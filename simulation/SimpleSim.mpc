@@ -1,0 +1,28 @@
+
+project (SimpleSim) : using_ace, using_madara {
+  exeout = bin
+  exename = SimpleSim
+
+  includes +=     comm
+  
+  Build_Files {
+    CollisionSimulation.mwc
+    SimpleSim.mpc
+    using_madara.mpb
+    using_ace.mpb
+    generate_vs2010.bat
+  }
+
+  Source_Files {
+    ./collision
+    ./comm
+    ./comm/multicast
+  }
+
+  Header_Files {
+    ./collision
+    ./comm
+    ./comm/multicast
+  }
+}
+

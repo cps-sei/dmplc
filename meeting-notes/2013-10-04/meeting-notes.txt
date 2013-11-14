@@ -1,0 +1,58 @@
+///////////////////////////////////////////////////////////////
+
+Left Side (James) (second version)
+
+int x = initx, y = inity, lock_node (x, y)
+while (x != dest_x || y != dest_y)
+{
+  (next_x, next_y) = f (x, y, dest_x, dest_y, cur_node_locks, cur_edge_locks)
+  lock_edge (x, y, next_x, next_y, cur_edge_locks)
+  lock_node (next_x, next_y)
+  move_to (next_x, next_y)  // asynchronous semantics, return only gaurantees that agent is off x, y (not at next_x, next_y)
+  release_node (x, y, cur_node_locks)
+  while (!arrived (next_x, next_y))
+    move_to (next_x, next_y)
+  release_edge (x, y, next_x, next_y, cur_edge_locks)
+}
+
+///////////////////////////////////////////////////////////////
+
+Right Side (Sagar) (first version)
+
+int x = initx, y = inity, lock_node (x), lock_node(y)
+while (x != dest_x || y != dest_y)
+{
+  int next_x = f (x, y, dest_x, dest_y);
+  int next_y = g (x, y, dest_x, dest_y);
+  lock_edge (x, y, next_x, next_y);
+  lock_node (next_x, next_y);
+  x = next_x;
+  y = next_y;
+  release (x);
+  release (y);
+}
+
+///////////////////////////////////////////////////////////////
+
+Comments:
+--------
+  * the right side release (x|y) does not work separately since a
+    tuple (x,y) represents a node, and release (x|y) would appear to
+    release an entire axis. During our discussions, we had talked
+    about this release (x|y) should actually be release_node (x, y),
+    as reflected in left side
+
+  * the right side version does not release the edge.
+
+  * the right side version moves instantaneously from (x,y) to
+    (next_x, next_y), which may be easier for validation but which is
+    harder to extend to a real world scenario
+
+  * the right side version uses two separate heuristics to generate
+    next_x and next_y, which may result in inconsistent coordinates in
+    relation to the current position. A single function, as done in
+    the left side version, provides a more consistent heuristic that
+    generates both next_x and next_y from the same heuristic call.
+
+
+

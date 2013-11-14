@@ -1,0 +1,58 @@
+//ASCII visualization (25 elements)
+
+ 0  1  2  3  4 
+ 5  6  7  8  9
+10 11 12 13 14
+15 16 17 18 19
+20 21 22 23 24
+
+// 27 elements (shows that this works, even on square roots that are not perfect)
+
+ 0  1  2  3  4 
+ 5  6  7  8  9
+10 11 12 13 14
+15 16 17 18 19
+20 21 22 23 24
+25 26
+
+// for access, process must get approval from their row AND column, 
+// which creates a unique, cross cutting quorum
+
+
+//globals required by most algorithm steps
+num_cols = sqrt (n);
+pos = .id % num_cols;
+last_col = .id - pos + num_cols;
+
+// horizontal check
+i = .id - pos; i < last_col; ++i
+
+// vertical check
+i = pos; i < n; i+=num_cols
+
+
+// quorum check
+pos = .id % num_cols;
+first_col = .id - pos
+last_col = first_col + num_cols;
+
+  // vertical check
+  input % num_cols = pos
+
+  ||
+
+  // horizontal check
+  input < last_col && input >= first_col
+
+
+// maekawa process
+1. request
+2. grant
+3. inquire
+4. release
+
+// format of variables
+MUTEX.{resource.name}.{requester} = #clock ()
+MUTEX.{resource.name}.{requester}.{granter} = MUTEX.{resource.name}.{requester}
+MUTEX.{resource.name}.{requester}.release = MUTEX.{resource.name}.{requester}
+
