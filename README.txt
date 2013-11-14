@@ -10,17 +10,8 @@ participant in the networked application.
 
 DIRECTORIES
 
-  /sagar
-
-  OK. Really, this directory should have a name that signifies what is in it,
-  so finding information is intuitive.
-
   /simulation
   
   The simulation directory contains code to run VREP simulations of the area
   coverage.
   
-  /meeting-notes
-  
-  Notes on overall strategy as discussed in meetings at SEI, CMU, and other
-  locations
