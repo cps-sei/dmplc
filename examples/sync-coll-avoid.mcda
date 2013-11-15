@@ -1,0 +1,103 @@
+MOC(sync);
+
+//number of X and Y coordinates
+CONST(X,4);
+CONST(Y,4);
+
+//states of each node
+CONST(NEXT,0);
+CONST(REQUEST,1);
+CONST(WAITING,2);
+CONST(MOVE,3);
+
+NODE(id)
+{
+  //shared variables -- visible across nodes. 
+  //must be accessed via R() and W()
+  PUBLIC(Array(Bool,X*Y), lock);
+
+  //private variables -- local to the node.
+  //preserved across rounds
+  PRIVATE(int state); //the state
+  PRIVATE(int x,y); //current coordinates
+  PRIVATE(int xp,yp); //next coordinates
+  PRIVATE(int xf,yf); //final coordinates
+  
+  NEXT_XY {
+    xp = x; yp = y;
+    if(x < xf) xp = x + 1;
+    else if(x > xf) xp = x - 1;
+    else if(y < yf) yp = y + 1;
+    else yp = y - 1;
+  }
+
+  MOVE_TO {
+    if(target != (xp,yp)) {
+      target = (xp,yp);
+      return 1;
+    } else {
+      return (position != target);
+    }
+  }
+
+  ROUND {
+    switch(state) {
+      //compute next point on route
+    case NEXT:
+      BREAKIF(x == xf && y == yf);
+      NEXT_XY();
+      state = REQUEST;
+      break;
+
+      //request the lock but only if it is free
+    case REQUEST: 
+      BREAKIF(EXISTS(idp,lock.idp[xp * Y + yp] != 0));
+      W(lock[xp * Y + yp],1);
+      state = WAITING;
+      break;
+
+      //grab the lock if we are the highest 
+      //id node to request or hold the lock
+    case WAITING:
+      BREAKIF(EXISTS(idp, idp>id && lock.idp[xp * Y + yp] != 0));
+      state = MOVE;
+      break;
+
+      //now we have the lock on (x’,y’)
+    case MOVE:
+      BREAKIF(MOVE_TO());
+      W(lock[x * Y + y],0); 
+      x = xp; y = yp;
+      state = NEXT;
+      break;
+    }
+  }
+}
+
+//program has two nodes with ids 0 and 1
+PROGRAM(0,1)
+
+//initial state
+INIT 
+{
+  FOREACH_NODE(id) {
+    SET(state.id,NEXT);
+    ND(x.id); ND(y.id);
+    ASSUME(0 <= x.id && x.id < X && 0 <= y.id && y.id < Y);
+    SET(lock.id[x.id * Y + y.id], 1);
+    ND(xf.id); ND(yf.id);
+    ASSUME(0 <= xf.id && xf.id < X && 0 <= yf.id && yf.id < Y);
+  }
+
+  FOREACH_DISTINCT_NODE_PAIR (id1,id2) {
+    ASSUME(x.id1 != x.id2 || y.id1 != y.id2);
+  }
+}
+
+//the safety property checked at the beginning of each round
+SAFETY
+{
+  FOREACH_DISTINCT_NODE_PAIR (id1,id2) {
+    ASSERT(x.id1 != x.id2 || y.id1 != y.id2);
+  }
+}
