@@ -15,3 +15,7 @@ DIRECTORIES
   The simulation directory contains code to run VREP simulations of the area
   coverage.
   
+  /examples
+
+  Contains various examples used to drive our work. This is very much
+  a scratch area.
