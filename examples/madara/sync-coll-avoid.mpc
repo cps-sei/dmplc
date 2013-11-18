@@ -1,0 +1,21 @@
+project (sync-coll-avoid) : using_madara, using_ace {
+  exeout = bin
+  exename = sync-coll-avoid
+  
+  requires += tests
+
+  Documentation_Files {
+  }
+  
+  Build_Files {
+    sync-coll-avoid.mpc
+  }
+
+  Header_Files {
+  }
+
+  Source_Files {
+    sync-coll-avoid-madara.cpp
+  }
+}
+
