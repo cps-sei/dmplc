@@ -225,7 +225,7 @@ COUNT_FINISHED (Madara::Knowledge_Engine::Function_Arguments &,
 {
   return vars.evaluate (
     ".finished = 0 ;> "
-    ".i [0->n]"
+    ".i [0->n)"
     "  ("
     "    x_{.id} == xf_{.id} && y_{.id} == yf_{.id} => ++.finished"
     "  ) ;> "
@@ -270,7 +270,7 @@ int main (int argc, char ** argv)
   // call the init function and initialize barrier
   knowledge.evaluate ("INIT (); ++b_{.id}");
 
-  while (knowledge.evaluate ("COUNT_FINISHED ()").to_integer () == 2)
+  while (knowledge.evaluate ("COUNT_FINISHED ()").to_integer () != 2)
   {
     // enable sending all updated variables
     wait_settings.send_list.clear ();
