@@ -2,8 +2,6 @@ project (sync-coll-avoid) : using_madara, using_ace {
   exeout = bin
   exename = sync-coll-avoid
   
-  requires += tests
-
   Documentation_Files {
   }
   
