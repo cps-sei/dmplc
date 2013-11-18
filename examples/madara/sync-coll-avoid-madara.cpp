@@ -276,7 +276,7 @@ int main (int argc, char ** argv)
     wait_settings.send_list.clear ();
 
     // Barrier and send all updates
-    knowledge.wait ("b_0 == b_1 <; REFRESH_STATUS ())", wait_settings);
+    knowledge.wait ("REFRESH_STATUS () ;> b_0 == b_1 ", wait_settings);
 
     // start round and only send barrier variable updates
     wait_settings.send_list = barrier_send_list;
@@ -286,7 +286,7 @@ int main (int argc, char ** argv)
     
     // wait for other processes to get through execute round and do not
     // send updates to anything except barrier variable
-    knowledge.wait ("b_0 == b_1 <; REFRESH_STATUS ())", wait_settings);
+    knowledge.wait ("REFRESH_STATUS () ;> b_0 == b_1 ", wait_settings);
 
     // update barrier variable
     knowledge.evaluate ("++b_{.id}", wait_settings);
