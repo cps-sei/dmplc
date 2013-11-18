@@ -124,7 +124,7 @@ INIT (Madara::Knowledge_Engine::Function_Arguments &,
     "y_{.id} = #rand_int (0, Y);"
     "lock_{.id}[x_{.id} * Y + y_{.id}] = 1;"
     "xf_{.id} = #rand_int (0, X);"
-    "yf_{.id} = #rand_int (0, Y);"
+    "yf_{.id} = #rand_int (0, Y)"
   );
 }
 
@@ -175,19 +175,21 @@ EXECUTE (Madara::Knowledge_Engine::Function_Arguments &,
 {
   return vars.evaluate (
     // is state_{.id} equal to NEXT?
-    "state_{.id} == 'NEXT' => "
+    "(state_{.id} == 'NEXT' => "
     "  ("
+    "    #print ('  Handling state == NEXT\n');"
     "    !(x_{.id} == xf_{.id} && y_{.id} == yf_{.id}) =>"
     "      ("
-    "        next_xy ();"
+    "        NEXT_XY ();"
     "        state_{.id} = 'REQUEST'"
     "      )"
     "  )"
     // or
-    "||"
+    ") ||"
     // is state_{.id} equal to REQUEST?
-    "state_{.id} == 'REQUEST' => "
+    "(state_{.id} == 'REQUEST' => "
     "  ("
+    "    #print ('  Handling state == REQUEST\n');"
     "    !lock_0[xp_{.id} * Y + yp_{.id}] && !lock_1[xp_{.id} * Y + yp_{.id}]"
     "      =>"
     "      ("
@@ -195,26 +197,31 @@ EXECUTE (Madara::Knowledge_Engine::Function_Arguments &,
     "        state_{.id} = 'WAITING'"
     "      )"
     "  )"
-    "||"
+    ") ||"
     // is state_{.id} equal to WAITING?
-    "state_{.id} == 'WAITING' => "
+    "(state_{.id} == 'WAITING' => "
     "  ("
+    "    #print ('  Handling state == WAITING\n');"
     "    !(.id == 0 && lock_1[xp_0 * Y + yp_0])"
     "      =>"
     "      ("
     "        state_{.id} = 'MOVE'"
     "      )"
     "  )"
-    "||"
+    ") ||"
     // is state_{.id} equal to MOVE?
-    "state_{.id} == 'MOVE' => "
+    "(state_{.id} == 'MOVE' => "
     "  ("
-    "    #rand_int (0, 5) == 0;"
-    "    lock_{.id}[x_{.id} * Y + y_{.id}] = 0;"
-    "    x_{.id} = xp_{.id};"
-    "    y_{.id} = yp_{.id};"
-    "    state_{.id} = 'NEXT'"
+    "    #print ('  Handling state == MOVE\n');"
+    //"     #rand_int (0, 5) == 0 =>"
+    "    ("
+    "      lock_{.id}[x_{.id} * Y + y_{.id}] = 0;"
+    "      x_{.id} = xp_{.id};"
+    "      y_{.id} = yp_{.id};"
+    "      state_{.id} = 'NEXT'"
+    "    )"
     "  )"
+    ")"
   );
 }
 
@@ -225,9 +232,9 @@ COUNT_FINISHED (Madara::Knowledge_Engine::Function_Arguments &,
 {
   return vars.evaluate (
     ".finished = 0 ;> "
-    ".i [0->n)"
+    ".i [0->.n)"
     "  ("
-    "    x_{.id} == xf_{.id} && y_{.id} == yf_{.id} => ++.finished"
+    "    (x_{.i} == xf_{.i} && y_{.i} == yf_{.i}) => (++.finished)"
     "  ) ;> "
     ".finished"
   );
@@ -244,6 +251,9 @@ int main (int argc, char ** argv)
   
   Madara::Knowledge_Engine::Wait_Settings wait_settings;
   wait_settings.max_wait_time = 10;
+  wait_settings.poll_frequency = 0.001;
+  //wait_settings.pre_print_statement = "PRE: Barriers: b_0 = {b_0}, b_1 = {b_1}\n";
+  //wait_settings.post_print_statement = "POST: Barriers: b_0 = {b_0}, b_1 = {b_1}\n";
 
   // create the knowledge base with the transport settings
   Madara::Knowledge_Engine::Knowledge_Base knowledge (host, settings);
@@ -268,22 +278,33 @@ int main (int argc, char ** argv)
   barrier_send_list [knowledge.expand_statement ("b_{.id}")] = true;
   
   // call the init function and initialize barrier
-  knowledge.evaluate ("INIT (); ++b_{.id}");
+  knowledge.evaluate ("INIT (); ++b_{.id}", wait_settings);
+  knowledge.print ("INIT: {x_{.id}}.{y_{.id}} -> {xf_{.id}}.{yf_{.id}}.\n");
+
 
   while (knowledge.evaluate ("COUNT_FINISHED ()").to_integer () != 2)
   {
+    knowledge.print ("Starting a fresh loop (.finished == {.finished})...\n");
+
     // enable sending all updated variables
     wait_settings.send_list.clear ();
+    
+    knowledge.print ("{b_{.id}}: BARRIER on updating round info...\n");
 
     // Barrier and send all updates
     knowledge.wait ("REFRESH_STATUS () ;> b_0 == b_1 ", wait_settings);
 
     // start round and only send barrier variable updates
     wait_settings.send_list = barrier_send_list;
+    
+    knowledge.print ("{b_{.id}}: Executing round: "
+      "{x_{.id}}.{y_{.id}} -> {xf_{.id}}.{yf_{.id}}.\n");
 
     // perform the round logic
     knowledge.evaluate ("EXECUTE (); ++b_{.id}", wait_settings);
     
+    knowledge.print ("{b_{.id}}: BARRIER on end of round...\n");
+
     // wait for other processes to get through execute round and do not
     // send updates to anything except barrier variable
     knowledge.wait ("REFRESH_STATUS () ;> b_0 == b_1 ", wait_settings);
@@ -291,7 +312,14 @@ int main (int argc, char ** argv)
     // update barrier variable
     knowledge.evaluate ("++b_{.id}", wait_settings);
   }
-  knowledge.print_knowledge ();
+  
+  // enable sending all updated variables
+  wait_settings.send_list.clear ();
+    
+  // update barrier variable
+  knowledge.wait ("REFRESH_STATUS () ;> "
+    "finished_{.id} = 1;> finished_0 == finished_1 ", wait_settings);
+
 
   return 0;
 }
