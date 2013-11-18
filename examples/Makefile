@@ -1,4 +1,4 @@
-GCC=g++ -std=c++0x
+GCC=g++ -std=c++0x -I$(ACE_ROOT) -I$(MADARA_ROOT)/include -L$(MADARA_ROOT)/lib
 COLL=../simulation/collision
 COMM=../simulation/comm
 MCAST=$(COMM)/multicast
