@@ -288,7 +288,7 @@ int main (int argc, char ** argv)
   
   Madara::Knowledge_Engine::Wait_Settings wait_settings;
   wait_settings.max_wait_time = 10;
-  wait_settings.poll_frequency = 0.001;
+  wait_settings.poll_frequency = 0.2;
   //wait_settings.pre_print_statement = "PRE: Barriers: b_0 = {b_0}, b_1 = {b_1}\n";
   //wait_settings.post_print_statement = "POST: Barriers: b_0 = {b_0}, b_1 = {b_1}\n";
 
