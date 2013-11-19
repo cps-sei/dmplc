@@ -128,11 +128,48 @@ INIT (Madara::Knowledge_Engine::Function_Arguments &,
   );
 }
 
+//print the board and the drone's location
+Madara::Knowledge_Record
+PRINT_BOARD(Madara::Knowledge_Engine::Function_Arguments &,
+            Madara::Knowledge_Engine::Variables & vars)
+{
+  int X = vars.get ("X").to_integer ();
+  int Y = vars.get ("Y").to_integer ();
+  int x_0 = vars.get ("x_0").to_integer ();
+  int x_1 = vars.get ("x_1").to_integer ();
+  int y_0 = vars.get ("y_0").to_integer ();
+  int y_1 = vars.get ("y_1").to_integer ();
+
+  //top-bar
+  vars.print(" ",0);
+  for(int x = 0;x < X;++x) vars.print("--- ",0);
+  vars.print("\n",0);
+
+  //each row
+  for(int y = 0;y < Y;++y) {
+    vars.print("|",0);
+    for(int x = 0;x < X;++x) {
+      if(x == x_0 && y == y_0)
+        vars.print(" 0 |",0);
+      else if(x == x_1 && y == y_1)
+        vars.print(" 1 |",0);
+      else 
+        vars.print("   |",0);
+    }
+    vars.print("\n",0);
+    vars.print(" ",0);
+    for(int x = 0;x < X;++x) vars.print("--- ",0);
+    vars.print("\n",0);
+  }
+
+  return 0.0;
+}
+
 // refresh status during barrier, in case of intermittent connections
 Madara::Knowledge_Record
 REFRESH_STATUS (Madara::Knowledge_Engine::Function_Arguments &,
                 Madara::Knowledge_Engine::Variables & vars)
-{
+{  
   return vars.evaluate (
     "x_{.id} = x_{.id};"
     "y_{.id} = y_{.id};"
@@ -264,6 +301,7 @@ int main (int argc, char ** argv)
   knowledge.define_function ("NEXT_XY", NEXT_XY);
   knowledge.define_function ("EXECUTE", EXECUTE);
   knowledge.define_function ("COUNT_FINISHED", COUNT_FINISHED);
+  knowledge.define_function ("PRINT_BOARD", PRINT_BOARD);
 
   // define constants that will never change and do not disseminate them
   knowledge.set (".id", Madara::Knowledge_Record::Integer (settings.id));
@@ -294,6 +332,9 @@ int main (int argc, char ** argv)
     // Barrier and send all updates
     knowledge.wait ("REFRESH_STATUS () ;> b_0 == b_1 ", wait_settings);
 
+    //print the board
+    knowledge.evaluate ("PRINT_BOARD ()");
+
     // start round and only send barrier variable updates
     wait_settings.send_list = barrier_send_list;
     
@@ -320,6 +361,8 @@ int main (int argc, char ** argv)
   knowledge.wait ("REFRESH_STATUS () ;> "
     "finished_{.id} = 1;> finished_0 == finished_1 ", wait_settings);
 
+  //print the board
+  knowledge.evaluate ("PRINT_BOARD ()");
 
   return 0;
 }
