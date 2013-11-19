@@ -44,14 +44,14 @@ NODE(id)
     switch(state) {
       //compute next point on route
     case NEXT:
-      BREAKIF(x == xf && y == yf);
+      IF(x == xf && y == yf) BREAK;
       NEXT_XY();
       state = REQUEST;
       break;
 
       //request the lock but only if it is free
     case REQUEST: 
-      BREAKIF(EXISTS(idp,lock.idp[xp * Y + yp] != 0));
+      IF(EXISTS_OTHER(idp,lock.idp[xp * Y + yp] != 0)) BREAK;
       W(lock[xp * Y + yp],1);
       state = WAITING;
       break;
@@ -59,13 +59,13 @@ NODE(id)
       //grab the lock if we are the highest 
       //id node to request or hold the lock
     case WAITING:
-      BREAKIF(EXISTS(idp, idp>id && lock.idp[xp * Y + yp] != 0));
+      IF(EXISTS_HIGHER(idp, lock.idp[xp * Y + yp] != 0)) BREAK;
       state = MOVE;
       break;
 
       //now we have the lock on (x’,y’)
     case MOVE:
-      BREAKIF(MOVE_TO());
+      IF(MOVE_TO()) BREAK;
       W(lock[x * Y + y],0); 
       x = xp; y = yp;
       state = NEXT;

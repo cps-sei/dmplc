@@ -78,7 +78,6 @@ void EXECUTE_0()
 
     //request the lock but only if it is free
   case REQUEST: 
-    if(lock_0_0[xp_0 * Y + yp_0] != 0) return;
     if(lock_1_0[xp_0 * Y + yp_0] != 0) return;
     lock_0_1[xp_0 * Y + yp_0] = 1;
     state_0 = WAITING;
@@ -87,8 +86,7 @@ void EXECUTE_0()
     //grab the lock if we are the highest 
     //id node to request or hold the lock
   case WAITING:
-    if(0 > 0 && lock_0_0[xp_0 * Y + yp_0] != 0) return;
-    if(1 > 0 && lock_1_0[xp_0 * Y + yp_0] != 0) return;
+    if(lock_1_0[xp_0 * Y + yp_0] != 0) return;
     state_0 = MOVE;
     break;
 
@@ -127,7 +125,6 @@ void EXECUTE_1()
     //request the lock but only if it is free
   case REQUEST: 
     if(lock_0_0[xp_1 * Y + yp_1] != 0) return;
-    if(lock_1_0[xp_1 * Y + yp_1] != 0) return;
     lock_1_1[xp_1 * Y + yp_1] = 1;
     state_1 = WAITING;
     break;
@@ -135,8 +132,6 @@ void EXECUTE_1()
     //grab the lock if we are the highest 
     //id node to request or hold the lock
   case WAITING:
-    if(0 > 1 && lock_0_0[xp_1 * Y + yp_1] != 0) return;
-    if(1 > 1 && lock_1_0[xp_1 * Y + yp_1] != 0) return;
     state_1 = MOVE;
     break;
 
