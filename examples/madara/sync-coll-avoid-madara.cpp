@@ -120,11 +120,11 @@ INIT (Madara::Knowledge_Engine::Function_Arguments &,
 {
   return vars.evaluate (
     "state_{.id} = 'NEXT';"
-    "x_{.id} = #rand_int (0, X);"
-    "y_{.id} = #rand_int (0, Y);"
+    "x_{.id} = #rand_int (0, X - 1);"
+    "y_{.id} = #rand_int (0, Y - 1);"
     "lock_{.id}[x_{.id} * Y + y_{.id}] = 1;"
-    "xf_{.id} = #rand_int (0, X);"
-    "yf_{.id} = #rand_int (0, Y)"
+    "xf_{.id} = #rand_int (0, X - 1);"
+    "yf_{.id} = #rand_int (0, Y - 1)"
   );
 }
 
