@@ -1,0 +1,1091 @@
+file sync-coll-avoid.c: Parsing
+Converting
+Type-checking sync-coll-avoid
+file sync-coll-avoid.c line 50 function COPY_FORWARD: symbol `COPY_FORWARD::1::i' already has an initial value
+file sync-coll-avoid.c line 56 function COPY_BACKWARD: symbol `COPY_BACKWARD::1::i' already has an initial value
+Generating GOTO Program
+Adding CPROVER library
+Function Pointer Removal
+Partial Inlining
+Generic Property Instrumentation
+Starting Bounded Model Checking
+Unwinding loop c::COPY_FORWARD.0 iteration 1 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 2 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 3 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 4 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 5 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 6 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 7 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 8 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 9 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 10 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 11 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 12 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 13 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 14 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 15 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 16 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 1 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 2 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 3 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 4 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 5 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 6 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 7 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 8 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 9 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 10 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 11 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 12 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 13 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 14 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 15 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 16 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 1 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 2 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 3 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 4 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 5 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 6 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 7 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 8 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 9 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 10 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 11 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 12 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 13 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 14 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 15 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 16 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 1 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 2 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 3 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 4 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 5 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 6 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 7 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 8 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 9 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 10 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 11 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 12 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 13 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 14 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 15 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 16 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::main.0 iteration 1 file sync-coll-avoid.c line 158 function main thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 1 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 2 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 3 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 4 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 5 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 6 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 7 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 8 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 9 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 10 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 11 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 12 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 13 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 14 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 15 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 16 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 1 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 2 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 3 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 4 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 5 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 6 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 7 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 8 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 9 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 10 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 11 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 12 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 13 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 14 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 15 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 16 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 1 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 2 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 3 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 4 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 5 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 6 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 7 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 8 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 9 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 10 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 11 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 12 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 13 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 14 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 15 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 16 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 1 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 2 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 3 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 4 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 5 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 6 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 7 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 8 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 9 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 10 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 11 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 12 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 13 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 14 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 15 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 16 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::main.0 iteration 2 file sync-coll-avoid.c line 158 function main thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 1 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 2 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 3 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 4 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 5 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 6 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 7 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 8 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 9 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 10 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 11 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 12 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 13 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 14 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 15 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 16 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 1 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 2 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 3 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 4 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 5 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 6 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 7 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 8 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 9 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 10 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 11 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 12 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 13 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 14 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 15 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 16 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 1 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 2 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 3 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 4 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 5 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 6 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 7 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 8 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 9 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 10 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 11 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 12 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 13 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 14 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 15 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 16 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 1 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 2 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 3 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 4 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 5 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 6 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 7 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 8 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 9 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 10 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 11 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 12 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 13 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 14 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 15 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 16 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::main.0 iteration 3 file sync-coll-avoid.c line 158 function main thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 1 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 2 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 3 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 4 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 5 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 6 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 7 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 8 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 9 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 10 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 11 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 12 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 13 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 14 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 15 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 16 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 1 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 2 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 3 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 4 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 5 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 6 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 7 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 8 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 9 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 10 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 11 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 12 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 13 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 14 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 15 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 16 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 1 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 2 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 3 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 4 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 5 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 6 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 7 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 8 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 9 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 10 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 11 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 12 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 13 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 14 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 15 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 16 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 1 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 2 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 3 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 4 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 5 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 6 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 7 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 8 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 9 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 10 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 11 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 12 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 13 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 14 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 15 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 16 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::main.0 iteration 4 file sync-coll-avoid.c line 158 function main thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 1 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 2 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 3 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 4 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 5 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 6 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 7 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 8 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 9 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 10 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 11 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 12 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 13 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 14 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 15 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 16 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 1 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 2 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 3 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 4 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 5 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 6 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 7 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 8 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 9 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 10 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 11 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 12 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 13 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 14 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 15 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 16 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 1 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 2 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 3 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 4 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 5 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 6 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 7 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 8 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 9 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 10 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 11 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 12 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 13 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 14 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 15 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 16 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 1 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 2 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 3 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 4 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 5 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 6 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 7 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 8 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 9 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 10 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 11 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 12 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 13 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 14 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 15 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 16 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::main.0 iteration 5 file sync-coll-avoid.c line 158 function main thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 1 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 2 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 3 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 4 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 5 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 6 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 7 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 8 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 9 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 10 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 11 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 12 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 13 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 14 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 15 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 16 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 1 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 2 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 3 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 4 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 5 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 6 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 7 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 8 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 9 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 10 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 11 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 12 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 13 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 14 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 15 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 16 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 1 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 2 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 3 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 4 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 5 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 6 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 7 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 8 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 9 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 10 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 11 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 12 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 13 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 14 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 15 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 16 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 1 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 2 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 3 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 4 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 5 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 6 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 7 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 8 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 9 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 10 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 11 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 12 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 13 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 14 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 15 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 16 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::main.0 iteration 6 file sync-coll-avoid.c line 158 function main thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 1 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 2 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 3 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 4 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 5 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 6 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 7 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 8 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 9 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 10 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 11 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 12 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 13 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 14 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 15 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 16 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 1 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 2 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 3 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 4 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 5 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 6 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 7 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 8 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 9 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 10 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 11 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 12 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 13 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 14 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 15 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 16 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 1 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 2 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 3 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 4 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 5 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 6 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 7 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 8 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 9 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 10 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 11 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 12 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 13 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 14 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 15 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 16 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 1 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 2 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 3 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 4 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 5 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 6 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 7 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 8 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 9 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 10 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 11 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 12 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 13 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 14 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 15 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 16 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::main.0 iteration 7 file sync-coll-avoid.c line 158 function main thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 1 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 2 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 3 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 4 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 5 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 6 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 7 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 8 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 9 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 10 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 11 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 12 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 13 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 14 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 15 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 16 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 1 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 2 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 3 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 4 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 5 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 6 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 7 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 8 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 9 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 10 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 11 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 12 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 13 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 14 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 15 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 16 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 1 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 2 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 3 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 4 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 5 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 6 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 7 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 8 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 9 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 10 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 11 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 12 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 13 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 14 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 15 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 16 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 1 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 2 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 3 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 4 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 5 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 6 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 7 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 8 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 9 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 10 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 11 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 12 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 13 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 14 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 15 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 16 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::main.0 iteration 8 file sync-coll-avoid.c line 158 function main thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 1 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 2 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 3 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 4 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 5 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 6 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 7 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 8 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 9 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 10 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 11 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 12 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 13 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 14 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 15 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 16 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 1 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 2 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 3 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 4 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 5 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 6 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 7 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 8 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 9 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 10 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 11 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 12 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 13 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 14 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 15 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 16 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 1 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 2 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 3 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 4 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 5 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 6 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 7 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 8 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 9 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 10 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 11 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 12 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 13 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 14 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 15 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 16 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 1 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 2 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 3 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 4 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 5 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 6 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 7 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 8 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 9 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 10 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 11 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 12 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 13 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 14 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 15 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 16 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::main.0 iteration 9 file sync-coll-avoid.c line 158 function main thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 1 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 2 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 3 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 4 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 5 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 6 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 7 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 8 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 9 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 10 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 11 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 12 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 13 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 14 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 15 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 16 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 1 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 2 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 3 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 4 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 5 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 6 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 7 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 8 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 9 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 10 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 11 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 12 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 13 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 14 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 15 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 16 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 1 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 2 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 3 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 4 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 5 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 6 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 7 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 8 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 9 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 10 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 11 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 12 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 13 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 14 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 15 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 16 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 1 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 2 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 3 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 4 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 5 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 6 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 7 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 8 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 9 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 10 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 11 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 12 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 13 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 14 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 15 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 16 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::main.0 iteration 10 file sync-coll-avoid.c line 158 function main thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 1 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 2 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 3 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 4 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 5 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 6 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 7 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 8 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 9 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 10 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 11 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 12 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 13 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 14 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 15 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 16 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 1 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 2 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 3 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 4 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 5 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 6 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 7 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 8 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 9 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 10 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 11 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 12 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 13 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 14 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 15 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 16 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 1 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 2 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 3 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 4 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 5 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 6 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 7 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 8 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 9 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 10 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 11 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 12 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 13 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 14 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 15 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 16 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 1 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 2 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 3 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 4 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 5 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 6 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 7 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 8 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 9 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 10 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 11 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 12 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 13 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 14 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 15 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 16 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::main.0 iteration 11 file sync-coll-avoid.c line 158 function main thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 1 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 2 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 3 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 4 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 5 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 6 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 7 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 8 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 9 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 10 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 11 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 12 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 13 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 14 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 15 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 16 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 1 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 2 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 3 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 4 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 5 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 6 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 7 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 8 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 9 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 10 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 11 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 12 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 13 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 14 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 15 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 16 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 1 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 2 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 3 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 4 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 5 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 6 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 7 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 8 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 9 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 10 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 11 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 12 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 13 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 14 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 15 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 16 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 1 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 2 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 3 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 4 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 5 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 6 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 7 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 8 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 9 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 10 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 11 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 12 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 13 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 14 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 15 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 16 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::main.0 iteration 12 file sync-coll-avoid.c line 158 function main thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 1 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 2 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 3 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 4 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 5 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 6 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 7 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 8 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 9 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 10 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 11 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 12 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 13 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 14 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 15 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 16 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 1 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 2 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 3 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 4 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 5 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 6 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 7 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 8 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 9 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 10 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 11 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 12 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 13 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 14 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 15 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 16 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 1 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 2 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 3 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 4 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 5 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 6 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 7 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 8 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 9 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 10 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 11 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 12 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 13 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 14 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 15 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 16 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 1 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 2 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 3 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 4 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 5 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 6 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 7 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 8 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 9 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 10 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 11 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 12 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 13 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 14 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 15 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 16 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::main.0 iteration 13 file sync-coll-avoid.c line 158 function main thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 1 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 2 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 3 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 4 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 5 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 6 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 7 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 8 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 9 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 10 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 11 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 12 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 13 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 14 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 15 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 16 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 1 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 2 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 3 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 4 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 5 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 6 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 7 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 8 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 9 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 10 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 11 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 12 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 13 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 14 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 15 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 16 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 1 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 2 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 3 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 4 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 5 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 6 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 7 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 8 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 9 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 10 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 11 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 12 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 13 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 14 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 15 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 16 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 1 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 2 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 3 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 4 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 5 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 6 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 7 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 8 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 9 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 10 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 11 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 12 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 13 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 14 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 15 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 16 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::main.0 iteration 14 file sync-coll-avoid.c line 158 function main thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 1 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 2 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 3 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 4 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 5 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 6 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 7 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 8 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 9 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 10 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 11 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 12 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 13 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 14 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 15 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.0 iteration 16 file sync-coll-avoid.c line 49 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 1 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 2 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 3 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 4 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 5 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 6 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 7 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 8 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 9 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 10 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 11 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 12 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 13 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 14 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 15 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_FORWARD.1 iteration 16 file sync-coll-avoid.c line 50 function COPY_FORWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 1 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 2 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 3 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 4 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 5 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 6 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 7 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 8 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 9 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 10 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 11 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 12 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 13 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 14 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 15 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.0 iteration 16 file sync-coll-avoid.c line 55 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 1 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 2 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 3 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 4 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 5 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 6 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 7 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 8 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 9 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 10 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 11 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 12 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 13 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 14 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 15 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::COPY_BACKWARD.1 iteration 16 file sync-coll-avoid.c line 56 function COPY_BACKWARD thread 0
+Unwinding loop c::main.0 iteration 15 file sync-coll-avoid.c line 158 function main thread 0
+size of program expression: 11708 steps
+simple slicing removed 795 assignments
+Generated 15 VCC(s), 15 remaining after simplification
+===================================================================
+c Plingeling Parallel SAT Solver
+c 
+c Version aqw 27d9fd46b7165001d2b9810598c94c5acf3cda9d
+c 
+c Copyright (C) 2010-2013 Armin Biere JKU Linz Austria.
+c All rights reserved.
+c 
+c released Mon Apr 29 23:59:43 CEST 2013
+c compiled Tue Nov 19 14:57:00 EST 2013
+c 
+c gcc (Ubuntu/Linaro 4.6.3-1ubuntu5) 4.6.3
+c -Wall -O3 -flto -fwhole-program -DNDBLSCR -DNLGLOG -DNDEBUG -DNCHKSOL
+c -DNLGLPICOSAT
+c Linux pccq 3.2.0-56-generic-pae i686
+c 
+c - W    0.0 assuming cores = number of processors reported by 'sysconf' = 4
+c - W    0.0 USING 4 WORKER THREADS
+c - W    0.0 12280132 KB total memory according to /proc/meminfo
+c - W    0.0 soft memory limit set to 5997 MB
+c - W    0.0 default garbage collection limit 1
+c - W    0.0 sharing of units enabled
+c - W    0.0 sharing of clauses enabled
+c - W    0.0 sharing of equivalences enabled
+c - W    0.0 parsing 15.dimacs
+c - W    0.3 trying to clone worker 1 from worker 0
+c - W    0.3 prediction: 28 MB to be cloned + allocated 29 MB = 57 MB
+c - W    0.4 42 MB total allocated memory after cloning worker 1 from worker 0
+c - W    0.4 simplifying original formula with worker 0
+c 
+c    seconds         irredundant          redundant clauses agility   height
+c            variables clauses conflicts large ternary binary    glue         MB
+c 
+c 0 S    0.0   77284   350051         0       0      0     0   1  0.0   0.0   17
+c 1 S    0.0   77284   350051         0       0      0     0   1  0.0   0.0   17
+c 1 S    1.0   76451   346505       523     270    104    27   5  7.8 1046.8   28
+c 0 P    1.0   72582   282222         0       0      0  8072   1  0.0   0.0   27
+c 0 P    2.0   72582   224920         0       0      0  5347   1  0.0   0.0   35
+c 1 S    2.0   76132   346488      2236    1490    383   125   6 10.3 826.6   29
+c 
+c    seconds         irredundant          redundant clauses agility   height
+c            variables clauses conflicts large ternary binary    glue         MB
+c 
+c - W    3.9 trying to clone 2 workers
+c - W    3.9 trying to clone worker 2 from worker 0
+c - W    3.9 prediction: 17 MB to be cloned + allocated 48 MB = 65 MB
+c - W    4.0 58 MB total allocated memory after cloning worker 2 from worker 0
+c - W    4.0 trying to clone worker 3 from worker 0
+c - W    4.0 prediction: 14 MB to be cloned + allocated 58 MB = 71 MB
+c - W    4.0 71 MB total allocated memory after cloning worker 3 from worker 0
+c 1 S    5.0   75730   346465      5999    4695   1046   405   4 35.8 667.5   29
+c 0 P    5.1   16608   161375      2319    3627    382   242   7 11.3 219.1   25
+c 2 P    5.2   16510   160312      2217    4116    405   247   5  9.2 249.1   25
+c 3 P    5.3   16566   160678      2280    4152    391   231   4  9.3  92.8   24
+c 1 S   10.0   70655   346451     10612    5677   1704   580   5 24.7 523.9   29
+c 2 P   10.0   12709   114937      4257    5087   4279  5714   5  8.4 194.5   26
+c 3 S   10.0   10093   111790      4805    5088    515  3110   4  9.5  84.3   14
+c 0 S   10.0   10094   111886      4679    4998    518  4091   5 10.1 176.7   14
+c 1 S   20.0   53624   346431     20113   10013   2596   747   9 17.7 425.3   29
+c 2 P   20.0    1947    23371     16461    9303   4494  2271  12  9.1 127.5    9
+c 3 P   20.0    1772    21629     14726    8149   3638  2591  10  9.4  62.5    8
+c 0 P   20.0    1811    22152     14502    6918   3754  1739  11  9.0 128.4    8
+c 1 S   30.0   53334   159140     29709   12951   3203   732   5 15.4 387.7   15
+c 3 S   30.0    1478    17726     49951   15333   8361  2135  15  9.5  40.8    9
+c 0 S   30.0    1491    18293     55522   18544   6528  1922  14  9.7  77.8   10
+c 2 S   30.0    1614    19564     44714   19863   8108  2203  13  9.5  86.9   10
+c 1 S   40.0   53320   159130     38905   22790   3693   757  13 14.6 358.1   16
+c 0 S   40.0    1489    18035     97828   28001   8919  2208  13  9.9  59.1   11
+c 2 S   40.1    1597    19274     86682   19315  10537  2361  16  9.8  65.0   10
+c 3 S   40.1    1478    17689     90636   23336  11370  2372  15  9.8  33.0   10
+c 
+c    seconds         irredundant          redundant clauses agility   height
+c            variables clauses conflicts large ternary binary    glue         MB
+c 
+c - W   47.1 worker 2 is the WINNER with result 20
+c
+c  0 PROD   64288  30% =    4062 units  15% +   54695 cls  30% +    5531 eqs  68%
+c  2 prod   57045  26% =    3279 units  12% +   51885 cls  29% +    1881 eqs  23%
+c  3 prod   56127  26% =    1916 units   7% +   53449 cls  30% +     762 eqs   9%
+c  1 prod   38238  18% =   18393 units  67% +   19845 cls  11% +       0 eqs   0%
+c -------------------------------------------------------------------------------
+c    prod  215698 100% =   27650 units 100% +  179874 cls 100% +    8174 eqs 100%
+c
+c  1 CONS    7228   3% =    7163 units  26% +      65 cls   0% +       0 eqs   0%
+c  0 cons    4997   2% =    4835 units  17% +       6 cls   0% +     156 eqs   2%
+c  3 cons    4380   2% =    4223 units  15% +       1 cls   0% +     156 eqs   2%
+c  2 cons    3485   2% =    3408 units  12% +       0 cls   0% +      77 eqs   1%
+c -------------------------------------------------------------------------------
+c    cons   20090   9% =   19629 units  71% +      72 cls   0% +     389 eqs   5%
+s UNSATISFIABLE
+c
+c 7506 termination checks
+c
+c units: 27650 found, 29968 publications, 4595 syncs, 642 flushed
+c clauses: 179874 clauses added, 173818 collected 97%, 18 gcs
+c equivalences: 8174 found, 135 syncs
+c
+c 1135854 decisions, 387067 conflicts, 8217.4 conflicts/sec
+c 3114725370 propagations, 6.6 megaprops/sec
+c 141.6 process time, 75% utilization
+c
+c 47.1 seconds, 292.1 MB
