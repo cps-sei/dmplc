@@ -1,5 +1,15 @@
+#ifndef X
 #define X 4
+#endif
+
+#ifndef Y
 #define Y 4
+#endif
+
+#ifndef R
+#define R 10
+#endif
+
 #define NEXT 0
 #define REQUEST 1
 #define WAITING 2
