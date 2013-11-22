@@ -428,7 +428,8 @@ int main (int argc, char ** argv)
   knowledge.evaluate ("INIT (); ++b_{.id}", wait_settings);
   knowledge.print ("INIT: {x_{.id}}.{y_{.id}} -> {xf_{.id}}.{yf_{.id}}.\n");
 
-  while (knowledge.evaluate ("COUNT_FINISHED ()").to_integer () != 2)
+  while (knowledge.evaluate (
+    "COUNT_FINISHED () == 2 || finished_0 || finished_1").is_false ())
   {
     knowledge.print (
       "Starting a fresh loop (.finished == {.finished})...\n");
@@ -477,7 +478,7 @@ int main (int argc, char ** argv)
   // enable sending all updated variables
   wait_settings.send_list.clear ();
     
-  knowledge.print ("{b_{.id}}:{.clock}: Reached final location: "
+  knowledge.print ("{b_{.id}}: Reached final location: "
     "{x_{.id}}.{y_{.id}} -> {xf_{.id}}.{yf_{.id}}.\n");
 
   // update barrier variable
