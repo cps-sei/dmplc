@@ -5,7 +5,10 @@
 #include <sstream>
 #include <assert.h>
 
+#include "ace/OS_NS_Thread.h"
+#include "ace/Sched_Params.h"
 #include "madara/knowledge_engine/Knowledge_Base.h"
+#include "madara/filters/Generic_Filters.h"
 
 // transport settings
 std::string host ("");
@@ -17,6 +20,12 @@ Madara::Knowledge_Record::Integer processes (2);
 
 // convenience variable for treating globals as locals
 Madara::Knowledge_Engine::Eval_Settings es_treat_as_local (false, true);
+
+// compiled init function
+Madara::Knowledge_Engine::Compiled_Expression init_function_logic;
+
+// rows and columns are set to y, x
+Madara::Knowledge_Record::Integer cols (4), rows (4);
 
 // handle arguments from the command line
 void handle_arguments (int argc, char ** argv)
@@ -80,6 +89,26 @@ void handle_arguments (int argc, char ** argv)
 
       ++i;
     }
+    else if (arg1 == "-x" || arg1 == "--cols")
+    {
+      if (i + 1 < argc)
+      {
+        std::stringstream buffer (argv[i + 1]);
+        buffer >> cols;
+      }
+
+      ++i;
+    }
+    else if (arg1 == "-y" || arg1 == "--rows")
+    {
+      if (i + 1 < argc)
+      {
+        std::stringstream buffer (argv[i + 1]);
+        buffer >> rows;
+      }
+
+      ++i;
+    }
     else if (arg1 == "-f" || arg1 == "--logfile")
     {
       if (i + 1 < argc)
@@ -105,6 +134,8 @@ void handle_arguments (int argc, char ** argv)
         " [-i|--id id]             the id of this agent (should be non-negative)\n" \
         " [-l|--level level]       the logger level (0+, higher is higher detail)\n" \
         " [-f|--logfile file]      log to a file\n" \
+        " [-x|--cols num_cols]     setup a board with num_cols number of columns\n" \
+        " [-y|--rows num_rows]     setup a board with num_rows number of rows\n" \
         " [-r|--reduced]           use the reduced message header\n" \
         "\n",
         argv[0]));
@@ -118,20 +149,13 @@ Madara::Knowledge_Record
 INIT (Madara::Knowledge_Engine::Function_Arguments &,
       Madara::Knowledge_Engine::Variables & vars)
 {
-  return vars.evaluate (
-    "state_{.id} = 'NEXT';"
-    "x_{.id} = #rand_int (0, X - 1);"
-    "y_{.id} = #rand_int (0, Y - 1);"
-    "lock_{.id}[x_{.id} * Y + y_{.id}] = 1;"
-    "xf_{.id} = #rand_int (0, X - 1);"
-    "yf_{.id} = #rand_int (0, Y - 1)"
-  );
+  return vars.evaluate (init_function_logic);
 }
 
 //print the board and the drone's location
 Madara::Knowledge_Record
-PRINT_BOARD(Madara::Knowledge_Engine::Function_Arguments &,
-            Madara::Knowledge_Engine::Variables & vars)
+PRINT_BOARD (Madara::Knowledge_Engine::Function_Arguments &,
+             Madara::Knowledge_Engine::Variables & vars)
 {
   int X = vars.get ("X").to_integer ();
   int Y = vars.get ("Y").to_integer ();
@@ -139,27 +163,38 @@ PRINT_BOARD(Madara::Knowledge_Engine::Function_Arguments &,
   int x_1 = vars.get ("x_1").to_integer ();
   int y_0 = vars.get ("y_0").to_integer ();
   int y_1 = vars.get ("y_1").to_integer ();
+  
+  // print horizontal separator
+  vars.print (" ", 0);
+  for (int x = 0; x < X; ++x)
+    vars.print ("--- ", 0);
+  vars.print ("\n", 0);
 
-  //top-bar
-  vars.print(" ",0);
-  for(int x = 0;x < X;++x) vars.print("--- ",0);
-  vars.print("\n",0);
+  // for each row
+  for(int y = 0; y < Y; ++y)
+  {
+    vars.print ("|", 0);
 
-  //each row
-  for(int y = 0;y < Y;++y) {
-    vars.print("|",0);
-    for(int x = 0;x < X;++x) {
-      if(x == x_0 && y == y_0)
-        vars.print(" 0 |",0);
-      else if(x == x_1 && y == y_1)
-        vars.print(" 1 |",0);
+    // separate each entry by a |
+    for (int x = 0; x < X; ++x)
+    {
+      if (x == x_0 && y == y_0)
+        vars.print (" 0 |", 0);
+      else if (x == x_1 && y == y_1)
+        vars.print (" 1 |", 0);
       else 
-        vars.print("   |",0);
+        vars.print ("   |", 0);
     }
-    vars.print("\n",0);
-    vars.print(" ",0);
-    for(int x = 0;x < X;++x) vars.print("--- ",0);
-    vars.print("\n",0);
+
+    // print a newline and spacer
+    vars.print ("\n", 0);
+    vars.print (" ", 0);
+
+    // print horizontal separator
+    for (int x = 0; x < X; ++x)
+      vars.print ("--- ", 0);
+
+    vars.print ("\n", 0);
   }
 
   return 0.0;
@@ -279,16 +314,28 @@ COUNT_FINISHED (Madara::Knowledge_Engine::Function_Arguments &,
 
 int main (int argc, char ** argv)
 {
+  ACE_TRACE (ACE_TEXT ("main"));
+
+  // use ACE real time scheduling class
+  int prio  = ACE_Sched_Params::next_priority
+    (ACE_SCHED_FIFO,
+     ACE_Sched_Params::priority_max (ACE_SCHED_FIFO),
+     ACE_SCOPE_THREAD);
+  ACE_OS::thr_setprio (prio);
+
   settings.hosts.push_back (default_multicast);
 
   // handle any command line arguments
   handle_arguments (argc, argv);
 
   settings.type = Madara::Transport::MULTICAST;
-  
+  settings.queue_length = 100000;
+  //settings.add_receive_filter (Madara::Filters::log_aggregate);
+  //settings.add_send_filter (Madara::Filters::log_aggregate);
+
   Madara::Knowledge_Engine::Wait_Settings wait_settings;
   wait_settings.max_wait_time = 10;
-  wait_settings.poll_frequency = 0.2;
+  wait_settings.poll_frequency = .1;
   //wait_settings.pre_print_statement = "PRE: Barriers: b_0 = {b_0}, b_1 = {b_1}\n";
   //wait_settings.post_print_statement = "POST: Barriers: b_0 = {b_0}, b_1 = {b_1}\n";
 
@@ -306,31 +353,99 @@ int main (int argc, char ** argv)
   // define constants that will never change and do not disseminate them
   knowledge.set (".id", Madara::Knowledge_Record::Integer (settings.id));
   knowledge.set (".n", processes);
-  knowledge.set ("X", Madara::Knowledge_Record::Integer (4),
-                 es_treat_as_local);
-  knowledge.set ("Y", Madara::Knowledge_Record::Integer (4),
-                 es_treat_as_local);
+  knowledge.set ("X", cols, es_treat_as_local);
+  knowledge.set ("Y", rows, es_treat_as_local);
   
+  std::string barrier_string = "REFRESH_STATUS () ;> b_1 >= b_0";
+
+  if (settings.id != 0)
+  {
+    barrier_string = "REFRESH_STATUS () ;> b_0 >= b_1";
+  }
+
+  init_function_logic = knowledge.compile (
+    "state_{.id} = 'NEXT';"
+    ".side = #rand_int (0, 4);"
+    "(.side == 0 =>\n"
+    "  (\n"
+    "    x_{.id} = 0;\n"
+    "    y_{.id} = #rand_int (0, Y - 1)\n"
+    "  )\n"
+    ") ||\n"
+    "(.side == 1 =>\n"
+    "  (\n"
+    "    x_{.id} = #rand_int (0, X - 1);\n"
+    "    y_{.id} = 0\n"
+    "  )\n"
+    ") ||\n"
+    "(.side == 2 =>\n"
+    "  (\n"
+    "    y_{.id} = #rand_int (0, Y - 1);\n"
+    "    x_{.id} = X - 1\n"
+    "  )\n"
+    ") ||\n"
+    "(.side == 3 =>\n"
+    "  (\n"
+    "    x_{.id} = #rand_int (0, X - 1);\n"
+    "    y_{.id} = Y - 1\n"
+    "  )\n"
+    ");\n"
+    ".side = #rand_int (0, 4);"
+    "(.side == 0 =>\n"
+    "  (\n"
+    "    xf_{.id} = 0;\n"
+    "    yf_{.id} = #rand_int (0, Y - 1, false)\n"
+    "  )\n"
+    ") ||\n"
+    "(.side == 1 =>\n"
+    "  (\n"
+    "    xf_{.id} = #rand_int (0, X - 1, false);\n"
+    "    yf_{.id} = 0\n"
+    "  )\n"
+    ") ||\n"
+    "(.side == 2 =>\n"
+    "  (\n"
+    "    yf_{.id} = #rand_int (0, Y - 1, false);\n"
+    "    xf_{.id} = X - 1\n"
+    "  )\n"
+    ") ||\n"
+    "(.side == 3 =>\n"
+    "  (\n"
+    "    xf_{.id} = #rand_int (0, X - 1, false);\n"
+    "    yf_{.id} = Y - 1\n"
+    "  )\n"
+    ");\n"
+    "lock_{.id}[x_{.id} * Y + y_{.id}] = 1"
+    );
+
   // keep a send list with only the barrier information for safe rounds
   std::map <std::string, bool>  barrier_send_list;
   barrier_send_list [knowledge.expand_statement ("b_{.id}")] = true;
   
+  std::string post_print = "b_0 ({b_0}) == b_1 ({b_1})\n";
+
   // call the init function and initialize barrier
   knowledge.evaluate ("INIT (); ++b_{.id}", wait_settings);
   knowledge.print ("INIT: {x_{.id}}.{y_{.id}} -> {xf_{.id}}.{yf_{.id}}.\n");
 
-
   while (knowledge.evaluate ("COUNT_FINISHED ()").to_integer () != 2)
   {
-    knowledge.print ("Starting a fresh loop (.finished == {.finished})...\n");
+    knowledge.print (
+      "Starting a fresh loop (.finished == {.finished})...\n");
 
     // enable sending all updated variables
     wait_settings.send_list.clear ();
+    wait_settings.post_print_statement = post_print;
     
-    knowledge.print ("{b_{.id}}: BARRIER on updating round info...\n");
+    knowledge.print (
+      "{b_{.id}}:{.clock}: BARRIER on updating round info (...\n");
 
     // Barrier and send all updates
-    knowledge.wait ("REFRESH_STATUS () ;> b_0 == b_1 ", wait_settings);
+    knowledge.wait (barrier_string, wait_settings);
+
+    knowledge.evaluate ("b_{.id} = (b_0 ; b_1)");
+
+    wait_settings.post_print_statement = "";
 
     //print the board
     knowledge.evaluate ("PRINT_BOARD ()");
@@ -338,17 +453,22 @@ int main (int argc, char ** argv)
     // start round and only send barrier variable updates
     wait_settings.send_list = barrier_send_list;
     
-    knowledge.print ("{b_{.id}}: Executing round: "
+    knowledge.print ("{b_{.id}}:{.clock}: Executing round: "
       "{x_{.id}}.{y_{.id}} -> {xf_{.id}}.{yf_{.id}}.\n");
 
     // perform the round logic
-    knowledge.evaluate ("EXECUTE (); ++b_{.id}", wait_settings);
+    knowledge.evaluate (
+      "EXECUTE (); ++b_{.id}; .clock = #get_clock ()", wait_settings);
     
-    knowledge.print ("{b_{.id}}: BARRIER on end of round...\n");
+    knowledge.print ("{b_{.id}}:{.clock}: BARRIER on end of round...\n");
+    
+    wait_settings.post_print_statement = post_print;
 
     // wait for other processes to get through execute round and do not
     // send updates to anything except barrier variable
-    knowledge.wait ("REFRESH_STATUS () ;> b_0 == b_1 ", wait_settings);
+    knowledge.wait (barrier_string, wait_settings);
+    
+    knowledge.evaluate ("b_{.id} = (b_0 ; b_1)");
 
     // update barrier variable
     knowledge.evaluate ("++b_{.id}", wait_settings);
@@ -357,11 +477,15 @@ int main (int argc, char ** argv)
   // enable sending all updated variables
   wait_settings.send_list.clear ();
     
+  knowledge.print ("{b_{.id}}:{.clock}: Reached final location: "
+    "{x_{.id}}.{y_{.id}} -> {xf_{.id}}.{yf_{.id}}.\n");
+
   // update barrier variable
   knowledge.wait ("REFRESH_STATUS () ;> "
     "finished_{.id} = 1;> finished_0 == finished_1 ", wait_settings);
 
   //print the board
+  knowledge.print ("\n*****Final board*****.\n");
   knowledge.evaluate ("PRINT_BOARD ()");
 
   return 0;
