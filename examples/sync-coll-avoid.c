@@ -16,12 +16,13 @@
 #define MOVE 3
 
 #define assume(_x) __CPROVER_assume(_x)
-int nondet_int();
+typedef unsigned char uchar;
+uchar nondet_int();
 
 _Bool lock_0_0[X*Y],lock_0_1[X*Y]; //public variable for node 0
-int state_0,x_0,y_0,xp_0,yp_0,xf_0,yf_0; //private variables for node 0
+uchar state_0,x_0,y_0,xp_0,yp_0,xf_0,yf_0; //private variables for node 0
 _Bool lock_1_0[X*Y],lock_1_1[X*Y]; //public variable for node 1
-int state_1,x_1,y_1,xp_1,yp_1,xf_1,yf_1; //private variables for node 0
+uchar state_1,x_1,y_1,xp_1,yp_1,xf_1,yf_1; //private variables for node 0
 
 void INIT()
 {
@@ -56,14 +57,14 @@ void CHECK_SAFETY()
 
 void COPY_FORWARD()
 {
-  for(int i = 0;i < X*Y;++i) lock_0_1[i] = lock_0_0[i];
-  for(int i = 0;i < X*Y;++i) lock_1_1[i] = lock_1_0[i];
+  for(uchar i = 0;i < X*Y;++i) lock_0_1[i] = lock_0_0[i];
+  for(uchar i = 0;i < X*Y;++i) lock_1_1[i] = lock_1_0[i];
 }
 
 void COPY_BACKWARD()
 {
-  for(int i = 0;i < X*Y;++i) lock_0_0[i] = lock_0_1[i];
-  for(int i = 0;i < X*Y;++i) lock_1_0[i] = lock_1_1[i];
+  for(uchar i = 0;i < X*Y;++i) lock_0_0[i] = lock_0_1[i];
+  for(uchar i = 0;i < X*Y;++i) lock_1_0[i] = lock_1_1[i];
 }
   
 void NEXT_XY_0() 
@@ -160,7 +161,7 @@ void EXECUTE_1()
 int main()
 {
   INIT();
-  for(int r = 0;r < R;++r) {
+  for(uchar r = 0;r < R;++r) {
     CHECK_SAFETY();
     COPY_FORWARD();
     EXECUTE_0();
