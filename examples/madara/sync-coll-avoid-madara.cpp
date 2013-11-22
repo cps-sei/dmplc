@@ -33,12 +33,32 @@ void handle_arguments (int argc, char ** argv)
   for (int i = 1; i < argc; ++i)
   {
     std::string arg1 (argv[i]);
-
+    
     if (arg1 == "-m" || arg1 == "--multicast")
     {
       if (i + 1 < argc)
-        settings.hosts[0] = argv[i + 1];
-
+      {
+        settings.hosts.push_back (argv[i + 1]);
+        settings.type = Madara::Transport::MULTICAST;
+      }
+      ++i;
+    }
+    else if (arg1 == "-b" || arg1 == "--broadcast")
+    {
+      if (i + 1 < argc)
+      {
+        settings.hosts.push_back (argv[i + 1]);
+        settings.type = Madara::Transport::BROADCAST;
+      }
+      ++i;
+    }
+    else if (arg1 == "-u" || arg1 == "--udp")
+    {
+      if (i + 1 < argc)
+      {
+        settings.hosts.push_back (argv[i + 1]);
+        settings.type = Madara::Transport::UDP;
+      }
       ++i;
     }
     else if (arg1 == "-o" || arg1 == "--host")
@@ -128,15 +148,17 @@ void handle_arguments (int argc, char ** argv)
         "\nProgram summary for %s:\n\n" \
         "  Test the collision avoidance protocol with multicast transport."
         "\n\n" \
-        " [-o|--host hostname]     the hostname of this process (def:localhost)\n" \
-        " [-m|--multicast ip:port] the multicast ip to send and listen to\n" \
+        " [-b|--broadcast ip:port] the broadcast ip to send and listen to\n" \
         " [-d|--domain domain]     the knowledge domain to send and listen to\n" \
+        " [-f|--logfile file]      log to a file\n" \
         " [-i|--id id]             the id of this agent (should be non-negative)\n" \
         " [-l|--level level]       the logger level (0+, higher is higher detail)\n" \
-        " [-f|--logfile file]      log to a file\n" \
+        " [-m|--multicast ip:port] the multicast ip to send and listen to\n" \
+        " [-o|--host hostname]     the hostname of this process (def:localhost)\n" \
+        " [-r|--reduced]           use the reduced message header\n" \
+        " [-u|--udp ip:port]       the udp ips to send to (first is self to bind to)\n" \
         " [-x|--cols num_cols]     setup a board with num_cols number of columns\n" \
         " [-y|--rows num_rows]     setup a board with num_rows number of rows\n" \
-        " [-r|--reduced]           use the reduced message header\n" \
         "\n",
         argv[0]));
       exit (0);
@@ -315,6 +337,8 @@ COUNT_FINISHED (Madara::Knowledge_Engine::Function_Arguments &,
 int main (int argc, char ** argv)
 {
   ACE_TRACE (ACE_TEXT ("main"));
+  
+  settings.type = Madara::Transport::MULTICAST;
 
   // use ACE real time scheduling class
   int prio  = ACE_Sched_Params::next_priority
@@ -323,12 +347,15 @@ int main (int argc, char ** argv)
      ACE_SCOPE_THREAD);
   ACE_OS::thr_setprio (prio);
 
-  settings.hosts.push_back (default_multicast);
-
   // handle any command line arguments
   handle_arguments (argc, argv);
 
-  settings.type = Madara::Transport::MULTICAST;
+  if (settings.hosts.size () == 0)
+  {
+    // setup default transport as multicast
+    settings.hosts.push_back (default_multicast);
+  }
+  
   settings.queue_length = 100000;
   //settings.add_receive_filter (Madara::Filters::log_aggregate);
   //settings.add_send_filter (Madara::Filters::log_aggregate);
