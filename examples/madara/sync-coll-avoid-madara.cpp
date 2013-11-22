@@ -435,17 +435,17 @@ int main (int argc, char ** argv)
 
     // enable sending all updated variables
     wait_settings.send_list.clear ();
-    wait_settings.post_print_statement = post_print;
+    //wait_settings.post_print_statement = post_print;
     
     knowledge.print (
-      "{b_{.id}}:{.clock}: BARRIER on updating round info (...\n");
+      "{b_{.id}}: BARRIER on updating round info (...\n");
 
     // Barrier and send all updates
     knowledge.wait (barrier_string, wait_settings);
 
     knowledge.evaluate ("b_{.id} = (b_0 ; b_1)");
 
-    wait_settings.post_print_statement = "";
+    //wait_settings.post_print_statement = "";
 
     //print the board
     knowledge.evaluate ("PRINT_BOARD ()");
@@ -453,16 +453,16 @@ int main (int argc, char ** argv)
     // start round and only send barrier variable updates
     wait_settings.send_list = barrier_send_list;
     
-    knowledge.print ("{b_{.id}}:{.clock}: Executing round: "
+    knowledge.print ("{b_{.id}}: Executing round: "
       "{x_{.id}}.{y_{.id}} -> {xf_{.id}}.{yf_{.id}}.\n");
 
     // perform the round logic
     knowledge.evaluate (
-      "EXECUTE (); ++b_{.id}; .clock = #get_clock ()", wait_settings);
+      "EXECUTE (); ++b_{.id}", wait_settings);
     
-    knowledge.print ("{b_{.id}}:{.clock}: BARRIER on end of round...\n");
+    knowledge.print ("{b_{.id}}: BARRIER on end of round...\n");
     
-    wait_settings.post_print_statement = post_print;
+    //wait_settings.post_print_statement = post_print;
 
     // wait for other processes to get through execute round and do not
     // send updates to anything except barrier variable
