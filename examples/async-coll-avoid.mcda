@@ -1,0 +1,148 @@
+MOC(async);
+
+//number of X and Y coordinates
+CONST(X,4);
+CONST(Y,4);
+
+//states of each node
+CONST(NEXT,0);
+CONST(WAITING,1);
+CONST(MOVE,2);
+
+NODE(id)
+{
+  //shared variables -- visible across nodes. 
+  //must be accessed via R() and W()
+
+  //request[x][y] is 1 iff this node has requested reservation for
+  //(x,y)
+  PUBLIC(Array(Bool,X*Y), request); 
+
+  //response[x][y][idp] is:
+  // -- 1 if node idp has granted this node's request for reserving (x,y)
+  // -- -1 if node idp has denied this node's request for reserving (x,y)
+  // -- 0 if node idp has not responded to this node's request for reserving (x,y)
+  PUBLIC(Array(Bool,X*Y*N), response);
+
+  //private variables -- local to the node.
+  //preserved across rounds
+  PRIVATE(int state); //the state
+  PRIVATE(int x,y); //current coordinates
+  PRIVATE(int xp,yp); //next coordinates
+  PRIVATE(int xf,yf); //final coordinates
+  
+  NEXT_XY {
+    xp = x; yp = y;
+    if(x < xf) xp = x + 1;
+    else if(x > xf) xp = x - 1;
+    else if(y < yf) yp = y + 1;
+    else yp = y - 1;
+  }
+
+  MOVE_TO {
+    if(target != (xp,yp)) {
+      target = (xp,yp);
+      return 1;
+    } else {
+      return (position != target);
+    }
+  }
+
+  RESPOND {
+    FORALL_OTHER_HIGHER(idp) {
+      FORALL_XY(xo,yo) {
+        if(request.idp[xo][yo]) {
+          if(xo == x && yo == y) //if requesting (x,y)
+            response.idp[xo][yo][id] = -1; //reject
+          else
+            response.idp[xo][yo][id] = 1; //grant
+        }
+      }
+    }
+    FORALL_OTHER_LOWER(idp) {
+      if(request.idp[x][y]) response.idp[x][y][id] = 0;
+      FORALL_XY(xo,yo) {
+        if(request.idp[xo][yo]) {
+          if((xo == x && yo == y) || (xo == xp && yo == yp)) //if requesting (x,y) or (xp,yp)   
+            response.idp[xo][yo][id] = -1; //reject
+          else
+            response.idp[xo][yo][id] = 1; //grant
+        }
+      }
+    }
+  }
+
+  ROUND {
+    switch(state) {
+      //compute next point on route
+    case NEXT:
+      BREAKIF(x == xf && y == yf); //check if final location
+      NEXT_XY(); //compute next waypoint
+      RESPOND(); //respond to other requests      
+
+      //atomic -- means that other nodes either see all updates in
+      //this block or none.
+      ATOMIC {
+        FORALL_OTHER(idp) response.id[xp][yp][idp] = 0; //reset responses
+        request.id[xp][yp] = 1; //request coordinate (xp,yp)
+      }
+
+      state = WAITING;
+      break;
+
+      //trying to grab the lock
+    case WAITING:
+      RESPOND();
+      //if someone rejected my request, go back to square one
+      if(EXISTS_OTHER(idp,response.id[xp][yp][idp] == -1)) {
+        state = NEXT;
+        BREAK;
+      }
+      //if someone has still not granted my request, wait
+      if(EXISTS_OTHER(idp, response.id[xp][yp][idp] == 0)) BREAK;
+
+      //everyone granted my request. we have the lock.
+      request.id[xp][yp] = 1; //clear request for (xp,yp), perhaps not needed
+      state = MOVE;
+      BREAK;
+
+      //now we have the lock on (x’,y’)
+    case MOVE:
+      RESPOND();
+      //move to (xp,yp)
+      BREAKIF(MOVE_TO());
+      //unlock (x,y) -- just change x and y
+      x = xp; y = yp;
+      //move to next square
+      state = NEXT;
+      break;
+    }
+  }
+}
+
+//program has two nodes with ids 0 and 1
+PROGRAM(0,1)
+
+//initial state
+INIT 
+{
+  FOREACH_NODE(id) {
+    SET(state.id,NEXT);
+    ND(x.id); ND(y.id);
+    ASSUME(0 <= x.id && x.id < X && 0 <= y.id && y.id < Y);
+    ND(xf.id); ND(yf.id);
+    ASSUME(0 <= xf.id && xf.id < X && 0 <= yf.id && yf.id < Y);
+  }
+
+  FOREACH_DISTINCT_NODE_PAIR (id1,id2) {
+    ASSUME(x.id1 != x.id2 || y.id1 != y.id2);
+  }
+}
+
+//the safety property checked at the beginning of each round
+SAFETY
+{
+  FOREACH_DISTINCT_NODE_PAIR (id1,id2) {
+    ASSERT(x.id1 != x.id2 || y.id1 != y.id2);
+  }
+}
