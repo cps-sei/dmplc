@@ -23,3 +23,11 @@ This has not been tested, only built.
     mwc.pl -type vc10 sync-coll-avoid.mwc
     *open sync_coll_avoid.sln and build*
   
+3. HOW TO RUN SIMULATION
+
+  3.0 build (as above)
+  3.1 run start_sync_coll_sim.sh
+  3.2 in the V-REP window, hit "play"
+  3.3 in one shell run ./bin/sync-coll-avoid-vrep -i 0 -x 10 -y 10
+  3.4 in one shell run ./bin/sync-coll-avoid-vrep -i 1 -x 10 -y 10
+  3.5 enjoy!
