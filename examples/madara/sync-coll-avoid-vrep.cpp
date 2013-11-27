@@ -306,7 +306,7 @@ MOVETO (Madara::Knowledge_Engine::Function_Arguments &,
   //move to next location
   move_to(vars.evaluate(vars.expand_statement ("xp_{.id}")).to_integer(),
           vars.evaluate(vars.expand_statement ("yp_{.id}")).to_integer());
-  return vars.evaluate("0");
+  return 0.0;
 }
 
 Madara::Knowledge_Record
