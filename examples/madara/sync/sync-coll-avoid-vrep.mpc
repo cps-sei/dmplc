@@ -1,0 +1,19 @@
+project (sync-coll-avoid-vrep) : using_madara, using_ace {
+  exeout = bin
+  exename = sync-coll-avoid-vrep
+  
+  Documentation_Files {
+  }
+  
+  Build_Files {
+    sync-coll-avoid-vrep.mpc
+  }
+
+  Header_Files {
+  }
+
+  Source_Files {
+    sync-coll-avoid-vrep.cpp
+  }
+}
+
