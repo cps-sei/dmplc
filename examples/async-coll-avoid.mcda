@@ -96,7 +96,7 @@ NODE(id)
          * the idp that owns the variable (which I believe is crucial)
          **/
       // }
-      LOCAL {
+      PRIVATE {
         FORALL_OTHER(idp) response.id[xp][yp][idp] = 0; //reset responses
       }
 
