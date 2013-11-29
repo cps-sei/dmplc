@@ -1,0 +1,19 @@
+project (async-coll-avoid) : using_madara, using_ace {
+  exeout = bin
+  exename = async-coll-avoid
+  
+  Documentation_Files {
+  }
+  
+  Build_Files {
+    async-coll-avoid.mpc
+  }
+
+  Header_Files {
+  }
+
+  Source_Files {
+    async-coll-avoid-madara.cpp
+  }
+}
+
