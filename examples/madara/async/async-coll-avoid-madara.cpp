@@ -22,10 +22,20 @@ Madara::Knowledge_Record::Integer processes (2);
 Madara::Knowledge_Engine::Eval_Settings es_treat_as_local (false, true);
 
 // compiled init function
-Madara::Knowledge_Engine::Compiled_Expression init_function_logic;
+Madara::Knowledge_Engine::Compiled_Expression init_function_logic,
+  reset_responses_at_current_location, reset_future_responses,
+  count_finished_logic, refresh_status_logic, next_xy_logic, execute_logic,
+  synchronize_barrier;
 
 // rows and columns are set to y, x
 Madara::Knowledge_Record::Integer cols (4), rows (4);
+
+// variable references for quick access within functions
+Madara::Knowledge_Engine::Variable_Reference x_ref, xp_ref, y_ref, yp_ref,
+  id_ref;
+
+// settings for keeping all changes local
+Madara::Knowledge_Engine::Knowledge_Update_Settings local_changes_only (true);
 
 // handle arguments from the command line
 void handle_arguments (int argc, char ** argv)
@@ -227,14 +237,7 @@ Madara::Knowledge_Record
 REFRESH_STATUS (Madara::Knowledge_Engine::Function_Arguments &,
                 Madara::Knowledge_Engine::Variables & vars)
 {  
-  return vars.evaluate (
-    "x_{.id} = x_{.id};"
-    "y_{.id} = y_{.id};"
-    "lock_{.id} = lock_{.id};"
-    "xf_{.id} = xf_{.id};"
-    "yf_{.id} = yf_{.id};"
-    "b_{.id} = b_{.id};"
-  );
+  return vars.evaluate (refresh_status_logic);
 }
 
 // 
@@ -250,73 +253,121 @@ Madara::Knowledge_Record
 NEXT_XY (Madara::Knowledge_Engine::Function_Arguments &,
          Madara::Knowledge_Engine::Variables & vars)
 {
-  return vars.evaluate (
-    "xp_{.id} = x_{.id};"
-    "yp_{.id}  = y_{.id};"
-    "(x_{.id} < xf_{.id} => (xp_{.id} = x_{.id} + 1))"
-    "||"
-    "(x_{.id} > xf_{.id} => (xp_{.id} = x_{.id} - 1))"
-    "||"
-    "(y_{.id} < yf_{.id} => (yp_{.id} = y_{.id} + 1))"
-    "||"
-    "(yp_{.id} = y_{.id} - 1)"
-  );
+  return vars.evaluate (next_xy_logic);
+}
+
+Madara::Knowledge_Record
+RESPOND (Madara::Knowledge_Engine::Function_Arguments & args,
+         Madara::Knowledge_Engine::Variables & vars)
+{
+  Madara::Knowledge_Record result;
+
+  if (args.size () > 1)
+  {
+    // if the variable name begins with "request."
+    if (Madara::Utility::begins_with (args[1].to_string (), "request."))
+    {
+      // tokenize the string by "."
+      std::vector <std::string> splitters, tokens, pivot_list;
+      splitters.push_back (".");
+
+      Madara::Utility::tokenizer (
+        args[1].to_string (), splitters, tokens, pivot_list);
+
+      if (tokens.size () == 4)
+      {
+        // we're interested in the requester id in "request.idp.x.y"
+        Madara::Knowledge_Record id_str (tokens[1]),
+          xo_str (tokens[2]), yo_str (tokens[3]);
+        Madara::Knowledge_Record::Integer requester_id = id_str.to_integer ();
+        
+        // build the response var name "request.idp.x.y.id"
+        std::stringstream response_var_name;
+        response_var_name << args[1].to_string ();
+        response_var_name << ".";
+        response_var_name << vars.get (id_ref).to_string ();
+
+        /**
+          * We could handle the requirements in many ways here. We'll
+          * simply update the knowledge base with the reply for this message,
+          * which will result in an update being sent whenever we execute our
+          * next knowledge.evaluate, knowledge.set, or knowledge.evaluate.
+          *
+          * However, we could also handle this immediately by sending out
+          * responses by pushing "var name" and then the var value onto the
+          * args list
+          **/
+
+        // if the requester id is greater than ours
+        if      (requester_id > settings.id)
+        {
+          if (xo_str.to_string () == vars.get (x_ref).to_string () &&
+              yo_str.to_string () == vars.get (y_ref).to_string ())
+          {
+            // reject because we are already here
+            vars.set (response_var_name.str (),
+              Madara::Knowledge_Record::Integer (-1));
+          }
+          else
+          {
+            // otherwise, accept because we have no conflict
+            vars.set (response_var_name.str (),
+              Madara::Knowledge_Record::Integer (1));
+          }
+        }
+        // else if requester id is less than ours
+        else if (requester_id < settings.id)
+        {
+          /**
+           * I assume the semantics are that we are resetting all grant and
+           * reject messages at our location, not just granted messages
+           **/
+          vars.evaluate (reset_responses_at_current_location);
+
+          if (
+               // if the request is for our current location
+               (xo_str.to_string () == vars.get (x_ref).to_string () &&
+                yo_str.to_string () == vars.get (y_ref).to_string ())
+
+                // or it is at our future, locked location
+                ||
+               (xo_str.to_string () == vars.get (xp_ref).to_string () &&
+                yo_str.to_string () == vars.get (yp_ref).to_string ())
+              )
+          {
+            // reject because we are already here
+            vars.set (response_var_name.str (),
+              Madara::Knowledge_Record::Integer (-1));
+          }
+          else
+          {
+            // otherwise, accept because we have no conflict
+            vars.set (response_var_name.str (),
+              Madara::Knowledge_Record::Integer (1));
+          }
+        }
+        // we do not respond to messages from ourself (requester_id == id)
+      }
+    }
+
+    result = args[0];
+  }
+  
+  return result;
+}
+
+Madara::Knowledge_Record
+RESET_FUTURES_LOCALLY (Madara::Knowledge_Engine::Function_Arguments &,
+               Madara::Knowledge_Engine::Variables & vars)
+{
+  return vars.evaluate (reset_future_responses, local_changes_only);
 }
 
 Madara::Knowledge_Record
 EXECUTE (Madara::Knowledge_Engine::Function_Arguments &,
          Madara::Knowledge_Engine::Variables & vars)
 {
-  return vars.evaluate (
-    // is state_{.id} equal to NEXT?
-    "(state_{.id} == 'NEXT' => "
-    "  ("
-    "    #print ('  Handling state == NEXT\n');"
-    "    !(x_{.id} == xf_{.id} && y_{.id} == yf_{.id}) =>"
-    "      ("
-    "        NEXT_XY ();"
-    "        state_{.id} = 'REQUEST'"
-    "      )"
-    "  )"
-    // or
-    ") ||"
-    // is state_{.id} equal to REQUEST?
-    "(state_{.id} == 'REQUEST' => "
-    "  ("
-    "    #print ('  Handling state == REQUEST\n');"
-    "    !lock_0[xp_{.id} * Y + yp_{.id}] && !lock_1[xp_{.id} * Y + yp_{.id}]"
-    "      =>"
-    "      ("
-    "        lock_{.id}[xp_{.id} * Y + yp_{.id}] = 1;"
-    "        state_{.id} = 'WAITING'"
-    "      )"
-    "  )"
-    ") ||"
-    // is state_{.id} equal to WAITING?
-    "(state_{.id} == 'WAITING' => "
-    "  ("
-    "    #print ('  Handling state == WAITING\n');"
-    "    !(.id == 0 && lock_1[xp_0 * Y + yp_0])"
-    "      =>"
-    "      ("
-    "        state_{.id} = 'MOVE'"
-    "      )"
-    "  )"
-    ") ||"
-    // is state_{.id} equal to MOVE?
-    "(state_{.id} == 'MOVE' => "
-    "  ("
-    "    #print ('  Handling state == MOVE\n');"
-    //"     #rand_int (0, 5) == 0 =>"
-    "    ("
-    "      lock_{.id}[x_{.id} * Y + y_{.id}] = 0;"
-    "      x_{.id} = xp_{.id};"
-    "      y_{.id} = yp_{.id};"
-    "      state_{.id} = 'NEXT'"
-    "    )"
-    "  )"
-    ")"
-  );
+  return vars.evaluate (execute_logic);
 }
 
 // count the number of finished processes
@@ -324,72 +375,11 @@ Madara::Knowledge_Record
 COUNT_FINISHED (Madara::Knowledge_Engine::Function_Arguments &,
                 Madara::Knowledge_Engine::Variables & vars)
 {
-  return vars.evaluate (
-    ".finished = 0 ;> "
-    ".i [0->.n)"
-    "  ("
-    "    (x_{.i} == xf_{.i} && y_{.i} == yf_{.i}) => (++.finished)"
-    "  ) ;> "
-    ".finished"
-  );
+  return vars.evaluate (count_finished_logic);
 }
 
-int main (int argc, char ** argv)
+void compile_expressions (Madara::Knowledge_Engine::Knowledge_Base & knowledge)
 {
-  ACE_TRACE (ACE_TEXT ("main"));
-  
-  settings.type = Madara::Transport::MULTICAST;
-
-  // use ACE real time scheduling class
-  int prio  = ACE_Sched_Params::next_priority
-    (ACE_SCHED_FIFO,
-     ACE_Sched_Params::priority_max (ACE_SCHED_FIFO),
-     ACE_SCOPE_THREAD);
-  ACE_OS::thr_setprio (prio);
-
-  // handle any command line arguments
-  handle_arguments (argc, argv);
-
-  if (settings.hosts.size () == 0)
-  {
-    // setup default transport as multicast
-    settings.hosts.push_back (default_multicast);
-  }
-  
-  settings.queue_length = 100000;
-  //settings.add_receive_filter (Madara::Filters::log_aggregate);
-  //settings.add_send_filter (Madara::Filters::log_aggregate);
-
-  Madara::Knowledge_Engine::Wait_Settings wait_settings;
-  wait_settings.max_wait_time = 10;
-  wait_settings.poll_frequency = .1;
-  //wait_settings.pre_print_statement = "PRE: Barriers: b_0 = {b_0}, b_1 = {b_1}\n";
-  //wait_settings.post_print_statement = "POST: Barriers: b_0 = {b_0}, b_1 = {b_1}\n";
-
-  // create the knowledge base with the transport settings
-  Madara::Knowledge_Engine::Knowledge_Base knowledge (host, settings);
-
-  // define functions we will use in MADARA
-  knowledge.define_function ("INIT", INIT);
-  knowledge.define_function ("REFRESH_STATUS", REFRESH_STATUS);
-  knowledge.define_function ("NEXT_XY", NEXT_XY);
-  knowledge.define_function ("EXECUTE", EXECUTE);
-  knowledge.define_function ("COUNT_FINISHED", COUNT_FINISHED);
-  knowledge.define_function ("PRINT_BOARD", PRINT_BOARD);
-
-  // define constants that will never change and do not disseminate them
-  knowledge.set (".id", Madara::Knowledge_Record::Integer (settings.id));
-  knowledge.set (".n", processes);
-  knowledge.set ("X", cols, es_treat_as_local);
-  knowledge.set ("Y", rows, es_treat_as_local);
-  
-  std::string barrier_string = "REFRESH_STATUS () ;> b_1 >= b_0";
-
-  if (settings.id != 0)
-  {
-    barrier_string = "REFRESH_STATUS () ;> b_0 >= b_1";
-  }
-
   init_function_logic = knowledge.compile (
     "state_{.id} = 'NEXT';"
     ".side = #rand_int (0, 4);"
@@ -443,7 +433,198 @@ int main (int argc, char ** argv)
     "  )\n"
     ");\n"
     "lock_{.id}[x_{.id} * Y + y_{.id}] = 1"
-    );
+  );
+
+  count_finished_logic = knowledge.compile (
+    ".finished = 0 ;> "
+    ".i [0->.n)"
+    "  ("
+    "    (x_{.i} == xf_{.i} && y_{.i} == yf_{.i}) => (++.finished)"
+    "  ) ;> "
+    ".finished"
+  );
+
+  execute_logic = knowledge.compile (
+    // is state_{.id} equal to NEXT?
+    "(state_{.id} == 'NEXT' =>\n"
+    "  (\n"
+    "    #print ('  Handling state == NEXT\n');\n"
+    "    !(x_{.id} == xf_{.id} && y_{.id} == yf_{.id}) =>\n"
+    "      (\n"
+    "        NEXT_XY ();\n"
+    "        RESET_FUTURES_LOCALLY ();\n"
+    "        state_{.id} = 'WAITING'\n"
+    "      )\n"
+    "  )\n"
+    // or
+    ") ||\n"
+    // is state_{.id} equal to WAITING?
+    "(state_{.id} == 'WAITING' =>\n"
+    "  (\n"
+    "    #print ('  Handling state == WAITING\n');\n"
+
+         // resend the request
+    "    request.{.id}.{xp_{.id}}.{yp_{.id}} = 1;\n"
+
+         // count the rejects and absents
+    "    .rejects = .absents = 0;\n"
+    "    .i [0->.n)\n"
+    "    (\n"
+    "       (request.{.id}.{xp_{.id}}.{yp_{.id}} == 0 => ++.absents) ||\n"
+    "       (request.{.id}.{xp_{.id}}.{yp_{.id}} == -1 => ++.rejects)\n"
+    "    );\n"
+         // if we had rejects, reset to NEXT state
+    "    (\n"
+    "      .rejects => state_{.id} = 'NEXT'\n"
+    "    )\n"
+    "    ||"
+         // or if we have all votes in and no rejects
+    "    (\n"
+    "      !.absents => state_{.id} = 'MOVE'\n"
+    "    )\n"
+    "    \n"
+    "  )\n"
+    ") ||\n"
+    // is state_{.id} equal to MOVE?
+    "(state_{.id} == 'MOVE' =>\n"
+    "  (\n"
+    "    #print ('  Handling state == MOVE\n');\n"
+    //"     #rand_int (0, 5) == 0 =>"
+    "    (\n"
+    "      lock_{.id}[x_{.id} * Y + y_{.id}] = 0;\n"
+    "      x_{.id} = xp_{.id};\n"
+    "      y_{.id} = yp_{.id};\n"
+    "      state_{.id} = 'NEXT'\n"
+    "    )\n"
+    "  )\n"
+    ")"
+  );
+
+  next_xy_logic = knowledge.compile (
+    "xp_{.id} = x_{.id};"
+    "yp_{.id}  = y_{.id};"
+    "(x_{.id} < xf_{.id} => (xp_{.id} = x_{.id} + 1))"
+    "||"
+    "(x_{.id} > xf_{.id} => (xp_{.id} = x_{.id} - 1))"
+    "||"
+    "(y_{.id} < yf_{.id} => (yp_{.id} = y_{.id} + 1))"
+    "||"
+    "(yp_{.id} = y_{.id} - 1)"
+  );
+
+  refresh_status_logic = knowledge.compile (
+    "x_{.id} = x_{.id};"
+    "y_{.id} = y_{.id};"
+    "lock_{.id} = lock_{.id};"
+    "xf_{.id} = xf_{.id};"
+    "yf_{.id} = yf_{.id};"
+    "b_{.id} = b_{.id};"
+  );
+
+  // compile reset logic which needs to be fast during receive messages
+  reset_responses_at_current_location = knowledge.compile (
+    // for all i from 0 to number of processes
+    ".i [0->.n)\n"
+    "(\n"
+    // if request is not reset, then reset it
+    "  request.{.i}.{x_{.id}}.{y_{.id}}.{.id} =>\n"
+    "    request.{.i}.{x_{.id}}.{y_{.id}}.{.id} = 0\n"
+    ")"
+  );
+
+  // compile reset logic for responses for requests to future location
+  reset_future_responses = knowledge.compile (
+    // for all i from 0 to number of processes
+    ".i [0->.n)\n"
+    "(\n"
+    // if request is not reset, then reset it
+    "  request.{.id}.{xp_{.id}}.{yp_{.id}}.{.i} =>\n"
+    "    request.{.id}.{xp_{.id}}.{yp_{.id}}.{.i} = 0\n"
+    ")"
+  );
+
+  synchronize_barrier = knowledge.compile (
+    "b_{.id} = (b_0 ; b_1)"
+  );
+}
+
+void define_functions (Madara::Knowledge_Engine::Knowledge_Base & knowledge)
+{
+  knowledge.define_function ("INIT", INIT);
+  knowledge.define_function ("REFRESH_STATUS", REFRESH_STATUS);
+  knowledge.define_function ("NEXT_XY", NEXT_XY);
+  knowledge.define_function ("EXECUTE", EXECUTE);
+  knowledge.define_function ("COUNT_FINISHED", COUNT_FINISHED);
+  knowledge.define_function ("PRINT_BOARD", PRINT_BOARD);
+  knowledge.define_function ("RESPOND", RESPOND);
+  knowledge.define_function ("RESET_FUTURES_LOCALLY", RESET_FUTURES_LOCALLY);
+}
+
+void get_variable_refs (Madara::Knowledge_Engine::Knowledge_Base & knowledge)
+{
+  id_ref = knowledge.get_ref (".id");
+  x_ref = knowledge.get_ref (knowledge.expand_statement ("x_{.id}"));
+  y_ref = knowledge.get_ref (knowledge.expand_statement ("y_{.id}"));
+  xp_ref = knowledge.get_ref (knowledge.expand_statement ("xp_{.id}"));
+  yp_ref = knowledge.get_ref (knowledge.expand_statement ("yp_{.id}"));
+}
+
+int main (int argc, char ** argv)
+{
+  ACE_TRACE (ACE_TEXT ("main"));
+  
+  settings.type = Madara::Transport::MULTICAST;
+
+  // use ACE real time scheduling class
+  int prio  = ACE_Sched_Params::next_priority
+    (ACE_SCHED_FIFO,
+     ACE_Sched_Params::priority_max (ACE_SCHED_FIFO),
+     ACE_SCOPE_THREAD);
+  ACE_OS::thr_setprio (prio);
+
+  // handle any command line arguments
+  handle_arguments (argc, argv);
+
+  if (settings.hosts.size () == 0)
+  {
+    // setup default transport as multicast
+    settings.hosts.push_back (default_multicast);
+  }
+  
+  settings.queue_length = 100000;
+  //settings.add_receive_filter (Madara::Filters::log_aggregate);
+  //settings.add_send_filter (Madara::Filters::log_aggregate);
+
+  Madara::Knowledge_Engine::Wait_Settings wait_settings;
+  wait_settings.max_wait_time = 10;
+  wait_settings.poll_frequency = .1;
+  //wait_settings.pre_print_statement = "PRE: Barriers: b_0 = {b_0}, b_1 = {b_1}\n";
+  //wait_settings.post_print_statement = "POST: Barriers: b_0 = {b_0}, b_1 = {b_1}\n";
+
+  // create the knowledge base with the transport settings
+  Madara::Knowledge_Engine::Knowledge_Base knowledge (host, settings);
+
+  // define functions we will use in MADARA
+  define_functions (knowledge);
+
+  // define constants that will never change and do not disseminate them
+  knowledge.set (".id", Madara::Knowledge_Record::Integer (settings.id));
+  knowledge.set (".n", processes);
+  knowledge.set ("X", cols, es_treat_as_local);
+  knowledge.set ("Y", rows, es_treat_as_local);
+  
+  // grab variable references for quick variable lookups in functions
+  get_variable_refs (knowledge);
+
+  std::string barrier_string = "REFRESH_STATUS () ;> b_1 >= b_0";
+
+  if (settings.id != 0)
+  {
+    barrier_string = "REFRESH_STATUS () ;> b_0 >= b_1";
+  }
+
+  // compile all expressions
+  compile_expressions (knowledge);
 
   // keep a send list with only the barrier information for safe rounds
   std::map <std::string, bool>  barrier_send_list;
@@ -458,48 +639,15 @@ int main (int argc, char ** argv)
   while (knowledge.evaluate (
     "COUNT_FINISHED () == 2 || finished_0 || finished_1").is_false ())
   {
-    knowledge.print (
-      "Starting a fresh loop (.finished == {.finished})...\n");
-
-    // enable sending all updated variables
-    wait_settings.send_list.clear ();
-    //wait_settings.post_print_statement = post_print;
-    
-    knowledge.print (
-      "{b_{.id}}: BARRIER on updating round info (...\n");
-
-    // Barrier and send all updates
-    knowledge.wait (barrier_string, wait_settings);
-
-    knowledge.evaluate ("b_{.id} = (b_0 ; b_1)");
-
-    //wait_settings.post_print_statement = "";
-
     //print the board
     knowledge.evaluate ("PRINT_BOARD ()");
 
-    // start round and only send barrier variable updates
-    wait_settings.send_list = barrier_send_list;
-    
     knowledge.print ("{b_{.id}}: Executing round: "
       "{x_{.id}}.{y_{.id}} -> {xf_{.id}}.{yf_{.id}}.\n");
 
     // perform the round logic
     knowledge.evaluate (
       "EXECUTE (); ++b_{.id}", wait_settings);
-    
-    knowledge.print ("{b_{.id}}: BARRIER on end of round...\n");
-    
-    //wait_settings.post_print_statement = post_print;
-
-    // wait for other processes to get through execute round and do not
-    // send updates to anything except barrier variable
-    knowledge.wait (barrier_string, wait_settings);
-    
-    knowledge.evaluate ("b_{.id} = (b_0 ; b_1)");
-
-    // update barrier variable
-    knowledge.evaluate ("++b_{.id}", wait_settings);
   }
   
   // enable sending all updated variables
