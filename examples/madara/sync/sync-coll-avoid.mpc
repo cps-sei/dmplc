@@ -3,6 +3,7 @@ project (sync-coll-avoid) : using_madara, using_ace {
   exename = sync-coll-avoid
   
   Documentation_Files {
+    ../../sync-coll-avoid.mcda
   }
   
   Build_Files {

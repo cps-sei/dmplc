@@ -5,8 +5,6 @@ distributed algorithm for collision avoidance implemented in MADARA. This
 example is based off the sync-coll-avoid.mcda logic located in the parent
 directory.
 
-This has not been tested, only built.
-
 2. HOW TO BUILD
 
   2.0 PREREQUISITES

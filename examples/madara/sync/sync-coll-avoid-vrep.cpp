@@ -8,6 +8,7 @@
 #include "ace/OS_NS_Thread.h"
 #include "ace/Sched_Params.h"
 #include "madara/knowledge_engine/Knowledge_Base.h"
+#include "madara/utility/Utility.h"
 #include "madara/filters/Generic_Filters.h"
 
 #include "sync-coll-avoid-vrep.h"
@@ -34,26 +35,20 @@ const double DPM = .00000899928005759539;
 //error in metres that we allow
 const double EIM = .1;
 
-//sleep for t milliseconds
-void sleep_ms(int t)
-{
-  struct timespec ts;
-  ts.tv_sec = t / 1000;
-  ts.tv_nsec = (t % 1000) * 1000000;
-  nanosleep(&ts,NULL);
-}
-
 //talk to v-rep and make the drones move to x and y
 void move_to(int x,int y)
 {
   std::cout << "moving to (" << x << "," << y << ")\n";
   platform_move_to_altitude(2.0);
-  sleep_ms(3000);
+
+  // remove platform specific sleep time and use the MADARA utility for sleep
+  Madara::Utility::sleep (3.0);
+
   platform_move_to_location(y * DPM, x * DPM, 2.0);
 
   //wait till we have 
   for(;;) {
-    sleep_ms(500);
+    Madara::Utility::sleep (0.5);
     struct madara_gps mgps;
     platform_read_gps(&mgps);
     if(fabs(mgps.latitude - y * DPM) / DPM < EIM &&

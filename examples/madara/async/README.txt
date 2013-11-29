@@ -22,7 +22,7 @@ directory.
     mwc.pl -type vc10 async-coll-avoid.mwc
     *open async_coll_avoid.sln and build*
   
-3. HOW TO RUN SIMULATION
+3. HOW TO RUN SIMULATION (FUTURE)
 
   3.0 build (as above)
   3.1 run start_async_coll_sim.sh
