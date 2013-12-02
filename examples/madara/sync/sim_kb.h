@@ -1,4 +1,4 @@
-/********************************************************************* 
+/*********************************************************************
  * Usage of this software requires acceptance of the SMASH-CMU License,
  * which can be found at the following URL:
  *
@@ -6,12 +6,14 @@
  *********************************************************************/
 
 /*********************************************************************
- * v-rep_madara_variables.h - Madara variables used for simulation between
- * the V-Rep platform on the Drone and the plugin for that in V-Rep.
+ * sim_kb.h - Declares functions and variables used in a Knowledge Base
+ * used to simulate a HW platform.
  *********************************************************************/
 
-#ifndef _VREP_MADARA_VARIABLES_H
-#define _VREP_MADARA_VARIABLES_H
+#ifndef _SIM_KB_H
+#define _SIM_KB_H
+
+#include "madara/knowledge_engine/Knowledge_Base.h"
 
 #include <string>
 
@@ -47,6 +49,12 @@
 #define MV_ALTITUDE             ".location.altitude"    // Altitude.
 
 // Sensor variables - thermal.
-#define MV_SIM_THERMAL_BUFFER   ".thermal.buffer"                                                   // A comma-separated stirng of thermal values.
+#define MV_SIM_THERMAL_BUFFER   ".thermal.buffer"       // A comma-separated stirng of thermal values.
+
+// Sets up a knowledge base with a transport that is appropriate for HW simulation.
+Madara::Knowledge_Engine::Knowledge_Base* sim_setup_knowledge_base(int id, bool enableLog);
+
+// Cleans up a sim knowledge base.
+void sim_cleanup_knowledge_base(Madara::Knowledge_Engine::Knowledge_Base* knowledge);
 
 #endif

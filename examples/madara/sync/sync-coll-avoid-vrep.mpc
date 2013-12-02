@@ -11,9 +11,13 @@ project (sync-coll-avoid-vrep) : using_madara, using_ace {
   }
 
   Header_Files {
+    hw_simulator.h
+    sim_kb.h
   }
 
   Source_Files {
+    hw_simulator.cpp
+    sim_kb.cpp
     sync-coll-avoid-vrep.cpp
   }
 }

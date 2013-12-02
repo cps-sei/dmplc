@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <assert.h>
+#include <math.h>
 
 #include "ace/OS_NS_Thread.h"
 #include "ace/Sched_Params.h"
@@ -39,20 +40,21 @@ const double EIM = .1;
 void move_to(int x,int y)
 {
   std::cout << "moving to (" << x << "," << y << ")\n";
-  platform_move_to_altitude(2.0);
+  sim_platform_move_to_altitude(2.0);
 
   // remove platform specific sleep time and use the MADARA utility for sleep
   Madara::Utility::sleep (3.0);
 
-  platform_move_to_location(y * DPM, x * DPM, 2.0);
+  sim_platform_move_to_location(y * DPM, x * DPM, 2.0);
 
   //wait till we have 
   for(;;) {
     Madara::Utility::sleep (0.5);
-    struct madara_gps mgps;
-    platform_read_gps(&mgps);
-    if(fabs(mgps.latitude - y * DPM) / DPM < EIM &&
-       fabs(mgps.longitude - x * DPM) / DPM < EIM) break;
+    std::map<std::string, double> currLoc = sim_platform_read_gps();
+    double _lat = currLoc["latitude"];
+    double _long = currLoc["longitude"];
+    if(fabs(_lat - y * DPM) / DPM < EIM &&
+       fabs(_long - x * DPM) / DPM < EIM) break;
   }
 
   std::cout << "reached (" << x << "," << y << ")\n";
@@ -398,7 +400,8 @@ int main (int argc, char ** argv)
     settings.hosts.push_back (default_multicast);
   }
 
-  platform_setup_knowledge_base(settings.id,true);
+  //initiate connection with the simulator
+  sim_setup(settings.id);
 
   settings.queue_length = 100000;
   //settings.add_receive_filter (Madara::Filters::log_aggregate);
