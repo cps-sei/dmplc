@@ -33,8 +33,12 @@ Madara::Knowledge_Record::Integer cols (4), rows (4);
 
 //degrees per metre
 const double DPM = .00000899928005759539;
+
 //error in metres that we allow
 const double EIM = .5;
+
+// altitude to start at
+double altitude = 2.0;
 
 
 // handle arguments from the command line
@@ -277,7 +281,7 @@ Madara::Knowledge_Record
 MOVETOALTITUDE (Madara::Knowledge_Engine::Function_Arguments & args,
         Madara::Knowledge_Engine::Variables & vars)
 {
-  platform_move_to_altitude (altitude);
+  sim_platform_move_to_altitude (altitude);
 
   Madara::Utility::sleep (3.0);
 
@@ -304,22 +308,21 @@ MOVETO (Madara::Knowledge_Engine::Function_Arguments & args,
     y = args[1];
   }
 
-  struct madara_gps mgps;
-  platform_read_gps (&mgps);
-  vars.set (".gps.x", mgps.longitude / DPM);
-  vars.set (".gps.y", mgps.latitude / DPM);
+  std::map<std::string, double> locations = sim_platform_read_gps ();
+  vars.set (".gps.x", locations["longitude"] / DPM);
+  vars.set (".gps.y", locations["latitude"] / DPM);
   
   vars.print ("  Currently at {x_{.id}}.{y_{.id}} at gps {.gps.x}.{.gps.y}\n");
 
-  if(!(fabs (mgps.latitude - y.to_integer () * DPM) / DPM < EIM &&
-     fabs (mgps.longitude - x.to_integer () * DPM) / DPM < EIM))
+  if(!(fabs (locations["latitude"] - y.to_integer () * DPM) / DPM < EIM &&
+     fabs (locations["longitude"] - x.to_integer () * DPM) / DPM < EIM))
   {
     vars.print ("  Moving to {xp_{.id}}.{yp_{.id}}\n");
 
     if (vars.get (".enroute").is_false ())
     {
       vars.print ("  Starting move to {xp_{.id}}.{yp_{.id}}\n");
-      platform_move_to_location (
+      sim_platform_move_to_location (
         y.to_double () * DPM, x.to_double () * DPM, altitude);
     }
     else
@@ -571,14 +574,15 @@ int main (int argc, char ** argv)
   std::string post_print = "b_0 ({b_0}) == b_1 ({b_1})\n";
 
   // call the init function and initialize barrier
-  knowledge.evaluate ("INIT (); ++b_{.id}", wait_settings);
+  knowledge.evaluate ("INIT ()", wait_settings);
   knowledge.print ("INIT: {x_{.id}}.{y_{.id}} -> {xf_{.id}}.{yf_{.id}}.\n");  
 
   //move drone to initial location
   knowledge.evaluate ("MOVETOALTITUDE (); MOVETO (x_{.id}, y_{.id});");
-  knowledge.evaluate (".enroute = 0");
 
-  Madara::Utility::sleep (6.0);
+  Madara::Utility::sleep (8.0);
+
+  knowledge.evaluate (".enroute = 0; ++b_{.id}");
 
   while (knowledge.evaluate (
     "COUNT_FINISHED () == 2 || finished_0 || finished_1").is_false ())
