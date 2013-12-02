@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <assert.h>
+#include <math.h>
 
 #include "ace/OS_NS_Thread.h"
 #include "ace/Sched_Params.h"
@@ -35,7 +36,6 @@ const double DPM = .00000899928005759539;
 //error in metres that we allow
 const double EIM = .5;
 
-double altitude = 2.0;
 
 // handle arguments from the command line
 void handle_arguments (int argc, char ** argv)
@@ -441,7 +441,8 @@ int main (int argc, char ** argv)
     settings.hosts.push_back (default_multicast);
   }
 
-  platform_setup_knowledge_base(settings.id,true);
+  //initiate connection with the simulator
+  sim_setup(settings.id);
 
   settings.queue_length = 100000;
   //settings.add_receive_filter (Madara::Filters::log_aggregate);
