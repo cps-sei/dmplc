@@ -33,30 +33,9 @@ Madara::Knowledge_Record::Integer cols (4), rows (4);
 //degrees per metre
 const double DPM = .00000899928005759539;
 //error in metres that we allow
-const double EIM = .1;
+const double EIM = .5;
 
-//talk to v-rep and make the drones move to x and y
-void move_to(int x,int y)
-{
-  std::cout << "moving to (" << x << "," << y << ")\n";
-  platform_move_to_altitude(2.0);
-
-  // remove platform specific sleep time and use the MADARA utility for sleep
-  Madara::Utility::sleep (3.0);
-
-  platform_move_to_location(y * DPM, x * DPM, 2.0);
-
-  //wait till we have 
-  for(;;) {
-    Madara::Utility::sleep (0.5);
-    struct madara_gps mgps;
-    platform_read_gps(&mgps);
-    if(fabs(mgps.latitude - y * DPM) / DPM < EIM &&
-       fabs(mgps.longitude - x * DPM) / DPM < EIM) break;
-  }
-
-  std::cout << "reached (" << x << "," << y << ")\n";
-}
+double altitude = 2.0;
 
 // handle arguments from the command line
 void handle_arguments (int argc, char ** argv)
@@ -295,13 +274,70 @@ NEXT_XY (Madara::Knowledge_Engine::Function_Arguments &,
 }
 
 Madara::Knowledge_Record
-MOVETO (Madara::Knowledge_Engine::Function_Arguments &,
+MOVETOALTITUDE (Madara::Knowledge_Engine::Function_Arguments & args,
         Madara::Knowledge_Engine::Variables & vars)
 {
-  //move to next location
-  move_to(vars.evaluate(vars.expand_statement ("xp_{.id}")).to_integer(),
-          vars.evaluate(vars.expand_statement ("yp_{.id}")).to_integer());
-  return 0.0;
+  platform_move_to_altitude (altitude);
+
+  Madara::Utility::sleep (3.0);
+
+  return 1.0;
+}
+
+
+Madara::Knowledge_Record
+MOVETO (Madara::Knowledge_Engine::Function_Arguments & args,
+        Madara::Knowledge_Engine::Variables & vars)
+{
+  // arrived is false by default
+  Madara::Knowledge_Record arrived;
+
+  Madara::Knowledge_Record x = vars.get ("xp_{.id}",
+    Madara::Knowledge_Engine::Knowledge_Reference_Settings (true));
+  Madara::Knowledge_Record y = vars.get ("yp_{.id}",
+    Madara::Knowledge_Engine::Knowledge_Reference_Settings (true));
+
+  // function arguments override the defaults
+  if (args.size () == 2)
+  {
+    x = args[0];
+    y = args[1];
+  }
+
+  struct madara_gps mgps;
+  platform_read_gps (&mgps);
+  vars.set (".gps.x", mgps.longitude / DPM);
+  vars.set (".gps.y", mgps.latitude / DPM);
+  
+  vars.print ("  Currently at {x_{.id}}.{y_{.id}} at gps {.gps.x}.{.gps.y}\n");
+
+  if(!(fabs (mgps.latitude - y.to_integer () * DPM) / DPM < EIM &&
+     fabs (mgps.longitude - x.to_integer () * DPM) / DPM < EIM))
+  {
+    vars.print ("  Moving to {xp_{.id}}.{yp_{.id}}\n");
+
+    if (vars.get (".enroute").is_false ())
+    {
+      vars.print ("  Starting move to {xp_{.id}}.{yp_{.id}}\n");
+      platform_move_to_location (
+        y.to_double () * DPM, x.to_double () * DPM, altitude);
+    }
+    else
+    {
+      vars.print ("  Enroute to {xp_{.id}}.{yp_{.id}}\n");
+    }
+
+    vars.evaluate (".enroute = 1");
+  }
+  else
+  {
+    arrived.set_value (Madara::Knowledge_Record::Integer (1));
+    vars.evaluate (".enroute = 0");
+    
+    vars.print ("  Arrived at {xp_{.id}}.{yp_{.id}}\n");
+  }
+
+  return !arrived;
 }
 
 Madara::Knowledge_Record
@@ -350,11 +386,18 @@ EXECUTE (Madara::Knowledge_Engine::Function_Arguments &,
     "    #print ('  Handling state == MOVE\n');"
     //"     #rand_int (0, 5) == 0 =>"
     "    ("
-    "      MOVETO ();"
-    "      lock_{.id}[x_{.id} * Y + y_{.id}] = 0;"
-    "      x_{.id} = xp_{.id};"
-    "      y_{.id} = yp_{.id};"
-    "      state_{.id} = 'NEXT'"
+    "      (!MOVETO () =>\n"
+    "      (\n"
+    "        #print ('  MOVETO returned arrival. Proceeding to next\n');"
+    "        lock_{.id}[x_{.id} * Y + y_{.id}] = 0;\n"
+    "        x_{.id} = xp_{.id};\n"
+    "        y_{.id} = yp_{.id};\n"
+    "        state_{.id} = 'NEXT'\n"
+    "      ))\n"
+    "      ||\n"
+    "      (\n"
+    "        #print ('  MOVETO returned enroute.\n');"
+    "      )\n"
     "    )"
     "  )"
     ")"
@@ -421,6 +464,7 @@ int main (int argc, char ** argv)
   knowledge.define_function ("COUNT_FINISHED", COUNT_FINISHED);
   knowledge.define_function ("PRINT_BOARD", PRINT_BOARD);
   knowledge.define_function ("MOVETO", MOVETO);
+  knowledge.define_function ("MOVETOALTITUDE", MOVETOALTITUDE);
 
   // define constants that will never change and do not disseminate them
   knowledge.set (".id", Madara::Knowledge_Record::Integer (settings.id));
@@ -441,6 +485,8 @@ int main (int argc, char ** argv)
       "state_{.id} = 'NEXT';"
       "x_{.id} = 0;\n"
       "y_{.id} = 4;\n"
+      "xp_{.id} = 0;\n"
+      "yp_{.id} = 4;\n"
       "xf_{.id} = 9;\n"
       "yf_{.id} = 4;\n"
       "lock_{.id}[x_{.id} * Y + y_{.id}] = 1"
@@ -452,6 +498,8 @@ int main (int argc, char ** argv)
       "state_{.id} = 'NEXT';"
       "x_{.id} = 5;\n"
       "y_{.id} = 9;\n"
+      "xp_{.id} = 5;\n"
+      "yp_{.id} = 9;\n"
       "xf_{.id} = 5;\n"
       "yf_{.id} = 0;\n"
       "lock_{.id}[x_{.id} * Y + y_{.id}] = 1"
@@ -526,8 +574,10 @@ int main (int argc, char ** argv)
   knowledge.print ("INIT: {x_{.id}}.{y_{.id}} -> {xf_{.id}}.{yf_{.id}}.\n");  
 
   //move drone to initial location
-  move_to(knowledge.get(knowledge.expand_statement ("x_{.id}")).to_integer(),
-          knowledge.get(knowledge.expand_statement ("y_{.id}")).to_integer());
+  knowledge.evaluate ("MOVETOALTITUDE (); MOVETO (x_{.id}, y_{.id});");
+  knowledge.evaluate (".enroute = 0");
+
+  Madara::Utility::sleep (6.0);
 
   while (knowledge.evaluate (
     "COUNT_FINISHED () == 2 || finished_0 || finished_1").is_false ())
