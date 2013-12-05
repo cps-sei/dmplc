@@ -344,6 +344,9 @@ MOVETO (Madara::Knowledge_Engine::Function_Arguments & args,
   return !arrived;
 }
 
+//uncomment the next line if you want to see a collision
+#define COLLISION
+
 Madara::Knowledge_Record
 EXECUTE (Madara::Knowledge_Engine::Function_Arguments &,
          Madara::Knowledge_Engine::Variables & vars)
@@ -365,23 +368,31 @@ EXECUTE (Madara::Knowledge_Engine::Function_Arguments &,
     "(state_{.id} == 'REQUEST' => "
     "  ("
     "    #print ('  Handling state == REQUEST\n');"
+#ifndef COLLISION
     "    !lock_0[xp_{.id} * Y + yp_{.id}] && !lock_1[xp_{.id} * Y + yp_{.id}]"
     "      =>"
     "      ("
+#endif
     "        lock_{.id}[xp_{.id} * Y + yp_{.id}] = 1;"
     "        state_{.id} = 'WAITING'"
+#ifndef COLLISION
     "      )"
+#endif
     "  )"
     ") ||"
     // is state_{.id} equal to WAITING?
     "(state_{.id} == 'WAITING' => "
     "  ("
     "    #print ('  Handling state == WAITING\n');"
+#ifndef COLLISION
     "    !(.id == 0 && lock_1[xp_0 * Y + yp_0])"
     "      =>"
     "      ("
+#endif
     "        state_{.id} = 'MOVE'"
+#ifndef COLLISION
     "      )"
+#endif
     "  )"
     ") ||"
     // is state_{.id} equal to MOVE?
