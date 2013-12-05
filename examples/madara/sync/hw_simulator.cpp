@@ -140,6 +140,25 @@ void sim_platform_move_to_location(double lat, double lon, double alt)
   m_sim_knowledge->evaluate(m_expressions[VE_UPDATE_COMMAND_ID]);
 }
 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// "Teleports" a drone to a given location.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void sim_platform_jump_to_location(double lat, double lon, double alt)
+{
+  // Set the arguments for this command. Note that we are intentionally ignoring altitude, as the 
+  // simulation is doing that as of now.
+  m_sim_knowledge->set(m_sim_knowledge->expand_statement(MS_SIM_DEVICES_PREFIX "{" MV_MY_ID "}" MV_MOVEMENT_CMD_ARG("0")), lat);
+  m_sim_knowledge->set(m_sim_knowledge->expand_statement(MS_SIM_DEVICES_PREFIX "{" MV_MY_ID "}" MV_MOVEMENT_CMD_ARG("1")), lon);
+  m_sim_knowledge->set(m_sim_knowledge->expand_statement(MS_SIM_DEVICES_PREFIX "{" MV_MY_ID "}" MV_MOVEMENT_CMD_ARG("2")), alt);
+
+  // Send the command.
+  m_sim_knowledge->set(m_sim_knowledge->expand_statement(MS_SIM_DEVICES_PREFIX "{" MV_MY_ID "}" MV_MOVEMENT_REQUESTED), MO_JUMP_TO_GPS_CMD);
+
+  // Update the command id.
+  m_sim_knowledge->evaluate(m_expressions[VE_UPDATE_COMMAND_ID]);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////

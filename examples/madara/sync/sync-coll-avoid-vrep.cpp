@@ -278,13 +278,14 @@ NEXT_XY (Madara::Knowledge_Engine::Function_Arguments &,
 }
 
 Madara::Knowledge_Record
-MOVETOALTITUDE (Madara::Knowledge_Engine::Function_Arguments & args,
+TELEPORT (Madara::Knowledge_Engine::Function_Arguments & args,
         Madara::Knowledge_Engine::Variables & vars)
 {
-  sim_platform_move_to_altitude (altitude);
+  Madara::Knowledge_Record x = args[0];
+  Madara::Knowledge_Record y = args[1];
 
-  Madara::Utility::sleep (3.0);
-
+  sim_platform_jump_to_location(
+        y.to_double () * DPM, x.to_double () * DPM, altitude);
   return 1.0;
 }
 
@@ -468,7 +469,7 @@ int main (int argc, char ** argv)
   knowledge.define_function ("COUNT_FINISHED", COUNT_FINISHED);
   knowledge.define_function ("PRINT_BOARD", PRINT_BOARD);
   knowledge.define_function ("MOVETO", MOVETO);
-  knowledge.define_function ("MOVETOALTITUDE", MOVETOALTITUDE);
+  knowledge.define_function ("TELEPORT", TELEPORT);
 
   // define constants that will never change and do not disseminate them
   knowledge.set (".id", Madara::Knowledge_Record::Integer (settings.id));
@@ -578,7 +579,7 @@ int main (int argc, char ** argv)
   knowledge.print ("INIT: {x_{.id}}.{y_{.id}} -> {xf_{.id}}.{yf_{.id}}.\n");  
 
   //move drone to initial location
-  knowledge.evaluate ("MOVETOALTITUDE (); MOVETO (x_{.id}, y_{.id});");
+  knowledge.evaluate ("TELEPORT (x_{.id}, y_{.id});");
 
   Madara::Utility::sleep (8.0);
 

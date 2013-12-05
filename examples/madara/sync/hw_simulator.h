@@ -25,6 +25,7 @@ void sim_platform_takeoff();
 void sim_platform_land();
 void sim_platform_move_to_location(double lat, double lon, double alt);
 void sim_platform_move_to_altitude(double alt);
+void sim_platform_jump_to_location(double lat, double lon, double alt);
 
 // Sensor functions.
 bool sim_platform_init_sensor_functions();

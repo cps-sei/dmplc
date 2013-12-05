@@ -40,6 +40,7 @@
 // Movement commands.
 #define MO_MOVE_TO_GPS_CMD      "move_to_gps"           // Command used to tell drone to move to that a location.
 #define MO_MOVE_TO_ALTITUDE_CMD "move_to_altitude"      // Command used to tell drone to move to a specific altitude.
+#define MO_JUMP_TO_GPS_CMD      "jump_to_gps"           // Command used to tell drone to teleport to that location.
 #define MO_LAND_CMD             "land"                  // Command used to tell drone to land at current location
 #define MO_TAKEOFF_CMD          "takeoff"               // Command used to tell drone to takeoff
 
