@@ -676,7 +676,9 @@ int main (int argc, char ** argv)
     knowledge.evaluate (
       "EXECUTE (); ++b_{.id}", wait_settings);
 
-    Madara::Utility::sleep (0.1);
+    knowledge.wait_for_change ();
+
+    //Madara::Utility::sleep (0.1);
   }
   
   // enable sending all updated variables
