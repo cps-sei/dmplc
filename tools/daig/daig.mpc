@@ -1,0 +1,25 @@
+project (daig) : using_madara, using_ace {
+  exeout = bin
+  exename = daig
+  
+  includes += src
+
+  Documentation_Files {
+    README.txt
+    ..\..\examples\*.mcda
+  }
+  
+  Build_Files {
+    daig.mpc
+  }
+
+  Header_Files {
+    src/daig
+  }
+
+  Source_Files {
+    src/daig_main.cpp
+    src/daig
+  }
+}
+
