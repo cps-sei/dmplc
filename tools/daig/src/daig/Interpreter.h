@@ -123,10 +123,12 @@ namespace daig
        * @param    input      input buffer
        * @param    position   the position in the input buffer to start from
        * @param    tokens     arguments to the function
+       * @param    allow_optional  if true, allows parenthesis and args to be
+       *                           optional
        * @return   new position in the buffer for parsing
        **/
       static unsigned int tokenize_arguments (const std::string & input,
-        unsigned int position, Tokens & tokens);
+        unsigned int position, Tokens & tokens, bool allow_optional = false);
 
     private:
       /**

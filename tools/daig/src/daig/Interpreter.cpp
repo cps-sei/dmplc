@@ -152,7 +152,7 @@ daig::Interpreter::find_closer (const std::string & input,
 
 unsigned int
 daig::Interpreter::tokenize_arguments (const std::string & input,
-        unsigned int position, Tokens & tokens)
+        unsigned int position, Tokens & tokens, bool allow_optional)
 {
   // \(\s*(\s*token\s*(,\s*token\s*)*)?\)
   
@@ -223,7 +223,7 @@ daig::Interpreter::tokenize_arguments (const std::string & input,
       exit (-1);
     }
   }
-  else
+  else if (!allow_optional)
   {
     std::cerr << "TEMPLATE ERROR: Argument list must start with parenthesis\n";
     exit (-1);
@@ -329,6 +329,9 @@ daig::Interpreter::handle_alphanumeric (
   }
   else
   {
+    Tokens arguments;
+    last_pos = tokenize_arguments (input, last_pos, arguments, true);
+    
     unsigned int brace = last_pos = churn_input_until (input, last_pos, "{");
     unsigned int closing_brace = find_closer (input, brace);
 
@@ -336,6 +339,7 @@ daig::Interpreter::handle_alphanumeric (
     {
       Function function;
       function.name = token;
+      function.args = arguments;
       function.body = input.substr (brace + 1, closing_brace - brace - 1);
       program.functions[token] = function;
       std::cout << "  Added function " << function.name << " to program...\n";
