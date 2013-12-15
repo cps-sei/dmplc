@@ -42,6 +42,11 @@ namespace daig
      * A map of function names to function definitions
      **/
     Functions functions;
+
+    /**
+     * Node definitions
+     **/
+    Nodes nodes;
   };
 }
 

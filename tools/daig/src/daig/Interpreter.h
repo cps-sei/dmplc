@@ -14,6 +14,7 @@
 #include <list>
 #include <map>
 #include "Token.h"
+#include "Node.h"
 
 namespace daig
 {
@@ -118,6 +119,17 @@ namespace daig
        **/
       static unsigned int churn_input_until (const std::string & input,
         unsigned int position, const std::string & enders);
+      
+      /**
+       * Churns through an input string until a predicate is true
+       * @param    input      input buffer
+       * @param    position   the position in the input buffer to start from
+       * @param    func       predicate function for checking a char
+       * @return   new position in the buffer for parsing
+       **/
+      static unsigned int churn_input_until (const std::string & input,
+        unsigned int position, bool (*func) (char));
+
       /**
        * Tokenizes an argument list in parentheses
        * @param    input      input buffer
@@ -129,17 +141,31 @@ namespace daig
        **/
       static unsigned int tokenize_arguments (const std::string & input,
         unsigned int position, Tokens & tokens, bool allow_optional = false);
+      
+      /**
+       * Tokenizes an input string from an expression for tokens
+       * @param    input      input buffer
+       * @param    tokens     arguments to the function
+       **/
+      void handle_expression (const std::string & input, Tokens & tokens);
+      
+      /**
+       * Tokenizes an input string from a node for tokens
+       * @param    input      input buffer
+       * @param    node       a node object to fill
+       **/
+      void handle_node (const std::string & input, Node & node);
 
     private:
       /**
-       * Handles an alphanumeric starter
+       * Handles high level parsing for program information
        * @param    input      input buffer
        * @param    position   the position in the input buffer
        * @param    program    the current program object for filling
        * @return   new position in the buffer for parsing
        **/
       unsigned int
-      handle_alphanumeric (Program & program, const std::string & input,
+      handle_program (Program & program, const std::string & input,
         unsigned int position);
     };
 }

@@ -56,6 +56,20 @@ namespace daig
     void print (unsigned int indent);
     
     /**
+     * Sets the type according to a string
+     * @param  strtype  string type. Values can be
+     *                  INT, INTEGER, DOUBLE, DOUBLE_ARRAY,
+     *                  BOOL, STRING, FILE
+     **/
+    void set_type (const std::string & strtype);
+    
+    /**
+     * Returns type as a string
+     * @return   stringified type
+     **/
+    std::string to_str_type (void);
+
+    /**
      * The variable name
      **/
     std::string name;
