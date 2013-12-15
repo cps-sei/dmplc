@@ -14,7 +14,7 @@ NODE(id)
 {
   //shared variables -- visible across nodes. 
   //must be accessed via R() and W()
-  PUBLIC(Array(Bool,X*Y), lock);
+  PUBLIC(Array(Bool,X*Y) lock);
 
   //private variables -- local to the node.
   //preserved across rounds

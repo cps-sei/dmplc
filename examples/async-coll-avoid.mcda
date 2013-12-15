@@ -16,13 +16,13 @@ NODE(id)
 
   //request[x][y] is 1 iff this node has requested reservation for
   //(x,y)
-  PUBLIC(Array(Bool,X*Y), request); 
+  PUBLIC(Array(Bool,X*Y) request); 
 
   //response[x][y][idp] is:
   // -- 1 if node idp has granted this node's request for reserving (x,y)
   // -- -1 if node idp has denied this node's request for reserving (x,y)
   // -- 0 if node idp has not responded to this node's request for reserving (x,y)
-  PUBLIC(Array(Bool,X*Y*N), response);
+  PUBLIC(Array(Bool,X*Y*N) response);
 
   //private variables -- local to the node.
   //preserved across rounds
