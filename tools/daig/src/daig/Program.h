@@ -24,6 +24,12 @@ namespace daig
   {
   public:
     /**
+     * Prints variable information
+     * @param  indent  spaces to indent printout
+     **/
+    void print (unsigned int indent);
+    
+    /**
      * Number of processes in the program
      **/
     int processes;

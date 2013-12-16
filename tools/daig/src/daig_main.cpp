@@ -36,32 +36,8 @@ int main (int argc, char **argv)
   daig::Program program = interpreter.interpret (input);
 
   std::cout << "Finished parsing " << argv[1] << "...\nRESULTS:\n\n";
-  std::cout << "Program::moc: " << program.moc.to_string_type () << "\n";
-  std::cout << "Program::processes: " << program.processes << "\n";
-  std::cout << "Program::variables:\n";
 
-  for (daig::Variables::iterator i = program.variables.begin ();
-       i != program.variables.end (); ++i)
-  {
-    i->second.print (2);
-  }
-  
-  std::cout << "Program::functions:\n";
-
-  for (daig::Functions::iterator i = program.functions.begin ();
-       i != program.functions.end (); ++i)
-  {
-    i->second.print (2);
-  }
-  
-  std::cout << "Program::nodes:\n\n";
-
-  for (daig::Nodes::iterator i = program.nodes.begin ();
-    i != program.nodes.end (); ++i)
-  {
-    std::cout << "Nodes[0]:\n";
-    i->print (2);
-  }
+  program.print (0);
 
   return 0;
 }
