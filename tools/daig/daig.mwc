@@ -1,4 +1,7 @@
 
 workspace {
+  cmdline += -feature_file default.features
+  
   daig.mpc
+  docs/daig_docs.mpc
 }
