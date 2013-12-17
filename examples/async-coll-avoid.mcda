@@ -9,20 +9,20 @@ CONST(NEXT,0);
 CONST(WAITING,1);
 CONST(MOVE,2);
 
-NODE(id)
+NODE uav (id)
 {
   //shared variables -- visible across nodes. 
   //must be accessed via R() and W()
 
   //request[x][y] is 1 iff this node has requested reservation for
   //(x,y)
-  PUBLIC(Array(Bool,X*Y) request); 
+  PUBLIC(bool request.X.Y.#N); 
 
   //response[x][y][idp] is:
   // -- 1 if node idp has granted this node's request for reserving (x,y)
   // -- -1 if node idp has denied this node's request for reserving (x,y)
   // -- 0 if node idp has not responded to this node's request for reserving (x,y)
-  PUBLIC(Array(Bool,X*Y*N) response);
+  PUBLIC(bool response[X][Y][#N][#N]); 
 
   //private variables -- local to the node.
   //preserved across rounds
@@ -53,22 +53,22 @@ NODE(id)
   RESPOND {
     FORALL_OTHER_HIGHER(idp) {
       FORALL_XY(xo,yo) {
-        if(request.idp[xo][yo]) {
+        if(request[xo][yo][idp]) {
           if(xo == x && yo == y) //if requesting (x,y)
-            response.idp[xo][yo][id] = -1; //reject
+            response[xo][yo][id][idp] = -1; //reject
           else
-            response.idp[xo][yo][id] = 1; //grant
+            response[xo][yo][id][idp] = 1; //grant
         }
       }
     }
     FORALL_OTHER_LOWER(idp) {
-      if(request.idp[x][y]) response.idp[x][y][id] = 0;
+      if(request[x][y][idp]) response[x][y][id][idp] = 0;
       FORALL_XY(xo,yo) {
-        if(request.idp[xo][yo]) {
+        if(request[xo][yo][idp]) {
           if((xo == x && yo == y) || (xo == xp && yo == yp)) //if requesting (x,y) or (xp,yp)   
-            response.idp[xo][yo][id] = -1; //reject
+            response[xo][yo][id][idp] = -1; //reject
           else
-            response.idp[xo][yo][id] = 1; //grant
+            response[xo][yo][id][idp] = 1; //grant
         }
       }
     }
@@ -97,7 +97,7 @@ NODE(id)
          **/
       // }
       PRIVATE {
-        FORALL_OTHER(idp) response.id[xp][yp][idp] = 0; //reset responses
+        FORALL_OTHER(idp) response[xp][yp][idp][id] = 0; //reset responses
       }
 
       state = WAITING;
@@ -105,19 +105,19 @@ NODE(id)
 
       //trying to grab the lock
     case WAITING:
-      request.id[xp][yp] = 1; //request coordinate (xp,yp)
+      request[xp][yp][id] = 1; //request coordinate (xp,yp)
       RESPOND();
 
       //if someone rejected my request, go back to square one
-      if(EXISTS_OTHER(idp,response.id[xp][yp][idp] == -1)) {
+      if(EXISTS_OTHER(idp,response[xp][yp][idp][id] == -1)) {
         state = NEXT;
         BREAK;
       }
       //if someone has still not granted my request, wait
-      if(EXISTS_OTHER(idp, response.id[xp][yp][idp] == 0)) BREAK;
+      if(EXISTS_OTHER(idp, response[xp][yp][idp][id] == 0)) BREAK;
 
       //everyone granted my request. we have the lock.
-      request.id[xp][yp] = 0; //clear request for (xp,yp), perhaps not needed
+      request[xp][yp][id] = 0; //clear request for (xp,yp), perhaps not needed
       state = MOVE;
       BREAK;
 
@@ -136,7 +136,7 @@ NODE(id)
 }
 
 //program has two nodes with ids 0 and 1
-PROGRAM(0,1)
+PROGRAM = uav (0) || uav (1)
 
 //initial state
 INIT 

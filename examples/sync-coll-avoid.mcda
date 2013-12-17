@@ -10,11 +10,11 @@ CONST(REQUEST,1);
 CONST(WAITING,2);
 CONST(MOVE,3);
 
-NODE(id)
+NODE uav (id)
 {
   //shared variables -- visible across nodes. 
   //must be accessed via R() and W()
-  PUBLIC(Array(Bool,X*Y) lock);
+  PUBLIC(bool lock [X][Y][#N]);
 
   //private variables -- local to the node.
   //preserved across rounds
@@ -77,7 +77,7 @@ NODE(id)
 }
 
 //program has two nodes with ids 0 and 1
-PROGRAM(0,1)
+PROGRAM = uav (0) || uav (1)
 
 //initial state
 INIT 
