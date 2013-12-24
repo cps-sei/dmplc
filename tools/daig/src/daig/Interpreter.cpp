@@ -505,6 +505,24 @@ daig::Interpreter::handle_program (
   else if (token == "NODE")
   {
     Tokens arguments;
+    
+    std::string type;
+
+    // eat whitespace
+    last_pos = churn_input (input, last_pos, is_whitespace);
+    
+    // obtain type of node
+    unsigned int type_start = last_pos;
+    last_pos = churn_input (input, type_start, is_alphanumeric);
+    std::string type = input.substr (type_start, last_pos - type_start);
+      
+    
+    MADARA_DEBUG (MADARA_LOG_MINOR_EVENT, (LM_DEBUG,
+      "INTERPRETER: Found type of %s.\n", type.c_str ()));
+
+    // eat whitespace
+    last_pos = churn_input (input, last_pos, is_whitespace);
+
     last_pos = tokenize_arguments (input, last_pos, arguments, true);
     
     unsigned int brace = last_pos = churn_input_until (input, last_pos, "{");
@@ -518,7 +536,7 @@ daig::Interpreter::handle_program (
 
       handle_node (node.body.value, node);
 
-      program.nodes.push_back (node);
+      program.node_types[type] = node;
       
       MADARA_DEBUG (MADARA_LOG_MINOR_EVENT, (LM_DEBUG,
         "INTERPRETER: Added a node to the program.\n", program.processes));

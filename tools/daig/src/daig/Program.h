@@ -30,6 +30,10 @@ namespace daig
     void print (unsigned int indent);
     
     /**
+     *
+     **/
+
+    /**
      * Number of processes in the program
      **/
     int processes;
@@ -51,6 +55,11 @@ namespace daig
 
     /**
      * Node definitions
+     **/
+    Node_Types node_types;
+
+    /**
+     * The actual nodes
      **/
     Nodes nodes;
   };
