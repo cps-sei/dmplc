@@ -14,6 +14,9 @@
 
 #include "sync-coll-avoid-vrep.h"
 
+// collision setting
+bool collision (false);
+
 // transport settings
 std::string host ("");
 const std::string default_multicast ("239.255.0.1:4150");
@@ -26,7 +29,7 @@ Madara::Knowledge_Record::Integer processes (2);
 Madara::Knowledge_Engine::Eval_Settings es_treat_as_local (false, true);
 
 // compiled init function
-Madara::Knowledge_Engine::Compiled_Expression init_function_logic;
+Madara::Knowledge_Engine::Compiled_Expression init_function_logic, execute_logic;
 
 // rows and columns are set to y, x
 Madara::Knowledge_Record::Integer cols (4), rows (4);
@@ -155,6 +158,10 @@ void handle_arguments (int argc, char ** argv)
     else if (arg1 == "-r" || arg1 == "--reduced")
     {
       settings.send_reduced_message_header = true;
+    }
+    else if (arg1 == "-c" || arg1 == "--collision")
+    {
+      collision = true;
     }
     else
     {
@@ -345,78 +352,13 @@ MOVETO (Madara::Knowledge_Engine::Function_Arguments & args,
 }
 
 //uncomment the next line if you want to see a collision
-#define COLLISION
+//#define COLLISION
 
 Madara::Knowledge_Record
 EXECUTE (Madara::Knowledge_Engine::Function_Arguments &,
          Madara::Knowledge_Engine::Variables & vars)
 {
-  return vars.evaluate (
-    // is state_{.id} equal to NEXT?
-    "(state_{.id} == 'NEXT' => "
-    "  ("
-    "    #print ('  Handling state == NEXT\n');"
-    "    !(x_{.id} == xf_{.id} && y_{.id} == yf_{.id}) =>"
-    "      ("
-    "        NEXT_XY ();"
-    "        state_{.id} = 'REQUEST'"
-    "      )"
-    "  )"
-    // or
-    ") ||"
-    // is state_{.id} equal to REQUEST?
-    "(state_{.id} == 'REQUEST' => "
-    "  ("
-    "    #print ('  Handling state == REQUEST\n');"
-#ifndef COLLISION
-    "    !lock_0[xp_{.id} * Y + yp_{.id}] && !lock_1[xp_{.id} * Y + yp_{.id}]"
-    "      =>"
-    "      ("
-#endif
-    "        lock_{.id}[xp_{.id} * Y + yp_{.id}] = 1;"
-    "        state_{.id} = 'WAITING'"
-#ifndef COLLISION
-    "      )"
-#endif
-    "  )"
-    ") ||"
-    // is state_{.id} equal to WAITING?
-    "(state_{.id} == 'WAITING' => "
-    "  ("
-    "    #print ('  Handling state == WAITING\n');"
-#ifndef COLLISION
-    "    !(.id == 0 && lock_1[xp_0 * Y + yp_0])"
-    "      =>"
-    "      ("
-#endif
-    "        state_{.id} = 'MOVE'"
-#ifndef COLLISION
-    "      )"
-#endif
-    "  )"
-    ") ||"
-    // is state_{.id} equal to MOVE?
-    "(state_{.id} == 'MOVE' => "
-    "  ("
-    "    #print ('  Handling state == MOVE\n');"
-    //"     #rand_int (0, 5) == 0 =>"
-    "    ("
-    "      (!MOVETO () =>\n"
-    "      (\n"
-    "        #print ('  MOVETO returned arrival. Proceeding to next\n');"
-    "        lock_{.id}[x_{.id} * Y + y_{.id}] = 0;\n"
-    "        x_{.id} = xp_{.id};\n"
-    "        y_{.id} = yp_{.id};\n"
-    "        state_{.id} = 'NEXT'\n"
-    "      ))\n"
-    "      ||\n"
-    "      (\n"
-    "        #print ('  MOVETO returned enroute.\n');"
-    "      )\n"
-    "    )"
-    "  )"
-    ")"
-  );
+  return vars.evaluate (execute_logic);
 }
 
 // count the number of finished processes
@@ -487,6 +429,7 @@ int main (int argc, char ** argv)
   knowledge.set (".n", processes);
   knowledge.set ("X", cols, es_treat_as_local);
   knowledge.set ("Y", rows, es_treat_as_local);
+  knowledge.set (".collision", Madara::Knowledge_Record::Integer (collision));
   
   std::string barrier_string = "REFRESH_STATUS () ;> b_1 >= b_0";
 
@@ -520,6 +463,95 @@ int main (int argc, char ** argv)
       "yf_{.id} = 0;\n"
       "lock_{.id}[x_{.id} * Y + y_{.id}] = 1"
     );
+  }
+
+  // define execute logic
+  {
+    
+    
+    std::stringstream buffer;
+    buffer <<
+      // is state_{.id} equal to NEXT?
+      "(state_{.id} == 'NEXT' => "
+      "  ("
+      "    #print ('  Handling state == NEXT\n');"
+      "    !(x_{.id} == xf_{.id} && y_{.id} == yf_{.id}) =>"
+      "      ("
+      "        NEXT_XY ();"
+      "        state_{.id} = 'REQUEST'"
+      "      )"
+      "  )"
+      // or
+      ") ||"
+      // is state_{.id} equal to REQUEST?
+      "(state_{.id} == 'REQUEST' => "
+      "  ("
+      "    #print ('  Handling state == REQUEST\n');";
+
+    if (!collision)
+    {
+      buffer << 
+      "    !lock_0[xp_{.id} * Y + yp_{.id}] && !lock_1[xp_{.id} * Y + yp_{.id}]"
+      "      =>"
+      "      (";
+    }
+
+    buffer << 
+      "        lock_{.id}[xp_{.id} * Y + yp_{.id}] = 1;"
+      "        state_{.id} = 'WAITING'";
+
+    if (!collision)
+    {
+      buffer << "      )";
+    }
+
+    buffer << 
+      "  )"
+      ") ||"
+      // is state_{.id} equal to WAITING?
+      "(state_{.id} == 'WAITING' => "
+      "  ("
+      "    #print ('  Handling state == WAITING\n');";
+
+    if (!collision)
+    {
+      buffer <<
+      "    !(.id == 0 && lock_1[xp_0 * Y + yp_0])"
+      "      =>"
+      "      (";
+    }
+    buffer << "        state_{.id} = 'MOVE'";
+
+    if (!collision)
+    {
+      buffer << "      )";
+    }
+
+    buffer <<
+      "  )"
+      ") ||"
+      // is state_{.id} equal to MOVE?
+      "(state_{.id} == 'MOVE' => "
+      "  ("
+      "    #print ('  Handling state == MOVE\n');"
+      //"     #rand_int (0, 5) == 0 =>"
+      "    ("
+      "      (!MOVETO () =>\n"
+      "      (\n"
+      "        #print ('  MOVETO returned arrival. Proceeding to next\n');"
+      "        lock_{.id}[x_{.id} * Y + y_{.id}] = 0;\n"
+      "        x_{.id} = xp_{.id};\n"
+      "        y_{.id} = yp_{.id};\n"
+      "        state_{.id} = 'NEXT'\n"
+      "      ))\n"
+      "      ||\n"
+      "      (\n"
+      "        #print ('  MOVETO returned enroute.\n');"
+      "      )\n"
+      "    )"
+      "  )"
+      ")";
+    execute_logic = knowledge.compile (buffer.str ());
   }
 
 #if 0
