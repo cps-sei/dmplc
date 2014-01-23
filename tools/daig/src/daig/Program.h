@@ -13,6 +13,7 @@
 #include "Model_Of_Computation.h"
 #include "Variable.h"
 #include "Function.h"
+#include "Node.h"
 
 namespace daig
 {
