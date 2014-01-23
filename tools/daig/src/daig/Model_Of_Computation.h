@@ -35,13 +35,13 @@ namespace daig
     /**
      * Sets the type based on a string
      * @param  str_type    string identifier of type.
-     *                     SYNC, ASYNC, or SYNC_ASYNC
+     *                     SYNC, ASYNC, or PARTIAL
      **/
     void set_type (const std::string & str_type);
 
     /**
      * Returns the stringified version of the type
-     * @return  SYNC, ASYNC, or SYNC_ASYNC
+     * @return  SYNC, ASYNC, or PARTIAL
      **/
     std::string to_string_type (void);
 
