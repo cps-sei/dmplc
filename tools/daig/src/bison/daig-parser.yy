@@ -128,6 +128,7 @@ procedure : type TIDENTIFIER TLPAREN param_list TRPAREN TLBRACE var_decl_list st
 ;
 
 param_list : {}
+| type TIDENTIFIER {}
 | param_list TCOMMA type TIDENTIFIER {}
 ;
 
