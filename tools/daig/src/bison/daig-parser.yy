@@ -24,8 +24,11 @@
  */
 %token <string> TIDENTIFIER TINTEGER TDOUBLE
 %token <token> TMOCSYNC TMOCASYNC TMOCPSYNC TSEMICOLON TCONST TNODE
-%token <token> TPUBLIC TPRIVATE TBOOL TINT TVOID TNODENUM TATOMIC
-%token <token> TIF TELSE TRETURN TPROGRAM TINIT TSAFETY TFAN TFADNP
+%token <token> TPUBLIC TPRIVATE TBOOL TINT TVOID TCHAR TSIGNED TUNSIGNED
+%token <token> TNODENUM TATOMIC
+%token <token> TIF TELSE TFOR TWHILE
+%token <token> TBREAK TCONTINUE TRETURN TPROGRAM TINIT TSAFETY
+%token <token> TFAN TFADNP TFAO TFAOL TFAOH
 %token <token> TCEQ TCNE TCLT TCLE TCGT TCGE TEQUAL
 %token <token> TLAND TLOR TLNOT
 %token <token> TLPAREN TRPAREN TLBRACE TRBRACE 
@@ -52,7 +55,6 @@
 %start program
 
 %%
-
 program : moc const_list node prog_def init_def safety_def {};
 
 moc : 
@@ -111,40 +113,76 @@ dimension : TINTEGER {}
 | TNODENUM {}
 ;
 
-type : TBOOL {}
-| TINT {}
-| TVOID {}
+type : base_type {}
+| TSIGNED base_type {}
+| TUNSIGNED base_type {}
 ;
 
-procedure : type TIDENTIFIER TLPAREN param_list TRPAREN TLBRACE stmt_list TRBRACE {}
+base_type : TBOOL {}
+| TINT {}
+| TVOID {}
+| TCHAR {}
+;
+
+procedure : type TIDENTIFIER TLPAREN param_list TRPAREN TLBRACE var_decl_list stmt_list TRBRACE {}
 ;
 
 param_list : {}
 | param_list TCOMMA type TIDENTIFIER {}
 ;
 
+var_decl_list : {}
+| var_decl_list var_decl TSEMICOLON {}
+;
+
 stmt_list : stmt {}
 | stmt_list stmt {}
 ;
 
-stmt : TATOMIC TLBRACE stmt_list TRBRACE {}
+stmt : TATOMIC stmt {}
+| TPRIVATE stmt {}
 | TLBRACE stmt_list TRBRACE {}
-| TIDENTIFIER TEQUAL expr TSEMICOLON {}
-| TIDENTIFIER TDOT TIDENTIFIER TEQUAL expr TSEMICOLON {}
+| lval TEQUAL expr TSEMICOLON {}
 | TIF TLPAREN expr TRPAREN stmt {}
 | TIF TLPAREN expr TRPAREN stmt TELSE stmt {}
+| TWHILE TLPAREN expr TRPAREN stmt {}
+| TFOR TLPAREN for_init TSEMICOLON for_test TSEMICOLON for_update TRPAREN stmt {}
+| TBREAK TSEMICOLON {}
+| TCONTINUE TSEMICOLON {}
 | TRETURN expr TSEMICOLON {}
 | TRETURN TSEMICOLON {}
 | TIDENTIFIER TLPAREN arg_list TRPAREN TSEMICOLON {}
-| TFAN TLPAREN TIDENTIFIER TRPAREN TLBRACE stmt_list TRBRACE {}
-| TFADNP TLPAREN TIDENTIFIER TCOMMA TIDENTIFIER TRPAREN TLBRACE stmt_list TRBRACE {}
+| TFAN TLPAREN TIDENTIFIER TRPAREN stmt {}
+| TFADNP TLPAREN TIDENTIFIER TCOMMA TIDENTIFIER TRPAREN stmt {}
+| TFAO TLPAREN TIDENTIFIER TRPAREN stmt {}
+| TFAOL TLPAREN TIDENTIFIER TRPAREN stmt {}
+| TFAOH TLPAREN TIDENTIFIER TRPAREN stmt {}
+| TFOR
 ;
 
-expr : TIDENTIFIER {}
+lval : TIDENTIFIER {}
 | TIDENTIFIER TDOT TIDENTIFIER {}
 | TIDENTIFIER indices {}
 | TIDENTIFIER TDOT TIDENTIFIER indices {}
+;
+
+for_init : {}
+| lval TEQUAL expr {}
+| for_init TCOMMA TIDENTIFIER TEQUAL expr {}
+;
+
+for_test : {}
+| expr {}
+;
+
+for_update : {}
+| lval TEQUAL expr {}
+;
+
+expr : lval {}
 | TINTEGER {}
+| TMINUS TINTEGER {}
+| TPLUS TINTEGER {}
 | expr TCEQ expr {}
 | expr TCNE expr {}
 | expr TCLT expr {}

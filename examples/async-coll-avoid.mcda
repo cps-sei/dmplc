@@ -1,4 +1,4 @@
-MOC(async);
+MOC_ASYNC;
 
 //number of X and Y coordinates
 CONST(X,4);
@@ -16,7 +16,7 @@ NODE uav (id)
 
   //request[x][y] is 1 iff this node has requested reservation for
   //(x,y)
-  PUBLIC(bool request.X.Y.#N); 
+  PUBLIC(bool request[X][Y][#N]); 
 
   //response[x][y][idp] is:
   // -- 1 if node idp has granted this node's request for reserving (x,y)
@@ -31,7 +31,7 @@ NODE uav (id)
   PRIVATE(int xp,yp); //next coordinates
   PRIVATE(int xf,yf); //final coordinates
   
-  NEXT_XY {
+  void NEXT_XY () {
     ATOMIC {
       xp = x; yp = y;
       if(x < xf) xp = x + 1;
@@ -41,43 +41,49 @@ NODE uav (id)
     }
   }
 
-  MOVE_TO {
-    if(target != (xp,yp)) {
-      target = (xp,yp);
-      return 1;
-    } else {
-      return (position != target);
-    }
-  }
+  //move to the next location -- this is a built-in function
+  //implemented non-deterministically for verification
+  // MOVE_TO {
+  //   if(target != (xp,yp)) {
+  //     target = (xp,yp);
+  //     return 1;
+  //   } else {
+  //     return (position != target);
+  //   }
+  // }
 
-  RESPOND {
+  void RESPOND () {
+    unsigned char xo,yo;
     FORALL_OTHER_HIGHER(idp) {
-      FORALL_XY(xo,yo) {
-        if(request[xo][yo][idp]) {
-          if(xo == x && yo == y) //if requesting (x,y)
-            response[xo][yo][id][idp] = -1; //reject
-          else
-            response[xo][yo][id][idp] = 1; //grant
+      for(xo = 0;xo < X;xo = xo+1) {
+        for(yo = 0;yo < Y;yo = yo+1) {
+          if(request[xo][yo][idp]) {
+            if(xo == x && yo == y) //if requesting (x,y)
+              response[xo][yo][id][idp] = -1; //reject
+            else
+              response[xo][yo][id][idp] = 1; //grant
+          }
         }
       }
     }
     FORALL_OTHER_LOWER(idp) {
       if(request[x][y][idp]) response[x][y][id][idp] = 0;
-      FORALL_XY(xo,yo) {
-        if(request[xo][yo][idp]) {
-          if((xo == x && yo == y) || (xo == xp && yo == yp)) //if requesting (x,y) or (xp,yp)   
-            response[xo][yo][id][idp] = -1; //reject
-          else
-            response[xo][yo][id][idp] = 1; //grant
+      for(xo = 0;xo < X;xo = xo+1) {
+        for(yo = 0;yo < Y;yo = yo+1) {
+          if(request[xo][yo][idp]) {
+            if((xo == x && yo == y) || (xo == xp && yo == yp)) //if requesting (x,y) or (xp,yp)   
+              response[xo][yo][id][idp] = -1; //reject
+            else
+              response[xo][yo][id][idp] = 1; //grant
+          }
         }
       }
     }
   }
 
-  ROUND {
-    switch(state) {
+  void ROUND () {
       //compute next point on route
-    case NEXT:
+    if(state == NEXT) {
       BREAKIF(x == xf && y == yf); //check if final location
       NEXT_XY(); //compute next waypoint
       RESPOND(); //respond to other requests      
@@ -85,44 +91,40 @@ NODE uav (id)
       //atomic -- means that other nodes either see all updates in
       //this block or none.
       // ATOMIC {
-        /**
-         * this ATOMIC overcomplicates the logic and causes inconsistent state
-         * due to arbitrary writes from all involved processes. Essentially, we
-         * are now doing many writers, many readers, instead of having idp own
-         * its response on its own context.
-         *
-         * My suggestion is to make this a local update that essentially only
-         * resets the local context and not everyone else's context, including
-         * the idp that owns the variable (which I believe is crucial)
-         **/
+         // this ATOMIC overcomplicates the logic and causes
+         // inconsistent state due to arbitrary writes from all
+         // involved processes. Essentially, we are now doing many
+         // writers, many readers, instead of having idp own its
+         // response on its own context.  My suggestion is to make
+         // this a local update that essentially only resets the local
+         // context and not everyone else's context, including the idp
+         // that owns the variable (which I believe is crucial)
       // }
       PRIVATE {
         FORALL_OTHER(idp) response[xp][yp][idp][id] = 0; //reset responses
       }
 
       state = WAITING;
-      break;
-
-      //trying to grab the lock
-    case WAITING:
+    }
+    //trying to grab the lock
+    else if(state == WAITING) {
       request[xp][yp][id] = 1; //request coordinate (xp,yp)
       RESPOND();
 
       //if someone rejected my request, go back to square one
       if(EXISTS_OTHER(idp,response[xp][yp][idp][id] == -1)) {
         state = NEXT;
-        BREAK;
+        return;
       }
       //if someone has still not granted my request, wait
-      if(EXISTS_OTHER(idp, response[xp][yp][idp][id] == 0)) BREAK;
+      if(EXISTS_OTHER(idp, response[xp][yp][idp][id] == 0)) return;
 
       //everyone granted my request. we have the lock.
       request[xp][yp][id] = 0; //clear request for (xp,yp), perhaps not needed
       state = MOVE;
-      BREAK;
-
-      //now we have the lock on (x’,y’)
-    case MOVE:
+    }
+    //now we have the lock on (x’,y’)
+    else if(state == MOVE) {
       RESPOND();
       //move to (xp,yp)
       BREAKIF(MOVE_TO());
@@ -130,20 +132,19 @@ NODE uav (id)
       x = xp; y = yp;
       //move to next square
       state = NEXT;
-      break;
     }
   }
 }
 
 //program has two nodes with ids 0 and 1
-PROGRAM = uav (0) || uav (1)
+PROGRAM = uav (0) || uav (1);
 
 //initial state
 INIT 
 {
   ATOMIC {
-    FOREACH_NODE(id) {
-      SET(state.id,NEXT);
+    FORALL_NODE(id) {
+      state.id = NEXT;
       ND(x.id); ND(y.id);
       ASSUME(0 <= x.id && x.id < X && 0 <= y.id && y.id < Y);
       ND(xf.id); ND(yf.id);
@@ -151,7 +152,7 @@ INIT
     }
   }
 
-  FOREACH_DISTINCT_NODE_PAIR (id1,id2) {
+  FORALL_DISTINCT_NODE_PAIR (id1,id2) {
     ASSUME(x.id1 != x.id2 || y.id1 != y.id2);
   }
 }
@@ -159,7 +160,7 @@ INIT
 //the safety property checked at the beginning of each round
 SAFETY
 {
-  FOREACH_DISTINCT_NODE_PAIR (id1,id2) {
+  FORALL_DISTINCT_NODE_PAIR (id1,id2) {
     ASSERT(x.id1 != x.id2 || y.id1 != y.id2);
   }
 }
