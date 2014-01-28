@@ -16,20 +16,20 @@ NODE uav (id)
 
   //request[x][y] is 1 iff this node has requested reservation for
   //(x,y)
-  PUBLIC(bool request[X][Y][#N]); 
+  GLOBAL(bool request[X][Y][#N]); 
 
   //response[x][y][idp] is:
   // -- 1 if node idp has granted this node's request for reserving (x,y)
   // -- -1 if node idp has denied this node's request for reserving (x,y)
   // -- 0 if node idp has not responded to this node's request for reserving (x,y)
-  PUBLIC(bool response[X][Y][#N][#N]); 
+  GLOBAL(bool response[X][Y][#N][#N]); 
 
   //private variables -- local to the node.
   //preserved across rounds
-  PRIVATE(int state); //the state
-  PRIVATE(int x,y); //current coordinates
-  PRIVATE(int xp,yp); //next coordinates
-  PRIVATE(int xf,yf); //final coordinates
+  LOCAL(int state); //the state
+  LOCAL(int x,y); //current coordinates
+  LOCAL(int xp,yp); //next coordinates
+  LOCAL(int xf,yf); //final coordinates
   
   void NEXT_XY () {
     ATOMIC {

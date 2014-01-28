@@ -18,8 +18,8 @@ extern "C" int yywrap() { }
 "MOC_PSYNC"                 PRINT_TOKEN; return TOKEN(TMOCPSYNC);
 "CONST"                     PRINT_TOKEN; return TOKEN(TCONST);
 "NODE"                      PRINT_TOKEN; return TOKEN(TNODE);
-"PUBLIC"                    PRINT_TOKEN; return TOKEN(TPUBLIC);
-"PRIVATE"                   PRINT_TOKEN; return TOKEN(TPRIVATE);
+"GLOBAL"                    PRINT_TOKEN; return TOKEN(TGLOBAL);
+"LOCAL"                     PRINT_TOKEN; return TOKEN(TLOCAL);
 "bool"                      PRINT_TOKEN; return TOKEN(TBOOL);
 "int"                       PRINT_TOKEN; return TOKEN(TINT);
 "void"                      PRINT_TOKEN; return TOKEN(TVOID);
@@ -28,6 +28,7 @@ extern "C" int yywrap() { }
 "unsigned"                  PRINT_TOKEN; return TOKEN(TUNSIGNED);
 "#N"                        PRINT_TOKEN; return TOKEN(TNODENUM);
 "ATOMIC"                    PRINT_TOKEN; return TOKEN(TATOMIC);
+"PRIVATE"                   PRINT_TOKEN; return TOKEN(TPRIVATE);
 "if"                        PRINT_TOKEN; return TOKEN(TIF);
 "else"                      PRINT_TOKEN; return TOKEN(TELSE);
 "for"                       PRINT_TOKEN; return TOKEN(TFOR);
