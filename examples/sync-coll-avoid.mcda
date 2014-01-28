@@ -46,7 +46,7 @@ NODE uav (id)
   //   // }
   // }
 
-  void ROUND() {
+  void ROUND () {
     if(state == NEXT) {
       //compute next point on route
       if(x == xf && y == yf) return;
@@ -79,7 +79,7 @@ PROGRAM = uav (0) || uav (1);
 INIT 
 {
   ATOMIC {
-    FOREACH_NODE(id) {
+    FORALL_NODE(id) {
       state.id = NEXT;
       ND(x.id); ND(y.id);
       ASSUME(0 <= x.id && x.id < X && 0 <= y.id && y.id < Y);
@@ -89,7 +89,7 @@ INIT
     }
   }
 
-  FOREACH_DISTINCT_NODE_PAIR (id1,id2) {
+  FORALL_DISTINCT_NODE_PAIR (id1,id2) {
     ASSUME(x.id1 != x.id2 || y.id1 != y.id2);
   }
 }
@@ -97,7 +97,7 @@ INIT
 //the safety property checked at the beginning of each round
 SAFETY
 {
-  FOREACH_DISTINCT_NODE_PAIR (id1,id2) {
+  FORALL_DISTINCT_NODE_PAIR (id1,id2) {
     ASSERT(x.id1 != x.id2 || y.id1 != y.id2);
   }
 }

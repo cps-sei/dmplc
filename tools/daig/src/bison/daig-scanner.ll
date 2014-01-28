@@ -31,8 +31,8 @@ extern "C" int yywrap() { }
 "PROGRAM"               PRINT_TOKEN; return TOKEN(TPROGRAM);
 "INIT"                  PRINT_TOKEN; return TOKEN(TINIT);
 "SAFETY"                PRINT_TOKEN; return TOKEN(TSAFETY);
-"FOREACH_NODE"          PRINT_TOKEN; return TOKEN(TFEN);
-"FOREACH_DISTINCT_NODE_PAIR" PRINT_TOKEN; return TOKEN(TFEDNP);
+"FORALL_NODE"           PRINT_TOKEN; return TOKEN(TFAN);
+"FORALL_DISTINCT_NODE_PAIR" PRINT_TOKEN; return TOKEN(TFADNP);
 [a-zA-Z_][a-zA-Z0-9_]*  {
                           /** substitute constant definitions */
                           std::map<std::string,std::string>::const_iterator it = 
