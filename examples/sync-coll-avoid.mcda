@@ -1,4 +1,4 @@
-MOC(sync);
+MOC_SYNC;
 
 //number of X and Y coordinates
 CONST(X,4);
@@ -23,7 +23,7 @@ NODE uav (id)
   PRIVATE(int xp,yp); //next coordinates
   PRIVATE(int xf,yf); //final coordinates
   
-  NEXT_XY {
+  void NEXT_XY () {
     ATOMIC {
       xp = x; yp = y;
       if(x < xf) xp = x + 1;
@@ -33,58 +33,54 @@ NODE uav (id)
     }
   }
 
-  MOVE_TO {
-    if(target != (xp,yp)) {
-      target = (xp,yp);
-      return 1;
-    } else {
-      return (position != target);
-    }
-  }
+  //move to the next location -- this is a built-in function
+  //implemented non-deterministically for verification
+  // MOVE_TO {
+  //   if (nondet_int()) return 0;
+  //   else return 1;
+  //   // if(target != (xp,yp)) {
+  //   //   target = (xp,yp);
+  //   //   return 1;
+  //   // } else {
+  //   //   return (position != target);
+  //   // }
+  // }
 
-  ROUND {
-    switch(state) {
+  void ROUND() {
+    if(state == NEXT) {
       //compute next point on route
-    case NEXT:
-      IF(x == xf && y == yf) BREAK;
+      if(x == xf && y == yf) return;
       NEXT_XY();
       state = REQUEST;
-      break;
-
+    } else if(state == REQUEST) {
       //request the lock but only if it is free
-    case REQUEST: 
-      IF(EXISTS_OTHER(idp,lock.idp[xp * Y + yp] != 0)) BREAK;
+      if(EXISTS_OTHER(idp,lock.idp[xp * Y + yp] != 0)) return;
       W(lock[xp * Y + yp],1);
       state = WAITING;
-      break;
-
+    } else if(state == WAITING) {
       //grab the lock if we are the highest 
       //id node to request or hold the lock
-    case WAITING:
-      IF(EXISTS_HIGHER(idp, lock.idp[xp * Y + yp] != 0)) BREAK;
+      if(EXISTS_HIGHER(idp, lock.idp[xp * Y + yp] != 0)) return;
       state = MOVE;
-      break;
-
+    } else if(state == MOVE) {
       //now we have the lock on (x’,y’)
-    case MOVE:
-      IF(MOVE_TO()) BREAK;
+      if(MOVE_TO()) return;
       W(lock[x * Y + y],0); 
       x = xp; y = yp;
       state = NEXT;
-      break;
     }
   }
 }
 
 //program has two nodes with ids 0 and 1
-PROGRAM = uav (0) || uav (1)
+PROGRAM = uav (0) || uav (1);
 
 //initial state
 INIT 
 {
   ATOMIC {
     FOREACH_NODE(id) {
-      SET(state.id,NEXT);
+      state.id = NEXT;
       ND(x.id); ND(y.id);
       ASSUME(0 <= x.id && x.id < X && 0 <= y.id && y.id < Y);
       SET(lock.id[x.id * Y + y.id], 1);
