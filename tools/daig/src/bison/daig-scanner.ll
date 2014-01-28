@@ -1,10 +1,10 @@
 %{
 #include <string>
 #include <map>
-#include "Program.h"
 #include "daig-parser.hpp"
-extern std::map<std::string,std::string> constDef;
-#define PRINT_TOKEN printf("%s\n",yytext)
+extern std::map<std::string,std::string> *constDef;
+extern bool daigDebug;
+#define PRINT_TOKEN if(daigDebug) printf("%s\n",yytext)
 #define SAVE_TOKEN PRINT_TOKEN; yylval.string = new std::string(yytext, yyleng)
 #define TOKEN(t) (yylval.token = t)
 extern "C" int yywrap() { }
@@ -47,12 +47,12 @@ extern "C" int yywrap() { }
 [a-zA-Z_][a-zA-Z0-9_]*  {
                           /** substitute constant definitions */
                           std::map<std::string,std::string>::const_iterator it = 
-                            constDef.find(std::string(yytext));
-                          if(it == constDef.end()) {
+                            constDef->find(std::string(yytext));
+                          if(it == constDef->end()) {
                             SAVE_TOKEN; return TIDENTIFIER;
                           }
                           yylval.string = new std::string(it->second);
-                          printf("%s\n",yylval.string->c_str());
+                          if(daigDebug) printf("%s\n",yylval.string->c_str());
                           return TINTEGER;
                         }
 [0-9]+\.[0-9]*          SAVE_TOKEN; return TDOUBLE;

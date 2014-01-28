@@ -3,8 +3,8 @@
     #include <map>
     #include <string>
     #include "Program.h"
-    extern std::map<std::string,std::string> constDef;
     extern daig::Program *program; /* the top level root node of our final AST */
+    extern std::map<std::string,std::string> *constDef;
     extern int yylex();
     void yyerror(const char *s) { printf("ERROR: %s\n", s); }
 %}
@@ -69,7 +69,7 @@ const_list : {}
 ;
 
 constant : TCONST TLPAREN TIDENTIFIER TCOMMA TINTEGER TRPAREN TSEMICOLON {
-  constDef[*$3] = *$5;
+  (*constDef)[*$3] = *$5;
   delete $3; delete $5;
 }
 ;
