@@ -212,8 +212,14 @@ arg_list : {}
 prog_def : TPROGRAM TEQUAL node_instances TSEMICOLON {}
 ;
 
-node_instances : TIDENTIFIER TLPAREN TINTEGER TRPAREN {}
-| node_instances TLOR TIDENTIFIER TLPAREN TINTEGER TRPAREN {}
+node_instances : TIDENTIFIER TLPAREN TINTEGER TRPAREN {
+  builder->program.processes.push_back(daig::Process(*$1,atoi($3->c_str())));
+  delete $1; delete $3;
+}
+| node_instances TLOR TIDENTIFIER TLPAREN TINTEGER TRPAREN {
+  builder->program.processes.push_back(daig::Process(*$3,atoi($5->c_str())));
+  delete $3; delete $5;
+}
 ;
 
 init_def : TINIT TLBRACE stmt_list TRBRACE {}
