@@ -1,11 +1,13 @@
 %{
-    #include <cstdio>
-    #include <map>
-    #include <string>
-    #include "DaigBuilder.hpp"
-    extern daig::DaigBuilder *builder; /* the dag builder */
-    extern int yylex();
-    void yyerror(const char *s) { printf("ERROR: %s\n", s); }
+#include <cstdio>
+#include <map>
+#include <string>
+#include "Expression.h"
+#include "DaigBuilder.hpp"
+extern daig::DaigBuilder *builder; /* the dag builder */
+extern int yylex();
+void yyerror(const char *s) { printf("ERROR: %s\n", s); }
+#define printExpr(_x) if(builder->debug) printf("==%s==\n",_x->toString().c_str())
 %}
 
 /* expect 2 shift reduce conflicts */
@@ -13,6 +15,8 @@
 
 /* Represents the many different ways we can access our data */
 %union {
+    daig::Expr *expr;
+    daig::ExprList *exprlist;
     std::string *string;
     int token;
 }
@@ -32,7 +36,7 @@
 %token <token> TLAND TLOR TLNOT
 %token <token> TLPAREN TRPAREN TLBRACE TRBRACE 
 %token <token> TLBRACKET TRBRACKET TCOMMA TDOT
-%token <token> TPLUS TMINUS TMUL TDIV
+%token <token> TPLUS TMINUS TMUL TDIV TFUNCALL
 
 /* Define the type of node our nonterminal symbols represent.
    The types refer to the %union declaration above. Ex: when
@@ -42,6 +46,8 @@
 %type <token> program moc const_list constant node node_body
 %type <token> node_body_elem_list node_body_elem
 %type <token> public_var private_var var_decl
+%type <expr> expr lval
+%type <exprlist> indices arg_list
 
 /* Operator precedence for mathematical operators */
 %left TPLUS TMINUS TMUL TDIV 
@@ -157,13 +163,24 @@ stmt : TATOMIC stmt {}
 | TFAO TLPAREN TIDENTIFIER TRPAREN stmt {}
 | TFAOL TLPAREN TIDENTIFIER TRPAREN stmt {}
 | TFAOH TLPAREN TIDENTIFIER TRPAREN stmt {}
-| TFOR
 ;
 
-lval : TIDENTIFIER {}
-| TIDENTIFIER TDOT TIDENTIFIER {}
-| TIDENTIFIER indices {}
-| TIDENTIFIER TDOT TIDENTIFIER indices {}
+lval : TIDENTIFIER { 
+  $$ = new daig::LvalExpr(*$1);
+  delete $1; printExpr($$);
+}
+| TIDENTIFIER TDOT TIDENTIFIER {
+  $$ = new daig::LvalExpr(*$1,*$3);
+  delete $1; delete $3; printExpr($$);
+}
+| TIDENTIFIER indices {
+  $$ = new daig::LvalExpr(*$1,*$2);
+  delete $1; delete $2; printExpr($$);
+}
+| TIDENTIFIER TDOT TIDENTIFIER indices {
+  $$ = new daig::LvalExpr(*$1,*$3,*$4);
+  delete $1; delete $3; delete $4; printExpr($$);
+}
 ;
 
 for_init : {}
@@ -179,34 +196,47 @@ for_update : {}
 | lval TEQUAL expr {}
 ;
 
-expr : lval {}
-| TINTEGER {}
-| TMINUS TINTEGER {}
-| TPLUS TINTEGER {}
-| expr TCEQ expr {}
-| expr TCNE expr {}
-| expr TCLT expr {}
-| expr TCLE expr {}
-| expr TCGT expr {}
-| expr TCGE expr {}
-| expr TPLUS expr {}
-| expr TMINUS expr {}
-| expr TMUL expr {}
-| expr TDIV expr {}
-| expr TLAND expr {}
-| expr TLOR expr {}
-| TLNOT expr {}
-| TIDENTIFIER TLPAREN arg_list TRPAREN {} 
-| TLPAREN expr TRPAREN {}
+expr : lval { $$ = $1; printExpr($$); }
+| TINTEGER { $$ = new daig::IntExpr(atoi($1->c_str())); delete $1; printExpr($$); }
+| TMINUS expr { $$ = new daig::CompExpr($1, *$2); delete $2; printExpr($$); }
+| TPLUS expr { $$ = new daig::CompExpr($1, *$2); delete $2; printExpr($$); }
+| expr TCEQ expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
+| expr TCNE expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
+| expr TCLT expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
+| expr TCLE expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
+| expr TCGT expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
+| expr TCGE expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
+| expr TPLUS expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
+| expr TMINUS expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
+| expr TMUL expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
+| expr TDIV expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
+| expr TLAND expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
+| expr TLOR expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
+| TLNOT expr { $$ = new daig::CompExpr($1, *$2); delete $2; }
+| lval TLPAREN arg_list TRPAREN { 
+  $3->push_front($1);
+  $$ = new daig::CompExpr(TFUNCALL,*$3);
+  delete $3;
+} 
+| TLPAREN expr TRPAREN { $$ = $2; }
 ;
 
-indices : TLBRACKET expr TRBRACKET {}
-| indices TLBRACKET expr TRBRACKET {}
+indices : TLBRACKET expr TRBRACKET {
+  $$ = new daig::ExprList();
+  $$->push_back($2);
+}
+| indices TLBRACKET expr TRBRACKET {
+  $$ = $1;
+  $$->push_back($3);
+}
 ;
 
-arg_list : {}
-| expr {}
-| arg_list TCOMMA expr {}
+arg_list : { $$ = new daig::ExprList(); }
+| expr { $$ = new daig::ExprList(); $$->push_back($1); }
+| arg_list TCOMMA expr {
+  $$ = $1;
+  $$->push_back($3);
+}
 ;
 
 prog_def : TPROGRAM TEQUAL node_instances TSEMICOLON {}
