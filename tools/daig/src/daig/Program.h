@@ -8,6 +8,7 @@
  * This file contains a class definition for the DAIG Program container.
  **/
 
+#include <list>
 #include <map>
 #include <string>
 #include "Model_Of_Computation.h"
@@ -17,6 +18,17 @@
 
 namespace daig
 {
+  //a process is a node name and a node id
+  class Process : public std::pair<std::string,int>
+  {
+  public:
+    Process(const std::string &n,const int id)
+      : std::pair<std::string,int>(n,id) {}
+
+    const std::string &getNode() const { return first; }
+    int getId() const { return second; }
+  };
+
   /**
     * @class Program
     * @brief Encapsulates a program definition
@@ -34,11 +46,6 @@ namespace daig
      *
      **/
 
-    /**
-     * Number of processes in the program
-     **/
-    int processes;
-    
     /**
      * Model of computation for the program
      **/
@@ -63,6 +70,9 @@ namespace daig
      * The actual nodes
      **/
     Nodes nodes;
+
+    //the list of processes
+    std::list<Process> processes;
   };
 }
 
