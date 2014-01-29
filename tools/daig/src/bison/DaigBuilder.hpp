@@ -8,20 +8,22 @@
 #include <map>
 #include "Program.h"
 
-class DaigBuilder
-{
-private:
-  daig::Program program;
-  std::map<std::string,std::string> constDef;
+namespace daig {
+  class DaigBuilder
+  {
+  public:
+    daig::Program program;
+    std::map<std::string,std::string> constDef;
   
-  std::string fileName;
-  bool debug;
+    std::string fileName;
+    bool debug;
   
-public:
-  DaigBuilder() : debug(0) {}
-  DaigBuilder(const std::string &fn,const bool d)
-    : fileName(fn),debug(d) {}
-  void run();
-};
+  public:
+    DaigBuilder() : debug(0) {}
+    DaigBuilder(const std::string &fn,const bool d)
+      : fileName(fn),debug(d) {}
+    void run();
+  };
+} //namespace daig
 
 #endif //__DAIG_BUILDER_HPP__

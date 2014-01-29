@@ -2,9 +2,8 @@
     #include <cstdio>
     #include <map>
     #include <string>
-    #include "Program.h"
-    extern daig::Program *program; /* the top level root node of our final AST */
-    extern std::map<std::string,std::string> *constDef;
+    #include "DaigBuilder.hpp"
+    extern daig::DaigBuilder *builder; /* the dag builder */
     extern int yylex();
     void yyerror(const char *s) { printf("ERROR: %s\n", s); }
 %}
@@ -58,9 +57,9 @@
 program : moc const_list node prog_def init_def safety_def {};
 
 moc : 
-  TMOCSYNC TSEMICOLON { program->moc.set_type("SYNC"); }
-| TMOCASYNC TSEMICOLON { program->moc.set_type("ASYNC"); }
-| TMOCPSYNC TSEMICOLON { program->moc.set_type("PARTIAL"); }
+  TMOCSYNC TSEMICOLON { builder->program.moc.set_type("SYNC"); }
+| TMOCASYNC TSEMICOLON { builder->program.moc.set_type("ASYNC"); }
+| TMOCPSYNC TSEMICOLON { builder->program.moc.set_type("PARTIAL"); }
 ;
 
 const_list : {}
@@ -69,7 +68,7 @@ const_list : {}
 ;
 
 constant : TCONST TLPAREN TIDENTIFIER TCOMMA TINTEGER TRPAREN TSEMICOLON {
-  (*constDef)[*$3] = *$5;
+  builder->constDef[*$3] = *$5;
   delete $3; delete $5;
 }
 ;

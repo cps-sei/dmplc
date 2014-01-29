@@ -15,7 +15,7 @@ int main(int argc, char **argv)
   parseOptions(argc,argv);
 
   //create the program
-  DaigBuilder db(fileName,debug);
+  daig::DaigBuilder db(fileName,debug);
   db.run();
 
   //all done

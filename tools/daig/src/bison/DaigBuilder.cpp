@@ -1,15 +1,8 @@
 #include <stdio.h>
 #include "DaigBuilder.hpp"
 
-//the complete program
-daig::Program *program;
-
-//constant definitions, these are stored in this map, and then
-//substituted during parsing
-std::map<std::string,std::string> *constDef;
-
-//debug flag
-bool daigDebug;
+//pointer to the builder to be passed to the parser and lexer
+daig::DaigBuilder *builder = NULL;
 
 //the parser routine
 extern int yyparse();
@@ -18,11 +11,9 @@ extern int yyparse();
 extern FILE *yyin;
 
 //run the parser
-void DaigBuilder::run()
+void daig::DaigBuilder::run()
 {
-  ::program = &(this->program);
-  ::constDef = &(this->constDef);
-  ::daigDebug = debug;
+  ::builder = this;
   ::yyin = fopen(fileName.c_str(),"r");
   ::yyparse();
   fclose(::yyin);
