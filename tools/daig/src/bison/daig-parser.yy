@@ -212,11 +212,12 @@ expr : lval { $$ = $1; printExpr($$); }
 | expr TDIV expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
 | expr TLAND expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
 | expr TLOR expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
-| TLNOT expr { $$ = new daig::CompExpr($1, *$2); delete $2; }
+| TLNOT expr { $$ = new daig::CompExpr($1, *$2); delete $2; printExpr($$); }
 | lval TLPAREN arg_list TRPAREN { 
   $3->push_front($1);
   $$ = new daig::CompExpr(TFUNCALL,*$3);
   delete $3;
+  printExpr($$);
 } 
 | TLPAREN expr TRPAREN { $$ = $2; }
 ;

@@ -120,9 +120,7 @@ namespace daig
     }
     Expr *clone() const { return new CompExpr(op,args); }
     std::string opToString() const;
-    std::string toString() const {
-      return "<COMPLEX-EXPR>";
-    }
+    std::string toString() const;
   };
 
   typedef std::vector <int> Expressions;
