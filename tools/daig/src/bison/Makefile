@@ -9,7 +9,7 @@ LIB=/home/chaki/stuff/madara/madara/libMADARA.so
 
 all : daig-bison
 
-daig-bison : $(SRC)
+daig-bison : $(SRC) $(DAIG)
 	g++ -o daig-bison $(INC) $(SRC) $(DAIG) $(LIB)
 
 daig-scanner.cpp : daig-scanner.ll
