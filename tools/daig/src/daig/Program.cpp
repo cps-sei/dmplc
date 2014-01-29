@@ -1,4 +1,5 @@
 #include <iostream>
+#include <boost/foreach.hpp>
 #include "Node.h"
 #include "Program.h"
 
@@ -8,7 +9,11 @@ daig::Program::print (unsigned int indent)
   std::string spacer (indent, ' ');
 
   std::cout << spacer << "Program::moc: " << moc.to_string_type () << "\n";
-  std::cout << spacer << "Program::processes: " << processes << "\n";
+
+  std::cout << spacer << "Program::processes: " << processes.size() << "\n";
+  BOOST_FOREACH(const Process &p,processes)
+    std::cout << '\t' << p.getNode() << '(' << p.getId() << ")\n";
+
   std::cout << spacer << "Program::variables:\n";
 
   for (daig::Variables::iterator i = variables.begin ();
