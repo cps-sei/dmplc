@@ -1,8 +1,9 @@
 %{
 #include <string>
 #include <map>
-#include "daig-parser.hpp"
+#include "Expression.h"
 #include "DaigBuilder.hpp"
+#include "daig-parser.hpp"
 extern daig::DaigBuilder *builder; /* the dag builder */
 #define PRINT_TOKEN if(builder->debug) printf("%s\n",yytext)
 #define SAVE_TOKEN PRINT_TOKEN; yylval.string = new std::string(yytext, yyleng)
