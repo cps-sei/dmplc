@@ -2,6 +2,7 @@
 #include <string>
 #include <map>
 #include "Expression.h"
+#include "Stmt.h"
 #include "DaigBuilder.hpp"
 #include "daig-parser.hpp"
 extern daig::DaigBuilder *builder; /* the dag builder */

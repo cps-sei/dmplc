@@ -3,11 +3,14 @@
 #include <map>
 #include <string>
 #include "Expression.h"
+#include "Stmt.h"
 #include "DaigBuilder.hpp"
 extern daig::DaigBuilder *builder; /* the dag builder */
 extern int yylex();
 void yyerror(const char *s) { printf("ERROR: %s\n", s); }
-#define printExpr(_x) if(builder->debug) printf("==%s==\n",_x->toString().c_str())
+#define printExpr(_x) if(builder->debug) printf("==%s==\n",(*_x)->toString().c_str())
+#define MAKE_UN(_res,_o,_l) _res = new daig::Expr(new daig::CompExpr(_o,*_l)); delete _l; printExpr(_res)
+#define MAKE_BIN(_res,_o,_l,_r) _res = new daig::Expr(new daig::CompExpr(_o,*_l,*_r)); delete _l; delete _r; printExpr(_res)
 %}
 
 /* expect 2 shift reduce conflicts */
@@ -17,6 +20,8 @@ void yyerror(const char *s) { printf("ERROR: %s\n", s); }
 %union {
     daig::Expr *expr;
     daig::ExprList *exprlist;
+    daig::Stmt *stmt;
+    daig::StmtList *stmtList;
     std::string *string;
     int token;
 }
@@ -48,6 +53,8 @@ void yyerror(const char *s) { printf("ERROR: %s\n", s); }
 %type <token> public_var private_var var_decl
 %type <expr> expr lval
 %type <exprlist> indices arg_list
+/*%type <stmt> stmt
+%type <stmtList> stmt_list*/
 
 /* Operator precedence for mathematical operators */
 %left TPLUS TMINUS TMUL TDIV 
@@ -141,13 +148,13 @@ var_decl_list : {}
 | var_decl_list var_decl TSEMICOLON {}
 ;
 
-stmt_list : stmt {}
-| stmt_list stmt {}
+stmt_list : stmt { /* $$ = new daig::StmtList(); $$->push_back($1); */ }
+| stmt_list stmt { /* $$ = $1; $$->push_back($2); */ }
 ;
 
-stmt : TATOMIC stmt {}
-| TPRIVATE stmt {}
-| TLBRACE stmt_list TRBRACE {}
+stmt : TATOMIC stmt { /* $$ = new daig::AtomicStmt($2); delete $2; */ }
+| TPRIVATE stmt { /* $$ = new daig::PrivateStmt($2); delete $2; */ }
+| TLBRACE stmt_list TRBRACE { /* $$ = new daig::BlockStmt(*$2); delete $2; */ }
 | lval TEQUAL expr TSEMICOLON {}
 | TIF TLPAREN expr TRPAREN stmt {}
 | TIF TLPAREN expr TRPAREN stmt TELSE stmt {}
@@ -166,19 +173,19 @@ stmt : TATOMIC stmt {}
 ;
 
 lval : TIDENTIFIER { 
-  $$ = new daig::LvalExpr(*$1);
+  $$ = new daig::Expr(new daig::LvalExpr(*$1));
   delete $1; printExpr($$);
 }
 | TIDENTIFIER TDOT TIDENTIFIER {
-  $$ = new daig::LvalExpr(*$1,*$3);
+  $$ = new daig::Expr(new daig::LvalExpr(*$1,*$3));
   delete $1; delete $3; printExpr($$);
 }
 | TIDENTIFIER indices {
-  $$ = new daig::LvalExpr(*$1,*$2);
+  $$ = new daig::Expr(new daig::LvalExpr(*$1,*$2));
   delete $1; delete $2; printExpr($$);
 }
 | TIDENTIFIER TDOT TIDENTIFIER indices {
-  $$ = new daig::LvalExpr(*$1,*$3,*$4);
+  $$ = new daig::Expr(new daig::LvalExpr(*$1,*$3,*$4));
   delete $1; delete $3; delete $4; printExpr($$);
 }
 ;
@@ -197,46 +204,48 @@ for_update : {}
 ;
 
 expr : lval { $$ = $1; printExpr($$); }
-| TINTEGER { $$ = new daig::IntExpr(atoi($1->c_str())); delete $1; printExpr($$); }
-| TMINUS expr { $$ = new daig::CompExpr($1, *$2); delete $2; printExpr($$); }
-| TPLUS expr { $$ = new daig::CompExpr($1, *$2); delete $2; printExpr($$); }
-| expr TCEQ expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
-| expr TCNE expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
-| expr TCLT expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
-| expr TCLE expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
-| expr TCGT expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
-| expr TCGE expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
-| expr TPLUS expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
-| expr TMINUS expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
-| expr TMUL expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
-| expr TDIV expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
-| expr TLAND expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
-| expr TLOR expr { $$ = new daig::CompExpr($2,*$1,*$3); delete $1; delete $3; }
-| TLNOT expr { $$ = new daig::CompExpr($1, *$2); delete $2; printExpr($$); }
+| TINTEGER { 
+  $$ = new daig::Expr(new daig::IntExpr(atoi($1->c_str()))); 
+  delete $1; printExpr($$); 
+}
+| TMINUS expr { MAKE_UN($$,$1,$2); }
+| TPLUS expr { MAKE_UN($$,$1,$2); }
+| expr TCEQ expr { MAKE_BIN($$,$2,$1,$3); }
+| expr TCNE expr { MAKE_BIN($$,$2,$1,$3); }
+| expr TCLT expr { MAKE_BIN($$,$2,$1,$3); }
+| expr TCLE expr { MAKE_BIN($$,$2,$1,$3); }
+| expr TCGT expr { MAKE_BIN($$,$2,$1,$3); }
+| expr TCGE expr { MAKE_BIN($$,$2,$1,$3); }
+| expr TPLUS expr { MAKE_BIN($$,$2,$1,$3); }
+| expr TMINUS expr { MAKE_BIN($$,$2,$1,$3); }
+| expr TMUL expr { MAKE_BIN($$,$2,$1,$3); }
+| expr TDIV expr { MAKE_BIN($$,$2,$1,$3); }
+| expr TLAND expr { MAKE_BIN($$,$2,$1,$3); }
+| expr TLOR expr { MAKE_BIN($$,$2,$1,$3); }
+| TLNOT expr { MAKE_UN($$,$1,$2); }
 | lval TLPAREN arg_list TRPAREN { 
-  $3->push_front($1);
-  $$ = new daig::CompExpr(TFUNCALL,*$3);
-  delete $3;
-  printExpr($$);
+  $3->push_front(*$1);
+  $$ = new daig::Expr(new daig::CompExpr(TFUNCALL,*$3));
+  delete $3; printExpr($$);
 } 
 | TLPAREN expr TRPAREN { $$ = $2; }
 ;
 
 indices : TLBRACKET expr TRBRACKET {
   $$ = new daig::ExprList();
-  $$->push_back($2);
+  $$->push_back(*$2);
 }
 | indices TLBRACKET expr TRBRACKET {
   $$ = $1;
-  $$->push_back($3);
+  $$->push_back(*$3);
 }
 ;
 
 arg_list : { $$ = new daig::ExprList(); }
-| expr { $$ = new daig::ExprList(); $$->push_back($1); }
+| expr { $$ = new daig::ExprList(); $$->push_back(*$1); }
 | arg_list TCOMMA expr {
   $$ = $1;
-  $$->push_back($3);
+  $$->push_back(*$3);
 }
 ;
 
