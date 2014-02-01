@@ -42,7 +42,7 @@ void yyerror(const char *s) { printf("ERROR: %s\n", s); }
 %token <token> TLAND TLOR TLNOT
 %token <token> TLPAREN TRPAREN TLBRACE TRBRACE 
 %token <token> TLBRACKET TRBRACKET TCOMMA TDOT
-%token <token> TPLUS TMINUS TMUL TDIV TFUNCALL
+%token <token> TPLUS TMINUS TMUL TDIV
 
 /* Define the type of node our nonterminal symbols represent.
    The types refer to the %union declaration above. Ex: when
@@ -226,9 +226,8 @@ expr : lval { $$ = new daig::Expr($1); printExpr(*$$); }
 | expr TLOR expr { MAKE_BIN($$,$2,$1,$3); }
 | TLNOT expr { MAKE_UN($$,$1,$2); }
 | lval TLPAREN arg_list TRPAREN { 
-  $3->push_front(*$1);
-  $$ = new daig::Expr(new daig::CompExpr(TFUNCALL,*$3));
-  delete $3; printExpr($$);
+  $$ = new daig::Expr(new daig::CallExpr(daig::Expr($1),*$3));
+  delete $3; printExpr(*$$);
 } 
 | TLPAREN expr TRPAREN { $$ = $2; }
 ;

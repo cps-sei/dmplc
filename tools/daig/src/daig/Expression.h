@@ -93,6 +93,28 @@ namespace daig
     std::string toString() const;
   };
 
+  //an function call expression
+  class CallExpr : public Expression
+  {
+  public:
+    Expr func;
+    ExprList args;
+
+    CallExpr(const Expr &f,const ExprList &a) : func(f),args(a) {}
+    std::string toString() const {
+      std::string res = func->toString() + "(";
+
+      size_t count = 0;
+      BOOST_FOREACH(const Expr &a,args) {
+        if(count) res = res + ",";
+        res = res + a->toString();
+        ++count;
+      }
+
+      return res + ")";
+    }
+  };
+
   typedef std::vector <int> Expressions;
 }
 

@@ -30,17 +30,6 @@ std::string daig::CompExpr::toString() const
 {
   assert(!args.empty());
 
-  if(op == TFUNCALL) {
-    ExprList::const_iterator it = args.begin();
-    std::string res = (*it)->toString() + "(";
-    ++it;
-    if(it == args.end()) return res + ")";
-    res = res + (*it)->toString();
-    for(++it;it != args.end();++it)
-      res = res + "," + (*it)->toString();
-    return res + ")";
-  }
-
   if(args.size() == 1) {
     ExprList::const_iterator it = args.begin();
     return opToString() + (*it)->toString();
