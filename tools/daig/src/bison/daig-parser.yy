@@ -8,9 +8,9 @@
 extern daig::DaigBuilder *builder; /* the dag builder */
 extern int yylex();
 void yyerror(const char *s) { printf("ERROR: %s\n", s); }
-#define printExpr(_x) if(builder->debug) printf("==%s==\n",(*_x)->toString().c_str())
-#define MAKE_UN(_res,_o,_l) _res = new daig::Expr(new daig::CompExpr(_o,*_l)); delete _l; printExpr(_res)
-#define MAKE_BIN(_res,_o,_l,_r) _res = new daig::Expr(new daig::CompExpr(_o,*_l,*_r)); delete _l; delete _r; printExpr(_res)
+#define printExpr(_x) if(builder->debug) printf("==%s==\n",(_x)->toString().c_str())
+#define MAKE_UN(_res,_o,_l) _res = new daig::Expr(new daig::CompExpr(_o,*_l)); delete _l; printExpr(*_res)
+#define MAKE_BIN(_res,_o,_l,_r) _res = new daig::Expr(new daig::CompExpr(_o,*_l,*_r)); delete _l; delete _r; printExpr(*_res)
 %}
 
 /* expect 2 shift reduce conflicts */
@@ -18,6 +18,7 @@ void yyerror(const char *s) { printf("ERROR: %s\n", s); }
 
 /* Represents the many different ways we can access our data */
 %union {
+    daig::LvalExpr *lvalExpr;
     daig::Expr *expr;
     daig::ExprList *exprlist;
     daig::Stmt *stmt;
@@ -51,7 +52,8 @@ void yyerror(const char *s) { printf("ERROR: %s\n", s); }
 %type <token> program moc const_list constant node node_body
 %type <token> node_body_elem_list node_body_elem
 %type <token> public_var private_var var_decl
-%type <expr> expr lval
+%type <lvalExpr> lval
+%type <expr> expr
 %type <exprlist> indices arg_list
 /*%type <stmt> stmt
 %type <stmtList> stmt_list*/
@@ -173,19 +175,19 @@ stmt : TATOMIC stmt { /* $$ = new daig::AtomicStmt($2); delete $2; */ }
 ;
 
 lval : TIDENTIFIER { 
-  $$ = new daig::Expr(new daig::LvalExpr(*$1));
+  $$ = new daig::LvalExpr(*$1);
   delete $1; printExpr($$);
 }
 | TIDENTIFIER TDOT TIDENTIFIER {
-  $$ = new daig::Expr(new daig::LvalExpr(*$1,*$3));
+  $$ = new daig::LvalExpr(*$1,*$3);
   delete $1; delete $3; printExpr($$);
 }
 | TIDENTIFIER indices {
-  $$ = new daig::Expr(new daig::LvalExpr(*$1,*$2));
+  $$ = new daig::LvalExpr(*$1,*$2);
   delete $1; delete $2; printExpr($$);
 }
 | TIDENTIFIER TDOT TIDENTIFIER indices {
-  $$ = new daig::Expr(new daig::LvalExpr(*$1,*$3,*$4));
+  $$ = new daig::LvalExpr(*$1,*$3,*$4);
   delete $1; delete $3; delete $4; printExpr($$);
 }
 ;
@@ -203,10 +205,10 @@ for_update : {}
 | lval TEQUAL expr {}
 ;
 
-expr : lval { $$ = $1; printExpr($$); }
+expr : lval { $$ = new daig::Expr($1); printExpr(*$$); }
 | TINTEGER { 
   $$ = new daig::Expr(new daig::IntExpr(atoi($1->c_str()))); 
-  delete $1; printExpr($$); 
+  delete $1; printExpr(*$$); 
 }
 | TMINUS expr { MAKE_UN($$,$1,$2); }
 | TPLUS expr { MAKE_UN($$,$1,$2); }
