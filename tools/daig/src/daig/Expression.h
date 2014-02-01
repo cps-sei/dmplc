@@ -67,8 +67,8 @@ namespace daig
       : var(v), node(n), indices(i) {}
     std::string toString() const {
       std::string res = var;
-      if(!node.empty()) res = res + "." + node;
-      BOOST_FOREACH(const Expr &ep,indices) res = res + "[" + ep->toString() + "]";
+      if(!node.empty()) res += "." + node;
+      BOOST_FOREACH(const Expr &ep,indices) res += "[" + ep->toString() + "]";
       return res;
     }
   };
@@ -106,8 +106,8 @@ namespace daig
 
       size_t count = 0;
       BOOST_FOREACH(const Expr &a,args) {
-        if(count) res = res + ",";
-        res = res + a->toString();
+        if(count) res += ",";
+        res += a->toString();
         ++count;
       }
 

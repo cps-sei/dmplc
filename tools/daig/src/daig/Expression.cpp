@@ -39,7 +39,7 @@ std::string daig::CompExpr::toString() const
     ExprList::const_iterator it = args.begin();
     std::string res = (*it)->toString();
     for(++it;it != args.end();++it)
-      res = res + opToString() + (*it)->toString();
+      res += opToString() + (*it)->toString();
     return res;
   }
 
