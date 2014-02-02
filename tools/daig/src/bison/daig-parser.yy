@@ -128,12 +128,12 @@ dimension : TINTEGER {}
 | TNODENUM {}
 ;
 
-type : base_type {}
-| TSIGNED base_type {}
-| TUNSIGNED base_type {}
+type : simp_type {}
+| TSIGNED simp_type {}
+| TUNSIGNED simp_type {}
 ;
 
-base_type : TBOOL {}
+simp_type : TBOOL {}
 | TINT {}
 | TVOID {}
 | TCHAR {}
