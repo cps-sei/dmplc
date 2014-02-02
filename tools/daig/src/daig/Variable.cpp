@@ -14,8 +14,8 @@ daig::Variable::print (unsigned int indent)
   if (this->classifiers & CONST_VAR)
     std::cout << "CONST ";
 
-  if (this->scope == PRIVATE)
-    std::cout << "PRIVATE ";
+  if (this->scope == LOCAL)
+    std::cout << "LOCAL ";
 
   else
     std::cout << "GLOBAL ";

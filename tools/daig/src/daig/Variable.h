@@ -34,7 +34,7 @@ namespace daig
 
     enum Scopes
     {
-      PRIVATE,
+      LOCAL,
       GLOBAL
     };
 
