@@ -1,5 +1,5 @@
-#ifndef _DAIG_STMT_H_
-#define _DAIG_STMT_H_
+#ifndef _DAIG_STATEMENT_H_
+#define _DAIG_STATEMENT_H_
 
 /**
  * @file Stmt.h
@@ -247,4 +247,4 @@ namespace daig
   };
 }
 
-#endif // _DAIG_STMT_H_
+#endif // _DAIG_STATEMENT_H_

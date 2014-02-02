@@ -3,7 +3,7 @@
 #include <map>
 #include <string>
 #include "Expression.h"
-#include "Stmt.h"
+#include "Statement.h"
 #include "DaigBuilder.hpp"
 extern daig::DaigBuilder *builder; /* the dag builder */
 extern int yylex();

@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <boost/foreach.hpp>
 #include "Expression.h"
-#include "Stmt.h"
+#include "Statement.h"
 #include "../bison/daig-parser.hpp"
 
 //convert an operator to string
