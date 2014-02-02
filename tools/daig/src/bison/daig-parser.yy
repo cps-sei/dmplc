@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include "Type.h"
+#include "Variable.h"
 #include "Expression.h"
 #include "Statement.h"
 #include "DaigBuilder.hpp"
@@ -22,6 +23,8 @@ void yyerror(const char *s) { printf("ERROR: %s\n", s); }
 /* Represents the many different ways we can access our data */
 %union {
     daig::Type *type;
+    daig::Variable *var;
+    std::list<daig::Variable> *varList;
     daig::LvalExpr *lvalExpr;
     daig::Expr *expr;
     daig::ExprList *exprlist;

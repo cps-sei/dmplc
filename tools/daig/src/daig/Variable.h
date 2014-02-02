@@ -10,44 +10,18 @@
 
 #include <map>
 #include <string>
-#include "Token.h"
+#include "Type.h"
 
 namespace daig
 {
   /**
     * @class Variable
-    * @brief A type of token that holds value
+    * @brief A variable
     */
-  class Variable : public Token
+  class Variable
   {
   public:
-    enum Types
-    {
-      ANY,
-      INTEGER,
-      INTEGER_ARRAY,
-      DOUBLE,
-      DOUBLE_ARRAY,
-      STRING,
-      FILE
-    };
-
-    enum Scopes
-    {
-      LOCAL,
-      GLOBAL
-    };
-
-    enum Classifiers
-    {
-      NONE = 0,
-      CONST_VAR = 1
-    };
-
-    /**
-     * Default constructor
-     **/
-    Variable ();
+    enum Scopes { LOCAL = 501,GLOBAL,TEMP };
 
     /**
      * Prints variable information
@@ -56,20 +30,6 @@ namespace daig
     void print (unsigned int indent);
     
     /**
-     * Sets the type according to a string
-     * @param  strtype  string type. Values can be
-     *                  INT, INTEGER, DOUBLE, DOUBLE_ARRAY,
-     *                  BOOL, STRING, FILE
-     **/
-    void set_type (const std::string & strtype);
-    
-    /**
-     * Returns type as a string
-     * @return   stringified type
-     **/
-    std::string to_str_type (void);
-
-    /**
      * The variable name
      **/
     std::string name;
@@ -77,22 +37,12 @@ namespace daig
     /**
      * The variable type
      **/
-    int type;
+    Type type;
     
     /**
      * The variable scope
      **/
     int scope;
-    
-    /**
-     * The variable classifiers (e.g. const)
-     **/
-    int classifiers;
-    
-    /**
-     * Description of the number of elements (useful for arrays)
-     **/
-    std::string elements;
   };
 
   typedef std::map <std::string, Variable> Variables;

@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <boost/foreach.hpp>
 #include "Type.h"
+#include "Variable.h"
 #include "Expression.h"
 #include "Statement.h"
 #include "../bison/daig-parser.hpp"
