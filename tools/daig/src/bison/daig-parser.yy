@@ -1,5 +1,6 @@
 %{
 #include <cstdio>
+#include <list>
 #include <map>
 #include <string>
 #include "Type.h"
@@ -26,6 +27,7 @@ void yyerror(const char *s) { printf("ERROR: %s\n", s); }
     daig::ExprList *exprlist;
     daig::Stmt *stmt;
     daig::StmtList *stmtList;
+    std::list<int> *intList;
     std::string *string;
     int token;
 }
@@ -54,13 +56,14 @@ void yyerror(const char *s) { printf("ERROR: %s\n", s); }
  */
 %type <token> program moc const_list constant node node_body
 %type <token> node_body_elem_list node_body_elem
-%type <token> public_var private_var var_decl
+%type <token> public_var private_var var_decl dimension
 %type <type> simp_type type
 %type <lvalExpr> lval
 %type <expr> expr
 %type <exprlist> indices arg_list for_test
 %type <stmt> stmt
 %type <stmtList> stmt_list for_init for_update
+%type <intList> dimensions
 
 /* Operator precedence for mathematical operators */
 %left TPLUS TMINUS TMUL TDIV 
@@ -123,12 +126,15 @@ var : TIDENTIFIER {}
 | TIDENTIFIER dimensions {}
 ;
 
-dimensions : TLBRACKET dimension TRBRACKET {}
-| dimensions TLBRACKET dimension TRBRACKET {}
+dimensions : TLBRACKET dimension TRBRACKET {
+  $$ = new std::list<int>(); $$->push_back($2);
+}
+| dimensions TLBRACKET dimension TRBRACKET { $$ = $1; $$->push_back($3); }
 ;
 
-dimension : TINTEGER {}
-| TNODENUM {}
+/* NODENUM is indicated by dimension -1 */
+dimension : TINTEGER { $$ = atoi($1->c_str()); delete $1; }
+| TNODENUM { $$ = -1; }
 ;
 
 type : simp_type { $$ = $1; }
