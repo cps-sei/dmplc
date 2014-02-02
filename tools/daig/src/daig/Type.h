@@ -35,10 +35,16 @@ namespace daig
   public:
     int qual; //qual = 0 means no qualifier
     int type; //the actual type -- void, char, int, bool etc.
-    std::list<size_t> dims; //dimensions -- empty means non-array type
+    std::list<int> dims; //dimensions -- empty means non-array type
+
+    //constructors
+    BaseType() : qual(0),type(-1) {}
     BaseType(int t) : qual(0),type(t) {}
+    BaseType(const std::list<int> &d) : qual(0),type(-1),dims(d) {}
+
     std::string toString() const;
     void setQual(int q) { qual = q; }
+    void setDims(const std::list<int> &d) { dims = d; }
   };
 }
 

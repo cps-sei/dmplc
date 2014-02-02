@@ -22,19 +22,18 @@ daig::Program::print (unsigned int indent)
     i->second.print (indent + 2);
   }
   
+  for (daig::Nodes::iterator i = nodes.begin (); i != nodes.end (); ++i)
+  {
+    std::cout << spacer << "Program:node [" << i->second.name << "]:\n";
+    i->second.print (indent + 2);
+  }
+  
   std::cout << spacer << "Program::functions:\n";
 
   for (daig::Functions::iterator i = functions.begin ();
        i != functions.end (); ++i)
   {
     i->second.print (indent + 2);
-  }
-  
-  for (unsigned i = 0;
-    i < nodes.size (); ++i)
-  {
-    std::cout << spacer << "Program:nodes[" << i << "]:\n";
-    nodes[i].print (indent + 2);
   }
 
 }

@@ -3,14 +3,22 @@
 #include <list>
 #include <map>
 #include <string>
+#include <boost/foreach.hpp>
 #include "Type.h"
 #include "Variable.h"
 #include "Expression.h"
 #include "Statement.h"
+#include "Node.h"
 #include "DaigBuilder.hpp"
+
 extern daig::DaigBuilder *builder; /* the dag builder */
+
 extern int yylex();
 void yyerror(const char *s) { printf("ERROR: %s\n", s); }
+
+/** the current node being parsed */
+daig::Node currNode;
+
 #define printExpr(_x) if(builder->debug) printf("EXPR: %s\n",(_x)->toString().c_str())
 #define MAKE_UN(_res,_o,_l) _res = new daig::Expr(new daig::CompExpr(_o,*_l)); delete _l; printExpr(*_res)
 #define MAKE_BIN(_res,_o,_l,_r) _res = new daig::Expr(new daig::CompExpr(_o,*_l,*_r)); delete _l; delete _r; printExpr(*_res)
@@ -59,7 +67,7 @@ void yyerror(const char *s) { printf("ERROR: %s\n", s); }
  */
 %type <token> program moc const_list constant node node_body
 %type <token> node_body_elem_list node_body_elem
-%type <token> public_var private_var var_decl dimension
+%type <token> global_var local_var dimension
 %type <type> simp_type type
 %type <lvalExpr> lval
 %type <expr> expr
@@ -67,6 +75,8 @@ void yyerror(const char *s) { printf("ERROR: %s\n", s); }
 %type <stmt> stmt
 %type <stmtList> stmt_list for_init for_update
 %type <intList> dimensions
+%type <var> var
+%type <varList> var_list var_decl
 
 /* Operator precedence for mathematical operators */
 %left TPLUS TMINUS TMUL TDIV 
@@ -98,7 +108,13 @@ constant : TCONST TLPAREN TIDENTIFIER TCOMMA TINTEGER TRPAREN TSEMICOLON {
 }
 ;
 
-node : TNODE TIDENTIFIER TLPAREN TIDENTIFIER TRPAREN TLBRACE node_body TRBRACE {};
+node : TNODE TIDENTIFIER TLPAREN TIDENTIFIER TRPAREN TLBRACE node_body TRBRACE {
+  currNode.name = *$2;
+  currNode.args.push_back(*$4);
+  builder->program.nodes[currNode.name] = currNode;
+  currNode.clear();
+  delete $2; delete $4;
+};
 
 node_body : node_body_elem_list {};
 
@@ -108,25 +124,44 @@ node_body_elem_list :
 ;
 
 node_body_elem :
-  public_var {}
-| private_var {}
+  global_var {}
+| local_var {}
 | procedure {}
 ;
 
-public_var : TGLOBAL TLPAREN var_decl TRPAREN TSEMICOLON {}
+global_var : TGLOBAL TLPAREN var_decl TRPAREN TSEMICOLON {
+  currNode.addGlobalVar(*$3); delete $3;
+}
 ;
 
-private_var : TLOCAL TLPAREN var_decl TRPAREN TSEMICOLON {}
+local_var : TLOCAL TLPAREN var_decl TRPAREN TSEMICOLON {
+  currNode.addLocalVar(*$3); delete $3;
+}
 ;
 
-var_decl : type var_list {};
+var_decl : type var_list {
+  $$ = new std::list<daig::Variable>();
+  BOOST_FOREACH(const daig::Variable &v,*$2) {
+    daig::BaseType *t = new daig::BaseType(**$1);
+    t->dims = v.type->dims;
+    daig::Variable newVar = v;
+    newVar.type = daig::Type(t);
+    $$->push_back(newVar);
+  }
+  delete $1; delete $2;
+};
 
-var_list : var {}
-| var_list TCOMMA var {}
+var_list : var {
+  $$ = new std::list<daig::Variable>(); $$->push_back(*$1); delete $1;
+}
+| var_list TCOMMA var { $$ = $1; $$->push_back(*$3); delete $3; }
 ;
 
-var : TIDENTIFIER {}
-| TIDENTIFIER dimensions {}
+var : TIDENTIFIER { $$ = new daig::Variable(*$1); delete $1; }
+| TIDENTIFIER dimensions {
+  $$ = new daig::Variable(*$1,*$2); 
+  delete $1; delete $2;
+}
 ;
 
 dimensions : TLBRACKET dimension TRBRACKET {

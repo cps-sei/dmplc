@@ -62,12 +62,7 @@ namespace daig
     Functions functions;
 
     /**
-     * Node definitions
-     **/
-    Node_Types node_types;
-
-    /**
-     * The actual nodes
+     * The node definitions
      **/
     Nodes nodes;
 

@@ -4,10 +4,18 @@
 void
 daig::Node::print (unsigned int level)
 {
-  std::cout << "Node::variables:\n";
+  std::cout << "Node::global_variables:\n";
 
-  for (daig::Variables::iterator i = variables.begin ();
-       i != variables.end (); ++i)
+  for (daig::Variables::iterator i = globVars.begin ();
+       i != globVars.end (); ++i)
+  {
+    i->second.print (2);
+  }
+
+  std::cout << "Node::local_variables:\n";
+
+  for (daig::Variables::iterator i = locVars.begin ();
+       i != locVars.end (); ++i)
   {
     i->second.print (2);
   }

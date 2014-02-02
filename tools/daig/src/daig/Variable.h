@@ -22,12 +22,6 @@ namespace daig
   {
   public:
     enum Scopes { LOCAL = 501,GLOBAL,TEMP };
-
-    /**
-     * Prints variable information
-     * @param  indent  spaces to indent printout
-     **/
-    void print (unsigned int indent);
     
     /**
      * The variable name
@@ -43,6 +37,17 @@ namespace daig
      * The variable scope
      **/
     int scope;
+
+    //constructors
+    Variable() {}
+    Variable(const std::string &n);
+    Variable(const std::string &n,const std::list<int> &d);
+
+    /**
+     * Prints variable information
+     * @param  indent  spaces to indent printout
+     **/
+    void print (unsigned int indent);
   };
 
   typedef std::map <std::string, Variable> Variables;
