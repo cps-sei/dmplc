@@ -8,6 +8,7 @@
 #include "Variable.h"
 #include "Expression.h"
 #include "Statement.h"
+#include "Function.h"
 #include "Node.h"
 #include "DaigBuilder.hpp"
 
@@ -76,7 +77,7 @@ daig::Node currNode;
 %type <stmtList> stmt_list for_init for_update
 %type <intList> dimensions
 %type <var> var
-%type <varList> var_list var_decl
+%type <varList> var_list var_decl param_list var_decl_list
 
 /* Operator precedence for mathematical operators */
 %left TPLUS TMINUS TMUL TDIV 
@@ -189,13 +190,32 @@ simp_type : TBOOL { $$ = new daig::Type(new daig::BaseType(TBOOL)); }
 procedure : type TIDENTIFIER TLPAREN param_list TRPAREN TLBRACE var_decl_list stmt_list TRBRACE {}
 ;
 
-param_list : {}
-| type TIDENTIFIER {}
-| param_list TCOMMA type TIDENTIFIER {}
+param_list : { $$ = new std::list<daig::Variable>(); }
+| type var {
+  $$ = new std::list<daig::Variable>();
+  daig::BaseType *t = new daig::BaseType(**$1);
+  t->dims = $2->type->dims;
+  daig::Variable newVar = *$2;
+  newVar.type = daig::Type(t);
+  $$->push_back(newVar);
+  delete $1; delete $2;
+}
+| param_list TCOMMA type var {
+  $$ = $1;
+  daig::BaseType *t = new daig::BaseType(**$3);
+  t->dims = $4->type->dims;
+  daig::Variable newVar = *$4;
+  newVar.type = daig::Type(t);
+  $$->push_back(newVar);
+  delete $3; delete $4;
+}
 ;
 
-var_decl_list : {}
-| var_decl_list var_decl TSEMICOLON {}
+var_decl_list : { $$ = new std::list<daig::Variable>(); }
+| var_decl_list var_decl TSEMICOLON {
+  $$ = $1; $$->insert($$->end(),$2->begin(),$2->end());
+  delete $2;
+}
 ;
 
 stmt_list : stmt { $$ = new daig::StmtList(); $$->push_back(*$1); delete $1; }
