@@ -1,5 +1,4 @@
-DAIG=../daig/Atomic.cpp ../daig/Expression.cpp ../daig/For_All_Higher.cpp \
-../daig/For_All_Lower.cpp ../daig/For_All_Other.cpp ../daig/Function.cpp \
+DAIG=../daig/Expression.cpp ../daig/Function.cpp \
 ../daig/Model_Of_Computation.cpp ../daig/Node.cpp ../daig/Program.cpp \
 ../daig/Token.cpp ../daig/Variable.cpp ../daig/Statement.cpp ../daig/Type.cpp
 DAIG_HDRS=$(patsubst %.cpp,%.h,$(DAIG))
