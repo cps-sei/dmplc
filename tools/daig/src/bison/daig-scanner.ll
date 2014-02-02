@@ -1,6 +1,7 @@
 %{
 #include <string>
 #include <map>
+#include "Type.h"
 #include "Expression.h"
 #include "Statement.h"
 #include "DaigBuilder.hpp"

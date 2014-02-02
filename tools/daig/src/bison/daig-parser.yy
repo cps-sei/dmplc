@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <map>
 #include <string>
+#include "Type.h"
 #include "Expression.h"
 #include "Statement.h"
 #include "DaigBuilder.hpp"
@@ -19,6 +20,7 @@ void yyerror(const char *s) { printf("ERROR: %s\n", s); }
 
 /* Represents the many different ways we can access our data */
 %union {
+    daig::Type *type;
     daig::LvalExpr *lvalExpr;
     daig::Expr *expr;
     daig::ExprList *exprlist;
@@ -53,6 +55,7 @@ void yyerror(const char *s) { printf("ERROR: %s\n", s); }
 %type <token> program moc const_list constant node node_body
 %type <token> node_body_elem_list node_body_elem
 %type <token> public_var private_var var_decl
+%type <type> simp_type type
 %type <lvalExpr> lval
 %type <expr> expr
 %type <exprlist> indices arg_list for_test
@@ -128,15 +131,15 @@ dimension : TINTEGER {}
 | TNODENUM {}
 ;
 
-type : simp_type {}
-| TSIGNED simp_type {}
-| TUNSIGNED simp_type {}
+type : simp_type { $$ = $1; }
+| TSIGNED simp_type { $$ = $2; (*$$)->setQual(TSIGNED); }
+| TUNSIGNED simp_type { $$ = $2; (*$$)->setQual(TUNSIGNED); }
 ;
 
-simp_type : TBOOL {}
-| TINT {}
-| TVOID {}
-| TCHAR {}
+simp_type : TBOOL { $$ = new daig::Type(new daig::BaseType(TBOOL)); }
+| TINT { $$ = new daig::Type(new daig::BaseType(TINT)); }
+| TVOID { $$ = new daig::Type(new daig::BaseType(TVOID)); }
+| TCHAR { $$ = new daig::Type(new daig::BaseType(TCHAR)); }
 ;
 
 procedure : type TIDENTIFIER TLPAREN param_list TRPAREN TLBRACE var_decl_list stmt_list TRBRACE {}

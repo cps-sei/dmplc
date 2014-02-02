@@ -28,21 +28,17 @@ namespace daig
 
   /**
     * @class BaseType
-    * @brief An abstract base class
+    * @brief A base type
     */
   class BaseType
   {
   public:
-    virtual std::string toString() const = 0;
-  };
-
-  //a simple type
-  class SimpType : public BaseType
-  {
-  public:
-    int data;
-    SimpType(int d) : data(d) {}
+    int qual; //qual = 0 means no qualifier
+    int type; //the actual type -- void, char, int, bool etc.
+    std::list<size_t> dims; //dimensions -- empty means non-array type
+    BaseType(int t) : qual(0),type(t) {}
     std::string toString() const;
+    void setQual(int q) { qual = q; }
   };
 }
 
