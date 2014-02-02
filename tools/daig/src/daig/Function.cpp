@@ -12,18 +12,17 @@ daig::Function::print (unsigned int indent)
   std::cout << this->name << ":\n";
   
   std::cout << spacer_2;
-  std::cout << "args:";
+  std::cout << "parameters:";
 
-  for (unsigned int i = 0; i < args.size (); ++i)
-  {
-    std::cout << args[i]->to_string ();
+  for (daig::Variables::iterator i = params.begin (); i != params.end (); ++i)
+    i->second.print (2);
 
-    if (i != args.size () - 1)
-      std::cout << ", ";
-  }
-
-  std::cout << "\n";
   std::cout << spacer_2;
+  std::cout << "temp vars:";
 
-  std::cout << "body:\n" << this->body.to_string () << "\n";
+  for (daig::Variables::iterator i = temps.begin (); i != params.end (); ++i)
+    i->second.print (2);
+
+  std::cout << spacer_2;
+  std::cout << "body:\n" << body->toString () << "\n";
 }

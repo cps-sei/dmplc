@@ -1,6 +1,6 @@
 DAIG=../daig/Expression.cpp ../daig/Function.cpp \
 ../daig/Model_Of_Computation.cpp ../daig/Node.cpp ../daig/Program.cpp \
-../daig/Token.cpp ../daig/Variable.cpp ../daig/Statement.cpp ../daig/Type.cpp
+../daig/Variable.cpp ../daig/Statement.cpp ../daig/Type.cpp
 DAIG_HDRS=$(patsubst %.cpp,%.h,$(DAIG))
 SRC=daig-bison.cpp daig-scanner.cpp daig-parser.cpp DaigBuilder.cpp
 INC=-I/home/chaki/stuff/madara/ace/ACE_wrappers \

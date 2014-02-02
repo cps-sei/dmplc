@@ -9,10 +9,10 @@
  **/
 
 #include <vector>
-#include "Token.h"
-
 #include <map>
 #include <string>
+#include "Variable.h"
+#include "Statement.h"
 
 namespace daig
 {
@@ -23,27 +23,30 @@ namespace daig
   class Function
   {
   public:
-    
-    /**
-     * Prints function information
-     * @param  indent  spaces to indent printout
-     **/
-    void print (unsigned int indent);
-
     /**
      * The name of the function
      **/
     std::string name;
 
     /**
-     * The function arguments
+     * The function parameters
      **/
-    Tokens args;
+    Variables params;
     
+    ///function local variables -- we call them temporary variables
+    ///since their scope is only the function body
+    Variables temps;
+
     /**
      * The function body
      **/
-    Token body;
+    Stmt body;
+    
+    /**
+     * Prints function information
+     * @param  indent  spaces to indent printout
+     **/
+    void print (unsigned int indent);
   };
 
   typedef std::map <std::string, Function> Functions;
