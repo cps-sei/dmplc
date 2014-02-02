@@ -8,9 +8,10 @@
 extern daig::DaigBuilder *builder; /* the dag builder */
 extern int yylex();
 void yyerror(const char *s) { printf("ERROR: %s\n", s); }
-#define printExpr(_x) if(builder->debug) printf("==%s==\n",(_x)->toString().c_str())
+#define printExpr(_x) if(builder->debug) printf("EXPR: %s\n",(_x)->toString().c_str())
 #define MAKE_UN(_res,_o,_l) _res = new daig::Expr(new daig::CompExpr(_o,*_l)); delete _l; printExpr(*_res)
 #define MAKE_BIN(_res,_o,_l,_r) _res = new daig::Expr(new daig::CompExpr(_o,*_l,*_r)); delete _l; delete _r; printExpr(*_res)
+#define printStmt(_x) if(builder->debug) printf("STMT: %s\n",(_x)->toString().c_str())
 %}
 
 /* expect 2 shift reduce conflicts */
@@ -54,9 +55,9 @@ void yyerror(const char *s) { printf("ERROR: %s\n", s); }
 %type <token> public_var private_var var_decl
 %type <lvalExpr> lval
 %type <expr> expr
-%type <exprlist> indices arg_list
-/*%type <stmt> stmt
-%type <stmtList> stmt_list*/
+%type <exprlist> indices arg_list for_test
+%type <stmt> stmt
+%type <stmtList> stmt_list for_init for_update
 
 /* Operator precedence for mathematical operators */
 %left TPLUS TMINUS TMUL TDIV 
@@ -150,28 +151,61 @@ var_decl_list : {}
 | var_decl_list var_decl TSEMICOLON {}
 ;
 
-stmt_list : stmt { /* $$ = new daig::StmtList(); $$->push_back($1); */ }
-| stmt_list stmt { /* $$ = $1; $$->push_back($2); */ }
+stmt_list : stmt { $$ = new daig::StmtList(); $$->push_back(*$1); delete $1; }
+| stmt_list stmt { $$ = $1; $$->push_back(*$2); delete $2; }
 ;
 
-stmt : TATOMIC stmt { /* $$ = new daig::AtomicStmt($2); delete $2; */ }
-| TPRIVATE stmt { /* $$ = new daig::PrivateStmt($2); delete $2; */ }
-| TLBRACE stmt_list TRBRACE { /* $$ = new daig::BlockStmt(*$2); delete $2; */ }
-| lval TEQUAL expr TSEMICOLON {}
-| TIF TLPAREN expr TRPAREN stmt {}
-| TIF TLPAREN expr TRPAREN stmt TELSE stmt {}
-| TWHILE TLPAREN expr TRPAREN stmt {}
-| TFOR TLPAREN for_init TSEMICOLON for_test TSEMICOLON for_update TRPAREN stmt {}
-| TBREAK TSEMICOLON {}
-| TCONTINUE TSEMICOLON {}
-| TRETURN expr TSEMICOLON {}
-| TRETURN TSEMICOLON {}
-| TIDENTIFIER TLPAREN arg_list TRPAREN TSEMICOLON {}
-| TFAN TLPAREN TIDENTIFIER TRPAREN stmt {}
-| TFADNP TLPAREN TIDENTIFIER TCOMMA TIDENTIFIER TRPAREN stmt {}
-| TFAO TLPAREN TIDENTIFIER TRPAREN stmt {}
-| TFAOL TLPAREN TIDENTIFIER TRPAREN stmt {}
-| TFAOH TLPAREN TIDENTIFIER TRPAREN stmt {}
+stmt : TATOMIC stmt { $$ = new daig::Stmt(new daig::AtomicStmt(*$2)); delete $2; }
+| TPRIVATE stmt { $$ = new daig::Stmt(new daig::PrivateStmt(*$2)); delete $2; }
+| TLBRACE stmt_list TRBRACE { $$ = new daig::Stmt(new daig::BlockStmt(*$2)); delete $2; }
+| lval TEQUAL expr TSEMICOLON { 
+  $$ = new daig::Stmt(new daig::AsgnStmt(*$1,*$3));
+  delete $1; delete $3;
+}
+| TIF TLPAREN expr TRPAREN stmt {
+  $$ = new daig::Stmt(new daig::ITStmt(*$3,*$5));
+  delete $3; delete $5; printStmt(*$$);
+}
+| TIF TLPAREN expr TRPAREN stmt TELSE stmt {
+  $$ = new daig::Stmt(new daig::ITEStmt(*$3,*$5,*$7));
+  delete $3; delete $5; delete $7; printStmt(*$$);
+}
+| TWHILE TLPAREN expr TRPAREN stmt {
+  $$ = new daig::Stmt(new daig::WhileStmt(*$3,*$5));
+  delete $3; delete $5;
+}
+| TFOR TLPAREN for_init TSEMICOLON for_test TSEMICOLON for_update TRPAREN stmt {
+  $$ = new daig::Stmt(new daig::ForStmt(*$3,*$5,*$7,*$9));
+  delete $3; delete $5; delete $7; delete $9;
+}
+| TBREAK TSEMICOLON { $$ = new daig::Stmt(new daig::BreakStmt()); }
+| TCONTINUE TSEMICOLON { $$ = new daig::Stmt(new daig::ContStmt()); }
+| TRETURN expr TSEMICOLON { $$ = new daig::Stmt(new daig::RetStmt(*$2)); delete $2; }
+| TRETURN TSEMICOLON { $$ = new daig::Stmt(new daig::RetVoidStmt()); }
+| lval TLPAREN arg_list TRPAREN TSEMICOLON {
+  $$ = new daig::Stmt(new daig::CallStmt(daig::Expr($1), *$3));
+  delete $3;
+}
+| TFAN TLPAREN TIDENTIFIER TRPAREN stmt { 
+  $$ = new daig::Stmt(new daig::FANStmt(*$3,*$5));
+  delete $3; delete $5;
+}
+| TFADNP TLPAREN TIDENTIFIER TCOMMA TIDENTIFIER TRPAREN stmt {
+  $$ = new daig::Stmt(new daig::FADNPStmt(*$3,*$5,*$7));
+  delete $3; delete $5; delete $7;
+}
+| TFAO TLPAREN TIDENTIFIER TRPAREN stmt {
+  $$ = new daig::Stmt(new daig::FAOStmt(*$3,*$5));
+  delete $3; delete $5;
+}
+| TFAOL TLPAREN TIDENTIFIER TRPAREN stmt {
+  $$ = new daig::Stmt(new daig::FAOLStmt(*$3,*$5));
+  delete $3; delete $5;
+}
+| TFAOH TLPAREN TIDENTIFIER TRPAREN stmt {
+  $$ = new daig::Stmt(new daig::FAOHStmt(*$3,*$5));
+  delete $3; delete $5;
+}
 ;
 
 lval : TIDENTIFIER { 
@@ -193,16 +227,28 @@ lval : TIDENTIFIER {
 ;
 
 for_init : {}
-| lval TEQUAL expr {}
-| for_init TCOMMA TIDENTIFIER TEQUAL expr {}
+| lval TEQUAL expr {
+  $$ = new daig::StmtList();
+  $$->push_back(daig::Stmt(new daig::AsgnStmt(*$1,*$3)));
+  delete $1; delete $3;
+}
+| for_init TCOMMA lval TEQUAL expr {
+  $$ = $1;
+  $$->push_back(daig::Stmt(new daig::AsgnStmt(*$3,*$5)));
+  delete $3; delete $5;
+}
 ;
 
-for_test : {}
-| expr {}
+for_test : { $$ = new daig::ExprList(); }
+| expr { $$ = new daig::ExprList(); $$->push_back(*$1); delete $1; }
 ;
 
-for_update : {}
-| lval TEQUAL expr {}
+for_update : {  $$ = new daig::StmtList(); }
+| lval TEQUAL expr {
+  $$ = new daig::StmtList();
+  $$->push_back(daig::Stmt(new daig::AsgnStmt(*$1,*$3)));
+  delete $1; delete $3;
+}
 ;
 
 expr : lval { $$ = new daig::Expr($1); printExpr(*$$); }
