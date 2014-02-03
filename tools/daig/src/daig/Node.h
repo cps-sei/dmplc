@@ -42,7 +42,7 @@ namespace daig
     /**
      * A map of function names to function definitions
      **/
-    Functions functions;
+    Functions funcs;
 
     ///constructors
     Node() {}
@@ -52,7 +52,7 @@ namespace daig
     {
       name.clear(); args.clear(); 
       globVars.clear(); locVars.clear();
-      functions.clear();
+      funcs.clear();
     }
 
     ///add a global variable
@@ -74,6 +74,9 @@ namespace daig
         locVars[v.name].scope = Variable::LOCAL;
       }
     }
+
+    ///add a function
+    void addFunction(const Function &f) { funcs[f.name] = f; }
 
     /**
      * Prints function information

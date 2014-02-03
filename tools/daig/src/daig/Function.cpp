@@ -20,9 +20,10 @@ daig::Function::print (unsigned int indent)
   std::cout << spacer_2;
   std::cout << "temp vars:";
 
-  for (daig::Variables::iterator i = temps.begin (); i != params.end (); ++i)
+  for (daig::Variables::iterator i = temps.begin (); i != temps.end (); ++i)
     i->second.print (2);
 
   std::cout << spacer_2;
-  std::cout << "body:\n" << body->toString () << "\n";
+  std::cout << "body:\n";
+  BOOST_FOREACH(const Stmt &st,body) std::cout << st->toString () << "\n";
 }

@@ -16,11 +16,8 @@ daig::Program::print (unsigned int indent)
 
   std::cout << spacer << "Program::variables:\n";
 
-  for (daig::Variables::iterator i = variables.begin ();
-       i != variables.end (); ++i)
-  {
+  for (daig::Variables::iterator i = variables.begin (); i != variables.end (); ++i)
     i->second.print (indent + 2);
-  }
   
   for (daig::Nodes::iterator i = nodes.begin (); i != nodes.end (); ++i)
   {
@@ -30,10 +27,6 @@ daig::Program::print (unsigned int indent)
   
   std::cout << spacer << "Program::functions:\n";
 
-  for (daig::Functions::iterator i = functions.begin ();
-       i != functions.end (); ++i)
-  {
+  for (daig::Functions::iterator i = funcs.begin (); i != funcs.end (); ++i)
     i->second.print (indent + 2);
-  }
-
 }

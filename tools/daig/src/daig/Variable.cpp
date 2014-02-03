@@ -18,8 +18,13 @@ daig::Variable::print (unsigned int indent)
 
   if (this->scope == LOCAL)
     std::cout << "LOCAL ";
-  else
+  else if (this->scope == GLOBAL)
     std::cout << "GLOBAL ";
+  else if (this->scope == PARAM)
+    std::cout << "PARAM ";
+  else if (this->scope == TEMP)
+    std::cout << "TEMP ";
+  else assert(0 && "ERROR : illegal variable scope");
 
   std::cout << this->name << "\n";
 }

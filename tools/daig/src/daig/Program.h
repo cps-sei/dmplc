@@ -59,7 +59,7 @@ namespace daig
     /**
      * A map of function names to function definitions
      **/
-    Functions functions;
+    Functions funcs;
 
     /**
      * The node definitions
@@ -68,6 +68,9 @@ namespace daig
 
     //the list of processes
     std::list<Process> processes;
+
+    ///add a function
+    void addFunction(const Function &f) { funcs[f.name] = f; }
   };
 }
 

@@ -21,7 +21,7 @@ namespace daig
   class Variable
   {
   public:
-    enum Scopes { LOCAL = 501,GLOBAL,TEMP };
+    enum Scopes { LOCAL = 501, GLOBAL, PARAM, TEMP };
     
     /**
      * The variable name

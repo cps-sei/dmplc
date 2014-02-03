@@ -40,7 +40,17 @@ namespace daig
     /**
      * The function body
      **/
-    Stmt body;
+    std::list<Stmt> body;
+
+    //constructors
+    Function() {}
+    Function(const std::string &n,const std::list<Variable> &p,
+             const std::list<Variable> &t,const std::list<Stmt> &b)
+      : name(n),body(b)
+    {
+      BOOST_FOREACH(const Variable &v,p) params[v.name] = v;
+      BOOST_FOREACH(const Variable &v,t) temps[v.name] = v;
+    }
     
     /**
      * Prints function information
