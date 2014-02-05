@@ -28,6 +28,9 @@ namespace daig
      **/
     std::string name;
 
+    ///the return type of the function
+    Type retType;
+
     /**
      * The function parameters
      **/
@@ -44,9 +47,9 @@ namespace daig
 
     //constructors
     Function() {}
-    Function(const std::string &n,const std::list<Variable> &p,
+    Function(const Type &rt,const std::string &n,const std::list<Variable> &p,
              const std::list<Variable> &t,const std::list<Stmt> &b)
-      : name(n),body(b)
+      : retType(rt),name(n),body(b)
     {
       BOOST_FOREACH(const Variable &v,p) params[v.name] = v;
       BOOST_FOREACH(const Variable &v,t) temps[v.name] = v;
@@ -56,7 +59,7 @@ namespace daig
      * Prints function information
      * @param  indent  spaces to indent printout
      **/
-    void print (unsigned int indent);
+    void print (std::ostream &os,unsigned int indent);
   };
 
   typedef std::map <std::string, Function> Functions;

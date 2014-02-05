@@ -1,4 +1,5 @@
 #include <iostream>
+#include <boost/foreach.hpp>
 #include "Variable.h"
 
 //constructor with name only -- assigns a default type and scope
@@ -10,22 +11,24 @@ daig::Variable::Variable(const std::string &n)
 daig::Variable::Variable(const std::string &n,const std::list<int> &d) 
   : name(n),type(daig::Type(new BaseType(d))),scope(0) {}
 
-//print with indentation to stdout
-void
-daig::Variable::print (unsigned int indent)
+//convert to string
+std::string daig::Variable::toString() const
 {
-  std::cout << std::string (indent, ' ');
+  std::string res = type->toString() + " " + name;
+  BOOST_FOREACH(int d,type->dims) {
+    char buf[128];
+    if(d == -1) snprintf(buf,128,"[#N]");
+    else snprintf(buf,128,"[%d]",d);
+    res += std::string(buf);
+  }
+  return res;
+}
 
-  if (this->scope == LOCAL)
-    std::cout << "LOCAL ";
-  else if (this->scope == GLOBAL)
-    std::cout << "GLOBAL ";
-  else if (this->scope == PARAM)
-    std::cout << "PARAM ";
-  else if (this->scope == TEMP)
-    std::cout << "TEMP ";
-  else assert(0 && "ERROR : illegal variable scope");
-
-  std::cout << this->name << "\n";
+//print with indentation
+void
+daig::Variable::print (std::ostream &os,unsigned int indent)
+{
+  std::string spacer(indent, ' ');
+  os << spacer << toString();
 }
 

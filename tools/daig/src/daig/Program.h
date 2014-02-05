@@ -40,7 +40,7 @@ namespace daig
      * Prints variable information
      * @param  indent  spaces to indent printout
      **/
-    void print (unsigned int indent);
+    void print (std::ostream &os,unsigned int indent);
     
     /**
      *
@@ -51,11 +51,10 @@ namespace daig
      **/
     Model_Of_Computation moc;
 
-    /**
-     * A map of variable names to variables
-     **/
-    Variables variables;
-    
+    //constant definitions
+    typedef std::map<std::string,std::string> ConstDef;
+    ConstDef constDef;
+
     /**
      * A map of function names to function definitions
      **/

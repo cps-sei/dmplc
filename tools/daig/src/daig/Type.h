@@ -45,6 +45,9 @@ namespace daig
     std::string toString() const;
     void setQual(int q) { qual = q; }
     void setDims(const std::list<int> &d) { dims = d; }
+
+    //print the type with appropriate indentation
+    void print (std::ostream &os,unsigned int indent);
   };
 }
 

@@ -1,3 +1,4 @@
+#include <assert.h>
 #include "Model_Of_Computation.h"
 #include "madara/utility/Utility.h"
 
@@ -23,16 +24,8 @@ daig::Model_Of_Computation::set_type (const std::string & str_type)
 std::string
   daig::Model_Of_Computation::to_string_type (void)
 {
-  std::string str_type;
-
-  if (type == SYNC)
-    str_type = "SYNC";
-  
-  else if (type == ASYNC)
-    str_type = "ASYNC";
-  
-  else if (type == PARTIAL)
-    str_type = "PARTIAL";
-
-  return str_type;
+  if (type == SYNC) return "MOC_SYNC";
+  else if (type == ASYNC) return "MOC_ASYNC";
+  else if (type == PARTIAL) return "MOC_PSYNC";
+  else assert(0 && "ERROR: illegal MOC type");
 }

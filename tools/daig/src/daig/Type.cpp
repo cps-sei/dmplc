@@ -23,3 +23,8 @@ std::string daig::BaseType::toString() const
 
   return res;
 }
+
+void daig::BaseType::print (std::ostream &os,unsigned int indent)
+{
+  os << std::string(' ',indent) << toString();
+}

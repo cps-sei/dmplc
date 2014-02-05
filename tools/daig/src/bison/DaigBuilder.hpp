@@ -13,7 +13,6 @@ namespace daig {
   {
   public:
     daig::Program program;
-    std::map<std::string,std::string> constDef;
   
     std::string fileName;
     bool debug;

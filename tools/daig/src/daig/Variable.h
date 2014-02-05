@@ -43,11 +43,14 @@ namespace daig
     Variable(const std::string &n);
     Variable(const std::string &n,const std::list<int> &d);
 
+    //convert to string
+    std::string toString() const;
+
     /**
      * Prints variable information
      * @param  indent  spaces to indent printout
      **/
-    void print (unsigned int indent);
+    void print (std::ostream &os,unsigned int indent);
   };
 
   typedef std::map <std::string, Variable> Variables;

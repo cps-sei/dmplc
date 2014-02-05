@@ -35,6 +35,7 @@ namespace daig
   {
   public:
     virtual std::string toString() const = 0;
+    virtual void print (std::ostream &os,unsigned int indent) const = 0;
   };
 
   //an atomic statement
@@ -44,7 +45,13 @@ namespace daig
     Stmt data;
     AtomicStmt(const Stmt &d) : data(d) {}
     std::string toString() const {
-      return "ATOMIC { " + data->toString() + " }";
+      return "ATOMIC " + data->toString();
+    }
+    void print (std::ostream &os,unsigned int indent) const
+    {
+      std::string spacer (indent, ' ');
+      os << spacer << "ATOMIC\n";
+      data->print(os,indent + 2);
     }
   };
 
@@ -55,7 +62,13 @@ namespace daig
     Stmt data;
     PrivateStmt(const Stmt &d) : data(d) {}
     std::string toString() const {
-      return "PRIVATE { " + data->toString() + " }";
+      return "PRIVATE " + data->toString();
+    }
+    void print (std::ostream &os,unsigned int indent) const
+    {
+      std::string spacer (indent, ' ');
+      os << spacer << "PRIVATE\n";
+      data->print(os,indent + 2);
     }
   };
 
@@ -71,6 +84,13 @@ namespace daig
       BOOST_FOREACH(const Stmt &st,args) res += st->toString();
       return res + " }";
     }
+    void print (std::ostream &os,unsigned int indent) const
+    {
+      std::string spacer (indent-2, ' ');
+      os << spacer << "{\n";
+      BOOST_FOREACH(const Stmt &st,args) st->print(os,indent);
+      os << spacer << "}\n";
+    }
   };
 
   //an assignment statement
@@ -81,7 +101,14 @@ namespace daig
     Expr rhs;
 
     AsgnStmt(const LvalExpr &l,const Expr &r) : lhs(l),rhs(r) {}
-    std::string toString() const { return lhs.toString() + " = " + rhs->toString() + ";"; }
+    std::string toString() const { 
+      return lhs.toString() + " = " + rhs->toString(); 
+    }
+    void print (std::ostream &os,unsigned int indent) const
+    {
+      std::string spacer (indent, ' ');
+      os << spacer << lhs.toString() << " = " << rhs->toString() << ";\n";
+    }
   };
 
   //an if-then statement
@@ -94,6 +121,12 @@ namespace daig
     ITStmt(const Expr &c,const Stmt &tb) : cond(c),tbranch(tb) {}
     std::string toString() const { 
       return "if(" + cond->toString() + ")" + tbranch->toString(); 
+    }
+    void print (std::ostream &os,unsigned int indent) const
+    {
+      std::string spacer (indent, ' ');
+      os << spacer << "if (" + cond->toString() + ")\n";
+      tbranch->print(os,indent+2); 
     }
   };
 
@@ -109,6 +142,14 @@ namespace daig
     std::string toString() const { 
       return "if(" + cond->toString() + ")" + tbranch->toString() + " else " +
         ebranch->toString(); 
+    }
+    void print (std::ostream &os,unsigned int indent) const
+    {
+      std::string spacer (indent, ' ');
+      os << spacer << "if (" + cond->toString() + ")\n";
+      tbranch->print(os,indent+2); 
+      os << spacer << "else\n";
+      ebranch->print(os,indent+2); 
     }
   };
 
@@ -129,6 +170,21 @@ namespace daig
       BOOST_FOREACH(const Stmt &s,update) res += s->toString();
       return res + ")" + body->toString(); 
     }
+    void print (std::ostream &os,unsigned int indent) const
+    {
+      std::string spacer (indent, ' ');
+      os << spacer << "for(";
+      size_t count = 0;
+      BOOST_FOREACH(const Stmt &s,init) {        
+        os << (count ? "," : "") << s->toString();
+        ++count;
+      }
+      os << ";";
+      BOOST_FOREACH(const Expr &e,test) os << e->toString() + ";";
+      BOOST_FOREACH(const Stmt &s,update) os << s->toString();
+      os << ")\n";
+      body->print(os,indent+2);      
+    }
   };
 
   //a while statement
@@ -142,6 +198,12 @@ namespace daig
     std::string toString() const { 
       return "while(" + cond->toString() + ")" + body->toString(); 
     }
+    void print (std::ostream &os,unsigned int indent) const
+    {
+      std::string spacer (indent, ' ');
+      os << spacer << "while(" << cond->toString() << ")\n";
+      body->toString();
+    }
   };
 
   //a break statement
@@ -149,6 +211,11 @@ namespace daig
   {
   public:
     std::string toString() const { return "break;"; }
+    void print (std::ostream &os,unsigned int indent) const
+    {
+      std::string spacer (indent, ' ');
+      os << spacer << "break;\n";
+    }
   };
 
   //a continue statement
@@ -156,6 +223,11 @@ namespace daig
   {
   public:
     std::string toString() const { return "continue;"; }
+    void print (std::ostream &os,unsigned int indent) const
+    {
+      std::string spacer (indent, ' ');
+      os << spacer << "continue;\n";
+    }
   };
 
   //a return statement
@@ -166,6 +238,11 @@ namespace daig
 
     RetStmt(const Expr &rv) : retVal(rv) {}
     std::string toString() const { return "return " + retVal->toString() + ";"; }
+    void print (std::ostream &os,unsigned int indent) const
+    {
+      std::string spacer (indent, ' ');
+      os << spacer << "return " << retVal->toString() << ";\n";
+    }
   };
 
   //a void return statement
@@ -173,6 +250,11 @@ namespace daig
   {
   public:
     std::string toString() const { return "return;"; }
+    void print (std::ostream &os,unsigned int indent) const
+    {
+      std::string spacer (indent, ' ');
+      os << spacer << "return;\n";
+    }
   };
 
   //a function call statement whose return value is discarded
@@ -182,7 +264,12 @@ namespace daig
     CallExpr data;
 
     CallStmt(const Expr &f,const ExprList &a) : data(f,a) {}
-    std::string toString() const { return data.toString(); } 
+    std::string toString() const { return data.toString(); }
+    void print (std::ostream &os,unsigned int indent) const
+    {
+      std::string spacer (indent, ' ');
+      os << spacer << data.toString() << ";\n";
+    }
   };
 
   //for-all-node statement
@@ -193,7 +280,13 @@ namespace daig
     Stmt data;
     FANStmt(const std::string &i,const Stmt &d) : id(i),data(d) {}
     std::string toString() const {
-      return "FOR_ALL_NODE (" + id + ") " + data->toString();
+      return "FORALL_NODE (" + id + ") " + data->toString();
+    }
+    void print (std::ostream &os,unsigned int indent) const
+    {
+      std::string spacer (indent, ' ');
+      os << spacer << "FORALL_NODE(" << id << ")\n";
+      data->print(os,indent+2);
     }
   };
 
@@ -206,7 +299,14 @@ namespace daig
     FADNPStmt(const std::string &i1,const std::string &i2,const Stmt &d) 
       : id1(i1),id2(i2),data(d) {}
     std::string toString() const {
-      return "FOR_ALL_DISTINCT_NODE_PAIR (" + id1 + "," + id2 + ") " + data->toString();
+      return "FORALL_DISTINCT_NODE_PAIR (" + id1 + "," + id2 + ") " + data->toString();
+    }
+    void print (std::ostream &os,unsigned int indent) const
+    {
+      std::string spacer (indent, ' ');
+      os << spacer << "FORALL_DISTINCT_NODE_PAIR(" 
+         << id1 << "," << id2 << ")\n";
+      data->print(os,indent+2);
     }
   };
 
@@ -218,7 +318,13 @@ namespace daig
     Stmt data;
     FAOStmt(const std::string &i,const Stmt &d) : id(i),data(d) {}
     std::string toString() const {
-      return "FOR_ALL_OTHER (" + id + ") " + data->toString();
+      return "FORALL_OTHER (" + id + ") " + data->toString();
+    }
+    void print (std::ostream &os,unsigned int indent) const
+    {
+      std::string spacer (indent, ' ');
+      os << spacer << "FORALL_OTHER(" << id << ")\n";
+      data->print(os,indent+2);
     }
   };
 
@@ -230,7 +336,13 @@ namespace daig
     Stmt data;
     FAOLStmt(const std::string &i,const Stmt &d) : id(i),data(d) {}
     std::string toString() const {
-      return "FOR_ALL_OTHER_LOWER (" + id + ") " + data->toString();
+      return "FORALL_OTHER_LOWER (" + id + ") " + data->toString();
+    }
+    void print (std::ostream &os,unsigned int indent) const
+    {
+      std::string spacer (indent, ' ');
+      os << spacer << "FORALL_OTHER_LOWER(" << id << ")\n";
+      data->print(os,indent+2);
     }
   };
 
@@ -242,7 +354,13 @@ namespace daig
     Stmt data;
     FAOHStmt(const std::string &i,const Stmt &d) : id(i),data(d) {}
     std::string toString() const {
-      return "FOR_ALL_OTHER_HIGHER (" + id + ") " + data->toString();
+      return "FORALL_OTHER_HIGHER (" + id + ") " + data->toString();
+    }
+    void print (std::ostream &os,unsigned int indent) const
+    {
+      std::string spacer (indent, ' ');
+      os << spacer << "FORALL_OTHER_HIGHER(" << id << ")\n";
+      data->print(os,indent+2);
     }
   };
 }

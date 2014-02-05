@@ -82,7 +82,7 @@ namespace daig
      * Prints function information
      * @param  indent  spaces to indent printout
      **/
-    void print (unsigned int indent);
+    void print (std::ostream &os,unsigned int indent);
   };
 
 
