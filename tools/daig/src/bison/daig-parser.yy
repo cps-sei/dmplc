@@ -383,21 +383,23 @@ node_instances : TIDENTIFIER TLPAREN TINTEGER TRPAREN {
 }
 ;
 
-init_def : TINIT TLBRACE var_decl_list stmt_list TRBRACE {
+init_def : TVOID TINIT TLPAREN TRPAREN TLBRACE var_decl_list stmt_list TRBRACE {
   /** set scope of temporary variables */
-  BOOST_FOREACH(daig::Variable &v,*$3) v.scope = daig::Variable::TEMP;
-  /** create and add function to the node */
-  builder->program.addFunction(daig::Function("INIT",std::list<daig::Variable>(),*$3,*$4));
-  delete $3; delete $4;
+  BOOST_FOREACH(daig::Variable &v,*$6) v.scope = daig::Variable::TEMP;
+  /** create and add function to the node -- make its return type void */
+  daig::Type rt(new daig::BaseType(TVOID));
+  builder->program.addFunction(daig::Function(rt,"INIT",std::list<daig::Variable>(),*$6,*$7));
+  delete $6; delete $7;
 }
 ;
 
-safety_def : TSAFETY TLBRACE var_decl_list stmt_list TRBRACE {
+safety_def : TVOID TSAFETY TLPAREN TRPAREN TLBRACE var_decl_list stmt_list TRBRACE {
   /** set scope of temporary variables */
-  BOOST_FOREACH(daig::Variable &v,*$3) v.scope = daig::Variable::TEMP;
-  /** create and add function to the node */
-  builder->program.addFunction(daig::Function("SAFETY",std::list<daig::Variable>(),*$3,*$4));
-  delete $3; delete $4;
+  BOOST_FOREACH(daig::Variable &v,*$6) v.scope = daig::Variable::TEMP;
+  /** create and add function to the node -- make its return type void */
+  daig::Type rt(new daig::BaseType(TVOID));
+  builder->program.addFunction(daig::Function(rt,"SAFETY",std::list<daig::Variable>(),*$6,*$7));
+  delete $6; delete $7;
 }
 ;
 %%

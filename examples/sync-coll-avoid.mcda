@@ -76,7 +76,7 @@ NODE uav (id)
 PROGRAM = uav (0) || uav (1);
 
 //initial state
-INIT 
+void INIT () 
 {
   ATOMIC {
     FORALL_NODE(id) {
@@ -95,7 +95,7 @@ INIT
 }
 
 //the safety property checked at the beginning of each round
-SAFETY
+void SAFETY ()
 {
   FORALL_DISTINCT_NODE_PAIR (id1,id2) {
     ASSERT(x.id1 != x.id2 || y.id1 != y.id2);
