@@ -104,7 +104,7 @@ const_list : {}
 ;
 
 constant : TCONST TLPAREN TIDENTIFIER TCOMMA TINTEGER TRPAREN TSEMICOLON {
-  builder->constDef[*$3] = *$5;
+  builder->program.constDef[*$3] = *$5;
   delete $3; delete $5;
 }
 ;

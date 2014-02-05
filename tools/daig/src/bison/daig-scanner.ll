@@ -50,8 +50,8 @@ extern "C" int yywrap() { }
 [a-zA-Z_][a-zA-Z0-9_]*  {
                           /** substitute constant definitions */
                           std::map<std::string,std::string>::const_iterator it = 
-                            builder->constDef.find(std::string(yytext));
-                          if(it == builder->constDef.end()) {
+                            builder->program.constDef.find(std::string(yytext));
+                          if(it == builder->program.constDef.end()) {
                             SAVE_TOKEN; return TIDENTIFIER;
                           }
                           yylval.string = new std::string(it->second);
