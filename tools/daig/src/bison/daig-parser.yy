@@ -192,8 +192,8 @@ procedure : type TIDENTIFIER TLPAREN param_list TRPAREN TLBRACE var_decl_list st
   BOOST_FOREACH(daig::Variable &v,*$4) v.scope = daig::Variable::PARAM;
   BOOST_FOREACH(daig::Variable &v,*$7) v.scope = daig::Variable::TEMP;
   /** create and add function to the node */
-  currNode.addFunction(daig::Function(*$2,*$4,*$7,*$8));
-  delete $2; delete $4; delete $7; delete $8;       
+  currNode.addFunction(daig::Function(*$1,*$2,*$4,*$7,*$8));
+  delete $1; delete $2; delete $4; delete $7; delete $8;       
 }
 ;
 
