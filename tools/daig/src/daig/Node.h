@@ -13,7 +13,6 @@
 #include <string>
 #include "Function.h"
 #include "Variable.h"
-#include "Token.h"
 
 namespace daig
 {
@@ -23,48 +22,74 @@ namespace daig
     */
   class Node
   {
-  public:
+  public:    
     /**
-     * Prints function information
-     * @param  indent  spaces to indent printout
+     * The node name
      **/
-    void print (unsigned int indent);
+    std::string name;
+
+    ///the node arguments
+    std::list<std::string> args;
 
     /**
-     * A map of variable names to variables
+     * list of global variables
      **/
-    Variables variables;
+    Variables globVars;
+
+    ///list of local variables
+    Variables locVars;
     
     /**
      * A map of function names to function definitions
      **/
-    Functions functions;
+    Functions funcs;
+
+    ///constructors
+    Node() {}
+
+    ///clear the node -- reset it to an empty node
+    void clear()
+    {
+      name.clear(); args.clear(); 
+      globVars.clear(); locVars.clear();
+      funcs.clear();
+    }
+
+    ///add a global variable
+    void addGlobalVar(const std::list<Variable> &vl)
+    {
+      BOOST_FOREACH(const Variable &v,vl) {
+        assert(globVars.count(v.name) == 0 && "ERROR: global variable redeclared!!");
+        globVars[v.name] = v;
+        globVars[v.name].scope = Variable::GLOBAL;
+      }
+    }
+
+    ///add a local variable
+    void addLocalVar(const std::list<Variable> &vl)
+    {
+      BOOST_FOREACH(const Variable &v,vl) {
+        assert(locVars.count(v.name) == 0 && "ERROR: loc variable redeclared!!");
+        locVars[v.name] = v;
+        locVars[v.name].scope = Variable::LOCAL;
+      }
+    }
+
+    ///add a function
+    void addFunction(const Function &f) { funcs[f.name] = f; }
 
     /**
-     * The arguments to the node
+     * Prints function information
+     * @param  indent  spaces to indent printout
      **/
-    Tokens args;
-    
-    /**
-     * The body of the node
-     **/
-    Token body;
-
-    /**
-     * The identifier of the Node type
-     **/
-    std::string type;
+    void print (std::ostream &os,unsigned int indent);
   };
 
-  /**
-   * A collection of nodes
-   **/
-  typedef std::vector <Node> Nodes;
 
   /**
    * A mapping of node types to node definitions
    **/
-  typedef std::map <std::string, Node> Node_Types;
+  typedef std::map <std::string, Node> Nodes;
 }
 
 #endif // _DAIG_NODE_H_

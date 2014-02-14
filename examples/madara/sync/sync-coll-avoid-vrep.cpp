@@ -351,9 +351,6 @@ MOVETO (Madara::Knowledge_Engine::Function_Arguments & args,
   return !arrived;
 }
 
-//uncomment the next line if you want to see a collision
-//#define COLLISION
-
 Madara::Knowledge_Record
 EXECUTE (Madara::Knowledge_Engine::Function_Arguments &,
          Madara::Knowledge_Engine::Variables & vars)

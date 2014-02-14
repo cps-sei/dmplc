@@ -1,26 +1,37 @@
+#include <string.h>
+#include <stdlib.h>
 #include <iostream>
-#include <map>
 #include <string>
-#include "Program.h"
+#include "DaigBuilder.hpp"
 
-//the complete program
-daig::Program *program;
+//options
+std::string fileName;
+bool debug;
 
-//constant definitions, these are stored in this map, and then
-//substituted during parsing
-std::map<std::string,std::string> constDef;
-
-extern int yyparse();
+void parseOptions(int argc, char **argv);
 
 int main(int argc, char **argv)
 {
-  //create the program
-  daig::Program _program;
-  program = &_program;
+  parseOptions(argc,argv);
 
-  //parse the program file
-  yyparse();
+  //create the program
+  daig::DaigBuilder db(fileName,debug);
+  db.run();
 
   //all done
   return 0;
+}
+
+void parseOptions(int argc, char **argv)
+{
+  for(int i = 1;i < argc;++i) {
+    if(!strcmp(argv[i],"--debug")) debug = true;
+    else fileName = std::string(argv[i]);
+  }
+
+  if(fileName.empty()) {
+    std::cerr << "ERROR: no filename ...\n";
+    std::cerr << "Usage : " << argv[0] << " filename [--debug]\n";
+    exit(1);
+  }
 }

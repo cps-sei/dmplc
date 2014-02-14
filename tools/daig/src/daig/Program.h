@@ -8,6 +8,7 @@
  * This file contains a class definition for the DAIG Program container.
  **/
 
+#include <list>
 #include <map>
 #include <string>
 #include "Model_Of_Computation.h"
@@ -17,6 +18,17 @@
 
 namespace daig
 {
+  //a process is a node name and a node id
+  class Process : public std::pair<std::string,int>
+  {
+  public:
+    Process(const std::string &n,const int id)
+      : std::pair<std::string,int>(n,id) {}
+
+    const std::string &getNode() const { return first; }
+    int getId() const { return second; }
+  };
+
   /**
     * @class Program
     * @brief Encapsulates a program definition
@@ -28,41 +40,36 @@ namespace daig
      * Prints variable information
      * @param  indent  spaces to indent printout
      **/
-    void print (unsigned int indent);
+    void print (std::ostream &os,unsigned int indent);
     
     /**
      *
      **/
 
     /**
-     * Number of processes in the program
-     **/
-    int processes;
-    
-    /**
      * Model of computation for the program
      **/
     Model_Of_Computation moc;
 
-    /**
-     * A map of variable names to variables
-     **/
-    Variables variables;
-    
+    //constant definitions
+    typedef std::map<std::string,std::string> ConstDef;
+    ConstDef constDef;
+
     /**
      * A map of function names to function definitions
      **/
-    Functions functions;
+    Functions funcs;
 
     /**
-     * Node definitions
-     **/
-    Node_Types node_types;
-
-    /**
-     * The actual nodes
+     * The node definitions
      **/
     Nodes nodes;
+
+    //the list of processes
+    std::list<Process> processes;
+
+    ///add a function
+    void addFunction(const Function &f) { funcs[f.name] = f; }
   };
 }
 

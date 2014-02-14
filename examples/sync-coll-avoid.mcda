@@ -14,14 +14,14 @@ NODE uav (id)
 {
   //shared variables -- visible across nodes. 
   //must be accessed via R() and W()
-  PUBLIC(bool lock [X][Y][#N]);
+  GLOBAL(bool lock [X][Y][#N]);
 
   //private variables -- local to the node.
   //preserved across rounds
-  PRIVATE(int state); //the state
-  PRIVATE(int x,y); //current coordinates
-  PRIVATE(int xp,yp); //next coordinates
-  PRIVATE(int xf,yf); //final coordinates
+  LOCAL(int state); //the state
+  LOCAL(int x,y); //current coordinates
+  LOCAL(int xp,yp); //next coordinates
+  LOCAL(int xf,yf); //final coordinates
   
   void NEXT_XY () {
     ATOMIC {
@@ -76,7 +76,7 @@ NODE uav (id)
 PROGRAM = uav (0) || uav (1);
 
 //initial state
-INIT 
+void INIT () 
 {
   ATOMIC {
     FORALL_NODE(id) {
@@ -95,7 +95,7 @@ INIT
 }
 
 //the safety property checked at the beginning of each round
-SAFETY
+void SAFETY ()
 {
   FORALL_DISTINCT_NODE_PAIR (id1,id2) {
     ASSERT(x.id1 != x.id2 || y.id1 != y.id2);

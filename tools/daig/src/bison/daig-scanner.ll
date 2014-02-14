@@ -1,10 +1,13 @@
 %{
 #include <string>
 #include <map>
-#include "Program.h"
+#include "Type.h"
+#include "Expression.h"
+#include "Statement.h"
+#include "DaigBuilder.hpp"
 #include "daig-parser.hpp"
-extern std::map<std::string,std::string> constDef;
-#define PRINT_TOKEN printf("%s\n",yytext)
+extern daig::DaigBuilder *builder; /* the dag builder */
+#define PRINT_TOKEN if(builder->debug) printf("%s\n",yytext)
 #define SAVE_TOKEN PRINT_TOKEN; yylval.string = new std::string(yytext, yyleng)
 #define TOKEN(t) (yylval.token = t)
 extern "C" int yywrap() { }
@@ -18,8 +21,8 @@ extern "C" int yywrap() { }
 "MOC_PSYNC"                 PRINT_TOKEN; return TOKEN(TMOCPSYNC);
 "CONST"                     PRINT_TOKEN; return TOKEN(TCONST);
 "NODE"                      PRINT_TOKEN; return TOKEN(TNODE);
-"PUBLIC"                    PRINT_TOKEN; return TOKEN(TPUBLIC);
-"PRIVATE"                   PRINT_TOKEN; return TOKEN(TPRIVATE);
+"GLOBAL"                    PRINT_TOKEN; return TOKEN(TGLOBAL);
+"LOCAL"                     PRINT_TOKEN; return TOKEN(TLOCAL);
 "bool"                      PRINT_TOKEN; return TOKEN(TBOOL);
 "int"                       PRINT_TOKEN; return TOKEN(TINT);
 "void"                      PRINT_TOKEN; return TOKEN(TVOID);
@@ -28,6 +31,7 @@ extern "C" int yywrap() { }
 "unsigned"                  PRINT_TOKEN; return TOKEN(TUNSIGNED);
 "#N"                        PRINT_TOKEN; return TOKEN(TNODENUM);
 "ATOMIC"                    PRINT_TOKEN; return TOKEN(TATOMIC);
+"PRIVATE"                   PRINT_TOKEN; return TOKEN(TPRIVATE);
 "if"                        PRINT_TOKEN; return TOKEN(TIF);
 "else"                      PRINT_TOKEN; return TOKEN(TELSE);
 "for"                       PRINT_TOKEN; return TOKEN(TFOR);
@@ -46,12 +50,12 @@ extern "C" int yywrap() { }
 [a-zA-Z_][a-zA-Z0-9_]*  {
                           /** substitute constant definitions */
                           std::map<std::string,std::string>::const_iterator it = 
-                            constDef.find(std::string(yytext));
-                          if(it == constDef.end()) {
+                            builder->program.constDef.find(std::string(yytext));
+                          if(it == builder->program.constDef.end()) {
                             SAVE_TOKEN; return TIDENTIFIER;
                           }
                           yylval.string = new std::string(it->second);
-                          printf("%s\n",yylval.string->c_str());
+                          if(builder->debug) printf("%s\n",yylval.string->c_str());
                           return TINTEGER;
                         }
 [0-9]+\.[0-9]*          SAVE_TOKEN; return TDOUBLE;

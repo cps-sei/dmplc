@@ -1,35 +1,36 @@
 #include <iostream>
+#include <boost/foreach.hpp>
 #include "Node.h"
 #include "Program.h"
 
 void
-daig::Program::print (unsigned int indent)
+daig::Program::print (std::ostream &os,unsigned int indent)
 {
   std::string spacer (indent, ' ');
 
-  std::cout << spacer << "Program::moc: " << moc.to_string_type () << "\n";
-  std::cout << spacer << "Program::processes: " << processes << "\n";
-  std::cout << spacer << "Program::variables:\n";
+  //print MOC
+  os << spacer << moc.to_string_type () << ";\n\n";
 
-  for (daig::Variables::iterator i = variables.begin ();
-       i != variables.end (); ++i)
-  {
-    i->second.print (indent + 2);
-  }
-  
-  std::cout << spacer << "Program::functions:\n";
+  //print CONST definitions
+  BOOST_FOREACH(ConstDef::value_type &cd,constDef)
+    os << spacer << "CONST(" << cd.first << "," << cd.second << ");\n";
+  os << '\n';
 
-  for (daig::Functions::iterator i = functions.begin ();
-       i != functions.end (); ++i)
-  {
-    i->second.print (indent + 2);
-  }
-  
-  for (unsigned i = 0;
-    i < nodes.size (); ++i)
-  {
-    std::cout << spacer << "Program:nodes[" << i << "]:\n";
-    nodes[i].print (indent + 2);
-  }
+  //print nodes
+  for (daig::Nodes::iterator i = nodes.begin (); i != nodes.end (); ++i)
+    i->second.print (os,indent);
 
+  //print program definition
+  os << spacer << "PROGRAM = ";
+  size_t count = 0;
+  BOOST_FOREACH(const Process &p,processes) {
+    if(count) os << " || ";
+    os << p.getNode() << '(' << p.getId() << ")";
+    ++count;
+  }
+  os << ";\n\n";
+
+  //print functions like INIT and safety
+  for (daig::Functions::iterator i = funcs.begin (); i != funcs.end (); ++i)
+    i->second.print (os,indent);
 }

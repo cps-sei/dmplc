@@ -10,65 +10,19 @@
 
 #include <map>
 #include <string>
-#include "Token.h"
+#include "Type.h"
 
 namespace daig
 {
   /**
     * @class Variable
-    * @brief A type of token that holds value
+    * @brief A variable
     */
-  class Variable : public Token
+  class Variable
   {
   public:
-    enum Types
-    {
-      ANY,
-      INTEGER,
-      INTEGER_ARRAY,
-      DOUBLE,
-      DOUBLE_ARRAY,
-      STRING,
-      FILE
-    };
-
-    enum Scopes
-    {
-      PRIVATE,
-      GLOBAL
-    };
-
-    enum Classifiers
-    {
-      NONE = 0,
-      CONST_VAR = 1
-    };
-
-    /**
-     * Default constructor
-     **/
-    Variable ();
-
-    /**
-     * Prints variable information
-     * @param  indent  spaces to indent printout
-     **/
-    void print (unsigned int indent);
+    enum Scopes { LOCAL = 501, GLOBAL, PARAM, TEMP };
     
-    /**
-     * Sets the type according to a string
-     * @param  strtype  string type. Values can be
-     *                  INT, INTEGER, DOUBLE, DOUBLE_ARRAY,
-     *                  BOOL, STRING, FILE
-     **/
-    void set_type (const std::string & strtype);
-    
-    /**
-     * Returns type as a string
-     * @return   stringified type
-     **/
-    std::string to_str_type (void);
-
     /**
      * The variable name
      **/
@@ -77,22 +31,26 @@ namespace daig
     /**
      * The variable type
      **/
-    int type;
+    Type type;
     
     /**
      * The variable scope
      **/
     int scope;
-    
+
+    //constructors
+    Variable() {}
+    Variable(const std::string &n);
+    Variable(const std::string &n,const std::list<int> &d);
+
+    //convert to string
+    std::string toString() const;
+
     /**
-     * The variable classifiers (e.g. const)
+     * Prints variable information
+     * @param  indent  spaces to indent printout
      **/
-    int classifiers;
-    
-    /**
-     * Description of the number of elements (useful for arrays)
-     **/
-    std::string elements;
+    void print (std::ostream &os,unsigned int indent);
   };
 
   typedef std::map <std::string, Variable> Variables;

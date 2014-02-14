@@ -1,92 +1,34 @@
 #include <iostream>
+#include <boost/foreach.hpp>
 #include "Variable.h"
 
-daig::Variable::Variable ()
-{
+//constructor with name only -- assigns a default type and scope
+daig::Variable::Variable(const std::string &n) 
+  : name(n),type(daig::Type(new BaseType())),scope(0) {}
 
+//constructor with name and dimensions -- assigns a default base type
+//and scope
+daig::Variable::Variable(const std::string &n,const std::list<int> &d) 
+  : name(n),type(daig::Type(new BaseType(d))),scope(0) {}
+
+//convert to string
+std::string daig::Variable::toString() const
+{
+  std::string res = type->toString() + " " + name;
+  BOOST_FOREACH(int d,type->dims) {
+    char buf[128];
+    if(d == -1) snprintf(buf,128,"[#N]");
+    else snprintf(buf,128,"[%d]",d);
+    res += std::string(buf);
+  }
+  return res;
 }
 
+//print with indentation
 void
-daig::Variable::print (unsigned int indent)
+daig::Variable::print (std::ostream &os,unsigned int indent)
 {
-  std::cout << std::string (indent, ' ');
-
-  if (this->classifiers & CONST_VAR)
-    std::cout << "CONST ";
-
-  if (this->scope == PRIVATE)
-    std::cout << "PRIVATE ";
-
-  else
-    std::cout << "GLOBAL ";
-
-  std::cout << to_str_type () << " ";
-
-  std::cout << this->name << " = " << this->value << "\n";
+  std::string spacer(indent, ' ');
+  os << spacer << toString();
 }
 
-std::string
-daig::Variable::to_str_type (void)
-{
-  std::string strtype = "ANY";
-
-  if (type == INTEGER)
-  {
-    strtype = "INT";
-  }
-  else if (type == DOUBLE)
-  {
-    strtype = "DOUBLE";
-  }
-  else if (type == INTEGER_ARRAY)
-  {
-    strtype = "INTEGER_ARRAY";
-  }
-  else if (type == DOUBLE_ARRAY)
-  {
-    strtype = "DOUBLE_ARRAY";
-  }
-  else if (type == STRING)
-  {
-    strtype = "STRING";
-  }
-  else if (type == FILE)
-  {
-    strtype = "FILE";
-  }
-
-  return strtype;
-}
-
-void
-daig::Variable::set_type (const std::string & strtype)
-{
-  if (strtype == "INT" || strtype == "INTEGER")
-  {
-    type = INTEGER;
-  }
-  else if (strtype == "DOUBLE")
-  {
-    type = DOUBLE;
-  }
-  else if (strtype == "INTEGER_ARRAY")
-  {
-    type = INTEGER_ARRAY;
-  }
-  else if (strtype == "DOUBLE_ARRAY")
-  {
-    type = DOUBLE_ARRAY;
-  }
-  else if (strtype == "STRING")
-  {
-    type = STRING;
-  }
-  else if (strtype == "FILE")
-  {
-    type = FILE;
-  }
-  else
-  {
-    type = ANY;
-  }
-}
