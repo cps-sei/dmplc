@@ -180,8 +180,15 @@ namespace daig
         ++count;
       }
       os << ";";
-      BOOST_FOREACH(const Expr &e,test) os << e->toString() + ";";
-      BOOST_FOREACH(const Stmt &s,update) os << s->toString();
+
+      if(test.empty()) os << ";";
+      else if(test.size() == 1) os << (*(test.begin()))->toString() + ";";
+      else assert(0 && "ERROR: multiple test conditions in for statement");
+
+      if(update.size() <= 1)
+        BOOST_FOREACH(const Stmt &s,update) os << s->toString();
+      else assert(0 && "ERROR: multiple update statements in for statement");
+
       os << ")\n";
       body->print(os,indent+2);      
     }
