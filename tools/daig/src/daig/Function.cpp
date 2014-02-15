@@ -23,9 +23,8 @@ daig::Function::print (std::ostream &os,unsigned int indent)
     os << ";\n";
   }
 
-  BOOST_FOREACH(const Stmt &st,body)  {
+  BOOST_FOREACH(const Stmt &st,body) {
     st->print (os,indent + 2);
-    //os << "\n";
   }
 
   os << spacer << "}\n\n";
