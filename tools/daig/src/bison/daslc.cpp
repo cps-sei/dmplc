@@ -10,7 +10,8 @@
 //options
 /*********************************************************************/
 std::string fileName,outFileName;
-bool debug = false,print=false,seq = false;
+bool debug = false,print=false;
+size_t nodeNum = 0;
 
 /*********************************************************************/
 //function declarations
@@ -40,12 +41,12 @@ int main(int argc, char **argv)
   }
 
   //sequentialize and print result
-  if(seq) {
+  if(nodeNum) {
     std::string moc = builder.program.moc.to_string_type();
 
     //for synchronous programs
     if(moc == "MOC_SYNC") {
-      daig::SyncSeq syncSeq(builder);
+      daig::SyncSeq syncSeq(builder,nodeNum);
       syncSeq.run();
       if(outFileName.empty()) syncSeq.printProgram(std::cout);
       else {
@@ -71,12 +72,10 @@ void parseOptions(int argc, char **argv)
 {
   for(int i = 1;i < argc;++i) {
     if(!strcmp(argv[i],"--debug")) debug = true;
-    else if(!strcmp(argv[i],"--seq")) seq = true;
+    else if(strstr(argv[i],"--seq=") == argv[i]) nodeNum = atoi(argv[i] + 6);
     else if(!strcmp(argv[i],"--print")) print = true;
-    else if(!strcmp(argv[i],"--out")) {
-      if(i < argc - 1) outFileName = std::string(argv[++i]);
-      else usage(argv[0]);
-    } else fileName = std::string(argv[i]);
+    else if(strstr(argv[i],"--out=") == argv[i]) outFileName = std::string(argv[i] + 6);
+    else fileName = std::string(argv[i]);
   }
 
   if(fileName.empty()) usage(argv[0]);
@@ -90,7 +89,7 @@ void usage(char *cmd)
   std::cerr << "ERROR: no input-filename ...\n";
   std::cerr << "Usage : " << cmd << " <options> filename\n";
   std::cerr << "Options :\n\t--debug\n\t--print\n\t"
-            << "--seq\n\t--out output-filename\n";
+            << "--seq=node-num\n\t--out=output-filename\n";
   exit(1);
 }
 

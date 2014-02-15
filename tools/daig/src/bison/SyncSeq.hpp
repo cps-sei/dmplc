@@ -11,8 +11,9 @@ namespace daig {
   {
   public:
     DaigBuilder &builder;
+    size_t nodeNum;
 
-    SyncSeq(DaigBuilder &b) : builder(b) {}
+    SyncSeq(DaigBuilder &b,size_t n) : builder(b),nodeNum(n) {}
     void run();
     void printProgram(std::ostream &os);
   };
