@@ -26,7 +26,7 @@ std::string daig::BaseType::toString() const
   else assert(qual == 0 && "ERROR : illegal type qualifier");
 
   if(type == TVOID) res += "void";
-  else if(type == TBOOL) res += "bool";
+  else if(type == TBOOL) res += "_Bool";
   else if(type == TINT) res += "int";
   else if(type == TCHAR) res += "char";
   else assert(0 && "ERROR : illegal simple type");

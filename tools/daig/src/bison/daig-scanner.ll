@@ -23,7 +23,7 @@ extern "C" int yywrap() { }
 "NODE"                      PRINT_TOKEN; return TOKEN(TNODE);
 "GLOBAL"                    PRINT_TOKEN; return TOKEN(TGLOBAL);
 "LOCAL"                     PRINT_TOKEN; return TOKEN(TLOCAL);
-"bool"                      PRINT_TOKEN; return TOKEN(TBOOL);
+"_Bool"                     PRINT_TOKEN; return TOKEN(TBOOL);
 "int"                       PRINT_TOKEN; return TOKEN(TINT);
 "void"                      PRINT_TOKEN; return TOKEN(TVOID);
 "char"                      PRINT_TOKEN; return TOKEN(TCHAR);

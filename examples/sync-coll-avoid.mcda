@@ -14,7 +14,7 @@ NODE uav (id)
 {
   //shared variables -- visible across nodes. 
   //must be accessed via R() and W()
-  GLOBAL(bool lock [X][Y][#N]);
+  GLOBAL(_Bool lock [X][Y][#N]);
 
   //private variables -- local to the node.
   //preserved across rounds
