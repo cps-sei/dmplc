@@ -10,6 +10,12 @@ void
 daig::CProgram::print (std::ostream &os,unsigned int indent)
 {
   std::string spacer (indent, ' ');
+  
+  //print global variables
+  for (daig::Variables::iterator i = globVars.begin (); i != globVars.end (); ++i) {
+    i->second.print (os,indent + 2);
+    os << ";\n";
+  }
 
   //print functions
   for (daig::Functions::iterator i = funcs.begin (); i != funcs.end (); ++i)

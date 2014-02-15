@@ -31,11 +31,17 @@ namespace daig
      * @param  indent  spaces to indent printout
      **/
     void print (std::ostream &os,unsigned int indent);
+
+    ///global variables
+    Variables globVars;
     
     /**
      * A map of function names to function definitions
      **/
     Functions funcs;
+
+    ///add a global variable
+    void addGlobVar(const Variable &v) { globVars[v.name] = v; }
 
     ///add a function
     void addFunction(const Function &f) { funcs[f.name] = f; }

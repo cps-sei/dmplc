@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include "DaigBuilder.hpp"
+#include "CProgram.h"
 
 namespace daig {
   class SyncSeq
@@ -12,6 +13,7 @@ namespace daig {
   public:
     DaigBuilder &builder;
     size_t nodeNum;
+    CProgram cprog;
 
     SyncSeq(DaigBuilder &b,size_t n) : builder(b),nodeNum(n) {}
     void run();
