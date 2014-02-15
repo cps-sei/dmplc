@@ -39,6 +39,14 @@ void daig::SyncSeq::createGlobVars()
 }
 
 /*********************************************************************/
+//create function that copies global variables back at the end of a
+//round
+/*********************************************************************/
+void daig::SyncSeq::createRoundCopier()
+{
+}
+
+/*********************************************************************/
 //create the main function
 /*********************************************************************/
 void daig::SyncSeq::createMainFunc()
@@ -65,10 +73,8 @@ void daig::SyncSeq::run()
 {
   std::cout << "Sequentializing with " << nodeNum << " nodes ...\n";
 
-  //create global variables
   createGlobVars();
-
-  //create the main function
+  createRoundCopier();
   createMainFunc();
 
   //instantiate functions

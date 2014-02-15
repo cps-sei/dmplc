@@ -17,6 +17,7 @@ namespace daig {
 
     SyncSeq(DaigBuilder &b,size_t n);
     void createGlobVars();
+    void createRoundCopier();
     void createMainFunc();
     void run();
     void printProgram(std::ostream &os);

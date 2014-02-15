@@ -17,6 +17,10 @@ daig::CProgram::print (std::ostream &os,unsigned int indent)
     os << ";\n";
   }
 
+  //print function declarations
+  for (daig::Functions::iterator i = funcs.begin (); i != funcs.end (); ++i)
+    i->second.printDecl (os,indent);
+
   //print functions
   for (daig::Functions::iterator i = funcs.begin (); i != funcs.end (); ++i)
     i->second.print (os,indent);
