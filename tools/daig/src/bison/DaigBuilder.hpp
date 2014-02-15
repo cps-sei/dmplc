@@ -22,6 +22,7 @@ namespace daig {
     DaigBuilder(const std::string &fn,const bool d)
       : fileName(fn),debug(d) {}
     void run();
+    void printProgram(std::ostream &os);
   };
 } //namespace daig
 
