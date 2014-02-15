@@ -26,6 +26,12 @@ namespace daig
   //a list of types
   typedef std::list <Type> TypeList;
 
+  //return various basic types
+  Type voidType();
+  Type intType();
+  Type charType();
+  Type boolType();
+
   /**
     * @class BaseType
     * @brief A base type

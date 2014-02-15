@@ -6,7 +6,17 @@
 #include "Statement.h"
 #include "../bison/daig-parser.hpp"
 
+/*********************************************************************/
+//return basic types
+/*********************************************************************/
+daig::Type daig::voidType() { return Type(new daig::BaseType(TVOID)); }
+daig::Type daig::intType() { return Type(new daig::BaseType(TINT)); }
+daig::Type daig::charType() { return Type(new daig::BaseType(TCHAR)); }
+daig::Type daig::boolType() { return Type(new daig::BaseType(TBOOL)); }
+
+/*********************************************************************/
 ///convert base type to string
+/*********************************************************************/
 std::string daig::BaseType::toString() const
 {
   std::string res;
@@ -24,13 +34,17 @@ std::string daig::BaseType::toString() const
   return res;
 }
 
+/*********************************************************************/
 ///print the type with appropriate indentation
+/*********************************************************************/
 void daig::BaseType::print (std::ostream &os,unsigned int indent)
 {
   os << std::string(' ',indent) << toString();
 }
 
+/*********************************************************************/
 ///return a copy but instantiate dimension #N with nodeNum
+/*********************************************************************/
 daig::Type daig::BaseType::instDim(size_t nodeNum)
 {
   BaseType *res = new BaseType(*this);
@@ -40,3 +54,7 @@ daig::Type daig::BaseType::instDim(size_t nodeNum)
 
   return Type(res);
 }
+
+/*********************************************************************/
+//end of file
+/*********************************************************************/
