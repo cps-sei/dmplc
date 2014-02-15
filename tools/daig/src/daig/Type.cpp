@@ -6,7 +6,7 @@
 #include "Statement.h"
 #include "../bison/daig-parser.hpp"
 
-//convert base type to string
+///convert base type to string
 std::string daig::BaseType::toString() const
 {
   std::string res;
@@ -24,7 +24,19 @@ std::string daig::BaseType::toString() const
   return res;
 }
 
+///print the type with appropriate indentation
 void daig::BaseType::print (std::ostream &os,unsigned int indent)
 {
   os << std::string(' ',indent) << toString();
+}
+
+///return a copy but instantiate dimension #N with nodeNum
+daig::Type daig::BaseType::instDim(size_t nodeNum)
+{
+  BaseType *res = new BaseType(*this);
+
+  BOOST_FOREACH(int &i,res->dims)
+    if(i == -1) i = static_cast<int>(nodeNum);
+
+  return Type(res);
 }

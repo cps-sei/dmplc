@@ -46,8 +46,11 @@ namespace daig
     void setQual(int q) { qual = q; }
     void setDims(const std::list<int> &d) { dims = d; }
 
-    //print the type with appropriate indentation
+    ///print the type with appropriate indentation
     void print (std::ostream &os,unsigned int indent);
+
+    ///return a copy but instantiate dimension #N with nodeNum
+    Type instDim(size_t nodeNum);
   };
 }
 

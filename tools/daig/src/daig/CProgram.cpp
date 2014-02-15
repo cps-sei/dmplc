@@ -13,7 +13,7 @@ daig::CProgram::print (std::ostream &os,unsigned int indent)
   
   //print global variables
   for (daig::Variables::iterator i = globVars.begin (); i != globVars.end (); ++i) {
-    i->second.print (os,indent + 2);
+    i->second.print (os,indent);
     os << ";\n";
   }
 

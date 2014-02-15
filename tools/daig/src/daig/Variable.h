@@ -51,6 +51,12 @@ namespace daig
      * @param  indent  spaces to indent printout
      **/
     void print (std::ostream &os,unsigned int indent);
+
+    ///return a copy but instantiate dimension #N with nodeNum
+    Variable instDim(size_t nodeNum) const;
+
+    ///return a copy but change name to name+ext
+    Variable instName(std::string ext) const;
   };
 
   typedef std::map <std::string, Variable> Variables;

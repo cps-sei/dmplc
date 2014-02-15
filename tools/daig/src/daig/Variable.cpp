@@ -32,3 +32,18 @@ daig::Variable::print (std::ostream &os,unsigned int indent)
   os << spacer << toString();
 }
 
+///return a copy but instantiate dimension #N with nodeNum
+daig::Variable daig::Variable::instDim(size_t nodeNum) const
+{
+  Variable res = *this;
+  res.type = res.type->instDim(nodeNum);
+  return res;
+}
+
+///return a copy but change name to name+ext
+daig::Variable daig::Variable::instName(std::string ext) const
+{
+  Variable res = *this;
+  res.name = res.name + ext;
+  return res;
+}
