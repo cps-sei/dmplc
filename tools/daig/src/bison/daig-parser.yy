@@ -387,8 +387,7 @@ init_def : TVOID TINIT TLPAREN TRPAREN TLBRACE var_decl_list stmt_list TRBRACE {
   /** set scope of temporary variables */
   BOOST_FOREACH(daig::Variable &v,*$6) v.scope = daig::Variable::TEMP;
   /** create and add function to the node -- make its return type void */
-  daig::Type rt(new daig::BaseType(TVOID));
-  builder->program.addFunction(daig::Function(rt,"INIT",std::list<daig::Variable>(),*$6,*$7));
+  builder->program.addFunction(daig::Function(daig::voidType(),"INIT",std::list<daig::Variable>(),*$6,*$7));
   delete $6; delete $7;
 }
 ;
@@ -397,8 +396,7 @@ safety_def : TVOID TSAFETY TLPAREN TRPAREN TLBRACE var_decl_list stmt_list TRBRA
   /** set scope of temporary variables */
   BOOST_FOREACH(daig::Variable &v,*$6) v.scope = daig::Variable::TEMP;
   /** create and add function to the node -- make its return type void */
-  daig::Type rt(new daig::BaseType(TVOID));
-  builder->program.addFunction(daig::Function(rt,"SAFETY",std::list<daig::Variable>(),*$6,*$7));
+  builder->program.addFunction(daig::Function(daig::voidType(),"SAFETY",std::list<daig::Variable>(),*$6,*$7));
   delete $6; delete $7;
 }
 ;
