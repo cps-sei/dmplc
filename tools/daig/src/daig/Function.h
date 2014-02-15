@@ -43,12 +43,12 @@ namespace daig
     /**
      * The function body
      **/
-    std::list<Stmt> body;
+    StmtList body;
 
     //constructors
     Function() {}
     Function(const Type &rt,const std::string &n,const std::list<Variable> &p,
-             const std::list<Variable> &t,const std::list<Stmt> &b)
+             const std::list<Variable> &t,const StmtList &b)
       : retType(rt),name(n),body(b)
     {
       BOOST_FOREACH(const Variable &v,p) params[v.name] = v;
