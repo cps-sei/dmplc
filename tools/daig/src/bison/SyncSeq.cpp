@@ -11,13 +11,10 @@ daig::SyncSeq::SyncSeq(daig::DaigBuilder &b,size_t n) : builder(b),nodeNum(n)
 }
 
 /*********************************************************************/
-//run the sequentialization, generating a C program
+//create the global variables
 /*********************************************************************/
-void daig::SyncSeq::run()
+void daig::SyncSeq::createGlobVars()
 {
-  std::cout << "Sequentializing with " << nodeNum << " nodes ...\n";
-
-  //create global variables
   Program &prog = builder.program;
   Node &node = prog.nodes.begin()->second;
 
@@ -39,6 +36,40 @@ void daig::SyncSeq::run()
       cprog.addGlobVar(v.second.instName(std::string("_") + 
                                          boost::lexical_cast<std::string>(i)));
   }
+}
+
+/*********************************************************************/
+//create the main function
+/*********************************************************************/
+void daig::SyncSeq::createMainFunc()
+{
+  std::list<daig::Variable> mainParams,mainTemps;
+  StmtList mainBody,roundBody;
+  for(size_t i = 0;i < nodeNum;++i) {
+    std::string callName = std::string("ROUND_") + boost::lexical_cast<std::string>(i);
+    Expr callExpr(new LvalExpr(callName));
+    Stmt callStmt(new CallStmt(callExpr,daig::ExprList()));
+    roundBody.push_back(callStmt);
+  }
+  Stmt forBody(new BlockStmt(roundBody));
+  mainBody.push_back(Stmt(new ForStmt(StmtList(),ExprList(),StmtList(),forBody)));
+
+  Function mainFunc(daig::voidType(),"main",mainParams,mainTemps,mainBody);
+  cprog.addFunction(mainFunc);
+}
+
+/*********************************************************************/
+//run the sequentialization, generating a C program
+/*********************************************************************/
+void daig::SyncSeq::run()
+{
+  std::cout << "Sequentializing with " << nodeNum << " nodes ...\n";
+
+  //create global variables
+  createGlobVars();
+
+  //create the main function
+  createMainFunc();
 
   //instantiate functions
 }
