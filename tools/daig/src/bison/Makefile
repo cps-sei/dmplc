@@ -10,7 +10,7 @@ LIB=/home/chaki/stuff/madara/madara/libMADARA.so
 
 all : daslc
 
-daslc : daslc.cpp $(OBJ)
+daslc : daslc.cpp daig-parser.hpp $(OBJ)
 	g++ -o $@ $(INC) daslc.cpp $(OBJ) $(LIB)
 
 daig-scanner.cpp : daig-scanner.ll
@@ -22,7 +22,7 @@ daig-parser.cpp daig-parser.hpp : daig-parser.yy
 %.o : %.cpp
 	g++ -c -o $@ $(INC) $<
 
-%.d : %.cpp daig-parser.hpp
+%.d : %.cpp
 	g++ -MM -o $@ $(INC) $<
 
 clean :
