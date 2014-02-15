@@ -181,10 +181,10 @@ type : simp_type { $$ = $1; }
 | TUNSIGNED simp_type { $$ = $2; (*$$)->setQual(TUNSIGNED); }
 ;
 
-simp_type : TBOOL { $$ = new daig::Type(new daig::BaseType(TBOOL)); }
-| TINT { $$ = new daig::Type(new daig::BaseType(TINT)); }
-| TVOID { $$ = new daig::Type(new daig::BaseType(TVOID)); }
-| TCHAR { $$ = new daig::Type(new daig::BaseType(TCHAR)); }
+simp_type : TBOOL { $$ = new daig::Type(daig::boolType()); }
+| TINT { $$ = new daig::Type(daig::intType()); }
+| TVOID { $$ = new daig::Type(daig::voidType()); }
+| TCHAR { $$ = new daig::Type(daig::charType()); }
 ;
 
 procedure : type TIDENTIFIER TLPAREN param_list TRPAREN TLBRACE var_decl_list stmt_list TRBRACE {
