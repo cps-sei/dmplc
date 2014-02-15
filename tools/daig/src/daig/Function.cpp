@@ -1,6 +1,9 @@
 #include <iostream>
 #include "Function.h"
 
+/*********************************************************************/
+//print function
+/*********************************************************************/
 void
 daig::Function::print (std::ostream &os,unsigned int indent)
 {
@@ -29,3 +32,27 @@ daig::Function::print (std::ostream &os,unsigned int indent)
 
   os << spacer << "}\n\n";
 }
+
+/*********************************************************************/
+//print function declaration
+/*********************************************************************/
+void
+daig::Function::printDecl (std::ostream &os,unsigned int indent)
+{
+  std::string spacer (indent, ' ');
+
+  os << spacer << retType->toString() << " " << name << "(";
+
+  size_t count = 0;
+  for (daig::Variables::iterator i = params.begin (); i != params.end (); ++i) {
+    if(count) os << ",";
+    os << i->second.toString();
+    count++;
+  }
+
+  os << ");\n";
+}
+
+/*********************************************************************/
+//end of file
+/*********************************************************************/

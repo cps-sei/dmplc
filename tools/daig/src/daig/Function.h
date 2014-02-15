@@ -60,6 +60,9 @@ namespace daig
      * @param  indent  spaces to indent printout
      **/
     void print (std::ostream &os,unsigned int indent);
+
+    ///print just the function declaration
+    void printDecl (std::ostream &os,unsigned int indent);    
   };
 
   typedef std::map <std::string, Function> Functions;
