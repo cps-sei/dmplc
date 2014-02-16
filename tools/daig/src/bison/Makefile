@@ -23,7 +23,7 @@ daig-parser.cpp daig-parser.hpp : daig-parser.yy
 	g++ -c -o $@ $(INC) $<
 
 %.d : %.cpp
-	g++ -MM -o $@ $(INC) $<
+	g++ -MM -MT $(@:%.d=%.o) -o $@ $(INC) $<
 
 clean :
 	rm -f daslc daig-scanner.cpp daig-parser.cpp daig-parser.hpp \
