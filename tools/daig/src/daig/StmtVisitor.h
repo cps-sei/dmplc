@@ -25,43 +25,43 @@ namespace daig
   public:
     void visit(const Stmt &stmt);
 
-    virtual void enterAtomic(const AtomicStmt &stmt) {}
-    virtual void enterPrivate(const PrivateStmt &stmt) {}
-    virtual void enterBlock(const BlockStmt &stmt) {}
-    virtual void enterAsgn(const AsgnStmt &stmt) {}
-    virtual void enterIT(const ITStmt &stmt) {}
-    virtual void enterITE(const ITEStmt &stmt) {}
-    virtual void enterFor(const ForStmt &stmt) {}
-    virtual void enterWhile(const WhileStmt &stmt) {}
-    virtual void enterBreak(const BreakStmt &stmt) {}
-    virtual void enterCont(const ContStmt &stmt) {}
-    virtual void enterRet(const RetStmt &stmt) {}
-    virtual void enterRetVoid(const RetVoidStmt &stmt) {}
-    virtual void enterCall(const CallStmt &stmt) {}
-    virtual void enterFAN(const FANStmt &stmt) {}
-    virtual void enterFADNP(const FADNPStmt &stmt) {}
-    virtual void enterFAO(const FAOStmt &stmt) {}
-    virtual void enterFAOL(const FAOLStmt &stmt) {}
-    virtual void enterFAOH(const FAOHStmt &stmt) {}
+    virtual void enterAtomic(AtomicStmt &stmt) {}
+    virtual void enterPrivate(PrivateStmt &stmt) {}
+    virtual void enterBlock(BlockStmt &stmt) {}
+    virtual void enterAsgn(AsgnStmt &stmt) {}
+    virtual void enterIT(ITStmt &stmt) {}
+    virtual void enterITE(ITEStmt &stmt) {}
+    virtual void enterFor(ForStmt &stmt) {}
+    virtual void enterWhile(WhileStmt &stmt) {}
+    virtual void enterBreak(BreakStmt &stmt) {}
+    virtual void enterCont(ContStmt &stmt) {}
+    virtual void enterRet(RetStmt &stmt) {}
+    virtual void enterRetVoid(RetVoidStmt &stmt) {}
+    virtual void enterCall(CallStmt &stmt) {}
+    virtual void enterFAN(FANStmt &stmt) {}
+    virtual void enterFADNP(FADNPStmt &stmt) {}
+    virtual void enterFAO(FAOStmt &stmt) {}
+    virtual void enterFAOL(FAOLStmt &stmt) {}
+    virtual void enterFAOH(FAOHStmt &stmt) {}
 
-    virtual void exitAtomic(const AtomicStmt &stmt) {}
-    virtual void exitPrivate(const PrivateStmt &stmt) {}
-    virtual void exitBlock(const BlockStmt &stmt) {}
-    virtual void exitAsgn(const AsgnStmt &stmt) {}
-    virtual void exitIT(const ITStmt &stmt) {}
-    virtual void exitITE(const ITEStmt &stmt) {}
-    virtual void exitFor(const ForStmt &stmt) {}
-    virtual void exitWhile(const WhileStmt &stmt) {}
-    virtual void exitBreak(const BreakStmt &stmt) {}
-    virtual void exitCont(const ContStmt &stmt) {}
-    virtual void exitRet(const RetStmt &stmt) {}
-    virtual void exitRetVoid(const RetVoidStmt &stmt) {}
-    virtual void exitCall(const CallStmt &stmt) {}
-    virtual void exitFAN(const FANStmt &stmt) {}
-    virtual void exitFADNP(const FADNPStmt &stmt) {}
-    virtual void exitFAO(const FAOStmt &stmt) {}
-    virtual void exitFAOL(const FAOLStmt &stmt) {}
-    virtual void exitFAOH(const FAOHStmt &stmt) {}
+    virtual void exitAtomic(AtomicStmt &stmt) {}
+    virtual void exitPrivate(PrivateStmt &stmt) {}
+    virtual void exitBlock(BlockStmt &stmt) {}
+    virtual void exitAsgn(AsgnStmt &stmt) {}
+    virtual void exitIT(ITStmt &stmt) {}
+    virtual void exitITE(ITEStmt &stmt) {}
+    virtual void exitFor(ForStmt &stmt) {}
+    virtual void exitWhile(WhileStmt &stmt) {}
+    virtual void exitBreak(BreakStmt &stmt) {}
+    virtual void exitCont(ContStmt &stmt) {}
+    virtual void exitRet(RetStmt &stmt) {}
+    virtual void exitRetVoid(RetVoidStmt &stmt) {}
+    virtual void exitCall(CallStmt &stmt) {}
+    virtual void exitFAN(FANStmt &stmt) {}
+    virtual void exitFADNP(FADNPStmt &stmt) {}
+    virtual void exitFAO(FAOStmt &stmt) {}
+    virtual void exitFAOL(FAOLStmt &stmt) {}
+    virtual void exitFAOH(FAOHStmt &stmt) {}
   };
 }
 
