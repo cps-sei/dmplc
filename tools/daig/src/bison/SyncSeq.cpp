@@ -90,6 +90,11 @@ void daig::SyncSeq::createMainFunc()
   std::list<daig::Variable> mainParams,mainTemps;
   StmtList mainBody,roundBody;
 
+  //call SAFETY()
+  Expr callExpr1(new LvalExpr("SAFETY"));
+  Stmt callStmt1(new CallStmt(callExpr1,daig::ExprList()));
+  roundBody.push_back(callStmt1);
+
   //call ROUND function of each node
   for(size_t i = 0;i < nodeNum;++i) {
     std::string callName = std::string("ROUND_") + boost::lexical_cast<std::string>(i);
@@ -99,10 +104,16 @@ void daig::SyncSeq::createMainFunc()
   }
 
   //call round copier
-  Expr callExpr(new LvalExpr("round_copier"));
-  Stmt callStmt(new CallStmt(callExpr,daig::ExprList()));
-  roundBody.push_back(callStmt);
+  Expr callExpr2(new LvalExpr("round_copier"));
+  Stmt callStmt2(new CallStmt(callExpr2,daig::ExprList()));
+  roundBody.push_back(callStmt2);
 
+  //add call to INIT()
+  Expr callExpr3(new LvalExpr("INIT"));
+  Stmt callStmt3(new CallStmt(callExpr3,daig::ExprList()));
+  mainBody.push_back(callStmt3);
+
+  //add the for statement
   Stmt forBody(new BlockStmt(roundBody));
   mainBody.push_back(Stmt(new ForStmt(StmtList(),ExprList(),StmtList(),forBody)));
 
