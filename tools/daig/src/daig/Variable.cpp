@@ -47,3 +47,11 @@ daig::Variable daig::Variable::instName(std::string ext) const
   res.name = res.name + ext;
   return res;
 }
+
+///return a copy with one less dimension
+daig::Variable daig::Variable::decrDim() const
+{
+  Variable res = *this;
+  res.type = res.type->decrDim();
+  return res;  
+}

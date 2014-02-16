@@ -57,6 +57,9 @@ namespace daig
 
     ///return a copy but instantiate dimension #N with nodeNum
     Type instDim(size_t nodeNum);
+
+    ///return a copy with one less dimension
+    Type decrDim();
   };
 }
 

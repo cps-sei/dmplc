@@ -57,6 +57,9 @@ namespace daig
 
     ///return a copy but change name to name+ext
     Variable instName(std::string ext) const;
+
+    ///return a copy with one less dimension
+    Variable decrDim() const;
   };
 
   typedef std::map <std::string, Variable> Variables;

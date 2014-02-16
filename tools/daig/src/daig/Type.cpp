@@ -55,6 +55,15 @@ daig::Type daig::BaseType::instDim(size_t nodeNum)
   return Type(res);
 }
 
+///return a copy with one less dimension
+daig::Type daig::BaseType::decrDim()
+{
+  BaseType *res = new BaseType(*this);
+  assert(!res->dims.empty() && "ERROR: cannot decrease dimensions of non-array type!");
+  res->dims.pop_front();
+  return Type(res);
+}
+
 /*********************************************************************/
 //end of file
 /*********************************************************************/

@@ -17,6 +17,7 @@ namespace daig {
 
     SyncSeq(DaigBuilder &b,size_t n);
     void createGlobVars();
+    void createCopyStmts(const Variable &var,StmtList &res,ExprList indx);
     void createRoundCopier();
     void createMainFunc();
     void run();
