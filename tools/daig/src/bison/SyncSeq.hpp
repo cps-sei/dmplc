@@ -15,11 +15,23 @@ namespace daig {
   /*******************************************************************/
   struct GlobalStmtTransformer : public StmtVisitor
   {
+    //the number of nodes
+    size_t nodeNum;
+
+    //map from variables to constants for substitution
+    std::map<std::string,size_t> substMap;
+
     //map from statements to the result of transforming them
     std::map<Stmt,Stmt> res;
 
-    //strip off atomic blocks -- they are not necessary in this
-    //sequentialization
+    //constructors
+    GlobalStmtTransformer(size_t n) : nodeNum(n) {}
+
+    //update substitution mapping
+    void addSubst(const std::string &s,size_t i);
+    void delSubst(const std::string &s);
+
+    //dispatchers
     void exitAtomic(AtomicStmt &stmt);
     void exitPrivate(PrivateStmt &stmt);
     void exitBlock(BlockStmt &stmt);
@@ -33,7 +45,9 @@ namespace daig {
     void exitRet(RetStmt &stmt);
     void exitRetVoid(RetVoidStmt &stmt);
     void exitCall(CallStmt &stmt);
+    bool enterFAN(FANStmt &stmt) { return false; }
     void exitFAN(FANStmt &stmt);
+    bool enterFADNP(FADNPStmt &stmt) { return false; }
     void exitFADNP(FADNPStmt &stmt);
     void exitFAO(FAOStmt &stmt);
     void exitFAOL(FAOLStmt &stmt);

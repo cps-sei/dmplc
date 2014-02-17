@@ -4,6 +4,24 @@
 /*********************************************************************/
 //methods for GlobalStmtTransformer
 /*********************************************************************/
+void daig::GlobalStmtTransformer::addSubst(const std::string &s,size_t i)
+{
+  if(substMap.count(s)) {
+    std::cerr << "ERROR: substitution mapping for " << s << " exists already!!\n";
+    assert(0);
+  }
+  substMap[s] = i;
+}
+
+void daig::GlobalStmtTransformer::delSubst(const std::string &s)
+{
+  if(!substMap.count(s)) {
+    std::cerr << "ERROR: substitution mapping for " << s << " doesn't exist!!\n";
+    assert(0);
+  }
+  substMap.erase(s);
+}
+
 void daig::GlobalStmtTransformer::exitAtomic(daig::AtomicStmt &stmt)
 {
   res[host] = res[stmt.data];
@@ -16,37 +34,106 @@ void daig::GlobalStmtTransformer::exitPrivate(daig::PrivateStmt &stmt)
 
 void daig::GlobalStmtTransformer::exitBlock(daig::BlockStmt &stmt)
 {
+  StmtList sl;
+  BOOST_FOREACH(const Stmt &s,stmt.data) sl.push_back(res[s]);
+  res[host] = Stmt(new BlockStmt(sl));
 }
 
-void daig::GlobalStmtTransformer::exitAsgn(daig::AsgnStmt &stmt) {}
+void daig::GlobalStmtTransformer::exitAsgn(daig::AsgnStmt &stmt) 
+{ 
+  res[host] = host; 
+}
 
-void daig::GlobalStmtTransformer::exitIT(daig::ITStmt &stmt) {}
+void daig::GlobalStmtTransformer::exitIT(daig::ITStmt &stmt) 
+{ 
+  res[host] = Stmt(new ITStmt(stmt.cond, res[stmt.tbranch]));
+}
 
-void daig::GlobalStmtTransformer::exitITE(daig::ITEStmt &stmt) {}
+void daig::GlobalStmtTransformer::exitITE(daig::ITEStmt &stmt) 
+{ 
+  res[host] = Stmt(new ITEStmt(stmt.cond, res[stmt.tbranch], res[stmt.ebranch]));
+}
 
-void daig::GlobalStmtTransformer::exitFor(daig::ForStmt &stmt) {}
+void daig::GlobalStmtTransformer::exitFor(daig::ForStmt &stmt) 
+{ 
+  StmtList nin,nup;
+  BOOST_FOREACH(const Stmt &s,stmt.init) nin.push_back(res[s]);
+  BOOST_FOREACH(const Stmt &s,stmt.update) nup.push_back(res[s]);
+  res[host] = Stmt(new ForStmt(nin,stmt.test,nup,res[stmt.body]));
+}
 
-void daig::GlobalStmtTransformer::exitWhile(daig::WhileStmt &stmt) {}
+void daig::GlobalStmtTransformer::exitWhile(daig::WhileStmt &stmt) 
+{ 
+  res[host] = Stmt(new WhileStmt(stmt.cond,res[stmt.body]));
+}
 
-void daig::GlobalStmtTransformer::exitBreak(daig::BreakStmt &stmt) {}
+void daig::GlobalStmtTransformer::exitBreak(daig::BreakStmt &stmt) 
+{ 
+  res[host] = host; 
+}
 
-void daig::GlobalStmtTransformer::exitCont(daig::ContStmt &stmt) {}
+void daig::GlobalStmtTransformer::exitCont(daig::ContStmt &stmt) 
+{ 
+  res[host] = host; 
+}
 
-void daig::GlobalStmtTransformer::exitRet(daig::RetStmt &stmt) {}
+void daig::GlobalStmtTransformer::exitRet(daig::RetStmt &stmt) 
+{ 
+  res[host] = host; 
+}
 
-void daig::GlobalStmtTransformer::exitRetVoid(daig::RetVoidStmt &stmt) {}
+void daig::GlobalStmtTransformer::exitRetVoid(daig::RetVoidStmt &stmt) 
+{ 
+  res[host] = host; 
+}
 
-void daig::GlobalStmtTransformer::exitCall(daig::CallStmt &stmt) {}
+void daig::GlobalStmtTransformer::exitCall(daig::CallStmt &stmt) 
+{ 
+  res[host] = host; 
+}
 
-void daig::GlobalStmtTransformer::exitFAN(daig::FANStmt &stmt) {}
+void daig::GlobalStmtTransformer::exitFAN(daig::FANStmt &stmt) 
+{ 
+  Stmt shost = host;
+  StmtList sl;
 
-void daig::GlobalStmtTransformer::exitFADNP(daig::FADNPStmt &stmt) {}
+  for(size_t i = 0;i < nodeNum;++i) {
+    addSubst(stmt.id,i);
+    visit(stmt.data);
+    sl.push_back(res[stmt.data]);
+    delSubst(stmt.id);
+  }
 
-void daig::GlobalStmtTransformer::exitFAO(daig::FAOStmt &stmt) {}
+  res[shost] = Stmt(new daig::BlockStmt(sl));
+}
 
-void daig::GlobalStmtTransformer::exitFAOL(daig::FAOLStmt &stmt) {}
+void daig::GlobalStmtTransformer::exitFADNP(daig::FADNPStmt &stmt) 
+{ 
+  Stmt shost = host;
+  StmtList sl;
 
-void daig::GlobalStmtTransformer::exitFAOH(daig::FAOHStmt &stmt) {}
+  for(size_t i1 = 0;i1 < nodeNum;++i1) {
+    for(size_t i2 = i1+1;i2 < nodeNum;++i2) {
+      addSubst(stmt.id1,i1);
+      addSubst(stmt.id2,i2);
+      visit(stmt.data);
+      sl.push_back(res[stmt.data]);
+      delSubst(stmt.id1);
+      delSubst(stmt.id2);
+    }
+  }
+
+  res[shost] = Stmt(new daig::BlockStmt(sl));
+}
+
+void daig::GlobalStmtTransformer::exitFAO(daig::FAOStmt &stmt) 
+{ res[host] = host; }
+
+void daig::GlobalStmtTransformer::exitFAOL(daig::FAOLStmt &stmt) 
+{ res[host] = host; }
+
+void daig::GlobalStmtTransformer::exitFAOH(daig::FAOHStmt &stmt) 
+{ res[host] = host; }
 
 /*********************************************************************/
 //constructor
@@ -187,7 +274,7 @@ void daig::SyncSeq::createInit()
 
   //transform the body of init
   BOOST_FOREACH(const Stmt &st,fit->second.body) {
-    GlobalStmtTransformer gst;
+    GlobalStmtTransformer gst(nodeNum);
     gst.visit(st);
     fnBody.push_back(gst.res[st]);
   }
