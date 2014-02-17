@@ -61,6 +61,12 @@ void daig::GlobalTransformer::exitLval(daig::LvalExpr &expr)
 
   //substitute global variable name x with x_i
   std::string newName = expr.var;
+
+  //handle assume and assert
+  if(newName == "ASSUME") newName = "__CPROVER_assume";
+  else if(newName == "ASSERT") newName = "assert";
+
+  //handle global variables
   Node &node = prog.nodes.begin()->second;
   if(node.globVars.count(expr.var)) newName += "_i";
 
@@ -221,8 +227,11 @@ void daig::NodeTransformer::exitLval(daig::LvalExpr &expr)
   //substitute global variable name x with x_i
   std::string newName = expr.var;
 
+  //handle function call
   if(inCall) newName += ("_" + boost::lexical_cast<std::string>(nodeId));
 
+  //handle global variables -- distinguishing between lhs of
+  //assignments and other cases
   Node &node = prog.nodes.begin()->second;
   if(node.globVars.count(expr.var)) {
     if(inLhs) newName += "_f";
