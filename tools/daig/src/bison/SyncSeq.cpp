@@ -179,7 +179,7 @@ void daig::SyncSeq::createCopyStmts(const Variable &var,StmtList &res,ExprList i
 {
   //non-array type
   if(var.type->dims.empty()) {
-    LvalExpr lhs(var.name + "_i",indx);
+    Expr lhs(new LvalExpr(var.name + "_i",indx));
     Expr rhs(new LvalExpr(var.name + "_f",indx));
     Stmt stmt(new AsgnStmt(lhs,rhs));
     res.push_back(stmt);

@@ -100,17 +100,16 @@ namespace daig
   class AsgnStmt : public Statement
   {
   public:
-    LvalExpr lhs;
-    Expr rhs;
+    Expr lhs,rhs;
 
-    AsgnStmt(const LvalExpr &l,const Expr &r) : lhs(l),rhs(r) {}
+    AsgnStmt(const Expr &l,const Expr &r) : lhs(l),rhs(r) {}
     std::string toString() const { 
-      return lhs.toString() + " = " + rhs->toString(); 
+      return lhs->toString() + " = " + rhs->toString(); 
     }
     void print (std::ostream &os,unsigned int indent) const
     {
       std::string spacer (indent, ' ');
-      os << spacer << lhs.toString() << " = " << rhs->toString() << ";\n";
+      os << spacer << lhs->toString() << " = " << rhs->toString() << ";\n";
     }
   };
 
@@ -271,14 +270,14 @@ namespace daig
   class CallStmt : public Statement
   {
   public:
-    CallExpr data;
+    Expr data;
 
-    CallStmt(const Expr &f,const ExprList &a) : data(f,a) {}
-    std::string toString() const { return data.toString(); }
+    CallStmt(const Expr &f,const ExprList &a) : data(new CallExpr(f,a)) {}
+    std::string toString() const { return data->toString(); }
     void print (std::ostream &os,unsigned int indent) const
     {
       std::string spacer (indent, ' ');
-      os << spacer << data.toString() << ";\n";
+      os << spacer << data->toString() << ";\n";
     }
   };
 

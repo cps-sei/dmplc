@@ -233,8 +233,8 @@ stmt : TATOMIC stmt { $$ = new daig::Stmt(new daig::AtomicStmt(*$2)); delete $2;
 | TPRIVATE stmt { $$ = new daig::Stmt(new daig::PrivateStmt(*$2)); delete $2; }
 | TLBRACE stmt_list TRBRACE { $$ = new daig::Stmt(new daig::BlockStmt(*$2)); delete $2; }
 | lval TEQUAL expr TSEMICOLON { 
-  $$ = new daig::Stmt(new daig::AsgnStmt(*$1,*$3));
-  delete $1; delete $3;
+  $$ = new daig::Stmt(new daig::AsgnStmt(daig::Expr($1),*$3));
+  delete $3;
 }
 | TIF TLPAREN expr TRPAREN stmt {
   $$ = new daig::Stmt(new daig::ITStmt(*$3,*$5));
@@ -303,13 +303,13 @@ lval : TIDENTIFIER {
 for_init : {}
 | lval TEQUAL expr {
   $$ = new daig::StmtList();
-  $$->push_back(daig::Stmt(new daig::AsgnStmt(*$1,*$3)));
-  delete $1; delete $3;
+  $$->push_back(daig::Stmt(new daig::AsgnStmt(daig::Expr($1),*$3)));
+  delete $3;
 }
 | for_init TCOMMA lval TEQUAL expr {
   $$ = $1;
-  $$->push_back(daig::Stmt(new daig::AsgnStmt(*$3,*$5)));
-  delete $3; delete $5;
+  $$->push_back(daig::Stmt(new daig::AsgnStmt(daig::Expr($3),*$5)));
+  delete $5;
 }
 ;
 
@@ -320,8 +320,8 @@ for_test : { $$ = new daig::ExprList(); }
 for_update : {  $$ = new daig::StmtList(); }
 | lval TEQUAL expr {
   $$ = new daig::StmtList();
-  $$->push_back(daig::Stmt(new daig::AsgnStmt(*$1,*$3)));
-  delete $1; delete $3;
+  $$->push_back(daig::Stmt(new daig::AsgnStmt(daig::Expr($1),*$3)));
+  delete $3;
 }
 ;
 
