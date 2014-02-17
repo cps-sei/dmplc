@@ -6,7 +6,9 @@
 #include "Statement.h"
 #include "../bison/daig-parser.hpp"
 
+/*********************************************************************/
 //convert an operator to string
+/*********************************************************************/
 std::string daig::CompExpr::opToString() const
 {
   switch(op) {
@@ -27,7 +29,9 @@ std::string daig::CompExpr::opToString() const
   }
 }
 
+/*********************************************************************/
 //convert complex expression to string
+/*********************************************************************/
 std::string daig::CompExpr::toString() const
 {
   assert(!args.empty());
@@ -47,3 +51,7 @@ std::string daig::CompExpr::toString() const
 
   assert(0 && "ERROR: unknown COMPLEX expression!!");
 }
+
+/*********************************************************************/
+//end of file
+/*********************************************************************/
