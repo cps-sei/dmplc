@@ -13,6 +13,7 @@
 #include <vector>
 #include <boost/shared_ptr.hpp>
 #include <boost/foreach.hpp>
+#include <boost/lexical_cast.hpp>
 
 namespace daig
 {
@@ -42,11 +43,7 @@ namespace daig
   public:
     int data;
     IntExpr(int d) : data(d) {}
-    std::string toString() const {
-      char buf[128];
-      snprintf(buf,128,"%d",data);
-      return std::string(buf);
-    }
+    std::string toString() const { return boost::lexical_cast<std::string>(data); }
   };
 
   //an lvalue expression
