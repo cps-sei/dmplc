@@ -272,6 +272,7 @@ namespace daig
   public:
     Expr data;
 
+    CallStmt(const Expr &d) : data(d) {}
     CallStmt(const Expr &f,const ExprList &a) : data(new CallExpr(f,a)) {}
     std::string toString() const { return data->toString(); }
     void print (std::ostream &os,unsigned int indent) const
