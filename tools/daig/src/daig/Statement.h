@@ -79,19 +79,19 @@ namespace daig
   class BlockStmt : public Statement
   {
   public:
-    StmtList args;
+    StmtList data;
 
-    BlockStmt(const StmtList &a) : args(a) {}
+    BlockStmt(const StmtList &d) : data(d) {}
     std::string toString() const { 
       std::string res = "{ ";
-      BOOST_FOREACH(const Stmt &st,args) res += st->toString();
+      BOOST_FOREACH(const Stmt &st,data) res += st->toString();
       return res + " }";
     }
     void print (std::ostream &os,unsigned int indent) const
     {
       std::string spacer (indent, ' ');
       os << spacer << "{\n";
-      BOOST_FOREACH(const Stmt &st,args) st->print(os,indent+2);
+      BOOST_FOREACH(const Stmt &st,data) st->print(os,indent+2);
       os << spacer << "}\n";
     }
   };

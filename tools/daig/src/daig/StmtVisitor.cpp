@@ -17,7 +17,7 @@ void daig::StmtVisitor::visit(const daig::Stmt &stmt)
     host = stmt; exitPrivate(*st);
   } else if(BlockStmt *st = dynamic_cast<BlockStmt*>(&*stmt)) {
     host = stmt; enterBlock(*st);
-    BOOST_FOREACH(Stmt &s,st->args) visit(s);
+    BOOST_FOREACH(Stmt &s,st->data) visit(s);
     host = stmt; exitBlock(*st);
   } else if(AsgnStmt *st = dynamic_cast<AsgnStmt*>(&*stmt)) {
     host = stmt; enterAsgn(*st);
