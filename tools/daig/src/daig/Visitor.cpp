@@ -7,6 +7,9 @@
 /*********************************************************************/
 void daig::Visitor::visit(const daig::Expr &expr)
 {
+  //std::cout << "*************** visiting expr *******\n";
+  //std::cout << expr->toString() << '\n';
+
   if(IntExpr *ex = dynamic_cast<IntExpr*>(&*expr)) {
     hostExpr = expr; enterInt(*ex);
     hostExpr = expr; exitInt(*ex);
@@ -32,6 +35,9 @@ void daig::Visitor::visit(const daig::Expr &expr)
 /*********************************************************************/
 void daig::Visitor::visit(const daig::Stmt &stmt)
 {
+  //std::cout << "*************** visiting stmt *******\n";
+  //stmt->print(std::cout,0);
+
   if(AtomicStmt *st = dynamic_cast<AtomicStmt*>(&*stmt)) {
     hostStmt = stmt; if(enterAtomic(*st)) visit(st->data);
     hostStmt = stmt; exitAtomic(*st);

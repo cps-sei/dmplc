@@ -63,6 +63,10 @@ void daig::GlobalStmtTransformer::exitLval(daig::LvalExpr &expr)
     newName + "_" + boost::lexical_cast<std::string>(iit->second);
 
   exprMap[hostExpr] = daig::Expr(new daig::LvalExpr(newName,collect(expr.indices)));
+  
+  //std::cout << "**************************************\n";
+  //std::cout << hostExpr->toString() << '\n';
+  //std::cout << exprMap[hostExpr]->toString() << '\n';
 }
 
 void daig::GlobalStmtTransformer::exitComp(daig::CompExpr &expr)
@@ -98,6 +102,10 @@ void daig::GlobalStmtTransformer::exitBlock(daig::BlockStmt &stmt)
 void daig::GlobalStmtTransformer::exitAsgn(daig::AsgnStmt &stmt) 
 { 
   stmtMap[hostStmt] = Stmt(new AsgnStmt(exprMap[stmt.lhs],exprMap[stmt.rhs]));
+
+  //std::cout << "**************************************\n";
+  //hostStmt->print(std::cout,0);
+  //stmtMap[hostStmt]->print(std::cout,0);
 }
 
 void daig::GlobalStmtTransformer::exitIT(daig::ITStmt &stmt) 
