@@ -6,8 +6,43 @@
 #include <iostream>
 #include "DaigBuilder.hpp"
 #include "CProgram.h"
+#include "StmtVisitor.h"
 
 namespace daig {
+
+  /*******************************************************************/
+  //a visitor that transforms statements
+  /*******************************************************************/
+  struct GlobalStmtTransformer : public StmtVisitor
+  {
+    //map from statements to the result of transforming them
+    std::map<Stmt,Stmt> res;
+
+    //strip off atomic blocks -- they are not necessary in this
+    //sequentialization
+    void exitAtomic(AtomicStmt &stmt);
+    void exitPrivate(PrivateStmt &stmt);
+    void exitBlock(BlockStmt &stmt);
+    void exitAsgn(AsgnStmt &stmt);
+    void exitIT(ITStmt &stmt);
+    void exitITE(ITEStmt &stmt);
+    void exitFor(ForStmt &stmt);
+    void exitWhile(WhileStmt &stmt);
+    void exitBreak(BreakStmt &stmt);
+    void exitCont(ContStmt &stmt);
+    void exitRet(RetStmt &stmt);
+    void exitRetVoid(RetVoidStmt &stmt);
+    void exitCall(CallStmt &stmt);
+    void exitFAN(FANStmt &stmt);
+    void exitFADNP(FADNPStmt &stmt);
+    void exitFAO(FAOStmt &stmt);
+    void exitFAOL(FAOLStmt &stmt);
+    void exitFAOH(FAOHStmt &stmt);
+  };
+
+  /*******************************************************************/
+  //sequentializer for synchronous
+  /*******************************************************************/
   class SyncSeq
   {
   public:
@@ -20,6 +55,8 @@ namespace daig {
     void createCopyStmts(const Variable &var,StmtList &res,ExprList indx);
     void createRoundCopier();
     void createMainFunc();
+    void createInit();
+    void createSafety();
     void run();
     void printProgram(std::ostream &os);
   };

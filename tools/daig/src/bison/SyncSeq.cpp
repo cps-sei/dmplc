@@ -2,6 +2,53 @@
 #include "SyncSeq.hpp"
 
 /*********************************************************************/
+//methods for GlobalStmtTransformer
+/*********************************************************************/
+void daig::GlobalStmtTransformer::exitAtomic(daig::AtomicStmt &stmt)
+{
+  res[host] = res[stmt.data];
+}
+
+void daig::GlobalStmtTransformer::exitPrivate(daig::PrivateStmt &stmt)
+{
+  res[host] = res[stmt.data];
+}
+
+void daig::GlobalStmtTransformer::exitBlock(daig::BlockStmt &stmt)
+{
+}
+
+void daig::GlobalStmtTransformer::exitAsgn(daig::AsgnStmt &stmt) {}
+
+void daig::GlobalStmtTransformer::exitIT(daig::ITStmt &stmt) {}
+
+void daig::GlobalStmtTransformer::exitITE(daig::ITEStmt &stmt) {}
+
+void daig::GlobalStmtTransformer::exitFor(daig::ForStmt &stmt) {}
+
+void daig::GlobalStmtTransformer::exitWhile(daig::WhileStmt &stmt) {}
+
+void daig::GlobalStmtTransformer::exitBreak(daig::BreakStmt &stmt) {}
+
+void daig::GlobalStmtTransformer::exitCont(daig::ContStmt &stmt) {}
+
+void daig::GlobalStmtTransformer::exitRet(daig::RetStmt &stmt) {}
+
+void daig::GlobalStmtTransformer::exitRetVoid(daig::RetVoidStmt &stmt) {}
+
+void daig::GlobalStmtTransformer::exitCall(daig::CallStmt &stmt) {}
+
+void daig::GlobalStmtTransformer::exitFAN(daig::FANStmt &stmt) {}
+
+void daig::GlobalStmtTransformer::exitFADNP(daig::FADNPStmt &stmt) {}
+
+void daig::GlobalStmtTransformer::exitFAO(daig::FAOStmt &stmt) {}
+
+void daig::GlobalStmtTransformer::exitFAOL(daig::FAOLStmt &stmt) {}
+
+void daig::GlobalStmtTransformer::exitFAOH(daig::FAOHStmt &stmt) {}
+
+/*********************************************************************/
 //constructor
 /*********************************************************************/
 daig::SyncSeq::SyncSeq(daig::DaigBuilder &b,size_t n) : builder(b),nodeNum(n) 
@@ -122,6 +169,57 @@ void daig::SyncSeq::createMainFunc()
 }
 
 /*********************************************************************/
+//create the INIT() function
+/*********************************************************************/
+void daig::SyncSeq::createInit()
+{
+  std::list<daig::Variable> fnParams,fnTemps;
+  StmtList fnBody;
+
+  //if no INIT() defined, create an empty one
+  daig::Functions::iterator fit = builder.program.funcs.find("INIT");
+  if(fit == builder.program.funcs.end()) {
+    std::cout << "node does not have a INIT function, creating an empty one ...\n";
+    Function func(daig::voidType(),"INIT",fnParams,fnTemps,fnBody);
+    cprog.addFunction(func);
+    return;
+  }
+
+  //transform the body of init
+  BOOST_FOREACH(const Stmt &st,fit->second.body) {
+    GlobalStmtTransformer gst;
+    gst.visit(st);
+    fnBody.push_back(gst.res[st]);
+  }
+
+  Function func(daig::voidType(),"INIT",fnParams,fnTemps,fnBody);
+  cprog.addFunction(func);
+}
+
+/*********************************************************************/
+//create the SAFETY() function
+/*********************************************************************/
+void daig::SyncSeq::createSafety()
+{
+  Node &node = builder.program.nodes.begin()->second;
+  std::list<daig::Variable> fnParams,fnTemps;
+  StmtList fnBody;
+
+  //if no SAFETY() defined, create an empty one
+  daig::Functions::iterator fit = node.funcs.find("SAFETY");
+  if(fit == node.funcs.end()) {
+    std::cout << "node does not have a SAFETY function, creating an empty one ...\n";
+    Function func(daig::voidType(),"SAFETY",fnParams,fnTemps,fnBody);
+    cprog.addFunction(func);
+    return;
+  }
+
+
+  Function func(daig::voidType(),"SAFETY",fnParams,fnTemps,fnBody);
+  cprog.addFunction(func);
+}
+
+/*********************************************************************/
 //run the sequentialization, generating a C program
 /*********************************************************************/
 void daig::SyncSeq::run()
@@ -131,6 +229,8 @@ void daig::SyncSeq::run()
   createGlobVars();
   createRoundCopier();
   createMainFunc();
+  createInit();
+  createSafety();
 
   //instantiate functions
 }
