@@ -23,6 +23,9 @@ namespace daig
   class StmtVisitor
   {
   public:
+    //the stmt being visited currently
+    Stmt host;
+
     void visit(const Stmt &stmt);
 
     virtual void enterAtomic(AtomicStmt &stmt) {}
