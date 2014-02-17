@@ -1,4 +1,9 @@
 #include <boost/lexical_cast.hpp>
+#include "Type.h"
+#include "Variable.h"
+#include "Expression.h"
+#include "Statement.h"
+#include "daig-parser.hpp"
 #include "SyncSeq.hpp"
 
 /*********************************************************************/
@@ -247,6 +252,70 @@ void daig::NodeTransformer::exitCall(daig::CallExpr &expr)
   inCall = false;
   BOOST_FOREACH(Expr &e,expr.args) visit(e);
   exprMap[shost] = daig::Expr(new daig::CallExpr(exprMap[expr.func],collect(expr.args)));
+}
+
+//compute disjunction over all other node ids
+void daig::NodeTransformer::exitEXO(daig::EXOExpr &expr)
+{
+  Expr shost = hostExpr;
+  exprMap[shost] = Expr();
+  for(size_t i = 0;i < nodeNum;++i) {
+    if(i == nodeId) continue;
+    addIdMap(expr.id,i);
+    visit(expr.arg);
+    delIdMap(expr.id);
+    if(exprMap[shost].get()) 
+      exprMap[shost] = 
+        daig::Expr(new daig::CompExpr(TLOR,exprMap[shost],exprMap[expr.arg]));
+    else
+      exprMap[shost] = exprMap[expr.arg];
+  }
+
+  //turn empty disjunct into "1"
+  if(!exprMap[shost].get())
+    exprMap[shost] = Expr(new daig::IntExpr(1));
+}
+
+//compute disjunction over all higher node ids
+void daig::NodeTransformer::exitEXH(daig::EXHExpr &expr)
+{
+  Expr shost = hostExpr;
+  exprMap[shost] = Expr();
+  for(size_t i = nodeId+1;i < nodeNum;++i) {
+    addIdMap(expr.id,i);
+    visit(expr.arg);
+    delIdMap(expr.id);
+    if(exprMap[shost].get()) 
+      exprMap[shost] = 
+        daig::Expr(new daig::CompExpr(TLOR,exprMap[shost],exprMap[expr.arg]));
+    else
+      exprMap[shost] = exprMap[expr.arg];
+  }
+
+  //turn empty disjunct into "1"
+  if(!exprMap[shost].get())
+    exprMap[shost] = Expr(new daig::IntExpr(1));
+}
+
+//compute disjunction over all lower node ids
+void daig::NodeTransformer::exitEXL(daig::EXLExpr &expr)
+{
+  Expr shost = hostExpr;
+  exprMap[shost] = Expr();
+  for(size_t i = 0;i < nodeId;++i) {
+    addIdMap(expr.id,i);
+    visit(expr.arg);
+    delIdMap(expr.id);
+    if(exprMap[shost].get()) 
+      exprMap[shost] = 
+        daig::Expr(new daig::CompExpr(TLOR,exprMap[shost],exprMap[expr.arg]));
+    else
+      exprMap[shost] = exprMap[expr.arg];
+  }
+
+  //turn empty disjunct into "1"
+  if(!exprMap[shost].get())
+    exprMap[shost] = Expr(new daig::IntExpr(1));
 }
 
 void daig::NodeTransformer::exitAsgn(daig::AsgnStmt &stmt)

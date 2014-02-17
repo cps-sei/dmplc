@@ -27,6 +27,15 @@ void daig::Visitor::visit(const daig::Expr &expr)
       BOOST_FOREACH(Expr &e,ex->args) visit(e);
     }
     hostExpr = expr; exitCall(*ex);
+  } else if(EXOExpr *ex = dynamic_cast<EXOExpr*>(&*expr)) {
+    hostExpr = expr; if(enterEXO(*ex)) visit(ex->arg);
+    hostExpr = expr; exitEXO(*ex);
+  } else if(EXHExpr *ex = dynamic_cast<EXHExpr*>(&*expr)) {
+    hostExpr = expr; if(enterEXH(*ex)) visit(ex->arg);
+    hostExpr = expr; exitEXH(*ex);
+  } else if(EXLExpr *ex = dynamic_cast<EXLExpr*>(&*expr)) {
+    hostExpr = expr; if(enterEXL(*ex)) visit(ex->arg);
+    hostExpr = expr; exitEXL(*ex);
   } else assert(0 && "ERROR : visiting unknown expression!");
 }
 

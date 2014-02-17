@@ -39,6 +39,12 @@ namespace daig
     virtual void exitComp(CompExpr &expr) {}
     virtual bool enterCall(CallExpr &expr) { return true; }
     virtual void exitCall(CallExpr &expr) {}
+    virtual bool enterEXO(EXOExpr &expr) { return true; }
+    virtual void exitEXO(EXOExpr &expr) {}
+    virtual bool enterEXH(EXHExpr &expr) { return true; }
+    virtual void exitEXH(EXHExpr &expr) {}
+    virtual bool enterEXL(EXLExpr &expr) { return true; }
+    virtual void exitEXL(EXLExpr &expr) {}
 
     virtual bool enterAtomic(AtomicStmt &stmt) { return true; }
     virtual void exitAtomic(AtomicStmt &stmt) {}

@@ -86,6 +86,12 @@ namespace daig {
     void exitLval(LvalExpr &expr);
     bool enterCall(CallExpr &expr) { return false; }
     void exitCall(CallExpr &expr);
+    bool enterEXO(EXOExpr &expr) { return false; }
+    void exitEXO(EXOExpr &expr);
+    bool enterEXH(EXHExpr &expr) { return false; }
+    void exitEXH(EXHExpr &expr);
+    bool enterEXL(EXLExpr &expr) { return false; }
+    void exitEXL(EXLExpr &expr);
     bool enterAsgn(AsgnStmt &stmt) { return false; }
     void exitAsgn(AsgnStmt &stmt);
   };

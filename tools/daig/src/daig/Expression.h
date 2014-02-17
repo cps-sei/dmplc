@@ -112,6 +112,45 @@ namespace daig
     }
   };
 
+  //an exists other expression
+  class EXOExpr : public Expression
+  {
+  public:
+    std::string id;
+    Expr arg;
+
+    EXOExpr(const std::string &i,const Expr &a) : id(i),arg(a) {}
+    std::string toString() const {
+      return "EXISTS_OTHER(" + id + "," + arg->toString() + ")";
+    }
+  };
+
+  //an exists higher expression
+  class EXHExpr : public Expression
+  {
+  public:
+    std::string id;
+    Expr arg;
+
+    EXHExpr(const std::string &i,const Expr &a) : id(i),arg(a) {}
+    std::string toString() const {
+      return "EXISTS_HIGHER(" + id + "," + arg->toString() + ")";
+    }
+  };
+
+  //an exists lower expression
+  class EXLExpr : public Expression
+  {
+  public:
+    std::string id;
+    Expr arg;
+
+    EXLExpr(const std::string &i,const Expr &a) : id(i),arg(a) {}
+    std::string toString() const {
+      return "EXISTS_LOWER(" + id + "," + arg->toString() + ")";
+    }
+  };
+
   typedef std::vector <int> Expressions;
 }
 

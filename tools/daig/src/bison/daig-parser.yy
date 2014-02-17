@@ -53,8 +53,8 @@ daig::Node currNode;
 %token <token> TGLOBAL TLOCAL TBOOL TINT TVOID TCHAR TSIGNED TUNSIGNED
 %token <token> TNODENUM TATOMIC TPRIVATE
 %token <token> TIF TELSE TFOR TWHILE
-%token <token> TBREAK TCONTINUE TRETURN TPROGRAM TINIT TSAFETY
-%token <token> TFAN TFADNP TFAO TFAOL TFAOH
+%token <token> TBREAK TCONTINUE TRETURN TEXO TEXH TEXL TPROGRAM
+%token <token> TINIT TSAFETY TFAN TFADNP TFAO TFAOL TFAOH
 %token <token> TCEQ TCNE TCLT TCLE TCGT TCGE TEQUAL
 %token <token> TLAND TLOR TLNOT
 %token <token> TLPAREN TRPAREN TLBRACE TRBRACE 
@@ -349,6 +349,18 @@ expr : lval { $$ = new daig::Expr($1); printExpr(*$$); }
   $$ = new daig::Expr(new daig::CallExpr(daig::Expr($1),*$3));
   delete $3; printExpr(*$$);
 } 
+| TEXO TLPAREN TIDENTIFIER TCOMMA expr TRPAREN {
+  $$ = new daig::Expr(new daig::EXOExpr(*$3,daig::Expr(*$5)));
+  delete $3; delete $5;
+}
+| TEXH TLPAREN TIDENTIFIER TCOMMA expr TRPAREN {
+  $$ = new daig::Expr(new daig::EXHExpr(*$3,daig::Expr(*$5)));
+  delete $3; delete $5;
+}
+| TEXL TLPAREN TIDENTIFIER TCOMMA expr TRPAREN {
+  $$ = new daig::Expr(new daig::EXLExpr(*$3,daig::Expr(*$5)));
+  delete $3; delete $5;
+}
 | TLPAREN expr TRPAREN { $$ = $2; }
 ;
 
