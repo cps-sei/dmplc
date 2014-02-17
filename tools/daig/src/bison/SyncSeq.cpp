@@ -55,10 +55,13 @@ void daig::GlobalStmtTransformer::exitLval(daig::LvalExpr &expr)
   exprMap[hostExpr] = hostExpr;
 
   //substitute .id with its mapping in idMap
-  std::map<std::string,size_t>::const_iterator iit = idMap.find(expr.node);
-  if(iit == idMap.end()) return;
+  std::map<std::string,size_t>::const_iterator iit = idMap.find(expr.var);
+  std::string newName = iit == idMap.end() ? expr.var : boost::lexical_cast<std::string>(iit->second);
 
-  std::string newName = expr.var + "_" + boost::lexical_cast<std::string>(iit->second);
+  iit = idMap.find(expr.node);
+  newName = iit == idMap.end() ? newName : 
+    newName + "_" + boost::lexical_cast<std::string>(iit->second);
+
   exprMap[hostExpr] = daig::Expr(new daig::LvalExpr(newName,collect(expr.indices)));
 }
 
