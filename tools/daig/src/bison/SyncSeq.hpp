@@ -19,19 +19,30 @@ namespace daig {
     size_t nodeNum;
 
     //map from variables to constants for substitution
-    std::map<std::string,size_t> substMap;
+    std::map<std::string,size_t> idMap;
+
+    //map from expressions to the result of transforming them
+    std::map<Expr,Expr> exprMap;
 
     //map from statements to the result of transforming them
-    std::map<Stmt,Stmt> res;
+    std::map<Stmt,Stmt> stmtMap;
 
     //constructors
     GlobalStmtTransformer(size_t n) : nodeNum(n) {}
 
     //update substitution mapping
-    void addSubst(const std::string &s,size_t i);
-    void delSubst(const std::string &s);
+    void addIdMap(const std::string &s,size_t i);
+    void delIdMap(const std::string &s);
+
+    //collect results
+    ExprList collect(const ExprList &el);
+    StmtList collect(const StmtList &sl);
 
     //dispatchers
+    void exitInt(IntExpr &expr);
+    void exitLval(LvalExpr &expr);
+    void exitComp(CompExpr &expr);
+    void exitCall(CallExpr &expr);
     void exitAtomic(AtomicStmt &stmt);
     void exitPrivate(PrivateStmt &stmt);
     void exitBlock(BlockStmt &stmt);

@@ -4,92 +4,144 @@
 /*********************************************************************/
 //methods for GlobalStmtTransformer
 /*********************************************************************/
-void daig::GlobalStmtTransformer::addSubst(const std::string &s,size_t i)
+
+//add id to int mapping
+void daig::GlobalStmtTransformer::addIdMap(const std::string &s,size_t i)
 {
-  if(substMap.count(s)) {
+  if(idMap.count(s)) {
     std::cerr << "ERROR: substitution mapping for " << s << " exists already!!\n";
     assert(0);
   }
-  substMap[s] = i;
+  idMap[s] = i;
 }
 
-void daig::GlobalStmtTransformer::delSubst(const std::string &s)
+//remove id to int mappiing
+void daig::GlobalStmtTransformer::delIdMap(const std::string &s)
 {
-  if(!substMap.count(s)) {
+  if(!idMap.count(s)) {
     std::cerr << "ERROR: substitution mapping for " << s << " doesn't exist!!\n";
     assert(0);
   }
-  substMap.erase(s);
+  idMap.erase(s);
 }
+
+//collect results for an expr list
+daig::ExprList daig::GlobalStmtTransformer::collect(const ExprList &el)
+{
+  daig::ExprList res;
+  BOOST_FOREACH(const daig::Expr &e,el) res.push_back(exprMap[e]);
+  return res;
+}
+
+//collect results for an stmt list
+daig::StmtList daig::GlobalStmtTransformer::collect(const StmtList &sl)
+{
+  daig::StmtList res;
+  BOOST_FOREACH(const daig::Stmt &s,sl) res.push_back(stmtMap[s]);
+  return res;
+}
+
+/*********************************************************************/
+//dispatchers for expressions
+/*********************************************************************/
+
+void daig::GlobalStmtTransformer::exitInt(daig::IntExpr &expr)
+{
+  exprMap[hostExpr] = hostExpr;
+}
+
+void daig::GlobalStmtTransformer::exitLval(daig::LvalExpr &expr)
+{
+  exprMap[hostExpr] = hostExpr;
+
+  //substitute .id with its mapping in idMap
+  std::map<std::string,size_t>::const_iterator iit = idMap.find(expr.node);
+  if(iit == idMap.end()) return;
+
+  std::string newName = expr.var + "_" + boost::lexical_cast<std::string>(iit->second);
+  exprMap[hostExpr] = daig::Expr(new daig::LvalExpr(newName,collect(expr.indices)));
+}
+
+void daig::GlobalStmtTransformer::exitComp(daig::CompExpr &expr)
+{
+  exprMap[hostExpr] = daig::Expr(new daig::CompExpr(expr.op,collect(expr.args)));
+}
+
+void daig::GlobalStmtTransformer::exitCall(daig::CallExpr &expr)
+{
+  exprMap[hostExpr] = daig::Expr(new daig::CallExpr(exprMap[expr.func],
+                                                    collect(expr.args)));
+}
+
+/*********************************************************************/
+//dispatchers for statements
+/*********************************************************************/
 
 void daig::GlobalStmtTransformer::exitAtomic(daig::AtomicStmt &stmt)
 {
-  res[hostStmt] = res[stmt.data];
+  stmtMap[hostStmt] = stmtMap[stmt.data];
 }
 
 void daig::GlobalStmtTransformer::exitPrivate(daig::PrivateStmt &stmt)
 {
-  res[hostStmt] = res[stmt.data];
+  stmtMap[hostStmt] = stmtMap[stmt.data];
 }
 
 void daig::GlobalStmtTransformer::exitBlock(daig::BlockStmt &stmt)
 {
-  StmtList sl;
-  BOOST_FOREACH(const Stmt &s,stmt.data) sl.push_back(res[s]);
-  res[hostStmt] = Stmt(new BlockStmt(sl));
+  stmtMap[hostStmt] = Stmt(new BlockStmt(collect(stmt.data)));
 }
 
 void daig::GlobalStmtTransformer::exitAsgn(daig::AsgnStmt &stmt) 
 { 
-  res[hostStmt] = hostStmt; 
+  stmtMap[hostStmt] = Stmt(new AsgnStmt(exprMap[stmt.lhs],exprMap[stmt.rhs]));
 }
 
 void daig::GlobalStmtTransformer::exitIT(daig::ITStmt &stmt) 
 { 
-  res[hostStmt] = Stmt(new ITStmt(stmt.cond, res[stmt.tbranch]));
+  stmtMap[hostStmt] = Stmt(new ITStmt(exprMap[stmt.cond], stmtMap[stmt.tbranch]));
 }
 
 void daig::GlobalStmtTransformer::exitITE(daig::ITEStmt &stmt) 
 { 
-  res[hostStmt] = Stmt(new ITEStmt(stmt.cond, res[stmt.tbranch], res[stmt.ebranch]));
+  stmtMap[hostStmt] = Stmt(new ITEStmt(exprMap[stmt.cond], stmtMap[stmt.tbranch], 
+                                       stmtMap[stmt.ebranch]));
 }
 
 void daig::GlobalStmtTransformer::exitFor(daig::ForStmt &stmt) 
 { 
-  StmtList nin,nup;
-  BOOST_FOREACH(const Stmt &s,stmt.init) nin.push_back(res[s]);
-  BOOST_FOREACH(const Stmt &s,stmt.update) nup.push_back(res[s]);
-  res[hostStmt] = Stmt(new ForStmt(nin,stmt.test,nup,res[stmt.body]));
+  stmtMap[hostStmt] = Stmt(new ForStmt(collect(stmt.init),collect(stmt.test),
+                                       collect(stmt.update),stmtMap[stmt.body]));
 }
 
 void daig::GlobalStmtTransformer::exitWhile(daig::WhileStmt &stmt) 
 { 
-  res[hostStmt] = Stmt(new WhileStmt(stmt.cond,res[stmt.body]));
+  stmtMap[hostStmt] = Stmt(new WhileStmt(exprMap[stmt.cond],stmtMap[stmt.body]));
 }
 
 void daig::GlobalStmtTransformer::exitBreak(daig::BreakStmt &stmt) 
 { 
-  res[hostStmt] = hostStmt; 
+  stmtMap[hostStmt] = hostStmt; 
 }
 
 void daig::GlobalStmtTransformer::exitCont(daig::ContStmt &stmt) 
 { 
-  res[hostStmt] = hostStmt; 
+  stmtMap[hostStmt] = hostStmt; 
 }
 
 void daig::GlobalStmtTransformer::exitRet(daig::RetStmt &stmt) 
 { 
-  res[hostStmt] = hostStmt; 
+  stmtMap[hostStmt] = Stmt(new RetStmt(exprMap[stmt.retVal]));
 }
 
 void daig::GlobalStmtTransformer::exitRetVoid(daig::RetVoidStmt &stmt) 
 { 
-  res[hostStmt] = hostStmt; 
+  stmtMap[hostStmt] = hostStmt; 
 }
 
 void daig::GlobalStmtTransformer::exitCall(daig::CallStmt &stmt) 
 { 
-  res[hostStmt] = hostStmt; 
+  stmtMap[hostStmt] = Stmt(new CallStmt(exprMap[stmt.data]));
 }
 
 void daig::GlobalStmtTransformer::exitFAN(daig::FANStmt &stmt) 
@@ -98,13 +150,13 @@ void daig::GlobalStmtTransformer::exitFAN(daig::FANStmt &stmt)
   StmtList sl;
 
   for(size_t i = 0;i < nodeNum;++i) {
-    addSubst(stmt.id,i);
+    addIdMap(stmt.id,i);
     visit(stmt.data);
-    sl.push_back(res[stmt.data]);
-    delSubst(stmt.id);
+    sl.push_back(stmtMap[stmt.data]);
+    delIdMap(stmt.id);
   }
 
-  res[shost] = Stmt(new daig::BlockStmt(sl));
+  stmtMap[shost] = Stmt(new daig::BlockStmt(sl));
 }
 
 void daig::GlobalStmtTransformer::exitFADNP(daig::FADNPStmt &stmt) 
@@ -114,26 +166,26 @@ void daig::GlobalStmtTransformer::exitFADNP(daig::FADNPStmt &stmt)
 
   for(size_t i1 = 0;i1 < nodeNum;++i1) {
     for(size_t i2 = i1+1;i2 < nodeNum;++i2) {
-      addSubst(stmt.id1,i1);
-      addSubst(stmt.id2,i2);
+      addIdMap(stmt.id1,i1);
+      addIdMap(stmt.id2,i2);
       visit(stmt.data);
-      sl.push_back(res[stmt.data]);
-      delSubst(stmt.id1);
-      delSubst(stmt.id2);
+      sl.push_back(stmtMap[stmt.data]);
+      delIdMap(stmt.id1);
+      delIdMap(stmt.id2);
     }
   }
 
-  res[shost] = Stmt(new daig::BlockStmt(sl));
+  stmtMap[shost] = Stmt(new daig::BlockStmt(sl));
 }
 
 void daig::GlobalStmtTransformer::exitFAO(daig::FAOStmt &stmt) 
-{ res[hostStmt] = hostStmt; }
+{ stmtMap[hostStmt] = hostStmt; }
 
 void daig::GlobalStmtTransformer::exitFAOL(daig::FAOLStmt &stmt) 
-{ res[hostStmt] = hostStmt; }
+{ stmtMap[hostStmt] = hostStmt; }
 
 void daig::GlobalStmtTransformer::exitFAOH(daig::FAOHStmt &stmt) 
-{ res[hostStmt] = hostStmt; }
+{ stmtMap[hostStmt] = hostStmt; }
 
 /*********************************************************************/
 //constructor
@@ -276,7 +328,7 @@ void daig::SyncSeq::createInit()
   BOOST_FOREACH(const Stmt &st,fit->second.body) {
     GlobalStmtTransformer gst(nodeNum);
     gst.visit(st);
-    fnBody.push_back(gst.res[st]);
+    fnBody.push_back(gst.stmtMap[st]);
   }
 
   Function func(daig::voidType(),"INIT",fnParams,fnTemps,fnBody);
