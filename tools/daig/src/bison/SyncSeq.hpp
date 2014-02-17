@@ -15,6 +15,9 @@ namespace daig {
   /*******************************************************************/
   struct GlobalStmtTransformer : public Visitor
   {
+    //the DASL program being transformed
+    daig::Program &prog;
+
     //the number of nodes
     size_t nodeNum;
 
@@ -28,7 +31,7 @@ namespace daig {
     std::map<Stmt,Stmt> stmtMap;
 
     //constructors
-    GlobalStmtTransformer(size_t n) : nodeNum(n) {}
+    GlobalStmtTransformer(daig::Program &p,size_t n) : prog(p),nodeNum(n) {}
 
     //update substitution mapping
     void addIdMap(const std::string &s,size_t i);

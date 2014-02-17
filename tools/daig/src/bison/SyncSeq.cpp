@@ -54,9 +54,14 @@ void daig::GlobalStmtTransformer::exitLval(daig::LvalExpr &expr)
 {
   exprMap[hostExpr] = hostExpr;
 
+  //substitute global variable name x with x_i
+  std::string newName = expr.var;
+  Node &node = prog.nodes.begin()->second;
+  if(node.globVars.count(expr.var)) newName += "_i";
+
   //substitute .id with its mapping in idMap
   std::map<std::string,size_t>::const_iterator iit = idMap.find(expr.var);
-  std::string newName = iit == idMap.end() ? expr.var : boost::lexical_cast<std::string>(iit->second);
+  newName = iit == idMap.end() ? newName : boost::lexical_cast<std::string>(iit->second);
 
   iit = idMap.find(expr.node);
   newName = iit == idMap.end() ? newName : 
@@ -337,7 +342,7 @@ void daig::SyncSeq::createInit()
 
   //transform the body of init
   BOOST_FOREACH(const Stmt &st,fit->second.body) {
-    GlobalStmtTransformer gst(nodeNum);
+    GlobalStmtTransformer gst(builder.program,nodeNum);
     gst.visit(st);
     fnBody.push_back(gst.stmtMap[st]);
   }
@@ -366,7 +371,7 @@ void daig::SyncSeq::createSafety()
 
   //transform the body of safety
   BOOST_FOREACH(const Stmt &st,fit->second.body) {
-    GlobalStmtTransformer gst(nodeNum);
+    GlobalStmtTransformer gst(builder.program,nodeNum);
     gst.visit(st);
     fnBody.push_back(gst.stmtMap[st]);
   }
