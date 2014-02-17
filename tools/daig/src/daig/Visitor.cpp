@@ -3,69 +3,97 @@
 #include "Visitor.h"
 
 /*********************************************************************/
-//top level dispatch method
+//top level dispatch method for expressions
+/*********************************************************************/
+void daig::Visitor::visit(const daig::Expr &expr)
+{
+  if(IntExpr *ex = dynamic_cast<IntExpr*>(&*expr)) {
+    hostExpr = expr; enterInt(*ex);
+    hostExpr = expr; exitInt(*ex);
+  } else if(LvalExpr *ex = dynamic_cast<LvalExpr*>(&*expr)) {
+    hostExpr = expr; 
+    if(enterLval(*ex)) BOOST_FOREACH(Expr &e,ex->indices) visit(e);
+    hostExpr = expr; exitLval(*ex);
+  } else if(CompExpr *ex = dynamic_cast<CompExpr*>(&*expr)) {
+    hostExpr = expr; 
+    if(enterComp(*ex)) BOOST_FOREACH(Expr &e,ex->args) visit(e);
+    hostExpr = expr; exitComp(*ex);
+  } else if(CallExpr *ex = dynamic_cast<CallExpr*>(&*expr)) {
+    hostExpr = expr; if(enterCall(*ex)) { 
+      visit(ex->func);
+      BOOST_FOREACH(Expr &e,ex->args) visit(e);
+    }
+    hostExpr = expr; exitCall(*ex);
+  } else assert(0 && "ERROR : visiting unknown expression!");
+}
+
+/*********************************************************************/
+//top level dispatch method for statements
 /*********************************************************************/
 void daig::Visitor::visit(const daig::Stmt &stmt)
 {
   if(AtomicStmt *st = dynamic_cast<AtomicStmt*>(&*stmt)) {
-    host = stmt; if(enterAtomic(*st)) visit(st->data);
-    host = stmt; exitAtomic(*st);
+    hostStmt = stmt; if(enterAtomic(*st)) visit(st->data);
+    hostStmt = stmt; exitAtomic(*st);
   } else if(PrivateStmt *st = dynamic_cast<PrivateStmt*>(&*stmt)) {
-    host = stmt; if(enterPrivate(*st)) visit(st->data);
-    host = stmt; exitPrivate(*st);
+    hostStmt = stmt; if(enterPrivate(*st)) visit(st->data);
+    hostStmt = stmt; exitPrivate(*st);
   } else if(BlockStmt *st = dynamic_cast<BlockStmt*>(&*stmt)) {
-    host = stmt; if(enterBlock(*st)) BOOST_FOREACH(Stmt &s,st->data) visit(s);
-    host = stmt; exitBlock(*st);
+    hostStmt = stmt; if(enterBlock(*st)) BOOST_FOREACH(Stmt &s,st->data) visit(s);
+    hostStmt = stmt; exitBlock(*st);
   } else if(AsgnStmt *st = dynamic_cast<AsgnStmt*>(&*stmt)) {
-    host = stmt; enterAsgn(*st);
-    host = stmt; exitAsgn(*st);
+    hostStmt = stmt; if(enterAsgn(*st)) { visit(st->lhs); visit(st->rhs); }
+    hostStmt = stmt; exitAsgn(*st);
   } else if(ITStmt *st = dynamic_cast<ITStmt*>(&*stmt)) {
-    host = stmt; if(enterIT(*st)) visit(st->tbranch);
-    host = stmt; exitIT(*st);
+    hostStmt = stmt; if(enterIT(*st)) { visit(st->cond); visit(st->tbranch); }
+    hostStmt = stmt; exitIT(*st);
   } else if(ITEStmt *st = dynamic_cast<ITEStmt*>(&*stmt)) {
-    host = stmt; if(enterITE(*st)) { visit(st->tbranch); visit(st->ebranch); }
-    host = stmt; exitITE(*st);
+    hostStmt = stmt; if(enterITE(*st)) { 
+      visit(st->cond); visit(st->tbranch); visit(st->ebranch); 
+    }
+    hostStmt = stmt; exitITE(*st);
   } else if(ForStmt *st = dynamic_cast<ForStmt*>(&*stmt)) {
-    host = stmt; 
+    hostStmt = stmt; 
     if(enterFor(*st)) {
       BOOST_FOREACH(Stmt &s,st->init) visit(s);
+      BOOST_FOREACH(Expr &e,st->test) visit(e);
       BOOST_FOREACH(Stmt &s,st->update) visit(s);
       visit(st->body);
     }
-    host = stmt; exitFor(*st);
+    hostStmt = stmt; exitFor(*st);
   } else if(WhileStmt *st = dynamic_cast<WhileStmt*>(&*stmt)) {
-    host = stmt; if(enterWhile(*st)) visit(st->body);
-    host = stmt; exitWhile(*st);
+    hostStmt = stmt; if(enterWhile(*st)) { visit(st->cond); visit(st->body); }
+    hostStmt = stmt; exitWhile(*st);
   } else if(BreakStmt *st = dynamic_cast<BreakStmt*>(&*stmt)) {
-    host = stmt; enterBreak(*st);
-    host = stmt; exitBreak(*st);
+    hostStmt = stmt; enterBreak(*st);
+    hostStmt = stmt; exitBreak(*st);
   } else if(ContStmt *st = dynamic_cast<ContStmt*>(&*stmt)) {
-    host = stmt; enterCont(*st);
-    host = stmt; exitCont(*st);
+    hostStmt = stmt; enterCont(*st);
+    hostStmt = stmt; exitCont(*st);
   } else if(RetStmt *st = dynamic_cast<RetStmt*>(&*stmt)) {
-    host = stmt; enterRet(*st);
-    host = stmt; exitRet(*st);
+    hostStmt = stmt; if(enterRet(*st)) visit(st->retVal);
+    hostStmt = stmt; exitRet(*st);
   } else if(RetVoidStmt *st = dynamic_cast<RetVoidStmt*>(&*stmt)) {
-    host = stmt; enterRetVoid(*st);
-    host = stmt; exitRetVoid(*st);
+    hostStmt = stmt; enterRetVoid(*st);
+    hostStmt = stmt; exitRetVoid(*st);
   } else if(CallStmt *st = dynamic_cast<CallStmt*>(&*stmt)) {
-    host = stmt; enterCall(*st);
-    host = stmt; exitCall(*st);
+    hostStmt = stmt; if(enterCall(*st)) visit(st->data);
+    hostStmt = stmt; exitCall(*st);
   } else if(FANStmt *st = dynamic_cast<FANStmt*>(&*stmt)) {
-    host = stmt; if(enterFAN(*st)) visit(st->data);
-    host = stmt; exitFAN(*st);
+    hostStmt = stmt; if(enterFAN(*st)) visit(st->data);
+    hostStmt = stmt; exitFAN(*st);
   } else if(FADNPStmt *st = dynamic_cast<FADNPStmt*>(&*stmt)) {
-    host = stmt; if(enterFADNP(*st)) visit(st->data);
-    host = stmt; exitFADNP(*st);
+    hostStmt = stmt; if(enterFADNP(*st)) visit(st->data);
+    hostStmt = stmt; exitFADNP(*st);
   } else if(FAOStmt *st = dynamic_cast<FAOStmt*>(&*stmt)) {
-    host = stmt; if(enterFAO(*st)) visit(st->data);
-    host = stmt; exitFAO(*st);
+    hostStmt = stmt; if(enterFAO(*st)) visit(st->data);
+    hostStmt = stmt; exitFAO(*st);
   } else if(FAOLStmt *st = dynamic_cast<FAOLStmt*>(&*stmt)) {
-    host = stmt; if(enterFAOL(*st)) visit(st->data);
-    host = stmt; exitFAOL(*st);
+    hostStmt = stmt; if(enterFAOL(*st)) visit(st->data);
+    hostStmt = stmt; exitFAOL(*st);
   } else if(FAOHStmt *st = dynamic_cast<FAOHStmt*>(&*stmt)) {
-    host = stmt; if(enterFAOH(*st)) visit(st->data);
-    host = stmt; exitFAOH(*st);
+    hostStmt = stmt; if(enterFAOH(*st)) visit(st->data);
+    hostStmt = stmt; exitFAOH(*st);
   } else assert(0 && "ERROR : visiting unknown statement!");
 }
 

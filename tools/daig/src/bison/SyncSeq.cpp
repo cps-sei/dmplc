@@ -24,34 +24,34 @@ void daig::GlobalStmtTransformer::delSubst(const std::string &s)
 
 void daig::GlobalStmtTransformer::exitAtomic(daig::AtomicStmt &stmt)
 {
-  res[host] = res[stmt.data];
+  res[hostStmt] = res[stmt.data];
 }
 
 void daig::GlobalStmtTransformer::exitPrivate(daig::PrivateStmt &stmt)
 {
-  res[host] = res[stmt.data];
+  res[hostStmt] = res[stmt.data];
 }
 
 void daig::GlobalStmtTransformer::exitBlock(daig::BlockStmt &stmt)
 {
   StmtList sl;
   BOOST_FOREACH(const Stmt &s,stmt.data) sl.push_back(res[s]);
-  res[host] = Stmt(new BlockStmt(sl));
+  res[hostStmt] = Stmt(new BlockStmt(sl));
 }
 
 void daig::GlobalStmtTransformer::exitAsgn(daig::AsgnStmt &stmt) 
 { 
-  res[host] = host; 
+  res[hostStmt] = hostStmt; 
 }
 
 void daig::GlobalStmtTransformer::exitIT(daig::ITStmt &stmt) 
 { 
-  res[host] = Stmt(new ITStmt(stmt.cond, res[stmt.tbranch]));
+  res[hostStmt] = Stmt(new ITStmt(stmt.cond, res[stmt.tbranch]));
 }
 
 void daig::GlobalStmtTransformer::exitITE(daig::ITEStmt &stmt) 
 { 
-  res[host] = Stmt(new ITEStmt(stmt.cond, res[stmt.tbranch], res[stmt.ebranch]));
+  res[hostStmt] = Stmt(new ITEStmt(stmt.cond, res[stmt.tbranch], res[stmt.ebranch]));
 }
 
 void daig::GlobalStmtTransformer::exitFor(daig::ForStmt &stmt) 
@@ -59,42 +59,42 @@ void daig::GlobalStmtTransformer::exitFor(daig::ForStmt &stmt)
   StmtList nin,nup;
   BOOST_FOREACH(const Stmt &s,stmt.init) nin.push_back(res[s]);
   BOOST_FOREACH(const Stmt &s,stmt.update) nup.push_back(res[s]);
-  res[host] = Stmt(new ForStmt(nin,stmt.test,nup,res[stmt.body]));
+  res[hostStmt] = Stmt(new ForStmt(nin,stmt.test,nup,res[stmt.body]));
 }
 
 void daig::GlobalStmtTransformer::exitWhile(daig::WhileStmt &stmt) 
 { 
-  res[host] = Stmt(new WhileStmt(stmt.cond,res[stmt.body]));
+  res[hostStmt] = Stmt(new WhileStmt(stmt.cond,res[stmt.body]));
 }
 
 void daig::GlobalStmtTransformer::exitBreak(daig::BreakStmt &stmt) 
 { 
-  res[host] = host; 
+  res[hostStmt] = hostStmt; 
 }
 
 void daig::GlobalStmtTransformer::exitCont(daig::ContStmt &stmt) 
 { 
-  res[host] = host; 
+  res[hostStmt] = hostStmt; 
 }
 
 void daig::GlobalStmtTransformer::exitRet(daig::RetStmt &stmt) 
 { 
-  res[host] = host; 
+  res[hostStmt] = hostStmt; 
 }
 
 void daig::GlobalStmtTransformer::exitRetVoid(daig::RetVoidStmt &stmt) 
 { 
-  res[host] = host; 
+  res[hostStmt] = hostStmt; 
 }
 
 void daig::GlobalStmtTransformer::exitCall(daig::CallStmt &stmt) 
 { 
-  res[host] = host; 
+  res[hostStmt] = hostStmt; 
 }
 
 void daig::GlobalStmtTransformer::exitFAN(daig::FANStmt &stmt) 
 { 
-  Stmt shost = host;
+  Stmt shost = hostStmt;
   StmtList sl;
 
   for(size_t i = 0;i < nodeNum;++i) {
@@ -109,7 +109,7 @@ void daig::GlobalStmtTransformer::exitFAN(daig::FANStmt &stmt)
 
 void daig::GlobalStmtTransformer::exitFADNP(daig::FADNPStmt &stmt) 
 { 
-  Stmt shost = host;
+  Stmt shost = hostStmt;
   StmtList sl;
 
   for(size_t i1 = 0;i1 < nodeNum;++i1) {
@@ -127,13 +127,13 @@ void daig::GlobalStmtTransformer::exitFADNP(daig::FADNPStmt &stmt)
 }
 
 void daig::GlobalStmtTransformer::exitFAO(daig::FAOStmt &stmt) 
-{ res[host] = host; }
+{ res[hostStmt] = hostStmt; }
 
 void daig::GlobalStmtTransformer::exitFAOL(daig::FAOLStmt &stmt) 
-{ res[host] = host; }
+{ res[hostStmt] = hostStmt; }
 
 void daig::GlobalStmtTransformer::exitFAOH(daig::FAOHStmt &stmt) 
-{ res[host] = host; }
+{ res[hostStmt] = hostStmt; }
 
 /*********************************************************************/
 //constructor

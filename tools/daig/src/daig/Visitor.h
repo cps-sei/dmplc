@@ -12,6 +12,7 @@
 #include <list>
 #include <map>
 #include <string>
+#include "Expression.h"
 #include "Statement.h"
 
 namespace daig
@@ -23,10 +24,21 @@ namespace daig
   class Visitor
   {
   public:
-    //the stmt being visited currently
-    Stmt host;
+    //the stmt/expression being visited currently
+    Stmt hostStmt;
+    Expr hostExpr;
 
+    void visit(const Expr &expr);
     void visit(const Stmt &stmt);
+
+    virtual bool enterInt(IntExpr &expr) { return true; }
+    virtual void exitInt(IntExpr &expr) {}
+    virtual bool enterLval(LvalExpr &expr) { return true; }
+    virtual void exitLval(LvalExpr &expr) {}
+    virtual bool enterComp(CompExpr &expr) { return true; }
+    virtual void exitComp(CompExpr &expr) {}
+    virtual bool enterCall(CallExpr &expr) { return true; }
+    virtual void exitCall(CallExpr &expr) {}
 
     virtual bool enterAtomic(AtomicStmt &stmt) { return true; }
     virtual void exitAtomic(AtomicStmt &stmt) {}
