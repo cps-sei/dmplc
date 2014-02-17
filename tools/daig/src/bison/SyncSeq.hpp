@@ -6,14 +6,14 @@
 #include <iostream>
 #include "DaigBuilder.hpp"
 #include "CProgram.h"
-#include "StmtVisitor.h"
+#include "Visitor.h"
 
 namespace daig {
 
   /*******************************************************************/
   //a visitor that transforms statements
   /*******************************************************************/
-  struct GlobalStmtTransformer : public StmtVisitor
+  struct GlobalStmtTransformer : public Visitor
   {
     //the number of nodes
     size_t nodeNum;

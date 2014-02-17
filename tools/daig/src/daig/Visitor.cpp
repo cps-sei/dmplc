@@ -1,11 +1,11 @@
 #include <iostream>
 #include <boost/foreach.hpp>
-#include "StmtVisitor.h"
+#include "Visitor.h"
 
 /*********************************************************************/
 //top level dispatch method
 /*********************************************************************/
-void daig::StmtVisitor::visit(const daig::Stmt &stmt)
+void daig::Visitor::visit(const daig::Stmt &stmt)
 {
   if(AtomicStmt *st = dynamic_cast<AtomicStmt*>(&*stmt)) {
     host = stmt; if(enterAtomic(*st)) visit(st->data);

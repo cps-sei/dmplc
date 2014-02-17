@@ -1,5 +1,5 @@
-#ifndef _DAIG_STMT_VISITOR_H_
-#define _DAIG_STMT_VISITOR_H_
+#ifndef _DAIG_VISITOR_H_
+#define _DAIG_VISITOR_H_
 
 /**
  * @file CProgram.h
@@ -17,10 +17,10 @@
 namespace daig
 {
   /**
-    * @class StmtVisitor
+    * @class Visitor
     * @brief Encapsulates a statement visitor definition
     */
-  class StmtVisitor
+  class Visitor
   {
   public:
     //the stmt being visited currently
@@ -67,4 +67,4 @@ namespace daig
   };
 }
 
-#endif // _DAIG_STMT_VISITOR_H_
+#endif // _DAIG_VISITOR_H_
