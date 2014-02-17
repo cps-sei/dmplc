@@ -27,6 +27,9 @@ namespace daig
   //a list of expressions
   typedef std::list <Stmt> StmtList;
 
+  ///check if the argument is a BlockStmt
+  bool isBlock(const Stmt &stmt);
+
   /**
     * @class Statement
     * @brief An abstract base class for all statements
@@ -51,7 +54,7 @@ namespace daig
     {
       std::string spacer (indent, ' ');
       os << spacer << "ATOMIC\n";
-      data->print(os,indent + 2);
+      data->print(os,isBlock(data) ? indent : indent + 2);
     }
   };
 
@@ -68,7 +71,7 @@ namespace daig
     {
       std::string spacer (indent, ' ');
       os << spacer << "PRIVATE\n";
-      data->print(os,indent + 2);
+      data->print(os,isBlock(data) ? indent : indent + 2);
     }
   };
 
@@ -86,9 +89,9 @@ namespace daig
     }
     void print (std::ostream &os,unsigned int indent) const
     {
-      std::string spacer (indent-2, ' ');
+      std::string spacer (indent, ' ');
       os << spacer << "{\n";
-      BOOST_FOREACH(const Stmt &st,args) st->print(os,indent);
+      BOOST_FOREACH(const Stmt &st,args) st->print(os,indent+2);
       os << spacer << "}\n";
     }
   };
@@ -126,7 +129,7 @@ namespace daig
     {
       std::string spacer (indent, ' ');
       os << spacer << "if (" + cond->toString() + ")\n";
-      tbranch->print(os,indent+2); 
+      tbranch->print(os,isBlock(tbranch) ? indent : indent+2); 
     }
   };
 
@@ -147,9 +150,9 @@ namespace daig
     {
       std::string spacer (indent, ' ');
       os << spacer << "if (" + cond->toString() + ")\n";
-      tbranch->print(os,indent+2); 
+      tbranch->print(os,isBlock(tbranch) ? indent : indent+2); 
       os << spacer << "else\n";
-      ebranch->print(os,indent+2); 
+      ebranch->print(os,isBlock(ebranch) ? indent : indent+2); 
     }
   };
 
@@ -190,7 +193,7 @@ namespace daig
       else assert(0 && "ERROR: multiple update statements in for statement");
 
       os << ")\n";
-      body->print(os,indent+2);      
+      body->print(os,isBlock(body) ? indent : indent+2);      
     }
   };
 
@@ -209,7 +212,7 @@ namespace daig
     {
       std::string spacer (indent, ' ');
       os << spacer << "while(" << cond->toString() << ")\n";
-      body->toString();
+      body->print(os,isBlock(body) ? indent : indent+2);      
     }
   };
 
@@ -293,7 +296,7 @@ namespace daig
     {
       std::string spacer (indent, ' ');
       os << spacer << "FORALL_NODE(" << id << ")\n";
-      data->print(os,indent+2);
+      data->print(os,isBlock(data) ? indent : indent+2);
     }
   };
 
@@ -313,7 +316,7 @@ namespace daig
       std::string spacer (indent, ' ');
       os << spacer << "FORALL_DISTINCT_NODE_PAIR(" 
          << id1 << "," << id2 << ")\n";
-      data->print(os,indent+2);
+      data->print(os,isBlock(data) ? indent : indent+2);
     }
   };
 
@@ -331,7 +334,7 @@ namespace daig
     {
       std::string spacer (indent, ' ');
       os << spacer << "FORALL_OTHER(" << id << ")\n";
-      data->print(os,indent+2);
+      data->print(os,isBlock(data) ? indent : indent+2);
     }
   };
 
@@ -349,7 +352,7 @@ namespace daig
     {
       std::string spacer (indent, ' ');
       os << spacer << "FORALL_OTHER_LOWER(" << id << ")\n";
-      data->print(os,indent+2);
+      data->print(os,isBlock(data) ? indent : indent+2);
     }
   };
 
@@ -367,7 +370,7 @@ namespace daig
     {
       std::string spacer (indent, ' ');
       os << spacer << "FORALL_OTHER_HIGHER(" << id << ")\n";
-      data->print(os,indent+2);
+      data->print(os,isBlock(data) ? indent : indent+2);
     }
   };
 }
