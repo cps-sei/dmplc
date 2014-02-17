@@ -28,41 +28,41 @@ namespace daig
 
     void visit(const Stmt &stmt);
 
-    virtual void enterAtomic(AtomicStmt &stmt) {}
+    virtual bool enterAtomic(AtomicStmt &stmt) { return true; }
     virtual void exitAtomic(AtomicStmt &stmt) {}
-    virtual void enterPrivate(PrivateStmt &stmt) {}
+    virtual bool enterPrivate(PrivateStmt &stmt) { return true; }
     virtual void exitPrivate(PrivateStmt &stmt) {}
-    virtual void enterBlock(BlockStmt &stmt) {}
+    virtual bool enterBlock(BlockStmt &stmt) { return true; }
     virtual void exitBlock(BlockStmt &stmt) {}
-    virtual void enterAsgn(AsgnStmt &stmt) {}
+    virtual bool enterAsgn(AsgnStmt &stmt) { return true; }
     virtual void exitAsgn(AsgnStmt &stmt) {}
-    virtual void enterIT(ITStmt &stmt) {}
+    virtual bool enterIT(ITStmt &stmt) { return true; }
     virtual void exitIT(ITStmt &stmt) {}
-    virtual void enterITE(ITEStmt &stmt) {}
+    virtual bool enterITE(ITEStmt &stmt) { return true; }
     virtual void exitITE(ITEStmt &stmt) {}
-    virtual void enterFor(ForStmt &stmt) {}
+    virtual bool enterFor(ForStmt &stmt) { return true; }
     virtual void exitFor(ForStmt &stmt) {}
-    virtual void enterWhile(WhileStmt &stmt) {}
+    virtual bool enterWhile(WhileStmt &stmt) { return true; }
     virtual void exitWhile(WhileStmt &stmt) {}
-    virtual void enterBreak(BreakStmt &stmt) {}
+    virtual bool enterBreak(BreakStmt &stmt) { return true; }
     virtual void exitBreak(BreakStmt &stmt) {}
-    virtual void enterCont(ContStmt &stmt) {}
+    virtual bool enterCont(ContStmt &stmt) { return true; }
     virtual void exitCont(ContStmt &stmt) {}
-    virtual void enterRet(RetStmt &stmt) {}
+    virtual bool enterRet(RetStmt &stmt) { return true; }
     virtual void exitRet(RetStmt &stmt) {}
-    virtual void enterRetVoid(RetVoidStmt &stmt) {}
+    virtual bool enterRetVoid(RetVoidStmt &stmt) { return true; }
     virtual void exitRetVoid(RetVoidStmt &stmt) {}
-    virtual void enterCall(CallStmt &stmt) {}
+    virtual bool enterCall(CallStmt &stmt) { return true; }
     virtual void exitCall(CallStmt &stmt) {}
-    virtual void enterFAN(FANStmt &stmt) {}
+    virtual bool enterFAN(FANStmt &stmt) { return true; }
     virtual void exitFAN(FANStmt &stmt) {}
-    virtual void enterFADNP(FADNPStmt &stmt) {}
+    virtual bool enterFADNP(FADNPStmt &stmt) { return true; }
     virtual void exitFADNP(FADNPStmt &stmt) {}
-    virtual void enterFAO(FAOStmt &stmt) {}
+    virtual bool enterFAO(FAOStmt &stmt) { return true; }
     virtual void exitFAO(FAOStmt &stmt) {}
-    virtual void enterFAOL(FAOLStmt &stmt) {}
+    virtual bool enterFAOL(FAOLStmt &stmt) { return true; }
     virtual void exitFAOL(FAOLStmt &stmt) {}
-    virtual void enterFAOH(FAOHStmt &stmt) {}
+    virtual bool enterFAOH(FAOHStmt &stmt) { return true; }
     virtual void exitFAOH(FAOHStmt &stmt) {}
   };
 }
