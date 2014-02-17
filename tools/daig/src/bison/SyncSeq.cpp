@@ -345,14 +345,20 @@ void daig::SyncSeq::createSafety()
   StmtList fnBody;
 
   //if no SAFETY() defined, create an empty one
-  daig::Functions::iterator fit = node.funcs.find("SAFETY");
-  if(fit == node.funcs.end()) {
+  daig::Functions::iterator fit = builder.program.funcs.find("SAFETY");
+  if(fit == builder.program.funcs.end()) {
     std::cout << "node does not have a SAFETY function, creating an empty one ...\n";
     Function func(daig::voidType(),"SAFETY",fnParams,fnTemps,fnBody);
     cprog.addFunction(func);
     return;
   }
 
+  //transform the body of safety
+  BOOST_FOREACH(const Stmt &st,fit->second.body) {
+    GlobalStmtTransformer gst(nodeNum);
+    gst.visit(st);
+    fnBody.push_back(gst.stmtMap[st]);
+  }
 
   Function func(daig::voidType(),"SAFETY",fnParams,fnTemps,fnBody);
   cprog.addFunction(func);
