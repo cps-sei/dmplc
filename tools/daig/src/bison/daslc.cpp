@@ -12,6 +12,7 @@
 std::string fileName,outFileName;
 bool debug = false,print=false;
 size_t nodeNum = 0;
+int roundNum = -1;
 
 /*********************************************************************/
 //function declarations
@@ -46,7 +47,7 @@ int main(int argc, char **argv)
 
     //for synchronous programs
     if(moc == "MOC_SYNC") {
-      daig::SyncSeq syncSeq(builder,nodeNum);
+      daig::SyncSeq syncSeq(builder,nodeNum,roundNum);
       syncSeq.run();
       if(outFileName.empty()) syncSeq.printProgram(std::cout);
       else {
@@ -75,6 +76,7 @@ void parseOptions(int argc, char **argv)
     else if(strstr(argv[i],"--seq=") == argv[i]) nodeNum = atoi(argv[i] + 6);
     else if(!strcmp(argv[i],"--print")) print = true;
     else if(strstr(argv[i],"--out=") == argv[i]) outFileName = std::string(argv[i] + 6);
+    else if(strstr(argv[i],"--rounds=") == argv[i]) roundNum = atoi(argv[i] + 9);
     else fileName = std::string(argv[i]);
   }
 
@@ -89,7 +91,8 @@ void usage(char *cmd)
   std::cerr << "ERROR: no input-filename ...\n";
   std::cerr << "Usage : " << cmd << " <options> filename\n";
   std::cerr << "Options :\n\t--debug\n\t--print\n\t"
-            << "--seq=node-num\n\t--out=output-filename\n";
+            << "--seq=node-num\n\t--out=output-filename\n\t"
+            << "--rounds=round-num\n";
   exit(1);
 }
 

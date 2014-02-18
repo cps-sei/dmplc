@@ -111,9 +111,10 @@ namespace daig {
   public:
     DaigBuilder &builder;
     size_t nodeNum;
+    int roundNum;
     CProgram cprog;
 
-    SyncSeq(DaigBuilder &b,size_t n);
+    SyncSeq(DaigBuilder &b,size_t n,int r);
     void createGlobVars();
     void createCopyStmts(const Variable &var,StmtList &res,ExprList indx);
     void createRoundCopier();

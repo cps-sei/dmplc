@@ -351,7 +351,8 @@ void daig::NodeTransformer::exitAsgn(daig::AsgnStmt &stmt)
 /*********************************************************************/
 //constructor
 /*********************************************************************/
-daig::SyncSeq::SyncSeq(daig::DaigBuilder &b,size_t n) : builder(b),nodeNum(n) 
+daig::SyncSeq::SyncSeq(daig::DaigBuilder &b,size_t n,int r) 
+  : builder(b),nodeNum(n),roundNum(r)
 {
   Program &prog = builder.program;
   assert(prog.nodes.size() == 1 && "ERROR: only node type supported!");
@@ -460,9 +461,18 @@ void daig::SyncSeq::createMainFunc()
   Stmt callStmt3(new CallStmt(callExpr3,daig::ExprList()));
   mainBody.push_back(callStmt3);
 
-  //add the for statement
-  Stmt forBody(new BlockStmt(roundBody));
-  mainBody.push_back(Stmt(new ForStmt(StmtList(),ExprList(),StmtList(),forBody)));
+  //if number of rounds not specified, add an infinite loop
+  if(roundNum == -1) {
+    Stmt forBody(new BlockStmt(roundBody));
+    mainBody.push_back(Stmt(new ForStmt(StmtList(),ExprList(),StmtList(),forBody)));
+  }
+  //otherwise statically unroll the loop roundNum times and the call
+  //SAFETY again one more time
+  else {
+    for(int i = 0;i < roundNum;++i)
+      mainBody.insert(mainBody.end(),roundBody.begin(),roundBody.end());
+    mainBody.push_back(callStmt1);
+  }
 
   Function mainFunc(daig::voidType(),"main",mainParams,mainTemps,mainBody);
   cprog.addFunction(mainFunc);
