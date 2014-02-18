@@ -5,7 +5,7 @@ SRC=daig-scanner.cpp daig-parser.cpp DaigBuilder.cpp SyncSeq.cpp \
 ../daig/CProgram.cpp ../daig/Visitor.cpp
 OBJ=$(patsubst %.cpp,%.o,$(SRC))
 INC=-I/home/chaki/stuff/madara/ace/ACE_wrappers \
--I/home/chaki/stuff/madara/madara/include -I../daig
+-I/home/chaki/stuff/madara/madara/include -I..
 LIB=/home/chaki/stuff/madara/madara/libMADARA.so
 
 all : daslc
