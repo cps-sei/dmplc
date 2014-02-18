@@ -168,6 +168,19 @@ void daig::GlobalTransformer::exitRetVoid(daig::RetVoidStmt &stmt)
 
 void daig::GlobalTransformer::exitCall(daig::CallStmt &stmt) 
 { 
+  //handle calls to ND(x) -- assign x non-deterministically
+  CallExpr *expr = dynamic_cast<CallExpr*>(stmt.data.get());
+  if(!expr) assert(0 && "ERROR: argument to call statement not a CallExpr!");
+  if(expr->func->toString() == "ND") {
+    assert(expr->args.size() == 1 && 
+           "ERROR: call to ND() must have one argument!");
+    const Expr &arg = exprMap[*(expr->args.begin())];
+    Expr ndfn = syncSeq.createNondetFunc(arg);
+    Expr ndcall(new CallExpr(ndfn,ExprList()));
+    stmtMap[hostStmt] = Stmt(new AsgnStmt(arg,ndcall));
+    return;
+  }
+
   stmtMap[hostStmt] = Stmt(new CallStmt(exprMap[stmt.data]));
 }
 
@@ -474,7 +487,7 @@ void daig::SyncSeq::createInit()
 
   //transform the body of init
   BOOST_FOREACH(const Stmt &st,fit->second.body) {
-    GlobalTransformer gt(builder.program,nodeNum);
+    GlobalTransformer gt(*this,builder.program,nodeNum);
     gt.visit(st);
     fnBody.push_back(gt.stmtMap[st]);
   }
@@ -503,7 +516,7 @@ void daig::SyncSeq::createSafety()
 
   //transform the body of safety
   BOOST_FOREACH(const Stmt &st,fit->second.body) {
-    GlobalTransformer gt(builder.program,nodeNum);
+    GlobalTransformer gt(*this,builder.program,nodeNum);
     gt.visit(st);
     fnBody.push_back(gt.stmtMap[st]);
   }
@@ -524,7 +537,7 @@ void daig::SyncSeq::createNodeFuncs()
       StmtList fnBody;
 
       BOOST_FOREACH(const Stmt &st,f.second.body) {
-        NodeTransformer nt(builder.program,nodeNum,i);
+        NodeTransformer nt(*this,builder.program,nodeNum,i);
 
         //currently, nodes have just one parameter -- its id
         assert(node.args.size() == 1 && "ERROR: node must have one id!");
@@ -540,6 +553,18 @@ void daig::SyncSeq::createNodeFuncs()
       cprog.addFunction(func);
     }
   }
+}
+
+/*********************************************************************/
+//create a nondet function for the type of the argument
+//expression. add its declaration to the C program if a new function
+//was created
+/*********************************************************************/
+daig::Expr daig::SyncSeq::createNondetFunc(const Expr &expr)
+{
+  const LvalExpr *lve = dynamic_cast<LvalExpr*>(expr.get());
+  assert(lve && "ERROR: can only create nondet function for LvalExpr");
+  return Expr(new LvalExpr("nondet_" + lve->var));
 }
 
 /*********************************************************************/

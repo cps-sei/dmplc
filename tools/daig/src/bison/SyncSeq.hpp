@@ -10,11 +10,17 @@
 
 namespace daig {
 
+  //forward declaration
+  class SyncSeq;
+
   /*******************************************************************/
   //a visitor that transforms at the global level
   /*******************************************************************/
   struct GlobalTransformer : public Visitor
   {
+    ///reference to callee class for callbacks
+    SyncSeq &syncSeq;
+
     //the DASL program being transformed
     daig::Program &prog;
 
@@ -31,7 +37,8 @@ namespace daig {
     std::map<Stmt,Stmt> stmtMap;
 
     //constructors
-    GlobalTransformer(daig::Program &p,size_t n) : prog(p),nodeNum(n) {}
+    GlobalTransformer(SyncSeq &ss,daig::Program &p,size_t n) 
+      : syncSeq(ss),prog(p),nodeNum(n) {}
 
     //update substitution mapping
     void addIdMap(const std::string &s,size_t i);
@@ -80,8 +87,8 @@ namespace daig {
     //lhs of an assignment
     bool inCall, inLhs;
 
-    NodeTransformer(daig::Program &p,size_t n,size_t i)
-      : GlobalTransformer(p,n),nodeId(i),inCall(0),inLhs(0) {}
+    NodeTransformer(SyncSeq &ss,Program &p,size_t n,size_t i)
+      : GlobalTransformer(ss,p,n),nodeId(i),inCall(0),inLhs(0) {}
 
     void exitLval(LvalExpr &expr);
     bool enterCall(CallExpr &expr) { return false; }
@@ -114,6 +121,7 @@ namespace daig {
     void createInit();
     void createSafety();
     void createNodeFuncs();
+    Expr createNondetFunc(const Expr &expr);
     void run();
     void printProgram(std::ostream &os);
   };
