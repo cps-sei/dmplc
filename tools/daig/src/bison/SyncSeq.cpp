@@ -293,9 +293,9 @@ void daig::NodeTransformer::exitEXO(daig::EXOExpr &expr)
       exprMap[shost] = exprMap[expr.arg];
   }
 
-  //turn empty disjunct into "1"
+  //turn empty disjunct into "0"
   if(!exprMap[shost].get())
-    exprMap[shost] = Expr(new daig::IntExpr(1));
+    exprMap[shost] = Expr(new daig::IntExpr(0));
 }
 
 //compute disjunction over all higher node ids
@@ -314,9 +314,9 @@ void daig::NodeTransformer::exitEXH(daig::EXHExpr &expr)
       exprMap[shost] = exprMap[expr.arg];
   }
 
-  //turn empty disjunct into "1"
+  //turn empty disjunct into "0"
   if(!exprMap[shost].get())
-    exprMap[shost] = Expr(new daig::IntExpr(1));
+    exprMap[shost] = Expr(new daig::IntExpr(0));
 }
 
 //compute disjunction over all lower node ids
@@ -335,9 +335,9 @@ void daig::NodeTransformer::exitEXL(daig::EXLExpr &expr)
       exprMap[shost] = exprMap[expr.arg];
   }
 
-  //turn empty disjunct into "1"
+  //turn empty disjunct into "0"
   if(!exprMap[shost].get())
-    exprMap[shost] = Expr(new daig::IntExpr(1));
+    exprMap[shost] = Expr(new daig::IntExpr(0));
 }
 
 void daig::NodeTransformer::exitAsgn(daig::AsgnStmt &stmt)
@@ -389,12 +389,12 @@ void daig::SyncSeq::createGlobVars()
 //create list of statements that copy new value of var into old value
 //of var. append list of statements to res.
 /*********************************************************************/
-void daig::SyncSeq::createCopyStmts(const Variable &var,StmtList &res,ExprList indx)
+void daig::SyncSeq::createCopyStmts(bool fwd,const Variable &var,StmtList &res,ExprList indx)
 {
   //non-array type
   if(var.type->dims.empty()) {
-    Expr lhs(new LvalExpr(var.name + "_i",indx));
-    Expr rhs(new LvalExpr(var.name + "_f",indx));
+    Expr lhs(new LvalExpr(var.name + (fwd ? "_f" : "_i"),indx));
+    Expr rhs(new LvalExpr(var.name + (fwd ? "_i" : "_f"),indx));
     Stmt stmt(new AsgnStmt(lhs,rhs));
     res.push_back(stmt);
     return;
@@ -407,27 +407,39 @@ void daig::SyncSeq::createCopyStmts(const Variable &var,StmtList &res,ExprList i
     ExprList newIndx = indx;
     newIndx.push_back(Expr(new IntExpr(i)));
     Variable newVar = var.decrDim();
-    createCopyStmts(newVar,res,newIndx);
+    createCopyStmts(fwd,newVar,res,newIndx);
   }
 }
 
 /*********************************************************************/
-//create function that copies global variables back at the end of a
-//round
+//create one function that copies global variables back from _f to _i
+//at the end of a round, and another that copies global variables from
+//_i to _f at the beginning of the round
 /*********************************************************************/
 void daig::SyncSeq::createRoundCopier()
 {
   Node &node = builder.program.nodes.begin()->second;
   std::list<daig::Variable> fnParams,fnTemps;
-  StmtList fnBody;
 
+  //create the copier from _f to _i
+  StmtList fnBody1;
   BOOST_FOREACH(Variables::value_type &v,node.globVars) {
     Variable var = v.second.instDim(nodeNum);
-    createCopyStmts(var,fnBody,ExprList());
+    createCopyStmts(0,var,fnBody1,ExprList());
   }
 
-  Function func(daig::voidType(),"round_copier",fnParams,fnTemps,fnBody);
-  cprog.addFunction(func);
+  Function func1(daig::voidType(),"round_bwd_copier",fnParams,fnTemps,fnBody1);
+  cprog.addFunction(func1);
+
+  //create the copier from _i to _f
+  StmtList fnBody2;
+  BOOST_FOREACH(Variables::value_type &v,node.globVars) {
+    Variable var = v.second.instDim(nodeNum);
+    createCopyStmts(1,var,fnBody2,ExprList());
+  }
+
+  Function func2(daig::voidType(),"round_fwd_copier",fnParams,fnTemps,fnBody2);
+  cprog.addFunction(func2);
 }
 
 /*********************************************************************/
@@ -443,6 +455,11 @@ void daig::SyncSeq::createMainFunc()
   Stmt callStmt1(new CallStmt(callExpr1,daig::ExprList()));
   roundBody.push_back(callStmt1);
 
+  //call fowward round copier
+  Expr callExpr4(new LvalExpr("round_fwd_copier"));
+  Stmt callStmt4(new CallStmt(callExpr4,daig::ExprList()));
+  roundBody.push_back(callStmt4);
+
   //call ROUND function of each node
   for(size_t i = 0;i < nodeNum;++i) {
     std::string callName = std::string("ROUND_") + boost::lexical_cast<std::string>(i);
@@ -451,8 +468,8 @@ void daig::SyncSeq::createMainFunc()
     roundBody.push_back(callStmt);
   }
 
-  //call round copier
-  Expr callExpr2(new LvalExpr("round_copier"));
+  //call backward round copier
+  Expr callExpr2(new LvalExpr("round_bwd_copier"));
   Stmt callStmt2(new CallStmt(callExpr2,daig::ExprList()));
   roundBody.push_back(callStmt2);
 
