@@ -1,0 +1,3 @@
+project {
+  includes += $(DAIG_ROOT)/src
+}

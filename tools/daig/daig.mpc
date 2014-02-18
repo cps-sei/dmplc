@@ -1,12 +1,22 @@
-project (daig) : using_madara, using_ace {
+project (daslc) : using_madara, using_ace, using_boost, using_daig {
   exeout = bin
-  exename = daig
+  exename = daslc
   
+  prebuild += bison -d -osrc\daslc\daig-parser.cpp src\daslc\daig-parser.yy
+  prebuild += flex -osrc\daslc\daig-scanner.cpp src\daslc\daig-scanner.ll
+
   includes += src
+  
+  specific(prop:microsoft) {
+    includes += $(GNUWIN32_ROOT)/include
+    DisableSpecificWarnings += 4065 4273
+  }
 
   Documentation_Files {
     README.txt
-    ..\..\examples\*.mcda
+    ../../examples/*.mcda
+    src/daslc/daig-parser.yy
+    src/daslc/daig-scanner.ll
   }
   
   Build_Files {
@@ -15,11 +25,15 @@ project (daig) : using_madara, using_ace {
 
   Header_Files {
     src/daig
+    src/daslc
+    src/daslc/daig-parser.hpp
   }
 
   Source_Files {
-    src/daig_main.cpp
     src/daig
+    src/daslc
+    src/daslc/daig-scanner.cpp
+    src/daslc/daig-parser.cpp
   }
 }
 

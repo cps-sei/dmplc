@@ -6,7 +6,7 @@
 
 #include <string>
 #include <map>
-#include "Program.h"
+#include "daig/Program.h"
 
 namespace daig {
   class DaigBuilder

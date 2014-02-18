@@ -1,5 +1,7 @@
 #include <iostream>
+#include <stdio.h>
 #include <boost/foreach.hpp>
+#include <boost/lexical_cast.hpp>
 #include "Variable.h"
 
 //constructor with name only -- assigns a default type and scope
@@ -16,10 +18,7 @@ std::string daig::Variable::toString() const
 {
   std::string res = type->toString() + " " + name;
   BOOST_FOREACH(int d,type->dims) {
-    char buf[128];
-    if(d == -1) snprintf(buf,128,"[#N]");
-    else snprintf(buf,128,"[%d]",d);
-    res += std::string(buf);
+    res += "[" + ((d == -1) ? "#N" : boost::lexical_cast<std::string>(d)) + "]";
   }
   return res;
 }

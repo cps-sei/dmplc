@@ -4,7 +4,7 @@
 #include "Variable.h"
 #include "Expression.h"
 #include "Statement.h"
-#include "../bison/daig-parser.hpp"
+#include "daslc/daig-parser.hpp"
 
 /*********************************************************************/
 //return basic types

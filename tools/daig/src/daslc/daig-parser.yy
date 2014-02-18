@@ -4,12 +4,12 @@
 #include <map>
 #include <string>
 #include <boost/foreach.hpp>
-#include "Type.h"
-#include "Variable.h"
-#include "Expression.h"
-#include "Statement.h"
-#include "Function.h"
-#include "Node.h"
+#include "daig/Type.h"
+#include "daig/Variable.h"
+#include "daig/Expression.h"
+#include "daig/Statement.h"
+#include "daig/Function.h"
+#include "daig/Node.h"
 #include "DaigBuilder.hpp"
 
 extern daig::DaigBuilder *builder; /* the dag builder */

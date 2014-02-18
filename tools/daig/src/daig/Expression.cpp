@@ -4,7 +4,7 @@
 #include "Variable.h"
 #include "Expression.h"
 #include "Statement.h"
-#include "../bison/daig-parser.hpp"
+#include "daslc/daig-parser.hpp"
 
 /*********************************************************************/
 //convert an operator to string
@@ -27,6 +27,7 @@ std::string daig::CompExpr::opToString() const
   case TLNOT : return "!";
   default: assert(0 && "ERROR : unknown operator!!");
   }
+  return "";
 }
 
 /*********************************************************************/
@@ -50,6 +51,8 @@ std::string daig::CompExpr::toString() const
   }
 
   assert(0 && "ERROR: unknown COMPLEX expression!!");
+
+  return "";
 }
 
 /*********************************************************************/

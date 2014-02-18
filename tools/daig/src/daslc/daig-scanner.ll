@@ -1,16 +1,16 @@
 %{
 #include <string>
 #include <map>
-#include "Type.h"
-#include "Expression.h"
-#include "Statement.h"
+#include "daig/Type.h"
+#include "daig/Expression.h"
+#include "daig/Statement.h"
 #include "DaigBuilder.hpp"
 #include "daig-parser.hpp"
 extern daig::DaigBuilder *builder; /* the dag builder */
 #define PRINT_TOKEN if(builder->debug) printf("%s\n",yytext)
 #define SAVE_TOKEN PRINT_TOKEN; yylval.string = new std::string(yytext, yyleng)
 #define TOKEN(t) (yylval.token = t)
-extern "C" int yywrap() { }
+extern "C" int yywrap() { return 0; }
 %}
 
 %%

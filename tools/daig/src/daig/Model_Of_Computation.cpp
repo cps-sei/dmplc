@@ -28,4 +28,7 @@ std::string
   else if (type == ASYNC) return "MOC_ASYNC";
   else if (type == PARTIAL) return "MOC_PSYNC";
   else assert(0 && "ERROR: illegal MOC type");
+
+  
+  return "";
 }

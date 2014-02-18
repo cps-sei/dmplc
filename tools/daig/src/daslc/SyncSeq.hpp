@@ -5,8 +5,8 @@
 
 #include <iostream>
 #include "DaigBuilder.hpp"
-#include "CProgram.h"
-#include "Visitor.h"
+#include "daig/CProgram.h"
+#include "daig/Visitor.h"
 
 namespace daig {
 

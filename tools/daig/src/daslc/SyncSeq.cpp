@@ -1,8 +1,8 @@
 #include <boost/lexical_cast.hpp>
-#include "Type.h"
-#include "Variable.h"
-#include "Expression.h"
-#include "Statement.h"
+#include "daig/Type.h"
+#include "daig/Variable.h"
+#include "daig/Expression.h"
+#include "daig/Statement.h"
 #include "daig-parser.hpp"
 #include "SyncSeq.hpp"
 
