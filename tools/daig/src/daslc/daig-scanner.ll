@@ -10,7 +10,7 @@ extern daig::DaigBuilder *builder; /* the dag builder */
 #define PRINT_TOKEN if(builder->debug) printf("%s\n",yytext)
 #define SAVE_TOKEN PRINT_TOKEN; yylval.string = new std::string(yytext, yyleng)
 #define TOKEN(t) (yylval.token = t)
-extern "C" int yywrap() { return 0; }
+extern "C" int yywrap() { return 1; }
 %}
 
 %%
