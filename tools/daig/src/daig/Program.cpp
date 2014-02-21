@@ -13,7 +13,7 @@ daig::Program::print (std::ostream &os,unsigned int indent)
 
   //print CONST definitions
   BOOST_FOREACH(ConstDef::value_type &cd,constDef)
-    os << spacer << "CONST(" << cd.first << "," << cd.second << ");\n";
+    os << spacer << "CONST " << cd.first << " = " << cd.second << ";\n";
   os << '\n';
 
   //print nodes

@@ -103,9 +103,9 @@ const_list : {}
 | const_list constant {}
 ;
 
-constant : TCONST TLPAREN TIDENTIFIER TCOMMA TINTEGER TRPAREN TSEMICOLON {
-  builder->program.constDef[*$3] = *$5;
-  delete $3; delete $5;
+constant : TCONST TIDENTIFIER TEQUAL TINTEGER TSEMICOLON {
+  builder->program.constDef[*$2] = *$4;
+  delete $2; delete $4;
 }
 ;
 
@@ -130,13 +130,13 @@ node_body_elem :
 | procedure {}
 ;
 
-global_var : TGLOBAL TLPAREN var_decl TRPAREN TSEMICOLON {
-  currNode.addGlobalVar(*$3); delete $3;
+global_var : TGLOBAL var_decl TSEMICOLON {
+  currNode.addGlobalVar(*$2); delete $2;
 }
 ;
 
-local_var : TLOCAL TLPAREN var_decl TRPAREN TSEMICOLON {
-  currNode.addLocalVar(*$3); delete $3;
+local_var : TLOCAL var_decl TSEMICOLON {
+  currNode.addLocalVar(*$2); delete $2;
 }
 ;
 

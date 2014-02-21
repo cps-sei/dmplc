@@ -1,13 +1,13 @@
 MOC_ASYNC;
 
 //number of X and Y coordinates
-CONST(X,4);
-CONST(Y,4);
+CONST X = 4;
+CONST Y = 4;
 
 //states of each node
-CONST(NEXT,0);
-CONST(WAITING,1);
-CONST(MOVE,2);
+CONST NEXT = 0;
+CONST WAITING = 1;
+CONST MOVE = 2;
 
 NODE uav (id)
 {
@@ -16,20 +16,20 @@ NODE uav (id)
 
   //request[x][y] is 1 iff this node has requested reservation for
   //(x,y)
-  GLOBAL(_Bool request[X][Y][#N]); 
+  GLOBAL _Bool request[X][Y][#N]; 
 
   //response[x][y][idp] is:
   // -- 1 if node idp has granted this node's request for reserving (x,y)
   // -- -1 if node idp has denied this node's request for reserving (x,y)
   // -- 0 if node idp has not responded to this node's request for reserving (x,y)
-  GLOBAL(_Bool response[X][Y][#N][#N]); 
+  GLOBAL _Bool response[X][Y][#N][#N]; 
 
   //private variables -- local to the node.
   //preserved across rounds
-  LOCAL(int state); //the state
-  LOCAL(int x,y); //current coordinates
-  LOCAL(int xp,yp); //next coordinates
-  LOCAL(int xf,yf); //final coordinates
+  LOCAL int state; //the state
+  LOCAL int x,y; //current coordinates
+  LOCAL int xp,yp; //next coordinates
+  LOCAL int xf,yf; //final coordinates
   
   void NEXT_XY () {
     ATOMIC {

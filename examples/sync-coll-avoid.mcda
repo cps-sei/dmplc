@@ -1,27 +1,27 @@
 MOC_SYNC;
 
 //number of X and Y coordinates
-CONST(X,4);
-CONST(Y,4);
+CONST X = 4;
+CONST Y = 4;
 
 //states of each node
-CONST(NEXT,0);
-CONST(REQUEST,1);
-CONST(WAITING,2);
-CONST(MOVE,3);
+CONST NEXT = 0;
+CONST REQUEST = 1;
+CONST WAITING = 2;
+CONST MOVE = 3;
 
 NODE uav (id)
 {
   //shared variables -- visible across nodes. 
   //must be accessed via R() and W()
-  GLOBAL(_Bool lock [X][Y][#N]);
+  GLOBAL _Bool lock [X][Y][#N];
 
   //private variables -- local to the node.
   //preserved across rounds
-  LOCAL(unsigned char state); //the state
-  LOCAL(unsigned char x,y); //current coordinates
-  LOCAL(unsigned char xp,yp); //next coordinates
-  LOCAL(unsigned char xf,yf); //final coordinates
+  LOCAL unsigned char state; //the state
+  LOCAL unsigned char x,y; //current coordinates
+  LOCAL unsigned char xp,yp; //next coordinates
+  LOCAL unsigned char xf,yf; //final coordinates
   
   void NEXT_XY () {
     ATOMIC {

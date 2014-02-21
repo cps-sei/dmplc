@@ -15,11 +15,11 @@ daig::Node::print (std::ostream &os,unsigned int indent)
   os << ")\n" << spacer << "{\n";  
 
   for (daig::Variables::iterator i = globVars.begin ();i != globVars.end (); ++i)
-    os << spacer << "  GLOBAL(" << i->second.toString() << ");\n";
+    os << spacer << "  GLOBAL " << i->second.toString() << ";\n";
   os << "\n";
 
   for (daig::Variables::iterator i = locVars.begin ();i != locVars.end (); ++i)
-    os << spacer << "  LOCAL(" << i->second.toString() << ");\n";
+    os << spacer << "  LOCAL " << i->second.toString() << ";\n";
   os << "\n";
 
   for (daig::Functions::iterator i = funcs.begin ();i != funcs.end (); ++i)
