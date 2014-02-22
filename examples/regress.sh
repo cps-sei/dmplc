@@ -1,14 +1,26 @@
 #!/bin/bash
+export PATH=$PATH:../tools/daig/src/daslc:/home/chaki/stuff/cbmc/cbmc-4.7
 TMPF1=$(mktemp)
 TMPF2=$(mktemp)
 
-DASLC=../tools/daig/src/daslc/daslc
+#ensures that the first argument is on the path
+function ensure {
+    X=$(which $1 | wc -l)
+    if [ "$X" == "0" ]; then
+        echo "ERROR: $1 not found on PATH"
+        exit 1
+    fi
+}
+
+#ensure key executables exist
+ensure daslc
+ensure cbmc
 
 #run a single regression test for verification. this function takes
 #four arguments: the name of the DASL file, the number of nodes, the
 #number of rounds of sequentialization, and the expected result
 function verify {
-    $DASLC $1 --seq=$2 --rounds=$3 --out=$TMPF1.c &> /dev/null
+    daslc $1 --seq=$2 --rounds=$3 --out=$TMPF1.c &> /dev/null
     cbmc $TMPF1.c &> $TMPF2
     
     #compute model checking result
@@ -34,8 +46,8 @@ function verify {
 echo "==== testing daslc parsing and printing"
 for i in sync-coll-avoid.ok.dasl \
     async-coll-avoid.dasl; do 
-    $DASLC $i --print > $TMPF1
-    $DASLC $TMPF1 --print > $TMPF2
+    daslc $i --print > $TMPF1
+    daslc $TMPF1 --print > $TMPF2
     DIFF=$(diff $TMPF1 $TMPF2 | wc -l)
     if [ "$DIFF" == "0" ]; then
         echo "$(basename $i) : PASSED"
