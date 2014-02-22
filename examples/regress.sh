@@ -60,3 +60,4 @@ echo "==== testing verifier"
 verify sync-coll-avoid.ok.dasl 2 4 SUCCESS
 verify sync-coll-avoid.bug1.dasl 2 4 FAILURE
 verify sync-coll-avoid.bug2.dasl 2 4 FAILURE
+verify sync-mutex.ok.dasl 2 4 SUCCESS
