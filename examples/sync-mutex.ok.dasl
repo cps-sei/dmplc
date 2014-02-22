@@ -21,7 +21,7 @@ NODE node(id) {
         if(EXISTS_HIGHER(idp,lock[idp])) return;
         state = INSIDE;
     } else if(state == INSIDE) {
-      in_cs(); 
+      if(in_cs()) return; 
       lock[id] = 0; state = OUTSIDE;
     }
   }
