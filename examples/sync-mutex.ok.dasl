@@ -14,13 +14,11 @@ NODE node(id) {
     if(state == OUTSIDE) {
       c = should_enter();
       if(c) {
-        if(EXISTS_LOWER(idp,lock[idp])) 
-          return;
+        if(EXISTS_LOWER(idp,lock[idp])) return;
         lock[id] = 1; state = TRYING;
       }
     } else if(state == TRYING) {
-        if(EXISTS_HIGHER(idp,lock[idp])) 
-          return;
+        if(EXISTS_HIGHER(idp,lock[idp])) return;
         state = INSIDE;
     } else if(state == INSIDE) {
       in_cs(); 
