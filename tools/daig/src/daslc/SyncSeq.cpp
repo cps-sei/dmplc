@@ -516,6 +516,14 @@ void daig::SyncSeq::createInit()
     return;
   }
 
+  //create parameters
+  BOOST_FOREACH(Variables::value_type &v,fit->second.params)
+    fnParams.push_back(v.second);
+
+  //create temporary variables
+  BOOST_FOREACH(Variables::value_type &v,fit->second.temps)
+    fnTemps.push_back(v.second);
+
   //transform the body of init
   BOOST_FOREACH(const Stmt &st,fit->second.body) {
     GlobalTransformer gt(*this,builder.program,nodeNum);
@@ -545,6 +553,14 @@ void daig::SyncSeq::createSafety()
     return;
   }
 
+  //create parameters
+  BOOST_FOREACH(Variables::value_type &v,fit->second.params)
+    fnParams.push_back(v.second);
+
+  //create temporary variables
+  BOOST_FOREACH(Variables::value_type &v,fit->second.temps)
+    fnTemps.push_back(v.second);
+
   //transform the body of safety
   BOOST_FOREACH(const Stmt &st,fit->second.body) {
     GlobalTransformer gt(*this,builder.program,nodeNum);
@@ -565,6 +581,15 @@ void daig::SyncSeq::createNodeFuncs()
   for(size_t i = 0;i < nodeNum;++i) {
     BOOST_FOREACH(Functions::value_type &f,node.funcs) {
       std::list<daig::Variable> fnParams,fnTemps;
+
+      //create parameters
+      BOOST_FOREACH(Variables::value_type &v,f.second.params)
+        fnParams.push_back(v.second);
+
+      //create temporary variables
+      BOOST_FOREACH(Variables::value_type &v,f.second.temps)
+        fnTemps.push_back(v.second);
+
       StmtList fnBody;
 
       BOOST_FOREACH(const Stmt &st,f.second.body) {
