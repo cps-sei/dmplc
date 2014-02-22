@@ -251,6 +251,10 @@ void daig::NodeTransformer::exitLval(daig::LvalExpr &expr)
     else newName += "_i";
   }
 
+  //handle local variables
+  if(node.locVars.count(expr.var))
+    newName += "_" + boost::lexical_cast<std::string>(nodeId);
+
   //substitute .id with its mapping in idMap
   std::map<std::string,size_t>::const_iterator iit = idMap.find(expr.var);
   newName = iit == idMap.end() ? newName : boost::lexical_cast<std::string>(iit->second);
