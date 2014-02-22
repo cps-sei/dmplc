@@ -1,3 +1,4 @@
+//a correct synchronous collision avoidance protocol
 MOC_SYNC;
 
 //number of X and Y coordinates
