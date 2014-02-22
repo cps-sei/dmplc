@@ -37,22 +37,22 @@ function verify {
     fi
 
     if [ "$4" == "$MCRES" ]; then
-        echo "$1 : PASSED"
+        printf "%-30s : PASSED\n" $1
     else
-        echo "$1 : FAILED - expected $4 got $MCRES"
+        printf "%-30s : FAILED - expected $4 got $MCRES\n" $1
     fi
 }
 
 echo "==== testing daslc parsing and printing"
-for i in sync-coll-avoid.ok.dasl \
-    async-coll-avoid.dasl; do 
+for i in sync-coll-avoid.ok.dasl sync-coll-avoid.bug1.dasl sync-coll-avoid.bug2.dasl \
+    sync-mutex.ok.dasl async-coll-avoid.dasl; do 
     daslc $i --print > $TMPF1
     daslc $TMPF1 --print > $TMPF2
     DIFF=$(diff $TMPF1 $TMPF2 | wc -l)
     if [ "$DIFF" == "0" ]; then
-        echo "$(basename $i) : PASSED"
+        printf "%-30s : PASSED\n" $(basename $i)
     else
-        echo "$(basename $i) : FAILED"
+        printf "%-30s : FAILED\n" $(basename $i)
     fi
 done
 
