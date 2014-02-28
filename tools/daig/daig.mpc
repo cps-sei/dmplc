@@ -25,6 +25,7 @@ project (daslc) : using_madara, using_ace, using_boost, using_daig {
 
   Header_Files {
     src/daig
+    src/daig/madara
     src/daslc
     src/daslc/daig-parser.hpp
   }
@@ -32,6 +33,7 @@ project (daslc) : using_madara, using_ace, using_boost, using_daig {
   Source_Files {
     src/daig
     src/daslc
+    src/daig/madara
     src/daslc/daig-scanner.cpp
     src/daslc/daig-parser.cpp
   }

@@ -2,7 +2,7 @@
 #define _DAIG_VISITOR_H_
 
 /**
- * @file CProgram.h
+ * @file Visitor.h
  * @author James Edmondson <jedmondson@gmail.com>
  *
  * This file contains a class definition for a base visitor over
