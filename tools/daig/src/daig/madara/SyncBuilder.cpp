@@ -21,6 +21,7 @@ daig::madara::SyncBuilder::build ()
   // build the header includes
   build_header_includes ();
   build_common_global_variables ();
+  build_program_variables ();
   build_parse_args ();
   build_functions_declarations ();
   build_functions ();
@@ -35,19 +36,152 @@ daig::madara::SyncBuilder::build_header_includes ()
   buffer_ << "#include <sstream>\n";
   buffer_ << "#include <assert.h>\n";
   buffer_ << "\n";
-  buffer_ << "#include \"madara/knowledge_engine/Knowledge_Base.h\"\n\n";
+  buffer_ << "#include \"madara/knowledge_engine/Knowledge_Base.h\"\n";
+  buffer_ << "#include \"madara/knowledge_engine/containers/Vector.h\"\n";
+  buffer_ << "#include \"madara/knowledge_engine/containers/Integer.h\"\n";
+  buffer_ << "#include \"madara/knowledge_engine/containers/Double.h\"\n";
+  buffer_ << "#include \"madara/knowledge_engine/containers/String.h\"\n";
+  buffer_ << "\n";
 }
 
 void
 daig::madara::SyncBuilder::build_common_global_variables ()
 {
+  buffer_ << "// namespace shortcuts\n";
+  buffer_ << "namespace engine = Madara::Knowledge_Engine;\n";
+  buffer_ << "namespace containers = engine::Containers;\n\n";
   buffer_ << "// default transport variables\n";
   buffer_ << "std::string host (\"\");\n";
-  buffer_ << "const std::string default_multicast (\"239.255.0.1:4150\")\n";
+  buffer_ << "const std::string default_multicast (\"239.255.0.1:4150\");\n";
   buffer_ << "Madara::Transport::QoS_Transport_Settings settings;\n";
   buffer_ << "\n";
+  buffer_ << "// Containers for commonly used variables\n";
+  buffer_ << "containers::Array barrier;\n";
+  buffer_ << "containers::Integer id;\n";
+  buffer_ << "containers::Integer num_processes;\n";
+  buffer_ << "\n";
   buffer_ << "// number of participating processes\n";
-  buffer_ << "Madara::Knowledge_Record::Integer processes (2);\n\n";
+  buffer_ << "Madara::Knowledge_Record::Integer processes (";
+  buffer_ << builder_.program.processes.size ();
+  buffer_ << ");\n\n";
+}
+
+void
+daig::madara::SyncBuilder::build_program_variables ()
+{
+  buffer_ << "// Defining program-specific constants\n";
+  
+  Program::ConstDef & consts = builder_.program.constDef;
+  for (Program::ConstDef::iterator i = consts.begin (); i != consts.end (); ++i)
+  {
+    buffer_ << "#define ";
+    buffer_ << i->first;
+    buffer_ << " ";
+    buffer_ << i->second;
+    buffer_ << "\n";
+  }
+
+  buffer_ << "\n";
+  
+  Nodes & nodes = builder_.program.nodes;
+  for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
+  {
+    buffer_ << "// Defining program-specific global variables\n";
+    Variables & vars = n->second.globVars;
+    for (Variables::iterator i = vars.begin (); i != vars.end (); ++i)
+    {
+      Variable & var = i->second;
+      build_program_variable (var);
+    }
+    
+    buffer_ << "\n// Defining program-specific local variables\n";
+    Variables & locals = n->second.locVars;
+    for (Variables::iterator i = locals.begin (); i != locals.end (); ++i)
+    {
+      Variable & var = i->second;
+      build_program_variable (var);
+    }
+  }
+
+  buffer_ << "\n";
+}
+
+void
+daig::madara::SyncBuilder::build_program_variable (const Variable & var)
+{
+  // is this an array type?
+  if (var.type->dims.size () > 0)
+  {
+    buffer_ << "containers::Array ";
+    buffer_ << var.name;
+    buffer_ << ";\n";
+  }
+  else
+  {
+    buffer_ << "containers::Integer ";
+    buffer_ << var.name;
+    buffer_ << ";\n";
+  }
+}
+
+void
+daig::madara::SyncBuilder::build_program_variables_bindings ()
+{ 
+  buffer_ << "  // Binding common variables\n";
+  buffer_ << "  barrier.set_name (\"mbarrier\", knowledge, ";
+  buffer_ << builder_.program.processes.size ();
+  buffer_ << ");\n";
+
+  buffer_ << "  id.set_name (\".id\", knowledge);\n";
+  buffer_ << "  num_processes.set_name (\".processes\", knowledge);\n";
+  buffer_ << "\n";
+
+  Nodes & nodes = builder_.program.nodes;
+  for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
+  {
+    buffer_ << "  // Binding program-specific global variables\n";
+    Variables & vars = n->second.globVars;
+    for (Variables::iterator i = vars.begin (); i != vars.end (); ++i)
+    {
+      Variable & var = i->second;
+      build_program_variable_binding (var);
+    }
+    
+    buffer_ << "\n  // Binding program-specific local variables\n";
+    Variables & locals = n->second.locVars;
+    for (Variables::iterator i = locals.begin (); i != locals.end (); ++i)
+    {
+      Variable & var = i->second;
+      build_program_variable_binding (var);
+    }
+  }
+
+  buffer_ << "\n";
+}
+
+void
+daig::madara::SyncBuilder::build_program_variable_binding (
+  const Variable & var)
+{
+  buffer_ << "  ";
+  buffer_ << var.name;
+  buffer_ << ".set_name (";
+
+  // local variables will have a period in front of them
+  if (var.scope == Variable::LOCAL)
+    buffer_ << ".";
+
+  buffer_ << var.name;
+  buffer_ << ", knowledge";
+
+  // is this an array type?
+  if (var.type->dims.size () > 0)
+  {
+    buffer_ << ", ";
+    buffer_ << builder_.program.processes.size ();
+  }
+
+  buffer_ << ");\n";
 }
 
 void
@@ -195,8 +329,56 @@ daig::madara::SyncBuilder::build_functions_declarations ()
 }
 
 void
+daig::madara::SyncBuilder::build_refresh_modify_globals ()
+{
+  buffer_ << "Madara::Knowledge_Record\n";
+  buffer_ << "REMODIFY_GLOBALS ";
+  buffer_ << "(engine::Function_Arguments &,\n";
+  buffer_ << "  engine::Variables & vars)\n";
+  buffer_ << "{\n";
+
+  Nodes & nodes = builder_.program.nodes;
+  for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
+  {
+    buffer_ << "  // Binding program-specific global variables\n";
+    Variables & vars = n->second.globVars;
+    for (Variables::iterator i = vars.begin (); i != vars.end (); ++i)
+    {
+      Variable & var = i->second;
+      build_refresh_modify_global (var);
+    }
+  }
+  
+  buffer_ << "  return engine::Knowledge_Record::Integer (0);\n";
+  buffer_ << "}\n\n";
+}
+
+void
+daig::madara::SyncBuilder::build_refresh_modify_global (const Variable & var)
+{
+  buffer_ << "  ";
+  // is this an array type?
+  if (var.type->dims.size () > 0)
+  {
+    buffer_ << var.name;
+    buffer_ << ".set (*id, ";
+    buffer_ << var.name;
+    buffer_ << "[*id]);\n";
+  }
+  else
+  {
+    buffer_ << var.name;
+    buffer_ << " = *";
+    buffer_ << var.name;
+    buffer_ << ";\n";
+  }
+}
+
+void
 daig::madara::SyncBuilder::build_functions ()
 {
+  build_refresh_modify_globals ();
+
   buffer_ << "// Defining global functions\n\n";
   Functions & funcs = builder_.program.funcs;
   for (Functions::iterator i = funcs.begin (); i != funcs.end (); ++i)
@@ -225,8 +407,7 @@ daig::madara::SyncBuilder::build_function_declaration (
 {
   buffer_ << "Madara::Knowledge_Record\n";
   buffer_ << function.name << " ";
-  buffer_ << "(Madara::Knowledge_Engine::Function_Arguments & args,\n";
-  buffer_ << "  Madara::Knowledge_Engine::Variables & vars);\n";
+  buffer_ << "(engine::Function_Arguments & args, engine::Variables & vars);\n";
 }
 
 void
@@ -235,10 +416,9 @@ daig::madara::SyncBuilder::build_function (
 {
   buffer_ << "Madara::Knowledge_Record\n";
   buffer_ << function.name << " ";
-  buffer_ << "(Madara::Knowledge_Engine::Function_Arguments & args,\n";
-  buffer_ << "  Madara::Knowledge_Engine::Variables & vars)\n";
+  buffer_ << "(engine::Function_Arguments & args, engine::Variables & vars)\n";
   buffer_ << "{\n";
-  buffer_ << "  return 0.0\n";
+  buffer_ << "  return engine::Knowledge_Record::Integer (0);\n";
   buffer_ << "}\n\n";
 }
 
@@ -263,13 +443,75 @@ daig::madara::SyncBuilder::build_main_function ()
 
   buffer_ << "  Madara::Knowledge_Engine::Wait_Settings wait_settings;\n";
   buffer_ << "  wait_settings.max_wait_time = 10;\n";
-  buffer_ << "  wait_settings.poll_frequency = .1;\n\n";
+  buffer_ << "  wait_settings.poll_frequency = .1;\n";
+  buffer_ << "  std::map <std::string, bool>  barrier_send_list;\n";
+  buffer_ << "  barrier_send_list [knowledge.expand_statement (";
+  buffer_ << "\"mbarrier.{.id}\")] = true;\n\n";
 
   buffer_ << "  // create the knowledge base with the transport settings\n";
   buffer_ << "  Madara::Knowledge_Engine::Knowledge_Base knowledge (host, settings);\n\n";
+  
+  // build the barrier string
+  
+  buffer_ << "  // Building the barrier string for this node\n";
+  buffer_ << "  std::stringstream barrier_string;\n";
+  buffer_ << "  barrier_string << \"REMODIFY_GLOBALS () ;> \"\n";
+  buffer_ << "  bool started = false;\n\n";
+  buffer_ << "  // create barrier check for all lower ids\n";
+  buffer_ << "  for (unsigned int i = 0; i < settings.id; ++i)\n";
+  buffer_ << "  {\n";
+  buffer_ << "    if (started)\n";
+  buffer_ << "    {\n";
+  buffer_ << "      barrier_string << \" && \";\n";
+  buffer_ << "    }\n";
+  buffer_ << "    barrier_string << \"mbarrier.\";\n";
+  buffer_ << "    barrier_string << i;\n";
+  buffer_ << "    barrier_string << \" >= mbarrier.\";\n";
+  buffer_ << "    barrier_string << settings.id;\n";
+  buffer_ << "    started = true;\n";
+  buffer_ << "  }\n\n";
+  buffer_ << "  // create barrier check for all higher ids\n";
+  buffer_ << "  for (int64_t i = settings.id + 1; i < processes; ++i)\n";
+  buffer_ << "  {\n";
+  buffer_ << "    if (started)\n";
+  buffer_ << "    {\n";
+  buffer_ << "      barrier_string << \" && \";\n";
+  buffer_ << "    }\n";
+  buffer_ << "    barrier_string << \"mbarrier.\";\n";
+  buffer_ << "    barrier_string << i;\n";
+  buffer_ << "    barrier_string << \" >= mbarrier.\";\n";
+  buffer_ << "    barrier_string << settings.id;\n";
+  buffer_ << "    started = true;\n";
+  buffer_ << "  }\n\n";
 
+  build_program_variables_bindings ();
   build_main_define_functions ();
 
+  buffer_ << "  id = Madara::Knowledge_Record::Integer (settings.id);\n";
+  buffer_ << "  num_processes = processes;\n\n";
+  buffer_ << "  engine::Compiled_Expression round_logic = knowledge.compile (\n";
+  buffer_ << "    knowledge.expand_statement (\"ROUND (); ++mbarrier.{.id}));\n";
+  buffer_ << "  engine::Compiled_Expression barrier_logic = \n";
+  buffer_ << "    knowledge.compile (barrier_string.str ());\n\n";
+
+
+  buffer_ << "  while (1)\n";
+  buffer_ << "  {\n";
+
+  buffer_ << "    // remodify our globals and send all updates\n";
+  buffer_ << "    wait_settings.send_list.clear ();\n";
+  buffer_ << "    knowledge.wait (barrier_logic, wait_settings);\n\n";
+
+  buffer_ << "    knowledge.evaluate (round_logic);\n\n";
+
+  buffer_ << "    // Send only barrier information\n";
+  buffer_ << "    wait_settings.send_list = barrier_list;\n";
+  buffer_ << "    knowledge.wait (barrier_logic, wait_settings);\n\n";
+
+  buffer_ << "    // Increment barrier and only send barrier update\n";
+  buffer_ << "    knowledge.evaluate (\"++mbarrier.{.id}\", wait_settings);\n";
+
+  buffer_ << "  }\n\n";
   buffer_ << "  return 0;\n";
   buffer_ << "}\n";
 }
@@ -277,6 +519,11 @@ daig::madara::SyncBuilder::build_main_function ()
 void
 daig::madara::SyncBuilder::build_main_define_functions ()
 {
+  buffer_ << "  // Defining common functions\n\n";
+
+  buffer_ << "  knowledge.define_function (\"REMODIFY_GLOBALS\", ";
+  buffer_ << "REMODIFY_GLOBALS);\n\n";
+
   buffer_ << "  // Defining global functions for MADARA\n\n";
   Functions & funcs = builder_.program.funcs;
   for (Functions::iterator i = funcs.begin (); i != funcs.end (); ++i)

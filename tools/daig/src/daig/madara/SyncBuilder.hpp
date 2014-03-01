@@ -36,6 +36,26 @@ namespace daig
        * Builds the common global MADARA generated variables
        **/
       void build_common_global_variables (void);
+      
+      /**
+       * Builds the program's MADARA generated variables
+       **/
+      void build_program_variables (void);
+      
+      /**
+       * Builds the program's MADARA generated variables
+       **/
+      void build_program_variable (const Variable & var);
+      
+      /**
+       * Builds the program's MADARA generated variable bindings in main
+       **/
+      void build_program_variables_bindings (void);
+      
+      /**
+       * Builds a MADARA generated variable binding in main
+       **/
+      void build_program_variable_binding (const Variable & var);
 
       /**
        * Builds the arguments parser
@@ -47,6 +67,16 @@ namespace daig
        **/
       void build_functions_declarations (void);
       
+      /**
+       * Builds a function for refreshing modification flag on globals
+       **/
+      void build_refresh_modify_globals (void);
+      
+      /**
+       * Builds a refresh statement for modification on a global
+       **/
+      void build_refresh_modify_global (const Variable & var);
+
       /**
        * Builds a function
        * @param  function  a defined function in the parsed program
@@ -79,6 +109,11 @@ namespace daig
        * @param  function  a defined function in the parsed program
        **/
       void build_function (daig::Function & function);
+      
+      /**
+       * Builds the main logic loop for execution of ROUND
+       **/
+      void build_main_logic (void);
 
       /**
        * Clears the underlying buffer
