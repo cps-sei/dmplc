@@ -4,7 +4,7 @@
 #include <fstream>
 #include <string>
 #include "DaigBuilder.hpp"
-#include "daig/madara/SyncBuilder.hpp"
+#include "daig/madara/Sync_Builder.hpp"
 #include "SyncSeq.hpp"
 
 /*********************************************************************/
@@ -54,7 +54,7 @@ int main(int argc, char **argv)
     std::ofstream os(madaraFileName.c_str());
 
     // create a madara builder instance of the daig builder parse
-    daig::madara::SyncBuilder madara_builder (builder);
+    daig::madara::Sync_Builder madara_builder (builder);
     madara_builder.build ();
 
     // print the resulting information to the string and close the stream
@@ -145,7 +145,7 @@ void usage(char *cmd)
   std::cerr << "Options :\n\t--debug\n\t--print\n\t"
             << "--seq=node-num\n\t--out=output-filename\n\t"
             << "--rounds=round-num\n"
-            << "--madara=madara-ouput-filename\n";
+            << "\t--madara=madara-ouput-filename\n";
   exit(1);
 }
 

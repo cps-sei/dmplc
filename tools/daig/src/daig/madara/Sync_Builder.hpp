@@ -4,6 +4,7 @@
 #define __MADARA_SYNC_BUILDER_H__
 
 #include <iostream>
+#include <sstream>
 #include "daslc/DaigBuilder.hpp"
 
 namespace daig
@@ -13,14 +14,14 @@ namespace daig
     /*******************************************************************/
     // Synchronous program builder for MADARA
     /*******************************************************************/
-    class SyncBuilder
+    class Sync_Builder
     {
     public:
       /**
        * Constructor
        * @param  builder   the source for building a program
        **/
-      SyncBuilder (DaigBuilder & builder);
+      Sync_Builder (DaigBuilder & builder);
 
       /**
        * Builds the underlying character stream that can then be printed

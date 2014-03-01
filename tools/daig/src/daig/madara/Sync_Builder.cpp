@@ -1,19 +1,20 @@
-#include "SyncBuilder.hpp"
+#include "Sync_Builder.hpp"
+#include "Function_Visitor.hpp"
 
-daig::madara::SyncBuilder::SyncBuilder (daig::DaigBuilder & builder)
+daig::madara::Sync_Builder::Sync_Builder (daig::DaigBuilder & builder)
   : builder_ (builder)
 {
 
 }
 
 void
-daig::madara::SyncBuilder::build ()
+daig::madara::Sync_Builder::build ()
 {
   // check if we have a valid model of computation
   std::string moc = builder_.program.moc.to_string_type ();
   if (moc != "SYNC" && moc != "MOC_SYNC")
   {
-    buffer_ << "ERROR: The MADARA SyncBuilder class only supports the ";
+    buffer_ << "ERROR: The MADARA Sync_Builder class only supports the ";
     buffer_ << "synchronous model of computation.\n";
     return;
   }
@@ -29,7 +30,7 @@ daig::madara::SyncBuilder::build ()
 }
 
 void
-daig::madara::SyncBuilder::build_header_includes ()
+daig::madara::Sync_Builder::build_header_includes ()
 {
   buffer_ << "#include <string>\n";
   buffer_ << "#include <vector>\n";
@@ -45,7 +46,7 @@ daig::madara::SyncBuilder::build_header_includes ()
 }
 
 void
-daig::madara::SyncBuilder::build_common_global_variables ()
+daig::madara::Sync_Builder::build_common_global_variables ()
 {
   buffer_ << "// namespace shortcuts\n";
   buffer_ << "namespace engine = Madara::Knowledge_Engine;\n";
@@ -67,7 +68,7 @@ daig::madara::SyncBuilder::build_common_global_variables ()
 }
 
 void
-daig::madara::SyncBuilder::build_program_variables ()
+daig::madara::Sync_Builder::build_program_variables ()
 {
   buffer_ << "// Defining program-specific constants\n";
   
@@ -107,7 +108,7 @@ daig::madara::SyncBuilder::build_program_variables ()
 }
 
 void
-daig::madara::SyncBuilder::build_program_variable (const Variable & var)
+daig::madara::Sync_Builder::build_program_variable (const Variable & var)
 {
   // is this an array type?
   if (var.type->dims.size () > 0)
@@ -125,7 +126,7 @@ daig::madara::SyncBuilder::build_program_variable (const Variable & var)
 }
 
 void
-daig::madara::SyncBuilder::build_program_variables_bindings ()
+daig::madara::Sync_Builder::build_program_variables_bindings ()
 { 
   buffer_ << "  // Binding common variables\n";
   buffer_ << "  barrier.set_name (\"mbarrier\", knowledge, ";
@@ -160,7 +161,7 @@ daig::madara::SyncBuilder::build_program_variables_bindings ()
 }
 
 void
-daig::madara::SyncBuilder::build_program_variable_binding (
+daig::madara::Sync_Builder::build_program_variable_binding (
   const Variable & var)
 {
   buffer_ << "  ";
@@ -185,7 +186,7 @@ daig::madara::SyncBuilder::build_program_variable_binding (
 }
 
 void
-daig::madara::SyncBuilder::build_parse_args ()
+daig::madara::Sync_Builder::build_parse_args ()
 {
   buffer_ << "// handle arguments from the command line\n";
   buffer_ << "void handle_arguments (int argc, char ** argv)\n";
@@ -305,7 +306,7 @@ daig::madara::SyncBuilder::build_parse_args ()
 }
 
 void
-daig::madara::SyncBuilder::build_functions_declarations ()
+daig::madara::Sync_Builder::build_functions_declarations ()
 {
   buffer_ << "// Forward declaring global functions\n\n";
   Functions & funcs = builder_.program.funcs;
@@ -329,7 +330,7 @@ daig::madara::SyncBuilder::build_functions_declarations ()
 }
 
 void
-daig::madara::SyncBuilder::build_refresh_modify_globals ()
+daig::madara::Sync_Builder::build_refresh_modify_globals ()
 {
   buffer_ << "Madara::Knowledge_Record\n";
   buffer_ << "REMODIFY_GLOBALS ";
@@ -357,7 +358,7 @@ daig::madara::SyncBuilder::build_refresh_modify_globals ()
 }
 
 void
-daig::madara::SyncBuilder::build_refresh_modify_global (const Variable & var)
+daig::madara::Sync_Builder::build_refresh_modify_global (const Variable & var)
 {
   buffer_ << "  ";
   // is this an array type?
@@ -378,7 +379,7 @@ daig::madara::SyncBuilder::build_refresh_modify_global (const Variable & var)
 }
 
 void
-daig::madara::SyncBuilder::build_functions ()
+daig::madara::Sync_Builder::build_functions ()
 {
   build_refresh_modify_globals ();
 
@@ -405,7 +406,7 @@ daig::madara::SyncBuilder::build_functions ()
 }
 
 void
-daig::madara::SyncBuilder::build_function_declaration (
+daig::madara::Sync_Builder::build_function_declaration (
   daig::Function & function)
 {
   buffer_ << "Madara::Knowledge_Record\n";
@@ -414,20 +415,39 @@ daig::madara::SyncBuilder::build_function_declaration (
 }
 
 void
-daig::madara::SyncBuilder::build_function (
+daig::madara::Sync_Builder::build_function (
   daig::Function & function)
 {
   buffer_ << "Madara::Knowledge_Record\n";
   buffer_ << function.name << " ";
   buffer_ << "(engine::Function_Arguments & args, engine::Variables & vars)\n";
   buffer_ << "{\n";
-  buffer_ << "  return engine::Knowledge_Record::Integer (0);\n";
+  buffer_ << "  // Declare local variables\n";
+  
+  buffer_ << "  engine::Knowledge_Record::Integer result (0);\n";
+  BOOST_FOREACH (Variables::value_type & variable, function.temps)
+  {
+    buffer_ << "  engine::Knowledge_Record::Integer ";
+    buffer_ << variable.second.name;
+    buffer_ << ";\n";
+  }
+  
+  buffer_ << "\n";
+
+  Function_Visitor visitor (builder_, buffer_);
+
+    //transform the body of safety
+  BOOST_FOREACH(const Stmt & statement, function.body)
+  {
+    visitor.visit (statement);
+  }
+
   buffer_ << "}\n\n";
 }
 
 
 void
-daig::madara::SyncBuilder::build_main_function ()
+daig::madara::Sync_Builder::build_main_function ()
 {
   buffer_ << "int main (int argc, char ** argv)\n";
   buffer_ << "{\n";
@@ -526,15 +546,12 @@ daig::madara::SyncBuilder::build_main_function ()
   buffer_ << "    // Send only barrier information\n";
   buffer_ << "    wait_settings.send_list = barrier_list;\n\n";
   
-  buffer_ << "    // Execute main user logic\n";
+  buffer_ << "    // Synchronize barrier information for late joiners\n";
   buffer_ << "    knowledge.evaluate (barrier_sync_logic, wait_settings);\n\n";
 
   buffer_ << "    // Execute main user logic\n";
   buffer_ << "    knowledge.evaluate (round_logic, wait_settings);\n\n";
   
-  buffer_ << "    // Execute main user logic\n";
-  buffer_ << "    knowledge.evaluate (barrier_sync_logic, wait_settings);\n\n";
-
   buffer_ << "    // Increment barrier and only send barrier update\n";
   buffer_ << "    knowledge.wait (barrier_logic, wait_settings);\n";
 
@@ -544,7 +561,7 @@ daig::madara::SyncBuilder::build_main_function ()
 }
 
 void
-daig::madara::SyncBuilder::build_main_define_functions ()
+daig::madara::Sync_Builder::build_main_define_functions ()
 {
   buffer_ << "  // Defining common functions\n\n";
 
@@ -576,7 +593,7 @@ daig::madara::SyncBuilder::build_main_define_functions ()
 
 
 void
-daig::madara::SyncBuilder::build_main_define_function (daig::Function & function)
+daig::madara::Sync_Builder::build_main_define_function (daig::Function & function)
 {
   buffer_ << "  knowledge.define_function (\"";
   buffer_ << function.name;
@@ -586,13 +603,13 @@ daig::madara::SyncBuilder::build_main_define_function (daig::Function & function
 }
 
 void
-daig::madara::SyncBuilder::clear_buffer ()
+daig::madara::Sync_Builder::clear_buffer ()
 {
   buffer_.str ("");
 }
 
 void
-daig::madara::SyncBuilder::print (std::ostream & os)
+daig::madara::Sync_Builder::print (std::ostream & os)
 {
   os << buffer_.str ();
 }
