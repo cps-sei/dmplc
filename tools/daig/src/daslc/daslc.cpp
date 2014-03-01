@@ -6,12 +6,13 @@
 #include "DaigBuilder.hpp"
 #include "daig/madara/Sync_Builder.hpp"
 #include "SyncSeq.hpp"
+#include "ArrayElim.hpp"
 
 /*********************************************************************/
 //options
 /*********************************************************************/
 std::string fileName, outFileName, madaraFileName;
-bool debug = false, print=false;
+bool debug = false, print=false, seqNoArray = false;
 size_t nodeNum = 0;
 int roundNum = -1;
 
@@ -74,6 +75,13 @@ int main(int argc, char **argv)
       syncSeq.run();
       daig::CProgram &cprog = syncSeq.cprog;
 
+      //eliminate arrays
+      if(seqNoArray) {
+        daig::ArrayElim ae(cprog);
+        ae.run();
+        cprog = ae.outProg;
+      }
+
       if(outFileName.empty())
       {
         cprog.print(std::cout,0);
@@ -119,6 +127,10 @@ void parseOptions(int argc, char **argv)
     {
       outFileName = std::string(argv[i] + 6);
     }
+    else if(!strcmp(argv[i],"--seq-no-array"))
+    {
+      seqNoArray = true;
+    }
     else if(strstr(argv[i],"--rounds=") == argv[i])
     {
       roundNum = atoi(argv[i] + 9);
@@ -146,7 +158,7 @@ void usage(char *cmd)
   std::cerr << "Usage : " << cmd << " <options> filename\n";
   std::cerr << "Options :\n\t--debug\n\t--print\n\t"
             << "--seq=node-num\n\t--out=output-filename\n\t"
-            << "--rounds=round-num\n"
+            << "--seq-no-array\n\t--rounds=round-num\n"
             << "\t--madara=madara-ouput-filename\n";
   exit(1);
 }
