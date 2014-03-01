@@ -72,14 +72,16 @@ int main(int argc, char **argv)
     {
       daig::SyncSeq syncSeq(builder,nodeNum,roundNum);
       syncSeq.run();
+      daig::CProgram &cprog = syncSeq.cprog;
+
       if(outFileName.empty())
       {
-        syncSeq.printCProgram(std::cout);
+        cprog.print(std::cout,0);
       }
       else
       {
         std::ofstream os(outFileName.c_str());
-        syncSeq.printCProgram(os);
+        cprog.print(os,0);
         os.close();
       }
 
