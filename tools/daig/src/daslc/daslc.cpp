@@ -74,12 +74,12 @@ int main(int argc, char **argv)
       syncSeq.run();
       if(outFileName.empty())
       {
-        syncSeq.printProgram(std::cout);
+        syncSeq.printCProgram(std::cout);
       }
       else
       {
         std::ofstream os(outFileName.c_str());
-        syncSeq.printProgram(os);
+        syncSeq.printCProgram(os);
         os.close();
       }
 

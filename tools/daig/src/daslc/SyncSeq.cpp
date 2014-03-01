@@ -643,7 +643,7 @@ void daig::SyncSeq::run()
 /*********************************************************************/
 //print the sequentialized program
 /*********************************************************************/
-void daig::SyncSeq::printProgram(std::ostream &os)
+void daig::SyncSeq::printCProgram(std::ostream &os)
 {
   cprog.print(os,0);
 }
