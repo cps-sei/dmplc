@@ -336,11 +336,14 @@ daig::madara::SyncBuilder::build_refresh_modify_globals ()
   buffer_ << "(engine::Function_Arguments &,\n";
   buffer_ << "  engine::Variables & vars)\n";
   buffer_ << "{\n";
+  
+  buffer_ << "  // Remodifying common global variables\n";
+  buffer_ << "  barrier.set (*id, barrier[*id].to_integer ());\n\n";
 
   Nodes & nodes = builder_.program.nodes;
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
-    buffer_ << "  // Binding program-specific global variables\n";
+    buffer_ << "  // Remodifying program-specific global variables\n";
     Variables & vars = n->second.globVars;
     for (Variables::iterator i = vars.begin (); i != vars.end (); ++i)
     {
@@ -363,7 +366,7 @@ daig::madara::SyncBuilder::build_refresh_modify_global (const Variable & var)
     buffer_ << var.name;
     buffer_ << ".set (*id, ";
     buffer_ << var.name;
-    buffer_ << "[*id]);\n";
+    buffer_ << "[*id].to_integer ());\n";
   }
   else
   {
@@ -454,21 +457,29 @@ daig::madara::SyncBuilder::build_main_function ()
   // build the barrier string
   
   buffer_ << "  // Building the barrier string for this node\n";
-  buffer_ << "  std::stringstream barrier_string;\n";
-  buffer_ << "  barrier_string << \"REMODIFY_GLOBALS () ;> \"\n";
+  buffer_ << "  std::stringstream barrier_string, barrier_sync;\n";
   buffer_ << "  bool started = false;\n\n";
+  buffer_ << "  barrier_string << \"REMODIFY_GLOBALS () ;> \"\n";
+  buffer_ << "  barrier_sync << \"mbarrier.\"\n";
+  buffer_ << "  barrier_sync << settings.id;\n";
+  buffer_ << "  barrier_sync << \" = mbarrier.\"\n";
+  buffer_ << "  barrier_sync << settings.id;\n\n";
   buffer_ << "  // create barrier check for all lower ids\n";
   buffer_ << "  for (unsigned int i = 0; i < settings.id; ++i)\n";
   buffer_ << "  {\n";
   buffer_ << "    if (started)\n";
   buffer_ << "    {\n";
   buffer_ << "      barrier_string << \" && \";\n";
-  buffer_ << "    }\n";
+  buffer_ << "    }\n\n";
   buffer_ << "    barrier_string << \"mbarrier.\";\n";
   buffer_ << "    barrier_string << i;\n";
   buffer_ << "    barrier_string << \" >= mbarrier.\";\n";
   buffer_ << "    barrier_string << settings.id;\n";
-  buffer_ << "    started = true;\n";
+  buffer_ << "    barrier_sync << \" ; \";\n";
+  buffer_ << "    barrier_sync << \"mbarrier.\";\n";
+  buffer_ << "    barrier_sync << i;\n\n";
+  buffer_ << "    if (!started)\n";
+  buffer_ << "      started = true;\n";
   buffer_ << "  }\n\n";
   buffer_ << "  // create barrier check for all higher ids\n";
   buffer_ << "  for (int64_t i = settings.id + 1; i < processes; ++i)\n";
@@ -476,40 +487,56 @@ daig::madara::SyncBuilder::build_main_function ()
   buffer_ << "    if (started)\n";
   buffer_ << "    {\n";
   buffer_ << "      barrier_string << \" && \";\n";
-  buffer_ << "    }\n";
+  buffer_ << "    }\n\n";
   buffer_ << "    barrier_string << \"mbarrier.\";\n";
   buffer_ << "    barrier_string << i;\n";
   buffer_ << "    barrier_string << \" >= mbarrier.\";\n";
   buffer_ << "    barrier_string << settings.id;\n";
-  buffer_ << "    started = true;\n";
+  buffer_ << "    barrier_sync << \" ; \";\n";
+  buffer_ << "    barrier_sync << \"mbarrier.\";\n";
+  buffer_ << "    barrier_sync << i;\n\n";
+  buffer_ << "    if (!started)\n";
+  buffer_ << "      started = true;\n";
   buffer_ << "  }\n\n";
+  buffer_ << "  barrier_sync << \")\"\n\n";
 
   build_program_variables_bindings ();
   build_main_define_functions ();
 
   buffer_ << "  id = Madara::Knowledge_Record::Integer (settings.id);\n";
   buffer_ << "  num_processes = processes;\n\n";
+  buffer_ << "  // Compile frequently used expressions\n";
   buffer_ << "  engine::Compiled_Expression round_logic = knowledge.compile (\n";
   buffer_ << "    knowledge.expand_statement (\"ROUND (); ++mbarrier.{.id}));\n";
   buffer_ << "  engine::Compiled_Expression barrier_logic = \n";
-  buffer_ << "    knowledge.compile (barrier_string.str ());\n\n";
+  buffer_ << "    knowledge.compile (barrier_string.str ());\n";
+  buffer_ << "  engine::Compiled_Expression barrier_sync_logic = \n";
+  buffer_ << "    knowledge.compile (barrier_sync.str ());\n\n";
 
 
   buffer_ << "  while (1)\n";
   buffer_ << "  {\n";
+  
+  buffer_ << "    knowledge.evaluate (\"++mbarrier.{.id}\", wait_settings);\n";
 
   buffer_ << "    // remodify our globals and send all updates\n";
   buffer_ << "    wait_settings.send_list.clear ();\n";
   buffer_ << "    knowledge.wait (barrier_logic, wait_settings);\n\n";
 
-  buffer_ << "    knowledge.evaluate (round_logic);\n\n";
-
   buffer_ << "    // Send only barrier information\n";
-  buffer_ << "    wait_settings.send_list = barrier_list;\n";
-  buffer_ << "    knowledge.wait (barrier_logic, wait_settings);\n\n";
+  buffer_ << "    wait_settings.send_list = barrier_list;\n\n";
+  
+  buffer_ << "    // Execute main user logic\n";
+  buffer_ << "    knowledge.evaluate (barrier_sync_logic, wait_settings);\n\n";
+
+  buffer_ << "    // Execute main user logic\n";
+  buffer_ << "    knowledge.evaluate (round_logic, wait_settings);\n\n";
+  
+  buffer_ << "    // Execute main user logic\n";
+  buffer_ << "    knowledge.evaluate (barrier_sync_logic, wait_settings);\n\n";
 
   buffer_ << "    // Increment barrier and only send barrier update\n";
-  buffer_ << "    knowledge.evaluate (\"++mbarrier.{.id}\", wait_settings);\n";
+  buffer_ << "    knowledge.wait (barrier_logic, wait_settings);\n";
 
   buffer_ << "  }\n\n";
   buffer_ << "  return 0;\n";

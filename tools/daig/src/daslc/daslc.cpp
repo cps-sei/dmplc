@@ -10,11 +10,10 @@
 /*********************************************************************/
 //options
 /*********************************************************************/
-std::string fileName,outFileName;
+std::string fileName, outFileName, madaraFileName;
 bool debug = false, print=false;
 size_t nodeNum = 0;
 int roundNum = -1;
-bool realize = false;
 
 /*********************************************************************/
 //function declarations
@@ -49,10 +48,10 @@ int main(int argc, char **argv)
   }
   
   // right now, we're just using a realize flag to indicate madara generation
-  if (realize && !outFileName.empty ())
+  if (!madaraFileName.empty ())
   {
     // create an output stream from the file name
-    std::ofstream os(outFileName.c_str());
+    std::ofstream os(madaraFileName.c_str());
 
     // create a madara builder instance of the daig builder parse
     daig::madara::SyncBuilder madara_builder (builder);
@@ -122,9 +121,9 @@ void parseOptions(int argc, char **argv)
     {
       roundNum = atoi(argv[i] + 9);
     }
-    else if(!strcmp(argv[i],"--realize") || !strcmp (argv[i],"-r"))
+    else if(strstr(argv[i],"--madara=") == argv[i])
     {
-      realize = true;
+      madaraFileName = std::string(argv[i] + 9);
     }
     else
     {
@@ -146,7 +145,7 @@ void usage(char *cmd)
   std::cerr << "Options :\n\t--debug\n\t--print\n\t"
             << "--seq=node-num\n\t--out=output-filename\n\t"
             << "--rounds=round-num\n"
-            << "-r|--realize   create a MADARA program for simulations\n";
+            << "--madara=madara-ouput-filename\n";
   exit(1);
 }
 
