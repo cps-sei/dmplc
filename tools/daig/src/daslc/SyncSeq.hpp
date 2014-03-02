@@ -124,7 +124,6 @@ namespace daig {
     void createNodeFuncs();
     Expr createNondetFunc(const Expr &expr);
     void run();
-    void printProgram(std::ostream &os);
   };
 } //namespace daig
 

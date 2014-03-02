@@ -1,8 +1,9 @@
 SRC=daig-scanner.cpp daig-parser.cpp DaigBuilder.cpp SyncSeq.cpp \
-../daig/Expression.cpp ../daig/Function.cpp \
+ArrayElim.cpp ../daig/Expression.cpp ../daig/Function.cpp \
 ../daig/Model_Of_Computation.cpp ../daig/Node.cpp ../daig/Program.cpp \
 ../daig/Variable.cpp ../daig/Statement.cpp ../daig/Type.cpp \
-../daig/CProgram.cpp ../daig/Visitor.cpp ../daig/madara/SyncBuilder.cpp
+../daig/CProgram.cpp ../daig/Visitor.cpp \
+../daig/madara/Sync_Builder.cpp ../daig/madara/Function_Visitor.cpp
 OBJ=$(patsubst %.cpp,%.o,$(SRC))
 INC=-I/home/chaki/stuff/madara/ace/ACE_wrappers \
 -I/home/chaki/stuff/madara/madara/include -I..
