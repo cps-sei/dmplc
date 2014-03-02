@@ -7,6 +7,8 @@
 #include <sstream>
 #include "daslc/DaigBuilder.hpp"
 #include "daig/Visitor.h"
+#include "daig/Function.h"
+#include "daig/Node.h"
 
 namespace daig
 {
@@ -23,7 +25,8 @@ namespace daig
        * @param  builder   the source for building a program
        * @param  buffer    the buffer being used to create the program text
        **/
-      Function_Visitor (DaigBuilder & builder, std::stringstream & buffer);
+      Function_Visitor (Function & function, Node & node, 
+        DaigBuilder & builder, std::stringstream & buffer);
 
       virtual bool enterInt(IntExpr &expr);
       virtual void exitInt(IntExpr &expr);
@@ -79,11 +82,20 @@ namespace daig
 
     private:
       
+      /// current function
+      Function & function_;
+
+      /// current node
+      Node & node_;
+
       /// the result of the DASL parsing function
       DaigBuilder & builder_;
 
       /// character buffer for holding results of build
       std::stringstream & buffer_;
+
+      /// space indentation
+      size_t indentation_;
     };
   } // namespace madara
 } //namespace daig

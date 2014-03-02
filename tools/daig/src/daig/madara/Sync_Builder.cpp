@@ -39,6 +39,7 @@ daig::madara::Sync_Builder::build_header_includes ()
   buffer_ << "\n";
   buffer_ << "#include \"madara/knowledge_engine/Knowledge_Base.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/containers/Vector.h\"\n";
+  buffer_ << "#include \"madara/knowledge_engine/containers/Vector_N.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/containers/Integer.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/containers/Double.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/containers/String.h\"\n";
@@ -111,9 +112,15 @@ void
 daig::madara::Sync_Builder::build_program_variable (const Variable & var)
 {
   // is this an array type?
-  if (var.type->dims.size () > 0)
+  if (var.type->dims.size () == 1)
   {
     buffer_ << "containers::Array ";
+    buffer_ << var.name;
+    buffer_ << ";\n";
+  }
+  else if (var.type->dims.size () > 1)
+  {
+    buffer_ << "containers::Array_N ";
     buffer_ << var.name;
     buffer_ << ";\n";
   }
@@ -312,7 +319,7 @@ daig::madara::Sync_Builder::build_functions_declarations ()
   Functions & funcs = builder_.program.funcs;
   for (Functions::iterator i = funcs.begin (); i != funcs.end (); ++i)
   {
-    build_function_declaration (i->second);
+    build_function_declaration (Node (), i->second);
   }
   
   buffer_ << "\n// Forward declaring node functions\n\n";
@@ -322,7 +329,7 @@ daig::madara::Sync_Builder::build_functions_declarations ()
     Functions & funcs = n->second.funcs;
     for (Functions::iterator i = funcs.begin (); i != funcs.end (); ++i)
     {
-      build_function_declaration (i->second);
+      build_function_declaration (n->second, i->second);
     }
   }
 
@@ -379,7 +386,7 @@ daig::madara::Sync_Builder::build_refresh_modify_global (const Variable & var)
 }
 
 void
-daig::madara::Sync_Builder::build_functions ()
+daig::madara::Sync_Builder::build_functions (void)
 {
   build_refresh_modify_globals ();
 
@@ -387,9 +394,8 @@ daig::madara::Sync_Builder::build_functions ()
   Functions & funcs = builder_.program.funcs;
   for (Functions::iterator i = funcs.begin (); i != funcs.end (); ++i)
   {
-    build_function (i->second);
+    build_function (Node (), i->second);
   }
-
 
   buffer_ << "// Defining node functions\n\n";
   Nodes & nodes = builder_.program.nodes;
@@ -398,7 +404,7 @@ daig::madara::Sync_Builder::build_functions ()
     Functions & funcs = n->second.funcs;
     for (Functions::iterator i = funcs.begin (); i != funcs.end (); ++i)
     {
-      build_function (i->second);
+      build_function (n->second, i->second);
     }
   }
 
@@ -407,8 +413,11 @@ daig::madara::Sync_Builder::build_functions ()
 
 void
 daig::madara::Sync_Builder::build_function_declaration (
-  daig::Function & function)
+  daig::Node & node, daig::Function & function)
 {
+  if (function.name == "INIT" || function.name == "SAFETY")
+    return;
+
   buffer_ << "Madara::Knowledge_Record\n";
   buffer_ << function.name << " ";
   buffer_ << "(engine::Function_Arguments & args, engine::Variables & vars);\n";
@@ -416,10 +425,13 @@ daig::madara::Sync_Builder::build_function_declaration (
 
 void
 daig::madara::Sync_Builder::build_function (
-  daig::Function & function)
+  daig::Node & node, daig::Function & function)
 {
+  if (function.name == "INIT" || function.name == "SAFETY")
+    return;
+
   buffer_ << "Madara::Knowledge_Record\n";
-  buffer_ << function.name << " ";
+  buffer_ << node.name << "_" << function.name << " ";
   buffer_ << "(engine::Function_Arguments & args, engine::Variables & vars)\n";
   buffer_ << "{\n";
   buffer_ << "  // Declare local variables\n";
@@ -434,14 +446,16 @@ daig::madara::Sync_Builder::build_function (
   
   buffer_ << "\n";
 
-  Function_Visitor visitor (builder_, buffer_);
+  Function_Visitor visitor (function, node, builder_, buffer_);
 
-    //transform the body of safety
+  //transform the body of safety
   BOOST_FOREACH(const Stmt & statement, function.body)
   {
     visitor.visit (statement);
   }
 
+  buffer_ << "\n  // Insert return statement, in case user program did not\n";
+  buffer_ << "  return result;\n";
   buffer_ << "}\n\n";
 }
 
@@ -572,7 +586,7 @@ daig::madara::Sync_Builder::build_main_define_functions ()
   Functions & funcs = builder_.program.funcs;
   for (Functions::iterator i = funcs.begin (); i != funcs.end (); ++i)
   {
-    build_main_define_function (i->second);
+    build_main_define_function (Node (), i->second);
   }
   
   buffer_ << "\n";
@@ -584,7 +598,7 @@ daig::madara::Sync_Builder::build_main_define_functions ()
     Functions & funcs = n->second.funcs;
     for (Functions::iterator i = funcs.begin (); i != funcs.end (); ++i)
     {
-      build_main_define_function (i->second);
+      build_main_define_function (n->second, i->second);
     }
   }
 
@@ -593,12 +607,13 @@ daig::madara::Sync_Builder::build_main_define_functions ()
 
 
 void
-daig::madara::Sync_Builder::build_main_define_function (daig::Function & function)
+daig::madara::Sync_Builder::build_main_define_function (Node & node,
+  Function & function)
 {
   buffer_ << "  knowledge.define_function (\"";
   buffer_ << function.name;
   buffer_ << "\", ";
-  buffer_ << function.name;
+  buffer_ << node.name << "_" << function.name;
   buffer_ << ");\n";
 }
 

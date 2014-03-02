@@ -82,7 +82,7 @@ namespace daig
        * Builds a function
        * @param  function  a defined function in the parsed program
        **/
-      void build_function_declaration (daig::Function & function);
+      void build_function_declaration (daig::Node & node, daig::Function & function);
 
       /**
        * Builds the main function
@@ -98,7 +98,8 @@ namespace daig
        * Builds a function definition for MADARA
        * @param  function  a defined function in the parsed program
        **/
-      void build_main_define_function (daig::Function & function);
+      void build_main_define_function (daig::Node & node,
+        daig::Function & function);
 
       /**
        * Builds all functions
@@ -109,7 +110,7 @@ namespace daig
        * Builds a function
        * @param  function  a defined function in the parsed program
        **/
-      void build_function (daig::Function & function);
+      void build_function (daig::Node & node, daig::Function & function);
       
       /**
        * Builds the main logic loop for execution of ROUND
