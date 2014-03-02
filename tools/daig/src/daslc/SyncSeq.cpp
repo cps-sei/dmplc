@@ -56,7 +56,7 @@
 /*********************************************************************/
 
 //add id to int mapping
-void daig::GlobalTransformer::addIdMap(const std::string &s,size_t i)
+void daig::syncseq::GlobalTransformer::addIdMap(const std::string &s,size_t i)
 {
   if(idMap.count(s)) {
     std::cerr << "ERROR: substitution mapping for " << s << " exists already!!\n";
@@ -66,7 +66,7 @@ void daig::GlobalTransformer::addIdMap(const std::string &s,size_t i)
 }
 
 //remove id to int mappiing
-void daig::GlobalTransformer::delIdMap(const std::string &s)
+void daig::syncseq::GlobalTransformer::delIdMap(const std::string &s)
 {
   if(!idMap.count(s)) {
     std::cerr << "ERROR: substitution mapping for " << s << " doesn't exist!!\n";
@@ -76,7 +76,7 @@ void daig::GlobalTransformer::delIdMap(const std::string &s)
 }
 
 //collect results for an expr list
-daig::ExprList daig::GlobalTransformer::collect(const ExprList &el)
+daig::ExprList daig::syncseq::GlobalTransformer::collect(const ExprList &el)
 {
   daig::ExprList res;
   BOOST_FOREACH(const daig::Expr &e,el) res.push_back(exprMap[e]);
@@ -84,7 +84,7 @@ daig::ExprList daig::GlobalTransformer::collect(const ExprList &el)
 }
 
 //collect results for an stmt list
-daig::StmtList daig::GlobalTransformer::collect(const StmtList &sl)
+daig::StmtList daig::syncseq::GlobalTransformer::collect(const StmtList &sl)
 {
   daig::StmtList res;
   BOOST_FOREACH(const daig::Stmt &s,sl) res.push_back(stmtMap[s]);
@@ -95,12 +95,12 @@ daig::StmtList daig::GlobalTransformer::collect(const StmtList &sl)
 //dispatchers for expressions
 /*********************************************************************/
 
-void daig::GlobalTransformer::exitInt(daig::IntExpr &expr)
+void daig::syncseq::GlobalTransformer::exitInt(daig::IntExpr &expr)
 {
   exprMap[hostExpr] = hostExpr;
 }
 
-void daig::GlobalTransformer::exitLval(daig::LvalExpr &expr)
+void daig::syncseq::GlobalTransformer::exitLval(daig::LvalExpr &expr)
 {
   exprMap[hostExpr] = hostExpr;
 
@@ -130,12 +130,12 @@ void daig::GlobalTransformer::exitLval(daig::LvalExpr &expr)
   //std::cout << exprMap[hostExpr]->toString() << '\n';
 }
 
-void daig::GlobalTransformer::exitComp(daig::CompExpr &expr)
+void daig::syncseq::GlobalTransformer::exitComp(daig::CompExpr &expr)
 {
   exprMap[hostExpr] = daig::Expr(new daig::CompExpr(expr.op,collect(expr.args)));
 }
 
-void daig::GlobalTransformer::exitCall(daig::CallExpr &expr)
+void daig::syncseq::GlobalTransformer::exitCall(daig::CallExpr &expr)
 {
   exprMap[hostExpr] = daig::Expr(new daig::CallExpr(exprMap[expr.func],
                                                     collect(expr.args)));
@@ -145,22 +145,22 @@ void daig::GlobalTransformer::exitCall(daig::CallExpr &expr)
 //dispatchers for statements
 /*********************************************************************/
 
-void daig::GlobalTransformer::exitAtomic(daig::AtomicStmt &stmt)
+void daig::syncseq::GlobalTransformer::exitAtomic(daig::AtomicStmt &stmt)
 {
   stmtMap[hostStmt] = stmtMap[stmt.data];
 }
 
-void daig::GlobalTransformer::exitPrivate(daig::PrivateStmt &stmt)
+void daig::syncseq::GlobalTransformer::exitPrivate(daig::PrivateStmt &stmt)
 {
   stmtMap[hostStmt] = stmtMap[stmt.data];
 }
 
-void daig::GlobalTransformer::exitBlock(daig::BlockStmt &stmt)
+void daig::syncseq::GlobalTransformer::exitBlock(daig::BlockStmt &stmt)
 {
   stmtMap[hostStmt] = Stmt(new BlockStmt(collect(stmt.data)));
 }
 
-void daig::GlobalTransformer::exitAsgn(daig::AsgnStmt &stmt) 
+void daig::syncseq::GlobalTransformer::exitAsgn(daig::AsgnStmt &stmt) 
 { 
   stmtMap[hostStmt] = Stmt(new AsgnStmt(exprMap[stmt.lhs],exprMap[stmt.rhs]));
 
@@ -169,49 +169,49 @@ void daig::GlobalTransformer::exitAsgn(daig::AsgnStmt &stmt)
   //stmtMap[hostStmt]->print(std::cout,0);
 }
 
-void daig::GlobalTransformer::exitIT(daig::ITStmt &stmt) 
+void daig::syncseq::GlobalTransformer::exitIT(daig::ITStmt &stmt) 
 { 
   stmtMap[hostStmt] = Stmt(new ITStmt(exprMap[stmt.cond], stmtMap[stmt.tbranch]));
 }
 
-void daig::GlobalTransformer::exitITE(daig::ITEStmt &stmt) 
+void daig::syncseq::GlobalTransformer::exitITE(daig::ITEStmt &stmt) 
 { 
   stmtMap[hostStmt] = Stmt(new ITEStmt(exprMap[stmt.cond], stmtMap[stmt.tbranch], 
                                        stmtMap[stmt.ebranch]));
 }
 
-void daig::GlobalTransformer::exitFor(daig::ForStmt &stmt) 
+void daig::syncseq::GlobalTransformer::exitFor(daig::ForStmt &stmt) 
 { 
   stmtMap[hostStmt] = Stmt(new ForStmt(collect(stmt.init),collect(stmt.test),
                                        collect(stmt.update),stmtMap[stmt.body]));
 }
 
-void daig::GlobalTransformer::exitWhile(daig::WhileStmt &stmt) 
+void daig::syncseq::GlobalTransformer::exitWhile(daig::WhileStmt &stmt) 
 { 
   stmtMap[hostStmt] = Stmt(new WhileStmt(exprMap[stmt.cond],stmtMap[stmt.body]));
 }
 
-void daig::GlobalTransformer::exitBreak(daig::BreakStmt &stmt) 
+void daig::syncseq::GlobalTransformer::exitBreak(daig::BreakStmt &stmt) 
 { 
   stmtMap[hostStmt] = hostStmt; 
 }
 
-void daig::GlobalTransformer::exitCont(daig::ContStmt &stmt) 
+void daig::syncseq::GlobalTransformer::exitCont(daig::ContStmt &stmt) 
 { 
   stmtMap[hostStmt] = hostStmt; 
 }
 
-void daig::GlobalTransformer::exitRet(daig::RetStmt &stmt) 
+void daig::syncseq::GlobalTransformer::exitRet(daig::RetStmt &stmt) 
 { 
   stmtMap[hostStmt] = Stmt(new RetStmt(exprMap[stmt.retVal]));
 }
 
-void daig::GlobalTransformer::exitRetVoid(daig::RetVoidStmt &stmt) 
+void daig::syncseq::GlobalTransformer::exitRetVoid(daig::RetVoidStmt &stmt) 
 { 
   stmtMap[hostStmt] = hostStmt; 
 }
 
-void daig::GlobalTransformer::exitCall(daig::CallStmt &stmt) 
+void daig::syncseq::GlobalTransformer::exitCall(daig::CallStmt &stmt) 
 { 
   //handle calls to ND(x) -- assign x non-deterministically
   CallExpr *expr = dynamic_cast<CallExpr*>(stmt.data.get());
@@ -229,7 +229,7 @@ void daig::GlobalTransformer::exitCall(daig::CallStmt &stmt)
   stmtMap[hostStmt] = Stmt(new CallStmt(exprMap[stmt.data]));
 }
 
-void daig::GlobalTransformer::exitFAN(daig::FANStmt &stmt) 
+void daig::syncseq::GlobalTransformer::exitFAN(daig::FANStmt &stmt) 
 { 
   Stmt shost = hostStmt;
   StmtList sl;
@@ -244,7 +244,7 @@ void daig::GlobalTransformer::exitFAN(daig::FANStmt &stmt)
   stmtMap[shost] = Stmt(new daig::BlockStmt(sl));
 }
 
-void daig::GlobalTransformer::exitFADNP(daig::FADNPStmt &stmt) 
+void daig::syncseq::GlobalTransformer::exitFADNP(daig::FADNPStmt &stmt) 
 { 
   Stmt shost = hostStmt;
   StmtList sl;
@@ -263,22 +263,22 @@ void daig::GlobalTransformer::exitFADNP(daig::FADNPStmt &stmt)
   stmtMap[shost] = Stmt(new daig::BlockStmt(sl));
 }
 
-void daig::GlobalTransformer::exitFAO(daig::FAOStmt &stmt) 
+void daig::syncseq::GlobalTransformer::exitFAO(daig::FAOStmt &stmt) 
 { 
   stmtMap[hostStmt] = hostStmt; 
 }
 
-void daig::GlobalTransformer::exitFAOL(daig::FAOLStmt &stmt) 
+void daig::syncseq::GlobalTransformer::exitFAOL(daig::FAOLStmt &stmt) 
 { stmtMap[hostStmt] = hostStmt; }
 
-void daig::GlobalTransformer::exitFAOH(daig::FAOHStmt &stmt) 
+void daig::syncseq::GlobalTransformer::exitFAOH(daig::FAOHStmt &stmt) 
 { stmtMap[hostStmt] = hostStmt; }
 
 /*********************************************************************/
 //methods for NodeTransformer
 /*********************************************************************/
 
-void daig::NodeTransformer::exitLval(daig::LvalExpr &expr)
+void daig::syncseq::NodeTransformer::exitLval(daig::LvalExpr &expr)
 {
   exprMap[hostExpr] = hostExpr;
 
@@ -315,7 +315,7 @@ void daig::NodeTransformer::exitLval(daig::LvalExpr &expr)
   //std::cout << exprMap[hostExpr]->toString() << '\n';
 }
 
-void daig::NodeTransformer::exitCall(daig::CallExpr &expr) 
+void daig::syncseq::NodeTransformer::exitCall(daig::CallExpr &expr) 
 {
   Expr shost = hostExpr;
   inCall = true;
@@ -326,7 +326,7 @@ void daig::NodeTransformer::exitCall(daig::CallExpr &expr)
 }
 
 //compute disjunction over all other node ids
-void daig::NodeTransformer::exitEXO(daig::EXOExpr &expr)
+void daig::syncseq::NodeTransformer::exitEXO(daig::EXOExpr &expr)
 {
   Expr shost = hostExpr;
   exprMap[shost] = Expr();
@@ -348,7 +348,7 @@ void daig::NodeTransformer::exitEXO(daig::EXOExpr &expr)
 }
 
 //compute disjunction over all higher node ids
-void daig::NodeTransformer::exitEXH(daig::EXHExpr &expr)
+void daig::syncseq::NodeTransformer::exitEXH(daig::EXHExpr &expr)
 {
   Expr shost = hostExpr;
   exprMap[shost] = Expr();
@@ -369,7 +369,7 @@ void daig::NodeTransformer::exitEXH(daig::EXHExpr &expr)
 }
 
 //compute disjunction over all lower node ids
-void daig::NodeTransformer::exitEXL(daig::EXLExpr &expr)
+void daig::syncseq::NodeTransformer::exitEXL(daig::EXLExpr &expr)
 {
   Expr shost = hostExpr;
   exprMap[shost] = Expr();
@@ -389,7 +389,7 @@ void daig::NodeTransformer::exitEXL(daig::EXLExpr &expr)
     exprMap[shost] = Expr(new daig::IntExpr(0));
 }
 
-void daig::NodeTransformer::exitAsgn(daig::AsgnStmt &stmt)
+void daig::syncseq::NodeTransformer::exitAsgn(daig::AsgnStmt &stmt)
 {
   Stmt shost = hostStmt;
   inLhs = true; visit(stmt.lhs); inLhs = false;
@@ -571,7 +571,7 @@ void daig::SyncSeq::createInit()
 
   //transform the body of init
   BOOST_FOREACH(const Stmt &st,fit->second.body) {
-    GlobalTransformer gt(*this,builder.program,nodeNum);
+    syncseq::GlobalTransformer gt(*this,builder.program,nodeNum);
     gt.visit(st);
     fnBody.push_back(gt.stmtMap[st]);
   }
@@ -608,7 +608,7 @@ void daig::SyncSeq::createSafety()
 
   //transform the body of safety
   BOOST_FOREACH(const Stmt &st,fit->second.body) {
-    GlobalTransformer gt(*this,builder.program,nodeNum);
+    syncseq::GlobalTransformer gt(*this,builder.program,nodeNum);
     gt.visit(st);
     fnBody.push_back(gt.stmtMap[st]);
   }
@@ -638,7 +638,7 @@ void daig::SyncSeq::createNodeFuncs()
       StmtList fnBody;
 
       BOOST_FOREACH(const Stmt &st,f.second.body) {
-        NodeTransformer nt(*this,builder.program,nodeNum,i);
+        syncseq::NodeTransformer nt(*this,builder.program,nodeNum,i);
 
         //currently, nodes have just one parameter -- its id
         assert(node.args.size() == 1 && "ERROR: node must have one id!");
