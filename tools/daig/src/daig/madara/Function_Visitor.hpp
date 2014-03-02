@@ -69,7 +69,7 @@ namespace daig
        * @param  builder   the source for building a program
        * @param  buffer    the buffer being used to create the program text
        **/
-      Function_Visitor (Function & function, Node & node, 
+      Function_Visitor (Function & function, const Node & node, 
         DaigBuilder & builder, std::stringstream & buffer);
 
       virtual bool enterInt(IntExpr &expr);
@@ -130,7 +130,7 @@ namespace daig
       Function & function_;
 
       /// current node
-      Node & node_;
+      const Node & node_;
 
       /// the result of the DASL parsing function
       DaigBuilder & builder_;

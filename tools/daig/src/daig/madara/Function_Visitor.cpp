@@ -48,7 +48,7 @@
 
 
 daig::madara::Function_Visitor::Function_Visitor (
-  Function & function, Node & node, 
+  Function & function, const Node & node, 
   DaigBuilder & builder, std::stringstream & buffer)
   : function_ (function), node_ (node), 
     builder_ (builder), buffer_ (buffer), indentation_ (2)

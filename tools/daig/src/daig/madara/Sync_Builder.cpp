@@ -458,7 +458,7 @@ daig::madara::Sync_Builder::build_functions (void)
 
 void
 daig::madara::Sync_Builder::build_function_declaration (
-  daig::Node & node, daig::Function & function)
+  const daig::Node & node, daig::Function & function)
 {
   if (function.name == "INIT" || function.name == "SAFETY")
     return;
@@ -470,7 +470,7 @@ daig::madara::Sync_Builder::build_function_declaration (
 
 void
 daig::madara::Sync_Builder::build_function (
-  daig::Node & node, daig::Function & function)
+  const daig::Node & node, daig::Function & function)
 {
   if (function.name == "INIT" || function.name == "SAFETY")
     return;
@@ -652,7 +652,7 @@ daig::madara::Sync_Builder::build_main_define_functions ()
 
 
 void
-daig::madara::Sync_Builder::build_main_define_function (Node & node,
+daig::madara::Sync_Builder::build_main_define_function (const Node & node,
   Function & function)
 {
   buffer_ << "  knowledge.define_function (\"";
