@@ -340,46 +340,52 @@ daig::madara::Function_Visitor::exitEXL (EXLExpr & expression)
 
 
 bool
-daig::madara::Function_Visitor::enterAtomic (AtomicStmt &statement)
+daig::madara::Function_Visitor::enterAtomic (AtomicStmt & statement)
 {
   return false;
 }
 
 
 void
-daig::madara::Function_Visitor::exitAtomic (AtomicStmt &statement)
+daig::madara::Function_Visitor::exitAtomic (AtomicStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
-  buffer_ << spacer << "Handling atomic block.\n";
+  buffer_ << spacer << "vars.lock ().\n";
+
+  visit (statement.data);
+
+  buffer_ << spacer << "vars.unlock ().\n";
 }
 
 
 bool
-daig::madara::Function_Visitor::enterPrivate (PrivateStmt &statement)
+daig::madara::Function_Visitor::enterPrivate (PrivateStmt & statement)
 {
   return false;
 }
 
 
 void
-daig::madara::Function_Visitor::exitPrivate (PrivateStmt &statement)
+daig::madara::Function_Visitor::exitPrivate (PrivateStmt & statement)
 {
   std::string spacer (indentation_, ' ');
+
+  // unimplemented because I cannot remember what this exactly does
 
   buffer_ << spacer << "Handling private.\n";
 }
 
 
 bool
-daig::madara::Function_Visitor::enterBlock (BlockStmt &statement)
+daig::madara::Function_Visitor::enterBlock (BlockStmt & statement)
 {
   return false;
 }
 
 
 void
-daig::madara::Function_Visitor::exitBlock (BlockStmt &statement)
+daig::madara::Function_Visitor::exitBlock (BlockStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
@@ -392,14 +398,14 @@ daig::madara::Function_Visitor::exitBlock (BlockStmt &statement)
 
 
 bool
-daig::madara::Function_Visitor::enterAsgn (AsgnStmt &statement)
+daig::madara::Function_Visitor::enterAsgn (AsgnStmt & statement)
 {
   return false;
 }
 
 
 void
-daig::madara::Function_Visitor::exitAsgn (AsgnStmt &statement)
+daig::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
@@ -437,8 +443,6 @@ daig::madara::Function_Visitor::exitAsgn (AsgnStmt &statement)
       buffer_ << "containers::Array_N::Index index (" << lhs->indices.size ();
       buffer_ << ");\n";
       
-
-
       int i = 0;
       BOOST_FOREACH (Expr & expression, lhs->indices)
       {
@@ -461,14 +465,14 @@ daig::madara::Function_Visitor::exitAsgn (AsgnStmt &statement)
 
 
 bool
-daig::madara::Function_Visitor::enterIT (ITStmt &statement)
+daig::madara::Function_Visitor::enterIT (ITStmt & statement)
 {
   return false;
 }
 
 
 void
-daig::madara::Function_Visitor::exitIT (ITStmt &statement)
+daig::madara::Function_Visitor::exitIT (ITStmt & statement)
 {
   daig::Expr & expression = statement.cond;
 
@@ -492,14 +496,14 @@ daig::madara::Function_Visitor::exitIT (ITStmt &statement)
 
 
 bool
-daig::madara::Function_Visitor::enterITE (ITEStmt &statement)
+daig::madara::Function_Visitor::enterITE (ITEStmt & statement)
 {
   return false;
 }
 
 
 void
-daig::madara::Function_Visitor::exitITE (ITEStmt &statement)
+daig::madara::Function_Visitor::exitITE (ITEStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
@@ -529,46 +533,89 @@ daig::madara::Function_Visitor::exitITE (ITEStmt &statement)
 
 
 bool
-daig::madara::Function_Visitor::enterFor (ForStmt &statement)
+daig::madara::Function_Visitor::enterFor (ForStmt & statement)
 {
   return false;
 }
 
 
 void
-daig::madara::Function_Visitor::exitFor (ForStmt &statement)
+daig::madara::Function_Visitor::exitFor (ForStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
-  buffer_ << spacer << "Handling for statement block.\n";
+  buffer_ << spacer << "for (";
+  
+  BOOST_FOREACH (const Stmt & init, statement.init)
+  {
+    visit (init);
+  }
+
+  buffer_ << "; ";
+
+  BOOST_FOREACH (const Expr & expr, statement.test)
+  {
+    visit (expr);
+  }
+  
+  buffer_ << "; ";
+  
+  BOOST_FOREACH (const Stmt & update, statement.update)
+  {
+    visit (update);
+  }
+  
+  buffer_ << ")\n";
+
+  indentation_ += 2;
+  
+  buffer_ << spacer << "{\n";
+  
+  visit (statement.body);
+
+  buffer_ << spacer << "}\n";
+  indentation_ -= 2;
 }
 
 
 bool
-daig::madara::Function_Visitor::enterWhile (WhileStmt &statement)
+daig::madara::Function_Visitor::enterWhile (WhileStmt & statement)
 {
   return false;
 }
 
 
 void
-daig::madara::Function_Visitor::exitWhile (WhileStmt &statement)
+daig::madara::Function_Visitor::exitWhile (WhileStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
-  buffer_ << spacer << "Handling while statement block.\n";
+  buffer_ << spacer << "while (";
+  
+  visit (statement.cond);
+  
+  buffer_ << ")\n";
+
+  indentation_ += 2;
+  
+  buffer_ << spacer << "{\n";
+  
+  visit (statement.body);
+
+  buffer_ << spacer << "}\n";
+  indentation_ -= 2;
 }
 
 
 bool
-daig::madara::Function_Visitor::enterBreak (BreakStmt &statement)
+daig::madara::Function_Visitor::enterBreak (BreakStmt & statement)
 {
   return false;
 }
 
 
 void
-daig::madara::Function_Visitor::exitBreak (BreakStmt &statement)
+daig::madara::Function_Visitor::exitBreak (BreakStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
@@ -577,14 +624,14 @@ daig::madara::Function_Visitor::exitBreak (BreakStmt &statement)
 
 
 bool
-daig::madara::Function_Visitor::enterCont (ContStmt &statement)
+daig::madara::Function_Visitor::enterCont (ContStmt & statement)
 {
   return false;
 }
 
 
 void
-daig::madara::Function_Visitor::exitCont (ContStmt &statement)
+daig::madara::Function_Visitor::exitCont (ContStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
@@ -593,14 +640,14 @@ daig::madara::Function_Visitor::exitCont (ContStmt &statement)
 
 
 bool
-daig::madara::Function_Visitor::enterRet (RetStmt &statement)
+daig::madara::Function_Visitor::enterRet (RetStmt & statement)
 {
   return false;
 }
 
 
 void
-daig::madara::Function_Visitor::exitRet (RetStmt &statement)
+daig::madara::Function_Visitor::exitRet (RetStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
@@ -609,14 +656,14 @@ daig::madara::Function_Visitor::exitRet (RetStmt &statement)
 
 
 bool
-daig::madara::Function_Visitor::enterRetVoid (RetVoidStmt &statement)
+daig::madara::Function_Visitor::enterRetVoid (RetVoidStmt & statement)
 {
   return false;
 }
 
 
 void
-daig::madara::Function_Visitor::exitRetVoid (RetVoidStmt &statement)
+daig::madara::Function_Visitor::exitRetVoid (RetVoidStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
@@ -625,14 +672,14 @@ daig::madara::Function_Visitor::exitRetVoid (RetVoidStmt &statement)
 
 
 bool
-daig::madara::Function_Visitor::enterCall (CallStmt &statement)
+daig::madara::Function_Visitor::enterCall (CallStmt & statement)
 {
   return false;
 }
 
 
 void
-daig::madara::Function_Visitor::exitCall (CallStmt &statement)
+daig::madara::Function_Visitor::exitCall (CallStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
@@ -640,7 +687,14 @@ daig::madara::Function_Visitor::exitCall (CallStmt &statement)
   
   if (data)
   {
-    buffer_ << spacer << data->func->toString ();
+    buffer_ << spacer;
+
+    std::string func_name = data->func->toString ();
+    if (func_name == "ASSUME")
+      buffer_ << "assert";
+    else
+      buffer_ << func_name;
+
     buffer_ << " (";
 
     
@@ -662,80 +716,270 @@ daig::madara::Function_Visitor::exitCall (CallStmt &statement)
 
 
 bool
-daig::madara::Function_Visitor::enterFAN (FANStmt &statement)
+daig::madara::Function_Visitor::enterFAN (FANStmt & statement)
 {
   return false;
 }
 
 
 void
-daig::madara::Function_Visitor::exitFAN (FANStmt &statement)
+daig::madara::Function_Visitor::exitFAN (FANStmt & statement)
 {
-  std::string spacer (indentation_, ' ');
+  std::string spacer (indentation_, ' '), spacer_2 (indentation_ + 2, ' '),
+    spacer_3 (indentation_ + 4, ' ');
 
-  buffer_ << spacer << "Handling for all node statement.\n";
+  buffer_ << spacer;
+  buffer_ << "// FORALL_NODES\n";
+  buffer_ << spacer;
+  buffer_ << "for (";
+  buffer_ << "Madara::Knowledge_Record::Integer ";
+  buffer_ << statement.id;
+  buffer_ << " = 0; ";
+  buffer_ << statement.id;
+  buffer_ << " < processes; ++";
+  buffer_ << statement.id;
+  buffer_ << ")\n";
+
+
+  indentation_ += 2;
+  
+  buffer_ << spacer << "{\n";
+  
+  bool i_added = false;
+
+  if (function_.temps.find (statement.id) == function_.temps.end ())
+  {
+    i_added = true;
+    function_.temps [statement.id] = Variable (statement.id);
+  }
+  
+  visit (statement.data);
+
+  if (i_added)
+    function_.temps.erase (statement.id);
+
+  buffer_ << spacer << "}\n\n";
+  indentation_ -= 2;
 }
 
 
 bool
-daig::madara::Function_Visitor::enterFADNP (FADNPStmt &statement)
+daig::madara::Function_Visitor::enterFADNP (FADNPStmt & statement)
 {
   return false;
 }
 
 
 void
-daig::madara::Function_Visitor::exitFADNP (FADNPStmt &statement)
+daig::madara::Function_Visitor::exitFADNP (FADNPStmt & statement)
 {
-  std::string spacer (indentation_, ' ');
+  std::string spacer (indentation_, ' '), spacer_2 (indentation_ + 2, ' '),
+    spacer_3 (indentation_ + 4, ' '), spacer_4 (indentation_ + 6, ' ');
 
-  buffer_ << spacer << "Handling for all node statement.\n";
+  buffer_ << spacer;
+  buffer_ << "// FORALL_DISTINCT_NODE_PAIRS\n";
+  buffer_ << spacer;
+  buffer_ << "for (";
+  buffer_ << "Madara::Knowledge_Record::Integer ";
+  buffer_ << statement.id1;
+  buffer_ << " = 0; ";
+  buffer_ << statement.id1;
+  buffer_ << " < processes; ++";
+  buffer_ << statement.id1;
+  buffer_ << ")\n";
+  
+  buffer_ << spacer << "{\n";
+  
+  buffer_ << spacer_2;
+  buffer_ << "for (";
+  buffer_ << "Madara::Knowledge_Record::Integer ";
+  buffer_ << statement.id2;
+  buffer_ << " = 0; ";
+  buffer_ << statement.id2;
+  buffer_ << " < processes; ++";
+  buffer_ << statement.id2;
+  buffer_ << ")\n";
+  
+  buffer_ << spacer_2 << "{\n";
+  
+  buffer_ << spacer_3 << "if (" << statement.id1;
+  buffer_ << " == ";
+  buffer_ << statement.id2;
+  buffer_ << ")\n";
+  
+  buffer_ << spacer_4 << "continue;\n\n";
+
+  indentation_ += 4;
+  
+  bool id1_added = false, id2_added = false;
+
+  if (function_.temps.find (statement.id1) == function_.temps.end ())
+  {
+    id1_added = true;
+    function_.temps [statement.id1] = Variable (statement.id1);
+  }
+  
+  if (function_.temps.find (statement.id2) == function_.temps.end ())
+  {
+    id2_added = true;
+    function_.temps [statement.id2] = Variable (statement.id2);
+  }
+  
+  visit (statement.data);
+
+  if (id1_added)
+    function_.temps.erase (statement.id1);
+  
+  if (id2_added)
+    function_.temps.erase (statement.id2);
+  
+  buffer_ << spacer_2 << "}\n";
+  
+  buffer_ << spacer << "}\n\n";
+
+  indentation_ -= 4;
 }
 
 
 bool
-daig::madara::Function_Visitor::enterFAO (FAOStmt &statement)
+daig::madara::Function_Visitor::enterFAO (FAOStmt & statement)
 {
   return false;
 }
 
 
 void
-daig::madara::Function_Visitor::exitFAO (FAOStmt &statement)
+daig::madara::Function_Visitor::exitFAO (FAOStmt & statement)
 {
-  std::string spacer (indentation_, ' ');
+  std::string spacer (indentation_, ' '), spacer_2 (indentation_ + 2, ' '),
+    spacer_3 (indentation_ + 4, ' ');
+  
+  buffer_ << spacer;
+  buffer_ << "// FORALL_OTHER\n";
+  buffer_ << spacer;
+  buffer_ << "for (";
+  buffer_ << "Madara::Knowledge_Record::Integer ";
+  buffer_ << statement.id;
+  buffer_ << " = 0; ";
+  buffer_ << statement.id;
+  buffer_ << " < processes; ++";
+  buffer_ << statement.id;
+  buffer_ << ")\n";
+  
+  indentation_ += 2;
+  
+  buffer_ << spacer << "{\n";
+  
+  bool i_added = false;
 
-  buffer_ << spacer << "Handling for all other node statement.\n";
+  if (function_.temps.find (statement.id) == function_.temps.end ())
+  {
+    i_added = true;
+    function_.temps [statement.id] = Variable (statement.id);
+  }
+  
+  buffer_ << spacer_2 << "if (i == *id)\n";
+  buffer_ << spacer_3 << "continue;\n\n";
+  
+  visit (statement.data);
+
+  if (i_added)
+    function_.temps.erase (statement.id);
+
+  buffer_ << spacer << "}\n\n";
+  indentation_ -= 2;
 }
 
 
 bool
-daig::madara::Function_Visitor::enterFAOL (FAOLStmt &statement)
+daig::madara::Function_Visitor::enterFAOL (FAOLStmt & statement)
 {
   return false;
 }
 
 
 void
-daig::madara::Function_Visitor::exitFAOL (FAOLStmt &statement)
+daig::madara::Function_Visitor::exitFAOL (FAOLStmt & statement)
 {
-  std::string spacer (indentation_, ' ');
+  std::string spacer (indentation_, ' '), spacer_2 (indentation_ + 2, ' '),
+    spacer_3 (indentation_ + 4, ' ');
+  
+  buffer_ << spacer;
+  buffer_ << "// FORALL_OTHER_LOWER\n";
+  buffer_ << spacer;
+  buffer_ << "for (";
+  buffer_ << "Madara::Knowledge_Record::Integer ";
+  buffer_ << statement.id;
+  buffer_ << " = 0; ";
+  buffer_ << statement.id;
+  buffer_ << " < *id; ++";
+  buffer_ << statement.id;
+  buffer_ << ")\n";
+  
+  indentation_ += 2;
+  
+  buffer_ << spacer << "{\n";
+  
+  bool i_added = false;
 
-  buffer_ << spacer << "Handling for all other lower node statement.\n";
+  if (function_.temps.find (statement.id) == function_.temps.end ())
+  {
+    i_added = true;
+    function_.temps [statement.id] = Variable (statement.id);
+  }
+  
+  visit (statement.data);
+
+  if (i_added)
+    function_.temps.erase (statement.id);
+
+  buffer_ << spacer << "}\n\n";
+  indentation_ -= 2;
 }
 
 
 bool
-daig::madara::Function_Visitor::enterFAOH (FAOHStmt &statement)
+daig::madara::Function_Visitor::enterFAOH (FAOHStmt & statement)
 {
   return false;
 }
 
 
 void
-daig::madara::Function_Visitor::exitFAOH (FAOHStmt &statement)
+daig::madara::Function_Visitor::exitFAOH (FAOHStmt & statement)
 {
-  std::string spacer (indentation_, ' ');
+  std::string spacer (indentation_, ' '), spacer_2 (indentation_ + 2, ' '),
+    spacer_3 (indentation_ + 4, ' ');
+  
+  buffer_ << spacer;
+  buffer_ << "// FORALL_OTHER_HIGHER\n";
+  buffer_ << spacer;
+  buffer_ << "for (";
+  buffer_ << "Madara::Knowledge_Record::Integer ";
+  buffer_ << statement.id;
+  buffer_ << " = *id + 1; ";
+  buffer_ << statement.id;
+  buffer_ << " < processes; ++";
+  buffer_ << statement.id;
+  buffer_ << ")\n";
+  
+  indentation_ += 2;
+  
+  buffer_ << spacer << "{\n";
+  
+  bool i_added = false;
 
-  buffer_ << spacer << "Handling for all other higher node statement.\n";
+  if (function_.temps.find (statement.id) == function_.temps.end ())
+  {
+    i_added = true;
+    function_.temps [statement.id] = Variable (statement.id);
+  }
+  
+  visit (statement.data);
+
+  if (i_added)
+    function_.temps.erase (statement.id);
+
+  buffer_ << spacer << "}\n\n";
+  indentation_ -= 2;
 }

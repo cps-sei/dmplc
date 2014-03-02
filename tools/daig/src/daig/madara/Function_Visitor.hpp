@@ -71,59 +71,313 @@ namespace daig
        **/
       Function_Visitor (Function & function, const Node & node, 
         DaigBuilder & builder, std::stringstream & buffer);
+      
+    /**
+     * Returns whether or not to visit the Integer's subfields first.
+     * @param  expr   the integer expression
+     **/
+    virtual bool enterInt(IntExpr &expr);
 
-      virtual bool enterInt(IntExpr &expr);
-      virtual void exitInt(IntExpr &expr);
-      virtual bool enterLval(LvalExpr &expr);
-      virtual void exitLval(LvalExpr &expr);
-      virtual bool enterComp(CompExpr &expr);
-      virtual void exitComp(CompExpr &expr);
-      virtual bool enterCall(CallExpr &expr);
-      virtual void exitCall(CallExpr &expr);
-      virtual bool enterEXO(EXOExpr &expr);
-      virtual void exitEXO(EXOExpr &expr);
-      virtual bool enterEXH(EXHExpr &expr);
-      virtual void exitEXH(EXHExpr &expr);
-      virtual bool enterEXL(EXLExpr &expr);
-      virtual void exitEXL(EXLExpr &expr);
+    /**
+     * Visits an integer
+     * @param  expr   the integer to visit
+     **/
+    virtual void exitInt(IntExpr &expr);
 
-      virtual bool enterAtomic(AtomicStmt &stmt);
-      virtual void exitAtomic(AtomicStmt &stmt);
-      virtual bool enterPrivate(PrivateStmt &stmt);
-      virtual void exitPrivate(PrivateStmt &stmt);
-      virtual bool enterBlock(BlockStmt &stmt);
-      virtual void exitBlock(BlockStmt &stmt);
-      virtual bool enterAsgn(AsgnStmt &stmt);
-      virtual void exitAsgn(AsgnStmt &stmt);
-      virtual bool enterIT(ITStmt &stmt);
-      virtual void exitIT(ITStmt &stmt);
-      virtual bool enterITE(ITEStmt &stmt);
-      virtual void exitITE(ITEStmt &stmt);
-      virtual bool enterFor(ForStmt &stmt);
-      virtual void exitFor(ForStmt &stmt);
-      virtual bool enterWhile(WhileStmt &stmt);
-      virtual void exitWhile(WhileStmt &stmt);
-      virtual bool enterBreak(BreakStmt &stmt);
-      virtual void exitBreak(BreakStmt &stmt);
-      virtual bool enterCont(ContStmt &stmt);
-      virtual void exitCont(ContStmt &stmt);
-      virtual bool enterRet(RetStmt &stmt);
-      virtual void exitRet(RetStmt &stmt);
-      virtual bool enterRetVoid(RetVoidStmt &stmt);
-      virtual void exitRetVoid(RetVoidStmt &stmt);
-      virtual bool enterCall(CallStmt &stmt);
-      virtual void exitCall(CallStmt &stmt);
-      virtual bool enterFAN(FANStmt &stmt);
-      virtual void exitFAN(FANStmt &stmt);
-      virtual bool enterFADNP(FADNPStmt &stmt);
-      virtual void exitFADNP(FADNPStmt &stmt);
-      virtual bool enterFAO(FAOStmt &stmt);
-      virtual void exitFAO(FAOStmt &stmt);
-      virtual bool enterFAOL(FAOLStmt &stmt);
-      virtual void exitFAOL(FAOLStmt &stmt);
-      virtual bool enterFAOH(FAOHStmt &stmt);
-      virtual void exitFAOH(FAOHStmt &stmt);
+    /**
+     * Returns whether or not to visit a variable's subfields first
+     * @param  expr   the variable expression
+     **/
+    virtual bool enterLval(LvalExpr &expr);
 
+    /**
+     * Visits a variable
+     * @param  expr   the variable to visit
+     **/
+    virtual void exitLval(LvalExpr &expr);
+
+    /**
+     * Returns whether or not to visit a comparison's subfields first
+     * @param  expr   the comparison expression
+     **/
+    virtual bool enterComp(CompExpr &expr);
+
+    /**
+     * Visits a comparison
+     * @param  expr   the comparison to visit
+     **/
+    virtual void exitComp(CompExpr &expr);
+
+    /**
+     * Returns whether or not to visit a function call's subfields first
+     * @param  expr   the function call expression
+     **/
+    virtual bool enterCall(CallExpr &expr);
+
+    /**
+     * Visits a function call
+     * @param  expr   the function call to visit
+     **/
+    virtual void exitCall(CallExpr &expr);
+
+    /**
+     * Returns whether or not to visit a there exists other's subfields first
+     * @param  expr   the there exists other's expression
+     **/
+    virtual bool enterEXO(EXOExpr &expr);
+
+    /**
+     * Visits a there exists other
+     * @param  expr   the there exists other to visit
+     **/
+    virtual void exitEXO(EXOExpr &expr);
+
+    /**
+     * Returns whether or not to visit a there exists higher id's subfields
+     * first
+     * @param  expr   the there exists higher id expression
+     **/
+    virtual bool enterEXH(EXHExpr &expr);
+
+    /**
+     * Visits a there exists higher id expression
+     * @param  expr   the there exists higher id expression to visit
+     **/
+    virtual void exitEXH(EXHExpr &expr);
+
+    /**
+     * Returns whether or not to visit a there exists lower id's subfields
+     * first
+     * @param  expr   the there exists lower id expression
+     **/
+    virtual bool enterEXL(EXLExpr &expr);
+
+    /**
+     * Visits a there exists lower id expression
+     * @param  expr   the there exists lower id expression to visit
+     **/
+    virtual void exitEXL(EXLExpr &expr);
+    
+    /**
+     * Returns whether or not to visit an atomic block's subfields first
+     * @param  expr   the atomic block's statement
+     **/
+    virtual bool enterAtomic(AtomicStmt &stmt);
+
+    /**
+     * Visits an atomic block
+     * @param  expr   the atomic block statement to visit
+     **/
+    virtual void exitAtomic(AtomicStmt &stmt);
+    
+    /**
+     * Returns whether or not to visit a private block's subfields first
+     * @param  expr   the private block's statement
+     **/
+    virtual bool enterPrivate(PrivateStmt &stmt);
+
+    /**
+     * Visits a private block
+     * @param  stmt   the private block statement to visit
+     **/
+    virtual void exitPrivate(PrivateStmt &stmt);
+    
+    /**
+     * Returns whether or not to visit a block's subfields first. Blocks
+     * are usually the bodies of control structures.
+     * @param  stmt   the block's statement
+     **/
+    virtual bool enterBlock(BlockStmt &stmt);
+
+    /**
+     * Visits a block. These are usually the body of control structures.
+     * @param  stmt   the private block statement to visit
+     **/
+    virtual void exitBlock(BlockStmt &stmt);
+    
+    /**
+     * Returns whether or not to visit an assignment's subfields first.
+     * @param  stmt   the assignment statement
+     **/
+    virtual bool enterAsgn(AsgnStmt &stmt);
+
+    /**
+     * Visits an assignment.
+     * @param  stmt   the assignment statement
+     **/
+    virtual void exitAsgn(AsgnStmt &stmt);
+    
+    /**
+     * Returns whether or not to visit an if/then's subfields first.
+     * @param  stmt   the if/then statement
+     **/
+    virtual bool enterIT(ITStmt &stmt);
+
+    /**
+     * Visits an if/then statement.
+     * @param  stmt   the if/then statement
+     **/
+    virtual void exitIT(ITStmt &stmt);
+    
+    /**
+     * Returns whether or not to visit an if/then/else's subfields first.
+     * @param  stmt   the if/then/else statement
+     **/
+    virtual bool enterITE(ITEStmt &stmt);
+
+    /**
+     * Visits an if/then/else statement.
+     * @param  stmt   the if/then/else statement
+     **/
+    virtual void exitITE(ITEStmt &stmt);
+    
+    /**
+     * Returns whether or not to visit a for loop's subfields first.
+     * @param  stmt   the for loop statement
+     **/
+    virtual bool enterFor(ForStmt &stmt);
+
+    /**
+     * Visits a for loop statement.
+     * @param  stmt   the for loop statement
+     **/
+    virtual void exitFor(ForStmt &stmt);
+    
+    /**
+     * Returns whether or not to visit a while loop's subfields first.
+     * @param  stmt   the while loop statement
+     **/
+    virtual bool enterWhile(WhileStmt &stmt);
+
+    /**
+     * Visits a while loop statement.
+     * @param  stmt   the while loop statement
+     **/
+    virtual void exitWhile(WhileStmt &stmt);
+    
+    /**
+     * Returns whether or not to visit a break statement's subfields first.
+     * @param  stmt   the break statement
+     **/
+    virtual bool enterBreak(BreakStmt &stmt);
+
+    /**
+     * Visits a break statement.
+     * @param  stmt   the break statement
+     **/
+    virtual void exitBreak(BreakStmt &stmt);
+    
+    /**
+     * Returns whether or not to visit a continue statement's subfields first.
+     * @param  stmt   the continue statement
+     **/
+    virtual bool enterCont(ContStmt &stmt);
+
+    /**
+     * Visits a continue statement.
+     * @param  stmt   the continue statement
+     **/
+    virtual void exitCont(ContStmt &stmt);
+    
+    /**
+     * Returns whether or not to visit a return statement's subfields first.
+     * @param  stmt   the return statement
+     **/
+    virtual bool enterRet(RetStmt &stmt);
+
+    /**
+     * Visits a return statement.
+     * @param  stmt   the return statement
+     **/
+    virtual void exitRet(RetStmt &stmt);
+    
+    /**
+     * Returns whether or not to visit a return void statement's subfields first.
+     * @param  stmt   the return void statement
+     **/
+    virtual bool enterRetVoid(RetVoidStmt &stmt);
+
+    /**
+     * Visits a return void statement.
+     * @param  stmt   the return void statement
+     **/
+    virtual void exitRetVoid(RetVoidStmt &stmt);
+    
+    /**
+     * Returns whether or not to visit a function call's subfields first.
+     * @param  stmt   the function call
+     **/
+    virtual bool enterCall(CallStmt &stmt);
+
+    /**
+     * Visits a function call.
+     * @param  stmt   the function call
+     **/
+    virtual void exitCall(CallStmt &stmt);
+    
+    /**
+     * Returns whether or not to visit a for all node statement's subfields.
+     * @param  stmt   the for all node statement
+     **/
+    virtual bool enterFAN(FANStmt &stmt);
+
+    /**
+     * Visits a for all node statement.
+     * @param  stmt   the for all node statement
+     **/
+    virtual void exitFAN(FANStmt &stmt);
+    
+    /**
+     * Returns whether or not to visit a for all distinct node pair statement's
+     * subfields.
+     * @param  stmt   the for all distinct node pair statement
+     **/
+    virtual bool enterFADNP(FADNPStmt &stmt);
+
+    /**
+     * Visits a for all distinct node pair statement.
+     * @param  stmt   the for all distinct node pair statement
+     **/
+    virtual void exitFADNP(FADNPStmt &stmt);
+    
+    /**
+     * Returns whether or not to visit a for all other nodes statement's
+     * subfields.
+     * @param  stmt   the for all other nodes statement
+     **/
+    virtual bool enterFAO(FAOStmt &stmt);
+
+    /**
+     * Visits a for all other nodes statement.
+     * @param  stmt   the for all other nodes statement
+     **/
+    virtual void exitFAO(FAOStmt &stmt);
+    
+    /**
+     * Returns whether or not to visit a for all other lower nodes statement's
+     * subfields.
+     * @param  stmt   the for all other lower nodes statement
+     **/
+    virtual bool enterFAOL(FAOLStmt &stmt);
+
+    /**
+     * Visits a for all other lower nodes statement.
+     * @param  stmt   the for all other lower nodes statement
+     **/
+    virtual void exitFAOL(FAOLStmt &stmt);
+    
+    /**
+     * Returns whether or not to visit a for all other higher nodes statement's
+     * subfields.
+     * @param  stmt   the for all other higher nodes statement
+     **/
+    virtual bool enterFAOH(FAOHStmt &stmt);
+
+    /**
+     * Visits a for all other higher nodes statement.
+     * @param  stmt   the for all other higher nodes statement
+     **/
+    virtual void exitFAOH(FAOHStmt &stmt);
     private:
       
       /// current function

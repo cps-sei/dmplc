@@ -74,7 +74,10 @@ NODE uav (id)
 }
 
 //program has two nodes with ids 0 and 1
-PROGRAM = uav (0) || uav (1);
+//PROGRAM = uav (0) || uav (1);
+
+//program has four nodes with ids 0, 1, 2, and 3
+PROGRAM = uav (0) || uav (1) || uav (2) || uav (3);
 
 //initial state
 void INIT () 
