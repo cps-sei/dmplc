@@ -53,6 +53,10 @@
 daig::Variable::Variable(const std::string &n) 
   : name(n),type(daig::Type(new BaseType())),scope(0) {}
 
+//constructor with name and type -- assigns a default scope
+daig::Variable::Variable(const std::string &n,const daig::Type &t) 
+  : name(n),type(t),scope(0) {}
+
 //constructor with name and dimensions -- assigns a default base type
 //and scope
 daig::Variable::Variable(const std::string &n,const std::list<int> &d) 
