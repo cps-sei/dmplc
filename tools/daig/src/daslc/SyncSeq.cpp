@@ -75,30 +75,9 @@ void daig::syncseq::GlobalTransformer::delIdMap(const std::string &s)
   idMap.erase(s);
 }
 
-//collect results for an expr list
-daig::ExprList daig::syncseq::GlobalTransformer::collect(const ExprList &el)
-{
-  daig::ExprList res;
-  BOOST_FOREACH(const daig::Expr &e,el) res.push_back(exprMap[e]);
-  return res;
-}
-
-//collect results for an stmt list
-daig::StmtList daig::syncseq::GlobalTransformer::collect(const StmtList &sl)
-{
-  daig::StmtList res;
-  BOOST_FOREACH(const daig::Stmt &s,sl) res.push_back(stmtMap[s]);
-  return res;
-}
-
 /*********************************************************************/
 //dispatchers for expressions
 /*********************************************************************/
-
-void daig::syncseq::GlobalTransformer::exitInt(daig::IntExpr &expr)
-{
-  exprMap[hostExpr] = hostExpr;
-}
 
 void daig::syncseq::GlobalTransformer::exitLval(daig::LvalExpr &expr)
 {
@@ -130,17 +109,6 @@ void daig::syncseq::GlobalTransformer::exitLval(daig::LvalExpr &expr)
   //std::cout << exprMap[hostExpr]->toString() << '\n';
 }
 
-void daig::syncseq::GlobalTransformer::exitComp(daig::CompExpr &expr)
-{
-  exprMap[hostExpr] = daig::Expr(new daig::CompExpr(expr.op,collect(expr.args)));
-}
-
-void daig::syncseq::GlobalTransformer::exitCall(daig::CallExpr &expr)
-{
-  exprMap[hostExpr] = daig::Expr(new daig::CallExpr(exprMap[expr.func],
-                                                    collect(expr.args)));
-}
-
 /*********************************************************************/
 //dispatchers for statements
 /*********************************************************************/
@@ -153,62 +121,6 @@ void daig::syncseq::GlobalTransformer::exitAtomic(daig::AtomicStmt &stmt)
 void daig::syncseq::GlobalTransformer::exitPrivate(daig::PrivateStmt &stmt)
 {
   stmtMap[hostStmt] = stmtMap[stmt.data];
-}
-
-void daig::syncseq::GlobalTransformer::exitBlock(daig::BlockStmt &stmt)
-{
-  stmtMap[hostStmt] = Stmt(new BlockStmt(collect(stmt.data)));
-}
-
-void daig::syncseq::GlobalTransformer::exitAsgn(daig::AsgnStmt &stmt) 
-{ 
-  stmtMap[hostStmt] = Stmt(new AsgnStmt(exprMap[stmt.lhs],exprMap[stmt.rhs]));
-
-  //std::cout << "**************************************\n";
-  //hostStmt->print(std::cout,0);
-  //stmtMap[hostStmt]->print(std::cout,0);
-}
-
-void daig::syncseq::GlobalTransformer::exitIT(daig::ITStmt &stmt) 
-{ 
-  stmtMap[hostStmt] = Stmt(new ITStmt(exprMap[stmt.cond], stmtMap[stmt.tbranch]));
-}
-
-void daig::syncseq::GlobalTransformer::exitITE(daig::ITEStmt &stmt) 
-{ 
-  stmtMap[hostStmt] = Stmt(new ITEStmt(exprMap[stmt.cond], stmtMap[stmt.tbranch], 
-                                       stmtMap[stmt.ebranch]));
-}
-
-void daig::syncseq::GlobalTransformer::exitFor(daig::ForStmt &stmt) 
-{ 
-  stmtMap[hostStmt] = Stmt(new ForStmt(collect(stmt.init),collect(stmt.test),
-                                       collect(stmt.update),stmtMap[stmt.body]));
-}
-
-void daig::syncseq::GlobalTransformer::exitWhile(daig::WhileStmt &stmt) 
-{ 
-  stmtMap[hostStmt] = Stmt(new WhileStmt(exprMap[stmt.cond],stmtMap[stmt.body]));
-}
-
-void daig::syncseq::GlobalTransformer::exitBreak(daig::BreakStmt &stmt) 
-{ 
-  stmtMap[hostStmt] = hostStmt; 
-}
-
-void daig::syncseq::GlobalTransformer::exitCont(daig::ContStmt &stmt) 
-{ 
-  stmtMap[hostStmt] = hostStmt; 
-}
-
-void daig::syncseq::GlobalTransformer::exitRet(daig::RetStmt &stmt) 
-{ 
-  stmtMap[hostStmt] = Stmt(new RetStmt(exprMap[stmt.retVal]));
-}
-
-void daig::syncseq::GlobalTransformer::exitRetVoid(daig::RetVoidStmt &stmt) 
-{ 
-  stmtMap[hostStmt] = hostStmt; 
 }
 
 void daig::syncseq::GlobalTransformer::exitCall(daig::CallStmt &stmt) 
@@ -262,17 +174,6 @@ void daig::syncseq::GlobalTransformer::exitFADNP(daig::FADNPStmt &stmt)
 
   stmtMap[shost] = Stmt(new daig::BlockStmt(sl));
 }
-
-void daig::syncseq::GlobalTransformer::exitFAO(daig::FAOStmt &stmt) 
-{ 
-  stmtMap[hostStmt] = hostStmt; 
-}
-
-void daig::syncseq::GlobalTransformer::exitFAOL(daig::FAOLStmt &stmt) 
-{ stmtMap[hostStmt] = hostStmt; }
-
-void daig::syncseq::GlobalTransformer::exitFAOH(daig::FAOHStmt &stmt) 
-{ stmtMap[hostStmt] = hostStmt; }
 
 /*********************************************************************/
 //methods for NodeTransformer
