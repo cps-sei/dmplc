@@ -52,23 +52,48 @@
 #include <iostream>
 #include "DaigBuilder.hpp"
 #include "daig/CProgram.h"
-#include "daig/Visitor.h"
+#include "CopyVisitor.hpp"
 
 namespace daig {
 
   /*******************************************************************/
   //array eliminator
   /*******************************************************************/
-  class ArrayElim
+  class ArrayElim : public CopyVisitor
   {
   public:
-    //the input program with arrays
+    ///the input program with arrays
     CProgram &inProg;
 
-    //the output program without arrays
+    ///the number of nodes
+    size_t nodeNum;
+
+    ///the output program without arrays
     CProgram outProg;
 
+    ///constructor
     ArrayElim(CProgram &ip);
+
+    //existing setter and getter functions
+    std::map<std::string,Expr> getters,setters;
+
+    void expandArrayVar(const Variable &var);
+
+    void createGetterBody(const std::string &varName,const Expr &cond,
+                          const Type &type,const VarList &params,
+                          StmtList &body);
+    Expr createGetter(const LvalExpr &expr);
+    void createSetterBody(const std::string &varName,const Expr &cond,
+                          const Type &type,const VarList &params,
+                          StmtList &body);
+    Expr createSetter(const LvalExpr &expr);
+
+    //dispatchers for visitor
+    void exitLval(LvalExpr &expr);
+    bool enterAsgn(AsgnStmt &stmt) { return false; }
+    void exitAsgn(AsgnStmt &stmt);
+
+    ///do array elimination
     void run();
   };
 } //namespace daig
