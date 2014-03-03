@@ -108,6 +108,10 @@ namespace daig
     ///return a copy with one less dimension
     Type decrDim() const;
 
+    ///return the element type if this is an array type. if not return
+    ///this type.
+    Type getElemType() const;
+
     ///return true if this is an array type
     bool isArray() const { return !dims.empty(); }
 
