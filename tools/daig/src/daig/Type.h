@@ -92,6 +92,7 @@ namespace daig
     //constructors
     BaseType() : qual(0),type(-1) {}
     BaseType(int t) : qual(0),type(t) {}
+    BaseType(int q,int t) : qual(q),type(t) {}
     BaseType(const std::list<int> &d) : qual(0),type(-1),dims(d) {}
 
     std::string toString() const;
