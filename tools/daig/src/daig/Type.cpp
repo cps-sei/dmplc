@@ -104,8 +104,8 @@ daig::Type daig::BaseType::instDim(size_t nodeNum) const
 ///return a copy with one less dimension
 daig::Type daig::BaseType::decrDim() const
 {
+  assert(!dims.empty() && "ERROR: cannot decrease dimensions of non-array type!");
   BaseType *res = new BaseType(*this);
-  assert(!res->dims.empty() && "ERROR: cannot decrease dimensions of non-array type!");
   res->dims.pop_front();
   return Type(res);
 }
