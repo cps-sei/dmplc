@@ -103,10 +103,10 @@ namespace daig
     void print (std::ostream &os,unsigned int indent);
 
     ///return a copy but instantiate dimension #N with nodeNum
-    Type instDim(size_t nodeNum);
+    Type instDim(size_t nodeNum) const;
 
     ///return a copy with one less dimension
-    Type decrDim();
+    Type decrDim() const;
 
     ///return true if this is an array type
     bool isArray() const { return !dims.empty(); }

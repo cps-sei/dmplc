@@ -91,7 +91,7 @@ void daig::BaseType::print (std::ostream &os,unsigned int indent)
 /*********************************************************************/
 ///return a copy but instantiate dimension #N with nodeNum
 /*********************************************************************/
-daig::Type daig::BaseType::instDim(size_t nodeNum)
+daig::Type daig::BaseType::instDim(size_t nodeNum) const
 {
   BaseType *res = new BaseType(*this);
 
@@ -102,7 +102,7 @@ daig::Type daig::BaseType::instDim(size_t nodeNum)
 }
 
 ///return a copy with one less dimension
-daig::Type daig::BaseType::decrDim()
+daig::Type daig::BaseType::decrDim() const
 {
   BaseType *res = new BaseType(*this);
   assert(!res->dims.empty() && "ERROR: cannot decrease dimensions of non-array type!");
