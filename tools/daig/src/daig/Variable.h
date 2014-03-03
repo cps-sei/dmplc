@@ -108,6 +108,7 @@ namespace daig
     Variable decrDim() const;
   };
 
+  typedef std::list <Variable> VarList;
   typedef std::map <std::string, Variable> Variables;
 }
 
