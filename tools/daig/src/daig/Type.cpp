@@ -110,6 +110,15 @@ daig::Type daig::BaseType::decrDim() const
   return Type(res);
 }
 
+///return the element type if this is an array type. if not return
+///this type.
+daig::Type daig::BaseType::getElemType() const
+{
+  BaseType *res = new BaseType(*this);
+  res->dims.clear();
+  return Type(res);
+}
+
 ///return the first dimension
 int daig::BaseType::getFirstDim() const
 {
