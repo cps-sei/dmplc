@@ -105,6 +105,12 @@ namespace daig
 
     ///return a copy with one less dimension
     Type decrDim();
+
+    ///return true if this is an array type
+    bool isArray() const { return !dims.empty(); }
+
+    ///return the first dimension
+    int getFirstDim() const;
   };
 }
 

@@ -109,6 +109,13 @@ daig::Type daig::BaseType::decrDim()
   return Type(res);
 }
 
+///return the first dimension
+int daig::BaseType::getFirstDim() const
+{
+  assert(!dims.empty() && "ERROR: cannot return first dimension of non-array type!");
+  return *(dims.begin());
+}
+
 /*********************************************************************/
 //end of file
 /*********************************************************************/
