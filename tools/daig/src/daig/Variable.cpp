@@ -49,6 +49,9 @@
 #include <boost/lexical_cast.hpp>
 #include "Variable.h"
 
+/*********************************************************************/
+//constructors
+/*********************************************************************/
 //constructor with name only -- assigns a default type and scope
 daig::Variable::Variable(const std::string &n) 
   : name(n),type(daig::Type(new BaseType())),scope(0) {}
@@ -62,7 +65,9 @@ daig::Variable::Variable(const std::string &n,const daig::Type &t)
 daig::Variable::Variable(const std::string &n,const std::list<int> &d) 
   : name(n),type(daig::Type(new BaseType(d))),scope(0) {}
 
-//convert to string
+/*********************************************************************/
+///convert to string
+/*********************************************************************/
 std::string daig::Variable::toString() const
 {
   std::string res = type->toString() + " " + name;
@@ -72,7 +77,9 @@ std::string daig::Variable::toString() const
   return res;
 }
 
-//print with indentation
+/*********************************************************************/
+///print with indentation
+/*********************************************************************/
 void
 daig::Variable::print (std::ostream &os,unsigned int indent)
 {
@@ -80,7 +87,9 @@ daig::Variable::print (std::ostream &os,unsigned int indent)
   os << spacer << toString();
 }
 
+/*********************************************************************/
 ///return a copy but instantiate dimension #N with nodeNum
+/*********************************************************************/
 daig::Variable daig::Variable::instDim(size_t nodeNum) const
 {
   Variable res = *this;
@@ -88,7 +97,9 @@ daig::Variable daig::Variable::instDim(size_t nodeNum) const
   return res;
 }
 
+/*********************************************************************/
 ///return a copy but change name to name+ext
+/*********************************************************************/
 daig::Variable daig::Variable::instName(std::string ext) const
 {
   Variable res = *this;
@@ -96,10 +107,17 @@ daig::Variable daig::Variable::instName(std::string ext) const
   return res;
 }
 
+/*********************************************************************/
 ///return a copy with one less dimension
+/*********************************************************************/
 daig::Variable daig::Variable::decrDim() const
 {
   Variable res = *this;
   res.type = res.type->decrDim();
   return res;  
 }
+
+/*********************************************************************/
+//end of file
+/*********************************************************************/
+
