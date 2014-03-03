@@ -75,6 +75,7 @@ namespace daig
   Type voidType();
   Type intType();
   Type charType();
+  Type ucharType();
   Type boolType();
 
   /**

@@ -57,6 +57,7 @@
 daig::Type daig::voidType() { return Type(new daig::BaseType(TVOID)); }
 daig::Type daig::intType() { return Type(new daig::BaseType(TINT)); }
 daig::Type daig::charType() { return Type(new daig::BaseType(TCHAR)); }
+daig::Type daig::ucharType() { return Type(new daig::BaseType(TUNSIGNED,TCHAR)); }
 daig::Type daig::boolType() { return Type(new daig::BaseType(TBOOL)); }
 
 /*********************************************************************/
