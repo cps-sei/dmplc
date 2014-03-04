@@ -51,7 +51,7 @@ daig::Node currNode;
 %token <string> TIDENTIFIER TINTEGER TDOUBLE
 %token <token> TMOCSYNC TMOCASYNC TMOCPSYNC TSEMICOLON TCONST TNODE
 %token <token> TGLOBAL TLOCAL TBOOL TINT TVOID TCHAR TSIGNED TUNSIGNED
-%token <token> TNODENUM TATOMIC TPRIVATE
+%token <token> TNODENUM TATOMIC TPRIVATE TEXTERN
 %token <token> TIF TELSE TFOR TWHILE
 %token <token> TBREAK TCONTINUE TRETURN TEXO TEXH TEXL TPROGRAM
 %token <token> TINIT TSAFETY TFAN TFADNP TFAO TFAOL TFAOH
@@ -90,7 +90,7 @@ daig::Node currNode;
 %start program
 
 %%
-program : moc const_list node prog_def init_def safety_def {};
+program : moc const_list extern_fn_list node prog_def init_def safety_def {};
 
 moc : 
   TMOCSYNC TSEMICOLON { builder->program.moc.set_type("SYNC"); }
@@ -101,6 +101,16 @@ moc :
 const_list : {}
 | constant {}
 | const_list constant {}
+;
+
+extern_fn_list : {}
+| extern_fn_list extern_fn_decl
+;
+
+extern_fn_decl : TEXTERN type TIDENTIFIER TLPAREN param_list TRPAREN TSEMICOLON {
+  builder->program.addExternalFunction(daig::Function(*$2,*$3,*$5,daig::VarList(),daig::StmtList()));
+  delete $2; delete $3; delete $5;
+}
 ;
 
 constant : TCONST TIDENTIFIER TEQUAL TINTEGER TSEMICOLON {

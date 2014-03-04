@@ -101,6 +101,12 @@ namespace daig
     ConstDef constDef;
 
     /**
+     * external function declarations -- these are Function objects
+     * with empty bodies
+     **/
+    Functions externalFuncs;
+
+    /**
      * A map of function names to function definitions
      **/
     Functions funcs;
@@ -112,6 +118,9 @@ namespace daig
 
     //the list of processes
     std::list<Process> processes;
+
+    ///add an external function
+    void addExternalFunction(const Function &f) { externalFuncs[f.name] = f; }
 
     ///add a function
     void addFunction(const Function &f) { funcs[f.name] = f; }

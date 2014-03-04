@@ -61,6 +61,13 @@ daig::Program::print (std::ostream &os,unsigned int indent)
     os << spacer << "CONST " << cd.first << " = " << cd.second << ";\n";
   os << '\n';
 
+  //print external function declarations
+  BOOST_FOREACH(daig::Functions::value_type &v, externalFuncs) {
+    os << spacer << "EXTERN";
+    v.second.printDecl(os, 1);
+  }
+  os << '\n';
+
   //print nodes
   for (daig::Nodes::iterator i = nodes.begin (); i != nodes.end (); ++i)
     i->second.print (os,indent);
