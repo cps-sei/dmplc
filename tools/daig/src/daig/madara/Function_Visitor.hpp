@@ -397,6 +397,9 @@ namespace daig
 
       /// special identifier map, generally used by daig specific functions
       std::map <std::string, int> id_map_;
+
+      /// privatized section (force globals to have only local modifications)
+      bool privatize_;
     };
   } // namespace madara
 } //namespace daig

@@ -51,7 +51,8 @@ daig::madara::Function_Visitor::Function_Visitor (
   Function & function, const Node & node, 
   DaigBuilder & builder, std::stringstream & buffer)
   : function_ (function), node_ (node), 
-    builder_ (builder), buffer_ (buffer), indentation_ (2)
+    builder_ (builder), buffer_ (buffer), indentation_ (2),
+    privatize_ (false)
 {
 
 }
@@ -371,9 +372,16 @@ daig::madara::Function_Visitor::exitPrivate (PrivateStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
-  // unimplemented because I cannot remember what this exactly does
+  buffer_ << "\n" << spacer << "// Enabling PRIVATE-only modifications\n\n";
 
-  buffer_ << spacer << "Handling private.\n";
+  privatize_ = true;
+
+  visit (statement.data);
+
+  privatize_ = false;
+
+  buffer_ << spacer << "// Disabling PRIVATE-only modifications\n\n";
+
 }
 
 
@@ -407,9 +415,7 @@ daig::madara::Function_Visitor::enterAsgn (AsgnStmt & statement)
 void
 daig::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
 {
-  std::string spacer (indentation_, ' ');
-
-  buffer_ << spacer;
+  std::string spacer (indentation_, ' '), sub_spacer (indentation_ + 2, ' ');
 
   LvalExpr *lhs  = dynamic_cast<LvalExpr*>(statement.lhs.get ());
   
@@ -417,27 +423,54 @@ daig::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
   {
     if (lhs->indices.size () == 0)
     {
+      bool is_private = false;
+      if (privatize_ &&
+          node_.globVars.find (lhs->var) != node_.globVars.end ())
+      {
+        is_private = true;
+        buffer_ << spacer;
+        buffer_ << "// treat global variable change as a local update\n";
+        buffer_ << spacer;
+        buffer_ << "engine::Knowledge_Update_Settings old_update_settings (\n";
+        buffer_ << sub_spacer;
+        buffer_ << lhs->var;
+        buffer_ << ".set_settings (private_update));\n";
+      }
+
+      buffer_ << spacer;
       buffer_ << lhs->var;
       buffer_ << " = ";
       visit (statement.rhs);
 
       buffer_ << ";\n";
+
+      if (is_private)
+      {
+        buffer_ << spacer;
+        buffer_ << "// revert global variable update settings\n";
+        buffer_ << spacer;
+        buffer_ << lhs->var;
+        buffer_ << ".set_settings (old_update_settings));\n\n";
+      }
     }
     else if (lhs->indices.size () == 1)
     {
-      
+      buffer_ << spacer;
       buffer_ << lhs->var;
       buffer_ << ".set (";
       visit (*(lhs->indices.begin ()));
       buffer_ << ", ";
       visit (statement.rhs);
+
+      if (privatize_)
+        buffer_ << ", private_update";
+
       buffer_ << ");\n";
     }
     else
     {
+      buffer_ << spacer;
       buffer_ << "{\n";
-
-      std::string sub_spacer (indentation_ + 2, ' ');
 
       buffer_ << sub_spacer;
       buffer_ << "containers::Array_N::Index index (" << lhs->indices.size ();
@@ -458,6 +491,10 @@ daig::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
       buffer_ << ".set (index, ";
       visit (statement.rhs);
       buffer_ << ");\n";
+
+      if (privatize_)
+        buffer_ << ", private_update";
+
       buffer_ << spacer << "}\n";
     }
   }

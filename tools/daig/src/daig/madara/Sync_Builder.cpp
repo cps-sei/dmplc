@@ -106,6 +106,7 @@ daig::madara::Sync_Builder::build_common_global_variables ()
   buffer_ << "containers::Array barrier;\n";
   buffer_ << "containers::Integer id;\n";
   buffer_ << "containers::Integer num_processes;\n";
+  buffer_ << "engine::Knowledge_Update_Settings private_update (true);\n";
   buffer_ << "\n";
   buffer_ << "// number of participating processes\n";
   buffer_ << "Madara::Knowledge_Record::Integer processes (";
