@@ -68,7 +68,9 @@ daig::madara::Function_Visitor::enterInt (IntExpr & expression)
 void
 daig::madara::Function_Visitor::exitInt (IntExpr & expression)
 {
+  buffer_ << "Integer (";
   buffer_ << expression.data;
+  buffer_ << ")";
 }
 
 
@@ -352,11 +354,9 @@ daig::madara::Function_Visitor::exitAtomic (AtomicStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
-  buffer_ << spacer << "vars.lock ().\n";
+  // functions in MADARA are inherently atomic. Additional work is unnecessary
 
   visit (statement.data);
-
-  buffer_ << spacer << "vars.unlock ().\n";
 }
 
 
@@ -450,7 +450,7 @@ daig::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
         buffer_ << "// revert global variable update settings\n";
         buffer_ << spacer;
         buffer_ << lhs->var;
-        buffer_ << ".set_settings (old_update_settings));\n\n";
+        buffer_ << ".set_settings (old_update_settings);\n\n";
       }
     }
     else if (lhs->indices.size () == 1)
@@ -769,7 +769,7 @@ daig::madara::Function_Visitor::exitFAN (FANStmt & statement)
   buffer_ << "// FORALL_NODES\n";
   buffer_ << spacer;
   buffer_ << "for (";
-  buffer_ << "Madara::Knowledge_Record::Integer ";
+  buffer_ << "Integer ";
   buffer_ << statement.id;
   buffer_ << " = 0; ";
   buffer_ << statement.id;
@@ -817,7 +817,7 @@ daig::madara::Function_Visitor::exitFADNP (FADNPStmt & statement)
   buffer_ << "// FORALL_DISTINCT_NODE_PAIRS\n";
   buffer_ << spacer;
   buffer_ << "for (";
-  buffer_ << "Madara::Knowledge_Record::Integer ";
+  buffer_ << "unsigned int ";
   buffer_ << statement.id1;
   buffer_ << " = 0; ";
   buffer_ << statement.id1;
@@ -829,7 +829,7 @@ daig::madara::Function_Visitor::exitFADNP (FADNPStmt & statement)
   
   buffer_ << spacer_2;
   buffer_ << "for (";
-  buffer_ << "Madara::Knowledge_Record::Integer ";
+  buffer_ << "unsigned int ";
   buffer_ << statement.id2;
   buffer_ << " = 0; ";
   buffer_ << statement.id2;
@@ -895,7 +895,7 @@ daig::madara::Function_Visitor::exitFAO (FAOStmt & statement)
   buffer_ << "// FORALL_OTHER\n";
   buffer_ << spacer;
   buffer_ << "for (";
-  buffer_ << "Madara::Knowledge_Record::Integer ";
+  buffer_ << "unsigned int ";
   buffer_ << statement.id;
   buffer_ << " = 0; ";
   buffer_ << statement.id;
@@ -915,7 +915,7 @@ daig::madara::Function_Visitor::exitFAO (FAOStmt & statement)
     function_.temps [statement.id] = Variable (statement.id);
   }
   
-  buffer_ << spacer_2 << "if (i == *id)\n";
+  buffer_ << spacer_2 << "if (" << statement.id << " == *id)\n";
   buffer_ << spacer_3 << "continue;\n\n";
   
   visit (statement.data);
@@ -945,7 +945,7 @@ daig::madara::Function_Visitor::exitFAOL (FAOLStmt & statement)
   buffer_ << "// FORALL_OTHER_LOWER\n";
   buffer_ << spacer;
   buffer_ << "for (";
-  buffer_ << "Madara::Knowledge_Record::Integer ";
+  buffer_ << "unsigned int ";
   buffer_ << statement.id;
   buffer_ << " = 0; ";
   buffer_ << statement.id;
@@ -992,7 +992,7 @@ daig::madara::Function_Visitor::exitFAOH (FAOHStmt & statement)
   buffer_ << "// FORALL_OTHER_HIGHER\n";
   buffer_ << spacer;
   buffer_ << "for (";
-  buffer_ << "Madara::Knowledge_Record::Integer ";
+  buffer_ << "unsigned int ";
   buffer_ << statement.id;
   buffer_ << " = *id + 1; ";
   buffer_ << statement.id;

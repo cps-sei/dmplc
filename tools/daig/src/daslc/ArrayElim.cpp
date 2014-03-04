@@ -129,7 +129,7 @@ daig::Expr daig::ArrayElim::createGetter(const LvalExpr &expr)
   
   //create parameters
   daig::VarList params;
-  for(int i = 0;i < expr.indices.size();++i) {
+  for(unsigned int i = 0;i < expr.indices.size();++i) {
     params.push_back(Variable("idx_" + boost::lexical_cast<std::string>(i),daig::ucharType()));
   }
 
@@ -197,7 +197,7 @@ daig::Expr daig::ArrayElim::createSetter(const LvalExpr &expr)
   
   //create parameters
   daig::VarList params;
-  for(int i = 0;i < expr.indices.size();++i) {
+  for(unsigned int i = 0;i < expr.indices.size();++i) {
     params.push_back(Variable("idx_" + boost::lexical_cast<std::string>(i),daig::ucharType()));
   }
   params.push_back(Variable("val", elemType));

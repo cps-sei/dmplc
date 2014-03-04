@@ -94,6 +94,8 @@ daig::madara::Sync_Builder::build_header_includes ()
 void
 daig::madara::Sync_Builder::build_common_global_variables ()
 {
+  buffer_ << "// typedefs\n";
+  buffer_ << "typedef   Madara::Knowledge_Record::Integer   Integer;\n\n";
   buffer_ << "// namespace shortcuts\n";
   buffer_ << "namespace engine = Madara::Knowledge_Engine;\n";
   buffer_ << "namespace containers = engine::Containers;\n\n";
@@ -109,7 +111,7 @@ daig::madara::Sync_Builder::build_common_global_variables ()
   buffer_ << "engine::Knowledge_Update_Settings private_update (true);\n";
   buffer_ << "\n";
   buffer_ << "// number of participating processes\n";
-  buffer_ << "Madara::Knowledge_Record::Integer processes (";
+  buffer_ << "Integer processes (";
   buffer_ << builder_.program.processes.size ();
   buffer_ << ");\n\n";
 }
@@ -219,17 +221,17 @@ daig::madara::Sync_Builder::build_program_variable_binding (
 {
   buffer_ << "  ";
   buffer_ << var.name;
-  buffer_ << ".set_name (";
+  buffer_ << ".set_name (\"";
 
   // local variables will have a period in front of them
   if (var.scope == Variable::LOCAL)
     buffer_ << ".";
 
   buffer_ << var.name;
-  buffer_ << ", knowledge";
+  buffer_ << "\", knowledge";
 
   // is this an array type?
-  if (var.type->dims.size () > 0)
+  if (var.type->dims.size () == 1)
   {
     buffer_ << ", ";
     buffer_ << builder_.program.processes.size ();
@@ -406,7 +408,7 @@ daig::madara::Sync_Builder::build_refresh_modify_globals ()
     }
   }
   
-  buffer_ << "  return engine::Knowledge_Record::Integer (0);\n";
+  buffer_ << "  return Integer (0);\n";
   buffer_ << "}\n\n";
 }
 
@@ -414,13 +416,20 @@ void
 daig::madara::Sync_Builder::build_refresh_modify_global (const Variable & var)
 {
   buffer_ << "  ";
+
   // is this an array type?
-  if (var.type->dims.size () > 0)
+  if (var.type->dims.size () == 1)
   {
     buffer_ << var.name;
     buffer_ << ".set (*id, ";
     buffer_ << var.name;
     buffer_ << "[*id].to_integer ());\n";
+  }
+  // is this an n-dimensional array type?
+  else if (var.type->dims.size () > 1)
+  {
+    // we currently have no way of specifying owned locations in an array
+    buffer_ << "\n";
   }
   else
   {
@@ -482,10 +491,10 @@ daig::madara::Sync_Builder::build_function (
   buffer_ << "{\n";
   buffer_ << "  // Declare local variables\n";
   
-  buffer_ << "  engine::Knowledge_Record::Integer result (0);\n";
+  buffer_ << "  Integer result (0);\n";
   BOOST_FOREACH (Variables::value_type & variable, function.temps)
   {
-    buffer_ << "  engine::Knowledge_Record::Integer ";
+    buffer_ << "  Integer ";
     buffer_ << variable.second.name;
     buffer_ << ";\n";
   }
@@ -527,22 +536,22 @@ daig::madara::Sync_Builder::build_main_function ()
   buffer_ << "  Madara::Knowledge_Engine::Wait_Settings wait_settings;\n";
   buffer_ << "  wait_settings.max_wait_time = 10;\n";
   buffer_ << "  wait_settings.poll_frequency = .1;\n";
-  buffer_ << "  std::map <std::string, bool>  barrier_send_list;\n";
-  buffer_ << "  barrier_send_list [knowledge.expand_statement (";
-  buffer_ << "\"mbarrier.{.id}\")] = true;\n\n";
 
   buffer_ << "  // create the knowledge base with the transport settings\n";
   buffer_ << "  Madara::Knowledge_Engine::Knowledge_Base knowledge (host, settings);\n\n";
+  buffer_ << "  std::map <std::string, bool>  barrier_send_list;\n";
+  buffer_ << "  barrier_send_list [knowledge.expand_statement (";
+  buffer_ << "\"mbarrier.{.id}\")] = true;\n\n";
   
   // build the barrier string
   
   buffer_ << "  // Building the barrier string for this node\n";
   buffer_ << "  std::stringstream barrier_string, barrier_sync;\n";
   buffer_ << "  bool started = false;\n\n";
-  buffer_ << "  barrier_string << \"REMODIFY_GLOBALS () ;> \"\n";
-  buffer_ << "  barrier_sync << \"mbarrier.\"\n";
+  buffer_ << "  barrier_string << \"REMODIFY_GLOBALS () ;> \";\n";
+  buffer_ << "  barrier_sync << \"mbarrier.\";\n";
   buffer_ << "  barrier_sync << settings.id;\n";
-  buffer_ << "  barrier_sync << \" = mbarrier.\"\n";
+  buffer_ << "  barrier_sync << \" = (mbarrier.\";\n";
   buffer_ << "  barrier_sync << settings.id;\n\n";
   buffer_ << "  // create barrier check for all lower ids\n";
   buffer_ << "  for (unsigned int i = 0; i < settings.id; ++i)\n";
@@ -578,16 +587,16 @@ daig::madara::Sync_Builder::build_main_function ()
   buffer_ << "    if (!started)\n";
   buffer_ << "      started = true;\n";
   buffer_ << "  }\n\n";
-  buffer_ << "  barrier_sync << \")\"\n\n";
+  buffer_ << "  barrier_sync << \")\";\n\n";
 
   build_program_variables_bindings ();
   build_main_define_functions ();
 
-  buffer_ << "  id = Madara::Knowledge_Record::Integer (settings.id);\n";
+  buffer_ << "  id = Integer (settings.id);\n";
   buffer_ << "  num_processes = processes;\n\n";
   buffer_ << "  // Compile frequently used expressions\n";
   buffer_ << "  engine::Compiled_Expression round_logic = knowledge.compile (\n";
-  buffer_ << "    knowledge.expand_statement (\"ROUND (); ++mbarrier.{.id}));\n";
+  buffer_ << "    knowledge.expand_statement (\"ROUND (); ++mbarrier.{.id}\"));\n";
   buffer_ << "  engine::Compiled_Expression barrier_logic = \n";
   buffer_ << "    knowledge.compile (barrier_string.str ());\n";
   buffer_ << "  engine::Compiled_Expression barrier_sync_logic = \n";
@@ -604,7 +613,7 @@ daig::madara::Sync_Builder::build_main_function ()
   buffer_ << "    knowledge.wait (barrier_logic, wait_settings);\n\n";
 
   buffer_ << "    // Send only barrier information\n";
-  buffer_ << "    wait_settings.send_list = barrier_list;\n\n";
+  buffer_ << "    wait_settings.send_list = barrier_send_list;\n\n";
   
   buffer_ << "    // Synchronize barrier information for late joiners\n";
   buffer_ << "    knowledge.evaluate (barrier_sync_logic, wait_settings);\n\n";
@@ -656,11 +665,14 @@ void
 daig::madara::Sync_Builder::build_main_define_function (const Node & node,
   Function & function)
 {
-  buffer_ << "  knowledge.define_function (\"";
-  buffer_ << function.name;
-  buffer_ << "\", ";
-  buffer_ << node.name << "_" << function.name;
-  buffer_ << ");\n";
+  if (function.name != "INIT" && function.name != "SAFETY")
+  {
+    buffer_ << "  knowledge.define_function (\"";
+    buffer_ << function.name;
+    buffer_ << "\", ";
+    buffer_ << node.name << "_" << function.name;
+    buffer_ << ");\n";
+  }
 }
 
 void
