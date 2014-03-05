@@ -186,8 +186,10 @@ void daig::syncseq::NodeTransformer::exitLval(daig::LvalExpr &expr)
   //substitute global variable name x with x_i
   std::string newName = expr.var;
 
-  //handle function call
-  if(inCall) newName += ("_" + boost::lexical_cast<std::string>(nodeId));
+  //handle function call -- only change name if the function is not
+  //external
+  if(inCall && !prog.isExternalFunction(newName)) 
+    newName += ("_" + boost::lexical_cast<std::string>(nodeId));
 
   //handle global variables -- distinguishing between lhs of
   //assignments and other cases
