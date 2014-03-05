@@ -254,6 +254,9 @@ void daig::ArrayElim::exitAsgn(AsgnStmt &stmt)
 /*********************************************************************/
 void daig::ArrayElim::run()
 {
+  //copy over external function declarations
+  outProg.externalFuncs = inProg.externalFuncs;
+
   //convert global variable arrays to individual variable elements
   BOOST_FOREACH(const Variables::value_type &v,inProg.globVars) {
     expandArrayVar(v.second);

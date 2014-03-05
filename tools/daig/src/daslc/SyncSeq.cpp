@@ -578,6 +578,9 @@ void daig::SyncSeq::run()
 {
   std::cout << "Sequentializing with " << nodeNum << " nodes ...\n";
 
+  //copy over external function declarations
+  cprog.externalFuncs = builder.program.externalFuncs;
+
   createGlobVars();
   createRoundCopier();
   createMainFunc();

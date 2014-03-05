@@ -77,6 +77,12 @@ namespace daig
      **/
     void print (std::ostream &os,unsigned int indent);
 
+    /**
+     * external function declarations -- these are Function objects
+     * with empty bodies
+     **/
+    Functions externalFuncs;
+
     ///global variables
     Variables globVars;
     
