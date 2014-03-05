@@ -11,6 +11,8 @@ CONST REQUEST = 1;
 CONST WAITING = 2;
 CONST MOVE = 3;
 
+EXTERN int MOVE_TO();
+
 NODE uav (id)
 {
   //shared variables -- visible across nodes. 
