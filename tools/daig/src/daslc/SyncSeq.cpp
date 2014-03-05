@@ -320,7 +320,7 @@ void daig::SyncSeq::createGlobVars()
   //instantiate node-global variables by replacing dimension #N with
   //nodeNum -- make two copies, one for initial value for a round, and
   //the other for the final value for a round
-  std::list<Variable> gvars;
+  daig::VarList gvars;
   BOOST_FOREACH(Variables::value_type &v,node.globVars) {
     gvars.push_back(v.second.instDim(nodeNum));
   }
@@ -371,7 +371,7 @@ void daig::SyncSeq::createCopyStmts(bool fwd,const Variable &var,StmtList &res,E
 void daig::SyncSeq::createRoundCopier()
 {
   Node &node = builder.program.nodes.begin()->second;
-  std::list<daig::Variable> fnParams,fnTemps;
+  daig::VarList fnParams,fnTemps;
 
   //create the copier from _f to _i
   StmtList fnBody1;
@@ -399,7 +399,7 @@ void daig::SyncSeq::createRoundCopier()
 /*********************************************************************/
 void daig::SyncSeq::createMainFunc()
 {
-  std::list<daig::Variable> mainParams,mainTemps;
+  daig::VarList mainParams,mainTemps;
   StmtList mainBody,roundBody;
 
   //call SAFETY()
@@ -452,7 +452,7 @@ void daig::SyncSeq::createMainFunc()
 /*********************************************************************/
 void daig::SyncSeq::createInit()
 {
-  std::list<daig::Variable> fnParams,fnTemps;
+  daig::VarList fnParams,fnTemps;
   StmtList fnBody;
 
   //if no INIT() defined, create an empty one
@@ -489,7 +489,7 @@ void daig::SyncSeq::createInit()
 void daig::SyncSeq::createSafety()
 {
   Node &node = builder.program.nodes.begin()->second;
-  std::list<daig::Variable> fnParams,fnTemps;
+  daig::VarList fnParams,fnTemps;
   StmtList fnBody;
 
   //if no SAFETY() defined, create an empty one
@@ -528,7 +528,7 @@ void daig::SyncSeq::createNodeFuncs()
   Node &node = builder.program.nodes.begin()->second;
   for(size_t i = 0;i < nodeNum;++i) {
     BOOST_FOREACH(Functions::value_type &f,node.funcs) {
-      std::list<daig::Variable> fnParams,fnTemps;
+      daig::VarList fnParams,fnTemps;
 
       //create parameters
       BOOST_FOREACH(Variables::value_type &v,f.second.params)

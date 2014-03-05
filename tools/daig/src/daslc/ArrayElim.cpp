@@ -265,7 +265,7 @@ void daig::ArrayElim::run()
   //convert array accesses in each function
   BOOST_FOREACH(const Functions::value_type &v,inProg.funcs) {
     const Function &func = v.second;
-    std::list<Variable> fnParams,fnTemps;
+    daig::VarList fnParams,fnTemps;
     BOOST_FOREACH(const Variables::value_type &v,func.params)
       fnParams.push_back(v.second);
     BOOST_FOREACH(const Variables::value_type &v,func.temps)

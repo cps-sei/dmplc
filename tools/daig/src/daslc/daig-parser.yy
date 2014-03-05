@@ -33,7 +33,7 @@ daig::Node currNode;
 %union {
     daig::Type *type;
     daig::Variable *var;
-    std::list<daig::Variable> *varList;
+    daig::VarList *varList;
     daig::LvalExpr *lvalExpr;
     daig::Expr *expr;
     daig::ExprList *exprlist;
@@ -151,7 +151,7 @@ local_var : TLOCAL var_decl TSEMICOLON {
 ;
 
 var_decl : type var_list {
-  $$ = new std::list<daig::Variable>();
+  $$ = new daig::VarList();
   BOOST_FOREACH(const daig::Variable &v,*$2) {
     daig::BaseType *t = new daig::BaseType(**$1);
     t->dims = v.type->dims;
@@ -163,7 +163,7 @@ var_decl : type var_list {
 };
 
 var_list : var {
-  $$ = new std::list<daig::Variable>(); $$->push_back(*$1); delete $1;
+  $$ = new daig::VarList(); $$->push_back(*$1); delete $1;
 }
 | var_list TCOMMA var { $$ = $1; $$->push_back(*$3); delete $3; }
 ;
@@ -207,9 +207,9 @@ procedure : type TIDENTIFIER TLPAREN param_list TRPAREN TLBRACE var_decl_list st
 }
 ;
 
-param_list : { $$ = new std::list<daig::Variable>(); }
+param_list : { $$ = new daig::VarList(); }
 | type var {
-  $$ = new std::list<daig::Variable>();
+  $$ = new daig::VarList();
   daig::BaseType *t = new daig::BaseType(**$1);
   t->dims = $2->type->dims;
   daig::Variable newVar = *$2;
@@ -228,7 +228,7 @@ param_list : { $$ = new std::list<daig::Variable>(); }
 }
 ;
 
-var_decl_list : { $$ = new std::list<daig::Variable>(); }
+var_decl_list : { $$ = new daig::VarList(); }
 | var_decl_list var_decl TSEMICOLON {
   $$ = $1; $$->insert($$->end(),$2->begin(),$2->end());
   delete $2;
@@ -409,7 +409,7 @@ init_def : TVOID TINIT TLPAREN TRPAREN TLBRACE var_decl_list stmt_list TRBRACE {
   /** set scope of temporary variables */
   BOOST_FOREACH(daig::Variable &v,*$6) v.scope = daig::Variable::TEMP;
   /** create and add function to the node -- make its return type void */
-  builder->program.addFunction(daig::Function(daig::voidType(),"INIT",std::list<daig::Variable>(),*$6,*$7));
+  builder->program.addFunction(daig::Function(daig::voidType(),"INIT",daig::VarList(),*$6,*$7));
   delete $6; delete $7;
 }
 ;
@@ -418,7 +418,7 @@ safety_def : TVOID TSAFETY TLPAREN TRPAREN TLBRACE var_decl_list stmt_list TRBRA
   /** set scope of temporary variables */
   BOOST_FOREACH(daig::Variable &v,*$6) v.scope = daig::Variable::TEMP;
   /** create and add function to the node -- make its return type void */
-  builder->program.addFunction(daig::Function(daig::voidType(),"SAFETY",std::list<daig::Variable>(),*$6,*$7));
+  builder->program.addFunction(daig::Function(daig::voidType(),"SAFETY",daig::VarList(),*$6,*$7));
   delete $6; delete $7;
 }
 ;
