@@ -124,6 +124,12 @@ namespace daig
 
     ///add a function
     void addFunction(const Function &f) { funcs[f.name] = f; }
+
+    ///return true if the argument is the name of an external function
+    bool isExternalFunction(const std::string &fn) const 
+    {
+      return externalFuncs.count(fn);
+    }
   };
 }
 
