@@ -117,6 +117,11 @@ constant : TCONST TIDENTIFIER TEQUAL TINTEGER TSEMICOLON {
   builder->program.constDef[*$2] = *$4;
   delete $2; delete $4;
 }
+/** this is needed to handle constant definitions that have also been
+supplied via the command line */
+| TCONST TINTEGER TEQUAL TINTEGER TSEMICOLON {
+  delete $2; delete $4;
+}
 ;
 
 node : TNODE TIDENTIFIER TLPAREN TIDENTIFIER TRPAREN TLBRACE node_body TRBRACE {

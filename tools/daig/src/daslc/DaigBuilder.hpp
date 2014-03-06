@@ -65,8 +65,9 @@ namespace daig {
   
   public:
     DaigBuilder() : debug(0) {}
-    DaigBuilder(const std::string &fn,const bool d)
-      : fileName(fn),debug(d) {}
+    DaigBuilder(const std::string &fn,const std::map<std::string,std::string> &constDef,
+                const bool d);
+
     void run();
     void printProgram(std::ostream &os);
   };

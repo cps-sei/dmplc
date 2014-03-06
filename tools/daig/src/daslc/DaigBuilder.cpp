@@ -43,6 +43,7 @@
  *      This material has been approved for public release and unlimited
  *      distribution.
  **/
+
 #include <stdio.h>
 #include "DaigBuilder.hpp"
 
@@ -60,6 +61,17 @@ extern int yyparse();
 //the file pointer for lex
 /*********************************************************************/
 extern FILE *yyin;
+
+/*********************************************************************/
+//constructor
+/*********************************************************************/
+daig::DaigBuilder::DaigBuilder(const std::string &fn,
+                               const std::map<std::string,std::string> &constDef,
+                               const bool d)
+  : fileName(fn),debug(d) 
+{
+  program.constDef = constDef;
+}
 
 /*********************************************************************/
 //run the parser

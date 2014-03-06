@@ -61,6 +61,9 @@ bool debug = false, print=false, seqNoArray = false;
 size_t nodeNum = 0;
 int roundNum = -1;
 
+//constant definitions supplied via command line
+std::map<std::string,std::string> constDef;
+
 /*********************************************************************/
 //function declarations
 /*********************************************************************/
@@ -75,7 +78,7 @@ int main(int argc, char **argv)
   parseOptions(argc,argv);
 
   //create the program
-  daig::DaigBuilder builder(fileName,debug);
+  daig::DaigBuilder builder(fileName,constDef,debug);
   builder.run();
 
   //print the program
@@ -168,6 +171,19 @@ void parseOptions(int argc, char **argv)
     {
       print = true;
     }
+    else if(strstr(argv[i],"--D") == argv[i])
+    {
+      //extract constant and value from constant=value
+      std::string arg(argv[i]);
+      size_t eqpos = arg.find('=',3);
+      assert(eqpos != std::string::npos 
+             && "ERROR : illegal option, must be --Dconstant=value");
+      int constLen = eqpos - 3;
+      std::string constStr = arg.substr(3,eqpos - 3);
+      std::string constVal(argv[i] + eqpos + 1);
+      //std::cout << constStr << "=" << constVal << '\n';
+      constDef[constStr] = constVal;
+    }
     else if(strstr(argv[i],"--out=") == argv[i])
     {
       outFileName = std::string(argv[i] + 6);
@@ -202,6 +218,7 @@ void usage(char *cmd)
   std::cerr << "ERROR: no input-filename ...\n";
   std::cerr << "Usage : " << cmd << " <options> filename\n";
   std::cerr << "Options :\n\t--debug\n\t--print\n\t"
+            << "--Dconstant=value\n\t"
             << "--seq=node-num\n\t--out=output-filename\n\t"
             << "--seq-no-array\n\t--rounds=round-num\n"
             << "\t--madara=madara-ouput-filename\n";
