@@ -386,6 +386,14 @@ void daig::SyncSeq::createRoundCopier()
   //create the copier from _i to _f
   StmtList fnBody2;
   BOOST_FOREACH(Variables::value_type &v,node.globVars) {
+    //non-array types of global variables are illegal
+    assert(!v.second.type->dims.empty() && 
+           "ERROR: all global variables must be of array type");
+
+    //last dimension of global variables must be #N
+    assert(*(v.second.type->dims.rbegin()) == -1 &&
+           "ERROR: last dimension of global variables must be #N");
+
     Variable var = v.second.instDim(nodeNum);
     createCopyStmts(1,var,fnBody2,ExprList());
   }
