@@ -43,11 +43,70 @@
  *      This material has been approved for public release and unlimited
  *      distribution.
  **/
+
 #include <iostream>
 #include <boost/foreach.hpp>
 #include "Node.h"
 #include "Program.h"
 
+/*********************************************************************/
+//methods for SanityChecker
+/*********************************************************************/
+
+//add id to int mapping
+void daig::program::SanityChecker::addIdMap(const std::string &s,size_t i)
+{
+  if(idMap.count(s)) {
+    std::cerr << "ERROR: substitution mapping for " << s << " exists already!!\n";
+    assert(0);
+  }
+  idMap[s] = i;
+}
+
+//remove id to int mappiing
+void daig::program::SanityChecker::delIdMap(const std::string &s)
+{
+  if(!idMap.count(s)) {
+    std::cerr << "ERROR: substitution mapping for " << s << " doesn't exist!!\n";
+    assert(0);
+  }
+  idMap.erase(s);
+}
+
+/*********************************************************************/
+//dispatchers for statements
+/*********************************************************************/
+
+void daig::program::SanityChecker::exitCall(daig::CallStmt &stmt) 
+{ 
+  //handle calls to ND(x) -- assign x non-deterministically
+  CallExpr *expr = dynamic_cast<CallExpr*>(stmt.data.get());
+  if(!expr) assert(0 && "ERROR: argument to call statement not a CallExpr!");
+  if(expr->func->toString() == "ND") {
+    assert(expr->args.size() == 1 && 
+           "ERROR: call to ND() must have one argument!");
+  }
+}
+
+void daig::program::SanityChecker::exitFAN(daig::FANStmt &stmt) 
+{ 
+  addIdMap(stmt.id,0);
+  visit(stmt.data);
+  delIdMap(stmt.id);
+}
+
+void daig::program::SanityChecker::exitFADNP(daig::FADNPStmt &stmt) 
+{ 
+  addIdMap(stmt.id1,0);
+  addIdMap(stmt.id2,0);
+  visit(stmt.data);
+  delIdMap(stmt.id1);
+  delIdMap(stmt.id2);
+}
+
+/*********************************************************************/
+//print the program to an output stream
+/*********************************************************************/
 void
 daig::Program::print (std::ostream &os,unsigned int indent)
 {
@@ -86,3 +145,54 @@ daig::Program::print (std::ostream &os,unsigned int indent)
   for (daig::Functions::iterator i = funcs.begin (); i != funcs.end (); ++i)
     i->second.print (os,indent);
 }
+
+/*********************************************************************/
+//check various sanity conditions
+/*********************************************************************/
+void
+daig::Program::sanityCheck()
+{
+  //right now we only support synchronous programs
+  if(moc.to_string_type() != "MOC_SYNC") return;
+
+  //only one type of node
+  assert(nodes.size() == 1 && "ERROR: only node type supported!");
+
+  //check global functions
+  BOOST_FOREACH(Functions::value_type &v,funcs) {
+    BOOST_FOREACH(Stmt &s, v.second.body) {
+      daig::program::SanityChecker sc(*this);
+      sc.visit(s);
+    }
+  }
+
+  //nodes have just one parameter -- its id
+  Node &node = nodes.begin()->second;
+  assert(node.args.size() == 1 && "ERROR: node must have one id!");
+  const std::string &nodeId = *(node.args.begin());
+
+  //check node functions
+  BOOST_FOREACH(Functions::value_type &v,node.funcs) {
+    BOOST_FOREACH(Stmt &s, v.second.body) {
+      daig::program::SanityChecker sc(*this);
+      sc.addIdMap(nodeId,0);
+      sc.visit(s);
+    }
+  }
+
+  //check node global variables
+  BOOST_FOREACH(Variables::value_type &v,node.globVars) {
+    //non-array types of global variables are illegal
+    assert(!v.second.type->dims.empty() && 
+           "ERROR: all global variables must be of array type");
+
+    //last dimension of global variables must be #N
+    assert(*(v.second.type->dims.rbegin()) == -1 &&
+           "ERROR: last dimension of global variables must be #N");
+  }
+}
+
+/*********************************************************************/
+//end of file
+/*********************************************************************/
+

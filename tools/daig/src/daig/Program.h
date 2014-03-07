@@ -60,6 +60,7 @@
 #include "Variable.h"
 #include "Function.h"
 #include "Node.h"
+#include "Visitor.h"
 
 namespace daig
 {
@@ -130,7 +131,39 @@ namespace daig
     {
       return externalFuncs.count(fn);
     }
+
+    ///check various sanity conditions on the program
+    void sanityCheck();
   };
+
+  //new namespace to avoid name collisions
+  namespace program {
+    /*****************************************************************/
+    //a visitor that checks for various sanity conditions
+    /*****************************************************************/
+    struct SanityChecker : public Visitor
+    {
+      //the DASL program being checked
+      Program &prog;
+
+      //map from variables to constants for substitution
+      std::map<std::string,size_t> idMap;
+
+      //constructors
+      SanityChecker(Program &p) : prog(p) {}
+
+      //update substitution mapping
+      void addIdMap(const std::string &s,size_t i);
+      void delIdMap(const std::string &s);
+
+      //dispatchers
+      void exitCall(CallStmt &stmt);
+      bool enterFAN(FANStmt &stmt) { return false; }
+      void exitFAN(FANStmt &stmt);
+      bool enterFADNP(FADNPStmt &stmt) { return false; }
+      void exitFADNP(FADNPStmt &stmt);
+    };
+  } //namespace program
 }
 
 #endif // _DAIG_PROGRAM_H_

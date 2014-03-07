@@ -82,6 +82,7 @@ void daig::DaigBuilder::run()
   ::yyin = fopen(fileName.c_str(),"r");
   ::yyparse();
   fclose(::yyin);
+  program.sanityCheck();
 }
 
 /*********************************************************************/

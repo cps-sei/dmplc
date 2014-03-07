@@ -43,6 +43,7 @@
  *      This material has been approved for public release and unlimited
  *      distribution.
  **/
+
 #include <boost/lexical_cast.hpp>
 #include "daig/Type.h"
 #include "daig/Variable.h"
@@ -58,20 +59,12 @@
 //add id to int mapping
 void daig::syncsem::GlobalTransformer::addIdMap(const std::string &s,size_t i)
 {
-  if(idMap.count(s)) {
-    std::cerr << "ERROR: substitution mapping for " << s << " exists already!!\n";
-    assert(0);
-  }
   idMap[s] = i;
 }
 
 //remove id to int mappiing
 void daig::syncsem::GlobalTransformer::delIdMap(const std::string &s)
 {
-  if(!idMap.count(s)) {
-    std::cerr << "ERROR: substitution mapping for " << s << " doesn't exist!!\n";
-    assert(0);
-  }
   idMap.erase(s);
 }
 
@@ -131,10 +124,7 @@ void daig::syncsem::GlobalTransformer::exitCall(daig::CallStmt &stmt)
 { 
   //handle calls to ND(x) -- assign x non-deterministically
   CallExpr *expr = dynamic_cast<CallExpr*>(stmt.data.get());
-  if(!expr) assert(0 && "ERROR: argument to call statement not a CallExpr!");
   if(expr->func->toString() == "ND") {
-    assert(expr->args.size() == 1 && 
-           "ERROR: call to ND() must have one argument!");
     const Expr &arg = exprMap[*(expr->args.begin())];
     Expr ndfn = syncSeq.createNondetFunc(arg);
     Expr ndcall(new CallExpr(ndfn,ExprList()));
@@ -311,7 +301,6 @@ daig::SyncSem::SyncSem(daig::DaigBuilder &b,size_t n,int r)
   : builder(b),nodeNum(n),roundNum(r)
 {
   Program &prog = builder.program;
-  assert(prog.nodes.size() == 1 && "ERROR: only node type supported!");
 }
 
 /*********************************************************************/
@@ -386,14 +375,6 @@ void daig::SyncSem::createGlobalCopier()
   //create the copier statements
   StmtList fnBody;
   BOOST_FOREACH(Variables::value_type &v,node.globVars) {
-    //non-array types of global variables are illegal
-    assert(!v.second.type->dims.empty() && 
-           "ERROR: all global variables must be of array type");
-
-    //last dimension of global variables must be #N
-    assert(*(v.second.type->dims.rbegin()) == -1 &&
-           "ERROR: last dimension of global variables must be #N");
-
     Variable var = v.second.instDim(nodeNum);
     createCopyStmts(var,fnBody,ExprList());
   }
@@ -546,8 +527,6 @@ void daig::SyncSem::createNodeFuncs()
       BOOST_FOREACH(const Stmt &st,f.second.body) {
         syncsem::NodeTransformer nt(*this,builder.program,nodeNum,i);
 
-        //currently, nodes have just one parameter -- its id
-        assert(node.args.size() == 1 && "ERROR: node must have one id!");
         std::string nodeId = *node.args.begin();
         nt.addIdMap(nodeId,i);
         nt.visit(st);
