@@ -410,6 +410,11 @@ void daig::SyncSem::createMainFunc()
   daig::VarList mainParams,mainTemps;
   StmtList mainBody,roundBody;
 
+  //call global copier
+  Expr callExpr2(new LvalExpr("global_copier"));
+  Stmt callStmt2(new CallStmt(callExpr2,daig::ExprList()));
+  roundBody.push_back(callStmt2);
+
   //call SAFETY()
   Expr callExpr1(new LvalExpr("SAFETY"));
   Stmt callStmt1(new CallStmt(callExpr1,daig::ExprList()));
@@ -422,11 +427,6 @@ void daig::SyncSem::createMainFunc()
     Stmt callStmt(new CallStmt(callExpr,daig::ExprList()));
     roundBody.push_back(callStmt);
   }
-
-  //call global copier
-  Expr callExpr2(new LvalExpr("global_copier"));
-  Stmt callStmt2(new CallStmt(callExpr2,daig::ExprList()));
-  roundBody.push_back(callStmt2);
 
   //add call to INIT()
   Expr callExpr3(new LvalExpr("INIT"));
