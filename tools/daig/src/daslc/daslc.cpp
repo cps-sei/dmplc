@@ -51,13 +51,14 @@
 #include "DaigBuilder.hpp"
 #include "daig/madara/Sync_Builder.hpp"
 #include "SyncSeq.hpp"
+#include "SyncSem.hpp"
 #include "ArrayElim.hpp"
 
 /*********************************************************************/
 //options
 /*********************************************************************/
 std::string fileName, outFileName, madaraFileName;
-bool debug = false, print=false, seqNoArray = false;
+bool debug = false, print=false, seqSem = false, seqNoArray = false;
 size_t nodeNum = 0;
 int roundNum = -1;
 
@@ -119,9 +120,21 @@ int main(int argc, char **argv)
     //for synchronous programs
     if(moc == "MOC_SYNC")
     {
-      daig::SyncSeq syncSeq(builder,nodeNum,roundNum);
-      syncSeq.run();
-      daig::CProgram &cprog = syncSeq.cprog;
+      //the C program produced by sequentialization
+      daig::CProgram cprog;
+
+      //if doing naive sequentialization to the semantics
+      if(seqSem) {
+        daig::SyncSem syncSem(builder,nodeNum,roundNum);
+        syncSem.run();
+        cprog = syncSem.cprog;
+      }
+      //if doing optimized sequentialization
+      else {
+        daig::SyncSeq syncSeq(builder,nodeNum,roundNum);
+        syncSeq.run();
+        cprog = syncSeq.cprog;
+      }      
 
       //eliminate arrays
       if(seqNoArray) {
@@ -166,6 +179,10 @@ void parseOptions(int argc, char **argv)
     else if(strstr(argv[i],"--seq=") == argv[i])
     {
       nodeNum = atoi(argv[i] + 6);
+    }
+    else if(!strcmp(argv[i],"--seq-sem"))
+    {
+      seqSem = true;
     }
     else if(!strcmp(argv[i],"--print"))
     {
@@ -218,8 +235,8 @@ void usage(char *cmd)
   std::cerr << "ERROR: no input-filename ...\n";
   std::cerr << "Usage : " << cmd << " <options> filename\n";
   std::cerr << "Options :\n\t--debug\n\t--print\n\t"
-            << "--Dconstant=value\n\t"
-            << "--seq=node-num\n\t--out=output-filename\n\t"
+            << "--Dconstant=value\n\t--seq=node-num\n\t"
+            << "--seq-sem\n\t--out=output-filename\n\t"
             << "--seq-no-array\n\t--rounds=round-num\n"
             << "\t--madara=madara-ouput-filename\n";
   exit(1);
