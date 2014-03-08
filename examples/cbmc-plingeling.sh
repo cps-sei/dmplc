@@ -1,5 +1,6 @@
 #!/bin/bash
 TMPF=$(mktemp)
+CORES=$(cat /proc/cpuinfo | grep processor | wc -l)
 echo "CNF file = "$TMPF.cnf
 
 function ensure {
@@ -14,4 +15,4 @@ ensure cbmc
 ensure plingeling
 
 cbmc --dimacs --outfile $TMPF.cnf $*
-plingeling -t 4 $TMPF.cnf
+plingeling -t $CORES $TMPF.cnf
