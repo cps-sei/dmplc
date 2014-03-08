@@ -43,6 +43,7 @@
  *      This material has been approved for public release and unlimited
  *      distribution.
  **/
+
 #include <string.h>
 #include <stdlib.h>
 #include <iostream>
@@ -52,13 +53,15 @@
 #include "daig/madara/Sync_Builder.hpp"
 #include "SyncSeq.hpp"
 #include "SyncSem.hpp"
+#include "SyncSeqDbl.hpp"
 #include "ArrayElim.hpp"
 
 /*********************************************************************/
 //options
 /*********************************************************************/
 std::string fileName, outFileName, madaraFileName;
-bool debug = false, print=false, seqSem = false, seqNoArray = false;
+bool debug = false, print=false, seqSem = false;
+bool seqDbl = false, seqNoArray = false;
 size_t nodeNum = 0;
 int roundNum = -1;
 
@@ -129,6 +132,12 @@ int main(int argc, char **argv)
         syncSem.run();
         cprog = syncSem.cprog;
       }
+      //if doing optimized sequentialization with double buffering
+      else if(seqDbl) {
+        daig::SyncSeqDbl syncSeqDbl(builder,nodeNum,roundNum);
+        syncSeqDbl.run();
+        cprog = syncSeqDbl.cprog;
+      }
       //if doing optimized sequentialization
       else {
         daig::SyncSeq syncSeq(builder,nodeNum,roundNum);
@@ -180,10 +189,8 @@ void parseOptions(int argc, char **argv)
     {
       nodeNum = atoi(argv[i] + 6);
     }
-    else if(!strcmp(argv[i],"--seq-sem"))
-    {
-      seqSem = true;
-    }
+    else if(!strcmp(argv[i],"--seq-sem")) seqSem = true;
+    else if(!strcmp(argv[i],"--seq-dbl")) seqDbl = true;
     else if(!strcmp(argv[i],"--print"))
     {
       print = true;
@@ -236,7 +243,7 @@ void usage(char *cmd)
   std::cerr << "Usage : " << cmd << " <options> filename\n";
   std::cerr << "Options :\n\t--debug\n\t--print\n\t"
             << "--Dconstant=value\n\t--seq=node-num\n\t"
-            << "--seq-sem\n\t--out=output-filename\n\t"
+            << "--seq-sem\n\t--seq-dbl\n\t--out=output-filename\n\t"
             << "--seq-no-array\n\t--rounds=round-num\n"
             << "\t--madara=madara-ouput-filename\n";
   exit(1);

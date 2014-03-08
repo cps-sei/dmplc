@@ -42,32 +42,6 @@ function run_cbmc {
     fi
 }
 
-#run a single regression test for verification. this function takes
-#four arguments: the name of the DASL file, the number of nodes, the
-#number of rounds of sequentialization, and the expected result
-function verify {
-    daslc $1 --seq=$2 --rounds=$3 --out=$TMPF1.c &> /dev/null
-    run_cbmc "$1" $TMPF1.c "$4"
-}
-
-#run a single regression test for verification. this function takes
-#four arguments: the name of the DASL file, the number of nodes, the
-#number of rounds of sequentialization, and the expected result. this
-#does sequentialization with no arrays
-function verify_no_array {
-    daslc $1 --seq=$2 --rounds=$3 --seq-no-array --out=$TMPF1.c &> /dev/null
-    run_cbmc "${1}-no-arr" $TMPF1.c "$4"
-}
-
-#run a single regression test for verification. this function takes
-#four arguments: the name of the DASL file, the number of nodes, the
-#number of rounds of sequentialization, and the expected result. this
-#does semantics-based sequentialization
-function verify_sem {
-    daslc $1 --seq=$2 --rounds=$3 --seq-sem --out=$TMPF1.c &> /dev/null
-    run_cbmc "${1}-sem" $TMPF1.c "$4"
-}
-
 #test parser
 function test_parser {
     echo "==== testing daslc parsing and printing"
@@ -84,6 +58,14 @@ function test_parser {
     done
 }
 
+#run a single regression test for verification. this function takes
+#four arguments: the name of the DASL file, the number of nodes, the
+#number of rounds of sequentialization, and the expected result
+function verify {
+    daslc $1 --seq=$2 --rounds=$3 --out=$TMPF1.c &> /dev/null
+    run_cbmc "$1" $TMPF1.c "$4"
+}
+
 #test verification with array-based sequentialization
 function test_verif_array {
     echo "==== testing verifier with array sequentialization"
@@ -93,6 +75,15 @@ function test_verif_array {
     verify sync-mutex.ok.dasl 2 4 SUCCESS
     verify sync-mutex.bug1.dasl 2 4 FAILURE
     verify sync-mutex.bug2.dasl 2 4 FAILURE
+}
+
+#run a single regression test for verification. this function takes
+#four arguments: the name of the DASL file, the number of nodes, the
+#number of rounds of sequentialization, and the expected result. this
+#does sequentialization with no arrays
+function verify_no_array {
+    daslc $1 --seq=$2 --rounds=$3 --seq-no-array --out=$TMPF1.c &> /dev/null
+    run_cbmc "${1}-no-arr" $TMPF1.c "$4"
 }
 
 #test verification with no-array-based sequentialization
@@ -106,6 +97,15 @@ function test_verif_no_array {
     verify_no_array sync-mutex.bug2.dasl 2 4 FAILURE
 }
 
+#run a single regression test for verification. this function takes
+#four arguments: the name of the DASL file, the number of nodes, the
+#number of rounds of sequentialization, and the expected result. this
+#does semantics-based sequentialization
+function verify_sem {
+    daslc $1 --seq=$2 --rounds=$3 --seq-sem --out=$TMPF1.c &> /dev/null
+    run_cbmc "${1}-sem" $TMPF1.c "$4"
+}
+
 #test verification with semantics-based sequentialization
 function test_verif_sem {
     echo "==== testing verifier with no-array sequentialization"
@@ -117,6 +117,26 @@ function test_verif_sem {
     verify_sem sync-mutex.bug2.dasl 2 4 FAILURE
 }
 
+#run a single regression test for verification. this function takes
+#four arguments: the name of the DASL file, the number of nodes, the
+#number of rounds of sequentialization, and the expected result. this
+#does double-buffer-based sequentialization
+function verify_dbl {
+    daslc $1 --seq=$2 --rounds=$3 --seq-dbl --out=$TMPF1.c &> /dev/null
+    run_cbmc "${1}-dbl" $TMPF1.c "$4"
+}
+
+#test verification with double-buffer-based sequentialization
+function test_verif_dbl {
+    echo "==== testing verifier with no-array sequentialization"
+    verify_dbl sync-coll-avoid.ok.dasl 2 4 SUCCESS
+    verify_dbl sync-coll-avoid.bug1.dasl 2 4 FAILURE
+    verify_dbl sync-coll-avoid.bug2.dasl 2 4 FAILURE
+    verify_dbl sync-mutex.ok.dasl 2 4 SUCCESS
+    verify_dbl sync-mutex.bug1.dasl 2 4 FAILURE
+    verify_dbl sync-mutex.bug2.dasl 2 4 FAILURE
+}
+
 #print usage and exit
 function usage {
     echo "Usage : $0 <option>"
@@ -126,6 +146,7 @@ function usage {
     echo "    -va: verification tests with array-sequentialization"
     echo "   -vna: verification tests with no-array-sequentialization"
     echo "    -vs: verification tests with semantics-sequentialization"
+    echo "    -vd: verification tests with double-buffer-sequentialization"
     exit 1
 }
 
@@ -136,6 +157,7 @@ elif [ "$1" == "-a" ]; then
     test_verif_array
     test_verif_no_array
     test_verif_sem
+    test_verif_dbl
 elif [ "$1" == "-p" ]; then
     test_parser
 elif [ "$1" == "-va" ]; then
@@ -144,6 +166,8 @@ elif [ "$1" == "-vna" ]; then
     test_verif_no_array
 elif [ "$1" == "-vs" ]; then
     test_verif_sem
+elif [ "$1" == "-vd" ]; then
+    test_verif_dbl
 else
     usage
 fi
