@@ -52,7 +52,7 @@ daig::madara::Function_Visitor::Function_Visitor (
   DaigBuilder & builder, std::stringstream & buffer)
   : function_ (function), node_ (node), 
     builder_ (builder), buffer_ (buffer), indentation_ (2),
-    privatize_ (false)
+    privatize_ (false), assignment_ (0)
 {
 
 }
@@ -417,6 +417,9 @@ daig::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
 {
   std::string spacer (indentation_, ' '), sub_spacer (indentation_ + 2, ' ');
 
+  // keep track of assignment;
+  assignment_ = &statement;
+
   LvalExpr *lhs  = dynamic_cast<LvalExpr*>(statement.lhs.get ());
   
   if (lhs)
@@ -498,6 +501,9 @@ daig::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
       buffer_ << spacer << "}\n";
     }
   }
+
+  // assignment over
+  assignment_ = 0;
 }
 
 
@@ -718,36 +724,119 @@ daig::madara::Function_Visitor::enterCall (CallStmt & statement)
 void
 daig::madara::Function_Visitor::exitCall (CallStmt & statement)
 {
-  std::string spacer (indentation_, ' ');
+  std::string spacer (indentation_, ' '), sub_spacer (indentation_ + 2, ' ');
 
-  CallExpr * data  = dynamic_cast<CallExpr*>(statement.data.get ());
+  CallExpr * data  = dynamic_cast<CallExpr*> (statement.data.get ());
   
   if (data)
   {
-    buffer_ << spacer;
-
     std::string func_name = data->func->toString ();
-    if (func_name == "ASSUME")
-      buffer_ << "assert";
-    else
-      buffer_ << func_name;
 
-    buffer_ << " (";
+    daig::Functions & externs = builder_.program.externalFuncs;
 
-    
-    bool started = false;
-    BOOST_FOREACH (Expr & expr, data->args)
+    if (func_name == "ASSUME" || externs.find (func_name) != externs.end ())
     {
-      if (started)
-        buffer_ << ", ";
+      buffer_ << spacer;
 
-      visit (expr);
+      if (func_name == "ASSUME")
+        buffer_ << "assert";
+      else
+        buffer_ << func_name;
 
-      if (!started)
-        started = true;
+      buffer_ << " (";
+    
+      bool started = false;
+      BOOST_FOREACH (Expr & expr, data->args)
+      {
+        if (started)
+          buffer_ << ", ";
+
+        visit (expr);
+
+        if (!started)
+          started = true;
+      }
+
+      buffer_ << ");\n";
     }
+    else
+    {
+      if (assignment_)
+      {
+        // complete the assignment and redo it later;
+        buffer_ << "0;\n";
+      }
 
-    buffer_ << ");\n";
+      buffer_ << spacer << "{\n";
+      
+      buffer_ << sub_spacer;
+      buffer_ << "engine::Function_Arguments args";
+      if (data->args.size () > 0)
+      {
+        buffer_ << " (";
+        buffer_ << data->args.size ();
+        buffer_ << ")";
+      }
+      buffer_ << ";\n";
+
+      unsigned int i = 0;
+      BOOST_FOREACH (Expr & expr, data->args)
+      {
+        buffer_ << sub_spacer;
+        buffer_ << "args [" << i << "] = ";
+
+        visit (expr);
+
+        buffer_ << ";\n";
+        ++i;
+      }
+
+      buffer_ << "\n";
+      
+      if (assignment_)
+      {
+        buffer_ << sub_spacer;
+
+        LvalExpr * lhs  = dynamic_cast<LvalExpr*>(assignment_->lhs.get ());
+  
+        if (lhs)
+        {
+          if (lhs->indices.size () == 0)
+          {
+            bool is_private = false;
+            if (privatize_ &&
+                node_.globVars.find (lhs->var) != node_.globVars.end ())
+            {
+              is_private = true;
+              buffer_ << spacer;
+              buffer_ << "// treat global variable change as a local update\n";
+              buffer_ << spacer;
+              buffer_ << "engine::Knowledge_Update_Settings old_update_settings (\n";
+              buffer_ << sub_spacer;
+              buffer_ << lhs->var;
+              buffer_ << ".set_settings (private_update));\n";
+            }
+
+            buffer_ << spacer;
+            buffer_ << lhs->var;
+            buffer_ << " = ";
+
+          }
+        }
+      }
+      else
+      {
+        buffer_ << sub_spacer;
+      }
+
+      if (node_.funcs.find (func_name) != node_.funcs.end ())
+      {
+        buffer_ << node_.name << "_";
+      }
+      buffer_ << func_name << " (args, vars);\n";
+
+      buffer_ << spacer << "}\n";
+    }
   }
 }
 

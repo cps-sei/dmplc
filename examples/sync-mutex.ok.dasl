@@ -6,6 +6,7 @@ CONST TRYING = 1;
 CONST INSIDE = 2;
 
 EXTERN int in_cs();
+EXTERN int should_enter();
 
 NODE node(id) {
   GLOBAL _Bool lock[#N];
