@@ -42,11 +42,24 @@ function run_cbmc {
     fi
 }
 
+#all the testcases
+TESTS=( \
+    "sync-coll-avoid.ok.dasl 2 4 SUCCESS" \
+    "sync-coll-avoid.bug1.dasl 2 4 FAILURE" \
+    "sync-coll-avoid.bug2.dasl 2 4 FAILURE" \
+    "sync-mutex.ok.dasl 2 4 SUCCESS" \
+    "sync-mutex.bug1.dasl 2 4 FAILURE" \
+    "sync-mutex.bug2.dasl 2 4 FAILURE" \
+    "sync-coll-opt.ok.dasl 2 4 SUCCESS" \
+    "sync-coll-opt.bug1.dasl 2 4 FAILURE" \
+    "sync-coll-opt.bug2.dasl 2 4 FAILURE" \
+    )
+
 #test parser
 function test_parser {
     echo "==== testing daslc parsing and printing"
-    for i in sync-coll-avoid.ok.dasl sync-coll-avoid.bug1.dasl sync-coll-avoid.bug2.dasl \
-        sync-mutex.ok.dasl async-coll-avoid.dasl; do 
+    for j in "${TESTS[@]}"; do
+        i=$(echo $j | awk '{print $1}')
         daslc $i --print > $TMPF1
         daslc $TMPF1 --print > $TMPF2
         DIFF=$(diff $TMPF1 $TMPF2 | wc -l)
@@ -57,16 +70,6 @@ function test_parser {
         fi
     done
 }
-
-#all the testcases
-TESTS=( \
-    "sync-coll-avoid.ok.dasl 2 4 SUCCESS" \
-    "sync-coll-avoid.bug1.dasl 2 4 FAILURE" \
-    "sync-coll-avoid.bug2.dasl 2 4 FAILURE" \
-    "sync-mutex.ok.dasl 2 4 SUCCESS" \
-    "sync-mutex.bug1.dasl 2 4 FAILURE" \
-    "sync-mutex.bug2.dasl 2 4 FAILURE" \
-    )
 
 #test verification with array-based sequentialization
 function test_verif_array {
