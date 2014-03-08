@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #resource limits
-ulimit -t 900
+ulimit -t 3600
 ulimit -m 4194304
 ulimit -v 4194304
 
@@ -28,6 +28,6 @@ echo "BRUNCH_STAT Rounds $ROUNDS"
 DARGS=$(echo "$1" | awk -F ':' '{print $5}' | sed 's/--/ --/g')
 
 TMPF=$(mktemp)
-daslc $DFILE --seq=$NODES --rounds=$ROUNDS $DARGS --out=$TMPF.c
-/usr/bin/time -f "BRUNCH_STAT CBMC-Time %e" cbmc $TMPF.c
+daslc $DFILE --seq=$NODES --rounds=$ROUNDS $DARGS --seq-sem --out=$TMPF.c
+#/usr/bin/time -f "BRUNCH_STAT CBMC-Time %e" cbmc $TMPF.c
 /usr/bin/time -f "BRUNCH_STAT CPLING-Time %e" ./cbmc-plingeling.sh $TMPF.c
