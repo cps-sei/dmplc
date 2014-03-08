@@ -129,7 +129,7 @@ namespace daig
     ///return true if the argument is the name of an external function
     bool isExternalFunction(const std::string &fn) const 
     {
-      return externalFuncs.count(fn);
+      return externalFuncs.count(fn) > 0;
     }
 
     ///check various sanity conditions on the program

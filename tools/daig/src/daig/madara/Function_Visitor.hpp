@@ -400,6 +400,9 @@ namespace daig
 
       /// privatized section (force globals to have only local modifications)
       bool privatize_;
+
+      /// keep track of if we are in an ongoing assignment operation
+      AsgnStmt * assignment_;
     };
   } // namespace madara
 } //namespace daig
