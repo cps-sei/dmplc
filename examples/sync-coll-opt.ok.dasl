@@ -11,7 +11,7 @@ CONST REQUEST = 1;
 CONST WAITING = 2;
 CONST MOVE = 3;
 
-EXTERN int MOVE_TO();
+EXTERN int MOVE_TO(unsigned char x,unsigned char y);
 
 NODE uav (id)
 {
@@ -36,19 +36,6 @@ NODE uav (id)
     }
   }
 
-  //move to the next location -- this is a built-in function
-  //implemented non-deterministically for verification
-  // MOVE_TO {
-  //   if (nondet_int()) return 0;
-  //   else return 1;
-  //   // if(target != (xp,yp)) {
-  //   //   target = (xp,yp);
-  //   //   return 1;
-  //   // } else {
-  //   //   return (position != target);
-  //   // }
-  // }
-
   void ROUND () {
     if(state == NEXT) {
       //compute next point on route
@@ -67,7 +54,7 @@ NODE uav (id)
       state = MOVE;
     } else if(state == MOVE) {
       //now we have the lock on (x’,y’)
-      if(MOVE_TO()) return;
+      if(MOVE_TO(xp,yp)) return;
       lock[x][y][id] = 0; 
       x = xp; y = yp;
       state = NEXT;
