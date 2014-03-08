@@ -2,8 +2,8 @@
 
 #resource limits
 ulimit -t 3600
-ulimit -m 4194304
-ulimit -v 4194304
+ulimit -m 16777216 #4194304
+ulimit -v 16777216 #4194304
 
 #check usage
 if [ "$#" != "1" ]; then
