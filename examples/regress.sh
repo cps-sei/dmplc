@@ -58,63 +58,44 @@ function test_parser {
     done
 }
 
-#run a single regression test for verification. this function takes
-#four arguments: the name of the DASL file, the number of nodes, the
-#number of rounds of sequentialization, and the expected result
-function verify {
-    daslc $1 --seq=$2 --rounds=$3 --out=$TMPF1.c &> /dev/null
-    run_cbmc "$1" $TMPF1.c "$4"
-}
+#all the testcases
+TESTS=( \
+    "sync-coll-avoid.ok.dasl 2 4 SUCCESS" \
+    "sync-coll-avoid.bug1.dasl 2 4 FAILURE" \
+    "sync-coll-avoid.bug2.dasl 2 4 FAILURE" \
+    "sync-mutex.ok.dasl 2 4 SUCCESS" \
+    "sync-mutex.bug1.dasl 2 4 FAILURE" \
+    "sync-mutex.bug2.dasl 2 4 FAILURE" \
+    )
 
 #test verification with array-based sequentialization
 function test_verif_array {
     echo "==== testing verifier with array sequentialization"
-    verify sync-coll-avoid.ok.dasl 2 4 SUCCESS
-    verify sync-coll-avoid.bug1.dasl 2 4 FAILURE
-    verify sync-coll-avoid.bug2.dasl 2 4 FAILURE
-    verify sync-mutex.ok.dasl 2 4 SUCCESS
-    verify sync-mutex.bug1.dasl 2 4 FAILURE
-    verify sync-mutex.bug2.dasl 2 4 FAILURE
-}
-
-#run a single regression test for verification. this function takes
-#four arguments: the name of the DASL file, the number of nodes, the
-#number of rounds of sequentialization, and the expected result. this
-#does sequentialization with no arrays
-function verify_no_array {
-    daslc $1 --seq=$2 --rounds=$3 --seq-no-array --out=$TMPF1.c &> /dev/null
-    run_cbmc "${1}-no-arr" $TMPF1.c "$4"
+    for i in "${TESTS[@]}"; do
+        CMDS=($i)
+        daslc ${CMDS[0]} --seq=${CMDS[1]} --rounds=${CMDS[2]} --out=$TMPF1.c &> /dev/null
+        run_cbmc "${CMDS[0]}" $TMPF1.c "${CMDS[3]}"
+    done
 }
 
 #test verification with no-array-based sequentialization
 function test_verif_no_array {
     echo "==== testing verifier with no-array sequentialization"
-    verify_no_array sync-coll-avoid.ok.dasl 2 4 SUCCESS
-    verify_no_array sync-coll-avoid.bug1.dasl 2 4 FAILURE
-    verify_no_array sync-coll-avoid.bug2.dasl 2 4 FAILURE
-    verify_no_array sync-mutex.ok.dasl 2 4 SUCCESS
-    verify_no_array sync-mutex.bug1.dasl 2 4 FAILURE
-    verify_no_array sync-mutex.bug2.dasl 2 4 FAILURE
-}
-
-#run a single regression test for verification. this function takes
-#four arguments: the name of the DASL file, the number of nodes, the
-#number of rounds of sequentialization, and the expected result. this
-#does semantics-based sequentialization
-function verify_sem {
-    daslc $1 --seq=$2 --rounds=$3 --seq-sem --out=$TMPF1.c &> /dev/null
-    run_cbmc "${1}-sem" $TMPF1.c "$4"
+    for i in "${TESTS[@]}"; do
+        CMDS=($i)
+        daslc ${CMDS[0]} --seq=${CMDS[1]} --rounds=${CMDS[2]} --seq-no-array --out=$TMPF1.c &> /dev/null
+        run_cbmc "${CMDS[0]}" $TMPF1.c "${CMDS[3]}"
+    done
 }
 
 #test verification with semantics-based sequentialization
 function test_verif_sem {
-    echo "==== testing verifier with no-array sequentialization"
-    verify_sem sync-coll-avoid.ok.dasl 2 4 SUCCESS
-    verify_sem sync-coll-avoid.bug1.dasl 2 4 FAILURE
-    verify_sem sync-coll-avoid.bug2.dasl 2 4 FAILURE
-    verify_sem sync-mutex.ok.dasl 2 4 SUCCESS
-    verify_sem sync-mutex.bug1.dasl 2 4 FAILURE
-    verify_sem sync-mutex.bug2.dasl 2 4 FAILURE
+    echo "==== testing verifier with semantics sequentialization"
+    for i in "${TESTS[@]}"; do
+        CMDS=($i)
+        daslc ${CMDS[0]} --seq=${CMDS[1]} --rounds=${CMDS[2]} --seq-sem --out=$TMPF1.c &> /dev/null
+        run_cbmc "${CMDS[0]}" $TMPF1.c "${CMDS[3]}"
+    done
 }
 
 #run a single regression test for verification. this function takes
@@ -128,13 +109,12 @@ function verify_dbl {
 
 #test verification with double-buffer-based sequentialization
 function test_verif_dbl {
-    echo "==== testing verifier with no-array sequentialization"
-    verify_dbl sync-coll-avoid.ok.dasl 2 4 SUCCESS
-    verify_dbl sync-coll-avoid.bug1.dasl 2 4 FAILURE
-    verify_dbl sync-coll-avoid.bug2.dasl 2 4 FAILURE
-    verify_dbl sync-mutex.ok.dasl 2 4 SUCCESS
-    verify_dbl sync-mutex.bug1.dasl 2 4 FAILURE
-    verify_dbl sync-mutex.bug2.dasl 2 4 FAILURE
+    echo "==== testing verifier with double-buffer sequentialization"
+    for i in "${TESTS[@]}"; do
+        CMDS=($i)
+        daslc ${CMDS[0]} --seq=${CMDS[1]} --rounds=${CMDS[2]} --seq-dbl --out=$TMPF1.c &> /dev/null
+        run_cbmc "${CMDS[0]}" $TMPF1.c "${CMDS[3]}"
+    done
 }
 
 #print usage and exit
