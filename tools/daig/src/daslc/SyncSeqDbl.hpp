@@ -129,6 +129,12 @@ namespace daig {
       void exitEXL(EXLExpr &expr);
       bool enterAsgn(AsgnStmt &stmt) { return false; }
       void exitAsgn(AsgnStmt &stmt);
+      bool enterFAO(FAOStmt &stmt) { return false; }
+      void exitFAO(FAOStmt &stmt);
+      bool enterFAOL(FAOLStmt &stmt) { return false; }
+      void exitFAOL(FAOLStmt &stmt);
+      bool enterFAOH(FAOHStmt &stmt) { return false; }
+      void exitFAOH(FAOHStmt &stmt);
     };
 
   } //namespace syncseqdbl

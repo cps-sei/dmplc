@@ -1,9 +1,10 @@
 #!/bin/bash
 
 #resource limits
-ulimit -t 3600
-ulimit -m 16777216 #4194304
-ulimit -v 16777216 #4194304
+CORES=$(cat /proc/cpuinfo | grep processor | wc -l)
+ulimit -t $(echo "$CORES * 3600" | bc)
+ulimit -m $(echo "16 * 1024 * 1024" | bc) #4194304
+ulimit -v $(echo "16 * 1024 * 1024" | bc) #4194304
 
 #check usage
 if [ "$#" != "1" ]; then
