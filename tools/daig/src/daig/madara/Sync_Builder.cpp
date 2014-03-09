@@ -84,7 +84,7 @@ daig::madara::Sync_Builder::build_header_includes ()
   buffer_ << "#include <assert.h>\n";
   buffer_ << "\n";
   buffer_ << "#include \"madara/knowledge_engine/Knowledge_Base.h\"\n";
-  buffer_ << "#include \"madara/knowledge_engine/containers/Vector.h\"\n";
+  buffer_ << "#include \"madara/knowledge_engine/containers/Integer_Vector.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/containers/Vector_N.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/containers/Integer.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/containers/Double.h\"\n";
@@ -106,7 +106,7 @@ daig::madara::Sync_Builder::build_common_global_variables ()
   buffer_ << "Madara::Transport::QoS_Transport_Settings settings;\n";
   buffer_ << "\n";
   buffer_ << "// Containers for commonly used variables\n";
-  buffer_ << "containers::Array barrier;\n";
+  buffer_ << "containers::Integer_Array barrier;\n";
   buffer_ << "containers::Integer id;\n";
   buffer_ << "containers::Integer num_processes;\n";
   buffer_ << "engine::Knowledge_Update_Settings private_update (true);\n";
@@ -163,7 +163,7 @@ daig::madara::Sync_Builder::build_program_variable (const Variable & var)
   // is this an array type?
   if (var.type->dims.size () == 1)
   {
-    buffer_ << "containers::Array ";
+    buffer_ << "containers::Integer_Array ";
     buffer_ << var.name;
     buffer_ << ";\n";
   }
@@ -395,7 +395,7 @@ daig::madara::Sync_Builder::build_refresh_modify_globals ()
   buffer_ << "{\n";
   
   buffer_ << "  // Remodifying common global variables\n";
-  buffer_ << "  barrier.set (*id, barrier[*id].to_integer ());\n\n";
+  buffer_ << "  barrier.set (*id, barrier[*id]);\n\n";
 
   Nodes & nodes = builder_.program.nodes;
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
@@ -424,7 +424,7 @@ daig::madara::Sync_Builder::build_refresh_modify_global (const Variable & var)
     buffer_ << var.name;
     buffer_ << ".set (*id, ";
     buffer_ << var.name;
-    buffer_ << "[*id].to_integer ());\n";
+    buffer_ << "[*id]);\n";
   }
   // is this an n-dimensional array type?
   else if (var.type->dims.size () > 1)

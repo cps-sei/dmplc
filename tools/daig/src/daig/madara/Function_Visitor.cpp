@@ -113,7 +113,8 @@ daig::madara::Function_Visitor::exitLval (LvalExpr & expression)
       buffer_ << "]";
 
 
-    if (function_.temps.find (expression.var) == function_.temps.end ())
+    if (function_.temps.find (expression.var) == function_.temps.end ()
+        && expression.indices.size () != 1)
     {
       buffer_ << ".to_integer ()";
     }
