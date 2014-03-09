@@ -137,6 +137,9 @@ daig::Expr daig::ArrayElim::createGetter(const LvalExpr &expr)
   StmtList body;
   createGetterBody(expr.var,Expr(),git->second.type,params,body);
 
+  //add a return 0 statement at the end
+  body.push_back(Stmt(new RetStmt(Expr(new IntExpr(0)))));
+
   //create and add the function to the result C program
   outProg.addFunction(Function(elemType,fnName,params,daig::VarList(),body));
 
