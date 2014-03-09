@@ -294,6 +294,52 @@ void daig::syncsem::NodeTransformer::exitAsgn(daig::AsgnStmt &stmt)
   stmtMap[shost] = daig::Stmt(new daig::AsgnStmt(exprMap[stmt.lhs],exprMap[stmt.rhs]));
 }
 
+void daig::syncsem::NodeTransformer::exitFAO(daig::FAOStmt &stmt)
+{
+  Stmt shost = hostStmt;
+  StmtList sl;
+
+  for(size_t i = 0;i < nodeNum;++i) {
+    if(i == nodeId) continue;
+    addIdMap(stmt.id,i);
+    visit(stmt.data);
+    sl.push_back(stmtMap[stmt.data]);
+    delIdMap(stmt.id);
+  }
+
+  stmtMap[shost] = Stmt(new daig::BlockStmt(sl));
+}
+
+void daig::syncsem::NodeTransformer::exitFAOL(daig::FAOLStmt &stmt)
+{
+  Stmt shost = hostStmt;
+  StmtList sl;
+
+  for(size_t i = 0;i < nodeId;++i) {
+    addIdMap(stmt.id,i);
+    visit(stmt.data);
+    sl.push_back(stmtMap[stmt.data]);
+    delIdMap(stmt.id);
+  }
+
+  stmtMap[shost] = Stmt(new daig::BlockStmt(sl));
+}
+
+void daig::syncsem::NodeTransformer::exitFAOH(daig::FAOHStmt &stmt)
+{
+  Stmt shost = hostStmt;
+  StmtList sl;
+
+  for(size_t i = nodeId+1;i < nodeNum;++i) {
+    addIdMap(stmt.id,i);
+    visit(stmt.data);
+    sl.push_back(stmtMap[stmt.data]);
+    delIdMap(stmt.id);
+  }
+
+  stmtMap[shost] = Stmt(new daig::BlockStmt(sl));
+}
+
 /*********************************************************************/
 //constructor
 /*********************************************************************/
