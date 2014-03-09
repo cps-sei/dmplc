@@ -1,4 +1,7 @@
-//a correct synchronous collision avoidance protocol
+/* a correct synchronous collision avoidance protocol -- this uses a
+ * lock global variable to request access to a coordinate. only the
+ * node with the highest id that has requested the lock gets it. */
+
 MOC_SYNC;
 
 //number of X and Y coordinates

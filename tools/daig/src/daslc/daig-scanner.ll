@@ -13,9 +13,14 @@ extern daig::DaigBuilder *builder; /* the dag builder */
 extern "C" int yywrap() { return 1; }
 %}
 
-%%
+%x IN_COMMENT
 
-[ \t\n]                 ;
+%%
+"/*"             { BEGIN(IN_COMMENT); }
+<IN_COMMENT>"*/" { BEGIN(INITIAL); }
+<IN_COMMENT>\n   { }
+<IN_COMMENT>.    { }
+[ \t\n]                     ;
 "MOC_SYNC"                  PRINT_TOKEN; return TOKEN(TMOCSYNC);
 "MOC_ASYNC"                 PRINT_TOKEN; return TOKEN(TMOCASYNC);
 "MOC_PSYNC"                 PRINT_TOKEN; return TOKEN(TMOCPSYNC);
