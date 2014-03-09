@@ -65,9 +65,6 @@ namespace daig {
     ///the input program with arrays
     CProgram &inProg;
 
-    ///the number of nodes
-    size_t nodeNum;
-
     ///the output program without arrays
     CProgram outProg;
 
