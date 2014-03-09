@@ -68,8 +68,12 @@ namespace daig {
     ///the output program without arrays
     CProgram outProg;
 
+    ///whether to add an initializer for globals at the beginning of
+    ///main
+    bool initGlobals;
+
     ///constructor
-    ArrayElim(CProgram &ip);
+    ArrayElim(CProgram &ip,bool ig);
 
     //existing setter and getter functions
     std::map<std::string,Expr> getters,setters;

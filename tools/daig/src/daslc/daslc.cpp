@@ -61,7 +61,7 @@
 /*********************************************************************/
 std::string fileName, outFileName, madaraFileName;
 bool debug = false, print=false, seqSem = false;
-bool seqDbl = false, seqNoArray = false;
+bool seqDbl = false, seqNoArray = false, initGlobals = false;
 size_t nodeNum = 0;
 int roundNum = -1;
 
@@ -147,7 +147,7 @@ int main(int argc, char **argv)
 
       //eliminate arrays
       if(seqNoArray) {
-        daig::ArrayElim ae(cprog);
+        daig::ArrayElim ae(cprog,initGlobals);
         ae.run();
         cprog = ae.outProg;
       }
@@ -216,6 +216,8 @@ void parseOptions(int argc, char **argv)
     {
       seqNoArray = true;
     }
+    else if(!strcmp(argv[i],"--init-globals"))
+      initGlobals = true;
     else if(strstr(argv[i],"--rounds=") == argv[i])
     {
       roundNum = atoi(argv[i] + 9);
@@ -244,8 +246,8 @@ void usage(char *cmd)
   std::cerr << "Options :\n\t--debug\n\t--print\n\t"
             << "--Dconstant=value\n\t--seq=node-num\n\t"
             << "--seq-sem\n\t--seq-dbl\n\t--out=output-filename\n\t"
-            << "--seq-no-array\n\t--rounds=round-num\n"
-            << "\t--madara=madara-ouput-filename\n";
+            << "--seq-no-array\n\t--init-globals\n\t--rounds=round-num\n\t"
+            << "--madara=madara-ouput-filename\n";
   exit(1);
 }
 

@@ -56,7 +56,8 @@
 /*********************************************************************/
 //constructor
 /*********************************************************************/
-daig::ArrayElim::ArrayElim(CProgram &ip) : inProg(ip) {}
+daig::ArrayElim::ArrayElim(CProgram &ip,bool ig) 
+  : inProg(ip),initGlobals(ig) {}
 
 /*********************************************************************/
 //recursively descent into an array variable to expand it into its
@@ -278,6 +279,22 @@ void daig::ArrayElim::run()
     BOOST_FOREACH(const Stmt &s,func.body) {
       visit(s);
       fnBody.push_back(stmtMap[s]);
+    }
+
+    //if needed, create and push a global initializer
+    if(initGlobals && func.name == "main") {
+      daig::StmtList igBody;
+      BOOST_FOREACH(const Variables::value_type &v,outProg.globVars) {
+        igBody.push_back(Stmt(new AsgnStmt(Expr(new LvalExpr(v.second.name)),
+                                           Expr(new IntExpr(0)))));
+      }
+
+      outProg.addFunction(Function(daig::voidType(),"init_globals",daig::VarList(),
+                                   daig::VarList(),igBody));
+
+      Expr callExpr(new LvalExpr("init_globals"));
+      Stmt callStmt(new CallStmt(callExpr,daig::ExprList()));
+      fnBody.push_front(callStmt);
     }
 
     outProg.addFunction(Function(func.retType,func.name,fnParams,fnTemps,fnBody));
