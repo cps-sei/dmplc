@@ -523,7 +523,7 @@ void daig::SyncSeqDbl::createMainFunc()
     }
   }
 
-  Function mainFunc(daig::voidType(),"main",mainParams,mainTemps,mainBody);
+  Function mainFunc(daig::intType(),"main",mainParams,mainTemps,mainBody);
   cprog.addFunction(mainFunc);
 }
 

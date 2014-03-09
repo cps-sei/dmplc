@@ -478,7 +478,7 @@ void daig::SyncSeq::createMainFunc()
     mainBody.push_back(callStmt1);
   }
 
-  Function mainFunc(daig::voidType(),"main",mainParams,mainTemps,mainBody);
+  Function mainFunc(daig::intType(),"main",mainParams,mainTemps,mainBody);
   cprog.addFunction(mainFunc);
 }
 
