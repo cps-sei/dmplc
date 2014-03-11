@@ -85,14 +85,14 @@ std::string daig::CompExpr::toString() const
 
   if(args.size() == 1) {
     ExprList::const_iterator it = args.begin();
-    return opToString() + (*it)->toString();
+    return opToString() + "(" + (*it)->toString() + ")";
   }
 
   if(args.size() == 2) {
     ExprList::const_iterator it = args.begin();
-    std::string res = (*it)->toString();
+    std::string res = "(" + (*it)->toString() + ")";
     for(++it;it != args.end();++it)
-      res += opToString() + (*it)->toString();
+      res += opToString() + "(" + (*it)->toString() + ")";
     return res;
   }
 
