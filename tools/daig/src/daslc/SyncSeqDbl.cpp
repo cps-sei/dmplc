@@ -72,6 +72,14 @@ void daig::syncseqdbl::GlobalTransformer::delIdMap(const std::string &s)
 //dispatchers for expressions
 /*********************************************************************/
 
+void daig::syncseqdbl::GlobalTransformer::exitComp(daig::CompExpr &expr)
+{
+  if(expr.op == TNODENUM)
+    exprMap[hostExpr] = Expr(new IntExpr(nodeNum));
+  else
+    exprMap[hostExpr] = daig::Expr(new daig::CompExpr(expr.op,collect(expr.args)));
+}
+
 void daig::syncseqdbl::GlobalTransformer::exitLval(daig::LvalExpr &expr)
 {
   exprMap[hostExpr] = hostExpr;

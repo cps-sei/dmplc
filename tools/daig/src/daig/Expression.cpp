@@ -57,6 +57,7 @@
 std::string daig::CompExpr::opToString() const
 {
   switch(op) {
+  case TNODENUM : return "#N";
   case TMINUS : return "-";
   case TPLUS : return "+";
   case TCEQ : return "==";
@@ -87,7 +88,7 @@ std::string daig::CompExpr::opToString() const
 /*********************************************************************/
 std::string daig::CompExpr::toString() const
 {
-  assert(!args.empty());
+  if(args.size() == 0) return opToString();
 
   if(args.size() == 1) {
     ExprList::const_iterator it = args.begin();

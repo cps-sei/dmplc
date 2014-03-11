@@ -21,6 +21,7 @@ void yyerror(const char *s) { printf("ERROR: %s\n", s); }
 daig::Node currNode;
 
 #define printExpr(_x) if(builder->debug) printf("EXPR: %s\n",(_x)->toString().c_str())
+#define MAKE_NULL(_res,_o) _res = new daig::Expr(new daig::CompExpr(_o)); printExpr(*_res)
 #define MAKE_UN(_res,_o,_l) _res = new daig::Expr(new daig::CompExpr(_o,*_l)); delete _l; printExpr(*_res)
 #define MAKE_BIN(_res,_o,_l,_r) _res = new daig::Expr(new daig::CompExpr(_o,*_l,*_r)); delete _l; delete _r; printExpr(*_res)
 #define printStmt(_x) if(builder->debug) printf("STMT: %s\n",(_x)->toString().c_str())
@@ -355,6 +356,7 @@ expr : lval { $$ = new daig::Expr($1); printExpr(*$$); }
   $$ = new daig::Expr(new daig::IntExpr(atoi($1->c_str()))); 
   delete $1; printExpr(*$$); 
 }
+| TNODENUM { MAKE_NULL($$,$1); }
 | TMINUS expr { MAKE_UN($$,$1,$2); }
 | TPLUS expr { MAKE_UN($$,$1,$2); }
 | expr TCEQ expr { MAKE_BIN($$,$2,$1,$3); }

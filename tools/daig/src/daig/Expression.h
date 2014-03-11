@@ -122,6 +122,8 @@ namespace daig
     int op;
     ExprList args;
 
+    CompExpr(int o) : op(o) {}
+
     CompExpr(int o,const Expr &e) : op(o)
     { args.push_back(e); }
 

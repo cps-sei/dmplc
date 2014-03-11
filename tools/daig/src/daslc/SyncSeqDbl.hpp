@@ -91,6 +91,7 @@ namespace daig {
 
       //dispatchers
       void exitLval(LvalExpr &expr);
+      void exitComp(CompExpr &expr);
       void exitAtomic(AtomicStmt &stmt);
       void exitPrivate(PrivateStmt &stmt);
       void exitCall(CallStmt &stmt);
