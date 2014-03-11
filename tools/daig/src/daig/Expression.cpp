@@ -103,6 +103,14 @@ std::string daig::CompExpr::toString() const
     return res;
   }
 
+  if(args.size() == 3 && op == TQUEST) {
+    ExprList::const_iterator it = args.begin();
+    std::string res = "(" + (*it)->toString() + ")";
+    ++it; res += std::string("?") + "(" + (*it)->toString() + ")";
+    ++it; res += std::string(":") + "(" + (*it)->toString() + ")";
+    return res;
+  }
+
   assert(0 && "ERROR: unknown COMPLEX expression!!");
 
   return "";

@@ -79,6 +79,8 @@ extern "C" int yywrap() { return 1; }
 "&&"                    PRINT_TOKEN; return TOKEN(TLAND);
 "||"                    PRINT_TOKEN; return TOKEN(TLOR);
 "!"                     PRINT_TOKEN; return TOKEN(TLNOT);
+"?"                     PRINT_TOKEN; return TOKEN(TQUEST);
+":"                     PRINT_TOKEN; return TOKEN(TCOLON);
 "("                     PRINT_TOKEN; return TOKEN(TLPAREN);
 ")"                     PRINT_TOKEN; return TOKEN(TRPAREN);
 "{"                     PRINT_TOKEN; return TOKEN(TLBRACE);

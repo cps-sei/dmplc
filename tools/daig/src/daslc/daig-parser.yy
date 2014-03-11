@@ -24,6 +24,7 @@ daig::Node currNode;
 #define MAKE_NULL(_res,_o) _res = new daig::Expr(new daig::CompExpr(_o)); printExpr(*_res)
 #define MAKE_UN(_res,_o,_l) _res = new daig::Expr(new daig::CompExpr(_o,*_l)); delete _l; printExpr(*_res)
 #define MAKE_BIN(_res,_o,_l,_r) _res = new daig::Expr(new daig::CompExpr(_o,*_l,*_r)); delete _l; delete _r; printExpr(*_res)
+#define MAKE_TRI(_res,_o,_a,_b,_c) _res = new daig::Expr(new daig::CompExpr(_o,*_a,*_b,*_c)); delete _a; delete _b; delete _c; printExpr(*_res)
 #define printStmt(_x) if(builder->debug) printf("STMT: %s\n",(_x)->toString().c_str())
 %}
 
@@ -57,7 +58,7 @@ daig::Node currNode;
 %token <token> TBREAK TCONTINUE TRETURN TEXO TEXH TEXL TPROGRAM
 %token <token> TINIT TSAFETY TFAN TFADNP TFAO TFAOL TFAOH
 %token <token> TCEQ TCNE TCLT TCLE TCGT TCGE TEQUAL
-%token <token> TLAND TLOR TLNOT
+%token <token> TLAND TLOR TLNOT TQUEST TCOLON
 %token <token> TLPAREN TRPAREN TLBRACE TRBRACE 
 %token <token> TLBRACKET TRBRACKET TCOMMA TDOT
 %token <token> TPLUS TMINUS TMUL TDIV TMOD
@@ -81,6 +82,8 @@ daig::Node currNode;
 %type <var> var
 %type <varList> var_list var_decl param_list var_decl_list
 
+/* Operator precedence for ternary operators */
+%left TQUEST TCOLON
 /* Operator precedence for logical operators */
 %left TLOR
 %left TLAND
@@ -377,6 +380,7 @@ expr : lval { $$ = new daig::Expr($1); printExpr(*$$); }
 | expr TBWXOR expr { MAKE_BIN($$,$2,$1,$3); }
 | expr TBWLSH expr { MAKE_BIN($$,$2,$1,$3); }
 | expr TBWRSH expr { MAKE_BIN($$,$2,$1,$3); }
+| expr TQUEST expr TCOLON expr { MAKE_TRI($$,$2,$1,$3,$5); }
 | TLNOT expr { MAKE_UN($$,$1,$2); }
 | TBWNOT expr { MAKE_UN($$,$1,$2); }
 | lval TLPAREN arg_list TRPAREN { 

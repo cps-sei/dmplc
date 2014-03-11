@@ -131,6 +131,10 @@ namespace daig
       : op(o)
     { args.push_back(e1); args.push_back(e2); }
 
+    CompExpr(int o,const Expr &e1,const Expr &e2,const Expr &e3) 
+      : op(o)
+    { args.push_back(e1); args.push_back(e2); args.push_back(e3); }
+
     CompExpr(int o,const ExprList &a) : op(o),args(a) {}
 
     std::string opToString() const;
