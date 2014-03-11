@@ -67,6 +67,7 @@ std::string daig::CompExpr::opToString() const
   case TCGE : return ">=";
   case TMUL : return "*";
   case TDIV : return "/";
+  case TMOD : return "%";
   case TLAND : return "&&";
   case TLOR : return "||";
   case TLNOT : return "!";
