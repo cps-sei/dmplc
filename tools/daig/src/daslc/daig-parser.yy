@@ -60,6 +60,7 @@ daig::Node currNode;
 %token <token> TLPAREN TRPAREN TLBRACE TRBRACE 
 %token <token> TLBRACKET TRBRACKET TCOMMA TDOT
 %token <token> TPLUS TMINUS TMUL TDIV TMOD
+%token <token> TBWNOT TBWAND TBWOR TBWXOR TBWLSH TBWRSH
 
 /* Define the type of node our nonterminal symbols represent.
    The types refer to the %union declaration above. Ex: when
@@ -82,14 +83,19 @@ daig::Node currNode;
 /* Operator precedence for logical operators */
 %left TLOR
 %left TLAND
+/* Operator precedence for bitwise operators */
+%left TBWOR
+%left TBWXOR
+%left TBWAND
 /* Operator precedence for comparison operators */
 %left TCEQ TCNE
 %left TCLT TCLE TCGT TCGE
 /* Operator precedence for mathematical operators */
+%left TBWLSH TBWRSH
 %left TPLUS TMINUS
 %left TMUL TDIV TMOD
 /* precedence for logical not */
-%right TLNOT
+%right TLNOT TBWNOT
 
 %start program
 
@@ -364,7 +370,13 @@ expr : lval { $$ = new daig::Expr($1); printExpr(*$$); }
 | expr TMOD expr { MAKE_BIN($$,$2,$1,$3); }
 | expr TLAND expr { MAKE_BIN($$,$2,$1,$3); }
 | expr TLOR expr { MAKE_BIN($$,$2,$1,$3); }
+| expr TBWAND expr { MAKE_BIN($$,$2,$1,$3); }
+| expr TBWOR expr { MAKE_BIN($$,$2,$1,$3); }
+| expr TBWXOR expr { MAKE_BIN($$,$2,$1,$3); }
+| expr TBWLSH expr { MAKE_BIN($$,$2,$1,$3); }
+| expr TBWRSH expr { MAKE_BIN($$,$2,$1,$3); }
 | TLNOT expr { MAKE_UN($$,$1,$2); }
+| TBWNOT expr { MAKE_UN($$,$1,$2); }
 | lval TLPAREN arg_list TRPAREN { 
   $$ = new daig::Expr(new daig::CallExpr(daig::Expr($1),*$3));
   delete $3; printExpr(*$$);

@@ -71,6 +71,12 @@ std::string daig::CompExpr::opToString() const
   case TLAND : return "&&";
   case TLOR : return "||";
   case TLNOT : return "!";
+  case TBWNOT : return "~";
+  case TBWAND : return "&";
+  case TBWOR : return "|";
+  case TBWXOR : return "^";
+  case TBWLSH : return "<<";
+  case TBWRSH : return ">>";
   default: assert(0 && "ERROR : unknown operator!!");
   }
   return "";
