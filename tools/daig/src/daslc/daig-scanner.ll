@@ -91,6 +91,7 @@ extern "C" int yywrap() { return 1; }
 "-"                     PRINT_TOKEN; return TOKEN(TMINUS);
 "*"                     PRINT_TOKEN; return TOKEN(TMUL);
 "/"                     PRINT_TOKEN; return TOKEN(TDIV);
+"%"                     PRINT_TOKEN; return TOKEN(TMOD);
 ";"                     PRINT_TOKEN; return TOKEN(TSEMICOLON);
 "//".*\n
 .                       printf("Unknown token <%s>!\n",yytext); yyterminate();

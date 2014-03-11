@@ -59,7 +59,7 @@ daig::Node currNode;
 %token <token> TLAND TLOR TLNOT
 %token <token> TLPAREN TRPAREN TLBRACE TRBRACE 
 %token <token> TLBRACKET TRBRACKET TCOMMA TDOT
-%token <token> TPLUS TMINUS TMUL TDIV
+%token <token> TPLUS TMINUS TMUL TDIV TMOD
 
 /* Define the type of node our nonterminal symbols represent.
    The types refer to the %union declaration above. Ex: when
@@ -80,7 +80,7 @@ daig::Node currNode;
 %type <varList> var_list var_decl param_list var_decl_list
 
 /* Operator precedence for mathematical operators */
-%left TPLUS TMINUS TMUL TDIV 
+%left TPLUS TMINUS TMUL TDIV TMOD
 /* Operator precedence for comparison operators */
 %left TCEQ TCNE TCLT TCLE TCGT TCGE
 /* Operator precedence for logical operators */
@@ -357,6 +357,7 @@ expr : lval { $$ = new daig::Expr($1); printExpr(*$$); }
 | expr TMINUS expr { MAKE_BIN($$,$2,$1,$3); }
 | expr TMUL expr { MAKE_BIN($$,$2,$1,$3); }
 | expr TDIV expr { MAKE_BIN($$,$2,$1,$3); }
+| expr TMOD expr { MAKE_BIN($$,$2,$1,$3); }
 | expr TLAND expr { MAKE_BIN($$,$2,$1,$3); }
 | expr TLOR expr { MAKE_BIN($$,$2,$1,$3); }
 | TLNOT expr { MAKE_UN($$,$1,$2); }
