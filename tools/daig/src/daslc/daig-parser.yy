@@ -79,12 +79,16 @@ daig::Node currNode;
 %type <var> var
 %type <varList> var_list var_decl param_list var_decl_list
 
-/* Operator precedence for mathematical operators */
-%left TPLUS TMINUS TMUL TDIV TMOD
-/* Operator precedence for comparison operators */
-%left TCEQ TCNE TCLT TCLE TCGT TCGE
 /* Operator precedence for logical operators */
-%left TLAND TLOR
+%left TLOR
+%left TLAND
+/* Operator precedence for comparison operators */
+%left TCEQ TCNE
+%left TCLT TCLE TCGT TCGE
+/* Operator precedence for mathematical operators */
+%left TPLUS TMINUS
+%left TMUL TDIV TMOD
+/* precedence for logical not */
 %right TLNOT
 
 %start program
