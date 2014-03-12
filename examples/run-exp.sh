@@ -33,7 +33,11 @@ daslc $DFILE --seq=$NODES --rounds=$ROUNDS $DARGS --out=$TMPF.c
 #/usr/bin/time -f "BRUNCH_STAT CBMC-Time %e" cbmc $TMPF.c
 /usr/bin/time -f "BRUNCH_STAT CPLING-Time %e" ./cbmc-plingeling.sh $TMPF.c &> $TMPF.out
 cat $TMPF.out
-if [ $(grep "s SATISFIABLE" $TMPF.out | wc -l) == "1" ]; then
+if [ $(grep "VERIFICATION SUCCESSFUL" $TMPF.out | wc -l) == "1" ]; then
+    echo "BRUNCH_STAT Status OK"
+elif [ $(grep "VERIFICATION FAILED" $TMPF.out | wc -l) == "1" ]; then
+    echo "BRUNCH_STAT Status BUG"
+elif [ $(grep "s SATISFIABLE" $TMPF.out | wc -l) == "1" ]; then
     echo "BRUNCH_STAT Status BUG"
 elif [ $(grep "s UNSATISFIABLE" $TMPF.out | wc -l) == "1" ]; then
     echo "BRUNCH_STAT Status OK"
