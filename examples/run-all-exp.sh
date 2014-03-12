@@ -69,8 +69,8 @@ if [ "$#" == "0" ]; then
     do_mutex bug1 --seq-sem
     do_mutex bug2 --seq-sem
     do_mutex ok --seq-dbl
-    #do_mutex bug1 --seq-dbl
-    #do_mutex bug2 --seq-dbl
+    do_mutex bug1 --seq-dbl
+    do_mutex bug2 --seq-dbl
 else
     $*
 fi
