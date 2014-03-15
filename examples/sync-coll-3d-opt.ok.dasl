@@ -1,0 +1,116 @@
+/* a correct synchronous collision avoidance protocol -- this uses a
+ * lock global variable to request access to a coordinate. only the
+ * node with the highest id that has requested the lock gets it. */
+
+MOC_SYNC;
+
+//number of X and Y coordinates
+CONST X = 4;
+CONST Y = 4;
+CONST Z = 4;
+
+//states of each node
+CONST NEXT = 0;
+CONST REQUEST = 1;
+CONST WAITING = 2;
+CONST MOVE = 3;
+
+EXTERN int MOVE_TO(unsigned char x,unsigned char y);
+
+NODE uav (id)
+{
+  //shared variables -- visible across nodes. 
+  //must be accessed via R() and W()
+  GLOBAL _Bool lock [X][Y][Z][#N];
+
+  //private variables -- local to the node.
+  //preserved across rounds
+  LOCAL unsigned char state; //the state
+  LOCAL unsigned char x,y,z; //current coordinates
+  LOCAL unsigned char xp,yp,zp; //next coordinates
+  LOCAL unsigned char xf,yf; //final coordinates
+  
+  void NEXT_XY () {
+    ATOMIC {
+      xp = x; yp = y;
+      if(x < xf) xp = x + 1;
+      else if(x > xf) xp = x - 1;
+      else if(y < yf) yp = y + 1;
+      else yp = y - 1;
+    }
+  }
+
+  /* sets zp to an available height at (xp,yp). if no such height is
+     available, set zp to Z. */
+  void NEXT_Z() {
+    unsigned char i;
+    for(i = 0;i < Z;i = i + 1) {
+      if(!(EXISTS_OTHER(idp,lock[xp][yp][i][idp] != 0))) {
+        zp = i;
+      }
+    }
+    zp = Z;
+  }
+
+  void ROUND () {
+    if(state == NEXT) {
+      //compute next point on route
+      if(x == xf && y == yf) return;
+      NEXT_XY();
+      state = REQUEST;
+    } else if(state == REQUEST) {
+      //request the lock but only if it is free
+      NEXT_Z();
+      if(zp == Z) return;
+      lock[xp][yp][zp][id] = 1;
+      state = WAITING;
+    } else if(state == WAITING) {
+      //grab the lock if we are the highest 
+      //id node to request or hold the lock
+      if(EXISTS_HIGHER(idp, lock[xp][yp][zp][idp] != 0))
+        state = WAITING;
+      else
+        state = MOVE;
+    } else if(state == MOVE) {
+      //now we have the lock on (x’,y’)
+      if(MOVE_TO(xp,yp)) return;
+      lock[x][y][z][id] = 0; 
+      x = xp; y = yp; z = zp;
+      state = NEXT;
+    }
+  }
+}
+
+//program has two nodes with ids 0 and 1
+//PROGRAM = uav (0) || uav (1);
+
+//program has four nodes with ids 0, 1, 2, and 3
+PROGRAM = uav (0) || uav (1) || uav (2) || uav (3);
+
+//initial state
+void INIT () 
+{
+  ATOMIC {
+    FORALL_NODE(id) {
+      state.id = NEXT;
+      ND(x.id); ND(y.id);
+      ASSUME(0 <= x.id && x.id < X && 0 <= y.id && y.id < Y);
+      z.id = 0;
+      lock[x.id][y.id][z.id][id] = 1;
+      ND(xf.id); ND(yf.id);
+      ASSUME(0 <= xf.id && xf.id < X && 0 <= yf.id && yf.id < Y);
+    }
+  }
+
+  FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+    ASSUME(x.id1 != x.id2 || y.id1 != y.id2);
+  }
+}
+
+//the safety property checked at the beginning of each round
+void SAFETY ()
+{
+  FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+    ASSERT(x.id1 != x.id2 || y.id1 != y.id2  || z.id1 != z.id2);
+  }
+}
