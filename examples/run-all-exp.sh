@@ -67,7 +67,7 @@ function do_coll_3d_opt {
         EXP=""
         for N in 4 7 10; do
             for X in 4 7 10; do
-                for R in 20 40 60 80 100; do
+                for R in 5 10 15 20 30 40 50; do
                     EXP="$EXP coll.3d.opt.$1.$X.$X:sync-coll-3d-opt.$1.dasl:$N:$R:--DX=$X--DY=$X$2"
                 done
             done
