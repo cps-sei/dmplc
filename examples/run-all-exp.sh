@@ -41,6 +41,25 @@ function do_coll_opt {
 
 }
 
+#coll-3d experiments
+function do_coll_3d {
+    OUTD=brunch.out.coll.3d.$1.$2
+    if [ ! -e $OUTD ]; then 
+        EXP=""
+        for N in 4 7 10; do
+            for X in 4 7 10; do
+                for R in 30 60 90 120 150; do
+                    EXP="$EXP coll.3d.$1.$X.$X:sync-coll-3d.$1.dasl:$N:$R:--DX=$X--DY=$X$2"
+                done
+            done
+        done
+        $BRUNCH --out $OUTD $EXP -- ./run-exp.sh
+    else
+        echo "directory $OUTD exists .. skipping"
+    fi
+
+}
+
 #mutex experiments
 function do_mutex {
     OUTD=brunch.out.mutex.$1.$2
