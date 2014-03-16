@@ -1,8 +1,8 @@
 #!/bin/bash
 
 BRFMT="ExpName:Nodes:Rounds:CPLING-Time:Status"
-BRUNCH="./brunch --cpu 30 --mem 100000 --format $BRFMT"
-BRUNCHFAIL="./brunch --cpu 1 --mem 100000 --format $BRFMT"
+BRUNCH="./brunch --cpu 100000 --mem 100000 --format $BRFMT"
+BRUNCHFAIL="./brunch --cpu 3 --mem 100000 --format $BRFMT"
 TMPD=$(mktemp -d)
 
 #array of experiments doomed to fail
@@ -156,75 +156,98 @@ function do_coll {
 #coll-opt experiments
 function do_coll_opt {
     local OUTD=brunch.out.coll.opt.$1.$2
-    if [ ! -e $OUTD ]; then 
-        local EXP=""
-        for N in 2 4 6 8 10; do
-            for X in 4 7 10; do
-                for R in 5 10 15 20 30 40 50; do
-                    EXP="$EXP coll.opt.$1.$X.$X:sync-coll-opt.$1.dasl:$N:$R:--DX=$X--DY=$X$2"
-                done
+    local NV="2 4 6 8 10"
+    local XV="4 7 10"
+    local RV="5 10 15 20 30 40 50"
+    create_dir $OUTD 
+    for N in $NV; do
+        for X in $XV; do
+            for R in $RV; do
+                TD="coll.opt.$1.$X.$X:sync-coll-opt.$1.dasl:$N:$R:--DX=$X--DY=$X$2"
+                if [ $(exists_stats $OUTD "$TD") == "n" ]; then
+                    echo "running $TD .."
+                    run_brunch "${N}:${X}:${R}" "$TD"
+                    update_results $OUTD
+                else
+                    echo "skipping $TD .."
+                fi
+                update_doomed_3 "$N" "$X" "$R" "$NV" "$XV" "$RV"
+                rm -f $TMPD/*
             done
         done
-        $BRUNCH --out $OUTD $EXP -- ./run-exp.sh
-    else
-        echo "directory $OUTD exists .. skipping"
-    fi
-
+    done
 }
 
 #coll-3d experiments
 function do_coll_3d {
     local OUTD=brunch.out.coll.3d.$1.$2
-    if [ ! -e $OUTD ]; then 
-        local EXP=""
-        for N in 4 7 10; do
-            for X in 4 7 10; do
-                for R in 30 60 90 120 150; do
-                    EXP="$EXP coll.3d.$1.$X.$X:sync-coll-3d.$1.dasl:$N:$R:--DX=$X--DY=$X$2"
-                done
+    local NV="4 7 10"
+    local XV="4 7 10"
+    local RV="30 60 90 120 150"
+    create_dir $OUTD 
+    for N in $NV; do
+        for X in $XV; do
+            for R in $RV; do
+                TD="coll.3d.$1.$X.$X:sync-coll-3d.$1.dasl:$N:$R:--DX=$X--DY=$X$2"
+                if [ $(exists_stats $OUTD "$TD") == "n" ]; then
+                    echo "running $TD .."
+                    run_brunch "${N}:${X}:${R}" "$TD"
+                    update_results $OUTD
+                else
+                    echo "skipping $TD .."
+                fi
+                update_doomed_3 "$N" "$X" "$R" "$NV" "$XV" "$RV"
+                rm -f $TMPD/*
             done
         done
-        $BRUNCH --out $OUTD $EXP -- ./run-exp.sh
-    else
-        echo "directory $OUTD exists .. skipping"
-    fi
-
+    done
 }
 
 #coll-3d-opt experiments
 function do_coll_3d_opt {
     local OUTD=brunch.out.coll.3d.opt.$1.$2
-    if [ ! -e $OUTD ]; then 
-        local EXP=""
-        for N in 4 7 10; do
-            for X in 4 7 10; do
-                for R in 5 10 15 20 30 40 50; do
-                    EXP="$EXP coll.3d.opt.$1.$X.$X:sync-coll-3d-opt.$1.dasl:$N:$R:--DX=$X--DY=$X$2"
-                done
+    local NV="4 7 10"
+    local XV="4 7 10"
+    local RV="5 10 15 20 30 40 50"
+    create_dir $OUTD 
+    for N in $NV; do
+        for X in $XV; do
+            for R in $RV; do
+                TD="coll.3d.opt.$1.$X.$X:sync-coll-3d-opt.$1.dasl:$N:$R:--DX=$X--DY=$X$2"
+                if [ $(exists_stats $OUTD "$TD") == "n" ]; then
+                    echo "running $TD .."
+                    run_brunch "${N}:${X}:${R}" "$TD"
+                    update_results $OUTD
+                else
+                    echo "skipping $TD .."
+                fi
+                update_doomed_3 "$N" "$X" "$R" "$NV" "$XV" "$RV"
+                rm -f $TMPD/*
             done
         done
-        $BRUNCH --out $OUTD $EXP -- ./run-exp.sh
-    else
-        echo "directory $OUTD exists .. skipping"
-    fi
-
+    done
 }
 
 #mutex experiments
 function do_mutex {
     local OUTD=brunch.out.mutex.$1.$2
-    if [ ! -e $OUTD ]; then 
-        local EXP=""
-        for N in 2 4 6 8 10; do
-            for R in 5 10 15 20 30 40 50 60 80 100; do
-                EXP="$EXP mutex.$1:sync-mutex.$1.dasl:$N:$R:$2"
-            done
+    local NV="2 4 6 8 10"
+    local RV="5 10 15 20 30 40 50 60 80 100"
+    create_dir $OUTD 
+    for N in $NV; do
+        for R in $RV; do
+            TD="mutex.$1:sync-mutex.$1.dasl:$N:$R:$2"
+            if [ $(exists_stats $OUTD "$TD") == "n" ]; then
+                echo "running $TD .."
+                run_brunch "${N}:${R}" "$TD"
+                update_results $OUTD
+            else
+                echo "skipping $TD .."
+            fi
+            update_doomed_2 "$N" "$R" "$NV" "$RV"
+            rm -f $TMPD/*
         done
-        $BRUNCH --out $OUTD $EXP -- ./run-exp.sh
-    else
-        echo "directory $OUTD exists .. skipping"
-    fi
-
+    done
 }
 
 if [ "$#" == "0" ]; then
