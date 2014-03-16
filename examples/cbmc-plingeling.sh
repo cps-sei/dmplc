@@ -1,5 +1,5 @@
 #!/bin/bash
-TMPF=$(mktemp)
+TMPF=$(mktemp) && rm -f $TMPF
 CORES=$(cat /proc/cpuinfo | grep processor | wc -l)
 echo "CNF file = "$TMPF.cnf
 

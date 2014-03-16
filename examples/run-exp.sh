@@ -28,11 +28,13 @@ ROUNDS=$(echo "$1" | awk -F ':' '{print $4}')
 echo "BRUNCH_STAT Rounds $ROUNDS"
 DARGS=$(echo "$1" | awk -F ':' '{print $5}' | sed 's/--/ --/g')
 
-TMPF=$(mktemp)
+TMPF=$(mktemp) && rm -f $TMPF
 daslc $DFILE --seq=$NODES --rounds=$ROUNDS $DARGS --out=$TMPF.c
 #/usr/bin/time -f "BRUNCH_STAT CBMC-Time %e" cbmc $TMPF.c
 /usr/bin/time -f "BRUNCH_STAT CPLING-Time %e" ./cbmc-plingeling.sh $TMPF.c &> $TMPF.out
 cat $TMPF.out
+
+#get result
 if [ $(grep "VERIFICATION SUCCESSFUL" $TMPF.out | wc -l) == "1" ]; then
     echo "BRUNCH_STAT Status OK"
 elif [ $(grep "VERIFICATION FAILED" $TMPF.out | wc -l) == "1" ]; then
@@ -45,3 +47,9 @@ else
     echo "BRUNCH_STAT Status UNK"
 fi
 
+#cleanup CNF and output file
+CNFF=$(grep "CNF file = " $TMPF.out | awk '{print $4}')
+echo "cleaning up $CNFF"
+rm -f $CNFF
+echo "cleaning up $TMPF.c $TMPF.out"
+rm -f $TMPF.c $TMPF.out
