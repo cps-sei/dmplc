@@ -68,7 +68,7 @@ NODE uav (id)
       //grab the lock if we are the highest 
       //id node to request or hold the lock
       if(EXISTS_HIGHER(idp, lock[xp][yp][zp][idp] != 0))
-        state = WAITING;
+        state = REQUEST;
       else
         state = MOVE;
     } else if(state == MOVE) {
