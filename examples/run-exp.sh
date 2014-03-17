@@ -17,6 +17,18 @@ if [ "$#" != "1" ]; then
     exit 1
 fi
 
+#check for binary in path. abort if not found.
+function ensure {
+    X=$(which $1)
+    if [ x"$X" == "x" ]; then
+        echo "$1 not found, make sure it is on your path"
+        exit 1
+    fi
+}
+
+#make sure daslc is on path
+ensure daslc
+
 #parse the argument
 EXPN=$(echo "$1" | awk -F ':' '{print $1}')
 echo "BRUNCH_STAT ExpName $EXPN"
