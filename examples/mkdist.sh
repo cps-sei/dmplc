@@ -10,9 +10,11 @@ fi
 PN="$1"
 TMPD=$(mktemp -d)
 mkdir $TMPD/$PN
-cp -a README.txt LICENSE.txt run.sh sync-coll-avoid.mcda \
-    sync-coll-avoid.c $TMPD/$PN
+cp -a README.txt LICENSE.txt cbmc-plingeling.sh run-all-exp.sh \
+run-exp.sh ../tools/daig/src/daslc/daslc brunch \
+/home/chaki/stuff/madara/madara/libMADARA.so.6.2.3 \
+/home/chaki/stuff/madara/ace/ACE_wrappers/ace/libACE.so.6.2.3 \
+sync-coll-3d-opt.*dasl sync-coll-avoid.*.dasl \
+sync-mutex.*.dasl $TMPD/$PN
 (cd $TMPD; zip -r $PN.zip $PN)
 echo "package $TMPD/$PN.zip created"
-
-
