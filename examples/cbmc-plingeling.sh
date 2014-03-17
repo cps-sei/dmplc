@@ -15,4 +15,4 @@ ensure cbmc
 ensure plingeling
 
 cbmc --dimacs --outfile $TMPF.cnf $*
-plingeling -t $CORES $TMPF.cnf
+plingeling -n -t $CORES $TMPF.cnf
