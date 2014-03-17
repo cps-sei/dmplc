@@ -252,19 +252,46 @@ function do_mutex {
     done
 }
 
+#print usage and exit
+function usage {
+    echo "Usage : $0 <Application> <Type> <Sequentialization>"
+    echo ""
+    echo "Application ="
+    echo "        do_coll : for 2-dimensional collision avoidance"
+    echo " do_coll_3d_opt : for 3-dimensional collision avoidance"
+    echo "       do_mutex : for mutual exclusion"
+    echo ""
+    echo "Type ="
+    echo "        ok : for correct variant"
+    echo "      bug1 : for first buggy variant"
+    echo "      bug2 : for second buggy variant"
+    echo "      Note : bug2 is not applicable for do_coll_3d_opt"
+    echo ""
+    echo "Sequentialization ="
+    echo "   --seq-sem : to use SEQSEM"
+    echo "   --seq-dbl : to use SEQDBL"
+    echo ""
+    echo "Results will be in brunch.out.Foo.Type.Sequentialization/stats"
+    echo "where Foo will depend on Application"
+    echo ""
+    echo "For example: $0 do_mutex bug2 --seq-dbl"
+    exit 1
+}
+
 if [ "$#" == "0" ]; then
-    do_coll ok --seq-sem
-    do_coll bug1 --seq-sem 
-    do_coll bug2 --seq-sem
-    # do_coll_opt ok --seq-sem
-    # do_coll_opt bug1 --seq-sem
-    # do_coll_opt bug2 --seq-sem
-    do_mutex ok --seq-sem
-    do_mutex bug1 --seq-sem
-    do_mutex bug2 --seq-sem
-    do_mutex ok --seq-dbl
-    do_mutex bug1 --seq-dbl
-    do_mutex bug2 --seq-dbl
+    usage
+    # do_coll ok --seq-sem
+    # do_coll bug1 --seq-sem 
+    # do_coll bug2 --seq-sem
+    # # do_coll_opt ok --seq-sem
+    # # do_coll_opt bug1 --seq-sem
+    # # do_coll_opt bug2 --seq-sem
+    # do_mutex ok --seq-sem
+    # do_mutex bug1 --seq-sem
+    # do_mutex bug2 --seq-sem
+    # do_mutex ok --seq-dbl
+    # do_mutex bug1 --seq-dbl
+    # do_mutex bug2 --seq-dbl
 else
     $*
 fi
