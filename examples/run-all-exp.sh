@@ -210,7 +210,7 @@ function do_coll_3d_opt {
     local OUTD=brunch.out.coll.3d.opt.$1.$2
     local NV="2 4 6 8 10"
     local XV="4 7 10"
-    local RV="5 10 15 20 30 40 50"
+    local RV="5 10 15 20 30 40 50 60 80 100"
     create_dir $OUTD 
     for N in $NV; do
         for X in $XV; do
