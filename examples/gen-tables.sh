@@ -7,6 +7,22 @@ cat <<EOF
 {\\scriptsize
 EOF
 
+#compute mean median etc
+function comp_stats {
+    PREF="$1"
+    STF="$2"
+    paste -d ',' $STF".--seq-sem/stats" $STF".--seq-dbl/stats" | \
+        grep "$PREF," | while read line; do
+        local -a row=()
+        IFS=', ' read -a row <<< $line
+        if [ ${row[4]} != "UNK" ] && [ ${row[9]} != "UNK" ]; then 
+            rat=$(echo "${row[3]} / ${row[8]}" | bc -l)
+        fi
+        #echo ${row[4]},${row[9]},${row[3]},${row[8]},$rat
+        echo $rat
+    done | Rscript -e 'd<-scan("stdin", quiet=TRUE); cat(mean(d), sd(d), sep=",")'
+}
+
 #generate sub table
 function sub_table {
     NV="$2"
@@ -14,6 +30,10 @@ function sub_table {
     PREF="$4"
     STF="$5"
     ROWCOL="$6"
+
+    #ratios of verification times
+    local -a stats
+    IFS=', ' read -a stats <<< $(comp_stats $PREF $STF)
 
     if [ "$ROWCOL" == "1" ]; then
         cat <<EOF
@@ -28,8 +48,6 @@ EOF
 \hline \$T_S\$ & \$T_D\$ & \$T_S\$ & \$T_D\$ & \$T_S\$ & \$T_D\$ \\\\
 EOF
     fi
-
-    local -a ROWS
 
     #generate top row
     TOP=""
@@ -47,6 +65,7 @@ EOF
     TOP=$TOP' \\'
     echo $TOP
 
+    local -a ROWS
     for N in $NV; do    
         for R in $RV; do
             IFS=', ' read -a sem <<< $(grep "$PREF,$N,$R," $STF".--seq-sem/stats")
@@ -77,10 +96,13 @@ EOF
     for R in $RV; do
         echo '\hline '${ROWS[${R}]}' \\'
     done
-    cat <<EOF
-\hline
-\end{tabular}
-EOF
+
+    if [ "$ROWCOL" == "1" ]; then
+        printf "\\hline & \multicolumn{6}{c|}{$\\mu$=%.3f $\\sigma$=%.3f} %s\n" ${stats[0]} ${stats[1]} '\\'
+    else
+        printf "\\hline \multicolumn{6}{|c|}{$\\mu$=%.3f $\\sigma$=%.3f} %s\n" ${stats[0]} ${stats[1]} '\\'
+    fi
+    printf "\\hline \n\\%s{tabular}\n" 'end'
 }
 
 echo '\begin{tabular}{ccc}'
@@ -129,8 +151,11 @@ done
 #print postamble
 cat <<EOF
 }
-\caption{Experimental Results; \$n\$ = no. of nodes; \$R\$ = no. of rounds; 
-\$g \times g\$ = grid size.}
+\caption{Experimental Results; \$T_S\$, \$T_D\$ = verification 
+time with \$\seqsem\$, \$\seqdbl\$; \$n\$ = no. of nodes; 
+\$R\$ = no. of rounds; \$G \times G\$ = grid size; 
+\$\mu\$, \$\sigma\$ = mean, standard deviation of \$T_D/T_D\$
+for all experiments in that category.}
 \label{tab:exp}
 \end{figure}
 EOF
