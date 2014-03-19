@@ -5,7 +5,6 @@ cat <<EOF
 \begin{figure}[t]
 \\centering
 {\\scriptsize
-\begin{tabular}{rcl}
 EOF
 
 #generate sub table
@@ -84,6 +83,7 @@ EOF
 EOF
 }
 
+echo '\begin{tabular}{ccc}'
 sub_table "MUTEX-OK" "6 8 10" "60 80 100" \
 "mutex.ok" "results/brunch.out.mutex.ok" "1"
 echo '&'
@@ -92,34 +92,45 @@ sub_table "MUTEX-BUG1" "6 8 10" "60 80 100" \
 echo '&'
 sub_table "MUTEX-BUG2" "6 8 10" "60 80 100" \
 "mutex.bug2" "results/brunch.out.mutex.bug2" "0"
-echo '\\'
+echo '\end{tabular}'
+
+echo '\hspace*{-0.25in}'
+echo '\begin{tabular}{cccc}'
+G="4"
+sub_table "3DCOLL-OK-${G}x${G}" "2 4 6" "10 20 30" \
+    "coll.3d.opt.ok.${G}.${G}" "results/brunch.out.coll.3d.opt.ok" "1"
+echo '&'
+G="7"
+sub_table "3DCOLL-OK-${G}x${G}" "2 4 6" "10 20 30" \
+    "coll.3d.opt.ok.${G}.${G}" "results/brunch.out.coll.3d.opt.ok" "0"
+echo '&'
+G="4"
+sub_table "3DCOLL-BUG-${G}x${G}" "2 4 6" "10 20 30" \
+    "coll.3d.opt.bug1.${G}.${G}" "results/brunch.out.coll.3d.opt.bug1" "0"
+echo '&'
+G="7"
+sub_table "3DCOLL-BUG-${G}x${G}" "2 4 6" "10 20 30" \
+    "coll.3d.opt.bug1.${G}.${G}" "results/brunch.out.coll.3d.opt.bug1" "0"
+echo '\end{tabular}'
 
 for G in 4 7; do
-    sub_table "3DCOLL-${G}x${G}-OK" "2 4 6" "10 20 30" \
-        "coll.3d.opt.ok.${G}.${G}" "results/brunch.out.coll.3d.opt.ok" "1"
-    echo '&'
-    sub_table "3DCOLL-${G}x${G}-BUG" "2 4 6" "10 20 30" \
-        "coll.3d.opt.bug1.${G}.${G}" "results/brunch.out.coll.3d.opt.bug1" "0"
-    echo '\\'
-done
-
-for G in 4 7; do
-    sub_table "2DCOLL-${G}x${G}-OK" "2 4 6" "10 20 30" \
+    echo '\begin{tabular}{ccc}'
+    sub_table "2DCOLL-OK-${G}x${G}" "2 4 6" "10 20 30" \
         "coll.ok.${G}.${G}" "results/brunch.out.coll.ok" "1"
     echo '&'
-    sub_table "2DCOLL-${G}x${G}-BUG1" "2 4 6" "10 20 30" \
+    sub_table "2DCOLL-BUG1-${G}x${G}" "2 4 6" "10 20 30" \
         "coll.bug1.${G}.${G}" "results/brunch.out.coll.bug1" "0"
     echo '&'
-    sub_table "2DCOLL-${G}x${G}-BUG2" "2 4 6" "10 20 30" \
+    sub_table "2DCOLL-BUG2-${G}x${G}" "2 4 6" "10 20 30" \
         "coll.bug2.${G}.${G}" "results/brunch.out.coll.bug2" "0"
-    echo '\\'
+    echo '\end{tabular}'
 done
 
 #print postamble
 cat <<EOF
-\end{tabular}
 }
-\caption{Experimental Results.}
+\caption{Experimental Results; \$n\$ = no. of nodes; \$R\$ = no. of rounds; 
+\$g \times g\$ = grid size.}
 \label{tab:exp}
 \end{figure}
 EOF
