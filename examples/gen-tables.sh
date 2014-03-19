@@ -154,7 +154,7 @@ cat <<EOF
 \caption{Experimental Results; \$T_S\$, \$T_D\$ = verification 
 time with \$\seqsem\$, \$\seqdbl\$; \$n\$ = no. of nodes; 
 \$R\$ = no. of rounds; \$G \times G\$ = grid size; 
-\$\mu\$, \$\sigma\$ = mean, standard deviation of \$T_D/T_D\$
+\$\mu\$, \$\sigma\$ = mean, standard deviation of \$T_S/T_D\$
 for all experiments in that category; -- mean out of 
 time/memory.}
 \label{tab:exp}
