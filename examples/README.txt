@@ -9,5 +9,6 @@ Plingeling webpage: http://fmv.jku.at/lingeling
 To repeat experiments, run script "./run-all-exp.sh" without any
 arguments and follow instructions.
 
-Results for experiments reported are in the "results" directory. To
-generate a Latex table from them, run the script "./gen-tables.sh".
+Log files for experiments reported are in the "results" directory. To
+generate a Latex table from them, run the script
+"./gen-tables.sh". Results are also summarized in results.xlsx.
