@@ -1,4 +1,6 @@
-Read LICENSE.txt for the license. 
+Project website: http://mcda.googlecode.com.
+
+Read LICENSE.txt for the license.
 
 Prerequisites: Install CBMC 4.7 and Plingeling. Make sure "cbmc" and
 "plingeling" are on your PATH.
