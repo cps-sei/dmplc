@@ -155,7 +155,7 @@ cat <<EOF
 time with \$\seqsem\$, \$\seqdbl\$; \$n\$ = no. of nodes; 
 \$R\$ = no. of rounds; \$G \times G\$ = grid size; 
 \$\mu\$, \$\sigma\$ = mean, standard deviation of \$T_S/T_D\$
-for all experiments in that category; -- mean out of 
+for all experiments in that category; -- denotes out of 
 time/memory.}
 \label{tab:exp}
 \end{figure}
