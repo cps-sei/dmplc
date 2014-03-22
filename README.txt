@@ -8,6 +8,10 @@ they are deployed. Our current approach involves sequentialization techniques
 to analyze the structure of a program and its execution mechanics for each
 participant in the networked application.
 
+LICSENSE.txt : License for this software.
+
+INSTALL.txt: Compiling and Installation instructions.
+
 DIRECTORIES
 
   /simulation
