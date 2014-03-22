@@ -15,7 +15,10 @@
 extern daig::DaigBuilder *builder; /* the dag builder */
 
 extern int yylex();
-void yyerror(const char *s) { printf("ERROR: %s\n", s); }
+void yyerror(const char *s) {
+  printf("ERROR: %s. Rerun with --debug for more details\n", s);
+  exit(1);
+}
 
 /** the current node being parsed */
 daig::Node currNode;
