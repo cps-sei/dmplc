@@ -1,0 +1,18 @@
+On Linux (tested on Kubuntu 13.10 64bit)
+----------------------------------------
+
+Let MCDA_ROOT be the directory where you checked out the MCDA source.
+
+1. Set environment variables, e.g., on bash:
+
+$ export ACE_ROOT=MCDA_ROOT/madara/ace/ACE_wrappers
+$ export MADARA_ROOT=MCDA_ROOT/madara/madara
+$ export LD_LIBRARY_PATH=$ACE_ROOT/lib:$MADARA_ROOT/lib:$LD_LIBRARY_PATH
+$ export PATH=$ACE_ROOT/bin:$MADARA_ROOT/bin:$PATH
+
+These should also be set in your .bashrc file. Then run:
+
+$ make
+
+On Windows (tested on Windows 7)
+--------------------------------
