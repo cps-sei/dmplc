@@ -25,7 +25,5 @@ $(MADARA_LIB) :
 	perl $(ACE_ROOT)/bin/mwc.pl -type gnuace MADARA.mwc && \
 	make tests=1)
 
-
-
-
-
+clean :
+	make -C tools/daig/src/daslc clean
