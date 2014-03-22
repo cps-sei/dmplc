@@ -226,14 +226,25 @@ void parseOptions(int argc, char **argv)
     {
       madaraFileName = std::string(argv[i] + 9);
     }
+    else if(strstr(argv[i],"--") == argv[i]) {
+      std::cerr << "ERROR: illegal option " << argv[i] << '\n';
+      usage(argv[0]);
+    }
     else
     {
+      if(!fileName.empty()) {
+        std::cerr << "ERROR: filename " << fileName << " already specified\n";
+        usage(argv[0]);
+      }
+
       fileName = std::string(argv[i]);
     }
   }
 
-  if(fileName.empty())
+  if(fileName.empty()) {
+    std::cerr << "ERROR: no input-filename ...\n";
     usage(argv[0]);
+  }
 }
 
 /*********************************************************************/
@@ -241,7 +252,6 @@ void parseOptions(int argc, char **argv)
 /*********************************************************************/
 void usage(char *cmd)
 {
-  std::cerr << "ERROR: no input-filename ...\n";
   std::cerr << "Usage : " << cmd << " <options> filename\n";
   std::cerr << "Options :\n\t--debug\n\t--print\n\t"
             << "--Dconstant=value\n\t--seq=node-num\n\t"

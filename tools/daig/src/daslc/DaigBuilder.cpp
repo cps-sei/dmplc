@@ -80,6 +80,11 @@ void daig::DaigBuilder::run()
 {
   ::builder = this;
   ::yyin = fopen(fileName.c_str(),"r");
+  if(!::yyin) {
+    std::cerr << "ERROR: could not open file " << fileName << '\n';
+    exit(1);
+  }
+
   ::yyparse();
   fclose(::yyin);
   program.sanityCheck();
