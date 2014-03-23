@@ -115,6 +115,10 @@ daig::Program::print (std::ostream &os,unsigned int indent)
   //print MOC
   os << spacer << moc.to_string_type () << ";\n\n";
 
+  //print target thunks
+  BOOST_FOREACH(TargetType::value_type &tt,targets)
+    os << spacer << "TARGET " << tt.first << " %%{" << tt.second << "%%}\n";
+
   //print CONST definitions
   BOOST_FOREACH(ConstDef::value_type &cd,constDef)
     os << spacer << "CONST " << cd.first << " = " << cd.second << ";\n";

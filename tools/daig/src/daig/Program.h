@@ -97,6 +97,10 @@ namespace daig
      **/
     Model_Of_Computation moc;
 
+    ///target thunks
+    typedef std::map<std::string,std::string> TargetType;
+    TargetType targets;
+
     //constant definitions
     typedef std::map<std::string,std::string> ConstDef;
     ConstDef constDef;
@@ -119,6 +123,10 @@ namespace daig
 
     //the list of processes
     std::list<Process> processes;
+
+    ///add a target thunk, or append to an existing one
+    void addTarget(const std::string &tgt,const std::string &thk)
+    { targets[tgt] += thk; }
 
     ///add an external function
     void addExternalFunction(const Function &f) { externalFuncs[f.name] = f; }

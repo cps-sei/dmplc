@@ -10,16 +10,27 @@ extern daig::DaigBuilder *builder; /* the dag builder */
 #define PRINT_TOKEN if(builder->debug) printf("%s\n",yytext)
 #define SAVE_TOKEN PRINT_TOKEN; yylval.string = new std::string(yytext, yyleng)
 #define TOKEN(t) (yylval.token = t)
+extern std::string thunk;
 extern "C" int yywrap() { return 1; }
 %}
 
-%x IN_COMMENT
+%x IN_COMMENT IN_THUNK
 
 %%
 "/*"             { BEGIN(IN_COMMENT); }
 <IN_COMMENT>"*/" { BEGIN(INITIAL); }
 <IN_COMMENT>\n   { }
 <IN_COMMENT>.    { }
+"%%{"            { thunk.clear(); BEGIN(IN_THUNK); }
+<IN_THUNK>"%%}"  { BEGIN(INITIAL); return TOKEN(TTHUNK); }
+<IN_THUNK>\n     { 
+                   thunk.push_back(yytext[0]); 
+                   if(builder->debug) printf("thunk = {%s}\n",thunk.c_str());
+                 }
+<IN_THUNK>.      { 
+                   thunk.push_back(yytext[0]);
+                   if(builder->debug) printf("thunk = {%s}\n",thunk.c_str());
+                 }
 [ \t\n]                     ;
 "MOC_SYNC"                  PRINT_TOKEN; return TOKEN(TMOCSYNC);
 "MOC_ASYNC"                 PRINT_TOKEN; return TOKEN(TMOCASYNC);
@@ -28,6 +39,7 @@ extern "C" int yywrap() { return 1; }
 "NODE"                      PRINT_TOKEN; return TOKEN(TNODE);
 "GLOBAL"                    PRINT_TOKEN; return TOKEN(TGLOBAL);
 "LOCAL"                     PRINT_TOKEN; return TOKEN(TLOCAL);
+"TARGET"                    PRINT_TOKEN; return TOKEN(TTARGET);
 "_Bool"                     PRINT_TOKEN; return TOKEN(TBOOL);
 "int"                       PRINT_TOKEN; return TOKEN(TINT);
 "void"                      PRINT_TOKEN; return TOKEN(TVOID);

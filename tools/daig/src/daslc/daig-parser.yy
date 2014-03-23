@@ -23,6 +23,9 @@ void yyerror(const char *s) {
 /** the current node being parsed */
 daig::Node currNode;
 
+/** a thunk */
+std::string thunk;
+
 #define printExpr(_x) if(builder->debug) printf("EXPR: %s\n",(_x)->toString().c_str())
 #define MAKE_NULL(_res,_o) _res = new daig::Expr(new daig::CompExpr(_o)); printExpr(*_res)
 #define MAKE_UN(_res,_o,_l) _res = new daig::Expr(new daig::CompExpr(_o,*_l)); delete _l; printExpr(*_res)
@@ -31,8 +34,8 @@ daig::Node currNode;
 #define printStmt(_x) if(builder->debug) printf("STMT: %s\n",(_x)->toString().c_str())
 %}
 
-/* expect 2 shift reduce conflicts */
-%expect 2
+/* expect 3 shift reduce conflicts */
+%expect 3
 
 /* Represents the many different ways we can access our data */
 %union {
@@ -55,7 +58,8 @@ daig::Node currNode;
  */
 %token <string> TIDENTIFIER TINTEGER TDOUBLE
 %token <token> TMOCSYNC TMOCASYNC TMOCPSYNC TSEMICOLON TCONST TNODE
-%token <token> TGLOBAL TLOCAL TBOOL TINT TVOID TCHAR TSIGNED TUNSIGNED
+%token <token> TGLOBAL TLOCAL TTARGET TTHUNK
+%token <token> TBOOL TINT TVOID TCHAR TSIGNED TUNSIGNED
 %token <token> TNODENUM TATOMIC TPRIVATE TEXTERN
 %token <token> TIF TELSE TFOR TWHILE
 %token <token> TBREAK TCONTINUE TRETURN TEXO TEXH TEXL TPROGRAM
@@ -107,12 +111,23 @@ daig::Node currNode;
 %start program
 
 %%
-program : moc const_list extern_fn_list node prog_def init_def safety_def {};
+program : moc target_list const_list extern_fn_list node prog_def init_def safety_def {};
 
 moc : 
   TMOCSYNC TSEMICOLON { builder->program.moc.set_type("SYNC"); }
 | TMOCASYNC TSEMICOLON { builder->program.moc.set_type("ASYNC"); }
 | TMOCPSYNC TSEMICOLON { builder->program.moc.set_type("PARTIAL"); }
+;
+
+target_list : {}
+| TTARGET TIDENTIFIER TTHUNK {
+  builder->program.addTarget(*$2,thunk);
+  delete $2;
+}
+| target_list TTARGET TIDENTIFIER TTHUNK {
+  builder->program.addTarget(*$3,thunk);
+  delete $3;
+}
 ;
 
 const_list : {}
