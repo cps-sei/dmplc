@@ -60,6 +60,7 @@
 //options
 /*********************************************************************/
 std::string fileName, outFileName, madaraFileName;
+std::string madaraTarget("GNU_CPP");
 bool debug = false, print=false, seqSem = false;
 bool seqDbl = false, seqNoArray = false, initGlobals = false;
 size_t nodeNum = 0;
@@ -107,7 +108,7 @@ int main(int argc, char **argv)
     std::ofstream os(madaraFileName.c_str());
 
     // create a madara builder instance of the daig builder parse
-    daig::madara::Sync_Builder madara_builder (builder);
+    daig::madara::Sync_Builder madara_builder (builder,madaraTarget);
     madara_builder.build ();
 
     // print the resulting information to the string and close the stream
@@ -226,6 +227,10 @@ void parseOptions(int argc, char **argv)
     {
       madaraFileName = std::string(argv[i] + 9);
     }
+    else if(strstr(argv[i],"--target=") == argv[i])
+    {
+      madaraTarget = std::string(argv[i] + 9);
+    }
     else if(strstr(argv[i],"--") == argv[i]) {
       std::cerr << "ERROR: illegal option " << argv[i] << '\n';
       usage(argv[0]);
@@ -257,7 +262,8 @@ void usage(char *cmd)
             << "--Dconstant=value\n\t--seq=node-num\n\t"
             << "--seq-sem\n\t--seq-dbl\n\t--out=output-filename\n\t"
             << "--seq-no-array\n\t--init-globals\n\t--rounds=round-num\n\t"
-            << "--madara=madara-ouput-filename\n";
+            << "--madara=madara-ouput-filename\n\t"
+            << "--target=target-name [default=GNU_CPP]\n";
   exit(1);
 }
 
