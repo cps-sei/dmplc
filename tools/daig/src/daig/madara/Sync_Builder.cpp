@@ -46,8 +46,9 @@
 #include "Sync_Builder.hpp"
 #include "Function_Visitor.hpp"
 
-daig::madara::Sync_Builder::Sync_Builder (daig::DaigBuilder & builder)
-  : builder_ (builder)
+daig::madara::Sync_Builder::Sync_Builder (daig::DaigBuilder & builder,
+                                          const std::string &target)
+  : builder_ (builder),target_(target)
 {
 
 }
@@ -67,6 +68,7 @@ daig::madara::Sync_Builder::build ()
   // build the header includes
   build_header_includes ();
   build_common_global_variables ();
+  build_target_thunk ();
   build_external_functions ();
   build_program_variables ();
   build_parse_args ();
@@ -115,6 +117,15 @@ daig::madara::Sync_Builder::build_common_global_variables ()
   buffer_ << "Integer processes (";
   buffer_ << builder_.program.processes.size ();
   buffer_ << ");\n\n";
+}
+
+void
+daig::madara::Sync_Builder::build_target_thunk ()
+{
+  buffer_ << "// target (" << target_ << ") specific thunk\n";
+  Program::TargetType::const_iterator it = builder_.program.targets.find(target_);
+  if (it == builder_.program.targets.end()) return;
+  buffer_ << it->second << '\n';
 }
 
 void

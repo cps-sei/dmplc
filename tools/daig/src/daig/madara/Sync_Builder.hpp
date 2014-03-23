@@ -65,7 +65,7 @@ namespace daig
        * Constructor
        * @param  builder   the source for building a program
        **/
-      Sync_Builder (DaigBuilder & builder);
+      Sync_Builder (DaigBuilder & builder,const std::string &target);
 
       /**
        * Builds the underlying character stream that can then be printed
@@ -81,6 +81,11 @@ namespace daig
        * Builds the common global MADARA generated variables
        **/
       void build_common_global_variables (void);
+
+      /**
+       * Builds the target-specific thunk from the DASL program
+       */
+      void build_target_thunk (void);
       
       /**
        * Builds the program's MADARA generated variables
@@ -187,6 +192,9 @@ namespace daig
       
       /// the result of the DASL parsing function
       DaigBuilder & builder_;
+
+      ///the target to build against
+      std::string target_;
 
       /// character buffer for holding results of build
       std::stringstream buffer_;
