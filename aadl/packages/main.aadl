@@ -42,7 +42,7 @@ subcomponents
  
  processor1: processor dart_node.i;
  properties
-  Actual_Processor_Binding => processor1.lcp applies to process_lc.t1; 
+  Actual_Processor_Binding => processor1.lcp applies to process_lc.t1; -- need to correct this 
 end dart_system.i;
 
 end main;
