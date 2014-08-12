@@ -32,7 +32,7 @@ end dart_process.hc;
 
 process implementation dart_process.lc
 subcomponents
- t11: thread dart_thread;
+ t1: thread dart_thread;
 end dart_process.lc;
 
 system implementation dart_system.i
