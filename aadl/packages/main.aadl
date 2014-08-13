@@ -59,50 +59,50 @@ end dart_process.lc;
 -- a DART system implementation
 system implementation dart_system.i
 subcomponents
-  -- we have two nodes
-  node1: processor dart_node.i;
-  node2: processor dart_node.i;
+  -- node1
+  node1: processor dart_node.i {
+  	DART::NodeId => 0;
+  };
   
-  -- the low and high criticality processes of node1
-  process_lc1: process dart_process.lc; -- this will do area coverage
-  process_hc1: process dart_process.hc; -- this will do collision avoidance
+  -- node2
+  node2: processor dart_node.i {
+  	DART::NodeId => 1;
+  };
   
-  -- the low and high criticality processes of node2
-  process_lc2: process dart_process.lc; -- this will do area coverage
-  process_hc2: process dart_process.hc; -- this will do collision avoidance
+  -- the low criticality processes of node1 (area coverage)
+  process_lc1: process dart_process.lc {
+  	Period => 100ms applies to t1;
+    Priority => 1 applies to t1;
+    Criticality => 1 applies to t1;
+  }; 
+  
+  -- the high criticality process of node2 (collision avoidance)
+  process_hc1: process dart_process.hc {
+  	Period => 500ms applies to t1;
+    Priority => 5 applies to t1;
+    Criticality => 5 applies to t1;
+  };
+  
+  -- the low criticality processes of node2 (area coverage)
+  process_lc2: process dart_process.lc {
+  	Period => 100ms applies to t1;
+    Priority => 1 applies to t1;
+    Criticality => 1 applies to t1;
+  }; 
+  
+  -- the high criticality process of node2 (collision avoidance)
+  process_hc2: process dart_process.hc {
+  	Period => 500ms applies to t1;
+    Priority => 5 applies to t1;
+    Criticality => 5 applies to t1;
+  };
 
 properties
-  -- node1 properties
-  DART::NodeId => 0 applies to node1;
-
   -- bind processes to processors
   Actual_Processor_Binding => (reference (node1.lcp)) applies to process_lc1; 
   Actual_Processor_Binding => (reference (node1.hcp)) applies to process_hc1;
-
-  -- assign periods, priorities and criticalities to threads
-  Period => 100ms applies to process_lc1.t1;
-  Priority => 1 applies to process_lc1.t1;
-  Criticality => 1 applies to process_lc1.t1;
-
-  Period => 500ms applies to process_hc1.t1;
-  Priority => 5 applies to process_hc1.t1;
-  Criticality => 5 applies to process_hc1.t1;
-  
-  -- node2 properties
-  DART::NodeId => 1 applies to node2;
-
-  -- bind processes to processors
   Actual_Processor_Binding => (reference (node2.lcp)) applies to process_lc2; 
   Actual_Processor_Binding => (reference (node2.hcp)) applies to process_hc2;
-
-  -- assign periods, priorities and criticalities to threads
-  Period => 100ms applies to process_lc2.t1;
-  Priority => 1 applies to process_lc2.t1;
-  Criticality => 1 applies to process_lc2.t1;
-
-  Period => 500ms applies to process_hc2.t1;
-  Priority => 5 applies to process_hc2.t1;
-  Criticality => 5 applies to process_hc2.t1;  
 end dart_system.i;
 
 end main;
