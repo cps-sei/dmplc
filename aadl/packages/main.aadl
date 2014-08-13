@@ -61,38 +61,38 @@ system implementation dart_system.i
 subcomponents
   -- node1
   node1: processor dart_node.i {
-  	DART::NodeId => 0;
+    DART::NodeId => 0;
   };
   
   -- node2
   node2: processor dart_node.i {
-  	DART::NodeId => 1;
+    DART::NodeId => 1;
   };
   
   -- the low criticality processes of node1 (area coverage)
   process_lc1: process dart_process.lc {
-  	Period => 100ms applies to t1;
+    Period => 100ms applies to t1;
     Priority => 1 applies to t1;
     Criticality => 1 applies to t1;
   }; 
   
   -- the high criticality process of node2 (collision avoidance)
   process_hc1: process dart_process.hc {
-  	Period => 500ms applies to t1;
+    Period => 500ms applies to t1;
     Priority => 5 applies to t1;
     Criticality => 5 applies to t1;
   };
   
   -- the low criticality processes of node2 (area coverage)
   process_lc2: process dart_process.lc {
-  	Period => 100ms applies to t1;
+    Period => 100ms applies to t1;
     Priority => 1 applies to t1;
     Criticality => 1 applies to t1;
   }; 
   
   -- the high criticality process of node2 (collision avoidance)
   process_hc2: process dart_process.hc {
-  	Period => 500ms applies to t1;
+    Period => 500ms applies to t1;
     Priority => 5 applies to t1;
     Criticality => 5 applies to t1;
   };
