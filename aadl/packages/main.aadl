@@ -27,6 +27,9 @@ end dart_node.i;
 
 -- a DART thread
 thread dart_thread
+properties
+  -- all DART threads are periodic
+  Dispatch_Protocol => constant Periodic;
 end dart_thread;
 
 -- a DART process
@@ -39,9 +42,6 @@ end dart_system;
 
 -- a DART thread implementation
 thread implementation dart_thread.i
-properties
-  -- all DART threads are periodic
-  Dispatch_Protocol => Periodic;
 end dart_thread.i;
 
 -- a high criticality DART process
