@@ -30,6 +30,8 @@ thread dart_thread
 properties
   -- all DART threads are periodic
   Dispatch_Protocol => constant Periodic;
+  -- all source code appears here
+  Source_Text => ("../sources/main.dasl");
 end dart_thread;
 
 -- a DART process
