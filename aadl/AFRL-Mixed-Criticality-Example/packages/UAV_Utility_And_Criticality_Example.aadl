@@ -1,0 +1,123 @@
+package UAV_Utility_And_Criticality_Example
+public
+
+with Zero_Slack_Scheduling;
+
+virtual processor flight_critical_partition
+end flight_critical_partition;
+
+virtual processor mission_critical_partition
+end mission_critical_partition;
+
+processor mixed_criticality_and_utility_processor
+end mixed_criticality_and_utility_processor;
+
+thread actuation_task
+end actuation_task;
+
+thread sensor_task
+end sensor_task;
+
+thread auxiliary_sensor_task
+end auxiliary_sensor_task;
+
+process flight_critical_process
+end flight_critical_process;
+
+process implementation flight_critical_process.i
+	subcomponents
+		actuation: thread actuation_task;
+		sensor: thread sensor_task;
+		aux_sensor: thread auxiliary_sensor_task;
+end flight_critical_process.i;
+
+thread navigation_task
+end navigation_task;
+
+thread object_detection_task
+end object_detection_task;
+
+thread low_fidelity_video_streaming_task
+end low_fidelity_video_streaming_task;
+
+thread high_fidelity_video_streaming_task
+end high_fidelity_video_streaming_task;
+
+process mixed_utility_video_streaming_partition
+end mixed_utility_video_streaming_partition;
+
+process implementation mixed_utility_video_streaming_partition.i
+	subcomponents
+		hf_streaming_task: thread high_fidelity_video_streaming_task in modes (high_fidelity_mode);
+		lf_streaming_task: thread low_fidelity_video_streaming_task in modes (low_fidelity_mode);
+	modes
+		high_fidelity_mode: initial mode;
+		low_fidelity_mode: mode;
+end mixed_utility_video_streaming_partition.i;
+
+process mission_critical_process
+end mission_critical_process;
+
+process implementation mission_critical_process.i
+	subcomponents
+		navigation: thread navigation_task;
+		detection: thread object_detection_task;
+end mission_critical_process.i;
+
+system mixed_criticality_utility_system
+end mixed_criticality_utility_system;
+
+system implementation mixed_criticality_utility_system.i
+	subcomponents
+		flight_process: process flight_critical_process.i;
+		mission_process: process mission_critical_process.i;
+		flight_partition: virtual processor flight_critical_partition;
+		mission_partition: virtual processor mission_critical_partition;
+		mixed_utility_partition: process mixed_utility_video_streaming_partition.i;
+		mixed_criticality_utility_processor: processor mixed_criticality_and_utility_processor;
+	properties
+		Actual_Processor_Binding => (reference (flight_partition)) applies to flight_process;
+		Actual_Processor_Binding => (reference (mission_partition)) applies to mission_process;
+		Actual_Processor_Binding => (reference (mixed_criticality_utility_processor)) applies to flight_partition;
+		Actual_Processor_Binding => (reference (mixed_criticality_utility_processor)) applies to mission_partition;
+		Actual_Processor_Binding => (reference (mixed_criticality_utility_processor)) applies to mixed_utility_partition;
+		-- scheduling parameter
+		Zero_Slack_Scheduling::Scheduling_Protocol => (ZSQRAM) applies to mixed_criticality_utility_processor;
+		Zero_Slack_Scheduling::Criticality => 1 applies to flight_partition;
+		Zero_Slack_Scheduling::Criticality => 2 applies to mission_partition;
+		Zero_Slack_Scheduling::Utility => 10.0 applies to flight_partition;
+		-- timing parameters
+		Period => 30 ms applies to flight_process.actuation;
+		Compute_Execution_Time => 1 ms .. 1 ms applies to flight_process.actuation;
+		Zero_Slack_Scheduling::Zero_Slack_Instant => 30 ms applies to flight_process.actuation;
+		--
+		Period => 65 ms applies to flight_process.sensor;
+		Compute_Execution_Time => 100 us .. 100 us applies to flight_process.sensor;
+		Zero_Slack_Scheduling::Zero_Slack_Instant => 65 ms applies to flight_process.sensor;
+		--
+		Period => 50 ms applies to  flight_process.aux_sensor;
+		Compute_Execution_Time => 500 us .. 500 us applies to flight_process.aux_sensor;
+		Zero_Slack_Scheduling::Zero_Slack_Instant => 50 ms applies to flight_process.aux_sensor;
+		-- 
+		Period => 50 ms applies to  mission_process.navigation;
+		Compute_Execution_Time => 11 ms .. 11 ms applies to mission_process.navigation;
+		Zero_Slack_Scheduling::Utility => 10.0 applies to mission_process.navigation;
+		Zero_Slack_Scheduling::Zero_Slack_Instant => 49 ms applies to mission_process.navigation;
+		--
+		Period => 100 ms applies to mission_process.detection;
+		Compute_Execution_Time => 15 ms .. 40 ms applies to mission_process.detection;
+		Zero_Slack_Scheduling::Utility => 2.5 applies to mission_process.detection;
+		Zero_Slack_Scheduling::Zero_Slack_Instant => 87 ms applies to mission_process.detection;
+		-- 
+		Period => 120 ms applies to mixed_utility_partition.lf_streaming_task;
+		Compute_Execution_Time => 10 ms .. 10 ms applies to  mixed_utility_partition.lf_streaming_task;
+		Zero_Slack_Scheduling::Utility => 0.1 applies to mixed_utility_partition.lf_streaming_task;
+		Zero_Slack_Scheduling::Zero_Slack_Instant => 120 ms applies to mixed_utility_partition.lf_streaming_task;
+		--
+		Period => 40 ms applies to mixed_utility_partition.hf_streaming_task;
+		Compute_Execution_Time => 10 ms .. 10 ms applies to mixed_utility_partition.hf_streaming_task;
+		Zero_Slack_Scheduling::Utility => 0.5 applies to mixed_utility_partition.hf_streaming_task;
+		Zero_Slack_Scheduling::Zero_Slack_Instant => 40 ms applies to mixed_utility_partition.hf_streaming_task;
+end mixed_criticality_utility_system.i;
+
+end UAV_Utility_And_Criticality_Example;

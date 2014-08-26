@@ -1,0 +1,62 @@
+package Dual_Criticality_Example
+public
+with Zero_Slack_Scheduling;
+
+thread low_criticality_task
+end low_criticality_task;
+
+process low_criticality_process
+end low_criticality_process;
+
+process implementation low_criticality_process.i
+	subcomponents
+	  t: thread low_criticality_task;
+end low_criticality_process.i;
+
+thread high_criticality_task
+end high_criticality_task;
+
+process high_criticality_process
+end high_criticality_process;
+
+process implementation high_criticality_process.i
+	subcomponents
+		t: thread high_criticality_task;
+end high_criticality_process.i;
+
+virtual processor high_criticality_partition
+end high_criticality_partition;
+
+virtual processor low_criticality_partition
+end low_criticality_partition;
+
+processor mixed_criticality_processor
+end mixed_criticality_processor;
+
+system mixed_criticality_system
+end mixed_criticality_system;
+
+system implementation mixed_criticality_system.i
+	subcomponents
+		mc_processor: processor mixed_criticality_processor;
+		hc_partition: virtual processor high_criticality_partition;
+		lc_partition: virtual processor low_criticality_partition;
+		hc_process: process high_criticality_process.i;
+		lc_process: process low_criticality_process.i;
+	properties
+		Zero_Slack_Scheduling::Criticality => 1 applies to hc_partition;
+		Zero_Slack_Scheduling::Criticality => 2 applies to lc_partition;
+		Zero_Slack_Scheduling::Scheduling_Protocol => (ZSRM) applies to mc_processor;
+		Actual_Processor_Binding => (reference (hc_partition)) applies to hc_process;
+		Actual_Processor_Binding => (reference (lc_partition)) applies to lc_process;
+		Actual_Processor_Binding => (reference (mc_processor)) applies to hc_partition;
+		Actual_Processor_Binding => (reference (mc_processor)) applies to lc_partition;
+		-- timing parameters
+		Period => 4 ms applies to lc_process.t;
+		Compute_Execution_Time => 2 ms .. 2 ms applies to lc_process.t;
+		-- 
+		Period => 8 ms applies to hc_process.t;
+		Compute_Execution_Time => 2 ms .. 5 ms applies to hc_process.t;
+end mixed_criticality_system.i;
+
+end Dual_Criticality_Example;
