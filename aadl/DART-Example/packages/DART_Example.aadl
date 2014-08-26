@@ -1,110 +1,112 @@
 package DART_Example
 public
+
 with DART; -- include the DART property set
-
--- high and low critical threads and partitioned via two virtual
--- processors
-
--- the high criticality processor
-virtual processor high_criticality_processor
-end high_criticality_processor;
-
--- the low criticality processor
-virtual processor low_criticality_processor
-end low_criticality_processor;
-
--- a DART node is a processor that contains the two virtual processors
--- as sub-processors
-processor dart_node
-end dart_node;
-
--- a DART node implementation
-processor implementation dart_node.i
-subcomponents
-  hcp: virtual processor high_criticality_processor;
-  lcp: virtual processor low_criticality_processor;
-end dart_node.i;  
+with Zero_Slack_Scheduling; -- include ZSS property set
 
 -- a DART thread
 thread dart_thread
-properties
-  -- all DART threads are periodic
-  Dispatch_Protocol => constant Periodic;
-  -- all source code appears here
-  Source_Text => ("../sources/main.dasl");
+	properties
+  		-- all DART threads are periodic
+  		Dispatch_Protocol => constant Periodic;
 end dart_thread;
 
--- a DART process
-process dart_process
-end dart_process;
+-- a low criticality process
+process low_criticality_process
+end low_criticality_process;
+
+-- a low criticality process implementation
+process implementation low_criticality_process.i
+	subcomponents
+		t: thread dart_thread;
+end low_criticality_process.i;
+
+-- a high criticality process
+process high_criticality_process
+end high_criticality_process;
+
+-- a high criticality process implementation
+process implementation high_criticality_process.i
+	subcomponents
+		t: thread dart_thread;
+end high_criticality_process.i;
+
+-- a high criticality partition. contains all high criticality processes.
+virtual processor high_criticality_partition
+end high_criticality_partition;
+
+-- a low criticality partition. contains all low criticality processes.
+virtual processor low_criticality_partition
+end low_criticality_partition;
+
+-- a DART processor. there will be one processor per node.
+processor DART_processor
+	properties
+		-- all DART processors are scheduled via ZSRM
+		Zero_Slack_Scheduling::Scheduling_Protocol => (ZSRM);
+end DART_processor;
+
+-- a DART node
+system DART_node
+end DART_Node;
+
+-- a DART node implementation
+system implementation DART_node.i
+	subcomponents
+		dart_processor: processor DART_processor;
+		hc_partition: virtual processor high_criticality_partition;
+		lc_partition: virtual processor low_criticality_partition;
+		hc_process: process high_criticality_process.i;
+		lc_process: process low_criticality_process.i;
+	properties
+		Actual_Processor_Binding => (reference (hc_partition)) applies to hc_process;
+		Actual_Processor_Binding => (reference (lc_partition)) applies to lc_process;
+		Actual_Processor_Binding => (reference (dart_processor)) applies to hc_partition;
+		Actual_Processor_Binding => (reference (dart_processor)) applies to lc_partition;
+end DART_node.i;
 
 -- a DART system
-system dart_system
-end dart_system;
+system DART_system
+end DART_system;
 
--- a DART thread implementation
-thread implementation dart_thread.i
-end dart_thread.i;
-
--- a high criticality DART process
-process implementation dart_process.hc
-subcomponents
-  t1: thread dart_thread.i;
-end dart_process.hc;
-
--- a low criticality DART process
-process implementation dart_process.lc
-subcomponents
-  t1: thread dart_thread.i;
-end dart_process.lc;
-
--- a DART system implementation
-system implementation dart_system.i
-subcomponents
-  -- node1
-  node1: processor dart_node.i {
-    DART::NodeId => 0;
-  };
-  
-  -- node2
-  node2: processor dart_node.i {
-    DART::NodeId => 1;
-  };
-  
-  -- the low criticality processes of node1 (area coverage)
-  process_lc1: process dart_process.lc {
-    Period => 100ms applies to t1;
-    Priority => 1 applies to t1;
-    Criticality => 1 applies to t1;
-  }; 
-  
-  -- the high criticality process of node2 (collision avoidance)
-  process_hc1: process dart_process.hc {
-    Period => 500ms applies to t1;
-    Priority => 5 applies to t1;
-    Criticality => 5 applies to t1;
-  };
-  
-  -- the low criticality processes of node2 (area coverage)
-  process_lc2: process dart_process.lc {
-    Period => 100ms applies to t1;
-    Priority => 1 applies to t1;
-    Criticality => 1 applies to t1;
-  }; 
-  
-  -- the high criticality process of node2 (collision avoidance)
-  process_hc2: process dart_process.hc {
-    Period => 500ms applies to t1;
-    Priority => 5 applies to t1;
-    Criticality => 5 applies to t1;
-  };
-
-properties
-  -- bind processes to processors
-  Actual_Processor_Binding => (reference (node1.lcp)) applies to process_lc1; 
-  Actual_Processor_Binding => (reference (node1.hcp)) applies to process_hc1;
-  Actual_Processor_Binding => (reference (node2.lcp)) applies to process_lc2; 
-  Actual_Processor_Binding => (reference (node2.hcp)) applies to process_hc2;
-end dart_system.i;
+-- a DART system implementation with two nodes
+system implementation DART_system.i
+	subcomponents
+		-- the first node
+		node1: system DART_node.i {
+			-- set the node id 
+			DART::Node_Id => 1;
+			-- set the criticality levels
+			Zero_Slack_Scheduling::Criticality => 1 applies to hc_partition;
+			Zero_Slack_Scheduling::Criticality => 2 applies to lc_partition;
+			-- timing parameters
+			Period => 4 ms applies to lc_process.t;
+			Compute_Execution_Time => 2 ms .. 2 ms applies to lc_process.t;
+			Zero_Slack_Scheduling::Zero_Slack_Instant => 4 ms applies to lc_process.t;
+			-- 
+			Period => 8 ms applies to hc_process.t;
+			Compute_Execution_Time => 2 ms .. 5 ms applies to hc_process.t;
+			Zero_Slack_Scheduling::Zero_Slack_Instant => 5 ms applies to hc_process.t;
+		};
+		-- the second node
+		node2: system DART_node.i {
+			-- set the node id 
+			DART::Node_Id => 2;
+			-- set the criticality levels
+			Zero_Slack_Scheduling::Criticality => 1 applies to hc_partition;
+			Zero_Slack_Scheduling::Criticality => 2 applies to lc_partition;
+			-- timing parameters
+			Period => 14 ms applies to lc_process.t;
+			Compute_Execution_Time => 12 ms .. 12 ms applies to lc_process.t;
+			Zero_Slack_Scheduling::Zero_Slack_Instant => 14 ms applies to lc_process.t;
+			-- 
+			Period => 18 ms applies to hc_process.t;
+			Compute_Execution_Time => 12 ms .. 15 ms applies to hc_process.t;
+			Zero_Slack_Scheduling::Zero_Slack_Instant => 15 ms applies to hc_process.t;
+		};
+	properties
+		-- all source code appears here
+  		Source_Text => ("../sources/DART_example.dasl");
+end DART_system.i;
 
 end DART_Example;

@@ -1,4 +1,4 @@
 property set DART is
   -- property to support security level analysis
-  NodeId : inherit aadlinteger applies to (processor);
+  Node_Id : inherit aadlinteger applies to (system);
 end DART;
