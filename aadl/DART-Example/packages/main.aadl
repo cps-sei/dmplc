@@ -1,0 +1,111 @@
+package main
+public
+with DART; -- include the DART property set
+
+-- high and low critical threads and partitioned via two virtual
+-- processors
+
+-- the high criticality processor
+virtual processor high_criticality_processor
+end high_criticality_processor;
+
+-- the low criticality processor
+virtual processor low_criticality_processor
+end low_criticality_processor;
+
+-- a DART node is a processor that contains the two virtual processors
+-- as sub-processors
+processor dart_node
+end dart_node;
+
+-- a DART node implementation
+processor implementation dart_node.i
+subcomponents
+  hcp: virtual processor high_criticality_processor;
+  lcp: virtual processor low_criticality_processor;
+end dart_node.i;  
+
+-- a DART thread
+thread dart_thread
+properties
+  -- all DART threads are periodic
+  Dispatch_Protocol => constant Periodic;
+  -- all source code appears here
+  Source_Text => ("../sources/main.dasl");
+end dart_thread;
+
+-- a DART process
+process dart_process
+end dart_process;
+
+-- a DART system
+system dart_system
+end dart_system;
+
+-- a DART thread implementation
+thread implementation dart_thread.i
+end dart_thread.i;
+
+-- a high criticality DART process
+process implementation dart_process.hc
+subcomponents
+  t1: thread dart_thread.i;
+end dart_process.hc;
+
+-- a low criticality DART process
+process implementation dart_process.lc
+subcomponents
+  t1: thread dart_thread.i;
+end dart_process.lc;
+
+-- a DART system implementation
+system implementation dart_system.i
+subcomponents
+  -- node1
+  node1: processor dart_node.i {
+    DART::NodeId => 0;
+  };
+  
+  -- node2
+  node2: processor dart_node.i {
+    DART::NodeId => 1;
+  };
+  
+  -- the low criticality processes of node1 (area coverage)
+  process_lc1: process dart_process.lc {
+    Period => 100ms applies to t1;
+    Priority => 1 applies to t1;
+    Criticality => 1 applies to t1;
+  }; 
+  
+  -- the high criticality process of node2 (collision avoidance)
+  process_hc1: process dart_process.hc {
+    Period => 500ms applies to t1;
+    Priority => 5 applies to t1;
+    Criticality => 5 applies to t1;
+  };
+  
+  -- the low criticality processes of node2 (area coverage)
+  process_lc2: process dart_process.lc {
+    Period => 100ms applies to t1;
+    Priority => 1 applies to t1;
+    Criticality => 1 applies to t1;
+  }; 
+  
+  -- the high criticality process of node2 (collision avoidance)
+  process_hc2: process dart_process.hc {
+    Period => 500ms applies to t1;
+    Priority => 5 applies to t1;
+    Criticality => 5 applies to t1;
+  };
+
+properties
+  -- bind processes to processors
+  Actual_Processor_Binding => (reference (node1.lcp)) applies to process_lc1; 
+  Actual_Processor_Binding => (reference (node1.hcp)) applies to process_hc1;
+  Actual_Processor_Binding => (reference (node2.lcp)) applies to process_lc2; 
+  Actual_Processor_Binding => (reference (node2.hcp)) applies to process_hc2;
+end dart_system.i;
+
+
+end main;
