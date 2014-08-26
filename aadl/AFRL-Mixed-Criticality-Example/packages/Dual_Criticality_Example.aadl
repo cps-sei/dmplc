@@ -54,9 +54,11 @@ system implementation mixed_criticality_system.i
 		-- timing parameters
 		Period => 4 ms applies to lc_process.t;
 		Compute_Execution_Time => 2 ms .. 2 ms applies to lc_process.t;
+		Zero_Slack_Scheduling::Zero_Slack_Instant => 4 ms applies to lc_process.t;
 		-- 
 		Period => 8 ms applies to hc_process.t;
 		Compute_Execution_Time => 2 ms .. 5 ms applies to hc_process.t;
+		Zero_Slack_Scheduling::Zero_Slack_Instant => 5 ms applies to hc_process.t;
 end mixed_criticality_system.i;
 
 end Dual_Criticality_Example;
