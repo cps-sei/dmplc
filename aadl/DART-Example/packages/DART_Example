@@ -1,4 +1,4 @@
-package main
+package DART_Example
 public
 with DART; -- include the DART property set
 
@@ -107,5 +107,4 @@ properties
   Actual_Processor_Binding => (reference (node2.hcp)) applies to process_hc2;
 end dart_system.i;
 
-
-end main;
+end DART_Example;
