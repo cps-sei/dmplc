@@ -1,0 +1,1383 @@
+<?xml version="1.0" encoding="ASCII"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aadl2="http://aadl.info/AADL/2.0" xmlns:instance="http://aadl.info/AADL/2.0/instance">
+  <instance:SystemInstance xmi:id="_RWSHcC4TEeSiT8ib3Z9hVw" name="Mixed_Criticality_Tracking_System_i_Instance" category="system">
+    <componentInstance xmi:id="_RWb4cC4TEeSiT8ib3Z9hVw" name="scan_process" category="process">
+      <ownedPropertyAssociation xmi:id="_RlMGNC4TEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_RlMGNS4TEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_RlMGNy4TEeSiT8ib3Z9hVw" referencedInstanceObject="_RWb4fC4TEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_RWb4cS4TEeSiT8ib3Z9hVw" name="task" category="thread">
+        <ownedPropertyAssociation xmi:id="_RlMGOC4TEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_RlMGOS4TEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_RlMGOy4TEeSiT8ib3Z9hVw" referencedInstanceObject="_RWb4fC4TEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.5/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.0"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_RWb4ci4TEeSiT8ib3Z9hVw" name="display_process" category="process">
+      <ownedPropertyAssociation xmi:id="_RlMGPC4TEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_RlMGPS4TEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_RlMGPy4TEeSiT8ib3Z9hVw" referencedInstanceObject="_RWb4fS4TEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_RWb4cy4TEeSiT8ib3Z9hVw" name="task" category="thread">
+        <ownedPropertyAssociation xmi:id="_RlMGQC4TEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_RlMGQS4TEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_RlMGQy4TEeSiT8ib3Z9hVw" referencedInstanceObject="_RWb4fS4TEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.8/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.1"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_RWb4dC4TEeSiT8ib3Z9hVw" name="nf_process" category="process">
+      <ownedPropertyAssociation xmi:id="_RlMGRC4TEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_RlMGRS4TEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_RlMGRy4TEeSiT8ib3Z9hVw" referencedInstanceObject="_RWb4gC4TEeSiT8ib3Z9hVw"/>
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_RlMGSC4TEeSiT8ib3Z9hVw" referencedInstanceObject="_RWb4fi4TEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_RWb4dS4TEeSiT8ib3Z9hVw" name="nf_task" category="thread">
+        <ownedPropertyAssociation xmi:id="_RlMGSS4TEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_RlMGSi4TEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_RlMGTC4TEeSiT8ib3Z9hVw" referencedInstanceObject="_RWb4gC4TEeSiT8ib3Z9hVw"/>
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_RlMGTS4TEeSiT8ib3Z9hVw" referencedInstanceObject="_RWb4fi4TEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_RlMGTi4TEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+          <ownedValue xmi:id="_RlMGTy4TEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_RlMGUC4TEeSiT8ib3Z9hVw" value="100">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_RlMGUS4TEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+          <ownedValue xmi:id="_RlMGUi4TEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:RangeValue">
+              <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_RlMGVC4TEeSiT8ib3Z9hVw" value="40">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_RlMGVS4TEeSiT8ib3Z9hVw" value="58">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.14/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.2"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_RWb4di4TEeSiT8ib3Z9hVw" name="ff_process" category="process">
+      <ownedPropertyAssociation xmi:id="_RlMGVi4TEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_RlMGVy4TEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_RlMGWS4TEeSiT8ib3Z9hVw" referencedInstanceObject="_RWb4gC4TEeSiT8ib3Z9hVw"/>
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_RlMGWi4TEeSiT8ib3Z9hVw" referencedInstanceObject="_RWb4fy4TEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_RWb4dy4TEeSiT8ib3Z9hVw" name="ff_task" category="thread">
+        <ownedPropertyAssociation xmi:id="_RlMGWy4TEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_RlMGXC4TEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_RlMGXi4TEeSiT8ib3Z9hVw" referencedInstanceObject="_RWb4gC4TEeSiT8ib3Z9hVw"/>
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_RlMGXy4TEeSiT8ib3Z9hVw" referencedInstanceObject="_RWb4fy4TEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_RlMGYC4TEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+          <ownedValue xmi:id="_RlMGYS4TEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_RlMGYi4TEeSiT8ib3Z9hVw" value="200">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_RlMGYy4TEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+          <ownedValue xmi:id="_RlMGZC4TEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:RangeValue">
+              <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_RlMGZi4TEeSiT8ib3Z9hVw" value="83">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_RlMGZy4TEeSiT8ib3Z9hVw" value="106">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.16/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.3"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_RWb4eC4TEeSiT8ib3Z9hVw" name="nh_process" category="process">
+      <ownedPropertyAssociation xmi:id="_RlMGaC4TEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_RlMGaS4TEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_RlMGay4TEeSiT8ib3Z9hVw" referencedInstanceObject="_RWb4gS4TEeSiT8ib3Z9hVw"/>
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_RlMGbC4TEeSiT8ib3Z9hVw" referencedInstanceObject="_RWb4fi4TEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_RWb4eS4TEeSiT8ib3Z9hVw" name="nh_task" category="thread">
+        <ownedPropertyAssociation xmi:id="_RlMGbS4TEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_RlMGbi4TEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_RlMGcC4TEeSiT8ib3Z9hVw" referencedInstanceObject="_RWb4gS4TEeSiT8ib3Z9hVw"/>
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_RlMGcS4TEeSiT8ib3Z9hVw" referencedInstanceObject="_RWb4fi4TEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_RlVQEC4TEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+          <ownedValue xmi:id="_RlVQES4TEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_RlVQEi4TEeSiT8ib3Z9hVw" value="100">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_RlVQEy4TEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+          <ownedValue xmi:id="_RlVQFC4TEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:RangeValue">
+              <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_RlVQFi4TEeSiT8ib3Z9hVw" value="40">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_RlVQFy4TEeSiT8ib3Z9hVw" value="58">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.18/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.4"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_RWb4ei4TEeSiT8ib3Z9hVw" name="fh_process" category="process">
+      <ownedPropertyAssociation xmi:id="_RlVQGC4TEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_RlVQGS4TEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_RlVQGy4TEeSiT8ib3Z9hVw" referencedInstanceObject="_RWb4gS4TEeSiT8ib3Z9hVw"/>
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_RlVQHC4TEeSiT8ib3Z9hVw" referencedInstanceObject="_RWb4fy4TEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_RWb4ey4TEeSiT8ib3Z9hVw" name="ff_task" category="thread">
+        <ownedPropertyAssociation xmi:id="_RlVQHS4TEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_RlVQHi4TEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_RlVQIC4TEeSiT8ib3Z9hVw" referencedInstanceObject="_RWb4gS4TEeSiT8ib3Z9hVw"/>
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_RlVQIS4TEeSiT8ib3Z9hVw" referencedInstanceObject="_RWb4fy4TEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_RlVQIi4TEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+          <ownedValue xmi:id="_RlVQIy4TEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_RlVQJC4TEeSiT8ib3Z9hVw" value="200">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_RlVQJS4TEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+          <ownedValue xmi:id="_RlVQJi4TEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:RangeValue">
+              <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_RlVQKC4TEeSiT8ib3Z9hVw" value="83">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_RlVQKS4TEeSiT8ib3Z9hVw" value="106">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.16/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.5"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_RWb4fC4TEeSiT8ib3Z9hVw" name="scan_processor" category="processor">
+      <subcomponent xsi:type="aadl2:ProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessorSubcomponent.0"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_RWb4fS4TEeSiT8ib3Z9hVw" name="display_processor" category="processor">
+      <subcomponent xsi:type="aadl2:ProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessorSubcomponent.1"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_RWb4fi4TEeSiT8ib3Z9hVw" name="mc_processor_1" category="processor">
+      <subcomponent xsi:type="aadl2:ProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessorSubcomponent.2"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_RWb4fy4TEeSiT8ib3Z9hVw" name="mc_processor_2" category="processor">
+      <subcomponent xsi:type="aadl2:ProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessorSubcomponent.3"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_RWb4gC4TEeSiT8ib3Z9hVw" name="lc_partition" category="virtual processor">
+      <ownedPropertyAssociation xmi:id="_RlVQKi4TEeSiT8ib3Z9hVw">
+        <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Criticality"/>
+        <ownedValue xmi:id="_RlVQKy4TEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_RlVQLC4TEeSiT8ib3Z9hVw" value="2"/>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <subcomponent xsi:type="aadl2:VirtualProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedVirtualProcessorSubcomponent.0"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_RWb4gS4TEeSiT8ib3Z9hVw" name="hc_partition" category="virtual processor">
+      <ownedPropertyAssociation xmi:id="_RlVQLS4TEeSiT8ib3Z9hVw">
+        <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Criticality"/>
+        <ownedValue xmi:id="_RlVQLi4TEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_RlVQLy4TEeSiT8ib3Z9hVw" value="1"/>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <subcomponent xsi:type="aadl2:VirtualProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedVirtualProcessorSubcomponent.1"/>
+      <index>0</index>
+    </componentInstance>
+    <systemOperationMode xmi:id="_RWb4gi4TEeSiT8ib3Z9hVw" name="No Modes"/>
+    <systemImplementation href="../packages/Mixed_Criticality_Radar_Tracker.aadl#Mixed_Criticality_Radar_Tracker.Mixed_Criticality_Tracking_System.i"/>
+  </instance:SystemInstance>
+  <instance:SystemInstance xmi:id="_A2zLUC4VEeSiT8ib3Z9hVw" name="Mixed_Criticality_Tracking_System_i_Instance" category="system">
+    <componentInstance xmi:id="_A2zLUS4VEeSiT8ib3Z9hVw" name="scan_process" category="process">
+      <ownedPropertyAssociation xmi:id="_A3GtbC4VEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_A3GtbS4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_A3Gtby4VEeSiT8ib3Z9hVw" referencedInstanceObject="_A288VS4VEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_A2zLUi4VEeSiT8ib3Z9hVw" name="task" category="thread">
+        <ownedPropertyAssociation xmi:id="_A3GtcC4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_A3GtcS4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_A3Gtcy4VEeSiT8ib3Z9hVw" referencedInstanceObject="_A288VS4VEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.5/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.0"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_A2zLUy4VEeSiT8ib3Z9hVw" name="display_process" category="process">
+      <ownedPropertyAssociation xmi:id="_A3GtdC4VEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_A3GtdS4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_A3Gtdy4VEeSiT8ib3Z9hVw" referencedInstanceObject="_A288Vi4VEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_A2zLVC4VEeSiT8ib3Z9hVw" name="task" category="thread">
+        <ownedPropertyAssociation xmi:id="_A3GteC4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_A3GteS4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_A3Gtey4VEeSiT8ib3Z9hVw" referencedInstanceObject="_A288Vi4VEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.8/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.1"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_A2zLVS4VEeSiT8ib3Z9hVw" name="nf_process" category="process">
+      <ownedPropertyAssociation xmi:id="_A3GtfC4VEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_A3GtfS4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_A3Gtfy4VEeSiT8ib3Z9hVw" referencedInstanceObject="_A288WS4VEeSiT8ib3Z9hVw"/>
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_A3GtgC4VEeSiT8ib3Z9hVw" referencedInstanceObject="_A288Vy4VEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_A2zLVi4VEeSiT8ib3Z9hVw" name="nf_task" category="thread">
+        <ownedPropertyAssociation xmi:id="_A3GtgS4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_A3Gtgi4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_A3GthC4VEeSiT8ib3Z9hVw" referencedInstanceObject="_A288WS4VEeSiT8ib3Z9hVw"/>
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_A3GthS4VEeSiT8ib3Z9hVw" referencedInstanceObject="_A288Vy4VEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_A3Gthi4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+          <ownedValue xmi:id="_A3P3QC4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_A3P3QS4VEeSiT8ib3Z9hVw" value="100">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_A3P3Qi4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+          <ownedValue xmi:id="_A3P3Qy4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:RangeValue">
+              <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_A3P3RS4VEeSiT8ib3Z9hVw" value="40">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_A3P3Ri4VEeSiT8ib3Z9hVw" value="58">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.14/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.2"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_A2zLVy4VEeSiT8ib3Z9hVw" name="ff_process" category="process">
+      <ownedPropertyAssociation xmi:id="_A3P3Ry4VEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_A3P3SC4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_A3P3Si4VEeSiT8ib3Z9hVw" referencedInstanceObject="_A288WS4VEeSiT8ib3Z9hVw"/>
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_A3P3Sy4VEeSiT8ib3Z9hVw" referencedInstanceObject="_A288WC4VEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_A288UC4VEeSiT8ib3Z9hVw" name="ff_task" category="thread">
+        <ownedPropertyAssociation xmi:id="_A3P3TC4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_A3P3TS4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_A3P3Ty4VEeSiT8ib3Z9hVw" referencedInstanceObject="_A288WS4VEeSiT8ib3Z9hVw"/>
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_A3P3UC4VEeSiT8ib3Z9hVw" referencedInstanceObject="_A288WC4VEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_A3P3US4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+          <ownedValue xmi:id="_A3P3Ui4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_A3P3Uy4VEeSiT8ib3Z9hVw" value="200">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_A3P3VC4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+          <ownedValue xmi:id="_A3P3VS4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:RangeValue">
+              <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_A3P3Vy4VEeSiT8ib3Z9hVw" value="83">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_A3P3WC4VEeSiT8ib3Z9hVw" value="106">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.16/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.3"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_A288US4VEeSiT8ib3Z9hVw" name="nh_process" category="process">
+      <ownedPropertyAssociation xmi:id="_A3P3WS4VEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_A3P3Wi4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_A3P3XC4VEeSiT8ib3Z9hVw" referencedInstanceObject="_A288Wi4VEeSiT8ib3Z9hVw"/>
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_A3P3XS4VEeSiT8ib3Z9hVw" referencedInstanceObject="_A288Vy4VEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_A288Ui4VEeSiT8ib3Z9hVw" name="nh_task" category="thread">
+        <ownedPropertyAssociation xmi:id="_A3P3Xi4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_A3P3Xy4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_A3P3YS4VEeSiT8ib3Z9hVw" referencedInstanceObject="_A288Wi4VEeSiT8ib3Z9hVw"/>
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_A3P3Yi4VEeSiT8ib3Z9hVw" referencedInstanceObject="_A288Vy4VEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_A3P3Yy4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+          <ownedValue xmi:id="_A3P3ZC4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_A3P3ZS4VEeSiT8ib3Z9hVw" value="100">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_A3P3Zi4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+          <ownedValue xmi:id="_A3P3Zy4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:RangeValue">
+              <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_A3P3aS4VEeSiT8ib3Z9hVw" value="40">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_A3P3ai4VEeSiT8ib3Z9hVw" value="58">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.18/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.4"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_A288Uy4VEeSiT8ib3Z9hVw" name="fh_process" category="process">
+      <ownedPropertyAssociation xmi:id="_A3P3ay4VEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_A3P3bC4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_A3P3bi4VEeSiT8ib3Z9hVw" referencedInstanceObject="_A288Wi4VEeSiT8ib3Z9hVw"/>
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_A3P3by4VEeSiT8ib3Z9hVw" referencedInstanceObject="_A288WC4VEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_A288VC4VEeSiT8ib3Z9hVw" name="ff_task" category="thread">
+        <ownedPropertyAssociation xmi:id="_A3P3cC4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_A3P3cS4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_A3P3cy4VEeSiT8ib3Z9hVw" referencedInstanceObject="_A288Wi4VEeSiT8ib3Z9hVw"/>
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_A3P3dC4VEeSiT8ib3Z9hVw" referencedInstanceObject="_A288WC4VEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_A3P3dS4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+          <ownedValue xmi:id="_A3P3di4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_A3P3dy4VEeSiT8ib3Z9hVw" value="200">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_A3P3eC4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+          <ownedValue xmi:id="_A3P3eS4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:RangeValue">
+              <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_A3P3ey4VEeSiT8ib3Z9hVw" value="83">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_A3P3fC4VEeSiT8ib3Z9hVw" value="106">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.16/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.5"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_A288VS4VEeSiT8ib3Z9hVw" name="scan_processor" category="processor">
+      <subcomponent xsi:type="aadl2:ProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessorSubcomponent.0"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_A288Vi4VEeSiT8ib3Z9hVw" name="display_processor" category="processor">
+      <subcomponent xsi:type="aadl2:ProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessorSubcomponent.1"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_A288Vy4VEeSiT8ib3Z9hVw" name="mc_processor_1" category="processor">
+      <subcomponent xsi:type="aadl2:ProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessorSubcomponent.2"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_A288WC4VEeSiT8ib3Z9hVw" name="mc_processor_2" category="processor">
+      <subcomponent xsi:type="aadl2:ProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessorSubcomponent.3"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_A288WS4VEeSiT8ib3Z9hVw" name="lc_partition" category="virtual processor">
+      <ownedPropertyAssociation xmi:id="_A3P3fS4VEeSiT8ib3Z9hVw">
+        <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Criticality"/>
+        <ownedValue xmi:id="_A3P3fi4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_A3P3fy4VEeSiT8ib3Z9hVw" value="2"/>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <subcomponent xsi:type="aadl2:VirtualProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedVirtualProcessorSubcomponent.0"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_A288Wi4VEeSiT8ib3Z9hVw" name="hc_partition" category="virtual processor">
+      <ownedPropertyAssociation xmi:id="_A3P3gC4VEeSiT8ib3Z9hVw">
+        <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Criticality"/>
+        <ownedValue xmi:id="_A3P3gS4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_A3P3gi4VEeSiT8ib3Z9hVw" value="1"/>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <subcomponent xsi:type="aadl2:VirtualProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedVirtualProcessorSubcomponent.1"/>
+      <index>0</index>
+    </componentInstance>
+    <systemOperationMode xmi:id="_A288Wy4VEeSiT8ib3Z9hVw" name="No Modes"/>
+    <systemImplementation href="../packages/Mixed_Criticality_Radar_Tracker.aadl#Mixed_Criticality_Radar_Tracker.Mixed_Criticality_Tracking_System.i"/>
+  </instance:SystemInstance>
+  <instance:SystemInstance xmi:id="_BJpO0C4VEeSiT8ib3Z9hVw" name="Mixed_Criticality_Tracking_System_i_Instance" category="system">
+    <componentInstance xmi:id="_BJy_0C4VEeSiT8ib3Z9hVw" name="scan_process" category="process">
+      <ownedPropertyAssociation xmi:id="_BJ8w7C4VEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_BJ8w7S4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_BJ8w7y4VEeSiT8ib3Z9hVw" referencedInstanceObject="_BJy_3C4VEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_BJy_0S4VEeSiT8ib3Z9hVw" name="task" category="thread">
+        <ownedPropertyAssociation xmi:id="_BJ8w8C4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_BJ8w8S4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_BJ8w8y4VEeSiT8ib3Z9hVw" referencedInstanceObject="_BJy_3C4VEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.5/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.0"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_BJy_0i4VEeSiT8ib3Z9hVw" name="display_process" category="process">
+      <ownedPropertyAssociation xmi:id="_BJ8w9C4VEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_BJ8w9S4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_BJ8w9y4VEeSiT8ib3Z9hVw" referencedInstanceObject="_BJy_3S4VEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_BJy_0y4VEeSiT8ib3Z9hVw" name="task" category="thread">
+        <ownedPropertyAssociation xmi:id="_BJ8w-C4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_BJ8w-S4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_BJ8w-y4VEeSiT8ib3Z9hVw" referencedInstanceObject="_BJy_3S4VEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.8/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.1"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_BJy_1C4VEeSiT8ib3Z9hVw" name="nf_process" category="process">
+      <ownedPropertyAssociation xmi:id="_BKF6wC4VEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_BKF6wS4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_BKF6wy4VEeSiT8ib3Z9hVw" referencedInstanceObject="_BJy_4C4VEeSiT8ib3Z9hVw"/>
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_BKF6xC4VEeSiT8ib3Z9hVw" referencedInstanceObject="_BJy_3i4VEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_BJy_1S4VEeSiT8ib3Z9hVw" name="nf_task" category="thread">
+        <ownedPropertyAssociation xmi:id="_BKF6xS4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_BKF6xi4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_BKF6yC4VEeSiT8ib3Z9hVw" referencedInstanceObject="_BJy_4C4VEeSiT8ib3Z9hVw"/>
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_BKF6yS4VEeSiT8ib3Z9hVw" referencedInstanceObject="_BJy_3i4VEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_BKF6yi4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+          <ownedValue xmi:id="_BKF6yy4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_BKF6zC4VEeSiT8ib3Z9hVw" value="100">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_BKF6zS4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+          <ownedValue xmi:id="_BKF6zi4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:RangeValue">
+              <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_BKF60C4VEeSiT8ib3Z9hVw" value="40">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_BKF60S4VEeSiT8ib3Z9hVw" value="58">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.14/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.2"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_BJy_1i4VEeSiT8ib3Z9hVw" name="ff_process" category="process">
+      <ownedPropertyAssociation xmi:id="_BKF60i4VEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_BKF60y4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_BKF61S4VEeSiT8ib3Z9hVw" referencedInstanceObject="_BJy_4C4VEeSiT8ib3Z9hVw"/>
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_BKF61i4VEeSiT8ib3Z9hVw" referencedInstanceObject="_BJy_3y4VEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_BJy_1y4VEeSiT8ib3Z9hVw" name="ff_task" category="thread">
+        <ownedPropertyAssociation xmi:id="_BKF61y4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_BKF62C4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_BKF62i4VEeSiT8ib3Z9hVw" referencedInstanceObject="_BJy_4C4VEeSiT8ib3Z9hVw"/>
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_BKF62y4VEeSiT8ib3Z9hVw" referencedInstanceObject="_BJy_3y4VEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_BKF63C4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+          <ownedValue xmi:id="_BKF63S4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_BKF63i4VEeSiT8ib3Z9hVw" value="200">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_BKF63y4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+          <ownedValue xmi:id="_BKF64C4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:RangeValue">
+              <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_BKF64i4VEeSiT8ib3Z9hVw" value="83">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_BKF64y4VEeSiT8ib3Z9hVw" value="106">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.16/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.3"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_BJy_2C4VEeSiT8ib3Z9hVw" name="nh_process" category="process">
+      <ownedPropertyAssociation xmi:id="_BKF65C4VEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_BKF65S4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_BKF65y4VEeSiT8ib3Z9hVw" referencedInstanceObject="_BJy_4S4VEeSiT8ib3Z9hVw"/>
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_BKF66C4VEeSiT8ib3Z9hVw" referencedInstanceObject="_BJy_3i4VEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_BJy_2S4VEeSiT8ib3Z9hVw" name="nh_task" category="thread">
+        <ownedPropertyAssociation xmi:id="_BKF66S4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_BKF66i4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_BKF67C4VEeSiT8ib3Z9hVw" referencedInstanceObject="_BJy_4S4VEeSiT8ib3Z9hVw"/>
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_BKF67S4VEeSiT8ib3Z9hVw" referencedInstanceObject="_BJy_3i4VEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_BKF67i4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+          <ownedValue xmi:id="_BKF67y4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_BKF68C4VEeSiT8ib3Z9hVw" value="100">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_BKF68S4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+          <ownedValue xmi:id="_BKF68i4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:RangeValue">
+              <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_BKF69C4VEeSiT8ib3Z9hVw" value="40">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_BKF69S4VEeSiT8ib3Z9hVw" value="58">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.18/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.4"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_BJy_2i4VEeSiT8ib3Z9hVw" name="fh_process" category="process">
+      <ownedPropertyAssociation xmi:id="_BKF69i4VEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_BKF69y4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_BKF6-S4VEeSiT8ib3Z9hVw" referencedInstanceObject="_BJy_4S4VEeSiT8ib3Z9hVw"/>
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_BKF6-i4VEeSiT8ib3Z9hVw" referencedInstanceObject="_BJy_3y4VEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_BJy_2y4VEeSiT8ib3Z9hVw" name="ff_task" category="thread">
+        <ownedPropertyAssociation xmi:id="_BKF6-y4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_BKF6_C4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_BKF6_i4VEeSiT8ib3Z9hVw" referencedInstanceObject="_BJy_4S4VEeSiT8ib3Z9hVw"/>
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_BKF6_y4VEeSiT8ib3Z9hVw" referencedInstanceObject="_BJy_3y4VEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_BKPrwC4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+          <ownedValue xmi:id="_BKPrwS4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_BKPrwi4VEeSiT8ib3Z9hVw" value="200">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_BKPrwy4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+          <ownedValue xmi:id="_BKPrxC4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:RangeValue">
+              <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_BKPrxi4VEeSiT8ib3Z9hVw" value="83">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_BKPrxy4VEeSiT8ib3Z9hVw" value="106">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.16/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.5"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_BJy_3C4VEeSiT8ib3Z9hVw" name="scan_processor" category="processor">
+      <subcomponent xsi:type="aadl2:ProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessorSubcomponent.0"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_BJy_3S4VEeSiT8ib3Z9hVw" name="display_processor" category="processor">
+      <subcomponent xsi:type="aadl2:ProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessorSubcomponent.1"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_BJy_3i4VEeSiT8ib3Z9hVw" name="mc_processor_1" category="processor">
+      <subcomponent xsi:type="aadl2:ProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessorSubcomponent.2"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_BJy_3y4VEeSiT8ib3Z9hVw" name="mc_processor_2" category="processor">
+      <subcomponent xsi:type="aadl2:ProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessorSubcomponent.3"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_BJy_4C4VEeSiT8ib3Z9hVw" name="lc_partition" category="virtual processor">
+      <ownedPropertyAssociation xmi:id="_BKPryC4VEeSiT8ib3Z9hVw">
+        <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Criticality"/>
+        <ownedValue xmi:id="_BKPryS4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_BKPryi4VEeSiT8ib3Z9hVw" value="2"/>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <subcomponent xsi:type="aadl2:VirtualProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedVirtualProcessorSubcomponent.0"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_BJy_4S4VEeSiT8ib3Z9hVw" name="hc_partition" category="virtual processor">
+      <ownedPropertyAssociation xmi:id="_BKPryy4VEeSiT8ib3Z9hVw">
+        <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Criticality"/>
+        <ownedValue xmi:id="_BKPrzC4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_BKPrzS4VEeSiT8ib3Z9hVw" value="1"/>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <subcomponent xsi:type="aadl2:VirtualProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedVirtualProcessorSubcomponent.1"/>
+      <index>0</index>
+    </componentInstance>
+    <systemOperationMode xmi:id="_BJy_4i4VEeSiT8ib3Z9hVw" name="No Modes"/>
+    <systemImplementation href="../packages/Mixed_Criticality_Radar_Tracker.aadl#Mixed_Criticality_Radar_Tracker.Mixed_Criticality_Tracking_System.i"/>
+  </instance:SystemInstance>
+  <instance:SystemInstance xmi:id="_TkcWMC4VEeSiT8ib3Z9hVw" name="Mixed_Criticality_Tracking_System_i_Instance" category="system">
+    <componentInstance xmi:id="_TklgIC4VEeSiT8ib3Z9hVw" name="scan_process" category="process">
+      <ownedPropertyAssociation xmi:id="_TkvRPC4VEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_TkvRPS4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_TkvRPy4VEeSiT8ib3Z9hVw" referencedInstanceObject="_TklgLC4VEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_TklgIS4VEeSiT8ib3Z9hVw" name="task" category="thread">
+        <ownedPropertyAssociation xmi:id="_TkvRQC4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_TkvRQS4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_TkvRQy4VEeSiT8ib3Z9hVw" referencedInstanceObject="_TklgLC4VEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.5/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.0"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_TklgIi4VEeSiT8ib3Z9hVw" name="display_process" category="process">
+      <ownedPropertyAssociation xmi:id="_TkvRRC4VEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_TkvRRS4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_TkvRRy4VEeSiT8ib3Z9hVw" referencedInstanceObject="_TklgLS4VEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_TklgIy4VEeSiT8ib3Z9hVw" name="task" category="thread">
+        <ownedPropertyAssociation xmi:id="_TkvRSC4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_TkvRSS4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_TkvRSy4VEeSiT8ib3Z9hVw" referencedInstanceObject="_TklgLS4VEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.8/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.1"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_TklgJC4VEeSiT8ib3Z9hVw" name="nf_process" category="process">
+      <ownedPropertyAssociation xmi:id="_Tk5CIC4VEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_Tk5CIS4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_Tk5CIy4VEeSiT8ib3Z9hVw" referencedInstanceObject="_TklgMC4VEeSiT8ib3Z9hVw"/>
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_Tk5CJC4VEeSiT8ib3Z9hVw" referencedInstanceObject="_TklgLi4VEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_TklgJS4VEeSiT8ib3Z9hVw" name="nf_task" category="thread">
+        <ownedPropertyAssociation xmi:id="_Tk5CJS4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_Tk5CJi4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_Tk5CKC4VEeSiT8ib3Z9hVw" referencedInstanceObject="_TklgMC4VEeSiT8ib3Z9hVw"/>
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_Tk5CKS4VEeSiT8ib3Z9hVw" referencedInstanceObject="_TklgLi4VEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_Tk5CKi4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+          <ownedValue xmi:id="_Tk5CKy4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_Tk5CLC4VEeSiT8ib3Z9hVw" value="100">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_Tk5CLS4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+          <ownedValue xmi:id="_Tk5CLi4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:RangeValue">
+              <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_Tk5CMC4VEeSiT8ib3Z9hVw" value="40">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_Tk5CMS4VEeSiT8ib3Z9hVw" value="58">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.14/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.2"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_TklgJi4VEeSiT8ib3Z9hVw" name="ff_process" category="process">
+      <ownedPropertyAssociation xmi:id="_Tk5CMi4VEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_Tk5CMy4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_Tk5CNS4VEeSiT8ib3Z9hVw" referencedInstanceObject="_TklgMC4VEeSiT8ib3Z9hVw"/>
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_Tk5CNi4VEeSiT8ib3Z9hVw" referencedInstanceObject="_TklgLy4VEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_TklgJy4VEeSiT8ib3Z9hVw" name="ff_task" category="thread">
+        <ownedPropertyAssociation xmi:id="_Tk5CNy4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_Tk5COC4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_Tk5COi4VEeSiT8ib3Z9hVw" referencedInstanceObject="_TklgMC4VEeSiT8ib3Z9hVw"/>
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_Tk5COy4VEeSiT8ib3Z9hVw" referencedInstanceObject="_TklgLy4VEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_Tk5CPC4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+          <ownedValue xmi:id="_Tk5CPS4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_Tk5CPi4VEeSiT8ib3Z9hVw" value="200">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_Tk5CPy4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+          <ownedValue xmi:id="_Tk5CQC4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:RangeValue">
+              <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_Tk5CQi4VEeSiT8ib3Z9hVw" value="83">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_Tk5CQy4VEeSiT8ib3Z9hVw" value="106">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.16/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.3"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_TklgKC4VEeSiT8ib3Z9hVw" name="nh_process" category="process">
+      <ownedPropertyAssociation xmi:id="_Tk5CRC4VEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_Tk5CRS4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_Tk5CRy4VEeSiT8ib3Z9hVw" referencedInstanceObject="_TklgMS4VEeSiT8ib3Z9hVw"/>
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_Tk5CSC4VEeSiT8ib3Z9hVw" referencedInstanceObject="_TklgLi4VEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_TklgKS4VEeSiT8ib3Z9hVw" name="nh_task" category="thread">
+        <ownedPropertyAssociation xmi:id="_Tk5CSS4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_Tk5CSi4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_Tk5CTC4VEeSiT8ib3Z9hVw" referencedInstanceObject="_TklgMS4VEeSiT8ib3Z9hVw"/>
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_Tk5CTS4VEeSiT8ib3Z9hVw" referencedInstanceObject="_TklgLi4VEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_Tk5CTi4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+          <ownedValue xmi:id="_Tk5CTy4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_Tk5CUC4VEeSiT8ib3Z9hVw" value="100">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_Tk5CUS4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+          <ownedValue xmi:id="_Tk5CUi4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:RangeValue">
+              <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_Tk5CVC4VEeSiT8ib3Z9hVw" value="40">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_Tk5CVS4VEeSiT8ib3Z9hVw" value="58">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.18/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.4"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_TklgKi4VEeSiT8ib3Z9hVw" name="fh_process" category="process">
+      <ownedPropertyAssociation xmi:id="_Tk5CVi4VEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_Tk5CVy4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_Tk5CWS4VEeSiT8ib3Z9hVw" referencedInstanceObject="_TklgMS4VEeSiT8ib3Z9hVw"/>
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_Tk5CWi4VEeSiT8ib3Z9hVw" referencedInstanceObject="_TklgLy4VEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_TklgKy4VEeSiT8ib3Z9hVw" name="ff_task" category="thread">
+        <ownedPropertyAssociation xmi:id="_Tk5CWy4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_Tk5CXC4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_Tk5CXi4VEeSiT8ib3Z9hVw" referencedInstanceObject="_TklgMS4VEeSiT8ib3Z9hVw"/>
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_Tk5CXy4VEeSiT8ib3Z9hVw" referencedInstanceObject="_TklgLy4VEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_Tk5CYC4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+          <ownedValue xmi:id="_Tk5CYS4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_Tk5CYi4VEeSiT8ib3Z9hVw" value="200">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_Tk5CYy4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+          <ownedValue xmi:id="_Tk5CZC4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:RangeValue">
+              <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_Tk5CZi4VEeSiT8ib3Z9hVw" value="83">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_Tk5CZy4VEeSiT8ib3Z9hVw" value="106">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.16/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.5"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_TklgLC4VEeSiT8ib3Z9hVw" name="scan_processor" category="processor">
+      <subcomponent xsi:type="aadl2:ProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessorSubcomponent.0"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_TklgLS4VEeSiT8ib3Z9hVw" name="display_processor" category="processor">
+      <subcomponent xsi:type="aadl2:ProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessorSubcomponent.1"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_TklgLi4VEeSiT8ib3Z9hVw" name="mc_processor_1" category="processor">
+      <subcomponent xsi:type="aadl2:ProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessorSubcomponent.2"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_TklgLy4VEeSiT8ib3Z9hVw" name="mc_processor_2" category="processor">
+      <subcomponent xsi:type="aadl2:ProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessorSubcomponent.3"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_TklgMC4VEeSiT8ib3Z9hVw" name="lc_partition" category="virtual processor">
+      <ownedPropertyAssociation xmi:id="_TlCMEC4VEeSiT8ib3Z9hVw">
+        <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Criticality"/>
+        <ownedValue xmi:id="_TlCMES4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_TlCMEi4VEeSiT8ib3Z9hVw" value="2"/>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <subcomponent xsi:type="aadl2:VirtualProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedVirtualProcessorSubcomponent.0"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_TklgMS4VEeSiT8ib3Z9hVw" name="hc_partition" category="virtual processor">
+      <ownedPropertyAssociation xmi:id="_TlCMEy4VEeSiT8ib3Z9hVw">
+        <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Criticality"/>
+        <ownedValue xmi:id="_TlCMFC4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_TlCMFS4VEeSiT8ib3Z9hVw" value="1"/>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <subcomponent xsi:type="aadl2:VirtualProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedVirtualProcessorSubcomponent.1"/>
+      <index>0</index>
+    </componentInstance>
+    <systemOperationMode xmi:id="_TklgMi4VEeSiT8ib3Z9hVw" name="No Modes"/>
+    <systemImplementation href="../packages/Mixed_Criticality_Radar_Tracker.aadl#Mixed_Criticality_Radar_Tracker.Mixed_Criticality_Tracking_System.i"/>
+  </instance:SystemInstance>
+  <instance:SystemInstance xmi:id="_UTJ2Wy4VEeSiT8ib3Z9hVw" name="Mixed_Criticality_Tracking_System_i_Instance" category="system">
+    <componentInstance xmi:id="_UTTnUC4VEeSiT8ib3Z9hVw" name="scan_process" category="process">
+      <ownedPropertyAssociation xmi:id="_UTmiQC4VEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_UTmiQS4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue" xmi:id="_UTmiQi4VEeSiT8ib3Z9hVw">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_UTmiQy4VEeSiT8ib3Z9hVw" referencedInstanceObject="_UTdYUC4VEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_UTTnUS4VEeSiT8ib3Z9hVw" name="task" category="thread">
+        <ownedPropertyAssociation xmi:id="_UTmiRC4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_UTmiRS4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue" xmi:id="_UTmiRi4VEeSiT8ib3Z9hVw">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_UTmiRy4VEeSiT8ib3Z9hVw" referencedInstanceObject="_UTdYUC4VEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.5/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.0"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_UTTnUi4VEeSiT8ib3Z9hVw" name="display_process" category="process">
+      <ownedPropertyAssociation xmi:id="_UTmiSC4VEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_UTmiSS4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue" xmi:id="_UTmiSi4VEeSiT8ib3Z9hVw">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_UTmiSy4VEeSiT8ib3Z9hVw" referencedInstanceObject="_UTdYUS4VEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_UTTnUy4VEeSiT8ib3Z9hVw" name="task" category="thread">
+        <ownedPropertyAssociation xmi:id="_UTmiTC4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_UTmiTS4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue" xmi:id="_UTmiTi4VEeSiT8ib3Z9hVw">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_UTmiTy4VEeSiT8ib3Z9hVw" referencedInstanceObject="_UTdYUS4VEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.8/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.1"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_UTTnVC4VEeSiT8ib3Z9hVw" name="nf_process" category="process">
+      <ownedPropertyAssociation xmi:id="_UTmiUC4VEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_UTmiUS4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue" xmi:id="_UTmiUi4VEeSiT8ib3Z9hVw">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_UTmiUy4VEeSiT8ib3Z9hVw" referencedInstanceObject="_UTdYVC4VEeSiT8ib3Z9hVw"/>
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_UTmiVC4VEeSiT8ib3Z9hVw" referencedInstanceObject="_UTdYUi4VEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_UTTnVS4VEeSiT8ib3Z9hVw" name="nf_task" category="thread">
+        <ownedPropertyAssociation xmi:id="_UTmiVS4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_UTmiVi4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue" xmi:id="_UTmiVy4VEeSiT8ib3Z9hVw">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_UTmiWC4VEeSiT8ib3Z9hVw" referencedInstanceObject="_UTdYVC4VEeSiT8ib3Z9hVw"/>
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_UTmiWS4VEeSiT8ib3Z9hVw" referencedInstanceObject="_UTdYUi4VEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_UTmiWi4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+          <ownedValue xmi:id="_UTmiWy4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_UTmiXC4VEeSiT8ib3Z9hVw" value="100">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_UTmiXS4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+          <ownedValue xmi:id="_UTmiXi4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:RangeValue" xmi:id="_UTmiXy4VEeSiT8ib3Z9hVw">
+              <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_UTmiYC4VEeSiT8ib3Z9hVw" value="40">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_UTmiYS4VEeSiT8ib3Z9hVw" value="58">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.14/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.2"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_UTTnVi4VEeSiT8ib3Z9hVw" name="ff_process" category="process">
+      <ownedPropertyAssociation xmi:id="_UTmiYi4VEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_UTmiYy4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue" xmi:id="_UTmiZC4VEeSiT8ib3Z9hVw">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_UTmiZS4VEeSiT8ib3Z9hVw" referencedInstanceObject="_UTdYVC4VEeSiT8ib3Z9hVw"/>
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_UTmiZi4VEeSiT8ib3Z9hVw" referencedInstanceObject="_UTdYUy4VEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_UTTnVy4VEeSiT8ib3Z9hVw" name="ff_task" category="thread">
+        <ownedPropertyAssociation xmi:id="_UTmiZy4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_UTmiaC4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue" xmi:id="_UTmiaS4VEeSiT8ib3Z9hVw">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_UTmiai4VEeSiT8ib3Z9hVw" referencedInstanceObject="_UTdYVC4VEeSiT8ib3Z9hVw"/>
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_UTmiay4VEeSiT8ib3Z9hVw" referencedInstanceObject="_UTdYUy4VEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_UTmibC4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+          <ownedValue xmi:id="_UTmibS4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_UTmibi4VEeSiT8ib3Z9hVw" value="200">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_UTmiby4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+          <ownedValue xmi:id="_UTmicC4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:RangeValue" xmi:id="_UTmicS4VEeSiT8ib3Z9hVw">
+              <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_UTmici4VEeSiT8ib3Z9hVw" value="83">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_UTmicy4VEeSiT8ib3Z9hVw" value="106">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.16/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.3"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_UTTnWC4VEeSiT8ib3Z9hVw" name="nh_process" category="process">
+      <ownedPropertyAssociation xmi:id="_UTmidC4VEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_UTmidS4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue" xmi:id="_UTmidi4VEeSiT8ib3Z9hVw">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_UTmidy4VEeSiT8ib3Z9hVw" referencedInstanceObject="_UTdYVS4VEeSiT8ib3Z9hVw"/>
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_UTmieC4VEeSiT8ib3Z9hVw" referencedInstanceObject="_UTdYUi4VEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_UTTnWS4VEeSiT8ib3Z9hVw" name="nh_task" category="thread">
+        <ownedPropertyAssociation xmi:id="_UTmieS4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_UTmiei4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue" xmi:id="_UTmiey4VEeSiT8ib3Z9hVw">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_UTmifC4VEeSiT8ib3Z9hVw" referencedInstanceObject="_UTdYVS4VEeSiT8ib3Z9hVw"/>
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_UTmifS4VEeSiT8ib3Z9hVw" referencedInstanceObject="_UTdYUi4VEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_UTmifi4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+          <ownedValue xmi:id="_UTmify4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_UTmigC4VEeSiT8ib3Z9hVw" value="100">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_UTmigS4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+          <ownedValue xmi:id="_UTmigi4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:RangeValue" xmi:id="_UTmigy4VEeSiT8ib3Z9hVw">
+              <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_UTmihC4VEeSiT8ib3Z9hVw" value="40">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_UTmihS4VEeSiT8ib3Z9hVw" value="58">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.18/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.4"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_UTTnWi4VEeSiT8ib3Z9hVw" name="fh_process" category="process">
+      <ownedPropertyAssociation xmi:id="_UTmihi4VEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_UTmihy4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue" xmi:id="_UTmiiC4VEeSiT8ib3Z9hVw">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_UTmiiS4VEeSiT8ib3Z9hVw" referencedInstanceObject="_UTdYVS4VEeSiT8ib3Z9hVw"/>
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_UTmiii4VEeSiT8ib3Z9hVw" referencedInstanceObject="_UTdYUy4VEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <componentInstance xmi:id="_UTTnWy4VEeSiT8ib3Z9hVw" name="ff_task" category="thread">
+        <ownedPropertyAssociation xmi:id="_UTwTQC4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_UTwTQS4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue" xmi:id="_UTwTQi4VEeSiT8ib3Z9hVw">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_UTwTQy4VEeSiT8ib3Z9hVw" referencedInstanceObject="_UTdYVS4VEeSiT8ib3Z9hVw"/>
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_UTwTRC4VEeSiT8ib3Z9hVw" referencedInstanceObject="_UTdYUy4VEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_UTwTRS4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+          <ownedValue xmi:id="_UTwTRi4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_UTwTRy4VEeSiT8ib3Z9hVw" value="200">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_UTwTSC4VEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+          <ownedValue xmi:id="_UTwTSS4VEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:RangeValue" xmi:id="_UTwTSi4VEeSiT8ib3Z9hVw">
+              <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_UTwTSy4VEeSiT8ib3Z9hVw" value="83">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </minimum>
+              <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_UTwTTC4VEeSiT8ib3Z9hVw" value="106">
+                <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+              </maximum>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.16/@ownedThreadSubcomponent.0"/>
+        <index>0</index>
+      </componentInstance>
+      <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessSubcomponent.5"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_UTdYUC4VEeSiT8ib3Z9hVw" name="scan_processor" category="processor">
+      <subcomponent xsi:type="aadl2:ProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessorSubcomponent.0"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_UTdYUS4VEeSiT8ib3Z9hVw" name="display_processor" category="processor">
+      <subcomponent xsi:type="aadl2:ProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessorSubcomponent.1"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_UTdYUi4VEeSiT8ib3Z9hVw" name="mc_processor_1" category="processor">
+      <subcomponent xsi:type="aadl2:ProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessorSubcomponent.2"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_UTdYUy4VEeSiT8ib3Z9hVw" name="mc_processor_2" category="processor">
+      <subcomponent xsi:type="aadl2:ProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedProcessorSubcomponent.3"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_UTdYVC4VEeSiT8ib3Z9hVw" name="lc_partition" category="virtual processor">
+      <ownedPropertyAssociation xmi:id="_UTwTTS4VEeSiT8ib3Z9hVw">
+        <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Criticality"/>
+        <ownedValue xmi:id="_UTwTTi4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_UTwTTy4VEeSiT8ib3Z9hVw" value="2"/>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <subcomponent xsi:type="aadl2:VirtualProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedVirtualProcessorSubcomponent.0"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_UTdYVS4VEeSiT8ib3Z9hVw" name="hc_partition" category="virtual processor">
+      <ownedPropertyAssociation xmi:id="_UTwTUC4VEeSiT8ib3Z9hVw">
+        <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Criticality"/>
+        <ownedValue xmi:id="_UTwTUS4VEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_UTwTUi4VEeSiT8ib3Z9hVw" value="1"/>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <subcomponent xsi:type="aadl2:VirtualProcessorSubcomponent" href="../packages/Mixed_Criticality_Radar_Tracker.aadl#//@ownedPublicSection/@ownedClassifier.25/@ownedVirtualProcessorSubcomponent.1"/>
+      <index>0</index>
+    </componentInstance>
+    <systemOperationMode xmi:id="_UTdYVi4VEeSiT8ib3Z9hVw" name="No Modes"/>
+    <systemImplementation href="../packages/Mixed_Criticality_Radar_Tracker.aadl#Mixed_Criticality_Radar_Tracker.Mixed_Criticality_Tracking_System.i"/>
+  </instance:SystemInstance>
+</xmi:XMI>

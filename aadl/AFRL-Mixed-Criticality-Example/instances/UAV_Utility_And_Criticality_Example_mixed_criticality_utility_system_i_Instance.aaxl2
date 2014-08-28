@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="ASCII"?>
+<instance:SystemInstance xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aadl2="http://aadl.info/AADL/2.0" xmlns:instance="http://aadl.info/AADL/2.0/instance" xmi:id="_y7JVgC4kEeSiT8ib3Z9hVw" name="mixed_criticality_utility_system_i_Instance" category="system">
+  <componentInstance xmi:id="_y7JVgS4kEeSiT8ib3Z9hVw" name="flight_process" category="process">
+    <ownedPropertyAssociation xmi:id="_zH9ppS4kEeSiT8ib3Z9hVw">
+      <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+      <ownedValue xmi:id="_zH9ppi4kEeSiT8ib3Z9hVw">
+        <ownedValue xsi:type="aadl2:ListValue" xmi:id="_zH9ppy4kEeSiT8ib3Z9hVw">
+          <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_zH9pqC4kEeSiT8ib3Z9hVw" referencedInstanceObject="_y7c3gC4kEeSiT8ib3Z9hVw"/>
+        </ownedValue>
+      </ownedValue>
+    </ownedPropertyAssociation>
+    <componentInstance xmi:id="_y7TGgC4kEeSiT8ib3Z9hVw" name="actuation" category="thread">
+      <ownedPropertyAssociation xmi:id="_zH9pqS4kEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_zH9pqi4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue" xmi:id="_zH9pqy4kEeSiT8ib3Z9hVw">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_zH9prC4kEeSiT8ib3Z9hVw" referencedInstanceObject="_y7c3gC4kEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <ownedPropertyAssociation xmi:id="_zH9prS4kEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+        <ownedValue xmi:id="_zH9pri4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_zH9pry4kEeSiT8ib3Z9hVw" value="30">
+            <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <ownedPropertyAssociation xmi:id="_zH9psC4kEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+        <ownedValue xmi:id="_zH9psS4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:RangeValue" xmi:id="_zH9psi4kEeSiT8ib3Z9hVw">
+            <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_zH9psy4kEeSiT8ib3Z9hVw" value="1">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </minimum>
+            <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_zH9ptC4kEeSiT8ib3Z9hVw" value="1">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </maximum>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <ownedPropertyAssociation xmi:id="_zH9ptS4kEeSiT8ib3Z9hVw">
+        <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Zero_Slack_Instant"/>
+        <ownedValue xmi:id="_zH9pti4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_zH9pty4kEeSiT8ib3Z9hVw" value="30">
+            <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/UAV_Utility_And_Criticality_Example.aadl#//@ownedPublicSection/@ownedClassifier.8/@ownedThreadSubcomponent.0"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_y7TGgS4kEeSiT8ib3Z9hVw" name="sensor" category="thread">
+      <ownedPropertyAssociation xmi:id="_zH9puC4kEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_zH9puS4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue" xmi:id="_zH9pui4kEeSiT8ib3Z9hVw">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_zH9puy4kEeSiT8ib3Z9hVw" referencedInstanceObject="_y7c3gC4kEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <ownedPropertyAssociation xmi:id="_zH9pvC4kEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+        <ownedValue xmi:id="_zH9pvS4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_zH9pvi4kEeSiT8ib3Z9hVw" value="65">
+            <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <ownedPropertyAssociation xmi:id="_zH9pvy4kEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+        <ownedValue xmi:id="_zH9pwC4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:RangeValue" xmi:id="_zH9pwS4kEeSiT8ib3Z9hVw">
+            <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_zH9pwi4kEeSiT8ib3Z9hVw" value="100">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.2"/>
+            </minimum>
+            <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_zH9pwy4kEeSiT8ib3Z9hVw" value="100">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.2"/>
+            </maximum>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <ownedPropertyAssociation xmi:id="_zH9pxC4kEeSiT8ib3Z9hVw">
+        <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Zero_Slack_Instant"/>
+        <ownedValue xmi:id="_zH9pxS4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_zH9pxi4kEeSiT8ib3Z9hVw" value="65">
+            <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/UAV_Utility_And_Criticality_Example.aadl#//@ownedPublicSection/@ownedClassifier.8/@ownedThreadSubcomponent.1"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_y7TGgi4kEeSiT8ib3Z9hVw" name="aux_sensor" category="thread">
+      <ownedPropertyAssociation xmi:id="_zH9pxy4kEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_zH9pyC4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue" xmi:id="_zH9pyS4kEeSiT8ib3Z9hVw">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_zH9pyi4kEeSiT8ib3Z9hVw" referencedInstanceObject="_y7c3gC4kEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <ownedPropertyAssociation xmi:id="_zH9pyy4kEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+        <ownedValue xmi:id="_zH9pzC4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_zH9pzS4kEeSiT8ib3Z9hVw" value="50">
+            <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <ownedPropertyAssociation xmi:id="_zH9pzi4kEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+        <ownedValue xmi:id="_zH9pzy4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:RangeValue" xmi:id="_zH9p0C4kEeSiT8ib3Z9hVw">
+            <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_zH9p0S4kEeSiT8ib3Z9hVw" value="500">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.2"/>
+            </minimum>
+            <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_zH9p0i4kEeSiT8ib3Z9hVw" value="500">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.2"/>
+            </maximum>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <ownedPropertyAssociation xmi:id="_zIHagC4kEeSiT8ib3Z9hVw">
+        <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Zero_Slack_Instant"/>
+        <ownedValue xmi:id="_zIHagS4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_zIHagi4kEeSiT8ib3Z9hVw" value="50">
+            <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/UAV_Utility_And_Criticality_Example.aadl#//@ownedPublicSection/@ownedClassifier.8/@ownedThreadSubcomponent.2"/>
+      <index>0</index>
+    </componentInstance>
+    <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/UAV_Utility_And_Criticality_Example.aadl#//@ownedPublicSection/@ownedClassifier.18/@ownedProcessSubcomponent.0"/>
+    <index>0</index>
+  </componentInstance>
+  <componentInstance xmi:id="_y7TGgy4kEeSiT8ib3Z9hVw" name="mission_process" category="process">
+    <ownedPropertyAssociation xmi:id="_zIHagy4kEeSiT8ib3Z9hVw">
+      <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+      <ownedValue xmi:id="_zIHahC4kEeSiT8ib3Z9hVw">
+        <ownedValue xsi:type="aadl2:ListValue" xmi:id="_zIHahS4kEeSiT8ib3Z9hVw">
+          <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_zIHahi4kEeSiT8ib3Z9hVw" referencedInstanceObject="_y7c3gS4kEeSiT8ib3Z9hVw"/>
+        </ownedValue>
+      </ownedValue>
+    </ownedPropertyAssociation>
+    <componentInstance xmi:id="_y7TGhC4kEeSiT8ib3Z9hVw" name="navigation" category="thread">
+      <ownedPropertyAssociation xmi:id="_zIHahy4kEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_zIHaiC4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue" xmi:id="_zIHaiS4kEeSiT8ib3Z9hVw">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_zIHaii4kEeSiT8ib3Z9hVw" referencedInstanceObject="_y7c3gS4kEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <ownedPropertyAssociation xmi:id="_zIHaiy4kEeSiT8ib3Z9hVw">
+        <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Utility"/>
+        <ownedValue xmi:id="_zIHajC4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:RealLiteral" xmi:id="_zIHajS4kEeSiT8ib3Z9hVw" value="10.0"/>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <ownedPropertyAssociation xmi:id="_zIHaji4kEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+        <ownedValue xmi:id="_zIHajy4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_zIHakC4kEeSiT8ib3Z9hVw" value="50">
+            <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <ownedPropertyAssociation xmi:id="_zIHakS4kEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+        <ownedValue xmi:id="_zIHaki4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:RangeValue" xmi:id="_zIHaky4kEeSiT8ib3Z9hVw">
+            <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_zIHalC4kEeSiT8ib3Z9hVw" value="11">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </minimum>
+            <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_zIHalS4kEeSiT8ib3Z9hVw" value="11">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </maximum>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <ownedPropertyAssociation xmi:id="_zIHali4kEeSiT8ib3Z9hVw">
+        <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Zero_Slack_Instant"/>
+        <ownedValue xmi:id="_zIHaly4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_zIHamC4kEeSiT8ib3Z9hVw" value="49">
+            <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/UAV_Utility_And_Criticality_Example.aadl#//@ownedPublicSection/@ownedClassifier.16/@ownedThreadSubcomponent.0"/>
+      <index>0</index>
+    </componentInstance>
+    <componentInstance xmi:id="_y7TGhS4kEeSiT8ib3Z9hVw" name="detection" category="thread">
+      <ownedPropertyAssociation xmi:id="_zIHamS4kEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_zIHami4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue" xmi:id="_zIHamy4kEeSiT8ib3Z9hVw">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_zIHanC4kEeSiT8ib3Z9hVw" referencedInstanceObject="_y7c3gS4kEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <ownedPropertyAssociation xmi:id="_zIHanS4kEeSiT8ib3Z9hVw">
+        <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Utility"/>
+        <ownedValue xmi:id="_zIHani4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:RealLiteral" xmi:id="_zIHany4kEeSiT8ib3Z9hVw" value="2.5"/>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <ownedPropertyAssociation xmi:id="_zIHaoC4kEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+        <ownedValue xmi:id="_zIHaoS4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_zIHaoi4kEeSiT8ib3Z9hVw" value="100">
+            <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <ownedPropertyAssociation xmi:id="_zIHaoy4kEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+        <ownedValue xmi:id="_zIHapC4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:RangeValue" xmi:id="_zIHapS4kEeSiT8ib3Z9hVw">
+            <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_zIHapi4kEeSiT8ib3Z9hVw" value="15">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </minimum>
+            <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_zIHapy4kEeSiT8ib3Z9hVw" value="40">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </maximum>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <ownedPropertyAssociation xmi:id="_zIHaqC4kEeSiT8ib3Z9hVw">
+        <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Zero_Slack_Instant"/>
+        <ownedValue xmi:id="_zIHaqS4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_zIHaqi4kEeSiT8ib3Z9hVw" value="87">
+            <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/UAV_Utility_And_Criticality_Example.aadl#//@ownedPublicSection/@ownedClassifier.16/@ownedThreadSubcomponent.1"/>
+      <index>0</index>
+    </componentInstance>
+    <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/UAV_Utility_And_Criticality_Example.aadl#//@ownedPublicSection/@ownedClassifier.18/@ownedProcessSubcomponent.1"/>
+    <index>0</index>
+  </componentInstance>
+  <componentInstance xmi:id="_y7TGhi4kEeSiT8ib3Z9hVw" name="mf_streaming_process" category="process">
+    <ownedPropertyAssociation xmi:id="_zIHaqy4kEeSiT8ib3Z9hVw">
+      <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+      <ownedValue xmi:id="_zIHarC4kEeSiT8ib3Z9hVw">
+        <ownedValue xsi:type="aadl2:ListValue" xmi:id="_zIHarS4kEeSiT8ib3Z9hVw">
+          <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_zIHari4kEeSiT8ib3Z9hVw" referencedInstanceObject="_y7c3gi4kEeSiT8ib3Z9hVw"/>
+        </ownedValue>
+      </ownedValue>
+    </ownedPropertyAssociation>
+    <componentInstance xmi:id="_y7TGhy4kEeSiT8ib3Z9hVw" name="mf_streaming_task" category="thread">
+      <ownedPropertyAssociation xmi:id="_zIHary4kEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+        <ownedValue xmi:id="_zIHasC4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:ListValue" xmi:id="_zIHasS4kEeSiT8ib3Z9hVw">
+            <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_zIHasi4kEeSiT8ib3Z9hVw" referencedInstanceObject="_y7c3gi4kEeSiT8ib3Z9hVw"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <ownedPropertyAssociation xmi:id="_zIHasy4kEeSiT8ib3Z9hVw">
+        <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Utility"/>
+        <ownedValue xmi:id="_zIHatC4kEeSiT8ib3Z9hVw" inMode="_y7c3hi4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:RealLiteral" xmi:id="_zIHatS4kEeSiT8ib3Z9hVw" value="0.1"/>
+        </ownedValue>
+        <ownedValue xmi:id="_zIHati4kEeSiT8ib3Z9hVw" inMode="_y7c3hS4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:RealLiteral" xmi:id="_zIHaty4kEeSiT8ib3Z9hVw" value="0.5"/>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <ownedPropertyAssociation xmi:id="_zIHauC4kEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+        <ownedValue xmi:id="_zIHauS4kEeSiT8ib3Z9hVw" inMode="_y7c3hi4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_zIHaui4kEeSiT8ib3Z9hVw" value="120">
+            <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+          </ownedValue>
+        </ownedValue>
+        <ownedValue xmi:id="_zIHauy4kEeSiT8ib3Z9hVw" inMode="_y7c3hS4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_zIHavC4kEeSiT8ib3Z9hVw" value="40">
+            <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <ownedPropertyAssociation xmi:id="_zIHavS4kEeSiT8ib3Z9hVw">
+        <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Compute_Execution_Time"/>
+        <ownedValue xmi:id="_zIHavi4kEeSiT8ib3Z9hVw" inMode="_y7c3hi4kEeSiT8ib3Z9hVw _y7c3hS4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:RangeValue" xmi:id="_zIHavy4kEeSiT8ib3Z9hVw">
+            <minimum xsi:type="aadl2:IntegerLiteral" xmi:id="_zIHawC4kEeSiT8ib3Z9hVw" value="10">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </minimum>
+            <maximum xsi:type="aadl2:IntegerLiteral" xmi:id="_zIHawS4kEeSiT8ib3Z9hVw" value="10">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </maximum>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <ownedPropertyAssociation xmi:id="_zIHawi4kEeSiT8ib3Z9hVw">
+        <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Zero_Slack_Instant"/>
+        <ownedValue xmi:id="_zIHawy4kEeSiT8ib3Z9hVw" inMode="_y7c3hi4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_zIHaxC4kEeSiT8ib3Z9hVw" value="120">
+            <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+          </ownedValue>
+        </ownedValue>
+        <ownedValue xmi:id="_zIHaxS4kEeSiT8ib3Z9hVw" inMode="_y7c3hS4kEeSiT8ib3Z9hVw">
+          <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_zIHaxi4kEeSiT8ib3Z9hVw" value="40">
+            <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+          </ownedValue>
+        </ownedValue>
+      </ownedPropertyAssociation>
+      <featureInstance xmi:id="_y7TGjC4kEeSiT8ib3Z9hVw" name="degrade_mode" category="eventPort">
+        <feature xsi:type="aadl2:EventPort" href="../packages/UAV_Utility_And_Criticality_Example.aadl#//@ownedPublicSection/@ownedClassifier.11/@ownedEventPort.0"/>
+      </featureInstance>
+      <featureInstance xmi:id="_y7TGjS4kEeSiT8ib3Z9hVw" name="upgrade_mode" category="eventPort">
+        <feature xsi:type="aadl2:EventPort" href="../packages/UAV_Utility_And_Criticality_Example.aadl#//@ownedPublicSection/@ownedClassifier.11/@ownedEventPort.1"/>
+      </featureInstance>
+      <modeInstance xmi:id="_y7TGiC4kEeSiT8ib3Z9hVw" name="high_fidelity_mode" srcModeTransition="_y7TGii4kEeSiT8ib3Z9hVw" dstModeTransition="_y7TGiy4kEeSiT8ib3Z9hVw" initial="true">
+        <mode href="../packages/UAV_Utility_And_Criticality_Example.aadl#//@ownedPublicSection/@ownedClassifier.12/@ownedMode.0"/>
+      </modeInstance>
+      <modeInstance xmi:id="_y7TGiS4kEeSiT8ib3Z9hVw" name="low_fidelity_mode" srcModeTransition="_y7TGiy4kEeSiT8ib3Z9hVw" dstModeTransition="_y7TGii4kEeSiT8ib3Z9hVw">
+        <mode href="../packages/UAV_Utility_And_Criticality_Example.aadl#//@ownedPublicSection/@ownedClassifier.12/@ownedMode.1"/>
+      </modeInstance>
+      <modeTransitionInstance xmi:id="_y7TGii4kEeSiT8ib3Z9hVw" name="high_fidelity_mode.degrade_mode.low_fidelity_mode" destination="_y7TGiS4kEeSiT8ib3Z9hVw" source="_y7TGiC4kEeSiT8ib3Z9hVw">
+        <ownedPropertyAssociation xmi:id="_zIHaxy4kEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_zIHayC4kEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue" xmi:id="_zIHayS4kEeSiT8ib3Z9hVw">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_zIHayi4kEeSiT8ib3Z9hVw" referencedInstanceObject="_y7c3gi4kEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_zIHayy4kEeSiT8ib3Z9hVw">
+          <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Utility"/>
+          <ownedValue xmi:id="_zIHazC4kEeSiT8ib3Z9hVw" inMode="_y7c3hi4kEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:RealLiteral" xmi:id="_zIHazS4kEeSiT8ib3Z9hVw" value="0.1"/>
+          </ownedValue>
+          <ownedValue xmi:id="_zIHazi4kEeSiT8ib3Z9hVw" inMode="_y7c3hS4kEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:RealLiteral" xmi:id="_zIHazy4kEeSiT8ib3Z9hVw" value="0.5"/>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_zIHa0C4kEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+          <ownedValue xmi:id="_zIHa0S4kEeSiT8ib3Z9hVw" inMode="_y7c3hi4kEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_zIHa0i4kEeSiT8ib3Z9hVw" value="120">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+          <ownedValue xmi:id="_zIHa0y4kEeSiT8ib3Z9hVw" inMode="_y7c3hS4kEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_zIHa1C4kEeSiT8ib3Z9hVw" value="40">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_zIHa1S4kEeSiT8ib3Z9hVw">
+          <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Zero_Slack_Instant"/>
+          <ownedValue xmi:id="_zIHa1i4kEeSiT8ib3Z9hVw" inMode="_y7c3hi4kEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_zIHa1y4kEeSiT8ib3Z9hVw" value="120">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+          <ownedValue xmi:id="_zIHa2C4kEeSiT8ib3Z9hVw" inMode="_y7c3hS4kEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_zIHa2S4kEeSiT8ib3Z9hVw" value="40">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <modeTransition href="../packages/UAV_Utility_And_Criticality_Example.aadl#//@ownedPublicSection/@ownedClassifier.12/@ownedModeTransition.0"/>
+      </modeTransitionInstance>
+      <modeTransitionInstance xmi:id="_y7TGiy4kEeSiT8ib3Z9hVw" name="low_fidelity_mode.upgrade_mode.high_fidelity_mode" destination="_y7TGiC4kEeSiT8ib3Z9hVw" source="_y7TGiS4kEeSiT8ib3Z9hVw">
+        <ownedPropertyAssociation xmi:id="_zIHa2i4kEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+          <ownedValue xmi:id="_zIHa2y4kEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:ListValue" xmi:id="_zIHa3C4kEeSiT8ib3Z9hVw">
+              <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_zIHa3S4kEeSiT8ib3Z9hVw" referencedInstanceObject="_y7c3gi4kEeSiT8ib3Z9hVw"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_zIHa3i4kEeSiT8ib3Z9hVw">
+          <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Utility"/>
+          <ownedValue xmi:id="_zIHa3y4kEeSiT8ib3Z9hVw" inMode="_y7c3hi4kEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:RealLiteral" xmi:id="_zIHa4C4kEeSiT8ib3Z9hVw" value="0.1"/>
+          </ownedValue>
+          <ownedValue xmi:id="_zIHa4S4kEeSiT8ib3Z9hVw" inMode="_y7c3hS4kEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:RealLiteral" xmi:id="_zIHa4i4kEeSiT8ib3Z9hVw" value="0.5"/>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_zIHa4y4kEeSiT8ib3Z9hVw">
+          <property href="../../Plugin_Resources/Timing_Properties.aadl#Timing_Properties.Period"/>
+          <ownedValue xmi:id="_zIHa5C4kEeSiT8ib3Z9hVw" inMode="_y7c3hi4kEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_zIHa5S4kEeSiT8ib3Z9hVw" value="120">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+          <ownedValue xmi:id="_zIHa5i4kEeSiT8ib3Z9hVw" inMode="_y7c3hS4kEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_zIHa5y4kEeSiT8ib3Z9hVw" value="40">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <ownedPropertyAssociation xmi:id="_zIHa6C4kEeSiT8ib3Z9hVw">
+          <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Zero_Slack_Instant"/>
+          <ownedValue xmi:id="_zIHa6S4kEeSiT8ib3Z9hVw" inMode="_y7c3hi4kEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_zIHa6i4kEeSiT8ib3Z9hVw" value="120">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+          <ownedValue xmi:id="_zIHa6y4kEeSiT8ib3Z9hVw" inMode="_y7c3hS4kEeSiT8ib3Z9hVw">
+            <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_zIHa7C4kEeSiT8ib3Z9hVw" value="40">
+              <unit href="../../Plugin_Resources/AADL_Project.aadl#//@ownedPropertyType.12/@ownedLiteral.3"/>
+            </ownedValue>
+          </ownedValue>
+        </ownedPropertyAssociation>
+        <modeTransition href="../packages/UAV_Utility_And_Criticality_Example.aadl#//@ownedPublicSection/@ownedClassifier.12/@ownedModeTransition.1"/>
+      </modeTransitionInstance>
+      <subcomponent xsi:type="aadl2:ThreadSubcomponent" href="../packages/UAV_Utility_And_Criticality_Example.aadl#//@ownedPublicSection/@ownedClassifier.14/@ownedThreadSubcomponent.0"/>
+      <index>0</index>
+    </componentInstance>
+    <subcomponent xsi:type="aadl2:ProcessSubcomponent" href="../packages/UAV_Utility_And_Criticality_Example.aadl#//@ownedPublicSection/@ownedClassifier.18/@ownedProcessSubcomponent.2"/>
+    <index>0</index>
+  </componentInstance>
+  <componentInstance xmi:id="_y7TGji4kEeSiT8ib3Z9hVw" name="mixed_criticality_utility_processor" category="processor">
+    <ownedPropertyAssociation xmi:id="_zIHa7S4kEeSiT8ib3Z9hVw">
+      <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Scheduling_Protocol"/>
+      <ownedValue xmi:id="_zIHa7i4kEeSiT8ib3Z9hVw">
+        <ownedValue xsi:type="aadl2:ListValue" xmi:id="_zIHa7y4kEeSiT8ib3Z9hVw">
+          <ownedListElement xsi:type="aadl2:NamedValue" xmi:id="_zIHa8C4kEeSiT8ib3Z9hVw">
+            <namedValue xsi:type="aadl2:EnumerationLiteral" href="../propertysets/Zero_Slack_Scheduling.aadl#//@ownedPropertyType.0/@ownedLiteral.1"/>
+          </ownedListElement>
+        </ownedValue>
+      </ownedValue>
+    </ownedPropertyAssociation>
+    <subcomponent xsi:type="aadl2:ProcessorSubcomponent" href="../packages/UAV_Utility_And_Criticality_Example.aadl#//@ownedPublicSection/@ownedClassifier.18/@ownedProcessorSubcomponent.0"/>
+    <index>0</index>
+  </componentInstance>
+  <componentInstance xmi:id="_y7c3gC4kEeSiT8ib3Z9hVw" name="flight_partition" category="virtual processor">
+    <ownedPropertyAssociation xmi:id="_zIHa8S4kEeSiT8ib3Z9hVw">
+      <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+      <ownedValue xmi:id="_zIHa8i4kEeSiT8ib3Z9hVw">
+        <ownedValue xsi:type="aadl2:ListValue" xmi:id="_zIHa8y4kEeSiT8ib3Z9hVw">
+          <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_zIHa9C4kEeSiT8ib3Z9hVw" referencedInstanceObject="_y7TGji4kEeSiT8ib3Z9hVw"/>
+        </ownedValue>
+      </ownedValue>
+    </ownedPropertyAssociation>
+    <ownedPropertyAssociation xmi:id="_zIHa9S4kEeSiT8ib3Z9hVw">
+      <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Criticality"/>
+      <ownedValue xmi:id="_zIHa9i4kEeSiT8ib3Z9hVw">
+        <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_zIHa9y4kEeSiT8ib3Z9hVw" value="2"/>
+      </ownedValue>
+    </ownedPropertyAssociation>
+    <ownedPropertyAssociation xmi:id="_zIHa-C4kEeSiT8ib3Z9hVw">
+      <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Utility"/>
+      <ownedValue xmi:id="_zIHa-S4kEeSiT8ib3Z9hVw">
+        <ownedValue xsi:type="aadl2:RealLiteral" xmi:id="_zIHa-i4kEeSiT8ib3Z9hVw" value="10.0"/>
+      </ownedValue>
+    </ownedPropertyAssociation>
+    <subcomponent xsi:type="aadl2:VirtualProcessorSubcomponent" href="../packages/UAV_Utility_And_Criticality_Example.aadl#//@ownedPublicSection/@ownedClassifier.18/@ownedVirtualProcessorSubcomponent.0"/>
+    <index>0</index>
+  </componentInstance>
+  <componentInstance xmi:id="_y7c3gS4kEeSiT8ib3Z9hVw" name="mission_partition" category="virtual processor">
+    <ownedPropertyAssociation xmi:id="_zIHa-y4kEeSiT8ib3Z9hVw">
+      <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+      <ownedValue xmi:id="_zIHa_C4kEeSiT8ib3Z9hVw">
+        <ownedValue xsi:type="aadl2:ListValue" xmi:id="_zIHa_S4kEeSiT8ib3Z9hVw">
+          <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_zIHa_i4kEeSiT8ib3Z9hVw" referencedInstanceObject="_y7TGji4kEeSiT8ib3Z9hVw"/>
+        </ownedValue>
+      </ownedValue>
+    </ownedPropertyAssociation>
+    <ownedPropertyAssociation xmi:id="_zIHa_y4kEeSiT8ib3Z9hVw">
+      <property href="../propertysets/Zero_Slack_Scheduling.aadl#Zero_Slack_Scheduling.Criticality"/>
+      <ownedValue xmi:id="_zIHbAC4kEeSiT8ib3Z9hVw">
+        <ownedValue xsi:type="aadl2:IntegerLiteral" xmi:id="_zIHbAS4kEeSiT8ib3Z9hVw" value="1"/>
+      </ownedValue>
+    </ownedPropertyAssociation>
+    <subcomponent xsi:type="aadl2:VirtualProcessorSubcomponent" href="../packages/UAV_Utility_And_Criticality_Example.aadl#//@ownedPublicSection/@ownedClassifier.18/@ownedVirtualProcessorSubcomponent.1"/>
+    <index>0</index>
+  </componentInstance>
+  <componentInstance xmi:id="_y7c3gi4kEeSiT8ib3Z9hVw" name="mixed_utility_partition" category="virtual processor">
+    <ownedPropertyAssociation xmi:id="_zIQkcC4kEeSiT8ib3Z9hVw">
+      <property href="../../Plugin_Resources/Deployment_Properties.aadl#Deployment_Properties.Actual_Processor_Binding"/>
+      <ownedValue xmi:id="_zIQkcS4kEeSiT8ib3Z9hVw">
+        <ownedValue xsi:type="aadl2:ListValue" xmi:id="_zIQkci4kEeSiT8ib3Z9hVw">
+          <ownedListElement xsi:type="instance:InstanceReferenceValue" xmi:id="_zIQkcy4kEeSiT8ib3Z9hVw" referencedInstanceObject="_y7c3gS4kEeSiT8ib3Z9hVw"/>
+        </ownedValue>
+      </ownedValue>
+    </ownedPropertyAssociation>
+    <featureInstance xmi:id="_y7c3gy4kEeSiT8ib3Z9hVw" name="degrade_mode" category="eventPort" direction="out">
+      <feature xsi:type="aadl2:EventPort" href="../packages/UAV_Utility_And_Criticality_Example.aadl#//@ownedPublicSection/@ownedClassifier.2/@ownedEventPort.0"/>
+    </featureInstance>
+    <featureInstance xmi:id="_y7c3hC4kEeSiT8ib3Z9hVw" name="upgrade_mode" category="eventPort" direction="out">
+      <feature xsi:type="aadl2:EventPort" href="../packages/UAV_Utility_And_Criticality_Example.aadl#//@ownedPublicSection/@ownedClassifier.2/@ownedEventPort.1"/>
+    </featureInstance>
+    <subcomponent xsi:type="aadl2:VirtualProcessorSubcomponent" href="../packages/UAV_Utility_And_Criticality_Example.aadl#//@ownedPublicSection/@ownedClassifier.18/@ownedVirtualProcessorSubcomponent.2"/>
+    <index>0</index>
+  </componentInstance>
+  <systemOperationMode xmi:id="_y7c3hS4kEeSiT8ib3Z9hVw" name="mf_streaming_process.mf_streaming_task.high_fidelity_mode" currentMode="_y7TGiC4kEeSiT8ib3Z9hVw"/>
+  <systemOperationMode xmi:id="_y7c3hi4kEeSiT8ib3Z9hVw" name="mf_streaming_process.mf_streaming_task.low_fidelity_mode" currentMode="_y7TGiS4kEeSiT8ib3Z9hVw"/>
+  <systemImplementation href="../packages/UAV_Utility_And_Criticality_Example.aadl#UAV_Utility_And_Criticality_Example.mixed_criticality_utility_system.i"/>
+</instance:SystemInstance>
