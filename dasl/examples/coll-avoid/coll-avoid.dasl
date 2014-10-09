@@ -1,0 +1,654 @@
+//a correct synchronous collision avoidance protocol
+MOC_SYNC;
+
+TARGET GNU_CPP,WIN_CPP %%{
+#define GNU_WIN
+#include <stdlib.h>
+#include <math.h>
+#include <unistd.h>
+#include <boost/lexical_cast.hpp>
+#include "madara/utility/Utility.h"
+
+int MOVE_TO(unsigned char x,unsigned char y)
+{
+  return rand() < (RAND_MAX / 10 * 6);
+}
+
+int my_sleep (int seconds)
+{
+  Madara::Utility::sleep (seconds);
+  return 0;
+}
+
+int round = 0;
+int xi,yi;
+bool node_finished = false;
+
+void print_line(int _X)
+{
+  printf("-");
+  for(int i = 0;i < _X;++i) printf("--");
+  printf("\n");
+}
+
+void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
+{
+  if(round == 0) {
+    xi = x; yi = y;
+  }
+
+  for(int i = 0;i < 150;++i) printf("\n");
+  
+  printf("round = %d : id = %d\n", ++round, id);
+  printf("_X = %d _Y = %d\n",_X,_Y);
+  print_line(_X);
+  for(int i = 0;i < _Y;++i) {
+    printf("|");
+    for(int j = 0;j < _X;++j) {
+      //printf("i = %d j = %d\n", i, j);
+      if(j == xf && i == yf) printf("o|");        
+      else if(j == x && i == y) printf("%d|",id);
+      else printf(" |");
+    }
+    printf("\n");
+    print_line(_X);
+  }
+}
+
+void print_global_state(int local_state)
+{
+  for (int i = 0; i < 150; ++i)
+    printf("\n");
+
+  printf("round = %d : id = %d : state = %d\n", ++round, (int) *id, local_state);
+  printf("_X = %d _Y = %d\n", X, Y);
+  print_line(X);
+
+  for (int i = 0; i < Y; ++i) {
+    printf("|");
+
+    for (int j = 0; j < X; ++j) {
+      bool taken = false;
+
+      for (int k = 0; k < processes; ++k) {
+        if (j == true_x[k] && i == true_y[k]) {
+          printf("%d|", k);
+          taken = true;
+          break;
+        }
+      }
+
+      if (!taken) {
+        if (j == *xf && i == *yf)
+          printf("o|");
+        else printf(" |");
+      }
+    }
+    printf("\n");
+    print_line(X);
+  }
+}
+
+void write_to_pipe (int status)
+{
+  int xi = (int) x[*id];
+  int yi = (int) y[*id];
+  int n = (int) *num_rounds;
+  char buf[64];
+  snprintf(buf,64,"/tmp/coll-avoid-%d",getpid());
+  FILE * stream = fopen(buf, "w");
+  if(stream) {
+    fprintf (stream, "%d %d %d %d\n", status, xi, yi, n);
+    fclose (stream);
+  }
+}
+
+void write_and_exit (int status)
+{
+  write_to_pipe (status);
+  exit (status);
+}
+
+const int DROP_RADIUS = 5;
+
+Madara::Knowledge_Record
+simple_distance_drop (Madara::Knowledge_Map & incoming_records,
+                      const Madara::Transport::Transport_Context & context,
+                      Madara::Knowledge_Engine::Variables & vars)
+{
+  Madara::Knowledge_Record result; // unused
+
+  // Get coordinates of this node
+  Integer my_x = x[*id];
+  Integer my_y = y[*id];
+
+  // Get coordinates of sender node
+  Integer sender_id = incoming_records["id"].to_integer();
+  std::string sender_x_key = "x." + boost::lexical_cast<std::string>(sender_id);
+  std::string sender_y_key = "y." + boost::lexical_cast<std::string>(sender_id);
+  Madara::Knowledge_Map::iterator it = incoming_records.find(sender_x_key);
+
+  // Check if incoming records contain global updates
+  if (it != incoming_records.end()) {
+    Integer sender_x = it->second.to_integer();
+    // Assume that x.{id} and y.{id} are always broadcasted together
+    Integer sender_y = incoming_records[sender_y_key].to_integer();
+
+    Integer dx = my_x - sender_x;
+    Integer dy = my_y - sender_y;
+
+    double dr = sqrt(dx * dx + dy * dy);
+
+    if (dr > DROP_RADIUS) {
+      // Discard both global and barrier updates
+
+      // Preserved variables for collision checking
+      std::string true_x = "true_x." + boost::lexical_cast<std::string>(sender_id);
+      std::string true_y = "true_y." + boost::lexical_cast<std::string>(sender_id);
+
+      Madara::Knowledge_Map::iterator it2 = incoming_records.begin();
+      while (it2 != incoming_records.end()) {
+        std::string var = it2->first;
+        if (var == true_x || var == true_y) {
+          it2++;
+        } else {
+          Madara::Knowledge_Map::iterator it3 = it2;
+          it2++;
+          // Discard both global and barrier updates
+          incoming_records.erase(it3);
+        }
+      }
+
+      // Since we use filter to simulate packet drop,
+      // set send_global_updates flag to false so that set_heartbeat filter
+      // will not record last global updates round
+      incoming_records["send_global_updates"] = Integer(0);
+    }
+  }
+
+  return result; // empty record
+}
+
+const int RADIUS_LEVEL_1 = 4;
+const int RADIUS_LEVEL_2 = 6;
+const int RADIUS_LEVEL_3 = 10;
+const double DROP_PROB_LEVEL_1 = 0.6;
+const double DROP_PROB_LEVEL_2 = 0.6;
+const double DROP_PROB_LEVEL_3 = 0.6;
+const double DROP_PROB_LEVEL_4 = 0.6;
+
+bool flip (double prob)
+{
+  return rand() < (RAND_MAX * prob);
+}
+
+Madara::Knowledge_Record
+prob_distance_drop (Madara::Knowledge_Map & incoming_records,
+                    const Madara::Transport::Transport_Context & context,
+                    Madara::Knowledge_Engine::Variables & vars)
+{
+  Madara::Knowledge_Record result; // unused
+
+  // Get coordinates of this node
+  Integer my_x = x[*id];
+  Integer my_y = y[*id];
+
+  // Get coordinates of sender node
+  Integer sender_id = incoming_records["id"].to_integer();
+  std::string sender_x_key = "x." + boost::lexical_cast<std::string>(sender_id);
+  std::string sender_y_key = "y." + boost::lexical_cast<std::string>(sender_id);
+  Madara::Knowledge_Map::iterator it = incoming_records.find(sender_x_key);
+
+  // Check if incoming records contain global updates
+  if (it != incoming_records.end()) {
+    Integer sender_x = it->second.to_integer();
+    // Assume that x.{id} and y.{id} are always broadcasted together
+    Integer sender_y = incoming_records[sender_y_key].to_integer();
+
+    Integer dx = my_x - sender_x;
+    Integer dy = my_y - sender_y;
+
+    double dr = sqrt(dx * dx + dy * dy);
+
+    if ((dr > RADIUS_LEVEL_3 && flip(DROP_PROB_LEVEL_4)) ||
+        (dr <= RADIUS_LEVEL_3 && dr > RADIUS_LEVEL_2 && flip(DROP_PROB_LEVEL_3)) ||
+        (dr <= RADIUS_LEVEL_2 && dr > RADIUS_LEVEL_1 && flip(DROP_PROB_LEVEL_2)) ||
+        (dr <= RADIUS_LEVEL_1 && flip(DROP_PROB_LEVEL_1)))
+    {
+      // Discard both global and barrier updates
+
+      // Preserved variables for collision checking
+      std::string true_x = "true_x." + boost::lexical_cast<std::string>(sender_id);
+      std::string true_y = "true_y." + boost::lexical_cast<std::string>(sender_id);
+
+      Madara::Knowledge_Map::iterator it2 = incoming_records.begin();
+      while (it2 != incoming_records.end()) {
+        std::string var = it2->first;
+        if (var == true_x || var == true_y) {
+          it2++;
+        } else {
+          Madara::Knowledge_Map::iterator it3 = it2;
+          it2++;
+          // Discard both global and barrier updates
+          incoming_records.erase(it3);
+        }
+      }
+
+      // Since we use filter to simulate packet drop,
+      // set send_global_updates flag to false so that set_heartbeat filter
+      // will not record last global updates round
+      incoming_records["send_global_updates"] = Integer(0);
+    }
+  }
+
+  return result; // empty record
+}
+
+//do some basic initialization at the start of the node
+void basic_node_init()
+{
+  srand(getpid());
+}
+%%}
+
+//directives
+@SEND_HEARTBEATS;
+@TRACK_LOCATIONS;
+@ON_RECEIVE_FILTER(prob_distance_drop);
+//@PERIODIC(2000);
+
+//number of X and Y coordinates
+CONST X = 20;
+CONST Y = 20;
+
+//states of each node
+CONST INITS = 0;
+CONST NEXT = 1;
+CONST REQUEST = 2;
+CONST WAITING = 3;
+CONST MOVE = 4;
+CONST FINISHED = 5;
+
+// Protocol to avoid deadlock
+CONST MAX_REQ = 10;
+CONST MAX_WAIT = 20;
+
+CONST CRITICAL_RADIUS = 3;
+
+// exit status
+CONST EXIT_FINISHED = 0;
+CONST EXIT_COLLISION = 1;
+CONST EXIT_TIMEOUT = 2;
+
+EXTERN int MOVE_TO(unsigned char x,unsigned char y);
+EXTERN int my_sleep(int seconds);
+EXTERN void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf);
+EXTERN void print_global_state(int local_state);
+EXTERN void write_to_pipe (int status);
+EXTERN void write_and_exit (int status);
+EXTERN void basic_node_init();
+
+NODE uav (id)
+{
+  //shared variables -- visible across nodes. 
+  //must be accessed via R() and W()
+  GLOBAL _Bool lock [X][Y][#N];
+
+  // Velocity in unit/round
+  GLOBAL double velocity_x [#N];
+  GLOBAL double velocity_y [#N];
+
+  // These global variables will always be up-to-date
+  // Used for collision checking
+  GLOBAL int true_x [#N];
+  GLOBAL int true_y [#N];
+
+  //private variables -- local to the node.
+  //preserved across rounds
+  LOCAL unsigned char state; //the state
+  LOCAL int xp,yp; //next coordinates
+  LOCAL int xf,yf; //final coordinates
+
+  LOCAL int prev_x, prev_y; // To calculate velocity
+  LOCAL _Bool hover;
+  LOCAL int num_rounds;
+
+  // Protocol to avoid deadlock
+  LOCAL int req_count;
+  LOCAL int wait_count;
+  LOCAL _Bool move_x_first;
+
+  void NODE_INIT () {
+    basic_node_init(); //do basic initialization
+
+    velocity_x[id] = NAN;
+    velocity_y[id] = NAN;
+    prev_x = x[id];
+    prev_y = y[id];
+    move_x_first = 1;
+
+    true_x[id] = x[id];
+    true_y[id] = y[id];
+  }
+
+  @ONCE_EVERY(10)
+  void CALCULATE_VELOCITY () {
+    // Calculate velocity in unit/round
+    double dx, dy;
+    double vx, vy;
+    dx = x[id] - prev_x;
+    dy = y[id] - prev_y;
+    vx = dx / PERIOD;
+    vy = dy / PERIOD;
+    velocity_x[id] = vx;
+    velocity_y[id] = vy;
+
+    prev_x = x[id];
+    prev_y = y[id];
+  }
+
+  void NEXT_XY () {
+    ATOMIC {
+      xp = x[id];
+      yp = y[id];
+
+      if (move_x_first) {
+        if (x[id] < xf)
+          xp = x[id] + 1;
+        else if (x[id] > xf)
+          xp = x[id] - 1;
+        else if (y[id] < yf)
+          yp = y[id] + 1;
+        else
+          yp = y[id] - 1;
+      } else {
+        if (y[id] < yf)
+          yp = y[id] + 1;
+        else if (y[id] > yf)
+          yp = y[id] - 1;
+        else if (x[id] < xf)
+          xp = x[id] + 1;
+        else
+          xp = x[id] - 1;
+      }
+    }
+  }
+
+  // Protocol to avoid deadlock
+  void NEXT_XY_ALT () {
+    ATOMIC {
+      if (xp != x[id]) {
+        // Moving in x-axis
+        // Change to moving in y-axis
+        xp = x[id];
+
+        if (y[id] == 0 || y[id] < yf) {
+          yp = y[id] + 1;
+        } else {
+          yp = y[id] - 1;
+        }
+
+        // Move x first in the next round
+        move_x_first = 1;
+      } else {
+        // Moving in y-axis
+        // Change to moving in x-axis
+        yp = y[id];
+
+        if (x[id] == 0 || x[id] < xf){
+          xp = x[id] + 1;
+        } else {
+          xp = x[id] - 1;
+        }
+
+        // Move y first in the next round
+        move_x_first = 0;
+      }
+    }
+  }
+
+  void CONSERVATIVE_METHOD () {
+    if (EXISTS_OTHER (i, round_count - last_global_updates_round[i] > 1)) {
+      // No heartbeat from node i
+      hover = 1;
+    } else {
+      hover = 0;
+    }
+  }
+
+  void DISC_METHOD () {
+    int lgu_round;
+    int dx, dy;
+    double dr;
+
+    FORALL_OTHER (i) {
+      lgu_round = last_global_updates_round[i];
+
+      if (lgu_round == -1) {
+        // Never received global updates from node i
+        // Assume node i is far away
+        continue;
+      }
+
+      if (round_count - lgu_round > 1) {
+        // No heartbeat from node i
+        // Check if last known location of node i
+        // is at least some distance away
+        dx = xp - x[i];
+        dy = yp - y[i];
+        dr = sqrt(dx * dx + dy * dy);
+
+        if (dr < CRITICAL_RADIUS)
+        {
+          hover = 1;
+          return;
+        }
+      }
+    }
+
+    hover = 0;
+  }
+
+  void APPROX_LOC_METHOD () {
+    int last_known_xi, last_known_yi;
+    int lgu_round;
+    int dround;
+    double approx_xi, approx_yi;
+    int ri; // critical radius
+    double dxi, dyi;
+    double dx, dy, dr;
+
+    FORALL_OTHER (i) {
+      lgu_round = last_global_updates_round[i];
+      if (lgu_round == -1) {
+        // Never received global updates from node i
+        // Assume node i is far away
+        continue;
+      }
+
+      // Number of rounds passed since last global updates from node i
+      dround = round_count - lgu_round;
+      if (dround <= 1) {
+        // We received updates in the previous round
+        continue;
+      }
+
+      // Last known location of node i
+      last_known_xi = x[i];
+      last_known_yi = y[i];
+
+      if (isnan(velocity_x[i])) {
+        // No last known velocity
+        // Use last known location, but critical radius depends on how many rounds have passed
+        approx_xi = last_known_xi;
+        approx_yi = last_known_yi;
+        ri = dround;
+      } else {
+        // Approximate current location of node i
+        // Use default critical radius
+        dxi = velocity_x[i] * dround;
+        dyi = velocity_y[i] * dround;
+        approx_xi = last_known_xi + dxi;
+        approx_yi = last_known_yi + dyi;
+        ri = CRITICAL_RADIUS;
+      }
+
+      // Check if (xp, yp) is in critical area of node i
+      dx = xp - approx_xi;
+      dy = yp - approx_yi;
+      dr = sqrt(dx * dx + dy * dy);
+
+      if (dr < ri)
+      {
+        // (xp, yp) in critical area of node i
+        hover = 1;
+        return;
+      }
+    }
+
+    // (xp, yp) not in critical area of any other node
+    hover = 0;
+  }
+
+  void ROUND () {
+    //print_global_state(state);
+
+    if (x[id] != xf || y[id] != yf) {
+      // Not at destination; continue to count rounds
+      num_rounds = round_count;
+    }
+
+    // Terminate if there is collision
+    CHECK_COLLISION();
+
+    if (state == INITS) {
+      lock[x[id]][y[id]][id] = 1;
+      state = NEXT;
+    }
+    if (state == NEXT) {
+      if (x[id] == xf && y[id] == yf) {
+        // Arrive destination
+        node_finished = 1;
+        write_to_pipe(EXIT_FINISHED);
+        state = FINISHED;
+      } else {
+        // Compute next point on route
+        NEXT_XY();
+        state = REQUEST;
+      }
+    } else if (state == REQUEST) {
+
+      //-- no deadlock stuff
+      if(NO_DEADLOCK == 1) {
+        req_count = req_count + 1;
+
+        if (req_count > MAX_REQ) {
+          NEXT_XY_ALT();
+          req_count = 0;
+          state = REQUEST;
+          return;
+        }
+      }
+
+      if(USE_DISC_METHOD == 1) {
+        DISC_METHOD();
+      } else {
+        CONSERVATIVE_METHOD();
+      }
+
+      //APPROX_LOC_METHOD();
+
+      if (hover) {
+        // do not grab lock
+        return;
+      }
+
+      // Request the lock (i.e., grab it) if no lower-id nodes
+      // holding the lock
+      if (EXISTS_LOWER(idp,lock[xp][yp][idp] != 0)) {
+        return;
+      }
+
+      if(NO_DEADLOCK == 1) { req_count = 0; }
+      lock[xp][yp][id] = 1;
+      state = WAITING;
+    } else if (state == WAITING) {
+
+      if(NO_DEADLOCK == 1) {
+        wait_count = wait_count + 1;
+
+        if (wait_count > MAX_WAIT) {
+          lock[xp][yp][id] = 0;
+          NEXT_XY_ALT();
+          wait_count = 0;
+          state = REQUEST;
+          return;
+        }
+      }
+
+      // Set to move to (x',y') if no higher-id nodes
+      // holding the lock
+      if (EXISTS_HIGHER(idp, lock[xp][yp][idp] != 0)) {
+        return;
+      }
+
+      if(NO_DEADLOCK == 1) { wait_count = 0; }
+      state = MOVE;
+    } else if (state == MOVE) {
+      // Now we have the lock on (x’,y’)
+      if (MOVE_TO(xp,yp)) {
+        return;
+      }
+      lock[x[id]][y[id]][id] = 0;
+      x[id] = xp; y[id] = yp;
+      state = NEXT;
+
+      // Update true_x and true_y for collision checking
+      UPDATE_TRUE_VARS();
+    }
+  }
+
+  void UPDATE_TRUE_VARS () {
+    true_x[id] = x[id];
+    true_y[id] = y[id];
+  }
+
+  //Detect Collision and Exit if detected
+  void CHECK_COLLISION () {
+    if (EXISTS_LOWER(idp,true_x[idp] == true_x[id] && true_y[idp] == true_y[id])) {
+      write_and_exit(EXIT_COLLISION);
+    }
+  }
+}
+
+//program has two nodes with ids 0 and 1
+//PROGRAM = uav (0) || uav (1);
+
+//program has four nodes with ids 0, 1, 2, and 3
+PROGRAM = uav (0) || uav (1) || uav (2) || uav (3);
+
+//initial state
+void INIT () 
+{
+  ATOMIC {
+    FORALL_NODE(id) {
+      state.id = INITS;
+      ND(x.id); ND(y.id);
+      ASSUME(0 <= x.id && x.id < X && 0 <= y.id && y.id < Y);
+      ND(xf.id); ND(yf.id);
+      ASSUME(0 <= xf.id && xf.id < X && 0 <= yf.id && yf.id < Y);
+    }
+  }
+
+  FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+    ASSUME(x.id1 != x.id2 || y.id1 != y.id2);
+  }
+}
+
+//the safety property checked at the beginning of each round
+void SAFETY ()
+{
+  FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+    ASSERT(x.id1 != x.id2 || y.id1 != y.id2);
+  }
+}
