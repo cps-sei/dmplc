@@ -206,7 +206,7 @@ simxInt DaslVrep::stopSim()
 /*********************************************************************/
 simxInt QuadriRotor::createNode()
 {
-  std::string modelFile(getenv("VREP_MCDA_ROOT"));
+  std::string modelFile(getenv("VREP_ROOT"));
   modelFile += "/models/robots/mobile/Quadricopter.ttm";
   return DaslVrep::createNode(modelFile);
 }
@@ -325,8 +325,8 @@ simxInt QuadriRotor::moveNodeTo(simxInt nodeId,simxFloat x,simxFloat y,simxFloat
 /*********************************************************************/
 simxInt TrackerAnt::createNode()
 {
-  std::string modelFile(getenv("MCDA_ROOT"));
-  modelFile += "/src/vrep/tracker_ant.ttm";
+  std::string modelFile(getenv("DART_ROOT"));
+  modelFile += "/dasl/src/vrep/tracker_ant.ttm";
   return DaslVrep::createNode(modelFile);
 }
 

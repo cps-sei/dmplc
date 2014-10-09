@@ -32,7 +32,7 @@ do
         echo "Experiment $i Run $j: $TMPD"
         TMPDS="$TMPDS $TMPD"
         echo "Experiment $i Run $j:" > $TMPD/out
-        $MCDA_ROOT/examples/coll-avoid/coll-avoid-experiment ./$DASL_BASE $NUM_NODES dom-$j $TMPD 2>&1 >> $TMPD/out &
+        $DART_ROOT/dasl/examples/coll-avoid/coll-avoid-experiment ./$DASL_BASE $NUM_NODES dom-$j $TMPD 2>&1 >> $TMPD/out &
     done
     wait
 done

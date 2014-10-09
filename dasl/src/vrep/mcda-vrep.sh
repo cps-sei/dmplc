@@ -41,7 +41,7 @@ for i in `seq 1 $NODENUM`; do
 done
 
 #save old and create new VREP remoteApiConnections.txt file
-RAC=$VREP_MCDA_ROOT/remoteApiConnections.txt
+RAC=$VREP_ROOT/remoteApiConnections.txt
 if [ -e $RAC ]; then
     rm -f $RAC.saved.mcda-vrep
     mv $RAC $RAC.saved.mcda-vrep
@@ -59,12 +59,12 @@ done
 #cat $RAC
 
 #save the VREP system/settings.dat
-SDF=$VREP_MCDA_ROOT/system/settings.dat
+SDF=$VREP_ROOT/system/settings.dat
 cp $SDF $SDF.saved.mcda-vrep
 
 #start vrep
 echo "starting VREP .. output is in $OUTDIR/vrep.out ..."
-(cd $VREP_MCDA_ROOT ; ./vrep.sh $MCDA_ROOT/src/vrep/mcda.ttt &> $OUTDIR/vrep.out &)
+(cd $VREP_ROOT ; ./vrep.sh $DART_ROOT/dasl/src/vrep/mcda.ttt &> $OUTDIR/vrep.out &)
 sleep 10
 
 #restore old VREP remoteApiConnections.txt file

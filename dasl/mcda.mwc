@@ -1,7 +1,0 @@
-
-workspace {
-  cmdline += -feature_file default.features
-  
-  mcda.mpc
-  docs/mcda_docs.mpc
-}

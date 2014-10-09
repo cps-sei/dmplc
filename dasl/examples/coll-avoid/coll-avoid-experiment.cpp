@@ -43,7 +43,7 @@ std::vector<pid_t> child_pids;
 std::vector<std::ofstream *> out_files;
 
 //-- environment variables
-std::string mcda_root,madara_root,ace_root;
+std::string dart_root,madara_root,ace_root;
 
 /*********************************************************************/
 //-- this is where everything starts
@@ -115,9 +115,9 @@ void sigalrm_handler (int signum)
 void set_env_vars()
 {
   char *envVar = NULL;
-  envVar = getenv("MCDA_ROOT");
-  if(!envVar) assert(0 && "ERROR: environment variable MCDA_ROOT not set!");
-  mcda_root = std::string(envVar);
+  envVar = getenv("DART_ROOT");
+  if(!envVar) assert(0 && "ERROR: environment variable DART_ROOT not set!");
+  dart_root = std::string(envVar);
   envVar = getenv("MADARA_ROOT");
   if(!envVar) assert(0 && "ERROR: environment variable MADARA_ROOT not set!");
   madara_root = std::string(envVar);

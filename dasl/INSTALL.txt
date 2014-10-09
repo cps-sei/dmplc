@@ -29,8 +29,8 @@ WINDOWS INSTALLATION
   system settings, and then clicking Environment Variables.  We assume
   that MCDA is checked out into the main drive (likely C:)
 
-  MCDA_ROOT=\mcda
-  PATH=%MCDA_ROOT%\tools\daig\bin;%MCDA_ROOT%\tools\daig\lib
+  DART_ROOT=\dart
+  PATH=%DART_ROOT%\dasl\tools\daig\bin;%DART_ROOT%\dasl\tools\daig\lib
 
 3. BUILDING MCDA
 
@@ -44,7 +44,7 @@ WINDOWS INSTALLATION
   two commands in a terminal.  Here, we assume Visual Studio 2010
   (vc10). Visual Studio 2008 would be vc9.
 
-  cd %MCDA_ROOT%\tools\daig
+  cd %DART_ROOT%\dasl\tools\daig
   mwc.pl -type vc10 daig.mwc
 
   This will create a Visual Studio solution in the
@@ -77,21 +77,21 @@ LINUX INSTALLATION
   or .profile, assuming that MCDA is checked out into the user's home
   directory, and VREP when unpacked created directory $HOME/vrep:
 
-  $ export MCDA_ROOT=$HOME/mcda
-  $ export PATH=$MCDA_ROOT/src/daslc:$PATH
-  $ export PATH=$MCDA_ROOT/src/vrep:$PATH
-  $ export ACE_ROOT=$MCDA_ROOT/madara/ace/ACE_wrappers
-  $ export MADARA_ROOT=$MCDA_ROOT/madara/madara
+  $ export DART_ROOT=$HOME/mcda
+  $ export PATH=$DART_ROOT/dasl/src/daslc:$PATH
+  $ export PATH=$DART_ROOT/dasl/src/vrep:$PATH
+  $ export ACE_ROOT=$DART_ROOT/madara/ace/ACE_wrappers
+  $ export MADARA_ROOT=$DART_ROOT/madara/madara
   $ export LD_LIBRARY_PATH=$ACE_ROOT/lib:$MADARA_ROOT/lib:$LD_LIBRARY_PATH
   $ export PATH=$ACE_ROOT/bin:$MADARA_ROOT/bin:$PATH
-  $ export VREP_MCDA_ROOT=$HOME/vrep
+  $ export VREP_ROOT=$HOME/vrep
 
 3. BUILDING MCDA
 
   We have created a Makefile that does everything for you, including
   downloading and compiling the correct version of MADARA. Simply type:
 
-  $ make -C $MCDA_ROOT
+  $ make -C $DART_ROOT/dasl
 
 ----------------------
 -- THE END

@@ -1,4 +1,4 @@
-VREP=$(VREP_MCDA_ROOT)
+VREP=$(VREP_ROOT)
 CXXFLAGS=-I$(MADARA_ROOT)/include -I$(ACE_ROOT) \
 -I.. -I$(VREP)/programming/remoteApi -I$(VREP)/programming/include \
 -DNON_MATLAB_PARSING -DMAX_EXT_API_CONNECTIONS=255 -D__linux
