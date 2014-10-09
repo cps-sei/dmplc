@@ -53,8 +53,8 @@
  * DM-0001023
 **/
 
-#ifndef _DAIG_FUNCTION_H_
-#define _DAIG_FUNCTION_H_
+#ifndef _DAIG_ATTRIBUTE_H_
+#define _DAIG_ATTRIBUTE_H_
 
 /**
  * @file Function.h
@@ -66,88 +66,22 @@
 #include <vector>
 #include <map>
 #include <string>
-#include "Variable.h"
-#include "Statement.h"
-#include "Attribute.h"
-
 
 namespace daig
 {
-  /**
-    * @class Function
-    * @brief Represents a function definition
-    */
-  class Function
+  class Attribute
   {
   public:
-    /**
-     * The name of the function
-     **/
     std::string name;
 
-    ///the return type of the function
-    Type retType;
+    std::list <std::string> paramList;
 
-    /**
-     * The function parameters
-     **/
-    Variables params;
-    
-    ///function local variables -- we call them temporary variables
-    ///since their scope is only the function body
-    Variables temps;
-
-    // @ATTR(X, ...) attributes specified for this function
-    Attributes attrs;
-
-    /**
-     * The function body
-     **/
-    StmtList body;
-
-    //constructors
-    Function() {}
-    Function(const std::string &n)
-      : name(n) {}
-    Function(const std::string &n, const Attributes &a)
-      : name(n),attrs(a) {}
-    Function(const Type &rt,const std::string &n,const std::list<Variable> &p,
-             const std::list<Variable> &t,const StmtList &b,
-             const Attributes &a = Attributes())
-      : retType(rt),name(n),body(b),attrs(a)
-    {
-      setParams(p);
-      setTemps(t);
-    }
-
-    void mergeWith (const Function &of);
-
-    void setParams (const std::list<Variable> &p)
-    {
-      doSetVars(p, params);
-    }
-
-    void setTemps (const std::list<Variable> &t)
-    {
-      doSetVars(t, temps);
-    }
-
-    /**
-     * Prints function information
-     * @param  indent  spaces to indent printout
-     **/
-    void print (std::ostream &os,unsigned int indent);
-
-    ///print just the function declaration
-    void printDecl (std::ostream &os,unsigned int indent);    
-  private:
-    void doSetVars (const std::list<Variable> &vars, Variables &dest)
-    {
-      BOOST_FOREACH(const Variable &v,vars) dest[v.name] = v;
-    }
+    Attribute() {}
+    Attribute(const std::string &n) : name(n) {}
+    Attribute(const std::string &n, const std::list<std::string> &p) : name(n),  paramList(p) {}
   };
 
-  typedef std::map <std::string, Function> Functions;
+  typedef std::map <std::string, Attribute> Attributes;
 }
 
-#endif // _DAIG_FUNCTION_H_
+#endif // _DAIG_ATTRIBUTE_H_

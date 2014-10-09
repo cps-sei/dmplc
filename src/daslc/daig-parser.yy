@@ -23,7 +23,7 @@ void yyerror(const char *s) {
 }
 
 /** the current node being parsed */
-daig::Node currNode;
+/*daig::Node currNode;*/
 
 /** a thunk */
 std::string thunk;
@@ -37,7 +37,7 @@ std::string thunk;
 %}
 
 /* expect 3 shift reduce conflicts */
-%expect 3
+%expect 1
 
 /* Represents the many different ways we can access our data */
 %union {
@@ -49,6 +49,10 @@ std::string thunk;
     daig::ExprList *exprlist;
     daig::Stmt *stmt;
     daig::StmtList *stmtList;
+    daig::Attribute *attr;
+    daig::Attributes *attrList;
+    daig::Node *node;
+    daig::Function *function;
     std::list<int> *intList;
     std::string *string;
     std::list<std::string> *strList;
@@ -59,9 +63,9 @@ std::string thunk;
    match our tokens.l lex file. We also define the node type
    they represent.
  */
-%token <string> TIDENTIFIER TINTEGER TDOUBLE TNAMESPACE
+%token <string> TIDENTIFIER TINTEGER TDOUBLE TNAMESPACE TATTRIBUTE
 %token <token> TMOCSYNC TMOCASYNC TMOCPSYNC TSEMICOLON TCONST TNODE
-%token <token> TGLOBAL TLOCAL TTARGET TTHUNK
+%token <token> TGLOBAL TLOCAL TALIAS TTARGET TTHUNK
 %token <token> TBOOL TINT TDOUBLE_TYPE TVOID TCHAR TSIGNED TUNSIGNED
 %token <token> TNODENUM TATOMIC TPRIVATE TEXTERN
 %token <token> TIF TELSE TFOR TWHILE
@@ -70,21 +74,24 @@ std::string thunk;
 %token <token> TCEQ TCNE TCLT TCLE TCGT TCGE TEQUAL
 %token <token> TLAND TLOR TLNOT TQUEST TCOLON
 %token <token> TLPAREN TRPAREN TLBRACE TRBRACE 
-%token <token> TLBRACKET TRBRACKET TCOMMA TDOT
+%token <token> TLBRACKET TRBRACKET TCOMMA TDOT TAT
 %token <token> TPLUS TMINUS TMUL TDIV TMOD
 %token <token> TBWNOT TBWAND TBWOR TBWXOR TBWLSH TBWRSH
 %token <token> TON_PRE_TIMEOUT TON_POST_TIMEOUT TON_RECV_FILTER
 %token <token> TTRACK_LOCATIONS TSEND_HEARTBEATS
-%token <token> TNODE_INIT TPERIODIC TONCE_EVERY
+%token <token> TNODE_INIT TONCE_EVERY
 
 /* Define the type of node our nonterminal symbols represent.
    The types refer to the %union declaration above. Ex: when
    we call an ident (defined by union type ident) we are really
    calling an (NIdentifier*). It makes the compiler happy.
  */
-%type <token> program moc const_list constant node node_body
-%type <token> node_body_elem_list node_body_elem
-%type <token> global_var local_var dimension
+%type <token> program moc constant node
+%type <node> node_body
+%type <varList> node_var
+%type <function> procedure
+%type <varList> global_var local_var
+%type <token> dimension
 %type <strList> target_id_list
 %type <type> simp_type type
 %type <lvalExpr> lval
@@ -95,7 +102,10 @@ std::string thunk;
 %type <intList> dimensions
 %type <var> var
 %type <varList> var_list var_decl param_list var_decl_list
-%type <string> callback_name
+%type <attr> attr
+%type <attrList> attr_list
+%type <strList> attr_param_list
+%type <string> attr_param
 
 /* Operator precedence for ternary operators */
 %left TQUEST TCOLON
@@ -120,34 +130,20 @@ std::string thunk;
 
 %%
 program :
-  moc target_list directive_list const_list extern_fn_list node prog_def init_def safety_def {}
+  program_element {}
+| program program_element {}
 ;
 
-directive_list : {}
-| directive_list TTRACK_LOCATIONS TSEMICOLON { builder->program.trackLocations = true; }
-| directive_list TSEND_HEARTBEATS TSEMICOLON { builder->program.sendHeartbeats = true; }
-| directive_list TON_PRE_TIMEOUT TLPAREN callback_name TRPAREN TSEMICOLON {
-  builder->program.addCallback("on_pre_round_barrier_timeout", *$4);
-  delete $4;
-}
-| directive_list TON_POST_TIMEOUT TLPAREN callback_name TRPAREN TSEMICOLON {
-  builder->program.addCallback("on_post_round_barrier_timeout", *$4);
-  delete $4;
-}
-| directive_list TON_RECV_FILTER TLPAREN callback_name TRPAREN TSEMICOLON {
-  builder->program.addCallback("on_receive_filter", *$4);
-  delete $4;
-}
-| directive_list TPERIODIC TLPAREN TINTEGER TRPAREN TSEMICOLON {
-  int p = atoi($4->c_str());
-  assert(p > 0 && "ERROR : period must be greater than 0!!");
-  builder->program.setPeriod(p);
-  delete $4;
-}
-;
-
-callback_name : TIDENTIFIER { $$ = $1; }
-| TNAMESPACE { $$ = $1; }
+program_element
+  : moc {}
+  | target {}
+  | constant {}
+  | extern_fn_decl {}
+  | node {}
+  | procedure {
+    builder->program.addFunction(*$1);
+    delete $1;
+  }
 ;
 
 moc : 
@@ -156,14 +152,10 @@ moc :
 | TMOCPSYNC TSEMICOLON { builder->program.moc.set_type("PARTIAL"); }
 ;
 
-target_list : {}
-| TTARGET target_id_list TTHUNK {
+target :
+  TTARGET target_id_list TTHUNK {
   BOOST_FOREACH(const std::string &t,*$2) builder->program.addTarget(t,thunk);
   delete $2;
-}
-| target_list TTARGET target_id_list TTHUNK {
-  BOOST_FOREACH(const std::string &t,*$3) builder->program.addTarget(t,thunk);
-  delete $3;
 }
 ;
 
@@ -175,15 +167,6 @@ target_id_list : TIDENTIFIER {
   $$ = $1;
   $$->push_back(*$3); delete $3;
 }
-;
-
-const_list : {}
-| constant {}
-| const_list constant {}
-;
-
-extern_fn_list : {}
-| extern_fn_list extern_fn_decl
 ;
 
 extern_fn_decl : TEXTERN type TIDENTIFIER TLPAREN param_list TRPAREN TSEMICOLON {
@@ -208,35 +191,82 @@ delete $2; delete $4;
 ;
 
 node : TNODE TIDENTIFIER TLPAREN TIDENTIFIER TRPAREN TLBRACE node_body TRBRACE {
-  currNode.name = *$2;
-  currNode.args.push_back(*$4);
-  builder->program.nodes[currNode.name] = currNode;
-  currNode.clear();
+  $7->name = *$2;
+  $7->args.push_back(*$4);
+  builder->program.addNode(*$7);
+  delete $2; delete $4; delete $7;
+}
+| attr_list TNODE TIDENTIFIER TLPAREN TIDENTIFIER TRPAREN TLBRACE node_body TRBRACE {
+  $8->name = *$3;
+  $8->args.push_back(*$5);
+  $8->attrs = *$1;
+  builder->program.addNode(*$8);
+  delete $1; delete $3; delete $5; delete $8;
+}
+| TNODE TIDENTIFIER TLBRACE node_body TRBRACE {
+  $4->name = *$2;
+  $4->abstract = true;
+  builder->program.addNode(*$4);
   delete $2; delete $4;
-};
-
-node_body : node_body_elem_list {};
-
-node_body_elem_list :
-  node_body_elem {}
-| node_body_elem_list node_body_elem {}
+}
+| attr_list TNODE TIDENTIFIER TLBRACE node_body TRBRACE {
+  $5->name = *$3;
+  $5->attrs = *$1;
+  $5->abstract = true;
+  builder->program.addNode(*$5);
+  delete $1; delete $3; delete $5;
+}
+| TNODE TIDENTIFIER TSEMICOLON {
+  builder->program.addNode(daig::Node(*$2, true));
+}
+| attr_list TNODE TIDENTIFIER TSEMICOLON {
+  builder->program.addNode(daig::Node(*$3, *$1, true));
+}
 ;
 
-node_body_elem :
-  global_var {}
-| local_var {}
-| node_init_procedure {}
-| periodic_procedure {}
-| procedure {}
+node_body:
+  node_var {
+    $$ = new daig::Node();
+    $$->addVar(*$1);
+    delete $1;
+}
+| node_body node_var {
+    $1->addVar(*$2);
+    delete $2;
+} |
+  procedure {
+    $$ = new daig::Node();
+    $$->addFunction(*$1);
+    delete $1;
+}
+| node_body procedure {
+    $1->addFunction(*$2);
+    delete $2;
+}
 ;
+
+node_var : global_var{
+  $$ = $1;
+}
+| local_var {
+  $$ = $1;
+}
 
 global_var : TGLOBAL var_decl TSEMICOLON {
-  currNode.addGlobalVar(*$2); delete $2;
+  BOOST_FOREACH(daig::Variable &v, *$2)
+  {
+    v.scope = daig::Variable::GLOBAL;
+  }
+  $$ = $2;
 }
 ;
 
 local_var : TLOCAL var_decl TSEMICOLON {
-  currNode.addLocalVar(*$2); delete $2;
+  BOOST_FOREACH(daig::Variable &v, *$2)
+  {
+    v.scope = daig::Variable::LOCAL;
+  }
+  $$ = $2;
 }
 ;
 
@@ -288,37 +318,79 @@ simp_type : TBOOL { $$ = new daig::Type(daig::boolType()); }
 | TCHAR { $$ = new daig::Type(daig::charType()); }
 ;
 
-node_init_procedure : TVOID TNODE_INIT TLPAREN TRPAREN TLBRACE var_decl_list stmt_list TRBRACE {
-  /** set scope of temporary variables */
-  BOOST_FOREACH(daig::Variable &v,*$6) v.scope = daig::Variable::TEMP;
-  currNode.setNodeInitFunction(daig::Function(daig::voidType(),"NODE_INIT",daig::VarList(),*$6,*$7));
-  delete $6; delete $7;
-}
-;
-
-periodic_procedure : TONCE_EVERY TLPAREN TINTEGER TRPAREN TVOID TIDENTIFIER TLPAREN TRPAREN TLBRACE var_decl_list stmt_list TRBRACE {
-  /** declare PERIOD as function's local variable */
-  $10->push_back(daig::Variable("PERIOD", daig::intType()));
-  /** assign value to PERIOD */
-  daig::Expr l(new daig::LvalExpr("PERIOD"));
-  daig::Expr r(new daig::IntExpr(atoi($3->c_str())));
-  daig::Stmt s(new daig::AsgnStmt(l, r));
-  $11->push_front(s);
-  /** set scope of temporary variables */
-  BOOST_FOREACH(daig::Variable &v,*$10) v.scope = daig::Variable::TEMP;
-  /** create and add periodic function to the node */
-  currNode.addPeriodicFunction(daig::Function(daig::voidType(),*$6,daig::VarList(),*$10,*$11), atoi($3->c_str()));
-  delete $3; delete $6; delete $10; delete $11;
-}
-;
-
 procedure : type TIDENTIFIER TLPAREN param_list TRPAREN TLBRACE var_decl_list stmt_list TRBRACE {
   /** set scope of parameters and temporary variables */
   BOOST_FOREACH(daig::Variable &v,*$4) v.scope = daig::Variable::PARAM;
   BOOST_FOREACH(daig::Variable &v,*$7) v.scope = daig::Variable::TEMP;
   /** create and add function to the node */
-  currNode.addFunction(daig::Function(*$1,*$2,*$4,*$7,*$8));
+  $$ = new daig::Function(*$1,*$2,*$4,*$7,*$8);
   delete $1; delete $2; delete $4; delete $7; delete $8;       
+}
+| attr_list type TIDENTIFIER TLPAREN param_list TRPAREN TLBRACE var_decl_list stmt_list TRBRACE {
+  /** set scope of parameters and temporary variables */
+  BOOST_FOREACH(daig::Variable &v,*$5) v.scope = daig::Variable::PARAM;
+  BOOST_FOREACH(daig::Variable &v,*$8) v.scope = daig::Variable::TEMP;
+  /** create and add function to the node */
+  $$ = new daig::Function(*$2,*$3,*$5,*$8,*$9,*$1);
+  delete $2; delete $3; delete $5; delete $8; delete $9; delete $1;
+}
+| TIDENTIFIER TLPAREN TRPAREN TSEMICOLON {
+  $$ = new daig::Function(*$1);
+  delete $1;
+}
+| attr_list TIDENTIFIER TLPAREN TRPAREN TSEMICOLON {
+  $$ = new daig::Function(*$2, *$1);
+  delete $1; delete $2;
+}
+;
+
+attr_list : attr {
+  $$ = new daig::Attributes();
+  (*$$)[$1->name] = *$1;
+}
+| attr_list attr {
+  $$ = $1;
+  (*$$)[$2->name] = *$2;
+}
+;
+
+attr : TATTRIBUTE {
+  $$ = new daig::Attribute($1->substr(1));
+}
+| TATTRIBUTE TLPAREN attr_param_list TRPAREN {
+  if($3 == 0)
+    $$ = new daig::Attribute($1->substr(1));
+  else
+  {
+    $$ = new daig::Attribute($1->substr(1), *$3);
+    delete $3;
+  }
+}
+;
+
+attr_param_list : {
+  $$ = 0;
+}
+| attr_param {
+  $$ = new std::list<std::string>();
+  $$->push_back(*$1);
+  delete $1;
+}
+| attr_param_list TCOMMA attr_param {
+  $$ = $1;
+  $$->push_back(*$3);
+  delete $3;
+}
+;
+
+attr_param : TINTEGER {
+  $$ = $1;
+}
+| TDOUBLE {
+  $$ = $1;
+}
+| TIDENTIFIER {
+  $$ = $1;
 }
 ;
 
@@ -518,37 +590,6 @@ arg_list : { $$ = new daig::ExprList(); }
 | arg_list TCOMMA expr {
   $$ = $1;
   $$->push_back(*$3);
-}
-;
-
-prog_def : TPROGRAM TEQUAL node_instances TSEMICOLON {}
-;
-
-node_instances : TIDENTIFIER TLPAREN TINTEGER TRPAREN {
-  builder->program.processes.push_back(daig::Process(*$1,atoi($3->c_str())));
-  delete $1; delete $3;
-}
-| node_instances TLOR TIDENTIFIER TLPAREN TINTEGER TRPAREN {
-  builder->program.processes.push_back(daig::Process(*$3,atoi($5->c_str())));
-  delete $3; delete $5;
-}
-;
-
-init_def : TVOID TINIT TLPAREN TRPAREN TLBRACE var_decl_list stmt_list TRBRACE {
-  /** set scope of temporary variables */
-  BOOST_FOREACH(daig::Variable &v,*$6) v.scope = daig::Variable::TEMP;
-  /** create and add function to the node -- make its return type void */
-  builder->program.addFunction(daig::Function(daig::voidType(),"INIT",daig::VarList(),*$6,*$7));
-  delete $6; delete $7;
-}
-;
-
-safety_def : TVOID TSAFETY TLPAREN TRPAREN TLBRACE var_decl_list stmt_list TRBRACE {
-  /** set scope of temporary variables */
-  BOOST_FOREACH(daig::Variable &v,*$6) v.scope = daig::Variable::TEMP;
-  /** create and add function to the node -- make its return type void */
-  builder->program.addFunction(daig::Function(daig::voidType(),"SAFETY",daig::VarList(),*$6,*$7));
-  delete $6; delete $7;
 }
 ;
 %%

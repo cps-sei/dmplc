@@ -58,7 +58,9 @@
 #include "daig/Type.h"
 #include "daig/Variable.h"
 #include "daig/Expression.h"
+#include "daig/Function.h"
 #include "daig/Statement.h"
+#include "daig/Node.h"
 #include "daig-parser.hpp"
 #include "SyncSem.hpp"
 

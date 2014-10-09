@@ -58,6 +58,7 @@
 #include <boost/foreach.hpp>
 #include "Node.h"
 #include "Program.h"
+#include "Function.h"
 #include "daslc/daig-parser.hpp"
 
 /*********************************************************************/

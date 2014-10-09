@@ -68,6 +68,7 @@
 #include <string>
 #include "Function.h"
 #include "Variable.h"
+#include "Attribute.h"
 
 
 namespace daig
@@ -87,6 +88,9 @@ namespace daig
     ///the node arguments
     std::list<std::string> args;
 
+    ///true if this is an abstract node definition (no function bodies)
+    bool abstract;
+
     /**
      * list of global variables
      **/
@@ -100,25 +104,22 @@ namespace daig
      **/
     Functions funcs;
 
-    /**
-     * Name of node initialization function -- empty by default
-     */
-    std::string node_init_func_name;
-
-    /**
-     * A map of names of periodic functions to their periods
-     */
-    std::map <std::string, int> periodic_func_names;
+    // @ATTR(X, ...) attributes specified for this node
+    Attributes attrs;
 
     ///constructors
-    Node() : node_init_func_name ("") {}
+    Node(bool abst = false) : abstract(abst) {}
+    Node(const std::string &n, bool abst = false)
+        : name(n), abstract(abst) {}
+    Node(const std::string &n, const Attributes& a, bool abst = false)
+        : name(n), attrs(a), abstract(abst) {}
 
     ///clear the node -- reset it to an empty node
     void clear()
     {
       name.clear(); args.clear(); 
       globVars.clear(); locVars.clear();
-      funcs.clear();
+      funcs.clear(); attrs.clear();
     }
 
     ///add a global variable
@@ -141,9 +142,32 @@ namespace daig
       }
     }
 
-    ///add a function
-    void addFunction(const Function &f) { funcs[f.name] = f; }
+    ///add variables, with scope already set
+    void addVar(const std::list<Variable> &v1)
+    {
+      BOOST_FOREACH(const Variable &v,v1) {
+        Variables &vars = v.scope == Variable::LOCAL ? locVars : globVars;
+        assert(vars.count(v.name) == 0 && "ERROR: variable redeclared!!");
+        vars[v.name] = v;
+      }
+    }
 
+    ///add a function
+    void addFunction(const Function &f)
+    {
+      if(funcs.count(f.name) > 0) {
+        Function &of = funcs[f.name];
+        of.mergeWith(f);
+      }
+      else
+      {
+        funcs[f.name] = f;
+      }
+    }
+
+    void mergeWith(const Node &on);
+
+    /*
     ///set the node initialization function
     void setNodeInitFunction(const Function &f)
     {
@@ -157,6 +181,7 @@ namespace daig
       addFunction(f);
       periodic_func_names[f.name] = T;
     }
+    */
 
     /**
      * Prints function information

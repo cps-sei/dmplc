@@ -168,6 +168,18 @@ namespace daig
     void addTarget(const std::string &tgt,const std::string &thk)
     { targets[tgt] += thk; }
 
+    void addNode(const Node &node)
+    {
+      if(nodes.count(node.name) == 0)
+      {
+        nodes[node.name] = node;
+      }
+      else
+      {
+        nodes[node.name].mergeWith(node);
+      }
+    }
+
     ///add an external function
     void addExternalFunction(const Function &f) { externalFuncs[f.name] = f; }
 

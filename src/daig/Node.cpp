@@ -57,6 +57,57 @@
 #include <iostream>
 
 void
+daig::Node::mergeWith(const Node &on)
+{
+  Node &n = *this;
+
+  if (n.abstract && !on.abstract)
+    n.abstract = false;
+
+  if (n.name == "")
+    n.name = on.name;
+  else if (n.name != on.name)
+    throw std::runtime_error("Cannot merge nodes of differing names: " + n.name + " and " + on.name);
+
+  if (n.args.size() == 0)
+    n.args = on.args;
+  else if (!on.abstract && n.args != on.args)
+    throw std::runtime_error("Cannot merge nodes which have different arguments: for " + n.name);
+
+  BOOST_FOREACH(const Variables::value_type &v, on.globVars)
+  {
+    if(n.globVars.count(v.second.name) == 0)
+      n.globVars[v.second.name] = v.second;
+    else if(n.globVars[v.second.name].type != v.second.type)
+      throw std::runtime_error("Collision while merging node globals: " + v.second.name + " in " + n.name);
+  }
+
+  BOOST_FOREACH(const Variables::value_type &v, on.locVars)
+  {
+    if(n.locVars.count(v.second.name) == 0)
+      n.locVars[v.second.name] = v.second;
+    else if(n.locVars[v.second.name].type != v.second.type)
+      throw std::runtime_error("Collision while merging node locals: " + v.second.name + " in " + n.name);
+  }
+
+  BOOST_FOREACH(const Functions::value_type &f, on.funcs)
+  {
+    if(n.funcs.count(f.second.name) == 0)
+      n.funcs[f.second.name] = f.second;
+    else
+      n.funcs[f.second.name].mergeWith(f.second);
+  }
+
+  BOOST_FOREACH(const Attributes::value_type &a, on.attrs)
+  {
+    if(n.attrs.count(a.second.name) == 0)
+      n.attrs[a.second.name] = a.second;
+    else if (n.attrs[a.second.name].paramList != a.second.paramList)
+      throw std::runtime_error("Cannot merge nodes with attributes of differing parameters: @" + a.second.name + " in " + n.name);
+  }
+}
+
+void
 daig::Node::print (std::ostream &os,unsigned int indent)
 {
   std::string spacer (indent, ' ');

@@ -56,6 +56,45 @@
 #include <iostream>
 #include "Function.h"
 
+void
+daig::Function::mergeWith (const Function &of)
+{
+  Function &f = *this;
+
+  if (f.name == "")
+    f.name = of.name;
+  else if (f.name != of.name)
+    throw std::runtime_error("Cannot merge functions of differing names: " + f.name + " and " + of.name);
+
+  if (f.retType.get() == NULL)
+    f.retType = of.retType;
+  else if (f.retType != of.retType)
+    throw std::runtime_error("Cannot merge functions of differing return types: for " + f.name);
+
+  if (f.params.size() == 0)
+    f.params = of.params;
+  else if (of.params.size() != 0)
+    throw std::runtime_error("Cannot merge functions which both have parameters: for " + f.name);
+
+  if (f.temps.size() == 0)
+    f.temps = of.temps;
+  else if (of.temps.size() != 0)
+    throw std::runtime_error("Cannot merge functions which both have temporaries: for " + f.name);
+
+  if (f.body.size() == 0)
+    f.body = of.body;
+  else if (of.body.size() != 0)
+    throw std::runtime_error("Cannot merge functions which both have bodies: for " + f.name);
+
+  BOOST_FOREACH(const Attributes::value_type &a, of.attrs)
+  {
+    if(f.attrs.count(a.second.name) == 0)
+      f.attrs[a.second.name] = a.second;
+    else if (f.attrs[a.second.name].paramList != a.second.paramList)
+      throw std::runtime_error("Cannot merge functions with attributes of differing parameters: @" + a.second.name + " in " + f.name);
+  }
+}
+
 /*********************************************************************/
 //print function
 /*********************************************************************/

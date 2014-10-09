@@ -60,8 +60,9 @@
 #include <fstream>
 #include <string>
 #include "DaigBuilder.hpp"
-#include "daig/madara/Sync_Builder.hpp"
-#include "daig/madara/Async_Builder.hpp"
+//#include "daig/madara/Sync_Builder.hpp"
+#include "daig/gams/Sync_Builder.hpp"
+//#include "daig/madara/Async_Builder.hpp"
 #include "SyncSeq.hpp"
 #include "SyncSem.hpp"
 #include "SyncSeqDbl.hpp"
@@ -72,7 +73,7 @@
 /*********************************************************************/
 std::string file_name, out_file;
 std::string madara_target ("GNU_CPP");
-bool do_print = false, do_madara = false, do_seq = false;
+bool do_print = false, do_madara = false, do_seq = false, do_gams = false;
 bool do_vrep = false;
 bool debug = false, seq_sem = false, seq_dbl = false;
 bool seq_no_array = false, init_globals = false;
@@ -116,7 +117,44 @@ int main (int argc, char **argv)
   
   // right now, we're just using a realize flag to indicate madara
   // generation
-  if (do_madara)
+  if (do_gams)
+  {
+    //fill in the processes with nodes nodes
+    daig::Program & program = builder.program;
+    const std::string & nodeName = program.nodes.begin ()->first;
+    program.processes.clear ();
+    for (size_t i = 0;i < nodes;++i)
+      program.processes.push_back (daig::Process (nodeName, i));
+
+    // create a madara builder instance of the daig builder parse
+    std::string moc = builder.program.moc.to_string_type ();
+    daig::gams::GAMS_Builder *gams_builder = NULL;
+    
+    if(moc == "MOC_SYNC")
+      gams_builder = new daig::gams::Sync_Builder (builder, madara_target);
+    else {
+      std::cerr << "ERROR: cannot generate code for " << moc << " programs!!\n";
+      exit (1);
+    }
+
+    //build the generated code
+    gams_builder->build ();
+
+    //print the generated code
+    if (out_file.empty ())
+      gams_builder->print (std::cout);
+    else
+    {
+      std::ofstream os (out_file.c_str ());
+      gams_builder->print (os);
+      os.close ();
+    }
+
+    //cleanup
+    delete gams_builder;
+  }
+#if 0
+  else if (do_madara)
   {
     //fill in the processes with nodes nodes
     daig::Program & program = builder.program;
@@ -154,6 +192,7 @@ int main (int argc, char **argv)
     //cleanup
     delete madara_builder;
   }
+#endif
 
   //sequentialize and print result
   if (do_seq)
@@ -270,6 +309,10 @@ void parse_options (int argc, char **argv)
     {
       do_madara = true;
     }
+    else if (arg1 == "-g" || arg1 == "--madara")
+    {
+      do_gams = true;
+    }
     else if (arg1 == "-t" || arg1 == "--target" || arg1 == "--platform")
     {
       if (i + 1 < argc)
@@ -319,7 +362,7 @@ void parse_options (int argc, char **argv)
     {
       seq_sem = true;
     }
-    else if (arg1 == "-g" || arg1 == "--init-globals")
+    else if (arg1 == "-i" || arg1 == "--init-globals")
     {
       init_globals = true;
     }
@@ -374,6 +417,7 @@ void usage (char *cmd)
   std::cerr << "  -p|--print               parse and print DASL file\n";
   std::cerr << "  -n|--nodes nodes         number of nodes\n";
   std::cerr << "  -m|--madara              generate C++/MADARA code to run\n";
+  std::cerr << "  -g|--gams                generate C++/GAMS code to run\n";
   std::cerr << "  -t|--target|--platform p specify a target platform\n";
   std::cerr << "        Available platforms: WIN_CPP, GNU_CPP (default)\n";
   std::cerr << "  -vr|--vrep               generate code that targets VREP\n";
@@ -382,7 +426,7 @@ void usage (char *cmd)
   std::cerr << "  --seq-dbl                use double buffering during verification\n";
   std::cerr << "  --seq-no-array           do not use arrays during verification\n";
   std::cerr << "  --seq-sem                use variable copying during verification\n";
-  std::cerr << "  -g|--init-globals        initialize global variables\n";
+  std::cerr << "  -i|--init-globals        initialize global variables\n";
   std::cerr << "  --D<const_name> value    set a const to a value\n";
   exit (0);
 }

@@ -59,6 +59,8 @@
 #include "daig/Variable.h"
 #include "daig/Expression.h"
 #include "daig/Statement.h"
+#include "daig/Function.h"
+#include "daig/Node.h"
 #include "daig-parser.hpp"
 #include "daslc/daig-parser.hpp"
 #include "ArrayElim.hpp"

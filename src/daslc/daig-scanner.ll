@@ -78,8 +78,6 @@ extern "C" int yywrap() { return 1; }
 [0-9]+\.[0-9]*              SAVE_TOKEN; return TDOUBLE;
 [0-9]+                      SAVE_TOKEN; return TINTEGER;
 "NODE_INIT"                 PRINT_TOKEN; return TOKEN(TNODE_INIT);
-"@PERIODIC"                 PRINT_TOKEN; return TOKEN(TPERIODIC);
-"@ONCE_EVERY"               PRINT_TOKEN; return TOKEN(TONCE_EVERY);
 [a-zA-Z_][a-zA-Z0-9_]*(::[a-zA-Z_][a-zA-Z0-9_]*)+  SAVE_TOKEN; return TNAMESPACE;
 [a-zA-Z_][a-zA-Z0-9_]*  {
                           /** substitute constant definitions */
@@ -92,6 +90,7 @@ extern "C" int yywrap() { return 1; }
                           if(builder->debug) printf("%s\n",yylval.string->c_str());
                           return TINTEGER;
                         }
+@[a-zA-Z_][a-zA-Z0-9_]* SAVE_TOKEN; return TATTRIBUTE;
 "="                     PRINT_TOKEN; return TOKEN(TEQUAL);
 "=="                    PRINT_TOKEN; return TOKEN(TCEQ);
 "!="                    PRINT_TOKEN; return TOKEN(TCNE);

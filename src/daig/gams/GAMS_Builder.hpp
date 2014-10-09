@@ -53,101 +53,54 @@
  * DM-0001023
 **/
 
-#ifndef _DAIG_FUNCTION_H_
-#define _DAIG_FUNCTION_H_
 
-/**
- * @file Function.h
- * @author James Edmondson <jedmondson@gmail.com>
- *
- * This file contains a class definition for function definitions.
- **/
+#ifndef __GAMS_GAMS_BUILDER_H__
+#define __GAMS_GAMS_BUILDER_H__
 
-#include <vector>
-#include <map>
-#include <string>
-#include "Variable.h"
-#include "Statement.h"
-#include "Attribute.h"
-
+#include "daslc/DaigBuilder.hpp"
 
 namespace daig
 {
-  /**
-    * @class Function
-    * @brief Represents a function definition
-    */
-  class Function
+  namespace gams
   {
-  public:
-    /**
-     * The name of the function
-     **/
-    std::string name;
-
-    ///the return type of the function
-    Type retType;
-
-    /**
-     * The function parameters
-     **/
-    Variables params;
-    
-    ///function local variables -- we call them temporary variables
-    ///since their scope is only the function body
-    Variables temps;
-
-    // @ATTR(X, ...) attributes specified for this function
-    Attributes attrs;
-
-    /**
-     * The function body
-     **/
-    StmtList body;
-
-    //constructors
-    Function() {}
-    Function(const std::string &n)
-      : name(n) {}
-    Function(const std::string &n, const Attributes &a)
-      : name(n),attrs(a) {}
-    Function(const Type &rt,const std::string &n,const std::list<Variable> &p,
-             const std::list<Variable> &t,const StmtList &b,
-             const Attributes &a = Attributes())
-      : retType(rt),name(n),body(b),attrs(a)
+    /*******************************************************************/
+    // this is the base class for various code generators for DASL
+    // programs that target MADARA
+    /*******************************************************************/
+    class GAMS_Builder
     {
-      setParams(p);
-      setTemps(t);
-    }
+    public:
+      /**
+       * Constructor
+       * @param  builder   the source for building a program
+       **/
+      GAMS_Builder (DaigBuilder & builder,const std::string &target)
+        : builder_ (builder), target_ (target) {}
 
-    void mergeWith (const Function &of);
+      ///we need a virtual destructor
+      virtual ~GAMS_Builder() {}
 
-    void setParams (const std::list<Variable> &p)
-    {
-      doSetVars(p, params);
-    }
+      /**
+       * Builds the underlying character stream that can then be printed
+       **/
+      virtual void build (void) = 0;
 
-    void setTemps (const std::list<Variable> &t)
-    {
-      doSetVars(t, temps);
-    }
+      /**
+       * Prints the MADARA program to a stream
+       * @param  os  the stream to print to
+       **/
+      virtual void print (std::ostream & os) = 0;
 
-    /**
-     * Prints function information
-     * @param  indent  spaces to indent printout
-     **/
-    void print (std::ostream &os,unsigned int indent);
 
-    ///print just the function declaration
-    void printDecl (std::ostream &os,unsigned int indent);    
-  private:
-    void doSetVars (const std::list<Variable> &vars, Variables &dest)
-    {
-      BOOST_FOREACH(const Variable &v,vars) dest[v.name] = v;
-    }
-  };
+    protected:
+      
+      /// the result of the DASL parsing function
+      DaigBuilder & builder_;
 
-  typedef std::map <std::string, Function> Functions;
-}
+      ///the target to build against
+      std::string target_;
+    };
+  } // namespace gams
+} //namespace daig
 
-#endif // _DAIG_FUNCTION_H_
+#endif //__MADARA_MADARA_BUILDER_H__

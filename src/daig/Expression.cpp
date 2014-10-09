@@ -59,6 +59,8 @@
 #include "Variable.h"
 #include "Expression.h"
 #include "Statement.h"
+#include "Function.h"
+#include "Node.h"
 #include "daslc/daig-parser.hpp"
 
 /*********************************************************************/
