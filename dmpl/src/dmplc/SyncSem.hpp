@@ -54,17 +54,17 @@
 **/
 
 
-//a class for sequentializing DAIG into a C program
+//a class for sequentializing DMPL into a C program
 
 #ifndef __SYNC_SEM_HPP__
 #define __SYNC_SEM_HPP__
 
 #include <iostream>
-#include "DaigBuilder.hpp"
-#include "daig/CProgram.h"
+#include "DmplBuilder.hpp"
+#include "dmpl/CProgram.h"
 #include "CopyVisitor.hpp"
 
-namespace daig {
+namespace dmpl {
 
   //forward declaration
   class SyncSem;
@@ -81,7 +81,7 @@ namespace daig {
       SyncSem &syncSeq;
 
       //the DASL program being transformed
-      daig::Program &prog;
+      dmpl::Program &prog;
 
       //the number of nodes
       size_t nodeNum;
@@ -90,7 +90,7 @@ namespace daig {
       std::map<std::string,size_t> idMap;
 
       //constructors
-      GlobalTransformer(SyncSem &ss,daig::Program &p,size_t n) 
+      GlobalTransformer(SyncSem &ss,dmpl::Program &p,size_t n) 
         : syncSeq(ss),prog(p),nodeNum(n) {}
 
       //update substitution mapping
@@ -151,12 +151,12 @@ namespace daig {
   class SyncSem
   {
   public:
-    DaigBuilder &builder;
+    DmplBuilder &builder;
     size_t nodeNum;
     int roundNum;
     CProgram cprog;
 
-    SyncSem(DaigBuilder &b,int r);
+    SyncSem(DmplBuilder &b,int r);
     void createGlobVars();
     void createCopyStmts(const Variable &var,StmtList &res,ExprList indx);
     void createGlobalCopier();
@@ -167,6 +167,6 @@ namespace daig {
     Expr createNondetFunc(const Expr &expr);
     void run();
   };
-} //namespace daig
+} //namespace dmpl
 
 #endif //__SYNC_SEM_HPP__

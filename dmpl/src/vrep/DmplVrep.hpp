@@ -3,7 +3,7 @@
 
 #include <map>
 #include <vector>
-#include "daig/MCDA_Export.h"
+#include "dmpl/MCDA_Export.h"
 
 extern "C" {
 #include "extApi.h"

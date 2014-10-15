@@ -54,32 +54,32 @@
 **/
 
 #include <boost/lexical_cast.hpp>
-#include "daig/Type.h"
-#include "daig/Variable.h"
-#include "daig/Expression.h"
-#include "daig/Statement.h"
-#include "daig/Function.h"
-#include "daig/Node.h"
-#include "daig-parser.hpp"
+#include "dmpl/Type.h"
+#include "dmpl/Variable.h"
+#include "dmpl/Expression.h"
+#include "dmpl/Statement.h"
+#include "dmpl/Function.h"
+#include "dmpl/Node.h"
+#include "dmpl-parser.hpp"
 #include "CopyVisitor.hpp"
 
 /*********************************************************************/
 //collect results for an expr list
 /*********************************************************************/
-daig::ExprList daig::CopyVisitor::collect(const ExprList &el)
+dmpl::ExprList dmpl::CopyVisitor::collect(const ExprList &el)
 {
-  daig::ExprList res;
-  BOOST_FOREACH(const daig::Expr &e,el) res.push_back(exprMap[e]);
+  dmpl::ExprList res;
+  BOOST_FOREACH(const dmpl::Expr &e,el) res.push_back(exprMap[e]);
   return res;
 }
 
 /*********************************************************************/
 //collect results for an stmt list
 /*********************************************************************/
-daig::StmtList daig::CopyVisitor::collect(const StmtList &sl)
+dmpl::StmtList dmpl::CopyVisitor::collect(const StmtList &sl)
 {
-  daig::StmtList res;
-  BOOST_FOREACH(const daig::Stmt &s,sl) res.push_back(stmtMap[s]);
+  dmpl::StmtList res;
+  BOOST_FOREACH(const dmpl::Stmt &s,sl) res.push_back(stmtMap[s]);
   return res;
 }
 
@@ -87,62 +87,62 @@ daig::StmtList daig::CopyVisitor::collect(const StmtList &sl)
 //dispatchers for expressions
 /*********************************************************************/
 
-void daig::CopyVisitor::exitInt(daig::IntExpr &expr)
+void dmpl::CopyVisitor::exitInt(dmpl::IntExpr &expr)
 {
   exprMap[hostExpr] = hostExpr;
 }
 
-void daig::CopyVisitor::exitLval(daig::LvalExpr &expr)
+void dmpl::CopyVisitor::exitLval(dmpl::LvalExpr &expr)
 {
   exprMap[hostExpr] = hostExpr;
 }
 
-void daig::CopyVisitor::exitComp(daig::CompExpr &expr)
+void dmpl::CopyVisitor::exitComp(dmpl::CompExpr &expr)
 {
-  exprMap[hostExpr] = daig::Expr(new daig::CompExpr(expr.op,collect(expr.args)));
+  exprMap[hostExpr] = dmpl::Expr(new dmpl::CompExpr(expr.op,collect(expr.args)));
 }
 
-void daig::CopyVisitor::exitCall(daig::CallExpr &expr)
+void dmpl::CopyVisitor::exitCall(dmpl::CallExpr &expr)
 {
-  exprMap[hostExpr] = daig::Expr(new daig::CallExpr(exprMap[expr.func],
+  exprMap[hostExpr] = dmpl::Expr(new dmpl::CallExpr(exprMap[expr.func],
                                                     collect(expr.args)));
 }
 
-void daig::CopyVisitor::exitEXO(daig::EXOExpr &expr)
+void dmpl::CopyVisitor::exitEXO(dmpl::EXOExpr &expr)
 {
-  exprMap[hostExpr] = daig::Expr(new daig::EXOExpr(expr.id,exprMap[expr.arg]));
+  exprMap[hostExpr] = dmpl::Expr(new dmpl::EXOExpr(expr.id,exprMap[expr.arg]));
 }
 
-void daig::CopyVisitor::exitEXH(daig::EXHExpr &expr)
+void dmpl::CopyVisitor::exitEXH(dmpl::EXHExpr &expr)
 {
-  exprMap[hostExpr] = daig::Expr(new daig::EXHExpr(expr.id,exprMap[expr.arg]));
+  exprMap[hostExpr] = dmpl::Expr(new dmpl::EXHExpr(expr.id,exprMap[expr.arg]));
 }
 
-void daig::CopyVisitor::exitEXL(daig::EXLExpr &expr)
+void dmpl::CopyVisitor::exitEXL(dmpl::EXLExpr &expr)
 {
-  exprMap[hostExpr] = daig::Expr(new daig::EXLExpr(expr.id,exprMap[expr.arg]));
+  exprMap[hostExpr] = dmpl::Expr(new dmpl::EXLExpr(expr.id,exprMap[expr.arg]));
 }
 
 /*********************************************************************/
 //dispatchers for statements
 /*********************************************************************/
 
-void daig::CopyVisitor::exitAtomic(daig::AtomicStmt &stmt)
+void dmpl::CopyVisitor::exitAtomic(dmpl::AtomicStmt &stmt)
 {
-  stmtMap[hostStmt] = Stmt(new daig::AtomicStmt(stmtMap[stmt.data]));
+  stmtMap[hostStmt] = Stmt(new dmpl::AtomicStmt(stmtMap[stmt.data]));
 }
 
-void daig::CopyVisitor::exitPrivate(daig::PrivateStmt &stmt)
+void dmpl::CopyVisitor::exitPrivate(dmpl::PrivateStmt &stmt)
 {
-  stmtMap[hostStmt] = Stmt(new daig::PrivateStmt(stmtMap[stmt.data]));
+  stmtMap[hostStmt] = Stmt(new dmpl::PrivateStmt(stmtMap[stmt.data]));
 }
 
-void daig::CopyVisitor::exitBlock(daig::BlockStmt &stmt)
+void dmpl::CopyVisitor::exitBlock(dmpl::BlockStmt &stmt)
 {
   stmtMap[hostStmt] = Stmt(new BlockStmt(collect(stmt.data)));
 }
 
-void daig::CopyVisitor::exitAsgn(daig::AsgnStmt &stmt) 
+void dmpl::CopyVisitor::exitAsgn(dmpl::AsgnStmt &stmt) 
 { 
   stmtMap[hostStmt] = Stmt(new AsgnStmt(exprMap[stmt.lhs],exprMap[stmt.rhs]));
 
@@ -151,74 +151,74 @@ void daig::CopyVisitor::exitAsgn(daig::AsgnStmt &stmt)
   //stmtMap[hostStmt]->print(std::cout,0);
 }
 
-void daig::CopyVisitor::exitIT(daig::ITStmt &stmt) 
+void dmpl::CopyVisitor::exitIT(dmpl::ITStmt &stmt) 
 { 
   stmtMap[hostStmt] = Stmt(new ITStmt(exprMap[stmt.cond], stmtMap[stmt.tbranch]));
 }
 
-void daig::CopyVisitor::exitITE(daig::ITEStmt &stmt) 
+void dmpl::CopyVisitor::exitITE(dmpl::ITEStmt &stmt) 
 { 
   stmtMap[hostStmt] = Stmt(new ITEStmt(exprMap[stmt.cond], stmtMap[stmt.tbranch], 
                                        stmtMap[stmt.ebranch]));
 }
 
-void daig::CopyVisitor::exitFor(daig::ForStmt &stmt) 
+void dmpl::CopyVisitor::exitFor(dmpl::ForStmt &stmt) 
 { 
   stmtMap[hostStmt] = Stmt(new ForStmt(collect(stmt.init),collect(stmt.test),
                                        collect(stmt.update),stmtMap[stmt.body]));
 }
 
-void daig::CopyVisitor::exitWhile(daig::WhileStmt &stmt) 
+void dmpl::CopyVisitor::exitWhile(dmpl::WhileStmt &stmt) 
 { 
   stmtMap[hostStmt] = Stmt(new WhileStmt(exprMap[stmt.cond],stmtMap[stmt.body]));
 }
 
-void daig::CopyVisitor::exitBreak(daig::BreakStmt &stmt) 
+void dmpl::CopyVisitor::exitBreak(dmpl::BreakStmt &stmt) 
 { 
   stmtMap[hostStmt] = hostStmt; 
 }
 
-void daig::CopyVisitor::exitCont(daig::ContStmt &stmt) 
+void dmpl::CopyVisitor::exitCont(dmpl::ContStmt &stmt) 
 { 
   stmtMap[hostStmt] = hostStmt; 
 }
 
-void daig::CopyVisitor::exitRet(daig::RetStmt &stmt) 
+void dmpl::CopyVisitor::exitRet(dmpl::RetStmt &stmt) 
 { 
   stmtMap[hostStmt] = Stmt(new RetStmt(exprMap[stmt.retVal]));
 }
 
-void daig::CopyVisitor::exitRetVoid(daig::RetVoidStmt &stmt) 
+void dmpl::CopyVisitor::exitRetVoid(dmpl::RetVoidStmt &stmt) 
 { 
   stmtMap[hostStmt] = hostStmt; 
 }
 
-void daig::CopyVisitor::exitCall(daig::CallStmt &stmt) 
+void dmpl::CopyVisitor::exitCall(dmpl::CallStmt &stmt) 
 { 
   stmtMap[hostStmt] = Stmt(new CallStmt(exprMap[stmt.data]));
 }
 
-void daig::CopyVisitor::exitFAN(daig::FANStmt &stmt) 
+void dmpl::CopyVisitor::exitFAN(dmpl::FANStmt &stmt) 
 { 
   stmtMap[hostStmt] = Stmt(new FANStmt(stmt.id,stmtMap[stmt.data]));
 }
 
-void daig::CopyVisitor::exitFADNP(daig::FADNPStmt &stmt) 
+void dmpl::CopyVisitor::exitFADNP(dmpl::FADNPStmt &stmt) 
 { 
   stmtMap[hostStmt] = Stmt(new FADNPStmt(stmt.id1,stmt.id2,stmtMap[stmt.data]));
 }
 
-void daig::CopyVisitor::exitFAO(daig::FAOStmt &stmt) 
+void dmpl::CopyVisitor::exitFAO(dmpl::FAOStmt &stmt) 
 { 
   stmtMap[hostStmt] = Stmt(new FAOStmt(stmt.id,stmtMap[stmt.data]));
 }
 
-void daig::CopyVisitor::exitFAOL(daig::FAOLStmt &stmt) 
+void dmpl::CopyVisitor::exitFAOL(dmpl::FAOLStmt &stmt) 
 {
   stmtMap[hostStmt] = Stmt(new FAOLStmt(stmt.id,stmtMap[stmt.data]));
 }
 
-void daig::CopyVisitor::exitFAOH(daig::FAOHStmt &stmt) 
+void dmpl::CopyVisitor::exitFAOH(dmpl::FAOHStmt &stmt) 
 {
   stmtMap[hostStmt] = Stmt(new FAOHStmt(stmt.id,stmtMap[stmt.data]));
 }

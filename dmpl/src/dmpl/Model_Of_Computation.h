@@ -53,60 +53,60 @@
  * DM-0001023
 **/
 
+#ifndef _DMPL_MODEL_OF_COMPUTATION_H_
+#define _DMPL_MODEL_OF_COMPUTATION_H_
 
-//a class for sequentializing DMPL into a C program
+/**
+ * @file Model_Of_Computation.h
+ * @author James Edmondson <jedmondson@gmail.com>
+ *
+ * This file contains a class definition for the DMPL model of computation.
+ **/
 
-#ifndef __ARRAY_ELIM_HPP__
-#define __ARRAY_ELIM_HPP__
+#include <string>
 
-#include <iostream>
-#include "DmplBuilder.hpp"
-#include "dmpl/CProgram.h"
-#include "CopyVisitor.hpp"
 
-namespace dmpl {
-
-  /*******************************************************************/
-  //array eliminator
-  /*******************************************************************/
-  class ArrayElim : public CopyVisitor
+namespace dmpl
+{
+  /**
+    * @class Model_Of_Computation
+    * @brief Contains information about the model of computation
+    */
+  class Model_Of_Computation
   {
   public:
-    ///the input program with arrays
-    CProgram &inProg;
 
-    ///the output program without arrays
-    CProgram outProg;
+    enum Types
+    {
+      SYNC,
+      ASYNC,
+      PARTIAL
+    };
 
-    ///whether to add an initializer for globals at the beginning of
-    ///main
-    bool initGlobals;
+    /**
+     * Constructor
+     **/
+    Model_Of_Computation ();
 
-    ///constructor
-    ArrayElim(CProgram &ip,bool ig);
+    /**
+     * Sets the type based on a string
+     * @param  str_type    string identifier of type.
+     *                     SYNC, ASYNC, or PARTIAL
+     **/
+    void set_type (const std::string & str_type);
 
-    //existing setter and getter functions
-    std::map<std::string,Expr> getters,setters;
+    /**
+     * Returns the stringified version of the type
+     * @return  SYNC, ASYNC, or PARTIAL
+     **/
+    std::string to_string_type (void);
 
-    void expandArrayVar(const Variable &var);
-
-    void createGetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VarList &params,
-                          StmtList &body);
-    Expr createGetter(const LvalExpr &expr);
-    void createSetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VarList &params,
-                          StmtList &body);
-    Expr createSetter(const LvalExpr &expr);
-
-    //dispatchers for visitor
-    void exitLval(LvalExpr &expr);
-    bool enterAsgn(AsgnStmt &stmt) { return false; }
-    void exitAsgn(AsgnStmt &stmt);
-
-    ///do array elimination
-    void run();
+    /**
+     * Holds the type of model of computation
+     **/
+    int type;
   };
-} //namespace dmpl
+}
 
-#endif //__ARRAY_ELIM_HPP__
+
+#endif // _DMPL_MODEL_OF_COMPUTATION_H_

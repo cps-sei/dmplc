@@ -53,60 +53,44 @@
  * DM-0001023
 **/
 
-
-//a class for sequentializing DMPL into a C program
-
-#ifndef __ARRAY_ELIM_HPP__
-#define __ARRAY_ELIM_HPP__
-
 #include <iostream>
-#include "DmplBuilder.hpp"
-#include "dmpl/CProgram.h"
-#include "CopyVisitor.hpp"
+#include <boost/foreach.hpp>
+#include "Node.h"
+#include "CProgram.h"
 
-namespace dmpl {
+/*********************************************************************/
+//print the program to an output stream with proper indentation
+/*********************************************************************/
+void
+dmpl::CProgram::print (std::ostream &os,unsigned int indent)
+{
+  std::string spacer (indent, ' ');
 
-  /*******************************************************************/
-  //array eliminator
-  /*******************************************************************/
-  class ArrayElim : public CopyVisitor
-  {
-  public:
-    ///the input program with arrays
-    CProgram &inProg;
+  //print external function declarations
+  os << spacer << "/************* external functions ***********/\n";
+  BOOST_FOREACH(dmpl::Functions::value_type &v, externalFuncs) {
+    os << spacer << "extern";
+    v.second.printDecl(os, 1);
+  }
+  os << '\n';
+  
+  //print global variables
+  os << spacer << "/************* global variables ***********/\n";
+  for (dmpl::Variables::iterator i = globVars.begin (); i != globVars.end (); ++i) {
+    i->second.print (os,indent);
+    os << ";\n";
+  }
+  os << '\n';
 
-    ///the output program without arrays
-    CProgram outProg;
+  //print function declarations
+  for (dmpl::Functions::iterator i = funcs.begin (); i != funcs.end (); ++i)
+    i->second.printDecl (os,indent);
 
-    ///whether to add an initializer for globals at the beginning of
-    ///main
-    bool initGlobals;
+  //print functions
+  for (dmpl::Functions::iterator i = funcs.begin (); i != funcs.end (); ++i)
+    i->second.print (os,indent);
+}
 
-    ///constructor
-    ArrayElim(CProgram &ip,bool ig);
-
-    //existing setter and getter functions
-    std::map<std::string,Expr> getters,setters;
-
-    void expandArrayVar(const Variable &var);
-
-    void createGetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VarList &params,
-                          StmtList &body);
-    Expr createGetter(const LvalExpr &expr);
-    void createSetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VarList &params,
-                          StmtList &body);
-    Expr createSetter(const LvalExpr &expr);
-
-    //dispatchers for visitor
-    void exitLval(LvalExpr &expr);
-    bool enterAsgn(AsgnStmt &stmt) { return false; }
-    void exitAsgn(AsgnStmt &stmt);
-
-    ///do array elimination
-    void run();
-  };
-} //namespace dmpl
-
-#endif //__ARRAY_ELIM_HPP__
+/*********************************************************************/
+//end of file
+/*********************************************************************/

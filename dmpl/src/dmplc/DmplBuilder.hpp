@@ -54,59 +54,34 @@
 **/
 
 
-//a class for sequentializing DMPL into a C program
+//a class for parsing mcda files and constructing its DMPL
+//representation
 
-#ifndef __ARRAY_ELIM_HPP__
-#define __ARRAY_ELIM_HPP__
+#ifndef __DMPL_BUILDER_HPP__
+#define __DMPL_BUILDER_HPP__
 
-#include <iostream>
-#include "DmplBuilder.hpp"
-#include "dmpl/CProgram.h"
-#include "CopyVisitor.hpp"
+#include <string>
+#include <list>
+#include <map>
+#include "dmpl/Program.h"
 
 namespace dmpl {
-
-  /*******************************************************************/
-  //array eliminator
-  /*******************************************************************/
-  class ArrayElim : public CopyVisitor
+  class DmplBuilder
   {
   public:
-    ///the input program with arrays
-    CProgram &inProg;
+    dmpl::Program program;
+  
+    std::list<std::string> fileNames;
+    bool debug;
+  
+  public:
+    DmplBuilder() : debug(0) {}
+    DmplBuilder(const std::list<std::string> &fns,const std::map<std::string,std::string> &constDef,
+                const bool d);
 
-    ///the output program without arrays
-    CProgram outProg;
-
-    ///whether to add an initializer for globals at the beginning of
-    ///main
-    bool initGlobals;
-
-    ///constructor
-    ArrayElim(CProgram &ip,bool ig);
-
-    //existing setter and getter functions
-    std::map<std::string,Expr> getters,setters;
-
-    void expandArrayVar(const Variable &var);
-
-    void createGetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VarList &params,
-                          StmtList &body);
-    Expr createGetter(const LvalExpr &expr);
-    void createSetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VarList &params,
-                          StmtList &body);
-    Expr createSetter(const LvalExpr &expr);
-
-    //dispatchers for visitor
-    void exitLval(LvalExpr &expr);
-    bool enterAsgn(AsgnStmt &stmt) { return false; }
-    void exitAsgn(AsgnStmt &stmt);
-
-    ///do array elimination
     void run();
+    void printProgram(std::ostream &os);
   };
 } //namespace dmpl
 
-#endif //__ARRAY_ELIM_HPP__
+#endif //__DMPL_BUILDER_HPP__

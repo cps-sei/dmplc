@@ -54,59 +54,64 @@
 **/
 
 
-//a class for sequentializing DMPL into a C program
-
-#ifndef __ARRAY_ELIM_HPP__
-#define __ARRAY_ELIM_HPP__
-
+#include <stdio.h>
 #include <iostream>
 #include "DmplBuilder.hpp"
-#include "dmpl/CProgram.h"
-#include "CopyVisitor.hpp"
 
-namespace dmpl {
+/*********************************************************************/
+//pointer to the builder to be passed to the parser and lexer
+/*********************************************************************/
+dmpl::DmplBuilder *builder = NULL;
 
-  /*******************************************************************/
-  //array eliminator
-  /*******************************************************************/
-  class ArrayElim : public CopyVisitor
+/*********************************************************************/
+//the parser routine
+/*********************************************************************/
+extern int yyparse();
+
+/*********************************************************************/
+//the file pointer for lex
+/*********************************************************************/
+extern FILE *yyin;
+
+/*********************************************************************/
+//constructor
+/*********************************************************************/
+dmpl::DmplBuilder::DmplBuilder(const std::list<std::string> &fns,
+                               const std::map<std::string,std::string> &constDef,
+                               const bool d)
+  : fileNames(fns),debug(d) 
+{
+  program.constDef = constDef;
+}
+
+/*********************************************************************/
+//run the parser
+/*********************************************************************/
+void dmpl::DmplBuilder::run()
+{
+  ::builder = this;
+  BOOST_FOREACH(std::string fileName, fileNames)
   {
-  public:
-    ///the input program with arrays
-    CProgram &inProg;
+    ::yyin = fopen(fileName.c_str(),"r");
+    if(!::yyin) {
+      std::cerr << "ERROR: could not open file " << fileName << '\n';
+      exit(1);
+    }
+  
+    ::yyparse();
+    fclose(::yyin);
+  }
+  program.sanityCheck();
+}
 
-    ///the output program without arrays
-    CProgram outProg;
+/*********************************************************************/
+//print the program
+/*********************************************************************/
+void dmpl::DmplBuilder::printProgram(std::ostream &os)
+{
+  program.print(os,0);
+}
 
-    ///whether to add an initializer for globals at the beginning of
-    ///main
-    bool initGlobals;
-
-    ///constructor
-    ArrayElim(CProgram &ip,bool ig);
-
-    //existing setter and getter functions
-    std::map<std::string,Expr> getters,setters;
-
-    void expandArrayVar(const Variable &var);
-
-    void createGetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VarList &params,
-                          StmtList &body);
-    Expr createGetter(const LvalExpr &expr);
-    void createSetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VarList &params,
-                          StmtList &body);
-    Expr createSetter(const LvalExpr &expr);
-
-    //dispatchers for visitor
-    void exitLval(LvalExpr &expr);
-    bool enterAsgn(AsgnStmt &stmt) { return false; }
-    void exitAsgn(AsgnStmt &stmt);
-
-    ///do array elimination
-    void run();
-  };
-} //namespace dmpl
-
-#endif //__ARRAY_ELIM_HPP__
+/*********************************************************************/
+//end of DmplBuilder.cpp
+/*********************************************************************/

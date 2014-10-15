@@ -2,8 +2,8 @@ project (dart) : using_madara, using_ace, using_boost, using_vrep {
   libout = $(DMPL_ROOT)/dmpl/lib
   sharedname = dart
   
-  prebuild += bison -d -osrc/dmplc/daig-parser.cpp src/dmplc/daig-parser.yy
-  prebuild += flex -osrc/dmplc/daig-scanner.cpp src/dmplc/daig-scanner.ll
+  prebuild += bison -d -osrc/dmplc/dmpl-parser.cpp src/dmplc/dmpl-parser.yy
+  prebuild += flex -osrc/dmplc/dmpl-scanner.cpp src/dmplc/dmpl-scanner.ll
 
   dynamicflags += MCDA_BUILD_DLL
   
@@ -49,8 +49,8 @@ project (dmplc) : using_madara, using_ace, using_boost, using_dart {
     README.txt
     VERSION.txt
     examples/*.mcda
-    src/dmplc/daig-parser.yy
-    src/dmplc/daig-scanner.ll
+    src/dmplc/dmpl-parser.yy
+    src/dmplc/dmpl-scanner.ll
   }
   
   Build_Files {
@@ -66,16 +66,16 @@ project (dmplc) : using_madara, using_ace, using_boost, using_dart {
 
   Header_Files {
     src/dmplc
-    src/daig
-    src/daig/madara
+    src/dmpl
+    src/dmpl/madara
   }
 
   Source_Files {
-    src/daig
-    src/daig/madara
+    src/dmpl
+    src/dmpl/madara
     src/dmplc
-    src/dmplc/daig-scanner.cpp
-    src/dmplc/daig-parser.cpp
+    src/dmplc/dmpl-scanner.cpp
+    src/dmplc/dmpl-parser.cpp
   }
 }
 

@@ -55,20 +55,20 @@
 
 #include <boost/lexical_cast.hpp>
 #include <boost/foreach.hpp>
-#include "daig/Type.h"
-#include "daig/Variable.h"
-#include "daig/Expression.h"
-#include "daig/Statement.h"
-#include "daig/Function.h"
-#include "daig/Node.h"
-#include "daig-parser.hpp"
-#include "dmplc/daig-parser.hpp"
+#include "dmpl/Type.h"
+#include "dmpl/Variable.h"
+#include "dmpl/Expression.h"
+#include "dmpl/Statement.h"
+#include "dmpl/Function.h"
+#include "dmpl/Node.h"
+#include "dmpl-parser.hpp"
+#include "dmplc/dmpl-parser.hpp"
 #include "ArrayElim.hpp"
 
 /*********************************************************************/
 //constructor
 /*********************************************************************/
-daig::ArrayElim::ArrayElim(CProgram &ip,bool ig) 
+dmpl::ArrayElim::ArrayElim(CProgram &ip,bool ig) 
   : inProg(ip),initGlobals(ig) {}
 
 /*********************************************************************/
@@ -76,7 +76,7 @@ daig::ArrayElim::ArrayElim(CProgram &ip,bool ig)
 //elements. for example, an array variable int x[2] is expanded into
 //two variables int x_0 and int x_1
 /*********************************************************************/
-void daig::ArrayElim::expandArrayVar(const Variable &var)
+void dmpl::ArrayElim::expandArrayVar(const Variable &var)
 {
   if(!var.type->isArray()) {
     outProg.addGlobVar(var);
@@ -94,7 +94,7 @@ void daig::ArrayElim::expandArrayVar(const Variable &var)
 /*********************************************************************/
 //recursively create the statements in the body of a getter
 /*********************************************************************/
-void daig::ArrayElim::createGetterBody(const std::string &varName,const Expr &cond,
+void dmpl::ArrayElim::createGetterBody(const std::string &varName,const Expr &cond,
                                        const Type &type,const VarList &params,
                                        StmtList &body)
 {
@@ -124,7 +124,7 @@ void daig::ArrayElim::createGetterBody(const std::string &varName,const Expr &co
 /*********************************************************************/
 //create the getter for an array
 /*********************************************************************/
-daig::Expr daig::ArrayElim::createGetter(const LvalExpr &expr)
+dmpl::Expr dmpl::ArrayElim::createGetter(const LvalExpr &expr)
 {
   //return existing
   std::map<std::string,Expr>::iterator it = getters.find(expr.var);
@@ -141,9 +141,9 @@ daig::Expr daig::ArrayElim::createGetter(const LvalExpr &expr)
   Expr getFunc(new LvalExpr(fnName));
   
   //create parameters
-  daig::VarList params;
+  dmpl::VarList params;
   for(unsigned int i = 0;i < expr.indices.size();++i) {
-    params.push_back(Variable("idx_" + boost::lexical_cast<std::string>(i),daig::ucharType()));
+    params.push_back(Variable("idx_" + boost::lexical_cast<std::string>(i),dmpl::ucharType()));
   }
 
   //create the body
@@ -154,7 +154,7 @@ daig::Expr daig::ArrayElim::createGetter(const LvalExpr &expr)
   body.push_back(Stmt(new RetStmt(Expr(new IntExpr(0)))));
 
   //create and add the function to the result C program
-  outProg.addFunction(Function(elemType,fnName,params,daig::VarList(),body));
+  outProg.addFunction(Function(elemType,fnName,params,dmpl::VarList(),body));
 
   getters[expr.var] = getFunc;
   return getFunc;
@@ -163,7 +163,7 @@ daig::Expr daig::ArrayElim::createGetter(const LvalExpr &expr)
 /*********************************************************************/
 //recursively create the statements in the body of a setter
 /*********************************************************************/
-void daig::ArrayElim::createSetterBody(const std::string &varName,const Expr &cond,
+void dmpl::ArrayElim::createSetterBody(const std::string &varName,const Expr &cond,
                                        const Type &type,const VarList &params,
                                        StmtList &body)
 {
@@ -195,7 +195,7 @@ void daig::ArrayElim::createSetterBody(const std::string &varName,const Expr &co
 /*********************************************************************/
 //create the setter for an array
 /*********************************************************************/
-daig::Expr daig::ArrayElim::createSetter(const LvalExpr &expr)
+dmpl::Expr dmpl::ArrayElim::createSetter(const LvalExpr &expr)
 {
   //return existing
   std::map<std::string,Expr>::iterator it = setters.find(expr.var);
@@ -212,9 +212,9 @@ daig::Expr daig::ArrayElim::createSetter(const LvalExpr &expr)
   Expr setFunc(new LvalExpr(fnName));
   
   //create parameters
-  daig::VarList params;
+  dmpl::VarList params;
   for(unsigned int i = 0;i < expr.indices.size();++i) {
-    params.push_back(Variable("idx_" + boost::lexical_cast<std::string>(i),daig::ucharType()));
+    params.push_back(Variable("idx_" + boost::lexical_cast<std::string>(i),dmpl::ucharType()));
   }
   params.push_back(Variable("val", elemType));
 
@@ -223,7 +223,7 @@ daig::Expr daig::ArrayElim::createSetter(const LvalExpr &expr)
   createSetterBody(expr.var,Expr(),git->second.type,params,body);
 
   //create and add the function to the result C program
-  outProg.addFunction(Function(voidType(),fnName,params,daig::VarList(),body));
+  outProg.addFunction(Function(voidType(),fnName,params,dmpl::VarList(),body));
 
   setters[expr.var] = setFunc;
   return setFunc;
@@ -232,7 +232,7 @@ daig::Expr daig::ArrayElim::createSetter(const LvalExpr &expr)
 /*********************************************************************/
 //visitor dispatchers
 /*********************************************************************/
-void daig::ArrayElim::exitLval(LvalExpr &expr)
+void dmpl::ArrayElim::exitLval(LvalExpr &expr)
 {
   //not an array element
   if(expr.indices.empty()) {
@@ -244,7 +244,7 @@ void daig::ArrayElim::exitLval(LvalExpr &expr)
   exprMap[hostExpr] = Expr(new CallExpr(createGetter(expr),expr.indices));
 }
 
-void daig::ArrayElim::exitAsgn(AsgnStmt &stmt)
+void dmpl::ArrayElim::exitAsgn(AsgnStmt &stmt)
 {
   Stmt shost = hostStmt;
 
@@ -268,7 +268,7 @@ void daig::ArrayElim::exitAsgn(AsgnStmt &stmt)
 /*********************************************************************/
 //run the array eliminator -- construct the output program
 /*********************************************************************/
-void daig::ArrayElim::run()
+void dmpl::ArrayElim::run()
 {
   //copy over external function declarations
   outProg.externalFuncs = inProg.externalFuncs;
@@ -281,7 +281,7 @@ void daig::ArrayElim::run()
   //convert array accesses in each function
   BOOST_FOREACH(const Functions::value_type &v,inProg.funcs) {
     const Function &func = v.second;
-    daig::VarList fnParams,fnTemps;
+    dmpl::VarList fnParams,fnTemps;
     BOOST_FOREACH(const Variables::value_type &v,func.params)
       fnParams.push_back(v.second);
     BOOST_FOREACH(const Variables::value_type &v,func.temps)
@@ -295,17 +295,17 @@ void daig::ArrayElim::run()
 
     //if needed, create and push a global initializer
     if(initGlobals && func.name == "main") {
-      daig::StmtList igBody;
+      dmpl::StmtList igBody;
       BOOST_FOREACH(const Variables::value_type &v,outProg.globVars) {
         igBody.push_back(Stmt(new AsgnStmt(Expr(new LvalExpr(v.second.name)),
                                            Expr(new IntExpr(0)))));
       }
 
-      outProg.addFunction(Function(daig::voidType(),"init_globals",daig::VarList(),
-                                   daig::VarList(),igBody));
+      outProg.addFunction(Function(dmpl::voidType(),"init_globals",dmpl::VarList(),
+                                   dmpl::VarList(),igBody));
 
       Expr callExpr(new LvalExpr("init_globals"));
-      Stmt callStmt(new CallStmt(callExpr,daig::ExprList()));
+      Stmt callStmt(new CallStmt(callExpr,dmpl::ExprList()));
       fnBody.push_front(callStmt);
     }
 

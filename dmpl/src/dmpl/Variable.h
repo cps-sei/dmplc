@@ -53,60 +53,75 @@
  * DM-0001023
 **/
 
+#ifndef _DMPL_VARIABLE_
+#define _DMPL_VARIABLE_
 
-//a class for sequentializing DMPL into a C program
+/**
+ * @file Variable.h
+ * @author James Edmondson <jedmondson@gmail.com>
+ *
+ * This file contains a class definition for the DMPL model of computation.
+ **/
 
-#ifndef __ARRAY_ELIM_HPP__
-#define __ARRAY_ELIM_HPP__
+#include <map>
+#include <string>
+#include "Type.h"
 
-#include <iostream>
-#include "DmplBuilder.hpp"
-#include "dmpl/CProgram.h"
-#include "CopyVisitor.hpp"
 
-namespace dmpl {
-
-  /*******************************************************************/
-  //array eliminator
-  /*******************************************************************/
-  class ArrayElim : public CopyVisitor
+namespace dmpl
+{
+  /**
+    * @class Variable
+    * @brief A variable
+    */
+  class Variable
   {
   public:
-    ///the input program with arrays
-    CProgram &inProg;
+    enum Scopes { LOCAL = 501, GLOBAL, PARAM, TEMP };
+    
+    /**
+     * The variable name
+     **/
+    std::string name;
+    
+    /**
+     * The variable type
+     **/
+    Type type;
+    
+    /**
+     * The variable scope
+     **/
+    int scope;
 
-    ///the output program without arrays
-    CProgram outProg;
+    //constructors
+    Variable() {}
+    Variable(const std::string &n);
+    Variable(const std::string &n,const Type &t);
+    Variable(const std::string &n,const std::list<int> &d);
 
-    ///whether to add an initializer for globals at the beginning of
-    ///main
-    bool initGlobals;
+    //convert to string
+    std::string toString() const;
 
-    ///constructor
-    ArrayElim(CProgram &ip,bool ig);
+    /**
+     * Prints variable information
+     * @param  indent  spaces to indent printout
+     **/
+    void print (std::ostream &os,unsigned int indent);
 
-    //existing setter and getter functions
-    std::map<std::string,Expr> getters,setters;
+    ///return a copy but instantiate dimension #N with nodeNum
+    Variable instDim(size_t nodeNum) const;
 
-    void expandArrayVar(const Variable &var);
+    ///return a copy but change name to name+ext
+    Variable instName(std::string ext) const;
 
-    void createGetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VarList &params,
-                          StmtList &body);
-    Expr createGetter(const LvalExpr &expr);
-    void createSetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VarList &params,
-                          StmtList &body);
-    Expr createSetter(const LvalExpr &expr);
-
-    //dispatchers for visitor
-    void exitLval(LvalExpr &expr);
-    bool enterAsgn(AsgnStmt &stmt) { return false; }
-    void exitAsgn(AsgnStmt &stmt);
-
-    ///do array elimination
-    void run();
+    ///return a copy with one less dimension
+    Variable decrDim() const;
   };
-} //namespace dmpl
 
-#endif //__ARRAY_ELIM_HPP__
+  typedef std::list <Variable> VarList;
+  typedef std::map <std::string, Variable> Variables;
+}
+
+
+#endif // _DMPL_VARIABLE_

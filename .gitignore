@@ -6,12 +6,12 @@
 dmpl/docs/tutorial/*.c
 dmpl/docs/tutorial/*.cpp
 
-dmpl/src/daslc/daig-parser.cpp
-dmpl/src/daslc/daig-parser.hpp
-dmpl/src/daslc/daig-scanner.cpp
-dmpl/src/vrep/libDaslVrep.a
+dmpl/src/dmplc/dmpl-parser.cpp
+dmpl/src/dmplc/dmpl-parser.hpp
+dmpl/src/dmplc/dmpl-scanner.cpp
+dmpl/src/vrep/libDmplVrep.a
 
-dmpl/src/daslc/daslc
+dmpl/src/dmplc/dmplc
 dmpl/docs/tutorial/tutorial-01
 dmpl/docs/tutorial/tutorial-02
 dmpl/src/vrep/testExtApi

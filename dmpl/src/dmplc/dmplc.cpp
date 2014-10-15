@@ -59,10 +59,10 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "DaigBuilder.hpp"
-//#include "daig/madara/Sync_Builder.hpp"
-#include "daig/gams/Sync_Builder.hpp"
-//#include "daig/madara/Async_Builder.hpp"
+#include "DmplBuilder.hpp"
+//#include "dmpl/madara/Sync_Builder.hpp"
+#include "dmpl/gams/Sync_Builder.hpp"
+//#include "dmpl/madara/Async_Builder.hpp"
 #include "SyncSeq.hpp"
 #include "SyncSem.hpp"
 #include "SyncSeqDbl.hpp"
@@ -98,7 +98,7 @@ int main (int argc, char **argv)
   parse_options (argc, argv);
 
   //create the program
-  daig::DaigBuilder builder (file_names, const_def, debug);
+  dmpl::DmplBuilder builder (file_names, const_def, debug);
   builder.run ();
 
   //print the program
@@ -121,18 +121,18 @@ int main (int argc, char **argv)
   if (do_gams)
   {
     //fill in the processes with nodes nodes
-    daig::Program & program = builder.program;
+    dmpl::Program & program = builder.program;
     const std::string & nodeName = program.nodes.begin ()->first;
     program.processes.clear ();
     for (size_t i = 0;i < nodes;++i)
-      program.processes.push_back (daig::Process (nodeName, i));
+      program.processes.push_back (dmpl::Process (nodeName, i));
 
-    // create a madara builder instance of the daig builder parse
+    // create a madara builder instance of the dmpl builder parse
     std::string moc = builder.program.moc.to_string_type ();
-    daig::gams::GAMS_Builder *gams_builder = NULL;
+    dmpl::gams::GAMS_Builder *gams_builder = NULL;
     
     if(moc == "MOC_SYNC")
-      gams_builder = new daig::gams::Sync_Builder (builder, madara_target);
+      gams_builder = new dmpl::gams::Sync_Builder (builder, madara_target);
     else {
       std::cerr << "ERROR: cannot generate code for " << moc << " programs!!\n";
       exit (1);
@@ -158,20 +158,20 @@ int main (int argc, char **argv)
   else if (do_madara)
   {
     //fill in the processes with nodes nodes
-    daig::Program & program = builder.program;
+    dmpl::Program & program = builder.program;
     const std::string & nodeName = program.nodes.begin ()->first;
     program.processes.clear ();
     for (size_t i = 0;i < nodes;++i)
-      program.processes.push_back (daig::Process (nodeName, i));
+      program.processes.push_back (dmpl::Process (nodeName, i));
 
-    // create a madara builder instance of the daig builder parse
+    // create a madara builder instance of the dmpl builder parse
     std::string moc = builder.program.moc.to_string_type ();
-    daig::madara::Madara_Builder *madara_builder = NULL;
+    dmpl::madara::Madara_Builder *madara_builder = NULL;
     
     if(moc == "MOC_SYNC")
-      madara_builder = new daig::madara::Sync_Builder (builder, madara_target, do_vrep);
+      madara_builder = new dmpl::madara::Sync_Builder (builder, madara_target, do_vrep);
     else if(moc == "MOC_ASYNC")
-      madara_builder = new daig::madara::Async_Builder (builder, madara_target, do_vrep);
+      madara_builder = new dmpl::madara::Async_Builder (builder, madara_target, do_vrep);
     else {
       std::cerr << "ERROR: cannot generate code for " << moc << " programs!!\n";
       exit (1);
@@ -207,37 +207,37 @@ int main (int argc, char **argv)
     }
 
     //fill in the processes with seq_node_num nodes
-    daig::Program & program = builder.program;
+    dmpl::Program & program = builder.program;
     const std::string & nodeName = program.nodes.begin ()->first;
     program.processes.clear ();
     for (size_t i = 0;i < nodes;++i)
-      program.processes.push_back (daig::Process (nodeName, i));
+      program.processes.push_back (dmpl::Process (nodeName, i));
 
     //the C program produced by sequentialization
-    daig::CProgram cprog;
+    dmpl::CProgram cprog;
     
     //if doing naive sequentialization to the semantics
     if (seq_sem) {
-      daig::SyncSem syncSem (builder, round_num);
+      dmpl::SyncSem syncSem (builder, round_num);
       syncSem.run ();
       cprog = syncSem.cprog;
     }
     //if doing optimized sequentialization with double buffering
     else if (seq_dbl) {
-      daig::SyncSeqDbl syncSeqDbl (builder, round_num);
+      dmpl::SyncSeqDbl syncSeqDbl (builder, round_num);
       syncSeqDbl.run ();
       cprog = syncSeqDbl.cprog;
     }
     //if doing optimized sequentialization
     else {
-      daig::SyncSeq syncSeq (builder, round_num);
+      dmpl::SyncSeq syncSeq (builder, round_num);
       syncSeq.run ();
       cprog = syncSeq.cprog;
     }      
     
     //eliminate arrays
     if (seq_no_array) {
-      daig::ArrayElim ae (cprog, init_globals);
+      dmpl::ArrayElim ae (cprog, init_globals);
       ae.run ();
       cprog = ae.outProg;
     }

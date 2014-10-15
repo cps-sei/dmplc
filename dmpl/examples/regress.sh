@@ -1,5 +1,5 @@
 #!/bin/bash
-export PATH=$PATH:../tools/daig/src/dmplc:/home/chaki/stuff/cbmc/cbmc-4.7
+export PATH=$PATH:../tools/dmpl/src/dmplc:/home/chaki/stuff/cbmc/cbmc-4.7
 TMPF1=$(mktemp)
 TMPF2=$(mktemp)
 

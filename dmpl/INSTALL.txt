@@ -30,7 +30,7 @@ WINDOWS INSTALLATION
   that MCDA is checked out into the main drive (likely C:)
 
   DMPL_ROOT=\dart
-  PATH=%DMPL_ROOT%\dmpl\tools\daig\bin;%DMPL_ROOT%\dmpl\tools\daig\lib
+  PATH=%DMPL_ROOT%\dmpl\tools\dmpl\bin;%DMPL_ROOT%\dmpl\tools\dmpl\lib
 
 3. BUILDING MCDA
 
@@ -44,11 +44,11 @@ WINDOWS INSTALLATION
   two commands in a terminal.  Here, we assume Visual Studio 2010
   (vc10). Visual Studio 2008 would be vc9.
 
-  cd %DMPL_ROOT%\dmpl\tools\daig
-  mwc.pl -type vc10 daig.mwc
+  cd %DMPL_ROOT%\dmpl\tools\dmpl
+  mwc.pl -type vc10 dmpl.mwc
 
   This will create a Visual Studio solution in the
-  %MCDA_ROOT%\tools\daig directory.  Open this solution and
+  %MCDA_ROOT%\tools\dmpl directory.  Open this solution and
   build. Remember that "Release" mode will produce the most optimized,
   efficient binary. The resulting binary will be found in the bin
   directory.

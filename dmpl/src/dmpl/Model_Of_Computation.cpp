@@ -53,60 +53,37 @@
  * DM-0001023
 **/
 
+#include <assert.h>
+#include "Model_Of_Computation.h"
+#include "madara/utility/Utility.h"
 
-//a class for sequentializing DMPL into a C program
+dmpl::Model_Of_Computation::Model_Of_Computation ()
+  : type (SYNC)
+{
 
-#ifndef __ARRAY_ELIM_HPP__
-#define __ARRAY_ELIM_HPP__
+}
 
-#include <iostream>
-#include "DmplBuilder.hpp"
-#include "dmpl/CProgram.h"
-#include "CopyVisitor.hpp"
+void
+dmpl::Model_Of_Computation::set_type (const std::string & str_type)
+{
+  std::string type_copy (str_type);
+  Madara::Utility::upper (type_copy);
+  if (type_copy == "SYNC")
+    type = SYNC;
+  else if (type_copy == "ASYNC")
+    type = ASYNC;
+  else if (type_copy == "PARTIAL")
+    type = PARTIAL;
+}
 
-namespace dmpl {
+std::string
+  dmpl::Model_Of_Computation::to_string_type (void)
+{
+  if (type == SYNC) return "MOC_SYNC";
+  else if (type == ASYNC) return "MOC_ASYNC";
+  else if (type == PARTIAL) return "MOC_PSYNC";
+  else assert(0 && "ERROR: illegal MOC type");
 
-  /*******************************************************************/
-  //array eliminator
-  /*******************************************************************/
-  class ArrayElim : public CopyVisitor
-  {
-  public:
-    ///the input program with arrays
-    CProgram &inProg;
-
-    ///the output program without arrays
-    CProgram outProg;
-
-    ///whether to add an initializer for globals at the beginning of
-    ///main
-    bool initGlobals;
-
-    ///constructor
-    ArrayElim(CProgram &ip,bool ig);
-
-    //existing setter and getter functions
-    std::map<std::string,Expr> getters,setters;
-
-    void expandArrayVar(const Variable &var);
-
-    void createGetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VarList &params,
-                          StmtList &body);
-    Expr createGetter(const LvalExpr &expr);
-    void createSetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VarList &params,
-                          StmtList &body);
-    Expr createSetter(const LvalExpr &expr);
-
-    //dispatchers for visitor
-    void exitLval(LvalExpr &expr);
-    bool enterAsgn(AsgnStmt &stmt) { return false; }
-    void exitAsgn(AsgnStmt &stmt);
-
-    ///do array elimination
-    void run();
-  };
-} //namespace dmpl
-
-#endif //__ARRAY_ELIM_HPP__
+  
+  return "";
+}

@@ -1,4 +1,4 @@
-DAIG HELP DOCUMENTATION INFORMATION
+DMPL HELP DOCUMENTATION INFORMATION
 
 0. INTRODUCTION
 
@@ -9,7 +9,7 @@ DAIG HELP DOCUMENTATION INFORMATION
   This file provides general overviews about the help documentation in this
   directory and where to find additional help documentation where applicable.
   The other files in this directory are input for the Doxygen program to 
-  generate the latest documentation for all of the daig tools.
+  generate the latest documentation for all of the dmpl tools.
 
 1. OBTAINING PREREQUISITES
 
@@ -30,14 +30,14 @@ DAIG HELP DOCUMENTATION INFORMATION
 
 2. GENERATING DEVELOPER DOCUMENTATION
 
-  2.1. daig
+  2.1. dmpl
 
        The (D)istributed (A)pplication (I)ntermediate (G)enerator is a tool
        for interpreting high level models of distributed applications and
        generating C or MADARA from it.
 
          perl get_version.pl
-         doxygen Doxyfile_daig
+         doxygen Doxyfile_dmpl
 
 
 3 COMMITTING DEVELOPER DOCUMENTATION

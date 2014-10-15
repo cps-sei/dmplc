@@ -54,59 +54,53 @@
 **/
 
 
-//a class for sequentializing DMPL into a C program
+#ifndef __GAMS_GAMS_BUILDER_H__
+#define __GAMS_GAMS_BUILDER_H__
 
-#ifndef __ARRAY_ELIM_HPP__
-#define __ARRAY_ELIM_HPP__
+#include "dmplc/DmplBuilder.hpp"
 
-#include <iostream>
-#include "DmplBuilder.hpp"
-#include "dmpl/CProgram.h"
-#include "CopyVisitor.hpp"
-
-namespace dmpl {
-
-  /*******************************************************************/
-  //array eliminator
-  /*******************************************************************/
-  class ArrayElim : public CopyVisitor
+namespace dmpl
+{
+  namespace gams
   {
-  public:
-    ///the input program with arrays
-    CProgram &inProg;
+    /*******************************************************************/
+    // this is the base class for various code generators for DASL
+    // programs that target MADARA
+    /*******************************************************************/
+    class GAMS_Builder
+    {
+    public:
+      /**
+       * Constructor
+       * @param  builder   the source for building a program
+       **/
+      GAMS_Builder (DmplBuilder & builder,const std::string &target)
+        : builder_ (builder), target_ (target) {}
 
-    ///the output program without arrays
-    CProgram outProg;
+      ///we need a virtual destructor
+      virtual ~GAMS_Builder() {}
 
-    ///whether to add an initializer for globals at the beginning of
-    ///main
-    bool initGlobals;
+      /**
+       * Builds the underlying character stream that can then be printed
+       **/
+      virtual void build (void) = 0;
 
-    ///constructor
-    ArrayElim(CProgram &ip,bool ig);
+      /**
+       * Prints the MADARA program to a stream
+       * @param  os  the stream to print to
+       **/
+      virtual void print (std::ostream & os) = 0;
 
-    //existing setter and getter functions
-    std::map<std::string,Expr> getters,setters;
 
-    void expandArrayVar(const Variable &var);
+    protected:
+      
+      /// the result of the DASL parsing function
+      DmplBuilder & builder_;
 
-    void createGetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VarList &params,
-                          StmtList &body);
-    Expr createGetter(const LvalExpr &expr);
-    void createSetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VarList &params,
-                          StmtList &body);
-    Expr createSetter(const LvalExpr &expr);
-
-    //dispatchers for visitor
-    void exitLval(LvalExpr &expr);
-    bool enterAsgn(AsgnStmt &stmt) { return false; }
-    void exitAsgn(AsgnStmt &stmt);
-
-    ///do array elimination
-    void run();
-  };
+      ///the target to build against
+      std::string target_;
+    };
+  } // namespace gams
 } //namespace dmpl
 
-#endif //__ARRAY_ELIM_HPP__
+#endif //__MADARA_MADARA_BUILDER_H__

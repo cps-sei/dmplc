@@ -53,60 +53,18 @@
  * DM-0001023
 **/
 
+#include <assert.h>
+#include <boost/foreach.hpp>
+#include "Statement.h"
 
-//a class for sequentializing DMPL into a C program
+/*********************************************************************/
+//return true if this is a BlockStmt
+/*********************************************************************/
+bool dmpl::isBlock(const dmpl::Stmt &stmt)
+{
+  return dynamic_cast<BlockStmt*>(&*stmt) != NULL;
+}
 
-#ifndef __ARRAY_ELIM_HPP__
-#define __ARRAY_ELIM_HPP__
-
-#include <iostream>
-#include "DmplBuilder.hpp"
-#include "dmpl/CProgram.h"
-#include "CopyVisitor.hpp"
-
-namespace dmpl {
-
-  /*******************************************************************/
-  //array eliminator
-  /*******************************************************************/
-  class ArrayElim : public CopyVisitor
-  {
-  public:
-    ///the input program with arrays
-    CProgram &inProg;
-
-    ///the output program without arrays
-    CProgram outProg;
-
-    ///whether to add an initializer for globals at the beginning of
-    ///main
-    bool initGlobals;
-
-    ///constructor
-    ArrayElim(CProgram &ip,bool ig);
-
-    //existing setter and getter functions
-    std::map<std::string,Expr> getters,setters;
-
-    void expandArrayVar(const Variable &var);
-
-    void createGetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VarList &params,
-                          StmtList &body);
-    Expr createGetter(const LvalExpr &expr);
-    void createSetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VarList &params,
-                          StmtList &body);
-    Expr createSetter(const LvalExpr &expr);
-
-    //dispatchers for visitor
-    void exitLval(LvalExpr &expr);
-    bool enterAsgn(AsgnStmt &stmt) { return false; }
-    void exitAsgn(AsgnStmt &stmt);
-
-    ///do array elimination
-    void run();
-  };
-} //namespace dmpl
-
-#endif //__ARRAY_ELIM_HPP__
+/*********************************************************************/
+//end of file
+/*********************************************************************/

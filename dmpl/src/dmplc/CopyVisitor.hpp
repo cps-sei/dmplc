@@ -54,16 +54,16 @@
 **/
 
 
-//a class for sequentializing DAIG into a C program
+//a class for sequentializing DMPL into a C program
 
 #ifndef __COPY_VISITOR_HPP__
 #define __COPY_VISITOR_HPP__
 
 #include <iostream>
-#include "daig/CProgram.h"
-#include "daig/Visitor.h"
+#include "dmpl/CProgram.h"
+#include "dmpl/Visitor.h"
 
-namespace daig {
+namespace dmpl {
 
   /*******************************************************************/
   //a visitor that simply creates a copy
@@ -110,6 +110,6 @@ namespace daig {
     void exitFAOL(FAOLStmt &stmt);
     void exitFAOH(FAOHStmt &stmt);
   };
-} //namespace daig
+} //namespace dmpl
 
 #endif //__COPY_VISITOR_HPP__

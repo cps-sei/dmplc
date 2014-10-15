@@ -53,60 +53,35 @@
  * DM-0001023
 **/
 
+#ifndef _DMPL_ATTRIBUTE_H_
+#define _DMPL_ATTRIBUTE_H_
 
-//a class for sequentializing DMPL into a C program
+/**
+ * @file Function.h
+ * @author James Edmondson <jedmondson@gmail.com>
+ *
+ * This file contains a class definition for function definitions.
+ **/
 
-#ifndef __ARRAY_ELIM_HPP__
-#define __ARRAY_ELIM_HPP__
+#include <vector>
+#include <map>
+#include <string>
 
-#include <iostream>
-#include "DmplBuilder.hpp"
-#include "dmpl/CProgram.h"
-#include "CopyVisitor.hpp"
-
-namespace dmpl {
-
-  /*******************************************************************/
-  //array eliminator
-  /*******************************************************************/
-  class ArrayElim : public CopyVisitor
+namespace dmpl
+{
+  class Attribute
   {
   public:
-    ///the input program with arrays
-    CProgram &inProg;
+    std::string name;
 
-    ///the output program without arrays
-    CProgram outProg;
+    std::list <std::string> paramList;
 
-    ///whether to add an initializer for globals at the beginning of
-    ///main
-    bool initGlobals;
-
-    ///constructor
-    ArrayElim(CProgram &ip,bool ig);
-
-    //existing setter and getter functions
-    std::map<std::string,Expr> getters,setters;
-
-    void expandArrayVar(const Variable &var);
-
-    void createGetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VarList &params,
-                          StmtList &body);
-    Expr createGetter(const LvalExpr &expr);
-    void createSetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VarList &params,
-                          StmtList &body);
-    Expr createSetter(const LvalExpr &expr);
-
-    //dispatchers for visitor
-    void exitLval(LvalExpr &expr);
-    bool enterAsgn(AsgnStmt &stmt) { return false; }
-    void exitAsgn(AsgnStmt &stmt);
-
-    ///do array elimination
-    void run();
+    Attribute() {}
+    Attribute(const std::string &n) : name(n) {}
+    Attribute(const std::string &n, const std::list<std::string> &p) : name(n),  paramList(p) {}
   };
-} //namespace dmpl
 
-#endif //__ARRAY_ELIM_HPP__
+  typedef std::map <std::string, Attribute> Attributes;
+}
+
+#endif // _DMPL_ATTRIBUTE_H_

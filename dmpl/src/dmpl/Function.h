@@ -53,60 +53,101 @@
  * DM-0001023
 **/
 
+#ifndef _DMPL_FUNCTION_H_
+#define _DMPL_FUNCTION_H_
 
-//a class for sequentializing DMPL into a C program
+/**
+ * @file Function.h
+ * @author James Edmondson <jedmondson@gmail.com>
+ *
+ * This file contains a class definition for function definitions.
+ **/
 
-#ifndef __ARRAY_ELIM_HPP__
-#define __ARRAY_ELIM_HPP__
+#include <vector>
+#include <map>
+#include <string>
+#include "Variable.h"
+#include "Statement.h"
+#include "Attribute.h"
 
-#include <iostream>
-#include "DmplBuilder.hpp"
-#include "dmpl/CProgram.h"
-#include "CopyVisitor.hpp"
 
-namespace dmpl {
-
-  /*******************************************************************/
-  //array eliminator
-  /*******************************************************************/
-  class ArrayElim : public CopyVisitor
+namespace dmpl
+{
+  /**
+    * @class Function
+    * @brief Represents a function definition
+    */
+  class Function
   {
   public:
-    ///the input program with arrays
-    CProgram &inProg;
+    /**
+     * The name of the function
+     **/
+    std::string name;
 
-    ///the output program without arrays
-    CProgram outProg;
+    ///the return type of the function
+    Type retType;
 
-    ///whether to add an initializer for globals at the beginning of
-    ///main
-    bool initGlobals;
+    /**
+     * The function parameters
+     **/
+    Variables params;
+    
+    ///function local variables -- we call them temporary variables
+    ///since their scope is only the function body
+    Variables temps;
 
-    ///constructor
-    ArrayElim(CProgram &ip,bool ig);
+    // @ATTR(X, ...) attributes specified for this function
+    Attributes attrs;
 
-    //existing setter and getter functions
-    std::map<std::string,Expr> getters,setters;
+    /**
+     * The function body
+     **/
+    StmtList body;
 
-    void expandArrayVar(const Variable &var);
+    //constructors
+    Function() {}
+    Function(const std::string &n)
+      : name(n) {}
+    Function(const std::string &n, const Attributes &a)
+      : name(n),attrs(a) {}
+    Function(const Type &rt,const std::string &n,const std::list<Variable> &p,
+             const std::list<Variable> &t,const StmtList &b,
+             const Attributes &a = Attributes())
+      : retType(rt),name(n),body(b),attrs(a)
+    {
+      setParams(p);
+      setTemps(t);
+    }
 
-    void createGetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VarList &params,
-                          StmtList &body);
-    Expr createGetter(const LvalExpr &expr);
-    void createSetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VarList &params,
-                          StmtList &body);
-    Expr createSetter(const LvalExpr &expr);
+    void mergeWith (const Function &of);
 
-    //dispatchers for visitor
-    void exitLval(LvalExpr &expr);
-    bool enterAsgn(AsgnStmt &stmt) { return false; }
-    void exitAsgn(AsgnStmt &stmt);
+    void setParams (const std::list<Variable> &p)
+    {
+      doSetVars(p, params);
+    }
 
-    ///do array elimination
-    void run();
+    void setTemps (const std::list<Variable> &t)
+    {
+      doSetVars(t, temps);
+    }
+
+    /**
+     * Prints function information
+     * @param  indent  spaces to indent printout
+     **/
+    void print (std::ostream &os,unsigned int indent);
+
+    ///print just the function declaration
+    void printDecl (std::ostream &os,unsigned int indent);    
+  private:
+    void doSetVars (const std::list<Variable> &vars, Variables &dest)
+    {
+      BOOST_FOREACH(const Variable &v,vars) dest[v.name] = v;
+    }
   };
-} //namespace dmpl
 
-#endif //__ARRAY_ELIM_HPP__
+  typedef std::map <std::string, Function> Functions;
+}
+
+#endif // _DMPL_FUNCTION_H_

@@ -54,7 +54,7 @@
 **/
 
 
-//a class for sequentializing DAIG into a C program -- this version
+//a class for sequentializing DMPL into a C program -- this version
 //uses two copies of the global variables, but does not copy between
 //them. instead it uses them alternatively.
 
@@ -62,11 +62,11 @@
 #define __SYNC_SEQ_DBL_HPP__
 
 #include <iostream>
-#include "DaigBuilder.hpp"
-#include "daig/CProgram.h"
+#include "DmplBuilder.hpp"
+#include "dmpl/CProgram.h"
 #include "CopyVisitor.hpp"
 
-namespace daig {
+namespace dmpl {
 
   //forward declaration
   class SyncSeqDbl;
@@ -83,7 +83,7 @@ namespace daig {
       SyncSeqDbl &syncSeq;
 
       //the DASL program being transformed
-      daig::Program &prog;
+      dmpl::Program &prog;
 
       //the number of nodes
       size_t nodeNum;
@@ -92,7 +92,7 @@ namespace daig {
       std::map<std::string,size_t> idMap;
 
       //constructors
-      GlobalTransformer(SyncSeqDbl &ss,daig::Program &p,size_t n) 
+      GlobalTransformer(SyncSeqDbl &ss,dmpl::Program &p,size_t n) 
         : syncSeq(ss),prog(p),nodeNum(n) {}
 
       //update substitution mapping
@@ -156,12 +156,12 @@ namespace daig {
   class SyncSeqDbl
   {
   public:
-    DaigBuilder &builder;
+    DmplBuilder &builder;
     size_t nodeNum;
     int roundNum;
     CProgram cprog;
 
-    SyncSeqDbl(DaigBuilder &b,int r);
+    SyncSeqDbl(DmplBuilder &b,int r);
     void createGlobVars();
     void createCopyStmts(bool fwd,const Variable &var,StmtList &res,ExprList indx);
     void createRoundCopier();
@@ -172,6 +172,6 @@ namespace daig {
     Expr createNondetFunc(const Expr &expr);
     void run();
   };
-} //namespace daig
+} //namespace dmpl
 
 #endif //__SYNC_SEQ_DBL_HPP__

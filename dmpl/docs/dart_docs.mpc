@@ -1,4 +1,4 @@
-project (daig_docs) : ../doxygen_help_gen, build_files {
+project (dmpl_docs) : ../doxygen_help_gen, build_files {
 
   requires += docs
 

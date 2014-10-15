@@ -53,60 +53,61 @@
  * DM-0001023
 **/
 
+#ifndef _DMPL_CPROGRAM_H_
+#define _DMPL_CPROGRAM_H_
 
-//a class for sequentializing DMPL into a C program
+/**
+ * @file CProgram.h
+ * @author James Edmondson <jedmondson@gmail.com>
+ *
+ * This file contains a class definition for the DMPL C Program
+ * container.
+ **/
 
-#ifndef __ARRAY_ELIM_HPP__
-#define __ARRAY_ELIM_HPP__
+#include <list>
+#include <map>
+#include <string>
+#include "Model_Of_Computation.h"
+#include "Variable.h"
+#include "Function.h"
+#include "Node.h"
 
-#include <iostream>
-#include "DmplBuilder.hpp"
-#include "dmpl/CProgram.h"
-#include "CopyVisitor.hpp"
 
-namespace dmpl {
-
-  /*******************************************************************/
-  //array eliminator
-  /*******************************************************************/
-  class ArrayElim : public CopyVisitor
+namespace dmpl
+{
+  /**
+    * @class CProgram
+    * @brief Encapsulates a C program definition
+    */
+  class CProgram
   {
   public:
-    ///the input program with arrays
-    CProgram &inProg;
+    /**
+     * Prints variable information
+     * @param  indent  spaces to indent printout
+     **/
+    void print (std::ostream &os,unsigned int indent);
 
-    ///the output program without arrays
-    CProgram outProg;
+    /**
+     * external function declarations -- these are Function objects
+     * with empty bodies
+     **/
+    Functions externalFuncs;
 
-    ///whether to add an initializer for globals at the beginning of
-    ///main
-    bool initGlobals;
+    ///global variables
+    Variables globVars;
+    
+    /**
+     * A map of function names to function definitions
+     **/
+    Functions funcs;
 
-    ///constructor
-    ArrayElim(CProgram &ip,bool ig);
+    ///add a global variable
+    void addGlobVar(const Variable &v) { globVars[v.name] = v; }
 
-    //existing setter and getter functions
-    std::map<std::string,Expr> getters,setters;
-
-    void expandArrayVar(const Variable &var);
-
-    void createGetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VarList &params,
-                          StmtList &body);
-    Expr createGetter(const LvalExpr &expr);
-    void createSetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VarList &params,
-                          StmtList &body);
-    Expr createSetter(const LvalExpr &expr);
-
-    //dispatchers for visitor
-    void exitLval(LvalExpr &expr);
-    bool enterAsgn(AsgnStmt &stmt) { return false; }
-    void exitAsgn(AsgnStmt &stmt);
-
-    ///do array elimination
-    void run();
+    ///add a function
+    void addFunction(const Function &f) { funcs[f.name] = f; }
   };
-} //namespace dmpl
+}
 
-#endif //__ARRAY_ELIM_HPP__
+#endif // _DMPL_CPROGRAM_H_

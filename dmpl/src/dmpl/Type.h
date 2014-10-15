@@ -53,60 +53,83 @@
  * DM-0001023
 **/
 
+#ifndef _DMPL_TYPE_H_
+#define _DMPL_TYPE_H_
 
-//a class for sequentializing DMPL into a C program
+/**
+ * @file Expression.h
+ * @author James Edmondson <jedmondson@gmail.com>
+ *
+ * This file contains a class definition for an expression.
+ **/
 
-#ifndef __ARRAY_ELIM_HPP__
-#define __ARRAY_ELIM_HPP__
+#include <stdio.h>
+#include <list>
+#include <vector>
+#include <boost/shared_ptr.hpp>
+#include <boost/foreach.hpp>
 
-#include <iostream>
-#include "DmplBuilder.hpp"
-#include "dmpl/CProgram.h"
-#include "CopyVisitor.hpp"
 
-namespace dmpl {
+namespace dmpl
+{
+  //forward declaration
+  class BaseType;
 
-  /*******************************************************************/
-  //array eliminator
-  /*******************************************************************/
-  class ArrayElim : public CopyVisitor
+  //share pointer to a base type -- this is the type we will
+  //mostly use
+  typedef boost::shared_ptr<BaseType> Type;
+
+  //a list of types
+  typedef std::list <Type> TypeList;
+
+  //return various basic types
+  Type voidType();
+  Type intType();
+  Type doubleType();
+  Type charType();
+  Type ucharType();
+  Type boolType();
+
+  /**
+    * @class BaseType
+    * @brief A base type
+    */
+  class BaseType
   {
   public:
-    ///the input program with arrays
-    CProgram &inProg;
+    int qual; //qual = 0 means no qualifier
+    int type; //the actual type -- void, char, int, double, bool etc.
+    std::list<int> dims; //dimensions -- empty means non-array type
 
-    ///the output program without arrays
-    CProgram outProg;
+    //constructors
+    BaseType() : qual(0),type(-1) {}
+    BaseType(int t) : qual(0),type(t) {}
+    BaseType(int q,int t) : qual(q),type(t) {}
+    BaseType(const std::list<int> &d) : qual(0),type(-1),dims(d) {}
 
-    ///whether to add an initializer for globals at the beginning of
-    ///main
-    bool initGlobals;
+    std::string toString() const;
+    void setQual(int q) { qual = q; }
+    void setDims(const std::list<int> &d) { dims = d; }
 
-    ///constructor
-    ArrayElim(CProgram &ip,bool ig);
+    ///print the type with appropriate indentation
+    void print (std::ostream &os,unsigned int indent);
 
-    //existing setter and getter functions
-    std::map<std::string,Expr> getters,setters;
+    ///return a copy but instantiate dimension #N with nodeNum
+    Type instDim(size_t nodeNum) const;
 
-    void expandArrayVar(const Variable &var);
+    ///return a copy with one less dimension
+    Type decrDim() const;
 
-    void createGetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VarList &params,
-                          StmtList &body);
-    Expr createGetter(const LvalExpr &expr);
-    void createSetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VarList &params,
-                          StmtList &body);
-    Expr createSetter(const LvalExpr &expr);
+    ///return the element type if this is an array type. if not return
+    ///this type.
+    Type getElemType() const;
 
-    //dispatchers for visitor
-    void exitLval(LvalExpr &expr);
-    bool enterAsgn(AsgnStmt &stmt) { return false; }
-    void exitAsgn(AsgnStmt &stmt);
+    ///return true if this is an array type
+    bool isArray() const { return !dims.empty(); }
 
-    ///do array elimination
-    void run();
+    ///return the first dimension
+    int getFirstDim() const;
   };
-} //namespace dmpl
+}
 
-#endif //__ARRAY_ELIM_HPP__
+#endif // _DMPL_TYPE_H_

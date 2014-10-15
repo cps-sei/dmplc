@@ -55,13 +55,13 @@
 
 
 #include <boost/lexical_cast.hpp>
-#include "daig/Type.h"
-#include "daig/Variable.h"
-#include "daig/Expression.h"
-#include "daig/Function.h"
-#include "daig/Statement.h"
-#include "daig/Node.h"
-#include "daig-parser.hpp"
+#include "dmpl/Type.h"
+#include "dmpl/Variable.h"
+#include "dmpl/Expression.h"
+#include "dmpl/Function.h"
+#include "dmpl/Statement.h"
+#include "dmpl/Node.h"
+#include "dmpl-parser.hpp"
 #include "SyncSem.hpp"
 
 /*********************************************************************/
@@ -69,13 +69,13 @@
 /*********************************************************************/
 
 //add id to int mapping
-void daig::syncsem::GlobalTransformer::addIdMap(const std::string &s,size_t i)
+void dmpl::syncsem::GlobalTransformer::addIdMap(const std::string &s,size_t i)
 {
   idMap[s] = i;
 }
 
 //remove id to int mappiing
-void daig::syncsem::GlobalTransformer::delIdMap(const std::string &s)
+void dmpl::syncsem::GlobalTransformer::delIdMap(const std::string &s)
 {
   idMap.erase(s);
 }
@@ -84,15 +84,15 @@ void daig::syncsem::GlobalTransformer::delIdMap(const std::string &s)
 //dispatchers for expressions
 /*********************************************************************/
 
-void daig::syncsem::GlobalTransformer::exitComp(daig::CompExpr &expr)
+void dmpl::syncsem::GlobalTransformer::exitComp(dmpl::CompExpr &expr)
 {
   if(expr.op == TNODENUM)
     exprMap[hostExpr] = Expr(new IntExpr(nodeNum));
   else
-    exprMap[hostExpr] = daig::Expr(new daig::CompExpr(expr.op,collect(expr.args)));
+    exprMap[hostExpr] = dmpl::Expr(new dmpl::CompExpr(expr.op,collect(expr.args)));
 }
 
-void daig::syncsem::GlobalTransformer::exitLval(daig::LvalExpr &expr)
+void dmpl::syncsem::GlobalTransformer::exitLval(dmpl::LvalExpr &expr)
 {
   exprMap[hostExpr] = hostExpr;
 
@@ -119,7 +119,7 @@ void daig::syncsem::GlobalTransformer::exitLval(daig::LvalExpr &expr)
   newName = iit == idMap.end() ? newName : 
     newName + "_" + boost::lexical_cast<std::string>(iit->second);
 
-  exprMap[hostExpr] = daig::Expr(new daig::LvalExpr(newName,collect(expr.indices)));
+  exprMap[hostExpr] = dmpl::Expr(new dmpl::LvalExpr(newName,collect(expr.indices)));
   
   //std::cout << "**************************************\n";
   //std::cout << hostExpr->toString() << '\n';
@@ -130,17 +130,17 @@ void daig::syncsem::GlobalTransformer::exitLval(daig::LvalExpr &expr)
 //dispatchers for statements
 /*********************************************************************/
 
-void daig::syncsem::GlobalTransformer::exitAtomic(daig::AtomicStmt &stmt)
+void dmpl::syncsem::GlobalTransformer::exitAtomic(dmpl::AtomicStmt &stmt)
 {
   stmtMap[hostStmt] = stmtMap[stmt.data];
 }
 
-void daig::syncsem::GlobalTransformer::exitPrivate(daig::PrivateStmt &stmt)
+void dmpl::syncsem::GlobalTransformer::exitPrivate(dmpl::PrivateStmt &stmt)
 {
   stmtMap[hostStmt] = stmtMap[stmt.data];
 }
 
-void daig::syncsem::GlobalTransformer::exitCall(daig::CallStmt &stmt) 
+void dmpl::syncsem::GlobalTransformer::exitCall(dmpl::CallStmt &stmt) 
 { 
   //handle calls to ND(x) -- assign x non-deterministically
   CallExpr *expr = dynamic_cast<CallExpr*>(stmt.data.get());
@@ -155,7 +155,7 @@ void daig::syncsem::GlobalTransformer::exitCall(daig::CallStmt &stmt)
   stmtMap[hostStmt] = Stmt(new CallStmt(exprMap[stmt.data]));
 }
 
-void daig::syncsem::GlobalTransformer::exitFAN(daig::FANStmt &stmt) 
+void dmpl::syncsem::GlobalTransformer::exitFAN(dmpl::FANStmt &stmt) 
 { 
   Stmt shost = hostStmt;
   StmtList sl;
@@ -167,10 +167,10 @@ void daig::syncsem::GlobalTransformer::exitFAN(daig::FANStmt &stmt)
     delIdMap(stmt.id);
   }
 
-  stmtMap[shost] = Stmt(new daig::BlockStmt(sl));
+  stmtMap[shost] = Stmt(new dmpl::BlockStmt(sl));
 }
 
-void daig::syncsem::GlobalTransformer::exitFADNP(daig::FADNPStmt &stmt) 
+void dmpl::syncsem::GlobalTransformer::exitFADNP(dmpl::FADNPStmt &stmt) 
 { 
   Stmt shost = hostStmt;
   StmtList sl;
@@ -186,14 +186,14 @@ void daig::syncsem::GlobalTransformer::exitFADNP(daig::FADNPStmt &stmt)
     }
   }
 
-  stmtMap[shost] = Stmt(new daig::BlockStmt(sl));
+  stmtMap[shost] = Stmt(new dmpl::BlockStmt(sl));
 }
 
 /*********************************************************************/
 //methods for NodeTransformer
 /*********************************************************************/
 
-void daig::syncsem::NodeTransformer::exitLval(daig::LvalExpr &expr)
+void dmpl::syncsem::NodeTransformer::exitLval(dmpl::LvalExpr &expr)
 {
   exprMap[hostExpr] = hostExpr;
 
@@ -225,25 +225,25 @@ void daig::syncsem::NodeTransformer::exitLval(daig::LvalExpr &expr)
   newName = iit == idMap.end() ? newName : 
     newName + "_" + boost::lexical_cast<std::string>(iit->second);
 
-  exprMap[hostExpr] = daig::Expr(new daig::LvalExpr(newName,collect(expr.indices)));
+  exprMap[hostExpr] = dmpl::Expr(new dmpl::LvalExpr(newName,collect(expr.indices)));
   
   //std::cout << "**************************************\n";
   //std::cout << hostExpr->toString() << '\n';
   //std::cout << exprMap[hostExpr]->toString() << '\n';
 }
 
-void daig::syncsem::NodeTransformer::exitCall(daig::CallExpr &expr) 
+void dmpl::syncsem::NodeTransformer::exitCall(dmpl::CallExpr &expr) 
 {
   Expr shost = hostExpr;
   inCall = true;
   visit(expr.func);
   inCall = false;
   BOOST_FOREACH(Expr &e,expr.args) visit(e);
-  exprMap[shost] = daig::Expr(new daig::CallExpr(exprMap[expr.func],collect(expr.args)));
+  exprMap[shost] = dmpl::Expr(new dmpl::CallExpr(exprMap[expr.func],collect(expr.args)));
 }
 
 //compute disjunction over all other node ids
-void daig::syncsem::NodeTransformer::exitEXO(daig::EXOExpr &expr)
+void dmpl::syncsem::NodeTransformer::exitEXO(dmpl::EXOExpr &expr)
 {
   Expr shost = hostExpr;
   exprMap[shost] = Expr();
@@ -254,18 +254,18 @@ void daig::syncsem::NodeTransformer::exitEXO(daig::EXOExpr &expr)
     delIdMap(expr.id);
     if(exprMap[shost].get()) 
       exprMap[shost] = 
-        daig::Expr(new daig::CompExpr(TLOR,exprMap[shost],exprMap[expr.arg]));
+        dmpl::Expr(new dmpl::CompExpr(TLOR,exprMap[shost],exprMap[expr.arg]));
     else
       exprMap[shost] = exprMap[expr.arg];
   }
 
   //turn empty disjunct into "0"
   if(!exprMap[shost].get())
-    exprMap[shost] = Expr(new daig::IntExpr(0));
+    exprMap[shost] = Expr(new dmpl::IntExpr(0));
 }
 
 //compute disjunction over all higher node ids
-void daig::syncsem::NodeTransformer::exitEXH(daig::EXHExpr &expr)
+void dmpl::syncsem::NodeTransformer::exitEXH(dmpl::EXHExpr &expr)
 {
   Expr shost = hostExpr;
   exprMap[shost] = Expr();
@@ -275,18 +275,18 @@ void daig::syncsem::NodeTransformer::exitEXH(daig::EXHExpr &expr)
     delIdMap(expr.id);
     if(exprMap[shost].get()) 
       exprMap[shost] = 
-        daig::Expr(new daig::CompExpr(TLOR,exprMap[shost],exprMap[expr.arg]));
+        dmpl::Expr(new dmpl::CompExpr(TLOR,exprMap[shost],exprMap[expr.arg]));
     else
       exprMap[shost] = exprMap[expr.arg];
   }
 
   //turn empty disjunct into "0"
   if(!exprMap[shost].get())
-    exprMap[shost] = Expr(new daig::IntExpr(0));
+    exprMap[shost] = Expr(new dmpl::IntExpr(0));
 }
 
 //compute disjunction over all lower node ids
-void daig::syncsem::NodeTransformer::exitEXL(daig::EXLExpr &expr)
+void dmpl::syncsem::NodeTransformer::exitEXL(dmpl::EXLExpr &expr)
 {
   Expr shost = hostExpr;
   exprMap[shost] = Expr();
@@ -296,25 +296,25 @@ void daig::syncsem::NodeTransformer::exitEXL(daig::EXLExpr &expr)
     delIdMap(expr.id);
     if(exprMap[shost].get()) 
       exprMap[shost] = 
-        daig::Expr(new daig::CompExpr(TLOR,exprMap[shost],exprMap[expr.arg]));
+        dmpl::Expr(new dmpl::CompExpr(TLOR,exprMap[shost],exprMap[expr.arg]));
     else
       exprMap[shost] = exprMap[expr.arg];
   }
 
   //turn empty disjunct into "0"
   if(!exprMap[shost].get())
-    exprMap[shost] = Expr(new daig::IntExpr(0));
+    exprMap[shost] = Expr(new dmpl::IntExpr(0));
 }
 
-void daig::syncsem::NodeTransformer::exitAsgn(daig::AsgnStmt &stmt)
+void dmpl::syncsem::NodeTransformer::exitAsgn(dmpl::AsgnStmt &stmt)
 {
   Stmt shost = hostStmt;
   inLhs = true; visit(stmt.lhs); inLhs = false;
   visit(stmt.rhs);
-  stmtMap[shost] = daig::Stmt(new daig::AsgnStmt(exprMap[stmt.lhs],exprMap[stmt.rhs]));
+  stmtMap[shost] = dmpl::Stmt(new dmpl::AsgnStmt(exprMap[stmt.lhs],exprMap[stmt.rhs]));
 }
 
-void daig::syncsem::NodeTransformer::exitFAO(daig::FAOStmt &stmt)
+void dmpl::syncsem::NodeTransformer::exitFAO(dmpl::FAOStmt &stmt)
 {
   Stmt shost = hostStmt;
   StmtList sl;
@@ -327,10 +327,10 @@ void daig::syncsem::NodeTransformer::exitFAO(daig::FAOStmt &stmt)
     delIdMap(stmt.id);
   }
 
-  stmtMap[shost] = Stmt(new daig::BlockStmt(sl));
+  stmtMap[shost] = Stmt(new dmpl::BlockStmt(sl));
 }
 
-void daig::syncsem::NodeTransformer::exitFAOL(daig::FAOLStmt &stmt)
+void dmpl::syncsem::NodeTransformer::exitFAOL(dmpl::FAOLStmt &stmt)
 {
   Stmt shost = hostStmt;
   StmtList sl;
@@ -342,10 +342,10 @@ void daig::syncsem::NodeTransformer::exitFAOL(daig::FAOLStmt &stmt)
     delIdMap(stmt.id);
   }
 
-  stmtMap[shost] = Stmt(new daig::BlockStmt(sl));
+  stmtMap[shost] = Stmt(new dmpl::BlockStmt(sl));
 }
 
-void daig::syncsem::NodeTransformer::exitFAOH(daig::FAOHStmt &stmt)
+void dmpl::syncsem::NodeTransformer::exitFAOH(dmpl::FAOHStmt &stmt)
 {
   Stmt shost = hostStmt;
   StmtList sl;
@@ -357,13 +357,13 @@ void daig::syncsem::NodeTransformer::exitFAOH(daig::FAOHStmt &stmt)
     delIdMap(stmt.id);
   }
 
-  stmtMap[shost] = Stmt(new daig::BlockStmt(sl));
+  stmtMap[shost] = Stmt(new dmpl::BlockStmt(sl));
 }
 
 /*********************************************************************/
 //constructor
 /*********************************************************************/
-daig::SyncSem::SyncSem(daig::DaigBuilder &b,int r) 
+dmpl::SyncSem::SyncSem(dmpl::DmplBuilder &b,int r) 
   : builder(b),roundNum(r)
 {
   nodeNum = builder.program.processes.size();
@@ -372,13 +372,13 @@ daig::SyncSem::SyncSem(daig::DaigBuilder &b,int r)
 /*********************************************************************/
 //create the global variables
 /*********************************************************************/
-void daig::SyncSem::createGlobVars()
+void dmpl::SyncSem::createGlobVars()
 {
   Node &node = builder.program.nodes.begin()->second;
 
   //instantiate node-global variables by replacing dimension #N with
   //nodeNum -- make one copy per node
-  daig::VarList gvars;
+  dmpl::VarList gvars;
   BOOST_FOREACH(Variables::value_type &v,node.globVars) {
     gvars.push_back(v.second.instDim(nodeNum));
   }
@@ -400,7 +400,7 @@ void daig::SyncSem::createGlobVars()
 //create list of statements that copy new value of var into old value
 //of var. append list of statements to res.
 /*********************************************************************/
-void daig::SyncSem::createCopyStmts(const Variable &var,StmtList &res,ExprList indx)
+void dmpl::SyncSem::createCopyStmts(const Variable &var,StmtList &res,ExprList indx)
 {
   //non-array type
   if(var.type->dims.empty()) {
@@ -433,10 +433,10 @@ void daig::SyncSem::createCopyStmts(const Variable &var,StmtList &res,ExprList i
 //create one function that copies global variables from writer node to
 //other nodes at the end of each round
 /*********************************************************************/
-void daig::SyncSem::createGlobalCopier()
+void dmpl::SyncSem::createGlobalCopier()
 {
   Node &node = builder.program.nodes.begin()->second;
-  daig::VarList fnParams,fnTemps;
+  dmpl::VarList fnParams,fnTemps;
 
   //create the copier statements
   StmtList fnBody;
@@ -445,39 +445,39 @@ void daig::SyncSem::createGlobalCopier()
     createCopyStmts(var,fnBody,ExprList());
   }
 
-  Function func(daig::voidType(),"global_copier",fnParams,fnTemps,fnBody);
+  Function func(dmpl::voidType(),"global_copier",fnParams,fnTemps,fnBody);
   cprog.addFunction(func);
 }
 
 /*********************************************************************/
 //create the main function
 /*********************************************************************/
-void daig::SyncSem::createMainFunc()
+void dmpl::SyncSem::createMainFunc()
 {
-  daig::VarList mainParams,mainTemps;
+  dmpl::VarList mainParams,mainTemps;
   StmtList mainBody,roundBody;
 
   //call global copier
   Expr callExpr2(new LvalExpr("global_copier"));
-  Stmt callStmt2(new CallStmt(callExpr2,daig::ExprList()));
+  Stmt callStmt2(new CallStmt(callExpr2,dmpl::ExprList()));
   roundBody.push_back(callStmt2);
 
   //call SAFETY()
   Expr callExpr1(new LvalExpr("SAFETY"));
-  Stmt callStmt1(new CallStmt(callExpr1,daig::ExprList()));
+  Stmt callStmt1(new CallStmt(callExpr1,dmpl::ExprList()));
   roundBody.push_back(callStmt1);
 
   //call ROUND function of each node
   for(size_t i = 0;i < nodeNum;++i) {
     std::string callName = std::string("ROUND_") + boost::lexical_cast<std::string>(i);
     Expr callExpr(new LvalExpr(callName));
-    Stmt callStmt(new CallStmt(callExpr,daig::ExprList()));
+    Stmt callStmt(new CallStmt(callExpr,dmpl::ExprList()));
     roundBody.push_back(callStmt);
   }
 
   //add call to INIT()
   Expr callExpr3(new LvalExpr("INIT"));
-  Stmt callStmt3(new CallStmt(callExpr3,daig::ExprList()));
+  Stmt callStmt3(new CallStmt(callExpr3,dmpl::ExprList()));
   mainBody.push_back(callStmt3);
 
   //if number of rounds not specified, add an infinite loop
@@ -493,23 +493,23 @@ void daig::SyncSem::createMainFunc()
     mainBody.push_back(callStmt1);
   }
 
-  Function mainFunc(daig::intType(),"main",mainParams,mainTemps,mainBody);
+  Function mainFunc(dmpl::intType(),"main",mainParams,mainTemps,mainBody);
   cprog.addFunction(mainFunc);
 }
 
 /*********************************************************************/
 //create the INIT() function
 /*********************************************************************/
-void daig::SyncSem::createInit()
+void dmpl::SyncSem::createInit()
 {
-  daig::VarList fnParams,fnTemps;
+  dmpl::VarList fnParams,fnTemps;
   StmtList fnBody;
 
   //if no INIT() defined, create an empty one
-  daig::Functions::iterator fit = builder.program.funcs.find("INIT");
+  dmpl::Functions::iterator fit = builder.program.funcs.find("INIT");
   if(fit == builder.program.funcs.end()) {
     std::cout << "node does not have a INIT function, creating an empty one ...\n";
-    Function func(daig::voidType(),"INIT",fnParams,fnTemps,fnBody);
+    Function func(dmpl::voidType(),"INIT",fnParams,fnTemps,fnBody);
     cprog.addFunction(func);
     return;
   }
@@ -529,24 +529,24 @@ void daig::SyncSem::createInit()
     fnBody.push_back(gt.stmtMap[st]);
   }
 
-  Function func(daig::voidType(),"INIT",fnParams,fnTemps,fnBody);
+  Function func(dmpl::voidType(),"INIT",fnParams,fnTemps,fnBody);
   cprog.addFunction(func);
 }
 
 /*********************************************************************/
 //create the SAFETY() function
 /*********************************************************************/
-void daig::SyncSem::createSafety()
+void dmpl::SyncSem::createSafety()
 {
   Node &node = builder.program.nodes.begin()->second;
-  daig::VarList fnParams,fnTemps;
+  dmpl::VarList fnParams,fnTemps;
   StmtList fnBody;
 
   //if no SAFETY() defined, create an empty one
-  daig::Functions::iterator fit = builder.program.funcs.find("SAFETY");
+  dmpl::Functions::iterator fit = builder.program.funcs.find("SAFETY");
   if(fit == builder.program.funcs.end()) {
     std::cout << "node does not have a SAFETY function, creating an empty one ...\n";
-    Function func(daig::voidType(),"SAFETY",fnParams,fnTemps,fnBody);
+    Function func(dmpl::voidType(),"SAFETY",fnParams,fnTemps,fnBody);
     cprog.addFunction(func);
     return;
   }
@@ -566,19 +566,19 @@ void daig::SyncSem::createSafety()
     fnBody.push_back(gt.stmtMap[st]);
   }
 
-  Function func(daig::voidType(),"SAFETY",fnParams,fnTemps,fnBody);
+  Function func(dmpl::voidType(),"SAFETY",fnParams,fnTemps,fnBody);
   cprog.addFunction(func);
 }
 
 /*********************************************************************/
 //create the functions for nodes
 /*********************************************************************/
-void daig::SyncSem::createNodeFuncs()
+void dmpl::SyncSem::createNodeFuncs()
 {
   Node &node = builder.program.nodes.begin()->second;
   for(size_t i = 0;i < nodeNum;++i) {
     BOOST_FOREACH(Functions::value_type &f,node.funcs) {
-      daig::VarList fnParams,fnTemps;
+      dmpl::VarList fnParams,fnTemps;
 
       //create parameters
       BOOST_FOREACH(Variables::value_type &v,f.second.params)
@@ -601,7 +601,7 @@ void daig::SyncSem::createNodeFuncs()
       }
 
       std::string fnName = f.second.name + "_" + boost::lexical_cast<std::string>(i);
-      Function func(daig::voidType(),fnName,fnParams,fnTemps,fnBody);
+      Function func(dmpl::voidType(),fnName,fnParams,fnTemps,fnBody);
       cprog.addFunction(func);
     }
   }
@@ -612,7 +612,7 @@ void daig::SyncSem::createNodeFuncs()
 //expression. add its declaration to the C program if a new function
 //was created
 /*********************************************************************/
-daig::Expr daig::SyncSem::createNondetFunc(const Expr &expr)
+dmpl::Expr dmpl::SyncSem::createNondetFunc(const Expr &expr)
 {
   const LvalExpr *lve = dynamic_cast<LvalExpr*>(expr.get());
   assert(lve && "ERROR: can only create nondet function for LvalExpr");
@@ -622,7 +622,7 @@ daig::Expr daig::SyncSem::createNondetFunc(const Expr &expr)
 /*********************************************************************/
 //run the sequentialization, generating a C program
 /*********************************************************************/
-void daig::SyncSem::run()
+void dmpl::SyncSem::run()
 {
   std::cout << "Sequentializing naively with " << nodeNum << " nodes ...\n";
 

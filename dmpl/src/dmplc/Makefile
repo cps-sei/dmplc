@@ -1,12 +1,12 @@
-SRC=daig-scanner.cpp daig-parser.cpp DaigBuilder.cpp CopyVisitor.cpp \
+SRC=dmpl-scanner.cpp dmpl-parser.cpp DmplBuilder.cpp CopyVisitor.cpp \
 SyncSeq.cpp SyncSem.cpp SyncSeqDbl.cpp ArrayElim.cpp \
-../daig/Expression.cpp ../daig/Function.cpp \
-../daig/Model_Of_Computation.cpp ../daig/Node.cpp ../daig/Program.cpp \
-../daig/Variable.cpp ../daig/Statement.cpp ../daig/Type.cpp \
-../daig/CProgram.cpp ../daig/Visitor.cpp \
-../daig/gams/Sync_Builder.cpp \
-../daig/madara/Function_Visitor.cpp
-#../daig/madara/Sync_Builder.cpp ../daig/madara/Async_Builder.cpp 
+../dmpl/Expression.cpp ../dmpl/Function.cpp \
+../dmpl/Model_Of_Computation.cpp ../dmpl/Node.cpp ../dmpl/Program.cpp \
+../dmpl/Variable.cpp ../dmpl/Statement.cpp ../dmpl/Type.cpp \
+../dmpl/CProgram.cpp ../dmpl/Visitor.cpp \
+../dmpl/gams/Sync_Builder.cpp \
+../dmpl/madara/Function_Visitor.cpp
+#../dmpl/madara/Sync_Builder.cpp ../dmpl/madara/Async_Builder.cpp 
 OBJ=$(patsubst %.cpp,%.o,$(SRC))
 INC=-I$(ACE_ROOT) -I$(MADARA_ROOT)/include -I..
 LIB=$(MADARA_ROOT)/libMADARA.so
@@ -14,14 +14,14 @@ CXX=g++
 
 all : dmplc
 
-dmplc : dmplc.cpp daig-parser.hpp $(OBJ)
+dmplc : dmpl-parser.hpp dmplc.cpp $(OBJ)
 	$(CXX) -o $@ $(INC) dmplc.cpp $(OBJ) $(LIB)
 
-daig-scanner.cpp : daig-scanner.ll
-	flex -o daig-scanner.cpp daig-scanner.ll
+dmpl-scanner.cpp : dmpl-scanner.ll
+	flex -o dmpl-scanner.cpp dmpl-scanner.ll
 
-daig-parser.cpp daig-parser.hpp : daig-parser.yy
-	bison -d -o daig-parser.cpp daig-parser.yy
+dmpl-parser.cpp dmpl-parser.hpp : dmpl-parser.yy
+	bison -d -o dmpl-parser.cpp dmpl-parser.yy
 
 %.o : %.cpp
 	$(CXX) -c -o $@ $(INC) $<
@@ -30,7 +30,7 @@ daig-parser.cpp daig-parser.hpp : daig-parser.yy
 	$(CXX) -MM -MT $(@:%.d=%.o) -o $@ $(INC) $<
 
 clean :
-	rm -f dmplc daig-scanner.cpp daig-parser.cpp daig-parser.hpp \
+	rm -f dmplc dmpl-scanner.cpp dmpl-parser.cpp dmpl-parser.hpp \
 stack.hh position.hh location.hh $(OBJ)
 
 -include $(SRC:%.cpp=%.d)

@@ -26,4 +26,4 @@ DIRECTORIES
 
   /tools
 
-  Contains tools such as the dmpl compiler and daig
+  Contains tools such as the dmpl compiler and dmpl
