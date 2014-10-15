@@ -1,0 +1,7 @@
+
+workspace {
+  cmdline += -feature_file default.features
+  
+  dart.mpc
+  docs/dart_docs.mpc
+}

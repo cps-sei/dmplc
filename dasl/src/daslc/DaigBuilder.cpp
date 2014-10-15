@@ -76,10 +76,10 @@ extern FILE *yyin;
 /*********************************************************************/
 //constructor
 /*********************************************************************/
-daig::DaigBuilder::DaigBuilder(const std::string &fn,
+daig::DaigBuilder::DaigBuilder(const std::list<std::string> &fns,
                                const std::map<std::string,std::string> &constDef,
                                const bool d)
-  : fileName(fn),debug(d) 
+  : fileNames(fns),debug(d) 
 {
   program.constDef = constDef;
 }
@@ -90,14 +90,17 @@ daig::DaigBuilder::DaigBuilder(const std::string &fn,
 void daig::DaigBuilder::run()
 {
   ::builder = this;
-  ::yyin = fopen(fileName.c_str(),"r");
-  if(!::yyin) {
-    std::cerr << "ERROR: could not open file " << fileName << '\n';
-    exit(1);
+  BOOST_FOREACH(std::string fileName, fileNames)
+  {
+    ::yyin = fopen(fileName.c_str(),"r");
+    if(!::yyin) {
+      std::cerr << "ERROR: could not open file " << fileName << '\n';
+      exit(1);
+    }
+  
+    ::yyparse();
+    fclose(::yyin);
   }
-
-  ::yyparse();
-  fclose(::yyin);
   program.sanityCheck();
 }
 

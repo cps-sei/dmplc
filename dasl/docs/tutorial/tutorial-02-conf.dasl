@@ -1,0 +1,6 @@
+@TEST
+NODE uav
+{
+  @TEST_XY
+  NEXT_XY();
+}

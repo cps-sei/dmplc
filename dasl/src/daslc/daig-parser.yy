@@ -456,6 +456,8 @@ stmt : TATOMIC stmt { $$ = new daig::Stmt(new daig::AtomicStmt(*$2)); delete $2;
 | lval TLPAREN arg_list TRPAREN TSEMICOLON {
   $$ = new daig::Stmt(new daig::CallStmt(daig::Expr($1), *$3));
   delete $3;
+  //$$ = new daig::Stmt(new daig::CallExpr(daig::Expr($1),*$3));
+  //delete $3; printExpr(*$$);
 }
 | TFAN TLPAREN TIDENTIFIER TRPAREN stmt { 
   $$ = new daig::Stmt(new daig::FANStmt(*$3,*$5));

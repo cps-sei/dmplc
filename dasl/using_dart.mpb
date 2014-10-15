@@ -1,0 +1,6 @@
+project {
+  after += dart
+  includes += $(DART_ROOT)/dasl/src
+  libpaths += $(DART_ROOT)/dasl/lib
+  libs += dart
+}

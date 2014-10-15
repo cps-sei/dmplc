@@ -1,0 +1,17 @@
+*.o
+*.a
+
+*.d
+
+dasl/docs/tutorial/*.c
+dasl/docs/tutorial/*.cpp
+
+dasl/src/daslc/daig-parser.cpp
+dasl/src/daslc/daig-parser.hpp
+dasl/src/daslc/daig-scanner.cpp
+dasl/src/vrep/libDaslVrep.a
+
+dasl/src/daslc/daslc
+dasl/docs/tutorial/tutorial-01
+dasl/docs/tutorial/tutorial-02
+dasl/src/vrep/testExtApi

@@ -20,6 +20,11 @@ int my_sleep (int seconds)
 int round = 0;
 int xi,yi;
 
+void print_int(int i)
+{
+  printf("%i\n", i);
+}
+
 void print_line(int _X)
 {
   printf("-");
@@ -63,17 +68,16 @@ CONST REQUEST = 2;
 CONST WAITING = 3;
 CONST MOVE = 4;
 
+CONST TopY = -2;
+CONST LeftX = -2;
+CONST BottomY = 2;
+CONST RightX = 2;
+
 //EXTERN int MOVE_TO(unsigned char x,unsigned char y);
 EXTERN int my_sleep(int seconds);
 EXTERN void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf);
+EXTERN void print_int(int i);
 
-
-@TEST
-NODE uav
-{
-  @TEST_XY
-  NEXT_XY();
-}
 
 @NODE_ATTR(2, 4)
 NODE uav (id)
@@ -102,13 +106,6 @@ NODE uav (id)
 
 NODE uav (id)
 {
-
-  @CRIT(H)
-  ROUND ();
-
-  @PRIORITY(32)
-  ROUND ();
-
   @BARRIER_SYNC
   void ROUND () {
     print_state(X,Y,id,x,y,xf,yf);
@@ -133,11 +130,18 @@ NODE uav (id)
       state = MOVE;
     } else if(state == MOVE) {
       //now we have the lock on (x’,y’)
-      if(PLAT_MOVE(xp,yp)) return;
+      if(GRID_MOVE(xp,yp)) return;
       lock[x][y][id] = 0; 
       x = xp; y = yp;
       state = NEXT;
     }
+  }
+
+  @INIT_SIM
+  void StartingPosition ()
+  {
+    GRID_INIT(X, Y, LeftX, RightX, TopY, BottomY);
+    GRID_PLACE(x, y);
   }
 }
 

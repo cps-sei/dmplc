@@ -61,6 +61,7 @@
 #define __DAIG_BUILDER_HPP__
 
 #include <string>
+#include <list>
 #include <map>
 #include "daig/Program.h"
 
@@ -70,12 +71,12 @@ namespace daig {
   public:
     daig::Program program;
   
-    std::string fileName;
+    std::list<std::string> fileNames;
     bool debug;
   
   public:
     DaigBuilder() : debug(0) {}
-    DaigBuilder(const std::string &fn,const std::map<std::string,std::string> &constDef,
+    DaigBuilder(const std::list<std::string> &fns,const std::map<std::string,std::string> &constDef,
                 const bool d);
 
     void run();

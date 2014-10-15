@@ -103,8 +103,11 @@ daig::gams::Sync_Builder::build_header_includes ()
   buffer_ << "#include <vector>\n";
   buffer_ << "#include <sstream>\n";
   buffer_ << "#include <assert.h>\n";
+  buffer_ << "#include <math.h>\n";
   buffer_ << "\n";
   buffer_ << "#include \"madara/knowledge_engine/Knowledge_Base.h\"\n";
+  buffer_ << "#include \"madara/knowledge_engine/Knowledge_Record.h\"\n";
+  buffer_ << "#include \"madara/knowledge_engine/Functions.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/containers/Integer_Vector.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/containers/Double_Vector.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/containers/Vector_N.h\"\n";
@@ -141,9 +144,27 @@ daig::gams::Sync_Builder::build_common_global_variables ()
   buffer_ << "namespace platforms = gams::platforms;\n\n";
   buffer_ << "namespace variables = gams::variables;\n\n";
   buffer_ << "\n";
+
+  buffer_ << "// Needed as a workaround for non-const-correctness in Madara; use carefully\n";
+  buffer_ << "inline engine::Function_Arguments &__strip_const(const engine::Function_Arguments &c)\n";
+  buffer_ << "{\n";
+  buffer_ << "  return const_cast<engine::Function_Arguments &>(c);\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+  buffer_ << "inline engine::Function_Arguments &__chain_set(engine::Function_Arguments &c, int i, const Madara::Knowledge_Record &v)\n";
+  buffer_ << "{\n";
+  buffer_ << "  c[i] = v;\n";
+  buffer_ << "  return c;\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
   buffer_ << "// default transport variables\n";
   buffer_ << "std::string host (\"\");\n";
+  buffer_ << "std::vector<std::string> platform_params;\n";
   buffer_ << "std::string platform_name (\"debug\");\n";
+  buffer_ << "typedef void (*PlatformInitFn)(const std::vector<std::string> &, engine::Knowledge_Base &);\n";
+  buffer_ << "typedef std::map<std::string, PlatformInitFn> PlatformInitFns;\n";
+  buffer_ << "PlatformInitFns platform_init_fns;\n";
   buffer_ << "const std::string default_multicast (\"239.255.0.1:4150\");\n";
   buffer_ << "Madara::Transport::QoS_Transport_Settings settings;\n";
   buffer_ << "int write_fd (-1);\n";
@@ -378,12 +399,12 @@ void
 daig::gams::Sync_Builder::build_program_variables_bindings ()
 { 
   buffer_ << "  // Binding common variables\n";
-  buffer_ << "  barrier.set_name (\"mbarrier\", knowledge, ";
+  buffer_ << "  barrier.set_name (\"mbarrier\", *knowledge, ";
   buffer_ << builder_.program.processes.size ();
   buffer_ << ");\n";
 
-  buffer_ << "  id.set_name (\".id\", knowledge);\n";
-  buffer_ << "  num_processes.set_name (\".processes\", knowledge);\n";
+  buffer_ << "  id.set_name (\".id\", *knowledge);\n";
+  buffer_ << "  num_processes.set_name (\".processes\", *knowledge);\n";
   buffer_ << "\n";
 
   Nodes & nodes = builder_.program.nodes;
@@ -422,7 +443,7 @@ daig::gams::Sync_Builder::build_program_variable_binding (
     buffer_ << ".";
 
   buffer_ << var.name;
-  buffer_ << "\", knowledge";
+  buffer_ << "\", *knowledge";
 
   // is this an array type?
   if (var.type->dims.size () == 1)
@@ -465,6 +486,39 @@ daig::gams::Sync_Builder::build_parse_args ()
 {
   std::stringstream variable_help;
 
+  buffer_ << "template < class ContainerT >\n";
+  buffer_ << "void tokenize(const std::string& str, ContainerT& tokens,\n";
+  buffer_ << "              const std::string& delimiters = \" \", bool trimEmpty = false)\n";
+  buffer_ << "{\n";
+  buffer_ << "   std::string::size_type pos, lastPos = 0;\n";
+  buffer_ << "\n";
+  buffer_ << "   typedef typename ContainerT::value_type value_type;\n";
+  buffer_ << "   typedef typename ContainerT::size_type size_type;\n";
+  buffer_ << "\n";
+  buffer_ << "   while(true)\n";
+  buffer_ << "   {\n";
+  buffer_ << "      pos = str.find_first_of(delimiters, lastPos);\n";
+  buffer_ << "      if(pos == std::string::npos)\n";
+  buffer_ << "      {\n";
+  buffer_ << "         pos = str.length();\n";
+  buffer_ << "\n";
+  buffer_ << "         if(pos != lastPos || !trimEmpty)\n";
+  buffer_ << "            tokens.push_back(value_type(str.data()+lastPos,\n";
+  buffer_ << "                  (size_type)pos-lastPos ));\n";
+  buffer_ << "\n";
+  buffer_ << "         break;\n";
+  buffer_ << "      }\n";
+  buffer_ << "      else\n";
+  buffer_ << "      {\n";
+  buffer_ << "         if(pos != lastPos || !trimEmpty)\n";
+  buffer_ << "            tokens.push_back(value_type(str.data()+lastPos,\n";
+  buffer_ << "                  (size_type)pos-lastPos ));\n";
+  buffer_ << "      }\n";
+  buffer_ << "\n";
+  buffer_ << "      lastPos = pos + 1;\n";
+  buffer_ << "   }\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
   buffer_ << "// handle arguments from the command line\n";
   buffer_ << "void handle_arguments (int argc, char ** argv)\n";
   buffer_ << "{\n";
@@ -485,7 +539,8 @@ daig::gams::Sync_Builder::build_parse_args ()
   buffer_ << "    {\n";
   buffer_ << "      if (i + 1 < argc)\n";
   buffer_ << "      {\n";
-  buffer_ << "        platform_name = (argv[i + 1]);\n";
+  buffer_ << "        tokenize(std::string(argv[i + 1]), platform_params, \":\");\n";
+  buffer_ << "        platform_name = (platform_params[0]);\n";
   buffer_ << "      }\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
@@ -873,7 +928,29 @@ daig::gams::Sync_Builder::build_function (
   buffer_ << "{\n";
   buffer_ << "  // Declare local variables\n";
   
-  buffer_ << "  Integer result (0);\n";
+  //buffer_ << "  Integer result (0);\n";
+  int i = 0;
+  BOOST_FOREACH (Variables::value_type & variable, function.params)
+  {
+    switch(variable.second.type->type)
+    {
+    case TDOUBLE_TYPE:
+      buffer_ << "  double ";
+      buffer_ << variable.second.name;
+      buffer_ << " = args[" << i << "].to_double();\n";
+      buffer_ << ";\n";
+      break;
+    case TINT:
+    case TCHAR:
+    case TBOOL:
+    default:
+      buffer_ << "  Integer ";
+      buffer_ << variable.second.name;
+      buffer_ << " = args[" << i << "].to_integer();\n";
+      break;
+    }
+    ++i;
+  }
   BOOST_FOREACH (Variables::value_type & variable, function.temps)
   {
     if (variable.second.type->type == TINT)
@@ -908,7 +985,7 @@ daig::gams::Sync_Builder::build_function (
   }
 
   buffer_ << "\n  // Insert return statement, in case user program did not\n";
-  buffer_ << "  return result;\n";
+  buffer_ << "  return Integer(0);\n";
   buffer_ << "}\n\n";
 }
 
@@ -920,13 +997,37 @@ daig::gams::Sync_Builder::build_gams_function (std::string &dasl_name, std::stri
 void
 daig::gams::Sync_Builder::build_gams_functions ()
 {
+  buffer_ << "Madara::Knowledge_Engine::Knowledge_Base *knowledge;\n";
   buffer_ << "gams::platforms::Base *platform;\n";
   buffer_ << "gams::algorithms::Base *algo;\n";
 
-  buffer_ << "int PLAT_MOVE(double lat, double lng, double alt = 0.0, double epsilon = 0.1)\n";
+  buffer_ << "int grid_x = 0, grid_y = 0;\n";
+  buffer_ << "double grid_leftX = NAN, grid_rightX = NAN, grid_topY = NAN, grid_bottomY = NAN, grid_cellX = NAN, grid_cellY = NAN;\n";
+  buffer_ << "void GRID_INIT(int x, int y, double leftX, double rightX, double topY, double bottomY)\n";
   buffer_ << "{\n";
-  buffer_ << "  int ret = platform->move(gams::utility::GPS_Position(lat, lng, alt), epsilon);\n";
-  buffer_ << "  std::cerr << \"PLAT_MOVE \" << platform->get_name() << \" \" << ret << std::endl;\n";
+  buffer_ << "  grid_x = x;\n";
+  buffer_ << "  grid_y = y;\n";
+  buffer_ << "  grid_leftX = leftX;\n";
+  buffer_ << "  grid_rightX = rightX;\n";
+  buffer_ << "  grid_topY = topY;\n";
+  buffer_ << "  grid_bottomY = bottomY;\n";
+  buffer_ << "  grid_cellX = (grid_rightX - grid_leftX) / grid_x;\n";
+  buffer_ << "  grid_cellY = (grid_bottomY - grid_topY) / grid_y;\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "void GRID_PLACE(int x, int y, double alt = 0.0)\n";
+  buffer_ << "{\n";
+  buffer_ << "  knowledge->set(\".initial_x\", grid_leftX + x * grid_cellX);\n";
+  buffer_ << "  knowledge->set(\".initial_y\", grid_topY + y * grid_cellY);\n";
+  buffer_ << "  knowledge->set(\".initial_alt\", alt);\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "int GRID_MOVE(int x, int y, double alt = 0.0, double epsilon = 0.1)\n";
+  buffer_ << "{\n";
+  buffer_ << "  int ret = platform->move(gams::utility::Position(grid_leftX + x * grid_cellX, grid_topY + y * grid_cellY, alt), epsilon);\n";
+  //buffer_ << "  std::cerr << \"PLAT_MOVE \" << platform->get_name() << \" \" << ret << std::endl;\n";
   buffer_ << "  return ret != 2;\n";
   buffer_ << "}\n";
   buffer_ << "\n";
@@ -935,17 +1036,17 @@ daig::gams::Sync_Builder::build_gams_functions ()
 void
 daig::gams::Sync_Builder::build_algo_declaration ()
 {
-  buffer_ << "class Algo : public gams::algorithms::Base\n";
+  buffer_ << "class SyncAlgo : public gams::algorithms::Base\n";
   buffer_ << "{\n";
   buffer_ << "public:\n";
-  buffer_ << "  Algo (\n";
+  buffer_ << "  SyncAlgo (\n";
   buffer_ << "    const std::string &exec_func,\n";
   buffer_ << "    Madara::Knowledge_Engine::Wait_Settings &wait_settings,\n";
   buffer_ << "    Madara::Knowledge_Engine::Knowledge_Base * knowledge = 0,\n";
   buffer_ << "    platforms::Base * platform = 0,\n";
   buffer_ << "    variables::Sensors * sensors = 0,\n";
   buffer_ << "    variables::Self * self = 0);\n";
-  buffer_ << "  ~Algo (void);\n";
+  buffer_ << "  ~SyncAlgo (void);\n";
   buffer_ << "  virtual int analyze (void);\n";
   buffer_ << "  virtual int plan (void);\n";
   buffer_ << "  virtual int execute (void);\n";
@@ -960,7 +1061,7 @@ daig::gams::Sync_Builder::build_algo_declaration ()
 void
 daig::gams::Sync_Builder::build_algo_functions ()
 {
-  buffer_ << "Algo::Algo (\n";
+  buffer_ << "SyncAlgo::SyncAlgo (\n";
   buffer_ << "    const std::string &exec_func,\n";
   buffer_ << "    Madara::Knowledge_Engine::Wait_Settings &wait_settings,\n";
   buffer_ << "    Madara::Knowledge_Engine::Knowledge_Base * knowledge,\n";
@@ -978,24 +1079,24 @@ daig::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "}\n";
   buffer_ << "\n";
 
-  buffer_ << "Algo::~Algo (void)\n";
+  buffer_ << "SyncAlgo::~SyncAlgo (void)\n";
   buffer_ << "{\n";
   buffer_ << "}\n";
   buffer_ << "\n";
 
-  buffer_ << "int Algo::analyze (void)\n";
-  buffer_ << "{\n";
-  buffer_ << "  return 0;\n";
-  buffer_ << "}\n";
-  buffer_ << "\n";
-
-  buffer_ << "int Algo::plan (void)\n";
+  buffer_ << "int SyncAlgo::analyze (void)\n";
   buffer_ << "{\n";
   buffer_ << "  return 0;\n";
   buffer_ << "}\n";
   buffer_ << "\n";
 
-  buffer_ << "int Algo::execute (void)\n";
+  buffer_ << "int SyncAlgo::plan (void)\n";
+  buffer_ << "{\n";
+  buffer_ << "  return 0;\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "int SyncAlgo::execute (void)\n";
   buffer_ << "{\n";
   buffer_ << "  knowledge_->evaluate (round_logic, _wait_settings);\n";
   buffer_ << "  return 0;\n";
@@ -1007,9 +1108,28 @@ daig::gams::Sync_Builder::build_algo_functions ()
 void
 daig::gams::Sync_Builder::build_main_function ()
 {
+  buffer_ << "void init_vrep(const std::vector<std::string> &params, engine::Knowledge_Base &knowledge)\n";
+  buffer_ << "{\n";
+  buffer_ << "  if(params.size() >= 2 && params[1].size() > 0)\n";
+  buffer_ << "    knowledge.set(\".vrep_host\", params[1]);\n";
+  buffer_ << "  else\n";
+  buffer_ << "    knowledge.set(\".vrep_host\", \"127.0.0.1\");\n";
+  buffer_ << "  if(params.size() >= 3 && params[2].size() > 0)\n";
+  buffer_ << "    knowledge.set(\".vrep_port\", params[2]);\n";
+  buffer_ << "  else\n";
+  buffer_ << "    knowledge.set(\".vrep_port\", \"19905\");\n";
+  buffer_ << "  if(params.size() >= 4 && params[3].size() > 0)\n";
+  buffer_ << "    knowledge.set(\".vrep_sw_position\", params[3]);\n";
+  buffer_ << "  else\n";
+  buffer_ << "    knowledge.set(\".vrep_sw_position\", \"40.4464255,-79.9499426\");\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
   buffer_ << "int main (int argc, char ** argv)\n";
   buffer_ << "{\n";
   buffer_ << "  settings.type = Madara::Transport::MULTICAST;\n";
+  buffer_ << "  platform_init_fns[\"vrep\"] = init_vrep;\n";
+  buffer_ << "  platform_init_fns[\"vrep-uav\"] = init_vrep;\n";
+  buffer_ << "  platform_init_fns[\"vrep-ant\"] = init_vrep;\n";
   buffer_ << "\n";
   buffer_ << "  // handle any command line arguments\n";
   buffer_ << "  handle_arguments (argc, argv);\n";
@@ -1043,7 +1163,7 @@ daig::gams::Sync_Builder::build_main_function ()
   }
 
   buffer_ << "  // create the knowledge base with the transport settings\n";
-  buffer_ << "  Madara::Knowledge_Engine::Knowledge_Base knowledge (host, settings);\n\n";
+  buffer_ << "  knowledge = new Madara::Knowledge_Engine::Knowledge_Base (host, settings);\n\n";
 
   buffer_ << "  std::map <std::string, bool>  barrier_send_list;\n";
   buffer_ << "  std::stringstream barrier_string, barrier_sync;\n";
@@ -1053,7 +1173,7 @@ daig::gams::Sync_Builder::build_main_function ()
   // build the barrier string  
   buffer_ << "  bool started = false;\n\n";
 
-  buffer_ << "  barrier_send_list [knowledge.expand_statement (";
+  buffer_ << "  barrier_send_list [knowledge->expand_statement (";
   buffer_ << "\"mbarrier.{.id}\")] = true;\n\n";
   
   if (false)
@@ -1130,8 +1250,8 @@ daig::gams::Sync_Builder::build_main_function ()
   buffer_ << "  // Compile frequently used expressions\n";
     
 
-  buffer_ << "  barrier_logic = knowledge.compile (barrier_string.str ());\n";
-  buffer_ << "  barrier_sync_logic = knowledge.compile (barrier_sync.str ());\n";
+  buffer_ << "  barrier_logic = knowledge->compile (barrier_string.str ());\n";
+  buffer_ << "  barrier_sync_logic = knowledge->compile (barrier_sync.str ());\n";
 
 #if 0
   if(builder_.program.sendHeartbeats) {
@@ -1272,10 +1392,13 @@ daig::gams::Sync_Builder::build_main_function ()
   buffer_ << "  wait_settings.max_wait_time = max_barrier_time;\n";
   buffer_ << "  wait_settings.poll_frequency = .1;\n\n";
 
-  buffer_ << "  controllers::Base loop (knowledge);\n";
+  buffer_ << "  controllers::Base loop (*knowledge);\n";
+  buffer_ << "  PlatformInitFns::iterator init_fn = platform_init_fns.find(platform_name);\n";
+  buffer_ << "  if(init_fn != platform_init_fns.end())\n";
+  buffer_ << "    init_fn->second(platform_params, *knowledge);\n";
   buffer_ << "  loop.init_vars (settings.id, processes);\n";
   buffer_ << "  loop.init_platform (platform_name);\n";
-  buffer_ << "  algo = new Algo(\"" + barrierFunction->name + "\", wait_settings, &knowledge);\n";
+  buffer_ << "  algo = new SyncAlgo(\"" + barrierFunction->name + "\", wait_settings, knowledge);\n";
   buffer_ << "  platform = loop.get_platform();\n";
   buffer_ << "  loop.init_algorithm (algo);\n";
   
@@ -1302,7 +1425,7 @@ daig::gams::Sync_Builder::build_main_define_functions ()
 {
   buffer_ << "  // Defining common functions\n\n";
 
-  buffer_ << "  knowledge.define_function (\"REMODIFY_GLOBALS\", ";
+  buffer_ << "  knowledge->define_function (\"REMODIFY_GLOBALS\", ";
   buffer_ << "REMODIFY_GLOBALS);\n\n";
 
   buffer_ << "  // Defining global functions for MADARA\n\n";
@@ -1333,9 +1456,9 @@ void
 daig::gams::Sync_Builder::build_main_define_function (const Node & node,
   Function & function)
 {
-  if (function.attrs.count("INIT") > 0 || function.attrs.count("SAFETY") > 0)
+  if (!(function.attrs.count("INIT") > 0 || function.attrs.count("SAFETY") > 0))
   {
-    buffer_ << "  knowledge.define_function (\"";
+    buffer_ << "  knowledge->define_function (\"";
     buffer_ << function.name;
     buffer_ << "\", ";
     buffer_ << node.name << "_" << function.name;

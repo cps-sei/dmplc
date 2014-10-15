@@ -160,7 +160,8 @@ daig::madara::Function_Visitor::exitLval (LvalExpr & expression)
     // otherwise, we need to determine if this is a MADARA container or not
     else
     {
-      if (function_.temps.find (expression.var) == function_.temps.end ())
+      if (function_.temps.find (expression.var) == function_.temps.end () &&
+          function_.params.find (expression.var) == function_.params.end ())
       {
         buffer_ << "*";
       }
@@ -228,24 +229,151 @@ daig::madara::Function_Visitor::enterCall (CallExpr & expression)
 void
 daig::madara::Function_Visitor::exitCall (CallExpr & expression)
 {
+  std::string spacer (indentation_, ' '), sub_spacer (indentation_ + 2, ' ');
+
   std::string func_name = expression.func->toString ();
-  if (do_vrep_ && func_name == "MOVE_TO") func_name = "VREP_MOVE_TO";
 
-  buffer_ << func_name;
-  buffer_ << " (";
+  //if (do_vrep_ && func_name == "MOVE_TO") func_name = "VREP_MOVE_TO";
 
-  bool started = false;
-  BOOST_FOREACH (Expr & expr, expression.args)
+  daig::Functions & externs = builder_.program.externalFuncs;
+
+  bool isExtern = (externs.find (func_name) != externs.end ());
+  Functions::const_iterator nodeFunc = node_.funcs.find (func_name);
+  Functions::const_iterator progFunc = builder_.program.funcs.find (func_name);
+  bool isNodeFunc = nodeFunc != node_.funcs.end();
+  bool isProgFunc = progFunc != builder_.program.funcs.end();
+
+  if (expression.ignore_return)
+    buffer_ << "(void) ";
+
+  buffer_ << "(";
+
+  if (isNodeFunc || isProgFunc)
   {
-    if (started)
+    const Function &func = (isNodeFunc ? nodeFunc->second : progFunc->second);
+    /*if (assignment_)
+    {
+      // complete the assignment and redo it later;
+      buffer_ << "0;\n";
+    }*/
+
+    if (isNodeFunc)
+    {
+      buffer_ << node_.name << "_";
+    }
+
+    buffer_ << func_name << " (\n";
+
+    buffer_ << sub_spacer << "     ";
+
+    BOOST_FOREACH (Expr & expr, expression.args)
+    {
+      buffer_ << "__chain_set(";
+    }
+
+    buffer_ << "__strip_const(engine::Function_Arguments(" << expression.args.size() << "))";
+    /*if (data->args.size () > 0)
+    {
+      buffer_ << " (";
+      buffer_ << data->args.size ();
+      buffer_ << ")";
+    }*/
+
+    buffer_ << "\n";
+
+    unsigned int i = 0;
+    BOOST_FOREACH (Expr & expr, expression.args)
+    {
+      buffer_ << sub_spacer << "       ";
       buffer_ << ", ";
+      buffer_ << i << ", ";
 
-    visit (expr);
+      visit (expr);
 
-    if (!started)
-      started = true;
+      buffer_ << ")\n";
+      ++i;
+    }
+
+    /*
+    if (assignment_)
+    {
+      buffer_ << sub_spacer;
+
+      LvalExpr * lhs  = dynamic_cast<LvalExpr*>(assignment_->lhs.get ());
+
+      if (lhs)
+      {
+        if (lhs->indices.size () == 0)
+        {
+          bool is_private = false;
+          if (privatize_ &&
+              node_.globVars.find (lhs->var) != node_.globVars.end ())
+          {
+            is_private = true;
+            buffer_ << spacer;
+            buffer_ << "// treat global variable change as a local update\n";
+            buffer_ << spacer;
+            buffer_ << "engine::Knowledge_Update_Settings old_update_settings (\n";
+            buffer_ << sub_spacer;
+            buffer_ << lhs->var;
+            buffer_ << ".set_settings (private_update));\n";
+          }
+
+          buffer_ << spacer;
+          buffer_ << lhs->var;
+          buffer_ << " = ";
+
+        }
+      }
+    }
+    else
+    {
+      buffer_ << sub_spacer;
+    }
+    */
+
+    buffer_ << sub_spacer << "    , vars)";
+
+    if(!expression.ignore_return && func.retType.get() != NULL)
+    {
+      switch(func.retType->type)
+      {
+        case TINT:
+        case TCHAR:
+          buffer_ << ".to_integer()";
+          break;
+        case TBOOL:
+          buffer_ << ".to_integer() == 0 ? false : true";
+          break;
+        case TDOUBLE_TYPE:
+          buffer_ << ".to_double()";
+          break;
+      }
+    }
   }
+  else
+  {
+    if (func_name == "ASSUME")
+      buffer_ << "assert";
+    else
+      buffer_ << func_name;
 
+    buffer_ << " (";
+  
+    bool started = false;
+    BOOST_FOREACH (Expr & expr, expression.args)
+    {
+      if (started)
+        buffer_ << ", ";
+
+      visit (expr);
+      
+      if (!started)
+        started = true;
+    }
+
+    buffer_ << ")";
+  }
   buffer_ << ")";
 }
 
@@ -754,7 +882,9 @@ daig::madara::Function_Visitor::exitRet (RetStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
-  buffer_ << spacer << "return result;\n";
+  buffer_ << spacer << "return (";
+  visit(statement.retVal);
+  buffer_ << ");\n";
 }
 
 
@@ -770,7 +900,7 @@ daig::madara::Function_Visitor::exitRetVoid (RetVoidStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
-  buffer_ << spacer << "return result;\n";
+  buffer_ << spacer << "return Integer(0);\n";
 }
 
 
@@ -790,71 +920,74 @@ daig::madara::Function_Visitor::exitCall (CallStmt & statement)
   
   if (data)
   {
+    buffer_ << spacer << "{\n";
+      
+    buffer_ << sub_spacer;
+
+    data -> ignore_return = true;
+    exitCall(*data);
+
+    buffer_ << ";\n";
+
+    buffer_ << spacer << "}\n";
+
+    #if 0
     std::string func_name = data->func->toString ();
 
-    if (do_vrep_ && func_name == "MOVE_TO") func_name = "VREP_MOVE_TO";
+    //if (do_vrep_ && func_name == "MOVE_TO") func_name = "VREP_MOVE_TO";
 
     daig::Functions & externs = builder_.program.externalFuncs;
 
-    if (func_name == "ASSUME" || externs.find (func_name) != externs.end ())
+    bool isExtern = (externs.find (func_name) != externs.end ());
+    bool isNodeFunc = (node_.funcs.find (func_name) != node_.funcs.end ());
+    bool isProgFunc = (builder_.program.funcs.find (func_name) != builder_.program.funcs.end ());
+
+    if (isNodeFunc || isProgFunc)
     {
-      buffer_ << spacer;
-
-      if (func_name == "ASSUME")
-        buffer_ << "assert";
-      else
-        buffer_ << func_name;
-
-      buffer_ << " (";
-    
-      bool started = false;
-      BOOST_FOREACH (Expr & expr, data->args)
-      {
-        if (started)
-          buffer_ << ", ";
-
-        visit (expr);
-
-        if (!started)
-          started = true;
-      }
-
-      buffer_ << ");\n";
-    }
-    else
-    {
-      if (assignment_)
+      /*if (assignment_)
       {
         // complete the assignment and redo it later;
         buffer_ << "0;\n";
+      }*/
+
+      if (node_.funcs.find (func_name) != node_.funcs.end ())
+      {
+        buffer_ << node_.name << "_";
       }
 
-      buffer_ << spacer << "{\n";
-      
-      buffer_ << sub_spacer;
-      buffer_ << "engine::Function_Arguments args";
-      if (data->args.size () > 0)
+      buffer_ << func_name << " (\n";
+
+      buffer_ << sub_spacer << "     ";
+
+      BOOST_FOREACH (Expr & expr, data->args)
+      {
+        buffer_ << "__chain_push_back(";
+      }
+
+      buffer_ << "__strip_const(engine::Function_Arguments())";
+      /*if (data->args.size () > 0)
       {
         buffer_ << " (";
         buffer_ << data->args.size ();
         buffer_ << ")";
-      }
-      buffer_ << ";\n";
+      }*/
+
+      buffer_ << "\n";
 
       unsigned int i = 0;
       BOOST_FOREACH (Expr & expr, data->args)
       {
-        buffer_ << sub_spacer;
-        buffer_ << "args [" << i << "] = ";
+        buffer_ << sub_spacer << "       ";
+        buffer_ << ", ";
+        //buffer_ << "args [" << i << "] = ";
 
         visit (expr);
 
-        buffer_ << ";\n";
+        buffer_ << ")\n";
         ++i;
       }
 
-      buffer_ << "\n";
-      
+      /*
       if (assignment_)
       {
         buffer_ << sub_spacer;
@@ -890,15 +1023,34 @@ daig::madara::Function_Visitor::exitCall (CallStmt & statement)
       {
         buffer_ << sub_spacer;
       }
+      */
 
-      if (node_.funcs.find (func_name) != node_.funcs.end ())
-      {
-        buffer_ << node_.name << "_";
-      }
-      buffer_ << func_name << " (args, vars);\n";
-
-      buffer_ << spacer << "}\n";
+      buffer_ << sub_spacer << "    , vars);\n";
     }
+    else
+    {
+      if (func_name == "ASSUME")
+        buffer_ << "assert";
+      else
+        buffer_ << func_name;
+
+      buffer_ << " (";
+    
+      bool started = false;
+      BOOST_FOREACH (Expr & expr, data->args)
+      {
+        if (started)
+          buffer_ << ", ";
+
+        visit (expr);
+
+        if (!started)
+          started = true;
+      }
+
+      buffer_ << ");\n";
+    }
+    #endif
   }
 }
 

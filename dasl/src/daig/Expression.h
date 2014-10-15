@@ -69,6 +69,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
+#include "Variable.h"
 
 
 namespace daig
@@ -174,7 +175,9 @@ namespace daig
     Expr func;
     ExprList args;
 
-    CallExpr(const Expr &f,const ExprList &a) : func(f),args(a) {}
+    bool ignore_return;
+
+    CallExpr(const Expr &f,const ExprList &a) : func(f),args(a),ignore_return(false) {}
     std::string toString() const {
       std::string res = func->toString() + "(";
 

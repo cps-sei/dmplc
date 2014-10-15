@@ -71,7 +71,8 @@
 /*********************************************************************/
 //options
 /*********************************************************************/
-std::string file_name, out_file;
+std::list<std::string> file_names;
+std::string out_file;
 std::string madara_target ("GNU_CPP");
 bool do_print = false, do_madara = false, do_seq = false, do_gams = false;
 bool do_vrep = false;
@@ -97,7 +98,7 @@ int main (int argc, char **argv)
   parse_options (argc, argv);
 
   //create the program
-  daig::DaigBuilder builder (file_name, const_def, debug);
+  daig::DaigBuilder builder (file_names, const_def, debug);
   builder.run ();
 
   //print the program
@@ -389,17 +390,11 @@ void parse_options (int argc, char **argv)
     }
     else
     {
-      if (!file_name.empty ())
-      {
-        std::cerr << "ERROR: filename " << file_name << " already specified\n";
-        usage (argv[0]);
-      }
-
-      file_name = std::string (argv[i]);
+      file_names.push_back(std::string (argv[i]));
     }
   }
 
-  if (file_name.empty ()) {
+  if (file_names.empty ()) {
     usage (argv[0]);
   }
 }
@@ -409,7 +404,7 @@ void parse_options (int argc, char **argv)
 /*********************************************************************/
 void usage (char *cmd)
 {
-  std::cerr << "Usage : " << cmd << " <options optionval> filename\n";
+  std::cerr << "Usage : " << cmd << " <options optionval> filename [filename ...]\n";
   std::cerr << "Options :\n";
   std::cerr << "  -d|--debug               print debugging information\n";
   std::cerr << "  -h|--help                print help and usage\n";
