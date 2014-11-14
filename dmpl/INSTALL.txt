@@ -2,14 +2,16 @@ INTRODUCTION
 ------------
 
   In this file, you will find instructions for building and installing
-  the tools in the Model Checking for Distributed Applications (MCDA)
+  the tools in the Distributed Adaptive Real-Time (DART) systems
   project. We currently support two platforms: LINUX (tested on
-  Kubuntu 13.10 64 bit) and WINDOWS (tested on Windows 7). If you have
+  Xubuntu 14.04 64 bit) and WINDOWS (tested on TODO). If you have
   questions or comments, contact the core developers or create issues
   on the project site at http://mcda.googlecode.com.
 
 WINDOWS INSTALLATION
 --------------------
+
+!!TODO: review these instructions for DART!!
 
 1. PREREQUISITES
 
@@ -17,11 +19,11 @@ WINDOWS INSTALLATION
    https://code.google.com/p/madara/wiki/InstallationFromSource
 
   Download MCDA with Git:
-    https://code.google.com/p/mcda/source/checkout  
+    https://TODO
   
 2. ENVIRONMENT VARIABLES
 
-  MCDA_ROOT = <the installation directory for the MCDA project>
+  DART_ROOT = <the installation directory for the DART project>
   
   The installation directory for MCDA should have tools and examples
   directories inside of it. The following shows an example
@@ -65,33 +67,34 @@ LINUX INSTALLATION
   Download and unpack VREP from: 
     http://www.coppeliarobotics.com/downloads.html
 
-  Download MCDA with Git:
-    git clone https://code.google.com/p/mcda mcda  
+  Download DART with Git:
+    git clone https://TODO
   
   Additional instructions are at:
-    https://code.google.com/p/mcda/source/checkout  
+    https://TODO
   
 2. ENVIRONMENT VARIABLES
 
   The following shows an example configuration, potentially in .bashrc
-  or .profile, assuming that MCDA is checked out into the user's home
+  or .profile, assuming that DART is checked out into the user's home
   directory, and VREP when unpacked created directory $HOME/vrep:
 
-  $ export DMPL_ROOT=$HOME/mcda
-  $ export PATH=$DMPL_ROOT/dmpl/src/dmplc:$PATH
-  $ export PATH=$DMPL_ROOT/dmpl/src/vrep:$PATH
+  $ export DART_ROOT=$HOME/dart
+  $ export DMPL_ROOT=$DART_ROOT/dmpl
+  $ export PATH=$DMPL_ROOT/src/dmplc:$PATH
+  $ export PATH=$DMPL_ROOT/src/vrep:$PATH
   $ export ACE_ROOT=$DMPL_ROOT/madara/ace/ACE_wrappers
   $ export MADARA_ROOT=$DMPL_ROOT/madara/madara
   $ export LD_LIBRARY_PATH=$ACE_ROOT/lib:$MADARA_ROOT/lib:$LD_LIBRARY_PATH
   $ export PATH=$ACE_ROOT/bin:$MADARA_ROOT/bin:$PATH
   $ export VREP_ROOT=$HOME/vrep
 
-3. BUILDING MCDA
+3. BUILDING DART
 
   We have created a Makefile that does everything for you, including
   downloading and compiling the correct version of MADARA. Simply type:
 
-  $ make -C $DMPL_ROOT/dmpl
+  $ make -C $DMPL_ROOT
 
 ----------------------
 -- THE END

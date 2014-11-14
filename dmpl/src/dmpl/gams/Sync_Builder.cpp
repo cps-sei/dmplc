@@ -114,6 +114,7 @@ dmpl::gams::Sync_Builder::build_header_includes ()
   buffer_ << "#include \"madara/knowledge_engine/containers/Integer.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/containers/Double.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/containers/String.h\"\n";
+  buffer_ << "#include \"madara/threads/Threader.h\"\n";
   buffer_ << "\n";
   buffer_ << "#include \"gams/controllers/Base_Controller.h\"\n";
   buffer_ << "#include \"gams/algorithms/Base_Algorithm.h\"\n";
@@ -139,6 +140,7 @@ dmpl::gams::Sync_Builder::build_common_global_variables ()
   buffer_ << "typedef   Madara::Knowledge_Record::Integer   Integer;\n\n";
   buffer_ << "// namespace shortcuts\n";
   buffer_ << "namespace engine = Madara::Knowledge_Engine;\n";
+  buffer_ << "namespace threads = Madara::Threads;\n\n";
   buffer_ << "namespace containers = engine::Containers;\n\n";
   buffer_ << "namespace controllers = gams::controllers;\n\n";
   buffer_ << "namespace platforms = gams::platforms;\n\n";
@@ -172,7 +174,7 @@ dmpl::gams::Sync_Builder::build_common_global_variables ()
 
   buffer_ << "// Containers for commonly used variables\n";
   buffer_ << "// Global variables\n";
-  buffer_ << "containers::Integer_Array barrier;\n";
+  //buffer_ << "containers::Integer_Array barrier;\n";
 
   buffer_ << "containers::Integer id;\n";
   buffer_ << "containers::Integer num_processes;\n";
@@ -399,9 +401,9 @@ void
 dmpl::gams::Sync_Builder::build_program_variables_bindings ()
 { 
   buffer_ << "  // Binding common variables\n";
-  buffer_ << "  barrier.set_name (\"mbarrier\", *knowledge, ";
-  buffer_ << builder_.program.processes.size ();
-  buffer_ << ");\n";
+  //buffer_ << "  barrier.set_name (\"mbarrier\", *knowledge, ";
+  //buffer_ << builder_.program.processes.size ();
+  //buffer_ << ");\n";
 
   buffer_ << "  id.set_name (\".id\", *knowledge);\n";
   buffer_ << "  num_processes.set_name (\".processes\", *knowledge);\n";
@@ -795,7 +797,7 @@ dmpl::gams::Sync_Builder::build_refresh_modify_globals ()
   buffer_ << "{\n";
   
   buffer_ << "  // Remodifying common global variables\n";
-  buffer_ << "  barrier.set (*id, barrier[*id]);\n\n";
+  //buffer_ << "  barrier.set (*id, barrier[*id]);\n\n";
 
   Nodes & nodes = builder_.program.nodes;
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
@@ -999,7 +1001,6 @@ dmpl::gams::Sync_Builder::build_gams_functions ()
 {
   buffer_ << "Madara::Knowledge_Engine::Knowledge_Base *knowledge;\n";
   buffer_ << "gams::platforms::Base *platform;\n";
-  buffer_ << "gams::algorithms::Base *algo;\n";
 
   buffer_ << "int grid_x = 0, grid_y = 0;\n";
   buffer_ << "double grid_leftX = NAN, grid_rightX = NAN, grid_topY = NAN, grid_bottomY = NAN, grid_cellX = NAN, grid_cellY = NAN;\n";
@@ -1011,8 +1012,8 @@ dmpl::gams::Sync_Builder::build_gams_functions ()
   buffer_ << "  grid_rightX = rightX;\n";
   buffer_ << "  grid_topY = topY;\n";
   buffer_ << "  grid_bottomY = bottomY;\n";
-  buffer_ << "  grid_cellX = (grid_rightX - grid_leftX) / grid_x;\n";
-  buffer_ << "  grid_cellY = (grid_bottomY - grid_topY) / grid_y;\n";
+  buffer_ << "  grid_cellX = (grid_rightX - grid_leftX) / (grid_x-1);\n";
+  buffer_ << "  grid_cellY = (grid_bottomY - grid_topY) / (grid_y-1);\n";
   buffer_ << "}\n";
   buffer_ << "\n";
 
@@ -1024,9 +1025,10 @@ dmpl::gams::Sync_Builder::build_gams_functions ()
   buffer_ << "}\n";
   buffer_ << "\n";
 
-  buffer_ << "int GRID_MOVE(int x, int y, double alt = 0.0, double epsilon = 0.1)\n";
+  buffer_ << "int GRID_MOVE(int x, int y, double alt = NAN, double epsilon = 0.1)\n";
   buffer_ << "{\n";
   buffer_ << "  int ret = platform->move(gams::utility::Position(grid_leftX + x * grid_cellX, grid_topY + y * grid_cellY, alt), epsilon);\n";
+  //buffer_ << "  std::cerr << grid_leftX + x * grid_cellX << \"/\" << grid_topY + y * grid_cellY << std::endl;\n";
   //buffer_ << "  std::cerr << \"PLAT_MOVE \" << platform->get_name() << \" \" << ret << std::endl;\n";
   buffer_ << "  return ret != 2;\n";
   buffer_ << "}\n";
@@ -1036,24 +1038,62 @@ dmpl::gams::Sync_Builder::build_gams_functions ()
 void
 dmpl::gams::Sync_Builder::build_algo_declaration ()
 {
-  buffer_ << "class SyncAlgo : public gams::algorithms::Base\n";
+  buffer_ << "class Algo : public gams::algorithms::Base, protected threads::Base_Thread\n";
+  buffer_ << "{\n";
+  buffer_ << "public:\n";
+  buffer_ << "  Algo (\n";
+  buffer_ << "    double hertz,\n";
+  buffer_ << "    const std::string &exec_func,\n";
+  buffer_ << "    Madara::Knowledge_Engine::Knowledge_Base * knowledge = 0,\n";
+  buffer_ << "    const std::string &platform_name = \"\",\n";
+  buffer_ << "    variables::Sensors * sensors = 0,\n";
+  buffer_ << "    variables::Self * self = 0);\n";
+  buffer_ << "  ~Algo (void);\n";
+
+  buffer_ << "  virtual int analyze (void);\n";
+  buffer_ << "  virtual int plan (void);\n";
+  buffer_ << "  virtual int execute (void);\n";
+
+  buffer_ << "  virtual void init (engine::Knowledge_Base & context);\n";
+  buffer_ << "  virtual void init_platform ();\n";
+  buffer_ << "  virtual void run (void);\n";
+  buffer_ << "  virtual void cleanup (void);\n";
+
+  buffer_ << "  virtual void start (threads::Threader &threader);\n";
+
+  buffer_ << "protected:\n";
+  buffer_ << "  double _hertz;\n";
+  buffer_ << "  controllers::Base loop;\n";
+  buffer_ << "  std::string _exec_func, _platform_name;\n";
+  buffer_ << "};\n";
+  buffer_ << "\n";
+  buffer_ << "class SyncAlgo : public Algo\n";
   buffer_ << "{\n";
   buffer_ << "public:\n";
   buffer_ << "  SyncAlgo (\n";
+  buffer_ << "    double hertz,\n";
   buffer_ << "    const std::string &exec_func,\n";
-  buffer_ << "    Madara::Knowledge_Engine::Wait_Settings &wait_settings,\n";
   buffer_ << "    Madara::Knowledge_Engine::Knowledge_Base * knowledge = 0,\n";
-  buffer_ << "    platforms::Base * platform = 0,\n";
+  buffer_ << "    const std::string &platform_name = \"\",\n";
   buffer_ << "    variables::Sensors * sensors = 0,\n";
   buffer_ << "    variables::Self * self = 0);\n";
   buffer_ << "  ~SyncAlgo (void);\n";
   buffer_ << "  virtual int analyze (void);\n";
   buffer_ << "  virtual int plan (void);\n";
   buffer_ << "  virtual int execute (void);\n";
-  buffer_ << "private:\n";
-  buffer_ << "  std::string _exec_func;\n";
-  buffer_ << "  Madara::Knowledge_Engine::Wait_Settings &_wait_settings;\n";
+
+  buffer_ << "  virtual void init (engine::Knowledge_Base & context);\n";
+  buffer_ << "  virtual void run (void);\n";
+  buffer_ << "  virtual void cleanup (void);\n";
+  buffer_ << "protected:\n";
+  buffer_ << "  int phase;\n";
+  buffer_ << "  std::string mbarrier;\n";
+  buffer_ << "  Madara::Knowledge_Engine::Wait_Settings wait_settings;\n";
   buffer_ << "  engine::Compiled_Expression round_logic;\n";
+  buffer_ << "  std::map <std::string, bool>  barrier_send_list;\n";
+  buffer_ << "  std::stringstream barrier_string, barrier_sync;\n";
+  buffer_ << "  engine::Compiled_Expression barrier_logic;\n";
+  buffer_ << "  engine::Compiled_Expression barrier_sync_logic;\n";
   buffer_ << "};\n";
   buffer_ << "\n";
 }
@@ -1061,25 +1101,216 @@ dmpl::gams::Sync_Builder::build_algo_declaration ()
 void
 dmpl::gams::Sync_Builder::build_algo_functions ()
 {
-  buffer_ << "SyncAlgo::SyncAlgo (\n";
+  buffer_ << "Algo::Algo (\n";
+  buffer_ << "    double hertz,\n";
   buffer_ << "    const std::string &exec_func,\n";
-  buffer_ << "    Madara::Knowledge_Engine::Wait_Settings &wait_settings,\n";
   buffer_ << "    Madara::Knowledge_Engine::Knowledge_Base * knowledge,\n";
-  buffer_ << "    platforms::Base * platform,\n";
+  buffer_ << "    const std::string &platform_name,\n";
   buffer_ << "    variables::Sensors * sensors,\n";
-  buffer_ << "    variables::Self * self) : \n";
-  buffer_ << "      Base (knowledge, platform, sensors, self), \n";
-  buffer_ << "            _exec_func(exec_func), _wait_settings(wait_settings)\n";
+  buffer_ << "    variables::Self * self) : loop(*knowledge), _platform_name(platform_name),\n";
+  buffer_ << "      Base (knowledge, 0, sensors, self),\n";
+  buffer_ << "            _hertz(hertz), _exec_func(exec_func)\n";
   buffer_ << "{\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "Algo::~Algo (void)\n";
+  buffer_ << "{\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "int Algo::analyze (void)\n";
+  buffer_ << "{\n";
+  buffer_ << "  return 0;\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "int Algo::plan (void)\n";
+  buffer_ << "{\n";
+  buffer_ << "  return 0;\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "void Algo::init (engine::Knowledge_Base & context)\n";
+  buffer_ << "{\n";
+  buffer_ << "  loop.init_vars (settings.id, processes);\n";
+  buffer_ << "  if(_platform_name != \"\") init_platform ();\n";
+  buffer_ << "  loop.init_algorithm (this);\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "void Algo::run (void)\n";
+  buffer_ << "{\n";
+  buffer_ << "  loop.run_once(); \n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "void Algo::init_platform ()\n";
+  buffer_ << "{\n";
+  buffer_ << "  loop.init_platform (_platform_name);\n";
+  buffer_ << "  platform = loop.get_platform();\n";
+  buffer_ << "  std::cout << \"Platform init\" << std::endl;\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "void Algo::cleanup (void)\n";
+  buffer_ << "{\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "void Algo::start (threads::Threader &threader)\n";
+  buffer_ << "{\n";
+  buffer_ << "  std::cout << \"Starting thread: \" << _exec_func << \" at \" << _hertz << \" hertz\" << std::endl;\n";
+  buffer_ << "  threader.run(_hertz, _exec_func, this);\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "int Algo::execute (void)\n";
+  buffer_ << "{\n";
+  buffer_ << "  knowledge_->evaluate (_exec_func + \"()\");\n";
+  buffer_ << "  return 0;\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "SyncAlgo::SyncAlgo (\n";
+  buffer_ << "    double hertz,\n";
+  buffer_ << "    const std::string &exec_func,\n";
+  buffer_ << "    Madara::Knowledge_Engine::Knowledge_Base * knowledge,\n";
+  buffer_ << "    const std::string &platform_name,\n";
+  buffer_ << "    variables::Sensors * sensors,\n";
+  buffer_ << "    variables::Self * self) : phase(0), mbarrier(\"mbarrier_\" + exec_func),\n";
+  buffer_ << "      Algo (hertz, exec_func, knowledge, platform_name, sensors, self)\n";
+  buffer_ << "{\n";
+
+  buffer_ << "  wait_settings.max_wait_time = 0;\n";
+  buffer_ << "  wait_settings.poll_frequency = .1;\n\n";
 
   buffer_ << "  round_logic = knowledge->compile (\n";
 
-  buffer_ << "    knowledge->expand_statement (_exec_func + \" (); ++mbarrier.{.id}\"));\n";
+  buffer_ << "    knowledge->expand_statement (_exec_func + \" (); ++\" + mbarrier + \".{.id}\"));\n";
 
   buffer_ << "}\n";
   buffer_ << "\n";
 
   buffer_ << "SyncAlgo::~SyncAlgo (void)\n";
+  buffer_ << "{\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "void SyncAlgo::init (engine::Knowledge_Base & context)\n";
+  buffer_ << "{\n";
+  //
+  // build the barrier string  
+  buffer_ << "  bool started = false;\n\n";
+
+  buffer_ << "  barrier_send_list [knowledge->expand_statement (";
+  buffer_ << "\"\" + mbarrier + \".{.id}\")] = true;\n\n";
+  
+  buffer_ << "  barrier_string << \"REMODIFY_GLOBALS () ;> \";\n";
+  buffer_ << "  barrier_sync << \"\" + mbarrier + \".\";\n";
+  buffer_ << "  barrier_sync << settings.id;\n";
+  buffer_ << "  barrier_sync << \" = (\" + mbarrier + \".\";\n";
+  buffer_ << "  barrier_sync << settings.id;\n\n";
+  buffer_ << "  // create barrier check for all lower ids\n";
+  buffer_ << "  for (unsigned int i = 0; i < settings.id; ++i)\n";
+  buffer_ << "  {\n";
+  buffer_ << "    if (started)\n";
+  buffer_ << "    {\n";
+  buffer_ << "      barrier_string << \" && \";\n";
+  buffer_ << "    }\n\n";
+
+  buffer_ << "    barrier_string << \"\" + mbarrier + \".\";\n";
+  buffer_ << "    barrier_string << i;\n";
+  buffer_ << "    barrier_string << \" >= \" + mbarrier + \".\";\n";
+  buffer_ << "    barrier_string << settings.id;\n";
+  buffer_ << "    barrier_sync << \" ; \";\n";
+  buffer_ << "    barrier_sync << \"\" + mbarrier + \".\";\n";
+  buffer_ << "    barrier_sync << i;\n\n";
+  buffer_ << "    if (!started)\n";
+  buffer_ << "      started = true;\n";
+  buffer_ << "  }\n\n";
+  buffer_ << "  // create barrier check for all higher ids\n";
+  buffer_ << "  for (int64_t i = settings.id + 1; i < processes; ++i)\n";
+  buffer_ << "  {\n";
+  buffer_ << "    if (started)\n";
+  buffer_ << "    {\n";
+  buffer_ << "      barrier_string << \" && \";\n";
+  buffer_ << "    }\n\n";
+
+  buffer_ << "    barrier_string << \"\" + mbarrier + \".\";\n";
+  buffer_ << "    barrier_string << i;\n";
+  buffer_ << "    barrier_string << \" >= \" + mbarrier + \".\";\n";
+  buffer_ << "    barrier_string << settings.id;\n";
+  buffer_ << "    barrier_sync << \" ; \";\n";
+  buffer_ << "    barrier_sync << \"\" + mbarrier + \".\";\n";
+  buffer_ << "    barrier_sync << i;\n\n";
+  buffer_ << "    if (!started)\n";
+  buffer_ << "      started = true;\n";
+  buffer_ << "  }\n\n";
+  buffer_ << "  barrier_sync << \")\";\n";
+  buffer_ << '\n';
+
+  buffer_ << "  // Compile frequently used expressions\n";
+
+  buffer_ << "  std::cout << \"barrier_string: \" << barrier_string.str() << std::endl;\n";
+
+  buffer_ << "  barrier_logic = knowledge->compile (barrier_string.str ());\n";
+  buffer_ << "  barrier_sync_logic = knowledge->compile (barrier_sync.str ());\n";
+
+  buffer_ << "  Algo::init(context);\n";
+  
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "void SyncAlgo::run (void)\n";
+
+  buffer_ << "{\n";
+  buffer_ << "  // Pre-round barrier increment\n";
+  buffer_ << "  engine::Eval_Settings eval_settings;\n";
+  //buffer_ << "  std::cout << \"SyncAlgo::run phase \" << phase << std::endl;;\n";
+  buffer_ << "  if(phase == 0)\n";
+  buffer_ << "  {\n";
+  buffer_ << "    eval_settings.send_list = barrier_send_list; \n";
+  buffer_ << "    eval_settings.delay_sending_modifieds = true; \n";
+  buffer_ << "    knowledge_->evaluate (\"++\" + mbarrier + \".{.id}\", eval_settings); \n";
+  buffer_ << "    phase++;\n";
+  buffer_ << "  }\n";
+
+  buffer_ << "  if(phase == 1)\n";
+  buffer_ << "  {\n";
+  buffer_ << "    // remodify our globals and send all updates \n";
+  buffer_ << "    eval_settings.send_list.clear (); \n";
+  buffer_ << "    eval_settings.delay_sending_modifieds = false; \n";
+  buffer_ << "    // first barrier for new data from previous round \n";
+  buffer_ << "    if(knowledge_->evaluate (barrier_logic, eval_settings).to_integer()) \n";
+  buffer_ << "      phase++;\n";
+  buffer_ << "  }\n";
+
+  buffer_ << "  if(phase == 2)\n";
+  buffer_ << "  {\n";
+  buffer_ << "    // Send only barrier information \n";
+  buffer_ << "    eval_settings.send_list = barrier_send_list; \n";
+  buffer_ << "    // Execute main user logic \n";
+  buffer_ << "    eval_settings.delay_sending_modifieds = true; \n";
+  buffer_ << "    Algo::run(); \n";
+  buffer_ << "    phase++;\n";
+  buffer_ << "  }\n";
+
+  buffer_ << "  if(phase == 3)\n";
+  buffer_ << "  {\n";
+  buffer_ << "    // second barrier for waiting on others to finish round \n";
+  buffer_ << "    // Increment barrier and only send barrier update \n";
+  buffer_ << "    eval_settings.send_list = barrier_send_list; \n";
+  buffer_ << "    eval_settings.delay_sending_modifieds = false; \n";
+  buffer_ << "    if(knowledge_->evaluate (barrier_logic, eval_settings).to_integer()) \n";
+  buffer_ << "      phase = 0;\n";
+  buffer_ << "  }\n";
+
+  //buffer_ << "  loop.run_once(barrier_logic, barrier_send_list, wait_settings);\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "void SyncAlgo::cleanup (void)\n";
   buffer_ << "{\n";
   buffer_ << "}\n";
   buffer_ << "\n";
@@ -1098,7 +1329,7 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
 
   buffer_ << "int SyncAlgo::execute (void)\n";
   buffer_ << "{\n";
-  buffer_ << "  knowledge_->evaluate (round_logic, _wait_settings);\n";
+  buffer_ << "  knowledge_->evaluate (round_logic, wait_settings);\n";
   buffer_ << "  return 0;\n";
   buffer_ << "}\n";
   buffer_ << "\n";
@@ -1108,6 +1339,13 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
 void
 dmpl::gams::Sync_Builder::build_main_function ()
 {
+  buffer_ << "template<class T> std::string to_string(const T &in)\n";
+  buffer_ << "{\n";
+  buffer_ << "  std::stringstream ss;\n";
+  buffer_ << "  ss << in;\n";
+  buffer_ << "  return ss.str();\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
   buffer_ << "void init_vrep(const std::vector<std::string> &params, engine::Knowledge_Base &knowledge)\n";
   buffer_ << "{\n";
   buffer_ << "  if(params.size() >= 2 && params[1].size() > 0)\n";
@@ -1117,11 +1355,16 @@ dmpl::gams::Sync_Builder::build_main_function ()
   buffer_ << "  if(params.size() >= 3 && params[2].size() > 0)\n";
   buffer_ << "    knowledge.set(\".vrep_port\", params[2]);\n";
   buffer_ << "  else\n";
-  buffer_ << "    knowledge.set(\".vrep_port\", \"19905\");\n";
+  buffer_ << "    knowledge.set(\".vrep_port\", to_string(19905+settings.id));\n";
   buffer_ << "  if(params.size() >= 4 && params[3].size() > 0)\n";
   buffer_ << "    knowledge.set(\".vrep_sw_position\", params[3]);\n";
   buffer_ << "  else\n";
   buffer_ << "    knowledge.set(\".vrep_sw_position\", \"40.4464255,-79.9499426\");\n";
+  buffer_ << "  if(params.size() >= 5 && params[4].size() > 0)\n";
+  buffer_ << "    knowledge.set(\".move_speed\", params[4]);\n";
+  buffer_ << "  else\n";
+  buffer_ << "    knowledge.set(\".move_speed\", \"0.4\");\n";
+  buffer_ << "  knowledge.set(\"vrep_ready\", \"1\");\n";
   buffer_ << "}\n";
   buffer_ << "\n";
   buffer_ << "int main (int argc, char ** argv)\n";
@@ -1143,6 +1386,7 @@ dmpl::gams::Sync_Builder::build_main_function ()
   buffer_ << "  settings.queue_length = 100000;\n\n";
 
 
+  #if 0
   //-- if either callbacks or heartbeats
   if(!builder_.program.callbacks.empty()) {
     buffer_ << "  // add commonly used filters\n";
@@ -1161,201 +1405,11 @@ dmpl::gams::Sync_Builder::build_main_function ()
     buffer_ << "  settings.add_receive_filter (remove_auxiliaries);\n";
     buffer_ << "\n";
   }
+  #endif
 
   buffer_ << "  // create the knowledge base with the transport settings\n";
   buffer_ << "  knowledge = new Madara::Knowledge_Engine::Knowledge_Base (host, settings);\n\n";
 
-  buffer_ << "  std::map <std::string, bool>  barrier_send_list;\n";
-  buffer_ << "  std::stringstream barrier_string, barrier_sync;\n";
-  buffer_ << "  engine::Compiled_Expression barrier_logic;\n";
-  buffer_ << "  engine::Compiled_Expression barrier_sync_logic;\n";
-  //
-  // build the barrier string  
-  buffer_ << "  bool started = false;\n\n";
-
-  buffer_ << "  barrier_send_list [knowledge->expand_statement (";
-  buffer_ << "\"mbarrier.{.id}\")] = true;\n\n";
-  
-  if (false)
-  {
-    buffer_ << "  // Building the barrier string for this node. NOTE: VREP_BARRIER ADDED\n";
-    buffer_ << "  std::stringstream barrier_string, barrier_sync, vrep_barrier;\n";
-  }
-
-  if (false)
-  {
-    buffer_ << "  // Create VREP_BARRIER string\n";
-    buffer_ << "  vrep_barrier << \"vrep.ready.{.id} = 1 ;> (\";\n\n";
-  }
-
-  buffer_ << "  barrier_string << \"REMODIFY_GLOBALS () ;> \";\n";
-  buffer_ << "  barrier_sync << \"mbarrier.\";\n";
-  buffer_ << "  barrier_sync << settings.id;\n";
-  buffer_ << "  barrier_sync << \" = (mbarrier.\";\n";
-  buffer_ << "  barrier_sync << settings.id;\n\n";
-  buffer_ << "  // create barrier check for all lower ids\n";
-  buffer_ << "  for (unsigned int i = 0; i < settings.id; ++i)\n";
-  buffer_ << "  {\n";
-  buffer_ << "    if (started)\n";
-  buffer_ << "    {\n";
-  buffer_ << "      barrier_string << \" && \";\n";
-  if (false) buffer_ << "      vrep_barrier << \" && \";\n";
-  buffer_ << "    }\n\n";
-
-  if (false)
-  {
-    buffer_ << "    vrep_barrier << \"vrep.ready.\";\n";
-    buffer_ << "    vrep_barrier << i;\n\n";
-  }
-
-  buffer_ << "    barrier_string << \"mbarrier.\";\n";
-  buffer_ << "    barrier_string << i;\n";
-  buffer_ << "    barrier_string << \" >= mbarrier.\";\n";
-  buffer_ << "    barrier_string << settings.id;\n";
-  buffer_ << "    barrier_sync << \" ; \";\n";
-  buffer_ << "    barrier_sync << \"mbarrier.\";\n";
-  buffer_ << "    barrier_sync << i;\n\n";
-  buffer_ << "    if (!started)\n";
-  buffer_ << "      started = true;\n";
-  buffer_ << "  }\n\n";
-  buffer_ << "  // create barrier check for all higher ids\n";
-  buffer_ << "  for (int64_t i = settings.id + 1; i < processes; ++i)\n";
-  buffer_ << "  {\n";
-  buffer_ << "    if (started)\n";
-  buffer_ << "    {\n";
-  buffer_ << "      barrier_string << \" && \";\n";
-  if (false) buffer_ << "      vrep_barrier << \" && \";\n";
-  buffer_ << "    }\n\n";
-
-  if (false)
-  {
-    buffer_ << "    vrep_barrier << \"vrep.ready.\";\n";
-    buffer_ << "    vrep_barrier << i;\n\n";
-  }
-
-  buffer_ << "    barrier_string << \"mbarrier.\";\n";
-  buffer_ << "    barrier_string << i;\n";
-  buffer_ << "    barrier_string << \" >= mbarrier.\";\n";
-  buffer_ << "    barrier_string << settings.id;\n";
-  buffer_ << "    barrier_sync << \" ; \";\n";
-  buffer_ << "    barrier_sync << \"mbarrier.\";\n";
-  buffer_ << "    barrier_sync << i;\n\n";
-  buffer_ << "    if (!started)\n";
-  buffer_ << "      started = true;\n";
-  buffer_ << "  }\n\n";
-  buffer_ << "  barrier_sync << \")\";\n";
-  if (false) buffer_ << "  vrep_barrier << \")\";\n";
-  buffer_ << '\n';
-
-  buffer_ << "  // Compile frequently used expressions\n";
-    
-
-  buffer_ << "  barrier_logic = knowledge->compile (barrier_string.str ());\n";
-  buffer_ << "  barrier_sync_logic = knowledge->compile (barrier_sync.str ());\n";
-
-#if 0
-  if(builder_.program.sendHeartbeats) {
-    buffer_ << "  round_count = Integer (0);\n";
-    buffer_ << "  for (Integer i = 0; i < processes; i++)\n";
-    buffer_ << "  {\n";
-    buffer_ << "    last_global_updates_round.set (i, -1);\n";
-    buffer_ << "  }\n\n";
-  }
-
-  if (false)
-  {
-    buffer_ << "  engine::Compiled_Expression vrep_barrier_logic =\n";
-    buffer_ << "    knowledge.compile (vrep_barrier.str ());\n\n";
-    buffer_ << "  // SETUP VREP HERE\n";
-    buffer_ << '\n';
-    buffer_ << "  // create the DV object\n";
-    buffer_ << "  switch (vrep_model)\n";
-    buffer_ << "  {\n";
-    buffer_ << "    case 2: vrep_interface = new TrackerAnt (X,Y); break;\n";
-    buffer_ << "    case 1: default: vrep_interface = new QuadriRotor (X,Y);\n";
-    buffer_ << "  }\n";
-    buffer_ << "  vrep_interface->setDebug (true);\n";
-    buffer_ << '\n';
-    buffer_ << "  // connect to VREP\n";
-    buffer_ << "  vrep_interface->connect ( (char*)vrep_host.c_str (), vrep_port);\n";
-    buffer_ << '\n';
-    buffer_ << "  // create this node\n";
-    buffer_ << "  vrep_node_id = vrep_interface->createNode ();\n";
-    buffer_ << '\n';
-    buffer_ << "  // place this node and sleep for a second\n";
-    buffer_ << "  vrep_interface->placeNodeAt (vrep_node_id, var_init_x, var_init_y, 1);\n";
-    buffer_ << "  Madara::Utility::sleep (1);\n";
-    buffer_ << '\n';
-    buffer_ << "  wait_settings.max_wait_time = max_barrier_time;\n";
-    buffer_ << '\n';
-    buffer_ << "  // Barrier for all processes before running the simulation\n";
-    buffer_ << "  knowledge.wait (vrep_barrier_logic, wait_settings);\n";
-    buffer_ << '\n';
-    buffer_ << "  if (settings.id == 0)\n";
-    buffer_ << "  {\n";
-    buffer_ << "    std::cout << \"Starting VREP simulator on id 0.\\n\";\n";
-    buffer_ << "    vrep_interface->startSim ();\n";
-    buffer_ << "  }\n";
-  }
-  buffer_ << '\n';
-
-  // For now, use the first node definition
-  Node & node = builder_.program.nodes.begin()->second;
-
-  buffer_ << "  // Call node initialization function, if any\n";
-  if (!node.node_init_func_name.empty())
-  {
-    buffer_ << "  wait_settings.delay_sending_modifieds = true;\n";
-    buffer_ << "  knowledge.evaluate (\"" << node.node_init_func_name << " ()\", wait_settings);\n";
-  }
-  buffer_ << '\n';
-
-  //-- for periodic nodes
-  if(builder_.program.period) {
-    std::string period = boost::lexical_cast<std::string>(builder_.program.period);
-    buffer_ << "  ACE_Time_Value current = ACE_OS::gettimeofday ();\n"
-            << "  ACE_Time_Value next_epoch = current;\n"
-            << "  ACE_Time_Value period; period.msec(" << period << ");\n"
-            << '\n';
-  }
-
-  buffer_ << "  while (1)\n";
-  buffer_ << "  {\n";
-  
-  //-- for periodic nodes
-  if(builder_.program.period) {
-    std::string period = boost::lexical_cast<std::string>(builder_.program.period);
-    buffer_ << "    // wait for next period\n"
-            << "    current = ACE_OS::gettimeofday ();\n"
-            << "    if(current < next_epoch) {\n"
-            << "      Madara::Utility::sleep (next_epoch - current);\n"
-            << "      next_epoch += period;\n"
-            << "    } else {\n"
-            << "      unsigned long current_msec = current.msec();\n"
-            << "      unsigned long next_epoch_msec = next_epoch.msec();\n"
-            << "      unsigned long diff_msec = current_msec - next_epoch_msec;\n"
-            << "      next_epoch_msec += (diff_msec / " << period << " + 1) * " << period << ";\n"
-            << "      next_epoch.msec(next_epoch_msec);\n"
-            << "      Madara::Utility::sleep (next_epoch - current);\n"
-            << "      next_epoch += period;\n"
-            << "    }\n"
-            << '\n';
-  }
-
-  buffer_ << "    // Pre-round barrier increment\n";
-  buffer_ << "    wait_settings.delay_sending_modifieds = true;\n";
-  buffer_ << "    knowledge.evaluate (\"++mbarrier.{.id}\", wait_settings);\n\n";
-
-  buffer_ << "    // Call periodic functions, if any\n";
-  for (std::map <std::string, int>::iterator it = node.periodic_func_names.begin ();
-       it != node.periodic_func_names.end();
-       ++it)
-  {
-    buffer_ << "    knowledge.evaluate (\"(.round > 0 && .round % " << it->second << " == 0)";
-    buffer_ << " => " << it->first << " ()\", wait_settings);\n";
-  }
-  buffer_ << '\n';
-#endif
   Node &node = builder_.program.nodes.begin()->second;
 
   buffer_ << "  // NODE: " << node.name << "\n";
@@ -1369,53 +1423,76 @@ dmpl::gams::Sync_Builder::build_main_function ()
     buffer_ << "\n";
   }
 
-  Function *barrierFunction = NULL;
-  BOOST_FOREACH(Functions::value_type &f, node.funcs)
-  {
-    if (f.second.attrs.count("BARRIER_SYNC") == 1)
-    {
-      if (barrierFunction == NULL)
-      {
-        barrierFunction = &f.second;
-      }
-      else
-      {
-        throw std::runtime_error("Multiple @BARRIER_SYNC functions are not supported.");
-      }
-    }
-  }
 
-  if (barrierFunction == NULL)
-    throw std::runtime_error("Must have exactly one @BARRIER_SYNC function.");
-
-  buffer_ << "  Madara::Knowledge_Engine::Wait_Settings wait_settings;\n";
-  buffer_ << "  wait_settings.max_wait_time = max_barrier_time;\n";
-  buffer_ << "  wait_settings.poll_frequency = .1;\n\n";
-
-  buffer_ << "  controllers::Base loop (*knowledge);\n";
-  buffer_ << "  PlatformInitFns::iterator init_fn = platform_init_fns.find(platform_name);\n";
-  buffer_ << "  if(init_fn != platform_init_fns.end())\n";
-  buffer_ << "    init_fn->second(platform_params, *knowledge);\n";
-  buffer_ << "  loop.init_vars (settings.id, processes);\n";
-  buffer_ << "  loop.init_platform (platform_name);\n";
-  buffer_ << "  algo = new SyncAlgo(\"" + barrierFunction->name + "\", wait_settings, knowledge);\n";
-  buffer_ << "  platform = loop.get_platform();\n";
-  buffer_ << "  loop.init_algorithm (algo);\n";
-  
   build_program_variables_bindings ();
   build_main_define_functions ();
-  
+
   // set the values for id and processes
   buffer_ << "  // Initialize commonly used local variables\n";  
   buffer_ << "  id = Integer (settings.id);\n";
   buffer_ << "  num_processes = processes;\n";
 
-  buffer_ << "  loop.run_barrier(barrier_logic, barrier_send_list, wait_settings);\n";
+  buffer_ << "  PlatformInitFns::iterator init_fn = platform_init_fns.find(platform_name);\n";
+  buffer_ << "  if(init_fn != platform_init_fns.end())\n";
+  buffer_ << "    init_fn->second(platform_params, *knowledge);\n";
 
-  if (false)
+
+  BOOST_FOREACH(Functions::value_type &f, node.funcs)
   {
-    buffer_ << "  delete vrep_interface;\n\n";
+    if (f.second.attrs.count("INIT_SIM") == 1)
+    {
+      buffer_ << "  knowledge->evaluate(\"" << f.second.name << "()\");\n";
+    }
   }
+  //buffer_ << "  knowledge->set(\"S\" + to_string(settings.id) + \".init\", \"1\");\n";
+
+  buffer_ << "  threads::Threader threader(*knowledge);\n";
+
+  Function *platformFunction = NULL;
+  buffer_ << "  std::vector<Algo *> algos;\n";
+  buffer_ << "  Algo *algo;\n\n";
+  BOOST_FOREACH(Functions::value_type &f, node.funcs)
+  {
+    if (f.second.attrs.count("HERTZ") == 0)
+      continue;
+    if (f.second.attrs.count("HERTZ") != 1 || f.second.attrs["HERTZ"].paramList.size() != 1)
+      throw std::runtime_error("Invalid @HERTZ attribute.");
+    std::string hertz(f.second.attrs["HERTZ"].paramList.front());
+    if (f.second.attrs.count("PLATFORM_CONTROLLER") == 1)
+    {
+      if (platformFunction == NULL)
+      {
+        platformFunction = &f.second;
+      }
+      else
+      {
+        throw std::runtime_error("Multiple @PLATFORM_CONTROLLER functions are not supported.");
+      }
+    }
+    if (f.second.attrs.count("BARRIER_SYNC") == 1)
+    {
+      if (platformFunction == &f.second)
+        buffer_ << "  algo = new SyncAlgo(" << hertz << ", \"" << f.second.name << "\", knowledge, platform_name);\n";
+      else
+        buffer_ << "  algo = new SyncAlgo(" << hertz << ", \"" << f.second.name << "\", knowledge);\n";
+    }
+    else
+    {
+      if (platformFunction == &f.second)
+        buffer_ << "  algo = new Algo(" << hertz << ", \"" << f.second.name << "\", knowledge, platform_name);\n";
+      else
+        buffer_ << "  algo = new Algo(" << hertz << ", \"" << f.second.name << "\", knowledge);\n";
+    }
+    buffer_ << "  algos.push_back(algo);\n\n";
+  }
+
+  buffer_ << "  for(int i = 0; i < algos.size(); i++)\n";
+  buffer_ << "    algos[i]->start(threader);\n";
+
+  buffer_ << "  knowledge->set(\"begin_sim\", \"1\");\n";
+
+  buffer_ << "  threader.wait();\n";
+
   buffer_ << "  return 0;\n";
   buffer_ << "}\n";
 }

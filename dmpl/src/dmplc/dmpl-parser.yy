@@ -304,6 +304,12 @@ dimensions : TLBRACKET dimension TRBRACKET {
 /* NODENUM is indicated by dimension -1 */
 dimension : TINTEGER { $$ = atoi($1->c_str()); delete $1; }
 | TNODENUM { $$ = -1; }
+| TIDENTIFIER {
+  std::map<std::string,std::string>::const_iterator it = 
+    builder->program.constDef.find(*$1);
+  $$ = atoi(it->second.c_str());
+  delete $1;
+}
 ;
 
 type : simp_type { $$ = $1; }

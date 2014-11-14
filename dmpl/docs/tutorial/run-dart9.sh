@@ -5,8 +5,6 @@ IY=$2
 FX=$3
 FY=$4
 
-echo $IX $IY $FX $FY
-
 trap "killall dart9;exit 0" SIGINT SIGTERM SIGHUP
 
 ./dart9 --platform vrep::::0.2 --id 1 --var_x $((IX+2)) --var_y $((IY+2)) > /dev/null &

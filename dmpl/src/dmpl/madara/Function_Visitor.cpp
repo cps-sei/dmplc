@@ -160,8 +160,9 @@ dmpl::madara::Function_Visitor::exitLval (LvalExpr & expression)
     // otherwise, we need to determine if this is a MADARA container or not
     else
     {
-      if (function_.temps.find (expression.var) == function_.temps.end () &&
-          function_.params.find (expression.var) == function_.params.end ())
+      if (function_.temps.count (expression.var) == 0 &&
+          function_.params.count (expression.var) == 0 &&
+          builder_.program.constDef.count (expression.var) == 0)
       {
         buffer_ << "*";
       }
