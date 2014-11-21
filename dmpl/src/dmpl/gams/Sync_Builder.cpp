@@ -1149,7 +1149,7 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "{\n";
   buffer_ << "  loop.init_platform (_platform_name);\n";
   buffer_ << "  platform = loop.get_platform();\n";
-  buffer_ << "  std::cout << \"Platform init\" << std::endl;\n";
+  //buffer_ << "  std::cout << \"Platform init\" << std::endl;\n";
   buffer_ << "}\n";
   buffer_ << "\n";
 

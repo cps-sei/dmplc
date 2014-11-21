@@ -1,4 +1,4 @@
-all: tutorial-02 dart dart9
+all: tutorial-02 dart dart9 dart9t
 
 tutorial-02: tutorial-02.cpp
 	  g++ -g -O0 -I$(DMPL_ROOT)/src -I$(VREP_ROOT)/programming/remoteApi -I$(ACE_ROOT) -I$(MADARA_ROOT)/include -I$(GAMS_ROOT)/src -o tutorial-02 tutorial-02.cpp $(MADARA_ROOT)/libMADARA.so $(ACE_ROOT)/lib/libACE.so $(GAMS_ROOT)/lib/libGAMS.so -lpthread
@@ -18,6 +18,12 @@ dart9: dart9.cpp
 dart9.cpp: dart9.dmpl $(DMPL_ROOT)/src/dmplc/dmplc
 		dmplc -n 9 -g -o dart9.cpp dart9.dmpl
 
+dart9t: dart9t.cpp
+	  g++ -g -O0 -I$(DMPL_ROOT)/src -I$(VREP_ROOT)/programming/remoteApi -I$(ACE_ROOT) -I$(MADARA_ROOT)/include -I$(GAMS_ROOT)/src -o dart9t dart9t.cpp $(MADARA_ROOT)/libMADARA.so $(ACE_ROOT)/lib/libACE.so $(GAMS_ROOT)/lib/libGAMS.so -lpthread
+
+dart9t.cpp: dart9t.dmpl $(DMPL_ROOT)/src/dmplc/dmplc
+		dmplc -n 9 -g -o dart9t.cpp dart9t.dmpl
+
 clean:
 		rm tutorial-02.cpp
 		rm tutorial-02
@@ -25,3 +31,5 @@ clean:
 		rm dart
 		rm dart9.cpp
 		rm dart9
+		rm dart9t.cpp
+		rm dart9t

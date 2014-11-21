@@ -651,8 +651,9 @@ dmpl::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
       buffer_ << lhs->var;
       buffer_ << ".set (";
       visit (*(lhs->indices.begin ()));
-      buffer_ << ", ";
+      buffer_ << ", Integer (";
       visit (statement.rhs);
+      buffer_ << ")";
 
       if (privatize_)
         buffer_ << ", private_update";
@@ -681,7 +682,9 @@ dmpl::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
       
       buffer_ << sub_spacer << lhs->var;
       buffer_ << ".set (index, ";
+      buffer_ << "Integer (";
       visit (statement.rhs);
+      buffer_ << ")";
       buffer_ << ");\n";
 
       if (privatize_)
