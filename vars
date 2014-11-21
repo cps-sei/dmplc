@@ -1,0 +1,14 @@
+export DART_ROOT=$HOME/dart
+export DMPL_ROOT=$DART_ROOT/dmpl
+
+export PATH=$DART_ROOT/dmpl/src/dmplc:$PATH
+export PATH=$DART_ROOT/dmpl/src/vrep:$PATH
+
+export VREP_ROOT=$HOME/vrep
+
+export C_INCLUDE_PATH=$MADARA_ROOT/include:$C_INCLUDE_PATH
+export CPLUS_INCLUDE_PATH=$MADARA_ROOT/include:$CPLUS_INCLUDE_PATH
+
+export GAMS_ROOT=$HOME/gams
+export LD_LIBRARY_PATH=$GAMS_ROOT/lib:$LD_LIBRARY_PATH
+export PATH=$GAMS_ROOT/bin:$PATH
