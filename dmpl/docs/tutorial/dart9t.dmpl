@@ -38,7 +38,7 @@ void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf, int xp, int
     xi = x; yi = y;
   }
 
-  for(int i = 0;i < 150;++i) printf("\n");
+  for(int i = 0;i < 10;++i) printf("\n");
   
   printf("round = %d : id = %d   dir = %d   state = %d\n", ++round, id, d, s);
   printf("_X = %d _Y = %d\n",_X,_Y);
@@ -86,12 +86,16 @@ EXTERN int my_sleep(int seconds);
 EXTERN void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf, int xp, int yp, int d, int s);
 EXTERN void print_int(int i);
 
+EXTERN int GRID_MOVE(int x, int y);
+EXTERN void GRID_INIT(int x, int y);
+EXTERN void GRID_PLACE(int x, int y);
+
 
 NODE uav (id)
 {
   //shared variables -- visible across nodes. 
   //must be accessed via R() and W()
-  GLOBAL _Bool lock [X][Y][#N];
+  GLOBAL unsigned char lock [X][Y][#N];
   GLOBAL unsigned char lx[#N],ly[#N]; //leader's destination coordinates
 
   //private variables -- local to the node.
@@ -181,13 +185,15 @@ NODE uav (id)
       state = REQUEST;
     } else if(state == REQUEST) {
       //request the lock but only if it is free
-      if(dir == STILL || EXISTS_LOWER(idp, (lock[xp][yp][idp] & dir) != 0)) return;
+      if(dir == STILL || EXISTS_LOWER(idp, (lock[xp][yp][idp] & dir) != 0))
+        return;
       lock[xp][yp][id] = ALL;
       state = WAITING;
     } else if(state == WAITING) {
       //grab the lock if we are the highest 
       //id node to request or hold the lock
-      if(dir == STILL || EXISTS_HIGHER(idp, (lock[xp][yp][idp] & dir) != 0)) return;
+      if(dir == STILL || EXISTS_HIGHER(idp, (lock[xp][yp][idp] & dir) != 0))
+        return;
       lock[x][y][id] = ALL & ~dir;
       state = MOVE;
     } else if(state == MOVE) {

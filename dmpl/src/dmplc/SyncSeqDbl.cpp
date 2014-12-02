@@ -463,7 +463,7 @@ void dmpl::SyncSeqDbl::createMainFunc()
   StmtList mainBody,roundBody;
 
   //call SAFETY()
-  Expr callExpr1(new LvalExpr("SAFETY"));
+  Expr callExpr1(new LvalExpr("__SAFETY"));
   Stmt callStmt1(new CallStmt(callExpr1,dmpl::ExprList()));
   roundBody.push_back(callStmt1);
 
@@ -588,35 +588,46 @@ void dmpl::SyncSeqDbl::createInit()
 /*********************************************************************/
 void dmpl::SyncSeqDbl::createSafety()
 {
-  Node &node = builder.program.nodes.begin()->second;
-  dmpl::VarList fnParams,fnTemps;
-  StmtList fnBody;
+  //Node &node = builder.program.nodes.begin()->second;
+  StmtList safetyFnBody;
 
-  //if no SAFETY() defined, create an empty one
-  dmpl::Functions::iterator fit = builder.program.funcs.find("SAFETY");
-  if(fit == builder.program.funcs.end()) {
-    std::cout << "node does not have a SAFETY function, creating an empty one ...\n";
-    Function func(dmpl::voidType(),"SAFETY",fnParams,fnTemps,fnBody);
+  BOOST_FOREACH(Functions::value_type &f, builder.program.funcs) {
+    int safety = f.second.attrs.count("SAFETY");
+    if(safety < 1)
+      continue;
+    else if(safety > 1)
+      std::cerr << "Warning: function " << f.second.name <<
+        " has more than one @SAFETY attribute" << std::endl;
+
+    dmpl::VarList fnParams,fnTemps;
+    StmtList fnBody;
+    //create parameters
+    BOOST_FOREACH(Variables::value_type &v,f.second.params)
+      fnParams.push_back(v.second);
+
+    //create temporary variables
+    BOOST_FOREACH(Variables::value_type &v,f.second.temps)
+      fnTemps.push_back(v.second);
+
+    //transform the body of safety
+    BOOST_FOREACH(const Stmt &st,f.second.body) {
+      syncseqdbl::GlobalTransformer gt(*this,builder.program,nodeNum);
+      gt.visit(st);
+      fnBody.push_back(gt.stmtMap[st]);
+    }
+
+    std::string fname = "__SAFETY_" + f.second.name;
+    Function func(dmpl::voidType(), fname, fnParams,fnTemps,fnBody);
     cprog.addFunction(func);
-    return;
+
+    Expr callExpr(new LvalExpr(fname));
+    Stmt callStmt(new CallStmt(callExpr,dmpl::ExprList()));
+    safetyFnBody.push_back(callStmt);
   }
 
-  //create parameters
-  BOOST_FOREACH(Variables::value_type &v,fit->second.params)
-    fnParams.push_back(v.second);
+  dmpl::VarList fnParams, fnTemps;
 
-  //create temporary variables
-  BOOST_FOREACH(Variables::value_type &v,fit->second.temps)
-    fnTemps.push_back(v.second);
-
-  //transform the body of safety
-  BOOST_FOREACH(const Stmt &st,fit->second.body) {
-    syncseqdbl::GlobalTransformer gt(*this,builder.program,nodeNum);
-    gt.visit(st);
-    fnBody.push_back(gt.stmtMap[st]);
-  }
-
-  Function func(dmpl::voidType(),"SAFETY",fnParams,fnTemps,fnBody);
+  Function func(dmpl::voidType(),"__SAFETY",fnParams,fnTemps,safetyFnBody);
   cprog.addFunction(func);
 }
 

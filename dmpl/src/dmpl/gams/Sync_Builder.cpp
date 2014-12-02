@@ -848,7 +848,7 @@ dmpl::gams::Sync_Builder::build_refresh_modify_global (const Variable & var)
     buffer_ << spacer << "containers::Array_N::Index index (" << dims.size() << ");\n";
     for(int i = 0;i < dims.size () - 1;++i)
       buffer_ << spacer << "index[" << i << "] = i" << i << ";\n";
-    buffer_ << spacer << "index[" << dims.size() << "] = *id;\n";
+    buffer_ << spacer << "index[" << dims.size() - 1 << "] = *id;\n";
     buffer_ << spacer << var.name << ".set (index, " << var.name << "(" << index_str << "*id).to_integer ());\n";
 
     //close for loops
@@ -1266,32 +1266,31 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
 
   buffer_ << "{\n";
   buffer_ << "  // Pre-round barrier increment\n";
-  buffer_ << "  engine::Eval_Settings eval_settings;\n";
   //buffer_ << "  std::cout << \"SyncAlgo::run phase \" << phase << std::endl;;\n";
   buffer_ << "  if(phase == 0)\n";
   buffer_ << "  {\n";
-  buffer_ << "    eval_settings.send_list = barrier_send_list; \n";
-  buffer_ << "    eval_settings.delay_sending_modifieds = true; \n";
-  buffer_ << "    knowledge_->evaluate (\"++\" + mbarrier + \".{.id}\", eval_settings); \n";
+  buffer_ << "    wait_settings.send_list = barrier_send_list; \n";
+  buffer_ << "    wait_settings.delay_sending_modifieds = true; \n";
+  buffer_ << "    knowledge_->evaluate (\"++\" + mbarrier + \".{.id}\", wait_settings); \n";
   buffer_ << "    phase++;\n";
   buffer_ << "  }\n";
 
   buffer_ << "  if(phase == 1)\n";
   buffer_ << "  {\n";
   buffer_ << "    // remodify our globals and send all updates \n";
-  buffer_ << "    eval_settings.send_list.clear (); \n";
-  buffer_ << "    eval_settings.delay_sending_modifieds = false; \n";
+  buffer_ << "    wait_settings.send_list.clear (); \n";
+  buffer_ << "    wait_settings.delay_sending_modifieds = false; \n";
   buffer_ << "    // first barrier for new data from previous round \n";
-  buffer_ << "    if(knowledge_->evaluate (barrier_logic, eval_settings).to_integer()) \n";
+  buffer_ << "    if(knowledge_->evaluate (barrier_logic, wait_settings).to_integer()) \n";
   buffer_ << "      phase++;\n";
   buffer_ << "  }\n";
 
   buffer_ << "  if(phase == 2)\n";
   buffer_ << "  {\n";
   buffer_ << "    // Send only barrier information \n";
-  buffer_ << "    eval_settings.send_list = barrier_send_list; \n";
+  buffer_ << "    wait_settings.send_list = barrier_send_list; \n";
   buffer_ << "    // Execute main user logic \n";
-  buffer_ << "    eval_settings.delay_sending_modifieds = true; \n";
+  buffer_ << "    wait_settings.delay_sending_modifieds = true; \n";
   buffer_ << "    Algo::run(); \n";
   buffer_ << "    phase++;\n";
   buffer_ << "  }\n";
@@ -1300,9 +1299,9 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "  {\n";
   buffer_ << "    // second barrier for waiting on others to finish round \n";
   buffer_ << "    // Increment barrier and only send barrier update \n";
-  buffer_ << "    eval_settings.send_list = barrier_send_list; \n";
-  buffer_ << "    eval_settings.delay_sending_modifieds = false; \n";
-  buffer_ << "    if(knowledge_->evaluate (barrier_logic, eval_settings).to_integer()) \n";
+  buffer_ << "    wait_settings.send_list = barrier_send_list; \n";
+  buffer_ << "    wait_settings.delay_sending_modifieds = false; \n";
+  buffer_ << "    if(knowledge_->evaluate (barrier_logic, wait_settings).to_integer()) \n";
   buffer_ << "      phase = 0;\n";
   buffer_ << "  }\n";
 

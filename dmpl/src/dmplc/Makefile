@@ -10,12 +10,13 @@ SyncSeq.cpp SyncSem.cpp SyncSeqDbl.cpp ArrayElim.cpp \
 OBJ=$(patsubst %.cpp,%.o,$(SRC))
 INC=-I$(ACE_ROOT) -I$(MADARA_ROOT)/include -I..
 LIB=$(MADARA_ROOT)/libMADARA.so
+CFLAGS=-g -O0 -fno-inline
 CXX=g++
 
 all : dmplc
 
 dmplc : dmpl-parser.hpp dmplc.cpp $(OBJ)
-	$(CXX) -o $@ $(INC) dmplc.cpp $(OBJ) $(LIB)
+	$(CXX) $(CFLAGS) -o $@ $(INC) dmplc.cpp $(OBJ) $(LIB)
 
 dmpl-scanner.cpp : dmpl-scanner.ll
 	flex -o dmpl-scanner.cpp dmpl-scanner.ll
@@ -24,10 +25,10 @@ dmpl-parser.cpp dmpl-parser.hpp : dmpl-parser.yy
 	bison -d -o dmpl-parser.cpp dmpl-parser.yy
 
 %.o : %.cpp
-	$(CXX) -c -o $@ $(INC) $<
+	$(CXX) $(CFLAGS) -c -o $@ $(INC) $<
 
 %.d : %.cpp
-	$(CXX) -MM -MT $(@:%.d=%.o) -o $@ $(INC) $<
+	$(CXX) $(CFLAGS) -MM -MT $(@:%.d=%.o) -o $@ $(INC) $<
 
 clean :
 	rm -f dmplc dmpl-scanner.cpp dmpl-parser.cpp dmpl-parser.hpp \
