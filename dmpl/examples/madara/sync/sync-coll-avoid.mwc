@@ -1,5 +1,0 @@
-
-workspace {
-  sync-coll-avoid.mpc
-  sync-coll-avoid-vrep.mpc
-}

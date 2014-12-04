@@ -79,7 +79,6 @@ EXTERN void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf);
 EXTERN void print_int(int i);
 
 
-@NODE_ATTR(2, 4)
 NODE uav (id)
 {
   //shared variables -- visible across nodes. 
