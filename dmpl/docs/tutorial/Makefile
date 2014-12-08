@@ -1,11 +1,15 @@
-all: tutorial-02
+CFLAGS=-g -O3 -I$(DMPL_ROOT)/src -I$(VREP_ROOT)/programming/remoteApi \
+	-I$(ACE_ROOT) -I$(MADARA_ROOT)/include -I$(GAMS_ROOT)/src
+LIBS=$(MADARA_ROOT)/libMADARA.so $(ACE_ROOT)/lib/libACE.so \
+	$(GAMS_ROOT)/lib/libGAMS.so -lpthread
 
-tutorial-02: tutorial-02.cpp
-	g++ -g -O0 -I$(DMPL_ROOT)/src -I$(VREP_ROOT)/programming/remoteApi -I$(ACE_ROOT) -I$(MADARA_ROOT)/include -I$(GAMS_ROOT)/src -o tutorial-02 tutorial-02.cpp $(MADARA_ROOT)/libMADARA.so $(ACE_ROOT)/lib/libACE.so $(GAMS_ROOT)/lib/libGAMS.so -lpthread
+all: tutorial-01 Makefile
 
-tutorial-02.cpp: tutorial-02.dmpl $(DMPL_ROOT)/src/dmplc/dmplc
-	dmplc -n 2 -g -o tutorial-02.cpp tutorial-02.dmpl
+tutorial-01: tutorial-01.cpp
+	g++ $(CFLAGS) -o $@ $< $(LIBS)
+
+%.cpp: %.dmpl $(DMPL_ROOT)/src/dmplc/dmplc
+	dmplc -n 2 -g -o $@ $<
 
 clean:
-	rm -f tutorial-02.cpp
-	rm -f tutorial-02
+	rm -f tutorial-01.cpp tutorial-01
