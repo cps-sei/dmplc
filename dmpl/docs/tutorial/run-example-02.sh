@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 function cleanup {
     echo "Cleaning up ..."
@@ -109,5 +109,4 @@ mv $RAC.saved.mcda-vrep $RAC
 
 printf "press enter terminate the simulation ..."
 read X
-
 cleanup
