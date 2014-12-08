@@ -115,6 +115,7 @@ dmpl::gams::Sync_Builder::build_header_includes ()
   buffer_ << "#include \"madara/knowledge_engine/containers/Double.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/containers/String.h\"\n";
   buffer_ << "#include \"madara/threads/Threader.h\"\n";
+  buffer_ << "#include \"madara/filters/Generic_Filters.h\"\n";
   buffer_ << "\n";
   buffer_ << "#include \"gams/controllers/Base_Controller.h\"\n";
   buffer_ << "#include \"gams/algorithms/Base_Algorithm.h\"\n";
@@ -1380,6 +1381,8 @@ dmpl::gams::Sync_Builder::build_main_function ()
   buffer_ << "  {\n";
   buffer_ << "    // setup default transport as multicast\n";
   buffer_ << "    settings.hosts.push_back (default_multicast);\n";
+  buffer_ << "    settings.add_receive_filter (Madara::Filters::log_aggregate);\n";
+  buffer_ << "    settings.add_send_filter (Madara::Filters::log_aggregate);\n";
   buffer_ << "  }\n\n";
   
   buffer_ << "  settings.queue_length = 100000;\n\n";

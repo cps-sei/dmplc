@@ -1,30 +1,70 @@
 #!/bin/bash -x
 
+function cleanup {
+    echo "Cleaning up ..."
+
+    #kill nodes and VREP
+    killall example-02 vrep vrep.sh
+    
+    #restore the VREP system/settings.dat
+    cp $SDF.saved.mcda-vrep $SDF
+    
+    #all done
+    exit 0
+}
+
+trap "cleanup" SIGINT SIGTERM SIGHUP
+
 INIT_PORT="19905"
 
 #get the directory where this script is located
 SCDIR=$(dirname $(realpath $0))
 
 function usage {
-    echo "Usage : $0 <out-dir> <init-x> <init-y> <final-x> <finaly>"
-    echo "        where N = node-num"
+    echo "Usage : $0 <out-dir> <map-name> <grid-size> <init-x> <init-y> <final-x> <final-y>"
 }
 
 #get inputs
 OUTDIR="$1"
-IX=$2
-IY=$3
-FX=$4
-FY=$5
+MAPNAME="$2"
+GRIDSIZE=$3
+IX=$4
+IY=$5
+FX=$6
+FY=$7
 
 #get the number of nodes
 NODENUM=$1
 #echo $NODENUM
 
-if [ "$#" != "5" ]; then
+if [ "$#" != "7" ]; then
     usage
     exit 1
 fi
+
+MAPFILE=$SCDIR/dart-${MAPNAME}.ttt
+
+if [ ! -e "$MAPFILE" ]; then
+    echo "Map file $MAPFILE does not exist!!"
+    exit 1
+fi
+
+#compile tutorial 2
+rm -f example-02 example-02.cpp
+
+if [ "$MAPNAME" == "small" ]; then
+    TopY=2.25
+    LeftX=-2.25
+    BottomY=-2.25
+    RightX=2.25
+elif [ "$MAPNAME" == "large" ]; then
+    TopY=13
+    LeftX=-12.5
+    BottomY=-6
+    RightX=6.5
+fi
+
+make example-02 GRIDSIZE=$GRIDSIZE TopY=$TopY LeftX=$LeftX BottomY=$BottomY RightX=$RightX
 
 #create the output directory and get its realpath
 rm -fr $OUTDIR; mkdir $OUTDIR
@@ -52,10 +92,9 @@ done
 #save the VREP system/settings.dat
 SDF=$VREP_ROOT/system/settings.dat
 cp $SDF $SDF.saved.mcda-vrep
-
 #start vrep
 echo "starting VREP .. output is in $OUTDIR/vrep.out ..."
-(cd $VREP_ROOT ; ./vrep.sh $SCDIR/dart-10x10.ttt &> $OUTDIR/vrep.out &)
+(cd $VREP_ROOT ; ./vrep.sh $MAPFILE &> $OUTDIR/vrep.out &)
 sleep 3
 
 #restore old VREP remoteApiConnections.txt file
@@ -71,11 +110,4 @@ mv $RAC.saved.mcda-vrep $RAC
 printf "press enter terminate the simulation ..."
 read X
 
-#kill nodes and VREP
-killall example-02 vrep vrep.sh
-
-#restore the VREP system/settings.dat
-cp $SDF.saved.mcda-vrep $SDF
-
-#all done
-exit 0
+cleanup

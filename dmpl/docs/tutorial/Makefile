@@ -15,7 +15,7 @@ example-01.cpp: example-01.dmpl $(DMPL_ROOT)/src/dmplc/dmplc
 	dmplc -n 2 -g -o $@ $<
 
 example-02.cpp: example-02.dmpl $(DMPL_ROOT)/src/dmplc/dmplc
-	dmplc -n 5 -g -o $@ $<
+	dmplc -n 5 --DX $(GRIDSIZE) --DY $(GRIDSIZE) --DTopY $(TopY) --DBottomY $(BottomY) --DLeftX $(LeftX) --DRightX $(RightX) -g -o $@ $<
 
 example-03.cpp: example-03.dmpl $(DMPL_ROOT)/src/dmplc/dmplc
 	dmplc -n 9 -g -o $@ $<
