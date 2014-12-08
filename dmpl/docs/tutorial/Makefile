@@ -5,7 +5,7 @@ LIBS=$(MADARA_ROOT)/libMADARA.so $(ACE_ROOT)/lib/libACE.so \
 
 all: tutorial-01 Makefile
 
-tutorial-01: tutorial-01.cpp
+%: %.cpp
 	g++ $(CFLAGS) -o $@ $< $(LIBS)
 
 %.cpp: %.dmpl $(DMPL_ROOT)/src/dmplc/dmplc
