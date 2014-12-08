@@ -1,6 +1,9 @@
-#!/bin/bash
+#!/bin/bash -x
 
 INIT_PORT="19905"
+
+#get the directory where this script is located
+SCDIR=$(dirname $(realpath $0))
 
 function usage {
     echo "Usage : $0 <node-num> <out-dir> <node-exec> <node-1-args> ... <node-N-args>"
@@ -41,7 +44,7 @@ for i in `seq 1 $NODENUM`; do
 done
 
 #save old and create new VREP remoteApiConnections.txt file
-RAC=$VREP_MCDA_ROOT/remoteApiConnections.txt
+RAC=$VREP_ROOT/remoteApiConnections.txt
 if [ -e $RAC ]; then
     rm -f $RAC.saved.mcda-vrep
     mv $RAC $RAC.saved.mcda-vrep
@@ -59,12 +62,12 @@ done
 #cat $RAC
 
 #save the VREP system/settings.dat
-SDF=$VREP_MCDA_ROOT/system/settings.dat
+SDF=$VREP_ROOT/system/settings.dat
 cp $SDF $SDF.saved.mcda-vrep
 
 #start vrep
 echo "starting VREP .. output is in $OUTDIR/vrep.out ..."
-(cd $VREP_MCDA_ROOT ; ./vrep.sh $MCDA_ROOT/src/vrep/mcda.ttt &> $OUTDIR/vrep.out &)
+(cd $VREP_ROOT ; ./vrep.sh $SCDIR/example-01.ttt &> $OUTDIR/vrep.out &)
 sleep 10
 
 #restore old VREP remoteApiConnections.txt file
@@ -74,7 +77,7 @@ mv $RAC.saved.mcda-vrep $RAC
 PORT=$INIT_PORT
 for i in `seq 1 $NODENUM`; do
     echo "starting node $i .. output is in $OUTDIR/node-$i.out"
-    ($NODECMD ${NODEARGS[${i}]} --vrep-host 127.0.0.1 --vrep-port $PORT &> $OUTDIR/node-$i.out &)
+    ($NODECMD ${NODEARGS[${i}]} --platform vrep::::0.2 --vrep-host 127.0.0.1 --vrep-port $PORT &> $OUTDIR/node-$i.out &)
     PORT=$(expr $PORT + 1)
 done
 
