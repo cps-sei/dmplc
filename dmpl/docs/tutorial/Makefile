@@ -11,8 +11,17 @@ all: $(EXE) Makefile
 %: %.cpp
 	g++ $(CFLAGS) -o $@ $< $(LIBS)
 
-%.cpp: %.dmpl $(DMPL_ROOT)/src/dmplc/dmplc
+tutorial-01.cpp: tutorial-01.dmpl $(DMPL_ROOT)/src/dmplc/dmplc
 	dmplc -n 2 -g -o $@ $<
+
+tutorial-02.cpp: tutorial-02.dmpl $(DMPL_ROOT)/src/dmplc/dmplc
+	dmplc -n 5 -g -o $@ $<
+
+tutorial-03.cpp: tutorial-03.dmpl $(DMPL_ROOT)/src/dmplc/dmplc
+	dmplc -n 9 -g -o $@ $<
+
+tutorial-04.cpp: tutorial-04.dmpl $(DMPL_ROOT)/src/dmplc/dmplc
+	dmplc -n 9 -g -o $@ $<
 
 clean:
 	rm -f $(EXE) $(SRC)
