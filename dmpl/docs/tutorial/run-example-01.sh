@@ -14,7 +14,7 @@ function usage {
 NODENUM=$1
 #echo $NODENUM
 
-if [ "$#" != $(expr $NODENUM + 2) ]; then
+if [ "$#" != $(expr $NODENUM \* 5 + 2) ]; then
     usage
     exit 1
 fi
@@ -35,9 +35,17 @@ NODECMD="./example-01"
 #get the node arguments
 declare -a NODEARGS
 for i in `seq 1 $NODENUM`; do
-    NODEARGS[${i}]="$1"
-    #echo ${NODEARGS[${i}]}
+    NODEARGS[${i}]="${NODEARGS[${i}]} --id $1"
     shift 1
+    NODEARGS[${i}]="${NODEARGS[${i}]} --var_x $1"
+    shift 1
+    NODEARGS[${i}]="${NODEARGS[${i}]} --var_y $1"
+    shift 1
+    NODEARGS[${i}]="${NODEARGS[${i}]} --var_xf $1"
+    shift 1
+    NODEARGS[${i}]="${NODEARGS[${i}]} --var_yf $1"
+    shift 1
+    #echo ${NODEARGS[${i}]}
 done
 
 #save old and create new VREP remoteApiConnections.txt file
