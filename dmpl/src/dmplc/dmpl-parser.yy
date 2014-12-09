@@ -67,7 +67,7 @@ std::string thunk;
 %token <token> TSEMICOLON TCONST TNODE
 %token <token> TGLOBAL TLOCAL TALIAS TTARGET TTHUNK
 %token <token> TBOOL TINT TDOUBLE_TYPE TVOID TCHAR TSIGNED TUNSIGNED
-%token <token> TNODENUM TATOMIC TPRIVATE TEXTERN
+%token <token> TNODENUM TPRIVATE TEXTERN
 %token <token> TIF TELSE TFOR TWHILE
 %token <token> TBREAK TCONTINUE TRETURN TEXO TEXH TEXL TPROGRAM
 %token <token> TINIT TSAFETY TFAN TFADNP TFAO TFAOL TFAOH
@@ -428,8 +428,7 @@ stmt_list : stmt { $$ = new dmpl::StmtList(); $$->push_back(*$1); delete $1; }
 | stmt_list stmt { $$ = $1; $$->push_back(*$2); delete $2; }
 ;
 
-stmt : TATOMIC stmt { $$ = new dmpl::Stmt(new dmpl::AtomicStmt(*$2)); delete $2; }
-| TPRIVATE stmt { $$ = new dmpl::Stmt(new dmpl::PrivateStmt(*$2)); delete $2; }
+stmt : TPRIVATE stmt { $$ = new dmpl::Stmt(new dmpl::PrivateStmt(*$2)); delete $2; }
 | TLBRACE stmt_list TRBRACE { $$ = new dmpl::Stmt(new dmpl::BlockStmt(*$2)); delete $2; }
 | lval TEQUAL expr TSEMICOLON { 
   $$ = new dmpl::Stmt(new dmpl::AsgnStmt(dmpl::Expr($1),*$3));

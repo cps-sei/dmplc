@@ -127,11 +127,6 @@ void dmpl::CopyVisitor::exitEXL(dmpl::EXLExpr &expr)
 //dispatchers for statements
 /*********************************************************************/
 
-void dmpl::CopyVisitor::exitAtomic(dmpl::AtomicStmt &stmt)
-{
-  stmtMap[hostStmt] = Stmt(new dmpl::AtomicStmt(stmtMap[stmt.data]));
-}
-
 void dmpl::CopyVisitor::exitPrivate(dmpl::PrivateStmt &stmt)
 {
   stmtMap[hostStmt] = Stmt(new dmpl::PrivateStmt(stmtMap[stmt.data]));

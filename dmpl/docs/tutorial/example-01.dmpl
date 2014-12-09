@@ -92,13 +92,11 @@ NODE uav (id)
   LOCAL unsigned char xf,yf; //final coordinates
   
   void NEXT_XY () {
-    ATOMIC {
-      xp = x; yp = y;
-      if(x < xf) xp = x + 1;
-      else if(x > xf) xp = x - 1;
-      else if(y < yf) yp = y + 1;
-      else yp = y - 1;
-    }
+    xp = x; yp = y;
+    if(x < xf) xp = x + 1;
+    else if(x > xf) xp = x - 1;
+    else if(y < yf) yp = y + 1;
+    else yp = y - 1;
   }
 }
 
@@ -147,14 +145,12 @@ NODE uav (id)
 @INIT
 void NodeInit () 
 {
-  ATOMIC {
-    FORALL_NODE(id) {
-      state.id = INITS;
-      ND(x.id); ND(y.id);
-      ASSUME(0 <= x.id && x.id < X && 0 <= y.id && y.id < Y);
-      ND(xf.id); ND(yf.id);
-      ASSUME(0 <= xf.id && xf.id < X && 0 <= yf.id && yf.id < Y);
-    }
+  FORALL_NODE(id) {
+    state.id = INITS;
+    ND(x.id); ND(y.id);
+    ASSUME(0 <= x.id && x.id < X && 0 <= y.id && y.id < Y);
+    ND(xf.id); ND(yf.id);
+    ASSUME(0 <= xf.id && xf.id < X && 0 <= yf.id && yf.id < Y);
   }
 
   FORALL_DISTINCT_NODE_PAIR (id1,id2) {

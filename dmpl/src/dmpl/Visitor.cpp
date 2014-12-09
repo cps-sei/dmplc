@@ -105,10 +105,7 @@ void dmpl::Visitor::visit(const dmpl::Stmt &stmt)
   //std::cout << "*************** visiting stmt *******\n";
   //stmt->print(std::cout,0);
 
-  if(AtomicStmt *st = dynamic_cast<AtomicStmt*>(&*stmt)) {
-    hostStmt = stmt; if(enterAtomic(*st)) visit(st->data);
-    hostStmt = stmt; exitAtomic(*st);
-  } else if(PrivateStmt *st = dynamic_cast<PrivateStmt*>(&*stmt)) {
+  if(PrivateStmt *st = dynamic_cast<PrivateStmt*>(&*stmt)) {
     hostStmt = stmt; if(enterPrivate(*st)) visit(st->data);
     hostStmt = stmt; exitPrivate(*st);
   } else if(BlockStmt *st = dynamic_cast<BlockStmt*>(&*stmt)) {

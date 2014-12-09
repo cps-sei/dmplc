@@ -45,7 +45,6 @@ extern "C" int yywrap() { return 1; }
 "signed"                    PRINT_TOKEN; return TOKEN(TSIGNED);
 "unsigned"                  PRINT_TOKEN; return TOKEN(TUNSIGNED);
 "#N"                        PRINT_TOKEN; return TOKEN(TNODENUM);
-"ATOMIC"                    PRINT_TOKEN; return TOKEN(TATOMIC);
 "PRIVATE"                   PRINT_TOKEN; return TOKEN(TPRIVATE);
 "EXTERN"                    PRINT_TOKEN; return TOKEN(TEXTERN);
 "if"                        PRINT_TOKEN; return TOKEN(TIF);

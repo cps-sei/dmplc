@@ -97,23 +97,6 @@ namespace dmpl
     virtual void print (std::ostream &os,unsigned int indent) const = 0;
   };
 
-  //an atomic statement
-  class AtomicStmt : public Statement
-  {
-  public:
-    Stmt data;
-    AtomicStmt(const Stmt &d) : data(d) {}
-    std::string toString() const {
-      return "ATOMIC " + data->toString();
-    }
-    void print (std::ostream &os,unsigned int indent) const
-    {
-      std::string spacer (indent, ' ');
-      os << spacer << "ATOMIC\n";
-      data->print(os,isBlock(data) ? indent : indent + 2);
-    }
-  };
-
   //a private statement
   class PrivateStmt : public Statement
   {

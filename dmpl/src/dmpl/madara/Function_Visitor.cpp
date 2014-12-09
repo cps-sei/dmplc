@@ -530,25 +530,6 @@ dmpl::madara::Function_Visitor::exitEXL (EXLExpr & expression)
 }
 
 
-
-bool
-dmpl::madara::Function_Visitor::enterAtomic (AtomicStmt & statement)
-{
-  return false;
-}
-
-
-void
-dmpl::madara::Function_Visitor::exitAtomic (AtomicStmt & statement)
-{
-  std::string spacer (indentation_, ' ');
-
-  // functions in MADARA are inherently atomic. Additional work is unnecessary
-
-  visit (statement.data);
-}
-
-
 bool
 dmpl::madara::Function_Visitor::enterPrivate (PrivateStmt & statement)
 {

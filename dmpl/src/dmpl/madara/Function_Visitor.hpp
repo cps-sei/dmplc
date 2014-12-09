@@ -183,18 +183,6 @@ namespace dmpl
     virtual void exitEXL(EXLExpr &expr);
     
     /**
-     * Returns whether or not to visit an atomic block's subfields first
-     * @param  expr   the atomic block's statement
-     **/
-    virtual bool enterAtomic(AtomicStmt &stmt);
-
-    /**
-     * Visits an atomic block
-     * @param  expr   the atomic block statement to visit
-     **/
-    virtual void exitAtomic(AtomicStmt &stmt);
-    
-    /**
      * Returns whether or not to visit a private block's subfields first
      * @param  expr   the private block's statement
      **/

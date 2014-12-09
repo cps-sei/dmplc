@@ -91,7 +91,6 @@ namespace dmpl {
     void exitEXO(EXOExpr &expr);
     void exitEXH(EXHExpr &expr);
     void exitEXL(EXLExpr &expr);
-    void exitAtomic(AtomicStmt &stmt);
     void exitPrivate(PrivateStmt &stmt);
     void exitBlock(BlockStmt &stmt);
     void exitAsgn(AsgnStmt &stmt);

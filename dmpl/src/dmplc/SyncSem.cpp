@@ -130,11 +130,6 @@ void dmpl::syncsem::GlobalTransformer::exitLval(dmpl::LvalExpr &expr)
 //dispatchers for statements
 /*********************************************************************/
 
-void dmpl::syncsem::GlobalTransformer::exitAtomic(dmpl::AtomicStmt &stmt)
-{
-  stmtMap[hostStmt] = stmtMap[stmt.data];
-}
-
 void dmpl::syncsem::GlobalTransformer::exitPrivate(dmpl::PrivateStmt &stmt)
 {
   stmtMap[hostStmt] = stmtMap[stmt.data];
