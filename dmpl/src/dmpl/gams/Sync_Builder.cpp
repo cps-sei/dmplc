@@ -57,7 +57,7 @@
 #include "../madara/Function_Visitor.hpp"
 #include <boost/algorithm/string.hpp>
 #include <vector>
-#include "dmplc/dmpl-parser.hpp"
+#include <dmplc/dmpl-parser.hpp>
 
 dmpl::gams::Sync_Builder::Sync_Builder (dmpl::DmplBuilder & builder,
                                           const std::string &target)
@@ -1424,6 +1424,10 @@ dmpl::gams::Sync_Builder::build_main_function ()
   buffer_ << "  // Initialize commonly used local variables\n";  
   buffer_ << "  id = Integer (settings.id);\n";
   buffer_ << "  num_processes = processes;\n";
+  buffer_ << "  if(id < 0 || id >= processes) {\n";
+  buffer_ << "    std::cerr << \"Invalid node id: \" << settings.id << \"  valid range: [0, \" << processes - 1 << \"]\" << std::endl;\n";
+  buffer_ << "    exit(1);\n";
+  buffer_ << "  }\n";
 
   buffer_ << "  PlatformInitFns::iterator init_fn = platform_init_fns.find(platform_name);\n";
   buffer_ << "  if(init_fn != platform_init_fns.end())\n";

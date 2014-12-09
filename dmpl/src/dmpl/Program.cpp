@@ -59,7 +59,7 @@
 #include "Node.h"
 #include "Program.h"
 #include "Function.h"
-#include "dmplc/dmpl-parser.hpp"
+#include "../dmplc/dmpl-parser.hpp"
 
 /*********************************************************************/
 //methods for SanityChecker

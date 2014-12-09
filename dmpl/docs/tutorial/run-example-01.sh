@@ -1,5 +1,20 @@
 #!/bin/bash
 
+function cleanup {
+    echo "Cleaning up ..."
+
+    #kill nodes and VREP
+    killall $NODECMD vrep vrep.sh
+
+    #restore the VREP system/settings.dat
+    cp $SDF.saved.mcda-vrep $SDF
+
+    #all done
+    exit 0
+}
+
+trap "cleanup" SIGINT SIGTERM SIGHUP
+
 INIT_PORT="19905"
 
 #get the directory where this script is located
@@ -89,11 +104,4 @@ done
 printf "press enter terminate the simulation ..."
 read X
 
-#kill nodes and VREP
-killall $NODECMD vrep vrep.sh
-
-#restore the VREP system/settings.dat
-cp $SDF.saved.mcda-vrep $SDF
-
-#all done
-exit 0
+cleanup

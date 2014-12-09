@@ -61,7 +61,7 @@
 #include "Statement.h"
 #include "Function.h"
 #include "Node.h"
-#include "dmplc/dmpl-parser.hpp"
+#include "../dmplc/dmpl-parser.hpp"
 
 /*********************************************************************/
 //return basic types
