@@ -1,5 +1,4 @@
-//a correct synchronous collision avoidance protocol
-MOC_SYNC;
+//-- TBD: describe what this example is about
 
 TARGET GNU_CPP,WIN_CPP %%{
 #define GNU_WIN

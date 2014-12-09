@@ -64,7 +64,7 @@ std::string thunk;
    they represent.
  */
 %token <string> TIDENTIFIER TINTEGER TDOUBLE TNAMESPACE TATTRIBUTE
-%token <token> TMOCSYNC TMOCASYNC TMOCPSYNC TSEMICOLON TCONST TNODE
+%token <token> TSEMICOLON TCONST TNODE
 %token <token> TGLOBAL TLOCAL TALIAS TTARGET TTHUNK
 %token <token> TBOOL TINT TDOUBLE_TYPE TVOID TCHAR TSIGNED TUNSIGNED
 %token <token> TNODENUM TATOMIC TPRIVATE TEXTERN
@@ -86,7 +86,7 @@ std::string thunk;
    we call an ident (defined by union type ident) we are really
    calling an (NIdentifier*). It makes the compiler happy.
  */
-%type <token> program moc constant node
+%type <token> program constant node
 %type <node> node_body
 %type <varList> node_var
 %type <function> procedure
@@ -135,8 +135,7 @@ program :
 ;
 
 program_element
-  : moc {}
-  | target {}
+  : target {}
   | constant {}
   | extern_fn_decl {}
   | node {}
@@ -144,12 +143,6 @@ program_element
     builder->program.addFunction(*$1);
     delete $1;
   }
-;
-
-moc : 
-  TMOCSYNC TSEMICOLON { builder->program.moc.set_type("SYNC"); }
-| TMOCASYNC TSEMICOLON { builder->program.moc.set_type("ASYNC"); }
-| TMOCPSYNC TSEMICOLON { builder->program.moc.set_type("PARTIAL"); }
 ;
 
 target :

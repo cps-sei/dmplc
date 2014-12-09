@@ -130,9 +130,6 @@ dmpl::Program::print (std::ostream &os,unsigned int indent)
 {
   std::string spacer (indent, ' ');
 
-  //print MOC
-  os << spacer << moc.to_string_type () << ";\n\n";
-
   //print target thunks
   BOOST_FOREACH(TargetType::value_type &tt,targets)
     os << spacer << "TARGET " << tt.first << " %%{" << tt.second << "%%}\n";
@@ -174,10 +171,6 @@ dmpl::Program::print (std::ostream &os,unsigned int indent)
 void
 dmpl::Program::sanityCheck()
 {
-  //right now we only support synchronous and asynchronous programs
-  if(moc.to_string_type() != "MOC_SYNC" && moc.to_string_type() != "MOC_ASYNC") 
-    return;
-
   //only one type of node
   assert(nodes.size() == 1 && "ERROR: only node type supported!");
 

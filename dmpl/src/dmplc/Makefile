@@ -1,7 +1,7 @@
 SRC=dmpl-scanner.cpp dmpl-parser.cpp DmplBuilder.cpp CopyVisitor.cpp \
 SyncSeq.cpp SyncSem.cpp SyncSeqDbl.cpp ArrayElim.cpp \
 ../dmpl/Expression.cpp ../dmpl/Function.cpp \
-../dmpl/Model_Of_Computation.cpp ../dmpl/Node.cpp ../dmpl/Program.cpp \
+../dmpl/Node.cpp ../dmpl/Program.cpp \
 ../dmpl/Variable.cpp ../dmpl/Statement.cpp ../dmpl/Type.cpp \
 ../dmpl/CProgram.cpp ../dmpl/Visitor.cpp \
 ../dmpl/gams/Sync_Builder.cpp \

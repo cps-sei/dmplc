@@ -32,9 +32,6 @@ extern "C" int yywrap() { return 1; }
                    if(builder->debug) printf("thunk = {%s}\n",thunk.c_str());
                  }
 [ \t\n]                     ;
-"MOC_SYNC"                  PRINT_TOKEN; return TOKEN(TMOCSYNC);
-"MOC_ASYNC"                 PRINT_TOKEN; return TOKEN(TMOCASYNC);
-"MOC_PSYNC"                 PRINT_TOKEN; return TOKEN(TMOCPSYNC);
 "CONST"                     PRINT_TOKEN; return TOKEN(TCONST);
 "NODE"                      PRINT_TOKEN; return TOKEN(TNODE);
 "GLOBAL"                    PRINT_TOKEN; return TOKEN(TGLOBAL);

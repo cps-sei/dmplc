@@ -128,15 +128,7 @@ int main (int argc, char **argv)
       program.processes.push_back (dmpl::Process (nodeName, i));
 
     // create a madara builder instance of the dmpl builder parse
-    std::string moc = builder.program.moc.to_string_type ();
-    dmpl::gams::GAMS_Builder *gams_builder = NULL;
-    
-    if(moc == "MOC_SYNC")
-      gams_builder = new dmpl::gams::Sync_Builder (builder, madara_target);
-    else {
-      std::cerr << "ERROR: cannot generate code for " << moc << " programs!!\n";
-      exit (1);
-    }
+    dmpl::gams::GAMS_Builder *gams_builder = new dmpl::gams::Sync_Builder (builder, madara_target);
 
     //build the generated code
     gams_builder->build ();
@@ -165,17 +157,8 @@ int main (int argc, char **argv)
       program.processes.push_back (dmpl::Process (nodeName, i));
 
     // create a madara builder instance of the dmpl builder parse
-    std::string moc = builder.program.moc.to_string_type ();
-    dmpl::madara::Madara_Builder *madara_builder = NULL;
-    
-    if(moc == "MOC_SYNC")
-      madara_builder = new dmpl::madara::Sync_Builder (builder, madara_target, do_vrep);
-    else if(moc == "MOC_ASYNC")
-      madara_builder = new dmpl::madara::Async_Builder (builder, madara_target, do_vrep);
-    else {
-      std::cerr << "ERROR: cannot generate code for " << moc << " programs!!\n";
-      exit (1);
-    }
+    dmpl::madara::Madara_Builder *madara_builder 
+      = new dmpl::madara::Sync_Builder (builder, madara_target, do_vrep);
 
     //build the generated code
     madara_builder->build ();
@@ -198,14 +181,6 @@ int main (int argc, char **argv)
   //sequentialize and print result
   if (do_seq)
   {
-    std::string moc = builder.program.moc.to_string_type ();
-
-    //only support synchronous programs
-    if (moc != "MOC_SYNC") {
-      std::cerr << "ERROR: cannot sequentialize " << moc << " programs!!\n";
-      exit (1);
-    }
-
     //fill in the processes with seq_node_num nodes
     dmpl::Program & program = builder.program;
     const std::string & nodeName = program.nodes.begin ()->first;

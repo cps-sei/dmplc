@@ -66,15 +66,6 @@ dmpl::gams::Sync_Builder::Sync_Builder (dmpl::DmplBuilder & builder,
 void
 dmpl::gams::Sync_Builder::build ()
 {
-  // check if we have a valid model of computation
-  std::string moc = builder_.program.moc.to_string_type ();
-  if (moc != "SYNC" && moc != "MOC_SYNC")
-  {
-    buffer_ << "ERROR: The MADARA Sync_Builder class only supports the ";
-    buffer_ << "synchronous model of computation.\n";
-    return;
-  }
-
   build_header_includes ();
   build_target_thunk_includes ();
   // open dmpl namespace after including ALL libraries

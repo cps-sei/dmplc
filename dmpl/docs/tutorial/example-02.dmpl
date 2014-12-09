@@ -7,8 +7,6 @@
 //-- next waypoint avoiding collisions, and an asynchronous thread
 //-- that determines the next waypoint for the node.
 
-MOC_SYNC;
-
 TARGET GNU_CPP,WIN_CPP %%{
 #define GNU_WIN
 #include <stdlib.h>
