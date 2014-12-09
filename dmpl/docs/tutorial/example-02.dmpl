@@ -58,8 +58,8 @@ void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
 %%}
 
 //number of X and Y coordinates
-//CONST X = 25;
-//CONST Y = 25;
+CONST X = 20;
+CONST Y = 20;
 
 //states of each node
 CONST INITS = 0;
@@ -68,10 +68,10 @@ CONST REQUEST = 2;
 CONST WAITING = 3;
 CONST MOVE = 4;
 
-//CONST TopY = 13;
-//CONST LeftX = -12.5;
-//CONST BottomY = -6;
-//CONST RightX = 6.5;
+CONST TopY = 13;
+CONST LeftX = -12.5;
+CONST BottomY = -6;
+CONST RightX = 6.5;
 
 //EXTERN int MOVE_TO(unsigned char x,unsigned char y);
 EXTERN int my_sleep(int seconds);
