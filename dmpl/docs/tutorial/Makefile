@@ -6,6 +6,13 @@ DMPL=example-01.dmpl example-02.dmpl example-03.dmpl example-04.dmpl
 SRC=$(patsubst %.dmpl,%.cpp,$(DMPL))
 EXE=$(patsubst %.dmpl,%,$(DMPL))
 
+#default grid size and map coordinates 
+GRIDSIZE=10
+TopY=2.25
+LeftX=-2.25
+BottomY=-2.25
+RightX=2.25
+
 all: $(EXE) Makefile
 
 %: %.cpp
