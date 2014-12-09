@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 INIT_PORT="19905"
 
@@ -6,7 +6,7 @@ INIT_PORT="19905"
 SCDIR=$(dirname $(realpath $0))
 
 function usage {
-    echo "Usage : $0 <node-num> <out-dir> <node-exec> <node-1-args> ... <node-N-args>"
+    echo "Usage : $0 <node-num> <out-dir> <node-1-args> ... <node-N-args>"
     echo "        where N = node-num"
 }
 
@@ -14,7 +14,7 @@ function usage {
 NODENUM=$1
 #echo $NODENUM
 
-if [ "$#" != $(expr $NODENUM + 3) ]; then
+if [ "$#" != $(expr $NODENUM + 2) ]; then
     usage
     exit 1
 fi
@@ -30,10 +30,7 @@ rm -fr $OUTDIR; mkdir $OUTDIR
 OUTDIR=$(realpath $OUTDIR)
 
 #get the node executable
-NODECMD="$1"
-#echo $NODECMD
-shift 1
-
+NODECMD="./example-01"
 
 #get the node arguments
 declare -a NODEARGS
@@ -67,8 +64,8 @@ cp $SDF $SDF.saved.mcda-vrep
 
 #start vrep
 echo "starting VREP .. output is in $OUTDIR/vrep.out ..."
-(cd $VREP_ROOT ; ./vrep.sh $SCDIR/example-01.ttt &> $OUTDIR/vrep.out &)
-sleep 10
+(cd $VREP_ROOT ; ./vrep.sh $SCDIR/dart-small.ttt &> $OUTDIR/vrep.out &)
+sleep 3
 
 #restore old VREP remoteApiConnections.txt file
 mv $RAC.saved.mcda-vrep $RAC
@@ -77,7 +74,7 @@ mv $RAC.saved.mcda-vrep $RAC
 PORT=$INIT_PORT
 for i in `seq 1 $NODENUM`; do
     echo "starting node $i .. output is in $OUTDIR/node-$i.out"
-    ($NODECMD ${NODEARGS[${i}]} --platform vrep::::0.2 --vrep-host 127.0.0.1 --vrep-port $PORT &> $OUTDIR/node-$i.out &)
+    ($NODECMD --platform vrep::::0.2 ${NODEARGS[${i}]} &> $OUTDIR/node-$i.out &)
     PORT=$(expr $PORT + 1)
 done
 

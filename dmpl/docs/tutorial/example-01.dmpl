@@ -1,4 +1,5 @@
-//-- TBD: describe what this example is about
+//-- this is a generic example demonstrating the synchronous collision
+//-- avoidance algorithm
 
 TARGET GNU_CPP,WIN_CPP %%{
 #define GNU_WIN
@@ -81,7 +82,6 @@ EXTERN void print_int(int i);
 NODE uav (id)
 {
   //shared variables -- visible across nodes. 
-  //must be accessed via R() and W()
   GLOBAL _Bool lock [X][Y][#N];
 
   //private variables -- local to the node.
@@ -90,7 +90,8 @@ NODE uav (id)
   LOCAL unsigned char x,y; //current coordinates
   LOCAL unsigned char xp,yp; //next coordinates
   LOCAL unsigned char xf,yf; //final coordinates
-  
+
+  //-- saves the next waypoint in (xp,yp)
   void NEXT_XY () {
     xp = x; yp = y;
     if(x < xf) xp = x + 1;
@@ -102,7 +103,9 @@ NODE uav (id)
 
 NODE uav (id)
 {
+  @HERTZ(10)
   @BARRIER_SYNC
+  @PLATFORM_CONTROLLER
   void ROUND () {
     print_state(X,Y,id,x,y,xf,yf);
     //my_sleep(1);
