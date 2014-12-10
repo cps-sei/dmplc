@@ -117,7 +117,7 @@ NODE uav (id)
       yp = y + 1;
       dir = DOWN;
     } else {
-      yt = y - 1;
+      yp = y - 1;
       dir = UP;
     }
   }
