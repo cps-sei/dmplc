@@ -44,7 +44,8 @@ shift 1
 rm -fr $OUTDIR; mkdir $OUTDIR
 OUTDIR=$(realpath $OUTDIR)
 
-#get the node executable
+#compile and get the node executable
+rm -f example-01.cpp example-01 && make example-01
 NODECMD="./example-01"
 
 #get the node arguments
