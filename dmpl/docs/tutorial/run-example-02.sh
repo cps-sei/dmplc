@@ -34,7 +34,7 @@ FX=$6
 FY=$7
 
 #get the number of nodes
-NODENUM=$1
+NODENUM=5
 #echo $NODENUM
 
 if [ "$#" != "7" ]; then
@@ -78,7 +78,6 @@ if [ -e $RAC ]; then
 fi
 touch $RAC
 PORT=$INIT_PORT
-NODENUM=5
 for i in `seq 1 $NODENUM`; do 
     echo "portIndex${i}_port                 = $PORT" >> $RAC
     echo "portIndex${i}_debug                = false" >> $RAC
