@@ -122,7 +122,7 @@ NODE uav (id)
     }
   }
 
-  @HERTZ(30)
+  @HERTZ(10)
   void WAYPOINT() {
     if(id == 0) {
       ly[0] = yp;
@@ -154,7 +154,7 @@ NODE uav (id)
     }
   }
 
-  @HERTZ(30)
+  @HERTZ(10)
   @BARRIER_SYNC
   @PLATFORM_CONTROLLER
   void ROUND () {
