@@ -92,6 +92,11 @@ void dmpl::CopyVisitor::exitInt(dmpl::IntExpr &expr)
   exprMap[hostExpr] = hostExpr;
 }
 
+void dmpl::CopyVisitor::exitDouble(dmpl::DoubleExpr &expr)
+{
+  exprMap[hostExpr] = hostExpr;
+}
+
 void dmpl::CopyVisitor::exitLval(dmpl::LvalExpr &expr)
 {
   exprMap[hostExpr] = hostExpr;

@@ -191,16 +191,20 @@ void dmpl::syncseqdbl::NodeTransformer::exitLval(dmpl::LvalExpr &expr)
   //substitute global variable name x with x_i
   std::string newName = expr.var;
 
-  //handle function call -- only change name if the function is not
-  //external
-  if(inCall && !prog.isExternalFunction(newName)) 
-    newName += ("_" + boost::lexical_cast<std::string>(nodeId) +
+  //assumes a single node
+  Node &node = prog.nodes.begin()->second;
+
+  //handle function call -- change name if the function is defined at top-level
+  if(inCall && prog.isInternalFunction(newName)) 
+    newName += (std::string("_") + (fwd ? "fwd" : "bwd"));
+  //handle function call -- change name if the function is defined in node
+  else if(inCall && node.isFunction(newName)) 
+    newName = (node.name + "__" + newName + "_" + boost::lexical_cast<std::string>(nodeId) +
                 "_" + (fwd ? "fwd" : "bwd"));
 
   //handle global variables -- distinguishing between lhs of
   //assignments and other cases, and between forward and backward
   //versions
-  Node &node = prog.nodes.begin()->second;
   if(node.globVars.count(expr.var)) {
     if(fwd) {
       if(inLhs) newName += "_f";
@@ -467,11 +471,33 @@ void dmpl::SyncSeqDbl::createMainFunc()
   Stmt callStmt4(new CallStmt(callExpr4,dmpl::ExprList()));
   roundBody.push_back(callStmt4);
 
+  const Function *roundFunc = NULL;
+  const Node &node = builder.program.nodes.begin()->second;
+  BOOST_FOREACH(const Functions::value_type &f, node.funcs) {
+    int barSync = f.second.attrs.count("BARRIER_SYNC");
+    if(barSync < 1)
+      continue;
+    else if(barSync > 1)
+      std::cerr << "Warning: function " << f.second.name <<
+        " has more than one @BARRIER_SYNC attribute" << std::endl;
+    if(roundFunc != NULL) {
+      std::cerr << "Warning: function " << roundFunc->name << " is not the " <<
+        "only @BARRIER_SYNC function; also found: " << f.second.name <<
+        " which will be ignored." << std::endl;
+    }
+    roundFunc = &f.second;
+  }
+
+  if(roundFunc == NULL) {
+    std::cerr << "Error: no @BARRIER_SYNC function found." << std::endl;
+    exit(1);
+  }
+
   //call ROUND function of each node -- forward version
   for(size_t i = 0;i < nodeNum;++i) {
     //call the _fwd version of the ROUND function of the node. this
     //copies from _i to _f
-    std::string callNameFwd = std::string("ROUND_") + 
+    std::string callNameFwd = node.name + "__" + roundFunc->name + "_" + 
       boost::lexical_cast<std::string>(i) + "_fwd";
     Expr callExprFwd(new LvalExpr(callNameFwd));
     Stmt callStmtFwd(new CallStmt(callExprFwd,dmpl::ExprList()));
@@ -490,7 +516,7 @@ void dmpl::SyncSeqDbl::createMainFunc()
   for(size_t i = 0;i < nodeNum;++i) {
     //call the _bwd version of the ROUND function of the node. this
     //copies from _f to _i
-    std::string callNameBwd = std::string("ROUND_") + 
+    std::string callNameBwd = node.name + "__" + roundFunc->name + "_" + 
       boost::lexical_cast<std::string>(i) + "_bwd";
     Expr callExprBwd(new LvalExpr(callNameBwd));
     Stmt callStmtBwd(new CallStmt(callExprBwd,dmpl::ExprList()));
@@ -498,7 +524,7 @@ void dmpl::SyncSeqDbl::createMainFunc()
   }
 
   //add call to INIT()
-  Expr callExpr3(new LvalExpr("INIT"));
+  Expr callExpr3(new LvalExpr("__INIT"));
   Stmt callStmt3(new CallStmt(callExpr3,dmpl::ExprList()));
   mainBody.push_back(callStmt3);
 
@@ -526,7 +552,7 @@ void dmpl::SyncSeqDbl::createMainFunc()
       for(size_t i = 0;i < nodeNum;++i) {
         //call the _fwd version of the ROUND function of the
         //node. this copies from _i to _f
-        std::string callNameFwd = std::string("ROUND_") + 
+        std::string callNameFwd = node.name + "__" + roundFunc->name + "_" + 
           boost::lexical_cast<std::string>(i) + "_fwd";
         Expr callExprFwd(new LvalExpr(callNameFwd));
         Stmt callStmtFwd(new CallStmt(callExprFwd,dmpl::ExprList()));
@@ -547,34 +573,46 @@ void dmpl::SyncSeqDbl::createMainFunc()
 /*********************************************************************/
 void dmpl::SyncSeqDbl::createInit()
 {
-  dmpl::VarList fnParams,fnTemps;
-  StmtList fnBody;
+  StmtList initFnBody;
 
-  //if no INIT() defined, create an empty one
-  dmpl::Functions::iterator fit = builder.program.funcs.find("INIT");
-  if(fit == builder.program.funcs.end()) {
-    std::cout << "node does not have a INIT function, creating an empty one ...\n";
-    Function func(dmpl::voidType(),"INIT",fnParams,fnTemps,fnBody);
+  BOOST_FOREACH(Functions::value_type &f, builder.program.funcs) {
+    int init = f.second.attrs.count("INIT");
+    if(init < 1)
+      continue;
+    else if(init > 1)
+      std::cerr << "Warning: function " << f.second.name <<
+        " has more than one @INIT attribute" << std::endl;
+
+    dmpl::VarList fnParams,fnTemps;
+    StmtList fnBody;
+
+    //create parameters
+    BOOST_FOREACH(Variables::value_type &v,f.second.params)
+      fnParams.push_back(v.second);
+
+    //create temporary variables
+    BOOST_FOREACH(Variables::value_type &v,f.second.temps)
+      fnTemps.push_back(v.second);
+
+    //transform the body of init
+    BOOST_FOREACH(const Stmt &st,f.second.body) {
+      syncseqdbl::GlobalTransformer gt(*this,builder.program,nodeNum);
+      gt.visit(st);
+      fnBody.push_back(gt.stmtMap[st]);
+    }
+
+    std::string fname = "__INIT_" + f.second.name;
+    Function func(dmpl::voidType(),fname,fnParams,fnTemps,fnBody);
     cprog.addFunction(func);
-    return;
+
+    Expr callExpr(new LvalExpr(fname));
+    Stmt callStmt(new CallStmt(callExpr,dmpl::ExprList()));
+    initFnBody.push_back(callStmt);
   }
 
-  //create parameters
-  BOOST_FOREACH(Variables::value_type &v,fit->second.params)
-    fnParams.push_back(v.second);
+  dmpl::VarList fnParams, fnTemps;
 
-  //create temporary variables
-  BOOST_FOREACH(Variables::value_type &v,fit->second.temps)
-    fnTemps.push_back(v.second);
-
-  //transform the body of init
-  BOOST_FOREACH(const Stmt &st,fit->second.body) {
-    syncseqdbl::GlobalTransformer gt(*this,builder.program,nodeNum);
-    gt.visit(st);
-    fnBody.push_back(gt.stmtMap[st]);
-  }
-
-  Function func(dmpl::voidType(),"INIT",fnParams,fnTemps,fnBody);
+  Function func(dmpl::voidType(),"__INIT",fnParams,fnTemps,initFnBody);
   cprog.addFunction(func);
 }
 
@@ -583,7 +621,6 @@ void dmpl::SyncSeqDbl::createInit()
 /*********************************************************************/
 void dmpl::SyncSeqDbl::createSafety()
 {
-  //Node &node = builder.program.nodes.begin()->second;
   StmtList safetyFnBody;
 
   BOOST_FOREACH(Functions::value_type &f, builder.program.funcs) {
@@ -657,7 +694,7 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
           fnBody.push_back(nt.stmtMap[st]);
         }
         
-        std::string fnName = f.second.name + "_" + 
+        std::string fnName = node.name + "__" + f.second.name + "_" + 
           boost::lexical_cast<std::string>(i) + "_fwd";
         Function func(dmpl::voidType(),fnName,fnParams,fnTemps,fnBody);
         cprog.addFunction(func);
@@ -676,7 +713,7 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
           fnBody.push_back(nt.stmtMap[st]);
         }
         
-        std::string fnName = f.second.name + "_" + 
+        std::string fnName = node.name + "__" + f.second.name + "_" + 
           boost::lexical_cast<std::string>(i) + "_bwd";
         Function func(dmpl::voidType(),fnName,fnParams,fnTemps,fnBody);
         cprog.addFunction(func);
@@ -697,6 +734,69 @@ dmpl::Expr dmpl::SyncSeqDbl::createNondetFunc(const Expr &expr)
   return Expr(new LvalExpr("nondet_" + lve->var));
 }
 
+void dmpl::SyncSeqDbl::processExternFuncs()
+{
+  BOOST_FOREACH(dmpl::Functions::value_type &ef, builder.program.externalFuncs)
+  {
+    int rets = ef.second.attrs.count("ASSUME_RETURN");
+    if(rets < 1) {
+      cprog.externalFuncs[ef.second.name] = ef.second;
+      continue;
+    }
+    else if(rets > 1)
+      std::cerr << "Warning: function " << ef.second.name <<
+        " has more than one @ASSUME_RETURN attribute" << std::endl;
+    dmpl::Attribute attr = ef.second.attrs["ASSUME_RETURN"];
+
+    int params = attr.paramList.size();
+
+    dmpl::StmtList fnBody;
+    dmpl::Variables fnTemps;
+
+    if(params == 1) {
+      Expr expr = attr.paramList.front();
+
+      Stmt ret(new RetStmt(expr));
+
+      fnBody.push_back(ret);
+    } else if(params == 2) {
+      Expr varExpr = attr.paramList.front();
+      LvalExpr var = varExpr->requireLval();
+      Expr condExpr = *(++attr.paramList.begin());
+
+      if(var.node != "" || var.indices.size() > 0) {
+        std::cerr << "Error: function " << ef.second.name <<
+          " has an @ASSUME_RETURN attribute with an invalid variable specified (" <<
+          var.toString() << ")" << std::endl;;
+        exit(1);
+      }
+
+      fnTemps[var.var] = Variable(var.var, ef.second.retType);
+
+      Expr call(new CallExpr(Expr(new LvalExpr(std::string("nondet_") + ef.second.name)), ExprList()));
+      Stmt assign(new AsgnStmt(varExpr, call));
+      fnBody.push_back(assign);
+
+      ExprList assumeArgs;
+      assumeArgs.push_back(condExpr);
+      Stmt assume(new CallStmt(Expr(new LvalExpr("__CPROVER_assume")), assumeArgs));
+      fnBody.push_back(assume);
+
+      Stmt ret(new RetStmt(varExpr));
+      fnBody.push_back(ret);
+    } else {
+      std::cerr << "Error: function " << ef.second.name <<
+        " has an @ASSUME_RETURN attribute with " << attr.paramList.size() <<
+        " parameters (expected 1: expression; or 2: variable, conditional)." << std::endl;
+      exit(1);
+    }
+
+
+    Function func(ef.second.retType,ef.second.name,ef.second.params,fnTemps,fnBody);
+    cprog.addFunction(func);
+  }
+}
+
 /*********************************************************************/
 //run the sequentialization, generating a C program
 /*********************************************************************/
@@ -705,10 +805,11 @@ void dmpl::SyncSeqDbl::run()
   std::cout << "Sequentializing with double-buffering and " 
             << nodeNum << " nodes ...\n";
 
-  //copy over external function declarations
-  cprog.externalFuncs = builder.program.externalFuncs;
+  //copy over constants
+  cprog.constDef = builder.program.constDef;
 
   createGlobVars();
+  processExternFuncs();
   createRoundCopier();
   createMainFunc();
   createInit();

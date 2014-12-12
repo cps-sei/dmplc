@@ -104,8 +104,7 @@ std::string thunk;
 %type <varList> var_list var_decl param_list var_decl_list
 %type <attr> attr
 %type <attrList> attr_list
-%type <strList> attr_param_list
-%type <string> attr_param
+%type <exprlist> attr_param_list
 
 /* Operator precedence for ternary operators */
 %left TQUEST TCOLON
@@ -165,6 +164,12 @@ target_id_list : TIDENTIFIER {
 extern_fn_decl : TEXTERN type TIDENTIFIER TLPAREN param_list TRPAREN TSEMICOLON {
   builder->program.addExternalFunction(dmpl::Function(*$2,*$3,*$5,dmpl::VarList(),dmpl::StmtList()));
   delete $2; delete $3; delete $5;
+}
+| attr_list TEXTERN type TIDENTIFIER TLPAREN param_list TRPAREN TSEMICOLON {
+  dmpl::Function func = dmpl::Function(*$3,*$4,*$6,dmpl::VarList(),dmpl::StmtList());
+  func.attrs = *$1;
+  builder->program.addExternalFunction(func);
+  delete $1; delete $3; delete $4; delete $6;
 }
 ;
 
@@ -370,29 +375,11 @@ attr : TATTRIBUTE {
 }
 ;
 
-attr_param_list : {
-  $$ = 0;
-}
-| attr_param {
-  $$ = new std::list<std::string>();
-  $$->push_back(*$1);
-  delete $1;
-}
-| attr_param_list TCOMMA attr_param {
+attr_param_list : { $$ = new dmpl::ExprList(); }
+| expr { $$ = new dmpl::ExprList(); $$->push_back(*$1); }
+| arg_list TCOMMA expr {
   $$ = $1;
   $$->push_back(*$3);
-  delete $3;
-}
-;
-
-attr_param : TINTEGER {
-  $$ = $1;
-}
-| TDOUBLE {
-  $$ = $1;
-}
-| TIDENTIFIER {
-  $$ = $1;
 }
 ;
 

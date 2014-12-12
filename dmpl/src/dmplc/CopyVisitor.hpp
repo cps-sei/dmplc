@@ -85,6 +85,7 @@ namespace dmpl {
 
     //dispatchers
     void exitInt(IntExpr &expr);
+    void exitDouble(DoubleExpr &expr);
     void exitLval(LvalExpr &expr);
     void exitComp(CompExpr &expr);
     void exitCall(CallExpr &expr);

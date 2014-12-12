@@ -1,29 +1,12 @@
 //a correct synchronous collision avoidance protocol
-MOC_SYNC;
 
 TARGET GNU_CPP,WIN_CPP %%{
 #define GNU_WIN
 #include <stdlib.h>
 #include "madara/utility/Utility.h"
 
-int MOVE_TO(unsigned char x,unsigned char y)
-{
-  return rand() < (RAND_MAX / 10 * 6);
-}
-
-int my_sleep (int seconds)
-{
-  Madara::Utility::sleep (seconds);
-  return 0;
-}
-
 int round = 0;
 int xi,yi;
-
-void print_int(int i)
-{
-  printf("%i\n", i);
-}
 
 void print_line(int _X)
 {
@@ -82,14 +65,13 @@ CONST BottomY = 2.25;
 CONST RightX = 2.25;
 
 //EXTERN int MOVE_TO(unsigned char x,unsigned char y);
-EXTERN int my_sleep(int seconds);
+
 EXTERN void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf, int xp, int yp, int d, int s);
-EXTERN void print_int(int i);
 
-EXTERN int GRID_MOVE(int x, int y);
-EXTERN void GRID_INIT(int x, int y);
-EXTERN void GRID_PLACE(int x, int y);
-
+//@ASSUME_RETURN(ret, ret >= 0 && ret <= 2)
+@ASSUME_RETURN(ret, ret == 0)
+//@ASSUME_RETURN(0)
+EXTERN int GRID_MOVE();
 
 NODE uav (id)
 {
@@ -107,21 +89,19 @@ NODE uav (id)
   LOCAL unsigned char dir;
   
   void NEXT_XY () {
-    ATOMIC {
-      xp = x; yp = y;
-      if(x < xt) {
-        xp = x + 1;
-        dir = RIGHT;
-      } else if(x > xt) {
-        xp = x - 1;
-        dir = LEFT;
-      } else if(y < yt) {
-        yp = y + 1;
-        dir = DOWN;
-      } else {
-        yt = y - 1;
-        dir = UP;
-      }
+    xp = x; yp = y;
+    if(x < xt) {
+      xp = x + 1;
+      dir = RIGHT;
+    } else if(x > xt) {
+      xp = x - 1;
+      dir = LEFT;
+    } else if(y < yt) {
+      yp = y + 1;
+      dir = DOWN;
+    } else {
+      yp = y - 1;
+      dir = UP;
     }
   }
 
@@ -177,7 +157,6 @@ NODE uav (id)
       //compute next point on route
       lock[x][y][id] = ALL;
       if(x == xt && y == yt) {
-        print_int(411);
         dir = STILL;
         return;
       }
@@ -218,14 +197,12 @@ NODE uav (id)
 @INIT
 void NodeInit () 
 {
-  ATOMIC {
-    FORALL_NODE(id) {
-      state.id = INITS;
-      ND(x.id); ND(y.id);
-      ASSUME(0 <= x.id && x.id < X && 0 <= y.id && y.id < Y);
-      ND(xf.id); ND(yf.id);
-      ASSUME(0 <= xf.id && xf.id < X && 0 <= yf.id && yf.id < Y);
-    }
+  FORALL_NODE(id) {
+    state.id = INITS;
+    ND(x.id); ND(y.id);
+    ASSUME(0 <= x.id && x.id < X && 0 <= y.id && y.id < Y);
+    ND(xt.id); ND(yt.id);
+    ASSUME(0 <= xt.id && xt.id < X && 0 <= yt.id && yt.id < Y);
   }
 
   FORALL_DISTINCT_NODE_PAIR (id1,id2) {

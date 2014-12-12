@@ -119,6 +119,11 @@ namespace dmpl
       setParams(p);
       setTemps(t);
     }
+    Function(const Type &rt,const std::string &n,const Variables &p,
+             const Variables &t,const StmtList &b,
+             const Attributes &a = Attributes())
+      : retType(rt),name(n),body(b),attrs(a),params(p),temps(t)
+    { }
 
     void mergeWith (const Function &of);
 

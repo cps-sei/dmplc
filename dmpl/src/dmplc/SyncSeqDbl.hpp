@@ -169,6 +169,7 @@ namespace dmpl {
     void createSafety();
     void createNodeFuncs();
     Expr createNondetFunc(const Expr &expr);
+    void processExternFuncs();
     void run();
   };
 } //namespace dmpl

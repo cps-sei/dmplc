@@ -909,9 +909,9 @@ dmpl::gams::Sync_Builder::build_function (
   BOOST_FOREACH (Attributes::value_type & attr, function.attrs)
   {
     buffer_ << "// @" << attr.second.name;
-    BOOST_FOREACH (std::string &p, attr.second.paramList)
+    BOOST_FOREACH (Expr p, attr.second.paramList)
     {
-      buffer_ << " " << p;
+      buffer_ << " " << p->toString();
     }
     buffer_ << "\n";
   }
@@ -1409,9 +1409,9 @@ dmpl::gams::Sync_Builder::build_main_function ()
   BOOST_FOREACH (Attributes::value_type & attr, node.attrs)
   {
     buffer_ << "  // @" << attr.second.name;
-    BOOST_FOREACH (std::string &p, attr.second.paramList)
+    BOOST_FOREACH (Expr p, attr.second.paramList)
     {
-      buffer_ << " " << p;
+      buffer_ << " " << p->toString();
     }
     buffer_ << "\n";
   }
@@ -1454,7 +1454,7 @@ dmpl::gams::Sync_Builder::build_main_function ()
       continue;
     if (f.second.attrs.count("HERTZ") != 1 || f.second.attrs["HERTZ"].paramList.size() != 1)
       throw std::runtime_error("Invalid @HERTZ attribute.");
-    std::string hertz(f.second.attrs["HERTZ"].paramList.front());
+    int hertz = f.second.attrs["HERTZ"].paramList.front()->requireInt();
     if (f.second.attrs.count("PLATFORM_CONTROLLER") == 1)
     {
       if (platformFunction == NULL)

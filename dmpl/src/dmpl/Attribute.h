@@ -74,11 +74,11 @@ namespace dmpl
   public:
     std::string name;
 
-    std::list <std::string> paramList;
+    ExprList paramList;
 
     Attribute() {}
     Attribute(const std::string &n) : name(n) {}
-    Attribute(const std::string &n, const std::list<std::string> &p) : name(n),  paramList(p) {}
+    Attribute(const std::string &n, const ExprList &p) : name(n),  paramList(p) {}
   };
 
   typedef std::map <std::string, Attribute> Attributes;

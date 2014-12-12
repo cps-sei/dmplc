@@ -57,6 +57,7 @@
 #include <boost/foreach.hpp>
 #include "Node.h"
 #include "CProgram.h"
+#include "Program.h"
 
 /*********************************************************************/
 //print the program to an output stream with proper indentation
@@ -71,6 +72,13 @@ dmpl::CProgram::print (std::ostream &os,unsigned int indent)
   BOOST_FOREACH(dmpl::Functions::value_type &v, externalFuncs) {
     os << spacer << "extern";
     v.second.printDecl(os, 1);
+  }
+  os << '\n';
+
+  //print constants
+  os << spacer << "/************* constants ***********/\n";
+  BOOST_FOREACH(dmpl::Program::ConstDef::value_type &cd, constDef) {
+    os << spacer << "#define " << cd.first << " " << cd.second << "\n";
   }
   os << '\n';
   

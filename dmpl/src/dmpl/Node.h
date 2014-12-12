@@ -165,6 +165,12 @@ namespace dmpl
       }
     }
 
+    ///return true if the argument is the name of a defined DMPL function of this node
+    bool isFunction(const std::string &fn)
+    {
+      return funcs.count(fn) > 0;
+    }
+
     void mergeWith(const Node &on);
 
     /*

@@ -213,6 +213,12 @@ namespace dmpl
       return externalFuncs.count(fn) > 0;
     }
 
+    ///return true if the argument is the name of a defined top-level DMPL function
+    bool isInternalFunction(const std::string &fn) const
+    {
+      return funcs.count(fn) > 0;
+    }
+
     ///set the period
     void setPeriod(int p) { period = p; }
 

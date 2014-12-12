@@ -70,6 +70,7 @@
 #include "Variable.h"
 #include "Function.h"
 #include "Node.h"
+#include "Program.h"
 
 
 namespace dmpl
@@ -92,6 +93,8 @@ namespace dmpl
      * with empty bodies
      **/
     Functions externalFuncs;
+
+    Program::ConstDef constDef;
 
     ///global variables
     Variables globVars;

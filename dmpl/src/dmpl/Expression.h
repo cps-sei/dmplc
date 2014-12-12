@@ -66,6 +66,7 @@
 #include <stdio.h>
 #include <list>
 #include <vector>
+#include <exception>
 #include <boost/shared_ptr.hpp>
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
@@ -84,6 +85,21 @@ namespace dmpl
   //a list of expressions
   typedef std::list <Expr> ExprList;
 
+  /*
+  class BadExprType : public std::exception
+  {
+  public:
+    BadExprType(const std::string &type) : _type(type) {}
+    virtual const char * what() const throw() {
+      return ("Expression not an " + type).c_str();
+    }
+  protected
+    std::string _type;
+  };
+  */
+
+  class LvalExpr;
+
   /**
     * @class Expression
     * @brief An abstract base class
@@ -92,6 +108,11 @@ namespace dmpl
   {
   public:
     virtual std::string toString() const = 0;
+
+    int requireInt() const;
+    double requireDouble() const;
+    LvalExpr &requireLval();
+    const LvalExpr &requireLval() const;
   };
 
   //an integer expression
@@ -102,6 +123,11 @@ namespace dmpl
     IntExpr(int d) : data(d) {}
     std::string toString() const { return boost::lexical_cast<std::string>(data); }
   };
+
+  inline int Expression::requireInt() const
+  {
+    return dynamic_cast<const IntExpr &>(*this).data;
+  }
 
   //a double expression
   class DoubleExpr : public Expression
@@ -117,6 +143,11 @@ namespace dmpl
     std::string toString() const { if (is_special_data) return special_data;
                                  else return boost::lexical_cast<std::string>(data);}
   };
+
+  inline double Expression::requireDouble() const
+  {
+    return dynamic_cast<const DoubleExpr &>(*this).data;
+  }
 
   //an lvalue expression
   class LvalExpr : public Expression
@@ -141,6 +172,16 @@ namespace dmpl
       return res;
     }
   };
+
+  inline LvalExpr &Expression::requireLval()
+  {
+    return dynamic_cast<LvalExpr &>(*this);
+  }
+
+  inline const LvalExpr &Expression::requireLval() const
+  {
+    return dynamic_cast<const LvalExpr &>(*this);
+  }
 
   //a complex expression
   class CompExpr : public Expression
