@@ -25,10 +25,10 @@ example-02.cpp: example-02.dmpl $(DMPL_ROOT)/src/dmplc/dmplc
 	dmplc -n 5 --DX $(GRIDSIZE) --DY $(GRIDSIZE) --DTopY $(TopY) --DBottomY $(BottomY) --DLeftX $(LeftX) --DRightX $(RightX) -g -o $@ $<
 
 example-03.cpp: example-03.dmpl $(DMPL_ROOT)/src/dmplc/dmplc
-	dmplc -n 9 -g -o $@ $<
+	dmplc -n 9 --DX $(GRIDSIZE) --DY $(GRIDSIZE) --DTopY $(TopY) --DBottomY $(BottomY) --DLeftX $(LeftX) --DRightX $(RightX) -g -o $@ $<
 
 example-04.cpp: example-04.dmpl $(DMPL_ROOT)/src/dmplc/dmplc
-	dmplc -n 9 -g -o $@ $<
+	dmplc -n 9 --DX $(GRIDSIZE) --DY $(GRIDSIZE) --DTopY $(TopY) --DBottomY $(BottomY) --DLeftX $(LeftX) --DRightX $(RightX) -g -o $@ $<
 
 clean:
 	rm -f $(EXE) $(SRC)
