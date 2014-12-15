@@ -1,11 +1,11 @@
 SRC=dmpl-scanner.cpp dmpl-parser.cpp DmplBuilder.cpp CopyVisitor.cpp \
-SyncSeq.cpp SyncSem.cpp SyncSeqDbl.cpp ArrayElim.cpp \
+SyncSeqDbl.cpp ArrayElim.cpp \
 ../dmpl/Expression.cpp ../dmpl/Function.cpp \
 ../dmpl/Node.cpp ../dmpl/Program.cpp \
 ../dmpl/Variable.cpp ../dmpl/Statement.cpp ../dmpl/Type.cpp \
 ../dmpl/CProgram.cpp ../dmpl/Visitor.cpp \
 ../dmpl/gams/Sync_Builder.cpp \
-../dmpl/madara/Function_Visitor.cpp
+../dmpl/gams/Function_Visitor.cpp
 
 OBJ=$(SRC:.cpp=.o)
 INC=-I$(ACE_ROOT) -I$(MADARA_ROOT)/include -I..

@@ -59,7 +59,7 @@
 
 #include <iostream>
 #include <sstream>
-#include "dmpl/gams/GAMS_Builder.hpp"
+#include <dmpl/gams/GAMS_Builder.hpp>
 
 namespace dmpl
 {

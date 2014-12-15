@@ -57,7 +57,7 @@
 #ifndef __GAMS_GAMS_BUILDER_H__
 #define __GAMS_GAMS_BUILDER_H__
 
-#include "dmplc/DmplBuilder.hpp"
+#include <dmplc/DmplBuilder.hpp>
 
 namespace dmpl
 {

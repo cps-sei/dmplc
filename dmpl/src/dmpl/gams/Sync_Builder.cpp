@@ -54,7 +54,7 @@
 **/
 
 #include "Sync_Builder.hpp"
-#include "../madara/Function_Visitor.hpp"
+#include <dmpl/gams/Function_Visitor.hpp>
 #include <boost/algorithm/string.hpp>
 #include <vector>
 #include <dmplc/dmpl-parser.hpp>

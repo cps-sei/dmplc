@@ -63,8 +63,6 @@
 //#include "dmpl/madara/Sync_Builder.hpp"
 #include "dmpl/gams/Sync_Builder.hpp"
 //#include "dmpl/madara/Async_Builder.hpp"
-#include "SyncSeq.hpp"
-#include "SyncSem.hpp"
 #include "SyncSeqDbl.hpp"
 #include "ArrayElim.hpp"
 
@@ -76,7 +74,7 @@ std::string out_file;
 std::string madara_target ("GNU_CPP");
 bool do_print = false, do_madara = false, do_seq = false, do_gams = false;
 bool do_vrep = false;
-bool debug = false, seq_sem = false, seq_dbl = false;
+bool debug = false;
 bool seq_no_array = false, init_globals = false;
 size_t nodes = 0;
 int round_num = -1;
@@ -191,24 +189,9 @@ int main (int argc, char **argv)
     //the C program produced by sequentialization
     dmpl::CProgram cprog;
     
-    //if doing naive sequentialization to the semantics
-    if (seq_sem) {
-      dmpl::SyncSem syncSem (builder, round_num);
-      syncSem.run ();
-      cprog = syncSem.cprog;
-    }
-    //if doing optimized sequentialization with double buffering
-    else if (seq_dbl) {
-      dmpl::SyncSeqDbl syncSeqDbl (builder, round_num);
-      syncSeqDbl.run ();
-      cprog = syncSeqDbl.cprog;
-    }
-    //if doing optimized sequentialization
-    else {
-      dmpl::SyncSeq syncSeq (builder, round_num);
-      syncSeq.run ();
-      cprog = syncSeq.cprog;
-    }      
+    dmpl::SyncSeqDbl syncSeqDbl (builder, round_num);
+    syncSeqDbl.run ();
+    cprog = syncSeqDbl.cprog;
     
     //eliminate arrays
     if (seq_no_array) {
@@ -326,18 +309,10 @@ void parse_options (int argc, char **argv)
       }
       ++i;
     }
-    else if (arg1 == "--seq-dbl")
-    {
-      seq_dbl = true;
-    }
-    else if (arg1 == "--seq-no-array")
+    /*else if (arg1 == "--seq-no-array")
     {
       seq_no_array = true;
-    }
-    else if (arg1 == "--seq-sem")
-    {
-      seq_sem = true;
-    }
+    }*/
     else if (arg1 == "-i" || arg1 == "--init-globals")
     {
       init_globals = true;
@@ -393,9 +368,7 @@ void usage (char *cmd)
   std::cerr << "  -vr|--vrep               generate code that targets VREP\n";
   std::cerr << "  -s|--seq                 generate sequentialized code to verify\n";
   std::cerr << "  -r|--rounds rounds       number of verification rounds\n";
-  std::cerr << "  --seq-dbl                use double buffering during verification\n";
-  std::cerr << "  --seq-no-array           do not use arrays during verification\n";
-  std::cerr << "  --seq-sem                use variable copying during verification\n";
+  //std::cerr << "  --seq-no-array           do not use arrays during verification\n";
   std::cerr << "  -i|--init-globals        initialize global variables\n";
   std::cerr << "  --D<const_name> value    set a const to a value\n";
   exit (0);
