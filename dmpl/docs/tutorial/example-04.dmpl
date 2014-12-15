@@ -96,6 +96,7 @@ NODE uav (id)
   //must be accessed via R() and W()
   GLOBAL unsigned char lock [X][Y][#N];
   GLOBAL unsigned char lx[#N],ly[#N]; //leader's destination coordinates
+  GLOBAL _Bool init[#N]; //node is initialized
 
   //private variables -- local to the node.
   //preserved across rounds
@@ -104,8 +105,11 @@ NODE uav (id)
   LOCAL unsigned char xp,yp; //next coordinates
   LOCAL unsigned char xt,yt; //current target coordinates
   LOCAL unsigned char dir;
+  LOCAL _Bool waypointValid; //xt, yt are valid
   
-  void NEXT_XY () {
+  _Bool NEXT_XY () {
+    if(!waypointValid)
+      return 1;
     xp = x; yp = y;
     if(x < xt) {
       xp = x + 1;
@@ -124,6 +128,12 @@ NODE uav (id)
 
   @HERTZ(10)
   void WAYPOINT() {
+    if(id != 0 && init[0] == 0) {
+      waypointValid = 0;
+      return;
+    } else {
+      waypointValid = 1;
+    }
     if(id == 0) {
       ly[0] = yp;
       lx[0] = xp;
@@ -169,6 +179,7 @@ NODE uav (id)
         lx[0] = x;
         ly[0] = y;
       }
+      init[id] = 1;
       state = NEXT;
     } else if(state == NEXT) {
       //compute next point on route
@@ -178,7 +189,7 @@ NODE uav (id)
         dir = STILL;
         return;
       }
-      NEXT_XY();
+      if(NEXT_XY()) return;
       state = REQUEST;
     } else if(state == REQUEST) {
       //request the lock but only if it is free
