@@ -1,7 +1,8 @@
 CFLAGS=-g -O3 -I$(DMPL_ROOT)/src -I$(VREP_ROOT)/programming/remoteApi \
-	-I$(ACE_ROOT) -I$(MADARA_ROOT)/include -I$(GAMS_ROOT)/src
+	-I$(ACE_ROOT) -I$(MADARA_ROOT)/include -I$(GAMS_ROOT)/src \
+	-I$(MZSRM_ROOT)/zsrmm
 LIBS=$(MADARA_ROOT)/libMADARA.so $(ACE_ROOT)/lib/libACE.so \
-	$(GAMS_ROOT)/lib/libGAMS.so -lpthread
+	$(GAMS_ROOT)/lib/libGAMS.so $(MZSRM_ROOT)/zsrmm/lib/libzs.a -lpthread
 DMPL=example-01.dmpl example-02.dmpl example-03.dmpl example-04.dmpl
 SRC=$(patsubst %.dmpl,%.cpp,$(DMPL))
 EXE=$(patsubst %.dmpl,%,$(DMPL))
