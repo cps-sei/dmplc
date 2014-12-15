@@ -60,9 +60,7 @@
 #include <fstream>
 #include <string>
 #include "DmplBuilder.hpp"
-//#include "dmpl/madara/Sync_Builder.hpp"
 #include "dmpl/gams/Sync_Builder.hpp"
-//#include "dmpl/madara/Async_Builder.hpp"
 #include "SyncSeqDbl.hpp"
 #include "ArrayElim.hpp"
 
@@ -72,7 +70,7 @@
 std::list<std::string> file_names;
 std::string out_file;
 std::string madara_target ("GNU_CPP");
-bool do_print = false, do_madara = false, do_seq = false, do_gams = false;
+bool do_print = false, do_seq = false, do_gams = false;
 bool do_vrep = false;
 bool debug = false;
 bool seq_no_array = false, init_globals = false;
@@ -144,37 +142,6 @@ int main (int argc, char **argv)
     //cleanup
     delete gams_builder;
   }
-#if 0
-  else if (do_madara)
-  {
-    //fill in the processes with nodes nodes
-    dmpl::Program & program = builder.program;
-    const std::string & nodeName = program.nodes.begin ()->first;
-    program.processes.clear ();
-    for (size_t i = 0;i < nodes;++i)
-      program.processes.push_back (dmpl::Process (nodeName, i));
-
-    // create a madara builder instance of the dmpl builder parse
-    dmpl::madara::Madara_Builder *madara_builder 
-      = new dmpl::madara::Sync_Builder (builder, madara_target, do_vrep);
-
-    //build the generated code
-    madara_builder->build ();
-
-    //print the generated code
-    if (out_file.empty ())
-      madara_builder->print (std::cout);
-    else
-    {
-      std::ofstream os (out_file.c_str ());
-      madara_builder->print (os);
-      os.close ();
-    }
-
-    //cleanup
-    delete madara_builder;
-  }
-#endif
 
   //sequentialize and print result
   if (do_seq)
@@ -264,11 +231,7 @@ void parse_options (int argc, char **argv)
       }
       ++i;
     }
-    else if (arg1 == "-m" || arg1 == "--madara")
-    {
-      do_madara = true;
-    }
-    else if (arg1 == "-g" || arg1 == "--madara")
+    else if (arg1 == "-g" || arg1 == "--gams")
     {
       do_gams = true;
     }
@@ -309,10 +272,10 @@ void parse_options (int argc, char **argv)
       }
       ++i;
     }
-    /*else if (arg1 == "--seq-no-array")
+    else if (arg1 == "--seq-no-array")
     {
       seq_no_array = true;
-    }*/
+    }
     else if (arg1 == "-i" || arg1 == "--init-globals")
     {
       init_globals = true;
@@ -361,14 +324,13 @@ void usage (char *cmd)
   std::cerr << "  -o|--out file            output file, default is stdout\n";
   std::cerr << "  -p|--print               parse and print DASL file\n";
   std::cerr << "  -n|--nodes nodes         number of nodes\n";
-  std::cerr << "  -m|--madara              generate C++/MADARA code to run\n";
   std::cerr << "  -g|--gams                generate C++/GAMS code to run\n";
   std::cerr << "  -t|--target|--platform p specify a target platform\n";
   std::cerr << "        Available platforms: WIN_CPP, GNU_CPP (default)\n";
   std::cerr << "  -vr|--vrep               generate code that targets VREP\n";
   std::cerr << "  -s|--seq                 generate sequentialized code to verify\n";
   std::cerr << "  -r|--rounds rounds       number of verification rounds\n";
-  //std::cerr << "  --seq-no-array           do not use arrays during verification\n";
+  std::cerr << "  --seq-no-array           do not use arrays during verification\n";
   std::cerr << "  -i|--init-globals        initialize global variables\n";
   std::cerr << "  --D<const_name> value    set a const to a value\n";
   exit (0);
