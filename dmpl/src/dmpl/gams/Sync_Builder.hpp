@@ -170,6 +170,12 @@ namespace dmpl
       void build_function_declaration (const dmpl::Node & node, dmpl::Function & function);
 
       /**
+       * Computes priorities, criticalities, and zero slack instants
+       * of functions.
+       **/
+      void compute_priorities (void);
+
+      /**
        * Builds the main function
        **/
       void build_main_function (void);
@@ -222,6 +228,12 @@ namespace dmpl
     private:
       /// character buffer for holding results of build
       std::stringstream buffer_;
+
+      //-- map from function names to priorities, criticalities and
+      //-- Zero-Slack instants
+      std::map<std::string,unsigned> funcPrios;
+      std::map<std::string,unsigned> funcCrits;
+      std::map<std::string,unsigned> funcZsinsts;
 
       /**
        * Begins dmpl namespace

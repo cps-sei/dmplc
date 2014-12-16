@@ -84,6 +84,7 @@ dmpl::gams::Sync_Builder::build ()
   // close dmpl namespace
   close_dmpl_namespace ();
   buffer_ << "using namespace dmpl;\n";
+  compute_priorities ();
   build_main_function ();
 }
 
@@ -1418,6 +1419,43 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
 
 
 void
+dmpl::gams::Sync_Builder::compute_priorities ()
+{
+  Node &node = builder_.program.nodes.begin()->second;
+
+  //-- assign priorities rate monotonically
+  std::map<int,std::string> freq2Func;
+  BOOST_FOREACH(Functions::value_type &f, node.funcs)
+  {
+    if (f.second.attrs.count("HERTZ") == 0)
+      continue;
+    if (f.second.attrs.count("HERTZ") != 1 || f.second.attrs["HERTZ"].paramList.size() != 1)
+      throw std::runtime_error("Invalid @HERTZ attribute.");
+
+    //-- get the frequency and convert to period in ms
+    int hertz = f.second.attrs["HERTZ"].paramList.front()->requireInt();
+    freq2Func[hertz] = f.second.name;
+  }
+
+  unsigned nextPrio = 1;
+  for(std::map<int,std::string>::const_iterator i = freq2Func.begin(), e = freq2Func.end(); i != e; ++i) {
+    funcPrios[i->second] = nextPrio++;
+  }
+
+  //-- get the criticalities from the dmpl file
+  BOOST_FOREACH(Functions::value_type &f, node.funcs)
+  {
+    if (f.second.attrs.count("CRITICALITY") == 0)
+      continue;
+    if (f.second.attrs.count("CRITICALITY") != 1 || f.second.attrs["CRITICALITY"].paramList.size() != 1)
+      throw std::runtime_error("Invalid @CRITICALITY attribute.");
+
+    //-- get the criticality
+    funcCrits[f.second.name] = f.second.attrs["CRITICALITY"].paramList.front()->requireInt();
+  }
+}
+
+void
 dmpl::gams::Sync_Builder::build_main_function ()
 {
   buffer_ << "template<class T> std::string to_string(const T &in)\n";
@@ -1544,7 +1582,16 @@ dmpl::gams::Sync_Builder::build_main_function ()
       continue;
     if (f.second.attrs.count("HERTZ") != 1 || f.second.attrs["HERTZ"].paramList.size() != 1)
       throw std::runtime_error("Invalid @HERTZ attribute.");
+
+    //-- get the frequency and convert to period in ms
     int hertz = f.second.attrs["HERTZ"].paramList.front()->requireInt();
+    unsigned period = 1000 / hertz;
+
+    //-- get the priority, criticality, and zero slack instant
+    unsigned priority = funcPrios[f.second.name];
+    unsigned criticality = funcCrits[f.second.name];
+    unsigned zsinst = funcZsinsts[f.second.name];
+
     if (f.second.attrs.count("PLATFORM_CONTROLLER") == 1)
     {
       if (platformFunction == NULL)
@@ -1556,19 +1603,34 @@ dmpl::gams::Sync_Builder::build_main_function ()
         throw std::runtime_error("Multiple @PLATFORM_CONTROLLER functions are not supported.");
       }
     }
+
+    //-- for synchronous function
     if (f.second.attrs.count("BARRIER_SYNC") == 1)
     {
       if (platformFunction == &f.second)
-        buffer_ << "  algo = new SyncAlgo(" << hertz << ", 0,0,0,0, \"" << f.second.name << "\", knowledge, platform_name);\n";
+        buffer_ << "  algo = new SyncAlgo(" << hertz << ", "
+                << period << ", " << priority << ", " 
+                << criticality << ", " << zsinst << ", \"" << f.second.name 
+                << "\", knowledge, platform_name);\n";
       else
-        buffer_ << "  algo = new SyncAlgo(" << hertz << ", 0,0,0,0, \"" << f.second.name << "\", knowledge);\n";
+        buffer_ << "  algo = new SyncAlgo(" << hertz << ", "
+                << period << ", " << priority << ", " 
+                << criticality << ", " << zsinst << ", \"" << f.second.name 
+                << "\", knowledge);\n";
     }
+    //-- for asynchronous function
     else
     {
       if (platformFunction == &f.second)
-        buffer_ << "  algo = new Algo(" << hertz << ", 0,0,0,0, \"" << f.second.name << "\", knowledge, platform_name);\n";
+        buffer_ << "  algo = new Algo(" << hertz << ", " 
+                << period << ", " << priority << ", " 
+                << criticality << ", " << zsinst << ", \"" << f.second.name 
+                << "\", knowledge, platform_name);\n";
       else
-        buffer_ << "  algo = new Algo(" << hertz << ", 0,0,0,0, \"" << f.second.name << "\", knowledge);\n";
+        buffer_ << "  algo = new Algo(" << hertz << ", "
+                << period << ", " << priority << ", " 
+                << criticality << ", " << zsinst << ", \"" << f.second.name 
+                << "\", knowledge);\n";
     }
     buffer_ << "  algos.push_back(algo);\n\n";
   }
