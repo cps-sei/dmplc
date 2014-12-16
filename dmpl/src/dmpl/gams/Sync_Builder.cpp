@@ -53,6 +53,11 @@
  * DM-0001023
 **/
 
+extern "C" {
+#include <stdio.h>
+#include <jni.h>
+}
+
 #include "Sync_Builder.hpp"
 #include <dmpl/gams/Function_Visitor.hpp>
 #include <boost/algorithm/string.hpp>
@@ -1418,7 +1423,6 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "\n";
 }
 
-
 void
 dmpl::gams::Sync_Builder::compute_priorities ()
 {
@@ -1443,7 +1447,9 @@ dmpl::gams::Sync_Builder::compute_priorities ()
     funcPrios[i->second] = nextPrio++;
   }
 
-  //-- get the criticalities from the dmpl file
+  //-- get the criticalities from the dmpl file. also compute the
+  //-- maximum criticality
+  unsigned maxCrit = 0;
   BOOST_FOREACH(Functions::value_type &f, node.funcs)
   {
     if (f.second.attrs.count("CRITICALITY") == 0)
@@ -1453,7 +1459,73 @@ dmpl::gams::Sync_Builder::compute_priorities ()
 
     //-- get the criticality
     funcCrits[f.second.name] = f.second.attrs["CRITICALITY"].paramList.front()->requireInt();
+    if(maxCrit < funcCrits[f.second.name]) maxCrit = funcCrits[f.second.name];
   }
+
+  //-- now run the schedulability analysis to compute zero slack
+  //-- instants. this requires interacting with Java since the tool is
+  //-- written in Java.
+
+  //-- create the string argument to the scheduler
+  std::string jvmArg;
+  BOOST_FOREACH(Functions::value_type &f, node.funcs)
+  {
+    if (f.second.attrs.count("HERTZ") == 0)
+      continue;
+
+    std::string arg = f.second.name;
+    arg += ":" + boost::lexical_cast<std::string>(1000 / f.second.attrs["HERTZ"].paramList.front()->requireInt());
+    arg += ":" + boost::lexical_cast<std::string>(f.second.attrs["WCET_OVERLOAD"].paramList.front()->requireInt());
+    arg += ":" + boost::lexical_cast<std::string>(f.second.attrs["WCET_NOMINAL"].paramList.front()->requireInt());
+    arg += ":" + boost::lexical_cast<std::string>(maxCrit + 1 - f.second.attrs["CRITICALITY"].paramList.front()->requireInt());
+    arg += ":" + boost::lexical_cast<std::string>(nextPrio - funcPrios[f.second.name]);
+
+    if(jvmArg.empty()) jvmArg = arg;
+    else jvmArg += "," + arg;
+  }
+
+  JavaVM *jvm = NULL;       /* denotes a Java VM */
+  JNIEnv *env = NULL;       /* pointer to native method interface */
+  JavaVMInitArgs vm_args; /* JDK/JRE 6 VM initialization arguments */
+  JavaVMOption* options = new JavaVMOption[1];
+  options[0].optionString = (char*)"-Djava.class.path=/usr/lib/java:/home/dart/mzsrm/zsrmscheduler";
+  vm_args.version = JNI_VERSION_1_6;
+  vm_args.nOptions = 1;
+  vm_args.options = options;
+  vm_args.ignoreUnrecognized = false;
+  /* load and initialize a Java VM, return a JNI interface
+   * pointer in env */
+  JNI_CreateJavaVM(&jvm, (void**)&env, &vm_args);
+  delete options;
+  /* invoke the Main.test method using the JNI */
+  jclass cls = env->FindClass("edu/cmu/sei/ZeroSlackRM/ZSRMScheduler");
+  assert(cls && "ERROR: could not load ZSRMScheduler class!!");
+  //-- get method id
+  jmethodID mid = env->GetStaticMethodID(cls, "computeZSInstants", "(Ljava/lang/String;)Ljava/lang/String;");
+  assert(mid && "ERROR: could not get method id for computeZSInstants!!");
+  //-- call method
+  jobject rv = env->CallStaticObjectMethod(cls, mid, env->NewStringUTF(jvmArg.c_str()));
+  const char *strReturn = env->GetStringUTFChars((jstring)rv, 0);
+  //std::cout << strReturn << '\n';
+  //-- parse return value and set zero slack instants
+  char *start = (char*) strReturn;
+  for(;;) {
+    char *next = strstr(start, ",");
+    if(next == NULL) next = start + strlen(start);
+    char *split = strstr(start, ":");
+    assert(split);
+    std::string fname(start, split-start);
+    std::string zsi(split+1, next-(split+1));
+    //std::cout << fname << ":" << zsi << '\n';
+    funcZsinsts[fname] = atoi(zsi.c_str());
+    if(next == start + strlen(start)) break;
+    else start = next+1;
+  }
+
+
+
+  /* We are done. */
+  jvm->DestroyJavaVM();
 }
 
 void
