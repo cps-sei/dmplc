@@ -8,8 +8,8 @@ SyncSeqDbl.cpp ArrayElim.cpp \
 ../dmpl/gams/Function_Visitor.cpp
 
 OBJ=$(SRC:.cpp=.o)
-INC=-I$(ACE_ROOT) -I$(MADARA_ROOT)/include -I..
-LIB=$(MADARA_ROOT)/libMADARA.so
+INC=-I$(ACE_ROOT) -I$(MADARA_ROOT)/include -I$(JAVA_ROOT)/include -I..
+LIB=$(MADARA_ROOT)/libMADARA.so $(JAVA_ROOT)/jre/lib/amd64/server/libjvm.so
 CFLAGS=-g -O0 -fno-inline
 CXX=g++
 
