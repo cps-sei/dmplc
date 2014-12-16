@@ -1182,13 +1182,13 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "\n";
   buffer_ << "  //-- setup reserve\n";
   buffer_ << "  struct zs_reserve_params cpuattr1;\n";
-  buffer_ << "  cpuattr1.period.tv_sec = _period / 1000;\n";
-  buffer_ << "  cpuattr1.period.tv_nsec= (_period % 1000) * 1000000;\n";
+  buffer_ << "  cpuattr1.period.tv_sec = _period / 1000000;\n";
+  buffer_ << "  cpuattr1.period.tv_nsec= (_period % 1000000) * 1000;\n";
   buffer_ << "  cpuattr1.reserve_type = CRITICALITY_RESERVE;\n";
   buffer_ << "  cpuattr1.criticality = _criticality;\n";
   buffer_ << "  cpuattr1.priority = _priority;\n";
-  buffer_ << "  cpuattr1.zs_instant.tv_sec=_zsinst / 1000;\n";
-  buffer_ << "  cpuattr1.zs_instant.tv_nsec=(_zsinst % 1000) * 1000000;\n";
+  buffer_ << "  cpuattr1.zs_instant.tv_sec=_zsinst / 1000000;\n";
+  buffer_ << "  cpuattr1.zs_instant.tv_nsec=(_zsinst % 1000000) * 1000;\n";
   buffer_ << "  //-- remove the following two lines. experimental.\n";
   buffer_ << "  //cpuattr1.response_time_instant.tv_sec = 4;\n";
   buffer_ << "  //cpuattr1.response_time_instant.tv_nsec =0;\n";
@@ -1474,7 +1474,7 @@ dmpl::gams::Sync_Builder::compute_priorities ()
       continue;
 
     std::string arg = f.second.name;
-    arg += ":" + boost::lexical_cast<std::string>(1000 / f.second.attrs["HERTZ"].paramList.front()->requireInt());
+    arg += ":" + boost::lexical_cast<std::string>(1000000 / f.second.attrs["HERTZ"].paramList.front()->requireInt());
     arg += ":" + boost::lexical_cast<std::string>(f.second.attrs["WCET_OVERLOAD"].paramList.front()->requireInt());
     arg += ":" + boost::lexical_cast<std::string>(f.second.attrs["WCET_NOMINAL"].paramList.front()->requireInt());
     arg += ":" + boost::lexical_cast<std::string>(maxCrit + 1 - f.second.attrs["CRITICALITY"].paramList.front()->requireInt());
@@ -1658,7 +1658,7 @@ dmpl::gams::Sync_Builder::build_main_function ()
 
     //-- get the frequency and convert to period in ms
     int hertz = f.second.attrs["HERTZ"].paramList.front()->requireInt();
-    unsigned period = 1000 / hertz;
+    unsigned period = 1000000 / hertz;
 
     //-- get the priority, criticality, and zero slack instant
     unsigned priority = funcPrios[f.second.name];

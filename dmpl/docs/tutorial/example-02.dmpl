@@ -114,8 +114,8 @@ NODE uav (id)
 
   @HERTZ(10)
   @CRITICALITY(1)
-  @WCET_NOMINAL(10)
-  @WCET_OVERLOAD(20)
+  @WCET_NOMINAL(10000)
+  @WCET_OVERLOAD(20000)
   void WAYPOINT() {
     if(id != 0 && init[0] == 0) {
       waypointValid = 0;
@@ -143,8 +143,8 @@ NODE uav (id)
 
   @HERTZ(10)
   @CRITICALITY(2)
-  @WCET_NOMINAL(15)
-  @WCET_OVERLOAD(30)
+  @WCET_NOMINAL(15000)
+  @WCET_OVERLOAD(30000)
   @BARRIER_SYNC
   @PLATFORM_CONTROLLER
   void ROUND () {
