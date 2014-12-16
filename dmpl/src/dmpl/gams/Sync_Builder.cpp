@@ -1564,7 +1564,9 @@ dmpl::gams::Sync_Builder::compute_priorities ()
   JNIEnv *env = NULL;       /* pointer to native method interface */
   JavaVMInitArgs vm_args; /* JDK/JRE 6 VM initialization arguments */
   JavaVMOption* options = new JavaVMOption[1];
-  options[0].optionString = (char*)"-Djava.class.path=/usr/lib/java:/home/dart/mzsrm/zsrmscheduler";
+  std::string classPath("-Djava.class.path=/usr/lib/java:");
+  classPath += std::string(getenv("MZSRM_ROOT")) + "/zsrmscheduler";
+  options[0].optionString = (char*)classPath.c_str();
   vm_args.version = JNI_VERSION_1_6;
   vm_args.nOptions = 1;
   vm_args.options = options;
