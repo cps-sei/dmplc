@@ -61,10 +61,17 @@
 
 namespace dmpl
 {
+
+  //-- the types of schedulers targeted by code generators
+  typedef enum {
+    NON_RT,  //-- non-real time : default: for laptop demos
+    MZSRM    //-- ZSRM mixed-criticality : the real-thing
+  } SchedType;
+
   namespace gams
   {
     /*******************************************************************/
-    // this is the base class for various code generators for DASL
+    // this is the base class for various code generators for DMPL
     // programs that target MADARA
     /*******************************************************************/
     class GAMS_Builder
@@ -74,8 +81,9 @@ namespace dmpl
        * Constructor
        * @param  builder   the source for building a program
        **/
-      GAMS_Builder (DmplBuilder & builder,const std::string &target)
-        : builder_ (builder), target_ (target) {}
+      GAMS_Builder (DmplBuilder & builder,const std::string &target,
+                    SchedType & schedType)
+        : builder_ (builder), target_ (target), schedType_(schedType) {}
 
       ///we need a virtual destructor
       virtual ~GAMS_Builder() {}
@@ -97,8 +105,11 @@ namespace dmpl
       /// the result of the DASL parsing function
       DmplBuilder & builder_;
 
-      ///the target to build against
+      /// the target to build against
       std::string target_;
+
+      /// the targeted scheduler
+      SchedType schedType_;
     };
   } // namespace gams
 } //namespace dmpl

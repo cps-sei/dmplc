@@ -75,7 +75,8 @@ namespace dmpl
        * Constructor
        * @param  builder   the source for building a program
        **/
-      Sync_Builder (DmplBuilder & builder,const std::string &target);
+      Sync_Builder (DmplBuilder & builder,const std::string &target, 
+                    SchedType & schedType);
 
       /**
        * Builds the underlying character stream that can then be printed

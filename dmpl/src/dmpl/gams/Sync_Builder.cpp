@@ -66,8 +66,9 @@ extern "C" {
 #include <dmplc/dmpl-parser.hpp>
 
 dmpl::gams::Sync_Builder::Sync_Builder (dmpl::DmplBuilder & builder,
-                                          const std::string &target)
-  : GAMS_Builder(builder,target) {}
+                                        const std::string &target, 
+                                        SchedType & schedType)
+  : GAMS_Builder(builder,target, schedType) {}
 
 void
 dmpl::gams::Sync_Builder::build ()
@@ -90,7 +91,7 @@ dmpl::gams::Sync_Builder::build ()
   // close dmpl namespace
   close_dmpl_namespace ();
   buffer_ << "using namespace dmpl;\n";
-  compute_priorities ();
+  if(schedType_ == MZSRM) compute_priorities ();
   build_main_function ();
 }
 
@@ -103,14 +104,16 @@ dmpl::gams::Sync_Builder::build_header_includes ()
   buffer_ << "#include <assert.h>\n";
   buffer_ << "#include <math.h>\n";
   buffer_ << "\n";
-  buffer_ << "extern \"C\" {\n";
-  buffer_ << "#include <stdio.h>\n";
-  buffer_ << "#include <stdlib.h>\n";
-  buffer_ << "#include <time.h>\n";
-  buffer_ << "#include <sched.h>\n";
-  buffer_ << "#include <zsrm.h>\n";
-  buffer_ << "}\n";
-  buffer_ << "\n";
+  if(schedType_ == MZSRM) {
+    buffer_ << "extern \"C\" {\n";
+    buffer_ << "#include <stdio.h>\n";
+    buffer_ << "#include <stdlib.h>\n";
+    buffer_ << "#include <time.h>\n";
+    buffer_ << "#include <sched.h>\n";
+    buffer_ << "#include <zsrm.h>\n";
+    buffer_ << "}\n";
+    buffer_ << "\n";
+  }
   buffer_ << "#include \"madara/knowledge_engine/Knowledge_Base.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/Knowledge_Record.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/Functions.h\"\n";
@@ -1050,10 +1053,14 @@ dmpl::gams::Sync_Builder::build_algo_declaration ()
   buffer_ << "public:\n";
   buffer_ << "  Algo (\n";
   buffer_ << "    double hertz,\n";
-  buffer_ << "    unsigned period,\n";
-  buffer_ << "    unsigned priority,\n";
-  buffer_ << "    unsigned criticality,\n";
-  buffer_ << "    unsigned zsinst,\n";
+
+  if(schedType_ == MZSRM) {
+    buffer_ << "    unsigned period,\n";
+    buffer_ << "    unsigned priority,\n";
+    buffer_ << "    unsigned criticality,\n";
+    buffer_ << "    unsigned zsinst,\n";
+  }
+
   buffer_ << "    const std::string &exec_func,\n";
   buffer_ << "    Madara::Knowledge_Engine::Knowledge_Base * knowledge = 0,\n";
   buffer_ << "    const std::string &platform_name = \"\",\n";
@@ -1074,15 +1081,22 @@ dmpl::gams::Sync_Builder::build_algo_declaration ()
 
   buffer_ << "protected:\n";
   buffer_ << "  double _hertz;\n";
-  buffer_ << "  unsigned _period; //-- period in ms\n";
-  buffer_ << "  unsigned _priority; //-- priority, starting with 1 and moving up\n";
-  buffer_ << "  unsigned _criticality; //-- criticality, starting with 1 and moving up\n";
-  buffer_ << "  unsigned _zsinst; //-- zero-slack instant in ms\n";
+
+  if(schedType_ == MZSRM) {
+    buffer_ << "  unsigned _period; //-- period in ms\n";
+    buffer_ << "  unsigned _priority; //-- priority, starting with 1 and moving up\n";
+    buffer_ << "  unsigned _criticality; //-- criticality, starting with 1 and moving up\n";
+    buffer_ << "  unsigned _zsinst; //-- zero-slack instant in ms\n";
+  }
 
   buffer_ << "  controllers::Base loop;\n";
   buffer_ << "  std::string _exec_func, _platform_name;\n";
-  buffer_ << "  int sched; //-- the ZSRM scheduler handle\n";
-  buffer_ << "  int rid;   //-- the ZSRM reservation id\n";
+
+  if(schedType_ == MZSRM) {
+    buffer_ << "  int sched; //-- the ZSRM scheduler handle\n";
+    buffer_ << "  int rid;   //-- the ZSRM reservation id\n";
+  }
+
   buffer_ << "};\n";
   buffer_ << "\n";
   buffer_ << "class SyncAlgo : public Algo\n";
@@ -1090,10 +1104,14 @@ dmpl::gams::Sync_Builder::build_algo_declaration ()
   buffer_ << "public:\n";
   buffer_ << "  SyncAlgo (\n";
   buffer_ << "    double hertz,\n";
-  buffer_ << "    unsigned period,\n";
-  buffer_ << "    unsigned priority,\n";
-  buffer_ << "    unsigned criticality,\n";
-  buffer_ << "    unsigned zsinst,\n";
+
+  if(schedType_ == MZSRM) {
+    buffer_ << "    unsigned period,\n";
+    buffer_ << "    unsigned priority,\n";
+    buffer_ << "    unsigned criticality,\n";
+    buffer_ << "    unsigned zsinst,\n";
+  }
+
   buffer_ << "    const std::string &exec_func,\n";
   buffer_ << "    Madara::Knowledge_Engine::Knowledge_Base * knowledge = 0,\n";
   buffer_ << "    const std::string &platform_name = \"\",\n";
@@ -1125,20 +1143,35 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
 {
   buffer_ << "Algo::Algo (\n";
   buffer_ << "    double hertz,\n";
-  buffer_ << "    unsigned period,\n";
-  buffer_ << "    unsigned priority,\n";
-  buffer_ << "    unsigned criticality,\n";
-  buffer_ << "    unsigned zsinst,\n";
+
+  if(schedType_ == MZSRM) {
+    buffer_ << "    unsigned period,\n";
+    buffer_ << "    unsigned priority,\n";
+    buffer_ << "    unsigned criticality,\n";
+    buffer_ << "    unsigned zsinst,\n";
+  }
+
   buffer_ << "    const std::string &exec_func,\n";
   buffer_ << "    Madara::Knowledge_Engine::Knowledge_Base * knowledge,\n";
   buffer_ << "    const std::string &platform_name,\n";
   buffer_ << "    variables::Sensors * sensors,\n";
-  buffer_ << "    variables::Self * self) : sched(0), rid(0),\n";
-  buffer_ << "      loop(*knowledge), _platform_name(platform_name),\n";
+
+  if(schedType_ == MZSRM) {
+    buffer_ << "    variables::Self * self) : sched(0), rid(0),\n";
+    buffer_ << "      loop(*knowledge), _platform_name(platform_name),\n";
+  } else {
+    buffer_ << "    variables::Self * self) : loop(*knowledge), _platform_name(platform_name),\n";
+  }
+
   buffer_ << "      Base (knowledge, 0, sensors, self),\n";
-  buffer_ << "      _hertz(hertz), _period(period),\n";
-  buffer_ << "      _priority(priority), _criticality(criticality),\n";
-  buffer_ << "      _zsinst(zsinst), _exec_func(exec_func)\n";
+
+  if(schedType_ == MZSRM) {
+    buffer_ << "      _hertz(hertz), _period(period),\n";
+    buffer_ << "      _priority(priority), _criticality(criticality),\n";
+    buffer_ << "      _zsinst(zsinst), _exec_func(exec_func)\n";
+  } else
+    buffer_ << "            _hertz(hertz), _exec_func(exec_func)\n";
+
   buffer_ << "{\n";
   buffer_ << "}\n";
   buffer_ << "\n";
@@ -1162,64 +1195,78 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
 
   buffer_ << "void Algo::init (engine::Knowledge_Base & context)\n";
   buffer_ << "{\n";
-  buffer_ << "  loop.init_vars (settings.id, processes);\n";
-  buffer_ << "  if(_platform_name != \"\") init_platform ();\n";
-  buffer_ << "  loop.init_algorithm (this);\n";
-  buffer_ << "\n";
-  buffer_ << "  //-- set thread affinity\n";
-  buffer_ << "  cpu_set_t cpuset;\n";
-  buffer_ << "  CPU_ZERO(&cpuset);\n";
-  buffer_ << "  CPU_SET(0, &cpuset);\n";
-  buffer_ << "  pthread_t current_thread = pthread_self();\n";
-  buffer_ << "  if(pthread_setaffinity_np(current_thread, sizeof(cpu_set_t), &cpuset))\n";
-  buffer_ << "    assert(0 && \"ERROR: could not set thread CPU affinity!!\");\n";
-  buffer_ << "\n";
-  buffer_ << "  //-- connect to the scheduler\n";
-  buffer_ << "  if ((sched = zs_open_sched()) == -1){\n";
-  buffer_ << "    printf(\"error opening the scheduler\\n\");\n";
-  buffer_ << "    assert(0 && \"ERROR: could not open ZSRM scheduler!!\");\n";
-  buffer_ << "  }\n";
-  buffer_ << "\n";
-  buffer_ << "  //-- setup reserve\n";
-  buffer_ << "  struct zs_reserve_params cpuattr1;\n";
-  buffer_ << "  cpuattr1.period.tv_sec = _period / 1000000;\n";
-  buffer_ << "  cpuattr1.period.tv_nsec= (_period % 1000000) * 1000;\n";
-  buffer_ << "  cpuattr1.reserve_type = CRITICALITY_RESERVE;\n";
-  buffer_ << "  cpuattr1.criticality = _criticality;\n";
-  buffer_ << "  cpuattr1.priority = _priority;\n";
-  buffer_ << "  cpuattr1.zs_instant.tv_sec=_zsinst / 1000000;\n";
-  buffer_ << "  cpuattr1.zs_instant.tv_nsec=(_zsinst % 1000000) * 1000;\n";
-  buffer_ << "  //-- remove the following two lines. experimental.\n";
-  buffer_ << "  //cpuattr1.response_time_instant.tv_sec = 4;\n";
-  buffer_ << "  //cpuattr1.response_time_instant.tv_nsec =0;\n";
-  buffer_ << "  cpuattr1.enforcement_mask=0;\n";
-  buffer_ << "  rid = zs_create_reserve(sched, &cpuattr1);\n";
-  buffer_ << "  if(rid == -1)\n";
-  buffer_ << "    assert(0 && \"error creating ZSRM reserve ...\");\n";
-  buffer_ << "\n";
-  buffer_ << "  //-- attach reservation\n";
-  buffer_ << "  if(zs_attach_reserve(sched, rid, syscall(SYS_gettid)) == -1)\n";
-  buffer_ << "    assert(0 && \"error attaching ZSRM reserve ...\");\n";
+
+  if(schedType_ == MZSRM) {
+    buffer_ << "  loop.init_vars (settings.id, processes);\n";
+    buffer_ << "  if(_platform_name != \"\") init_platform ();\n";
+    buffer_ << "  loop.init_algorithm (this);\n";
+    buffer_ << "\n";
+    buffer_ << "  //-- set thread affinity\n";
+    buffer_ << "  cpu_set_t cpuset;\n";
+    buffer_ << "  CPU_ZERO(&cpuset);\n";
+    buffer_ << "  CPU_SET(0, &cpuset);\n";
+    buffer_ << "  pthread_t current_thread = pthread_self();\n";
+    buffer_ << "  if(pthread_setaffinity_np(current_thread, sizeof(cpu_set_t), &cpuset))\n";
+    buffer_ << "    assert(0 && \"ERROR: could not set thread CPU affinity!!\");\n";
+    buffer_ << "\n";
+    buffer_ << "  //-- connect to the scheduler\n";
+    buffer_ << "  if ((sched = zs_open_sched()) == -1){\n";
+    buffer_ << "    printf(\"error opening the scheduler\\n\");\n";
+    buffer_ << "    assert(0 && \"ERROR: could not open ZSRM scheduler!!\");\n";
+    buffer_ << "  }\n";
+    buffer_ << "\n";
+    buffer_ << "  //-- setup reserve\n";
+    buffer_ << "  struct zs_reserve_params cpuattr1;\n";
+    buffer_ << "  cpuattr1.period.tv_sec = _period / 1000000;\n";
+    buffer_ << "  cpuattr1.period.tv_nsec= (_period % 1000000) * 1000;\n";
+    buffer_ << "  cpuattr1.reserve_type = CRITICALITY_RESERVE;\n";
+    buffer_ << "  cpuattr1.criticality = _criticality;\n";
+    buffer_ << "  cpuattr1.priority = _priority;\n";
+    buffer_ << "  cpuattr1.zs_instant.tv_sec=_zsinst / 1000000;\n";
+    buffer_ << "  cpuattr1.zs_instant.tv_nsec=(_zsinst % 1000000) * 1000;\n";
+    buffer_ << "  //-- remove the following two lines. experimental.\n";
+    buffer_ << "  //cpuattr1.response_time_instant.tv_sec = 4;\n";
+    buffer_ << "  //cpuattr1.response_time_instant.tv_nsec =0;\n";
+    buffer_ << "  cpuattr1.enforcement_mask=0;\n";
+    buffer_ << "  rid = zs_create_reserve(sched, &cpuattr1);\n";
+    buffer_ << "  if(rid == -1)\n";
+    buffer_ << "    assert(0 && \"error creating ZSRM reserve ...\");\n";
+    buffer_ << "\n";
+    buffer_ << "  //-- attach reservation\n";
+    buffer_ << "  if(zs_attach_reserve(sched, rid, syscall(SYS_gettid)) == -1)\n";
+    buffer_ << "    assert(0 && \"error attaching ZSRM reserve ...\");\n";
+  } else {
+    buffer_ << "  loop.init_vars (settings.id, processes);\n";
+    buffer_ << "  if(_platform_name != \"\") init_platform ();\n";
+    buffer_ << "  loop.init_algorithm (this);\n";
+  }
+
   buffer_ << "}\n";
   buffer_ << "\n";
 
   buffer_ << "void Algo::run (void)\n";
   buffer_ << "{\n";
-  buffer_ << "  for(;;) {\n";
-  buffer_ << "    //-- wait for next period\n";
-  buffer_ << "    if (zs_wait_next_period(sched, rid) < 0){\n";
-  buffer_ << "      printf(\"wait next period returned negative\\n\");\n";
-  buffer_ << "      if (errno == EINTR){\n";
-  buffer_ << "        printf(\"signal interruption!!\\n\");\n";
-  buffer_ << "      }\n";
-  buffer_ << "    }\n";
-  buffer_ << "\n";
-  buffer_ << "    //-- run job\n";
-  buffer_ << "    loop.run_once();\n";
-  buffer_ << "  }\n";
+
+  if(schedType_ == MZSRM) {
+    buffer_ << "  for(;;) {\n";
+    buffer_ << "    //-- wait for next period\n";
+    buffer_ << "    if (zs_wait_next_period(sched, rid) < 0){\n";
+    buffer_ << "      printf(\"wait next period returned negative\\n\");\n";
+    buffer_ << "      if (errno == EINTR){\n";
+    buffer_ << "        printf(\"signal interruption!!\\n\");\n";
+    buffer_ << "      }\n";
+    buffer_ << "    }\n";
+    buffer_ << "\n";
+    buffer_ << "    //-- run job\n";
+    buffer_ << "    loop.run_once();\n";
+    buffer_ << "  }\n";
+  } else {
+    buffer_ << "  loop.run_once(); \n";
+  }
+
   buffer_ << "}\n";
   buffer_ << "\n";
-
+    
   buffer_ << "void Algo::init_platform ()\n";
   buffer_ << "{\n";
   buffer_ << "  loop.init_platform (_platform_name);\n";
@@ -1227,16 +1274,22 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   //buffer_ << "  std::cout << \"Platform init\" << std::endl;\n";
   buffer_ << "}\n";
   buffer_ << "\n";
-
+    
   buffer_ << "void Algo::cleanup (void)\n";
   buffer_ << "{\n";
   buffer_ << "}\n";
   buffer_ << "\n";
-
+    
   buffer_ << "void Algo::start (threads::Threader &threader)\n";
   buffer_ << "{\n";
   buffer_ << "  std::cout << \"Starting thread: \" << _exec_func << \" at \" << _hertz << \" hertz\" << std::endl;\n";
-  buffer_ << "  threader.run(_exec_func, this);\n";
+
+  if(schedType_ == MZSRM) {
+    buffer_ << "  threader.run(_exec_func, this);\n";
+  } else {
+    buffer_ << "  threader.run(_hertz, _exec_func, this);\n";
+  }
+
   buffer_ << "}\n";
   buffer_ << "\n";
 
@@ -1249,17 +1302,27 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
 
   buffer_ << "SyncAlgo::SyncAlgo (\n";
   buffer_ << "    double hertz,\n";
-  buffer_ << "    unsigned period,\n";
-  buffer_ << "    unsigned priority,\n";
-  buffer_ << "    unsigned criticality,\n";
-  buffer_ << "    unsigned zsinst,\n";
+
+  if(schedType_ == MZSRM) {
+    buffer_ << "    unsigned period,\n";
+    buffer_ << "    unsigned priority,\n";
+    buffer_ << "    unsigned criticality,\n";
+    buffer_ << "    unsigned zsinst,\n";
+  }
+
   buffer_ << "    const std::string &exec_func,\n";
   buffer_ << "    Madara::Knowledge_Engine::Knowledge_Base * knowledge,\n";
   buffer_ << "    const std::string &platform_name,\n";
   buffer_ << "    variables::Sensors * sensors,\n";
   buffer_ << "    variables::Self * self) : phase(0), mbarrier(\"mbarrier_\" + exec_func),\n";
-  buffer_ << "      Algo (hertz, period, priority, criticality, zsinst,\n";
-  buffer_ << "            exec_func, knowledge, platform_name, sensors, self)\n";
+
+  if(schedType_ == MZSRM) {
+    buffer_ << "      Algo (hertz, period, priority, criticality, zsinst,\n";
+    buffer_ << "            exec_func, knowledge, platform_name, sensors, self)\n";
+  } else {
+    buffer_ << "      Algo (hertz, exec_func, knowledge, platform_name, sensors, self)\n";
+  }
+
   buffer_ << "{\n";
 
   buffer_ << "  wait_settings.max_wait_time = 0;\n";
@@ -1345,15 +1408,23 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "void SyncAlgo::run (void)\n";
 
   buffer_ << "{\n";
-  buffer_ << "  for(;;) {\n";
-  buffer_ << "    //-- wait for next period\n";
-  buffer_ << "    if (zs_wait_next_period(sched, rid) < 0) {\n";
-  buffer_ << "      printf(\"wait next period returned negative\\n\");\n";
-  buffer_ << "      if (errno == EINTR) {\n";
-  buffer_ << "        printf(\"signal interruption!!\\n\");\n";
-  buffer_ << "      }\n";
-  buffer_ << "    }\n";
-  buffer_ << "\n"; 
+
+  if(schedType_ == MZSRM)
+    buffer_ << "  for(;;) {\n";
+  else
+    buffer_ << "  {\n";
+
+  if(schedType_ == MZSRM) {
+    buffer_ << "    //-- wait for next period\n";
+    buffer_ << "    if (zs_wait_next_period(sched, rid) < 0) {\n";
+    buffer_ << "      printf(\"wait next period returned negative\\n\");\n";
+    buffer_ << "      if (errno == EINTR) {\n";
+    buffer_ << "        printf(\"signal interruption!!\\n\");\n";
+    buffer_ << "      }\n";
+    buffer_ << "    }\n";
+    buffer_ << "\n"; 
+  }
+
   buffer_ << "    // Pre-round barrier increment\n";
   //buffer_ << "  std::cout << \"SyncAlgo::run phase \" << phase << std::endl;;\n";
   buffer_ << "    if(phase == 0)\n";
@@ -1380,7 +1451,12 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "      wait_settings.send_list = barrier_send_list; \n";
   buffer_ << "      // Execute main user logic \n";
   buffer_ << "      wait_settings.delay_sending_modifieds = true; \n";
-  buffer_ << "      loop.run_once();\n";
+
+  if(schedType_ == MZSRM)
+    buffer_ << "      loop.run_once();\n";
+  else
+    buffer_ << "      Algo::run(); \n";
+
   buffer_ << "      phase++;\n";
   buffer_ << "    }\n";
 
@@ -1431,16 +1507,16 @@ dmpl::gams::Sync_Builder::compute_priorities ()
   //-- assign priorities rate monotonically
   std::multimap<int,std::string> freq2Func;
   BOOST_FOREACH(Functions::value_type &f, node.funcs)
-  {
-    if (f.second.attrs.count("HERTZ") == 0)
-      continue;
-    if (f.second.attrs.count("HERTZ") != 1 || f.second.attrs["HERTZ"].paramList.size() != 1)
-      throw std::runtime_error("Invalid @HERTZ attribute.");
+    {
+      if (f.second.attrs.count("HERTZ") == 0)
+        continue;
+      if (f.second.attrs.count("HERTZ") != 1 || f.second.attrs["HERTZ"].paramList.size() != 1)
+        throw std::runtime_error("Invalid @HERTZ attribute.");
 
-    //-- get the frequency and convert to period in ms
-    int hertz = f.second.attrs["HERTZ"].paramList.front()->requireInt();
-    freq2Func.insert(std::pair<int,std::string>(hertz, f.second.name));
-  }
+      //-- get the frequency and convert to period in ms
+      int hertz = f.second.attrs["HERTZ"].paramList.front()->requireInt();
+      freq2Func.insert(std::pair<int,std::string>(hertz, f.second.name));
+    }
 
   unsigned nextPrio = 1;
   for(std::map<int,std::string>::const_iterator i = freq2Func.begin(), e = freq2Func.end(); i != e; ++i) {
@@ -1451,16 +1527,16 @@ dmpl::gams::Sync_Builder::compute_priorities ()
   //-- maximum criticality
   unsigned maxCrit = 0;
   BOOST_FOREACH(Functions::value_type &f, node.funcs)
-  {
-    if (f.second.attrs.count("CRITICALITY") == 0)
-      continue;
-    if (f.second.attrs.count("CRITICALITY") != 1 || f.second.attrs["CRITICALITY"].paramList.size() != 1)
-      throw std::runtime_error("Invalid @CRITICALITY attribute.");
+    {
+      if (f.second.attrs.count("CRITICALITY") == 0)
+        continue;
+      if (f.second.attrs.count("CRITICALITY") != 1 || f.second.attrs["CRITICALITY"].paramList.size() != 1)
+        throw std::runtime_error("Invalid @CRITICALITY attribute.");
 
-    //-- get the criticality
-    funcCrits[f.second.name] = f.second.attrs["CRITICALITY"].paramList.front()->requireInt();
-    if(maxCrit < funcCrits[f.second.name]) maxCrit = funcCrits[f.second.name];
-  }
+      //-- get the criticality
+      funcCrits[f.second.name] = f.second.attrs["CRITICALITY"].paramList.front()->requireInt();
+      if(maxCrit < funcCrits[f.second.name]) maxCrit = funcCrits[f.second.name];
+    }
 
   //-- now run the schedulability analysis to compute zero slack
   //-- instants. this requires interacting with Java since the tool is
@@ -1469,20 +1545,20 @@ dmpl::gams::Sync_Builder::compute_priorities ()
   //-- create the string argument to the scheduler
   std::string jvmArg;
   BOOST_FOREACH(Functions::value_type &f, node.funcs)
-  {
-    if (f.second.attrs.count("HERTZ") == 0)
-      continue;
+    {
+      if (f.second.attrs.count("HERTZ") == 0)
+        continue;
 
-    std::string arg = f.second.name;
-    arg += ":" + boost::lexical_cast<std::string>(1000000 / f.second.attrs["HERTZ"].paramList.front()->requireInt());
-    arg += ":" + boost::lexical_cast<std::string>(f.second.attrs["WCET_OVERLOAD"].paramList.front()->requireInt());
-    arg += ":" + boost::lexical_cast<std::string>(f.second.attrs["WCET_NOMINAL"].paramList.front()->requireInt());
-    arg += ":" + boost::lexical_cast<std::string>(maxCrit + 1 - f.second.attrs["CRITICALITY"].paramList.front()->requireInt());
-    arg += ":" + boost::lexical_cast<std::string>(nextPrio - funcPrios[f.second.name]);
+      std::string arg = f.second.name;
+      arg += ":" + boost::lexical_cast<std::string>(1000000 / f.second.attrs["HERTZ"].paramList.front()->requireInt());
+      arg += ":" + boost::lexical_cast<std::string>(f.second.attrs["WCET_OVERLOAD"].paramList.front()->requireInt());
+      arg += ":" + boost::lexical_cast<std::string>(f.second.attrs["WCET_NOMINAL"].paramList.front()->requireInt());
+      arg += ":" + boost::lexical_cast<std::string>(maxCrit + 1 - f.second.attrs["CRITICALITY"].paramList.front()->requireInt());
+      arg += ":" + boost::lexical_cast<std::string>(nextPrio - funcPrios[f.second.name]);
 
-    if(jvmArg.empty()) jvmArg = arg;
-    else jvmArg += "," + arg;
-  }
+      if(jvmArg.empty()) jvmArg = arg;
+      else jvmArg += "," + arg;
+    }
 
   JavaVM *jvm = NULL;       /* denotes a Java VM */
   JNIEnv *env = NULL;       /* pointer to native method interface */
@@ -1580,7 +1656,7 @@ dmpl::gams::Sync_Builder::build_main_function ()
   buffer_ << "  settings.queue_length = 100000;\n\n";
 
 
-  #if 0
+#if 0
   //-- if either callbacks or heartbeats
   if(!builder_.program.callbacks.empty()) {
     buffer_ << "  // add commonly used filters\n";
@@ -1599,7 +1675,7 @@ dmpl::gams::Sync_Builder::build_main_function ()
     buffer_ << "  settings.add_receive_filter (remove_auxiliaries);\n";
     buffer_ << "\n";
   }
-  #endif
+#endif
 
   buffer_ << "  // create the knowledge base with the transport settings\n";
   buffer_ << "  knowledge = new Madara::Knowledge_Engine::Knowledge_Base (host, settings);\n\n";
@@ -1608,14 +1684,14 @@ dmpl::gams::Sync_Builder::build_main_function ()
 
   buffer_ << "  // NODE: " << node.name << "\n";
   BOOST_FOREACH (Attributes::value_type & attr, node.attrs)
-  {
-    buffer_ << "  // @" << attr.second.name;
-    BOOST_FOREACH (Expr p, attr.second.paramList)
     {
-      buffer_ << " " << p->toString();
+      buffer_ << "  // @" << attr.second.name;
+      BOOST_FOREACH (Expr p, attr.second.paramList)
+        {
+          buffer_ << " " << p->toString();
+        }
+      buffer_ << "\n";
     }
-    buffer_ << "\n";
-  }
 
 
   build_program_variables_bindings ();
@@ -1636,12 +1712,12 @@ dmpl::gams::Sync_Builder::build_main_function ()
 
 
   BOOST_FOREACH(Functions::value_type &f, node.funcs)
-  {
-    if (f.second.attrs.count("INIT_SIM") == 1)
     {
-      buffer_ << "  knowledge->evaluate(\"" << f.second.name << "()\");\n";
+      if (f.second.attrs.count("INIT_SIM") == 1)
+        {
+          buffer_ << "  knowledge->evaluate(\"" << f.second.name << "()\");\n";
+        }
     }
-  }
   //buffer_ << "  knowledge->set(\"S\" + to_string(settings.id) + \".init\", \"1\");\n";
 
   buffer_ << "  threads::Threader threader(*knowledge);\n";
@@ -1650,63 +1726,77 @@ dmpl::gams::Sync_Builder::build_main_function ()
   buffer_ << "  std::vector<Algo *> algos;\n";
   buffer_ << "  Algo *algo;\n\n";
   BOOST_FOREACH(Functions::value_type &f, node.funcs)
-  {
-    if (f.second.attrs.count("HERTZ") == 0)
-      continue;
-    if (f.second.attrs.count("HERTZ") != 1 || f.second.attrs["HERTZ"].paramList.size() != 1)
-      throw std::runtime_error("Invalid @HERTZ attribute.");
-
-    //-- get the frequency and convert to period in ms
-    int hertz = f.second.attrs["HERTZ"].paramList.front()->requireInt();
-    unsigned period = 1000000 / hertz;
-
-    //-- get the priority, criticality, and zero slack instant
-    unsigned priority = funcPrios[f.second.name];
-    unsigned criticality = funcCrits[f.second.name];
-    unsigned zsinst = funcZsinsts[f.second.name];
-
-    if (f.second.attrs.count("PLATFORM_CONTROLLER") == 1)
     {
-      if (platformFunction == NULL)
-      {
-        platformFunction = &f.second;
-      }
-      else
-      {
-        throw std::runtime_error("Multiple @PLATFORM_CONTROLLER functions are not supported.");
-      }
-    }
+      if (f.second.attrs.count("HERTZ") == 0)
+        continue;
+      if (f.second.attrs.count("HERTZ") != 1 || f.second.attrs["HERTZ"].paramList.size() != 1)
+        throw std::runtime_error("Invalid @HERTZ attribute.");
 
-    //-- for synchronous function
-    if (f.second.attrs.count("BARRIER_SYNC") == 1)
-    {
-      if (platformFunction == &f.second)
-        buffer_ << "  algo = new SyncAlgo(" << hertz << ", "
-                << period << ", " << priority << ", " 
-                << criticality << ", " << zsinst << ", \"" << f.second.name 
-                << "\", knowledge, platform_name);\n";
+      //-- get the frequency and convert to period in ms
+      int hertz = f.second.attrs["HERTZ"].paramList.front()->requireInt();
+      unsigned period = 1000000 / hertz;
+
+      //-- get the priority, criticality, and zero slack instant
+      unsigned priority = funcPrios[f.second.name];
+      unsigned criticality = funcCrits[f.second.name];
+      unsigned zsinst = funcZsinsts[f.second.name];
+
+      if (f.second.attrs.count("PLATFORM_CONTROLLER") == 1)
+        {
+          if (platformFunction == NULL)
+            {
+              platformFunction = &f.second;
+            }
+          else
+            {
+              throw std::runtime_error("Multiple @PLATFORM_CONTROLLER functions are not supported.");
+            }
+        }
+
+      //-- for synchronous function
+      if (f.second.attrs.count("BARRIER_SYNC") == 1)
+        {
+          if(schedType_ == MZSRM) {
+            if (platformFunction == &f.second)
+              buffer_ << "  algo = new SyncAlgo(" << hertz << ", "
+                      << period << ", " << priority << ", " 
+                      << criticality << ", " << zsinst << ", \"" << f.second.name 
+                      << "\", knowledge, platform_name);\n";
+            else
+              buffer_ << "  algo = new SyncAlgo(" << hertz << ", "
+                      << period << ", " << priority << ", " 
+                      << criticality << ", " << zsinst << ", \"" << f.second.name 
+                      << "\", knowledge);\n";
+          } else {
+            if (platformFunction == &f.second)
+              buffer_ << "  algo = new SyncAlgo(" << hertz << ", \"" << f.second.name << "\", knowledge, platform_name);\n";
+            else
+              buffer_ << "  algo = new SyncAlgo(" << hertz << ", \"" << f.second.name << "\", knowledge);\n";
+          }
+        }
+      //-- for asynchronous function
       else
-        buffer_ << "  algo = new SyncAlgo(" << hertz << ", "
-                << period << ", " << priority << ", " 
-                << criticality << ", " << zsinst << ", \"" << f.second.name 
-                << "\", knowledge);\n";
+        {
+          if(schedType_ == MZSRM) {
+            if (platformFunction == &f.second)
+              buffer_ << "  algo = new Algo(" << hertz << ", " 
+                      << period << ", " << priority << ", " 
+                      << criticality << ", " << zsinst << ", \"" << f.second.name 
+                      << "\", knowledge, platform_name);\n";
+            else
+              buffer_ << "  algo = new Algo(" << hertz << ", "
+                      << period << ", " << priority << ", " 
+                      << criticality << ", " << zsinst << ", \"" << f.second.name 
+                      << "\", knowledge);\n";
+          } else {
+            if (platformFunction == &f.second)
+              buffer_ << "  algo = new Algo(" << hertz << ", \"" << f.second.name << "\", knowledge, platform_name);\n";
+            else
+              buffer_ << "  algo = new Algo(" << hertz << ", \"" << f.second.name << "\", knowledge);\n";
+          }
+        }
+      buffer_ << "  algos.push_back(algo);\n\n";
     }
-    //-- for asynchronous function
-    else
-    {
-      if (platformFunction == &f.second)
-        buffer_ << "  algo = new Algo(" << hertz << ", " 
-                << period << ", " << priority << ", " 
-                << criticality << ", " << zsinst << ", \"" << f.second.name 
-                << "\", knowledge, platform_name);\n";
-      else
-        buffer_ << "  algo = new Algo(" << hertz << ", "
-                << period << ", " << priority << ", " 
-                << criticality << ", " << zsinst << ", \"" << f.second.name 
-                << "\", knowledge);\n";
-    }
-    buffer_ << "  algos.push_back(algo);\n\n";
-  }
 
   buffer_ << "  for(int i = 0; i < algos.size(); i++)\n";
   buffer_ << "    algos[i]->start(threader);\n";
@@ -1730,22 +1820,22 @@ dmpl::gams::Sync_Builder::build_main_define_functions ()
   buffer_ << "  // Defining global functions for MADARA\n\n";
   Functions & funcs = builder_.program.funcs;
   for (Functions::iterator i = funcs.begin (); i != funcs.end (); ++i)
-  {
-    build_main_define_function (Node (), i->second);
-  }
+    {
+      build_main_define_function (Node (), i->second);
+    }
   
   buffer_ << "\n";
 
   buffer_ << "  // Defining node functions for MADARA\n\n";
   Nodes & nodes = builder_.program.nodes;
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
-  {
-    Functions & funcs = n->second.funcs;
-    for (Functions::iterator i = funcs.begin (); i != funcs.end (); ++i)
     {
-      build_main_define_function (n->second, i->second);
+      Functions & funcs = n->second.funcs;
+      for (Functions::iterator i = funcs.begin (); i != funcs.end (); ++i)
+        {
+          build_main_define_function (n->second, i->second);
+        }
     }
-  }
 
   buffer_ << "\n";
 }
@@ -1753,16 +1843,16 @@ dmpl::gams::Sync_Builder::build_main_define_functions ()
 
 void
 dmpl::gams::Sync_Builder::build_main_define_function (const Node & node,
-  Function & function)
+                                                      Function & function)
 {
   if (!(function.attrs.count("INIT") > 0 || function.attrs.count("SAFETY") > 0))
-  {
-    buffer_ << "  knowledge->define_function (\"";
-    buffer_ << function.name;
-    buffer_ << "\", ";
-    buffer_ << node.name << "_" << function.name;
-    buffer_ << ");\n";
-  }
+    {
+      buffer_ << "  knowledge->define_function (\"";
+      buffer_ << function.name;
+      buffer_ << "\", ";
+      buffer_ << node.name << "_" << function.name;
+      buffer_ << ");\n";
+    }
 }
 
 void

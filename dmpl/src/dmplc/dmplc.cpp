@@ -76,6 +76,7 @@ bool debug = false;
 bool seq_no_array = false, init_globals = false;
 size_t nodes = 0;
 int round_num = -1;
+dmpl::SchedType schedType = dmpl::NON_RT;
 
 //constant definitions supplied via command line
 std::map<std::string, std::string> const_def;
@@ -124,7 +125,7 @@ int main (int argc, char **argv)
       program.processes.push_back (dmpl::Process (nodeName, i));
 
     // create a madara builder instance of the dmpl builder parse
-    dmpl::gams::GAMS_Builder *gams_builder = new dmpl::gams::Sync_Builder (builder, madara_target);
+    dmpl::gams::GAMS_Builder *gams_builder = new dmpl::gams::Sync_Builder (builder, madara_target, schedType);
 
     //build the generated code
     gams_builder->build ();
@@ -253,6 +254,10 @@ void parse_options (int argc, char **argv)
     {
       do_vrep = true;
     }
+    else if (arg1 == "-mz" || arg1 == "--mzsrm")
+    {
+      schedType = dmpl::MZSRM;
+    }
     else if (arg1 == "-s" || arg1 == "--seq")
     {
       do_seq = true;
@@ -328,6 +333,7 @@ void usage (char *cmd)
   std::cerr << "  -t|--target|--platform p specify a target platform\n";
   std::cerr << "        Available platforms: WIN_CPP, GNU_CPP (default)\n";
   std::cerr << "  -vr|--vrep               generate code that targets VREP\n";
+  std::cerr << "  -mz|--mzsrm              generate code that targets MZSRM scheduler\n";
   std::cerr << "  -s|--seq                 generate sequentialized code to verify\n";
   std::cerr << "  -r|--rounds rounds       number of verification rounds\n";
   std::cerr << "  --seq-no-array           do not use arrays during verification\n";
