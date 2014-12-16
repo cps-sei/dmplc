@@ -57,6 +57,7 @@
 #include <dmpl/gams/Function_Visitor.hpp>
 #include <boost/algorithm/string.hpp>
 #include <vector>
+#include <map>
 #include <dmplc/dmpl-parser.hpp>
 
 dmpl::gams::Sync_Builder::Sync_Builder (dmpl::DmplBuilder & builder,
@@ -1424,7 +1425,7 @@ dmpl::gams::Sync_Builder::compute_priorities ()
   Node &node = builder_.program.nodes.begin()->second;
 
   //-- assign priorities rate monotonically
-  std::map<int,std::string> freq2Func;
+  std::multimap<int,std::string> freq2Func;
   BOOST_FOREACH(Functions::value_type &f, node.funcs)
   {
     if (f.second.attrs.count("HERTZ") == 0)
@@ -1434,7 +1435,7 @@ dmpl::gams::Sync_Builder::compute_priorities ()
 
     //-- get the frequency and convert to period in ms
     int hertz = f.second.attrs["HERTZ"].paramList.front()->requireInt();
-    freq2Func[hertz] = f.second.name;
+    freq2Func.insert(std::pair<int,std::string>(hertz, f.second.name));
   }
 
   unsigned nextPrio = 1;
