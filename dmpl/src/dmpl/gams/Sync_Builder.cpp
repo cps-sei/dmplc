@@ -96,6 +96,14 @@ dmpl::gams::Sync_Builder::build_header_includes ()
   buffer_ << "#include <assert.h>\n";
   buffer_ << "#include <math.h>\n";
   buffer_ << "\n";
+  buffer_ << "extern \"C\" {\n";
+  buffer_ << "#include <stdio.h>\n";
+  buffer_ << "#include <stdlib.h>\n";
+  buffer_ << "#include <time.h>\n";
+  buffer_ << "#include <sched.h>\n";
+  buffer_ << "#include <zsrm.h>\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
   buffer_ << "#include \"madara/knowledge_engine/Knowledge_Base.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/Knowledge_Record.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/Functions.h\"\n";
@@ -1035,6 +1043,10 @@ dmpl::gams::Sync_Builder::build_algo_declaration ()
   buffer_ << "public:\n";
   buffer_ << "  Algo (\n";
   buffer_ << "    double hertz,\n";
+  buffer_ << "    unsigned period,\n";
+  buffer_ << "    unsigned priority,\n";
+  buffer_ << "    unsigned criticality,\n";
+  buffer_ << "    unsigned zsinst,\n";
   buffer_ << "    const std::string &exec_func,\n";
   buffer_ << "    Madara::Knowledge_Engine::Knowledge_Base * knowledge = 0,\n";
   buffer_ << "    const std::string &platform_name = \"\",\n";
@@ -1055,8 +1067,15 @@ dmpl::gams::Sync_Builder::build_algo_declaration ()
 
   buffer_ << "protected:\n";
   buffer_ << "  double _hertz;\n";
+  buffer_ << "  unsigned _period; //-- period in ms\n";
+  buffer_ << "  unsigned _priority; //-- priority, starting with 1 and moving up\n";
+  buffer_ << "  unsigned _criticality; //-- criticality, starting with 1 and moving up\n";
+  buffer_ << "  unsigned _zsinst; //-- zero-slack instant in ms\n";
+
   buffer_ << "  controllers::Base loop;\n";
   buffer_ << "  std::string _exec_func, _platform_name;\n";
+  buffer_ << "  int sched; //-- the ZSRM scheduler handle\n";
+  buffer_ << "  int rid;   //-- the ZSRM reservation id\n";
   buffer_ << "};\n";
   buffer_ << "\n";
   buffer_ << "class SyncAlgo : public Algo\n";
@@ -1064,6 +1083,10 @@ dmpl::gams::Sync_Builder::build_algo_declaration ()
   buffer_ << "public:\n";
   buffer_ << "  SyncAlgo (\n";
   buffer_ << "    double hertz,\n";
+  buffer_ << "    unsigned period,\n";
+  buffer_ << "    unsigned priority,\n";
+  buffer_ << "    unsigned criticality,\n";
+  buffer_ << "    unsigned zsinst,\n";
   buffer_ << "    const std::string &exec_func,\n";
   buffer_ << "    Madara::Knowledge_Engine::Knowledge_Base * knowledge = 0,\n";
   buffer_ << "    const std::string &platform_name = \"\",\n";
@@ -1095,13 +1118,20 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
 {
   buffer_ << "Algo::Algo (\n";
   buffer_ << "    double hertz,\n";
+  buffer_ << "    unsigned period,\n";
+  buffer_ << "    unsigned priority,\n";
+  buffer_ << "    unsigned criticality,\n";
+  buffer_ << "    unsigned zsinst,\n";
   buffer_ << "    const std::string &exec_func,\n";
   buffer_ << "    Madara::Knowledge_Engine::Knowledge_Base * knowledge,\n";
   buffer_ << "    const std::string &platform_name,\n";
   buffer_ << "    variables::Sensors * sensors,\n";
-  buffer_ << "    variables::Self * self) : loop(*knowledge), _platform_name(platform_name),\n";
+  buffer_ << "    variables::Self * self) : sched(0), rid(0),\n";
+  buffer_ << "      loop(*knowledge), _platform_name(platform_name),\n";
   buffer_ << "      Base (knowledge, 0, sensors, self),\n";
-  buffer_ << "            _hertz(hertz), _exec_func(exec_func)\n";
+  buffer_ << "      _hertz(hertz), _period(period),\n";
+  buffer_ << "      _priority(priority), _criticality(criticality),\n";
+  buffer_ << "      _zsinst(zsinst), _exec_func(exec_func)\n";
   buffer_ << "{\n";
   buffer_ << "}\n";
   buffer_ << "\n";
@@ -1128,12 +1158,58 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "  loop.init_vars (settings.id, processes);\n";
   buffer_ << "  if(_platform_name != \"\") init_platform ();\n";
   buffer_ << "  loop.init_algorithm (this);\n";
+  buffer_ << "\n";
+  buffer_ << "  //-- set thread affinity\n";
+  buffer_ << "  cpu_set_t cpuset;\n";
+  buffer_ << "  CPU_ZERO(&cpuset);\n";
+  buffer_ << "  CPU_SET(0, &cpuset);\n";
+  buffer_ << "  pthread_t current_thread = pthread_self();\n";
+  buffer_ << "  if(pthread_setaffinity_np(current_thread, sizeof(cpu_set_t), &cpuset))\n";
+  buffer_ << "    assert(0 && \"ERROR: could not set thread CPU affinity!!\");\n";
+  buffer_ << "\n";
+  buffer_ << "  //-- connect to the scheduler\n";
+  buffer_ << "  if ((sched = zs_open_sched()) == -1){\n";
+  buffer_ << "    printf(\"error opening the scheduler\\n\");\n";
+  buffer_ << "    assert(0 && \"ERROR: could not open ZSRM scheduler!!\");\n";
+  buffer_ << "  }\n";
+  buffer_ << "\n";
+  buffer_ << "  //-- setup reserve\n";
+  buffer_ << "  struct zs_reserve_params cpuattr1;\n";
+  buffer_ << "  cpuattr1.period.tv_sec = _period / 1000;\n";
+  buffer_ << "  cpuattr1.period.tv_nsec= (_period % 1000) * 1000000;\n";
+  buffer_ << "  cpuattr1.reserve_type = CRITICALITY_RESERVE;\n";
+  buffer_ << "  cpuattr1.criticality = _criticality;\n";
+  buffer_ << "  cpuattr1.priority = _priority;\n";
+  buffer_ << "  cpuattr1.zs_instant.tv_sec=_zsinst / 1000;\n";
+  buffer_ << "  cpuattr1.zs_instant.tv_nsec=(_zsinst % 1000) * 1000000;\n";
+  buffer_ << "  //-- remove the following two lines. experimental.\n";
+  buffer_ << "  //cpuattr1.response_time_instant.tv_sec = 4;\n";
+  buffer_ << "  //cpuattr1.response_time_instant.tv_nsec =0;\n";
+  buffer_ << "  cpuattr1.enforcement_mask=0;\n";
+  buffer_ << "  rid = zs_create_reserve(sched, &cpuattr1);\n";
+  buffer_ << "  if(rid == -1)\n";
+  buffer_ << "    assert(0 && \"error creating ZSRM reserve ...\");\n";
+  buffer_ << "\n";
+  buffer_ << "  //-- attach reservation\n";
+  buffer_ << "  if(zs_attach_reserve(sched, rid, syscall(SYS_gettid)) == -1)\n";
+  buffer_ << "    assert(0 && \"error attaching ZSRM reserve ...\");\n";
   buffer_ << "}\n";
   buffer_ << "\n";
 
   buffer_ << "void Algo::run (void)\n";
   buffer_ << "{\n";
-  buffer_ << "  loop.run_once(); \n";
+  buffer_ << "  for(;;) {\n";
+  buffer_ << "    //-- wait for next period\n";
+  buffer_ << "    if (zs_wait_next_period(sched, rid) < 0){\n";
+  buffer_ << "      printf(\"wait next period returned negative\\n\");\n";
+  buffer_ << "      if (errno == EINTR){\n";
+  buffer_ << "        printf(\"signal interruption!!\\n\");\n";
+  buffer_ << "      }\n";
+  buffer_ << "    }\n";
+  buffer_ << "\n";
+  buffer_ << "    //-- run job\n";
+  buffer_ << "    loop.run_once();\n";
+  buffer_ << "  }\n";
   buffer_ << "}\n";
   buffer_ << "\n";
 
@@ -1153,7 +1229,7 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "void Algo::start (threads::Threader &threader)\n";
   buffer_ << "{\n";
   buffer_ << "  std::cout << \"Starting thread: \" << _exec_func << \" at \" << _hertz << \" hertz\" << std::endl;\n";
-  buffer_ << "  threader.run(_hertz, _exec_func, this);\n";
+  buffer_ << "  threader.run(_exec_func, this);\n";
   buffer_ << "}\n";
   buffer_ << "\n";
 
@@ -1166,12 +1242,17 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
 
   buffer_ << "SyncAlgo::SyncAlgo (\n";
   buffer_ << "    double hertz,\n";
+  buffer_ << "    unsigned period,\n";
+  buffer_ << "    unsigned priority,\n";
+  buffer_ << "    unsigned criticality,\n";
+  buffer_ << "    unsigned zsinst,\n";
   buffer_ << "    const std::string &exec_func,\n";
   buffer_ << "    Madara::Knowledge_Engine::Knowledge_Base * knowledge,\n";
   buffer_ << "    const std::string &platform_name,\n";
   buffer_ << "    variables::Sensors * sensors,\n";
   buffer_ << "    variables::Self * self) : phase(0), mbarrier(\"mbarrier_\" + exec_func),\n";
-  buffer_ << "      Algo (hertz, exec_func, knowledge, platform_name, sensors, self)\n";
+  buffer_ << "      Algo (hertz, period, priority, criticality, zsinst,\n";
+  buffer_ << "            exec_func, knowledge, platform_name, sensors, self)\n";
   buffer_ << "{\n";
 
   buffer_ << "  wait_settings.max_wait_time = 0;\n";
@@ -1257,46 +1338,55 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "void SyncAlgo::run (void)\n";
 
   buffer_ << "{\n";
-  buffer_ << "  // Pre-round barrier increment\n";
+  buffer_ << "  for(;;) {\n";
+  buffer_ << "    //-- wait for next period\n";
+  buffer_ << "    if (zs_wait_next_period(sched, rid) < 0) {\n";
+  buffer_ << "      printf(\"wait next period returned negative\\n\");\n";
+  buffer_ << "      if (errno == EINTR) {\n";
+  buffer_ << "        printf(\"signal interruption!!\\n\");\n";
+  buffer_ << "      }\n";
+  buffer_ << "    }\n";
+  buffer_ << "\n"; 
+  buffer_ << "    // Pre-round barrier increment\n";
   //buffer_ << "  std::cout << \"SyncAlgo::run phase \" << phase << std::endl;;\n";
-  buffer_ << "  if(phase == 0)\n";
-  buffer_ << "  {\n";
-  buffer_ << "    wait_settings.send_list = barrier_send_list; \n";
-  buffer_ << "    wait_settings.delay_sending_modifieds = true; \n";
-  buffer_ << "    knowledge_->evaluate (\"++\" + mbarrier + \".{.id}\", wait_settings); \n";
-  buffer_ << "    phase++;\n";
-  buffer_ << "  }\n";
-
-  buffer_ << "  if(phase == 1)\n";
-  buffer_ << "  {\n";
-  buffer_ << "    // remodify our globals and send all updates \n";
-  buffer_ << "    wait_settings.send_list.clear (); \n";
-  buffer_ << "    wait_settings.delay_sending_modifieds = false; \n";
-  buffer_ << "    // first barrier for new data from previous round \n";
-  buffer_ << "    if(knowledge_->evaluate (barrier_logic, wait_settings).to_integer()) \n";
+  buffer_ << "    if(phase == 0)\n";
+  buffer_ << "    {\n";
+  buffer_ << "      wait_settings.send_list = barrier_send_list; \n";
+  buffer_ << "      wait_settings.delay_sending_modifieds = true; \n";
+  buffer_ << "      knowledge_->evaluate (\"++\" + mbarrier + \".{.id}\", wait_settings); \n";
   buffer_ << "      phase++;\n";
-  buffer_ << "  }\n";
+  buffer_ << "    }\n";
 
-  buffer_ << "  if(phase == 2)\n";
-  buffer_ << "  {\n";
-  buffer_ << "    // Send only barrier information \n";
-  buffer_ << "    wait_settings.send_list = barrier_send_list; \n";
-  buffer_ << "    // Execute main user logic \n";
-  buffer_ << "    wait_settings.delay_sending_modifieds = true; \n";
-  buffer_ << "    Algo::run(); \n";
-  buffer_ << "    phase++;\n";
-  buffer_ << "  }\n";
+  buffer_ << "    if(phase == 1)\n";
+  buffer_ << "    {\n";
+  buffer_ << "      // remodify our globals and send all updates \n";
+  buffer_ << "      wait_settings.send_list.clear (); \n";
+  buffer_ << "      wait_settings.delay_sending_modifieds = false; \n";
+  buffer_ << "      // first barrier for new data from previous round \n";
+  buffer_ << "      if(knowledge_->evaluate (barrier_logic, wait_settings).to_integer()) \n";
+  buffer_ << "        phase++;\n";
+  buffer_ << "    }\n";
 
-  buffer_ << "  if(phase == 3)\n";
-  buffer_ << "  {\n";
-  buffer_ << "    // second barrier for waiting on others to finish round \n";
-  buffer_ << "    // Increment barrier and only send barrier update \n";
-  buffer_ << "    wait_settings.send_list = barrier_send_list; \n";
-  buffer_ << "    wait_settings.delay_sending_modifieds = false; \n";
-  buffer_ << "    if(knowledge_->evaluate (barrier_logic, wait_settings).to_integer()) \n";
-  buffer_ << "      phase = 0;\n";
-  buffer_ << "  }\n";
+  buffer_ << "    if(phase == 2)\n";
+  buffer_ << "    {\n";
+  buffer_ << "      // Send only barrier information \n";
+  buffer_ << "      wait_settings.send_list = barrier_send_list; \n";
+  buffer_ << "      // Execute main user logic \n";
+  buffer_ << "      wait_settings.delay_sending_modifieds = true; \n";
+  buffer_ << "      loop.run_once();\n";
+  buffer_ << "      phase++;\n";
+  buffer_ << "    }\n";
 
+  buffer_ << "    if(phase == 3)\n";
+  buffer_ << "    {\n";
+  buffer_ << "      // second barrier for waiting on others to finish round \n";
+  buffer_ << "      // Increment barrier and only send barrier update \n";
+  buffer_ << "      wait_settings.send_list = barrier_send_list; \n";
+  buffer_ << "      wait_settings.delay_sending_modifieds = false; \n";
+  buffer_ << "      if(knowledge_->evaluate (barrier_logic, wait_settings).to_integer()) \n";
+  buffer_ << "        phase = 0;\n";
+  buffer_ << "    }\n";
+  buffer_ << "  }\n";
   //buffer_ << "  loop.run_once(barrier_logic, barrier_send_list, wait_settings);\n";
   buffer_ << "}\n";
   buffer_ << "\n";
@@ -1469,16 +1559,16 @@ dmpl::gams::Sync_Builder::build_main_function ()
     if (f.second.attrs.count("BARRIER_SYNC") == 1)
     {
       if (platformFunction == &f.second)
-        buffer_ << "  algo = new SyncAlgo(" << hertz << ", \"" << f.second.name << "\", knowledge, platform_name);\n";
+        buffer_ << "  algo = new SyncAlgo(" << hertz << ", 0,0,0,0, \"" << f.second.name << "\", knowledge, platform_name);\n";
       else
-        buffer_ << "  algo = new SyncAlgo(" << hertz << ", \"" << f.second.name << "\", knowledge);\n";
+        buffer_ << "  algo = new SyncAlgo(" << hertz << ", 0,0,0,0, \"" << f.second.name << "\", knowledge);\n";
     }
     else
     {
       if (platformFunction == &f.second)
-        buffer_ << "  algo = new Algo(" << hertz << ", \"" << f.second.name << "\", knowledge, platform_name);\n";
+        buffer_ << "  algo = new Algo(" << hertz << ", 0,0,0,0, \"" << f.second.name << "\", knowledge, platform_name);\n";
       else
-        buffer_ << "  algo = new Algo(" << hertz << ", \"" << f.second.name << "\", knowledge);\n";
+        buffer_ << "  algo = new Algo(" << hertz << ", 0,0,0,0, \"" << f.second.name << "\", knowledge);\n";
     }
     buffer_ << "  algos.push_back(algo);\n\n";
   }
