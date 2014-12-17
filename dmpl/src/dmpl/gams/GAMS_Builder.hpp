@@ -65,7 +65,9 @@ namespace dmpl
   //-- the types of schedulers targeted by code generators
   typedef enum {
     NON_RT,  //-- non-real time : default: for laptop demos
+#if USE_MZSRM==1
     MZSRM    //-- ZSRM mixed-criticality : the real-thing
+#endif
   } SchedType;
 
   namespace gams

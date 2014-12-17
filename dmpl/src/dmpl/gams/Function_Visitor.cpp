@@ -236,13 +236,13 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
 
   //if (do_vrep_ && func_name == "MOVE_TO") func_name = "VREP_MOVE_TO";
 
-  dmpl::Functions & externs = builder_.program.externalFuncs;
+  //dmpl::Functions & externs = builder_.program.externalFuncs;
 
-  bool isExtern = (externs.find (func_name) != externs.end ());
+  //bool isExtern = (externs.find (func_name) != externs.end ());
   Functions::const_iterator nodeFunc = node_.funcs.find (func_name);
   Functions::const_iterator progFunc = builder_.program.funcs.find (func_name);
   bool isNodeFunc = nodeFunc != node_.funcs.end();
-  bool isProgFunc = progFunc != builder_.program.funcs.end();
+  bool isProgFunc = progFunc != builder_.program.funcs.end() && progFunc->second.isExtern == false;
 
   if (expression.ignore_return)
     buffer_ << "(void) ";

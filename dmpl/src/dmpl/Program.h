@@ -140,15 +140,14 @@ namespace dmpl
     ConstDef constDef;
 
     /**
-     * external function declarations -- these are Function objects
-     * with empty bodies
-     **/
-    Functions externalFuncs;
-
-    /**
      * A map of function names to function definitions
      **/
     Functions funcs;
+
+    /**
+     * A map of thread start function names to thread objects
+     **/
+    Threads threads;
 
     /**
      * The node definitions
@@ -175,7 +174,7 @@ namespace dmpl
     }
 
     ///add an external function
-    void addExternalFunction(const Function &f) { externalFuncs[f.name] = f; }
+    //void addExternalFunction(const Function &f) { externalFuncs[f.name] = f; }
 
     ///add a function
     void addFunction(const Function &f) { funcs[f.name] = f; }
@@ -207,16 +206,22 @@ namespace dmpl
       return it->second;
     }
 
+    ///return true if the argument is the name of a function
+    bool isFunction(const std::string &fn) const 
+    {
+      return funcs.count(fn) > 0;
+    }
+
     ///return true if the argument is the name of an external function
     bool isExternalFunction(const std::string &fn) const 
     {
-      return externalFuncs.count(fn) > 0;
+      return isFunction(fn) && funcs.find(fn)->second.isExtern == true;
     }
 
     ///return true if the argument is the name of a defined top-level DMPL function
     bool isInternalFunction(const std::string &fn) const
     {
-      return funcs.count(fn) > 0;
+      return isFunction(fn) && funcs.find(fn)->second.isExtern == false;
     }
 
     ///set the period
@@ -224,6 +229,9 @@ namespace dmpl
 
     ///check various sanity conditions on the program
     void sanityCheck();
+
+    ///look for threads, analyze variable usage
+    void analyzeThreads();
   };
 
   //new namespace to avoid name collisions

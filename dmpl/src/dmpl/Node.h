@@ -173,22 +173,6 @@ namespace dmpl
 
     void mergeWith(const Node &on);
 
-    /*
-    ///set the node initialization function
-    void setNodeInitFunction(const Function &f)
-    {
-      addFunction(f);
-      node_init_func_name = f.name;
-    }
-
-    ///add a periodic function and its period
-    void addPeriodicFunction(const Function &f, int T)
-    {
-      addFunction(f);
-      periodic_func_names[f.name] = T;
-    }
-    */
-
     /**
      * Prints function information
      * @param  indent  spaces to indent printout

@@ -53,10 +53,12 @@
  * DM-0001023
 **/
 
+#if USE_MZSRM==1
 extern "C" {
 #include <stdio.h>
 #include <jni.h>
 }
+#endif
 
 #include "Sync_Builder.hpp"
 #include <dmpl/gams/Function_Visitor.hpp>
@@ -91,7 +93,9 @@ dmpl::gams::Sync_Builder::build ()
   // close dmpl namespace
   close_dmpl_namespace ();
   buffer_ << "using namespace dmpl;\n";
+#if USE_MZSRM==1
   if(schedType_ == MZSRM) compute_priorities ();
+#endif
   build_main_function ();
 }
 
@@ -104,6 +108,7 @@ dmpl::gams::Sync_Builder::build_header_includes ()
   buffer_ << "#include <assert.h>\n";
   buffer_ << "#include <math.h>\n";
   buffer_ << "\n";
+#if USE_MZSRM==1
   if(schedType_ == MZSRM) {
     buffer_ << "extern \"C\" {\n";
     buffer_ << "#include <stdio.h>\n";
@@ -114,6 +119,7 @@ dmpl::gams::Sync_Builder::build_header_includes ()
     buffer_ << "}\n";
     buffer_ << "\n";
   }
+#endif
   buffer_ << "#include \"madara/knowledge_engine/Knowledge_Base.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/Knowledge_Record.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/Functions.h\"\n";
@@ -909,7 +915,7 @@ void
 dmpl::gams::Sync_Builder::build_function_declaration (
   const dmpl::Node & node, dmpl::Function & function)
 {
-  if (function.attrs.count("INIT") > 0 || function.attrs.count("SAFETY") > 0)
+  if (function.isExtern || function.attrs.count("INIT") > 0 || function.attrs.count("SAFETY") > 0)
     return;
 
   buffer_ << "Madara::Knowledge_Record\n";
@@ -921,7 +927,7 @@ void
 dmpl::gams::Sync_Builder::build_function (
   const dmpl::Node & node, dmpl::Function & function)
 {
-  if (function.attrs.count("INIT") > 0 || function.attrs.count("SAFETY") > 0)
+  if (function.isExtern || function.attrs.count("INIT") > 0 || function.attrs.count("SAFETY") > 0)
     return;
 
   BOOST_FOREACH (Attributes::value_type & attr, function.attrs)
@@ -1054,12 +1060,14 @@ dmpl::gams::Sync_Builder::build_algo_declaration ()
   buffer_ << "  Algo (\n";
   buffer_ << "    double hertz,\n";
 
+#if USE_MZSRM==1
   if(schedType_ == MZSRM) {
     buffer_ << "    unsigned period,\n";
     buffer_ << "    unsigned priority,\n";
     buffer_ << "    unsigned criticality,\n";
     buffer_ << "    unsigned zsinst,\n";
   }
+#endif
 
   buffer_ << "    const std::string &exec_func,\n";
   buffer_ << "    Madara::Knowledge_Engine::Knowledge_Base * knowledge = 0,\n";
@@ -1082,20 +1090,24 @@ dmpl::gams::Sync_Builder::build_algo_declaration ()
   buffer_ << "protected:\n";
   buffer_ << "  double _hertz;\n";
 
+#if USE_MZSRM==1
   if(schedType_ == MZSRM) {
     buffer_ << "  unsigned _period; //-- period in ms\n";
     buffer_ << "  unsigned _priority; //-- priority, starting with 1 and moving up\n";
     buffer_ << "  unsigned _criticality; //-- criticality, starting with 1 and moving up\n";
     buffer_ << "  unsigned _zsinst; //-- zero-slack instant in ms\n";
   }
+#endif
 
   buffer_ << "  controllers::Base loop;\n";
   buffer_ << "  std::string _exec_func, _platform_name;\n";
 
+#if USE_MZSRM==1
   if(schedType_ == MZSRM) {
     buffer_ << "  int sched; //-- the ZSRM scheduler handle\n";
     buffer_ << "  int rid;   //-- the ZSRM reservation id\n";
   }
+#endif
 
   buffer_ << "};\n";
   buffer_ << "\n";
@@ -1105,12 +1117,14 @@ dmpl::gams::Sync_Builder::build_algo_declaration ()
   buffer_ << "  SyncAlgo (\n";
   buffer_ << "    double hertz,\n";
 
+#if USE_MZSRM==1
   if(schedType_ == MZSRM) {
     buffer_ << "    unsigned period,\n";
     buffer_ << "    unsigned priority,\n";
     buffer_ << "    unsigned criticality,\n";
     buffer_ << "    unsigned zsinst,\n";
   }
+#endif
 
   buffer_ << "    const std::string &exec_func,\n";
   buffer_ << "    Madara::Knowledge_Engine::Knowledge_Base * knowledge = 0,\n";
@@ -1144,33 +1158,44 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "Algo::Algo (\n";
   buffer_ << "    double hertz,\n";
 
+#if USE_MZSRM==1
   if(schedType_ == MZSRM) {
     buffer_ << "    unsigned period,\n";
     buffer_ << "    unsigned priority,\n";
     buffer_ << "    unsigned criticality,\n";
     buffer_ << "    unsigned zsinst,\n";
   }
+#endif
 
   buffer_ << "    const std::string &exec_func,\n";
   buffer_ << "    Madara::Knowledge_Engine::Knowledge_Base * knowledge,\n";
   buffer_ << "    const std::string &platform_name,\n";
   buffer_ << "    variables::Sensors * sensors,\n";
 
+#if USE_MZSRM==1
   if(schedType_ == MZSRM) {
     buffer_ << "    variables::Self * self) : sched(0), rid(0),\n";
     buffer_ << "      loop(*knowledge), _platform_name(platform_name),\n";
-  } else {
+  }
+  else
+#endif
+  {
     buffer_ << "    variables::Self * self) : loop(*knowledge), _platform_name(platform_name),\n";
   }
 
   buffer_ << "      Base (knowledge, 0, sensors, self),\n";
 
+#if USE_MZSRM==1
   if(schedType_ == MZSRM) {
     buffer_ << "      _hertz(hertz), _period(period),\n";
     buffer_ << "      _priority(priority), _criticality(criticality),\n";
     buffer_ << "      _zsinst(zsinst), _exec_func(exec_func)\n";
-  } else
+  }
+  else
+#endif
+  {
     buffer_ << "            _hertz(hertz), _exec_func(exec_func)\n";
+  }
 
   buffer_ << "{\n";
   buffer_ << "}\n";
@@ -1196,6 +1221,7 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "void Algo::init (engine::Knowledge_Base & context)\n";
   buffer_ << "{\n";
 
+#if USE_MZSRM==1
   if(schedType_ == MZSRM) {
     buffer_ << "  loop.init_vars (settings.id, processes);\n";
     buffer_ << "  if(_platform_name != \"\") init_platform ();\n";
@@ -1235,7 +1261,10 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
     buffer_ << "  //-- attach reservation\n";
     buffer_ << "  if(zs_attach_reserve(sched, rid, syscall(SYS_gettid)) == -1)\n";
     buffer_ << "    assert(0 && \"error attaching ZSRM reserve ...\");\n";
-  } else {
+  }
+  else
+#endif
+  {
     buffer_ << "  loop.init_vars (settings.id, processes);\n";
     buffer_ << "  if(_platform_name != \"\") init_platform ();\n";
     buffer_ << "  loop.init_algorithm (this);\n";
@@ -1247,6 +1276,7 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "void Algo::run (void)\n";
   buffer_ << "{\n";
 
+#if USE_MZSRM==1
   if(schedType_ == MZSRM) {
     buffer_ << "  for(;;) {\n";
     buffer_ << "    //-- wait for next period\n";
@@ -1260,7 +1290,10 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
     buffer_ << "    //-- run job\n";
     buffer_ << "    loop.run_once();\n";
     buffer_ << "  }\n";
-  } else {
+  }
+  else
+#endif
+  {
     buffer_ << "  loop.run_once(); \n";
   }
 
@@ -1284,9 +1317,13 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "{\n";
   buffer_ << "  std::cout << \"Starting thread: \" << _exec_func << \" at \" << _hertz << \" hertz\" << std::endl;\n";
 
+#if USE_MZSRM==1
   if(schedType_ == MZSRM) {
     buffer_ << "  threader.run(_exec_func, this);\n";
-  } else {
+  }
+  else
+#endif
+  {
     buffer_ << "  threader.run(_hertz, _exec_func, this);\n";
   }
 
@@ -1303,12 +1340,14 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "SyncAlgo::SyncAlgo (\n";
   buffer_ << "    double hertz,\n";
 
+#if USE_MZSRM==1
   if(schedType_ == MZSRM) {
     buffer_ << "    unsigned period,\n";
     buffer_ << "    unsigned priority,\n";
     buffer_ << "    unsigned criticality,\n";
     buffer_ << "    unsigned zsinst,\n";
   }
+#endif
 
   buffer_ << "    const std::string &exec_func,\n";
   buffer_ << "    Madara::Knowledge_Engine::Knowledge_Base * knowledge,\n";
@@ -1316,10 +1355,14 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "    variables::Sensors * sensors,\n";
   buffer_ << "    variables::Self * self) : phase(0), mbarrier(\"mbarrier_\" + exec_func),\n";
 
+#if USE_MZSRM==1
   if(schedType_ == MZSRM) {
     buffer_ << "      Algo (hertz, period, priority, criticality, zsinst,\n";
     buffer_ << "            exec_func, knowledge, platform_name, sensors, self)\n";
-  } else {
+  }
+  else
+#endif
+  {
     buffer_ << "      Algo (hertz, exec_func, knowledge, platform_name, sensors, self)\n";
   }
 
@@ -1409,11 +1452,18 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
 
   buffer_ << "{\n";
 
+#if USE_MZSRM==1
   if(schedType_ == MZSRM)
+  {
     buffer_ << "  for(;;) {\n";
+  }
   else
+#endif
+  {
     buffer_ << "  {\n";
+  }
 
+#if USE_MZSRM==1
   if(schedType_ == MZSRM) {
     buffer_ << "    //-- wait for next period\n";
     buffer_ << "    if (zs_wait_next_period(sched, rid) < 0) {\n";
@@ -1424,6 +1474,7 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
     buffer_ << "    }\n";
     buffer_ << "\n"; 
   }
+#endif
 
   buffer_ << "    // Pre-round barrier increment\n";
   //buffer_ << "  std::cout << \"SyncAlgo::run phase \" << phase << std::endl;;\n";
@@ -1452,10 +1503,16 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "      // Execute main user logic \n";
   buffer_ << "      wait_settings.delay_sending_modifieds = true; \n";
 
+#if USE_MZSRM==1
   if(schedType_ == MZSRM)
+  {
     buffer_ << "      loop.run_once();\n";
+  }
   else
+#endif
+  {
     buffer_ << "      Algo::run(); \n";
+  }
 
   buffer_ << "      phase++;\n";
   buffer_ << "    }\n";
@@ -1538,6 +1595,7 @@ dmpl::gams::Sync_Builder::compute_priorities ()
       if(maxCrit < funcCrits[f.second.name]) maxCrit = funcCrits[f.second.name];
     }
 
+#if USE_MZSRM==1
   //-- now run the schedulability analysis to compute zero slack
   //-- instants. this requires interacting with Java since the tool is
   //-- written in Java.
@@ -1600,10 +1658,9 @@ dmpl::gams::Sync_Builder::compute_priorities ()
     else start = next+1;
   }
 
-
-
   /* We are done. */
   jvm->DestroyJavaVM();
+#endif
 }
 
 void
@@ -1758,6 +1815,7 @@ dmpl::gams::Sync_Builder::build_main_function ()
       //-- for synchronous function
       if (f.second.attrs.count("BARRIER_SYNC") == 1)
         {
+#if USE_MZSRM==1
           if(schedType_ == MZSRM) {
             if (platformFunction == &f.second)
               buffer_ << "  algo = new SyncAlgo(" << hertz << ", "
@@ -1769,7 +1827,10 @@ dmpl::gams::Sync_Builder::build_main_function ()
                       << period << ", " << priority << ", " 
                       << criticality << ", " << zsinst << ", \"" << f.second.name 
                       << "\", knowledge);\n";
-          } else {
+          }
+          else
+#endif
+          {
             if (platformFunction == &f.second)
               buffer_ << "  algo = new SyncAlgo(" << hertz << ", \"" << f.second.name << "\", knowledge, platform_name);\n";
             else
@@ -1779,6 +1840,7 @@ dmpl::gams::Sync_Builder::build_main_function ()
       //-- for asynchronous function
       else
         {
+#if USE_MZSRM==1
           if(schedType_ == MZSRM) {
             if (platformFunction == &f.second)
               buffer_ << "  algo = new Algo(" << hertz << ", " 
@@ -1790,7 +1852,10 @@ dmpl::gams::Sync_Builder::build_main_function ()
                       << period << ", " << priority << ", " 
                       << criticality << ", " << zsinst << ", \"" << f.second.name 
                       << "\", knowledge);\n";
-          } else {
+          }
+          else
+#endif
+          {
             if (platformFunction == &f.second)
               buffer_ << "  algo = new Algo(" << hertz << ", \"" << f.second.name << "\", knowledge, platform_name);\n";
             else
@@ -1847,7 +1912,7 @@ void
 dmpl::gams::Sync_Builder::build_main_define_function (const Node & node,
                                                       Function & function)
 {
-  if (!(function.attrs.count("INIT") > 0 || function.attrs.count("SAFETY") > 0))
+  if (!(function.isExtern || function.attrs.count("INIT") > 0 || function.attrs.count("SAFETY") > 0))
     {
       buffer_ << "  knowledge->define_function (\"";
       buffer_ << function.name;

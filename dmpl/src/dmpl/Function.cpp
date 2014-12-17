@@ -147,6 +147,20 @@ dmpl::Function::printDecl (std::ostream &os,unsigned int indent)
   os << ");\n";
 }
 
+void
+dmpl::Thread::analyze (const dmpl::Function &function)
+{
+  calledFuncs.insert(&function);
+  BOOST_FOREACH(const Stmt &st, function.body) {
+    analyze(st);
+  }
+}
+
+void
+dmpl::Thread::analyze (const dmpl::Stmt &statement)
+{
+}
+
 /*********************************************************************/
 //end of file
 /*********************************************************************/

@@ -1,3 +1,5 @@
+MZSRM=1
+
 SRC=dmpl-scanner.cpp dmpl-parser.cpp DmplBuilder.cpp CopyVisitor.cpp \
 SyncSeqDbl.cpp ArrayElim.cpp \
 ../dmpl/Expression.cpp ../dmpl/Function.cpp \
@@ -9,8 +11,11 @@ SyncSeqDbl.cpp ArrayElim.cpp \
 
 OBJ=$(SRC:.cpp=.o)
 INC=-I$(ACE_ROOT) -I$(MADARA_ROOT)/include -I$(JAVA_ROOT)/include -I..
-LIB=$(MADARA_ROOT)/libMADARA.so $(JAVA_ROOT)/jre/lib/amd64/server/libjvm.so
-CFLAGS=-g -O0 -fno-inline
+LIB=$(MADARA_ROOT)/libMADARA.so
+ifeq "$(MZSRM)" "1"
+LIB+= $(JAVA_ROOT)/jre/lib/amd64/server/libjvm.so
+endif
+CFLAGS=-g -O0 -fno-inline -DUSE_MZSRM=$(MZSRM)
 CXX=g++
 
 all : dmplc

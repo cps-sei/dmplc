@@ -140,7 +140,9 @@ dmpl::Program::print (std::ostream &os,unsigned int indent)
   os << '\n';
 
   //print external function declarations
-  BOOST_FOREACH(dmpl::Functions::value_type &v, externalFuncs) {
+  BOOST_FOREACH(dmpl::Functions::value_type &v, funcs) {
+    if(v.second.isExtern == false)
+      continue;
     os << spacer << "EXTERN";
     v.second.printDecl(os, 1);
   }

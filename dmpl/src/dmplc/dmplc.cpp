@@ -76,6 +76,7 @@ bool debug = false;
 bool seq_no_array = false, init_globals = false;
 size_t nodes = 0;
 int round_num = -1;
+
 dmpl::SchedType schedType = dmpl::NON_RT;
 
 //constant definitions supplied via command line
@@ -254,10 +255,12 @@ void parse_options (int argc, char **argv)
     {
       do_vrep = true;
     }
+#if MZSRM==1
     else if (arg1 == "-mz" || arg1 == "--mzsrm")
     {
       schedType = dmpl::MZSRM;
     }
+#endif
     else if (arg1 == "-s" || arg1 == "--seq")
     {
       do_seq = true;
@@ -333,7 +336,9 @@ void usage (char *cmd)
   std::cerr << "  -t|--target|--platform p specify a target platform\n";
   std::cerr << "        Available platforms: WIN_CPP, GNU_CPP (default)\n";
   std::cerr << "  -vr|--vrep               generate code that targets VREP\n";
+#if MZSRM==1
   std::cerr << "  -mz|--mzsrm              generate code that targets MZSRM scheduler\n";
+#endif
   std::cerr << "  -s|--seq                 generate sequentialized code to verify\n";
   std::cerr << "  -r|--rounds rounds       number of verification rounds\n";
   std::cerr << "  --seq-no-array           do not use arrays during verification\n";

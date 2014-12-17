@@ -162,13 +162,16 @@ target_id_list : TIDENTIFIER {
 ;
 
 extern_fn_decl : TEXTERN type TIDENTIFIER TLPAREN param_list TRPAREN TSEMICOLON {
-  builder->program.addExternalFunction(dmpl::Function(*$2,*$3,*$5,dmpl::VarList(),dmpl::StmtList()));
+  dmpl::Function func = dmpl::Function(*$2,*$3,*$5,dmpl::VarList(),dmpl::StmtList());
+  func.isExtern = true;
+  builder->program.addFunction(func);
   delete $2; delete $3; delete $5;
 }
 | attr_list TEXTERN type TIDENTIFIER TLPAREN param_list TRPAREN TSEMICOLON {
   dmpl::Function func = dmpl::Function(*$3,*$4,*$6,dmpl::VarList(),dmpl::StmtList());
+  func.isExtern = true;
   func.attrs = *$1;
-  builder->program.addExternalFunction(func);
+  builder->program.addFunction(func);
   delete $1; delete $3; delete $4; delete $6;
 }
 ;

@@ -65,7 +65,9 @@
 
 #include <vector>
 #include <map>
+#include <set>
 #include <string>
+#include <boost/ref.hpp>
 #include "Variable.h"
 #include "Statement.h"
 #include "Attribute.h"
@@ -84,6 +86,9 @@ namespace dmpl
      * The name of the function
      **/
     std::string name;
+
+    ///Is this function EXTERN?
+    bool isExtern;
 
     ///the return type of the function
     Type retType;
@@ -106,15 +111,15 @@ namespace dmpl
     StmtList body;
 
     //constructors
-    Function() {}
+    Function() : isExtern(false) {}
     Function(const std::string &n)
-      : name(n) {}
+      : name(n), isExtern(false) {}
     Function(const std::string &n, const Attributes &a)
       : name(n),attrs(a) {}
     Function(const Type &rt,const std::string &n,const std::list<Variable> &p,
              const std::list<Variable> &t,const StmtList &b,
              const Attributes &a = Attributes())
-      : retType(rt),name(n),body(b),attrs(a)
+      : retType(rt),name(n),body(b),attrs(a),isExtern(false)
     {
       setParams(p);
       setTemps(t);
@@ -122,7 +127,7 @@ namespace dmpl
     Function(const Type &rt,const std::string &n,const Variables &p,
              const Variables &t,const StmtList &b,
              const Attributes &a = Attributes())
-      : retType(rt),name(n),body(b),attrs(a),params(p),temps(t)
+      : retType(rt),name(n),body(b),attrs(a),params(p),temps(t),isExtern(false)
     { }
 
     void mergeWith (const Function &of);
@@ -153,6 +158,27 @@ namespace dmpl
   };
 
   typedef std::map <std::string, Function> Functions;
+
+  class Thread
+  {
+  public:
+    const Function &startFunc;
+
+    std::set <const Function *> calledFuncs;
+    std::set <const Variable *> readVars;
+    std::set <const Variable *> writeVars;
+
+    Thread(const Function &f) : startFunc(f)
+    {
+      analyze(f);
+    }
+  private:
+    void analyze(const Function &function);
+    void analyze(const Stmt &statement);
+    void analyze(const Expr &expression);
+  };
+
+  typedef std::map <std::string, Thread> Threads;
 }
 
 #endif // _DMPL_FUNCTION_H_

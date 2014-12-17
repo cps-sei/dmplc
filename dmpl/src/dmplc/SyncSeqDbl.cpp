@@ -576,6 +576,9 @@ void dmpl::SyncSeqDbl::createInit()
   StmtList initFnBody;
 
   BOOST_FOREACH(Functions::value_type &f, builder.program.funcs) {
+    if(f.second.isExtern == true)
+      continue;
+      
     int init = f.second.attrs.count("INIT");
     if(init < 1)
       continue;
@@ -624,6 +627,9 @@ void dmpl::SyncSeqDbl::createSafety()
   StmtList safetyFnBody;
 
   BOOST_FOREACH(Functions::value_type &f, builder.program.funcs) {
+    if(f.second.isExtern == true)
+      continue;
+
     int safety = f.second.attrs.count("SAFETY");
     if(safety < 1)
       continue;
@@ -736,11 +742,13 @@ dmpl::Expr dmpl::SyncSeqDbl::createNondetFunc(const Expr &expr)
 
 void dmpl::SyncSeqDbl::processExternFuncs()
 {
-  BOOST_FOREACH(dmpl::Functions::value_type &ef, builder.program.externalFuncs)
+  BOOST_FOREACH(dmpl::Functions::value_type &ef, builder.program.funcs)
   {
+    if(ef.second.isExtern == false)
+      continue;
     int rets = ef.second.attrs.count("ASSUME_RETURN");
     if(rets < 1) {
-      cprog.externalFuncs[ef.second.name] = ef.second;
+      cprog.funcs[ef.second.name] = ef.second;
       continue;
     }
     else if(rets > 1)
@@ -793,6 +801,7 @@ void dmpl::SyncSeqDbl::processExternFuncs()
 
 
     Function func(ef.second.retType,ef.second.name,ef.second.params,fnTemps,fnBody);
+    func.isExtern = true;
     cprog.addFunction(func);
   }
 }
