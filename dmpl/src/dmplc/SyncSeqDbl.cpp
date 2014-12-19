@@ -702,7 +702,7 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
         
         std::string fnName = node.name + "__" + f.second.name + "_" + 
           boost::lexical_cast<std::string>(i) + "_fwd";
-        Function func(dmpl::voidType(),fnName,fnParams,fnTemps,fnBody);
+        Function func(f.second.retType,fnName,fnParams,fnTemps,fnBody);
         cprog.addFunction(func);
       }
 
@@ -721,7 +721,7 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
         
         std::string fnName = node.name + "__" + f.second.name + "_" + 
           boost::lexical_cast<std::string>(i) + "_bwd";
-        Function func(dmpl::voidType(),fnName,fnParams,fnTemps,fnBody);
+        Function func(f.second.retType,fnName,fnParams,fnTemps,fnBody);
         cprog.addFunction(func);
       }
     }
