@@ -75,7 +75,7 @@ CONST RightX = 2.25;
 
 //EXTERN int MOVE_TO(unsigned char x,unsigned char y);
 EXTERN int my_sleep(int seconds);
-EXTERN void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf);
+EXTERN void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
 EXTERN void print_int(int i);
 
 
@@ -149,15 +149,15 @@ NODE uav (id)
 void NodeInit () 
 {
   FORALL_NODE(id) {
-    state.id = INITS;
-    ND(x.id); ND(y.id);
-    ASSUME(0 <= x.id && x.id < X && 0 <= y.id && y.id < Y);
-    ND(xf.id); ND(yf.id);
-    ASSUME(0 <= xf.id && xf.id < X && 0 <= yf.id && yf.id < Y);
+    state@id = INITS;
+    ND(x@id); ND(y@id);
+    ASSUME(0 <= x@id && x@id < X && 0 <= y@id && y@id < Y);
+    ND(xf@id); ND(yf@id);
+    ASSUME(0 <= xf@id && xf@id < X && 0 <= yf@id && yf@id < Y);
   }
 
   FORALL_DISTINCT_NODE_PAIR (id1,id2) {
-    ASSUME(x.id1 != x.id2 || y.id1 != y.id2);
+    ASSUME(x@id1 != x@id2 || y@id1 != y@id2);
   }
 }
 
@@ -166,6 +166,6 @@ void NodeInit ()
 void NoCollisions ()
 {
   FORALL_DISTINCT_NODE_PAIR (id1,id2) {
-    ASSERT(x.id1 != x.id2 || y.id1 != y.id2);
+    ASSERT(x@id1 != x@id2 || y@id1 != y@id2);
   }
 }

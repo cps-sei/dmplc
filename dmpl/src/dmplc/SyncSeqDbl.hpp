@@ -108,6 +108,8 @@ namespace dmpl {
       void exitFAN(FANStmt &stmt);
       bool enterFADNP(FADNPStmt &stmt) { return false; }
       void exitFADNP(FADNPStmt &stmt);
+
+      std::string getNodeStr(const LvalExpr &expr) const;
     };
 
     /*****************************************************************/

@@ -63,7 +63,7 @@ std::string thunk;
    match our tokens.l lex file. We also define the node type
    they represent.
  */
-%token <string> TIDENTIFIER TINTEGER TDOUBLE TNAMESPACE TATTRIBUTE
+%token <string> TIDENTIFIER TINTEGER TDOUBLE TATTRIBUTE
 %token <token> TSEMICOLON TCONST TNODE
 %token <token> TGLOBAL TLOCAL TALIAS TTARGET TTHUNK
 %token <token> TBOOL TINT TDOUBLE_TYPE TVOID TCHAR TSIGNED TUNSIGNED
@@ -124,6 +124,7 @@ std::string thunk;
 %left TMUL TDIV TMOD
 /* precedence for logical not */
 %right TLNOT TBWNOT
+%left TAT
 
 %start program
 
@@ -444,8 +445,8 @@ stmt : TPRIVATE stmt { $$ = new dmpl::Stmt(new dmpl::PrivateStmt(*$2)); delete $
 | TCONTINUE TSEMICOLON { $$ = new dmpl::Stmt(new dmpl::ContStmt()); }
 | TRETURN expr TSEMICOLON { $$ = new dmpl::Stmt(new dmpl::RetStmt(*$2)); delete $2; }
 | TRETURN TSEMICOLON { $$ = new dmpl::Stmt(new dmpl::RetVoidStmt()); }
-| lval TLPAREN arg_list TRPAREN TSEMICOLON {
-  $$ = new dmpl::Stmt(new dmpl::CallStmt(dmpl::Expr($1), *$3));
+| TIDENTIFIER TLPAREN arg_list TRPAREN TSEMICOLON {
+  $$ = new dmpl::Stmt(new dmpl::CallStmt(dmpl::Expr(new dmpl::LvalExpr(*$1)), *$3));
   delete $3;
   //$$ = new dmpl::Stmt(new dmpl::CallExpr(dmpl::Expr($1),*$3));
   //delete $3; printExpr(*$$);
@@ -476,17 +477,25 @@ lval : TIDENTIFIER {
   $$ = new dmpl::LvalExpr(*$1);
   delete $1; printExpr($$);
 }
-| TIDENTIFIER TDOT TIDENTIFIER {
+| TIDENTIFIER TAT expr {
   $$ = new dmpl::LvalExpr(*$1,*$3);
   delete $1; delete $3; printExpr($$);
+}
+| TIDENTIFIER TATTRIBUTE {
+  $$ = new dmpl::LvalExpr(*$1,dmpl::Expr(new dmpl::LvalExpr($2->substr(1))));
+  delete $1; delete $2; printExpr($$);
 }
 | TIDENTIFIER indices {
   $$ = new dmpl::LvalExpr(*$1,*$2);
   delete $1; delete $2; printExpr($$);
 }
-| TIDENTIFIER TDOT TIDENTIFIER indices {
-  $$ = new dmpl::LvalExpr(*$1,*$3,*$4);
-  delete $1; delete $3; delete $4; printExpr($$);
+| TIDENTIFIER indices TAT expr {
+  $$ = new dmpl::LvalExpr(*$1,*$4,*$2);
+  delete $1; delete $2; delete $4; printExpr($$);
+}
+| TIDENTIFIER indices TATTRIBUTE {
+  $$ = new dmpl::LvalExpr(*$1,dmpl::Expr(new dmpl::LvalExpr($3->substr(1))), *$2);
+  delete $1; delete $2; delete $3; printExpr($$);
 }
 ;
 
@@ -549,8 +558,8 @@ expr : lval { $$ = new dmpl::Expr($1); printExpr(*$$); }
 | expr TQUEST expr TCOLON expr { MAKE_TRI($$,$2,$1,$3,$5); }
 | TLNOT expr { MAKE_UN($$,$1,$2); }
 | TBWNOT expr { MAKE_UN($$,$1,$2); }
-| lval TLPAREN arg_list TRPAREN { 
-  $$ = new dmpl::Expr(new dmpl::CallExpr(dmpl::Expr($1),*$3));
+| TIDENTIFIER TLPAREN arg_list TRPAREN { 
+  $$ = new dmpl::Expr(new dmpl::CallExpr(dmpl::Expr(new dmpl::LvalExpr(*$1)),*$3));
   delete $3; printExpr(*$$);
 } 
 | TEXO TLPAREN TIDENTIFIER TCOMMA expr TRPAREN {

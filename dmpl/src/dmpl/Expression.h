@@ -81,6 +81,7 @@ namespace dmpl
   //share pointer to a base expression -- this is the type we will
   //mostly use
   typedef boost::shared_ptr<Expression> Expr;
+  typedef boost::shared_ptr<Expression const> CExpr;
 
   //a list of expressions
   typedef std::list <Expr> ExprList;
@@ -156,19 +157,19 @@ namespace dmpl
     //the base variable name -- this is always non-empty
     std::string var; 
     //an optional node id -- can be empty
-    std::string node; 
+    Expr node; 
     //a list of indices
     ExprList indices;
 
     LvalExpr(const std::string &v) : var(v) {}
-    LvalExpr(const std::string &v,const std::string &n) : var(v), node(n) {}
+    LvalExpr(const std::string &v,const Expr &n) : var(v), node(n) {}
     LvalExpr(const std::string &v,const ExprList &i) : var(v), indices(i) {}
-    LvalExpr(const std::string &v,const std::string &n,const ExprList &i)
+    LvalExpr(const std::string &v,const Expr &n,const ExprList &i)
       : var(v), node(n), indices(i) {}
     std::string toString() const {
       std::string res = var;
-      if(!node.empty()) res += "." + node;
       BOOST_FOREACH(const Expr &ep,indices) res += "[" + ep->toString() + "]";
+      if(node != NULL) res += "@" + node->toString();
       return res;
     }
   };

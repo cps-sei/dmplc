@@ -74,6 +74,8 @@ bool do_print = false, do_seq = false, do_gams = false;
 bool do_vrep = false;
 bool debug = false;
 bool seq_no_array = false, init_globals = false;
+bool statistical = false;
+double stat_hertz = 10;
 size_t nodes = 0;
 int round_num = -1;
 
@@ -255,6 +257,25 @@ void parse_options (int argc, char **argv)
     {
       do_vrep = true;
     }
+    else if (arg1 == "-st" || arg1 == "--statistic")
+    {
+      statistical = true;
+    }
+    else if (arg1 == "-sh" || arg1 == "--stat-hertz")
+    {
+      if (i + 1 < argc)
+      {
+        std::stringstream buffer (argv[i + 1]);
+        buffer >> stat_hertz;
+      }
+      else
+      {
+        std::cerr << "ERROR: Stat rate (-sh|--stat-hertz) must have a ";
+        std::cerr << " number of hertz (e.g. -sh 10)\n";
+        usage (argv[0]);
+      }
+      ++i;
+    }
 #if MZSRM==1
     else if (arg1 == "-mz" || arg1 == "--mzsrm")
     {
@@ -336,6 +357,8 @@ void usage (char *cmd)
   std::cerr << "  -t|--target|--platform p specify a target platform\n";
   std::cerr << "        Available platforms: WIN_CPP, GNU_CPP (default)\n";
   std::cerr << "  -vr|--vrep               generate code that targets VREP\n";
+  std::cerr << "  -st|--statistic          include statistical model checking support\n";
+  std::cerr << "  -sh|--stat-hertz [hertz] gathered stats at hertz rate (default " << stat_hertz << ")\n";
 #if MZSRM==1
   std::cerr << "  -mz|--mzsrm              generate code that targets MZSRM scheduler\n";
 #endif

@@ -92,6 +92,38 @@ void dmpl::syncseqdbl::GlobalTransformer::exitComp(dmpl::CompExpr &expr)
     exprMap[hostExpr] = dmpl::Expr(new dmpl::CompExpr(expr.op,collect(expr.args)));
 }
 
+std::string dmpl::syncseqdbl::GlobalTransformer::getNodeStr(const dmpl::LvalExpr &expr) const
+{
+  Expr nodeExpr = expr.node;
+  try
+  {
+    int id = nodeExpr->requireInt();
+    return boost::lexical_cast<std::string>(id);
+  }
+  catch(std::bad_cast)
+  {
+    try
+    {
+      const LvalExpr &nodeLVal = nodeExpr->requireLval();
+      std::map<std::string,size_t>::const_iterator iit = idMap.find(nodeLVal.var);
+      if(iit == idMap.end() || nodeLVal.node != NULL || nodeLVal.indices.size() > 0 )
+      {
+        std::cerr << "Error: bad @node specifier. Unknown identifier: " << nodeExpr->toString() << std::endl;
+        exit(1);
+      }
+      else
+      {
+        return boost::lexical_cast<std::string>(iit->second);
+      }
+    }
+    catch(std::bad_cast)
+    {
+      std::cerr << "Error: bad @node specifier (" << nodeExpr->toString() << "); must be integer, or identifier" << std::endl;
+      exit(1);
+    }
+  }
+}
+
 void dmpl::syncseqdbl::GlobalTransformer::exitLval(dmpl::LvalExpr &expr)
 {
   exprMap[hostExpr] = hostExpr;
@@ -111,9 +143,8 @@ void dmpl::syncseqdbl::GlobalTransformer::exitLval(dmpl::LvalExpr &expr)
   std::map<std::string,size_t>::const_iterator iit = idMap.find(expr.var);
   newName = iit == idMap.end() ? newName : boost::lexical_cast<std::string>(iit->second);
 
-  iit = idMap.find(expr.node);
-  newName = iit == idMap.end() ? newName : 
-    newName + "_" + boost::lexical_cast<std::string>(iit->second);
+  if(expr.node != NULL)
+    newName = newName + "_" + getNodeStr(expr);
 
   exprMap[hostExpr] = dmpl::Expr(new dmpl::LvalExpr(newName,collect(expr.indices)));
   
@@ -223,9 +254,8 @@ void dmpl::syncseqdbl::NodeTransformer::exitLval(dmpl::LvalExpr &expr)
   std::map<std::string,size_t>::const_iterator iit = idMap.find(expr.var);
   newName = iit == idMap.end() ? newName : boost::lexical_cast<std::string>(iit->second);
 
-  iit = idMap.find(expr.node);
-  newName = iit == idMap.end() ? newName : 
-    newName + "_" + boost::lexical_cast<std::string>(iit->second);
+  if(expr.node != NULL)
+    newName = newName + "_" + getNodeStr(expr);
 
   exprMap[hostExpr] = dmpl::Expr(new dmpl::LvalExpr(newName,collect(expr.indices)));
   
@@ -772,7 +802,7 @@ void dmpl::SyncSeqDbl::processExternFuncs()
       LvalExpr var = varExpr->requireLval();
       Expr condExpr = *(++attr.paramList.begin());
 
-      if(var.node != "" || var.indices.size() > 0) {
+      if(var.node != NULL || var.indices.size() > 0) {
         std::cerr << "Error: function " << ef.second.name <<
           " has an @ASSUME_RETURN attribute with an invalid variable specified (" <<
           var.toString() << ")" << std::endl;;
