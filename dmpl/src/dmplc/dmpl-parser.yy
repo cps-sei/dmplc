@@ -43,7 +43,7 @@ std::string thunk;
 %union {
     dmpl::Type *type;
     dmpl::Variable *var;
-    dmpl::VarList *varList;
+    dmpl::VariablesList *varList;
     dmpl::LvalExpr *lvalExpr;
     dmpl::Expr *expr;
     dmpl::ExprList *exprlist;
@@ -64,22 +64,23 @@ std::string thunk;
    they represent.
  */
 %token <string> TIDENTIFIER TINTEGER TDOUBLE TATTRIBUTE
+%token <string> TIF TREQUIRE TEXPECT
 %token <token> TSEMICOLON TCONST TNODE
 %token <token> TGLOBAL TLOCAL TALIAS TTARGET TTHUNK
 %token <token> TBOOL TINT TDOUBLE_TYPE TVOID TCHAR TSIGNED TUNSIGNED
 %token <token> TNODENUM TPRIVATE TEXTERN
-%token <token> TIF TELSE TFOR TWHILE
-%token <token> TBREAK TCONTINUE TRETURN TEXO TEXH TEXL TPROGRAM
-%token <token> TINIT TSAFETY TFAN TFADNP TFAO TFAOL TFAOH
+%token <token> TELSE TFOR TWHILE
+%token <token> TBREAK TCONTINUE TRETURN TEXO TEXH TEXL /*TPROGRAM*/
+%token <token> /*TINIT TSAFETY*/ TFAN TFADNP TFAO TFAOL TFAOH
 %token <token> TCEQ TCNE TCLT TCLE TCGT TCGE TEQUAL
 %token <token> TLAND TLOR TLNOT TQUEST TCOLON
 %token <token> TLPAREN TRPAREN TLBRACE TRBRACE 
 %token <token> TLBRACKET TRBRACKET TCOMMA TDOT TAT
 %token <token> TPLUS TMINUS TMUL TDIV TMOD
 %token <token> TBWNOT TBWAND TBWOR TBWXOR TBWLSH TBWRSH
-%token <token> TON_PRE_TIMEOUT TON_POST_TIMEOUT TON_RECV_FILTER
+/*%token <token> TON_PRE_TIMEOUT TON_POST_TIMEOUT TON_RECV_FILTER
 %token <token> TTRACK_LOCATIONS TSEND_HEARTBEATS
-%token <token> TNODE_INIT TONCE_EVERY
+%token <token> TNODE_INIT TONCE_EVERY*/
 
 /* Define the type of node our nonterminal symbols represent.
    The types refer to the %union declaration above. Ex: when
@@ -87,6 +88,7 @@ std::string thunk;
    calling an (NIdentifier*). It makes the compiler happy.
  */
 %type <token> program constant node
+%type <string> cond_kind stmt_name
 %type <node> node_body
 %type <varList> node_var
 %type <function> procedure
@@ -163,13 +165,13 @@ target_id_list : TIDENTIFIER {
 ;
 
 extern_fn_decl : TEXTERN type TIDENTIFIER TLPAREN param_list TRPAREN TSEMICOLON {
-  dmpl::Function func = dmpl::Function(*$2,*$3,*$5,dmpl::VarList(),dmpl::StmtList());
+  dmpl::Function func = dmpl::Function(*$2,*$3,*$5,dmpl::VariablesList(),dmpl::StmtList());
   func.isExtern = true;
   builder->program.addFunction(func);
   delete $2; delete $3; delete $5;
 }
 | attr_list TEXTERN type TIDENTIFIER TLPAREN param_list TRPAREN TSEMICOLON {
-  dmpl::Function func = dmpl::Function(*$3,*$4,*$6,dmpl::VarList(),dmpl::StmtList());
+  dmpl::Function func = dmpl::Function(*$3,*$4,*$6,dmpl::VariablesList(),dmpl::StmtList());
   func.isExtern = true;
   func.attrs = *$1;
   builder->program.addFunction(func);
@@ -276,7 +278,7 @@ local_var : TLOCAL var_decl TSEMICOLON {
 ;
 
 var_decl : type var_list {
-  $$ = new dmpl::VarList();
+  $$ = new dmpl::VariablesList();
   BOOST_FOREACH(const dmpl::Variable &v,*$2) {
     dmpl::BaseType *t = new dmpl::BaseType(**$1);
     t->dims = v.type->dims;
@@ -288,7 +290,7 @@ var_decl : type var_list {
 };
 
 var_list : var {
-  $$ = new dmpl::VarList(); $$->push_back(*$1); delete $1;
+  $$ = new dmpl::VariablesList(); $$->push_back(*$1); delete $1;
 }
 | var_list TCOMMA var { $$ = $1; $$->push_back(*$3); delete $3; }
 ;
@@ -387,9 +389,9 @@ attr_param_list : { $$ = new dmpl::ExprList(); }
 }
 ;
 
-param_list : { $$ = new dmpl::VarList(); }
+param_list : { $$ = new dmpl::VariablesList(); }
 | type var {
-  $$ = new dmpl::VarList();
+  $$ = new dmpl::VariablesList();
   dmpl::BaseType *t = new dmpl::BaseType(**$1);
   t->dims = $2->type->dims;
   dmpl::Variable newVar = *$2;
@@ -408,7 +410,7 @@ param_list : { $$ = new dmpl::VarList(); }
 }
 ;
 
-var_decl_list : { $$ = new dmpl::VarList(); }
+var_decl_list : { $$ = new dmpl::VariablesList(); }
 | var_decl_list var_decl TSEMICOLON {
   $$ = $1; $$->insert($$->end(),$2->begin(),$2->end());
   delete $2;
@@ -419,27 +421,39 @@ stmt_list : stmt { $$ = new dmpl::StmtList(); $$->push_back(*$1); delete $1; }
 | stmt_list stmt { $$ = $1; $$->push_back(*$2); delete $2; }
 ;
 
+cond_kind : TIF {} | TREQUIRE {} | TEXPECT {} ;
+
+stmt_name : { $$ = new std::string(); }
+| TIDENTIFIER {
+  $$ = $1;
+}
+;
+
 stmt : TPRIVATE stmt { $$ = new dmpl::Stmt(new dmpl::PrivateStmt(*$2)); delete $2; }
 | TLBRACE stmt_list TRBRACE { $$ = new dmpl::Stmt(new dmpl::BlockStmt(*$2)); delete $2; }
 | lval TEQUAL expr TSEMICOLON { 
   $$ = new dmpl::Stmt(new dmpl::AsgnStmt(dmpl::Expr($1),*$3));
   delete $3;
 }
-| TIF TLPAREN expr TRPAREN stmt {
-  $$ = new dmpl::Stmt(new dmpl::ITStmt(*$3,*$5));
-  delete $3; delete $5; printStmt(*$$);
+| cond_kind stmt_name TLPAREN expr TRPAREN stmt {
+  $$ = new dmpl::Stmt(new dmpl::CondStmt(*$2, *$1, *$4, *$6));
+  delete $1; delete $2; delete $4; delete $6; printStmt(*$$);
 }
-| TIF TLPAREN expr TRPAREN stmt TELSE stmt {
-  $$ = new dmpl::Stmt(new dmpl::ITEStmt(*$3,*$5,*$7));
-  delete $3; delete $5; delete $7; printStmt(*$$);
+| cond_kind stmt_name TLPAREN expr TRPAREN TELSE stmt {
+  $$ = new dmpl::Stmt(new dmpl::CondStmt(*$2, *$1, *$4, NULL, *$7));
+  delete $1; delete $2; delete $4; delete $7; printStmt(*$$);
 }
-| TWHILE TLPAREN expr TRPAREN stmt {
-  $$ = new dmpl::Stmt(new dmpl::WhileStmt(*$3,*$5));
-  delete $3; delete $5;
+| cond_kind stmt_name TLPAREN expr TRPAREN stmt TELSE stmt {
+  $$ = new dmpl::Stmt(new dmpl::CondStmt(*$2, *$1, *$4, *$6, *$8));
+  delete $1; delete $2; delete $4; delete $6; delete $8; printStmt(*$$);
 }
-| TFOR TLPAREN for_init TSEMICOLON for_test TSEMICOLON for_update TRPAREN stmt {
-  $$ = new dmpl::Stmt(new dmpl::ForStmt(*$3,*$5,*$7,*$9));
-  delete $3; delete $5; delete $7; delete $9;
+| TWHILE stmt_name TLPAREN expr TRPAREN stmt {
+  $$ = new dmpl::Stmt(new dmpl::WhileStmt(*$2, *$4,*$6));
+  delete $2; delete $4; delete $6;
+}
+| TFOR stmt_name TLPAREN for_init TSEMICOLON for_test TSEMICOLON for_update TRPAREN stmt {
+  $$ = new dmpl::Stmt(new dmpl::ForStmt(*$2, *$4,*$6,*$8,*$10));
+  delete $2; delete $4; delete $6; delete $8; delete $10;
 }
 | TBREAK TSEMICOLON { $$ = new dmpl::Stmt(new dmpl::BreakStmt()); }
 | TCONTINUE TSEMICOLON { $$ = new dmpl::Stmt(new dmpl::ContStmt()); }

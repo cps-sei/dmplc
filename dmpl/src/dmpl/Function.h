@@ -68,6 +68,7 @@
 #include <set>
 #include <string>
 #include <boost/ref.hpp>
+#include "SelfRef.h"
 #include "Variable.h"
 #include "Statement.h"
 #include "Attribute.h"
@@ -75,6 +76,10 @@
 
 namespace dmpl
 {
+  class Function;
+  typedef SelfRef<Function>::ref_type Func;
+  typedef std::list <Func> FuncList;
+
   /**
     * @class Function
     * @brief Represents a function definition
@@ -101,6 +106,9 @@ namespace dmpl
     ///function local variables -- we call them temporary variables
     ///since their scope is only the function body
     Variables temps;
+
+    VarList writesTo;
+    VarList readsFrom;
 
     // @ATTR(X, ...) attributes specified for this function
     Attributes attrs;

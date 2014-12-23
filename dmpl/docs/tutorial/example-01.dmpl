@@ -109,25 +109,25 @@ NODE uav (id)
   void ROUND () {
     print_state(X,Y,id,x,y,xf,yf);
     //my_sleep(1);
-    if(state == INITS) {
+    if IF_INIT (state == INITS) {
       lock[x][y][id] = 1;
       state = NEXT;
-    } if(state == NEXT) {
+    } if IF_NEXT (state == NEXT) {
       //compute next point on route
       if(x == xf && y == yf) return;
       NEXT_XY();
       state = REQUEST;
-    } else if(state == REQUEST) {
+    } else if IF_REQUEST (state == REQUEST) {
       //request the lock but only if it is free
       if(EXISTS_LOWER(idp,lock[xp][yp][idp] != 0)) return;
       lock[xp][yp][id] = 1;
       state = WAITING;
-    } else if(state == WAITING) {
+    } else if IF_WAITING (state == WAITING) {
       //grab the lock if we are the highest 
       //id node to request or hold the lock
       if(EXISTS_HIGHER(idp, lock[xp][yp][idp] != 0)) return;
       state = MOVE;
-    } else if(state == MOVE) {
+    } else if IF_MOVE (state == MOVE) {
       //now we have the lock on (x’,y’)
       if(GRID_MOVE(xp,yp,0.5)) return;
       lock[x][y][id] = 0; 

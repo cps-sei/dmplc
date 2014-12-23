@@ -235,25 +235,13 @@ namespace dmpl
      * Returns whether or not to visit an if/then's subfields first.
      * @param  stmt   the if/then statement
      **/
-    virtual bool enterIT(ITStmt &stmt) { return true; }
+    virtual bool enterCond(CondStmt &stmt) { return true; }
 
     /**
      * Visits an if/then statement.
      * @param  stmt   the if/then statement
      **/
-    virtual void exitIT(ITStmt &stmt) {}
-    
-    /**
-     * Returns whether or not to visit an if/then/else's subfields first.
-     * @param  stmt   the if/then/else statement
-     **/
-    virtual bool enterITE(ITEStmt &stmt) { return true; }
-
-    /**
-     * Visits an if/then/else statement.
-     * @param  stmt   the if/then/else statement
-     **/
-    virtual void exitITE(ITEStmt &stmt) {}
+    virtual void exitCond(CondStmt &stmt) {}
     
     /**
      * Returns whether or not to visit a for loop's subfields first.

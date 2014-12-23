@@ -65,16 +65,28 @@
 
 #include <map>
 #include <string>
+#include "SelfRef.h"
+//#include "Function.h"
 #include "Type.h"
 
 
 namespace dmpl
 {
+  class Variable;
+  typedef SelfRef<Variable>::ref_type Var;
+  typedef std::list <Var> VarList;
+  typedef std::list <Variable> VariablesList;
+  typedef std::map <std::string, Variable> Variables;
+
+  class Function;
+  typedef SelfRef<Function>::ref_type Func;
+  typedef std::list <Func> FuncList;
+
   /**
     * @class Variable
     * @brief A variable
     */
-  class Variable
+  class Variable : public SelfRef<Variable>
   {
   public:
     enum Scopes { LOCAL = 501, GLOBAL, PARAM, TEMP };
@@ -93,6 +105,11 @@ namespace dmpl
      * The variable scope
      **/
     int scope;
+
+    Func owner;
+
+    FuncList readers;
+    FuncList writers;
 
     //constructors
     Variable() {}
@@ -119,8 +136,6 @@ namespace dmpl
     Variable decrDim() const;
   };
 
-  typedef std::list <Variable> VarList;
-  typedef std::map <std::string, Variable> Variables;
 }
 
 

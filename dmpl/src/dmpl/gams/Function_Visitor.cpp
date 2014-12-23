@@ -681,72 +681,65 @@ dmpl::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
 
 
 bool
-dmpl::madara::Function_Visitor::enterIT (ITStmt & statement)
+dmpl::madara::Function_Visitor::enterCond (CondStmt & statement)
 {
   return false;
 }
 
 
 void
-dmpl::madara::Function_Visitor::exitIT (ITStmt & statement)
+dmpl::madara::Function_Visitor::exitCond (CondStmt & statement)
 {
   dmpl::Expr & expression = statement.cond;
 
   std::string spacer (indentation_, ' ');
 
-  buffer_ << spacer << "if (";
+  if(statement.kind == "if")
+  {
+    buffer_ << spacer << "if ";
+    if(statement.name != "")
+    {
+      buffer_ << "/* " << statement.name << " */ ";
+    }
+    buffer_ << "(";
 
-  visit (statement.cond);
+    visit (statement.cond);
 
-  buffer_ << ")\n";
+    buffer_ << ")\n";
 
-  indentation_ += 2;
-  
-  buffer_ << spacer << "{\n";
-  
-  visit (statement.tbranch);
+    indentation_ += 2;
+    
+    buffer_ << spacer << "{\n";
+    
+    if(statement.tbranch)
+    {
+      visit (statement.tbranch);
+    }
+    else
+    {
+      buffer_ << spacer << "  { /* Do Nothing */ }\n";
+    }
 
-  buffer_ << spacer << "}\n";
-  indentation_ -= 2;
-}
+    buffer_ << spacer << "}\n";
 
+    if(statement.ebranch)
+    {
+      buffer_ << spacer << "else\n";
+      buffer_ << spacer << "{\n";
+      
+      visit (statement.ebranch);
 
-bool
-dmpl::madara::Function_Visitor::enterITE (ITEStmt & statement)
-{
-  return false;
-}
-
-
-void
-dmpl::madara::Function_Visitor::exitITE (ITEStmt & statement)
-{
-  std::string spacer (indentation_, ' ');
-
-  buffer_ << spacer << "if (";
-
-  visit (statement.cond);
-
-  buffer_ << ")\n";
-
-  indentation_ += 2;
-  
-  buffer_ << spacer << "{\n";
-  
-  visit (statement.tbranch);
-
-  buffer_ << spacer << "}\n";
-
-  buffer_ << spacer << "else\n";
-  buffer_ << spacer << "{\n";
-  
-  visit (statement.ebranch);
-
-  buffer_ << spacer << "}\n";
+      buffer_ << spacer << "}\n";
+    }
+  }
+  else
+  {
+    buffer_ << spacer << "/* Ommited " << statement.kind << " statement. */" << std::endl;
+    std::cerr << "Warning: " << statement.kind << " not supported by this output mode; ignored." << std::endl;
+  }
 
   indentation_ -= 2;
 }
-
 
 bool
 dmpl::madara::Function_Visitor::enterFor (ForStmt & statement)
@@ -760,7 +753,12 @@ dmpl::madara::Function_Visitor::exitFor (ForStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
-  buffer_ << spacer << "for (";
+  buffer_ << spacer << "for ";
+  if(statement.name != "")
+  {
+    buffer_ << "/* " << statement.name << " */ ";
+  }
+  buffer_ << "(";
   
   BOOST_FOREACH (const Stmt & init, statement.init)
   {
@@ -806,7 +804,12 @@ dmpl::madara::Function_Visitor::exitWhile (WhileStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
-  buffer_ << spacer << "while (";
+  buffer_ << spacer << "while ";
+  if(statement.name != "")
+  {
+    buffer_ << "/* " << statement.name << " */ ";
+  }
+  buffer_ << "(";
   
   visit (statement.cond);
   

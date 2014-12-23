@@ -411,7 +411,7 @@ void dmpl::SyncSeqDbl::createGlobVars()
   //instantiate node-global variables by replacing dimension #N with
   //nodeNum -- make two copies, one for initial value for a round, and
   //the other for the final value for a round
-  dmpl::VarList gvars;
+  dmpl::VariablesList gvars;
   BOOST_FOREACH(Variables::value_type &v,node.globVars) {
     gvars.push_back(v.second.instDim(nodeNum));
   }
@@ -460,7 +460,7 @@ void dmpl::SyncSeqDbl::createCopyStmts(bool fwd,const Variable &var,StmtList &re
 void dmpl::SyncSeqDbl::createRoundCopier()
 {
   Node &node = builder.program.nodes.begin()->second;
-  dmpl::VarList fnParams,fnTemps;
+  dmpl::VariablesList fnParams,fnTemps;
 
   //create the copier from _f to _i
   StmtList fnBody1;
@@ -488,7 +488,7 @@ void dmpl::SyncSeqDbl::createRoundCopier()
 /*********************************************************************/
 void dmpl::SyncSeqDbl::createMainFunc()
 {
-  dmpl::VarList mainParams,mainTemps;
+  dmpl::VariablesList mainParams,mainTemps;
   StmtList mainBody,roundBody;
 
   //call SAFETY()
@@ -616,7 +616,7 @@ void dmpl::SyncSeqDbl::createInit()
       std::cerr << "Warning: function " << f.second.name <<
         " has more than one @INIT attribute" << std::endl;
 
-    dmpl::VarList fnParams,fnTemps;
+    dmpl::VariablesList fnParams,fnTemps;
     StmtList fnBody;
 
     //create parameters
@@ -643,7 +643,7 @@ void dmpl::SyncSeqDbl::createInit()
     initFnBody.push_back(callStmt);
   }
 
-  dmpl::VarList fnParams, fnTemps;
+  dmpl::VariablesList fnParams, fnTemps;
 
   Function func(dmpl::voidType(),"__INIT",fnParams,fnTemps,initFnBody);
   cprog.addFunction(func);
@@ -667,7 +667,7 @@ void dmpl::SyncSeqDbl::createSafety()
       std::cerr << "Warning: function " << f.second.name <<
         " has more than one @SAFETY attribute" << std::endl;
 
-    dmpl::VarList fnParams,fnTemps;
+    dmpl::VariablesList fnParams,fnTemps;
     StmtList fnBody;
     //create parameters
     BOOST_FOREACH(Variables::value_type &v,f.second.params)
@@ -693,7 +693,7 @@ void dmpl::SyncSeqDbl::createSafety()
     safetyFnBody.push_back(callStmt);
   }
 
-  dmpl::VarList fnParams, fnTemps;
+  dmpl::VariablesList fnParams, fnTemps;
 
   Function func(dmpl::voidType(),"__SAFETY",fnParams,fnTemps,safetyFnBody);
   cprog.addFunction(func);
@@ -707,7 +707,7 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
   Node &node = builder.program.nodes.begin()->second;
   for(size_t i = 0;i < nodeNum;++i) {
     BOOST_FOREACH(Functions::value_type &f,node.funcs) {
-      dmpl::VarList fnParams,fnTemps;
+      dmpl::VariablesList fnParams,fnTemps;
 
       //create parameters
       BOOST_FOREACH(Variables::value_type &v,f.second.params)

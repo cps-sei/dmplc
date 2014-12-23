@@ -47,7 +47,9 @@ extern "C" int yywrap() { return 1; }
 "#N"                        PRINT_TOKEN; return TOKEN(TNODENUM);
 "PRIVATE"                   PRINT_TOKEN; return TOKEN(TPRIVATE);
 "EXTERN"                    PRINT_TOKEN; return TOKEN(TEXTERN);
-"if"                        PRINT_TOKEN; return TOKEN(TIF);
+"if"                        SAVE_TOKEN; return TIF;
+"require"                   SAVE_TOKEN; return TREQUIRE;
+"expect"                    SAVE_TOKEN; return TEXPECT;
 "else"                      PRINT_TOKEN; return TOKEN(TELSE);
 "for"                       PRINT_TOKEN; return TOKEN(TFOR);
 "while"                     PRINT_TOKEN; return TOKEN(TWHILE);
@@ -57,23 +59,23 @@ extern "C" int yywrap() { return 1; }
 "EXISTS_OTHER"              PRINT_TOKEN; return TOKEN(TEXO);
 "EXISTS_HIGHER"             PRINT_TOKEN; return TOKEN(TEXH);
 "EXISTS_LOWER"              PRINT_TOKEN; return TOKEN(TEXL);
-"PROGRAM"                   PRINT_TOKEN; return TOKEN(TPROGRAM);
-"INIT"                      PRINT_TOKEN; return TOKEN(TINIT);
-"SAFETY"                    PRINT_TOKEN; return TOKEN(TSAFETY);
+  /*"PROGRAM"                   PRINT_TOKEN; return TOKEN(TPROGRAM); */
+  /*"INIT"                      PRINT_TOKEN; return TOKEN(TINIT); */
+  /*"SAFETY"                    PRINT_TOKEN; return TOKEN(TSAFETY); */
 "FORALL_NODE"               PRINT_TOKEN; return TOKEN(TFAN);
 "FORALL_DISTINCT_NODE_PAIR" PRINT_TOKEN; return TOKEN(TFADNP);
 "FORALL_OTHER"              PRINT_TOKEN; return TOKEN(TFAO);
 "FORALL_OTHER_LOWER"        PRINT_TOKEN; return TOKEN(TFAOL);
 "FORALL_OTHER_HIGHER"       PRINT_TOKEN; return TOKEN(TFAOH);
-"@TRACK_LOCATIONS"          PRINT_TOKEN; return TOKEN(TTRACK_LOCATIONS);
-"@SEND_HEARTBEATS"          PRINT_TOKEN; return TOKEN(TSEND_HEARTBEATS);
-"@ON_PRE_ROUND_BARRIER_TIMEOUT"  PRINT_TOKEN; return TOKEN(TON_PRE_TIMEOUT);
-"@ON_POST_ROUND_BARRIER_TIMEOUT" PRINT_TOKEN; return TOKEN(TON_POST_TIMEOUT);
-"@ON_RECEIVE_FILTER"        PRINT_TOKEN; return TOKEN(TON_RECV_FILTER);
+  /*"@TRACK_LOCATIONS"          PRINT_TOKEN; return TOKEN(TTRACK_LOCATIONS);
+    "@SEND_HEARTBEATS"          PRINT_TOKEN; return TOKEN(TSEND_HEARTBEATS);
+    "@ON_PRE_ROUND_BARRIER_TIMEOUT"  PRINT_TOKEN; return TOKEN(TON_PRE_TIMEOUT);
+    "@ON_POST_ROUND_BARRIER_TIMEOUT" PRINT_TOKEN; return TOKEN(TON_POST_TIMEOUT);
+    "@ON_RECEIVE_FILTER"        PRINT_TOKEN; return TOKEN(TON_RECV_FILTER); */
 "NAN"                       SAVE_TOKEN; return TDOUBLE;
 -?[0-9]+\.[0-9]*            SAVE_TOKEN; return TDOUBLE;
 -?[0-9]+                    SAVE_TOKEN; return TINTEGER;
-"NODE_INIT"                 PRINT_TOKEN; return TOKEN(TNODE_INIT);
+  /*"NODE_INIT"                 PRINT_TOKEN; return TOKEN(TNODE_INIT); */
   /* [a-zA-Z_][a-zA-Z0-9_]*(::[a-zA-Z_][a-zA-Z0-9_]*)+  SAVE_TOKEN; return TNAMESPACE; */
 [a-zA-Z][a-zA-Z0-9_]*  {
                           /** substitute constant definitions */

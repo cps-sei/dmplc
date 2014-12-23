@@ -3,6 +3,8 @@
 
 *.d
 
+.*.swp
+
 dmpl/docs/tutorial/*.c
 dmpl/docs/tutorial/*.cpp
 
@@ -12,6 +14,5 @@ dmpl/src/dmplc/dmpl-scanner.cpp
 dmpl/src/vrep/libDmplVrep.a
 
 dmpl/src/dmplc/dmplc
-dmpl/docs/tutorial/tutorial-01
-dmpl/docs/tutorial/tutorial-02
+dmpl/docs/tutorial/example-0?
 dmpl/src/vrep/testExtApi

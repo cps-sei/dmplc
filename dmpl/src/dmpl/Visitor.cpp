@@ -65,6 +65,9 @@ void dmpl::Visitor::visit(const dmpl::Expr &expr)
   //std::cout << "*************** visiting expr *******\n";
   //std::cout << expr->toString() << '\n';
 
+  if(!expr)
+    return;
+
   if(IntExpr *ex = dynamic_cast<IntExpr*>(&*expr)) {
     hostExpr = expr; enterInt(*ex);
     hostExpr = expr; exitInt(*ex);
@@ -105,6 +108,9 @@ void dmpl::Visitor::visit(const dmpl::Stmt &stmt)
   //std::cout << "*************** visiting stmt *******\n";
   //stmt->print(std::cout,0);
 
+  if(!stmt)
+    return;
+
   if(PrivateStmt *st = dynamic_cast<PrivateStmt*>(&*stmt)) {
     hostStmt = stmt; if(enterPrivate(*st)) visit(st->data);
     hostStmt = stmt; exitPrivate(*st);
@@ -114,14 +120,11 @@ void dmpl::Visitor::visit(const dmpl::Stmt &stmt)
   } else if(AsgnStmt *st = dynamic_cast<AsgnStmt*>(&*stmt)) {
     hostStmt = stmt; if(enterAsgn(*st)) { visit(st->lhs); visit(st->rhs); }
     hostStmt = stmt; exitAsgn(*st);
-  } else if(ITStmt *st = dynamic_cast<ITStmt*>(&*stmt)) {
-    hostStmt = stmt; if(enterIT(*st)) { visit(st->cond); visit(st->tbranch); }
-    hostStmt = stmt; exitIT(*st);
-  } else if(ITEStmt *st = dynamic_cast<ITEStmt*>(&*stmt)) {
-    hostStmt = stmt; if(enterITE(*st)) { 
+  } else if(CondStmt *st = dynamic_cast<CondStmt*>(&*stmt)) {
+    hostStmt = stmt; if(enterCond(*st)) { 
       visit(st->cond); visit(st->tbranch); visit(st->ebranch); 
     }
-    hostStmt = stmt; exitITE(*st);
+    hostStmt = stmt; exitCond(*st);
   } else if(ForStmt *st = dynamic_cast<ForStmt*>(&*stmt)) {
     hostStmt = stmt; 
     if(enterFor(*st)) {

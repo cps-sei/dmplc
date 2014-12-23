@@ -95,8 +95,7 @@ namespace dmpl {
     void exitPrivate(PrivateStmt &stmt);
     void exitBlock(BlockStmt &stmt);
     void exitAsgn(AsgnStmt &stmt);
-    void exitIT(ITStmt &stmt);
-    void exitITE(ITEStmt &stmt);
+    void exitCond(CondStmt &stmt);
     void exitFor(ForStmt &stmt);
     void exitWhile(WhileStmt &stmt);
     void exitBreak(BreakStmt &stmt);

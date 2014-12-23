@@ -151,26 +151,36 @@ void dmpl::CopyVisitor::exitAsgn(dmpl::AsgnStmt &stmt)
   //stmtMap[hostStmt]->print(std::cout,0);
 }
 
-void dmpl::CopyVisitor::exitIT(dmpl::ITStmt &stmt) 
+void dmpl::CopyVisitor::exitCond(dmpl::CondStmt &stmt) 
 { 
-  stmtMap[hostStmt] = Stmt(new ITStmt(exprMap[stmt.cond], stmtMap[stmt.tbranch]));
-}
-
-void dmpl::CopyVisitor::exitITE(dmpl::ITEStmt &stmt) 
-{ 
-  stmtMap[hostStmt] = Stmt(new ITEStmt(exprMap[stmt.cond], stmtMap[stmt.tbranch], 
-                                       stmtMap[stmt.ebranch]));
+  if(stmt.tbranch && stmt.ebranch)
+  {
+    stmtMap[hostStmt] = Stmt(new CondStmt(stmt.name, stmt.kind, exprMap[stmt.cond], stmtMap[stmt.tbranch], 
+                                         stmtMap[stmt.ebranch]));
+  }
+  else if(stmt.tbranch)
+  {
+    stmtMap[hostStmt] = Stmt(new CondStmt(stmt.name, stmt.kind, exprMap[stmt.cond], stmtMap[stmt.tbranch]));
+  }
+  else if(stmt.ebranch)
+  {
+    stmtMap[hostStmt] = Stmt(new CondStmt(stmt.name, stmt.kind, exprMap[stmt.cond], NULL, stmtMap[stmt.ebranch]));
+  }
+  else
+  {
+    stmtMap[hostStmt] = Stmt(new CondStmt(stmt.name, stmt.kind, exprMap[stmt.cond]));
+  }
 }
 
 void dmpl::CopyVisitor::exitFor(dmpl::ForStmt &stmt) 
 { 
-  stmtMap[hostStmt] = Stmt(new ForStmt(collect(stmt.init),collect(stmt.test),
+  stmtMap[hostStmt] = Stmt(new ForStmt(stmt.name, collect(stmt.init),collect(stmt.test),
                                        collect(stmt.update),stmtMap[stmt.body]));
 }
 
 void dmpl::CopyVisitor::exitWhile(dmpl::WhileStmt &stmt) 
 { 
-  stmtMap[hostStmt] = Stmt(new WhileStmt(exprMap[stmt.cond],stmtMap[stmt.body]));
+  stmtMap[hostStmt] = Stmt(new WhileStmt(stmt.name, exprMap[stmt.cond],stmtMap[stmt.body]));
 }
 
 void dmpl::CopyVisitor::exitBreak(dmpl::BreakStmt &stmt) 

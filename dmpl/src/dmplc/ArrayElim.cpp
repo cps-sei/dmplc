@@ -94,21 +94,21 @@ void dmpl::ArrayElim::expandArrayVar(const Variable &var)
 //recursively create the statements in the body of a getter
 /*********************************************************************/
 void dmpl::ArrayElim::createGetterBody(const std::string &varName,const Expr &cond,
-                                       const Type &type,const VarList &params,
+                                       const Type &type,const VariablesList &params,
                                        StmtList &body)
 {
   //no more indices to cover
   if(params.empty()) {
     Expr retVal(new LvalExpr(varName));
     Stmt retStmt(new RetStmt(retVal));
-    body.push_back(Stmt(new ITStmt(cond,retStmt)));
+    body.push_back(Stmt(new CondStmt(cond,retStmt)));
     return;
   }
 
   //more parameters to cover
   int dim = type->getFirstDim();
   Type newType = type->decrDim();
-  VarList newParams = params;
+  VariablesList newParams = params;
   newParams.pop_front();
   const Variable &param = *(params.begin());
 
@@ -140,7 +140,7 @@ dmpl::Expr dmpl::ArrayElim::createGetter(const LvalExpr &expr)
   Expr getFunc(new LvalExpr(fnName));
   
   //create parameters
-  dmpl::VarList params;
+  dmpl::VariablesList params;
   for(unsigned int i = 0;i < expr.indices.size();++i) {
     params.push_back(Variable("idx_" + boost::lexical_cast<std::string>(i),dmpl::ucharType()));
   }
@@ -153,7 +153,7 @@ dmpl::Expr dmpl::ArrayElim::createGetter(const LvalExpr &expr)
   body.push_back(Stmt(new RetStmt(Expr(new IntExpr(0)))));
 
   //create and add the function to the result C program
-  outProg.addFunction(Function(elemType,fnName,params,dmpl::VarList(),body));
+  outProg.addFunction(Function(elemType,fnName,params,dmpl::VariablesList(),body));
 
   getters[expr.var] = getFunc;
   return getFunc;
@@ -163,7 +163,7 @@ dmpl::Expr dmpl::ArrayElim::createGetter(const LvalExpr &expr)
 //recursively create the statements in the body of a setter
 /*********************************************************************/
 void dmpl::ArrayElim::createSetterBody(const std::string &varName,const Expr &cond,
-                                       const Type &type,const VarList &params,
+                                       const Type &type,const VariablesList &params,
                                        StmtList &body)
 {
   //no more indices to cover -- the last parameter is the value to be
@@ -172,14 +172,14 @@ void dmpl::ArrayElim::createSetterBody(const std::string &varName,const Expr &co
     Expr lhs(new LvalExpr(varName));
     Expr rhs(new LvalExpr(params.begin()->name));
     Stmt asgn(new AsgnStmt(lhs,rhs));
-    body.push_back(Stmt(new ITStmt(cond,asgn)));
+    body.push_back(Stmt(new CondStmt(cond,asgn)));
     return;
   }
 
   //more parameters to cover
   int dim = type->getFirstDim();
   Type newType = type->decrDim();
-  VarList newParams = params;
+  VariablesList newParams = params;
   newParams.pop_front();
   const Variable &param = *(params.begin());
 
@@ -211,7 +211,7 @@ dmpl::Expr dmpl::ArrayElim::createSetter(const LvalExpr &expr)
   Expr setFunc(new LvalExpr(fnName));
   
   //create parameters
-  dmpl::VarList params;
+  dmpl::VariablesList params;
   for(unsigned int i = 0;i < expr.indices.size();++i) {
     params.push_back(Variable("idx_" + boost::lexical_cast<std::string>(i),dmpl::ucharType()));
   }
@@ -222,7 +222,7 @@ dmpl::Expr dmpl::ArrayElim::createSetter(const LvalExpr &expr)
   createSetterBody(expr.var,Expr(),git->second.type,params,body);
 
   //create and add the function to the result C program
-  outProg.addFunction(Function(voidType(),fnName,params,dmpl::VarList(),body));
+  outProg.addFunction(Function(voidType(),fnName,params,dmpl::VariablesList(),body));
 
   setters[expr.var] = setFunc;
   return setFunc;
@@ -280,7 +280,7 @@ void dmpl::ArrayElim::run()
   //convert array accesses in each function
   BOOST_FOREACH(const Functions::value_type &v,inProg.funcs) {
     const Function &func = v.second;
-    dmpl::VarList fnParams,fnTemps;
+    dmpl::VariablesList fnParams,fnTemps;
     BOOST_FOREACH(const Variables::value_type &v,func.params)
       fnParams.push_back(v.second);
     BOOST_FOREACH(const Variables::value_type &v,func.temps)
@@ -300,8 +300,8 @@ void dmpl::ArrayElim::run()
                                            Expr(new IntExpr(0)))));
       }
 
-      outProg.addFunction(Function(dmpl::voidType(),"init_globals",dmpl::VarList(),
-                                   dmpl::VarList(),igBody));
+      outProg.addFunction(Function(dmpl::voidType(),"init_globals",dmpl::VariablesList(),
+                                   dmpl::VariablesList(),igBody));
 
       Expr callExpr(new LvalExpr("init_globals"));
       Stmt callStmt(new CallStmt(callExpr,dmpl::ExprList()));
