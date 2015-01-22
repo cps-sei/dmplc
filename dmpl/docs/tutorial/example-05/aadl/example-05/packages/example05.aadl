@@ -1,0 +1,308 @@
+package example05
+public
+
+with Zero_Slack_Scheduling;
+
+data coordinate
+end coordinate;
+
+data element_index
+end element_index;
+
+data lock_type
+end lock_type;
+
+data locks_array_type	
+end locks_array_type;
+	
+data implementation locks_array_type.i
+	subcomponents
+		locks: data lock_type[5];
+end locks_array_type.i;	
+
+data lock_update_type
+end lock_update_type;
+
+data implementation lock_update_type.i
+	subcomponents
+		lock: data lock_type;
+	    index: data element_index;		
+end lock_update_type.i;
+
+data initialized_node_type
+end initialized_node_type;	
+
+data initialized_node_update_type
+end initialized_node_update_type;
+
+data implementation initialized_node_update_type.i
+	subcomponents
+		initialized_node: data initialized_node_type;
+		index: data element_index;
+end initialized_node_update_type.i;
+ 
+data distributed_data_store
+end distributed_data_store;
+
+data implementation distributed_data_store.i
+	subcomponents
+		locks: data locks_array_type.i;
+		destination: data coordinate[1];
+		initalized_nodes: data initialized_node_type[5];
+end distributed_data_store.i;
+
+
+system dart_node
+end dart_node;
+
+processor drone_cpu
+end drone_cpu;
+
+thread madara_receiver_thread
+	features
+		leader_destination_update: in event data port coordinate;
+		lock_update_in: in event data port lock_update_type.i;
+		init_update: in event data port initialized_node_update_type.i;
+		distributed_variables: out data port distributed_data_store.i;
+end madara_receiver_thread;
+
+process madara_comm_agent
+	features
+		leader_destination_update: in event data port coordinate;
+		distributed_variables: out data port distributed_data_store.i;		
+		lock_update_in: in event data port lock_update_type.i;
+end madara_comm_agent;
+
+process implementation madara_comm_agent.i
+	subcomponents
+		madara_thread: thread madara_receiver_thread;
+	connections
+		c1: port madara_thread.distributed_variables -> distributed_variables;
+		c2: port leader_destination_update -> madara_thread.leader_destination_update;
+		c3: port lock_update_in -> madara_thread.lock_update_in;
+	properties
+		-- This are 'sample' parameters. We need to get the real ones.
+		Period => 100 ms applies to madara_thread;
+		Zero_Slack_Scheduling::Criticality => 1 applies to madara_thread;
+		Compute_Execution_Time => 10000 ns .. 20000 ns applies to madara_thread;
+end madara_comm_agent.i;
+
+system implementation dart_node.i
+	subcomponents
+		madara_sw: process madara_comm_agent.i;
+		hw: processor drone_cpu;
+	properties
+		Actual_Processor_Binding => (reference (hw)) applies to madara_sw; 
+end dart_node.i;
+
+system protector extends dart_node
+	features
+		leader_destination_update: in event data port coordinate;
+		locks: out event data port lock_update_type.i;
+		lock_update_in: in event data port lock_update_type.i;
+		lock_update_out: out event data port lock_update_type.i;
+end protector;
+
+-- this should exist in some.dmpl as: 'function_name_sample' function
+subprogram protector_subprogram_waypoint
+	features
+		nodeid: in parameter;
+		target_coordinate: out parameter coordinate;
+		leader_destination: in parameter coordinate;
+	properties
+		Source_Name => "WAYPOINT";
+end protector_subprogram_waypoint;
+
+thread protector_waypoint
+	features
+		target_coordinate: out data port coordinate;
+		distributed_variables: in data port distributed_data_store.i;
+end protector_waypoint;
+
+thread implementation protector_waypoint.i
+	calls main:{
+		c: subprogram protector_subprogram_waypoint;
+	};
+	connections
+		c1: parameter c.target_coordinate -> target_coordinate;
+		c2: parameter distributed_variables.destination -> c.leader_destination;
+	properties
+		Activate_Entrypoint_Source_Text => "example-05.dmpl";
+end protector_waypoint.i;
+
+subprogram protector_subprogram_collision_avoidance
+	features
+		nodeid: in parameter;
+		target_coordinate: in parameter coordinate;
+		lock_update: out parameter lock_update_type.i;
+		locks: in parameter locks_array_type.i;
+	properties
+		Source_Name => "COLLISION_AVOIDANCE";
+end protector_subprogram_collision_avoidance;
+
+thread protector_collision_avoidance
+	features
+		target_coordinate: in data port coordinate;
+		lock_update: out data port lock_update_type.i;
+		distributed_variables: in data port distributed_data_store.i;
+end protector_collision_avoidance;
+
+thread implementation protector_collision_avoidance.i
+	calls main:  {
+		c: subprogram protector_subprogram_collision_avoidance;
+	};
+	connections
+		c1: parameter target_coordinate -> c.target_coordinate;
+		c2: parameter c.lock_update -> lock_update;
+		c3: parameter distributed_variables.locks -> c.locks;
+	properties
+		Activate_Entrypoint_Source_Text =>"example-05.dmpl";
+end protector_collision_avoidance.i;
+
+process protector_process
+	features
+		distributed_variables: in data port distributed_data_store.i;
+		lock_update: out data port lock_update_type.i;
+end protector_process;
+
+process implementation protector_process.i
+	subcomponents
+		waypoint_thread: thread protector_waypoint.i;
+		collision_avoidance_thread: thread protector_collision_avoidance.i;
+	connections
+		c1: port waypoint_thread.target_coordinate -> collision_avoidance_thread.target_coordinate;
+		c2: port distributed_variables -> waypoint_thread.distributed_variables;
+		c3: port collision_avoidance_thread.lock_update -> lock_update;
+	properties
+		Period => 100 ms applies to waypoint_thread;
+		Zero_Slack_Scheduling::Criticality => 1 applies to waypoint_thread;
+		Compute_Execution_Time => 10000 ns .. 20000 ns applies to waypoint_thread;
+		Period => 200 ms applies to collision_avoidance_thread;
+		Zero_Slack_Scheduling::Criticality => 2 applies to collision_avoidance_thread;
+		Compute_Execution_Time => 15000 ns .. 30000 ns applies to collision_avoidance_thread;		
+end protector_process.i;
+
+system implementation protector.i extends dart_node.i
+	subcomponents
+		protector_sw: process protector_process.i;
+	connections
+		c1: port madara_sw.distributed_variables -> protector_sw.distributed_variables;
+		c2: port leader_destination_update -> madara_sw.leader_destination_update;
+		c3: port protector_sw.lock_update -> lock_update_out;
+		c4: port lock_update_in -> madara_sw.lock_update_in;
+end protector.i;
+	
+system leader extends dart_node
+	features
+		leader_destination: out event data port coordinate;
+		lock_update_out: out event data port lock_update_type.i;
+		lock_update_in: in event data port lock_update_type.i;
+end leader;
+
+subprogram leader_subprogram_waypoint
+	features
+		nodeid: in parameter;
+		leader_destination: out parameter coordinate;
+	properties
+		Source_Name => "WAYPOINT";
+end leader_subprogram_waypoint;
+
+subprogram leader_subprogram_collision_avoidance
+	features
+		nodeid: in parameter;
+		target_coordinate: in parameter coordinate;
+		lock_update_out: out parameter lock_update_type.i;
+		locks: in parameter locks_array_type.i;
+	properties
+		Source_Name => "COLLISION_AVOIDANCE";
+end leader_subprogram_collision_avoidance;
+
+thread leader_waypoint
+	features
+		leader_destination: out data port coordinate;
+end leader_waypoint;
+
+thread implementation leader_waypoint.i
+	calls main:  {
+		c: subprogram leader_subprogram_waypoint;
+	};
+	connections
+		c1: parameter c.leader_destination -> leader_destination;
+	properties
+		Activate_Entrypoint_Source_Text =>"example-05.dmpl";
+end leader_waypoint.i;
+
+thread leader_collision_avoidance
+	features 
+		target_coordinate: in data port coordinate;
+		lock_update_out: out data port lock_update_type.i;
+		distributed_variables: in data port distributed_data_store.i;
+end leader_collision_avoidance;
+
+thread implementation leader_collision_avoidance.i
+	calls main:  {
+		c: subprogram leader_subprogram_collision_avoidance;
+	};
+	connections
+		c1: parameter target_coordinate -> c.target_coordinate;
+		c2: parameter c.lock_update_out -> lock_update_out;
+		c3: parameter distributed_variables.locks -> c.locks;
+	properties
+		Activate_Entrypoint_Source_Text =>"example-05.dmpl";
+end leader_collision_avoidance.i;
+
+process leader_process
+	features 
+		leader_destination: out data port coordinate;
+		lock_update_out: out event data port lock_update_type.i;
+		distributed_variables: in data port distributed_data_store.i;
+end leader_process;
+
+process implementation leader_process.i
+	subcomponents
+		waypoint_thread: thread leader_waypoint.i;
+		collision_avoidance_thread: thread leader_collision_avoidance.i;
+	connections
+		c1: port waypoint_thread.leader_destination -> leader_destination;
+		c2: port waypoint_thread.leader_destination -> collision_avoidance_thread.target_coordinate;
+		c3: port collision_avoidance_thread.lock_update_out -> lock_update_out;
+	properties
+		Period => 100 ms applies to waypoint_thread;
+		Zero_Slack_Scheduling::Criticality => 1 applies to waypoint_thread;
+		Compute_Execution_Time => 10000 ns .. 20000 ns applies to waypoint_thread;
+		Period => 200 ms applies to collision_avoidance_thread;
+		Zero_Slack_Scheduling::Criticality => 2 applies to collision_avoidance_thread;
+		Compute_Execution_Time => 15000 ns .. 30000 ns applies to collision_avoidance_thread;		
+end leader_process.i;
+
+system implementation leader.i extends dart_node.i
+	subcomponents
+		leader_sw: process leader_process.i;
+	connections
+		c1: port leader_sw.leader_destination -> leader_destination;
+		c2: port leader_sw.lock_update_out -> lock_update_out;
+		c3: port lock_update_in -> madara_sw.lock_update_in;
+		c4: port madara_sw.distributed_variables -> leader_sw.distributed_variables;
+end leader.i;
+	
+system swarm_protection
+end swarm_protection;
+
+system implementation swarm_protection.i
+	subcomponents
+		the_leader: system leader.i;
+		protectors : system protector.i[4];
+	connections
+		c1: port the_leader.leader_destination -> protectors.leader_destination_update {Connection_Pattern => ((All_to_All));};
+		c2: port the_leader.lock_update_out -> protectors.lock_update_in {Connection_Pattern => ((All_to_All));};
+		c3: port protectors.lock_update_out -> the_leader.lock_update_in {Connection_Pattern => ((All_to_All));};
+		c4: port protectors.lock_update_out -> protectors.lock_update_in {Connection_Pattern => ((All_to_All));};
+-- This is an example of how to assign properties to specific elements of the 'protector' array or 
+-- the leader
+--
+--	properties
+--		Period => 100 ms  applies to protectors[1].protector_sw.waypoint_thread;
+		
+end swarm_protection.i;
+
+end example05;
