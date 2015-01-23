@@ -59,7 +59,7 @@
 
 
 dmpl::madara::Function_Visitor::Function_Visitor (
-  Function & function, const Node & node,
+  const Func & function, const Node & node,
   DmplBuilder & builder, std::stringstream & buffer, bool do_vrep)
   : function_ (function), node_ (node),
     builder_ (builder), buffer_ (buffer), do_vrep_(do_vrep),
@@ -116,19 +116,27 @@ dmpl::madara::Function_Visitor::enterLval (LvalExpr & expression)
 void
 dmpl::madara::Function_Visitor::exitLval (LvalExpr & expression)
 {
-  if (expression.indices.size () > 0)
+  int indices = expression.indices.size();
+  bool atNode = expression.node != NULL;
+  if(atNode)
+    indices++;
+  buffer_ << "/* " << expression.toString() << "  atNode: " << expression.node << "  " << expression.node.get() << "  " << indices << " */";
+  if (indices > 0)
   {
     buffer_ << expression.var;
 
     // indexing into a multi-dimensional array requires a different operator
-    if (expression.indices.size () > 1)
+    if (indices > 1)
       buffer_ << "(";
     else
       buffer_ << "[";
 
     // iterate over each index
     bool started = false;
-    BOOST_FOREACH (Expr & expr, expression.indices)
+    ExprList allIndices = expression.indices;
+    if(atNode)
+      allIndices.push_back(expression.node);
+    BOOST_FOREACH (Expr & expr, allIndices)
     {
       if (started)
         buffer_ << ", ";
@@ -139,16 +147,16 @@ dmpl::madara::Function_Visitor::exitLval (LvalExpr & expression)
         started = true;
     }
 
-    if (expression.indices.size () > 1)
+    if (indices > 1)
       buffer_ << ")";
     else
       buffer_ << "]";
 
 
-    if (function_.temps.find (expression.var) == function_.temps.end ()
+    if (function_ && function_->temps.find (expression.var) == function_->temps.end ()
         && expression.indices.size () != 1)
     {
-      buffer_ << ".to_integer ()";
+      //buffer_ << ".to_integer ()";
     }
   }
   else
@@ -160,8 +168,8 @@ dmpl::madara::Function_Visitor::exitLval (LvalExpr & expression)
     // otherwise, we need to determine if this is a MADARA container or not
     else
     {
-      if (function_.temps.count (expression.var) == 0 &&
-          function_.params.count (expression.var) == 0 &&
+      if (function_ && function_->temps.count (expression.var) == 0 &&
+          function_->params.count (expression.var) == 0 &&
           builder_.program.constDef.count (expression.var) == 0)
       {
         buffer_ << "*";
@@ -239,10 +247,10 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
   //dmpl::Functions & externs = builder_.program.externalFuncs;
 
   //bool isExtern = (externs.find (func_name) != externs.end ());
-  Functions::const_iterator nodeFunc = node_.funcs.find (func_name);
-  Functions::const_iterator progFunc = builder_.program.funcs.find (func_name);
+  Funcs::const_iterator nodeFunc = node_.funcs.find (func_name);
+  Funcs::const_iterator progFunc = builder_.program.funcs.find (func_name);
   bool isNodeFunc = nodeFunc != node_.funcs.end();
-  bool isProgFunc = progFunc != builder_.program.funcs.end() && progFunc->second.isExtern == false;
+  bool isProgFunc = progFunc != builder_.program.funcs.end() && progFunc->second->isExtern == false;
 
   if (expression.ignore_return)
     buffer_ << "(void) ";
@@ -251,7 +259,7 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
 
   if (isNodeFunc || isProgFunc)
   {
-    const Function &func = (isNodeFunc ? nodeFunc->second : progFunc->second);
+    const Func &func = (isNodeFunc ? nodeFunc->second : progFunc->second);
     /*if (assignment_)
     {
       // complete the assignment and redo it later;
@@ -335,9 +343,9 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
 
     buffer_ << sub_spacer << "    , vars)";
 
-    if(!expression.ignore_return && func.retType.get() != NULL)
+    if(!expression.ignore_return && func->retType.get() != NULL)
     {
-      switch(func.retType->type)
+      switch(func->retType->type)
       {
         case TINT:
         case TCHAR:
@@ -590,11 +598,16 @@ dmpl::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
   // keep track of assignment;
   assignment_ = &statement;
 
-  LvalExpr *lhs  = dynamic_cast<LvalExpr*>(statement.lhs.get ());
+  boost::shared_ptr<LvalExpr> lhs  = boost::dynamic_pointer_cast<LvalExpr>(statement.lhs);
   
   if (lhs)
   {
-    if (lhs->indices.size () == 0)
+    int indices = lhs->indices.size();
+    bool atNode = lhs->node != NULL;
+    if(atNode)
+      indices++;
+    buffer_ << "/* Assign " << lhs->toString() << "  atNode: " << lhs->node << "  " << lhs->node.get() << "  " << indices << " */";
+    if (indices == 0)
     {
       bool is_private = false;
       if (privatize_ &&
@@ -626,52 +639,59 @@ dmpl::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
         buffer_ << ".set_settings (old_update_settings);\n\n";
       }
     }
-    else if (lhs->indices.size () == 1)
-    {
-      buffer_ << spacer;
-      buffer_ << lhs->var;
-      buffer_ << ".set (";
-      visit (*(lhs->indices.begin ()));
-      buffer_ << ", Integer (";
-      visit (statement.rhs);
-      buffer_ << ")";
-
-      if (privatize_)
-        buffer_ << ", private_update";
-
-      buffer_ << ");\n";
-    }
     else
     {
-      buffer_ << spacer;
-      buffer_ << "{\n";
-
-      buffer_ << sub_spacer;
-      buffer_ << "containers::Array_N::Index index (" << lhs->indices.size ();
-      buffer_ << ");\n";
-      
-      int i = 0;
-      BOOST_FOREACH (Expr & expression, lhs->indices)
+      if (indices == 1)
       {
-        buffer_ << sub_spacer << "index[";
-        buffer_ << i;
-        buffer_ << "] = ";
-        visit (expression);
-        buffer_ << ";\n";
-        ++i;
+        buffer_ << spacer;
+        buffer_ << lhs->var;
+        buffer_ << ".set (";
+        visit (atNode ? lhs->node : *(lhs->indices.begin ()));
+        buffer_ << ", Integer (";
+        visit (statement.rhs);
+        buffer_ << ")";
+
+        if (privatize_)
+          buffer_ << ", private_update";
+
+        buffer_ << ");\n";
       }
-      
-      buffer_ << sub_spacer << lhs->var;
-      buffer_ << ".set (index, ";
-      buffer_ << "Integer (";
-      visit (statement.rhs);
-      buffer_ << ")";
-      buffer_ << ");\n";
+      else
+      {
+        ExprList allIndices = lhs->indices;
+        if(atNode)
+          allIndices.push_back(lhs->node);
 
-      if (privatize_)
-        buffer_ << ", private_update";
+        buffer_ << spacer;
+        buffer_ << "{\n";
 
-      buffer_ << spacer << "}\n";
+        buffer_ << sub_spacer;
+        buffer_ << "containers::Array_N::Index index (" << indices;
+        buffer_ << ");\n";
+        
+        int i = 0;
+        BOOST_FOREACH (Expr & expression, allIndices)
+        {
+          buffer_ << sub_spacer << "index[";
+          buffer_ << i;
+          buffer_ << "] = ";
+          visit (expression);
+          buffer_ << ";\n";
+          ++i;
+        }
+        
+        buffer_ << sub_spacer << lhs->var;
+        buffer_ << ".set (index, ";
+        buffer_ << "Integer (";
+        visit (statement.rhs);
+        buffer_ << ")";
+        buffer_ << ");\n";
+
+        if (privatize_)
+          buffer_ << ", private_update";
+
+        buffer_ << spacer << "}\n";
+      }
     }
   }
 
@@ -1075,16 +1095,16 @@ dmpl::madara::Function_Visitor::exitFAN (FANStmt & statement)
   
   bool i_added = false;
 
-  if (function_.temps.find (statement.id) == function_.temps.end ())
+  if (function_ && function_->temps.find (statement.id) == function_->temps.end ())
   {
     i_added = true;
-    function_.temps [statement.id] = Variable (statement.id);
+    function_->temps [statement.id] = Var (new Variable(statement.id));
   }
   
   visit (statement.data);
 
-  if (i_added)
-    function_.temps.erase (statement.id);
+  if (function_ && i_added)
+    function_->temps.erase (statement.id);
 
   buffer_ << spacer << "}\n\n";
   indentation_ -= 2;
@@ -1141,25 +1161,25 @@ dmpl::madara::Function_Visitor::exitFADNP (FADNPStmt & statement)
   
   bool id1_added = false, id2_added = false;
 
-  if (function_.temps.find (statement.id1) == function_.temps.end ())
+  if (function_ && function_->temps.find (statement.id1) == function_->temps.end ())
   {
     id1_added = true;
-    function_.temps [statement.id1] = Variable (statement.id1);
+    function_->temps [statement.id1] = Var(new Variable (statement.id1));
   }
   
-  if (function_.temps.find (statement.id2) == function_.temps.end ())
+  if (function_ && function_->temps.find (statement.id2) == function_->temps.end ())
   {
     id2_added = true;
-    function_.temps [statement.id2] = Variable (statement.id2);
+    function_->temps [statement.id2] = Var(new Variable (statement.id2));
   }
   
   visit (statement.data);
 
-  if (id1_added)
-    function_.temps.erase (statement.id1);
+  if (function_ && id1_added)
+    function_->temps.erase (statement.id1);
   
-  if (id2_added)
-    function_.temps.erase (statement.id2);
+  if (function_ && id2_added)
+    function_->temps.erase (statement.id2);
   
   buffer_ << spacer_2 << "}\n";
   
@@ -1200,10 +1220,10 @@ dmpl::madara::Function_Visitor::exitFAO (FAOStmt & statement)
   
   bool i_added = false;
 
-  if (function_.temps.find (statement.id) == function_.temps.end ())
+  if (function_ && function_->temps.find (statement.id) == function_->temps.end ())
   {
     i_added = true;
-    function_.temps [statement.id] = Variable (statement.id);
+    function_->temps [statement.id] = Var(new Variable (statement.id));
   }
   
   buffer_ << spacer_2 << "if (" << statement.id << " == *id)\n";
@@ -1211,8 +1231,8 @@ dmpl::madara::Function_Visitor::exitFAO (FAOStmt & statement)
   
   visit (statement.data);
 
-  if (i_added)
-    function_.temps.erase (statement.id);
+  if (function_ && i_added)
+    function_->temps.erase (statement.id);
 
   buffer_ << spacer << "}\n\n";
   indentation_ -= 2;
@@ -1250,16 +1270,16 @@ dmpl::madara::Function_Visitor::exitFAOL (FAOLStmt & statement)
   
   bool i_added = false;
 
-  if (function_.temps.find (statement.id) == function_.temps.end ())
+  if (function_ && function_->temps.find (statement.id) == function_->temps.end ())
   {
     i_added = true;
-    function_.temps [statement.id] = Variable (statement.id);
+    function_->temps [statement.id] = Var(new Variable (statement.id));
   }
   
   visit (statement.data);
 
-  if (i_added)
-    function_.temps.erase (statement.id);
+  if (function_ && i_added)
+    function_->temps.erase (statement.id);
 
   buffer_ << spacer << "}\n\n";
   indentation_ -= 2;
@@ -1297,16 +1317,16 @@ dmpl::madara::Function_Visitor::exitFAOH (FAOHStmt & statement)
   
   bool i_added = false;
 
-  if (function_.temps.find (statement.id) == function_.temps.end ())
+  if (function_ && function_->temps.find (statement.id) == function_->temps.end ())
   {
     i_added = true;
-    function_.temps [statement.id] = Variable (statement.id);
+    function_->temps [statement.id] = Var(new Variable (statement.id));
   }
   
   visit (statement.data);
 
-  if (i_added)
-    function_.temps.erase (statement.id);
+  if (function_ && i_added)
+    function_->temps.erase (statement.id);
 
   buffer_ << spacer << "}\n\n";
   indentation_ -= 2;

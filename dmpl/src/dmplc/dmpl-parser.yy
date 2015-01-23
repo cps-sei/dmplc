@@ -3,6 +3,7 @@
 #include <list>
 #include <map>
 #include <string>
+#include <boost/make_shared.hpp>
 #include <boost/foreach.hpp>
 #include "dmpl/Type.h"
 #include "dmpl/Variable.h"
@@ -42,8 +43,8 @@ std::string thunk;
 /* Represents the many different ways we can access our data */
 %union {
     dmpl::Type *type;
-    dmpl::Variable *var;
-    dmpl::VariablesList *varList;
+    dmpl::Var *var;
+    dmpl::VarList *varList;
     dmpl::LvalExpr *lvalExpr;
     dmpl::Expr *expr;
     dmpl::ExprList *exprlist;
@@ -52,8 +53,8 @@ std::string thunk;
     dmpl::Attribute *attr;
     dmpl::Attributes *attrList;
     dmpl::Node *node;
-    dmpl::Function *function;
-    std::list<int> *intList;
+    dmpl::Func *function;
+    dmpl::Dims *dims;
     std::string *string;
     std::list<std::string> *strList;
     int token;
@@ -99,9 +100,9 @@ std::string thunk;
 %type <lvalExpr> lval
 %type <expr> expr
 %type <exprlist> indices arg_list for_test
-%type <stmt> stmt
+%type <stmt> stmt cond_stmt
 %type <stmtList> stmt_list for_init for_update
-%type <intList> dimensions
+%type <dims> dimensions
 %type <var> var
 %type <varList> var_list var_decl param_list var_decl_list
 %type <attr> attr
@@ -165,15 +166,15 @@ target_id_list : TIDENTIFIER {
 ;
 
 extern_fn_decl : TEXTERN type TIDENTIFIER TLPAREN param_list TRPAREN TSEMICOLON {
-  dmpl::Function func = dmpl::Function(*$2,*$3,*$5,dmpl::VariablesList(),dmpl::StmtList());
-  func.isExtern = true;
+  dmpl::Func func = boost::make_shared<dmpl::Func::element_type>(*$2,*$3,*$5,dmpl::VarList(),dmpl::StmtList());
+  func->isExtern = true;
   builder->program.addFunction(func);
   delete $2; delete $3; delete $5;
 }
 | attr_list TEXTERN type TIDENTIFIER TLPAREN param_list TRPAREN TSEMICOLON {
-  dmpl::Function func = dmpl::Function(*$3,*$4,*$6,dmpl::VariablesList(),dmpl::StmtList());
-  func.isExtern = true;
-  func.attrs = *$1;
+  dmpl::Func func = boost::make_shared<dmpl::Func::element_type>(*$3,*$4,*$6,dmpl::VarList(),dmpl::StmtList());
+  func->isExtern = true;
+  func->attrs = *$1;
   builder->program.addFunction(func);
   delete $1; delete $3; delete $4; delete $6;
 }
@@ -240,14 +241,23 @@ node_body:
 | node_body node_var {
     $1->addVar(*$2);
     delete $2;
-} |
-  procedure {
+}
+| procedure {
     $$ = new dmpl::Node();
     $$->addFunction(*$1);
     delete $1;
 }
 | node_body procedure {
     $1->addFunction(*$2);
+    delete $2;
+}
+| cond_stmt {
+    $$ = new dmpl::Node();
+    $$->addStatement(*$1);
+    delete $1;
+}
+| node_body cond_stmt {
+    $1->addStatement(*$2);
     delete $2;
 }
 ;
@@ -260,50 +270,50 @@ node_var : global_var{
 }
 
 global_var : TGLOBAL var_decl TSEMICOLON {
-  BOOST_FOREACH(dmpl::Variable &v, *$2)
+  BOOST_FOREACH(dmpl::Var &v, *$2)
   {
-    v.scope = dmpl::Variable::GLOBAL;
+    v->scope = dmpl::Variable::GLOBAL;
   }
   $$ = $2;
 }
 ;
 
 local_var : TLOCAL var_decl TSEMICOLON {
-  BOOST_FOREACH(dmpl::Variable &v, *$2)
+  BOOST_FOREACH(dmpl::Var &v, *$2)
   {
-    v.scope = dmpl::Variable::LOCAL;
+    v->scope = dmpl::Variable::LOCAL;
   }
   $$ = $2;
 }
 ;
 
 var_decl : type var_list {
-  $$ = new dmpl::VariablesList();
-  BOOST_FOREACH(const dmpl::Variable &v,*$2) {
-    dmpl::BaseType *t = new dmpl::BaseType(**$1);
-    t->dims = v.type->dims;
-    dmpl::Variable newVar = v;
-    newVar.type = dmpl::Type(t);
+  $$ = new dmpl::VarList();
+  BOOST_FOREACH(const dmpl::Var &v,*$2) {
+    dmpl::Type t = boost::make_shared<dmpl::BaseType>(**$1);
+    t->dims = v->type->dims;
+    dmpl::Var newVar = boost::make_shared<dmpl::Var::element_type>(*v);
+    newVar->type = t;//dmpl::Type(t);
     $$->push_back(newVar);
   }
   delete $1; delete $2;
 };
 
 var_list : var {
-  $$ = new dmpl::VariablesList(); $$->push_back(*$1); delete $1;
+  $$ = new dmpl::VarList(); $$->push_back(*$1); delete $1;
 }
 | var_list TCOMMA var { $$ = $1; $$->push_back(*$3); delete $3; }
 ;
 
-var : TIDENTIFIER { $$ = new dmpl::Variable(*$1); delete $1; }
+var : TIDENTIFIER { $$ = new dmpl::Var(boost::make_shared<dmpl::Var::element_type>(*$1)); delete $1; }
 | TIDENTIFIER dimensions {
-  $$ = new dmpl::Variable(*$1,*$2); 
+  $$ = new dmpl::Var(boost::make_shared<dmpl::Var::element_type>(*$1,*$2)); 
   delete $1; delete $2;
 }
 ;
 
 dimensions : TLBRACKET dimension TRBRACKET {
-  $$ = new std::list<int>(); $$->push_back($2);
+  $$ = new dmpl::Dims(); $$->push_back($2);
 }
 | dimensions TLBRACKET dimension TRBRACKET { $$ = $1; $$->push_back($3); }
 ;
@@ -333,26 +343,26 @@ simp_type : TBOOL { $$ = new dmpl::Type(dmpl::boolType()); }
 
 procedure : type TIDENTIFIER TLPAREN param_list TRPAREN TLBRACE var_decl_list stmt_list TRBRACE {
   /** set scope of parameters and temporary variables */
-  BOOST_FOREACH(dmpl::Variable &v,*$4) v.scope = dmpl::Variable::PARAM;
-  BOOST_FOREACH(dmpl::Variable &v,*$7) v.scope = dmpl::Variable::TEMP;
+  BOOST_FOREACH(dmpl::Var &v,*$4) v->scope = dmpl::Variable::PARAM;
+  BOOST_FOREACH(dmpl::Var &v,*$7) v->scope = dmpl::Variable::TEMP;
   /** create and add function to the node */
-  $$ = new dmpl::Function(*$1,*$2,*$4,*$7,*$8);
+  $$ = new dmpl::Func(boost::make_shared<dmpl::Func::element_type>(*$1,*$2,*$4,*$7,*$8));
   delete $1; delete $2; delete $4; delete $7; delete $8;       
 }
 | attr_list type TIDENTIFIER TLPAREN param_list TRPAREN TLBRACE var_decl_list stmt_list TRBRACE {
   /** set scope of parameters and temporary variables */
-  BOOST_FOREACH(dmpl::Variable &v,*$5) v.scope = dmpl::Variable::PARAM;
-  BOOST_FOREACH(dmpl::Variable &v,*$8) v.scope = dmpl::Variable::TEMP;
+  BOOST_FOREACH(dmpl::Var &v,*$5) v->scope = dmpl::Variable::PARAM;
+  BOOST_FOREACH(dmpl::Var &v,*$8) v->scope = dmpl::Variable::TEMP;
   /** create and add function to the node */
-  $$ = new dmpl::Function(*$2,*$3,*$5,*$8,*$9,*$1);
+  $$ = new dmpl::Func(boost::make_shared<dmpl::Func::element_type>(*$2,*$3,*$5,*$8,*$9,*$1));
   delete $2; delete $3; delete $5; delete $8; delete $9; delete $1;
 }
 | TIDENTIFIER TLPAREN TRPAREN TSEMICOLON {
-  $$ = new dmpl::Function(*$1);
+  $$ = new dmpl::Func(boost::make_shared<dmpl::Func::element_type>(*$1));
   delete $1;
 }
 | attr_list TIDENTIFIER TLPAREN TRPAREN TSEMICOLON {
-  $$ = new dmpl::Function(*$2, *$1);
+  $$ = new dmpl::Func(boost::make_shared<dmpl::Func::element_type>(*$2, *$1));
   delete $1; delete $2;
 }
 ;
@@ -389,28 +399,28 @@ attr_param_list : { $$ = new dmpl::ExprList(); }
 }
 ;
 
-param_list : { $$ = new dmpl::VariablesList(); }
+param_list : { $$ = new dmpl::VarList(); }
 | type var {
-  $$ = new dmpl::VariablesList();
+  $$ = new dmpl::VarList();
   dmpl::BaseType *t = new dmpl::BaseType(**$1);
-  t->dims = $2->type->dims;
-  dmpl::Variable newVar = *$2;
-  newVar.type = dmpl::Type(t);
+  t->dims = (*$2)->type->dims;
+  dmpl::Var newVar(*$2);
+  newVar->type = dmpl::Type(t);
   $$->push_back(newVar);
   delete $1; delete $2;
 }
 | param_list TCOMMA type var {
   $$ = $1;
   dmpl::BaseType *t = new dmpl::BaseType(**$3);
-  t->dims = $4->type->dims;
-  dmpl::Variable newVar = *$4;
-  newVar.type = dmpl::Type(t);
+  t->dims = (*$4)->type->dims;
+  dmpl::Var newVar(*$4);
+  newVar->type = dmpl::Type(t);
   $$->push_back(newVar);
   delete $3; delete $4;
 }
 ;
 
-var_decl_list : { $$ = new dmpl::VariablesList(); }
+var_decl_list : { $$ = new dmpl::VarList(); }
 | var_decl_list var_decl TSEMICOLON {
   $$ = $1; $$->insert($$->end(),$2->begin(),$2->end());
   delete $2;
@@ -422,6 +432,24 @@ stmt_list : stmt { $$ = new dmpl::StmtList(); $$->push_back(*$1); delete $1; }
 ;
 
 cond_kind : TIF {} | TREQUIRE {} | TEXPECT {} ;
+
+cond_stmt : cond_kind stmt_name TLPAREN expr TRPAREN stmt {
+  $$ = new dmpl::Stmt(new dmpl::CondStmt(*$2, *$1, *$4, *$6));
+  delete $1; delete $2; delete $4; delete $6; printStmt(*$$);
+}
+| cond_kind stmt_name TLPAREN expr TRPAREN TSEMICOLON {
+  $$ = new dmpl::Stmt(new dmpl::CondStmt(*$2, *$1, *$4));
+  delete $1; delete $2; delete $4; printStmt(*$$);
+}
+| cond_kind stmt_name TLPAREN expr TRPAREN TELSE stmt {
+  $$ = new dmpl::Stmt(new dmpl::CondStmt(*$2, *$1, *$4, NULL, *$7));
+  delete $1; delete $2; delete $4; delete $7; printStmt(*$$);
+}
+| cond_kind stmt_name TLPAREN expr TRPAREN stmt TELSE stmt {
+  $$ = new dmpl::Stmt(new dmpl::CondStmt(*$2, *$1, *$4, *$6, *$8));
+  delete $1; delete $2; delete $4; delete $6; delete $8; printStmt(*$$);
+}
+;
 
 stmt_name : { $$ = new std::string(); }
 | TIDENTIFIER {
@@ -435,18 +463,6 @@ stmt : TPRIVATE stmt { $$ = new dmpl::Stmt(new dmpl::PrivateStmt(*$2)); delete $
   $$ = new dmpl::Stmt(new dmpl::AsgnStmt(dmpl::Expr($1),*$3));
   delete $3;
 }
-| cond_kind stmt_name TLPAREN expr TRPAREN stmt {
-  $$ = new dmpl::Stmt(new dmpl::CondStmt(*$2, *$1, *$4, *$6));
-  delete $1; delete $2; delete $4; delete $6; printStmt(*$$);
-}
-| cond_kind stmt_name TLPAREN expr TRPAREN TELSE stmt {
-  $$ = new dmpl::Stmt(new dmpl::CondStmt(*$2, *$1, *$4, NULL, *$7));
-  delete $1; delete $2; delete $4; delete $7; printStmt(*$$);
-}
-| cond_kind stmt_name TLPAREN expr TRPAREN stmt TELSE stmt {
-  $$ = new dmpl::Stmt(new dmpl::CondStmt(*$2, *$1, *$4, *$6, *$8));
-  delete $1; delete $2; delete $4; delete $6; delete $8; printStmt(*$$);
-}
 | TWHILE stmt_name TLPAREN expr TRPAREN stmt {
   $$ = new dmpl::Stmt(new dmpl::WhileStmt(*$2, *$4,*$6));
   delete $2; delete $4; delete $6;
@@ -454,6 +470,9 @@ stmt : TPRIVATE stmt { $$ = new dmpl::Stmt(new dmpl::PrivateStmt(*$2)); delete $
 | TFOR stmt_name TLPAREN for_init TSEMICOLON for_test TSEMICOLON for_update TRPAREN stmt {
   $$ = new dmpl::Stmt(new dmpl::ForStmt(*$2, *$4,*$6,*$8,*$10));
   delete $2; delete $4; delete $6; delete $8; delete $10;
+}
+| cond_stmt {
+  $$ = $1;
 }
 | TBREAK TSEMICOLON { $$ = new dmpl::Stmt(new dmpl::BreakStmt()); }
 | TCONTINUE TSEMICOLON { $$ = new dmpl::Stmt(new dmpl::ContStmt()); }

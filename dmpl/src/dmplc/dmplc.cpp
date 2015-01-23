@@ -62,7 +62,7 @@
 #include "DmplBuilder.hpp"
 #include "dmpl/gams/Sync_Builder.hpp"
 #include "SyncSeqDbl.hpp"
-#include "ArrayElim.hpp"
+//#include "ArrayElim.hpp"
 
 /*********************************************************************/
 //options
@@ -71,7 +71,7 @@ std::list<std::string> file_names;
 std::string out_file;
 std::string madara_target ("GNU_CPP");
 bool do_print = false, do_seq = false, do_gams = false;
-bool do_vrep = false;
+bool do_vrep = false, do_expect = false;
 bool debug = false;
 bool seq_no_array = false, init_globals = false;
 bool statistical = false;
@@ -128,7 +128,7 @@ int main (int argc, char **argv)
       program.processes.push_back (dmpl::Process (nodeName, i));
 
     // create a madara builder instance of the dmpl builder parse
-    dmpl::gams::GAMS_Builder *gams_builder = new dmpl::gams::Sync_Builder (builder, madara_target, schedType);
+    dmpl::gams::GAMS_Builder *gams_builder = new dmpl::gams::Sync_Builder (builder, madara_target, schedType, do_expect);
 
     //build the generated code
     gams_builder->build ();
@@ -165,11 +165,11 @@ int main (int argc, char **argv)
     cprog = syncSeqDbl.cprog;
     
     //eliminate arrays
-    if (seq_no_array) {
+    /*if (seq_no_array) {
       dmpl::ArrayElim ae (cprog, init_globals);
       ae.run ();
       cprog = ae.outProg;
-    }
+    }*/
     
     if (out_file.empty ())
       {
@@ -239,6 +239,10 @@ void parse_options (int argc, char **argv)
     {
       do_gams = true;
     }
+    else if (arg1 == "-e" || arg1 == "--expect")
+    {
+      do_expect = true;
+    }
     else if (arg1 == "-t" || arg1 == "--target" || arg1 == "--platform")
     {
       if (i + 1 < argc)
@@ -301,10 +305,10 @@ void parse_options (int argc, char **argv)
       }
       ++i;
     }
-    else if (arg1 == "--seq-no-array")
+    /*else if (arg1 == "--seq-no-array")
     {
       seq_no_array = true;
-    }
+    }*/
     else if (arg1 == "-i" || arg1 == "--init-globals")
     {
       init_globals = true;
@@ -354,6 +358,7 @@ void usage (char *cmd)
   std::cerr << "  -p|--print               parse and print DASL file\n";
   std::cerr << "  -n|--nodes nodes         number of nodes\n";
   std::cerr << "  -g|--gams                generate C++/GAMS code to run\n";
+  std::cerr << "  -e|--expect              check and log 'expect' statements\n";
   std::cerr << "  -t|--target|--platform p specify a target platform\n";
   std::cerr << "        Available platforms: WIN_CPP, GNU_CPP (default)\n";
   std::cerr << "  -vr|--vrep               generate code that targets VREP\n";
@@ -364,7 +369,7 @@ void usage (char *cmd)
 #endif
   std::cerr << "  -s|--seq                 generate sequentialized code to verify\n";
   std::cerr << "  -r|--rounds rounds       number of verification rounds\n";
-  std::cerr << "  --seq-no-array           do not use arrays during verification\n";
+  //std::cerr << "  --seq-no-array           do not use arrays during verification\n";
   std::cerr << "  -i|--init-globals        initialize global variables\n";
   std::cerr << "  --D<const_name> value    set a const to a value\n";
   exit (0);

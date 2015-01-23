@@ -142,12 +142,12 @@ namespace dmpl
     /**
      * A map of function names to function definitions
      **/
-    Functions funcs;
+    Funcs funcs;
 
     /**
      * A map of thread start function names to thread objects
      **/
-    Threads threads;
+    //Threads threads;
 
     /**
      * The node definitions
@@ -177,7 +177,7 @@ namespace dmpl
     //void addExternalFunction(const Function &f) { externalFuncs[f.name] = f; }
 
     ///add a function
-    void addFunction(const Function &f) { funcs[f.name] = f; }
+    void addFunction(const Func &f) { funcs[f->name] = f; }
 
     ///add a callback
     void addCallback(const std::string &callback_type, const std::string &callback_name)
@@ -215,13 +215,13 @@ namespace dmpl
     ///return true if the argument is the name of an external function
     bool isExternalFunction(const std::string &fn) const 
     {
-      return isFunction(fn) && funcs.find(fn)->second.isExtern == true;
+      return isFunction(fn) && funcs.find(fn)->second->isExtern == true;
     }
 
     ///return true if the argument is the name of a defined top-level DMPL function
     bool isInternalFunction(const std::string &fn) const
     {
-      return isFunction(fn) && funcs.find(fn)->second.isExtern == false;
+      return isFunction(fn) && funcs.find(fn)->second->isExtern == false;
     }
 
     ///set the period

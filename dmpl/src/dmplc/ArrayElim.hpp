@@ -88,14 +88,14 @@ namespace dmpl {
     //existing setter and getter functions
     std::map<std::string,Expr> getters,setters;
 
-    void expandArrayVar(const Variable &var);
+    void expandArrayVar(const Var &var);
 
     void createGetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VariablesList &params,
+                          const Type &type,const VarList &params,
                           StmtList &body);
     Expr createGetter(const LvalExpr &expr);
     void createSetterBody(const std::string &varName,const Expr &cond,
-                          const Type &type,const VariablesList &params,
+                          const Type &type,const VarList &params,
                           StmtList &body);
     Expr createSetter(const LvalExpr &expr);
 

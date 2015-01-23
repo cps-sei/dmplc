@@ -69,6 +69,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/foreach.hpp>
 #include "Expression.h"
+#include "Symbol.h"
 
 
 namespace dmpl
@@ -90,7 +91,7 @@ namespace dmpl
     * @class Statement
     * @brief An abstract base class for all statements
     */
-  class Statement
+  class Statement : public SymbolUser
   {
   public:
     virtual std::string toString() const = 0;
@@ -101,6 +102,11 @@ namespace dmpl
   {
   public:
     std::string name;
+     
+    virtual bool recordUse()
+    {
+      return (name != "");
+    }
 
   protected:
     NamedStmt() : name() {}
@@ -136,12 +142,17 @@ namespace dmpl
       BOOST_FOREACH(const Stmt &st,data) res += st->toString();
       return res + " }";
     }
+
     void print (std::ostream &os,unsigned int indent) const
     {
       std::string spacer (indent, ' ');
       os << spacer << "{\n";
       BOOST_FOREACH(const Stmt &st,data) st->print(os,indent+2);
       os << spacer << "}\n";
+    }
+
+    virtual SymUserList getParents(Context &con) {
+      return SymUserList(data.begin(), data.end());
     }
   };
 
@@ -159,6 +170,16 @@ namespace dmpl
     {
       std::string spacer (indent, ' ');
       os << spacer << lhs->toString() << " = " << rhs->toString() << ";\n";
+    }
+
+    virtual Context useSymbols(const SymUser &self, Context con) {
+      {
+        Context conW = con;
+        conW.isLHS = true;
+        lhs->useSymbols(lhs, conW);
+      }
+      rhs->useSymbols(rhs, con);
+      return con;
     }
   };
 
@@ -195,7 +216,10 @@ namespace dmpl
         NamedStmt(n), kind(k), cond(c),tbranch(tb),ebranch(eb) {}
 
     std::string toString() const { 
-      return kind + (name != "" ? " /* " + name + " */ " : "") + "(" + cond->toString() + ")" + tbranch->toString(); 
+      return kind + (name != "" ? " /* " + name + " */ " : "") + "(" + cond->toString() + ")" +
+        (tbranch ? tbranch->toString() : "") +
+        (ebranch ? " else " + tbranch->toString() : "") +
+        (!ebranch && !tbranch ? ";" : ""); 
     }
 
     void print (std::ostream &os,unsigned int indent) const
@@ -216,7 +240,19 @@ namespace dmpl
         ebranch->print(os,isBlock(ebranch) ? indent : indent+2); 
       }
     }
+
+    virtual SymUserList getParents(Context &con) {
+      SymUserList ret;
+      ret.push_back(cond);
+      if(tbranch != NULL)
+        ret.push_back(tbranch);
+      if(ebranch != NULL)
+        ret.push_back(ebranch);
+      return ret;
+    }
   };
+
+  typedef boost::shared_ptr<CondStmt> CStmt;
 
   //an if-then-else statement
   /*
@@ -250,6 +286,15 @@ namespace dmpl
     StmtList init,update;
     ExprList test;
     Stmt body;
+
+    virtual SymUserList getParents(Context &con) {
+      SymUserList ret;
+      ret.insert(ret.end(), init.begin(), init.end());
+      ret.insert(ret.end(), update.begin(), update.end());
+      ret.insert(ret.end(), test.begin(), test.end());
+      ret.push_back(body);
+      return ret;
+    }
 
     ForStmt(const StmtList &i,const ExprList &t,const StmtList &u,const Stmt &b) 
       : init(i),update(u),test(t),body(b) {}
@@ -292,6 +337,13 @@ namespace dmpl
   public:
     Expr cond;
     Stmt body;
+
+    virtual SymUserList getParents(Context &con) {
+      SymUserList ret;
+      ret.push_back(cond);
+      ret.push_back(body);
+      return ret;
+    }
 
     WhileStmt(const Expr &c,const Stmt &b) : cond(c),body(b) {}
     WhileStmt(const std::string &n,const Expr &c,const Stmt &b) : NamedStmt(n),cond(c),body(b) {}
@@ -336,6 +388,12 @@ namespace dmpl
   public:
     Expr retVal;
 
+    virtual SymUserList getParents(Context &con) {
+      SymUserList ret;
+      ret.push_back(retVal);
+      return ret;
+    }
+
     RetStmt(const Expr &rv) : retVal(rv) {}
     std::string toString() const { return "return " + retVal->toString() + ";"; }
     void print (std::ostream &os,unsigned int indent) const
@@ -363,6 +421,12 @@ namespace dmpl
   public:
     Expr data;
 
+    virtual SymUserList getParents(Context &con) {
+      SymUserList ret;
+      ret.push_back(data);
+      return ret;
+    }
+
     //caller must ensure that d is a CallExpr
     CallStmt(const Expr &d) : data(d) {}
 
@@ -381,6 +445,13 @@ namespace dmpl
   public:
     std::string id;
     Stmt data;
+
+    virtual SymUserList getParents(Context &con) {
+      SymUserList ret;
+      ret.push_back(data);
+      return ret;
+    }
+
     FANStmt(const std::string &i,const Stmt &d) : id(i),data(d) {}
     std::string toString() const {
       return "FORALL_NODE (" + id + ") " + data->toString();
@@ -399,6 +470,13 @@ namespace dmpl
   public:
     std::string id1,id2;
     Stmt data;
+
+    virtual SymUserList getParents(Context &con) {
+      SymUserList ret;
+      ret.push_back(data);
+      return ret;
+    }
+
     FADNPStmt(const std::string &i1,const std::string &i2,const Stmt &d) 
       : id1(i1),id2(i2),data(d) {}
     std::string toString() const {
@@ -419,6 +497,13 @@ namespace dmpl
   public:
     std::string id;
     Stmt data;
+
+    virtual SymUserList getParents(Context &con) {
+      SymUserList ret;
+      ret.push_back(data);
+      return ret;
+    }
+
     FAOStmt(const std::string &i,const Stmt &d) : id(i),data(d) {}
     std::string toString() const {
       return "FORALL_OTHER (" + id + ") " + data->toString();
@@ -437,6 +522,13 @@ namespace dmpl
   public:
     std::string id;
     Stmt data;
+
+    virtual SymUserList getParents(Context &con) {
+      SymUserList ret;
+      ret.push_back(data);
+      return ret;
+    }
+
     FAOLStmt(const std::string &i,const Stmt &d) : id(i),data(d) {}
     std::string toString() const {
       return "FORALL_OTHER_LOWER (" + id + ") " + data->toString();
@@ -455,6 +547,13 @@ namespace dmpl
   public:
     std::string id;
     Stmt data;
+
+    virtual SymUserList getParents(Context &con) {
+      SymUserList ret;
+      ret.push_back(data);
+      return ret;
+    }
+
     FAOHStmt(const std::string &i,const Stmt &d) : id(i),data(d) {}
     std::string toString() const {
       return "FORALL_OTHER_HIGHER (" + id + ") " + data->toString();

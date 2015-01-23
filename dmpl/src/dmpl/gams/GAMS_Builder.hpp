@@ -84,8 +84,9 @@ namespace dmpl
        * @param  builder   the source for building a program
        **/
       GAMS_Builder (DmplBuilder & builder,const std::string &target,
-                    SchedType & schedType)
-        : builder_ (builder), target_ (target), schedType_(schedType) {}
+                    SchedType & schedType, bool do_expect)
+        : builder_ (builder), target_ (target),
+          schedType_(schedType), do_expect_(do_expect) {}
 
       ///we need a virtual destructor
       virtual ~GAMS_Builder() {}
@@ -112,6 +113,9 @@ namespace dmpl
 
       /// the targeted scheduler
       SchedType schedType_;
+
+      /// output expect logging
+      bool do_expect_;
     };
   } // namespace gams
 } //namespace dmpl

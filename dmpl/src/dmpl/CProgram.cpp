@@ -69,9 +69,9 @@ dmpl::CProgram::print (std::ostream &os,unsigned int indent)
 
   //print external function declarations
   os << spacer << "/************* external functions ***********/\n";
-  BOOST_FOREACH(dmpl::Functions::value_type &v, externalFuncs) {
+  BOOST_FOREACH(dmpl::Funcs::value_type &v, externalFuncs) {
     os << spacer << "extern";
-    v.second.printDecl(os, 1);
+    v.second->printDecl(os, 1);
   }
   os << '\n';
 
@@ -84,19 +84,19 @@ dmpl::CProgram::print (std::ostream &os,unsigned int indent)
   
   //print global variables
   os << spacer << "/************* global variables ***********/\n";
-  for (dmpl::Variables::iterator i = globVars.begin (); i != globVars.end (); ++i) {
-    i->second.print (os,indent);
+  for (dmpl::Vars::iterator i = globVars.begin (); i != globVars.end (); ++i) {
+    i->second->print (os,indent);
     os << ";\n";
   }
   os << '\n';
 
   //print function declarations
-  for (dmpl::Functions::iterator i = funcs.begin (); i != funcs.end (); ++i)
-    i->second.printDecl (os,indent);
+  for (dmpl::Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
+    i->second->printDecl (os,indent);
 
   //print functions
-  for (dmpl::Functions::iterator i = funcs.begin (); i != funcs.end (); ++i)
-    i->second.print (os,indent);
+  for (dmpl::Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
+    i->second->print (os,indent);
 }
 
 /*********************************************************************/

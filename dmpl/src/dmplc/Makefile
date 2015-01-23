@@ -1,13 +1,14 @@
 MZSRM=1
 
 SRC=dmpl-scanner.cpp dmpl-parser.cpp DmplBuilder.cpp CopyVisitor.cpp \
-SyncSeqDbl.cpp ArrayElim.cpp \
+SyncSeqDbl.cpp \
 ../dmpl/Expression.cpp ../dmpl/Function.cpp \
-../dmpl/Node.cpp ../dmpl/Program.cpp \
+../dmpl/Node.cpp ../dmpl/Program.cpp ../dmpl/Symbol.cpp \
 ../dmpl/Variable.cpp ../dmpl/Statement.cpp ../dmpl/Type.cpp \
 ../dmpl/CProgram.cpp ../dmpl/Visitor.cpp \
 ../dmpl/gams/Sync_Builder.cpp \
 ../dmpl/gams/Function_Visitor.cpp
+# ArrayElim.cpp
 
 OBJ=$(SRC:.cpp=.o)
 INC=-I$(ACE_ROOT) -I$(MADARA_ROOT)/include -I$(JAVA_ROOT)/include -I..

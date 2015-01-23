@@ -72,7 +72,7 @@ dmpl::Variable::Variable(const std::string &n,const dmpl::Type &t)
 
 //constructor with name and dimensions -- assigns a default base type
 //and scope
-dmpl::Variable::Variable(const std::string &n,const std::list<int> &d) 
+dmpl::Variable::Variable(const std::string &n,const Dims &d) 
   : name(n),type(dmpl::Type(new BaseType(d))),scope(0) {}
 
 /*********************************************************************/
@@ -100,30 +100,30 @@ dmpl::Variable::print (std::ostream &os,unsigned int indent)
 /*********************************************************************/
 ///return a copy but instantiate dimension #N with nodeNum
 /*********************************************************************/
-dmpl::Variable dmpl::Variable::instDim(size_t nodeNum) const
+dmpl::Var dmpl::Variable::instDim(size_t nodeNum) const
 {
-  Variable res = *this;
-  res.type = res.type->instDim(nodeNum);
+  Var res(new Variable(*this));
+  res->type = res->type->instDim(nodeNum);
   return res;
 }
 
 /*********************************************************************/
 ///return a copy but change name to name+ext
 /*********************************************************************/
-dmpl::Variable dmpl::Variable::instName(std::string ext) const
+dmpl::Var dmpl::Variable::instName(std::string ext) const
 {
-  Variable res = *this;
-  res.name = res.name + ext;
+  Var res(new Variable(*this));
+  res->name = res->name + ext;
   return res;
 }
 
 /*********************************************************************/
 ///return a copy with one less dimension
 /*********************************************************************/
-dmpl::Variable dmpl::Variable::decrDim() const
+dmpl::Var dmpl::Variable::decrDim() const
 {
-  Variable res = *this;
-  res.type = res.type->decrDim();
+  Var res(new Variable(*this));
+  res->type = res->type->decrDim();
   return res;  
 }
 

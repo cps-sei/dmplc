@@ -105,7 +105,7 @@ namespace dmpl
     * @class Expression
     * @brief An abstract base class
     */
-  class Expression
+  class Expression : public SymbolUser
   {
   public:
     virtual std::string toString() const = 0;
@@ -156,10 +156,44 @@ namespace dmpl
   public:
     //the base variable name -- this is always non-empty
     std::string var; 
+    //the Var or Func object this references -- populated by symbolic analysis
+    Sym sym;
     //an optional node id -- can be empty
     Expr node; 
     //a list of indices
     ExprList indices;
+
+    virtual SymUserList getParents(Context &con) {
+      SymUserList ret;
+      if(node != NULL)
+        ret.push_back(node);
+      if(indices.size() > 0)
+        ret.insert(ret.end(), indices.begin(), indices.end());
+      return ret;
+    }
+
+    virtual Context useSymbols(const SymUser &self, Context con)
+    {
+      {
+        Context con2 = con;
+        con.isLHS = false;
+        if(node)
+        {
+          node->useSymbols(node, con2);
+          inherit(self, node);
+        }
+        BOOST_FOREACH(Expr e, indices)
+        {
+          e->useSymbols(e, con2);
+          inherit(self, e);
+        }
+      }
+      
+      sym = con.findSym(var);
+      if(sym)
+        sym.use(self, con.isLHS, node != NULL, con.inExpect());
+      return con;
+    }
 
     LvalExpr(const std::string &v) : var(v) {}
     LvalExpr(const std::string &v,const Expr &n) : var(v), node(n) {}
@@ -191,6 +225,12 @@ namespace dmpl
     int op;
     ExprList args;
 
+    virtual SymUserList getParents(Context &con) {
+      SymUserList ret;
+      ret.insert(ret.end(), args.begin(), args.end());
+      return ret;
+    }
+
     CompExpr(int o) : op(o) {}
 
     CompExpr(int o,const Expr &e) : op(o)
@@ -217,6 +257,14 @@ namespace dmpl
     Expr func;
     ExprList args;
 
+    virtual SymUserList getParents(Context &con) {
+      SymUserList ret;
+      ret.push_back(func);
+      ret.insert(ret.end(), args.begin(), args.end());
+      return ret;
+    }
+
+
     bool ignore_return;
 
     CallExpr(const Expr &f,const ExprList &a) : func(f),args(a),ignore_return(false) {}
@@ -234,40 +282,102 @@ namespace dmpl
     }
   };
 
-  //an exists other expression
-  class EXOExpr : public Expression
+  class SingleIDBinder : public SymbolBinder
   {
   public:
     std::string id;
+    Var idVar;
+
+    virtual Sym findSym(const std::string &name) const
+    {
+      if(idVar && idVar->name == name)
+        return boost::static_pointer_cast<Sym::element_type>(idVar);
+    }
+
+    void reg(SymbolUser::Context &con)
+    {
+      con.addBinder(this);
+    }
+
+    SingleIDBinder(const std::string &name) : id(name), idVar(new Variable(name, intType())) {}
+  };
+
+  class DualIDBinder : public SymbolBinder
+  {
+  public:
+    std::string id1, id2;
+    Var id1Var, id2Var;
+
+    virtual Sym findSym(const std::string &name) const
+    {
+      if(id1Var && id1Var->name == name)
+        return boost::static_pointer_cast<Sym::element_type>(id1Var);
+      if(id2Var && id2Var->name == name)
+        return boost::static_pointer_cast<Sym::element_type>(id1Var);
+    }
+
+    void reg(SymbolUser::Context &con)
+    {
+      con.addBinder(this);
+    }
+
+    DualIDBinder(const std::string &name1, const std::string &name2) :
+        id1(name1), id1Var(new Variable(name1, intType()))
+        id2(name2), id2Var(new Variable(name2, intType())) {}
+  };
+
+  //an exists other expression
+  class EXOExpr : public Expression, public SingleIDBinder
+  {
+  public:
     Expr arg;
 
-    EXOExpr(const std::string &i,const Expr &a) : id(i),arg(a) {}
+    virtual SymUserList getParents(Context &con) {
+      SymUserList ret;
+      reg(con);
+      ret.push_back(arg);
+      return ret;
+    }
+
+    EXOExpr(const std::string &i,const Expr &a) : SingleIDBinder(i),arg(a) {}
     std::string toString() const {
       return "EXISTS_OTHER(" + id + "," + arg->toString() + ")";
     }
   };
 
   //an exists higher expression
-  class EXHExpr : public Expression
+  class EXHExpr : public Expression, public SingleIDBinder
   {
   public:
-    std::string id;
     Expr arg;
 
-    EXHExpr(const std::string &i,const Expr &a) : id(i),arg(a) {}
+    virtual SymUserList getParents(Context &con) {
+      SymUserList ret;
+      reg(con);
+      ret.push_back(arg);
+      return ret;
+    }
+
+    EXHExpr(const std::string &i,const Expr &a) : SingleIDBinder(i),arg(a) {}
     std::string toString() const {
       return "EXISTS_HIGHER(" + id + "," + arg->toString() + ")";
     }
   };
 
   //an exists lower expression
-  class EXLExpr : public Expression
+  class EXLExpr : public Expression, public SingleIDBinder
   {
   public:
-    std::string id;
     Expr arg;
 
-    EXLExpr(const std::string &i,const Expr &a) : id(i),arg(a) {}
+    virtual SymUserList getParents(Context &con) {
+      SymUserList ret;
+      reg(con);
+      ret.push_back(arg);
+      return ret;
+    }
+
+    EXLExpr(const std::string &i,const Expr &a) : SingleIDBinder(i),arg(a) {}
     std::string toString() const {
       return "EXISTS_LOWER(" + id + "," + arg->toString() + ")";
     }

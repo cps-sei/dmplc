@@ -76,7 +76,7 @@ namespace dmpl
        * @param  builder   the source for building a program
        **/
       Sync_Builder (DmplBuilder & builder,const std::string &target, 
-                    SchedType & schedType);
+                    SchedType & schedType, bool do_expect);
 
       /**
        * Builds the underlying character stream that can then be printed
@@ -116,12 +116,12 @@ namespace dmpl
       /**
        * Builds the program's MADARA generated variables
        **/
-      void build_program_variable (const Variable & var);
+      void build_program_variable (const Var & var);
       
       /**
        * Builds the program's MADARA generated variables
        **/
-      void build_program_variable_init (const Variable & var);
+      void build_program_variable_init (const Var & var);
       
       /**
        * Builds the program's MADARA generated variable bindings in main
@@ -131,12 +131,12 @@ namespace dmpl
       /**
        * Builds a MADARA generated variable binding in main
        **/
-      void build_program_variable_binding (const Variable & var);
+      void build_program_variable_binding (const Var & var);
       
       /**
        * Builds a MADARA generated variable binding in main
        **/
-      void build_program_variable_assignment (const Variable & var);
+      void build_program_variable_assignment (const Var & var);
 
       /**
        * Builds the arguments parser
@@ -147,7 +147,7 @@ namespace dmpl
        * Builds variable value parsing
        * @return help printout for variable
        **/
-      std::string build_parse_args (const Variable & var);
+      std::string build_parse_args (const Var& var);
 
       /**
        * Builds all function declarations to prevent undefined references
@@ -162,19 +162,22 @@ namespace dmpl
       /**
        * Builds a refresh statement for modification on a global
        **/
-      void build_refresh_modify_global (const Variable & var);
+      void build_refresh_modify_global (const Var& var);
 
       /**
        * Builds a function
        * @param  function  a defined function in the parsed program
        **/
-      void build_function_declaration (const dmpl::Node & node, dmpl::Function & function);
+      void build_function_declaration (const dmpl::Node & node, dmpl::Func& function);
 
       /**
        * Computes priorities, criticalities, and zero slack instants
        * of functions.
        **/
       void compute_priorities (void);
+
+      void build_expect_thread_declaration (void);
+      void build_expect_thread_definition (void);
 
       /**
        * Builds the main function
@@ -191,7 +194,7 @@ namespace dmpl
        * @param  function  a defined function in the parsed program
        **/
       void build_main_define_function (const dmpl::Node & node,
-        dmpl::Function & function);
+        dmpl::Func& function);
 
       /**
        * Builds all functions
@@ -202,7 +205,7 @@ namespace dmpl
        * Builds a function
        * @param  function  a defined function in the parsed program
        **/
-      void build_function (const dmpl::Node & node, dmpl::Function & function);
+      void build_function (const dmpl::Node & node, dmpl::Func& function);
       
       /**
        * Builds commonly used filters

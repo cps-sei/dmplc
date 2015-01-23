@@ -411,19 +411,19 @@ void dmpl::SyncSeqDbl::createGlobVars()
   //instantiate node-global variables by replacing dimension #N with
   //nodeNum -- make two copies, one for initial value for a round, and
   //the other for the final value for a round
-  dmpl::VariablesList gvars;
-  BOOST_FOREACH(Variables::value_type &v,node.globVars) {
-    gvars.push_back(v.second.instDim(nodeNum));
+  dmpl::VarList gvars;
+  BOOST_FOREACH(Vars::value_type &v,node.globVars) {
+    gvars.push_back(v.second->instDim(nodeNum));
   }
-  BOOST_FOREACH(const Variable &v,gvars) {
-    cprog.addGlobVar(v.instName("_i"));
-    cprog.addGlobVar(v.instName("_f"));
+  BOOST_FOREACH(const Var &v,gvars) {
+    cprog.addGlobVar(v->instName("_i"));
+    cprog.addGlobVar(v->instName("_f"));
   }
 
   //instantiate node-local variables by adding _i for each node id i
-  BOOST_FOREACH(Variables::value_type &v,node.locVars) {
+  BOOST_FOREACH(Vars::value_type &v,node.locVars) {
     for(size_t i = 0;i < nodeNum;++i)
-      cprog.addGlobVar(v.second.instName(std::string("_") + 
+      cprog.addGlobVar(v.second->instName(std::string("_") + 
                                          boost::lexical_cast<std::string>(i)));
   }
 }
@@ -432,25 +432,27 @@ void dmpl::SyncSeqDbl::createGlobVars()
 //create list of statements that copy new value of var into old value
 //of var. append list of statements to res.
 /*********************************************************************/
-void dmpl::SyncSeqDbl::createCopyStmts(bool fwd,const Variable &var,StmtList &res,ExprList indx)
+void dmpl::SyncSeqDbl::createCopyStmts(bool fwd,const Var &var,StmtList &res,ExprList indx)
 {
   //non-array type
-  if(var.type->dims.empty()) {
-    Expr lhs(new LvalExpr(var.name + (fwd ? "_f" : "_i"),indx));
-    Expr rhs(new LvalExpr(var.name + (fwd ? "_i" : "_f"),indx));
+  if(var->type->dims.empty()) {
+    Expr lhs(new LvalExpr(var->name + (fwd ? "_f" : "_i"),indx));
+    Expr rhs(new LvalExpr(var->name + (fwd ? "_i" : "_f"),indx));
     Stmt stmt(new AsgnStmt(lhs,rhs));
     res.push_back(stmt);
-    return;
   }
+  else
+  {
 
-  //array type -- peel off the first dimension and iterate over it
-  //recursively
-  int dim = *(var.type->dims.begin());
-  for(int i = 0;i < dim;++i) {
-    ExprList newIndx = indx;
-    newIndx.push_back(Expr(new IntExpr(i)));
-    Variable newVar = var.decrDim();
-    createCopyStmts(fwd,newVar,res,newIndx);
+    //array type -- peel off the first dimension and iterate over it
+    //recursively
+    int dim = *(var->type->dims.begin());
+    for(int i = 0;i < dim;++i) {
+      ExprList newIndx = indx;
+      newIndx.push_back(Expr(new IntExpr(i)));
+      Var newVar = var->decrDim();
+      createCopyStmts(fwd,newVar,res,newIndx);
+    }
   }
 }
 
@@ -460,26 +462,26 @@ void dmpl::SyncSeqDbl::createCopyStmts(bool fwd,const Variable &var,StmtList &re
 void dmpl::SyncSeqDbl::createRoundCopier()
 {
   Node &node = builder.program.nodes.begin()->second;
-  dmpl::VariablesList fnParams,fnTemps;
+  dmpl::VarList fnParams,fnTemps;
 
   //create the copier from _f to _i
   StmtList fnBody1;
-  BOOST_FOREACH(Variables::value_type &v,node.globVars) {
-    Variable var = v.second.instDim(nodeNum);
+  BOOST_FOREACH(Vars::value_type &v,node.globVars) {
+    Var var = v.second->instDim(nodeNum);
     createCopyStmts(0,var,fnBody1,ExprList());
   }
 
-  Function func1(dmpl::voidType(),"round_bwd_copier",fnParams,fnTemps,fnBody1);
+  Func func1(new Function(dmpl::voidType(),"round_bwd_copier",fnParams,fnTemps,fnBody1));
   cprog.addFunction(func1);
 
   //create the copier from _i to _f
   StmtList fnBody2;
-  BOOST_FOREACH(Variables::value_type &v,node.globVars) {
-    Variable var = v.second.instDim(nodeNum);
+  BOOST_FOREACH(Vars::value_type &v,node.globVars) {
+    Var var = v.second->instDim(nodeNum);
     createCopyStmts(1,var,fnBody2,ExprList());
   }
 
-  Function func2(dmpl::voidType(),"round_fwd_copier",fnParams,fnTemps,fnBody2);
+  Func func2(new Function(dmpl::voidType(),"round_fwd_copier",fnParams,fnTemps,fnBody2));
   cprog.addFunction(func2);
 }
 
@@ -488,7 +490,7 @@ void dmpl::SyncSeqDbl::createRoundCopier()
 /*********************************************************************/
 void dmpl::SyncSeqDbl::createMainFunc()
 {
-  dmpl::VariablesList mainParams,mainTemps;
+  dmpl::VarList mainParams,mainTemps;
   StmtList mainBody,roundBody;
 
   //call SAFETY()
@@ -501,21 +503,21 @@ void dmpl::SyncSeqDbl::createMainFunc()
   Stmt callStmt4(new CallStmt(callExpr4,dmpl::ExprList()));
   roundBody.push_back(callStmt4);
 
-  const Function *roundFunc = NULL;
+  Func roundFunc;
   const Node &node = builder.program.nodes.begin()->second;
-  BOOST_FOREACH(const Functions::value_type &f, node.funcs) {
-    int barSync = f.second.attrs.count("BARRIER_SYNC");
+  BOOST_FOREACH(const Funcs::value_type &f, node.funcs) {
+    int barSync = f.second->attrs.count("BARRIER_SYNC");
     if(barSync < 1)
       continue;
     else if(barSync > 1)
-      std::cerr << "Warning: function " << f.second.name <<
+      std::cerr << "Warning: function " << f.second->name <<
         " has more than one @BARRIER_SYNC attribute" << std::endl;
     if(roundFunc != NULL) {
       std::cerr << "Warning: function " << roundFunc->name << " is not the " <<
-        "only @BARRIER_SYNC function; also found: " << f.second.name <<
+        "only @BARRIER_SYNC function; also found: " << f.second->name <<
         " which will be ignored." << std::endl;
     }
-    roundFunc = &f.second;
+    roundFunc = f.second;
   }
 
   if(roundFunc == NULL) {
@@ -594,7 +596,7 @@ void dmpl::SyncSeqDbl::createMainFunc()
     }
   }
 
-  Function mainFunc(dmpl::intType(),"main",mainParams,mainTemps,mainBody);
+  Func mainFunc(new Function(dmpl::intType(),"main",mainParams,mainTemps,mainBody));
   cprog.addFunction(mainFunc);
 }
 
@@ -605,37 +607,37 @@ void dmpl::SyncSeqDbl::createInit()
 {
   StmtList initFnBody;
 
-  BOOST_FOREACH(Functions::value_type &f, builder.program.funcs) {
-    if(f.second.isExtern == true)
+  BOOST_FOREACH(Funcs::value_type &f, builder.program.funcs) {
+    if(f.second->isExtern == true)
       continue;
       
-    int init = f.second.attrs.count("INIT");
+    int init = f.second->attrs.count("INIT");
     if(init < 1)
       continue;
     else if(init > 1)
-      std::cerr << "Warning: function " << f.second.name <<
+      std::cerr << "Warning: function " << f.second->name <<
         " has more than one @INIT attribute" << std::endl;
 
-    dmpl::VariablesList fnParams,fnTemps;
+    dmpl::VarList fnParams,fnTemps;
     StmtList fnBody;
 
     //create parameters
-    BOOST_FOREACH(Variables::value_type &v,f.second.params)
+    BOOST_FOREACH(Vars::value_type &v,f.second->params)
       fnParams.push_back(v.second);
 
     //create temporary variables
-    BOOST_FOREACH(Variables::value_type &v,f.second.temps)
+    BOOST_FOREACH(Vars::value_type &v,f.second->temps)
       fnTemps.push_back(v.second);
 
     //transform the body of init
-    BOOST_FOREACH(const Stmt &st,f.second.body) {
+    BOOST_FOREACH(const Stmt &st,f.second->body) {
       syncseqdbl::GlobalTransformer gt(*this,builder.program,nodeNum);
       gt.visit(st);
       fnBody.push_back(gt.stmtMap[st]);
     }
 
-    std::string fname = "__INIT_" + f.second.name;
-    Function func(dmpl::voidType(),fname,fnParams,fnTemps,fnBody);
+    std::string fname = "__INIT_" + f.second->name;
+    Func func(new Function(dmpl::voidType(),fname,fnParams,fnTemps,fnBody));
     cprog.addFunction(func);
 
     Expr callExpr(new LvalExpr(fname));
@@ -643,9 +645,9 @@ void dmpl::SyncSeqDbl::createInit()
     initFnBody.push_back(callStmt);
   }
 
-  dmpl::VariablesList fnParams, fnTemps;
+  dmpl::VarList fnParams, fnTemps;
 
-  Function func(dmpl::voidType(),"__INIT",fnParams,fnTemps,initFnBody);
+  Func func(new Function(dmpl::voidType(),"__INIT",fnParams,fnTemps,initFnBody));
   cprog.addFunction(func);
 }
 
@@ -656,36 +658,36 @@ void dmpl::SyncSeqDbl::createSafety()
 {
   StmtList safetyFnBody;
 
-  BOOST_FOREACH(Functions::value_type &f, builder.program.funcs) {
-    if(f.second.isExtern == true)
+  BOOST_FOREACH(Funcs::value_type &f, builder.program.funcs) {
+    if(f.second->isExtern == true)
       continue;
 
-    int safety = f.second.attrs.count("SAFETY");
+    int safety = f.second->attrs.count("SAFETY");
     if(safety < 1)
       continue;
     else if(safety > 1)
-      std::cerr << "Warning: function " << f.second.name <<
+      std::cerr << "Warning: function " << f.second->name <<
         " has more than one @SAFETY attribute" << std::endl;
 
-    dmpl::VariablesList fnParams,fnTemps;
+    dmpl::VarList fnParams,fnTemps;
     StmtList fnBody;
     //create parameters
-    BOOST_FOREACH(Variables::value_type &v,f.second.params)
-      fnParams.push_back(v.second);
+    BOOST_FOREACH(Vars::value_type &v,f.second->params)
+      fnParams.push_back(Var(new Variable(*v.second)));
 
     //create temporary variables
-    BOOST_FOREACH(Variables::value_type &v,f.second.temps)
-      fnTemps.push_back(v.second);
+    BOOST_FOREACH(Vars::value_type &v,f.second->temps)
+      fnTemps.push_back(Var(new Variable(*v.second)));
 
     //transform the body of safety
-    BOOST_FOREACH(const Stmt &st,f.second.body) {
+    BOOST_FOREACH(const Stmt &st,f.second->body) {
       syncseqdbl::GlobalTransformer gt(*this,builder.program,nodeNum);
       gt.visit(st);
       fnBody.push_back(gt.stmtMap[st]);
     }
 
-    std::string fname = "__SAFETY_" + f.second.name;
-    Function func(dmpl::voidType(), fname, fnParams,fnTemps,fnBody);
+    std::string fname = "__SAFETY_" + f.second->name;
+    Func func(new Function(dmpl::voidType(), fname, fnParams,fnTemps,fnBody));
     cprog.addFunction(func);
 
     Expr callExpr(new LvalExpr(fname));
@@ -693,9 +695,9 @@ void dmpl::SyncSeqDbl::createSafety()
     safetyFnBody.push_back(callStmt);
   }
 
-  dmpl::VariablesList fnParams, fnTemps;
+  dmpl::VarList fnParams, fnTemps;
 
-  Function func(dmpl::voidType(),"__SAFETY",fnParams,fnTemps,safetyFnBody);
+  Func func(new Function(dmpl::voidType(),"__SAFETY",fnParams,fnTemps,safetyFnBody));
   cprog.addFunction(func);
 }
 
@@ -706,22 +708,22 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
 {
   Node &node = builder.program.nodes.begin()->second;
   for(size_t i = 0;i < nodeNum;++i) {
-    BOOST_FOREACH(Functions::value_type &f,node.funcs) {
-      dmpl::VariablesList fnParams,fnTemps;
+    BOOST_FOREACH(Funcs::value_type &f,node.funcs) {
+      dmpl::VarList fnParams,fnTemps;
 
       //create parameters
-      BOOST_FOREACH(Variables::value_type &v,f.second.params)
+      BOOST_FOREACH(Vars::value_type &v,f.second->params)
         fnParams.push_back(v.second);
 
       //create temporary variables
-      BOOST_FOREACH(Variables::value_type &v,f.second.temps)
+      BOOST_FOREACH(Vars::value_type &v,f.second->temps)
         fnTemps.push_back(v.second);
 
       //create the forward version
       {
         StmtList fnBody;
 
-        BOOST_FOREACH(const Stmt &st,f.second.body) {
+        BOOST_FOREACH(const Stmt &st,f.second->body) {
           syncseqdbl::NodeTransformer nt(*this,builder.program,nodeNum,i,true);
           std::string nodeId = *node.args.begin();
           nt.addIdMap(nodeId,i);
@@ -730,9 +732,9 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
           fnBody.push_back(nt.stmtMap[st]);
         }
         
-        std::string fnName = node.name + "__" + f.second.name + "_" + 
+        std::string fnName = node.name + "__" + f.second->name + "_" + 
           boost::lexical_cast<std::string>(i) + "_fwd";
-        Function func(f.second.retType,fnName,fnParams,fnTemps,fnBody);
+        Func func(new Function(f.second->retType,fnName,fnParams,fnTemps,fnBody));
         cprog.addFunction(func);
       }
 
@@ -740,7 +742,7 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
       {
         StmtList fnBody;
 
-        BOOST_FOREACH(const Stmt &st,f.second.body) {
+        BOOST_FOREACH(const Stmt &st,f.second->body) {
           syncseqdbl::NodeTransformer nt(*this,builder.program,nodeNum,i,false);
           std::string nodeId = *node.args.begin();
           nt.addIdMap(nodeId,i);
@@ -749,9 +751,9 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
           fnBody.push_back(nt.stmtMap[st]);
         }
         
-        std::string fnName = node.name + "__" + f.second.name + "_" + 
+        std::string fnName = node.name + "__" + f.second->name + "_" + 
           boost::lexical_cast<std::string>(i) + "_bwd";
-        Function func(f.second.retType,fnName,fnParams,fnTemps,fnBody);
+        Func func(new Function(f.second->retType,fnName,fnParams,fnTemps,fnBody));
         cprog.addFunction(func);
       }
     }
@@ -772,24 +774,24 @@ dmpl::Expr dmpl::SyncSeqDbl::createNondetFunc(const Expr &expr)
 
 void dmpl::SyncSeqDbl::processExternFuncs()
 {
-  BOOST_FOREACH(dmpl::Functions::value_type &ef, builder.program.funcs)
+  BOOST_FOREACH(dmpl::Funcs::value_type &ef, builder.program.funcs)
   {
-    if(ef.second.isExtern == false)
+    if(ef.second->isExtern == false)
       continue;
-    int rets = ef.second.attrs.count("ASSUME_RETURN");
+    int rets = ef.second->attrs.count("ASSUME_RETURN");
     if(rets < 1) {
-      cprog.funcs[ef.second.name] = ef.second;
+      cprog.funcs[ef.second->name] = Func(new Function(*ef.second));
       continue;
     }
     else if(rets > 1)
-      std::cerr << "Warning: function " << ef.second.name <<
+      std::cerr << "Warning: function " << ef.second->name <<
         " has more than one @ASSUME_RETURN attribute" << std::endl;
-    dmpl::Attribute attr = ef.second.attrs["ASSUME_RETURN"];
+    dmpl::Attribute attr = ef.second->attrs["ASSUME_RETURN"];
 
     int params = attr.paramList.size();
 
     dmpl::StmtList fnBody;
-    dmpl::Variables fnTemps;
+    dmpl::Vars fnTemps;
 
     if(params == 1) {
       Expr expr = attr.paramList.front();
@@ -803,15 +805,15 @@ void dmpl::SyncSeqDbl::processExternFuncs()
       Expr condExpr = *(++attr.paramList.begin());
 
       if(var.node != NULL || var.indices.size() > 0) {
-        std::cerr << "Error: function " << ef.second.name <<
+        std::cerr << "Error: function " << ef.second->name <<
           " has an @ASSUME_RETURN attribute with an invalid variable specified (" <<
           var.toString() << ")" << std::endl;;
         exit(1);
       }
 
-      fnTemps[var.var] = Variable(var.var, ef.second.retType);
+      fnTemps[var.var] = Var(new Variable(var.var, ef.second->retType));
 
-      Expr call(new CallExpr(Expr(new LvalExpr(std::string("nondet_") + ef.second.name)), ExprList()));
+      Expr call(new CallExpr(Expr(new LvalExpr(std::string("nondet_") + ef.second->name)), ExprList()));
       Stmt assign(new AsgnStmt(varExpr, call));
       fnBody.push_back(assign);
 
@@ -823,15 +825,15 @@ void dmpl::SyncSeqDbl::processExternFuncs()
       Stmt ret(new RetStmt(varExpr));
       fnBody.push_back(ret);
     } else {
-      std::cerr << "Error: function " << ef.second.name <<
+      std::cerr << "Error: function " << ef.second->name <<
         " has an @ASSUME_RETURN attribute with " << attr.paramList.size() <<
         " parameters (expected 1: expression; or 2: variable, conditional)." << std::endl;
       exit(1);
     }
 
 
-    Function func(ef.second.retType,ef.second.name,ef.second.params,fnTemps,fnBody);
-    func.isExtern = true;
+    Func func(new Function(ef.second->retType,ef.second->name,ef.second->params,fnTemps,fnBody));
+    func->isExtern = true;
     cprog.addFunction(func);
   }
 }

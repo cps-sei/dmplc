@@ -55,6 +55,7 @@
 
 #include <assert.h>
 #include <boost/foreach.hpp>
+#include <boost/make_shared.hpp>
 #include "Type.h"
 #include "Variable.h"
 #include "Expression.h"
@@ -119,8 +120,16 @@ dmpl::Type dmpl::BaseType::instDim(size_t nodeNum) const
 dmpl::Type dmpl::BaseType::decrDim() const
 {
   assert(!dims.empty() && "ERROR: cannot decrease dimensions of non-array type!");
+  Type ret = boost::make_shared<Type::element_type>(*this);
+  ret->dims.erase(ret->dims.begin());
+  return ret;
+}
+
+///return a copy with one more dimension
+dmpl::Type dmpl::BaseType::incrDim(int d) const
+{
   BaseType *res = new BaseType(*this);
-  res->dims.pop_front();
+  res->dims.push_back(d);
   return Type(res);
 }
 

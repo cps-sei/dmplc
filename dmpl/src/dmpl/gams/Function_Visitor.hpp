@@ -80,7 +80,7 @@ namespace dmpl
        * @param  builder   the source for building a program
        * @param  buffer    the buffer being used to create the program text
        **/
-      Function_Visitor (Function & function, const Node & node,
+      Function_Visitor (const Func & function, const Node & node,
                         DmplBuilder & builder, std::stringstream & buffer,
                         bool do_vrep);
       
@@ -381,7 +381,7 @@ namespace dmpl
     private:
       
       /// current function
-      Function & function_;
+      Func function_;
 
       /// current node
       const Node & node_;

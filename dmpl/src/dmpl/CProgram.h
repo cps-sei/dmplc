@@ -92,23 +92,23 @@ namespace dmpl
      * external function declarations -- these are Function objects
      * with empty bodies
      **/
-    Functions externalFuncs;
+    Funcs externalFuncs;
 
     Program::ConstDef constDef;
 
     ///global variables
-    Variables globVars;
+    Vars globVars;
     
     /**
      * A map of function names to function definitions
      **/
-    Functions funcs;
+    Funcs funcs;
 
     ///add a global variable
-    void addGlobVar(const Variable &v) { globVars[v.name] = v; }
+    void addGlobVar(const Var &v) { globVars[v->name] = v; }
 
     ///add a function
-    void addFunction(const Function &f) { funcs[f.name] = f; }
+    void addFunction(const Func &f) { funcs[f->name] = f; }
   };
 }
 

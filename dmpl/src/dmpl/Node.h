@@ -66,6 +66,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <boost/make_shared.hpp>
 #include "Function.h"
 #include "Variable.h"
 #include "Attribute.h"
@@ -86,7 +87,10 @@ namespace dmpl
     std::string name;
 
     ///the node arguments
-    std::list<std::string> args;
+    std::vector<std::string> args;
+
+    ///id variable (named by the single entry in args).
+    Var idVar;
 
     ///true if this is an abstract node definition (no function bodies)
     bool abstract;
@@ -94,15 +98,18 @@ namespace dmpl
     /**
      * list of global variables
      **/
-    Variables globVars;
+    Vars globVars;
 
     ///list of local variables
-    Variables locVars;
+    Vars locVars;
     
     /**
      * A map of function names to function definitions
      **/
-    Functions funcs;
+    Funcs funcs;
+
+    ///list of statements (expect or require) declared at node level
+    StmtList stmts;
 
     // @ATTR(X, ...) attributes specified for this node
     Attributes attrs;
@@ -114,6 +121,46 @@ namespace dmpl
     Node(const std::string &n, const Attributes& a, bool abst = false)
         : name(n), attrs(a), abstract(abst) {}
 
+    void initArgs()
+    {
+      if(idVar == NULL && args.size() == 1 && name == args[0])
+      {
+        idVar = boost::make_shared<Var::element_type>(args[0], intType());
+      }
+    }
+
+    Var findVar(const std::string& name) const
+    {
+      Vars::const_iterator ret = locVars.find(name);
+      if(idVar && idVar->name == name)
+        return idVar;
+      if(ret != locVars.end())
+        return ret->second;
+      ret = globVars.find(name);
+      if(ret != globVars.end())
+        return ret->second;
+      return Var();
+    }
+
+    Func findFunc(const std::string& name) const
+    {
+      Funcs::const_iterator ret = funcs.find(name);
+      if(ret != funcs.end())
+        return ret->second;
+      return Func();
+    }
+
+    Sym findSym(const std::string& name) const
+    {
+      Var v = findVar(name);
+      if(v)
+        return Sym(boost::static_pointer_cast<Sym::element_type>(v));
+      Func f = findFunc(name);
+      if(f)
+        return Sym(boost::static_pointer_cast<Sym::element_type>(f));
+      return Sym();
+    }
+
     ///clear the node -- reset it to an empty node
     void clear()
     {
@@ -123,46 +170,56 @@ namespace dmpl
     }
 
     ///add a global variable
-    void addGlobalVar(const std::list<Variable> &vl)
+    void addGlobalVar(const VarList &vl)
     {
-      BOOST_FOREACH(const Variable &v,vl) {
-        assert(globVars.count(v.name) == 0 && "ERROR: global variable redeclared!!");
-        globVars[v.name] = v;
-        globVars[v.name].scope = Variable::GLOBAL;
+      BOOST_FOREACH(const Var &v,vl) {
+        assert(globVars.count(v->name) == 0 && "ERROR: global variable redeclared!!");
+        globVars[v->name] = v;
+        globVars[v->name]->scope = Variable::GLOBAL;
       }
     }
 
     ///add a local variable
-    void addLocalVar(const std::list<Variable> &vl)
+    void addLocalVar(const VarList &vl)
     {
-      BOOST_FOREACH(const Variable &v,vl) {
-        assert(locVars.count(v.name) == 0 && "ERROR: loc variable redeclared!!");
-        locVars[v.name] = v;
-        locVars[v.name].scope = Variable::LOCAL;
+      BOOST_FOREACH(const Var &v,vl) {
+        assert(locVars.count(v->name) == 0 && "ERROR: loc variable redeclared!!");
+        locVars[v->name] = v;
+        locVars[v->name]->scope = Variable::LOCAL;
       }
     }
 
     ///add variables, with scope already set
-    void addVar(const std::list<Variable> &v1)
+    void addVar(const VarList &v1)
     {
-      BOOST_FOREACH(const Variable &v,v1) {
-        Variables &vars = v.scope == Variable::LOCAL ? locVars : globVars;
-        assert(vars.count(v.name) == 0 && "ERROR: variable redeclared!!");
-        vars[v.name] = v;
+      BOOST_FOREACH(const Var &v,v1) {
+        Vars &vars = v->scope == Variable::LOCAL ? locVars : globVars;
+        assert(vars.count(v->name) == 0 && "ERROR: variable redeclared!!");
+        vars[v->name] = v;
       }
     }
 
     ///add a function
-    void addFunction(const Function &f)
+    void addFunction(const Func &f)
     {
-      if(funcs.count(f.name) > 0) {
-        Function &of = funcs[f.name];
-        of.mergeWith(f);
+      if(funcs.count(f->name) > 0) {
+        Func &of = funcs[f->name];
+        of->mergeWith(f);
       }
       else
       {
-        funcs[f.name] = f;
+        funcs[f->name] = f;
       }
+    }
+
+
+    ///add a Statement; must be "expect" or "require"
+    void addStatement(const Stmt &s)
+    {
+      boost::shared_ptr<CondStmt> cs( boost::dynamic_pointer_cast<CondStmt>(s) );
+      assert(cs != NULL && (cs->kind == "expect" || cs->kind == "require") &&
+        "ERROR: Node-level statement an expect or require statement");
+      stmts.push_back(s);
     }
 
     ///return true if the argument is the name of a defined DMPL function of this node

@@ -164,7 +164,7 @@ namespace dmpl {
 
     SyncSeqDbl(DmplBuilder &b,int r);
     void createGlobVars();
-    void createCopyStmts(bool fwd,const Variable &var,StmtList &res,ExprList indx);
+    void createCopyStmts(bool fwd,const Var &var,StmtList &res,ExprList indx);
     void createRoundCopier();
     void createMainFunc();
     void createInit();

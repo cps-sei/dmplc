@@ -74,28 +74,28 @@ dmpl::Node::mergeWith(const Node &on)
   else if (!on.abstract && n.args != on.args)
     throw std::runtime_error("Cannot merge nodes which have different arguments: for " + n.name);
 
-  BOOST_FOREACH(const Variables::value_type &v, on.globVars)
+  BOOST_FOREACH(const Vars::value_type &v, on.globVars)
   {
-    if(n.globVars.count(v.second.name) == 0)
-      n.globVars[v.second.name] = v.second;
-    else if(n.globVars[v.second.name].type != v.second.type)
-      throw std::runtime_error("Collision while merging node globals: " + v.second.name + " in " + n.name);
+    if(n.globVars.count(v.second->name) == 0)
+      n.globVars[v.second->name] = v.second;
+    else if(n.globVars[v.second->name]->type != v.second->type)
+      throw std::runtime_error("Collision while merging node globals: " + v.second->name + " in " + n.name);
   }
 
-  BOOST_FOREACH(const Variables::value_type &v, on.locVars)
+  BOOST_FOREACH(const Vars::value_type &v, on.locVars)
   {
-    if(n.locVars.count(v.second.name) == 0)
-      n.locVars[v.second.name] = v.second;
-    else if(n.locVars[v.second.name].type != v.second.type)
-      throw std::runtime_error("Collision while merging node locals: " + v.second.name + " in " + n.name);
+    if(n.locVars.count(v.second->name) == 0)
+      n.locVars[v.second->name] = v.second;
+    else if(n.locVars[v.second->name]->type != v.second->type)
+      throw std::runtime_error("Collision while merging node locals: " + v.second->name + " in " + n.name);
   }
 
-  BOOST_FOREACH(const Functions::value_type &f, on.funcs)
+  BOOST_FOREACH(const Funcs::value_type &f, on.funcs)
   {
-    if(n.funcs.count(f.second.name) == 0)
-      n.funcs[f.second.name] = f.second;
+    if(n.funcs.count(f.second->name) == 0)
+      n.funcs[f.second->name] = f.second;
     else
-      n.funcs[f.second.name].mergeWith(f.second);
+      n.funcs[f.second->name]->mergeWith(f.second);
   }
 
   BOOST_FOREACH(const Attributes::value_type &a, on.attrs)
@@ -120,16 +120,16 @@ dmpl::Node::print (std::ostream &os,unsigned int indent)
   }
   os << ")\n" << spacer << "{\n";  
 
-  for (dmpl::Variables::iterator i = globVars.begin ();i != globVars.end (); ++i)
-    os << spacer << "  GLOBAL " << i->second.toString() << ";\n";
+  for (dmpl::Vars::iterator i = globVars.begin ();i != globVars.end (); ++i)
+    os << spacer << "  GLOBAL " << i->second->toString() << ";\n";
   os << "\n";
 
-  for (dmpl::Variables::iterator i = locVars.begin ();i != locVars.end (); ++i)
-    os << spacer << "  LOCAL " << i->second.toString() << ";\n";
+  for (dmpl::Vars::iterator i = locVars.begin ();i != locVars.end (); ++i)
+    os << spacer << "  LOCAL " << i->second->toString() << ";\n";
   os << "\n";
 
-  for (dmpl::Functions::iterator i = funcs.begin ();i != funcs.end (); ++i)
-    i->second.print (os,indent+2);
+  for (dmpl::Funcs::iterator i = funcs.begin ();i != funcs.end (); ++i)
+    i->second->print (os,indent+2);
   os << "\n";
 
   os << spacer << "}\n\n";

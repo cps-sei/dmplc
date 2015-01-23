@@ -68,43 +68,39 @@
 #include "SelfRef.h"
 //#include "Function.h"
 #include "Type.h"
+#include "Symbol.h"
 
 
 namespace dmpl
 {
-  class Variable;
-  typedef SelfRef<Variable>::ref_type Var;
-  typedef std::list <Var> VarList;
-  typedef std::list <Variable> VariablesList;
-  typedef std::map <std::string, Variable> Variables;
-
-  class Function;
-  typedef SelfRef<Function>::ref_type Func;
-  typedef std::list <Func> FuncList;
-
   /**
     * @class Variable
     * @brief A variable
     */
-  class Variable : public SelfRef<Variable>
+  class Variable : public Symbol
   {
   public:
-    enum Scopes { LOCAL = 501, GLOBAL, PARAM, TEMP };
-    
+
     /**
      * The variable name
      **/
     std::string name;
+
+    virtual const std::string &getName() { return name; }
     
     /**
      * The variable type
      **/
     Type type;
+
+    virtual const Type &getType() { return type; }
     
     /**
      * The variable scope
      **/
     int scope;
+
+    virtual int getScope() { return scope; }
 
     Func owner;
 
@@ -115,7 +111,7 @@ namespace dmpl
     Variable() {}
     Variable(const std::string &n);
     Variable(const std::string &n,const Type &t);
-    Variable(const std::string &n,const std::list<int> &d);
+    Variable(const std::string &n,const Dims &d);
 
     //convert to string
     std::string toString() const;
@@ -127,16 +123,21 @@ namespace dmpl
     void print (std::ostream &os,unsigned int indent);
 
     ///return a copy but instantiate dimension #N with nodeNum
-    Variable instDim(size_t nodeNum) const;
+    Var instDim(size_t nodeNum) const;
 
     ///return a copy but change name to name+ext
-    Variable instName(std::string ext) const;
+    Var instName(std::string ext) const;
 
     ///return a copy with one less dimension
-    Variable decrDim() const;
+    Var decrDim() const;
   };
 
+  inline Var Sym::asVar()
+  {
+    return boost::dynamic_pointer_cast<Var::element_type>(*this);
+  }
 }
+
 
 
 #endif // _DMPL_VARIABLE_

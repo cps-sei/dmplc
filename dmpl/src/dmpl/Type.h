@@ -90,6 +90,8 @@ namespace dmpl
   Type ucharType();
   Type boolType();
 
+  typedef std::vector <int> Dims;
+
   /**
     * @class BaseType
     * @brief A base type
@@ -99,17 +101,17 @@ namespace dmpl
   public:
     int qual; //qual = 0 means no qualifier
     int type; //the actual type -- void, char, int, double, bool etc.
-    std::list<int> dims; //dimensions -- empty means non-array type
+    Dims dims; //dimensions -- empty means non-array type
 
     //constructors
     BaseType() : qual(0),type(-1) {}
     BaseType(int t) : qual(0),type(t) {}
     BaseType(int q,int t) : qual(q),type(t) {}
-    BaseType(const std::list<int> &d) : qual(0),type(-1),dims(d) {}
+    BaseType(const Dims &d) : qual(0),type(-1),dims(d) {}
 
     std::string toString() const;
     void setQual(int q) { qual = q; }
-    void setDims(const std::list<int> &d) { dims = d; }
+    void setDims(const Dims &d) { dims = d; }
 
     ///print the type with appropriate indentation
     void print (std::ostream &os,unsigned int indent);
@@ -119,6 +121,9 @@ namespace dmpl
 
     ///return a copy with one less dimension
     Type decrDim() const;
+
+    ///return a copy with one more dimension
+    Type incrDim(int d) const;
 
     ///return the element type if this is an array type. if not return
     ///this type.

@@ -140,11 +140,11 @@ dmpl::Program::print (std::ostream &os,unsigned int indent)
   os << '\n';
 
   //print external function declarations
-  BOOST_FOREACH(dmpl::Functions::value_type &v, funcs) {
-    if(v.second.isExtern == false)
+  BOOST_FOREACH(dmpl::Funcs::value_type &v, funcs) {
+    if(v.second->isExtern == false)
       continue;
     os << spacer << "EXTERN";
-    v.second.printDecl(os, 1);
+    v.second->printDecl(os, 1);
   }
   os << '\n';
 
@@ -163,8 +163,8 @@ dmpl::Program::print (std::ostream &os,unsigned int indent)
   os << ";\n\n";
 
   //print functions like INIT and safety
-  for (dmpl::Functions::iterator i = funcs.begin (); i != funcs.end (); ++i)
-    i->second.print (os,indent);
+  for (dmpl::Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
+    i->second->print (os,indent);
 }
 
 /*********************************************************************/
@@ -174,11 +174,11 @@ void
 dmpl::Program::sanityCheck()
 {
   //only one type of node
-  assert(nodes.size() == 1 && "ERROR: only node type supported!");
+  assert(nodes.size() == 1 && "ERROR: only a single node type supported!");
 
   //check global functions
-  BOOST_FOREACH(Functions::value_type &v,funcs) {
-    BOOST_FOREACH(Stmt &s, v.second.body) {
+  BOOST_FOREACH(Funcs::value_type &v,funcs) {
+    BOOST_FOREACH(Stmt &s, v.second->body) {
       dmpl::program::SanityChecker sc(*this);
       sc.visit(s);
     }
@@ -187,28 +187,32 @@ dmpl::Program::sanityCheck()
   //nodes have just one parameter -- its id
   Node &node = nodes.begin()->second;
   assert(node.args.size() == 1 && "ERROR: node must have one id!");
+  node.initArgs();
   const std::string &nodeId = *(node.args.begin());
 
   //check node functions
-  BOOST_FOREACH(Functions::value_type &v,node.funcs) {
-    BOOST_FOREACH(Stmt &s, v.second.body) {
+  BOOST_FOREACH(Funcs::value_type &v,node.funcs) {
+    BOOST_FOREACH(Stmt &s, v.second->body) {
       dmpl::program::SanityChecker sc(*this);
       sc.addIdMap(nodeId,0);
       sc.visit(s);
     }
   }
 
+#if 0
   //check node global variables
-  BOOST_FOREACH(Variables::value_type &v,node.globVars) {
+  BOOST_FOREACH(Vars::value_type &v,node.globVars) {
     //non-array types of global variables are illegal
-    assert(!v.second.type->dims.empty() && 
+    assert(!v.second->type->dims.empty() && 
            "ERROR: all global variables must be of array type");
 
     //last dimension of global variables must be #N
-    assert(*(v.second.type->dims.rbegin()) == -1 &&
+    assert(*(v.second->type->dims.rbegin()) == -1 &&
            "ERROR: last dimension of global variables must be #N");
   }
+#endif
 
+#if 0
   // if track locations is set, then add the x, y, z variables to
   // declarations
   if (trackLocations)
@@ -225,7 +229,7 @@ dmpl::Program::sanityCheck()
       //-- set the dimension to -1 since this will be replaced by the
       //-- number of nodes later on
       t->dims.push_back(-1);
-      dmpl::Variable var (var_name, dmpl::Type(t));
+      dmpl::Var var (new dmpl::Variable(var_name, dmpl::Type(t)));
       var.scope = Variable::GLOBAL;
       node.globVars[var.name] = var;
     }
@@ -241,6 +245,7 @@ dmpl::Program::sanityCheck()
     var.scope = Variable::LOCAL;
     node.locVars[var.name] = var;
   }
+#endif
 }
 
 /*********************************************************************/

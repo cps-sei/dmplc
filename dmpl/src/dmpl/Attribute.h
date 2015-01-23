@@ -79,6 +79,13 @@ namespace dmpl
     Attribute() {}
     Attribute(const std::string &n) : name(n) {}
     Attribute(const std::string &n, const ExprList &p) : name(n),  paramList(p) {}
+
+    Expr requireSingleParam()
+    {
+      if(paramList.size() != 1)
+        throw std::runtime_error("Expected 1 parameter for attribute @" + name +".");
+      return paramList.front();
+    }
   };
 
   typedef std::map <std::string, Attribute> Attributes;

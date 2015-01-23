@@ -102,6 +102,10 @@ void dmpl::DmplBuilder::run()
     fclose(::yyin);
   }
   program.sanityCheck();
+  BOOST_FOREACH(Nodes::value_type &node, program.nodes)
+  {
+    SymbolUser::analyzeSymbolUsage(node.second);
+  }
 }
 
 /*********************************************************************/
