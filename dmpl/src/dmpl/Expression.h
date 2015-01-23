@@ -322,7 +322,7 @@ namespace dmpl
     }
 
     DualIDBinder(const std::string &name1, const std::string &name2) :
-        id1(name1), id1Var(new Variable(name1, intType()))
+        id1(name1), id1Var(new Variable(name1, intType())),
         id2(name2), id2Var(new Variable(name2, intType())) {}
   };
 

@@ -9,7 +9,7 @@
 #include <sstream>
 #include <typeinfo>
 #include <exception>
-#include <madara/knowledge_engine/Knowledge_Base.h>
+#include <madara/knowledge_engine/Thread_Safe_Context.h>
 #include <madara/knowledge_engine/Thread_Safe_Context.h>
 #include <madara/knowledge_engine/Knowledge_Update_Settings.h>
 #include "knowledge_cast.hpp"
@@ -41,14 +41,14 @@ template<typename T, typename Impl>
 class basic_container
 {
 private:
-  Knowledge_Base *kbase;
+  Thread_Safe_Context *context;
 public:
   basic_container() {}
-  basic_container(Knowledge_Base &kb)
-    : kbase(&kb), settings() {}
+  basic_container(Thread_Safe_Context &con)
+    : context(&con), settings() {}
 
-  basic_container(Knowledge_Base &kb, const Knowledge_Update_Settings &settings)
-    : kbase(&kb), settings(settings) {}
+  basic_container(Thread_Safe_Context &con, const Knowledge_Update_Settings &settings)
+    : context(&con), settings(settings) {}
 public:
   Knowledge_Update_Settings settings;
 
@@ -59,12 +59,12 @@ public:
 
   bool valid() const
   {
-    return kbase != NULL;
+    return context != NULL;
   }
 
-  Knowledge_Base &get_kbase() const
+  Thread_Safe_Context &get_context() const
   {
-    return *kbase;
+    return *context;
   }
 
   Knowledge_Update_Settings &get_settings()
@@ -93,7 +93,7 @@ public:
 
   bool exists() const
   {
-    return get_kbase().exists(get_name(), get_settings());
+    return get_context().exists(get_name(), get_settings());
   }
 
   Knowledge_Record::Integer get_integer() const
@@ -193,18 +193,6 @@ public:
   {
     return static_cast<Impl*>(this)->set_knowledge_record(in, settings);
   }
-
-  template<typename I>
-  I bind()
-  {
-    return I(this->get_name(), this->get_kbase(), this->settings);
-  }
-
-  template<typename I>
-  I bind(const Knowledge_Update_Settings &settings)
-  {
-    return I(this->get_name(), this->get_kbase(), settings);
-  }
 };
 
 }
@@ -223,26 +211,26 @@ protected:
   T data;
 public:
   CachedContainer<T>() {}
-  CachedContainer<T>(Knowledge_Base &kb, const std::string &name)
-    : Base(kb), name(name), exist(kb.exists(name)), dirty(false), create(false),
-      var_ref(exist ? kb.get_ref(name) : Variable_Reference()),
-      data(exist ? knowledge_cast<T>(kb.get(name)) : T()) {}
+  CachedContainer<T>(Thread_Safe_Context &con, const std::string &name)
+    : Base(con), name(name), exist(con.exists(name)), dirty(false), create(false),
+      var_ref(exist ? con.get_ref(name) : Variable_Reference()),
+      data(exist ? knowledge_cast<T>(con.get(name)) : T()) {}
 
-  CachedContainer<T>(Knowledge_Base &kb, const std::string &name, const Knowledge_Update_Settings &settings)
-    : Base(kb, settings), name(name), exist(kb.exists(name, settings)), dirty(false), create(false),
-      var_ref(exist ? kb.get_ref(name) : Variable_Reference()),
-      data(exist ? knowledge_cast<T>(kb.get(name, settings)) : T()) {}
+  CachedContainer<T>(Thread_Safe_Context &con, const std::string &name, const Knowledge_Update_Settings &settings)
+    : Base(con, settings), name(name), exist(con.exists(name, settings)), dirty(false), create(false),
+      var_ref(exist ? con.get_ref(name) : Variable_Reference()),
+      data(exist ? knowledge_cast<T>(con.get(name, settings)) : T()) {}
 
   CachedContainer<T>(const CachedContainer<T> &o)
-    : Base(o.get_kbase(), o.settings), name(o.name), exist(o.exist), dirty(o.dirty),
+    : Base(o.get_context(), o.settings), name(o.name), exist(o.exist), dirty(o.dirty),
       create(o.create), var_ref(o.var_ref), data(o.data) { }
 
   template<typename Impl>
   CachedContainer<T>(const __INTERNAL__::basic_container<T, Impl> &o)
-    : Base(o.get_kbase(), o.get_settings()), name(o.get_name()),
-      exist(this->get_kbase().exists(this->get_name(), this->get_settings())), dirty(false), create(false),
-      var_ref(exist ? this->get_kbase().get_ref(this->get_name(), this->get_settings()) : Variable_Reference()),
-      data(exist ? knowledge_cast<T>(this->get_kbase().get(this->get_name(), this->get_settings())) : T()) {
+    : Base(o.get_context(), o.get_settings()), name(o.get_name()),
+      exist(this->get_context().exists(this->get_name(), this->get_settings())), dirty(false), create(false),
+      var_ref(exist ? this->get_context().get_ref(this->get_name(), this->get_settings()) : Variable_Reference()),
+      data(exist ? knowledge_cast<T>(this->get_context().get(this->get_name(), this->get_settings())) : T()) {
    // std::cerr << "Converting to CachedContainer type from " << typeid(Impl).name() << std::endl;
   }
 
@@ -290,7 +278,7 @@ public:
   {
     if(create)
     {
-      var_ref = this->get_kbase().get_context().get_ref(name, this->get_settings());
+      var_ref = this->get_context().get_ref(name, this->get_settings());
       create = false;
     }
   }
@@ -300,7 +288,7 @@ public:
     if(dirty)
     {
       ensure_exists();
-      this->get_kbase().get_context().set(var_ref, knowledge_cast(data), this->get_settings());
+      this->get_context().set(var_ref, knowledge_cast(data), this->get_settings());
       //std::cerr << "Pushing " << data << " to " << name << std::endl;
       dirty = false;
     }
@@ -309,7 +297,7 @@ public:
   void pull()
   {
     ensure_exists();
-    data = knowledge_cast<T>(this->get_kbase().get_context().get(var_ref, this->get_settings()));
+    data = knowledge_cast<T>(this->get_context().get(var_ref, this->get_settings()));
     dirty = false;
   }
 
@@ -334,17 +322,17 @@ protected:
 
 public:
   Container<T>() {}
-  Container<T>(Knowledge_Base &kb, const std::string &name)
-    : Base(kb), var_ref(kb.get_ref(name)) {}
+  Container<T>(Thread_Safe_Context &con, const std::string &name)
+    : Base(con), var_ref(con.get_ref(name)) {}
 
-  Container<T>(Knowledge_Base &kb, const std::string &name, const Knowledge_Update_Settings &settings)
-    : Base(kb, settings), var_ref(kb.get_ref(name, settings)) {}
+  Container<T>(Thread_Safe_Context &con, const std::string &name, const Knowledge_Update_Settings &settings)
+    : Base(con, settings), var_ref(con.get_ref(name, settings)) {}
 
-  Container<T>(const Container<T> &o) : Base(o.get_kbase(), o.settings), var_ref(o.var_ref) { }
+  Container<T>(const Container<T> &o) : Base(o.get_context(), o.settings), var_ref(o.var_ref) { }
 
   template<typename Impl>
   Container<T>(const __INTERNAL__::basic_container<T, Impl> &o)
-    : Base(o.get_kbase(), o.get_settings()), var_ref(o.get_kbase().get_ref(o.get_name()))
+    : Base(o.get_context(), o.get_settings()), var_ref(o.get_context().get_ref(o.get_name()))
   {
    // std::cerr << "Converting to Container type from " << typeid(Impl).name() << std::endl;
   }
@@ -355,7 +343,7 @@ public:
   }
 
   Knowledge_Record get_knowledge_record() const {
-    return this->get_kbase().get(var_ref, this->get_settings());
+    return this->get_context().get(var_ref, this->get_settings());
   }
 
   T get() const
@@ -365,7 +353,7 @@ public:
 
   Container &set_knowledge_record(const Knowledge_Record &in, const Knowledge_Update_Settings &settings)
   {
-    this->get_kbase().get_context().set(var_ref, in, settings);
+    this->get_context().set(var_ref, in, settings);
     return *this;
   }
 

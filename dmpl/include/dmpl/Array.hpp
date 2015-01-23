@@ -9,7 +9,7 @@
 #include <sstream>
 #include <typeinfo>
 #include <exception>
-#include <madara/knowledge_engine/Knowledge_Base.h>
+#include <madara/knowledge_engine/Thread_Safe_Context.h>
 #include <madara/knowledge_engine/Thread_Safe_Context.h>
 #include <madara/knowledge_engine/Knowledge_Update_Settings.h>
 #include "knowledge_cast.hpp"
@@ -64,7 +64,7 @@ public:
 
   operator T() const
   {
-    T ret(this->get_kbase(), this->get_name(), this->get_settings());
+    T ret(this->get_context(), this->get_name(), this->get_settings());
     //std::cerr << "cast to array" << std::endl;
     return ret;
   }
@@ -98,12 +98,12 @@ protected:
   typedef Array_Base subarray_type;
   typedef Array_Base sub0;
 
-  Knowledge_Base &kbase;
+  Thread_Safe_Context &context;
   std::string name;
 
-  Array_Base(Knowledge_Base &kb, const std::string &varName = "",
+  Array_Base(Thread_Safe_Context &con, const std::string &varName = "",
       const Knowledge_Update_Settings &settings = Knowledge_Update_Settings()) :
-    kbase(kb), name(varName), settings(settings) {}
+    context(con), name(varName), settings(settings) {}
 public:
   Knowledge_Update_Settings settings;
 
@@ -112,7 +112,7 @@ public:
   /// Note: any containers generated from this Array will keep old name
   const std::string &set_name(const std::string &n) { return name = n; }
 
-  Knowledge_Base &get_kbase() { return kbase; }
+  Thread_Safe_Context &get_context() { return context; }
 
   Knowledge_Update_Settings &get_settings()
   {
@@ -140,13 +140,13 @@ protected:
 #endif
 
 public:
-  reference<Array_Base, R>(Array_Base &v) : container_type(v.get_kbase(), v.settings), name_str(new std::ostringstream())
+  reference<Array_Base, R>(Array_Base &v) : container_type(v.get_context(), v.settings), name_str(new std::ostringstream())
   {
     *name_str << v.get_name();
   }
 
   reference<Array_Base, R>(const reference<Array_Base, R> &o)
-    : container_type(o.get_kbase(), o.settings), name_str(new std::ostringstream())
+    : container_type(o.get_context(), o.settings), name_str(new std::ostringstream())
   {
     *name_str << o.name_str->str();
     //std::cerr << "Copying: " << o.name_str->str() << " to " << name_str->str() << std::endl;
@@ -154,7 +154,7 @@ public:
 
 #ifdef USE_RVAL_REF
   reference(reference &&o)
-    : container_type(o.get_kbase(), o.settings), name_str(std::move(o.name_str))
+    : container_type(o.get_context(), o.settings), name_str(std::move(o.name_str))
   {
     //std::cerr << "reference move ctor called" << std::endl;
   }
@@ -170,7 +170,7 @@ public:
   }
 
   Knowledge_Record get_knowledge_record() const {
-    return this->get_kbase().get(this->get_name(), this->get_settings());
+    return this->get_context().get(this->get_name(), this->get_settings());
   }
 
   R get() const
@@ -180,7 +180,7 @@ public:
 
   reference &set_knowledge_record(const Knowledge_Record &in, const Knowledge_Update_Settings &settings)
   {
-    this->get_kbase().get_context().set(this->get_name(), in, settings);
+    this->get_context().set(this->get_name(), in, settings);
     return *this;
   }
 
@@ -454,9 +454,9 @@ public:
 #else
   Array<T, d0, d1, d2, d3, d4, d5, d6, d7, d8, d9>
 #endif
-    (Knowledge_Base &kb, const std::string &varName = "",
+    (Thread_Safe_Context &con, const std::string &varName = "",
       const Knowledge_Update_Settings &settings = Knowledge_Update_Settings()) :
-    raw_subarray_type(kb, varName, settings) {}
+    raw_subarray_type(con, varName, settings) {}
 
   __INTERNAL__::reference<subarray_type, T> operator[](unsigned int i)
   {
@@ -571,9 +571,9 @@ public:
 #else
   Array<T, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0>
 #endif
-    (Knowledge_Base &kb, const std::string &varName = "",
+    (Thread_Safe_Context &con, const std::string &varName = "",
       const Knowledge_Update_Settings &settings = Knowledge_Update_Settings()) :
-    subarray_type(kb, varName, settings) {}
+    subarray_type(con, varName, settings) {}
 };
 
 }

@@ -9,9 +9,9 @@ using Madara::Knowledge_Engine::Containers::Container;
 int main()
 {
   Madara::Knowledge_Engine::Knowledge_Base kbase;
-  Madara::Knowledge_Engine::Containers::Array<int, 5, 6, 7, 8, 9> v(kbase, "vec");
+  Madara::Knowledge_Engine::Containers::Array<int, 5, 6, 7, 8, 9> v(kbase.get_context(), "vec");
   std::cout << v[1][2][3][4][5] << std::endl;
-  Madara::Knowledge_Engine::Containers::Array<int, 5, 6, 7> vec(kbase, "vec");
+  Madara::Knowledge_Engine::Containers::Array<int, 5, 6, 7> vec(kbase.get_context(), "vec");
   //auto r1 = vec[1];
   //auto r2 = vec[1][2];
   int r2 = vec[3][1][1];
@@ -21,7 +21,7 @@ int main()
   r3 = 18;
   std::cout << r3 << "  " << sizeof(r3) << std::endl;
   std::cout << vec[4][2][3] << std::endl;
-  //std::cout << &vec[1][2][3].get_kbase() << std::endl;
+  //std::cout << &vec[1][2][3].get_context() << std::endl;
   std::cout << vec[1][2][3].get_name() << std::endl;
   std::cout << sizeof(vec) << "  " << sizeof(vec[1][3][2]) << "  " << sizeof(Madara::Knowledge_Record) << std::endl;
   vec[1][2][3] = 42;
@@ -30,10 +30,6 @@ int main()
   vec[1][2][4] *= 2;
   std::cout << vec[1][2][3] << std::endl;
   std::cout << vec[1][2][4] + 10 << std::endl;
-  Madara::Knowledge_Engine::Containers::Integer x = vec[2][1][4].bind<Madara::Knowledge_Engine::Containers::Integer>();
-  x = 12;
-  std::cout << vec[2][1][4] << std::endl;
-  std::cout << Madara::knowledge_cast<int>(vec[2][1][4]) << std::endl;
   BOOST_FOREACH(int i, vec.get_dims())
   {
     std::cout << i << " ";
@@ -95,7 +91,7 @@ int main()
 
 #endif
 
-  Madara::Knowledge_Engine::Containers::Array<Madara::Knowledge_Record, 8, 4, 3> kvec(kbase, "kvec");
+  Madara::Knowledge_Engine::Containers::Array<Madara::Knowledge_Record, 8, 4, 3> kvec(kbase.get_context(), "kvec");
   kvec[1][1][1] = (long int)5;
   std::cout << kvec[1][1][1].get().to_integer() << std::endl;
 
@@ -105,7 +101,7 @@ int main()
   std::cout << sub_sub_vec[4] << std::endl;
 
 #ifdef USE_VAR_TMPL
-  Array<int, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15> big_array(kbase, "big_array");
+  Array<int, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15> big_array(kbase.get_context(), "big_array");
   Container<int> e = big_array[0][1][2][3][4][5][6][7][8][9][10][11][12][13][14];
   e = 123;
   std::cout << e << "  " << big_array[0][1][2][3][4][5][6][7][8][9][10][11][12][13][14] << std::endl;
