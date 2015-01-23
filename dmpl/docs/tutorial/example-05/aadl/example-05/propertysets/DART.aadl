@@ -1,0 +1,4 @@
+property set DART is
+  -- property to support security level analysis
+  Node_Id : inherit aadlinteger applies to (system);
+end DART;
