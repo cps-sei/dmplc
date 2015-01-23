@@ -147,7 +147,7 @@ dmpl::gams::Sync_Builder::build_header_includes ()
   buffer_ << "#include \"gams/utility/GPS_Position.h\"\n";
   buffer_ << "\n";
   buffer_ << "#include \"dmpl/Container.hpp\"\n";
-  buffer_ << "#include \"dmpl/Array.hpp\"\n";
+  buffer_ << "#include \"dmpl/StaticArray.hpp\"\n";
   if(do_expect_) {
     buffer_ << "extern \"C\" {\n";
     buffer_ << "#include <sys/time.h>\n";
@@ -176,7 +176,7 @@ dmpl::gams::Sync_Builder::build_common_global_variables ()
   buffer_ << "namespace platforms = gams::platforms;\n\n";
   buffer_ << "namespace variables = gams::variables;\n\n";
   buffer_ << "using containers::Container;\n\n";
-  buffer_ << "using containers::Array;\n\n";
+  buffer_ << "using containers::StaticArray;\n\n";
   buffer_ << "\n";
 
   buffer_ << "// Needed as a workaround for non-const-correctness in Madara; use carefully\n";
