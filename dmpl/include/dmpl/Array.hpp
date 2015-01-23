@@ -339,6 +339,30 @@ public:
     }
   }
 
+  static void push_cache_array(cache_array_type &in)
+  {
+    for(int i = 0; i < dim; i++)
+    {
+      raw_subarray_type::push_cache_array(in[i]);
+    }
+  }
+
+  static void pull_cache_array(cache_array_type &in)
+  {
+    for(int i = 0; i < dim; i++)
+    {
+      raw_subarray_type::pull_cache_array(in[i]);
+    }
+  }
+
+  static void pull_cache_array_keep_local(cache_array_type &in)
+  {
+    for(int i = 0; i < dim; i++)
+    {
+      raw_subarray_type::pull_cache_array_keep_local(in[i]);
+    }
+  }
+
   void set_from_array(const array_type &in)
   {
     for(int i = 0; i < dim; i++)
@@ -500,6 +524,21 @@ protected:
   void get_cache_array(cache_array_type &out, reference_type v)
   {
     out = cache_array_type(v);
+  }
+
+  static void push_cache_array(cache_array_type &in)
+  {
+    in.push();
+  }
+
+  static void pull_cache_array(cache_array_type &in)
+  {
+    in.pull();
+  }
+
+  static void pull_cache_array_keep_local(cache_array_type &in)
+  {
+    in.pull_keep_local();
   }
 
   void set_from_array(const T &in, reference_type v)

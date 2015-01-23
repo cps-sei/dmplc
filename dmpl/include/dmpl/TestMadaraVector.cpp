@@ -78,8 +78,19 @@ int main()
   carray[1][2][3] += 1;
   std::cout << "Cached Array: " << carray[1][2][3] << std::endl;
   std::cout << "Base Array before push: " << vec[1][2][3] << std::endl;
-  carray[1][2][3].push();
+  vec.push_cache_array(carray);
   std::cout << "Base Array after push: " << vec[1][2][3] << std::endl;
+  vec[1][2][3] += 1;
+  carray[1][2][3] = 42;
+  std::cout << "Base Array before pull: " << vec[1][2][3] << std::endl;
+  std::cout << "Cached Array before pull: " << carray[1][2][3] << std::endl;
+  vec.pull_cache_array(carray);
+  std::cout << "Cached Array after pull: " << carray[1][2][3] << std::endl;
+  carray[1][2][3] = 13;
+  vec[1][2][3] += 1;
+  std::cout << "Cached Array before pull_keep_local: " << carray[1][2][3] << std::endl;
+  vec.pull_cache_array_keep_local(carray);
+  std::cout << "Cached Array after pull_keep_local: " << carray[1][2][3] << std::endl;
 
 
 #endif

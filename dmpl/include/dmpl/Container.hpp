@@ -216,26 +216,34 @@ protected:
   typedef __INTERNAL__::basic_container<T, CachedContainer<T> > Base;
 
   std::string name;
+  bool exist:1;
+  bool dirty:1;
+  bool create:1;
+  Variable_Reference var_ref;
   T data;
-  bool dirty;
 public:
   CachedContainer<T>() {}
   CachedContainer<T>(Knowledge_Base &kb, const std::string &name)
-    : Base(kb), name(name), data(kb.exists(name) ? knowledge_cast<T>(kb.get(name)) : T()), dirty(false) {}
+    : Base(kb), name(name), exist(kb.exists(name)), dirty(false), create(false),
+      var_ref(exist ? kb.get_ref(name) : Variable_Reference()),
+      data(exist ? knowledge_cast<T>(kb.get(name)) : T()) {}
 
   CachedContainer<T>(Knowledge_Base &kb, const std::string &name, const Knowledge_Update_Settings &settings)
-    : Base(kb, settings), name(name),
-      data(kb.exists(name, settings) ? knowledge_cast<T>(kb.get(name, settings)) : T()), dirty(false) {}
+    : Base(kb, settings), name(name), exist(kb.exists(name, settings)), dirty(false), create(false),
+      var_ref(exist ? kb.get_ref(name) : Variable_Reference()),
+      data(exist ? knowledge_cast<T>(kb.get(name, settings)) : T()) {}
 
   CachedContainer<T>(const CachedContainer<T> &o)
-    : Base(o.get_kbase(), o.settings), name(o.name), data(o.data), dirty(false) { }
+    : Base(o.get_kbase(), o.settings), name(o.name), exist(o.exist), dirty(o.dirty),
+      create(o.create), var_ref(o.var_ref), data(o.data) { }
 
   template<typename Impl>
   CachedContainer<T>(const __INTERNAL__::basic_container<T, Impl> &o)
     : Base(o.get_kbase(), o.get_settings()), name(o.get_name()),
-      data(this->get_kbase().exists(this->get_name(), this->get_settings()) ?
-        knowledge_cast<T>(this->get_kbase().get(this->get_name(), this->get_settings())) : T()), dirty(false) {
-   // std::cerr << "Converting to Container type from " << typeid(Impl).name() << std::endl;
+      exist(this->get_kbase().exists(this->get_name(), this->get_settings())), dirty(false), create(false),
+      var_ref(exist ? this->get_kbase().get_ref(this->get_name(), this->get_settings()) : Variable_Reference()),
+      data(exist ? knowledge_cast<T>(this->get_kbase().get(this->get_name(), this->get_settings())) : T()) {
+   // std::cerr << "Converting to CachedContainer type from " << typeid(Impl).name() << std::endl;
   }
 
   std::string get_name() const
@@ -259,7 +267,13 @@ public:
 
   CachedContainer &set(const T& in, const Knowledge_Update_Settings &settings)
   {
-    if(in != data)
+    if(!exist)
+    {
+      exist = true;
+      create = true;
+      dirty = true;
+      data = in;
+    } else if(in != data)
     {
       dirty = true;
       data = in;
@@ -272,11 +286,21 @@ public:
     return dirty;
   }
 
+  void ensure_exists()
+  {
+    if(create)
+    {
+      var_ref = this->get_kbase().get_context().get_ref(name, this->get_settings());
+      create = false;
+    }
+  }
+
   void push()
   {
     if(dirty)
     {
-      this->get_kbase().get_context().set(name, knowledge_cast(data), this->get_settings());
+      ensure_exists();
+      this->get_kbase().get_context().set(var_ref, knowledge_cast(data), this->get_settings());
       //std::cerr << "Pushing " << data << " to " << name << std::endl;
       dirty = false;
     }
@@ -284,8 +308,15 @@ public:
 
   void pull()
   {
-    data = this->get_kbase().get_context().get(name, this->get_settings());
+    ensure_exists();
+    data = knowledge_cast<T>(this->get_kbase().get_context().get(var_ref, this->get_settings()));
     dirty = false;
+  }
+
+  void pull_keep_local()
+  {
+    if(!dirty)
+      pull();
   }
 
   using Base::operator=;
