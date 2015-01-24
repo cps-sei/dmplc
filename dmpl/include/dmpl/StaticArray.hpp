@@ -166,10 +166,9 @@ public:
 
   using container_type::operator=;
 
-  array_reference &operator=(const array_reference &o)
+  const R &operator=(const array_reference &o)
   {
-    set(o);
-    return *this;
+    return set(o);
   }
 
   std::string get_name() const
@@ -193,15 +192,16 @@ public:
     return knowledge_cast<R>(get_knowledge_record());
   }
 
-  array_reference &set_knowledge_record(const Knowledge_Record &in, const Knowledge_Update_Settings &settings)
+  const Knowledge_Record &set_knowledge_record(const Knowledge_Record &in, const Knowledge_Update_Settings &settings)
   {
     this->get_context().set(this->get_name(), in, settings);
-    return *this;
+    return in;
   }
 
-  array_reference &set(const R& in, const Knowledge_Update_Settings &settings)
+  const R &set(const R& in, const Knowledge_Update_Settings &settings)
   {
-    return set_knowledge_record(knowledge_cast(in), settings);
+    set_knowledge_record(knowledge_cast(in), settings);
+    return in;
   }
 
   using container_type::set;

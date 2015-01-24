@@ -124,90 +124,90 @@ public:
     return knowledge_cast<R>(get_knowledge_record());
   }
 
-  basic_reference &operator=(const basic_reference &in)
+  const T &operator=(const basic_reference &in)
   {
     return set(in.get());
   }
 
   template<class E>
-  basic_reference &operator=(const __INTERNAL__::basic_reference<T, E> &in)
+  const T &operator=(const basic_reference<T, E> &in)
   {
     return this->set(in.get());
   }
 
-  basic_reference &operator=(const T& in)
+  const T &operator=(const T& in)
   {
     return set(in);
   }
 
-  basic_reference &operator+=(const T& in)
+  const T &operator+=(const T& in)
   {
     return set((*this) + in);
   }
 
-  basic_reference &operator-=(const T& in)
+  const T &operator-=(const T& in)
   {
     return set((*this) - in);
   }
 
-  basic_reference &operator*=(const T& in)
+  const T &operator*=(const T& in)
   {
     return set((*this) * in);
   }
 
-  basic_reference &operator/=(const T& in)
+  const T &operator/=(const T& in)
   {
     return set((*this) / in);
   }
 
-  basic_reference &operator%=(const T& in)
+  const T &operator%=(const T& in)
   {
     return set((*this) % in);
   }
 
-  basic_reference &operator|=(const T& in)
+  const T &operator|=(const T& in)
   {
     return set((*this) | in);
   }
 
-  basic_reference &operator&=(const T& in)
+  const T &operator&=(const T& in)
   {
     return set((*this) & in);
   }
 
-  basic_reference &operator^=(const T& in)
+  const T &operator^=(const T& in)
   {
     return set((*this) ^ in);
   }
 
   template<typename I>
-  basic_reference &operator<<=(const I& in)
+  const T &operator<<=(const I& in)
   {
     return set((*this) << in);
   }
 
   template<typename I>
-  basic_reference &operator>>=(const I& in)
+  const T &operator>>=(const I& in)
   {
     return set((*this) << in);
   }
 
-  basic_reference &set(const T& in)
+  const T &set(const T& in)
   {
     return set(in, this->settings);
   }
 
-  basic_reference &set(const T& in, const Knowledge_Update_Settings &settings)
+  const T &set(const T& in, const Knowledge_Update_Settings &settings)
   {
     return static_cast<Impl*>(this)->set(in, settings);
   }
 
-  basic_reference &set_knowledge_record(const Knowledge_Record &in)
+  const Knowledge_Record &set_knowledge_record(const Knowledge_Record &in)
   {
     return set_knowledge_record(in, this->settings);
   }
 
-  basic_reference &set_knowledge_record(const Knowledge_Record &in, const Knowledge_Update_Settings &settings)
+  const Knowledge_Record &set_knowledge_record(const Knowledge_Record &in, const Knowledge_Update_Settings &settings)
   {
     return static_cast<Impl*>(this)->set_knowledge_record(in, settings);
   }
@@ -282,12 +282,12 @@ public:
     return data;
   }
 
-  CachedReference &set_knowledge_record(const Knowledge_Record &in, const Knowledge_Update_Settings &settings)
+  const Knowledge_Record &set_knowledge_record(const Knowledge_Record &in, const Knowledge_Update_Settings &settings)
   {
     return set(knowledge_cast<T>(in), settings);
   }
 
-  CachedReference &set(const T& in, const Knowledge_Update_Settings &settings)
+  const T &set(const T& in, const Knowledge_Update_Settings &settings)
   {
     if(!exist)
     {
@@ -300,7 +300,7 @@ public:
       dirty = true;
       data = in;
     }
-    return *this;
+    return data;
   }
 
   bool is_dirty()
@@ -342,6 +342,7 @@ public:
 
   void pull_keep_local()
   {
+    //std::cerr<<"pull_keep_local @ " << this->get_name() << ": dirty " << dirty << std::endl;
     if(!dirty)
       pull();
   }
@@ -410,10 +411,11 @@ public:
    // std::cerr << "Converting to Reference type from " << typeid(Impl).name() << std::endl;
   }
 
-  Reference &operator=(const Reference &in)
+  /*
+  const T &operator=(const Reference &in)
   {
     return set(in.get(), this->get_settings());
-  }
+  }*/
 
   std::string get_name() const
   {
@@ -436,15 +438,16 @@ public:
     return knowledge_cast<T>(get_knowledge_record());
   }
 
-  Reference &set_knowledge_record(const Knowledge_Record &in, const Knowledge_Update_Settings &settings)
+  const Knowledge_Record &set_knowledge_record(const Knowledge_Record &in, const Knowledge_Update_Settings &settings)
   {
     this->get_context().set(var_ref, in, settings);
-    return *this;
+    return in;
   }
 
-  Reference &set(const T& in, const Knowledge_Update_Settings &settings)
+  const T &set(const T& in, const Knowledge_Update_Settings &settings)
   {
-    return set_knowledge_record(knowledge_cast(in), settings);
+    set_knowledge_record(knowledge_cast(in), settings);
+    return in;
   }
 
   using Base::operator=;

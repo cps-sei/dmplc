@@ -93,7 +93,7 @@ int main()
   vec[1][2][3] += 1;
   std::cout << "Cached StaticArray before pull_keep_local: " << carray[1][2][3] << std::endl;
   vec.pull_all_keep_local(carray);
-  std::cout << "Cached StaticArray after pull_keep_local: " << carray[2][2][3] << std::endl;
+  std::cout << "Cached StaticArray after pull_keep_local: " << carray[1][2][3] << std::endl;
 
   vec[1][2][0] = 123;
   vec[1][2][2] = vec[1][2][0];
@@ -106,6 +106,11 @@ int main()
   std::cout << "test container: " << test << " == " << vec[1][3][0] << std::endl;
   test = CachedReference<int>(kbase, "testing");
   std::cout << "test attempted overwrite: " << test << " == " << vec[1][3][0] << std::endl;
+
+  vec[4][2][0] = vec[4][2][1] = vec[4][2][1] = 1234;
+  std::cout << "test chained assign: " << vec[4][2][0] << " == " << vec[4][2][1] << " == 1234" << std::endl;
+  vec[4][2][1] += 1;
+  std::cout << "test chained assign: " << vec[4][2][0] << " != " << vec[4][2][1] << " == 1235" << std::endl;
 
   Madara::Knowledge_Engine::Containers::StaticArray<Madara::Knowledge_Record, 8, 4, 3> kvec(kbase.get_context(), "kvec");
   kvec[1][1][1] = (long int)5;
