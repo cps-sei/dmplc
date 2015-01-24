@@ -15,9 +15,11 @@
 #include "knowledge_cast.hpp"
 
 #if __cplusplus >= 201103L
+#define USE_CPP11
 #define USE_RVAL_REF
 #define USE_VAR_TMPL
 #define USE_STD_ARRAY
+#define USE_DELETE_MEMBER
 #endif
 
 namespace Madara
@@ -38,17 +40,22 @@ struct identity
 };
 
 template<typename T, typename Impl>
-class basic_container
+class basic_reference
 {
-private:
-  Thread_Safe_Context *context;
-public:
-  basic_container() {}
-  basic_container(Thread_Safe_Context &con)
-    : context(&con), settings() {}
+protected:
+  Thread_Safe_Context &context;
 
-  basic_container(Thread_Safe_Context &con, const Knowledge_Update_Settings &settings)
-    : context(&con), settings(settings) {}
+  basic_reference(Knowledge_Base &kbase)
+    : context(kbase.get_context()), settings() {}
+
+  basic_reference(Thread_Safe_Context &con)
+    : context(con), settings() {}
+
+  basic_reference(Thread_Safe_Context &con, const Knowledge_Update_Settings &settings)
+    : context(con), settings(settings) {}
+
+  basic_reference(Knowledge_Base &kbase, const Knowledge_Update_Settings &settings)
+    : context(kbase.get_context()), settings(settings) {}
 public:
   Knowledge_Update_Settings settings;
 
@@ -57,14 +64,9 @@ public:
     return static_cast<const Impl*>(this)->get_name();
   }
 
-  bool valid() const
-  {
-    return context != NULL;
-  }
-
   Thread_Safe_Context &get_context() const
   {
-    return *context;
+    return context;
   }
 
   Knowledge_Update_Settings &get_settings()
@@ -79,6 +81,11 @@ public:
 
   Knowledge_Record get_knowledge_record() const {
     return static_cast<const Impl*>(this)->get_knowledge_record();
+  }
+
+  void mark_modified()
+  {
+    static_cast<const Impl*>(this)->mark_modified();
   }
 
   T get() const
@@ -117,79 +124,90 @@ public:
     return knowledge_cast<R>(get_knowledge_record());
   }
 
-  basic_container &operator=(const T& in)
+  basic_reference &operator=(const basic_reference &in)
+  {
+    return set(in.get());
+  }
+
+  template<class E>
+  basic_reference &operator=(const __INTERNAL__::basic_reference<T, E> &in)
+  {
+    return this->set(in.get());
+  }
+
+  basic_reference &operator=(const T& in)
   {
     return set(in);
   }
 
-  basic_container &operator+=(const T& in)
+  basic_reference &operator+=(const T& in)
   {
     return set((*this) + in);
   }
 
-  basic_container &operator-=(const T& in)
+  basic_reference &operator-=(const T& in)
   {
     return set((*this) - in);
   }
 
-  basic_container &operator*=(const T& in)
+  basic_reference &operator*=(const T& in)
   {
     return set((*this) * in);
   }
 
-  basic_container &operator/=(const T& in)
+  basic_reference &operator/=(const T& in)
   {
     return set((*this) / in);
   }
 
-  basic_container &operator%=(const T& in)
+  basic_reference &operator%=(const T& in)
   {
     return set((*this) % in);
   }
 
-  basic_container &operator|=(const T& in)
+  basic_reference &operator|=(const T& in)
   {
     return set((*this) | in);
   }
 
-  basic_container &operator&=(const T& in)
+  basic_reference &operator&=(const T& in)
   {
     return set((*this) & in);
   }
 
-  basic_container &operator^=(const T& in)
+  basic_reference &operator^=(const T& in)
   {
     return set((*this) ^ in);
   }
 
   template<typename I>
-  basic_container &operator<<=(const I& in)
+  basic_reference &operator<<=(const I& in)
   {
     return set((*this) << in);
   }
 
   template<typename I>
-  basic_container &operator>>=(const I& in)
+  basic_reference &operator>>=(const I& in)
   {
     return set((*this) << in);
   }
 
-  basic_container &set(const T& in)
+  basic_reference &set(const T& in)
   {
     return set(in, this->settings);
   }
 
-  basic_container &set(const T& in, const Knowledge_Update_Settings &settings)
+  basic_reference &set(const T& in, const Knowledge_Update_Settings &settings)
   {
     return static_cast<Impl*>(this)->set(in, settings);
   }
 
-  basic_container &set_knowledge_record(const Knowledge_Record &in)
+  basic_reference &set_knowledge_record(const Knowledge_Record &in)
   {
     return set_knowledge_record(in, this->settings);
   }
 
-  basic_container &set_knowledge_record(const Knowledge_Record &in, const Knowledge_Update_Settings &settings)
+  basic_reference &set_knowledge_record(const Knowledge_Record &in, const Knowledge_Update_Settings &settings)
   {
     return static_cast<Impl*>(this)->set_knowledge_record(in, settings);
   }
@@ -198,40 +216,56 @@ public:
 }
 
 template<typename T>
-class CachedContainer : public __INTERNAL__::basic_container<T, CachedContainer<T> >
+class CachedReference : public __INTERNAL__::basic_reference<T, CachedReference<T> >
 {
 protected:
-  typedef __INTERNAL__::basic_container<T, CachedContainer<T> > Base;
+  typedef __INTERNAL__::basic_reference<T, CachedReference<T> > Base;
 
+#ifdef USE_CPP11
+  const std::string name;
+#else
+  // to support putting CachedReference in a vector, pre-C++11, must be assignable
   std::string name;
+#endif
   bool exist:1;
   bool dirty:1;
   bool create:1;
   Variable_Reference var_ref;
   T data;
 public:
-  CachedContainer<T>() {}
-  CachedContainer<T>(Thread_Safe_Context &con, const std::string &name)
+
+  CachedReference<T>(Thread_Safe_Context &con, const std::string &name)
     : Base(con), name(name), exist(con.exists(name)), dirty(false), create(false),
       var_ref(exist ? con.get_ref(name) : Variable_Reference()),
       data(exist ? knowledge_cast<T>(con.get(name)) : T()) {}
 
-  CachedContainer<T>(Thread_Safe_Context &con, const std::string &name, const Knowledge_Update_Settings &settings)
+  CachedReference<T>(Knowledge_Base &kbase, const std::string &name)
+    : Base(kbase), name(name), exist(this->get_context().exists(name)), dirty(false), create(false),
+      var_ref(exist ? this->get_context().get_ref(name) : Variable_Reference()),
+      data(exist ? knowledge_cast<T>(this->get_context().get(name)) : T()) {}
+
+  CachedReference<T>(Thread_Safe_Context &con, const std::string &name, const Knowledge_Update_Settings &settings)
     : Base(con, settings), name(name), exist(con.exists(name, settings)), dirty(false), create(false),
       var_ref(exist ? con.get_ref(name) : Variable_Reference()),
       data(exist ? knowledge_cast<T>(con.get(name, settings)) : T()) {}
 
-  CachedContainer<T>(const CachedContainer<T> &o)
+  CachedReference<T>(Knowledge_Base &kbase, const std::string &name, const Knowledge_Update_Settings &settings)
+    : Base(kbase, settings), name(name),
+      exist(this->get_context().exists(name, settings)), dirty(false), create(false),
+      var_ref(exist ? this->get_context().get_ref(name) : Variable_Reference()),
+      data(exist ? knowledge_cast<T>(this->get_context().get(name, settings)) : T()) {}
+
+  CachedReference<T>(const CachedReference<T> &o)
     : Base(o.get_context(), o.settings), name(o.name), exist(o.exist), dirty(o.dirty),
       create(o.create), var_ref(o.var_ref), data(o.data) { }
 
   template<typename Impl>
-  CachedContainer<T>(const __INTERNAL__::basic_container<T, Impl> &o)
+  CachedReference<T>(const __INTERNAL__::basic_reference<T, Impl> &o)
     : Base(o.get_context(), o.get_settings()), name(o.get_name()),
       exist(this->get_context().exists(this->get_name(), this->get_settings())), dirty(false), create(false),
       var_ref(exist ? this->get_context().get_ref(this->get_name(), this->get_settings()) : Variable_Reference()),
       data(exist ? knowledge_cast<T>(this->get_context().get(this->get_name(), this->get_settings())) : T()) {
-   // std::cerr << "Converting to CachedContainer type from " << typeid(Impl).name() << std::endl;
+   // std::cerr << "Converting to CachedReference type from " << typeid(Impl).name() << std::endl;
   }
 
   std::string get_name() const
@@ -248,12 +282,12 @@ public:
     return data;
   }
 
-  CachedContainer &set_knowledge_record(const Knowledge_Record &in, const Knowledge_Update_Settings &settings)
+  CachedReference &set_knowledge_record(const Knowledge_Record &in, const Knowledge_Update_Settings &settings)
   {
     return set(knowledge_cast<T>(in), settings);
   }
 
-  CachedContainer &set(const T& in, const Knowledge_Update_Settings &settings)
+  CachedReference &set(const T& in, const Knowledge_Update_Settings &settings)
   {
     if(!exist)
     {
@@ -272,6 +306,11 @@ public:
   bool is_dirty()
   {
     return dirty;
+  }
+
+  void mark_modified()
+  {
+    dirty = true;
   }
 
   void ensure_exists()
@@ -313,33 +352,79 @@ public:
 };
 
 template<typename T>
-class Container : public __INTERNAL__::basic_container<T, Container<T> >
+class Reference : public __INTERNAL__::basic_reference<T, Reference<T> >
 {
 protected:
-  typedef __INTERNAL__::basic_container<T, Container<T> > Base;
+  typedef __INTERNAL__::basic_reference<T, Reference<T> > Base;
 
+#ifdef USE_CPP11
+  const Variable_Reference var_ref;
+#else
+  // to support putting Reference in a vector, pre-C++11, must be assignable
   Variable_Reference var_ref;
+#endif
 
 public:
-  Container<T>() {}
-  Container<T>(Thread_Safe_Context &con, const std::string &name)
+  Reference<T>(const Reference<T> &o) : Base(o.get_context(), o.settings), var_ref(o.var_ref) { }
+
+  Reference<T>(Thread_Safe_Context &con, const std::string &name)
     : Base(con), var_ref(con.get_ref(name)) {}
 
-  Container<T>(Thread_Safe_Context &con, const std::string &name, const Knowledge_Update_Settings &settings)
+  Reference<T>(Thread_Safe_Context &con, const std::string &name, const T& def)
+    : Base(con), var_ref(con.get_ref(name))
+  {
+    set(def);
+  }
+
+  Reference<T>(Knowledge_Base &kbase, const std::string &name)
+    : Base(kbase), var_ref(this->get_context().get_ref(name)) {}
+
+  Reference<T>(Knowledge_Base &kbase, const std::string &name, const T& def)
+    : Base(kbase), var_ref(this->get_context().get_ref(name))
+  {
+    set(def);
+  }
+
+  Reference<T>(Thread_Safe_Context &con, const std::string &name, const Knowledge_Update_Settings &settings)
     : Base(con, settings), var_ref(con.get_ref(name, settings)) {}
 
-  Container<T>(const Container<T> &o) : Base(o.get_context(), o.settings), var_ref(o.var_ref) { }
+  Reference<T>(Thread_Safe_Context &con, const std::string &name, const T& def, const Knowledge_Update_Settings &settings)
+    : Base(con, settings), var_ref(con.get_ref(name, settings))
+  {
+    set(def);
+  }
+
+  Reference<T>(Knowledge_Base &kbase, const std::string &name, const Knowledge_Update_Settings &settings)
+    : Base(kbase, settings), var_ref(this->get_context().get_ref(name, settings)) {}
+
+  Reference<T>(Knowledge_Base &kbase, const std::string &name, const T& def, const Knowledge_Update_Settings &settings)
+    : Base(kbase, settings), var_ref(this->get_context().get_ref(name, settings))
+  {
+    set(def);
+  }
 
   template<typename Impl>
-  Container<T>(const __INTERNAL__::basic_container<T, Impl> &o)
+  Reference<T>(const __INTERNAL__::basic_reference<T, Impl> &o)
     : Base(o.get_context(), o.get_settings()), var_ref(o.get_context().get_ref(o.get_name()))
   {
-   // std::cerr << "Converting to Container type from " << typeid(Impl).name() << std::endl;
+   // std::cerr << "Converting to Reference type from " << typeid(Impl).name() << std::endl;
+  }
+
+  Reference &operator=(const Reference &in)
+  {
+    return set(in.get(), this->get_settings());
   }
 
   std::string get_name() const
   {
-    return std::string(const_cast<Container*>(this)->var_ref.get_name());
+    // const_cast required to workaround missing const decorator;
+    // current implementation is actually const
+    return std::string(const_cast<Variable_Reference&>(this->var_ref).get_name());
+  }
+
+  void mark_modified()
+  {
+    this->get_context().mark_modified(var_ref);
   }
 
   Knowledge_Record get_knowledge_record() const {
@@ -351,13 +436,13 @@ public:
     return knowledge_cast<T>(get_knowledge_record());
   }
 
-  Container &set_knowledge_record(const Knowledge_Record &in, const Knowledge_Update_Settings &settings)
+  Reference &set_knowledge_record(const Knowledge_Record &in, const Knowledge_Update_Settings &settings)
   {
     this->get_context().set(var_ref, in, settings);
     return *this;
   }
 
-  Container &set(const T& in, const Knowledge_Update_Settings &settings)
+  Reference &set(const T& in, const Knowledge_Update_Settings &settings)
   {
     return set_knowledge_record(knowledge_cast(in), settings);
   }
