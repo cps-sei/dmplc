@@ -6,6 +6,11 @@
 using Madara::Knowledge_Engine::Containers::StaticArray;
 using Madara::Knowledge_Engine::Containers::Reference;
 using Madara::Knowledge_Engine::Containers::CachedReference;
+using Madara::Knowledge_Engine::Containers::VAR_LEN;
+using Madara::Knowledge_Engine::Containers::StorageManager::Lazy;
+
+#define LOG(expr) \
+  std::cout << #expr << " == " << (expr) << std::endl
 
 int main()
 {
@@ -37,13 +42,13 @@ int main()
     std::cout << i << " ";
   }
   std::cout << std::endl;
-  std::cout << vec.dims << " " << vec.dim << " " << vec.subarray_type::dim << " " << vec.subarray_type::subarray_type::dim << std::endl;
-  std::cout << "Lookup: " << vec.dim0 << " " << vec.dim1 << " " << vec.dim2 << " " << vec.dim9 << std::endl;
+  //std::cout << vec.dims << " " << vec.dim << " " << vec.subarray_type::dim << " " << vec.subarray_type::subarray_type::dim << std::endl;
+  //std::cout << "Lookup: " << vec.dim0 << " " << vec.dim1 << " " << vec.dim2 << " " << vec.dim9 << std::endl;
 
-#ifdef USE_STD_ARRAY
-  decltype(vec)::array_type<int> array;
+#ifdef USE_USING_TYPE
+  decltype(vec)::array_type array;
 #else
-  StaticArray<int, 5, 6, 7>::vector_type<int>::type array;
+  StaticArray<int, 5, 6, 7>::array_type array;
 #endif
   vec.get_into(array);
   std::cout << "Local StaticArray: " << array[1][2][3] << std::endl;
@@ -53,28 +58,22 @@ int main()
   vec.update_from(array);
   std::cout << "Base StaticArray: " << vec[1][2][3] << std::endl;
 
-#ifdef USE_EMPLACE
-  decltype(vec)::vector_type<Reference<int> > ref_vector;
-  vec.get_into(ref_vector);
-  std::cout << "Reference StaticArray: " << ref_vector[1][2][3] << std::endl;
-  std::cout << "Reference StaticArray: " << ref_vector[1][2][3].get_name() << std::endl;
-  ref_vector[1][2][3] += 1;
-  std::cout << "Reference StaticArray: " << ref_vector[1][2][3] << std::endl;
-  std::cout << "Base StaticArray: " << vec[1][2][3] << std::endl;
+#ifdef USE_USING_TYPE
+  decltype(vec)::get_vector_type<Reference<int> > ref_vector;
 #else
-  StaticArray<int, 5, 6, 7>::vector_type<Reference<int> >::type ref_vector;
+  StaticArray<int, 5, 6, 7>::get_vector_type_compat<Reference<int> >::type ref_vector;
+#endif
   vec.get_into(ref_vector);
   std::cout << "Reference StaticArray: " << ref_vector[1][2][3] << std::endl;
   std::cout << "Reference StaticArray: " << ref_vector[1][2][3].get_name() << std::endl;
   ref_vector[1][2][3] += 1;
   std::cout << "Reference StaticArray: " << ref_vector[1][2][3] << std::endl;
   std::cout << "Base StaticArray: " << vec[1][2][3] << std::endl;
-#endif
 
 #ifdef USE_USING_TYPE
-  decltype(vec)::vector_type<CachedReference<int> > carray;
+  decltype(vec)::get_vector_type<CachedReference<int> > carray;
 #else
-  StaticArray<int, 5, 6, 7>::vector_type<CachedReference<int> >::type carray;
+  StaticArray<int, 5, 6, 7>::get_vector_type_compat<CachedReference<int> >::type carray;
 #endif
   vec.get_into(carray);
   std::cout << "Cached StaticArray: " << carray[1][2][3] << std::endl;
@@ -127,6 +126,89 @@ int main()
   e = 123;
   std::cout << e << "  " << big_array[0][1][2][3][4][5][6][7][8][9][10][11][12][13][14] << std::endl;
 #endif
+
+  StaticArray<int, 6, VAR_LEN> var_arr(kbase, "variable_array", 0, 20);
+  StaticArray<int, 6, VAR_LEN>::vector_type var_arr_vec;
+  try
+  {
+    var_arr.get_into(var_arr_vec);
+    LOG(var_arr_vec.size());
+    LOG(var_arr_vec[0].size());
+  }
+  catch(std::range_error err)
+  {
+    std::cout << err.what() << std::endl;
+  }
+  var_arr.resize<1>(30);
+  var_arr[1][25] = 55;
+  LOG(var_arr[1][25]);
+
+#ifdef USE_VAR_TMPL
+  StaticArray<int, 6, 30> resized_arr(var_arr);
+  std::cout << "resized_arr[1][25] == " << resized_arr[1][25] << std::endl;
+#endif
+
+  StaticArray<int, 6, VAR_LEN, VAR_LEN> var_arr2(kbase, "variable_array");
+  StaticArray<int, 6, VAR_LEN, VAR_LEN, VAR_LEN> var_arr3(kbase, "variable_array");
+#ifdef USE_VAR_TMPL
+  LOG(sizeof(big_array));
+#endif
+  LOG(sizeof(vec));
+  LOG(sizeof(var_arr));
+  LOG(sizeof(var_arr2));
+  LOG(sizeof(std::vector<int>));
+  LOG(sizeof(var_arr3));
+  LOG(sizeof(unsigned int));
+  LOG(sizeof(Madara::Knowledge_Engine::Containers::__INTERNAL__::size_manager<0, 5>));
+  LOG(sizeof(Madara::Knowledge_Engine::Containers::__INTERNAL__::size_manager<0, VAR_LEN>));
+
+#ifdef USE_VAR_TMPL
+  LOG(vec.get_size());
+#else
+  LOG(vec.get_size<0>());
+#endif
+  LOG(vec.get_size<1>());
+  LOG(vec.get_size<2>());
+  LOG(vec.can_resize<0>());
+  LOG(var_arr.get_size<1>());
+  LOG(var_arr.can_resize<1>());
+
+  LOG(vec.get_multiplier<0>());
+  LOG(vec.get_multiplier<1>());
+  LOG(vec.get_multiplier<2>());
+
+  LOG(var_arr2.get_multiplier<0>());
+  LOG(var_arr2.get_multiplier<1>());
+  LOG(var_arr2.get_multiplier<2>());
+  var_arr2.resize<1>(3);
+  var_arr2.resize<2>(5);
+  LOG(var_arr2.get_multiplier<0>());
+  LOG(var_arr2.get_multiplier<1>());
+  LOG(var_arr2.get_multiplier<2>());
+
+  try
+  {
+    var_arr[10][35] = 12343;
+  }
+  catch(std::range_error err)
+  {
+    std::cout << err.what() << std::endl;
+  }
+  try
+  {
+    var_arr[1][35] = 12343;
+  }
+  catch(std::range_error err)
+  {
+    std::cout << err.what() << std::endl;
+  }
+  var_arr.resize<1>(40);
+  LOG(var_arr[1][35] = 12343);
+
+  var_arr.get_into(var_arr_vec);
+  LOG(var_arr_vec[1][35]);
+  LOG(var_arr_vec.size());
+  LOG(var_arr_vec[1].size());
 
   return 0;
 }
