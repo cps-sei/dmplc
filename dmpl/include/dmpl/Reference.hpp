@@ -40,21 +40,21 @@ struct identity
 };
 
 template<typename T, typename Impl>
-class basic_reference
+class BaseReference
 {
 protected:
   Thread_Safe_Context &context;
 
-  basic_reference(Knowledge_Base &kbase)
+  BaseReference(Knowledge_Base &kbase)
     : context(kbase.get_context()), settings() {}
 
-  basic_reference(Thread_Safe_Context &con)
+  BaseReference(Thread_Safe_Context &con)
     : context(con), settings() {}
 
-  basic_reference(Thread_Safe_Context &con, const Knowledge_Update_Settings &settings)
+  BaseReference(Thread_Safe_Context &con, const Knowledge_Update_Settings &settings)
     : context(con), settings(settings) {}
 
-  basic_reference(Knowledge_Base &kbase, const Knowledge_Update_Settings &settings)
+  BaseReference(Knowledge_Base &kbase, const Knowledge_Update_Settings &settings)
     : context(kbase.get_context()), settings(settings) {}
 public:
   Knowledge_Update_Settings settings;
@@ -124,13 +124,13 @@ public:
     return knowledge_cast<R>(get_knowledge_record());
   }
 
-  const T &operator=(const basic_reference &in)
+  const T &operator=(const BaseReference &in)
   {
     return set(in.get());
   }
 
   template<class E>
-  const T &operator=(const basic_reference<T, E> &in)
+  const T &operator=(const BaseReference<T, E> &in)
   {
     return this->set(in.get());
   }
@@ -216,10 +216,10 @@ public:
 }
 
 template<typename T>
-class CachedReference : public __INTERNAL__::basic_reference<T, CachedReference<T> >
+class CachedReference : public __INTERNAL__::BaseReference<T, CachedReference<T> >
 {
 protected:
-  typedef __INTERNAL__::basic_reference<T, CachedReference<T> > Base;
+  typedef __INTERNAL__::BaseReference<T, CachedReference<T> > Base;
 
 #ifdef USE_CPP11
   const std::string name;
@@ -256,11 +256,20 @@ public:
       data(exist ? knowledge_cast<T>(this->get_context().get(name, settings)) : T()) {}
 
   CachedReference<T>(const CachedReference<T> &o)
+#ifdef USE_RVAL_REF
+noexcept
+#endif
     : Base(o.get_context(), o.settings), name(o.name), exist(o.exist), dirty(o.dirty),
       create(o.create), var_ref(o.var_ref), data(o.data) { }
 
+#ifdef USE_RVAL_REF
+  CachedReference<T>(CachedReference<T> &&o) noexcept
+    : Base(o.get_context(), o.settings), name(std::move(o.name)), exist(o.exist), dirty(o.dirty),
+      create(o.create), var_ref(std::move(o.var_ref)), data(std::move(o.data)) { }
+#endif
+
   template<typename Impl>
-  CachedReference<T>(const __INTERNAL__::basic_reference<T, Impl> &o)
+  CachedReference<T>(const __INTERNAL__::BaseReference<T, Impl> &o)
     : Base(o.get_context(), o.get_settings()), name(o.get_name()),
       exist(this->get_context().exists(this->get_name(), this->get_settings())), dirty(false), create(false),
       var_ref(exist ? this->get_context().get_ref(this->get_name(), this->get_settings()) : Variable_Reference()),
@@ -353,10 +362,10 @@ public:
 };
 
 template<typename T>
-class Reference : public __INTERNAL__::basic_reference<T, Reference<T> >
+class Reference : public __INTERNAL__::BaseReference<T, Reference<T> >
 {
 protected:
-  typedef __INTERNAL__::basic_reference<T, Reference<T> > Base;
+  typedef __INTERNAL__::BaseReference<T, Reference<T> > Base;
 
 #ifdef USE_CPP11
   const Variable_Reference var_ref;
@@ -405,7 +414,7 @@ public:
   }
 
   template<typename Impl>
-  Reference<T>(const __INTERNAL__::basic_reference<T, Impl> &o)
+  Reference<T>(const __INTERNAL__::BaseReference<T, Impl> &o)
     : Base(o.get_context(), o.get_settings()), var_ref(o.get_context().get_ref(o.get_name()))
   {
    // std::cerr << "Converting to Reference type from " << typeid(Impl).name() << std::endl;

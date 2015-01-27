@@ -1,5 +1,6 @@
 #include <string>
 #include <boost/foreach.hpp>
+#include <boost/lexical_cast.hpp>
 #include <madara/knowledge_engine/containers/Integer.h>
 #include "StaticArray.hpp"
 
@@ -9,8 +10,20 @@ using Madara::Knowledge_Engine::Containers::CachedReference;
 using Madara::Knowledge_Engine::Containers::VAR_LEN;
 using Madara::Knowledge_Engine::Containers::StorageManager::Lazy;
 
+static unsigned int OK_count = 0;
+static unsigned int FAIL_count = 0;
+
 #define LOG(expr) \
   std::cout << #expr << " == " << (expr) << std::endl
+
+#define TEST(expr, expect) \
+  do {\
+    std::string v = boost::lexical_cast<std::string>(expr); \
+    int ok = (v == #expect); \
+    std::cout << #expr << " ?= " << expect << "  " << (ok ? "OK" : "FAILED! got " + v + " instead" ) << std::endl; \
+    (ok ? OK_count : FAIL_count)++; \
+  } while(0)
+
 
 int main()
 {
@@ -159,16 +172,18 @@ int main()
   LOG(sizeof(std::vector<int>));
   LOG(sizeof(var_arr3));
   LOG(sizeof(unsigned int));
-  LOG(sizeof(Madara::Knowledge_Engine::Containers::__INTERNAL__::size_manager<0, 5>));
-  LOG(sizeof(Madara::Knowledge_Engine::Containers::__INTERNAL__::size_manager<0, VAR_LEN>));
+  LOG(sizeof(Madara::Knowledge_Engine::Containers::__INTERNAL__::SizeManager<5, 1>));
+  LOG(sizeof(Madara::Knowledge_Engine::Containers::__INTERNAL__::SizeManager<VAR_LEN, 1>));
+  LOG(sizeof(Madara::Knowledge_Engine::Containers::__INTERNAL__::SizeManagerReference<5, 1>));
+  LOG(sizeof(Madara::Knowledge_Engine::Containers::__INTERNAL__::SizeManagerReference<VAR_LEN, 1>));
 
 #ifdef USE_VAR_TMPL
-  LOG(vec.get_size());
+  TEST(vec.get_size(), 5);
 #else
-  LOG(vec.get_size<0>());
+  TEST(vec.get_size<0>(), 5);
 #endif
-  LOG(vec.get_size<1>());
-  LOG(vec.get_size<2>());
+  TEST(vec.get_size<1>(), 6);
+  TEST(vec.get_size<2>(), 7);
   LOG(vec.can_resize<0>());
   LOG(var_arr.get_size<1>());
   LOG(var_arr.can_resize<1>());
@@ -209,6 +224,18 @@ int main()
   LOG(var_arr_vec[1][35]);
   LOG(var_arr_vec.size());
   LOG(var_arr_vec[1].size());
+
+  StaticArray<Lazy<int, Reference<int> >, 3, 4, 5> lazy_array(kbase, "lazy_array");
+  LOG(lazy_array.get_dimension<0>().dims);
+  LOG(lazy_array.get_dimension<1>().dims);
+  LOG(lazy_array.get_dimension<2>().dims);
+  LOG(lazy_array.get_multiplier<0>());
+  LOG(lazy_array.get_multiplier<1>());
+  LOG(lazy_array.get_multiplier<2>());
+  LOG(lazy_array[1][2][3].get_name());
+
+  LOG(OK_count);
+  LOG(FAIL_count);
 
   return 0;
 }

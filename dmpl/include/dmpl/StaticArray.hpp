@@ -22,6 +22,7 @@
 #define USE_RVAL_REF
 #define USE_VAR_TMPL
 #define USE_STD_ARRAY
+#define USE_UNIQUE_PTR
 #define USE_EMPLACE
 #define USE_USING_TYPE
 #define USE_STATIC_ASSERT
@@ -53,18 +54,28 @@ struct get_sm_info;
 
 }
 
+#ifdef USE_VAR_TMPL
+template <typename T, unsigned int d0 = 0, unsigned int ...dN>
+class StaticArray;
+#else
+
+template <typename T, unsigned int d0, unsigned int d1 = 0, unsigned int d2 = 0, unsigned int d3 = 0,
+                      unsigned int d4 = 0, unsigned int d5 = 0, unsigned int d6 = 0, unsigned int d7 = 0,
+                      unsigned int d8 = 0, unsigned int d9 = 0>
+class StaticArray;
+#endif
 
 namespace __INTERNAL__
 {
 
-template <unsigned Size, unsigned int Dim>
-class size_manager
+template <unsigned int Size, unsigned int Dim>
+class SizeManager
 {
 protected:
   static const unsigned int dim = Dim;
   static const unsigned int size = Size;
-  size_manager() {}
-  size_manager(unsigned int s) { resize(s); }
+  SizeManager() {}
+  SizeManager(unsigned int s) { resize(s); }
   void throw_error(unsigned int newSize)
   {
     std::ostringstream err;
@@ -73,6 +84,8 @@ protected:
   }
 public:
   unsigned int get_size() const { return size; }
+  const unsigned int &get_size_ref() const { static unsigned int ref_size = Size; return ref_size; }
+  unsigned int get_num_dims() const { return dim; }
   bool can_resize() const { return false; }
   void resize(unsigned int newSize) {
     if(newSize != 0 && newSize != size)
@@ -85,15 +98,17 @@ public:
 };
 
 template <unsigned int Dim>
-struct size_manager<VAR_LEN, Dim>
+struct SizeManager<VAR_LEN, Dim>
 {
 protected:
   static const unsigned int dim = Dim;
   unsigned int size;
-  size_manager() : size(VAR_LEN) {}
-  size_manager(unsigned int s) : size(s > 0 ? s : VAR_LEN) {}
+  SizeManager() : size(VAR_LEN) {}
+  SizeManager(unsigned int s) : size(s > 0 ? s : VAR_LEN) {}
 public:
   unsigned int get_size() const { return size; }
+  const unsigned int &get_size_ref() const { return size; }
+  unsigned int get_num_dims() const { return dim; }
   bool can_resize() const { return true; }
   void resize(unsigned int new_size) {
     if(new_size > 0)
@@ -105,84 +120,62 @@ public:
   }
 };
 
-class StaticArray_Base;
+template <unsigned int Size, unsigned int Dim>
+struct SizeManagerReference : protected SizeManager<Size, Dim>
+{
+public:
+  SizeManager<Size, Dim> &get_size_manager()
+  {
+    return static_cast<SizeManager<Size, Dim>&>(*this);
+  }
+  const SizeManager<Size, Dim> &get_size_manager() const
+  {
+    return static_cast<const SizeManager<Size, Dim>&>(*this);
+  }
+  SizeManagerReference(SizeManager<Size, Dim> &sm) {}
+};
 
-template<typename T, typename R = typename T::value_type,
-   typename S = StorageManager::__INTERNAL__::Stateless<R> >
-class array_reference
-  : protected array_reference<typename T::subarray_type, R, S>,
-    protected size_manager<T::static_size, T::dims>,
-    protected S::template RefDimensionMixin<T>
+template<unsigned int Dim>
+struct SizeManagerReference<VAR_LEN, Dim>
 {
 protected:
-  typedef size_manager<T::static_size, T::dims> size_mgr;
-  typedef S storage_mgr;
-  typedef typename S::template RefDimensionMixin<T> storage_mixin;
+  SizeManager<VAR_LEN, Dim> &size_manager;
 public:
-  typedef array_reference<T, R, S> index_as_type;
-  typedef array_reference<typename T::subarray_type, R, S> sub_type;
-  typedef typename sub_type::index_as_type indexed_type;
+  SizeManager<VAR_LEN, Dim> &get_size_manager() { return size_manager; }
+  const SizeManager<VAR_LEN, Dim> &get_size_manager() const { return size_manager; }
+  SizeManagerReference(SizeManager<VAR_LEN, Dim> &sm) : size_manager(sm) {}
+};
 
-  friend class StaticArray_Base;
-  friend class identity<T>::type;
-  friend class identity<array_reference<typename T::subarray_type, R, S> >::type;
-  friend class identity<array_reference<StaticArray_Base, R, S> >::type;
-
-  /**
-   * C++11 support is highly recommended for multi-dimensional arrays;
-   * without it, each index operation creates pointless copies of array_reference
-   * object
-   */
-#ifdef USE_RVAL_REF
-  indexed_type operator[](unsigned int i) &;
-
-  indexed_type &&operator[](unsigned int i) &&;
+template<typename T>
+struct StaticArray_0
+{
+#ifdef USE_VAR_TMPL
+  typedef class StaticArray<T> type;
 #else
-  indexed_type operator[](unsigned int i);
-#endif
-
-  operator T() const
-  {
-    T ret(this->get_context(), this->get_name(), this->get_settings());
-    //std::cerr << "cast to array" << std::endl;
-    return ret;
-  }
-
-protected:
-  array_reference(T &v)
-    : array_reference<typename T::subarray_type, R, S>(v),
-      size_mgr(v.template get_size_manager<0>()),
-      storage_mixin() {}
-
-public:
-  /*
-   * Do not use these methods; treat as protected
-   */
-#ifdef USE_RVAL_REF
-  array_reference __get(unsigned int i) &;
-  array_reference &&__get(unsigned int i) &&;
-#else
-  array_reference __get(unsigned int i);
+  typedef StaticArray<T, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0> type;
 #endif
 };
 
-class StaticArray_Base
+class StaticArrayBase
 {
 public:
   const static unsigned int dims = 0;
+
+  template<typename T, typename S>
+  friend class StaticArrayReference;
 protected:
-  typedef StaticArray_Base forwarded_type;
+  //typedef StaticArrayBase forwarded_type;
 
 protected:
   const static unsigned int static_size = 0;
   const static unsigned int dim0 = 0;
-  typedef StaticArray_Base subarray_type;
-  typedef StaticArray_Base sub0;
+  typedef StaticArrayBase subarray_type;
+  typedef StaticArrayBase sub0;
 
   Thread_Safe_Context &context;
   std::string name;
 
-  StaticArray_Base(Thread_Safe_Context &con, const std::string &varName = "",
+  StaticArrayBase(Thread_Safe_Context &con, const std::string &varName = "",
       const Knowledge_Update_Settings &settings = Knowledge_Update_Settings()) :
     context(con), name(varName), settings(settings) {}
 public:
@@ -209,17 +202,27 @@ protected:
   void get_dims(std::vector<int> &out) const {}
 };
 
-template<class R, typename S>
-class array_reference<StaticArray_Base, R, S>
-  : public basic_reference<R, array_reference<StaticArray_Base, R> >,
-    protected size_manager<1, 0>,
-    protected S::template RefBaseMixin<StaticArray_Base>
+template<typename T, typename S = StorageManager::__INTERNAL__::Stateless<typename T::value_type> >
+class StaticArrayReference
+  : protected StaticArrayReference<typename T::subarray_type, S>,
+    protected SizeManagerReference<T::static_size, T::dims>,
+    protected S::template RefDimensionMixin<T>
 {
 protected:
-  typedef basic_reference<R, array_reference<StaticArray_Base, R> > container_type;
-  typedef size_manager<1, 0> size_mgr;
+  typedef SizeManager<T::static_size, T::dims> size_mgr;
+  typedef SizeManagerReference<T::static_size, T::dims> size_mgr_ref;
   typedef S storage_mgr;
-  typedef typename S::template RefBaseMixin<StaticArray_Base> storage_mixin;
+  typedef typename S::template RefDimensionMixin<T> storage_mixin;
+  
+  size_mgr &get_size_mgr()
+  {
+    return static_cast<size_mgr_ref&>(*this).get_size_manager();
+  }
+
+  const size_mgr &get_size_mgr() const
+  {
+    return static_cast<const size_mgr_ref&>(*this).get_size_manager();
+  }
 
   storage_mixin &get_storage_mixin()
   {
@@ -231,122 +234,168 @@ protected:
     return static_cast<const storage_mixin &>(*this);
   }
 public:
-  array_reference(StaticArray_Base &v)
-    : container_type(v.get_context(), v.settings),
-      storage_mixin(v)
+  typedef T storage_specifier;
+  typedef typename T::value_type value_type;
+  typedef StaticArrayReference<T, S> index_as_type;
+  typedef StaticArrayReference<typename T::subarray_type, S> sub_type;
+  typedef typename __INTERNAL__::template StaticArray_0<storage_specifier>::type base_type;
+  typedef typename sub_type::index_as_type indexed_type;
+
+  friend class StaticArrayBase;
+  friend class identity<T>::type;
+  friend class identity<storage_mgr>::type;
+
+  template<typename A, typename B>
+  friend class StaticArrayReference;
+
+  sub_type &get_sub_type()
+  {
+    return static_cast<sub_type &>(*this);
+  }
+
+  const sub_type &get_sub_type() const
+  {
+    return static_cast<const sub_type &>(*this);
+  }
+
+  unsigned int get_multiplier() const
+  {
+    const unsigned int num_dims = get_size_mgr().get_num_dims();
+    //std::cerr << "get_multiplier  dims == " << num_dims << std::endl;
+    if(num_dims <= 1)
+      return 1;
+    unsigned int s = get_sub_type().get_size_mgr().get_size();
+    //std::cerr << "  size == " << s << std::endl;
+    if(num_dims == 2)
+      return s;
+    if(s == VAR_LEN)
+      return VAR_LEN;
+    return s * get_sub_type().get_multiplier();
+  }
+
+  /**
+   * C++11 support is highly recommended for multi-dimensional arrays;
+   * without it, each index operation creates pointless copies of StaticArrayReference
+   * object
+   */
+#ifdef USE_RVAL_REF
+  indexed_type operator[](unsigned int i) &;
+
+  indexed_type &&operator[](unsigned int i) &&;
+#else
+  indexed_type operator[](unsigned int i);
+#endif
+
+  operator T() const
+  {
+    T ret(this->get_context(), this->get_name(), this->get_settings());
+    //std::cerr << "cast to array" << std::endl;
+    return ret;
+  }
+
+protected:
+  StaticArrayReference(T &v)
+    : StaticArrayReference<typename T::subarray_type, S>(v),
+      size_mgr_ref(v.template get_SizeManager<0>()),
+      storage_mixin() {
+        //std::cerr << "constructing dim " << get_size_mgr().get_num_dims() << " size " << get_size_mgr().get_size() << std::endl;
+      }
+
+public:
+  void append_index(unsigned int i)
+  {
+    //std::cerr << "append_index   num_dims: " << get_size_mgr().get_num_dims() << " i: " << i
+    //  << "  size: " << get_size_mgr().get_size() << std::endl;
+    get_storage_mixin().append_index(i);
+  }
+};
+
+template<typename R, typename S>
+#ifdef USE_VAR_TMPL
+class StaticArrayReference<StaticArray<R>, S>
+#else
+class StaticArrayReference<StaticArray<R, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0>, S>
+#endif
+  : protected SizeManager<1, 0>,
+    public S::template RefBaseMixin<typename StaticArray_0<R>::type>
+{
+protected:
+  typedef R value_type;
+  typedef SizeManager<1, 0> size_mgr;
+
+  size_mgr &get_size_mgr()
+  {
+    return static_cast<size_mgr &>(*this);
+  }
+
+  const size_mgr &get_size_mgr() const
+  {
+    return static_cast<const size_mgr &>(*this);
+  }
+
+  typedef S storage_mgr;
+  typedef typename S::template RefBaseMixin<typename StaticArray_0<R>::type> storage_mixin;
+
+  storage_mixin &get_storage_mixin()
+  {
+    return static_cast<storage_mixin &>(*this);
+  }
+
+  const storage_mixin &get_storage_mixin() const
+  {
+    return static_cast<const storage_mixin &>(*this);
+  }
+public:
+  using storage_mixin::operator=;
+
+  const value_type &operator=(const StaticArrayReference &o)
+  {
+    return storage_mixin::operator=(o);
+  }
+
+  StaticArrayReference(typename StaticArray_0<R>::type &v)
+    : storage_mixin(v)
   { }
 
-  array_reference(const array_reference<StaticArray_Base, R, S> &o)
-    : container_type(o.get_context(), o.settings),
-      storage_mixin(o.get_storage_mixin())
+  StaticArrayReference(const StaticArrayReference<typename StaticArray_0<R>::type, S> &o)
+    : storage_mixin(o.get_storage_mixin())
   {
     //std::cerr << "Copying: " << o.name_str->str() << " to " << name_str->str() << std::endl;
   }
 
 #ifdef USE_RVAL_REF
-  array_reference(array_reference &&o)
-    : container_type(o.get_context(), o.settings),
-      storage_mixin(std::move(o.get_storage_mixin()))
+  StaticArrayReference(StaticArrayReference &&o)
+    : storage_mixin(std::move(o.get_storage_mixin()))
   {
-    //std::cerr << "array_reference move ctor called" << std::endl;
+    //std::cerr << "StaticArrayReference move ctor called" << std::endl;
   }
 #endif
 
-  typedef array_reference<StaticArray_Base, R, S> index_as_type;
-
-  using container_type::operator=;
-
-  const R &operator=(const array_reference &o)
-  {
-    return set(o);
-  }
+  typedef StaticArrayReference<typename StaticArray_0<R>::type, S> index_as_type;
 
   std::string get_name() const
   {
     return get_storage_mixin().get_name();
   }
 
-  void mark_modified()
+  unsigned int get_multiplier() const
   {
-    this->get_context().mark_modified(
-        this->get_context().get_ref(this->get_name(), this->get_settings())
-      );
+    return 1;
   }
 
-  Knowledge_Record get_knowledge_record() const {
-    return this->get_context().get(this->get_name(), this->get_settings());
-  }
-
-  R get() const
-  {
-    return knowledge_cast<R>(get_knowledge_record());
-  }
-
-  const Knowledge_Record &set_knowledge_record(const Knowledge_Record &in, const Knowledge_Update_Settings &settings)
-  {
-    this->get_context().set(this->get_name(), in, settings);
-    return in;
-  }
-
-  const R &set(const R& in, const Knowledge_Update_Settings &settings)
-  {
-    set_knowledge_record(knowledge_cast(in), settings);
-    return in;
-  }
-
-  using container_type::set;
-  using container_type::set_knowledge_record;
-
-protected:
-  void __append_index(unsigned int i)
+public:
+  void append_index(unsigned int i)
   {
     get_storage_mixin().append_index(i);
   }
+protected:
 
-  friend class StaticArray_Base;
-public:
-  index_as_type __get(unsigned int i)
-#ifdef USE_RVAL_REF
-  &
-#endif
-  {
-    //std::cerr << "container index lvalue: " << this->get_name() << "." << i << std::endl;
-    index_as_type ret(*this);
-    ret.__append_index(i);
-    return ret;
-  }
-
-#ifdef USE_RVAL_REF
-  index_as_type &&__get(unsigned int i) &&
-  {
-    this->__append_index(i);
-    //std::cerr << "container index rvalue: " << this->get_name() << std::endl;
-    return std::move(*this);
-  }
-#endif
+  friend class StaticArrayBase;
+  friend class identity<typename StaticArray_0<R>::type>::type;
+  
+  template<typename A, typename B>
+  friend class StaticArrayReference;
 };
-
-template<typename T, typename R, typename D>
-inline array_reference<T, R, D> array_reference<T, R, D>::__get(unsigned int i)
-#ifdef USE_RVAL_REF
-&
-#endif
-{
-  array_reference<T, R> ret(*this);
-  ret.__append_index(i);
-  //std::cerr << "index lvalue: " << ret.get_name() << std::endl;
-  return ret;
-}
-
-#ifdef USE_RVAL_REF
-template<typename T, typename R, typename D>
-inline array_reference<T, R, D> &&array_reference<T, R, D>::__get(unsigned int i) &&
-{
-  this->__append_index(i);
-  //std::cerr << "index rvalue: " << this->get_name() << std::endl;
-  return std::move(*this);
-}
-#endif
 
 void throw_range_error(std::string name, int i, int max)
 {
@@ -355,26 +404,32 @@ void throw_range_error(std::string name, int i, int max)
   throw std::range_error(err.str());
 }
 
-template<typename T, typename R, typename D>
-inline typename array_reference<T, R, D>::indexed_type array_reference<T, R, D>::operator[](unsigned int i)
+template<typename T, typename S>
+inline typename StaticArrayReference<T, S>::indexed_type StaticArrayReference<T, S>::operator[](unsigned int i)
 #ifdef USE_RVAL_REF
  &
 #endif
 {
-  if(!size_mgr::check_bounds(i))
-    throw_range_error(this->get_name(), i, size_mgr::get_size());
+  //std::cerr << "indexing dim " << get_size_mgr().get_num_dims() << " size " << get_size_mgr().get_size() << " i: " << i << std::endl;;
+  if(!get_size_mgr().check_bounds(i))
+    throw_range_error(this->get_name(), i, get_size_mgr().get_size());
   //std::cerr << "index op lvalue: " << this->get_name() << std::endl;
-  return static_cast<typename array_reference<T, R>::sub_type &>(*this).__get(i);
+  StaticArrayReference<T, S> ret(*this);
+  ret.append_index(i);
+  //std::cerr << "index lvalue: " << ret.get_name() << std::endl;
+  return ret;
 }
 
 #ifdef USE_RVAL_REF
-template<typename T, typename R, typename D>
-inline typename array_reference<T, R, D>::indexed_type &&array_reference<T, R, D>::operator[](unsigned int i) &&
+template<typename T, typename S>
+inline typename StaticArrayReference<T, S>::indexed_type &&StaticArrayReference<T, S>::operator[](unsigned int i) &&
 {
-  if(!size_mgr::check_bounds(i))
-    throw_range_error(this->get_name(), i, size_mgr::get_size());
+  //std::cerr << "indexing dim " << get_size_mgr().get_num_dims() << " size " << get_size_mgr().get_size() << " i: " << i << std::endl;;
+  if(!get_size_mgr().check_bounds(i))
+    throw_range_error(this->get_name(), i, get_size_mgr().get_size());
   //std::cerr << "index op rvalue: " << this->get_name() << std::endl;
-  return static_cast<typename array_reference<T, R>::sub_type &&>(*this).__get(i);
+  this->append_index(i);
+  return std::move(*this);
 }
 #endif
 
@@ -382,20 +437,20 @@ inline typename array_reference<T, R, D>::indexed_type &&array_reference<T, R, D
 
 
 #ifdef USE_VAR_TMPL
-template <typename T, unsigned int d0 = 0, unsigned int ...dN>
+template <typename T, unsigned int d0, unsigned int ...dN>
 class StaticArray
   : public StaticArray<T, dN...>,
-    protected __INTERNAL__::size_manager<d0, StaticArray<T, dN...>::dims + 1>,
-    protected StorageManager::get_sm_info<T>::sm_type::template DimensionMixin<StaticArray<T, dN...> >
+    protected __INTERNAL__::SizeManager<d0, StaticArray<T, dN...>::dims + 1>,
+    public StorageManager::get_sm_info<T>::sm_type::template DimensionMixin<StaticArray<T, d0, dN...> >
 #else
 
-template <typename T, unsigned int d0, unsigned int d1 = 0, unsigned int d2 = 0, unsigned int d3 = 0,
-                      unsigned int d4 = 0, unsigned int d5 = 0, unsigned int d6 = 0, unsigned int d7 = 0,
-                      unsigned int d8 = 0, unsigned int d9 = 0>
+template <typename T, unsigned int d0, unsigned int d1, unsigned int d2, unsigned int d3,
+                      unsigned int d4, unsigned int d5, unsigned int d6, unsigned int d7,
+                      unsigned int d8, unsigned int d9>
 class StaticArray
   : public StaticArray<T, d1, d2, d3, d4, d5, d6, d7, d8, d9, 0>,
-    protected __INTERNAL__::size_manager<d0, StaticArray<T, d1, d2, d3, d4, d5, d6, d7, d8, d9, 0>::dims + 1>,
-    protected StorageManager::get_sm_info<T>::sm_type::template DimensionMixin<StaticArray<T, d1, d2, d3, d4, d5, d6, d7, d8, d9, 0> >
+    protected __INTERNAL__::SizeManager<d0, StaticArray<T, d1, d2, d3, d4, d5, d6, d7, d8, d9, 0>::dims + 1>,
+    public StorageManager::get_sm_info<T>::sm_type::template DimensionMixin<StaticArray<T, d0, d1, d2, d3, d4, d5, d6, d7, d8, d9> >
 #endif
 {
 protected:
@@ -405,21 +460,24 @@ protected:
   typedef StaticArray<T, d1, d2, d3, d4, d5, d6, d7, d8, d9, 0> raw_subarray_type;
 #endif
 public:
-  typedef StorageManager::get_sm_info<T> sm_info;
-  typedef typename sm_info::sm_type sm_type;
-  typedef typename sm_info::data_type value_type;
-  typedef typename raw_subarray_type::forwarded_type subarray_type;
 #ifdef USE_VAR_TMPL
   typedef StaticArray<T, d0, dN...> this_type;
 #else
   typedef StaticArray<T, d0, d1, d2, d3, d4, d5, d6, d7, d8, d9> this_type;
 #endif
-  typedef __INTERNAL__::array_reference<this_type> reference_type;
+  typedef T storage_specifier;
+  typedef StorageManager::get_sm_info<T> sm_info;
+  typedef typename sm_info::sm_type sm_type;
+  typedef typename sm_info::data_type value_type;
+  typedef typename sm_type::template DimensionMixin<this_type> storage_mixin;
+  typedef raw_subarray_type subarray_type;
+  //typedef typename raw_subarray_type::forwarded_type subarray_type;
+  typedef __INTERNAL__::StaticArrayReference<this_type, sm_type> reference_type;
 public:
   const static unsigned int static_size = d0;
   const static unsigned int dims = raw_subarray_type::dims + 1;
 
-  typedef __INTERNAL__::size_manager<static_size, dims> size_mgr;
+  typedef __INTERNAL__::SizeManager<static_size, dims> size_mgr;
 
   template<unsigned int dimension, bool dummy = true>
   struct get_dimension_type
@@ -481,7 +539,7 @@ protected:
   =0
 #endif
   >
-  const typename get_dimension_type<dimension>::type::size_mgr &get_size_manager() const
+  const typename get_dimension_type<dimension>::type::size_mgr &get_SizeManager() const
   {
     return static_cast<const typename get_dimension_type<dimension>::type::size_mgr &>(*this);
   }
@@ -491,7 +549,7 @@ protected:
   =0
 #endif
   >
-  typename get_dimension_type<dimension>::type::size_mgr &get_size_manager()
+  typename get_dimension_type<dimension>::type::size_mgr &get_SizeManager()
   {
     return static_cast<typename get_dimension_type<dimension>::type::size_mgr &>(*this);
   }
@@ -504,7 +562,17 @@ public:
   >
   unsigned int get_size() const
   {
-    return get_size_manager<dimension>().get_size();
+    return get_SizeManager<dimension>().get_size();
+  }
+
+  template<unsigned int dimension
+#ifdef USE_VAR_TMPL
+  =0
+#endif
+  >
+  const unsigned int &get_size_ref() const
+  {
+    return get_SizeManager<dimension>().get_size_ref();
   }
 
   template<unsigned int dimension
@@ -514,7 +582,7 @@ public:
   >
   void resize(unsigned int new_size)
   {
-    get_size_manager<dimension>().resize(new_size);
+    get_SizeManager<dimension>().resize(new_size);
   }
 
   template<unsigned int dimension
@@ -524,7 +592,7 @@ public:
   >
   bool can_resize() const
   {
-    return get_size_manager<dimension>().can_resize();
+    return get_SizeManager<dimension>().can_resize();
   }
 
   template<unsigned int dimension
@@ -534,7 +602,7 @@ public:
   >
   bool check_bounds(unsigned int i) const
   {
-    return get_size_manager<dimension>().check_bounds(i);
+    return get_SizeManager<dimension>().check_bounds(i);
   }
 
   template<unsigned int dimension
@@ -719,18 +787,17 @@ public:
 
 #ifdef USE_VAR_TMPL
   StaticArray(Thread_Safe_Context &con, const std::string &varName)
-    : raw_subarray_type(con, varName) {}
+    : raw_subarray_type(con, varName), storage_mixin(*this) {}
 
   StaticArray(Thread_Safe_Context &con, const std::string &varName,
       const Knowledge_Update_Settings &settings)
-    : raw_subarray_type(con, varName, settings) {}
+    : raw_subarray_type(con, varName, settings), storage_mixin(*this) {}
 
   template<typename... Args>
   StaticArray(Thread_Safe_Context &con, const std::string &varName,
         const Knowledge_Update_Settings &settings,
         unsigned int default_dim, Args... args)
-    : raw_subarray_type(con, varName, args...), size_mgr(default_dim)
-  { }
+    : raw_subarray_type(con, varName, args...), size_mgr(default_dim), storage_mixin(*this) { }
 
   template<typename... Args>
   StaticArray(Thread_Safe_Context &con, const std::string &varName,
@@ -747,7 +814,7 @@ public:
       unsigned int i4 = 0, unsigned int i5 = 0, unsigned int i6 = 0, unsigned int i7 = 0,
       unsigned int i8 = 0, unsigned int i9 = 0) :
     raw_subarray_type(con, varName, Knowledge_Update_Settings(),
-      i1, i2, i3, i4, i5, i6, i7, i8, i9), size_mgr(i0) { }
+      i1, i2, i3, i4, i5, i6, i7, i8, i9), size_mgr(i0), storage_mixin(*this) { }
 
   StaticArray(Thread_Safe_Context &con, const std::string &varName,
       const Knowledge_Update_Settings &settings,
@@ -755,14 +822,14 @@ public:
       unsigned int i4 = 0, unsigned int i5 = 0, unsigned int i6 = 0, unsigned int i7 = 0,
       unsigned int i8 = 0, unsigned int i9 = 0) :
     raw_subarray_type(con, varName, settings,
-      i1, i2, i3, i4, i5, i6, i7, i8, i9), size_mgr(i0) { }
+      i1, i2, i3, i4, i5, i6, i7, i8, i9), size_mgr(i0), storage_mixin(*this) { }
 
   StaticArray(Knowledge_Base &kbase, const std::string &varName,
       unsigned int i0 = 0, unsigned int i1 = 0, unsigned int i2 = 0, unsigned int i3 = 0,
       unsigned int i4 = 0, unsigned int i5 = 0, unsigned int i6 = 0, unsigned int i7 = 0,
       unsigned int i8 = 0, unsigned int i9 = 0) :
     raw_subarray_type(kbase.get_context(), varName, Knowledge_Update_Settings(),
-      i1, i2, i3, i4, i5, i6, i7, i8, i9), size_mgr(i0) { }
+      i1, i2, i3, i4, i5, i6, i7, i8, i9), size_mgr(i0), storage_mixin(*this) { }
 
   StaticArray(Knowledge_Base &kbase, const std::string &varName,
       const Knowledge_Update_Settings &settings,
@@ -770,10 +837,10 @@ public:
       unsigned int i4 = 0, unsigned int i5 = 0, unsigned int i6 = 0, unsigned int i7 = 0,
       unsigned int i8 = 0, unsigned int i9 = 0) :
     raw_subarray_type(kbase.get_context(), varName, settings,
-      i1, i2, i3, i4, i5, i6, i7, i8, i9), size_mgr(i0) { }
+      i1, i2, i3, i4, i5, i6, i7, i8, i9), size_mgr(i0), storage_mixin(*this) { }
 #endif
 
-  __INTERNAL__::array_reference<subarray_type, T> operator[](unsigned int i)
+  __INTERNAL__::StaticArrayReference<subarray_type, sm_type> operator[](unsigned int i)
   {
     reference_type ret(*this);
 #ifdef USE_RVAL_REF
@@ -786,14 +853,18 @@ public:
 #ifdef USE_VAR_TMPL
   template<unsigned int dNew0, unsigned int... dNewN>
   StaticArray(const StaticArray<T, dNew0, dNewN...> &o)
-    : raw_subarray_type(o) {}
+    : raw_subarray_type(o), storage_mixin(*this) {}
 #endif
 
+  template<typename A, typename B>
+  friend class __INTERNAL__::StaticArrayReference;
+  /*
 #ifdef USE_VAR_TMPL
-  friend class __INTERNAL__::array_reference<StaticArray<T, d0, dN...>, T>;
+  friend class __INTERNAL__::StaticArrayReference<StaticArray<T, d0, dN...>, T>;
 #else
-  friend class __INTERNAL__::array_reference<StaticArray<T, d0, d1, d2, d3, d4, d5, d6, d7, d8, d9>, T>;
+  friend class __INTERNAL__::StaticArrayReference<StaticArray<T, d0, d1, d2, d3, d4, d5, d6, d7, d8, d9>, T>;
 #endif
+*/
 
 #ifdef USE_VAR_TMPL
   std::array<int, dims> get_static_dims() const
@@ -819,15 +890,15 @@ protected:
 #ifdef USE_VAR_TMPL
 template <class T>
 class StaticArray<T>
-  : public __INTERNAL__::StaticArray_Base,
-    protected __INTERNAL__::size_manager<1, 0>,
-    protected StorageManager::get_sm_info<T>::sm_type::template BaseMixin<StaticArray<T> >
+  : public __INTERNAL__::StaticArrayBase,
+    protected __INTERNAL__::SizeManager<1, 0>,
+    public StorageManager::get_sm_info<T>::sm_type::template BaseMixin<StaticArray<T> >
 #else
 template <class T>
 class StaticArray<T, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0>
-  : public __INTERNAL__::StaticArray_Base,
-    protected __INTERNAL__::size_manager<1, 0>,
-    protected StorageManager::get_sm_info<T>::sm_type::template BaseMixin<StaticArray<T, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0> >
+  : public __INTERNAL__::StaticArrayBase,
+    protected __INTERNAL__::SizeManager<1, 0>,
+    public StorageManager::get_sm_info<T>::sm_type::template BaseMixin<StaticArray<T, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0> >
 #endif
 {
 public:
@@ -836,10 +907,14 @@ public:
 #else
   typedef StaticArray<T, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0> this_type;
 #endif
-  typedef __INTERNAL__::StaticArray_Base subarray_type;
+  //typedef __INTERNAL__::StaticArrayBase subarray_type;
+  typedef this_type subarray_type;
   const static unsigned int dims = 0;
+  const static unsigned int static_size = 1;
+  typedef typename StorageManager::get_sm_info<T>::sm_type sm_type;
+  typedef typename sm_type::template BaseMixin<this_type> storage_mixin;
 
-  typedef __INTERNAL__::array_reference<StaticArray_Base, T> reference_type;
+  typedef __INTERNAL__::StaticArrayReference<this_type, sm_type> reference_type;
 
 public:
 #if defined(USE_STD_ARRAY) && defined(USE_USING_TYPE)
@@ -875,7 +950,7 @@ public:
     typedef this_type type;
   };
 
-  typedef __INTERNAL__::size_manager<1,0> size_mgr;
+  typedef __INTERNAL__::SizeManager<1,0> size_mgr;
 
   template<unsigned int i>
   this_type &get_dimension()
@@ -945,7 +1020,7 @@ public:
       v.set(in);
   }
 
-  typedef subarray_type forwarded_type;
+  //typedef this_type forwarded_type;
 public:
 
   StaticArray
@@ -956,11 +1031,13 @@ public:
       unsigned int i4 = 0, unsigned int i5 = 0, unsigned int i6 = 0, unsigned int i7 = 0,
       unsigned int i8 = 0, unsigned int i9 = 0
 #endif
-      ) : subarray_type(con, varName, settings) {}
+      ) : StaticArrayBase(con, varName, settings), storage_mixin(*this) {}
 };
 
 namespace StorageManager
 {
+
+using namespace ::Madara::Knowledge_Engine::Containers::__INTERNAL__;
 
 namespace __INTERNAL__
 {
@@ -975,13 +1052,9 @@ struct Stateless
   {
   public:
     typedef T data_type;
-    typedef typename A::reference_type reference_type;
-    typedef typename A::reference_type index_type;
-    typedef typename A::reference_type getter_type;
 
-    getter_type sm_get(reference_type ref)
+    DimensionMixin(A &a)
     {
-      return ref;
     }
   };
 
@@ -989,18 +1062,80 @@ struct Stateless
   class BaseMixin
   {
   public:
+    BaseMixin(A &a)
+    {
+    }
   };
 
   template<typename A>
   class RefDimensionMixin
   {
   public:
+    typedef A array_type;
+    typedef typename array_type::reference_type reference_type;
+    typedef typename array_type::value_type value_type;
+
+    reference_type &get_reference()
+    {
+      return static_cast<reference_type&>(*this);
+    }
+
+    const reference_type &get_reference() const
+    {
+      return static_cast<reference_type&>(*this);
+    }
+
+    void append_index(unsigned int i)
+    {
+      this->get_reference().get_sub_type().append_index(i);
+    }
   };
 
   template<typename A>
   class RefBaseMixin
+    : public BaseReference<T, RefBaseMixin<A> >
   {
+  protected:
+    typedef BaseReference<T, RefBaseMixin<A> > container_type;
   public:
+    using container_type::operator=;
+
+    const T &operator=(const RefBaseMixin &o)
+    {
+      return set(o);
+    }
+
+    void mark_modified()
+    {
+      this->get_context().mark_modified(
+          this->get_context().get_ref(this->get_name(), this->get_settings())
+        );
+    }
+
+    Knowledge_Record get_knowledge_record() const {
+      return this->get_context().get(this->get_name(), this->get_settings());
+    }
+
+    T get() const
+    {
+      return knowledge_cast<T>(get_knowledge_record());
+    }
+
+    const Knowledge_Record &set_knowledge_record(const Knowledge_Record &in, const Knowledge_Update_Settings &settings)
+    {
+      this->get_context().set(this->get_name(), in, settings);
+      return in;
+    }
+
+    const T &set(const T& in, const Knowledge_Update_Settings &settings)
+    {
+      set_knowledge_record(knowledge_cast(in), settings);
+      return in;
+    }
+
+    using container_type::set;
+    using container_type::set_knowledge_record;
+
 #ifdef USE_RVAL_REF
     std::unique_ptr<std::ostringstream> name_str;
 #else
@@ -1008,20 +1143,23 @@ struct Stateless
 #endif
 
     RefBaseMixin(const A &a)
-      : name_str(new std::ostringstream())
+      : container_type(a.get_context(), a.get_settings()),
+        name_str(new std::ostringstream())
     {
       *name_str << a.get_name();
     }
 
     RefBaseMixin(const RefBaseMixin<A> &o)
-      : name_str(new std::ostringstream())
+      : container_type(o.get_context(), o.get_settings()),
+        name_str(new std::ostringstream())
     {
       *name_str << o.name_str->str();
     }
 
 #ifdef USE_RVAL_REF
     RefBaseMixin(RefBaseMixin<A> &&o)
-      : name_str(std::move(o.name_str)) { }
+      : container_type(o.get_context(), o.get_settings()),
+        name_str(std::move(o.name_str)) { }
 #endif
 
     std::string get_name() const
@@ -1048,6 +1186,14 @@ struct Lazy
   class DimensionMixin
   {
   public:
+    typedef T data_type;
+    typedef S storage_type;
+    typedef A array_type;
+
+    DimensionMixin(A &a)
+    {
+      a.dim_sizes.push_back(&a.template get_size_ref<0>());
+    }
   };
 
   template<typename A>
@@ -1057,15 +1203,75 @@ struct Lazy
     typedef T data_type;
     typedef S storage_type;
     typedef storage_type getter_type;
-    typedef std::vector<T> vector_type;
-    std::vector<unsigned int> stored_dims;
+#ifdef USE_UNIQUE_PTR
+    typedef std::vector<std::unique_ptr<S> > vector_type;
+#else
+    typedef std::vector<std::auto_ptr<S> > vector_type;
+#endif
+    typedef std::vector<const unsigned int *> dim_sizes_t;
+    dim_sizes_t dim_sizes;
     vector_type stored_data;
+
+    BaseMixin(A &a) {}
+
+    BaseMixin(const BaseMixin &o) : dim_sizes(o.dim_sizes)
+    {
+      for(typename vector_type::iterator it = stored_data.begin(); it != dim_sizes.end(); ++it)
+      {
+        if(*it)
+        {
+#ifdef USE_UNIQUE_PTR
+          std::unique_ptr<S> ptr = new S(**it);
+#else
+          std::auto_ptr<S> ptr = new S(**it);
+#endif
+          stored_data.push_back(ptr);
+        }
+        else
+        {
+#ifdef USE_UNIQUE_PTR
+          stored_data.push_back(std::unique_ptr<S>());
+#else
+          stored_data.push_back(std::auto_ptr<S>());
+#endif
+        }
+      }
+    }
+
+#ifdef USE_RVAL_REF
+    BaseMixin(BaseMixin &&o)
+      : dim_sizes(std::move(o.dim_sizes)), stored_data(std::move(o.stored_data)) {}
+#endif
   };
 
   template<typename A>
   class RefDimensionMixin
   {
   public:
+    typedef A array_type;
+    typedef typename array_type::reference_type reference_type;
+    typedef typename array_type::value_type value_type;
+
+    reference_type &get_reference()
+    {
+      return static_cast<reference_type&>(*this);
+    }
+
+    const reference_type &get_reference() const
+    {
+      return static_cast<reference_type&>(*this);
+    }
+
+    void append_index(unsigned int i)
+    {
+      //std::cerr << "append_index: " << this->get_reference().offset << " += " <<
+      //  i << " * " << this->get_reference().get_multiplier() << 
+      //  "  num_dims: " << this->get_reference().get_size_mgr().get_num_dims() << std::endl;
+      unsigned int mult = this->get_reference().get_multiplier();
+      if(mult == VAR_LEN)
+        throw std::range_error("Lazy storage manager does not support unbounded VAR_LEN dimensions, other than the first dimension");
+      this->get_reference().offset += i * mult;
+    }
   };
 
   template<typename A>
@@ -1073,36 +1279,51 @@ struct Lazy
   {
   public:
     const std::string base_name;
+    const BaseMixin<A> &base_mixin;
     unsigned int offset;
 
     RefBaseMixin(const A &a)
-      : base_name(a.get_name()), offset(0)
+      : base_name(a.get_name()), base_mixin(static_cast<const BaseMixin<A> &>(a)), offset(0)
     { }
 
     RefBaseMixin(const RefBaseMixin<A> &o)
-      : base_name(o.base_name), offset(o.offset)
+      : base_name(o.base_name), base_mixin(o.base_mixin), offset(o.offset)
     { }
 
 #ifdef USE_RVAL_REF
     RefBaseMixin(RefBaseMixin<A> &&o)
-      : base_name(std::move(o.base_name)), offset(o.offset) { }
+      : base_name(std::move(o.base_name)), base_mixin(o.base_mixin), offset(o.offset) { }
 #endif
 
     std::string get_name() const
     {
       std::ostringstream ret;
       ret << base_name;
-      ret << "." << offset;
+      unsigned int o = offset;
+      for(typename BaseMixin<A>::dim_sizes_t::const_reverse_iterator it = base_mixin.dim_sizes.rbegin(); it != base_mixin.dim_sizes.rend(); ++it)
+      {
+        unsigned int mult = 1;
+        typename BaseMixin<A>::dim_sizes_t::const_reverse_iterator it2 = it;
+        ++it2;
+        for(; it2 != base_mixin.dim_sizes.rend(); ++it2)
+        {
+          if(**it == VAR_LEN)
+            throw std::runtime_error("Lazy storage manager does not support unbound VAR_LEN dimensions, other than the first dimension.");
+          mult *= **it2;
+        }
+        ret << "." << o / mult;
+        o %= mult;
+      }
       return ret.str();
     }
 
     void append_index(unsigned int i)
     {
-      offset += i;
     }
   };
 };
 
+#if 0
 template <typename T, typename S>
 struct Proactive
 {
@@ -1137,6 +1358,7 @@ struct Proactive
   public:
   };
 };
+#endif
 
 template <typename T>
 struct get_sm_info
@@ -1160,6 +1382,7 @@ struct get_sm_info<Lazy<T,S> >
   typedef S storage_type;
 };
 
+#if 0
 template <typename T, typename S>
 struct get_sm_info<Proactive<T,S> >
 {
@@ -1167,6 +1390,7 @@ struct get_sm_info<Proactive<T,S> >
   typedef T data_type;
   typedef S storage_type;
 };
+#endif
 
 }
 
