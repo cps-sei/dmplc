@@ -252,6 +252,8 @@ connections
   c2: port leader_destination_update -> madara_sw.leader_destination_update;
   c3: port protector_sw.lock_update -> lock_update_out;
   c4: port lock_update_in -> madara_sw.lock_update_in;
+properties
+  Actual_Processor_Binding => (reference (hw)) applies to protector_sw; 
 end protector.i;
 
 -----------------------------------------------------------------------
@@ -371,6 +373,8 @@ connections
   c2: port leader_sw.lock_update_out -> lock_update_out;
   c3: port lock_update_in -> madara_sw.lock_update_in;
   c4: port madara_sw.distributed_variables -> leader_sw.distributed_variables;
+properties
+  Actual_Processor_Binding => (reference (hw)) applies to leader_sw; 
 end leader.i;
 
 -----------------------------------------------------------------------
