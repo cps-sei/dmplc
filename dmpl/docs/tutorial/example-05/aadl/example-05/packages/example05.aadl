@@ -389,7 +389,7 @@ end swarm_protection;
 system implementation swarm_protection.i
 subcomponents
   -- the system contains one leader and 4 protector nodes
-  the_leader: system leader.i;
+  the_leader: system leader.i[1];
   protectors : system protector.i[4];
 connections
   c1: port the_leader.leader_destination -> protectors.leader_destination_update {Connection_Pattern => ((All_to_All));};
