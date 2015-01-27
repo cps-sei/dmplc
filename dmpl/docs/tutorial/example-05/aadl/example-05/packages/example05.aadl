@@ -123,7 +123,7 @@ properties
   -- This are 'sample' parameters. We need to get the real ones.
   Period => 100 ms applies to madara_thread;
   Zero_Slack_Scheduling::Criticality => 1 applies to madara_thread;
-  Compute_Execution_Time => 10000 ns .. 20000 ns applies to madara_thread;
+  Compute_Execution_Time => 10000 us .. 20000 us applies to madara_thread;
 end madara_comm_agent.i;
 
 -- a DART node implementation. this will be extended to implement the
@@ -237,10 +237,10 @@ connections
 properties
   Period => 100 ms applies to waypoint_thread;
   Zero_Slack_Scheduling::Criticality => 1 applies to waypoint_thread;
-  Compute_Execution_Time => 10000 ns .. 20000 ns applies to waypoint_thread;
+  Compute_Execution_Time => 10000 us .. 20000 us applies to waypoint_thread;
   Period => 200 ms applies to collision_avoidance_thread;
   Zero_Slack_Scheduling::Criticality => 2 applies to collision_avoidance_thread;
-  Compute_Execution_Time => 15000 ns .. 30000 ns applies to collision_avoidance_thread;		
+  Compute_Execution_Time => 15000 us .. 30000 us applies to collision_avoidance_thread;		
 end protector_process.i;
 
 -- a protector node implementation.
@@ -357,10 +357,10 @@ connections
 properties
   Period => 100 ms applies to waypoint_thread;
   Zero_Slack_Scheduling::Criticality => 1 applies to waypoint_thread;
-  Compute_Execution_Time => 10000 ns .. 20000 ns applies to waypoint_thread;
+  Compute_Execution_Time => 10000 us .. 20000 us applies to waypoint_thread;
   Period => 200 ms applies to collision_avoidance_thread;
   Zero_Slack_Scheduling::Criticality => 2 applies to collision_avoidance_thread;
-  Compute_Execution_Time => 15000 ns .. 30000 ns applies to collision_avoidance_thread;		
+  Compute_Execution_Time => 15000 us .. 30000 us applies to collision_avoidance_thread;		
 end leader_process.i;
 
 -- the leader node implementation.
