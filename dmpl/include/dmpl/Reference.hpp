@@ -216,152 +216,6 @@ public:
 }
 
 template<typename T>
-class CachedReference : public __INTERNAL__::BaseReference<T, CachedReference<T> >
-{
-protected:
-  typedef __INTERNAL__::BaseReference<T, CachedReference<T> > Base;
-
-#ifdef USE_CPP11
-  const std::string name;
-#else
-  // to support putting CachedReference in a vector, pre-C++11, must be assignable
-  std::string name;
-#endif
-  bool exist:1;
-  bool dirty:1;
-  bool create:1;
-  Variable_Reference var_ref;
-  T data;
-public:
-
-  CachedReference<T>(Thread_Safe_Context &con, const std::string &name)
-    : Base(con), name(name), exist(con.exists(name)), dirty(false), create(false),
-      var_ref(exist ? con.get_ref(name) : Variable_Reference()),
-      data(exist ? knowledge_cast<T>(con.get(name)) : T()) {}
-
-  CachedReference<T>(Knowledge_Base &kbase, const std::string &name)
-    : Base(kbase), name(name), exist(this->get_context().exists(name)), dirty(false), create(false),
-      var_ref(exist ? this->get_context().get_ref(name) : Variable_Reference()),
-      data(exist ? knowledge_cast<T>(this->get_context().get(name)) : T()) {}
-
-  CachedReference<T>(Thread_Safe_Context &con, const std::string &name, const Knowledge_Update_Settings &settings)
-    : Base(con, settings), name(name), exist(con.exists(name, settings)), dirty(false), create(false),
-      var_ref(exist ? con.get_ref(name) : Variable_Reference()),
-      data(exist ? knowledge_cast<T>(con.get(name, settings)) : T()) {}
-
-  CachedReference<T>(Knowledge_Base &kbase, const std::string &name, const Knowledge_Update_Settings &settings)
-    : Base(kbase, settings), name(name),
-      exist(this->get_context().exists(name, settings)), dirty(false), create(false),
-      var_ref(exist ? this->get_context().get_ref(name) : Variable_Reference()),
-      data(exist ? knowledge_cast<T>(this->get_context().get(name, settings)) : T()) {}
-
-  CachedReference<T>(const CachedReference<T> &o)
-#ifdef USE_RVAL_REF
-noexcept
-#endif
-    : Base(o.get_context(), o.settings), name(o.name), exist(o.exist), dirty(o.dirty),
-      create(o.create), var_ref(o.var_ref), data(o.data) { }
-
-#ifdef USE_RVAL_REF
-  CachedReference<T>(CachedReference<T> &&o) noexcept
-    : Base(o.get_context(), o.settings), name(std::move(o.name)), exist(o.exist), dirty(o.dirty),
-      create(o.create), var_ref(std::move(o.var_ref)), data(std::move(o.data)) { }
-#endif
-
-  template<typename Impl>
-  CachedReference<T>(const __INTERNAL__::BaseReference<T, Impl> &o)
-    : Base(o.get_context(), o.get_settings()), name(o.get_name()),
-      exist(this->get_context().exists(this->get_name(), this->get_settings())), dirty(false), create(false),
-      var_ref(exist ? this->get_context().get_ref(this->get_name(), this->get_settings()) : Variable_Reference()),
-      data(exist ? knowledge_cast<T>(this->get_context().get(this->get_name(), this->get_settings())) : T()) {
-   // std::cerr << "Converting to CachedReference type from " << typeid(Impl).name() << std::endl;
-  }
-
-  std::string get_name() const
-  {
-    return name;
-  }
-  
-  Knowledge_Record get_knowledge_record() const {
-    return knowledge_cast(data);
-  }
-
-  T get() const
-  {
-    return data;
-  }
-
-  const Knowledge_Record &set_knowledge_record(const Knowledge_Record &in, const Knowledge_Update_Settings &settings)
-  {
-    return set(knowledge_cast<T>(in), settings);
-  }
-
-  const T &set(const T& in, const Knowledge_Update_Settings &settings)
-  {
-    if(!exist)
-    {
-      exist = true;
-      create = true;
-      dirty = true;
-      data = in;
-    } else if(in != data)
-    {
-      dirty = true;
-      data = in;
-    }
-    return data;
-  }
-
-  bool is_dirty()
-  {
-    return dirty;
-  }
-
-  void mark_modified()
-  {
-    dirty = true;
-  }
-
-  void ensure_exists()
-  {
-    if(create)
-    {
-      var_ref = this->get_context().get_ref(name, this->get_settings());
-      create = false;
-    }
-  }
-
-  void push()
-  {
-    if(dirty)
-    {
-      ensure_exists();
-      this->get_context().set(var_ref, knowledge_cast(data), this->get_settings());
-      //std::cerr << "Pushing " << data << " to " << name << std::endl;
-      dirty = false;
-    }
-  }
-
-  void pull()
-  {
-    ensure_exists();
-    data = knowledge_cast<T>(this->get_context().get(var_ref, this->get_settings()));
-    dirty = false;
-  }
-
-  void pull_keep_local()
-  {
-    //std::cerr<<"pull_keep_local @ " << this->get_name() << ": dirty " << dirty << std::endl;
-    if(!dirty)
-      pull();
-  }
-
-  using Base::operator=;
-  using Base::set;
-  using Base::set_knowledge_record;
-};
-
-template<typename T>
 class Reference : public __INTERNAL__::BaseReference<T, Reference<T> >
 {
 protected:
@@ -457,6 +311,178 @@ public:
   {
     set_knowledge_record(knowledge_cast(in), settings);
     return in;
+  }
+
+  using Base::operator=;
+  using Base::set;
+  using Base::set_knowledge_record;
+};
+
+template<typename T>
+class CachedReference : public __INTERNAL__::BaseReference<T, CachedReference<T> >
+{
+protected:
+  typedef __INTERNAL__::BaseReference<T, CachedReference<T> > Base;
+
+  struct data_t
+  {
+    const std::string name;
+    bool exist:1;
+    bool dirty:1;
+    bool create:1;
+    Variable_Reference var_ref;
+    T data;
+    mutable unsigned int ref_count;
+
+    data_t(Thread_Safe_Context &con, const std::string &name) : name(name),
+      exist(con.exists(name)), dirty(false), create(false),
+      var_ref(exist ? con.get_ref(name) : Variable_Reference()),
+      data(exist ? knowledge_cast<T>(con.get(name)) : T()),
+      ref_count(1) {}
+
+    data_t &new_ref()
+#ifdef USE_RVAL_REF
+noexcept
+#endif
+    {
+      ++ref_count;
+      return *this;
+    }
+
+    const data_t &new_ref() const
+#ifdef USE_RVAL_REF
+noexcept
+#endif
+    {
+      ++ref_count;
+      return *this;
+    }
+
+    bool del_ref()
+    {
+      return ((--ref_count) == 0);
+    }
+  };
+
+  data_t &data;
+public:
+
+  CachedReference<T>(Thread_Safe_Context &con, const std::string &name)
+    : Base(con), data(*new data_t(con, name)) {}
+
+  CachedReference<T>(Knowledge_Base &kbase, const std::string &name)
+    : Base(kbase), data(*new data_t(kbase.get_context(), name)) {}
+
+  CachedReference<T>(Thread_Safe_Context &con, const std::string &name, const Knowledge_Update_Settings &settings)
+    : Base(con, settings), data(*new data_t(con, name)) {}
+
+  CachedReference<T>(Knowledge_Base &kbase, const std::string &name, const Knowledge_Update_Settings &settings)
+    : Base(kbase, settings), data(*new data_t(kbase.get_context(), name)) {}
+
+  CachedReference<T>(const CachedReference<T> &o)
+#ifdef USE_RVAL_REF
+noexcept
+#endif
+    : Base(o.get_context(), o.settings), data(o.data.new_ref()) {
+      std::cerr << "Copying CachedReference" << std::endl;
+    }
+#ifdef USE_RVAL_REF
+  CachedReference<T>(CachedReference<T> &&o) noexcept
+    : Base(o.get_context(), o.settings), data(o.data.new_ref()) {}
+#endif
+
+  template<typename Impl>
+  CachedReference<T>(const __INTERNAL__::BaseReference<T, Impl> &o)
+    : Base(o.get_context(), o.get_settings()), data(*new data_t(o.get_context(), o.get_name())) {
+      //exist(this->get_context().exists(this->get_name(), this->get_settings())), dirty(false), create(false),
+      //var_ref(exist ? this->get_context().get_ref(this->get_name(), this->get_settings()) : Variable_Reference()),
+      //data(exist ? knowledge_cast<T>(this->get_context().get(this->get_name(), this->get_settings())) : T()) {
+    std::cerr << "Converting to CachedReference type from " << typeid(Impl).name() << std::endl;
+  }
+
+  ~CachedReference()
+  {
+    if(data.del_ref())
+      delete &data;
+  }
+
+  std::string get_name() const
+  {
+    return data.name;
+  }
+  
+  Knowledge_Record get_knowledge_record() const {
+    return knowledge_cast(data.data);
+  }
+
+  T get() const
+  {
+    return data.data;
+  }
+
+  const Knowledge_Record &set_knowledge_record(const Knowledge_Record &in, const Knowledge_Update_Settings &settings)
+  {
+    return set(knowledge_cast<T>(in), settings);
+  }
+
+  const T &set(const T& in, const Knowledge_Update_Settings &settings)
+  {
+    if(!data.exist)
+    {
+      data.exist = true;
+      data.create = true;
+      data.dirty = true;
+      data.data = in;
+    } else if(in != data.data)
+    {
+      data.dirty = true;
+      data.data = in;
+    }
+    return data.data;
+  }
+
+  bool is_dirty()
+  {
+    return data.dirty;
+  }
+
+  void mark_modified()
+  {
+    data.dirty = true;
+  }
+
+  void ensure_exists()
+  {
+    if(data.create)
+    {
+      data.var_ref = this->get_context().get_ref(data.name, this->get_settings());
+      data.create = false;
+    }
+  }
+
+  void push()
+  {
+    if(is_dirty())
+    {
+      ensure_exists();
+      this->get_context().set(data.var_ref, knowledge_cast(data.data), this->get_settings());
+      //std::cerr << "Pushing " << data << " to " << name << std::endl;
+      data.dirty = false;
+    }
+  }
+
+  void pull()
+  {
+    ensure_exists();
+    data.data = knowledge_cast<T>(this->get_context().get(data.var_ref, this->get_settings()));
+    data.dirty = false;
+  }
+
+  void pull_keep_local()
+  {
+    //std::cerr<<"pull_keep_local @ " << this->get_name() << ": dirty " << dirty << std::endl;
+    if(is_dirty())
+      pull();
   }
 
   using Base::operator=;

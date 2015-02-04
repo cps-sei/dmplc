@@ -146,7 +146,7 @@ dmpl::gams::Sync_Builder::build_header_includes ()
   buffer_ << "#include \"gams/variables/Self.h\"\n";
   buffer_ << "#include \"gams/utility/GPS_Position.h\"\n";
   buffer_ << "\n";
-  buffer_ << "#include \"dmpl/Container.hpp\"\n";
+  buffer_ << "#include \"dmpl/Reference.hpp\"\n";
   buffer_ << "#include \"dmpl/StaticArray.hpp\"\n";
   if(do_expect_) {
     buffer_ << "extern \"C\" {\n";
@@ -175,7 +175,7 @@ dmpl::gams::Sync_Builder::build_common_global_variables ()
   buffer_ << "namespace controllers = gams::controllers;\n\n";
   buffer_ << "namespace platforms = gams::platforms;\n\n";
   buffer_ << "namespace variables = gams::variables;\n\n";
-  buffer_ << "using containers::Container;\n\n";
+  buffer_ << "using containers::Reference;\n\n";
   buffer_ << "using containers::StaticArray;\n\n";
   buffer_ << "\n";
 

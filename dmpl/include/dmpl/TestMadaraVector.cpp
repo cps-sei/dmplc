@@ -2,13 +2,19 @@
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 #include <madara/knowledge_engine/containers/Integer.h>
+#include <madara/knowledge_engine/containers/Integer_Vector.h>
+#include <madara/knowledge_engine/containers/Vector_N.h>
 #include "StaticArray.hpp"
+#include <ctime>
 
 using Madara::Knowledge_Engine::Containers::StaticArray;
 using Madara::Knowledge_Engine::Containers::Reference;
 using Madara::Knowledge_Engine::Containers::CachedReference;
+using Madara::Knowledge_Engine::Containers::Vector_N;
+using Madara::Knowledge_Engine::Containers::Integer_Vector;
 using Madara::Knowledge_Engine::Containers::VAR_LEN;
 using Madara::Knowledge_Engine::Containers::StorageManager::Lazy;
+using Madara::Knowledge_Engine::Containers::StorageManager::Proactive;
 
 static unsigned int OK_count = 0;
 static unsigned int FAIL_count = 0;
@@ -23,6 +29,90 @@ static unsigned int FAIL_count = 0;
     std::cout << #expr << " ?= " << expect << "  " << (ok ? "OK" : "FAILED! got " + v + " instead" ) << std::endl; \
     (ok ? OK_count : FAIL_count)++; \
   } while(0)
+
+void perf_test()
+{
+  clock_t vector_N_start = clock();
+  {
+    Madara::Knowledge_Engine::Knowledge_Base kbase;
+    Vector_N v("array", kbase);
+    for(int i = 0; i < 100; ++i)
+    {
+      for(int j = 0; j < 100; ++j)
+      {
+        for(int k = 0; k < 100; ++k)
+        {
+          Vector_N::Index index;
+          index.push_back(i);
+          index.push_back(j);
+          index.push_back(k);
+          v.set(index, (long int)(i + j + k));
+        }
+      }
+    }
+  }
+  clock_t vector_N_end = clock();
+  LOG(vector_N_end - vector_N_start);
+
+  clock_t staticArray_start = clock();
+  {
+    Madara::Knowledge_Engine::Knowledge_Base kbase;
+    StaticArray<int, 100, 100, 100> a(kbase, "array");
+    for(int i = 0; i < 100; ++i)
+    {
+      for(int j = 0; j < 100; ++j)
+      {
+        for(int k = 0; k < 100; ++k)
+        {
+          a[i][j][k] = i + j + k;
+        }
+      }
+    }
+  }
+  clock_t staticArray_end = clock();
+  LOG(staticArray_end - staticArray_start);
+
+  clock_t intVec_start = clock(), intVec_init;
+  {
+    Madara::Knowledge_Engine::Knowledge_Base kbase;
+    Integer_Vector v("array", kbase, 1000000);
+    intVec_init = clock();
+    for(int i = 0; i < 1000000; ++i)
+    {
+      v.set(i, i);
+    }
+  }
+  clock_t intVec_end = clock();
+  LOG(intVec_init - intVec_start);
+  LOG(intVec_end - intVec_start);
+
+  clock_t lazyArray_start = clock();
+  {
+    Madara::Knowledge_Engine::Knowledge_Base kbase;
+    StaticArray<Lazy<int, Reference<int> >, 1000000> a(kbase, "array");
+    for(int i = 0; i < 1000000; ++i)
+    {
+      a[i] = i;
+    }
+  }
+  clock_t lazyArray_end = clock();
+  LOG(lazyArray_end - lazyArray_start);
+
+  clock_t proactiveArray_start = clock(), proactiveArray_init;
+  {
+    Madara::Knowledge_Engine::Knowledge_Base kbase;
+    StaticArray<Proactive<int, Reference<int> >, 1000000> a(kbase, "array");
+    a[0];
+    proactiveArray_init = clock();
+    for(int i = 0; i < 1000000; ++i)
+    {
+      a[i] = i;
+    }
+  }
+  clock_t proactiveArray_end = clock();
+  LOG(proactiveArray_init - proactiveArray_start);
+  LOG(proactiveArray_end - proactiveArray_start);
+}
 
 
 int main()
@@ -161,7 +251,7 @@ int main()
   std::cout << "resized_arr[1][25] == " << resized_arr[1][25] << std::endl;
 #endif
 
-  StaticArray<int, 6, VAR_LEN, VAR_LEN> var_arr2(kbase, "variable_array");
+  StaticArray< ::Madara::Knowledge_Engine::Containers::StorageManager::__INTERNAL__::Stateless<int>, 6, VAR_LEN, VAR_LEN> var_arr2(kbase, "variable_array");
   StaticArray<int, 6, VAR_LEN, VAR_LEN, VAR_LEN> var_arr3(kbase, "variable_array");
 #ifdef USE_VAR_TMPL
   LOG(sizeof(big_array));
@@ -172,10 +262,6 @@ int main()
   LOG(sizeof(std::vector<int>));
   LOG(sizeof(var_arr3));
   LOG(sizeof(unsigned int));
-  LOG(sizeof(Madara::Knowledge_Engine::Containers::__INTERNAL__::SizeManager<5, 1>));
-  LOG(sizeof(Madara::Knowledge_Engine::Containers::__INTERNAL__::SizeManager<VAR_LEN, 1>));
-  LOG(sizeof(Madara::Knowledge_Engine::Containers::__INTERNAL__::SizeManagerReference<5, 1>));
-  LOG(sizeof(Madara::Knowledge_Engine::Containers::__INTERNAL__::SizeManagerReference<VAR_LEN, 1>));
 
 #ifdef USE_VAR_TMPL
   TEST(vec.get_size(), 5);
@@ -187,19 +273,7 @@ int main()
   LOG(vec.can_resize<0>());
   LOG(var_arr.get_size<1>());
   LOG(var_arr.can_resize<1>());
-
-  LOG(vec.get_multiplier<0>());
-  LOG(vec.get_multiplier<1>());
-  LOG(vec.get_multiplier<2>());
-
-  LOG(var_arr2.get_multiplier<0>());
-  LOG(var_arr2.get_multiplier<1>());
-  LOG(var_arr2.get_multiplier<2>());
-  var_arr2.resize<1>(3);
-  var_arr2.resize<2>(5);
-  LOG(var_arr2.get_multiplier<0>());
-  LOG(var_arr2.get_multiplier<1>());
-  LOG(var_arr2.get_multiplier<2>());
+  var_arr2[1][1][1] = 456;
 
   try
   {
@@ -233,9 +307,40 @@ int main()
   LOG(lazy_array.get_multiplier<1>());
   LOG(lazy_array.get_multiplier<2>());
   LOG(lazy_array[1][2][3].get_name());
+  LOG(lazy_array[0][0][0].get_name());
+  LOG(lazy_array[1][2][3] = 32);
+  LOG(lazy_array[1][2][3]);
+
+  StaticArray<Lazy<int, Reference<int> >, 3> lazy_array_1D(kbase, "lazy_array");
+  lazy_array_1D[2] = 678;
+  LOG(lazy_array_1D[0].get_name());
+
+  StaticArray<int, 10> uncached_array(kbase, "cached_array");
+  uncached_array[0] = 5;
+  LOG(uncached_array[0]);
+  StaticArray<Proactive<int, CachedReference<int> >, 10> cached_array(kbase, "cached_array");
+  LOG(cached_array[0]);
+  LOG(cached_array[0].get_name());
+  LOG(cached_array[1].get_name());
+  LOG(cached_array[2].get_name());
+  LOG(uncached_array[0].get_name());
+  LOG(uncached_array[1].get_name());
+  LOG(uncached_array[2].get_name());
+  CachedReference<int> cached_ref = cached_array[0];
+  LOG(cached_ref.get_name());
+  LOG(cached_ref);
+  cached_ref.pull();
+  LOG(cached_ref);
+  uncached_array[1] = 10;
+  LOG(uncached_array[0]);
+  LOG(cached_array[1]);
+  cached_array[1].pull();
+  LOG(cached_array[1]);
 
   LOG(OK_count);
   LOG(FAIL_count);
+
+  //perf_test();
 
   return 0;
 }
