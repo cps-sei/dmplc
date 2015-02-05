@@ -96,18 +96,18 @@ end drone_cpu;
 -- the MADARA receiver thread declaration
 thread madara_receiver_thread
 features
-  leader_destination_update: in event data port coordinate;
+  distributed_variables: out data port distributed_data_store.i;
+leader_destination_update: in event data port coordinate;
   lock_update_in: in event data port lock_update_type.i;
   init_update: in event data port initialized_node_update_type.i;
-  distributed_variables: out data port distributed_data_store.i;
-end madara_receiver_thread;
+	end madara_receiver_thread;
 
 -- we need a process to encapsulate the MADARA thread. this is the
 -- declaration of that process.
 process madara_comm_agent
 features
-  leader_destination_update: in event data port coordinate;
   distributed_variables: out data port distributed_data_store.i;		
+  leader_destination_update: in event data port coordinate;
   lock_update_in: in event data port lock_update_type.i;
 end madara_comm_agent;
 
@@ -338,9 +338,9 @@ end leader_collision_avoidance.i;
 process leader_process
 features 
   leader_destination: out data port coordinate;
-  lock_update_out: out event data port lock_update_type.i;
   distributed_variables: in data port distributed_data_store.i;
-end leader_process;
+lock_update_out: out event data port lock_update_type.i;
+	end leader_process;
 
 -- the leader process implementation. consists of two threads. one
 -- thread is responsible for computing the next waypoint
@@ -402,6 +402,31 @@ connections
   --
   -- properties
   --   Period => 100 ms  applies to protectors[1].protector_sw.waypoint_thread;
-end swarm_protection.i;
+properties
+			Zero_Slack_Scheduling::Zero_Slack_Instant => 100000000 ns applies to protectors.madara_sw.madara_thread;
+					Zero_Slack_Scheduling::Zero_Slack_Instant => 80000000 ns applies to protectors.protector_sw.waypoint_thread;
+					Zero_Slack_Scheduling::Zero_Slack_Instant => 180000000 ns applies to
+							protectors.protector_sw.collision_avoidance_thread;
+							Zero_Slack_Scheduling::Zero_Slack_Instant =>
+							100000000 ns applies to the_leader.madara_sw.madara_thread;
+							Zero_Slack_Scheduling::Zero_Slack_Instant =>
+							80000000 ns applies to the_leader.leader_sw.waypoint_thread;
+							Zero_Slack_Scheduling::Zero_Slack_Instant =>
+							180000000 ns applies to the_leader.leader_sw.collision_avoidance_thread;
+					Zero_Slack_Scheduling::Zero_Slack_Instant => 100000000 ns applies to protectors.madara_sw.madara_thread;
+					Zero_Slack_Scheduling::Zero_Slack_Instant => 80000000 ns applies to protectors.protector_sw.waypoint_thread;
+					Zero_Slack_Scheduling::Zero_Slack_Instant => 180000000 ns applies to
+							protectors.protector_sw.collision_avoidance_thread;
+							Zero_Slack_Scheduling::Zero_Slack_Instant =>
+							100000000 ns applies to protectors.madara_sw.madara_thread;
+							Zero_Slack_Scheduling::Zero_Slack_Instant =>
+							80000000 ns applies to protectors.protector_sw.waypoint_thread;
+							Zero_Slack_Scheduling::Zero_Slack_Instant
+					=> 180000000 ns applies to protectors.protector_sw.collision_avoidance_thread;
+					Zero_Slack_Scheduling::Zero_Slack_Instant => 100000000 ns applies to protectors.madara_sw.madara_thread;
+					Zero_Slack_Scheduling::Zero_Slack_Instant => 80000000 ns applies to protectors.protector_sw.waypoint_thread;
+					Zero_Slack_Scheduling::Zero_Slack_Instant => 180000000 ns applies to
+							protectors.protector_sw.collision_avoidance_thread;
+	end swarm_protection.i;
 
 end example05;

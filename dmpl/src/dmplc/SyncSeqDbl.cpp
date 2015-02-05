@@ -232,30 +232,40 @@ void dmpl::syncseqdbl::NodeTransformer::exitLval(dmpl::LvalExpr &expr)
   else if(inCall && node.isFunction(newName)) 
     newName = (node.name + "__" + newName + "_" + boost::lexical_cast<std::string>(nodeId) +
                 "_" + (fwd ? "fwd" : "bwd"));
+  else
+  {
+    bool isGlob = node.globVars.count(expr.var) > 0;
+    bool isLoc = node.locVars.count(expr.var) > 0;
 
-  //handle global variables -- distinguishing between lhs of
-  //assignments and other cases, and between forward and backward
-  //versions
-  if(node.globVars.count(expr.var)) {
-    if(fwd) {
-      if(inLhs) newName += "_f";
-      else newName += "_i";
-    } else {
-      if(inLhs) newName += "_i";
-      else newName += "_f";
+    //handle global variables -- distinguishing between lhs of
+    //assignments and other cases, and between forward and backward
+    //versions
+    if(isGlob) {
+      if(fwd) {
+        if(inLhs) newName += "_f";
+        else newName += "_i";
+      } else {
+        if(inLhs) newName += "_i";
+        else newName += "_f";
+      }
+    }
+
+    //handle local variables
+    //if(node.locVars.count(expr.var))
+      //newName += "_" + boost::lexical_cast<std::string>(nodeId);
+
+    //substitute .id with its mapping in idMap
+    std::map<std::string,size_t>::const_iterator iit = idMap.find(expr.var);
+    newName = iit == idMap.end() ? newName : boost::lexical_cast<std::string>(iit->second);
+
+    if(isGlob || isLoc) 
+    {
+      if(expr.node != NULL)
+        newName = newName + "_" + getNodeStr(expr);
+      else
+        newName += "_" + boost::lexical_cast<std::string>(nodeId);
     }
   }
-
-  //handle local variables
-  if(node.locVars.count(expr.var))
-    newName += "_" + boost::lexical_cast<std::string>(nodeId);
-
-  //substitute .id with its mapping in idMap
-  std::map<std::string,size_t>::const_iterator iit = idMap.find(expr.var);
-  newName = iit == idMap.end() ? newName : boost::lexical_cast<std::string>(iit->second);
-
-  if(expr.node != NULL)
-    newName = newName + "_" + getNodeStr(expr);
 
   exprMap[hostExpr] = dmpl::Expr(new dmpl::LvalExpr(newName,collect(expr.indices)));
   
@@ -416,15 +426,18 @@ void dmpl::SyncSeqDbl::createGlobVars()
     gvars.push_back(v.second->instDim(nodeNum));
   }
   BOOST_FOREACH(const Var &v,gvars) {
-    cprog.addGlobVar(v->instName("_i"));
-    cprog.addGlobVar(v->instName("_f"));
+    for(size_t i = 0;i < nodeNum;++i) {
+      cprog.addGlobVar(v->instName(std::string("_i_") + boost::lexical_cast<std::string>(i)));
+      cprog.addGlobVar(v->instName(std::string("_f_") + boost::lexical_cast<std::string>(i)));
+    }
   }
 
   //instantiate node-local variables by adding _i for each node id i
   BOOST_FOREACH(Vars::value_type &v,node.locVars) {
-    for(size_t i = 0;i < nodeNum;++i)
+    for(size_t i = 0;i < nodeNum;++i) {
       cprog.addGlobVar(v.second->instName(std::string("_") + 
                                          boost::lexical_cast<std::string>(i)));
+    }
   }
 }
 
@@ -432,12 +445,13 @@ void dmpl::SyncSeqDbl::createGlobVars()
 //create list of statements that copy new value of var into old value
 //of var. append list of statements to res.
 /*********************************************************************/
-void dmpl::SyncSeqDbl::createCopyStmts(bool fwd,const Var &var,StmtList &res,ExprList indx)
+void dmpl::SyncSeqDbl::createCopyStmts(bool fwd,const Var &var,StmtList &res,ExprList indx,int node)
 {
   //non-array type
   if(var->type->dims.empty()) {
-    Expr lhs(new LvalExpr(var->name + (fwd ? "_f" : "_i"),indx));
-    Expr rhs(new LvalExpr(var->name + (fwd ? "_i" : "_f"),indx));
+    std::string n = boost::lexical_cast<std::string>(node);
+    Expr lhs(new LvalExpr(var->name + std::string(fwd ? "_f_" : "_i_") + n,indx));
+    Expr rhs(new LvalExpr(var->name + std::string(fwd ? "_i_" : "_f_")  + n,indx));
     Stmt stmt(new AsgnStmt(lhs,rhs));
     res.push_back(stmt);
   }
@@ -451,7 +465,7 @@ void dmpl::SyncSeqDbl::createCopyStmts(bool fwd,const Var &var,StmtList &res,Exp
       ExprList newIndx = indx;
       newIndx.push_back(Expr(new IntExpr(i)));
       Var newVar = var->decrDim();
-      createCopyStmts(fwd,newVar,res,newIndx);
+      createCopyStmts(fwd,newVar,res,newIndx,node);
     }
   }
 }
@@ -466,9 +480,11 @@ void dmpl::SyncSeqDbl::createRoundCopier()
 
   //create the copier from _f to _i
   StmtList fnBody1;
-  BOOST_FOREACH(Vars::value_type &v,node.globVars) {
-    Var var = v.second->instDim(nodeNum);
-    createCopyStmts(0,var,fnBody1,ExprList());
+  for(size_t i = 0;i < nodeNum;++i) {
+    BOOST_FOREACH(Vars::value_type &v,node.globVars) {
+      Var var = v.second->instDim(nodeNum);
+      createCopyStmts(0,var,fnBody1,ExprList(),i);
+    }
   }
 
   Func func1(new Function(dmpl::voidType(),"round_bwd_copier",fnParams,fnTemps,fnBody1));
@@ -476,9 +492,11 @@ void dmpl::SyncSeqDbl::createRoundCopier()
 
   //create the copier from _i to _f
   StmtList fnBody2;
-  BOOST_FOREACH(Vars::value_type &v,node.globVars) {
-    Var var = v.second->instDim(nodeNum);
-    createCopyStmts(1,var,fnBody2,ExprList());
+  for(size_t i = 0;i < nodeNum;++i) {
+    BOOST_FOREACH(Vars::value_type &v,node.globVars) {
+      Var var = v.second->instDim(nodeNum);
+      createCopyStmts(1,var,fnBody2,ExprList(),i);
+    }
   }
 
   Func func2(new Function(dmpl::voidType(),"round_fwd_copier",fnParams,fnTemps,fnBody2));

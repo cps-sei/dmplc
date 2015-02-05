@@ -126,7 +126,7 @@ NODE uav (id)
     }
   }
 
-  @HERTZ(10)
+  @HERTZ(5)
   void WAYPOINT() {
     if(id != 0 && init@0 == 0) {
       waypointValid = 0;
@@ -164,7 +164,7 @@ NODE uav (id)
     }
   }
 
-  @HERTZ(10)
+  @HERTZ(5)
   @BARRIER_SYNC
   @PLATFORM_CONTROLLER
   void ROUND () {

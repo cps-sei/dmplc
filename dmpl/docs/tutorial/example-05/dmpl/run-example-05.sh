@@ -4,7 +4,7 @@ function cleanup {
     echo "Cleaning up ..."
 
     #kill nodes and VREP
-    killall example-04 vrep vrep.sh
+    killall example-05 vrep vrep.sh
     
     #restore the VREP system/settings.dat
     cp $SDF.saved.mcda-vrep $SDF
@@ -18,7 +18,7 @@ trap "cleanup" SIGINT SIGTERM SIGHUP
 INIT_PORT="19905"
 
 #get the directory where this script is located
-SCDIR=$(dirname $(realpath $0))
+SCDIR=$(dirname $(realpath $0))/../../
 
 function usage {
     echo "Usage : $0 <out-dir> <map-name> <grid-size> <init-x> <init-y> <final-x> <final-y>"
@@ -34,7 +34,7 @@ FX=$6
 FY=$7
 
 #get the number of nodes
-NODENUM=9
+NODENUM=5
 #echo $NODENUM
 
 if [ "$#" != "7" ]; then
@@ -50,7 +50,7 @@ if [ ! -e "$MAPFILE" ]; then
 fi
 
 #compile tutorial 2
-rm -f example-04 example-04.cpp
+rm -f example-05 example-05.cpp
 
 if [ "$MAPNAME" == "small" ]; then
     TopY=2.25
@@ -64,7 +64,7 @@ elif [ "$MAPNAME" == "large" ]; then
     RightX=6.5
 fi
 
-make example-04 GRIDSIZE=$GRIDSIZE TopY=$TopY LeftX=$LeftX BottomY=$BottomY RightX=$RightX
+make example-05 GRIDSIZE=$GRIDSIZE TopY=$TopY LeftX=$LeftX BottomY=$BottomY RightX=$RightX
 
 #create the output directory and get its realpath
 rm -fr $OUTDIR; mkdir $OUTDIR
@@ -100,15 +100,11 @@ sleep 5
 mv $RAC.saved.mcda-vrep $RAC
 
 #start the nodes
-./example-04 --platform vrep::::0.2 --id 1 --var_x $((IX+1)) --var_y $((IY+1)) &> $OUTDIR/node1.out &
-./example-04 --platform vrep::::0.2 --id 2 --var_x $((IX)) --var_y $((IY+1)) &> $OUTDIR/node2.out &
-./example-04 --platform vrep::::0.2 --id 3 --var_x $((IX-1)) --var_y $((IY+1)) &> $OUTDIR/node3.out &
-./example-04 --platform vrep::::0.2 --id 4 --var_x $((IX-1)) --var_y $((IY)) &> $OUTDIR/node4.out &
-./example-04 --platform vrep::::0.2 --id 5 --var_x $((IX-1)) --var_y $((IY-1)) &> $OUTDIR/node5.out &
-./example-04 --platform vrep::::0.2 --id 6 --var_x $((IX)) --var_y $((IY-1)) &> $OUTDIR/node6.out &
-./example-04 --platform vrep::::0.2 --id 7 --var_x $((IX+1)) --var_y $((IY-1)) &> $OUTDIR/node7.out &
-./example-04 --platform vrep::::0.2 --id 8 --var_x $((IX+1)) --var_y $((IY)) &> $OUTDIR/node8.out &
-./example-04 --platform vrep::::0.2 --id 0 --var_x $IX --var_y $IY --var_xt $FX --var_yt $FY &> $OUTDIR/node0.out &
+./example-05 --platform vrep::::0.2 --id 1 --var_x $((IX+1)) --var_y $((IY+1)) &> $OUTDIR/node1.out &
+./example-05 --platform vrep::::0.2 --id 2 --var_x $((IX-1)) --var_y $((IY+1)) &> $OUTDIR/node2.out &
+./example-05 --platform vrep::::0.2 --id 3 --var_x $((IX-1)) --var_y $((IY-1)) &> $OUTDIR/node3.out &
+./example-05 --platform vrep::::0.2 --id 4 --var_x $((IX+1)) --var_y $((IY-1)) &> $OUTDIR/node4.out &
+./example-05 --platform vrep::::0.2 --id 0 --var_x $IX --var_y $IY --var_xt $FX --var_yt $FY &> $OUTDIR/node0.out &
 
 printf "press enter terminate the simulation ..."
 read X

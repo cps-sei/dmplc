@@ -1776,6 +1776,7 @@ dmpl::gams::Sync_Builder::build_main_function ()
   buffer_ << "int main (int argc, char ** argv)\n";
   buffer_ << "{\n";
   buffer_ << "  settings.type = Madara::Transport::MULTICAST;\n";
+  //buffer_ << "  settings.type = Madara::Transport::BROADCAST;\n";
   buffer_ << "  platform_init_fns[\"vrep\"] = init_vrep;\n";
   buffer_ << "  platform_init_fns[\"vrep-uav\"] = init_vrep;\n";
   buffer_ << "  platform_init_fns[\"vrep-ant\"] = init_vrep;\n";
@@ -1787,11 +1788,13 @@ dmpl::gams::Sync_Builder::build_main_function ()
   buffer_ << "  {\n";
   buffer_ << "    // setup default transport as multicast\n";
   buffer_ << "    settings.hosts.push_back (default_multicast);\n";
+  //buffer_ << "    settings.hosts.push_back (\"127.0.0.1:4150\");\n";
   buffer_ << "    //settings.add_receive_filter (Madara::Filters::log_aggregate);\n";
   buffer_ << "    //settings.add_send_filter (Madara::Filters::log_aggregate);\n";
   buffer_ << "  }\n\n";
   
   buffer_ << "  settings.queue_length = 100000;\n\n";
+  buffer_ << "  settings.set_deadline(2);\n\n";
 
 
 #if 0
