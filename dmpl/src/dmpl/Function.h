@@ -68,7 +68,6 @@
 #include <set>
 #include <string>
 #include <boost/ref.hpp>
-#include "SelfRef.h"
 #include "Symbol.h"
 #include "Variable.h"
 #include "Statement.h"

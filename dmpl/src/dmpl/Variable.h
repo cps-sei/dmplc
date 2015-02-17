@@ -65,8 +65,6 @@
 
 #include <map>
 #include <string>
-#include "SelfRef.h"
-//#include "Function.h"
 #include "Type.h"
 #include "Symbol.h"
 
