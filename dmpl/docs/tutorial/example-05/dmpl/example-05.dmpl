@@ -5,7 +5,9 @@
 //-- leader's movement and keep it surrounded. each node has two
 //-- threads -- a synchronous thread responsible for moving to the
 //-- next waypoint avoiding collisions, and an asynchronous thread
-//-- that determines the next waypoint for the node.
+//-- that determines the next waypoint for the node. the timing
+//-- characteristics for various thread (periods, WCETs etc.) are
+//-- specified in a separate DMPL file.
 
 TARGET GNU_CPP,WIN_CPP %%{
 #define GNU_WIN
@@ -115,6 +117,7 @@ NODE uav (id)
     return 0;
   }
 
+  //-- the task that computes the next waypoint.
   void WAYPOINT() {
     if(id != 0 && init@0 == 0) {
       waypointValid = 0;
@@ -140,6 +143,8 @@ NODE uav (id)
     }
   }
 
+  //-- the task that moves the node to its next waypoint while
+  //-- avoiding collisions.
   @BARRIER_SYNC
   @PLATFORM_CONTROLLER
   void COLLISION_AVOIDANCE () {
