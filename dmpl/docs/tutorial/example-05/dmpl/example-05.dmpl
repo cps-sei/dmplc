@@ -13,7 +13,8 @@ TARGET GNU_CPP,WIN_CPP %%{
 #define GNU_WIN
 #include <stdlib.h>
 #include "madara/utility/Utility.h"
-
+#include "adaptation_manager.h"
+  
 int MOVE_TO(unsigned char x,unsigned char y)
 {
   return rand() < (RAND_MAX / 10 * 6);
@@ -85,7 +86,7 @@ CONST RightX = 6.5;
 EXTERN int my_sleep(int seconds);
 EXTERN void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
 EXTERN void print_int(int i);
-
+EXTERN void adaptation_manager();
 
 NODE uav (id)
 {
@@ -115,6 +116,16 @@ NODE uav (id)
     else if(y < yt) yp = y + 1;
     else yp = y - 1;
     return 0;
+  }
+
+  //-- the task that invokes the adaptation manager. this task only
+  //-- does something meaningful for the leader node (i.e., id =
+  //-- 0). otherwise it is a NOP.
+  void ADAPTATION_MANAGER() {
+    //-- not leader or uninitialized
+    if(id != 0 || init@0 == 0) return;
+    //-- call the external adapatation manager
+    adaptation_manager();
   }
 
   //-- the task that computes the next waypoint.
