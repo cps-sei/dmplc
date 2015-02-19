@@ -2,12 +2,13 @@
 //-- protectors surrounding it. the leader moves from an initial to a
 //-- target coordinate, going from one waypoint to the next following
 //-- a path planning strategy. the protectors try to follow the
-//-- leader's movement and keep it surrounded. each node has two
+//-- leader's movement and keep it surrounded. each node has three
 //-- threads -- a synchronous thread responsible for moving to the
-//-- next waypoint avoiding collisions, and an asynchronous thread
-//-- that determines the next waypoint for the node. the timing
-//-- characteristics for various thread (periods, WCETs etc.) are
-//-- specified in a separate DMPL file.
+//-- next waypoint avoiding collisions, an asynchronous thread that
+//-- determines the next waypoint for the node, and an asynchronous
+//-- adaptation manager thread that switched formation between tight
+//-- and loose. the timing characteristics for various thread
+//-- (periods, WCETs etc.) are specified in a separate DMPL file.
 
 TARGET GNU_CPP,WIN_CPP %%{
 #define GNU_WIN
