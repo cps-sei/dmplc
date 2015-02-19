@@ -384,7 +384,7 @@ subcomponents
 connections
   c1: port adaptation_manager_thread.formation -> formation;
   c2: port waypoint_thread.leader_destination -> leader_destination;
-  c3: port waypoint_thread.leader_destination -> collision_avoidance_thread.target_coordinate;
+  c3: port distributed_variables -> collision_avoidance_thread.distributed_variables;
   c4: port collision_avoidance_thread.lock_update_out -> lock_update_out;
 properties
   Period => 1000 ms applies to adaptation_manager_thread;
