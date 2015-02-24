@@ -231,6 +231,7 @@ void NodeInit ()
     ASSUME(0 <= x@id && x@id < X && 0 <= y@id && y@id < Y);
     ND(xf@id); ND(yf@id);
     ASSUME(0 <= xf@id && xf@id < X && 0 <= yf@id && yf@id < Y);
+    waypointValid@id = 1;
   }
 
   FORALL_DISTINCT_NODE_PAIR (id1,id2) {
