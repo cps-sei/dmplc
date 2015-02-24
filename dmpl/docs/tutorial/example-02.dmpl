@@ -169,7 +169,7 @@ NODE uav (id)
     } else if(state == REQUEST) {
       //request the lock but only if it is free
       if(EXISTS_LOWER(idp,lock[xp][yp]@idp != 0)) return;
-      lock[xp][yp][id] = 1;
+      lock[xp][yp]@id = 1;
       state = WAITING;
     } else if(state == WAITING) {
       //grab the lock if we are the highest 
