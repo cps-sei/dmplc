@@ -2,16 +2,20 @@
 //-- protectors surrounding it. the leader moves from an initial to a
 //-- target coordinate, going from one waypoint to the next following
 //-- a path planning strategy. the protectors try to follow the
-//-- leader's movement and keep it surrounded. each node has two
+//-- leader's movement and keep it surrounded. each node has three
 //-- threads -- a synchronous thread responsible for moving to the
-//-- next waypoint avoiding collisions, and an asynchronous thread
-//-- that determines the next waypoint for the node.
+//-- next waypoint avoiding collisions, an asynchronous thread that
+//-- determines the next waypoint for the node, and an asynchronous
+//-- adaptation manager thread that switched formation between tight
+//-- and loose. the timing characteristics for various thread
+//-- (periods, WCETs etc.) are specified in a separate DMPL file.
 
 TARGET GNU_CPP,WIN_CPP %%{
 #define GNU_WIN
 #include <stdlib.h>
 #include "madara/utility/Utility.h"
-
+#include "adaptation_manager.h"
+  
 int MOVE_TO(unsigned char x,unsigned char y)
 {
   return rand() < (RAND_MAX / 10 * 6);
@@ -84,6 +88,31 @@ EXTERN int my_sleep(int seconds);
 EXTERN void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
 EXTERN void print_int(int i);
 
+//-- the external function implementing the adaptation
+//-- manager. returns 0 for loose formation and 1 for tight formation.
+EXTERN int adaptation_manager
+(
+ int current_formation,
+ int changing, //-- whether in process of changing to other formation
+ double change_progress, //-- progress in changing to other formation
+ //-- next 2 hazards
+ double hazard1,
+ double hazard2,    
+ double hazard3,    
+ double hazard4,    
+ double hazard5,    
+ //-- next 2 coverages
+ double cover1,
+ double cover2,
+ double cover3,
+ double cover4,
+ double cover5,
+ double loose_speed, //-- speed of loose formation
+ double tight_speed, //-- speed of tight formation
+ double loose_power, //-- power needed in loose formation
+ double tight_power, //-- power needed in tight formation
+ double energy //-- amount of energy left
+);
 
 NODE uav (id)
 {
@@ -92,6 +121,7 @@ NODE uav (id)
   GLOBAL _Bool lock [X][Y];
   GLOBAL unsigned char lx,ly; //leader's destination coordinates
   GLOBAL _Bool init; //node is initialized
+  GLOBAL _Bool formation; //0 = loose, 1 = tight
 
   //private variables -- local to the node.
   //preserved across rounds
@@ -100,7 +130,7 @@ NODE uav (id)
   LOCAL unsigned char xp,yp; //next coordinates
   LOCAL unsigned char xt,yt; //current target coordinates
   LOCAL _Bool waypointValid; //xt, yt are valid
-
+    
   expect (x < 5);
   expect YLT5(y < 5);
   
@@ -115,6 +145,20 @@ NODE uav (id)
     return 0;
   }
 
+  //-- the task that invokes the adaptation manager. this task only
+  //-- does something meaningful for the leader node (i.e., id =
+  //-- 0). otherwise it is a NOP.
+  void ADAPTATION_MANAGER() {
+    //-- not leader or uninitialized
+    if(id != 0 || init@0 == 0) return;
+    //-- call the external adapatation manager
+    formation@0 = adaptation_manager(0,1,0.5,
+                                     1, 2, 3, 2, 1,
+                                     0.1, 0.3, 0.4, 0.7, 0.3,
+                                     5.5, 2.5, 1.5, 0.5, 17.5);
+  }
+
+  //-- the task that computes the next waypoint.
   void WAYPOINT() {
     if(id != 0 && init@0 == 0) {
       waypointValid = 0;
@@ -140,6 +184,8 @@ NODE uav (id)
     }
   }
 
+  //-- the task that moves the node to its next waypoint while
+  //-- avoiding collisions.
   @BARRIER_SYNC
   @PLATFORM_CONTROLLER
   void COLLISION_AVOIDANCE () {

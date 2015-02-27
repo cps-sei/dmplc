@@ -75,14 +75,14 @@ CONST RightX = 2.25;
 
 //EXTERN int MOVE_TO(unsigned char x,unsigned char y);
 EXTERN int my_sleep(int seconds);
-EXTERN void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf);
+EXTERN void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
 EXTERN void print_int(int i);
 
 
 NODE uav (id)
 {
   //shared variables -- visible across nodes. 
-  GLOBAL _Bool lock [X][Y][#N];
+  GLOBAL _Bool lock [X][Y];
 
   //private variables -- local to the node.
   //preserved across rounds
@@ -109,28 +109,28 @@ NODE uav (id)
   void ROUND () {
     print_state(X,Y,id,x,y,xf,yf);
     //my_sleep(1);
-    if(state == INITS) {
-      lock[x][y][id] = 1;
+    if IF_INIT (state == INITS) {
+      lock[x][y]@id = 1;
       state = NEXT;
-    } if(state == NEXT) {
+    } if IF_NEXT (state == NEXT) {
       //compute next point on route
       if(x == xf && y == yf) return;
       NEXT_XY();
       state = REQUEST;
-    } else if(state == REQUEST) {
+    } else if IF_REQUEST (state == REQUEST) {
       //request the lock but only if it is free
-      if(EXISTS_LOWER(idp,lock[xp][yp][idp] != 0)) return;
-      lock[xp][yp][id] = 1;
+      if(EXISTS_LOWER(idp,lock[xp][yp]@idp != 0)) return;
+      lock[xp][yp]@id = 1;
       state = WAITING;
-    } else if(state == WAITING) {
+    } else if IF_WAITING (state == WAITING) {
       //grab the lock if we are the highest 
       //id node to request or hold the lock
-      //if(EXISTS_HIGHER(idp, lock[xp][yp][idp] != 0)) return;
+      //if(EXISTS_HIGHER(idp, lock[xp][yp]@idp != 0)) return;
       state = MOVE;
-    } else if(state == MOVE) {
+    } else if IF_MOVE (state == MOVE) {
       //now we have the lock on (x’,y’)
       if(GRID_MOVE(xp,yp,0.5)) return;
-      lock[x][y][id] = 0; 
+      lock[x][y]@id = 0; 
       x = xp; y = yp;
       state = NEXT;
     }
@@ -149,15 +149,15 @@ NODE uav (id)
 void NodeInit () 
 {
   FORALL_NODE(id) {
-    state.id = INITS;
-    ND(x.id); ND(y.id);
-    ASSUME(0 <= x.id && x.id < X && 0 <= y.id && y.id < Y);
-    ND(xf.id); ND(yf.id);
-    ASSUME(0 <= xf.id && xf.id < X && 0 <= yf.id && yf.id < Y);
+    state@id = INITS;
+    ND(x@id); ND(y@id);
+    ASSUME(0 <= x@id && x@id < X && 0 <= y@id && y@id < Y);
+    ND(xf@id); ND(yf@id);
+    ASSUME(0 <= xf@id && xf@id < X && 0 <= yf@id && yf@id < Y);
   }
 
   FORALL_DISTINCT_NODE_PAIR (id1,id2) {
-    ASSUME(x.id1 != x.id2 || y.id1 != y.id2);
+    ASSUME(x@id1 != x@id2 || y@id1 != y@id2);
   }
 }
 
@@ -166,6 +166,6 @@ void NodeInit ()
 void NoCollisions ()
 {
   FORALL_DISTINCT_NODE_PAIR (id1,id2) {
-    ASSERT(x.id1 != x.id2 || y.id1 != y.id2);
+    ASSERT(x@id1 != x@id2 || y@id1 != y@id2);
   }
 }

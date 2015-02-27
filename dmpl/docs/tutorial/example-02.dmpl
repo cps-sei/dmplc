@@ -169,7 +169,7 @@ NODE uav (id)
     } else if(state == REQUEST) {
       //request the lock but only if it is free
       if(EXISTS_LOWER(idp,lock[xp][yp]@idp != 0)) return;
-      lock[xp][yp][id] = 1;
+      lock[xp][yp]@id = 1;
       state = WAITING;
     } else if(state == WAITING) {
       //grab the lock if we are the highest 
@@ -203,6 +203,7 @@ void NodeInit ()
     ASSUME(0 <= x@id && x@id < X && 0 <= y@id && y@id < Y);
     ND(xt@id); ND(yt@id);
     ASSUME(0 <= xt@id && xt@id < X && 0 <= yt@id && yt@id < Y);
+    waypointValid@id = 1;
   }
 
   FORALL_DISTINCT_NODE_PAIR (id1,id2) {
