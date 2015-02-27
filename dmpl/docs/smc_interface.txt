@@ -1,0 +1,99 @@
+== Execute a Simulation ==
+
+Will provide a script, run as follows:
+
+run-sim.sh [options] 240 output.csv source.dmpl [source2.dmpl [...] ]
+
+No options yet defined. Most DMPL programs will be in two files: example.dmpl
+and example.aadl.dmpl.  Both .aadl.dmpl would be auto generated from .aadl
+file. Both would get passed into this script. Script will compile DMPL into
+executable controller, run V-REP, and terminate based on mission time passed
+(in seconds, 240 in this example).
+
+Output of script will go to specified output file (overwriting if present).
+If output filename is "-", output to standard out instead.
+Example CSV:
+
+===BEGIN===
+Time,Node,Variable,Value
+0,0,x,2
+0,0,y,2
+0,1,x,2
+0,1,y,3
+100,0,x,3
+100,0,y,2
+100,1,x,3
+100,1,y,3
+===END===
+
+Options:
+-p INT | --period INT : override default observer period; in microseconds
+
+
+== Analyze Results ==
+
+dmpl-analyze.sh [-p Predicate] [-i input.csv] output.csv source.dmpl [source2.dmpl [...] ]
+
+Source files same as above. Input and output files can be "-" for stdin/stdout 
+
+With -p Predicate option, output is simply a list of variables needed to analyze
+the Predicate; for example:
+
+===BEGIN===
+Node,Variable
+0,x
+0,y
+1,x
+1,y
+===END===
+
+If -i input.csv is provided, it should be of the following form:
+
+===BEGIN===
+Time,Node,Variable,Value
+0,0,x,2
+0,0,y,2
+0,1,x,2
+0,1,y,3
+100,0,x,3
+100,0,y,2
+100,1,x,3
+100,1,y,3
+===END===
+
+I.e., same as output of run-sim.sh
+
+If both -p and -i are given, output will be a list of variables needed to
+complete analysis of that predicate (same format as with just -p)
+
+If just -i is given, output will be of this form:
+
+===BEGIN===
+Node,Predicate,Result,NumSamples,MeanSkew,MaxSkew
+OMNI,Coverage,True,2345,21,75
+0,InBounds,True,2345,0,0
+1,InBounds,True,2362,0,0
+0,Alive,InsufficientDataError,0,0,0
+1,Alive,InsufficientDataError,0,0,0
+===END===
+
+In this example, Coverage is an "omnipotent" predicate; it is evaluated by
+cross-referencing data from all nodes. InBounds are each specific to a given
+node (depend only on a single node position)
+
+The Alive predicate in this example does not have enough data from the input
+file for those nodes. If it were omnipotent, it would have OMNI as the Node.
+
+NumSamples should, ideally, be observer hertz-rate times mission time.
+Obviously, will vary in practice. For omnipotent predicates, this will
+be the number of samples that can be successfully cross-referenced between
+all nodes (since each will sample at slightly different times). Details
+of cross-reference logic are TBD.
+
+MeanSkew and MaxSkew will represent how much the different samples collected
+together to form a single data point for an omnipotent predicate varied in
+their times. Skew will be the max time among all samples for that evaluation
+minus the min time. MeanSkew, then, is the arithmetic mean of all Skews for
+all samples for that Predicate; MaxSkew is the maximum.
+
+Note that single-node predicates will always have zero Skew.
