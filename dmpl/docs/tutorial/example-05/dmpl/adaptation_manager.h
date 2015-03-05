@@ -28,6 +28,7 @@ int adaptation_manager
  double remaining_flight_time //-- how much flight time the formation has left
 )
 {
+  return 0;
 }
 
 /*********************************************************************/
