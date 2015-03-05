@@ -301,7 +301,6 @@ NODE uav (id)
         start_time = wall_time();
         
         init@id = 1;
-
       }
 
       state = NEXT;
