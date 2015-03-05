@@ -121,8 +121,25 @@ NODE uav (id)
   GLOBAL _Bool lock [X][Y];
   GLOBAL unsigned char lx,ly; //leader's destination coordinates
   GLOBAL _Bool init; //node is initialized
-  GLOBAL _Bool formation; //0 = loose, 1 = tight
 
+  //-- these variables are used to interact with the adaptation
+  //-- manager
+  GLOBAL _Bool formation; //0 = loose, 1 = tight
+  GLOBAL _Bool changing; //are we chaning formation now?
+  GLOBAL double remaining_time; //how much time left to complete formation change 
+  LOCAL double hazards[X][Y]; //map from cells to hazards
+  LOCAL double variances[X][Y]; //map from cells to variances in hazard predictions
+  //-- next 5 waypoints
+  LOCAL unsigned char next_wp_x[5]; 
+  LOCAL unsigned char next_wp_y[5]; 
+  //-- speeds in loose and tight formations
+  LOCAL double loose_speed;
+  LOCAL double tight_speed;
+  //-- segment length and remaining segments
+  LOCAL double seg_len;
+  LOCAL unsigned char remaining_segs;
+
+  
   //private variables -- local to the node.
   //preserved across rounds
   LOCAL unsigned char state; //the state
@@ -130,10 +147,11 @@ NODE uav (id)
   LOCAL unsigned char xp,yp; //next coordinates
   LOCAL unsigned char xt,yt; //current target coordinates
   LOCAL _Bool waypointValid; //xt, yt are valid
-    
+  
   expect (x < 5);
   expect YLT5(y < 5);
-  
+
+  //-- return the next waypoint value
   _Bool NEXT_XY () {
     if(!waypointValid)
       return 1;
@@ -145,17 +163,48 @@ NODE uav (id)
     return 0;
   }
 
+  //-- only return the next waypoint X value given the current waypoint
+  unsigned char NEXT_X (unsigned char curr_x, unsigned char curr_y) {
+    if(curr_x < xt) return curr_x + 1;
+    if(curr_x > xt) return curr_x - 1;
+    return curr_x;
+  }
+
+  //-- only return the next waypoint Y value given the current waypoint
+  unsigned char NEXT_Y (unsigned char curr_x, unsigned char curr_y) {
+    if(curr_y < yt) return curr_y + 1;
+    if(curr_y > yt) return curr_y - 1;
+    return curr_y;
+  }
+
+  //-- manhattan distance between (x,y) and (xt,yt)
+  unsigned char REMAINING_SEGMENTS()
+  {
+    unsigned char res;
+    res = 0;
+    if(x < xt) res = res + (xt - x);
+    else if(x > xt) res = res + (x - xt);
+    if(y < yt) res = res + (yt - y);
+    else if(y > yt) res = res + (y - yt);
+    return res;
+  }
+
   //-- the task that invokes the adaptation manager. this task only
   //-- does something meaningful for the leader node (i.e., id =
   //-- 0). otherwise it is a NOP.
   void ADAPTATION_MANAGER() {
+    double h1;
     //-- not leader or uninitialized
     if(id != 0 || init@0 == 0) return;
     //-- call the external adapatation manager
-    formation@0 = adaptation_manager(0,1,0.5,
+    //XXX : this is broken: h1 = hazards[1][1];
+    formation@0 = adaptation_manager(formation@id,changing@id,remaining_time@id,
+                                     //--XXX: this is broken: hazards[1][1],
                                      1, 2, 3, 2, 1,
+                                     //--XXX: this is broken: variances[1][1],
                                      0.1, 0.3, 0.4, 0.7, 0.3,
-                                     5.5, 2.5, 1.5, 9, 4.5);
+                                     loose_speed, tight_speed,
+                                     seg_len, remaining_segs, 4.5);
   }
 
   //-- the task that computes the next waypoint.
@@ -188,16 +237,52 @@ NODE uav (id)
   //-- avoiding collisions.
   @BARRIER_SYNC
   @PLATFORM_CONTROLLER
-  void COLLISION_AVOIDANCE () {
+  void COLLISION_AVOIDANCE ()
+  {
+    unsigned char i,j;
+
     print_state(X,Y,id,x,y,xt,yt);
     //my_sleep(1);
     if(state == INITS) {
+      //-- initialize
       lock[x][y]@id = 1;
+
       if(id == 0) {
-        lx@0 = x;
-        ly@0 = y;
+        lx@id = x;
+        ly@id = y;
+        formation@id = 0;
+        changing@id = 0;
+        remaining_time@id = 0.0;
+        //-- XXX : for loops are not handled by dmplc correctly. once
+        //-- that is fixed, this is where we would initialize the
+        //-- hazards and variances arrays.
+
+        //-- XXX: also initialize next_wp_x and next_wp_y. this should
+        //-- also be done using a for loop once that is supported.
+        next_wp_x[0] = x;
+        next_wp_y[0] = y;
+        next_wp_x[1] = NEXT_X(next_wp_x[0],next_wp_y[0]);
+        next_wp_y[1] = NEXT_Y(next_wp_x[0],next_wp_y[0]);
+        next_wp_x[2] = NEXT_X(next_wp_x[1],next_wp_y[1]);
+        next_wp_y[2] = NEXT_Y(next_wp_x[1],next_wp_y[1]);
+        next_wp_x[3] = NEXT_X(next_wp_x[2],next_wp_y[2]);
+        next_wp_y[3] = NEXT_Y(next_wp_x[2],next_wp_y[2]);
+        next_wp_x[4] = NEXT_X(next_wp_x[3],next_wp_y[3]);
+        next_wp_y[4] = NEXT_Y(next_wp_x[3],next_wp_y[3]);
+
+        //-- we set default values of some system parameters
+        //-- here. they will likely be initialized from the command
+        //-- line.
+        loose_speed = 10.0;
+        tight_speed = 5.0;
+        seg_len = 50.0;
+
+        remaining_segs = REMAINING_SEGMENTS();
+        
+        init@id = 1;
+
       }
-      init@0 = 1;
+
       state = NEXT;
     } if(state == NEXT) {
       //compute next point on route
