@@ -346,7 +346,7 @@ thread leader_collision_avoidance
 features 
   target_coordinate: in data port coordinate;
   lock_update_out: out data port lock_update_type.i;
-  distributed_variables: in data port distributed_data_store.i;
+  --distributed_variables: in data port distributed_data_store.i;
 end leader_collision_avoidance;
 
 -- the leader's collision-avoidance thread implementation
@@ -358,7 +358,7 @@ calls main:  {
 connections
   c1: parameter target_coordinate -> c.target_coordinate;
   c2: parameter c.lock_update_out -> lock_update_out;
-  c3: parameter distributed_variables.locks -> c.locks;
+  --c3: parameter distributed_variables.locks -> c.locks;
 properties
   Activate_Entrypoint_Source_Text =>"example-05.dmpl";
 end leader_collision_avoidance.i;
@@ -369,7 +369,7 @@ features
   leader_destination: out data port coordinate;
   formation: out data port;
   lock_update_out: out event data port lock_update_type.i;
-  distributed_variables: in data port distributed_data_store.i;
+  --distributed_variables: in data port distributed_data_store.i;
 end leader_process;
 
 -- the leader process implementation. consists of two threads. one
@@ -384,7 +384,7 @@ subcomponents
 connections
   c1: port adaptation_manager_thread.formation -> formation;
   c2: port waypoint_thread.leader_destination -> leader_destination;
-  c3: port distributed_variables -> collision_avoidance_thread.distributed_variables;
+  --c3: port distributed_variables -> collision_avoidance_thread.distributed_variables;
   c4: port collision_avoidance_thread.lock_update_out -> lock_update_out;
 properties
   Period => 1000 ms applies to adaptation_manager_thread;
@@ -408,7 +408,7 @@ connections
   c2: port leader_sw.leader_destination -> leader_destination;
   c3: port leader_sw.lock_update_out -> lock_update_out;
   c4: port lock_update_in -> madara_sw.lock_update_in;
-  c5: port madara_sw.distributed_variables -> leader_sw.distributed_variables;
+  --c5: port madara_sw.distributed_variables -> leader_sw.distributed_variables;
 properties
   Actual_Processor_Binding => (reference (hw)) applies to leader_sw; 
 end leader.i;
