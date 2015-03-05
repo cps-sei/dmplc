@@ -253,22 +253,28 @@ NODE uav (id)
         formation@id = 0;
         changing@id = 0;
         remaining_time@id = 0.0;
-        //-- XXX : for loops are not handled by dmplc correctly. once
-        //-- that is fixed, this is where we would initialize the
-        //-- hazards and variances arrays.
 
-        //-- XXX: also initialize next_wp_x and next_wp_y. this should
-        //-- also be done using a for loop once that is supported.
+        //-- initialize hazards and variances arrays
+        for(i = 0;i < X;) {
+          for(j = 0;j < Y;) {
+            //-- we start with a simple hazard mapping
+            if(x < y) hazards[i][j] = 0.1;
+            else hazards[i][j] = 0.9;
+            //-- variances are fixed and low
+            variances[i][j] = 0.01;
+            j = j+1;
+          }
+          i = i+1; //XXX: this should be part of the for loop header
+        }
+
+        //-- also initialize next_wp_x and next_wp_y.
         next_wp_x[0] = x;
         next_wp_y[0] = y;
-        next_wp_x[1] = NEXT_X(next_wp_x[0],next_wp_y[0]);
-        next_wp_y[1] = NEXT_Y(next_wp_x[0],next_wp_y[0]);
-        next_wp_x[2] = NEXT_X(next_wp_x[1],next_wp_y[1]);
-        next_wp_y[2] = NEXT_Y(next_wp_x[1],next_wp_y[1]);
-        next_wp_x[3] = NEXT_X(next_wp_x[2],next_wp_y[2]);
-        next_wp_y[3] = NEXT_Y(next_wp_x[2],next_wp_y[2]);
-        next_wp_x[4] = NEXT_X(next_wp_x[3],next_wp_y[3]);
-        next_wp_y[4] = NEXT_Y(next_wp_x[3],next_wp_y[3]);
+        for(i = 1;i < 5;) {        
+          next_wp_x[i] = NEXT_X(next_wp_x[i - 1],next_wp_y[i - 1]);
+          next_wp_y[i] = NEXT_Y(next_wp_x[i - 1],next_wp_y[i - 1]);
+          i = i+1;
+        }
 
         //-- we set default values of some system parameters
         //-- here. they will likely be initialized from the command
