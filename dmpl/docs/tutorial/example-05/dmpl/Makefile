@@ -20,8 +20,8 @@ RightX=2.25
 
 all: $(EXE) Makefile
 
-%: %.cpp
-	g++ $(CFLAGS) -o $@ $< $(LIBS)
+example-05: example-05.cpp adaptation_manager.h
+	g++ $(CFLAGS) -o $@ $^ $(LIBS)
 
 example-05.cpp: example-05.dmpl example-05-AADL.dmpl $(DMPL_ROOT)/src/dmplc/dmplc
 	dmplc -e -n 5 --DX $(GRIDSIZE) --DY $(GRIDSIZE) --DTopY $(TopY) --DBottomY $(BottomY) --DLeftX $(LeftX) --DRightX $(RightX) -g -o $@ $< example-05-AADL.dmpl
