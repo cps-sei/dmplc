@@ -205,11 +205,9 @@ NODE uav (id)
   //-- does something meaningful for the leader node (i.e., id =
   //-- 0). otherwise it is a NOP.
   void ADAPTATION_MANAGER() {
-    double h1;
     //-- not leader or uninitialized
     if(id != 0 || init@0 == 0) return;
     //-- call the external adapatation manager
-    //XXX : this is broken: h1 = hazards[1][1];
     formation@0 = adaptation_manager(formation@id,changing@id,remaining_time@id,
                                      //--XXX: this is broken: hazards[1][1],
                                      1, 2, 3, 2, 1,
