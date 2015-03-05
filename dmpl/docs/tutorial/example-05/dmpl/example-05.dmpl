@@ -13,6 +13,7 @@
 TARGET GNU_CPP,WIN_CPP %%{
 #define GNU_WIN
 #include <stdlib.h>
+#include <sys/resource.h>
 #include "madara/utility/Utility.h"
 #include "adaptation_manager.h"
   
@@ -27,6 +28,14 @@ int my_sleep (int seconds)
   return 0;
 }
 
+//-- return the current wall time since epoch
+double wall_time()
+{
+  struct timeval tv;
+  gettimeofday(&tv, NULL);
+  return tv.tv_sec + 0.000001 * tv.tv_usec;
+}
+ 
 int round = 0;
 int xi,yi;
 
@@ -87,6 +96,7 @@ CONST RightX = 6.5;
 EXTERN int my_sleep(int seconds);
 EXTERN void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
 EXTERN void print_int(int i);
+EXTERN double wall_time();
 
 //-- the external function implementing the adaptation
 //-- manager. returns 0 for loose formation and 1 for tight formation.
@@ -138,7 +148,9 @@ NODE uav (id)
   //-- segment length and remaining segments
   LOCAL double seg_len;
   LOCAL unsigned char remaining_segs;
-
+  //-- total mission time, and mission start time
+  LOCAL double total_time;
+  LOCAL double start_time;
   
   //private variables -- local to the node.
   //preserved across rounds
@@ -204,7 +216,8 @@ NODE uav (id)
                                      //--XXX: this is broken: variances[1][1],
                                      0.1, 0.3, 0.4, 0.7, 0.3,
                                      loose_speed, tight_speed,
-                                     seg_len, remaining_segs, 4.5);
+                                     seg_len, remaining_segs,
+                                     total_time - (wall_time() - start_time));
   }
 
   //-- the task that computes the next waypoint.
@@ -282,8 +295,10 @@ NODE uav (id)
         loose_speed = 10.0;
         tight_speed = 5.0;
         seg_len = 50.0;
-
+        total_time = 100.0;
+        
         remaining_segs = REMAINING_SEGMENTS();
+        start_time = wall_time();
         
         init@id = 1;
 
