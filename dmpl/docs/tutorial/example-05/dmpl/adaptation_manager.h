@@ -2,8 +2,11 @@
  * Interface with the adaptation manager.
  */
 
-//-- an empty adaptation manager stub. this will be ultimately
-//-- replaced by Gabe's implementation.
+#include <stdlib.h>
+
+//-- an default adaptation manager stub. this will be ultimately
+//-- replaced by Gabe's implementation. right now, it randomly returns
+//-- 0 or 1 with equal probability.
 int adaptation_manager
 (
  int current_formation, //-- 0 loose, 1 tight
@@ -28,7 +31,7 @@ int adaptation_manager
  double remaining_flight_time //-- how much flight time the formation has left
 )
 {
-  return 0;
+  return random() % 2;
 }
 
 /*********************************************************************/
