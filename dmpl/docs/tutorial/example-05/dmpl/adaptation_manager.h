@@ -31,7 +31,7 @@ int adaptation_manager
  double remaining_flight_time //-- how much flight time the formation has left
 )
 {
-  if(random() % 20 == 0) return 1 - current_formation;
+  if(!changing && (random() % 4 == 0)) return 1 - current_formation;
   else return current_formation;
 }
 
