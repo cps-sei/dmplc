@@ -92,6 +92,9 @@ CONST LeftX = -12.5;
 CONST BottomY = -6;
 CONST RightX = 6.5;
 
+//-- assume that formation change takes 20 seconds
+CONST FORM_CHANGE_TIME = 20.0;
+
 //EXTERN int MOVE_TO(unsigned char x,unsigned char y);
 EXTERN int my_sleep(int seconds);
 EXTERN void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
@@ -216,7 +219,8 @@ NODE uav (id)
   void ADAPTATION_MANAGER()
   {
     _Bool last_formation;    
-
+    unsigned char num_protectors_changing;
+    
     //-- not leader or uninitialized
     if(id != 0 || init@0 == 0) return;
 
@@ -226,6 +230,19 @@ NODE uav (id)
       changing@id = 1;
     } else {
       changing@id = 0;
+    }
+
+    //-- estimate the remaining time for formation change as the
+    //-- fraction of protectors that are yet to complete formation
+    //-- change
+    if(changing@id) {
+      num_protectors_changing = 0;
+      FORALL_OTHER(idp) {
+        if(num_changes@idp != num_changes@id) {
+          num_protectors_changing = num_protectors_changing + 1;
+        }
+      }
+      remaining_time@id = num_protectors_changing * FORM_CHANGE_TIME / 4;
     }
     
     //-- call the external adapatation manager
