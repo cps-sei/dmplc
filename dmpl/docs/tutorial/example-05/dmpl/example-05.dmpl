@@ -138,7 +138,7 @@ NODE uav (id)
   //-- these variables are used to interact with the adaptation
   //-- manager
   GLOBAL _Bool formation; //0 = loose, 1 = tight
-  GLOBAL _Bool changing; //are we chaning formation now?
+  GLOBAL _Bool changing; //are we changing formation now?
   GLOBAL double remaining_time; //how much time left to complete formation change 
   LOCAL double hazards[X][Y]; //map from cells to hazards
   LOCAL double variances[X][Y]; //map from cells to variances in hazard predictions
