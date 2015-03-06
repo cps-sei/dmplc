@@ -151,6 +151,12 @@ NODE uav (id)
   //-- total mission time, and mission start time
   LOCAL double total_time;
   LOCAL double start_time;
+
+  //-- we use counters for the number of formation changes by each
+  //-- node. when the leader initiates a formation change, it
+  //-- increments its counter. it waits for the other counters to
+  //-- catch up detect that the formation change has completed.
+  GLOBAL _Bool num_changes;
   
   //private variables -- local to the node.
   //preserved across rounds
@@ -164,7 +170,8 @@ NODE uav (id)
   expect YLT5(y < 5);
 
   //-- return the next waypoint value
-  _Bool NEXT_XY () {
+  _Bool NEXT_XY ()
+  {
     if(!waypointValid)
       return 1;
     xp = x; yp = y;
@@ -176,14 +183,16 @@ NODE uav (id)
   }
 
   //-- only return the next waypoint X value given the current waypoint
-  unsigned char NEXT_X (unsigned char curr_x, unsigned char curr_y) {
+  unsigned char NEXT_X (unsigned char curr_x, unsigned char curr_y)
+  {
     if(curr_x < xt) return curr_x + 1;
     if(curr_x > xt) return curr_x - 1;
     return curr_x;
   }
 
   //-- only return the next waypoint Y value given the current waypoint
-  unsigned char NEXT_Y (unsigned char curr_x, unsigned char curr_y) {
+  unsigned char NEXT_Y (unsigned char curr_x, unsigned char curr_y)
+  {
     if(curr_y < yt) return curr_y + 1;
     if(curr_y > yt) return curr_y - 1;
     return curr_y;
@@ -204,10 +213,23 @@ NODE uav (id)
   //-- the task that invokes the adaptation manager. this task only
   //-- does something meaningful for the leader node (i.e., id =
   //-- 0). otherwise it is a NOP.
-  void ADAPTATION_MANAGER() {
+  void ADAPTATION_MANAGER()
+  {
+    _Bool last_formation;    
+
     //-- not leader or uninitialized
     if(id != 0 || init@0 == 0) return;
+
+    //-- check if formation change is still happening
+    if(EXISTS_LOWER(idp,num_changes@idp != num_changes@id) ||
+       EXISTS_HIGHER(idp,num_changes@idp != num_changes@id)) {
+      changing@id = 1;
+    } else {
+      changing@id = 0;
+    }
+    
     //-- call the external adapatation manager
+    last_formation = formation@0;
     formation@0 = adaptation_manager(formation@id,changing@id,remaining_time@id,
                                      //--XXX: this is broken: hazards[1][1],
                                      1, 2, 3, 2, 1,
@@ -216,20 +238,53 @@ NODE uav (id)
                                      loose_speed, tight_speed,
                                      seg_len, remaining_segs,
                                      total_time - (wall_time() - start_time));
+
+    //-- update the flag to indicate if a change formation is
+    //-- triggered, and increment number of formation changes.
+    if(!changing@id && last_formation != formation@0) {
+      changing@id = 1;
+      num_changes@id = 1 - num_changes@id;
+    }
   }
 
   //-- the task that computes the next waypoint.
-  void WAYPOINT() {
+  void WAYPOINT()
+  {
     if(id != 0 && init@0 == 0) {
       waypointValid = 0;
       return;
     } else {
       waypointValid = 1;
     }
+
+    //-- note that while a formation change is happening, there will
+    //-- be no change in xp and yp for the leader.
     if(id == 0) {
       ly@0 = yp;
       lx@0 = xp;
-    } if(id == 1) {
+      return;
+    }
+
+    //-- loose formation
+    if(formation@0 == 0) {
+      if(id == 1) {
+        xt = lx@0 + 2;
+        yt = ly@0 + 2;
+      } else if(id == 2) {
+        xt = lx@0 - 2;
+        yt = ly@0 + 2;
+      } else if(id == 3) {
+        xt = lx@0 - 2;
+        yt = ly@0 - 2;
+      } else if(id == 4) {
+        xt = lx@0 + 2;
+        yt = ly@0 - 2;
+      }
+      return;
+    }
+
+    //-- tight formation
+    if(id == 1) {
       xt = lx@0 + 1;
       yt = ly@0 + 1;
     } else if(id == 2) {
@@ -257,7 +312,8 @@ NODE uav (id)
     if(state == INITS) {
       //-- initialize
       lock[x][y]@id = 1;
-
+      num_changes@id = 0;
+      
       if(id == 0) {
         lx@id = x;
         ly@id = y;
@@ -305,6 +361,9 @@ NODE uav (id)
     } if(state == NEXT) {
       //compute next point on route
       if(x == xt && y == yt) return;
+      //-- the leader does not move if formation change is going on
+      if(id == 0 && changing@id) return;
+      //-- get the next waypoint
       if(NEXT_XY()) return;
       state = REQUEST;
     } else if(state == REQUEST) {
@@ -322,6 +381,12 @@ NODE uav (id)
       if(GRID_MOVE(xp,yp,0.5)) return;
       lock[x][y]@id = 0; 
       x = xp; y = yp;
+      //-- if i am not the leader and a formation change was
+      //-- happening, and i have reached the end-point, then formation
+      //-- change is complete.
+      if(id != 0 && num_changes@id != num_changes@0 && x == xt && y == yt) {
+        num_changes@id = 1 - num_changes@id;
+      }
       state = NEXT;
     }
   }
