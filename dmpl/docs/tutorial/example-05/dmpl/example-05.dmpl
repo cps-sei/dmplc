@@ -139,7 +139,7 @@ NODE uav (id)
   //-- manager
   GLOBAL _Bool formation; //0 = loose, 1 = tight
   LOCAL _Bool changing; //are we changing formation now?
-  GLOBAL double remaining_time; //how much time left to complete formation change 
+  LOCAL double remaining_time; //how much time left to complete formation change 
   LOCAL double hazards[X][Y]; //map from cells to hazards
   LOCAL double variances[X][Y]; //map from cells to variances in hazard predictions
   //-- next 5 waypoints
@@ -242,12 +242,12 @@ NODE uav (id)
           num_protectors_changing = num_protectors_changing + 1;
         }
       }
-      remaining_time@id = num_protectors_changing * FORM_CHANGE_TIME / 4;
+      remaining_time = num_protectors_changing * FORM_CHANGE_TIME / 4;
     }
     
     //-- call the external adapatation manager
     last_formation = formation@0;
-    formation@0 = adaptation_manager(formation@id,changing,remaining_time@id,
+    formation@0 = adaptation_manager(formation@id,changing,remaining_time,
                                      //--XXX: this is broken: hazards[1][1],
                                      1, 2, 3, 2, 1,
                                      //--XXX: this is broken: variances[1][1],
@@ -336,7 +336,7 @@ NODE uav (id)
         ly@id = y;
         formation@id = 0;
         changing = 0;
-        remaining_time@id = 0.0;
+        remaining_time = 0.0;
 
         //-- initialize hazards and variances arrays
         for(i = 0;i < X;) {
