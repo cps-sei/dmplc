@@ -247,15 +247,20 @@ NODE uav (id)
     
     //-- call the external adapatation manager
     last_formation = formation@0;
-    formation@0 = adaptation_manager(formation@id,changing,remaining_time,
-                                     //--XXX: this is broken: hazards[1][1],
-                                     1, 2, 3, 2, 1,
-                                     //--XXX: this is broken: variances[1][1],
-                                     0.1, 0.3, 0.4, 0.7, 0.3,
-                                     loose_speed, tight_speed,
-                                     seg_len, remaining_segs,
-                                     total_time - (wall_time() - start_time));
 
+    //-- if the leader has reached the destination, no more formation
+    //-- changes are needed
+    if(x != xt || y != yt) {
+      formation@0 = adaptation_manager(formation@id,changing,remaining_time,
+                                       //--XXX: this is broken: hazards[1][1],
+                                       1, 2, 3, 2, 1,
+                                       //--XXX: this is broken: variances[1][1],
+                                       0.1, 0.3, 0.4, 0.7, 0.3,
+                                       loose_speed, tight_speed,
+                                       seg_len, remaining_segs,
+                                       total_time - (wall_time() - start_time));
+    }
+    
     //-- update the flag to indicate if a change formation is
     //-- triggered, and increment number of formation changes.
     if(!changing && last_formation != formation@0) {
