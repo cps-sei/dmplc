@@ -2,7 +2,7 @@ CFLAGS=-g -O3 -I$(DMPL_ROOT)/src -I$(VREP_ROOT)/programming/remoteApi \
 	-I$(ACE_ROOT) -I$(MADARA_ROOT)/include -I$(GAMS_ROOT)/src -I$(DMPL_ROOT)/include
 LIBS=$(MADARA_ROOT)/libMADARA.so $(ACE_ROOT)/lib/libACE.so \
 	$(GAMS_ROOT)/lib/libGAMS.so -lpthread
-DMPL=example-05.dmpl
+DMPL=example-06.dmpl
 SRC=$(patsubst %.dmpl,%.cpp,$(DMPL))
 EXE=$(patsubst %.dmpl,%,$(DMPL))
 
@@ -20,11 +20,11 @@ RightX=2.25
 
 all: $(EXE) Makefile
 
-example-05: example-05.cpp adaptation_manager.h
+example-06: example-06.cpp adaptation_manager.h
 	g++ $(CFLAGS) -o $@ $^ $(LIBS)
 
-example-05.cpp: example-05.dmpl example-05-AADL.dmpl $(DMPL_ROOT)/src/dmplc/dmplc
-	dmplc -e -n 5 --DX $(GRIDSIZE) --DY $(GRIDSIZE) --DTopY $(TopY) --DBottomY $(BottomY) --DLeftX $(LeftX) --DRightX $(RightX) -g -o $@ $< example-05-AADL.dmpl
+example-06.cpp: example-06.dmpl example-06-AADL.dmpl $(DMPL_ROOT)/src/dmplc/dmplc
+	dmplc -e -n 5 --DX $(GRIDSIZE) --DY $(GRIDSIZE) --DTopY $(TopY) --DBottomY $(BottomY) --DLeftX $(LeftX) --DRightX $(RightX) -g -o $@ $< example-06-AADL.dmpl
 
 clean:
 	rm -f $(EXE) $(SRC)
