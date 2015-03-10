@@ -1,6 +1,6 @@
 package example05
 public
-	with Zero_Slack_Scheduling;
+  with Zero_Slack_Scheduling;
 
 -----------------------------------------------------------------------
 -- begin datatype stuff
@@ -75,16 +75,27 @@ end set_waypoint_routine_type;
 subprogram get_waypoint_routine_type
 end get_waypoint_routine_type;
 
+-----------------------------------------------------------------------
+-- end datatype stuff
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+-- distributed data store. models the MADARA context (a collection of
+-- shared variables) through which threads (application threads and
+-- the receiver thread) communicate with one another.
+-----------------------------------------------------------------------
+
 -- declaration of distributed data store
 data distributed_data_store
-	features
-		setlock: provides subprogram access set_lock_routine_type; 
-		setleaderdestination: provides subprogram access set_leader_destination_routine_type;
-		setinitialized: provides subprogram access set_initialized_routine_type;	
-		getlocks: provides subprogram access getlocks_routine_type;	
-		getleaderdestination: provides subprogram access get_leader_destination_routine_type;
-		setwaypoint: provides subprogram access set_waypoint_routine_type;
-		getwaypoint: provides subprogram access get_waypoint_routine_type;
+features
+  -- accessors for the different shared variables
+  setlock: provides subprogram access set_lock_routine_type; 
+  getlocks: provides subprogram access getlocks_routine_type;	
+  setleaderdestination: provides subprogram access set_leader_destination_routine_type;
+  getleaderdestination: provides subprogram access get_leader_destination_routine_type;
+  setwaypoint: provides subprogram access set_waypoint_routine_type;
+  getwaypoint: provides subprogram access get_waypoint_routine_type;
+  setinitialized: provides subprogram access set_initialized_routine_type;	
 end distributed_data_store;
 
 -- implementation of distributed data store
@@ -98,152 +109,183 @@ subcomponents
   initalized_nodes: data initialized_node_type[5];
 end distributed_data_store.i;
 
------------------------------------------------------------------------
--- end datatype stuff
------------
-
+-- a generic DART processor. just a placeholder for the CPU.
 processor dart_processor
 end dart_processor;
 
--- the MADARA receiver thread declaration
+-- the MADARA receiver thread declaration. this thread receives stuff
+-- from other nodes via the network, and updates the local
+-- context. for each such data type, it therefore has an input port to
+-- receive the data and an accessor method to update the context.
 thread madara_receiver_thread
 features
   leader_destination_update: in data port coordinate;
-  lock_update_in: in  data port lock_update_type.i;
-  init_update: in  data port initialized_node_update_type.i;
-  --distributed_variables: out data port distributed_data_store.i;
-  setlock : requires subprogram access set_lock_routine_type;
   setleaderdestination: requires subprogram access set_leader_destination_routine_type;
+  lock_update_in: in data port lock_update_type.i;
+  setlock : requires subprogram access set_lock_routine_type;
+  init_update: in data port initialized_node_update_type.i;
   setinitialized: requires subprogram access set_initialized_routine_type;  
 end madara_receiver_thread;
 
+-- the base software specification running on each DART node.
 process dart_sw
-	features
-		lock_update_in: in data port lock_update_type.i;
-		leader_destination_update: in data port coordinate;
+features
+  leader_destination_update: in data port coordinate;
+  lock_update_in: in data port lock_update_type.i;
+  init_update: in data port initialized_node_update_type.i;
 end dart_sw;
 		
+-- the base software implementation running on each DART node. it
+-- contains only the MADARA context and the receiver thread. it will
+-- be specialized by each concrete DART node by adding
+-- application-specific threads and data.
 process implementation dart_sw.i
-	subcomponents
-		distributed_store: data distributed_data_store.i;
-		madara_thread: thread madara_receiver_thread;
-	connections
-		c1: subprogram access madara_thread.setlock -> distributed_store.setlock;
-		c2: subprogram access madara_thread.setleaderdestination -> distributed_store.setleaderdestination;
-		c3: subprogram access madara_thread.setinitialized -> distributed_store.setinitialized;		
-		c4: port lock_update_in -> madara_thread.lock_update_in;	
-		c5: port leader_destination_update->madara_thread.leader_destination_update;	
+subcomponents
+  madara_thread: thread madara_receiver_thread;
+  distributed_store: data distributed_data_store.i;
+connections
+  c1: port leader_destination_update -> madara_thread.leader_destination_update;	
+  c2: subprogram access madara_thread.setleaderdestination -> distributed_store.setleaderdestination;
+  c3: port lock_update_in -> madara_thread.lock_update_in;	
+  c4: subprogram access madara_thread.setlock -> distributed_store.setlock;
+  c5: port init_update -> madara_thread.init_update;	
+  c6: subprogram access madara_thread.setinitialized -> distributed_store.setinitialized;		
 end dart_sw.i;
 
+-- the collision avoidance thread
 thread collision_avoidance
-	features 
-		getlocks: requires subprogram access getlocks_routine_type;
-		setlock: requires subprogram access set_lock_routine_type;
-		publish_lock: out data port lock_update_type.i; -- CHECK if event or only data
-		get_waypoint: requires subprogram access get_waypoint_routine_type;
+features 
+  getlocks: requires subprogram access getlocks_routine_type;
+  setlock: requires subprogram access set_lock_routine_type;
+  publish_lock: out data port lock_update_type.i; -- CHECK if event or only data
+  get_waypoint: requires subprogram access get_waypoint_routine_type;
 end collision_avoidance;
 
+-- the waypoint thread. decides on the next destination node for the
+-- leader relative to the next waypoint of the leader.
 thread waypoint_thread
-	features
-		get_leader_destination : requires subprogram access get_leader_destination_routine_type;
-		set_waypoint: requires subprogram access set_waypoint_routine_type;
+features
+  get_leader_destination : requires subprogram access get_leader_destination_routine_type;
+  set_waypoint: requires subprogram access set_waypoint_routine_type;
 end waypoint_thread;
 
+-- the specification of process running on a protector node
 process protector_sw extends dart_sw
-	features
-		publish_lock : out data port lock_update_type.i;
+features
+  publish_lock : out data port lock_update_type.i;
 end protector_sw;
 
+-- the implementation of process running on a protector node. it adds
+-- two new threads (over the receiver thread already in the base dart
+-- software) : collision avoidance and waypoint.
 process implementation protector_sw.i extends dart_sw.i
-	subcomponents
-		avoidance: thread  collision_avoidance;
-		waypoint: thread waypoint_thread;
-	connections
-		c10: subprogram access avoidance.getlocks->distributed_store.getlocks;	
-		c11: subprogram access avoidance.setlock->distributed_store.setlock;
-		c12: port avoidance.publish_lock->	publish_lock;
-		c13: subprogram access waypoint.get_leader_destination -> distributed_store.getleaderdestination;
-		c14: subprogram access waypoint.set_waypoint -> distributed_store.setwaypoint;
-		c15: subprogram access avoidance.get_waypoint -> distributed_store.getwaypoint;
+subcomponents
+  avoidance: thread  collision_avoidance;
+  waypoint: thread waypoint_thread;
+connections
+  c10: subprogram access avoidance.getlocks -> distributed_store.getlocks;	
+  c11: subprogram access avoidance.setlock -> distributed_store.setlock;
+  c12: port avoidance.publish_lock -> publish_lock;
+  c13: subprogram access avoidance.get_waypoint -> distributed_store.getwaypoint;
+  c14: subprogram access waypoint.get_leader_destination -> distributed_store.getleaderdestination;
+  c15: subprogram access waypoint.set_waypoint -> distributed_store.setwaypoint;
 end protector_sw.i;
 
+-- a protector node specification
 system protector_node
-	features
-		publish_lock: out data port lock_update_type.i;
-		leader_destination: in data port coordinate;
-		input_lock: in data port lock_update_type.i;
+features
+  publish_lock: out data port lock_update_type.i;
+  leader_destination: in data port coordinate;
+  input_lock: in data port lock_update_type.i;
 end protector_node;
 
+-- a protector node implementation. consists of a CPU and a protector process.
 system implementation protector_node.i
-	subcomponents
-		hw: processor dart_processor;
-		sw: process protector_sw.i;
-	connections
-		c1: port input_lock->sw.lock_update_in;
-		c2: port sw.publish_lock -> publish_lock;
-		c3: port leader_destination -> sw.leader_destination_update;
-	properties
-		Actual_Processor_Binding => (reference (hw)) applies to sw;
+subcomponents
+  hw: processor dart_processor;
+  sw: process protector_sw.i;
+connections
+  c1: port sw.publish_lock -> publish_lock;
+  c2: port leader_destination -> sw.leader_destination_update;
+  c3: port input_lock -> sw.lock_update_in;
+properties
+  Actual_Processor_Binding => (reference (hw)) applies to sw;
 end protector_node.i;	
 
+-- the leader navigation thread. decides the next waypoint for the
+-- leader.
 thread leader_navigation
-	features
-		setleaderdestination: requires subprogram access set_leader_destination_routine_type;
-		leader_destination: out data port coordinate;
+features
+  setleaderdestination: requires subprogram access set_leader_destination_routine_type;
+  leader_destination: out data port coordinate;
 end leader_navigation;
 
-thread implementation leader_navigation.i 
-end leader_navigation.i;
-
+-- the specification of process running on a leader node
 process leader_sw extends dart_sw
-	features
-		leader_destination: out data port coordinate;
-		publish_lock: out data port lock_update_type.i;
+features
+  leader_destination: out data port coordinate;
+  publish_lock: out data port lock_update_type.i;
 end leader_sw;
 
+-- the implementation of process running on a leader node. it adds
+-- two new threads (over the receiver thread already in the base dart
+-- software) : collision avoidance and navigation.
 process implementation leader_sw.i extends dart_sw.i
-	subcomponents
-		navigation: thread leader_navigation.i;
-		avoidance: thread collision_avoidance;
-	connections
-		c20: subprogram access navigation.setleaderdestination->distributed_store.setleaderdestination;
-		c21: port navigation.leader_destination -> leader_destination; 
-		c23: subprogram access avoidance.setlock->distributed_store.setlock;
-		c24: port avoidance.publish_lock->	publish_lock;		
-		c25: subprogram access avoidance.getlocks->distributed_store.getlocks;	
+subcomponents
+  avoidance: thread collision_avoidance;
+  navigation: thread leader_navigation;
+connections
+  c21: subprogram access avoidance.getlocks -> distributed_store.getlocks;	
+  c22: subprogram access avoidance.setlock -> distributed_store.setlock;
+  c23: port avoidance.publish_lock -> publish_lock;		
+  c24: subprogram access avoidance.get_waypoint -> distributed_store.getwaypoint;
+  c25: subprogram access navigation.setleaderdestination -> distributed_store.setleaderdestination;
+  c26: port navigation.leader_destination -> leader_destination; 
 end leader_sw.i;
 	
+-- a leader node specification
 system leader_node
-	features
-		leader_destination : out data port coordinate;
-		publish_lock : out data port lock_update_type.i;
-		input_lock : in data port lock_update_type.i;
+features
+  leader_destination : out data port coordinate;
+  publish_lock : out data port lock_update_type.i;
+  input_lock : in data port lock_update_type.i;
 end leader_node;
 
+-- a protector node implementation. consists of a CPU and a leader process.
 system implementation leader_node.i
-	subcomponents
-		hw: processor dart_processor;
-		sw: process leader_sw.i;
-	connections
-		c1: port sw.leader_destination -> leader_destination;
-		c2: port sw.publish_lock -> publish_lock;
-		c3: port input_lock->sw.lock_update_in;
-	properties
-		Actual_Processor_Binding => (reference (hw)) applies to sw;	
+subcomponents
+  hw: processor dart_processor;
+  sw: process leader_sw.i;
+connections
+  c1: port sw.publish_lock -> publish_lock;
+  c2: port sw.leader_destination -> leader_destination;
+  c3: port input_lock -> sw.lock_update_in;
+properties
+  Actual_Processor_Binding => (reference (hw)) applies to sw;	
 end leader_node.i;	
-	
+
+-----------------------------------------------------------------------
+-- the whole system. consists of one leader and 4 protectors.
+-----------------------------------------------------------------------
+
+-- system specification
 system protector_swarm
 end protector_swarm;	
-	
+
+-- system implementation
 system implementation protector_swarm.i
-	subcomponents
-		leader: system leader_node.i;
-		protectors: system protector_node.i[4];
-	connections
-		c1: port leader.leader_destination->protectors.leader_destination {Connection_Pattern =>((One_to_All));};
-		c2: port leader.publish_lock -> protectors.input_lock {Connection_Pattern => ((One_to_All));};
-		c3: port protectors.publish_lock->leader.input_lock{Connection_Pattern => ((All_to_One));};
-		c4: port protectors.publish_lock->protectors.input_lock {Connection_Pattern => ((All_to_All));};
+subcomponents
+  leader: system leader_node.i;
+  protectors: system protector_node.i[4];
+connections
+  c1: port leader.leader_destination->protectors.leader_destination {Connection_Pattern =>((One_to_All));};
+  c2: port leader.publish_lock -> protectors.input_lock {Connection_Pattern => ((One_to_All));};
+  c3: port protectors.publish_lock->leader.input_lock{Connection_Pattern => ((All_to_One));};
+  c4: port protectors.publish_lock->protectors.input_lock {Connection_Pattern => ((All_to_All));};
 end protector_swarm.i;	
-	
+
 end example05;
+
+-----------------------------------------------------------------------
+-- end of file
+-----------------------------------------------------------------------
