@@ -335,64 +335,93 @@ NODE uav (id)
     }
   }
 
+  //-- initialize state
+  void INITIALIZE_STATE()
+  {
+    unsigned char i,j;
+    lock[x][y]@id = 1;
+    num_changes@id = 0;
+    
+    if(id != 0) return;
+
+    //-- the rest of this stuff is only done by the leader
+    lx@id = x;
+    ly@id = y;
+    formation@id = 0;
+    changing = 0;
+    remaining_time = 0.0;
+      
+    //-- initialize hazards and variances arrays
+    for(i = 0;i < X;) {
+      for(j = 0;j < Y;) {
+        //-- we start with a simple hazard mapping
+        if(x < y) hazards[i][j] = 0.1;
+        else hazards[i][j] = 0.9;
+        //-- variances are fixed and low
+        variances[i][j] = 0.01;
+        j = j+1;
+      }
+      i = i+1; //XXX: this should be part of the for loop header
+    }
+    
+    //-- also initialize next_wp_x and next_wp_y.
+    next_wp_x[0] = x;
+    next_wp_y[0] = y;
+    for(i = 1;i < 5;) {        
+      next_wp_x[i] = NEXT_X(next_wp_x[i - 1],next_wp_y[i - 1]);
+      next_wp_y[i] = NEXT_Y(next_wp_x[i - 1],next_wp_y[i - 1]);
+      i = i+1;
+    }
+    
+    //-- we set default values of some system parameters here. they
+    //-- will likely be initialized from the command line.
+    loose_speed = 10.0;
+    tight_speed = 5.0;
+    seg_len = 50.0;
+    total_time = 100.0;
+    
+    remaining_segs = REMAINING_SEGMENTS();
+    start_time = wall_time();
+    
+    init@id = 1;
+  }
+
+  //-- stuff to do once the next waypoint is reached
+  void REACHED_NEXT_XY()
+  {
+    unsigned char i;
+
+    lock[x][y]@id = 0; 
+    x = xp; y = yp;
+    //-- if i am not the leader and a formation change was
+    //-- happening, and i have reached the end-point, then formation
+    //-- change is complete.
+    if(id != 0 && num_changes@id != num_changes@0 && x == xt && y == yt) {
+      num_changes@id = 1 - num_changes@id;
+    }
+    //For leader, update remaining segments, and next 5 waypoints
+    if(id == 0) {
+      for(i = 1;i < 5;) {        
+        next_wp_x[i - 1] = next_wp_x[i];
+        next_wp_y[i - 1] = next_wp_y[i];
+        i = i+1;
+      }
+      next_wp_x[4] = NEXT_X(next_wp_x[3],next_wp_y[3]);
+      next_wp_y[4] = NEXT_Y(next_wp_x[3],next_wp_y[3]);
+      remaining_segs = remaining_segs - 1;
+    }
+  }
+  
   //-- the task that moves the node to its next waypoint while
   //-- avoiding collisions.
   @BARRIER_SYNC
   @PLATFORM_CONTROLLER
   void COLLISION_AVOIDANCE ()
   {
-    unsigned char i,j;
-
     print_state(X,Y,id,x,y,xt,yt);
     //my_sleep(1);
     if(state == INITS) {
-      //-- initialize
-      lock[x][y]@id = 1;
-      num_changes@id = 0;
-      
-      if(id == 0) {
-        lx@id = x;
-        ly@id = y;
-        formation@id = 0;
-        changing = 0;
-        remaining_time = 0.0;
-
-        //-- initialize hazards and variances arrays
-        for(i = 0;i < X;) {
-          for(j = 0;j < Y;) {
-            //-- we start with a simple hazard mapping
-            if(x < y) hazards[i][j] = 0.1;
-            else hazards[i][j] = 0.9;
-            //-- variances are fixed and low
-            variances[i][j] = 0.01;
-            j = j+1;
-          }
-          i = i+1; //XXX: this should be part of the for loop header
-        }
-
-        //-- also initialize next_wp_x and next_wp_y.
-        next_wp_x[0] = x;
-        next_wp_y[0] = y;
-        for(i = 1;i < 5;) {        
-          next_wp_x[i] = NEXT_X(next_wp_x[i - 1],next_wp_y[i - 1]);
-          next_wp_y[i] = NEXT_Y(next_wp_x[i - 1],next_wp_y[i - 1]);
-          i = i+1;
-        }
-
-        //-- we set default values of some system parameters
-        //-- here. they will likely be initialized from the command
-        //-- line.
-        loose_speed = 10.0;
-        tight_speed = 5.0;
-        seg_len = 50.0;
-        total_time = 100.0;
-        
-        remaining_segs = REMAINING_SEGMENTS();
-        start_time = wall_time();
-        
-        init@id = 1;
-      }
-
+      INITIALIZE_STATE();
       state = NEXT;
     } if(state == NEXT) {
       //compute next point on route
@@ -415,25 +444,7 @@ NODE uav (id)
     } else if(state == MOVE) {
       //now we have the lock on (x’,y’)
       if(GRID_MOVE(xp,yp,0.5)) return;
-      lock[x][y]@id = 0; 
-      x = xp; y = yp;
-      //-- if i am not the leader and a formation change was
-      //-- happening, and i have reached the end-point, then formation
-      //-- change is complete.
-      if(id != 0 && num_changes@id != num_changes@0 && x == xt && y == yt) {
-        num_changes@id = 1 - num_changes@id;
-      }
-      //For leader, update remaining segments, and next 5 waypoints
-      if(id == 0) {
-        for(i = 1;i < 5;) {        
-          next_wp_x[i - 1] = next_wp_x[i];
-          next_wp_y[i - 1] = next_wp_y[i];
-          i = i+1;
-        }
-        next_wp_x[4] = NEXT_X(next_wp_x[3],next_wp_y[3]);
-        next_wp_y[4] = NEXT_Y(next_wp_x[3],next_wp_y[3]);
-        remaining_segs = remaining_segs - 1;
-      }
+      REACHED_NEXT_XY();
       state = NEXT;
     }
   }
