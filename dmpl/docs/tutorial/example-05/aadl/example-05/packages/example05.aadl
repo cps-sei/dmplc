@@ -152,7 +152,14 @@ connections
   c6: subprogram access madara_thread.setinitialized -> distributed_store.setinitialized;		
 end dart_sw.i;
 
--- the collision avoidance thread
+-- a subprogram encapsulating the job function called periodically by
+-- a node's collision avoidance thread
+subprogram subprogram_collision_avoidance
+properties
+  Source_Name => "COLLISION_AVOIDANCE";
+end subprogram_collision_avoidance;
+
+-- the collision avoidance thread specification
 thread collision_avoidance
 features 
   getlocks: requires subprogram access getlocks_routine_type;
@@ -161,13 +168,40 @@ features
   get_waypoint: requires subprogram access get_waypoint_routine_type;
 end collision_avoidance;
 
--- the waypoint thread. decides on the next destination node for the
--- leader relative to the next waypoint of the leader.
+-- the collision avoidance thread implementation
+thread implementation collision_avoidance.i
+-- the job function called periodically by the thread
+calls main:{
+  c: subprogram subprogram_collision_avoidance;
+  };
+properties
+  Activate_Entrypoint_Source_Text => "example-05.dmpl";
+end collision_avoidance.i;
+
+-- a subprogram encapsulating the job function called periodically by
+-- a node's next-waypoint thread
+subprogram subprogram_waypoint
+properties
+  Source_Name => "WAYPOINT";
+end subprogram_waypoint;
+
+-- the waypoint thread specification. decides on the next destination
+-- node for the leader relative to the next waypoint of the leader.
 thread waypoint_thread
 features
   get_leader_destination : requires subprogram access get_leader_destination_routine_type;
   set_waypoint: requires subprogram access set_waypoint_routine_type;
 end waypoint_thread;
+
+-- a waypoint thread implementation
+thread implementation waypoint_thread.i
+-- the job function called periodically by the thread
+calls main:{
+  c: subprogram subprogram_waypoint;
+  };
+properties
+  Activate_Entrypoint_Source_Text => "example-05.dmpl";
+end waypoint_thread.i;
 
 -- the specification of process running on a protector node
 process protector_sw extends dart_sw
@@ -180,8 +214,8 @@ end protector_sw;
 -- software) : collision avoidance and waypoint.
 process implementation protector_sw.i extends dart_sw.i
 subcomponents
-  avoidance: thread  collision_avoidance;
-  waypoint: thread waypoint_thread;
+  avoidance: thread collision_avoidance.i;
+  waypoint: thread waypoint_thread.i;
 connections
   c10: subprogram access avoidance.getlocks -> distributed_store.getlocks;	
   c11: subprogram access avoidance.setlock -> distributed_store.setlock;
@@ -189,6 +223,17 @@ connections
   c13: subprogram access avoidance.get_waypoint -> distributed_store.getwaypoint;
   c14: subprogram access waypoint.get_leader_destination -> distributed_store.getleaderdestination;
   c15: subprogram access waypoint.set_waypoint -> distributed_store.setwaypoint;
+properties
+  Period => 100 ms applies to waypoint;
+  Zero_Slack_Scheduling::Criticality => 1 applies to waypoint;
+  Compute_Execution_Time => 10000 us .. 20000 us applies to waypoint;
+  Period => 200 ms applies to avoidance;
+  Zero_Slack_Scheduling::Criticality => 2 applies to avoidance;
+  Compute_Execution_Time => 15000 us .. 30000 us applies to avoidance;
+  -- This are 'sample' parameters. We need to get the real ones.
+  Period => 100 ms applies to madara_thread;
+  Zero_Slack_Scheduling::Criticality => 1 applies to madara_thread;
+  Compute_Execution_Time => 10000 us .. 20000 us applies to madara_thread;
 end protector_sw.i;
 
 -- a protector node specification
@@ -212,13 +257,23 @@ properties
   Actual_Processor_Binding => (reference (hw)) applies to sw;
 end protector_node.i;	
 
--- the leader navigation thread. decides the next waypoint for the
--- leader.
+-- the leader navigation thread specification. decides the next
+-- waypoint for the leader.
 thread leader_navigation
 features
   setleaderdestination: requires subprogram access set_leader_destination_routine_type;
   leader_destination: out data port coordinate;
 end leader_navigation;
+
+-- a leader navigation thread implementation
+thread implementation leader_navigation.i
+-- the job function called periodically by the thread
+calls main:{
+  c: subprogram subprogram_waypoint;
+  };
+properties
+  Activate_Entrypoint_Source_Text => "example-05.dmpl";
+end leader_navigation.i;
 
 -- the specification of process running on a leader node
 process leader_sw extends dart_sw
@@ -232,15 +287,29 @@ end leader_sw;
 -- software) : collision avoidance and navigation.
 process implementation leader_sw.i extends dart_sw.i
 subcomponents
-  avoidance: thread collision_avoidance;
-  navigation: thread leader_navigation;
+  avoidance: thread collision_avoidance.i;
+  navigation: thread leader_navigation.i;
 connections
   c21: subprogram access avoidance.getlocks -> distributed_store.getlocks;	
   c22: subprogram access avoidance.setlock -> distributed_store.setlock;
   c23: port avoidance.publish_lock -> publish_lock;		
   c24: subprogram access avoidance.get_waypoint -> distributed_store.getwaypoint;
   c25: subprogram access navigation.setleaderdestination -> distributed_store.setleaderdestination;
-  c26: port navigation.leader_destination -> leader_destination; 
+  c26: port navigation.leader_destination -> leader_destination;
+properties
+  -- Period => 1000 ms applies to adaptation_manager_thread;
+  -- Zero_Slack_Scheduling::Criticality => 1 applies to adaptation_manager_thread;
+  -- Compute_Execution_Time => 10000 us .. 20000 us applies to adaptation_manager_thread;
+  Period => 100 ms applies to navigation;
+  Zero_Slack_Scheduling::Criticality => 2 applies to navigation;
+  Compute_Execution_Time => 10000 us .. 20000 us applies to navigation;
+  Period => 200 ms applies to avoidance;
+  Zero_Slack_Scheduling::Criticality => 3 applies to avoidance;
+  Compute_Execution_Time => 15000 us .. 30000 us applies to avoidance;
+  -- This are 'sample' parameters. We need to get the real ones.
+  Period => 100 ms applies to madara_thread;
+  Zero_Slack_Scheduling::Criticality => 1 applies to madara_thread;
+  Compute_Execution_Time => 10000 us .. 20000 us applies to madara_thread;
 end leader_sw.i;
 	
 -- a leader node specification
