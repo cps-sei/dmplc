@@ -224,16 +224,19 @@ connections
   c14: subprogram access waypoint.get_leader_destination -> distributed_store.getleaderdestination;
   c15: subprogram access waypoint.set_waypoint -> distributed_store.setwaypoint;
 properties
-  Period => 100 ms applies to waypoint;
-  Zero_Slack_Scheduling::Criticality => 1 applies to waypoint;
-  Compute_Execution_Time => 10000 us .. 20000 us applies to waypoint;
-  Period => 200 ms applies to avoidance;
-  Zero_Slack_Scheduling::Criticality => 2 applies to avoidance;
-  Compute_Execution_Time => 15000 us .. 30000 us applies to avoidance;
-  -- This are 'sample' parameters. We need to get the real ones.
-  Period => 100 ms applies to madara_thread;
+  -- MADARA receiver thread timing parameters. This are 'sample'
+  -- parameters. We need to get the real ones.
+  Period => 50 ms applies to madara_thread;
   Zero_Slack_Scheduling::Criticality => 1 applies to madara_thread;
   Compute_Execution_Time => 10000 us .. 20000 us applies to madara_thread;
+  -- waypoint thread timing parameters
+  Period => 100 ms applies to waypoint;
+  Zero_Slack_Scheduling::Criticality => 3 applies to waypoint;
+  Compute_Execution_Time => 10000 us .. 20000 us applies to waypoint;
+  -- collision avoidance thread timing parameters
+  Period => 200 ms applies to avoidance;
+  Zero_Slack_Scheduling::Criticality => 4 applies to avoidance;
+  Compute_Execution_Time => 15000 us .. 30000 us applies to avoidance;
 end protector_sw.i;
 
 -- a protector node specification
@@ -275,6 +278,27 @@ properties
   Activate_Entrypoint_Source_Text => "example-05.dmpl";
 end leader_navigation.i;
 
+-- a subprogram encapsulating the job function called periodically by
+-- the leader's adaptation manager thread
+subprogram subprogram_adaptation_manager
+properties
+  Source_Name => "ADAPTATION_MANAGER";
+end subprogram_adaptation_manager;
+
+-- the adaptation manager thread specification. decides on the next formation.
+thread adaptation_manager
+end adaptation_manager;
+
+-- the adaptation manager thread implementation.
+thread implementation adaptation_manager.i
+-- the job function called periodically by the thread
+calls main:{
+  c: subprogram subprogram_adaptation_manager;
+  };
+properties
+  Activate_Entrypoint_Source_Text => "example-05.dmpl";
+end adaptation_manager.i;
+
 -- the specification of process running on a leader node
 process leader_sw extends dart_sw
 features
@@ -289,6 +313,7 @@ process implementation leader_sw.i extends dart_sw.i
 subcomponents
   avoidance: thread collision_avoidance.i;
   navigation: thread leader_navigation.i;
+  adapt_mgr : thread adaptation_manager.i;
 connections
   c21: subprogram access avoidance.getlocks -> distributed_store.getlocks;	
   c22: subprogram access avoidance.setlock -> distributed_store.setlock;
@@ -297,19 +322,23 @@ connections
   c25: subprogram access navigation.setleaderdestination -> distributed_store.setleaderdestination;
   c26: port navigation.leader_destination -> leader_destination;
 properties
-  -- Period => 1000 ms applies to adaptation_manager_thread;
-  -- Zero_Slack_Scheduling::Criticality => 1 applies to adaptation_manager_thread;
-  -- Compute_Execution_Time => 10000 us .. 20000 us applies to adaptation_manager_thread;
-  Period => 100 ms applies to navigation;
-  Zero_Slack_Scheduling::Criticality => 2 applies to navigation;
-  Compute_Execution_Time => 10000 us .. 20000 us applies to navigation;
-  Period => 200 ms applies to avoidance;
-  Zero_Slack_Scheduling::Criticality => 3 applies to avoidance;
-  Compute_Execution_Time => 15000 us .. 30000 us applies to avoidance;
-  -- This are 'sample' parameters. We need to get the real ones.
-  Period => 100 ms applies to madara_thread;
+  -- MADARA receiver thread timing parameters. This are 'sample'
+  -- parameters. We need to get the real ones.
+  Period => 50 ms applies to madara_thread;
   Zero_Slack_Scheduling::Criticality => 1 applies to madara_thread;
   Compute_Execution_Time => 10000 us .. 20000 us applies to madara_thread;
+  -- adaptation manager thread timing parameters
+  Period => 1000 ms applies to adapt_mgr;
+  Zero_Slack_Scheduling::Criticality => 2 applies to adapt_mgr;
+  Compute_Execution_Time => 10000 us .. 20000 us applies to adapt_mgr;
+  -- navigation thread timing parameters
+  Period => 100 ms applies to navigation;
+  Zero_Slack_Scheduling::Criticality => 3 applies to navigation;
+  Compute_Execution_Time => 10000 us .. 20000 us applies to navigation;
+  -- collision avoidance thread timing parameters
+  Period => 200 ms applies to avoidance;
+  Zero_Slack_Scheduling::Criticality => 4 applies to avoidance;
+  Compute_Execution_Time => 15000 us .. 30000 us applies to avoidance;
 end leader_sw.i;
 	
 -- a leader node specification
