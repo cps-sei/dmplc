@@ -424,7 +424,7 @@ NODE uav (id)
       INITIALIZE_STATE();
       state = NEXT;
     } if(state == NEXT) {
-      //compute next point on route
+      //-- if reached destination, nothing to do
       if(x == xt && y == yt) return;
       //-- the leader does not move if formation change is going on
       if(id == 0 && changing) return;
