@@ -185,6 +185,20 @@ NODE uav (id)
     return 0;
   }
 
+  //-- use this instead of NEXT_XY to enable diagonal movement. note
+  //-- collision avoidance is not guaranteed under such movement.
+  _Bool NEXT_XY_DIAGONAL ()
+  {
+    if(!waypointValid)
+      return 1;
+    xp = x; yp = y;
+    if(x < xt) xp = x + 1;
+    if(x > xt) xp = x - 1;
+    if(y < yt) yp = y + 1;
+    if(y > yt) yp = y - 1;
+    return 0;
+  }
+  
   //-- only return the next waypoint X value given the current waypoint
   unsigned char NEXT_X (unsigned char curr_x, unsigned char curr_y)
   {
