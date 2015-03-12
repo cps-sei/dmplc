@@ -128,6 +128,29 @@ std::string dmpl::CompExpr::toString() const
   return "";
 }
 
+dmpl::CallExpr::Context dmpl::CallExpr::useSymbols(const SymUser &self, Context con)
+{
+  func->useSymbols(func, con);
+  inherit(self, func);
+  BOOST_FOREACH(const Expr &su, args)
+  {
+    su->useSymbols(su, con);
+    inherit(self, su);
+  }
+  LvalExpr &lval = func->requireLval();
+  Func f = boost::dynamic_pointer_cast<Function>(lval.sym);
+  if(f != NULL)
+  {
+    f->useSymbols(f, con);
+    inherit(self, f);
+  }
+  else
+  {
+    std::cerr << "Symbol not found: " << lval.var << std::endl;
+  }
+  return con;
+}
+
 /*********************************************************************/
 //end of file
 /*********************************************************************/

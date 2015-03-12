@@ -4,10 +4,10 @@
 #include <madara/knowledge_engine/containers/Integer.h>
 #include <madara/knowledge_engine/containers/Integer_Vector.h>
 #include <madara/knowledge_engine/containers/Vector_N.h>
-#include "StaticArray.hpp"
+#include "ArrayReference.hpp"
 #include <ctime>
 
-using Madara::Knowledge_Engine::Containers::StaticArray;
+using Madara::Knowledge_Engine::Containers::ArrayReference;
 using Madara::Knowledge_Engine::Containers::Reference;
 using Madara::Knowledge_Engine::Containers::CachedReference;
 using Madara::Knowledge_Engine::Containers::Vector_N;
@@ -57,7 +57,7 @@ void perf_test()
   clock_t staticArray_start = clock();
   {
     Madara::Knowledge_Engine::Knowledge_Base kbase;
-    StaticArray<int, 100, 100, 100> a(kbase, "array");
+    ArrayReference<int, 100, 100, 100> a(kbase, "array");
     for(int i = 0; i < 100; ++i)
     {
       for(int j = 0; j < 100; ++j)
@@ -89,7 +89,7 @@ void perf_test()
   clock_t lazyArray_start = clock();
   {
     Madara::Knowledge_Engine::Knowledge_Base kbase;
-    StaticArray<Lazy<int, Reference<int> >, 1000000> a(kbase, "array");
+    ArrayReference<Lazy<int, Reference<int> >, 1000000> a(kbase, "array");
     for(int i = 0; i < 1000000; ++i)
     {
       a[i] = i;
@@ -101,7 +101,7 @@ void perf_test()
   clock_t proactiveArray_start = clock(), proactiveArray_init;
   {
     Madara::Knowledge_Engine::Knowledge_Base kbase;
-    StaticArray<Proactive<int, Reference<int> >, 1000000> a(kbase, "array");
+    ArrayReference<Proactive<int, Reference<int> >, 1000000> a(kbase, "array");
     a[0];
     proactiveArray_init = clock();
     for(int i = 0; i < 1000000; ++i)
@@ -118,9 +118,9 @@ void perf_test()
 int main()
 {
   Madara::Knowledge_Engine::Knowledge_Base kbase;
-  Madara::Knowledge_Engine::Containers::StaticArray<int, 5, 6, 7, 8, 9> v(kbase.get_context(), "vec");
+  Madara::Knowledge_Engine::Containers::ArrayReference<int, 5, 6, 7, 8, 9> v(kbase.get_context(), "vec");
   std::cout << v[1][2][3][4][5] << std::endl;
-  Madara::Knowledge_Engine::Containers::StaticArray<int, 5, 6, 7> vec(kbase.get_context(), "vec");
+  Madara::Knowledge_Engine::Containers::ArrayReference<int, 5, 6, 7> vec(kbase.get_context(), "vec");
   //auto r1 = vec[1];
   //auto r2 = vec[1][2];
   int r2 = vec[3][1][1];
@@ -151,51 +151,51 @@ int main()
 #ifdef USE_USING_TYPE
   decltype(vec)::array_type array;
 #else
-  StaticArray<int, 5, 6, 7>::array_type array;
+  ArrayReference<int, 5, 6, 7>::array_type array;
 #endif
   vec.get_into(array);
-  std::cout << "Local StaticArray: " << array[1][2][3] << std::endl;
+  std::cout << "Local ArrayReference: " << array[1][2][3] << std::endl;
   array[1][2][3] += 1;
-  std::cout << "Base StaticArray: " << vec[1][2][3] << std::endl;
+  std::cout << "Base ArrayReference: " << vec[1][2][3] << std::endl;
   //vec.set_from(array);
   vec.update_from(array);
-  std::cout << "Base StaticArray: " << vec[1][2][3] << std::endl;
+  std::cout << "Base ArrayReference: " << vec[1][2][3] << std::endl;
 
 #ifdef USE_USING_TYPE
   decltype(vec)::get_vector_type<Reference<int> > ref_vector;
 #else
-  StaticArray<int, 5, 6, 7>::get_vector_type_compat<Reference<int> >::type ref_vector;
+  ArrayReference<int, 5, 6, 7>::get_vector_type_compat<Reference<int> >::type ref_vector;
 #endif
   vec.get_into(ref_vector);
-  std::cout << "Reference StaticArray: " << ref_vector[1][2][3] << std::endl;
-  std::cout << "Reference StaticArray: " << ref_vector[1][2][3].get_name() << std::endl;
+  std::cout << "Reference ArrayReference: " << ref_vector[1][2][3] << std::endl;
+  std::cout << "Reference ArrayReference: " << ref_vector[1][2][3].get_name() << std::endl;
   ref_vector[1][2][3] += 1;
-  std::cout << "Reference StaticArray: " << ref_vector[1][2][3] << std::endl;
-  std::cout << "Base StaticArray: " << vec[1][2][3] << std::endl;
+  std::cout << "Reference ArrayReference: " << ref_vector[1][2][3] << std::endl;
+  std::cout << "Base ArrayReference: " << vec[1][2][3] << std::endl;
 
 #ifdef USE_USING_TYPE
   decltype(vec)::get_vector_type<CachedReference<int> > carray;
 #else
-  StaticArray<int, 5, 6, 7>::get_vector_type_compat<CachedReference<int> >::type carray;
+  ArrayReference<int, 5, 6, 7>::get_vector_type_compat<CachedReference<int> >::type carray;
 #endif
   vec.get_into(carray);
-  std::cout << "Cached StaticArray: " << carray[1][2][3] << std::endl;
+  std::cout << "Cached ArrayReference: " << carray[1][2][3] << std::endl;
   carray[1][2][3] += 1;
-  std::cout << "Cached StaticArray: " << carray[1][2][3] << std::endl;
-  std::cout << "Base StaticArray before push: " << vec[1][2][3] << std::endl;
+  std::cout << "Cached ArrayReference: " << carray[1][2][3] << std::endl;
+  std::cout << "Base ArrayReference before push: " << vec[1][2][3] << std::endl;
   vec.push_all(carray);
-  std::cout << "Base StaticArray after push: " << vec[1][2][3] << std::endl;
+  std::cout << "Base ArrayReference after push: " << vec[1][2][3] << std::endl;
   vec[1][2][3] += 1;
   carray[1][2][3] = 42;
-  std::cout << "Base StaticArray before pull: " << vec[1][2][3] << std::endl;
-  std::cout << "Cached StaticArray before pull: " << carray[1][2][3] << std::endl;
+  std::cout << "Base ArrayReference before pull: " << vec[1][2][3] << std::endl;
+  std::cout << "Cached ArrayReference before pull: " << carray[1][2][3] << std::endl;
   vec.pull_all(carray);
-  std::cout << "Cached StaticArray after pull: " << carray[1][2][3] << std::endl;
+  std::cout << "Cached ArrayReference after pull: " << carray[1][2][3] << std::endl;
   carray[1][2][3] = 13;
   vec[1][2][3] += 1;
-  std::cout << "Cached StaticArray before pull_keep_local: " << carray[1][2][3] << std::endl;
+  std::cout << "Cached ArrayReference before pull_keep_local: " << carray[1][2][3] << std::endl;
   vec.pull_all_keep_local(carray);
-  std::cout << "Cached StaticArray after pull_keep_local: " << carray[1][2][3] << std::endl;
+  std::cout << "Cached ArrayReference after pull_keep_local: " << carray[1][2][3] << std::endl;
 
   vec[1][2][0] = 123;
   vec[1][2][2] = vec[1][2][0];
@@ -214,24 +214,24 @@ int main()
   vec[4][2][1] += 1;
   std::cout << "test chained assign: " << vec[4][2][0] << " != " << vec[4][2][1] << " == 1235" << std::endl;
 
-  Madara::Knowledge_Engine::Containers::StaticArray<Madara::Knowledge_Record, 8, 4, 3> kvec(kbase.get_context(), "kvec");
+  Madara::Knowledge_Engine::Containers::ArrayReference<Madara::Knowledge_Record, 8, 4, 3> kvec(kbase.get_context(), "kvec");
   kvec[1][1][1] = (long int)5;
   std::cout << kvec[1][1][1].get().to_integer() << std::endl;
 
-  Madara::Knowledge_Engine::Containers::StaticArray<int, 6, 7> sub_vec(vec[1]);
+  Madara::Knowledge_Engine::Containers::ArrayReference<int, 6, 7> sub_vec(vec[1]);
   std::cout << sub_vec[2][3] << std::endl;
-  Madara::Knowledge_Engine::Containers::StaticArray<int, 7> sub_sub_vec(sub_vec[2]);
+  Madara::Knowledge_Engine::Containers::ArrayReference<int, 7> sub_sub_vec(sub_vec[2]);
   std::cout << sub_sub_vec[4] << std::endl;
 
 #ifdef USE_VAR_TMPL
-  StaticArray<int, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15> big_array(kbase.get_context(), "big_array");
+  ArrayReference<int, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15> big_array(kbase.get_context(), "big_array");
   Reference<int> e = big_array[0][1][2][3][4][5][6][7][8][9][10][11][12][13][14];
   e = 123;
   std::cout << e << "  " << big_array[0][1][2][3][4][5][6][7][8][9][10][11][12][13][14] << std::endl;
 #endif
 
-  StaticArray<int, 6, VAR_LEN> var_arr(kbase, "variable_array", 0, 20);
-  StaticArray<int, 6, VAR_LEN>::vector_type var_arr_vec;
+  ArrayReference<int, 6, VAR_LEN> var_arr(kbase, "variable_array", 0, 20);
+  ArrayReference<int, 6, VAR_LEN>::vector_type var_arr_vec;
   try
   {
     var_arr.get_into(var_arr_vec);
@@ -247,12 +247,12 @@ int main()
   LOG(var_arr[1][25]);
 
 #ifdef USE_VAR_TMPL
-  StaticArray<int, 6, 30> resized_arr(var_arr);
+  ArrayReference<int, 6, 30> resized_arr(var_arr);
   std::cout << "resized_arr[1][25] == " << resized_arr[1][25] << std::endl;
 #endif
 
-  StaticArray< ::Madara::Knowledge_Engine::Containers::StorageManager::__INTERNAL__::Stateless<int>, 6, VAR_LEN, VAR_LEN> var_arr2(kbase, "variable_array");
-  StaticArray<int, 6, VAR_LEN, VAR_LEN, VAR_LEN> var_arr3(kbase, "variable_array");
+  ArrayReference< ::Madara::Knowledge_Engine::Containers::StorageManager::__INTERNAL__::Stateless<int>, 6, VAR_LEN, VAR_LEN> var_arr2(kbase, "variable_array");
+  ArrayReference<int, 6, VAR_LEN, VAR_LEN, VAR_LEN> var_arr3(kbase, "variable_array");
 #ifdef USE_VAR_TMPL
   LOG(sizeof(big_array));
 #endif
@@ -299,7 +299,7 @@ int main()
   LOG(var_arr_vec.size());
   LOG(var_arr_vec[1].size());
 
-  StaticArray<Lazy<int, Reference<int> >, 3, 4, 5> lazy_array(kbase, "lazy_array");
+  ArrayReference<Lazy<int, Reference<int> >, 3, 4, 5> lazy_array(kbase, "lazy_array");
   LOG(lazy_array.get_dimension<0>().dims);
   LOG(lazy_array.get_dimension<1>().dims);
   LOG(lazy_array.get_dimension<2>().dims);
@@ -311,14 +311,14 @@ int main()
   LOG(lazy_array[1][2][3] = 32);
   LOG(lazy_array[1][2][3]);
 
-  StaticArray<Lazy<int, Reference<int> >, 3> lazy_array_1D(kbase, "lazy_array");
+  ArrayReference<Lazy<int, Reference<int> >, 3> lazy_array_1D(kbase, "lazy_array");
   lazy_array_1D[2] = 678;
   LOG(lazy_array_1D[0].get_name());
 
-  StaticArray<int, 10> uncached_array(kbase, "cached_array");
+  ArrayReference<int, 10> uncached_array(kbase, "cached_array");
   uncached_array[0] = 5;
   LOG(uncached_array[0]);
-  StaticArray<Proactive<int, CachedReference<int> >, 10> cached_array(kbase, "cached_array");
+  ArrayReference<Proactive<int, CachedReference<int> >, 10> cached_array(kbase, "cached_array");
   LOG(cached_array[0]);
   LOG(cached_array[0].get_name());
   LOG(cached_array[1].get_name());
@@ -336,6 +336,8 @@ int main()
   LOG(cached_array[1]);
   cached_array[1].pull();
   LOG(cached_array[1]);
+
+  uncached_array.mark_modified();
 
   LOG(OK_count);
   LOG(FAIL_count);

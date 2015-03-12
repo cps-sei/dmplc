@@ -2,11 +2,25 @@
 
 DEBUG=1
 
+function usage {
+    echo "Usage : $0 file.mission output.log"
+}
+
+#get inputs
+MISSION="$1"
+
+if [ "$#" != "2" ]; then
+    usage
+    exit 1
+fi
+
+. $MISSION
+
 function cleanup {
     echo "Cleaning up ..."
 
     #kill nodes and VREP
-    killall example-02 vrep vrep.sh
+    killall $BIN vrep vrep.sh
     
     #restore the VREP system/settings.dat
     cp $SDF.saved.mcda-vrep $SDF
@@ -22,28 +36,6 @@ INIT_PORT="19905"
 #get the directory where this script is located
 SCDIR=$(dirname $(realpath $0))
 
-function usage {
-    echo "Usage : $0 <out-dir> <map-name> <grid-size> <init-x> <init-y> <final-x> <final-y>"
-}
-
-#get inputs
-OUTDIR="$1"
-MAPNAME="$2"
-GRIDSIZE=$3
-IX=$4
-IY=$5
-FX=$6
-FY=$7
-
-#get the number of nodes
-NODENUM=5
-#echo $NODENUM
-
-if [ "$#" != "7" ]; then
-    usage
-    exit 1
-fi
-
 MAPFILE=$SCDIR/dart-${MAPNAME}.ttt
 
 if [ ! -e "$MAPFILE" ]; then
@@ -52,7 +44,6 @@ if [ ! -e "$MAPFILE" ]; then
 fi
 
 #compile tutorial 2
-rm -f example-02 example-02.cpp
 
 if [ "$MAPNAME" == "small" ]; then
     TopY=2.25
@@ -66,7 +57,10 @@ elif [ "$MAPNAME" == "large" ]; then
     RightX=6.5
 fi
 
-make example-02 GRIDSIZE=$GRIDSIZE TopY=$TopY LeftX=$LeftX BottomY=$BottomY RightX=$RightX
+dmplc -e -n $NODENUM --DX $GRIDSIZE --DY $GRIDSIZE --DTopY $TopY --DBottomY $BottomY --DLeftX $LeftX --DRightX $RightX -g -o ${BIN}.cpp $DMPL
+CFLAGS="-g -Og -std=c++11 -I$DMPL_ROOT/src -I$VREP_ROOT/programming/remoteApi -I$ACE_ROOT -I$MADARA_ROOT/include -I$GAMS_ROOT/src -I$DMPL_ROOT/include"
+LIBS="$MADARA_ROOT/libMADARA.so $ACE_ROOT/lib/libACE.so $GAMS_ROOT/lib/libGAMS.so -lpthread"
+g++ $CFLAGS -o $BIN ${BIN}.cpp $LIBS
 
 #create the output directory and get its realpath
 rm -fr $OUTDIR; mkdir $OUTDIR
@@ -104,11 +98,13 @@ mv $RAC.saved.mcda-vrep $RAC
 #start the nodes
 GDB=""
 [ "$DEBUG" -ne 0 ] && GDB="gdb -ex=r --args"
-$GDB ./example-02 --platform vrep::::0.2 --id 1 --var_x $((IX+1)) --var_y $((IY+1)) &> $OUTDIR/node1.out &
-$GDB ./example-02 --platform vrep::::0.2 --id 2 --var_x $((IX-1)) --var_y $((IY+1)) &> $OUTDIR/node2.out &
-$GDB ./example-02 --platform vrep::::0.2 --id 3 --var_x $((IX-1)) --var_y $((IY-1)) &> $OUTDIR/node3.out &
-$GDB ./example-02 --platform vrep::::0.2 --id 4 --var_x $((IX+1)) --var_y $((IY-1)) &> $OUTDIR/node4.out &
-$GDB ./example-02 -e test.log --platform vrep::::0.2 --id 0 --var_x $IX --var_y $IY --var_xt $FX --var_yt $FY # &> $OUTDIR/node0.out &
+for x in `seq 1 $NODENUM`; do
+echo $x
+args_var=ARGS_$x
+args="$(eval echo \$$args_var)"
+$GDB $BIN -e $OUTDIR/expect${x}.log --platform vrep::::0.2 --id $x $args &> $OUTDIR/node${x}.out &
+done
+$GDB $BIN -e $OUTDIR/expect0.log --platform vrep::::0.2 --id 0 $ARGS_0 &> $OUTDIR/node0.out &
 
 printf "press enter terminate the simulation ..."
 read X

@@ -116,49 +116,41 @@ dmpl::madara::Function_Visitor::enterLval (LvalExpr & expression)
 void
 dmpl::madara::Function_Visitor::exitLval (LvalExpr & expression)
 {
+  Sym symbol = expression.sym;
+  Var var = boost::dynamic_pointer_cast<Variable>(symbol);
   int indices = expression.indices.size();
   bool atNode = expression.node != NULL;
   if(atNode)
     indices++;
-  buffer_ << "/* " << expression.toString() << "  atNode: " << expression.node << "  " << expression.node.get() << "  " << indices << " */";
-  if (indices > 0)
+  if (symbol == NULL)
   {
     buffer_ << expression.var;
-
-    // indexing into a multi-dimensional array requires a different operator
-    if (indices > 1)
-      buffer_ << "(";
-    else
-      buffer_ << "[";
-
-    // iterate over each index
-    bool started = false;
-    ExprList allIndices = expression.indices;
-    if(atNode)
-      allIndices.push_back(expression.node);
-    BOOST_FOREACH (Expr & expr, allIndices)
+  }
+  else if (var != NULL && id_map_.find (var) != id_map_.end ())
+  {
+    buffer_ << id_map_[var];
+  }
+  else
+  {
+    buffer_ << symbol->getName();
+    if (indices > 0)
     {
-      if (started)
-        buffer_ << ", ";
-
-      visit (expr);
-
-      if (!started)
-        started = true;
-    }
-
-    if (indices > 1)
-      buffer_ << ")";
-    else
-      buffer_ << "]";
-
-
-    if (function_ && function_->temps.find (expression.var) == function_->temps.end ()
-        && expression.indices.size () != 1)
-    {
-      //buffer_ << ".to_integer ()";
+      // iterate over each index
+      if(atNode)
+      {
+        buffer_ << "[";
+        visit (expression.node);
+        buffer_ << "]";
+      }
+      BOOST_FOREACH (Expr & expr, expression.indices)
+      {
+        buffer_ << "[";
+        visit (expr);
+        buffer_ << "]";
+      }
     }
   }
+#if 0
   else
   {
     // if this is substitution variable, do the substitution
@@ -168,15 +160,16 @@ dmpl::madara::Function_Visitor::exitLval (LvalExpr & expression)
     // otherwise, we need to determine if this is a MADARA container or not
     else
     {
-      if (function_ && function_->temps.count (expression.var) == 0 &&
+      /*if (function_ && function_->temps.count (expression.var) == 0 &&
           function_->params.count (expression.var) == 0 &&
           builder_.program.constDef.count (expression.var) == 0)
       {
         buffer_ << "*";
-      }
+      }*/
       buffer_ << expression.var;
     }
   }
+#endif
 }
 
 
@@ -240,7 +233,13 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
 {
   std::string spacer (indentation_, ' '), sub_spacer (indentation_ + 2, ' ');
 
-  std::string func_name = expression.func->toString ();
+  LvalExpr &lval = expression.func->requireLval ();
+  if(lval.node != NULL)
+  {
+    std::cerr << "Error: cannot use @ operator on function calls not supported in this output mode" << std::endl;
+    exit(1);
+  }
+  std::string func_name = lval.var;
 
   //if (do_vrep_ && func_name == "MOVE_TO") func_name = "VREP_MOVE_TO";
 
@@ -410,7 +409,7 @@ dmpl::madara::Function_Visitor::exitEXO (EXOExpr & expression)
     }
 
     buffer_ << "(";
-    buffer_ << "*id == " << i << " && (";
+    buffer_ << "id == " << i << " && (";
 
     bool started_j = false;
     for (unsigned int j = 0; j < processes; ++j)
@@ -422,11 +421,11 @@ dmpl::madara::Function_Visitor::exitEXO (EXOExpr & expression)
       if (started_j)
         buffer_ << " || ";
 
-      id_map_ [expression.id] = j;
+      id_map_ [expression.idVar] = j;
       
       visit (expression.arg);
 
-      id_map_.erase (expression.id);
+      id_map_.erase (expression.idVar);
 
       if (!started_j)
         started_j = true;
@@ -463,7 +462,7 @@ dmpl::madara::Function_Visitor::exitEXH (EXHExpr & expression)
     }
 
     buffer_ << "(";
-    buffer_ << "*id == " << i << " && (";
+    buffer_ << "id == " << i << " && (";
 
     bool started_j = false;
     for (unsigned int j = i + 1; j < processes; ++j)
@@ -471,11 +470,11 @@ dmpl::madara::Function_Visitor::exitEXH (EXHExpr & expression)
       if (started_j)
         buffer_ << " || ";
 
-      id_map_ [expression.id] = j;
+      id_map_ [expression.idVar] = j;
       
       visit (expression.arg);
 
-      id_map_.erase (expression.id);
+      id_map_.erase (expression.idVar);
 
       if (!started_j)
         started_j = true;
@@ -512,7 +511,7 @@ dmpl::madara::Function_Visitor::exitEXL (EXLExpr & expression)
     }
 
     buffer_ << "(";
-    buffer_ << "*id == " << i << " && (";
+    buffer_ << "id == " << i << " && (";
 
     bool started_j = false;
     for (unsigned int j = 0; j < i; ++j)
@@ -520,11 +519,11 @@ dmpl::madara::Function_Visitor::exitEXL (EXLExpr & expression)
       if (started_j)
         buffer_ << " || ";
 
-      id_map_ [expression.id] = j;
+      id_map_ [expression.idVar] = j;
       
       visit (expression.arg);
 
-      id_map_.erase (expression.id);
+      id_map_.erase (expression.idVar);
 
       if (!started_j)
         started_j = true;
@@ -548,6 +547,8 @@ dmpl::madara::Function_Visitor::enterPrivate (PrivateStmt & statement)
 void
 dmpl::madara::Function_Visitor::exitPrivate (PrivateStmt & statement)
 {
+  throw std::runtime_error("PRIVATE not supported");
+  /*
   std::string spacer (indentation_, ' ');
 
   buffer_ << "\n" << spacer << "// Enabling PRIVATE-only modifications\n\n";
@@ -559,7 +560,7 @@ dmpl::madara::Function_Visitor::exitPrivate (PrivateStmt & statement)
   privatize_ = false;
 
   buffer_ << spacer << "// Disabling PRIVATE-only modifications\n\n";
-
+  */
 }
 
 
@@ -603,12 +604,26 @@ dmpl::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
   if (lhs)
   {
     int indices = lhs->indices.size();
-    bool atNode = lhs->node != NULL;
-    if(atNode)
+    bool isGlobal = lhs->sym != NULL && lhs->sym->getScope() == Variable::GLOBAL;
+    if(isGlobal)
       indices++;
-    buffer_ << "/* Assign " << lhs->toString() << "  atNode: " << lhs->node << "  " << lhs->node.get() << "  " << indices << " */";
+    if(lhs->node != NULL)
+    {
+      if(!isGlobal)
+      {
+        std::cerr << "Error: usage of @ operator with non-GLOBAL variable" << std::endl;
+        exit(1);
+      }
+      else
+      {
+        std::cerr << "Error: assignment using @ operator not permitted" << std::endl;
+        exit(1);
+      }
+    }
+    //buffer_ << "/* Assign " << lhs->toString() << "  atNode: " << lhs->node << "  " << lhs->node.get() << "  " << indices << " */";
     if (indices == 0)
     {
+      /*
       bool is_private = false;
       if (privatize_ &&
           node_.globVars.find (lhs->var) != node_.globVars.end ())
@@ -622,6 +637,7 @@ dmpl::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
         buffer_ << lhs->var;
         buffer_ << ".set_settings (private_update));\n";
       }
+      */
 
       buffer_ << spacer;
       buffer_ << lhs->var;
@@ -630,6 +646,7 @@ dmpl::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
 
       buffer_ << ";\n";
 
+      /*
       if (is_private)
       {
         buffer_ << spacer;
@@ -638,59 +655,38 @@ dmpl::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
         buffer_ << lhs->var;
         buffer_ << ".set_settings (old_update_settings);\n\n";
       }
+      */
     }
     else
     {
-      if (indices == 1)
+      if (indices >= 1)
       {
-        buffer_ << spacer;
         buffer_ << lhs->var;
-        buffer_ << ".set (";
-        visit (atNode ? lhs->node : *(lhs->indices.begin ()));
-        buffer_ << ", Integer (";
-        visit (statement.rhs);
-        buffer_ << ")";
 
-        if (privatize_)
-          buffer_ << ", private_update";
 
-        buffer_ << ");\n";
-      }
-      else
-      {
-        ExprList allIndices = lhs->indices;
-        if(atNode)
-          allIndices.push_back(lhs->node);
-
-        buffer_ << spacer;
-        buffer_ << "{\n";
-
-        buffer_ << sub_spacer;
-        buffer_ << "containers::Array_N::Index index (" << indices;
-        buffer_ << ");\n";
-        
-        int i = 0;
-        BOOST_FOREACH (Expr & expression, allIndices)
+        // iterate over each index
+        if(isGlobal)
         {
-          buffer_ << sub_spacer << "index[";
-          buffer_ << i;
-          buffer_ << "] = ";
-          visit (expression);
-          buffer_ << ";\n";
-          ++i;
+          buffer_ << "[";
+          buffer_ << node_.idVar->getName();
+          buffer_ << "]";
         }
-        
-        buffer_ << sub_spacer << lhs->var;
-        buffer_ << ".set (index, ";
-        buffer_ << "Integer (";
-        visit (statement.rhs);
-        buffer_ << ")";
-        buffer_ << ");\n";
+        BOOST_FOREACH (Expr & expr, lhs->indices)
+        {
+          buffer_ << "[";
+          visit (expr);
+          buffer_ << "]";
+        }
 
+        buffer_ << " = ";
+
+        visit (statement.rhs);
+        buffer_ << ";\n";
+
+        /*
         if (privatize_)
           buffer_ << ", private_update";
-
-        buffer_ << spacer << "}\n";
+        */
       }
     }
   }
@@ -785,7 +781,7 @@ dmpl::madara::Function_Visitor::exitFor (ForStmt & statement)
     visit (init);
   }
 
-  buffer_ << "; ";
+  //buffer_ << "; ";
 
   BOOST_FOREACH (const Expr & expr, statement.test)
   {
@@ -890,9 +886,9 @@ dmpl::madara::Function_Visitor::exitRet (RetStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
-  buffer_ << spacer << "return (";
+  buffer_ << spacer << "return (Integer(";
   visit(statement.retVal);
-  buffer_ << ");\n";
+  buffer_ << "));\n";
 }
 
 
@@ -1226,7 +1222,7 @@ dmpl::madara::Function_Visitor::exitFAO (FAOStmt & statement)
     function_->temps [statement.id] = Var(new Variable (statement.id));
   }
   
-  buffer_ << spacer_2 << "if (" << statement.id << " == *id)\n";
+  buffer_ << spacer_2 << "if (" << statement.id << " == id)\n";
   buffer_ << spacer_3 << "continue;\n\n";
   
   visit (statement.data);
@@ -1260,7 +1256,7 @@ dmpl::madara::Function_Visitor::exitFAOL (FAOLStmt & statement)
   buffer_ << statement.id;
   buffer_ << " = 0; ";
   buffer_ << statement.id;
-  buffer_ << " < *id; ++";
+  buffer_ << " < id; ++";
   buffer_ << statement.id;
   buffer_ << ")\n";
   
@@ -1305,7 +1301,7 @@ dmpl::madara::Function_Visitor::exitFAOH (FAOHStmt & statement)
   buffer_ << "for (";
   buffer_ << "unsigned int ";
   buffer_ << statement.id;
-  buffer_ << " = *id + 1; ";
+  buffer_ << " = id + 1; ";
   buffer_ << statement.id;
   buffer_ << " < processes; ++";
   buffer_ << statement.id;

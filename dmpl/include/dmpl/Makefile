@@ -1,4 +1,4 @@
-FILES=TestMadaraVector.cpp StaticArray.hpp Reference.hpp knowledge_cast.hpp StorageManager.hpp LazyStorage.hpp StatelessStorage.hpp ProactiveStorage.hpp
+FILES=TestMadaraVector.cpp ArrayReference.hpp Reference.hpp knowledge_cast.hpp StorageManager.hpp LazyStorage.hpp StatelessStorage.hpp ProactiveStorage.hpp
 all: test test-c98
 
 release: test_release test_release-c98

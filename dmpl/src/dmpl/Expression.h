@@ -192,6 +192,8 @@ namespace dmpl
       sym = con.findSym(var);
       if(sym)
         sym.use(self, con.isLHS, node != NULL, con.inExpect());
+      else
+        std::cerr << "Couldn't find symbol: " << var << std::endl;
       return con;
     }
 
@@ -261,8 +263,11 @@ namespace dmpl
       SymUserList ret;
       ret.push_back(func);
       ret.insert(ret.end(), args.begin(), args.end());
+      std::cerr << "CallExpr getParents " << ret.size() << std::endl;
       return ret;
     }
+
+    virtual Context useSymbols(const SymUser &self, Context con);
 
 
     bool ignore_return;
@@ -292,6 +297,7 @@ namespace dmpl
     {
       if(idVar && idVar->name == name)
         return boost::static_pointer_cast<Sym::element_type>(idVar);
+      return Sym();
     }
 
     void reg(SymbolUser::Context &con)
@@ -299,7 +305,10 @@ namespace dmpl
       con.addBinder(this);
     }
 
-    SingleIDBinder(const std::string &name) : id(name), idVar(new Variable(name, intType())) {}
+    SingleIDBinder(const std::string &name) : id(name), idVar(new Variable(name, intType()))
+    {
+      idVar->scope = Variable::INDEP_ID;
+    }
   };
 
   class DualIDBinder : public SymbolBinder
@@ -314,6 +323,7 @@ namespace dmpl
         return boost::static_pointer_cast<Sym::element_type>(id1Var);
       if(id2Var && id2Var->name == name)
         return boost::static_pointer_cast<Sym::element_type>(id1Var);
+      return Sym();
     }
 
     void reg(SymbolUser::Context &con)
@@ -323,7 +333,11 @@ namespace dmpl
 
     DualIDBinder(const std::string &name1, const std::string &name2) :
         id1(name1), id1Var(new Variable(name1, intType())),
-        id2(name2), id2Var(new Variable(name2, intType())) {}
+        id2(name2), id2Var(new Variable(name2, intType()))
+    {
+      id1Var->scope = Variable::INDEP_ID;
+      id2Var->scope = Variable::INDEP_ID;
+    }
   };
 
   //an exists other expression

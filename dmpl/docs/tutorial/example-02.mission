@@ -1,0 +1,22 @@
+#!/bin/bash
+
+DMPL="example-02.dmpl example-02-AADL.dmpl"
+BIN=example-02
+
+OUTDIR=outdir
+MAPNAME=small
+GRIDSIZE=10
+NODENUM=5
+
+MISSION_TIME=240
+
+IX=2
+IY=2
+FX=8
+FY=8
+
+ARGS_0="--var_x $IX --var_y $IY --var_xt $FX --var_yt $FY"
+ARGS_1="--var_x $((IX+1)) --var_y $((IY+1))"
+ARGS_2="--var_x $((IX-1)) --var_y $((IY+1))"
+ARGS_3="--var_x $((IX-1)) --var_y $((IY-1))"
+ARGS_4="--var_x $((IX+1)) --var_y $((IY-1))"

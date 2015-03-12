@@ -83,6 +83,8 @@ CONST RightX = 6.5;
 EXTERN int my_sleep(int seconds);
 EXTERN void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
 EXTERN void print_int(int i);
+EXTERN double GET_LAT();
+EXTERN double GET_LNG();
 
 
 NODE uav (id)
@@ -103,6 +105,14 @@ NODE uav (id)
 
   expect (x < 5);
   expect YLT5(y < 5);
+
+  double coverage()
+  {
+    return GET_LAT() + GET_LNG()@0;
+  }
+
+  @AT_LEAST(0.5)
+  expect COVERAGE(coverage() > 0.9);
   
   _Bool NEXT_XY () {
     if(!waypointValid)
@@ -127,8 +137,8 @@ NODE uav (id)
       waypointValid = 1;
     }
     if(id == 0) {
-      ly@0 = yp;
-      lx@0 = xp;
+      ly = yp;
+      lx = xp;
     } if(id == 1) {
       xt = lx@0 + 1;
       yt = ly@0 + 1;
@@ -154,12 +164,12 @@ NODE uav (id)
     print_state(X,Y,id,x,y,xt,yt);
     //my_sleep(1);
     if(state == INITS) {
-      lock[x][y]@id = 1;
+      lock[x][y] = 1;
       if(id == 0) {
-        lx@0 = x;
-        ly@0 = y;
+        lx = x;
+        ly = y;
       }
-      init@0 = 1;
+      init = 1;
       state = NEXT;
     } if(state == NEXT) {
       //compute next point on route
@@ -169,7 +179,7 @@ NODE uav (id)
     } else if(state == REQUEST) {
       //request the lock but only if it is free
       if(EXISTS_LOWER(idp,lock[xp][yp]@idp != 0)) return;
-      lock[xp][yp]@id = 1;
+      lock[xp][yp] = 1;
       state = WAITING;
     } else if(state == WAITING) {
       //grab the lock if we are the highest 
@@ -179,7 +189,7 @@ NODE uav (id)
     } else if(state == MOVE) {
       //now we have the lock on (x’,y’)
       if(GRID_MOVE(xp,yp,0.5)) return;
-      lock[x][y]@id = 0; 
+      lock[x][y] = 0; 
       x = xp; y = yp;
       state = NEXT;
     }

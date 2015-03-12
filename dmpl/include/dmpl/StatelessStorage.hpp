@@ -156,12 +156,12 @@ struct Stateless
     typedef T data_type;
 
     template <typename X>
-    friend class StaticArrayReference;
+    friend class ArrayReferenceReference;
 
     friend class identity<A>::type;
 
     template <typename X>
-    friend class StaticArray_0;
+    friend class ArrayReference_0;
 
     template <typename X>
     friend class RefDimensionMixin;
@@ -217,12 +217,12 @@ struct Stateless
 
   public:
     template <typename X>
-    friend class StaticArrayReference;
+    friend class ArrayReferenceReference;
 
     friend class identity<A>::type;
 
     template <typename X>
-    friend class StaticArray_0;
+    friend class ArrayReference_0;
 
     template <typename X>
     friend class RefDimensionMixin;
@@ -273,12 +273,12 @@ struct Stateless
     typedef typename array_type::value_type value_type;
 
     template <typename X>
-    friend class StaticArrayReference;
+    friend class ArrayReferenceReference;
 
     friend class identity<A>::type;
 
     //template <typename X>
-    //friend class StaticArray_0;
+    //friend class ArrayReference_0;
 
     reference_type &get_reference()
     {
@@ -338,19 +338,37 @@ struct Stateless
       return static_cast<const size_mgr &>(*this);
     }
   public:
-    typedef StaticArrayReference<typename StaticArray_0<typename A::storage_specifier>::type> element_reference_type;
+    typedef typename ArrayReference_0<typename A::storage_specifier>::type base_array_type;
+    typedef ArrayReferenceReference<base_array_type> element_reference_type;
 #ifdef USE_RVAL_REF
     typedef element_reference_type &&element_rvalue_type;
 #endif
+  protected:
+    element_reference_type &get_parent()
+    {
+      return static_cast<element_reference_type &>(*this);
+    }
+
+    const element_reference_type &get_parent() const
+    {
+      return static_cast<const element_reference_type &>(*this);
+    }
+
+    base_array_type &get_array() const
+    {
+      return get_parent().array;
+    }
+  public:
+    
 
     using container_type::operator=;
 
     template <typename X>
-    friend class StaticArrayReference;
+    friend class ArrayReferenceReference;
 
     friend class identity<A>::type;
 
-    friend class identity<typename StaticArray_0<this_type>::type >::type;
+    friend class identity<typename ArrayReference_0<this_type>::type >::type;
 
   protected:
     element_reference_type dereference()
@@ -371,17 +389,50 @@ struct Stateless
   public:
     const T &operator=(const RefBaseMixin &o)
     {
-      return set(o); }
+      return set(o);
+    }
 
     void mark_modified()
     {
-      this->get_context().mark_modified(
-          this->get_context().get_ref(this->get_name(), this->get_settings())
-        );
+      //std::cerr << "Ref mark_modified " << this->get_name() << std::endl;
+
+      const Knowledge_Update_Settings &settings = this->get_settings_cref();
+      //Knowledge_Record *rec = this->get_context().get_record(this->get_name(), settings);
+      //std::cerr << "Value: " << rec->to_integer() << std::endl;
+      //std::cerr << "Size: " << rec->size() << std::endl;
+      Variable_Reference ref = this->get_context().get_ref(this->get_name(), settings);
+      //std::cerr << "Value: " << this->get_context().get(ref, settings) << std::endl;
+      //this->get_context().mark_modified(ref);
+      this->get_context().set(ref, this->get_context().get(ref,settings));
+    }
+
+    Thread_Safe_Context &get_context() const
+    {
+      return get_array().get_context();
+    }
+
+    /// Returns previous settings
+    /*
+    Knowledge_Update_Settings *set_settings(Knowledge_Update_Settings *new_settings)
+    {
+      return get_array().set_settings(new_settings);
+      Knowledge_Update_Settings *old_settings = settings;
+      settings = new_settings;
+      return old_settings;
+    }*/
+
+    Knowledge_Update_Settings *get_settings() const
+    {
+      return get_array().get_settings();
+    }
+
+    const Knowledge_Update_Settings &get_settings_cref() const
+    {
+      return get_array().get_settings_cref();
     }
 
     Knowledge_Record get_knowledge_record() const {
-      return this->get_context().get(this->get_name(), this->get_settings());
+      return this->get_context().get(this->get_name(), this->get_settings_cref());
     }
 
     T get() const
@@ -411,16 +462,14 @@ struct Stateless
 #endif
 
     RefBaseMixin(const A &a)
-      : container_type(a.get_context(), a.get_settings()),
-        size_mgr(a.template get_storage_mixin<0>().get_size_mgr()),
+      : size_mgr(a.template get_storage_mixin<0>().get_size_mgr()),
         name_str(new std::ostringstream())
     {
       *name_str << a.get_name();
     }
 
     RefBaseMixin(const RefBaseMixin<A> &o)
-      : container_type(o.get_context(), o.get_settings()),
-        size_mgr(o.get_size_mgr()),
+      : size_mgr(o.get_size_mgr()),
         name_str(new std::ostringstream())
     {
       *name_str << o.name_str->str();
@@ -428,8 +477,7 @@ struct Stateless
 
 #ifdef USE_RVAL_REF
     RefBaseMixin(RefBaseMixin<A> &&o)
-      : container_type(o.get_context(), o.get_settings()),
-        size_mgr(o.get_size_mgr()),
+      : size_mgr(o.get_size_mgr()),
         name_str(std::move(o.name_str)) { }
 #endif
 

@@ -120,7 +120,7 @@ namespace dmpl
      **/
     StmtList body;
 
-    virtual SymUserList getParents(Context con) {
+    virtual SymUserList getParents(Context &con) {
       return SymUserList(body.begin(), body.end());
     }
 

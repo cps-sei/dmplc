@@ -26,6 +26,8 @@
 #define USE_EMPLACE
 #define USE_USING_TYPE
 #define USE_STATIC_ASSERT
+#else
+#define nullptr NULL
 #endif
 
 
@@ -66,74 +68,60 @@ struct get_sm_info;
 
 #ifdef USE_VAR_TMPL
 template <typename T, unsigned int d0 = 0, unsigned int ...dN>
-class StaticArray;
+class ArrayReference;
 #else
 
 template <typename T, unsigned int d0, unsigned int d1 = 0, unsigned int d2 = 0, unsigned int d3 = 0,
                       unsigned int d4 = 0, unsigned int d5 = 0, unsigned int d6 = 0, unsigned int d7 = 0,
                       unsigned int d8 = 0, unsigned int d9 = 0>
-class StaticArray;
+class ArrayReference;
 #endif
 
 namespace __INTERNAL__
 {
 
 template<typename T>
-struct StaticArray_0
+struct ArrayReference_0
 {
 #ifdef USE_VAR_TMPL
-  typedef class StaticArray<T> type;
+  typedef class ArrayReference<T> type;
 #else
-  typedef StaticArray<T, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0> type;
+  typedef ArrayReference<T, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0> type;
 #endif
 };
 
-class StaticArrayBase
+class ArrayReferenceBase : public ContextHost
 {
 public:
   const static unsigned int dims = 0;
 
   template<typename T>
-  friend class StaticArrayReference;
+  friend class ArrayReferenceReference;
 protected:
-  //typedef StaticArrayBase forwarded_type;
+  //typedef ArrayReferenceBase forwarded_type;
 
 protected:
   const static unsigned int static_size = 1;
   const static unsigned int dim0 = 0;
-  typedef StaticArrayBase subarray_type;
-  typedef StaticArrayBase sub0;
+  typedef ArrayReferenceBase subarray_type;
+  typedef ArrayReferenceBase sub0;
 
-  Thread_Safe_Context &context;
   std::string name;
 
-  StaticArrayBase(Thread_Safe_Context &con, const std::string &varName = "",
-      const Knowledge_Update_Settings &settings = Knowledge_Update_Settings()) :
-    context(con), name(varName), settings(settings) {}
+  ArrayReferenceBase(Thread_Safe_Context &con,
+      Knowledge_Update_Settings *settings = nullptr,
+      const std::string &varName = "") :
+    ContextHost(con, settings), name(varName) {}
 public:
-  Knowledge_Update_Settings settings;
-
   const std::string &get_name() const { return name; }
-
-  Thread_Safe_Context &get_context() const { return context; }
-
-  Knowledge_Update_Settings &get_settings()
-  {
-    return settings;
-  }
-
-  const Knowledge_Update_Settings &get_settings() const
-  {
-    return settings;
-  }
 
 protected:
   void get_dims(std::vector<int> &out) const {}
 };
 
 template<typename T>
-class StaticArrayReference
-  : protected StaticArrayReference<typename T::subarray_type>,
+class ArrayReferenceReference
+  : protected ArrayReferenceReference<typename T::subarray_type>,
     public T::sm_type::template RefDimensionMixin<T>
 {
 protected:
@@ -167,15 +155,23 @@ protected:
 public:
   typedef typename array_type::value_type value_type;
 
-  typedef StaticArrayReference<array_type> index_as_type;
-  typedef StaticArrayReference<typename array_type::subarray_type> sub_type;
+  typedef ArrayReferenceReference<array_type> index_as_type;
+  typedef ArrayReferenceReference<typename array_type::subarray_type> sub_type;
   typedef typename sub_type::index_as_type indexed_type;
 #ifdef USE_RVAL_REF
-  typedef StaticArrayReference<array_type> &&rvalue_index_as_type;
+  typedef ArrayReferenceReference<array_type> &&rvalue_index_as_type;
   typedef typename sub_type::rvalue_index_as_type rvalue_indexed_type;
 #endif
 
-  friend class StaticArrayBase;
+protected:
+  array_type &get_array()
+  {
+    return static_cast<array_type &>(sub_type::get_array());
+  }
+
+public:
+
+  friend class ArrayReferenceBase;
   friend class identity<array_type>::type;
   friend class identity<sm_type>::type;
 
@@ -192,16 +188,16 @@ public:
   friend class sm_type::RefDimensionMixin;
 
   template<typename A>
-  friend class StaticArrayReference;
+  friend class ArrayReferenceReference;
 
 #ifdef USE_VAR_TMPL
   template<typename X, unsigned int x0, unsigned int... xN>
-  friend class StaticArray;
+  friend class ArrayReference;
 #else
   template <typename X, unsigned int x0, unsigned int x1, unsigned int x2, unsigned int x3,
                         unsigned int x4, unsigned int x5, unsigned int x6, unsigned int x7,
                         unsigned int x8, unsigned int x9>
-  friend class StaticArray;
+  friend class ArrayReference;
 #endif
 
   sub_type &get_sub_type()
@@ -228,9 +224,15 @@ public:
     return s * get_sub_type().get_multiplier();
   }
 
+  void mark_modified()
+  {
+    std::cerr << "Reference mark_modified " << this->get_name() << std::endl;
+    get_array().mark_modified(*this);
+  }
+
   /**
    * C++11 support is highly recommended for multi-dimensional arrays;
-   * without it, each index operation creates pointless copies of StaticArrayReference
+   * without it, each index operation creates pointless copies of ArrayReferenceReference
    * object
    */
 #ifdef USE_RVAL_REF
@@ -243,14 +245,14 @@ public:
 
   operator array_type() const
   {
-    array_type ret(this->get_context(), this->get_name(), this->get_settings());
+    array_type ret(this->get_context(), this->get_settings(), this->get_name());
     //std::cerr << "cast to array" << std::endl;
     return ret;
   }
 
 protected:
-  StaticArrayReference(array_type &v)
-    : StaticArrayReference<typename array_type::subarray_type>(v),
+  ArrayReferenceReference(array_type &v)
+    : ArrayReferenceReference<typename array_type::subarray_type>(v),
       storage_mixin(v) {}
 
   index_as_type dereference()
@@ -297,20 +299,22 @@ public:
 
 template<typename R>
 #ifdef USE_VAR_TMPL
-class StaticArrayReference<StaticArray<R>>
+class ArrayReferenceReference<ArrayReference<R>>
 #else
-class StaticArrayReference<StaticArray<R, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0> >
+class ArrayReferenceReference<ArrayReference<R, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0> >
 #endif
-  : public StaticArray_0<R>::type::sm_type::template RefBaseMixin<typename StaticArray_0<R>::type>
+  : public ArrayReference_0<R>::type::sm_type::template RefBaseMixin<typename ArrayReference_0<R>::type>
 {
 public:
-  typedef typename StaticArray_0<R>::type this_type;
+  typedef typename ArrayReference_0<R>::type array_type;
 protected:
+  array_type &array;
+
   typedef R storage_specifier;
   typedef StorageManager::get_sm_info<R> sm_info;
   typedef typename sm_info::sm_type sm_type;
   typedef typename sm_info::data_type value_type;
-  typedef typename sm_type::template RefBaseMixin<this_type> storage_mixin;
+  typedef typename sm_type::template RefBaseMixin<array_type> storage_mixin;
 
   storage_mixin &get_storage_mixin()
   {
@@ -321,29 +325,34 @@ protected:
   {
     return static_cast<const storage_mixin &>(*this);
   }
+
+  array_type &get_array() const
+  {
+    return array;
+  }
 public:
   using storage_mixin::operator=;
 
-  const value_type &operator=(const StaticArrayReference &o)
+  const value_type &operator=(const ArrayReferenceReference &o)
   {
     return storage_mixin::operator=(o);
   }
 
-  StaticArrayReference(this_type&v)
-    : storage_mixin(v)
+  ArrayReferenceReference(array_type &v)
+    : storage_mixin(v), array(v)
   { }
 
-  StaticArrayReference(const StaticArrayReference<this_type> &o)
-    : storage_mixin(o.get_storage_mixin())
+  ArrayReferenceReference(const ArrayReferenceReference<array_type> &o)
+    : storage_mixin(o.get_storage_mixin()), array(o.array)
   {
     //std::cerr << "Copying: " << o.name_str->str() << " to " << name_str->str() << std::endl;
   }
 
 #ifdef USE_RVAL_REF
-  StaticArrayReference(StaticArrayReference &&o)
-    : storage_mixin(std::move(o.get_storage_mixin()))
+  ArrayReferenceReference(ArrayReferenceReference &&o)
+    : storage_mixin(std::move(o.get_storage_mixin())), array(o.array)
   {
-    //std::cerr << "StaticArrayReference move ctor called" << std::endl;
+    //std::cerr << "ArrayReferenceReference move ctor called" << std::endl;
   }
 #endif
 
@@ -387,10 +396,10 @@ public:
     get_storage_mixin().append_index(i);
   }
 
-  friend class StaticArrayBase;
+  friend class ArrayReferenceBase;
   
   template<typename A>
-  friend class StaticArrayReference;
+  friend class ArrayReferenceReference;
 
   friend class identity<sm_type>::type;
 
@@ -408,12 +417,12 @@ public:
 
 #ifdef USE_VAR_TMPL
   template<typename X, unsigned int x0, unsigned int... xN>
-  friend class StaticArray;
+  friend class ArrayReference;
 #else
   template <typename X, unsigned int x0, unsigned int x1, unsigned int x2, unsigned int x3,
                         unsigned int x4, unsigned int x5, unsigned int x6, unsigned int x7,
                         unsigned int x8, unsigned int x9>
-  friend class StaticArray;
+  friend class ArrayReference;
 #endif
 };
 
@@ -426,7 +435,7 @@ void throw_range_error(std::string name, int i, int max)
 }
 
 template<typename T>
-inline typename StaticArrayReference<T>::indexed_type StaticArrayReference<T>::operator[](unsigned int i)
+inline typename ArrayReferenceReference<T>::indexed_type ArrayReferenceReference<T>::operator[](unsigned int i)
 #ifdef USE_RVAL_REF
  &
 #endif
@@ -435,7 +444,7 @@ inline typename StaticArrayReference<T>::indexed_type StaticArrayReference<T>::o
   if(!this->check_bounds(i))
     throw_range_error(this->get_name(), i, this->get_size());
   //std::cerr << "index op lvalue: " << this->get_name() << std::endl;
-  StaticArrayReference<T> ret(*this);
+  ArrayReferenceReference<T> ret(*this);
   ret.append_index(i);
   //std::cerr << "index lvalue: " << ret.get_name() << std::endl;
   return static_cast<sub_type&>(ret).dereference();
@@ -443,7 +452,7 @@ inline typename StaticArrayReference<T>::indexed_type StaticArrayReference<T>::o
 
 #ifdef USE_RVAL_REF
 template<typename T>
-inline typename StaticArrayReference<T>::rvalue_indexed_type StaticArrayReference<T>::operator[](unsigned int i) &&
+inline typename ArrayReferenceReference<T>::rvalue_indexed_type ArrayReferenceReference<T>::operator[](unsigned int i) &&
 {
   //std::cerr << "indexing dim " << get_size_mgr().get_num_dims() << " size " << get_size_mgr().get_size() << " i: " << i << std::endl;;
   if(!this->check_bounds(i))
@@ -459,26 +468,26 @@ inline typename StaticArrayReference<T>::rvalue_indexed_type StaticArrayReferenc
 
 #ifdef USE_VAR_TMPL
 template <typename T, unsigned int d0, unsigned int ...dN>
-class StaticArray
-  : protected StaticArray<T, dN...>,
+class ArrayReference
+  : protected ArrayReference<T, dN...>,
     public StorageManager::get_sm_info<T>::sm_type::template
-        DimensionMixin<StaticArray<T, d0, dN...>, d0, StaticArray<T, dN...>::dims + 1 >
+        DimensionMixin<ArrayReference<T, d0, dN...>, d0, ArrayReference<T, dN...>::dims + 1 >
 #else
 template <typename T, unsigned int d0, unsigned int d1, unsigned int d2, unsigned int d3,
                       unsigned int d4, unsigned int d5, unsigned int d6, unsigned int d7,
                       unsigned int d8, unsigned int d9>
-class StaticArray
-  : protected StaticArray<T, d1, d2, d3, d4, d5, d6, d7, d8, d9, 0>,
-    protected StorageManager::get_sm_info<T>::sm_type::template
-        DimensionMixin<StaticArray<T, d0, d1, d2, d3, d4, d5, d6, d7, d8, d9>, d0,
-          StaticArray<T, d1, d2, d3, d4, d5, d6, d7, d8, d9, 0>::dims + 1 >
+class ArrayReference
+  : protected ArrayReference<T, d1, d2, d3, d4, d5, d6, d7, d8, d9, 0>,
+    public StorageManager::get_sm_info<T>::sm_type::template
+        DimensionMixin<ArrayReference<T, d0, d1, d2, d3, d4, d5, d6, d7, d8, d9>, d0,
+          ArrayReference<T, d1, d2, d3, d4, d5, d6, d7, d8, d9, 0>::dims + 1 >
 #endif
 {
 protected:
 #ifdef USE_VAR_TMPL
-  typedef StaticArray<T, dN...> raw_subarray_type;
+  typedef ArrayReference<T, dN...> raw_subarray_type;
 #else
-  typedef StaticArray<T, d1, d2, d3, d4, d5, d6, d7, d8, d9, 0> raw_subarray_type;
+  typedef ArrayReference<T, d1, d2, d3, d4, d5, d6, d7, d8, d9, 0> raw_subarray_type;
 #endif
 public:
   typedef T storage_specifier;
@@ -489,15 +498,15 @@ public:
   //typedef typename raw_subarray_type::forwarded_type subarray_type;
 
 #ifdef USE_VAR_TMPL
-  typedef StaticArray<T, d0, dN...> this_type;
+  typedef ArrayReference<T, d0, dN...> this_type;
 #else
-  typedef StaticArray<T, d0, d1, d2, d3, d4, d5, d6, d7, d8, d9> this_type;
+  typedef ArrayReference<T, d0, d1, d2, d3, d4, d5, d6, d7, d8, d9> this_type;
 #endif
-  typedef typename __INTERNAL__::StaticArray_0<storage_specifier>::type base_type;
+  typedef typename __INTERNAL__::ArrayReference_0<storage_specifier>::type base_type;
   //typedef typename raw_subarray_type::forwarded_type subarray_type;
-  typedef __INTERNAL__::StaticArrayReference<this_type> reference_type;
-  typedef __INTERNAL__::StaticArrayReference<base_type> base_reference_type;
-  typedef typename __INTERNAL__::StaticArrayReference<subarray_type>::index_as_type index_type;
+  typedef __INTERNAL__::ArrayReferenceReference<this_type> reference_type;
+  typedef __INTERNAL__::ArrayReferenceReference<base_type> base_reference_type;
+  typedef typename __INTERNAL__::ArrayReferenceReference<subarray_type>::index_as_type index_type;
 public:
   const static unsigned int static_size = d0;
   const static unsigned int dims = raw_subarray_type::dims + 1;
@@ -704,10 +713,20 @@ private:
   void check_var_len(const char *fname)
   {
     if(static_size == VAR_LEN && get_size<0>() == VAR_LEN)
-      throw std::range_error(std::string(fname) + "() called on StaticArray with unbounded VAR_LEN dimension");
+      throw std::range_error(std::string(fname) + "() called on ArrayReference with unbounded VAR_LEN dimension");
   }
 
 public:
+  void mark_modified()
+  {
+    std::cerr << "Array mark_modified " << this->get_name() << std::endl;
+    check_var_len("mark_modified");
+    for(int i = 0; i < get_size<0>(); i++)
+    {
+      raw_subarray_type::mark_modified((*this)[i]);
+    }
+  }
+
   template<class E>
   void get_into(E &out)
   {
@@ -780,6 +799,16 @@ public:
   }
 
 protected:
+  void mark_modified(reference_type ref)
+  {
+    std::cerr << "Array sub mark_modified " << ref.get_name() << std::endl;
+    check_var_len("mark_modified");
+    for(int i = 0; i < get_size<0>(); i++)
+    {
+      raw_subarray_type::mark_modified(ref[i]);
+    }
+  }
+
   template<class E>
   void get_into(E &out, reference_type ref)
   {
@@ -831,57 +860,57 @@ protected:
 public:
 
 #ifdef USE_VAR_TMPL
-  StaticArray(Thread_Safe_Context &con, const std::string &varName)
-    : raw_subarray_type(con, varName), storage_mixin(*this) {}
+  ArrayReference(Thread_Safe_Context &con, const std::string &varName)
+    : raw_subarray_type(con, nullptr, varName), storage_mixin(*this) {}
 
-  StaticArray(Thread_Safe_Context &con, const std::string &varName,
-      const Knowledge_Update_Settings &settings)
-    : raw_subarray_type(con, varName, settings), storage_mixin(*this) {}
+  ArrayReference(Thread_Safe_Context &con,
+      Knowledge_Update_Settings *settings, const std::string &varName)
+    : raw_subarray_type(con, settings, varName), storage_mixin(*this) {}
 
   template<typename... Args>
-  StaticArray(Thread_Safe_Context &con, const std::string &varName,
-        const Knowledge_Update_Settings &settings,
+  ArrayReference(Thread_Safe_Context &con,
+        Knowledge_Update_Settings *settings, const std::string &varName,
         unsigned int default_dim, Args... args)
-    : raw_subarray_type(con, varName, args...), storage_mixin(*this, default_dim) { }
+    : raw_subarray_type(con, settings, varName, args...), storage_mixin(*this, default_dim) { }
 
   template<typename... Args>
-  StaticArray(Thread_Safe_Context &con, const std::string &varName,
+  ArrayReference(Thread_Safe_Context &con, const std::string &varName,
         unsigned int default_dim, Args... args)
-    : StaticArray(con, varName, Knowledge_Update_Settings(), default_dim, args...) {}
+    : ArrayReference(con, nullptr, varName, default_dim, args...) {}
 
   template<typename... Args>
-  StaticArray(Knowledge_Base &kbase, Args... args)
-    : StaticArray(kbase.get_context(), args...) {}
+  ArrayReference(Knowledge_Base &kbase, Args... args)
+    : ArrayReference(kbase.get_context(), args...) {}
 
 #else
-  StaticArray(Thread_Safe_Context &con, const std::string &varName,
+  ArrayReference(Thread_Safe_Context &con, const std::string &varName,
       unsigned int i0 = 0, unsigned int i1 = 0, unsigned int i2 = 0, unsigned int i3 = 0,
       unsigned int i4 = 0, unsigned int i5 = 0, unsigned int i6 = 0, unsigned int i7 = 0,
       unsigned int i8 = 0, unsigned int i9 = 0) :
-    raw_subarray_type(con, varName, Knowledge_Update_Settings(),
+    raw_subarray_type(con, nullptr, varName,
       i1, i2, i3, i4, i5, i6, i7, i8, i9), storage_mixin(*this, i0) { }
 
-  StaticArray(Thread_Safe_Context &con, const std::string &varName,
-      const Knowledge_Update_Settings &settings,
+  ArrayReference(Thread_Safe_Context &con,
+      Knowledge_Update_Settings *settings, const std::string &varName,
       unsigned int i0 = 0, unsigned int i1 = 0, unsigned int i2 = 0, unsigned int i3 = 0,
       unsigned int i4 = 0, unsigned int i5 = 0, unsigned int i6 = 0, unsigned int i7 = 0,
       unsigned int i8 = 0, unsigned int i9 = 0) :
-    raw_subarray_type(con, varName, settings,
+    raw_subarray_type(con, settings, varName,
       i1, i2, i3, i4, i5, i6, i7, i8, i9), storage_mixin(*this, i0) { }
 
-  StaticArray(Knowledge_Base &kbase, const std::string &varName,
+  ArrayReference(Knowledge_Base &kbase, const std::string &varName,
       unsigned int i0 = 0, unsigned int i1 = 0, unsigned int i2 = 0, unsigned int i3 = 0,
       unsigned int i4 = 0, unsigned int i5 = 0, unsigned int i6 = 0, unsigned int i7 = 0,
       unsigned int i8 = 0, unsigned int i9 = 0) :
-    raw_subarray_type(kbase.get_context(), varName, Knowledge_Update_Settings(),
+    raw_subarray_type(kbase.get_context(), nullptr, varName,
       i1, i2, i3, i4, i5, i6, i7, i8, i9), storage_mixin(*this, i0) { }
 
-  StaticArray(Knowledge_Base &kbase, const std::string &varName,
-      const Knowledge_Update_Settings &settings,
+  ArrayReference(Knowledge_Base &kbase,
+      Knowledge_Update_Settings *settings, const std::string &varName,
       unsigned int i0 = 0, unsigned int i1 = 0, unsigned int i2 = 0, unsigned int i3 = 0,
       unsigned int i4 = 0, unsigned int i5 = 0, unsigned int i6 = 0, unsigned int i7 = 0,
       unsigned int i8 = 0, unsigned int i9 = 0) :
-    raw_subarray_type(kbase.get_context(), varName, settings,
+    raw_subarray_type(kbase.get_context(), settings, varName,
       i1, i2, i3, i4, i5, i6, i7, i8, i9), storage_mixin(*this, i0) { }
 #endif
 
@@ -897,12 +926,12 @@ public:
 
 #ifdef USE_VAR_TMPL
   template<unsigned int dNew0, unsigned int... dNewN>
-  StaticArray(const StaticArray<T, dNew0, dNewN...> &o)
+  ArrayReference(const ArrayReference<T, dNew0, dNewN...> &o)
     : raw_subarray_type(o), storage_mixin(*this) {}
 #endif
 
   template<typename A>
-  friend class __INTERNAL__::StaticArrayReference;
+  friend class __INTERNAL__::ArrayReferenceReference;
 
   friend class __INTERNAL__::identity<sm_type>::type;
 
@@ -920,12 +949,12 @@ public:
 
 #ifdef USE_VAR_TMPL
   template<typename X, unsigned int x0, unsigned int... xN>
-  friend class StaticArray;
+  friend class ArrayReference;
 #else
   template <typename X, unsigned int x0, unsigned int x1, unsigned int x2, unsigned int x3,
                         unsigned int x4, unsigned int x5, unsigned int x6, unsigned int x7,
                         unsigned int x8, unsigned int x9>
-  friend class StaticArray;
+  friend class ArrayReference;
 #endif
 
 #ifdef USE_VAR_TMPL
@@ -951,23 +980,23 @@ protected:
 
 #ifdef USE_VAR_TMPL
 template <class T>
-class StaticArray<T>
-  : public __INTERNAL__::StaticArrayBase,
-    public StorageManager::get_sm_info<T>::sm_type::template BaseMixin<StaticArray<T> >
+class ArrayReference<T>
+  : public __INTERNAL__::ArrayReferenceBase,
+    public StorageManager::get_sm_info<T>::sm_type::template BaseMixin<ArrayReference<T> >
 #else
 template <class T>
-class StaticArray<T, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0>
-  : public __INTERNAL__::StaticArrayBase,
-    public StorageManager::get_sm_info<T>::sm_type::template BaseMixin<StaticArray<T, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0> >
+class ArrayReference<T, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0>
+  : public __INTERNAL__::ArrayReferenceBase,
+    public StorageManager::get_sm_info<T>::sm_type::template BaseMixin<ArrayReference<T, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0> >
 #endif
 {
 public:
 #ifdef USE_VAR_TMPL
-  typedef StaticArray<T> this_type;
+  typedef ArrayReference<T> this_type;
 #else
-  typedef StaticArray<T, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0> this_type;
+  typedef ArrayReference<T, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0> this_type;
 #endif
-  //typedef __INTERNAL__::StaticArrayBase subarray_type;
+  //typedef __INTERNAL__::ArrayReferenceBase subarray_type;
   typedef this_type subarray_type;
   const static unsigned int dims = 0;
   const static unsigned int static_size = 1;
@@ -980,7 +1009,7 @@ public:
 
   typedef typename sm_type::template BaseMixin<this_type> storage_mixin;
 
-  typedef __INTERNAL__::StaticArrayReference<this_type> reference_type;
+  typedef __INTERNAL__::ArrayReferenceReference<this_type> reference_type;
 
   friend class __INTERNAL__::identity<sm_type>::type;
 
@@ -998,12 +1027,12 @@ public:
 
 #ifdef USE_VAR_TMPL
   template<typename X, unsigned int x0, unsigned int... xN>
-  friend class StaticArray;
+  friend class ArrayReference;
 #else
   template <typename X, unsigned int x0, unsigned int x1, unsigned int x2, unsigned int x3,
                         unsigned int x4, unsigned int x5, unsigned int x6, unsigned int x7,
                         unsigned int x8, unsigned int x9>
-  friend class StaticArray;
+  friend class ArrayReference;
 
 #endif
 
@@ -1151,18 +1180,24 @@ public:
       v.set(in);
   }
 
+  void mark_modified(reference_type in)
+  {
+    std::cerr << "Base mark_modified " << in.get_name() << std::endl;
+    in.mark_modified();
+  }
+
   //typedef this_type forwarded_type;
 public:
 
-  StaticArray
-    (Thread_Safe_Context &con, const std::string &varName = "",
-      const Knowledge_Update_Settings &settings = Knowledge_Update_Settings()
+  ArrayReference
+    (Thread_Safe_Context &con,
+      Knowledge_Update_Settings *settings = nullptr, const std::string &varName = ""
 #ifndef USE_VAR_TMPL
       , unsigned int i0 = 0, unsigned int i1 = 0, unsigned int i2 = 0, unsigned int i3 = 0,
       unsigned int i4 = 0, unsigned int i5 = 0, unsigned int i6 = 0, unsigned int i7 = 0,
       unsigned int i8 = 0, unsigned int i9 = 0
 #endif
-      ) : StaticArrayBase(con, varName, settings), storage_mixin(*this) {}
+      ) : ArrayReferenceBase(con, settings, varName), storage_mixin(*this) {}
 };
 
 }

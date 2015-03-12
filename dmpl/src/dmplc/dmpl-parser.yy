@@ -5,6 +5,7 @@
 #include <string>
 #include <boost/make_shared.hpp>
 #include <boost/foreach.hpp>
+#include "dmpl/Program.h"
 #include "dmpl/Type.h"
 #include "dmpl/Variable.h"
 #include "dmpl/Expression.h"
@@ -593,7 +594,16 @@ expr : lval { $$ = new dmpl::Expr($1); printExpr(*$$); }
 | TBWNOT expr { MAKE_UN($$,$1,$2); }
 | TIDENTIFIER TLPAREN arg_list TRPAREN { 
   $$ = new dmpl::Expr(new dmpl::CallExpr(dmpl::Expr(new dmpl::LvalExpr(*$1)),*$3));
-  delete $3; printExpr(*$$);
+  delete $1; delete $3; printExpr(*$$);
+} 
+| TIDENTIFIER TLPAREN arg_list TRPAREN TAT expr { 
+  $$ = new dmpl::Expr(new dmpl::CallExpr(dmpl::Expr(new dmpl::LvalExpr(*$1, *$6)),*$3));
+  delete $1; delete $3; delete $6; printExpr(*$$);
+} 
+| TIDENTIFIER TLPAREN arg_list TRPAREN TATTRIBUTE { 
+  $$ = new dmpl::Expr(new dmpl::CallExpr(
+    dmpl::Expr(new dmpl::LvalExpr(*$1, dmpl::Expr(new dmpl::LvalExpr($5->substr(1))))),*$3));
+  delete $1; delete $3; delete $5; printExpr(*$$);
 } 
 | TEXO TLPAREN TIDENTIFIER TCOMMA expr TRPAREN {
   $$ = new dmpl::Expr(new dmpl::EXOExpr(*$3,dmpl::Expr(*$5)));
