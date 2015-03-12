@@ -1128,8 +1128,11 @@ dmpl::gams::Sync_Builder::build_expect_thread_definition (void)
 
   BOOST_FOREACH(Vars::value_type &it, node.locVars)
   {
+    Var var = it.second;
+    if(var->type->dims.size() != 0)
+      continue;
     buffer_ << "  out << tv.tv_sec << \",\" << tv.tv_usec << \",\" << id << \",\";\n";
-    buffer_ << "  out << \"" << it.second->getName() << ",\" << ::dmpl::" << it.second->getName() << ";\n";
+    buffer_ << "  out << \"" << var->getName() << ",\" << ::dmpl::" << var->getName() << ";\n";
     buffer_ << "  out << std::endl;\n\n";
   }
 

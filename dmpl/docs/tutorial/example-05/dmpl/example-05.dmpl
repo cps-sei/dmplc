@@ -141,6 +141,7 @@ NODE uav (id)
   LOCAL _Bool changing; //are we changing formation now?
   LOCAL double remaining_time; //how much time left to complete formation change 
   LOCAL double hazards[X][Y]; //map from cells to hazards
+  LOCAL double current_hazard; //hazard of current x and y
   LOCAL double variances[X][Y]; //map from cells to variances in hazard predictions
   //-- next 5 waypoints
   LOCAL unsigned char next_wp_x[5]; 
@@ -172,6 +173,34 @@ NODE uav (id)
   expect (x < 5);
   expect YLT5(y < 5);
 
+  double coverage()
+  {
+    // Made up; depends on formation
+    return formation@0 ? 0.7 : 0.3;
+  }
+
+  //@AT_LEAST(0.5)
+  //expect COVERAGE(hazard[x][y] > 0.5 ? coverage() > 0.5 : 1);
+
+  LOCAL double accumulated_risk;
+  double risk_integral()
+  {
+    accumulated_risk = accumulated_risk + current_hazard * (1-coverage()) * 0.1;
+    return accumulated_risk;
+  }
+
+  //@AT_END
+  expect RISK_INTEGRAL(risk_integral() < 0.105);
+
+  // True if you reach destination by end of mission time
+  //@AT_END
+  expect REACHED_END(x@0 == xt@0 && y@0 == yt@0);
+  
+  // Completed and good coverage
+  // 0.105 is -ln(0.9), 0.9 is desired success probability
+  //@AT_END
+  expect REACHED_END_AND_RISK_INTEGRAL(risk_integral() < 0.105 && x@0 == xt@0 && y@0 == yt@0);
+  
   //-- return the next waypoint value
   _Bool NEXT_XY ()
   {
@@ -266,7 +295,7 @@ NODE uav (id)
     //-- if the leader has reached the destination, no more formation
     //-- changes are needed
     if(x != xt || y != yt) {
-      formation@0 = adaptation_manager(formation@id,changing,remaining_time,
+      formation = adaptation_manager(formation@id,changing,remaining_time,
                                        //--XXX: this is broken: hazards[1][1],
                                        1, 2, 3, 2, 1,
                                        //--XXX: this is broken: variances[1][1],
@@ -280,7 +309,7 @@ NODE uav (id)
     //-- triggered, and increment number of formation changes.
     if(!changing && last_formation != formation@0) {
       changing = 1;
-      num_changes@id = 1 - num_changes@id;
+      num_changes = 1 - num_changes@id;
     }
   }
 
@@ -297,8 +326,8 @@ NODE uav (id)
     //-- note that while a formation change is happening, there will
     //-- be no change in xp and yp for the leader.
     if(id == 0) {
-      ly@0 = yp;
-      lx@0 = xp;
+      ly = yp;
+      lx = xp;
       return;
     }
 
@@ -340,15 +369,16 @@ NODE uav (id)
   void INITIALIZE_STATE()
   {
     unsigned char i,j;
-    lock[x][y]@id = 1;
-    num_changes@id = 0;
+    lock[x][y] = 1;
+    num_changes = 0;
     
     if(id != 0) return;
 
     //-- the rest of this stuff is only done by the leader
-    lx@id = x;
-    ly@id = y;
-    formation@id = 0;
+    lx = x;
+    ly = y;
+    current_hazard = hazards[x][y];
+    formation = 0;
     changing = 0;
     remaining_time = 0.0;
       
@@ -369,8 +399,8 @@ NODE uav (id)
     next_wp_x[0] = x;
     next_wp_y[0] = y;
     for(i = 1;i < 5;) {        
-      next_wp_x[i] = NEXT_X(next_wp_x[i - 1],next_wp_y[i - 1]);
-      next_wp_y[i] = NEXT_Y(next_wp_x[i - 1],next_wp_y[i - 1]);
+      //next_wp_x[i] = NEXT_X(next_wp_x[i - 1],next_wp_y[i - 1]);
+      //next_wp_y[i] = NEXT_Y(next_wp_x[i - 1],next_wp_y[i - 1]);
       i = i+1;
     }
     
@@ -384,7 +414,7 @@ NODE uav (id)
     remaining_segs = REMAINING_SEGMENTS();
     start_time = wall_time();
     
-    init@id = 1;
+    init = 1;
   }
 
   //-- stuff to do once the next waypoint is reached
@@ -392,13 +422,14 @@ NODE uav (id)
   {
     unsigned char i;
 
-    lock[x][y]@id = 0; 
+    lock[x][y] = 0; 
     x = xp; y = yp;
+    current_hazard = hazards[x][y];
     //-- if i am not the leader and a formation change was
     //-- happening, and i have reached the end-point, then formation
     //-- change is complete.
     if(id != 0 && num_changes@id != num_changes@0 && x == xt && y == yt) {
-      num_changes@id = 1 - num_changes@id;
+      num_changes = 1 - num_changes@id;
     }
     //For leader, update remaining segments, and next 5 waypoints
     if(id == 0) {
@@ -407,8 +438,8 @@ NODE uav (id)
         next_wp_y[i - 1] = next_wp_y[i];
         i = i+1;
       }
-      next_wp_x[4] = NEXT_X(next_wp_x[3],next_wp_y[3]);
-      next_wp_y[4] = NEXT_Y(next_wp_x[3],next_wp_y[3]);
+      //next_wp_x[4] = NEXT_X(next_wp_x[3],next_wp_y[3]);
+      //next_wp_y[4] = NEXT_Y(next_wp_x[3],next_wp_y[3]);
       remaining_segs = remaining_segs - 1;
     }
   }
@@ -435,7 +466,7 @@ NODE uav (id)
     } else if(state == REQUEST) {
       //request the lock but only if it is free
       if(EXISTS_LOWER(idp,lock[xp][yp]@idp != 0)) return;
-      lock[xp][yp]@id = 1;
+      lock[xp][yp] = 1;
       state = WAITING;
     } else if(state == WAITING) {
       //grab the lock if we are the highest 

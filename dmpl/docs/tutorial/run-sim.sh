@@ -3,13 +3,13 @@
 DEBUG=1
 
 function usage {
-    echo "Usage : $0 file.mission"
+    echo "Usage : $0 file.mission output.log"
 }
 
 #get inputs
 MISSION="$1"
 
-if [ "$#" != "1" ]; then
+if [ "$#" != "2" ]; then
     usage
     exit 1
 fi
@@ -102,9 +102,9 @@ for x in `seq 1 $NODENUM`; do
 echo $x
 args_var=ARGS_$x
 args="$(eval echo \$$args_var)"
-$GDB $BIN -e $outdir/expect${x}.log --platform vrep::::0.2 --id $x $args &> $OUTDIR/node${x}.out &
+$GDB $BIN -e $OUTDIR/expect${x}.log --platform vrep::::0.2 --id $x $args &> $OUTDIR/node${x}.out &
 done
-$GDB $BIN -e $outdir/expect0.log --platform vrep::::0.2 --id 0 $ARGS_0 &> $OUTDIR/node0.out &
+$GDB $BIN -e $OUTDIR/expect0.log --platform vrep::::0.2 --id 0 $ARGS_0 &> $OUTDIR/node0.out &
 
 printf "press enter terminate the simulation ..."
 read X

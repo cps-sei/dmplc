@@ -781,7 +781,7 @@ dmpl::madara::Function_Visitor::exitFor (ForStmt & statement)
     visit (init);
   }
 
-  buffer_ << "; ";
+  //buffer_ << "; ";
 
   BOOST_FOREACH (const Expr & expr, statement.test)
   {
@@ -886,9 +886,9 @@ dmpl::madara::Function_Visitor::exitRet (RetStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
-  buffer_ << spacer << "return (";
+  buffer_ << spacer << "return (Integer(";
   visit(statement.retVal);
-  buffer_ << ");\n";
+  buffer_ << "));\n";
 }
 
 
