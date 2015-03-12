@@ -4,7 +4,7 @@ function cleanup {
     echo "Cleaning up ..."
 
     #kill nodes and VREP
-    killall example-05 vrep vrep.sh
+    killall example-06 vrep vrep.sh
     
     #restore the VREP system/settings.dat
     cp $SDF.saved.mcda-vrep $SDF
@@ -50,7 +50,7 @@ if [ ! -e "$MAPFILE" ]; then
 fi
 
 #compile tutorial 2
-rm -f example-05 example-05.cpp
+rm -f example-06 example-06.cpp
 
 if [ "$MAPNAME" == "small" ]; then
     TopY=2.25
@@ -64,7 +64,7 @@ elif [ "$MAPNAME" == "large" ]; then
     RightX=6.5
 fi
 
-make example-05 GRIDSIZE=$GRIDSIZE TopY=$TopY LeftX=$LeftX BottomY=$BottomY RightX=$RightX
+make example-06 GRIDSIZE=$GRIDSIZE TopY=$TopY LeftX=$LeftX BottomY=$BottomY RightX=$RightX
 
 #create the output directory and get its realpath
 rm -fr $OUTDIR; mkdir $OUTDIR
@@ -100,11 +100,11 @@ sleep 5
 mv $RAC.saved.mcda-vrep $RAC
 
 #start the nodes
-./example-05 --platform vrep::::0.2 --id 1 --var_x $((IX+2)) --var_y $((IY+2)) &> $OUTDIR/node1.out &
-./example-05 --platform vrep::::0.2 --id 2 --var_x $((IX-2)) --var_y $((IY+2)) &> $OUTDIR/node2.out &
-./example-05 --platform vrep::::0.2 --id 3 --var_x $((IX-2)) --var_y $((IY-2)) &> $OUTDIR/node3.out &
-./example-05 --platform vrep::::0.2 --id 4 --var_x $((IX+2)) --var_y $((IY-2)) &> $OUTDIR/node4.out &
-./example-05 --platform vrep::::0.2 --id 0 --var_x $IX --var_y $IY --var_xt $FX --var_yt $FY &> $OUTDIR/node0.out &
+./example-06 --platform vrep::::0.2 --id 1 --var_x $((IX+2)) --var_y $((IY+2)) &> $OUTDIR/node1.out &
+./example-06 --platform vrep::::0.2 --id 2 --var_x $((IX-2)) --var_y $((IY+2)) &> $OUTDIR/node2.out &
+./example-06 --platform vrep::::0.2 --id 3 --var_x $((IX-2)) --var_y $((IY-2)) &> $OUTDIR/node3.out &
+./example-06 --platform vrep::::0.2 --id 4 --var_x $((IX+2)) --var_y $((IY-2)) &> $OUTDIR/node4.out &
+./example-06 --platform vrep::::0.2 --id 0 --var_x $IX --var_y $IY --var_xt $FX --var_yt $FY &> $OUTDIR/node0.out &
 
 printf "press enter terminate the simulation ..."
 read X

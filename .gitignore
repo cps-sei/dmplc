@@ -16,6 +16,7 @@ dmpl/src/vrep/libDmplVrep.a
 dmpl/src/dmplc/dmplc
 dmpl/docs/tutorial/example-0?
 !dmpl/docs/tutorial/example-05
+!dmpl/docs/tutorial/example-06
 dmpl/docs/tutorial/example-0?/dmpl/example-0?
 dmpl/docs/tutorial/example-0?/dmpl/**/*.c
 dmpl/docs/tutorial/example-0?/dmpl/**/*.cpp
