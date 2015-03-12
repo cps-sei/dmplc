@@ -65,10 +65,18 @@ struct Lazy
     vector_type stored_data;
 
     template <typename X>
-    friend class StaticArrayReference;
+    friend class ArrayReferenceReference;
 
     //template <typename X>
-    //friend class identity<typename StaticArray_0<X>::type >::type;
+    //friend class identity<typename ArrayReference_0<X>::type >::type;
+
+    /** Just clears existing storage.
+     * LazyStorage never preallocates space (to permit unbounded VAR_LEN initial dimension)
+     */
+    void init_storage()
+    {
+      stored_data.clear();
+    }
 
     BaseMixin(A &a) {}
 
@@ -136,16 +144,16 @@ struct Lazy
     static const unsigned int static_size = Size;
     static const unsigned int num_dims = Dims;
 
-    typedef typename StaticArray_0<this_type>::type base_type;
+    typedef typename ArrayReference_0<this_type>::type base_type;
     typedef BaseMixin<base_type> base_mixin;
 
     template <typename X>
-    friend class StaticArrayReference;
+    friend class ArrayReferenceReference;
 
     //friend class identity<A>::type;
 
     //template <typename X>
-    //friend class identity<typename StaticArray_0<X>::type >::type;
+    //friend class identity<typename ArrayReference_0<X>::type >::type;
 
     base_mixin &get_base_mixin()
     {
@@ -172,7 +180,11 @@ struct Lazy
     void resize(unsigned int i)
     {
       if(i != get_size())
-        throw std::runtime_error("Lazy storage type for StaticArray does not yet support resizing");
+      {
+        size_sanity(i);
+        get_base_mixin().dim_sizes[num_dims - 1] = i;
+        get_base_mixin().init_storage();
+      }
     }
 
     unsigned int get_size() const
@@ -218,12 +230,12 @@ struct Lazy
     typedef BaseMixin<array_base_type> base_mixin;
 
     template <typename X>
-    friend class StaticArrayReference;
+    friend class ArrayReferenceReference;
 
     //friend class identity<A>::type;
 
     //template <typename X>
-    //friend class identity<typename StaticArray_0<X>::type >::type;
+    //friend class identity<typename ArrayReference_0<X>::type >::type;
 
     reference_type &get_reference()
     {
@@ -297,8 +309,8 @@ struct Lazy
     typedef storage_type  element_reference_type;
     typedef storage_type  element_rvalue_type;
 
-    typedef typename StaticArray_0<typename A::storage_specifier>::type base_array_type;
-    typedef StaticArrayReference<base_array_type> base_ref_type;
+    typedef typename ArrayReference_0<typename A::storage_specifier>::type base_array_type;
+    typedef ArrayReferenceReference<base_array_type> base_ref_type;
 
     typedef typename BaseMixin<A>::ptr_type ptr_type;
 
@@ -307,12 +319,12 @@ struct Lazy
     unsigned int offset;
 
     template <typename X>
-    friend class StaticArrayReference;
+    friend class ArrayReferenceReference;
 
     //friend class identity<A>::type;
 
     //template <typename X>
-    //friend class identity<typename StaticArray_0<X>::type >::type;
+    //friend class identity<typename ArrayReference_0<X>::type >::type;
 
     RefBaseMixin(A &a)
       : base_name(a.get_name()), base_mixin(static_cast<BaseMixin<A> &>(a)), offset(0)
@@ -346,9 +358,9 @@ struct Lazy
       if(data_ptr == NULL)
       {
 #ifdef USE_UNIQUE_PTR
-          data_ptr = make_unique<storage_type>(get_base_array().get_context(), get_name(), get_base_array().get_settings());
+          data_ptr = make_unique<storage_type>(get_base_array().get_context(), get_base_array().get_settings(), get_name());
 #else
-          data_ptr = new storage_type(get_base_array().get_context(), get_name(), get_base_array().get_settings());
+          data_ptr = new storage_type(get_base_array().get_context(), get_base_array().get_settings(), get_name());
 #endif
       }
       return *data_ptr;

@@ -144,6 +144,15 @@ namespace dmpl
      **/
     Funcs funcs;
 
+    Func findFunc(const std::string& name) const
+    {
+      Funcs::const_iterator ret = funcs.find(name);
+      if(ret != funcs.end())
+        return ret->second;
+      return Func();
+    }
+
+
     /**
      * A map of thread start function names to thread objects
      **/
@@ -166,10 +175,12 @@ namespace dmpl
       if(nodes.count(node.name) == 0)
       {
         nodes[node.name] = node;
+        nodes[node.name].program = this;
       }
       else
       {
         nodes[node.name].mergeWith(node);
+        nodes[node.name].program = this;
       }
     }
 

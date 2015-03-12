@@ -54,6 +54,7 @@
 **/
 
 #include "Node.h"
+#include "Program.h"
 #include <iostream>
 
 void
@@ -151,4 +152,13 @@ dmpl::Node::print (std::ostream &os,unsigned int indent)
   for (dmpl::Functions::iterator i = funcs.begin ();i != funcs.end (); ++i)
     i->second.print (2);
   */
+}
+
+dmpl::Func
+dmpl::Node::findFunc(const std::string& name) const
+{
+  Funcs::const_iterator ret = funcs.find(name);
+  if(ret != funcs.end())
+    return ret->second;
+  return program->findFunc(name);
 }

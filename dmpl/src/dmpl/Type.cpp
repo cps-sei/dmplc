@@ -125,11 +125,11 @@ dmpl::Type dmpl::BaseType::decrDim() const
   return ret;
 }
 
-///return a copy with one more dimension
+///return a copy with one more dimension (added at front)
 dmpl::Type dmpl::BaseType::incrDim(int d) const
 {
   BaseType *res = new BaseType(*this);
-  res->dims.push_back(d);
+  res->dims.insert(res->dims.begin(), d);
   return Type(res);
 }
 

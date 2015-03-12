@@ -74,6 +74,7 @@
 
 namespace dmpl
 {
+  class Program;
   /**
     * @class Node
     * @brief Represents a process in a distributed program
@@ -81,6 +82,9 @@ namespace dmpl
   class Node
   {
   public:    
+    /// Owning Program object
+    Program *program;
+
     /**
      * The node name
      **/
@@ -115,25 +119,30 @@ namespace dmpl
     Attributes attrs;
 
     ///constructors
-    Node(bool abst = false) : abstract(abst) {}
+    Node(bool abst = false) : program(NULL), abstract(abst) {}
     Node(const std::string &n, bool abst = false)
-        : name(n), abstract(abst) {}
+        : program(NULL), name(n), abstract(abst) {}
     Node(const std::string &n, const Attributes& a, bool abst = false)
-        : name(n), attrs(a), abstract(abst) {}
+        : program(NULL), name(n), attrs(a), abstract(abst) {}
 
     void initArgs()
     {
-      if(idVar == NULL && args.size() == 1 && name == args[0])
+      if(idVar == NULL && args.size() == 1)
       {
         idVar = boost::make_shared<Var::element_type>(args[0], intType());
+        idVar->scope = Variable::SELF_ID;
+      }
+      else
+      {
+        throw std::runtime_error("Node must have exactly one parameter (its id)");
       }
     }
 
     Var findVar(const std::string& name) const
     {
-      Vars::const_iterator ret = locVars.find(name);
       if(idVar && idVar->name == name)
         return idVar;
+      Vars::const_iterator ret = locVars.find(name);
       if(ret != locVars.end())
         return ret->second;
       ret = globVars.find(name);
@@ -142,13 +151,7 @@ namespace dmpl
       return Var();
     }
 
-    Func findFunc(const std::string& name) const
-    {
-      Funcs::const_iterator ret = funcs.find(name);
-      if(ret != funcs.end())
-        return ret->second;
-      return Func();
-    }
+    Func findFunc(const std::string& name) const;
 
     Sym findSym(const std::string& name) const
     {

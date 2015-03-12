@@ -399,7 +399,7 @@ namespace dmpl
       size_t indentation_;
 
       /// special identifier map, generally used by dmpl specific functions
-      std::map <std::string, int> id_map_;
+      std::map <Var, int> id_map_;
 
       /// privatized section (force globals to have only local modifications)
       bool privatize_;

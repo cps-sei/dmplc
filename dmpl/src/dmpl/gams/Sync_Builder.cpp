@@ -111,6 +111,7 @@ dmpl::gams::Sync_Builder::build_header_includes ()
   buffer_ << "#include <string>\n";
   buffer_ << "#include <vector>\n";
   buffer_ << "#include <sstream>\n";
+  buffer_ << "#include <fstream>\n";
   buffer_ << "#include <assert.h>\n";
   buffer_ << "#include <math.h>\n";
   buffer_ << "\n";
@@ -132,9 +133,6 @@ dmpl::gams::Sync_Builder::build_header_includes ()
   buffer_ << "#include \"madara/knowledge_engine/containers/Integer_Vector.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/containers/Double_Vector.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/containers/Vector_N.h\"\n";
-  buffer_ << "#include \"madara/knowledge_engine/containers/Integer.h\"\n";
-  buffer_ << "#include \"madara/knowledge_engine/containers/Double.h\"\n";
-  buffer_ << "#include \"madara/knowledge_engine/containers/String.h\"\n";
   buffer_ << "#include \"madara/threads/Threader.h\"\n";
   buffer_ << "#include \"madara/filters/Generic_Filters.h\"\n";
   buffer_ << "\n";
@@ -147,7 +145,7 @@ dmpl::gams::Sync_Builder::build_header_includes ()
   buffer_ << "#include \"gams/utility/GPS_Position.h\"\n";
   buffer_ << "\n";
   buffer_ << "#include \"dmpl/Reference.hpp\"\n";
-  buffer_ << "#include \"dmpl/StaticArray.hpp\"\n";
+  buffer_ << "#include \"dmpl/ArrayReference.hpp\"\n";
   if(do_expect_) {
     buffer_ << "extern \"C\" {\n";
     buffer_ << "#include <sys/time.h>\n";
@@ -176,7 +174,9 @@ dmpl::gams::Sync_Builder::build_common_global_variables ()
   buffer_ << "namespace platforms = gams::platforms;\n\n";
   buffer_ << "namespace variables = gams::variables;\n\n";
   buffer_ << "using containers::Reference;\n\n";
-  buffer_ << "using containers::StaticArray;\n\n";
+  buffer_ << "using containers::ArrayReference;\n\n";
+  buffer_ << "\n";
+  buffer_ << "engine::Knowledge_Base knowledge;\n";
   buffer_ << "\n";
 
   buffer_ << "// Needed as a workaround for non-const-correctness in Madara; use carefully\n";
@@ -202,19 +202,20 @@ dmpl::gams::Sync_Builder::build_common_global_variables ()
   buffer_ << "const std::string default_multicast (\"239.255.0.1:4150\");\n";
   buffer_ << "Madara::Transport::QoS_Transport_Settings settings;\n";
   buffer_ << "int write_fd (-1);\n";
+  buffer_ << "ofstream expect_file;\n";
   buffer_ << "\n";
 
   buffer_ << "// Containers for commonly used variables\n";
   buffer_ << "// Global variables\n";
   //buffer_ << "containers::Integer_Array barrier;\n";
 
-  buffer_ << "containers::Integer id;\n";
-  buffer_ << "containers::Integer num_processes;\n";
+  buffer_ << "Reference<unsigned int> id(knowledge, \".id\");\n";
+  buffer_ << "Reference<unsigned int>  num_processes(knowledge, \".num_processes\");\n";
   buffer_ << "double max_barrier_time (-1);\n";
   buffer_ << "engine::Knowledge_Update_Settings private_update (true);\n";
   buffer_ << "\n";
   buffer_ << "// number of participating processes\n";
-  buffer_ << "Integer processes (";
+  buffer_ << "unsigned int processes (";
   buffer_ << builder_.program.processes.size ();
   buffer_ << ");\n\n";
 }
@@ -353,37 +354,36 @@ dmpl::gams::Sync_Builder::build_program_variables ()
   buffer_ << "\n";
 }
 
+namespace
+{
+  std::string get_type_name(const dmpl::Var &var)
+  {
+    if(var->type->type == TCHAR)
+      return "short";
+    else
+      return var->type->toString();
+  }
+}
+
 void
 dmpl::gams::Sync_Builder::build_program_variable_init (
   const Var & var)
 {
   if (var->type->dims.size () <= 1)
   {
-    if (var->type->type == TINT)
-    {
-      buffer_ << "Integer var_init_";
-      buffer_ << var->name;
-      buffer_ << " (0);\n";
-    }
-    else if (var->type->type == TDOUBLE_TYPE)
-    {
-      buffer_ << "double var_init_";
-      buffer_ << var->name;
+    buffer_ << get_type_name(var) << " var_init_";
+    buffer_ << var->name;
+    if (var->type->type == TDOUBLE_TYPE)
       buffer_ << " (0.0);\n";
-    }
     else
-    {
-      // Default to integer
-      buffer_ << "Integer var_init_";
-      buffer_ << var->name;
       buffer_ << " (0);\n";
-    }
   }
 }
 
 void
 dmpl::gams::Sync_Builder::build_program_variable (const Var & var)
 {
+#if 0
   // is this an array type?
   if (var->type->dims.size () == 1)
   {
@@ -407,23 +407,31 @@ dmpl::gams::Sync_Builder::build_program_variable (const Var & var)
     buffer_ << "containers::Array_N ";
   }
   // non-array type
+#endif
+
+  // is this an array type?
+  if (var->type->dims.size () >= 1)
+  {
+    buffer_ << "ArrayReference<" << get_type_name(var);
+    BOOST_FOREACH(int dim, var->type->dims)
+    {
+      buffer_ << ", ";
+      if(dim > 0)
+        buffer_ << dim;
+      else
+        buffer_ << builder_.program.processes.size ();
+    }
+    buffer_ << "> ";
+  }
   else
   {
-    if (var->type->type == TINT)
-    {
-      buffer_ << "containers::Integer ";
-    }
-    else if (var->type->type == TDOUBLE_TYPE)
-    {
-      buffer_ << "containers::Double ";
-    }
-    else
-    {
-      // Default to integer
-      buffer_ << "containers::Integer ";
-    }
+    buffer_ << "Reference<" << get_type_name(var) << "> ";
   }
   buffer_ << var->name;
+  buffer_ << "(knowledge, \"";
+  if(var->scope == Variable::LOCAL)
+    buffer_ << ".";
+  buffer_ << var->name << "\")";
   buffer_ << ";\n";
 
   build_program_variable_init (var);
@@ -438,8 +446,8 @@ dmpl::gams::Sync_Builder::build_program_variables_bindings ()
   //buffer_ << builder_.program.processes.size ();
   //buffer_ << ");\n";
 
-  buffer_ << "  id.set_name (\".id\", *knowledge);\n";
-  buffer_ << "  num_processes.set_name (\".processes\", *knowledge);\n";
+  //buffer_ << "  id.set_name (\".id\", knowledge);\n";
+  //buffer_ << "  num_processes.set_name (\".processes\", knowledge);\n";
   buffer_ << "\n";
 
   Nodes & nodes = builder_.program.nodes;
@@ -469,25 +477,31 @@ void
 dmpl::gams::Sync_Builder::build_program_variable_binding (
   const Var & var)
 {
-  buffer_ << "  ";
-  buffer_ << var->name;
-  buffer_ << ".set_name (\"";
-
-  // local variables will have a period in front of them
-  if (var->scope == Variable::LOCAL)
-    buffer_ << ".";
-
-  buffer_ << var->name;
-  buffer_ << "\", *knowledge";
-
-  // is this an array type?
-  if (var->type->dims.size () == 1)
+#if 0
+  // if scalar, already bound
+  if (var->type->dims.size () > 0)
   {
-    buffer_ << ", ";
-    buffer_ << builder_.program.processes.size ();
-  }
+    buffer_ << "  ";
+    buffer_ << var->name;
+    buffer_ << ".set_name (\"";
 
-  buffer_ << ");\n";
+    // local variables will have a period in front of them
+    if (var->scope == Variable::LOCAL)
+      buffer_ << ".";
+
+    buffer_ << var->name;
+    buffer_ << "\", knowledge";
+
+    // is this an array type?
+    if (var->type->dims.size () == 1)
+    {
+      buffer_ << ", ";
+      buffer_ << builder_.program.processes.size ();
+    }
+
+    buffer_ << ");\n";
+  }
+#endif
 
   build_program_variable_assignment (var);
 
@@ -498,13 +512,13 @@ void
 dmpl::gams::Sync_Builder::build_program_variable_assignment (
   const Var & var)
 {
-  // is this an array type?
-  if (var->type->dims.size () == 1)
+  // is this a GLOBAL scalar (i.e., 1-dimensional array)?
+  if (var->scope == Variable::GLOBAL && var->type->dims.size () == 1)
   {
     buffer_ << "  " << var->name;
-    buffer_ << ".set (settings.id, var_init_";
+    buffer_ << "[settings.id] = var_init_";
     buffer_ << var->name;
-    buffer_ << ");\n";
+    buffer_ << ";\n";
   }
   else if (var->type->dims.size () == 0)
   {
@@ -655,6 +669,15 @@ dmpl::gams::Sync_Builder::build_parse_args ()
   buffer_ << "      \n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
+  buffer_ << "    else if (arg1 == \"-e\" || arg1 == \"--expect-log\")\n";
+  buffer_ << "    {\n";
+  buffer_ << "      if (i + 1 < argc)\n";
+  buffer_ << "      {\n";
+  buffer_ << "        expect_file.open(argv[i + 1], ios::out | ios::trunc);\n";
+  buffer_ << "      }\n";
+  buffer_ << "      \n";
+  buffer_ << "      ++i;\n";
+  buffer_ << "    }\n";
   buffer_ << "    else if (arg1 == \"-f\" || arg1 == \"--logfile\")\n";
   buffer_ << "    {\n";
   buffer_ << "      if (i + 1 < argc)\n";
@@ -738,6 +761,7 @@ dmpl::gams::Sync_Builder::build_parse_args ()
   buffer_ << "        \" [-p|--platform type]     platform for loop (vrep, dronerk)\\n\"\\\n";
   buffer_ << "        \" [-b|--broadcast ip:port] the broadcast ip to send and listen to\\n\"\\\n";
   buffer_ << "        \" [-d|--domain domain]     the knowledge domain to send and listen to\\n\"\\\n";
+  buffer_ << "        \" [-e|--expect-log file]   file to log variables related to 'expect' clauses\\n\"\\\n";
   buffer_ << "        \" [-f|--logfile file]      log to a file\\n\"\\\n";
   buffer_ << "        \" [-i|--id id]             the id of this agent (should be non-negative)\\n\"\\\n";
   buffer_ << "        \" [-l|--level level]       the logger level (0+, higher is higher detail)\\n\"\\\n";
@@ -851,13 +875,12 @@ dmpl::gams::Sync_Builder::build_refresh_modify_globals ()
 void
 dmpl::gams::Sync_Builder::build_refresh_modify_global (const Var & var)
 {
+#if 0
   // is this an array type?
   if (var->type->dims.size () == 1)
   {
     buffer_ << "  " << var->name;
-    buffer_ << ".set (*id, ";
-    buffer_ << var->name;
-    buffer_ << "[*id]);\n";
+    buffer_ << "[id].mark_modified();\n";
   }
   // is this an n-dimensional array type?
   else if (var->type->dims.size () > 1)
@@ -881,8 +904,8 @@ dmpl::gams::Sync_Builder::build_refresh_modify_global (const Var & var)
     buffer_ << spacer << "containers::Array_N::Index index (" << dims.size() << ");\n";
     for(int i = 0;i < dims.size () - 1;++i)
       buffer_ << spacer << "index[" << i << "] = i" << i << ";\n";
-    buffer_ << spacer << "index[" << dims.size() - 1 << "] = *id;\n";
-    buffer_ << spacer << var->name << ".set (index, " << var->name << "(" << index_str << "*id).to_integer ());\n";
+    buffer_ << spacer << "index[" << dims.size() - 1 << "] = id;\n";
+    buffer_ << spacer << var->name << ".set (index, " << var->name << "(" << index_str << "id).to_integer ());\n";
 
     //close for loops
     for(int i = dims.size () - 2;i >= 0;--i) {
@@ -892,13 +915,14 @@ dmpl::gams::Sync_Builder::build_refresh_modify_global (const Var & var)
 
     // we currently have no way of specifying owned locations in an array
     buffer_ << "\n";
+#endif
+  if (var->scope == Variable::GLOBAL)
+  {
+    buffer_ << "  " << var->name << "[id].mark_modified();\n";
   }
   else
   {
-    buffer_ << "  " << var->name;
-    buffer_ << " = *";
-    buffer_ << var->name;
-    buffer_ << ";\n";
+    buffer_ << "  " << var->name << ".mark_modified()";
   }
 }
 
@@ -928,11 +952,18 @@ dmpl::gams::Sync_Builder::build_functions (void)
   buffer_ << "\n";
 }
 
+bool skip_func(dmpl::Func & function)
+{
+  return (function->attrs.count("INIT_SIM") == 0 && (function->isExtern ||
+      function->attrs.count("INIT") > 0 || function->attrs.count("SAFETY") > 0 ||
+      !function->usage_summary.anyNonExpect().any()));
+}
+
 void
 dmpl::gams::Sync_Builder::build_function_declaration (
   const dmpl::Node & node, dmpl::Func & function)
 {
-  if (function->isExtern || function->attrs.count("INIT") > 0 || function->attrs.count("SAFETY") > 0)
+  if (skip_func(function))
     return;
 
   buffer_ << "Madara::Knowledge_Record\n";
@@ -944,7 +975,7 @@ void
 dmpl::gams::Sync_Builder::build_function (
   const dmpl::Node & node, dmpl::Func & function)
 {
-  if (function->isExtern || function->attrs.count("INIT") > 0 || function->attrs.count("SAFETY") > 0)
+  if (skip_func(function))
     return;
 
   BOOST_FOREACH (Attributes::value_type & attr, function->attrs)
@@ -967,46 +998,17 @@ dmpl::gams::Sync_Builder::build_function (
   int i = 0;
   BOOST_FOREACH (Vars::value_type & variable, function->params)
   {
-    switch(variable.second->type->type)
-    {
-    case TDOUBLE_TYPE:
-      buffer_ << "  double ";
-      buffer_ << variable.second->name;
-      buffer_ << " = args[" << i << "].to_double();\n";
-      buffer_ << ";\n";
-      break;
-    case TINT:
-    case TCHAR:
-    case TBOOL:
-    default:
-      buffer_ << "  Integer ";
-      buffer_ << variable.second->name;
-      buffer_ << " = args[" << i << "].to_integer();\n";
-      break;
-    }
+    buffer_ << "  " << get_type_name(variable.second) << " ";
+    buffer_ << variable.second->name;
+    buffer_ << " = args[" << i << "].to_double();\n";
+    buffer_ << ";\n";
     ++i;
   }
   BOOST_FOREACH (Vars::value_type & variable, function->temps)
   {
-    if (variable.second->type->type == TINT)
-    {
-      buffer_ << "  Integer ";
-      buffer_ << variable.second->name;
-      buffer_ << ";\n";
-    }
-    else if (variable.second->type->type == TDOUBLE_TYPE)
-    {
-      buffer_ << "  double ";
-      buffer_ << variable.second->name;
-      buffer_ << ";\n";
-    }
-    else
-    {
-      // Default to integer
-      buffer_ << "  Integer ";
-      buffer_ << variable.second->name;
-      buffer_ << ";\n";
-    }
+    buffer_ << "  " << get_type_name(variable.second);
+    buffer_ << " " << variable.second->name;
+    buffer_ << ";\n";
   }
   
   buffer_ << "\n";
@@ -1032,7 +1034,6 @@ dmpl::gams::Sync_Builder::build_gams_function (std::string &dmpl_name, std::stri
 void
 dmpl::gams::Sync_Builder::build_gams_functions ()
 {
-  buffer_ << "Madara::Knowledge_Engine::Knowledge_Base *knowledge;\n";
   buffer_ << "gams::platforms::Base *platform;\n";
 
   buffer_ << "int grid_x = 0, grid_y = 0;\n";
@@ -1052,9 +1053,9 @@ dmpl::gams::Sync_Builder::build_gams_functions ()
 
   buffer_ << "void GRID_PLACE(int x, int y, double alt = 0.0)\n";
   buffer_ << "{\n";
-  buffer_ << "  knowledge->set(\".initial_x\", grid_leftX + x * grid_cellX);\n";
-  buffer_ << "  knowledge->set(\".initial_y\", grid_topY + y * grid_cellY);\n";
-  buffer_ << "  knowledge->set(\".initial_alt\", alt);\n";
+  buffer_ << "  knowledge.set(\".initial_x\", grid_leftX + x * grid_cellX);\n";
+  buffer_ << "  knowledge.set(\".initial_y\", grid_topY + y * grid_cellY);\n";
+  buffer_ << "  knowledge.set(\".initial_alt\", alt);\n";
   buffer_ << "}\n";
   buffer_ << "\n";
 
@@ -1066,6 +1067,26 @@ dmpl::gams::Sync_Builder::build_gams_functions ()
   buffer_ << "  return ret != 2;\n";
   buffer_ << "}\n";
   buffer_ << "\n";
+
+  buffer_ << "double GET_LAT()\n";
+  buffer_ << "{\n";
+  buffer_ << "  if(platform == NULL) return NAN;\n";
+  buffer_ << "  gams::utility::Position *pos = platform->get_position();\n";
+  buffer_ << "  double lat = pos->x;\n";
+  buffer_ << "  delete pos;\n";
+  buffer_ << "  return lat;\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "double GET_LNG()\n";
+  buffer_ << "{\n";
+  buffer_ << "  if(platform == NULL) return NAN;\n";
+  buffer_ << "  gams::utility::Position *pos = platform->get_position();\n";
+  buffer_ << "  double lng = pos->y;\n";
+  buffer_ << "  delete pos;\n";
+  buffer_ << "  return lng;\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
 }
 
 void
@@ -1074,13 +1095,15 @@ dmpl::gams::Sync_Builder::build_expect_thread_declaration (void)
   buffer_ << "class ExpectThread : public threads::Base_Thread\n";
   buffer_ << "{\n";
   buffer_ << "public:\n";
-  buffer_ << "  int iter_count;\n";
   buffer_ << "  Madara::Knowledge_Engine::Knowledge_Base *_knowledge;\n";
   buffer_ << "  ExpectThread (\n";
-  buffer_ << "  ) : iter_count(0) {}\n";
+  buffer_ << "    ostream &o = std::cout\n";
+  buffer_ << "  ) : out(o) {}\n";
   buffer_ << "  virtual void init (engine::Knowledge_Base & context);\n";
   buffer_ << "  virtual void run (void);\n";
   buffer_ << "  virtual void cleanup (void) {}\n";
+  buffer_ << "protected:\n";
+  buffer_ << "  ostream &out;\n";
   buffer_ << "};\n";
 }
 
@@ -1090,42 +1113,54 @@ dmpl::gams::Sync_Builder::build_expect_thread_definition (void)
   buffer_ << "void ExpectThread::init (engine::Knowledge_Base & context)\n";
   buffer_ << "{\n";
   buffer_ << "  _knowledge = &context;\n";
+  buffer_ << "  out << \"Seconds,Micros,Node,Variable,Value\" << std::endl;\n";
   buffer_ << "}\n";
   buffer_ << "\n";
   buffer_ << "void ExpectThread::run (void)\n";
   buffer_ << "{\n";
-  buffer_ << "  std::cout << \"EXPECT CHECK #\" << iter_count;\n";
   buffer_ << "  timeval tv;\n";
-  buffer_ << "  if(gettimeofday(&tv, NULL) == 0)\n";
-  buffer_ << "    std::cout << \" (\" << tv.tv_sec << \".\" << std::setfill('0') << std::setw(6) << tv.tv_usec << \")\";\n";
-  buffer_ << "  std::cout << \":\" << std::endl;\n";
+  buffer_ << "  if(gettimeofday(&tv, NULL) != 0) {\n";
+  buffer_ << "    tv.tv_sec = 0;\n";
+  buffer_ << "    tv.tv_usec = 0;\n";
+  buffer_ << "  }\n";
 
   Node &node = builder_.program.nodes.begin()->second;
 
-  int unnamed_expect_count = 0;
-
-  BOOST_FOREACH(Stmt &stmt, node.stmts)
+  BOOST_FOREACH(Vars::value_type &it, node.locVars)
   {
-    boost::shared_ptr<CondStmt> cs( boost::dynamic_pointer_cast<CondStmt>(stmt) );
-    if(cs != NULL && cs->kind == "expect")
+    buffer_ << "  out << tv.tv_sec << \",\" << tv.tv_usec << \",\" << id << \",\";\n";
+    buffer_ << "  out << \"" << it.second->getName() << ",\" << ::dmpl::" << it.second->getName() << ";\n";
+    buffer_ << "  out << std::endl;\n\n";
+  }
+
+  BOOST_FOREACH(Vars::value_type &it, node.globVars)
+  {
+    Var var = it.second;
+    if(var->type->dims.size() != 1)
+      continue;
+    for(int i = 0; i < builder_.program.processes.size(); i++)
     {
-      buffer_ << "  {\n";
-      buffer_ << "    bool __val = (";
-
-      dmpl::madara::Function_Visitor visitor (Func(), node, builder_, buffer_, false);
-      visitor.visit(cs->cond);
-
-      buffer_ << ");\n";
-
-      if(cs->name == "")
-        cs->name = "AUTO_" + node.name + "_" + boost::lexical_cast<std::string>(unnamed_expect_count++);
-
-      buffer_ << "    std::cout << \"  EXPECT "  << cs->name << "\" << (!__val ? \" FAILED\" : \" PASSED\" ) << std::endl;\n";
-      buffer_ << "  }\n";
+      buffer_ << "  out << tv.tv_sec << \",\" << tv.tv_usec << \",\" << " << i << " << \",\";\n";
+      buffer_ << "  out << \"" << var->getName() << ",\" << ::dmpl::" << var->getName() << "[" << i << "];\n";
+      buffer_ << "  out << std::endl;\n\n";
     }
   }
-  buffer_ << "  std::cout << std::endl;\n";
-  buffer_ << "  iter_count++;\n";
+
+  BOOST_FOREACH(Funcs::value_type &it, builder_.program.funcs)
+  {
+    Func func = it.second;
+    if(!func->isExtern || func->params.size() > 0 || func->retType->type == TVOID)
+      continue;
+    std::cerr << "External Function: " << func->getName() << std::endl;
+    std::cerr << "  usage_summary: " << func->usage_summary << std::endl;
+    std::cerr << "  expect: " << func->usage_summary.anyExpect() << std::endl;
+    if(func->usage_summary.anyExpect().any())
+    {
+      buffer_ << "  out << tv.tv_sec << \",\" << tv.tv_usec << \",\" << id << \",\";\n";
+      buffer_ << "  out << \"" << func->getName() << ",\" << ::dmpl::" << func->getName() << "();\n";
+      buffer_ << "  out << std::endl;\n\n";
+    }
+  }
   buffer_ << "}\n";
   buffer_ << "\n";
 }
@@ -1179,6 +1214,7 @@ dmpl::gams::Sync_Builder::build_algo_declaration ()
 #endif
 
   buffer_ << "  controllers::Base loop;\n";
+  buffer_ << "  engine::Knowledge_Base *knowledge_;\n";
   buffer_ << "  std::string _exec_func, _platform_name;\n";
 
 #if USE_MZSRM==1
@@ -1262,7 +1298,7 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
     buffer_ << "    variables::Self * self) : loop(*knowledge), _platform_name(platform_name),\n";
   }
 
-  buffer_ << "      Base (knowledge, 0, sensors, self),\n";
+  buffer_ << "      Base (knowledge, 0, sensors, self), knowledge_(knowledge),\n";
 
 #if USE_MZSRM==1
   if(schedType_ == MZSRM) {
@@ -1450,9 +1486,9 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "  wait_settings.max_wait_time = 0;\n";
   buffer_ << "  wait_settings.poll_frequency = .1;\n\n";
 
-  buffer_ << "  round_logic = knowledge->compile (\n";
+  buffer_ << "  round_logic = knowledge_->compile (\n";
 
-  buffer_ << "    knowledge->expand_statement (_exec_func + \" (); ++\" + mbarrier + \".{.id}\"));\n";
+  buffer_ << "    knowledge_->expand_statement (_exec_func + \" (); ++\" + mbarrier + \".{.id}\"));\n";
 
   buffer_ << "}\n";
   buffer_ << "\n";
@@ -1468,7 +1504,7 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   // build the barrier string  
   buffer_ << "  bool started = false;\n\n";
 
-  buffer_ << "  barrier_send_list [knowledge->expand_statement (";
+  buffer_ << "  barrier_send_list [knowledge_->expand_statement (";
   buffer_ << "\"\" + mbarrier + \".{.id}\")] = true;\n\n";
   
   buffer_ << "  barrier_string << \"REMODIFY_GLOBALS () ;> \";\n";
@@ -1519,8 +1555,8 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
 
   buffer_ << "  std::cout << \"barrier_string: \" << barrier_string.str() << std::endl;\n";
 
-  buffer_ << "  barrier_logic = knowledge->compile (barrier_string.str ());\n";
-  buffer_ << "  barrier_sync_logic = knowledge->compile (barrier_sync.str ());\n";
+  buffer_ << "  barrier_logic = knowledge_->compile (barrier_string.str ());\n";
+  buffer_ << "  barrier_sync_logic = knowledge_->compile (barrier_sync.str ());\n";
 
   buffer_ << "  Algo::init(context);\n";
   
@@ -1775,6 +1811,7 @@ dmpl::gams::Sync_Builder::build_main_function ()
   buffer_ << "\n";
   buffer_ << "int main (int argc, char ** argv)\n";
   buffer_ << "{\n";
+  //buffer_ << "  Madara::Utility::set_log_level(Madara::Utility::LOG_DETAILED_TRACE);\n";
   buffer_ << "  settings.type = Madara::Transport::MULTICAST;\n";
   //buffer_ << "  settings.type = Madara::Transport::BROADCAST;\n";
   buffer_ << "  platform_init_fns[\"vrep\"] = init_vrep;\n";
@@ -1789,11 +1826,11 @@ dmpl::gams::Sync_Builder::build_main_function ()
   buffer_ << "    // setup default transport as multicast\n";
   buffer_ << "    settings.hosts.push_back (default_multicast);\n";
   //buffer_ << "    settings.hosts.push_back (\"127.0.0.1:4150\");\n";
-  buffer_ << "    //settings.add_receive_filter (Madara::Filters::log_aggregate);\n";
-  buffer_ << "    //settings.add_send_filter (Madara::Filters::log_aggregate);\n";
+  buffer_ << "    settings.add_receive_filter (Madara::Filters::log_aggregate);\n";
+  buffer_ << "    settings.add_send_filter (Madara::Filters::log_aggregate);\n";
   buffer_ << "  }\n\n";
   
-  buffer_ << "  settings.queue_length = 100000;\n\n";
+  buffer_ << "  settings.queue_length = 1000000;\n\n";
   buffer_ << "  settings.set_deadline(2);\n\n";
 
 
@@ -1818,8 +1855,8 @@ dmpl::gams::Sync_Builder::build_main_function ()
   }
 #endif
 
-  buffer_ << "  // create the knowledge base with the transport settings\n";
-  buffer_ << "  knowledge = new Madara::Knowledge_Engine::Knowledge_Base (host, settings);\n\n";
+  buffer_ << "  // configure the knowledge base with the transport settings\n";
+  buffer_ << "  knowledge.attach_transport(host, settings);\n\n";
 
   Node &node = builder_.program.nodes.begin()->second;
 
@@ -1840,7 +1877,7 @@ dmpl::gams::Sync_Builder::build_main_function ()
 
   // set the values for id and processes
   buffer_ << "  // Initialize commonly used local variables\n";  
-  buffer_ << "  id = Integer (settings.id);\n";
+  buffer_ << "  id = settings.id;\n";
   buffer_ << "  num_processes = processes;\n";
   buffer_ << "  if(id < 0 || id >= processes) {\n";
   buffer_ << "    std::cerr << \"Invalid node id: \" << settings.id << \"  valid range: [0, \" << processes - 1 << \"]\" << std::endl;\n";
@@ -1849,19 +1886,19 @@ dmpl::gams::Sync_Builder::build_main_function ()
 
   buffer_ << "  PlatformInitFns::iterator init_fn = platform_init_fns.find(platform_name);\n";
   buffer_ << "  if(init_fn != platform_init_fns.end())\n";
-  buffer_ << "    init_fn->second(platform_params, *knowledge);\n";
+  buffer_ << "    init_fn->second(platform_params, knowledge);\n";
 
 
   BOOST_FOREACH(Funcs::value_type &f, node.funcs)
     {
       if (f.second->attrs.count("INIT_SIM") == 1)
         {
-          buffer_ << "  knowledge->evaluate(\"" << f.second->name << "()\");\n";
+          buffer_ << "  knowledge.evaluate(\"" << f.second->name << "()\");\n";
         }
     }
-  //buffer_ << "  knowledge->set(\"S\" + to_string(settings.id) + \".init\", \"1\");\n";
+  //buffer_ << "  knowledge.set(\"S\" + to_string(settings.id) + \".init\", \"1\");\n";
 
-  buffer_ << "  threads::Threader threader(*knowledge);\n";
+  buffer_ << "  threads::Threader threader(knowledge);\n";
 
   Func platformFunction;
   buffer_ << "  std::vector<Algo *> algos;\n";
@@ -1903,20 +1940,20 @@ dmpl::gams::Sync_Builder::build_main_function ()
               buffer_ << "  algo = new SyncAlgo(" << hertz << ", "
                       << period << ", " << priority << ", " 
                       << criticality << ", " << zsinst << ", \"" << f.second->name 
-                      << "\", knowledge, platform_name);\n";
+                      << "\", &knowledge, platform_name);\n";
             else
               buffer_ << "  algo = new SyncAlgo(" << hertz << ", "
                       << period << ", " << priority << ", " 
                       << criticality << ", " << zsinst << ", \"" << f.second->name 
-                      << "\", knowledge);\n";
+                      << "\", &knowledge);\n";
           }
           else
 #endif
           {
             if (platformFunction == f.second)
-              buffer_ << "  algo = new SyncAlgo(" << hertz << ", \"" << f.second->name << "\", knowledge, platform_name);\n";
+              buffer_ << "  algo = new SyncAlgo(" << hertz << ", \"" << f.second->name << "\", &knowledge, platform_name);\n";
             else
-              buffer_ << "  algo = new SyncAlgo(" << hertz << ", \"" << f.second->name << "\", knowledge);\n";
+              buffer_ << "  algo = new SyncAlgo(" << hertz << ", \"" << f.second->name << "\", &knowledge);\n";
           }
         }
       //-- for asynchronous function
@@ -1928,20 +1965,20 @@ dmpl::gams::Sync_Builder::build_main_function ()
               buffer_ << "  algo = new Algo(" << hertz << ", " 
                       << period << ", " << priority << ", " 
                       << criticality << ", " << zsinst << ", \"" << f.second->name 
-                      << "\", knowledge, platform_name);\n";
+                      << "\", &knowledge, platform_name);\n";
             else
               buffer_ << "  algo = new Algo(" << hertz << ", "
                       << period << ", " << priority << ", " 
                       << criticality << ", " << zsinst << ", \"" << f.second->name 
-                      << "\", knowledge);\n";
+                      << "\", &knowledge);\n";
           }
           else
 #endif
           {
             if (platformFunction == f.second)
-              buffer_ << "  algo = new Algo(" << hertz << ", \"" << f.second->name << "\", knowledge, platform_name);\n";
+              buffer_ << "  algo = new Algo(" << hertz << ", \"" << f.second->name << "\", &knowledge, platform_name);\n";
             else
-              buffer_ << "  algo = new Algo(" << hertz << ", \"" << f.second->name << "\", knowledge);\n";
+              buffer_ << "  algo = new Algo(" << hertz << ", \"" << f.second->name << "\", &knowledge);\n";
           }
         }
       buffer_ << "  algos.push_back(algo);\n\n";
@@ -1950,11 +1987,11 @@ dmpl::gams::Sync_Builder::build_main_function ()
   buffer_ << "  for(int i = 0; i < algos.size(); i++)\n";
   buffer_ << "    algos[i]->start(threader);\n";
 
-  buffer_ << "  knowledge->set(\"begin_sim\", \"1\");\n";
+  buffer_ << "  knowledge.set(\"begin_sim\", \"1\");\n";
 
   if(do_expect_)
   {
-    buffer_ << "  threader.run(5.0, \"expect_thread\", new ExpectThread());\n";
+    buffer_ << "  threader.run(5.0, \"expect_thread\", new ExpectThread(expect_file.is_open()?expect_file:std::cout));\n";
   }
 
   buffer_ << "  threader.wait();\n";
@@ -1968,7 +2005,7 @@ dmpl::gams::Sync_Builder::build_main_define_functions ()
 {
   buffer_ << "  // Defining common functions\n\n";
 
-  buffer_ << "  knowledge->define_function (\"REMODIFY_GLOBALS\", ";
+  buffer_ << "  knowledge.define_function (\"REMODIFY_GLOBALS\", ";
   buffer_ << "REMODIFY_GLOBALS);\n\n";
 
   buffer_ << "  // Defining global functions for MADARA\n\n";
@@ -1999,9 +2036,9 @@ void
 dmpl::gams::Sync_Builder::build_main_define_function (const Node & node,
                                                       Func & function)
 {
-  if (!(function->isExtern || function->attrs.count("INIT") > 0 || function->attrs.count("SAFETY") > 0))
+  if (!(skip_func(function)))
     {
-      buffer_ << "  knowledge->define_function (\"";
+      buffer_ << "  knowledge.define_function (\"";
       buffer_ << function->name;
       buffer_ << "\", ";
       buffer_ << node.name << "_" << function->name;

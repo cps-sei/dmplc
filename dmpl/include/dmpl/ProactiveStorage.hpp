@@ -65,10 +65,10 @@ struct Proactive
     vector_type stored_data;
 
     template <typename X>
-    friend class StaticArrayReference;
+    friend class ArrayReferenceReference;
 
     //template <typename X>
-    //friend class identity<typename StaticArray_0<X>::type >::type;
+    //friend class identity<typename ArrayReference_0<X>::type >::type;
 
     BaseMixin(A &a) { }
 
@@ -102,10 +102,11 @@ struct Proactive
       return static_cast<const A&>(*this).A::get_name();
     }
 
+    /** Clears any existing storage, and recreates references to all array elements.
+     */
     void init_storage()
     {
-      if(stored_data.size() != 0)
-        stored_data.clear();
+      stored_data.clear();
       unsigned int total_size = 1;
       for(int i = dim_sizes.size() - 1; i >= 0; --i)
       {
@@ -125,9 +126,9 @@ struct Proactive
         }
         //std::cerr << "Making reference to " << str.str() << std::endl;
 #ifdef USE_EMPLACE
-        stored_data.emplace_back(base.get_context(), str.str(), base.get_settings());
+        stored_data.emplace_back(base.get_context(), base.get_settings(), str.str());
 #else
-        stored_data.push_back(storage_type(base.get_context(), str.str(), base.get_settings()));
+        stored_data.push_back(storage_type(base.get_context(), base.get_settings(), str.str()));
 #endif
       }
       while(inc_index(cur_index));
@@ -163,16 +164,16 @@ struct Proactive
     static const unsigned int static_size = Size;
     static const unsigned int num_dims = Dims;
 
-    typedef typename StaticArray_0<this_type>::type base_type;
+    typedef typename ArrayReference_0<this_type>::type base_type;
     typedef BaseMixin<base_type> base_mixin;
 
     template <typename X>
-    friend class StaticArrayReference;
+    friend class ArrayReferenceReference;
 
     //friend class identity<A>::type;
 
     //template <typename X>
-    //friend class identity<typename StaticArray_0<X>::type >::type;
+    //friend class identity<typename ArrayReference_0<X>::type >::type;
 
     base_mixin &get_base_mixin()
     {
@@ -199,7 +200,14 @@ struct Proactive
     void resize(unsigned int i)
     {
       if(i != get_size())
-        throw std::runtime_error("Proactive storage type for StaticArray does not yet support resizing");
+      {
+        size_sanity(i);
+        get_base_mixin().dims_size[num_dims - 1] = i;
+
+        // TODO: instead of throwing out all existing storage and re-initializing everything,
+        //       keep existing storage, only initialize new ones.
+        get_base_mixin().init_storage();
+      }
     }
 
     unsigned int get_size() const
@@ -246,12 +254,12 @@ struct Proactive
     typedef BaseMixin<array_base_type> base_mixin;
 
     template <typename X>
-    friend class StaticArrayReference;
+    friend class ArrayReferenceReference;
 
     //friend class identity<A>::type;
 
     //template <typename X>
-    //friend class identity<typename StaticArray_0<X>::type >::type;
+    //friend class identity<typename ArrayReference_0<X>::type >::type;
 
     reference_type &get_reference()
     {
@@ -325,8 +333,8 @@ struct Proactive
     typedef storage_type  element_reference_type;
     typedef storage_type  element_rvalue_type;
 
-    typedef typename StaticArray_0<typename A::storage_specifier>::type base_array_type;
-    typedef StaticArrayReference<base_array_type> base_ref_type;
+    typedef typename ArrayReference_0<typename A::storage_specifier>::type base_array_type;
+    typedef ArrayReferenceReference<base_array_type> base_ref_type;
 
     typedef typename BaseMixin<A>::ptr_type ptr_type;
 
@@ -334,12 +342,12 @@ struct Proactive
     unsigned int offset;
 
     template <typename X>
-    friend class StaticArrayReference;
+    friend class ArrayReferenceReference;
 
     //friend class identity<A>::type;
 
     //template <typename X>
-    //friend class identity<typename StaticArray_0<X>::type >::type;
+    //friend class identity<typename ArrayReference_0<X>::type >::type;
 
     RefBaseMixin(A &a)
       : base_mixin(static_cast<BaseMixin<A> &>(a)), offset(0)

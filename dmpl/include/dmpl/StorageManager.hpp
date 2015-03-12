@@ -14,7 +14,7 @@
 #include <madara/knowledge_engine/Thread_Safe_Context.h>
 #include <madara/knowledge_engine/Knowledge_Update_Settings.h>
 #include "knowledge_cast.hpp"
-#include "StaticArray.hpp"
+#include "ArrayReference.hpp"
 
 #if __cplusplus >= 201103L
 #include <array>

@@ -122,7 +122,7 @@ namespace dmpl
     ///return a copy with one less dimension
     Type decrDim() const;
 
-    ///return a copy with one more dimension
+    ///return a copy with one more dimension (added at front)
     Type incrDim(int d) const;
 
     ///return the element type if this is an array type. if not return

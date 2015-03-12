@@ -43,64 +43,70 @@ template<typename T, typename Impl>
 class BaseReference
 {
 protected:
-  Thread_Safe_Context &context;
+  BaseReference() {}
+  Impl* get_impl()
+  {
+    return static_cast<Impl*>(this);
+  }
 
-  BaseReference(Knowledge_Base &kbase)
-    : context(kbase.get_context()), settings() {}
-
-  BaseReference(Thread_Safe_Context &con)
-    : context(con), settings() {}
-
-  BaseReference(Thread_Safe_Context &con, const Knowledge_Update_Settings &settings)
-    : context(con), settings(settings) {}
-
-  BaseReference(Knowledge_Base &kbase, const Knowledge_Update_Settings &settings)
-    : context(kbase.get_context()), settings(settings) {}
+  const Impl* get_impl() const
+  {
+    return static_cast<const Impl*>(this);
+  }
 public:
-  Knowledge_Update_Settings settings;
 
   std::string get_name() const
   {
-    return static_cast<const Impl*>(this)->get_name();
+    return get_impl()->get_name();
   }
 
   Thread_Safe_Context &get_context() const
   {
-    return context;
+    return get_impl()->get_context();
   }
 
-  Knowledge_Update_Settings &get_settings()
+  /// Returns previous settings
+  Knowledge_Update_Settings *set_settings(Knowledge_Update_Settings *new_settings)
   {
-    return settings;
+    return get_impl()->set_settings(new_settings);;
   }
 
-  const Knowledge_Update_Settings &get_settings() const
+  Knowledge_Update_Settings *get_settings() const
   {
-    return settings;
+    return get_impl()->get_settings();;
+  }
+
+  const Knowledge_Update_Settings &get_settings_cref() const
+  {
+    return get_impl()->get_settings_cref();
+    //return settings ? *settings : default_knowledge_settings;
   }
 
   Knowledge_Record get_knowledge_record() const {
-    return static_cast<const Impl*>(this)->get_knowledge_record();
+    return get_impl()->get_knowledge_record();
   }
 
   void mark_modified()
   {
-    static_cast<const Impl*>(this)->mark_modified();
+    get_impl()->mark_modified();
   }
 
   T get() const
   {
-    return static_cast<const Impl*>(this)->get();
+    return get_impl()->get();
     //return knowledge_cast<T>(get_knowledge_record());
   }
 
   operator T() const {
-    return get();
+    //return get();
+    T ret = get();
+    //std::cout << "Getting " << get_name() << ": " << ret << std::endl;
+    return ret;
   }
 
   bool exists() const
   {
-    return get_context().exists(get_name(), get_settings());
+    return get_context().exists(get_name(), get_settings_cref());
   }
 
   Knowledge_Record::Integer get_integer() const
@@ -137,89 +143,147 @@ public:
 
   const T &operator=(const T& in)
   {
+    //std::cout << "Setting " << get_name() << " to " << in << std::endl;
     return set(in);
   }
 
   const T &operator+=(const T& in)
   {
-    return set((*this) + in);
+    return set(get() + in);
   }
 
   const T &operator-=(const T& in)
   {
-    return set((*this) - in);
+    return set(get() - in);
   }
 
   const T &operator*=(const T& in)
   {
-    return set((*this) * in);
+    return set(get() * in);
   }
 
   const T &operator/=(const T& in)
   {
-    return set((*this) / in);
+    return set(get() / in);
   }
 
   const T &operator%=(const T& in)
   {
-    return set((*this) % in);
+    return set(get() % in);
   }
 
   const T &operator|=(const T& in)
   {
-    return set((*this) | in);
+    return set(get() | in);
   }
 
   const T &operator&=(const T& in)
   {
-    return set((*this) & in);
+    return set(get() & in);
   }
 
   const T &operator^=(const T& in)
   {
-    return set((*this) ^ in);
+    return set(get() ^ in);
   }
 
   template<typename I>
   const T &operator<<=(const I& in)
   {
-    return set((*this) << in);
+    return set(get() << in);
   }
 
   template<typename I>
   const T &operator>>=(const I& in)
   {
-    return set((*this) << in);
+    return set(get() << in);
   }
 
   const T &set(const T& in)
   {
-    return set(in, this->settings);
+    return set(in, get_settings_cref());
   }
 
   const T &set(const T& in, const Knowledge_Update_Settings &settings)
   {
-    return static_cast<Impl*>(this)->set(in, settings);
+    return get_impl()->set(in, settings);
   }
 
   const Knowledge_Record &set_knowledge_record(const Knowledge_Record &in)
   {
-    return set_knowledge_record(in, this->settings);
+    return set_knowledge_record(in, get_settings_cref());
   }
 
   const Knowledge_Record &set_knowledge_record(const Knowledge_Record &in, const Knowledge_Update_Settings &settings)
   {
-    return static_cast<Impl*>(this)->set_knowledge_record(in, settings);
+    return get_impl()->set_knowledge_record(in, settings);
+  }
+};
+
+namespace
+{
+  /* All defaults, except don't expand variable names (siginificant performance penalty) */
+  const Knowledge_Update_Settings default_knowledge_settings(false, true, false, false, false, 1);
+}
+
+class ContextHost
+{
+protected:
+  Thread_Safe_Context &context;
+  Knowledge_Update_Settings *settings;
+
+  ContextHost(Knowledge_Base &kbase)
+    : context(kbase.get_context()), settings() {}
+
+  ContextHost(Thread_Safe_Context &con)
+    : context(con), settings() {}
+
+  ContextHost(Thread_Safe_Context &con, Knowledge_Update_Settings *settings)
+    : context(con), settings(settings) {}
+
+  ContextHost(Knowledge_Base &kbase, Knowledge_Update_Settings *settings)
+    : context(kbase.get_context()), settings(settings) {}
+
+  ContextHost(const ContextHost &o)
+#ifdef USE_RVAL_REF
+noexcept
+#endif
+    : context(o.get_context()), settings(o.get_settings()) {}
+
+public:
+  Thread_Safe_Context &get_context() const
+  {
+    return context;
+  }
+
+  /// Returns previous settings
+  Knowledge_Update_Settings *set_settings(Knowledge_Update_Settings *new_settings)
+  {
+    Knowledge_Update_Settings *old_settings = settings;
+    settings = new_settings;
+    return old_settings;
+  }
+
+  Knowledge_Update_Settings *get_settings() const
+  {
+    return settings;
+  }
+
+  const Knowledge_Update_Settings &get_settings_cref() const
+  {
+    return settings ? *settings : default_knowledge_settings;
   }
 };
 
 }
 
 template<typename T>
-class Reference : public __INTERNAL__::BaseReference<T, Reference<T> >
+class Reference : public __INTERNAL__::BaseReference<T, Reference<T> >,
+                  public __INTERNAL__::ContextHost
 {
 protected:
   typedef __INTERNAL__::BaseReference<T, Reference<T> > Base;
+  typedef __INTERNAL__::ContextHost ContextStorage;
 
 #ifdef USE_CPP11
   const Variable_Reference var_ref;
@@ -229,56 +293,50 @@ protected:
 #endif
 
 public:
-  Reference<T>(const Reference<T> &o) : Base(o.get_context(), o.settings), var_ref(o.var_ref) { }
+  Reference(const Reference &o)
+#ifdef USE_RVAL_REF
+noexcept
+#endif
+    : ContextStorage(o), var_ref(o.var_ref) { }
 
-  Reference<T>(Thread_Safe_Context &con, const std::string &name)
-    : Base(con), var_ref(con.get_ref(name)) {}
+#ifdef USE_RVAL_REF
+  Reference(Reference &&o) noexcept
+    : ContextStorage(std::move(o)), var_ref(std::move(o.var_ref)) {}
+#endif
 
-  Reference<T>(Thread_Safe_Context &con, const std::string &name, const T& def)
-    : Base(con), var_ref(con.get_ref(name))
-  {
-    set(def);
-  }
+  Reference(Thread_Safe_Context &con, const std::string &name)
+    : ContextStorage(con), var_ref(con.get_ref(name)) {}
 
-  Reference<T>(Knowledge_Base &kbase, const std::string &name)
-    : Base(kbase), var_ref(this->get_context().get_ref(name)) {}
+  Reference(Knowledge_Base &kbase, const std::string &name)
+    : ContextStorage(kbase), var_ref(this->get_context().get_ref(name)) {}
 
-  Reference<T>(Knowledge_Base &kbase, const std::string &name, const T& def)
-    : Base(kbase), var_ref(this->get_context().get_ref(name))
-  {
-    set(def);
-  }
+  Reference(Thread_Safe_Context &con, Knowledge_Update_Settings *settings, const std::string &name)
+    : ContextStorage(con, settings), var_ref(con.get_ref(name, settings)) {}
 
-  Reference<T>(Thread_Safe_Context &con, const std::string &name, const Knowledge_Update_Settings &settings)
-    : Base(con, settings), var_ref(con.get_ref(name, settings)) {}
-
-  Reference<T>(Thread_Safe_Context &con, const std::string &name, const T& def, const Knowledge_Update_Settings &settings)
-    : Base(con, settings), var_ref(con.get_ref(name, settings))
-  {
-    set(def);
-  }
-
-  Reference<T>(Knowledge_Base &kbase, const std::string &name, const Knowledge_Update_Settings &settings)
-    : Base(kbase, settings), var_ref(this->get_context().get_ref(name, settings)) {}
-
-  Reference<T>(Knowledge_Base &kbase, const std::string &name, const T& def, const Knowledge_Update_Settings &settings)
-    : Base(kbase, settings), var_ref(this->get_context().get_ref(name, settings))
-  {
-    set(def);
-  }
+  Reference(Knowledge_Base &kbase, Knowledge_Update_Settings *settings, const std::string &name)
+    : ContextStorage(kbase, settings), var_ref(this->get_context().get_ref(name, settings)) {}
 
   template<typename Impl>
-  Reference<T>(const __INTERNAL__::BaseReference<T, Impl> &o)
-    : Base(o.get_context(), o.get_settings()), var_ref(o.get_context().get_ref(o.get_name()))
+  Reference(const __INTERNAL__::BaseReference<T, Impl> &o)
+    : ContextStorage(o.get_context(), o.get_settings()), var_ref(o.get_context().get_ref(o.get_name()))
   {
-   // std::cerr << "Converting to Reference type from " << typeid(Impl).name() << std::endl;
+    //std::cerr << "Converting to Reference type from " << typeid(Impl).name() << std::endl;
   }
 
-  /*
+  using ContextStorage::get_settings;
+  using ContextStorage::get_settings_cref;
+  using ContextStorage::get_context;
+
   const T &operator=(const Reference &in)
   {
-    return set(in.get(), this->get_settings());
-  }*/
+    return set(in.template get(), this->get_settings_cref());
+  }
+
+  template<typename Q>
+  const T &operator=(const __INTERNAL__::BaseReference<T, Q> &in)
+  {
+    return set(in.get(), this->get_settings_cref());
+  }
 
   std::string get_name() const
   {
@@ -290,10 +348,11 @@ public:
   void mark_modified()
   {
     this->get_context().mark_modified(var_ref);
+    //this->get_context().set(var_ref, 
   }
 
   Knowledge_Record get_knowledge_record() const {
-    return this->get_context().get(var_ref, this->get_settings());
+    return this->get_context().get(var_ref, this->get_settings_cref());
   }
 
   T get() const
@@ -319,10 +378,12 @@ public:
 };
 
 template<typename T>
-class CachedReference : public __INTERNAL__::BaseReference<T, CachedReference<T> >
+class CachedReference : public __INTERNAL__::BaseReference<T, CachedReference<T> >,
+                        public __INTERNAL__::ContextHost
 {
 protected:
   typedef __INTERNAL__::BaseReference<T, CachedReference<T> > Base;
+  typedef __INTERNAL__::ContextHost ContextStorage;
 
   struct data_t
   {
@@ -340,13 +401,13 @@ protected:
       data(exist ? knowledge_cast<T>(con.get(name)) : T()),
       ref_count(1) {}
 
-    data_t &new_ref()
+    data_t *new_ref()
 #ifdef USE_RVAL_REF
 noexcept
 #endif
     {
       ++ref_count;
-      return *this;
+      return this;
     }
 
     const data_t &new_ref() const
@@ -364,60 +425,75 @@ noexcept
     }
   };
 
-  data_t &data;
+  data_t *data;
 public:
 
-  CachedReference<T>(Thread_Safe_Context &con, const std::string &name)
-    : Base(con), data(*new data_t(con, name)) {}
+  CachedReference(Thread_Safe_Context &con, const std::string &name)
+    : ContextStorage(con), data(new data_t(con, name)) {}
 
-  CachedReference<T>(Knowledge_Base &kbase, const std::string &name)
-    : Base(kbase), data(*new data_t(kbase.get_context(), name)) {}
+  CachedReference(Knowledge_Base &kbase, const std::string &name)
+    : ContextStorage(kbase), data(new data_t(kbase.get_context(), name)) {}
 
-  CachedReference<T>(Thread_Safe_Context &con, const std::string &name, const Knowledge_Update_Settings &settings)
-    : Base(con, settings), data(*new data_t(con, name)) {}
+  CachedReference(Thread_Safe_Context &con, Knowledge_Update_Settings *settings, const std::string &name)
+    : ContextStorage(con, settings), data(new data_t(con, name)) {}
 
-  CachedReference<T>(Knowledge_Base &kbase, const std::string &name, const Knowledge_Update_Settings &settings)
-    : Base(kbase, settings), data(*new data_t(kbase.get_context(), name)) {}
+  CachedReference(Knowledge_Base &kbase, Knowledge_Update_Settings *settings, const std::string &name)
+    : ContextStorage(kbase, settings), data(new data_t(kbase.get_context(), name)) {}
 
-  CachedReference<T>(const CachedReference<T> &o)
+  CachedReference(const CachedReference &o)
 #ifdef USE_RVAL_REF
 noexcept
 #endif
-    : Base(o.get_context(), o.settings), data(o.data.new_ref()) {
-      std::cerr << "Copying CachedReference" << std::endl;
+    : ContextStorage(o), data(o.data->new_ref()) {
+      //std::cerr << "Copying CachedReference" << std::endl;
     }
 #ifdef USE_RVAL_REF
-  CachedReference<T>(CachedReference<T> &&o) noexcept
-    : Base(o.get_context(), o.settings), data(o.data.new_ref()) {}
+  CachedReference(CachedReference &&o) noexcept
+    : ContextStorage(std::move(o)), data(o.data->new_ref()) {}
 #endif
 
   template<typename Impl>
-  CachedReference<T>(const __INTERNAL__::BaseReference<T, Impl> &o)
-    : Base(o.get_context(), o.get_settings()), data(*new data_t(o.get_context(), o.get_name())) {
+  CachedReference(const __INTERNAL__::BaseReference<T, Impl> &o)
+    : ContextStorage(o.get_context(), o.get_settings()), data(new data_t(o.get_context(), o.get_name())) {
       //exist(this->get_context().exists(this->get_name(), this->get_settings())), dirty(false), create(false),
       //var_ref(exist ? this->get_context().get_ref(this->get_name(), this->get_settings()) : Variable_Reference()),
       //data(exist ? knowledge_cast<T>(this->get_context().get(this->get_name(), this->get_settings())) : T()) {
-    std::cerr << "Converting to CachedReference type from " << typeid(Impl).name() << std::endl;
+    //std::cerr << "Converting to CachedReference type from " << typeid(Impl).name() << std::endl;
   }
 
   ~CachedReference()
   {
-    if(data.del_ref())
-      delete &data;
+    if(data->del_ref())
+      delete data;
   }
+
+  using ContextStorage::get_settings;
+  using ContextStorage::get_settings_cref;
+  using ContextStorage::get_context;
 
   std::string get_name() const
   {
-    return data.name;
+    return data->name;
   }
   
   Knowledge_Record get_knowledge_record() const {
-    return knowledge_cast(data.data);
+    return knowledge_cast(data->data);
+  }
+
+  const T &operator=(const CachedReference &in)
+  {
+    return set(in.template get(), this->get_settings_cref());
+  }
+
+  template<typename Q>
+  const T &operator=(const __INTERNAL__::BaseReference<T, Q> &in)
+  {
+    return set(in.get(), this->get_settings_cref());
   }
 
   T get() const
   {
-    return data.data;
+    return data->data;
   }
 
   const Knowledge_Record &set_knowledge_record(const Knowledge_Record &in, const Knowledge_Update_Settings &settings)
@@ -427,55 +503,56 @@ noexcept
 
   const T &set(const T& in, const Knowledge_Update_Settings &settings)
   {
-    if(!data.exist)
+    if(!data->exist)
     {
-      data.exist = true;
-      data.create = true;
-      data.dirty = true;
-      data.data = in;
-    } else if(in != data.data)
+      data->exist = true;
+      data->create = true;
+      data->dirty = true;
+      data->data = in;
+    } else if(in != data->data)
     {
-      data.dirty = true;
-      data.data = in;
+      data->dirty = true;
+      data->data = in;
     }
-    return data.data;
+    return data->data;
   }
 
   bool is_dirty()
   {
-    return data.dirty;
+    return data->dirty;
   }
 
   void mark_modified()
   {
-    data.dirty = true;
+    data->dirty = true;
   }
 
+protected:
   void ensure_exists()
   {
-    if(data.create)
+    if(data->create)
     {
-      data.var_ref = this->get_context().get_ref(data.name, this->get_settings());
-      data.create = false;
+      data->var_ref = this->get_context().get_ref(data->name, this->get_settings_cref());
+      data->create = false;
     }
   }
 
+public:
   void push()
   {
     if(is_dirty())
     {
       ensure_exists();
-      this->get_context().set(data.var_ref, knowledge_cast(data.data), this->get_settings());
-      //std::cerr << "Pushing " << data << " to " << name << std::endl;
-      data.dirty = false;
+      this->get_context().set(data->var_ref, knowledge_cast(data->data), this->get_settings_cref());
+      data->dirty = false;
     }
   }
 
   void pull()
   {
     ensure_exists();
-    data.data = knowledge_cast<T>(this->get_context().get(data.var_ref, this->get_settings()));
-    data.dirty = false;
+    data->data = knowledge_cast<T>(this->get_context().get(data->var_ref, this->get_settings_cref()));
+    data->dirty = false;
   }
 
   void pull_keep_local()

@@ -194,24 +194,25 @@ namespace dmpl
     {
       return (*this)[SymbolAccess(write, remote, expect)];
     }
+  public:
 
     static const unsigned long write_mask =
-          (1 << SymbolAccess::WRITE) |
-          (1 << SymbolAccess::WRITE | 1 << SymbolAccess::REMOTE ) |
-          (1 << SymbolAccess::WRITE | 1 << SymbolAccess::EXPECT ) |
-          (1 << SymbolAccess::WRITE | 1 << SymbolAccess::REMOTE | 1 << SymbolAccess::EXPECT ) ;
+          1 << ((1 << SymbolAccess::WRITE)) |
+          1 << ((1 << SymbolAccess::WRITE | 1 << SymbolAccess::REMOTE )) |
+          1 << ((1 << SymbolAccess::WRITE | 1 << SymbolAccess::EXPECT )) |
+          1 << ((1 << SymbolAccess::WRITE | 1 << SymbolAccess::REMOTE | 1 << SymbolAccess::EXPECT )) ;
 
     static const unsigned long remote_mask =
-          (1 << SymbolAccess::REMOTE) |
-          (1 << SymbolAccess::WRITE | 1 << SymbolAccess::REMOTE ) |
-          (1 << SymbolAccess::REMOTE | 1 << SymbolAccess::EXPECT ) |
-          (1 << SymbolAccess::WRITE | 1 << SymbolAccess::REMOTE | 1 << SymbolAccess::EXPECT ) ;
+          1 << ((1 << SymbolAccess::REMOTE)) |
+          1 << ((1 << SymbolAccess::WRITE | 1 << SymbolAccess::REMOTE )) |
+          1 << ((1 << SymbolAccess::REMOTE | 1 << SymbolAccess::EXPECT )) |
+          1 << ((1 << SymbolAccess::WRITE | 1 << SymbolAccess::REMOTE | 1 << SymbolAccess::EXPECT )) ;
 
     static const unsigned long expect_mask =
-          (1 << SymbolAccess::EXPECT) |
-          (1 << SymbolAccess::EXPECT | 1 << SymbolAccess::REMOTE ) |
-          (1 << SymbolAccess::WRITE | 1 << SymbolAccess::EXPECT ) |
-          (1 << SymbolAccess::WRITE | 1 << SymbolAccess::REMOTE | 1 << SymbolAccess::EXPECT ) ;
+          1 << ((1 << SymbolAccess::EXPECT)) |
+          1 << ((1 << SymbolAccess::EXPECT | 1 << SymbolAccess::REMOTE )) |
+          1 << ((1 << SymbolAccess::WRITE | 1 << SymbolAccess::EXPECT )) |
+          1 << ((1 << SymbolAccess::WRITE | 1 << SymbolAccess::REMOTE | 1 << SymbolAccess::EXPECT )) ;
 
     SymbolUseInfo anyWrite()
     {
@@ -227,6 +228,11 @@ namespace dmpl
     {
       return SymbolUseInfo(to_ulong() & expect_mask);
     }
+
+    SymbolUseInfo anyNonExpect()
+    {
+      return SymbolUseInfo(to_ulong() & ~expect_mask);
+    }
   };
 
   class SymbolUser;
@@ -241,6 +247,8 @@ namespace dmpl
     static const int GLOBAL = 502;
     static const int PARAM = 503;
     static const int TEMP = 504;
+    static const int SELF_ID = 505;
+    static const int INDEP_ID = 506;
 
     SymbolUseInfo usage_summary;
     SymUserSet users;
@@ -324,30 +332,40 @@ namespace dmpl
     public:
       friend class SymbolUseSummary;
 
-      operator SymbolUseInfo() {
+      operator SymbolUseInfo()
+      {
         return SymbolUseInfo((sum.to_ulong() >> offset) & ((1 << symuse_size) - 1));
+      }
+
+      SymbolUseInfo get()
+      {
+        return (SymbolUseInfo)(*this);
       }
 
       sub_ref &operator=(const SymbolUseInfo &o)
       {
         unsigned long mask = ~(((1 << symuse_size) - 1) << offset);
         sum = (sum.to_ulong() & mask) | (o.to_ulong() << offset);
+        return *this;
       }
 
       sub_ref &operator|=(const SymbolUseInfo &o)
       {
         sum |= SymbolUseSummary(o.to_ulong() << offset);
+        return *this;
       }
 
       sub_ref &operator^=(const SymbolUseInfo &o)
       {
         sum ^= SymbolUseSummary(o.to_ulong() << offset);
+        return *this;
       }
 
       sub_ref &operator&=(const SymbolUseInfo &o)
       {
         unsigned long mask = ~(((1 << symuse_size) - 1) << offset);
         sum &= SymbolUseSummary((o.to_ulong() << offset) | mask);
+        return *this;
       }
     };
 
@@ -395,7 +413,6 @@ namespace dmpl
     {
     public:
       Node *node;
-      Func thread;
       CStmt clause;
       Func curFunc;
       bool isLHS;
