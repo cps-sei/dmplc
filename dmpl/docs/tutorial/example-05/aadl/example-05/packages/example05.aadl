@@ -134,11 +134,11 @@ end madara_receiver_thread;
 
 thread implementation madara_receiver_thread.i
 calls
-	main: {
-		m: subprogram subprogram_madara_receiver;
-	};
+  main: {
+  m: subprogram subprogram_madara_receiver;
+  };
 properties
-	Compute_Entrypoint_Call_Sequence => reference (main);
+  Compute_Entrypoint_Call_Sequence => reference (main);
 end madara_receiver_thread.i;
 
 -- the base software specification running on each DART node.
@@ -185,13 +185,13 @@ end collision_avoidance;
 -- the collision avoidance thread implementation
 thread implementation collision_avoidance.i
 calls
-	main:{
-		m: subprogram subprogram_collision_avoidance;
-	};
+  main:{
+  m: subprogram subprogram_collision_avoidance;
+  };
 properties
-  	Compute_Entrypoint_Source_Text => "example-05.dmpl";
--- the job function called periodically by the thread
-	Compute_Entrypoint_Call_Sequence => reference (main) ;
+  Compute_Entrypoint_Source_Text => "example-05.dmpl";
+  -- the job function called periodically by the thread
+  Compute_Entrypoint_Call_Sequence => reference (main) ;
 end collision_avoidance.i;
 
 -- a subprogram encapsulating the job function called periodically by
@@ -212,12 +212,12 @@ end waypoint_thread;
 -- a waypoint thread implementation
 thread implementation waypoint_thread.i
 calls
-	main:{ 
-	m: subprogram subprogram_waypoint;
-	};
+  main:{ 
+  m: subprogram subprogram_waypoint;
+  };
 properties
   Compute_Entrypoint_Source_Text => "example-05.dmpl";
--- the job function called periodically by the thread
+  -- the job function called periodically by the thread
   Compute_Entrypoint_Call_Sequence => reference (main) ; 
 end waypoint_thread.i;
 
@@ -289,12 +289,12 @@ end leader_navigation;
 -- a leader navigation thread implementation
 thread implementation leader_navigation.i
 calls
-	main:{
-		m: subprogram subprogram_waypoint;
-	};
+  main:{
+  m: subprogram subprogram_waypoint;
+  };
 properties
   Compute_Entrypoint_Source_Text => "example-05.dmpl";
--- the job function called periodically by the thread
+  -- the job function called periodically by the thread
   Compute_Entrypoint_Call_Sequence => reference (main);
 end leader_navigation.i;
 
@@ -312,12 +312,12 @@ end adaptation_manager;
 -- the adaptation manager thread implementation.
 thread implementation adaptation_manager.i
 calls
-	main:{
-		m: subprogram subprogram_adaptation_manager;
-	};
+  main:{
+  m: subprogram subprogram_adaptation_manager;
+  };
 properties
   Compute_Entrypoint_Source_Text => "example-05.dmpl";
--- the job function called periodically by the thread
+  -- the job function called periodically by the thread
   Compute_Entrypoint_Call_Sequence => reference (main);
 end adaptation_manager.i;
 
@@ -403,24 +403,8 @@ connections
   c3: port protectors.publish_lock->leader.input_lock{Connection_Pattern => ((All_to_One));};
   c4: port protectors.publish_lock->protectors.input_lock {Connection_Pattern => ((All_to_All));};
 properties
-	DART::DMPL_TIMING_PARAMETERS_TEXT => "/tmp/dmpl_nodes.dmpl";
-			Zero_Slack_Scheduling::Zero_Slack_Instant => 50000000 ns applies to protectors.sw.madara_thread;
-					Zero_Slack_Scheduling::Zero_Slack_Instant => 90000000 ns applies to protectors.sw.waypoint;
-					Zero_Slack_Scheduling::Zero_Slack_Instant => 180000000 ns applies to protectors.sw.avoidance;
-					Zero_Slack_Scheduling::Zero_Slack_Instant => 50000000 ns applies to leader.sw.madara_thread;
-					Zero_Slack_Scheduling::Zero_Slack_Instant => 90000000 ns applies to leader.sw.navigation;
-					Zero_Slack_Scheduling::Zero_Slack_Instant => 180000000 ns applies to leader.sw.avoidance;
-					Zero_Slack_Scheduling::Zero_Slack_Instant => 990000000 ns applies to leader.sw.adapt_mgr;
-					Zero_Slack_Scheduling::Zero_Slack_Instant => 50000000 ns applies to protectors.sw.madara_thread;
-					Zero_Slack_Scheduling::Zero_Slack_Instant => 90000000 ns applies to protectors.sw.waypoint;
-					Zero_Slack_Scheduling::Zero_Slack_Instant => 180000000 ns applies to protectors.sw.avoidance;
-					Zero_Slack_Scheduling::Zero_Slack_Instant => 50000000 ns applies to protectors.sw.madara_thread;
-					Zero_Slack_Scheduling::Zero_Slack_Instant => 90000000 ns applies to protectors.sw.waypoint;
-					Zero_Slack_Scheduling::Zero_Slack_Instant => 180000000 ns applies to protectors.sw.avoidance;
-					Zero_Slack_Scheduling::Zero_Slack_Instant => 50000000 ns applies to protectors.sw.madara_thread;
-					Zero_Slack_Scheduling::Zero_Slack_Instant => 90000000 ns applies to protectors.sw.waypoint;
-					Zero_Slack_Scheduling::Zero_Slack_Instant => 180000000 ns applies to protectors.sw.avoidance;
-	end protector_swarm.i;	
+  DART::DMPL_TIMING_PARAMETERS_TEXT => "/tmp/dmpl_nodes.dmpl";
+end protector_swarm.i;	
 
 end example05;
 
