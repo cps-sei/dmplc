@@ -1,6 +1,6 @@
 package example05
 public
-  with Zero_Slack_Scheduling;
+  with Zero_Slack_Scheduling, DART;
 
 -----------------------------------------------------------------------
 -- begin datatype stuff
@@ -113,6 +113,11 @@ end distributed_data_store.i;
 processor dart_processor
 end dart_processor;
 
+subprogram subprogram_madara_receiver
+properties
+  Source_Name => "RECEIVER";
+end subprogram_madara_receiver;
+
 -- the MADARA receiver thread declaration. this thread receives stuff
 -- from other nodes via the network, and updates the local
 -- context. for each such data type, it therefore has an input port to
@@ -126,6 +131,15 @@ features
   init_update: in data port initialized_node_update_type.i;
   setinitialized: requires subprogram access set_initialized_routine_type;  
 end madara_receiver_thread;
+
+thread implementation madara_receiver_thread.i
+calls
+  main: {
+  m: subprogram subprogram_madara_receiver;
+  };
+properties
+  Compute_Entrypoint_Call_Sequence => reference (main);
+end madara_receiver_thread.i;
 
 -- the base software specification running on each DART node.
 process dart_sw
@@ -141,7 +155,7 @@ end dart_sw;
 -- application-specific threads and data.
 process implementation dart_sw.i
 subcomponents
-  madara_thread: thread madara_receiver_thread;
+  madara_thread: thread madara_receiver_thread.i;
   distributed_store: data distributed_data_store.i;
 connections
   c1: port leader_destination_update -> madara_thread.leader_destination_update;	
@@ -170,12 +184,14 @@ end collision_avoidance;
 
 -- the collision avoidance thread implementation
 thread implementation collision_avoidance.i
--- the job function called periodically by the thread
-calls main:{
-  c: subprogram subprogram_collision_avoidance;
+calls
+  main:{
+  m: subprogram subprogram_collision_avoidance;
   };
 properties
-  Activate_Entrypoint_Source_Text => "example-05.dmpl";
+  Compute_Entrypoint_Source_Text => "example-05.dmpl";
+  -- the job function called periodically by the thread
+  Compute_Entrypoint_Call_Sequence => reference (main) ;
 end collision_avoidance.i;
 
 -- a subprogram encapsulating the job function called periodically by
@@ -195,12 +211,14 @@ end waypoint_thread;
 
 -- a waypoint thread implementation
 thread implementation waypoint_thread.i
--- the job function called periodically by the thread
-calls main:{
-  c: subprogram subprogram_waypoint;
+calls
+  main:{ 
+  m: subprogram subprogram_waypoint;
   };
 properties
-  Activate_Entrypoint_Source_Text => "example-05.dmpl";
+  Compute_Entrypoint_Source_Text => "example-05.dmpl";
+  -- the job function called periodically by the thread
+  Compute_Entrypoint_Call_Sequence => reference (main) ; 
 end waypoint_thread.i;
 
 -- the specification of process running on a protector node
@@ -270,12 +288,14 @@ end leader_navigation;
 
 -- a leader navigation thread implementation
 thread implementation leader_navigation.i
--- the job function called periodically by the thread
-calls main:{
-  c: subprogram subprogram_waypoint;
+calls
+  main:{
+  m: subprogram subprogram_waypoint;
   };
 properties
-  Activate_Entrypoint_Source_Text => "example-05.dmpl";
+  Compute_Entrypoint_Source_Text => "example-05.dmpl";
+  -- the job function called periodically by the thread
+  Compute_Entrypoint_Call_Sequence => reference (main);
 end leader_navigation.i;
 
 -- a subprogram encapsulating the job function called periodically by
@@ -291,12 +311,14 @@ end adaptation_manager;
 
 -- the adaptation manager thread implementation.
 thread implementation adaptation_manager.i
--- the job function called periodically by the thread
-calls main:{
-  c: subprogram subprogram_adaptation_manager;
+calls
+  main:{
+  m: subprogram subprogram_adaptation_manager;
   };
 properties
-  Activate_Entrypoint_Source_Text => "example-05.dmpl";
+  Compute_Entrypoint_Source_Text => "example-05.dmpl";
+  -- the job function called periodically by the thread
+  Compute_Entrypoint_Call_Sequence => reference (main);
 end adaptation_manager.i;
 
 -- the specification of process running on a leader node
@@ -368,7 +390,7 @@ end leader_node.i;
 
 -- system specification
 system protector_swarm
-end protector_swarm;	
+end protector_swarm;
 
 -- system implementation
 system implementation protector_swarm.i
@@ -380,6 +402,8 @@ connections
   c2: port leader.publish_lock -> protectors.input_lock {Connection_Pattern => ((One_to_All));};
   c3: port protectors.publish_lock->leader.input_lock{Connection_Pattern => ((All_to_One));};
   c4: port protectors.publish_lock->protectors.input_lock {Connection_Pattern => ((All_to_All));};
+properties
+  DART::DMPL_TIMING_PARAMETERS_TEXT => "/tmp/dmpl_nodes.dmpl";
 end protector_swarm.i;	
 
 end example05;
