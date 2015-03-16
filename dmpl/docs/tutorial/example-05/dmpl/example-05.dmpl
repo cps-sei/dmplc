@@ -15,7 +15,7 @@ TARGET GNU_CPP,WIN_CPP %%{
 #include <stdlib.h>
 #include <sys/resource.h>
 #include "madara/utility/Utility.h"
-#include "adaptation_manager.h"
+#include "dartam/adaptation_manager.h"
   
 int MOVE_TO(unsigned char x,unsigned char y)
 {
