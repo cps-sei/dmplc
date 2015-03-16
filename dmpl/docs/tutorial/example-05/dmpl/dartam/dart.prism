@@ -1,0 +1,134 @@
+// Rmin=? [F "final" ]
+
+mdp
+
+// 0=loose, 1=tight
+
+//#init
+
+//#environment
+
+// --------------- begin static content -------------------
+// assumption V_0 > V_1
+
+const int LOOSE = 0;
+const int TIGHT = 1;
+
+label "initState" = c = ini_config; 
+
+
+formula v = (c = 0 ? V_0 : 0)
+		+ (c = 1 ? V_1 : 0);
+
+formula e = (c = 0 ? E_0 : 0)
+		+ (c = 1 ? E_1 : 0);
+
+const int LOOK_AHEAD_HORIZON = 5; // the standard look-ahead horizon
+formula HORIZON = min(LOOK_AHEAD_HORIZON, N); // actual horizon for this decision
+
+
+label "final" = time = HORIZON + 1;
+formula sys_go = readyToTick;
+
+module clk
+	time : [0..HORIZON + 1] init 0;
+	readyToTick : bool init true;
+	[tick] readyToTick & time < HORIZON + 1 -> 1 : (time' = time + 1) & (readyToTick'=false);
+	[tack] !readyToTick -> 1 : (readyToTick'=true);
+endmodule
+
+// tactic concurrency rules
+// for now, this are redundant with the tactic applicability rules,
+// but will be needed when we have more tactics
+formula switchToTight_compatible = !switchToLoose_used;
+formula switchToLoose_compatible = !switchToTight_used;
+
+
+// tactic
+// applicability conditions
+formula switchToTight_applicable = c = LOOSE & switchToTight_compatible; 
+
+module switchToTight
+	switchToTight_go : bool init true;
+	switchToTight_used : bool init false;
+
+	[switchToTight_start] sys_go & switchToTight_go
+		& switchToTight_applicable
+		-> (switchToTight_go' = false) & (switchToTight_used' = true);
+
+	// tactic applicable but not used
+	[] sys_go & switchToTight_go
+		& switchToTight_applicable
+		-> (switchToTight_go' = false);
+
+	// pass if the tactic is not applicable
+	[] sys_go & switchToTight_go 
+		& !switchToTight_applicable
+		-> 1 : (switchToTight_go' = false);
+
+	[tick] !switchToTight_go -> 1 : (switchToTight_go' = true) & (switchToTight_used' = false);
+endmodule
+
+// tactic
+// applicability conditions
+formula switchToLoose_applicable = c = TIGHT & switchToLoose_compatible; 
+
+module switchToLoose
+	switchToLoose_go : bool init true;
+	switchToLoose_used : bool init false;
+
+	[switchToLoose_start] sys_go & switchToLoose_go
+		& switchToLoose_applicable
+		-> (switchToLoose_go' = false) & (switchToLoose_used' = true);
+
+	// tactic applicable but not used
+	[] sys_go & switchToLoose_go
+		& switchToLoose_applicable
+		-> (switchToLoose_go' = false);
+
+	// pass if the tactic is not applicable
+	[] sys_go & switchToLoose_go 
+		& !switchToLoose_applicable
+		-> 1 : (switchToLoose_go' = false);
+
+	[tick] !switchToLoose_go -> 1 : (switchToLoose_go' = true) & (switchToLoose_used' = false);
+endmodule
+
+// system
+module sys
+	c : [0..1] init ini_config; // configuration 
+	tightSegmentsFlown : [0..maxHorizonTightSegments + 1] init 0; //
+	
+	[switchToTight_start] c = LOOSE -> 1 : (c' = TIGHT);
+	[switchToLoose_start] c = TIGHT -> 1 : (c' = LOOSE);
+
+	[tick] c = TIGHT & tightSegmentsFlown <= maxHorizonTightSegments -> 1 : (tightSegmentsFlown' = tightSegmentsFlown + 1);
+	[tick] !(c = TIGHT & tightSegmentsFlown <= maxHorizonTightSegments) -> 1 : true;
+endmodule
+
+
+formula z = stateValue;
+
+
+// how many tight segments could we fly in tight formation for the rest of the mission
+formula maxTightSegments = max(0, floor((V_1 * V_0 * T - V_1 * N) / (V_0 - V_1)));
+
+// If maxTightSegments >= HORIZON & N > HORIZON, then it will do tight for all the
+// segments in the horizon, even if that means not leaving enough for later.
+// Since we only have to commit to the first tactic, we will force it to decide between
+// using tight or not for the first segment by making the available tight segments smaller
+// than the horizon
+// TODO should the -1 depend on the latency? perhaps not
+formula maxHorizonTightSegments = N > HORIZON ? min(maxTightSegments, HORIZON - 1) : maxTightSegments;
+
+
+// the objective is to minimize the absolute value of the exponent of e in R(phi)
+// perhaps we need to shift the reward base on the highest possible sum
+formula SHIFT = HORIZON * SL / V_1;
+
+rewards "util"
+	// the first term is to make sure that if the maximum number of possible tight segments
+	// is exceeded, the reward is worse than any other valid sequence
+	[tack] true : (tightSegmentsFlown > maxHorizonTightSegments ? SHIFT : 0) + e * z * SL / v;
+endrewards
+
