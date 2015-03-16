@@ -785,7 +785,7 @@ dmpl::madara::Function_Visitor::exitFor (ForStmt & statement)
     visit (init);
   }
 
-  buffer_ << "; ";
+  //buffer_ << "; ";
 
   BOOST_FOREACH (const Expr & expr, statement.test)
   {
