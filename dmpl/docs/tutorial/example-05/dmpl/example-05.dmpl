@@ -15,7 +15,8 @@ TARGET GNU_CPP,WIN_CPP %%{
 #include <stdlib.h>
 #include <sys/resource.h>
 #include "madara/utility/Utility.h"
-#include "dartam/adaptation_manager.h"
+#include "./adaptation_manager.h"
+#include "./dartam/adaptation_manager.h"
   
 int MOVE_TO(unsigned char x,unsigned char y)
 {
@@ -104,6 +105,32 @@ EXTERN double wall_time();
 //-- the external function implementing the adaptation
 //-- manager. returns 0 for loose formation and 1 for tight formation.
 EXTERN int adaptation_manager
+(
+ int current_formation, //-- 0 loose, 1 tight
+ int changing, //-- whether in process of changing to other formation
+ double change_progress, //-- progress in changing to other formation (remaining time)
+ //-- next n hazards (for the next n segments in the path)
+ double hazard1,
+ double hazard2,
+ double hazard3,
+ double hazard4,
+ double hazard5,
+ //-- variance of the next n hazards predictions
+ double variance1,
+ double variance2,
+ double variance3,
+ double variance4,
+ double variance5,
+ double loose_speed, //-- speed of loose formation
+ double tight_speed, //-- speed of tight formation
+ double segment_length, //-- length of a segment in the path
+ int remaining_segments, //-- number of segments remaining in the path
+ double remaining_flight_time //-- how much flight time the formation has left
+ );
+
+//-- a random implementation of the adaptation manager. returns 0 for
+//-- loose formation and 1 for tight formation. useful for testing.
+EXTERN int adaptation_manager_random
 (
  int current_formation, //-- 0 loose, 1 tight
  int changing, //-- whether in process of changing to other formation

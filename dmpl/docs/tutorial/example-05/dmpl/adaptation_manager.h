@@ -7,7 +7,7 @@
 //-- an default adaptation manager stub. this will be ultimately
 //-- replaced by Gabe's implementation. right now, it randomly returns
 //-- 0 or 1 with equal probability.
-int adaptation_manager
+int adaptation_manager_random
 (
  int current_formation, //-- 0 loose, 1 tight
  int changing, //-- whether in process of changing to other formation
