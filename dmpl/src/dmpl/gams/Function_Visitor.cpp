@@ -294,11 +294,11 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
     {
       buffer_ << sub_spacer << "       ";
       buffer_ << ", ";
-      buffer_ << i << ", ";
+      buffer_ << i << ", knowledge_cast(";
 
       visit (expr);
 
-      buffer_ << ")\n";
+      buffer_ << "))\n";
       ++i;
     }
 

@@ -111,7 +111,7 @@ NODE uav (id)
     return GET_LAT() + GET_LNG()@0;
   }
 
-  @AT_LEAST(0.5)
+  //@AT_LEAST(0.5)
   expect COVERAGE(coverage() > 0.9);
   
   _Bool NEXT_XY () {

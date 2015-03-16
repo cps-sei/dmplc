@@ -71,7 +71,6 @@
 #include "Variable.h"
 #include "Attribute.h"
 
-
 namespace dmpl
 {
   class Program;

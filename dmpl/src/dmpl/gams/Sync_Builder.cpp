@@ -175,6 +175,7 @@ dmpl::gams::Sync_Builder::build_common_global_variables ()
   buffer_ << "namespace variables = gams::variables;\n\n";
   buffer_ << "using containers::Reference;\n\n";
   buffer_ << "using containers::ArrayReference;\n\n";
+  buffer_ << "using Madara::knowledge_cast;\n\n";
   buffer_ << "\n";
   buffer_ << "engine::Knowledge_Base knowledge;\n";
   buffer_ << "\n";
@@ -185,7 +186,7 @@ dmpl::gams::Sync_Builder::build_common_global_variables ()
   buffer_ << "  return const_cast<engine::Function_Arguments &>(c);\n";
   buffer_ << "}\n";
   buffer_ << "\n";
-  buffer_ << "inline engine::Function_Arguments &__chain_set(engine::Function_Arguments &c, int i, const Madara::Knowledge_Record &v)\n";
+  buffer_ << "inline engine::Function_Arguments &__chain_set(engine::Function_Arguments &c, int i, Madara::Knowledge_Record v)\n";
   buffer_ << "{\n";
   buffer_ << "  c[i] = v;\n";
   buffer_ << "  return c;\n";

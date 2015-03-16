@@ -7,9 +7,13 @@
 namespace Madara
 {
 
-/// Must define a specialization for all uses
+/// By default, call constructor of target class;
+/// for other semantics, define specializations
 template<class O>
-O knowledge_cast(const Knowledge_Record &in);
+O knowledge_cast(const Knowledge_Record &in)
+{
+  return O(in);
+}
 
 template<>
 float knowledge_cast<float>(const Knowledge_Record &in)
@@ -111,29 +115,21 @@ Knowledge_Record knowledge_cast<Knowledge_Record>(const Knowledge_Record &in)
   return in;
 }
 
-/// Must define a specialization for all uses
-template<class I>
-Knowledge_Record knowledge_cast(const I &in);
-
-template<>
 Knowledge_Record knowledge_cast(const int &in)
 {
   return Knowledge_Record(Knowledge_Record::Integer(in));
 }
 
-template<>
 Knowledge_Record knowledge_cast(const unsigned int &in)
 {
   return Knowledge_Record(Knowledge_Record::Integer(in));
 }
 
-template<>
 Knowledge_Record knowledge_cast(const long int &in)
 {
   return Knowledge_Record(Knowledge_Record::Integer(in));
 }
 
-template<>
 Knowledge_Record knowledge_cast(const unsigned long int &in)
 {
   return Knowledge_Record(Knowledge_Record::Integer(in));
@@ -141,13 +137,11 @@ Knowledge_Record knowledge_cast(const unsigned long int &in)
 
 #if __STDC_VERSION__ >= 199901L
 
-template<>
 Knowledge_Record knowledge_cast(const long long int &in)
 {
   return Knowledge_Record(Knowledge_Record::Integer(in));
 }
 
-template<>
 Knowledge_Record knowledge_cast(const unsigned long long int &in)
 {
   return Knowledge_Record(Knowledge_Record::Integer(in));
@@ -155,49 +149,41 @@ Knowledge_Record knowledge_cast(const unsigned long long int &in)
 
 #endif
 
-template<>
 Knowledge_Record knowledge_cast(const short &in)
 {
   return Knowledge_Record(Knowledge_Record::Integer(in));
 }
 
-template<>
 Knowledge_Record knowledge_cast(const unsigned short &in)
 {
   return Knowledge_Record(Knowledge_Record::Integer(in));
 }
 
-template<>
 Knowledge_Record knowledge_cast(const char &in)
 {
   return Knowledge_Record(Knowledge_Record::Integer(in));
 }
 
-template<>
 Knowledge_Record knowledge_cast(const unsigned char &in)
 {
   return Knowledge_Record(Knowledge_Record::Integer(in));
 }
 
-template<>
 Knowledge_Record knowledge_cast(const bool &in)
 {
   return Knowledge_Record(Knowledge_Record::Integer(in ? 1 : 0));
 }
 
-template<>
 Knowledge_Record knowledge_cast(const float &in)
 {
   return Knowledge_Record(static_cast<double>(in));
 }
 
-template<>
 Knowledge_Record knowledge_cast(const double &in)
 {
   return Knowledge_Record(in);
 }
 
-template<>
 Knowledge_Record knowledge_cast(const long double &in)
 {
   return Knowledge_Record(static_cast<double>(in));

@@ -7,6 +7,8 @@
 #include "ArrayReference.hpp"
 #include <ctime>
 
+using Madara::Knowledge_Record;
+using Madara::knowledge_cast;
 using Madara::Knowledge_Engine::Containers::ArrayReference;
 using Madara::Knowledge_Engine::Containers::Reference;
 using Madara::Knowledge_Engine::Containers::CachedReference;
@@ -112,6 +114,10 @@ void perf_test()
   clock_t proactiveArray_end = clock();
   LOG(proactiveArray_init - proactiveArray_start);
   LOG(proactiveArray_end - proactiveArray_start);
+}
+
+void takes_krec(Knowledge_Record foo)
+{
 }
 
 
@@ -338,6 +344,8 @@ int main()
   LOG(cached_array[1]);
 
   uncached_array.mark_modified();
+
+  takes_krec(knowledge_cast(uncached_array[0]));
 
   LOG(OK_count);
   LOG(FAIL_count);
