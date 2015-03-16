@@ -390,7 +390,7 @@ end leader_node.i;
 
 -- system specification
 system protector_swarm
-end protector_swarm;	
+end protector_swarm;
 
 -- system implementation
 system implementation protector_swarm.i
