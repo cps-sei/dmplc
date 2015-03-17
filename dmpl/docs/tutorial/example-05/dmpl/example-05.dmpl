@@ -471,10 +471,29 @@ NODE uav (id)
     
     //-- we set default values of some system parameters here. they
     //-- will likely be initialized from the command line.
-    loose_speed = 10.0;
-    tight_speed = 5.0;
+
+    //-- NOTE: the difference between loose and tight speeds should
+    //-- not be very small. otherwise, the prism model becomes too
+    //-- hard to solve
+
+    //-- NOTE: in the adaptation manager, the exposures for loose and
+    //-- tight formations are set to 0.8 and 0.2. the ratio is 4.
+    
+    //-- SCENARIO 1: the ratio of loose and tight speeds is > 4. in
+    //-- this case, there is no benefit to switch to tight formation.
+    loose_speed = 50.0;
+    tight_speed = 12.0;
     seg_len = 50.0;
-    total_time = 100.0;
+    total_time = 10.0;
+
+    //-- SCENARIO 2: the ratio of loose and tight speeds is < 4. in
+    //-- this case, there is benefit to switch to a tight
+    //-- formation. however, the total time is too short to switch
+    //-- back to a loose formation once out of the high hazard area.
+    loose_speed = 50.0;
+    tight_speed = 25.0;
+    seg_len = 50.0;
+    total_time = 10.0;
     
     remaining_segs = REMAINING_SEGMENTS();
     start_time = wall_time();
