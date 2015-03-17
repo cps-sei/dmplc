@@ -18,13 +18,20 @@ LeftX=-2.25
 BottomY=-2.25
 RightX=2.25
 
+#adaptation manager object files
+AM_OBJS=dartam/Debug/adaptation_manager.o dartam/Debug/AdaptationPlanner.o
+
 all: $(EXE) Makefile
 
-example-05: example-05.cpp adaptation_manager.h
+example-05: example-05.cpp adaptation_manager.h $(AM_OBJS)
 	g++ $(CFLAGS) -o $@ $^ $(LIBS)
+
+$(AM_OBJS) :
+	make -C dartam/Debug
 
 example-05.cpp: example-05.dmpl example-05-AADL.dmpl $(DMPL_ROOT)/src/dmplc/dmplc
 	dmplc -e -n 5 --DX $(GRIDSIZE) --DY $(GRIDSIZE) --DTopY $(TopY) --DBottomY $(BottomY) --DLeftX $(LeftX) --DRightX $(RightX) -g -o $@ $< example-05-AADL.dmpl
 
 clean:
+	make -C dartam/Debug clean
 	rm -f $(EXE) $(SRC)

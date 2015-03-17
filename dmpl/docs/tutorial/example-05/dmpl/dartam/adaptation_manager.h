@@ -1,13 +1,20 @@
+/*
+ * adaptation_manager.h
+ *
+ *  Created on: Mar 6, 2015
+ *      Author: gmoreno
+ */
+
+#ifndef ADAPTATION_MANAGER_H_
+#define ADAPTATION_MANAGER_H_
+
 /**
  * Interface with the adaptation manager.
  */
 
-#include <stdlib.h>
-
-//-- an default adaptation manager stub. this will be ultimately
-//-- replaced by Gabe's implementation. right now, it randomly returns
-//-- 0 or 1 with equal probability.
-int adaptation_manager_random
+//-- an empty adaptation manager stub. this will be ultimately
+//-- replaced by Gabe's implementation.
+int adaptation_manager
 (
  int current_formation, //-- 0 loose, 1 tight
  int changing, //-- whether in process of changing to other formation
@@ -29,12 +36,8 @@ int adaptation_manager_random
  double segment_length, //-- length of a segment in the path
  int remaining_segments, //-- number of segments remaining in the path
  double remaining_flight_time //-- how much flight time the formation has left
-)
-{
-  if(!changing && (random() % 4 == 0)) return 1 - current_formation;
-  else return current_formation;
-}
+);
 
-/*********************************************************************/
-//end of file
-/*********************************************************************/
+
+
+#endif /* ADAPTATION_MANAGER_H_ */

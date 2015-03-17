@@ -15,7 +15,8 @@ TARGET GNU_CPP,WIN_CPP %%{
 #include <stdlib.h>
 #include <sys/resource.h>
 #include "madara/utility/Utility.h"
-#include "adaptation_manager.h"
+#include "./adaptation_manager.h"
+#include "./dartam/adaptation_manager.h"
   
 int MOVE_TO(unsigned char x,unsigned char y)
 {
@@ -127,6 +128,32 @@ EXTERN int adaptation_manager
  double remaining_flight_time //-- how much flight time the formation has left
  );
 
+//-- a random implementation of the adaptation manager. returns 0 for
+//-- loose formation and 1 for tight formation. useful for testing.
+EXTERN int adaptation_manager_random
+(
+ int current_formation, //-- 0 loose, 1 tight
+ int changing, //-- whether in process of changing to other formation
+ double change_progress, //-- progress in changing to other formation (remaining time)
+ //-- next n hazards (for the next n segments in the path)
+ double hazard1,
+ double hazard2,
+ double hazard3,
+ double hazard4,
+ double hazard5,
+ //-- variance of the next n hazards predictions
+ double variance1,
+ double variance2,
+ double variance3,
+ double variance4,
+ double variance5,
+ double loose_speed, //-- speed of loose formation
+ double tight_speed, //-- speed of tight formation
+ double segment_length, //-- length of a segment in the path
+ int remaining_segments, //-- number of segments remaining in the path
+ double remaining_flight_time //-- how much flight time the formation has left
+ );
+
 NODE uav (id)
 {
   //shared variables -- visible across nodes. 
@@ -146,6 +173,10 @@ NODE uav (id)
   //-- next 5 waypoints
   LOCAL unsigned char next_wp_x[5]; 
   LOCAL unsigned char next_wp_y[5]; 
+  //-- next 5 hazards
+  LOCAL double hazard1, hazard2, hazard3, hazard4, hazard5;
+  //-- next 5 hazard variances
+  LOCAL double variance1, variance2, variance3, variance4, variance5;
   //-- speeds in loose and tight formations
   LOCAL double loose_speed;
   LOCAL double tight_speed;
@@ -295,11 +326,9 @@ NODE uav (id)
     //-- if the leader has reached the destination, no more formation
     //-- changes are needed
     if(x != xt || y != yt) {
-      formation = adaptation_manager(formation@id,changing,remaining_time,
-                                       //--XXX: this is broken: hazards[1][1],
-                                       1, 2, 3, 2, 1,
-                                       //--XXX: this is broken: variances[1][1],
-                                       0.1, 0.3, 0.4, 0.7, 0.3,
+      formation@0 = adaptation_manager(formation@id,changing,remaining_time,
+                                       hazard1, hazard2, hazard3, hazard4, hazard5,
+                                       variance1, variance2, variance3, variance4, variance5,
                                        loose_speed, tight_speed,
                                        seg_len, remaining_segs,
                                        total_time - (wall_time() - start_time));
@@ -365,6 +394,24 @@ NODE uav (id)
     }
   }
 
+  //-- set the next 5 hazards based on the next 5 waypoints. XXX: this
+  //-- should be fixed once compiler support is added.
+  void SET_HAZARDS()
+  {
+    hazard1 = (next_wp_x[0] > 4 && next_wp_y[0] <= 4) ? 0.9 : 0.1;
+    hazard2 = (next_wp_x[1] > 4 && next_wp_y[1] <= 4) ? 0.9 : 0.1;
+    hazard3 = (next_wp_x[2] > 4 && next_wp_y[2] <= 4) ? 0.9 : 0.1;
+    hazard4 = (next_wp_x[3] > 4 && next_wp_y[3] <= 4) ? 0.9 : 0.1;
+    hazard5 = (next_wp_x[4] > 4 && next_wp_y[4] <= 4) ? 0.9 : 0.1;
+  }
+
+  //-- set the next 5 variances based on the next 5 waypoints. XXX:
+  //-- this should be fixed once compiler support is added.
+  void SET_VARIANCES()
+  {
+    variance1 = 0.1; variance2 = 0.1; variance3 = 0.1; variance4 = 0.1; variance5 = 0.1;
+  }
+  
   //-- initialize state
   void INITIALIZE_STATE()
   {
@@ -390,7 +437,7 @@ NODE uav (id)
       j=0;
       while(j < Y) {
         //-- we start with a simple hazard mapping
-        if(x < y) hazards[i][j] = 0.1;
+        if(x > 4 && y <= 4) hazards[i][j] = 0.9;
         else hazards[i][j] = 0.9;
         //-- variances are fixed and low
         variances[i][j] = 0.01;
@@ -410,6 +457,10 @@ NODE uav (id)
       next_wp_y[i] = NEXT_Y(next_wp_y[i - 1],next_wp_y[i - 1]);
       i = i+1;
     }
+
+    //initialize the next 5 hazards and variances
+    SET_HAZARDS();
+    SET_VARIANCES();
     
     //-- we set default values of some system parameters here. they
     //-- will likely be initialized from the command line.
@@ -448,7 +499,11 @@ NODE uav (id)
         i = i+1;
       }
       next_wp_x[4] = NEXT_X(next_wp_x[3],next_wp_y[3]);
-      next_wp_y[4] = NEXT_Y(next_wp_y[3],next_wp_y[3]);
+      next_wp_y[4] = NEXT_Y(next_wp_x[3],next_wp_y[3]);
+      //-- update next 5 hazards and variances based on waypoints
+      SET_HAZARDS();
+      SET_VARIANCES();
+      //-- one less segment to go
       remaining_segs = remaining_segs - 1;
     }
   }
