@@ -16,7 +16,7 @@ using namespace std;
 
 const double EXPOSURE_LOOSE = 0.8;
 const double EXPOSURE_TIGHT = 0.2;
-const char* TEMPLATE = "dart.prism";
+const char* TEMPLATE = "dartam/dart.prism";
 
 const char* SWITCH_TO_TIGHT = "switchToTight_start";
 const char* SWITCH_TO_LOOSE = "switchToLoose_start";
