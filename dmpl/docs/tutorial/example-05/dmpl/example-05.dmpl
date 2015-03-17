@@ -332,12 +332,12 @@ NODE uav (id)
     //-- if the leader has reached the destination, no more formation
     //-- changes are needed
     if(x != xt || y != yt) {
-      formation@0 = adaptation_manager(formation@id,changing,remaining_time,
-                                       hazard1, hazard2, hazard3, hazard4, hazard5,
-                                       variance1, variance2, variance3, variance4, variance5,
-                                       loose_speed, tight_speed,
-                                       seg_len, remaining_segs,
-                                       total_time - (wall_time() - start_time));
+      formation = adaptation_manager(formation@id,changing,remaining_time,
+                                     hazard1, hazard2, hazard3, hazard4, hazard5,
+                                     variance1, variance2, variance3, variance4, variance5,
+                                     loose_speed, tight_speed,
+                                     seg_len, remaining_segs,
+                                     total_time - (wall_time() - start_time));
       print_labeled_int(formation@id);
     }
     
