@@ -111,7 +111,7 @@ formula z = stateValue;
 
 
 // how many tight segments could we fly in tight formation for the rest of the mission
-formula maxTightSegments = max(0, floor((V_1 * V_0 * T - V_1 * N) / (V_0 - V_1)));
+formula maxTightSegments = min(N, max(0, floor((V_1 * V_0 * T - V_1 * N) / (V_0 - V_1))));
 
 // If maxTightSegments >= HORIZON & N > HORIZON, then it will do tight for all the
 // segments in the horizon, even if that means not leaving enough for later.
