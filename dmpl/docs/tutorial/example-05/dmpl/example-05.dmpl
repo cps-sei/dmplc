@@ -45,6 +45,11 @@ void print_int(int i)
   printf("%i\n", i);
 }
 
+void print_labeled_int(int i)
+{
+  printf("ADAPTATION_MANAGER_OUTPUT : %d\n", i);
+}
+ 
 void print_line(int _X)
 {
   printf("-");
@@ -100,6 +105,7 @@ CONST FORM_CHANGE_TIME = 20.0;
 EXTERN int my_sleep(int seconds);
 EXTERN void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
 EXTERN void print_int(int i);
+EXTERN void print_labeled_int(int i);
 EXTERN double wall_time();
 
 //-- the external function implementing the adaptation
@@ -332,6 +338,7 @@ NODE uav (id)
                                        loose_speed, tight_speed,
                                        seg_len, remaining_segs,
                                        total_time - (wall_time() - start_time));
+      print_labeled_int(formation@id);
     }
     
     //-- update the flag to indicate if a change formation is
