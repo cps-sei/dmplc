@@ -100,11 +100,11 @@ sleep 5
 mv $RAC.saved.mcda-vrep $RAC
 
 #start the nodes
-./example-05 --platform vrep::::0.2 --id 1 --var_x $((IX+2)) --var_y $((IY+2)) &> $OUTDIR/node1.out &
-./example-05 --platform vrep::::0.2 --id 2 --var_x $((IX-2)) --var_y $((IY+2)) &> $OUTDIR/node2.out &
-./example-05 --platform vrep::::0.2 --id 3 --var_x $((IX-2)) --var_y $((IY-2)) &> $OUTDIR/node3.out &
-./example-05 --platform vrep::::0.2 --id 4 --var_x $((IX+2)) --var_y $((IY-2)) &> $OUTDIR/node4.out &
-./example-05 --platform vrep::::0.2 --id 0 --var_x $IX --var_y $IY --var_xt $FX --var_yt $FY &> $OUTDIR/node0.out &
+./example-05 -e /dev/null --platform vrep::::0.2 --id 1 --var_x $((IX+2)) --var_y $((IY+2)) &> $OUTDIR/node1.out &
+./example-05 -e /dev/null --platform vrep::::0.2 --id 2 --var_x $((IX-2)) --var_y $((IY+2)) &> $OUTDIR/node2.out &
+./example-05 -e /dev/null --platform vrep::::0.2 --id 3 --var_x $((IX-2)) --var_y $((IY-2)) &> $OUTDIR/node3.out &
+./example-05 -e /dev/null --platform vrep::::0.2 --id 4 --var_x $((IX+2)) --var_y $((IY-2)) &> $OUTDIR/node4.out &
+./example-05 -e /dev/null --platform vrep::::0.2 --id 0 --var_x $IX --var_y $IY --var_xt $FX --var_yt $FY &> $OUTDIR/node0.out &
 
 printf "press enter terminate the simulation ..."
 read X
