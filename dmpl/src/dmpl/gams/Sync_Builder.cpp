@@ -1982,7 +1982,8 @@ dmpl::gams::Sync_Builder::build_main_function ()
             if (platformFunction == f.second)
               buffer_ << "  algo = new Algo(" << hertz << ", \"" << f.second->name << "\", &knowledge, platform_name);\n";
             else
-              buffer_ << "  algo = new Algo(" << hertz << ", \"" << f.second->name << "\", &knowledge);\n";
+              buffer_ << "  algo = new Algo(" << (f.second->name == "ADAPTATION_MANAGER" ? 0.15 : hertz)
+                      << ", \"" << f.second->name << "\", &knowledge);\n";
           }
         }
       buffer_ << "  algos.push_back(algo);\n\n";
