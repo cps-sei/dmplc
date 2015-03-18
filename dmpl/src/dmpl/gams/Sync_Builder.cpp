@@ -1830,8 +1830,8 @@ dmpl::gams::Sync_Builder::build_main_function ()
   buffer_ << "    // setup default transport as multicast\n";
   buffer_ << "    settings.hosts.push_back (default_multicast);\n";
   //buffer_ << "    settings.hosts.push_back (\"127.0.0.1:4150\");\n";
-  buffer_ << "    settings.add_receive_filter (Madara::Filters::log_aggregate);\n";
-  buffer_ << "    settings.add_send_filter (Madara::Filters::log_aggregate);\n";
+  //buffer_ << "    settings.add_receive_filter (Madara::Filters::log_aggregate);\n";
+  //buffer_ << "    settings.add_send_filter (Madara::Filters::log_aggregate);\n";
   buffer_ << "  }\n\n";
   
   buffer_ << "  settings.queue_length = 1000000;\n\n";
