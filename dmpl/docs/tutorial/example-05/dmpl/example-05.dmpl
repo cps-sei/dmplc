@@ -487,16 +487,18 @@ NODE uav (id)
     loose_speed = 50.0;
     tight_speed = 12.0;
     seg_len = 50.0;
-    total_time = 10.0;
+    total_time = 15.0;
 
     //-- SCENARIO 2: the ratio of loose and tight speeds is < 4. in
     //-- this case, there is benefit to switch to a tight
     //-- formation. however, the total time is too short to switch
     //-- back to a loose formation once out of the high hazard area.
+    /*
     loose_speed = 50.0;
     tight_speed = 25.0;
     seg_len = 50.0;
-    total_time = 10.0;
+    total_time = 15.0;
+    */
     
     remaining_segs = REMAINING_SEGMENTS();
     total_segs = remaining_segs;
