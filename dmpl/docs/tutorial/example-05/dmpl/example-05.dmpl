@@ -189,6 +189,8 @@ NODE uav (id)
   //-- segment length and remaining segments
   LOCAL double seg_len;
   LOCAL unsigned char remaining_segs;
+  //-- total number of segments in mission
+  LOCAL unsigned char total_segs;
   //-- total mission time, and mission start time
   LOCAL double total_time;
   LOCAL double start_time;
@@ -337,7 +339,8 @@ NODE uav (id)
                                      variance1, variance2, variance3, variance4, variance5,
                                      loose_speed, tight_speed,
                                      seg_len, remaining_segs,
-                                     total_time - (wall_time() - start_time));
+                                     //total_time - (wall_time() - start_time),
+                                     remaining_segs * (total_time / total_segs));
       print_labeled_int(formation@id);
     }
     
@@ -496,6 +499,7 @@ NODE uav (id)
     total_time = 10.0;
     
     remaining_segs = REMAINING_SEGMENTS();
+    total_segs = remaining_segs;
     start_time = wall_time();
     
     init = 1;
