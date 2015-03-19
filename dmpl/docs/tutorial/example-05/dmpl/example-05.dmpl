@@ -189,8 +189,8 @@ NODE uav (id)
   //-- segment length and remaining segments
   LOCAL double seg_len;
   LOCAL unsigned char remaining_segs;
-  //-- total number of segments in mission
-  LOCAL unsigned char total_segs;
+  //-- remaining flight time
+  LOCAL double remaining_flt_time;
   //-- total mission time, and mission start time
   LOCAL double total_time;
   LOCAL double start_time;
@@ -340,7 +340,7 @@ NODE uav (id)
                                      loose_speed, tight_speed,
                                      seg_len, remaining_segs,
                                      //total_time - (wall_time() - start_time),
-                                     remaining_segs * (total_time / total_segs));
+                                     remaining_flt_time);
       print_labeled_int(formation@id);
     }
     
@@ -501,7 +501,7 @@ NODE uav (id)
     */
     
     remaining_segs = REMAINING_SEGMENTS();
-    total_segs = remaining_segs;
+    remaining_flt_time = total_time;
     start_time = wall_time();
     
     init = 1;
@@ -535,6 +535,9 @@ NODE uav (id)
       //-- update next 5 hazards and variances based on waypoints
       SET_HAZARDS();
       SET_VARIANCES();
+      //-- reduced flight time
+      remaining_flt_time = remaining_flt_time -
+        (formation@id == 0 ? seg_len/loose_speed : seg_len/tight_speed);
       //-- one less segment to go
       remaining_segs = remaining_segs - 1;
     }
