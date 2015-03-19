@@ -1,0 +1,644 @@
+//-- an example with 5 nodes -- a leader in the middle and four
+//-- protectors surrounding it. the leader moves from an initial to a
+//-- target coordinate, going from one waypoint to the next following
+//-- a path planning strategy. the protectors try to follow the
+//-- leader's movement and keep it surrounded. each node has three
+//-- threads -- a synchronous thread responsible for moving to the
+//-- next waypoint avoiding collisions, an asynchronous thread that
+//-- determines the next waypoint for the node, and an asynchronous
+//-- adaptation manager thread that switched formation between tight
+//-- and loose. the timing characteristics for various thread
+//-- (periods, WCETs etc.) are specified in a separate DMPL file.
+
+TARGET GNU_CPP,WIN_CPP %%{
+#define GNU_WIN
+#include <stdlib.h>
+#include <sys/resource.h>
+#include "madara/utility/Utility.h"
+#include "./adaptation_manager.h"
+#include "./dartam/adaptation_manager.h"
+  
+int MOVE_TO(unsigned char x,unsigned char y)
+{
+  return rand() < (RAND_MAX / 10 * 6);
+}
+
+int my_sleep (int seconds)
+{
+  Madara::Utility::sleep (seconds);
+  return 0;
+}
+
+//-- return the current wall time since epoch
+double wall_time()
+{
+  struct timeval tv;
+  gettimeofday(&tv, NULL);
+  return tv.tv_sec + 0.000001 * tv.tv_usec;
+}
+ 
+int round = 0;
+int xi,yi;
+
+void print_int(int i)
+{
+  printf("%i\n", i);
+}
+
+void print_labeled_int(int i)
+{
+  printf("ADAPTATION_MANAGER_OUTPUT : %d\n", i);
+}
+ 
+void print_line(int _X)
+{
+  printf("-");
+  for(int i = 0;i < _X;++i) printf("--");
+  printf("\n");
+}
+
+void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
+{
+  if(round == 0) {
+    xi = x; yi = y;
+  }
+
+  for(int i = 0;i < 150;++i) printf("\n");
+  
+  printf("round = %d : id = %d\n", ++round, id);
+  printf("_X = %d _Y = %d\n",_X,_Y);
+  print_line(_X);
+  for(int i = 0;i < _Y;++i) {
+    printf("|");
+    for(int j = 0;j < _X;++j) {
+      //printf("i = %d j = %d\n", i, j);
+      if(j == xf && i == yf) printf("o|");        
+      else if(j == x && i == y) printf("%d|",id);
+      else printf(" |");
+    }
+    printf("\n");
+    print_line(_X);
+  }
+}
+%%}
+
+//number of X and Y coordinates
+CONST X = 20;
+CONST Y = 20;
+
+//states of each node
+CONST INITS = 0;
+CONST NEXT = 1;
+CONST REQUEST = 2;
+CONST WAITING = 3;
+CONST MOVE = 4;
+
+CONST TopY = 13;
+CONST LeftX = -12.5;
+CONST BottomY = -6;
+CONST RightX = 6.5;
+
+//-- assume that formation change takes 20 seconds
+CONST FORM_CHANGE_TIME = 20.0;
+
+//EXTERN int MOVE_TO(unsigned char x,unsigned char y);
+EXTERN int my_sleep(int seconds);
+EXTERN void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
+EXTERN void print_int(int i);
+EXTERN void print_labeled_int(int i);
+EXTERN double wall_time();
+
+//-- the external function implementing the adaptation
+//-- manager. returns 0 for loose formation and 1 for tight formation.
+EXTERN int adaptation_manager
+(
+ int current_formation, //-- 0 loose, 1 tight
+ int changing, //-- whether in process of changing to other formation
+ double change_progress, //-- progress in changing to other formation (remaining time)
+ //-- next n hazards (for the next n segments in the path)
+ double hazard1,
+ double hazard2,
+ double hazard3,
+ double hazard4,
+ double hazard5,
+ //-- variance of the next n hazards predictions
+ double variance1,
+ double variance2,
+ double variance3,
+ double variance4,
+ double variance5,
+ double loose_speed, //-- speed of loose formation
+ double tight_speed, //-- speed of tight formation
+ double segment_length, //-- length of a segment in the path
+ int remaining_segments, //-- number of segments remaining in the path
+ double remaining_flight_time //-- how much flight time the formation has left
+ );
+
+//-- a random implementation of the adaptation manager. returns 0 for
+//-- loose formation and 1 for tight formation. useful for testing.
+EXTERN int adaptation_manager_random
+(
+ int current_formation, //-- 0 loose, 1 tight
+ int changing, //-- whether in process of changing to other formation
+ double change_progress, //-- progress in changing to other formation (remaining time)
+ //-- next n hazards (for the next n segments in the path)
+ double hazard1,
+ double hazard2,
+ double hazard3,
+ double hazard4,
+ double hazard5,
+ //-- variance of the next n hazards predictions
+ double variance1,
+ double variance2,
+ double variance3,
+ double variance4,
+ double variance5,
+ double loose_speed, //-- speed of loose formation
+ double tight_speed, //-- speed of tight formation
+ double segment_length, //-- length of a segment in the path
+ int remaining_segments, //-- number of segments remaining in the path
+ double remaining_flight_time //-- how much flight time the formation has left
+ );
+
+NODE uav (id)
+{
+  //shared variables -- visible across nodes. 
+  //must be accessed via R() and W()
+  GLOBAL _Bool lock [X][Y];
+  GLOBAL unsigned char lx,ly; //leader's destination coordinates
+  GLOBAL _Bool init; //node is initialized
+
+  //-- these variables are used to interact with the adaptation
+  //-- manager
+  GLOBAL _Bool formation; //0 = loose, 1 = tight
+  LOCAL _Bool changing; //are we changing formation now?
+  LOCAL double remaining_time; //how much time left to complete formation change 
+  LOCAL double hazards[X][Y]; //map from cells to hazards
+  LOCAL double current_hazard; //hazard of current x and y
+  LOCAL double variances[X][Y]; //map from cells to variances in hazard predictions
+  //-- next 5 waypoints
+  LOCAL unsigned char next_wp_x[5]; 
+  LOCAL unsigned char next_wp_y[5]; 
+  //-- next 5 hazards
+  LOCAL double hazard1, hazard2, hazard3, hazard4, hazard5;
+  //-- next 5 hazard variances
+  LOCAL double variance1, variance2, variance3, variance4, variance5;
+  //-- speeds in loose and tight formations
+  LOCAL double loose_speed;
+  LOCAL double tight_speed;
+  //-- segment length and remaining segments
+  LOCAL double seg_len;
+  LOCAL unsigned char remaining_segs;
+  //-- remaining flight time
+  LOCAL double remaining_flt_time;
+  //-- total mission time, and mission start time
+  LOCAL double total_time;
+  LOCAL double start_time;
+
+  //-- scenario selector
+  LOCAL unsigned char scenario;
+  
+  //-- we use counters for the number of formation changes by each
+  //-- node. when the leader initiates a formation change, it
+  //-- increments its counter. it waits for the other counters to
+  //-- catch up detect that the formation change has completed.
+  GLOBAL _Bool num_changes;
+  
+  //private variables -- local to the node.
+  //preserved across rounds
+  LOCAL unsigned char state; //the state
+  LOCAL unsigned char x,y; //current coordinates
+  LOCAL unsigned char xp,yp; //next coordinates
+  LOCAL unsigned char xt,yt; //current target coordinates
+  LOCAL _Bool waypointValid; //xt, yt are valid
+  
+  expect (x < 5);
+  expect YLT5(y < 5);
+
+  double coverage()
+  {
+    // Made up; depends on formation
+    return formation@0 ? 0.7 : 0.3;
+  }
+
+  //@AT_LEAST(0.5)
+  //expect COVERAGE(hazard[x][y] > 0.5 ? coverage() > 0.5 : 1);
+
+  LOCAL double accumulated_risk;
+  double risk_integral()
+  {
+    accumulated_risk = accumulated_risk + current_hazard * (1-coverage()) * 0.1;
+    return accumulated_risk;
+  }
+
+  //@AT_END
+  expect RISK_INTEGRAL(risk_integral() < 0.105);
+
+  // True if you reach destination by end of mission time
+  //@AT_END
+  expect REACHED_END(x@0 == xt@0 && y@0 == yt@0);
+  
+  // Completed and good coverage
+  // 0.105 is -ln(0.9), 0.9 is desired success probability
+  //@AT_END
+  expect REACHED_END_AND_RISK_INTEGRAL(risk_integral() < 0.105 && x@0 == xt@0 && y@0 == yt@0);
+  
+  //-- return the next waypoint value
+  _Bool NEXT_XY ()
+  {
+    if(!waypointValid)
+      return 1;
+    //-- set next coordinates
+    xp = x; yp = y;
+    if(xp < xt) xp = xp + 1;
+    else if(xp > xt) xp = xp - 1;
+    else if(yp < yt) yp = yp + 1;
+    else if(yp > yt) yp = yp - 1;
+    return 0;
+  }
+
+  //-- use this instead of NEXT_XY to enable diagonal movement. note
+  //-- collision avoidance is not guaranteed under such movement.
+  _Bool NEXT_XY_DIAGONAL ()
+  {
+    if(!waypointValid)
+      return 1;
+    xp = x; yp = y;
+    if(x < xt) xp = x + 1;
+    if(x > xt) xp = x - 1;
+    if(y < yt) yp = y + 1;
+    if(y > yt) yp = y - 1;
+    return 0;
+  }
+  
+  //-- only return the next waypoint X value given the current waypoint
+  unsigned char NEXT_X (unsigned char curr_x, unsigned char curr_y)
+  {
+    if(curr_x < xt) return curr_x + 1;
+    if(curr_x > xt) return curr_x - 1;
+    return curr_x;
+  }
+
+  //-- only return the next waypoint Y value given the current waypoint
+  unsigned char NEXT_Y (unsigned char curr_x, unsigned char curr_y)
+  {
+    if(curr_y < yt) return curr_y + 1;
+    if(curr_y > yt) return curr_y - 1;
+    return curr_y;
+  }
+
+  //-- manhattan distance between (x,y) and (xt,yt)
+  unsigned char REMAINING_SEGMENTS()
+  {
+    unsigned char res;
+    res = 0;
+    if(x < xt) res = res + (xt - x);
+    else if(x > xt) res = res + (x - xt);
+    if(y < yt) res = res + (yt - y);
+    else if(y > yt) res = res + (y - yt);
+    return res;
+  }
+
+  //-- the task that invokes the adaptation manager. this task only
+  //-- does something meaningful for the leader node (i.e., id =
+  //-- 0). otherwise it is a NOP.
+  void ADAPTATION_MANAGER()
+  {
+    _Bool last_formation;    
+    unsigned char num_protectors_changing;
+    
+    //-- not leader or uninitialized
+    if(id != 0 || init@0 == 0) return;
+
+    //-- check if formation change is still happening
+    if(EXISTS_LOWER(idp,num_changes@idp != num_changes@id) ||
+       EXISTS_HIGHER(idp,num_changes@idp != num_changes@id)) {
+      changing = 1;
+    } else {
+      changing = 0;
+    }
+
+    //-- estimate the remaining time for formation change as the
+    //-- fraction of protectors that are yet to complete formation
+    //-- change
+    if(changing) {
+      num_protectors_changing = 0;
+      FORALL_OTHER(idp) {
+        if(num_changes@idp != num_changes@id) {
+          num_protectors_changing = num_protectors_changing + 1;
+        }
+      }
+      remaining_time = num_protectors_changing * FORM_CHANGE_TIME / 4;
+    }
+    
+    //-- call the external adapatation manager
+    last_formation = formation@0;
+
+    //-- if the leader has reached the destination, no more formation
+    //-- changes are needed
+    if(x != xt || y != yt) {
+      formation = adaptation_manager(formation@id,changing,remaining_time,
+                                     hazard1, hazard2, hazard3, hazard4, hazard5,
+                                     variance1, variance2, variance3, variance4, variance5,
+                                     loose_speed, tight_speed,
+                                     seg_len, remaining_segs,
+                                     //total_time - (wall_time() - start_time),
+                                     remaining_flt_time);
+      print_labeled_int(formation@id);
+    }
+    
+    //-- update the flag to indicate if a change formation is
+    //-- triggered, and increment number of formation changes.
+    if(!changing && last_formation != formation@0) {
+      changing = 1;
+      num_changes = 1 - num_changes@id;
+    }
+  }
+
+  //-- the task that computes the next waypoint.
+  void WAYPOINT()
+  {
+    if(id != 0 && init@0 == 0) {
+      waypointValid = 0;
+      return;
+    } else {
+      waypointValid = 1;
+    }
+
+    //-- note that while a formation change is happening, there will
+    //-- be no change in xp and yp for the leader.
+    if(id == 0) {
+      ly = yp;
+      lx = xp;
+      return;
+    }
+
+    //-- loose formation
+    if(formation@0 == 0) {
+      if(id == 1) {
+        xt = lx@0 + 2;
+        yt = ly@0 + 2;
+      } else if(id == 2) {
+        xt = lx@0 - 2;
+        yt = ly@0 + 2;
+      } else if(id == 3) {
+        xt = lx@0 - 2;
+        yt = ly@0 - 2;
+      } else if(id == 4) {
+        xt = lx@0 + 2;
+        yt = ly@0 - 2;
+      }
+      return;
+    }
+
+    //-- tight formation
+    if(id == 1) {
+      xt = lx@0 + 1;
+      yt = ly@0 + 1;
+    } else if(id == 2) {
+      xt = lx@0 - 1;
+      yt = ly@0 + 1;
+    } else if(id == 3) {
+      xt = lx@0 - 1;
+      yt = ly@0 - 1;
+    } else if(id == 4) {
+      xt = lx@0 + 1;
+      yt = ly@0 - 1;
+    }
+  }
+
+  //-- set the next 5 hazards based on the next 5 waypoints. XXX: this
+  //-- should be fixed once compiler support is added.
+  void SET_HAZARDS()
+  {
+    hazard1 = (next_wp_x[0] > 4 && next_wp_y[0] <= 4) ? 0.9 : 0.1;
+    hazard2 = (next_wp_x[1] > 4 && next_wp_y[1] <= 4) ? 0.9 : 0.1;
+    hazard3 = (next_wp_x[2] > 4 && next_wp_y[2] <= 4) ? 0.9 : 0.1;
+    hazard4 = (next_wp_x[3] > 4 && next_wp_y[3] <= 4) ? 0.9 : 0.1;
+    hazard5 = (next_wp_x[4] > 4 && next_wp_y[4] <= 4) ? 0.9 : 0.1;
+  }
+
+  //-- set the next 5 variances based on the next 5 waypoints. XXX:
+  //-- this should be fixed once compiler support is added.
+  void SET_VARIANCES()
+  {
+    variance1 = 0.1; variance2 = 0.1; variance3 = 0.1; variance4 = 0.1; variance5 = 0.1;
+  }
+  
+  //-- initialize state
+  void INITIALIZE_STATE()
+  {
+    unsigned char i,j;
+    lock[x][y] = 1;
+    num_changes = 0;
+    
+    if(id != 0) return;
+
+    //-- the rest of this stuff is only done by the leader
+    lx = x;
+    ly = y;
+    current_hazard = hazards[x][y];
+    formation = 0;
+    changing = 0;
+    remaining_time = 0.0;
+      
+    //-- initialize hazards and variances arrays
+    //for(i = 0;i < X;) {
+    i=0;
+    while(i < x) {
+      //for(j = 0;j < Y;) {
+      j=0;
+      while(j < Y) {
+        //-- we start with a simple hazard mapping
+        if(x > 4 && y <= 4) hazards[i][j] = 0.9;
+        else hazards[i][j] = 0.9;
+        //-- variances are fixed and low
+        variances[i][j] = 0.01;
+        j = j+1;
+      }
+      i = i+1; //XXX: this should be part of the for loop header
+    }
+    
+    //-- also initialize next_wp_x and next_wp_y.
+    next_wp_x[0] = x;
+    next_wp_y[0] = y;
+
+    //for(i = 1;i < 5;) {        
+    i = 1;
+    while(i < 5) {
+      next_wp_x[i] = NEXT_X(next_wp_x[i - 1],next_wp_y[i - 1]);
+      next_wp_y[i] = NEXT_Y(next_wp_y[i - 1],next_wp_y[i - 1]);
+      i = i+1;
+    }
+
+    //initialize the next 5 hazards and variances
+    SET_HAZARDS();
+    SET_VARIANCES();
+    
+    //-- we set default values of some system parameters here. they
+    //-- will likely be initialized from the command line.
+
+    //-- NOTE: the difference between loose and tight speeds should
+    //-- not be very small. otherwise, the prism model becomes too
+    //-- hard to solve
+
+    //-- NOTE: in the adaptation manager, the exposures for loose and
+    //-- tight formations are set to 0.8 and 0.2. the ratio is 4.
+
+    //-- select the scenario
+    scenario = 3;
+    
+    //-----------------------------------------------------------------
+    //-- begin scenarios
+    //-----------------------------------------------------------------
+    
+    //-- SCENARIO 1: the ratio of loose and tight speeds is > 4. in
+    //-- this case, there is no benefit to switch to tight formation.
+    if(scenario == 1) {
+      loose_speed = 50.0;
+      tight_speed = 12.0;
+      seg_len = 50.0;
+      total_time = 15.0;
+    }
+    
+    //-- SCENARIO 2: the ratio of loose and tight speeds is < 4. in
+    //-- this case, there is benefit to switch to a tight formation.
+    if(scenario == 2) {
+      loose_speed = 50.0;
+      tight_speed = 25.0;
+      seg_len = 50.0;
+      total_time = 15.0;
+    }
+
+    //-- SCENARIO 3: similar to scenario 2 but slightly longer mission
+    //-- time so that the switch back to loose formation happens
+    //-- later.
+    if(scenario == 3) {
+      loose_speed = 50.0;
+      tight_speed = 25.0;
+      seg_len = 50.0;
+      total_time = 18.0;
+    }
+
+    //-----------------------------------------------------------------
+    //-- begin scenarios
+    //-----------------------------------------------------------------
+    
+    remaining_segs = REMAINING_SEGMENTS();
+    remaining_flt_time = total_time;
+    start_time = wall_time();
+    
+    init = 1;
+  }
+
+  //-- stuff to do once the next waypoint is reached
+  void REACHED_NEXT_XY()
+  {
+    unsigned char i;
+
+    lock[x][y] = 0; 
+    x = xp; y = yp;
+    current_hazard = hazards[x][y];
+    //-- if i am not the leader and a formation change was
+    //-- happening, and i have reached the end-point, then formation
+    //-- change is complete.
+    if(id != 0 && num_changes@id != num_changes@0 && x == xt && y == yt) {
+      num_changes = 1 - num_changes@id;
+    }
+    //For leader, update remaining segments, and next 5 waypoints
+    if(id == 0) {
+      //for(i = 1;i < 5;) {        
+      i = 1;
+      while(i < 5) {
+        next_wp_x[i - 1] = next_wp_x[i];
+        next_wp_y[i - 1] = next_wp_y[i];
+        i = i+1;
+      }
+      next_wp_x[4] = NEXT_X(next_wp_x[3],next_wp_y[3]);
+      next_wp_y[4] = NEXT_Y(next_wp_x[3],next_wp_y[3]);
+      //-- update next 5 hazards and variances based on waypoints
+      SET_HAZARDS();
+      SET_VARIANCES();
+      //-- reduced flight time
+      remaining_flt_time = remaining_flt_time -
+        (formation@id == 0 ? seg_len/loose_speed : seg_len/tight_speed);
+      //-- one less segment to go
+      remaining_segs = remaining_segs - 1;
+    }
+  }
+  
+  //-- the task that moves the node to its next waypoint while
+  //-- avoiding collisions.
+  @BARRIER_SYNC
+  @PLATFORM_CONTROLLER
+  void COLLISION_AVOIDANCE ()
+  {
+    print_state(X,Y,id,x,y,xt,yt);
+    //my_sleep(1);
+    if(state == INITS) {
+      INITIALIZE_STATE();
+      state = NEXT;
+    } if(state == NEXT) {
+      //-- if reached destination, nothing to do
+      if(x == xt && y == yt) return;
+      //-- the leader does not move if formation change is going on
+      if(id == 0 && changing) return;
+      //-- get the next waypoint
+      if(NEXT_XY()) return;
+      state = REQUEST;
+    } else if(state == REQUEST) {
+      //request the lock but only if it is free
+      //if(EXISTS_LOWER(idp,lock[xp][yp]@idp != 0)) return;
+      lock[xp][yp] = 1;
+      state = WAITING;
+    } else if(state == WAITING) {
+      //grab the lock if we are the highest 
+      //id node to request or hold the lock
+      if(EXISTS_HIGHER(idp, lock[xp][yp]@idp != 0)) return;
+      state = MOVE;
+    } else if(state == MOVE) {
+      //now we have the lock on (x’,y’)
+      if(GRID_MOVE(xp,yp,0.5)) return;
+      REACHED_NEXT_XY();
+      state = NEXT;
+    }
+  }
+
+  @INIT_SIM
+  void StartingPosition ()
+  {
+    GRID_INIT(X, Y, LeftX, RightX, TopY, BottomY);
+    GRID_PLACE(x, y, 0.5);
+  }
+}
+
+//initial state
+@INIT
+void NodeInit () 
+{
+  FORALL_NODE(id) {
+    state@id = INITS;
+    ND(x@id); ND(y@id);
+    ASSUME(0 <= x@id && x@id < X && 0 <= y@id && y@id < Y);
+    ND(xt@id); ND(yt@id);
+    ASSUME(0 <= xt@id && xt@id < X && 0 <= yt@id && yt@id < Y);
+    waypointValid@id = 1;
+  }
+
+  FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+    ASSUME(x@id1 != x@id2 || y@id1 != y@id2);
+  }
+}
+
+//the safety property checked at the beginning of each round
+@SAFETY
+void NoCollisions ()
+{
+  FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+    ASSERT(x@id1 != x@id2 || y@id1 != y@id2);
+  }
+}
+
+/*********************************************************************/
+//-- end of file
+/*********************************************************************/
