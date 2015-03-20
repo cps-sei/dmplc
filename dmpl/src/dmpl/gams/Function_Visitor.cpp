@@ -60,9 +60,9 @@
 
 dmpl::madara::Function_Visitor::Function_Visitor (
   const Func & function, const Node & node,
-  DmplBuilder & builder, std::stringstream & buffer, bool do_vrep)
+  DmplBuilder & builder, std::stringstream & buffer, bool do_vrep, bool do_analyzer)
   : function_ (function), node_ (node),
-    builder_ (builder), buffer_ (buffer), do_vrep_(do_vrep),
+    builder_ (builder), buffer_ (buffer), do_vrep_(do_vrep), do_analyzer_(do_analyzer),
     indentation_ (2), privatize_ (false), assignment_ (0)
 {
 
@@ -118,10 +118,6 @@ dmpl::madara::Function_Visitor::exitLval (LvalExpr & expression)
 {
   Sym symbol = expression.sym;
   Var var = boost::dynamic_pointer_cast<Variable>(symbol);
-  int indices = expression.indices.size();
-  bool atNode = expression.node != NULL;
-  if(atNode)
-    indices++;
   if (symbol == NULL)
   {
     buffer_ << expression.var;
@@ -132,6 +128,12 @@ dmpl::madara::Function_Visitor::exitLval (LvalExpr & expression)
   }
   else
   {
+    int indices = expression.indices.size();
+    bool atNode = expression.node != NULL;
+    bool isAnalyzerLocal = do_analyzer_ && var->getScope() == Variable::LOCAL;
+    bool isGlobal = var->getScope() == Variable::GLOBAL;
+    if(atNode || isGlobal || isAnalyzerLocal)
+      indices++;
     buffer_ << symbol->getName();
     if (indices > 0)
     {
@@ -140,6 +142,12 @@ dmpl::madara::Function_Visitor::exitLval (LvalExpr & expression)
       {
         buffer_ << "[";
         visit (expression.node);
+        buffer_ << "]";
+      }
+      else if(isGlobal || isAnalyzerLocal)
+      {
+        buffer_ << "[";
+        buffer_ << node_.idVar->getName();
         buffer_ << "]";
       }
       BOOST_FOREACH (Expr & expr, expression.indices)
@@ -234,7 +242,7 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
   std::string spacer (indentation_, ' '), sub_spacer (indentation_ + 2, ' ');
 
   LvalExpr &lval = expression.func->requireLval ();
-  if(lval.node != NULL)
+  if(!do_analyzer_ && lval.node != NULL)
   {
     std::cerr << "Error: cannot use @ operator on function calls not supported in this output mode" << std::endl;
     exit(1);
@@ -258,6 +266,11 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
 
   if (isNodeFunc || isProgFunc)
   {
+    if(lval.node != NULL)
+    {
+      std::cerr << "Error: @ operator on function calls only supported for EXTERN functions" << std::endl;
+      exit(1);
+    }
     const Func &func = (isNodeFunc ? nodeFunc->second : progFunc->second);
     /*if (assignment_)
     {
@@ -361,26 +374,38 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
   }
   else
   {
-    if (func_name == "ASSUME")
-      buffer_ << "assert";
-    else
-      buffer_ << func_name;
-
-    buffer_ << " (";
-  
-    bool started = false;
-    BOOST_FOREACH (Expr & expr, expression.args)
+    if(do_analyzer_ && expression.args.size() == 0)
     {
-      if (started)
-        buffer_ << ", ";
-
-      visit (expr);
-      
-      if (!started)
-        started = true;
+      buffer_ << "EXTERN_" << func_name << "[";
+      if(lval.node == NULL)
+        buffer_ << node_.idVar->getName();
+      else
+        visit(lval.node);
+      buffer_ << "]";
     }
+    else
+    {
+      if (func_name == "ASSUME")
+        buffer_ << "assert";
+      else
+        buffer_ << func_name;
 
-    buffer_ << ")";
+      buffer_ << " (";
+    
+      bool started = false;
+      BOOST_FOREACH (Expr & expr, expression.args)
+      {
+        if (started)
+          buffer_ << ", ";
+
+        visit (expr);
+        
+        if (!started)
+          started = true;
+      }
+
+      buffer_ << ")";
+    }
   }
   buffer_ << ")";
 }
@@ -604,7 +629,8 @@ dmpl::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
   if (lhs)
   {
     int indices = lhs->indices.size();
-    bool isGlobal = lhs->sym != NULL && lhs->sym->getScope() == Variable::GLOBAL;
+    bool isAnalyzerLocal = do_analyzer_ && lhs->sym->getScope() == Variable::LOCAL;
+    bool isGlobal = lhs->sym != NULL && (lhs->sym->getScope() == Variable::GLOBAL || isAnalyzerLocal);
     if(isGlobal)
       indices++;
     if(lhs->node != NULL)

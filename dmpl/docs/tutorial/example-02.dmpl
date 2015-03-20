@@ -108,7 +108,7 @@ NODE uav (id)
 
   double coverage()
   {
-    return GET_LAT() + GET_LNG()@0;
+    return GET_LAT() - GET_LNG()@0;
   }
 
   //@AT_LEAST(0.5)

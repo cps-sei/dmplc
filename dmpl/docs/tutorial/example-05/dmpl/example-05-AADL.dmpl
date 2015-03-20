@@ -1,12 +1,10 @@
+//-- there is an implicit MADARA receiver thread
+@MADARA_HERTZ(20)
+@MADARA_CRITICALITY(1)
+@MADARA_WCET_NOMINAL(10000)
+@MADARA_WCET_OVERLOAD(20000)
 NODE uav
 {
-  //-- there is an implicit MADARA receiver thread
-  @HERTZ(20)
-  @CRITICALITY(1)
-  @WCET_NOMINAL(10000)
-  @WCET_OVERLOAD(20000)
-  MADARA_RECEIVER();
-
   @HERTZ(1)  //-- this will be made fractional once dmplc is updated
   @CRITICALITY(2)
   @WCET_NOMINAL(10000)

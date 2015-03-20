@@ -18,6 +18,14 @@ TARGET GNU_CPP,WIN_CPP %%{
 #include "./adaptation_manager.h"
 #include "./dartam/adaptation_manager.h"
   
+double accumulated_risk = 0.0;
+
+double accumulate_risk(double risk)
+{
+  printf("Risk: %f (+%f)\n", accumulated_risk, risk);
+  return accumulated_risk += risk;
+}
+
 int MOVE_TO(unsigned char x,unsigned char y)
 {
   return rand() < (RAND_MAX / 10 * 6);
@@ -107,6 +115,9 @@ EXTERN void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
 EXTERN void print_int(int i);
 EXTERN void print_labeled_int(int i);
 EXTERN double wall_time();
+EXTERN double accumulate_risk(double risk);
+EXTERN double GET_LAT();
+EXTERN double GET_LNG();
 
 //-- the external function implementing the adaptation
 //-- manager. returns 0 for loose formation and 1 for tight formation.
@@ -211,10 +222,9 @@ NODE uav (id)
   LOCAL unsigned char xp,yp; //next coordinates
   LOCAL unsigned char xt,yt; //current target coordinates
   LOCAL _Bool waypointValid; //xt, yt are valid
-  
-  expect (x < 5);
-  expect YLT5(y < 5);
 
+  expect IN_BOUNDS(GET_LAT() > 40 && GET_LAT() < 41 && GET_LNG() > -80 && GET_LNG() < -79);
+  
   double coverage()
   {
     // Made up; depends on formation
@@ -224,19 +234,20 @@ NODE uav (id)
   //@AT_LEAST(0.5)
   //expect COVERAGE(hazard[x][y] > 0.5 ? coverage() > 0.5 : 1);
 
-  LOCAL double accumulated_risk;
   double risk_integral()
   {
-    accumulated_risk = accumulated_risk + current_hazard * (1-coverage()) * 0.1;
-    return accumulated_risk;
+    if(id == 0)
+      return accumulate_risk(hazard1 * (1-coverage()) * 0.2);
+    else
+      return 0.0;
   }
 
   //@AT_END
-  expect RISK_INTEGRAL(risk_integral() < 0.105);
+  //expect RISK_INTEGRAL(risk_integral() < 0.105);
 
   // True if you reach destination by end of mission time
   //@AT_END
-  expect REACHED_END(x@0 == xt@0 && y@0 == yt@0);
+  //expect REACHED_END(x@0 == xt@0 && y@0 == yt@0);
   
   // Completed and good coverage
   // 0.105 is -ln(0.9), 0.9 is desired success probability

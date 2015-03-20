@@ -82,7 +82,7 @@ namespace dmpl
        **/
       Function_Visitor (const Func & function, const Node & node,
                         DmplBuilder & builder, std::stringstream & buffer,
-                        bool do_vrep);
+                        bool do_vrep, bool do_analyzer = false);
       
     /**
      * Returns whether or not to visit the Integer's subfields first.
@@ -394,6 +394,9 @@ namespace dmpl
 
       ///whether we are generating code for VREP
       bool do_vrep_;
+
+      ///whether we are generating code for expect log analyzer
+      bool do_analyzer_;
 
       /// space indentation
       size_t indentation_;

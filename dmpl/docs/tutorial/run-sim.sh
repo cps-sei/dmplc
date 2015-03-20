@@ -8,6 +8,9 @@ function usage {
 
 #get inputs
 MISSION="$1"
+OUTLOG="$2"
+
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
 if [ "$#" != "2" ]; then
     usage
@@ -24,6 +27,9 @@ function cleanup {
     
     #restore the VREP system/settings.dat
     cp $SDF.saved.mcda-vrep $SDF
+
+    #collate output log
+    $DIR/expect_merge.py $EXPECT_LOG_PERIOD $OUTDIR/expect*.log > $OUTLOG
     
     #all done
     exit 0
@@ -59,7 +65,7 @@ fi
 
 dmplc -e -n $NODENUM --DX $GRIDSIZE --DY $GRIDSIZE --DTopY $TopY --DBottomY $BottomY --DLeftX $LeftX --DRightX $RightX -g -o ${BIN}.cpp $DMPL
 CFLAGS="-g -Og -std=c++11 -I$DMPL_ROOT/src -I$VREP_ROOT/programming/remoteApi -I$ACE_ROOT -I$MADARA_ROOT/include -I$GAMS_ROOT/src -I$DMPL_ROOT/include"
-LIBS="$MADARA_ROOT/libMADARA.so $ACE_ROOT/lib/libACE.so $GAMS_ROOT/lib/libGAMS.so -lpthread"
+LIBS="$LIBS $MADARA_ROOT/libMADARA.so $ACE_ROOT/lib/libACE.so $GAMS_ROOT/lib/libGAMS.so -lpthread"
 g++ $CFLAGS -o $BIN ${BIN}.cpp $LIBS
 
 #create the output directory and get its realpath

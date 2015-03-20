@@ -1114,7 +1114,7 @@ dmpl::gams::Sync_Builder::build_expect_thread_definition (void)
   buffer_ << "void ExpectThread::init (engine::Knowledge_Base & context)\n";
   buffer_ << "{\n";
   buffer_ << "  _knowledge = &context;\n";
-  buffer_ << "  out << \"Seconds,Micros,Node,Variable,Value\" << std::endl;\n";
+  buffer_ << "  out << \"Seconds,Micros,Node,At,Variable,Value\" << std::endl;\n";
   buffer_ << "}\n";
   buffer_ << "\n";
   buffer_ << "void ExpectThread::run (void)\n";
@@ -1132,9 +1132,12 @@ dmpl::gams::Sync_Builder::build_expect_thread_definition (void)
     Var var = it.second;
     if(var->type->dims.size() != 0)
       continue;
-    buffer_ << "  out << tv.tv_sec << \",\" << tv.tv_usec << \",\" << id << \",\";\n";
-    buffer_ << "  out << \"" << var->getName() << ",\" << ::dmpl::" << var->getName() << ";\n";
-    buffer_ << "  out << std::endl;\n\n";
+    if(var->usage_summary.anyExpect().any())
+    {
+      buffer_ << "  out << tv.tv_sec << \",\" << tv.tv_usec << \",\" << id << \",\" << id << \",\";\n";
+      buffer_ << "  out << \"." << var->getName() << ",\" << ::dmpl::" << var->getName() << ";\n";
+      buffer_ << "  out << std::endl;\n\n";
+    }
   }
 
   BOOST_FOREACH(Vars::value_type &it, node.globVars)
@@ -1142,11 +1145,14 @@ dmpl::gams::Sync_Builder::build_expect_thread_definition (void)
     Var var = it.second;
     if(var->type->dims.size() != 1)
       continue;
-    for(int i = 0; i < builder_.program.processes.size(); i++)
+    if(var->usage_summary.anyExpect().any())
     {
-      buffer_ << "  out << tv.tv_sec << \",\" << tv.tv_usec << \",\" << " << i << " << \",\";\n";
-      buffer_ << "  out << \"" << var->getName() << ",\" << ::dmpl::" << var->getName() << "[" << i << "];\n";
-      buffer_ << "  out << std::endl;\n\n";
+      for(int i = 0; i < builder_.program.processes.size(); i++)
+      {
+        buffer_ << "  out << tv.tv_sec << \",\" << tv.tv_usec << \",\" << id << \",\" << " << i << " << \",\";\n";
+        buffer_ << "  out << \"" << var->getName() << ",\" << ::dmpl::" << var->getName() << "[" << i << "];\n";
+        buffer_ << "  out << std::endl;\n\n";
+      }
     }
   }
 
@@ -1160,7 +1166,7 @@ dmpl::gams::Sync_Builder::build_expect_thread_definition (void)
     std::cerr << "  expect: " << func->usage_summary.anyExpect() << std::endl;
     if(func->usage_summary.anyExpect().any())
     {
-      buffer_ << "  out << tv.tv_sec << \",\" << tv.tv_usec << \",\" << id << \",\";\n";
+      buffer_ << "  out << tv.tv_sec << \",\" << tv.tv_usec << \",\" << id << \",\" << id << \",\";\n";
       buffer_ << "  out << \"" << func->getName() << ",\" << ::dmpl::" << func->getName() << "();\n";
       buffer_ << "  out << std::endl;\n\n";
     }

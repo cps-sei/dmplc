@@ -61,6 +61,7 @@
 #include <string>
 #include "DmplBuilder.hpp"
 #include "dmpl/gams/Sync_Builder.hpp"
+#include "dmpl/gams/Analyzer_Builder.hpp"
 #include "SyncSeqDbl.hpp"
 //#include "ArrayElim.hpp"
 
@@ -71,7 +72,7 @@ std::list<std::string> file_names;
 std::string out_file;
 std::string madara_target ("GNU_CPP");
 bool do_print = false, do_seq = false, do_gams = false;
-bool do_vrep = false, do_expect = false;
+bool do_vrep = false, do_expect = false, do_analyzer = false;
 bool debug = false;
 bool seq_no_array = false, init_globals = false;
 bool statistical = false;
@@ -145,6 +146,34 @@ int main (int argc, char **argv)
 
     //cleanup
     delete gams_builder;
+  }
+  else if(do_analyzer)
+  {
+    //fill in the processes with nodes nodes
+    dmpl::Program & program = builder.program;
+    const std::string & nodeName = program.nodes.begin ()->first;
+    program.processes.clear ();
+    for (size_t i = 0;i < nodes;++i)
+      program.processes.push_back (dmpl::Process (nodeName, i));
+
+    // create a madara builder instance of the dmpl builder parse
+    dmpl::gams::Analyzer_Builder *ana_builder = new dmpl::gams::Analyzer_Builder (builder, madara_target);
+
+    //build the generated code
+    ana_builder->build ();
+
+    //print the generated code
+    if (out_file.empty ())
+      ana_builder->print (std::cout);
+    else
+    {
+      std::ofstream os (out_file.c_str ());
+      ana_builder->print (os);
+      os.close ();
+    }
+
+    //cleanup
+    delete ana_builder;
   }
 
   //sequentialize and print result
@@ -234,6 +263,10 @@ void parse_options (int argc, char **argv)
         usage (argv[0]);
       }
       ++i;
+    }
+    else if (arg1 == "-a" || arg1 == "--analyzer")
+    {
+      do_analyzer = true;
     }
     else if (arg1 == "-g" || arg1 == "--gams")
     {
@@ -357,6 +390,7 @@ void usage (char *cmd)
   std::cerr << "  -o|--out file            output file, default is stdout\n";
   std::cerr << "  -p|--print               parse and print DASL file\n";
   std::cerr << "  -n|--nodes nodes         number of nodes\n";
+  std::cerr << "  -a|--analyzer            generate C++ for expect log analyzer\n";
   std::cerr << "  -g|--gams                generate C++/GAMS code to run\n";
   std::cerr << "  -e|--expect              check and log 'expect' statements\n";
   std::cerr << "  -t|--target|--platform p specify a target platform\n";
