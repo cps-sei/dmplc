@@ -162,6 +162,24 @@ dmpl::gams::Analyzer_Builder::build_common_global_variables ()
   buffer_ << "engine::Knowledge_Base knowledge;\n";
   buffer_ << "\n";
 
+  buffer_ << "template<class T> std::string to_string(const T &in)\n";
+  buffer_ << "{\n";
+  buffer_ << "  std::stringstream ss;\n";
+  buffer_ << "  ss << in;\n";
+  buffer_ << "  return ss.str();\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+  buffer_ << "double integrate_knowledge(const std::string &name, double value)\n";
+  buffer_ << "{\n";
+  buffer_ << "  engine::Variable_Reference ref = knowledge.get_ref(name);\n";
+  buffer_ << "  Madara::Knowledge_Record rec = knowledge.get(ref);\n";
+  buffer_ << "  double orig = rec.to_double();\n";
+  buffer_ << "  double ret = orig + value * 0.2;\n";
+  buffer_ << "  knowledge.set(ref, ret);\n";
+  buffer_ << "  std::cout << name << \": \" << ret << \"  (+\" << ret - orig << \")\" << std::endl;\n";
+  buffer_ << "  return ret;\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
   buffer_ << "// Needed as a workaround for non-const-correctness in Madara; use carefully\n";
   buffer_ << "inline engine::Function_Arguments &__strip_const(const engine::Function_Arguments &c)\n";
   buffer_ << "{\n";
@@ -939,13 +957,6 @@ dmpl::gams::Analyzer_Builder::build_function (
 void
 dmpl::gams::Analyzer_Builder::build_main_function ()
 {
-  buffer_ << "template<class T> std::string to_string(const T &in)\n";
-  buffer_ << "{\n";
-  buffer_ << "  std::stringstream ss;\n";
-  buffer_ << "  ss << in;\n";
-  buffer_ << "  return ss.str();\n";
-  buffer_ << "}\n";
-  buffer_ << "\n";
   buffer_ << "int main (int argc, char ** argv)\n";
   buffer_ << "{\n";
   buffer_ << "  // handle any command line arguments\n";

@@ -237,7 +237,8 @@ NODE uav (id)
   double risk_integral()
   {
     if(id == 0)
-      return accumulate_risk(hazard1 * (1-coverage()) * 0.2);
+      //return accumulate_risk(current_hazard * (1-coverage()) * 0.2);
+      return INTEGRATE(current_hazard * (1-coverage()));
     else
       return 0.0;
   }
@@ -348,7 +349,7 @@ NODE uav (id)
     //-- if the leader has reached the destination, no more formation
     //-- changes are needed
     if(x != xt || y != yt) {
-      formation = adaptation_manager(formation@id,changing,remaining_time,
+      formation = adaptation_manager_random(formation@id,changing,remaining_time,
                                      hazard1, hazard2, hazard3, hazard4, hazard5,
                                      variance1, variance2, variance3, variance4, variance5,
                                      loose_speed, tight_speed,
@@ -418,15 +419,23 @@ NODE uav (id)
     }
   }
 
+  double GET_HAZARD(int curx, int cury)
+  {
+    if(id == 0 && curx == xt && cury == yt)
+      return 0.0;
+    else
+      return (curx > 4 && cury <= 4) ? 0.09 : 0.01;
+  }
+
   //-- set the next 5 hazards based on the next 5 waypoints. XXX: this
   //-- should be fixed once compiler support is added.
   void SET_HAZARDS()
   {
-    hazard1 = (next_wp_x[0] > 4 && next_wp_y[0] <= 4) ? 0.9 : 0.1;
-    hazard2 = (next_wp_x[1] > 4 && next_wp_y[1] <= 4) ? 0.9 : 0.1;
-    hazard3 = (next_wp_x[2] > 4 && next_wp_y[2] <= 4) ? 0.9 : 0.1;
-    hazard4 = (next_wp_x[3] > 4 && next_wp_y[3] <= 4) ? 0.9 : 0.1;
-    hazard5 = (next_wp_x[4] > 4 && next_wp_y[4] <= 4) ? 0.9 : 0.1;
+    hazard1 = GET_HAZARD(next_wp_x[0], next_wp_y[0] <= 4);
+    hazard2 = GET_HAZARD(next_wp_x[1], next_wp_y[1] <= 4);
+    hazard3 = GET_HAZARD(next_wp_x[2], next_wp_y[2] <= 4);
+    hazard4 = GET_HAZARD(next_wp_x[3], next_wp_y[3] <= 4);
+    hazard5 = GET_HAZARD(next_wp_x[4], next_wp_y[4] <= 4);
   }
 
   //-- set the next 5 variances based on the next 5 waypoints. XXX:
@@ -448,7 +457,7 @@ NODE uav (id)
     //-- the rest of this stuff is only done by the leader
     lx = x;
     ly = y;
-    current_hazard = hazards[x][y];
+    current_hazard = GET_HAZARD(x,y);
     formation = 0;
     changing = 0;
     remaining_time = 0.0;
@@ -549,7 +558,7 @@ NODE uav (id)
 
     lock[x][y] = 0; 
     x = xp; y = yp;
-    current_hazard = hazards[x][y];
+    current_hazard = GET_HAZARD(x,y);
     //-- if i am not the leader and a formation change was
     //-- happening, and i have reached the end-point, then formation
     //-- change is complete.

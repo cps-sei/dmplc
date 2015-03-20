@@ -374,7 +374,15 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
   }
   else
   {
-    if(do_analyzer_ && expression.args.size() == 0)
+    if(do_analyzer_ && func_name == "INTEGRATE" && expression.args.size() == 1)
+    {
+      static int integrate_id = 0;
+      buffer_ << "integrate_knowledge((\".INTEGRAL." << integrate_id++
+              << ".\" + to_string(" << node_.idVar->getName() << ")), (";
+      visit(expression.args.front());
+      buffer_ << "))";
+    }
+    else if(do_analyzer_ && expression.args.size() == 0)
     {
       buffer_ << "EXTERN_" << func_name << "[";
       if(lval.node == NULL)
@@ -912,7 +920,19 @@ dmpl::madara::Function_Visitor::exitRet (RetStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
-  buffer_ << spacer << "return (Integer(";
+  buffer_ << spacer << "// retType->type == " << function_->retType->type << std::endl;
+  buffer_ << spacer << "return (";
+  
+  switch(function_->retType->type)
+  {
+  case TDOUBLE_TYPE:
+    buffer_ << "double(";
+    break;
+  default:
+    buffer_ << "Integer(";
+    break;
+  }
+
   visit(statement.retVal);
   buffer_ << "));\n";
 }

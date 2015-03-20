@@ -109,7 +109,8 @@ namespace dmpl
         std::cout << std::fixed;
         std::cout << cur_row.frame << " " << cur_row.time << " " << cur_row.var << "@" << cur_row.node << ": "
                   << cur_row.val << "  (" << cur_row.val.type() << ")" << std::endl;
-        std::cout << std::scientific;
+        std::cout.unsetf(ios_base::floatfield);
+
         update_knowledge(cur_row);
         if(!get_next_row())
         {
