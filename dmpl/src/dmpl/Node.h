@@ -78,7 +78,7 @@ namespace dmpl
     * @class Node
     * @brief Represents a process in a distributed program
     */
-  class Node
+  class Node : public HasAttributes
   {
   public:    
     /// Owning Program object
@@ -88,6 +88,8 @@ namespace dmpl
      * The node name
      **/
     std::string name;
+
+    virtual std::string getName() const { return name; }
 
     ///the node arguments
     std::vector<std::string> args;
@@ -114,15 +116,12 @@ namespace dmpl
     ///list of statements (expect or require) declared at node level
     StmtList stmts;
 
-    // @ATTR(X, ...) attributes specified for this node
-    Attributes attrs;
-
     ///constructors
     Node(bool abst = false) : program(NULL), abstract(abst) {}
     Node(const std::string &n, bool abst = false)
         : program(NULL), name(n), abstract(abst) {}
     Node(const std::string &n, const Attributes& a, bool abst = false)
-        : program(NULL), name(n), attrs(a), abstract(abst) {}
+        : program(NULL), name(n), HasAttributes(a), abstract(abst) {}
 
     void initArgs()
     {

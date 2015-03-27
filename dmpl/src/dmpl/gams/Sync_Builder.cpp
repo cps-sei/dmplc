@@ -955,7 +955,7 @@ dmpl::gams::Sync_Builder::build_functions (void)
 
 bool skip_func(dmpl::Func & function)
 {
-  return (function->attrs.count("INIT_SIM") == 0 && (function->isExtern ||
+  return (function->attrs.count("InitSim") == 0 && (function->isExtern ||
       function->attrs.count("INIT") > 0 || function->attrs.count("SAFETY") > 0 ||
       !function->usage_summary.anyNonExpect().any()));
 }
@@ -1182,11 +1182,10 @@ dmpl::gams::Sync_Builder::build_algo_declaration ()
   buffer_ << "{\n";
   buffer_ << "public:\n";
   buffer_ << "  Algo (\n";
-  buffer_ << "    double hertz,\n";
+  buffer_ << "    unsigned period,\n";
 
 #if USE_MZSRM==1
   if(schedType_ == MZSRM) {
-    buffer_ << "    unsigned period,\n";
     buffer_ << "    unsigned priority,\n";
     buffer_ << "    unsigned criticality,\n";
     buffer_ << "    unsigned zsinst,\n";
@@ -1212,11 +1211,10 @@ dmpl::gams::Sync_Builder::build_algo_declaration ()
   buffer_ << "  virtual void start (threads::Threader &threader);\n";
 
   buffer_ << "protected:\n";
-  buffer_ << "  double _hertz;\n";
+  buffer_ << "  unsigned _period; //-- period in us\n";
 
 #if USE_MZSRM==1
   if(schedType_ == MZSRM) {
-    buffer_ << "  unsigned _period; //-- period in ms\n";
     buffer_ << "  unsigned _priority; //-- priority, starting with 1 and moving up\n";
     buffer_ << "  unsigned _criticality; //-- criticality, starting with 1 and moving up\n";
     buffer_ << "  unsigned _zsinst; //-- zero-slack instant in ms\n";
@@ -1240,11 +1238,10 @@ dmpl::gams::Sync_Builder::build_algo_declaration ()
   buffer_ << "{\n";
   buffer_ << "public:\n";
   buffer_ << "  SyncAlgo (\n";
-  buffer_ << "    double hertz,\n";
+  buffer_ << "    unsigned period,\n";
 
 #if USE_MZSRM==1
   if(schedType_ == MZSRM) {
-    buffer_ << "    unsigned period,\n";
     buffer_ << "    unsigned priority,\n";
     buffer_ << "    unsigned criticality,\n";
     buffer_ << "    unsigned zsinst,\n";
@@ -1281,11 +1278,10 @@ void
 dmpl::gams::Sync_Builder::build_algo_functions ()
 {
   buffer_ << "Algo::Algo (\n";
-  buffer_ << "    double hertz,\n";
+  buffer_ << "    unsigned period,\n";
 
 #if USE_MZSRM==1
   if(schedType_ == MZSRM) {
-    buffer_ << "    unsigned period,\n";
     buffer_ << "    unsigned priority,\n";
     buffer_ << "    unsigned criticality,\n";
     buffer_ << "    unsigned zsinst,\n";
@@ -1312,14 +1308,14 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
 
 #if USE_MZSRM==1
   if(schedType_ == MZSRM) {
-    buffer_ << "      _hertz(hertz), _period(period),\n";
+    buffer_ << "      _period(period),\n";
     buffer_ << "      _priority(priority), _criticality(criticality),\n";
     buffer_ << "      _zsinst(zsinst), _exec_func(exec_func)\n";
   }
   else
 #endif
   {
-    buffer_ << "            _hertz(hertz), _exec_func(exec_func)\n";
+    buffer_ << "            _period(period), _exec_func(exec_func)\n";
   }
 
   buffer_ << "{\n";
@@ -1440,7 +1436,7 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
     
   buffer_ << "void Algo::start (threads::Threader &threader)\n";
   buffer_ << "{\n";
-  buffer_ << "  std::cout << \"Starting thread: \" << _exec_func << \" at \" << _hertz << \" hertz\" << std::endl;\n";
+  buffer_ << "  std::cout << \"Starting thread: \" << _exec_func << \" at period \" << _period << \" us\" << std::endl;\n";
 
 #if USE_MZSRM==1
   if(schedType_ == MZSRM) {
@@ -1449,7 +1445,8 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   else
 #endif
   {
-    buffer_ << "  threader.run(_hertz, _exec_func, this);\n";
+    buffer_ << "  double hertz = 1000000.0 / _period;\n";
+    buffer_ << "  threader.run(hertz, _exec_func, this);\n";
   }
 
   buffer_ << "}\n";
@@ -1463,11 +1460,10 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "\n";
 
   buffer_ << "SyncAlgo::SyncAlgo (\n";
-  buffer_ << "    double hertz,\n";
+  buffer_ << "    unsigned period,\n";
 
 #if USE_MZSRM==1
   if(schedType_ == MZSRM) {
-    buffer_ << "    unsigned period,\n";
     buffer_ << "    unsigned priority,\n";
     buffer_ << "    unsigned criticality,\n";
     buffer_ << "    unsigned zsinst,\n";
@@ -1482,13 +1478,13 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
 
 #if USE_MZSRM==1
   if(schedType_ == MZSRM) {
-    buffer_ << "      Algo (hertz, period, priority, criticality, zsinst,\n";
+    buffer_ << "      Algo (period, priority, criticality, zsinst,\n";
     buffer_ << "            exec_func, knowledge, platform_name, sensors, self)\n";
   }
   else
 #endif
   {
-    buffer_ << "      Algo (hertz, exec_func, knowledge, platform_name, sensors, self)\n";
+    buffer_ << "      Algo (period, exec_func, knowledge, platform_name, sensors, self)\n";
   }
 
   buffer_ << "{\n";
@@ -1687,21 +1683,21 @@ dmpl::gams::Sync_Builder::compute_priorities ()
   Node &node = builder_.program.nodes.begin()->second;
 
   //-- assign priorities rate monotonically
-  std::multimap<int,std::string> freq2Func;
+  std::multimap<int,std::string> period2Func;
   BOOST_FOREACH(Funcs::value_type &f, node.funcs)
     {
-      if (f.second->attrs.count("HERTZ") == 0)
+      if (f.second->attrs.count("Period") == 0)
         continue;
-      if (f.second->attrs.count("HERTZ") != 1 || f.second->attrs["HERTZ"].paramList.size() != 1)
-        throw std::runtime_error("Invalid @HERTZ attribute.");
+      if (f.second->attrs.count("Period") != 1 || f.second->attrs["Period"].paramList.size() != 1)
+        throw std::runtime_error("Invalid @Period attribute.");
 
-      //-- get the frequency and convert to period in ms
-      int hertz = f.second->attrs["HERTZ"].paramList.front()->requireInt();
-      freq2Func.insert(std::pair<int,std::string>(hertz, f.second->name));
+      //-- get the period, in us
+      int period = f.second->attrs["Period"].paramList.front()->requireInt();
+      period2Func.insert(std::pair<int,std::string>(period, f.second->name));
     }
 
   unsigned nextPrio = 1;
-  for(std::map<int,std::string>::const_iterator i = freq2Func.begin(), e = freq2Func.end(); i != e; ++i) {
+  for(std::map<int,std::string>::const_reverse_iterator i = period2Func.rbegin(), e = period2Func.rend(); i != e; ++i) {
     funcPrios[i->second] = nextPrio++;
   }
 
@@ -1710,13 +1706,13 @@ dmpl::gams::Sync_Builder::compute_priorities ()
   unsigned maxCrit = 0;
   BOOST_FOREACH(Funcs::value_type &f, node.funcs)
     {
-      if (f.second->attrs.count("CRITICALITY") == 0)
+      if (f.second->attrs.count("Criticality") == 0)
         continue;
-      if (f.second->attrs.count("CRITICALITY") != 1 || f.second->attrs["CRITICALITY"].paramList.size() != 1)
-        throw std::runtime_error("Invalid @CRITICALITY attribute.");
+      if (f.second->attrs.count("Criticality") != 1 || f.second->attrs["Criticality"].paramList.size() != 1)
+        throw std::runtime_error("Invalid @Criticality attribute.");
 
       //-- get the criticality
-      funcCrits[f.second->name] = f.second->attrs["CRITICALITY"].paramList.front()->requireInt();
+      funcCrits[f.second->name] = f.second->attrs["Criticality"].paramList.front()->requireInt();
       if(maxCrit < funcCrits[f.second->name]) maxCrit = funcCrits[f.second->name];
     }
 
@@ -1729,14 +1725,14 @@ dmpl::gams::Sync_Builder::compute_priorities ()
   std::string jvmArg;
   BOOST_FOREACH(Funcs::value_type &f, node.funcs)
     {
-      if (f.second->attrs.count("HERTZ") == 0)
+      if (f.second->attrs.count("Period") == 0)
         continue;
 
       std::string arg = f.second->name;
-      arg += ":" + boost::lexical_cast<std::string>(1000000 / f.second->attrs["HERTZ"].paramList.front()->requireInt());
-      arg += ":" + boost::lexical_cast<std::string>(f.second->attrs["WCET_OVERLOAD"].paramList.front()->requireInt());
-      arg += ":" + boost::lexical_cast<std::string>(f.second->attrs["WCET_NOMINAL"].paramList.front()->requireInt());
-      arg += ":" + boost::lexical_cast<std::string>(maxCrit + 1 - f.second->attrs["CRITICALITY"].paramList.front()->requireInt());
+      arg += ":" + boost::lexical_cast<std::string>(f.second->attrs["Period"].paramList.front()->requireInt());
+      arg += ":" + boost::lexical_cast<std::string>(f.second->attrs["WCExecTimeOverload"].paramList.front()->requireInt());
+      arg += ":" + boost::lexical_cast<std::string>(f.second->attrs["WCExecTimeNominal"].paramList.front()->requireInt());
+      arg += ":" + boost::lexical_cast<std::string>(maxCrit + 1 - f.second->attrs["Criticality"].paramList.front()->requireInt());
       arg += ":" + boost::lexical_cast<std::string>(nextPrio - funcPrios[f.second->name]);
 
       if(jvmArg.empty()) jvmArg = arg;
@@ -1901,7 +1897,7 @@ dmpl::gams::Sync_Builder::build_main_function ()
 
   BOOST_FOREACH(Funcs::value_type &f, node.funcs)
     {
-      if (f.second->attrs.count("INIT_SIM") == 1)
+      if (f.second->attrs.count("InitSim") == 1)
         {
           buffer_ << "  knowledge.evaluate(\"" << f.second->name << "()\");\n";
         }
@@ -1915,21 +1911,25 @@ dmpl::gams::Sync_Builder::build_main_function ()
   buffer_ << "  Algo *algo;\n\n";
   BOOST_FOREACH(Funcs::value_type &f, node.funcs)
     {
-      if (f.second->attrs.count("HERTZ") == 0)
+      if (!f.second->isThread())
         continue;
-      if (f.second->attrs.count("HERTZ") != 1 || f.second->attrs["HERTZ"].paramList.size() != 1)
-        throw std::runtime_error("Invalid @HERTZ attribute.");
+      int period;
+      if (f.second->attrs.count("Period") == 0)
+        period = 100000; // Default to 10 Hz
+      else if (f.second->attrs.count("Period") != 1 || f.second->attrs["Period"].paramList.size() != 1)
+        throw std::runtime_error("Invalid @Period attribute.");
+      else
+        period = f.second->attrs["Period"].paramList.front()->requireInt(); //-- get the period, in us
 
-      //-- get the frequency and convert to period in ms
-      int hertz = f.second->attrs["HERTZ"].paramList.front()->requireInt();
-      unsigned period = 1000000 / hertz;
 
+#if USE_MZSRM==1
       //-- get the priority, criticality, and zero slack instant
       unsigned priority = funcPrios[f.second->name];
       unsigned criticality = funcCrits[f.second->name];
       unsigned zsinst = funcZsinsts[f.second->name];
+#endif
 
-      if (f.second->attrs.count("PLATFORM_CONTROLLER") == 1)
+      if (f.second->attrs.count("PlatformController") == 1)
         {
           if (platformFunction == NULL)
             {
@@ -1942,17 +1942,17 @@ dmpl::gams::Sync_Builder::build_main_function ()
         }
 
       //-- for synchronous function
-      if (f.second->attrs.count("BARRIER_SYNC") == 1)
+      if (f.second->attrs.count("BarrierSync") == 1)
         {
 #if USE_MZSRM==1
           if(schedType_ == MZSRM) {
             if (platformFunction == f.second)
-              buffer_ << "  algo = new SyncAlgo(" << hertz << ", "
+              buffer_ << "  algo = new SyncAlgo(" <<
                       << period << ", " << priority << ", " 
                       << criticality << ", " << zsinst << ", \"" << f.second->name 
                       << "\", &knowledge, platform_name);\n";
             else
-              buffer_ << "  algo = new SyncAlgo(" << hertz << ", "
+              buffer_ << "  algo = new SyncAlgo(" <<
                       << period << ", " << priority << ", " 
                       << criticality << ", " << zsinst << ", \"" << f.second->name 
                       << "\", &knowledge);\n";
@@ -1961,9 +1961,9 @@ dmpl::gams::Sync_Builder::build_main_function ()
 #endif
           {
             if (platformFunction == f.second)
-              buffer_ << "  algo = new SyncAlgo(" << hertz << ", \"" << f.second->name << "\", &knowledge, platform_name);\n";
+              buffer_ << "  algo = new SyncAlgo(" << period << ", \"" << f.second->name << "\", &knowledge, platform_name);\n";
             else
-              buffer_ << "  algo = new SyncAlgo(" << hertz << ", \"" << f.second->name << "\", &knowledge);\n";
+              buffer_ << "  algo = new SyncAlgo(" << period << ", \"" << f.second->name << "\", &knowledge);\n";
           }
         }
       //-- for asynchronous function
@@ -1972,12 +1972,12 @@ dmpl::gams::Sync_Builder::build_main_function ()
 #if USE_MZSRM==1
           if(schedType_ == MZSRM) {
             if (platformFunction == f.second)
-              buffer_ << "  algo = new Algo(" << hertz << ", " 
+              buffer_ << "  algo = new Algo(" << period << ", " 
                       << period << ", " << priority << ", " 
                       << criticality << ", " << zsinst << ", \"" << f.second->name 
                       << "\", &knowledge, platform_name);\n";
             else
-              buffer_ << "  algo = new Algo(" << hertz << ", "
+              buffer_ << "  algo = new Algo(" << period << ", "
                       << period << ", " << priority << ", " 
                       << criticality << ", " << zsinst << ", \"" << f.second->name 
                       << "\", &knowledge);\n";
@@ -1986,10 +1986,9 @@ dmpl::gams::Sync_Builder::build_main_function ()
 #endif
           {
             if (platformFunction == f.second)
-              buffer_ << "  algo = new Algo(" << hertz << ", \"" << f.second->name << "\", &knowledge, platform_name);\n";
+              buffer_ << "  algo = new Algo(" << period << ", \"" << f.second->name << "\", &knowledge, platform_name);\n";
             else
-              buffer_ << "  algo = new Algo(" << (f.second->name == "ADAPTATION_MANAGER" ? 0.15 : hertz)
-                      << ", \"" << f.second->name << "\", &knowledge);\n";
+              buffer_ << "  algo = new Algo(" << period << ", \"" << f.second->name << "\", &knowledge);\n";
           }
         }
       buffer_ << "  algos.push_back(algo);\n\n";

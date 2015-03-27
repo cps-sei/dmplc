@@ -65,15 +65,15 @@ namespace dmpl
 {
   void Sym::use(const SymUser &suser = SymUser(), bool isWrite = false, bool isRemote = false, bool isExpect = false)
   {
-    std::cerr << "Using symbol " << (*this)->getName() << " " << isWrite << " " << isRemote << " " << isExpect << std::endl;
+    //std::cerr << "Using symbol " << (*this)->getName() << " " << isWrite << " " << isRemote << " " << isExpect << std::endl;
     SymbolAccess sa(isWrite, isRemote, isExpect);
-    std::cerr << "sa: " << sa << std::endl;
+    //std::cerr << "sa: " << sa << std::endl;
     (*this)->usage_summary.set(sa);
     if(suser != NULL)
     {
       SymbolUse &su = suser->findOrAddSymbol(*this);
       su.info.set(sa);
-      std::cerr << "su: " << su.info << std::endl;
+      //std::cerr << "su: " << su.info << std::endl;
 
       suser->summary |= su;
 
@@ -114,7 +114,7 @@ namespace dmpl
       Context con;
       con.node = &n;
       con.clause = boost::dynamic_pointer_cast<CStmt::element_type>(s);
-      std::cerr << s->toString() << std::endl;
+      //std::cerr << s->toString() << std::endl;
       s->useSymbols(s, con);
     }
   }

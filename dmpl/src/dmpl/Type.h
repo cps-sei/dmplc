@@ -69,7 +69,6 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/foreach.hpp>
 
-
 namespace dmpl
 {
   //forward declaration
@@ -84,6 +83,7 @@ namespace dmpl
 
   //return various basic types
   Type voidType();
+  Type threadType();
   Type intType();
   Type doubleType();
   Type charType();

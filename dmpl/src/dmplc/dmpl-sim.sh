@@ -10,7 +10,8 @@ function usage {
 MISSION="$1"
 OUTLOG="$2"
 
-DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+#get the directory where this script is located
+SCDIR=$(dirname $(realpath $0))
 
 if [ "$#" != "2" ]; then
     usage
@@ -29,7 +30,7 @@ function cleanup {
     cp $SDF.saved.mcda-vrep $SDF
 
     #collate output log
-    $DIR/expect_merge.py $EXPECT_LOG_PERIOD $OUTDIR/expect*.log > $OUTLOG
+    $SCDIR/expect_merge.py $EXPECT_LOG_PERIOD $OUTDIR/expect*.log > $OUTLOG
     
     #all done
     exit 0
@@ -39,10 +40,7 @@ trap "cleanup" SIGINT SIGTERM SIGHUP
 
 INIT_PORT="19905"
 
-#get the directory where this script is located
-SCDIR=$(dirname $(realpath $0))
-
-MAPFILE=$SCDIR/dart-${MAPNAME}.ttt
+MAPFILE=$SCDIR/../../docs/tutorial/dart-${MAPNAME}.ttt
 
 if [ ! -e "$MAPFILE" ]; then
     echo "Map file $MAPFILE does not exist!!"
@@ -79,8 +77,12 @@ if [ -e $RAC ]; then
     mv $RAC $RAC.saved.mcda-vrep
 fi
 touch $RAC
+echo "portIndex1_port                 = 19001" >> $RAC
+echo "portIndex1_debug                = false" >> $RAC
+echo "portIndex1_syncSimTrigger       = true" >> $RAC
+echo "" >> $RAC
 PORT=$INIT_PORT
-for i in `seq 1 $NODENUM`; do 
+for i in `seq 2 $((NODENUM + 1))`; do 
     echo "portIndex${i}_port                 = $PORT" >> $RAC
     echo "portIndex${i}_debug                = false" >> $RAC
     echo "portIndex${i}_syncSimTrigger       = true" >> $RAC
@@ -95,7 +97,7 @@ SDF=$VREP_ROOT/system/settings.dat
 cp $SDF $SDF.saved.mcda-vrep
 #start vrep
 echo "starting VREP .. output is in $OUTDIR/vrep.out ..."
-(cd $VREP_ROOT ; ./vrep.sh $MAPFILE &> $OUTDIR/vrep.out &)
+(cd $VREP_ROOT ; ./vrep.sh -q $MAPFILE &> $OUTDIR/vrep.out &)
 sleep 5
 
 #restore old VREP remoteApiConnections.txt file
@@ -112,6 +114,11 @@ $GDB $BIN -e $OUTDIR/expect${x}.log --platform vrep::::0.2 --id $x $args &> $OUT
 done
 $GDB $BIN -e $OUTDIR/expect0.log --platform vrep::::0.2 --id 0 $ARGS_0 &> $OUTDIR/node0.out &
 
-printf "press enter terminate the simulation ..."
-read X
+printf "press Ctrl-C to terminate the simulation ..."
+
+sleep 5
+( cd $SCDIR; ./startSim.py )
+sleep $MISSION_TIME
+( cd $SCDIR; ./stopSim.py )
+
 cleanup

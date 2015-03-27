@@ -72,6 +72,7 @@
 #include "Variable.h"
 #include "Statement.h"
 #include "Attribute.h"
+#include "../dmplc/dmpl-parser.hpp"
 
 
 namespace dmpl
@@ -80,7 +81,7 @@ namespace dmpl
     * @class Function
     * @brief Represents a function definition
     */
-  class Function : public Symbol, public SymbolUser
+  class Function : public Symbol, public SymbolUser, public HasAttributes
   {
   public:
     /**
@@ -88,10 +89,13 @@ namespace dmpl
      **/
     std::string name;
 
-    virtual const std::string &getName() { return name; }
+    virtual std::string getName() const { return name; }
 
     ///Is this function EXTERN?
     bool isExtern;
+
+    ///Is this function PURE? i.e., no side effects (but may read MADARA vars)
+    bool isPure;
 
     ///the return type of the function
     Type retType;
@@ -111,9 +115,6 @@ namespace dmpl
 
     VarList writesTo;
     VarList readsFrom;
-
-    // @ATTR(X, ...) attributes specified for this function
-    Attributes attrs;
 
     /**
      * The function body
@@ -138,8 +139,7 @@ namespace dmpl
 
     bool isThread()
     {
-      Attribute *a = getSingleAttribute("HERTZ");
-      return a != NULL && a->requireSingleParam()->requireInt() > 0;
+      return retType->type == TTHREAD;
     }
 
     Var findVar(const std::string& name) const
@@ -158,11 +158,11 @@ namespace dmpl
     Function(const std::string &n)
       : name(n), isExtern(false) {}
     Function(const std::string &n, const Attributes &a)
-      : name(n),attrs(a) {}
+      : name(n),HasAttributes(a) {}
     Function(const Type &rt,const std::string &n,const VarList &p,
              const VarList &t,const StmtList &b,
              const Attributes &a = Attributes())
-      : retType(rt),name(n),body(b),attrs(a),isExtern(false)
+      : retType(rt),name(n),body(b),HasAttributes(a),isExtern(false)
     {
       setParams(p);
       setTemps(t);
@@ -170,7 +170,7 @@ namespace dmpl
     Function(const Type &rt,const std::string &n,const Vars &p,
              const Vars &t,const StmtList &b,
              const Attributes &a = Attributes())
-      : retType(rt),name(n),body(b),attrs(a),params(p),temps(t),isExtern(false)
+      : retType(rt),name(n),body(b),HasAttributes(a),params(p),temps(t),isExtern(false)
     { }
 
     void mergeWith (const Func &of);

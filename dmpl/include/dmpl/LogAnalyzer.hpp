@@ -106,16 +106,16 @@ namespace dmpl
       for(;;)
       {
         cur_frame = cur_row.frame;
-        std::cout << std::fixed;
-        std::cout << cur_row.frame << " " << cur_row.time << " " << cur_row.var << "@" << cur_row.node << ": "
-                  << cur_row.val << "  (" << cur_row.val.type() << ")" << std::endl;
-        std::cout.unsetf(ios_base::floatfield);
+        //std::cout << std::fixed;
+        //std::cout << cur_row.frame << " " << cur_row.time << " " << cur_row.var << "@" << cur_row.node << ": "
+                  //<< cur_row.val << "  (" << cur_row.val.type() << ")" << std::endl;
+        //std::cout.unsetf(ios_base::floatfield);
 
         update_knowledge(cur_row);
         if(!get_next_row())
         {
-          std::cout << "END OF FRAME " << active_frame << std::endl;
-          std::cout << "END OF FILE" << std::endl;
+          //std::cout << "END OF FRAME " << active_frame << std::endl;
+          //std::cout << "END OF FILE" << std::endl;
           return false;
         }
         if(cur_row.frame > active_frame)

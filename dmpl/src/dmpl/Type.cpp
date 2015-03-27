@@ -68,6 +68,7 @@
 //return basic types
 /*********************************************************************/
 dmpl::Type dmpl::voidType() { return Type(new dmpl::BaseType(TVOID)); }
+dmpl::Type dmpl::threadType() { return Type(new dmpl::BaseType(TTHREAD)); }
 dmpl::Type dmpl::intType() { return Type(new dmpl::BaseType(TINT)); }
 dmpl::Type dmpl::doubleType() { return Type(new dmpl::BaseType(TDOUBLE_TYPE)); }
 dmpl::Type dmpl::charType() { return Type(new dmpl::BaseType(TCHAR)); }
@@ -86,6 +87,7 @@ std::string dmpl::BaseType::toString() const
   else assert(qual == 0 && "ERROR : illegal type qualifier");
 
   if(type == TVOID) res += "void";
+  else if(type == TTHREAD) res += "void /* THREAD */ ";
   else if(type == TBOOL) res += "_Bool";
   else if(type == TINT) res += "int";
   else if(type == TDOUBLE_TYPE) res += "double";

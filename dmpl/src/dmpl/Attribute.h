@@ -64,8 +64,10 @@
  **/
 
 #include <vector>
+#include <exception>
 #include <map>
 #include <string>
+#include "Expression.h"
 
 namespace dmpl
 {
@@ -89,6 +91,52 @@ namespace dmpl
   };
 
   typedef std::map <std::string, Attribute> Attributes;
+
+  class HasAttributes
+  {
+  public:
+    Attributes attrs;
+
+    virtual std::string getName() const = 0;
+
+    HasAttributes() {}
+    HasAttributes(const Attributes &a) : attrs(a) { }
+
+    Attribute *getAttribute(std::string name) {
+      if (attrs.count(name) == 0)
+        return NULL;
+      else
+        return &attrs[name];
+    }
+
+    Attribute *getAttribute(std::string name, int expectedArgs) {
+      if (attrs.count(name) == 0)
+        return NULL;
+      else if (attrs[name].paramList.size() != expectedArgs)
+        return NULL;
+      else
+        return &attrs[name];
+    }
+
+    Attribute &requireAttribute(std::string name) {
+      Attribute *ret = getAttribute(name);
+      if (ret == NULL)
+        throw std::runtime_error("Required attribute @" + name + " not found for " + getName());
+      return *ret;
+    }
+
+    Attribute &requireAttribute(std::string name, int expectedArgs) {
+      if (attrs.count(name) == 0)
+        throw std::runtime_error("Required attribute @" + name + " not found for " + getName());
+      else if (attrs[name].paramList.size() != expectedArgs)
+        throw std::runtime_error("Required attribute @" + name + " for " + getName() +
+                " must have " + boost::lexical_cast<std::string>(expectedArgs) + " arguments; has " +
+                boost::lexical_cast<std::string>(attrs[name].paramList.size()));
+      else
+        return attrs[name];
+    }
+
+  };
 }
 
 #endif // _DMPL_ATTRIBUTE_H_

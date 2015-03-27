@@ -2,41 +2,40 @@
 
 Will provide a script, run as follows:
 
-run-sim.sh [options] 240 output.csv source.dmpl [source2.dmpl [...] ]
+dmpl-sim.sh example.mission output.csv
 
-No options yet defined. Most DMPL programs will be in two files: example.dmpl
-and example.aadl.dmpl.  Both .aadl.dmpl would be auto generated from .aadl
-file. Both would get passed into this script. Script will compile DMPL into
-executable controller, run V-REP, and terminate based on mission time passed
-(in seconds, 240 in this example).
+example.mission defines source files, and mission parameters (see examples
+in tutorial directory).  Script will compile DMPL into executable controller,
+run V-REP, and terminate based on mission time passed
 
 Output of script will go to specified output file (overwriting if present).
-If output filename is "-", output to standard out instead.
+If "-", output goes to stdout (TODO).
 Example CSV:
 
 ===BEGIN===
-Time,Node,Variable,Value
-0,0,x,2
-0,0,y,2
-0,1,x,2
-0,1,y,3
-100,0,x,3
-100,0,y,2
-100,1,x,3
-100,1,y,3
+Frame,Time,Node,Variable,Value
+1,0,0,x,2
+1,0,0,y,2
+1,0,1,x,2
+1,0,1,y,3
+2,100,0,x,3
+2,100,0,y,2
+2,100,1,x,3
+2,100,1,y,3
 ===END===
 
 Options:
--p INT | --period INT : override default observer period; in microseconds
+-p INT | --period INT : override default observer period; in microseconds (TODO)
 
 
 == Analyze Results ==
 
-dmpl-analyze.sh [-p Predicate] [-i input.csv] output.csv source.dmpl [source2.dmpl [...] ]
+dmpl-analyze.sh -p Predicate example.mission output.csv
+dmpl-analyze.sh [-p Predicate] example.mission input.csv output.csv
 
-Source files same as above. Input and output files can be "-" for stdin/stdout 
+Source files same as above. Input and output files can be "-" for stdin/stdout (TODO) 
 
-With -p Predicate option, output is simply a list of variables needed to analyze
+(TODO) With -p Predicate option, output is simply a list of variables needed to analyze
 the Predicate; for example:
 
 ===BEGIN===
@@ -47,7 +46,7 @@ Node,Variable
 1,y
 ===END===
 
-If -i input.csv is provided, it should be of the following form:
+input.csv should be of the following form:
 
 ===BEGIN===
 Time,Node,Variable,Value
@@ -61,20 +60,24 @@ Time,Node,Variable,Value
 100,1,y,3
 ===END===
 
-I.e., same as output of run-sim.sh
+I.e., same as output of dmpl-sim.sh
 
-If both -p and -i are given, output will be a list of variables needed to
+(TODO) If both -p and input.csv are given, output will be a list of variables needed to
 complete analysis of that predicate (same format as with just -p)
 
-If just -i is given, output will be of this form:
+If just input.csv is given (no -p), output will be of this form:
 
 ===BEGIN===
-Node,Predicate,Result,NumSamples,MeanSkew,MaxSkew
-OMNI,Coverage,True,2345,21,75
-0,InBounds,True,2345,0,0
-1,InBounds,True,2362,0,0
-0,Alive,InsufficientDataError,0,0,0
-1,Alive,InsufficientDataError,0,0,0
+Time,Node,Name,Result
+1,0,InBounds,0
+1,1,InBounds,0
+2,0,InBounds,1
+2,1,InBounds,1
+3,0,InBounds,1
+3,1,InBounds,1
+AtEnd,OMNI,Coverage,1
+AtEnd,Alive,InsufficientDataError
+AtEnd,Alive,InsufficientDataError
 ===END===
 
 In this example, Coverage is an "omnipotent" predicate; it is evaluated by
@@ -83,17 +86,3 @@ node (depend only on a single node position)
 
 The Alive predicate in this example does not have enough data from the input
 file for those nodes. If it were omnipotent, it would have OMNI as the Node.
-
-NumSamples should, ideally, be observer hertz-rate times mission time.
-Obviously, will vary in practice. For omnipotent predicates, this will
-be the number of samples that can be successfully cross-referenced between
-all nodes (since each will sample at slightly different times). Details
-of cross-reference logic are TBD.
-
-MeanSkew and MaxSkew will represent how much the different samples collected
-together to form a single data point for an omnipotent predicate varied in
-their times. Skew will be the max time among all samples for that evaluation
-minus the min time. MeanSkew, then, is the arithmetic mean of all Skews for
-all samples for that Predicate; MaxSkew is the maximum.
-
-Note that single-node predicates will always have zero Skew.

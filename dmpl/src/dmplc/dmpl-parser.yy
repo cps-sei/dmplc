@@ -1,4 +1,4 @@
-%{
+%code top {
 #include <cstdio>
 #include <list>
 #include <map>
@@ -36,7 +36,27 @@ std::string thunk;
 #define MAKE_BIN(_res,_o,_l,_r) _res = new dmpl::Expr(new dmpl::CompExpr(_o,*_l,*_r)); delete _l; delete _r; printExpr(*_res)
 #define MAKE_TRI(_res,_o,_a,_b,_c) _res = new dmpl::Expr(new dmpl::CompExpr(_o,*_a,*_b,*_c)); delete _a; delete _b; delete _c; printExpr(*_res)
 #define printStmt(_x) if(builder->debug) printf("STMT: %s\n",(_x)->toString().c_str())
-%}
+}
+
+%code {
+void apply_fn_decors(dmpl::Func func, std::list<int> decors)
+{
+  BOOST_FOREACH(int decor, decors)
+  {
+    switch(decor)
+    {
+    case TEXTERN:
+      func->isExtern = true;
+      break;
+    case TPURE:
+      func->isPure = true;
+      break;
+    default:
+      printf("ERROR: unknown function decorator token #%i\n", decor);
+    };
+  }
+}
+}
 
 /* expect 3 shift reduce conflicts */
 %expect 1
@@ -59,6 +79,7 @@ std::string thunk;
     std::string *string;
     std::list<std::string> *strList;
     int token;
+    std::list<int> *tokenList;
 }
 
 /* Define our terminal symbols (tokens). This should
@@ -70,7 +91,7 @@ std::string thunk;
 %token <token> TSEMICOLON TCONST TNODE
 %token <token> TGLOBAL TLOCAL TALIAS TTARGET TTHUNK
 %token <token> TBOOL TINT TDOUBLE_TYPE TVOID TCHAR TSIGNED TUNSIGNED
-%token <token> TNODENUM TPRIVATE TEXTERN
+%token <token> TNODENUM TEXTERN TTHREAD TPURE
 %token <token> TELSE TFOR TWHILE
 %token <token> TBREAK TCONTINUE TRETURN TEXO TEXH TEXL /*TPROGRAM*/
 %token <token> /*TINIT TSAFETY*/ TFAN TFADNP TFAO TFAOL TFAOH
@@ -95,13 +116,14 @@ std::string thunk;
 %type <varList> node_var
 %type <function> procedure
 %type <varList> global_var local_var
-%type <token> dimension
+%type <token> dimension fn_decor
+%type <tokenList> fn_decors
 %type <strList> target_id_list
-%type <type> simp_type type
+%type <type> simp_type type fn_type
 %type <lvalExpr> lval
 %type <expr> expr
 %type <exprlist> indices arg_list for_test
-%type <stmt> stmt cond_stmt
+%type <stmt> stmt cond_stmt cond_stmt_impl
 %type <stmtList> stmt_list for_init for_update
 %type <dims> dimensions
 %type <var> var
@@ -166,18 +188,23 @@ target_id_list : TIDENTIFIER {
 }
 ;
 
-extern_fn_decl : TEXTERN type TIDENTIFIER TLPAREN param_list TRPAREN TSEMICOLON {
-  dmpl::Func func = boost::make_shared<dmpl::Func::element_type>(*$2,*$3,*$5,dmpl::VarList(),dmpl::StmtList());
-  func->isExtern = true;
-  builder->program.addFunction(func);
-  delete $2; delete $3; delete $5;
+fn_decor : TPURE;
+
+fn_decors : { $$ = new std::list<int>(); }
+| fn_decor fn_decors {
+  $$ = $2;
+  $$->push_back($1);
 }
-| attr_list TEXTERN type TIDENTIFIER TLPAREN param_list TRPAREN TSEMICOLON {
-  dmpl::Func func = boost::make_shared<dmpl::Func::element_type>(*$3,*$4,*$6,dmpl::VarList(),dmpl::StmtList());
-  func->isExtern = true;
+;
+
+extern_fn_decl :
+attr_list TEXTERN fn_decors type TIDENTIFIER TLPAREN param_list TRPAREN TSEMICOLON {
+  dmpl::Func func = boost::make_shared<dmpl::Func::element_type>(*$4,*$5,*$7,dmpl::VarList(),dmpl::StmtList());
+  $3->push_back(TEXTERN);
+  apply_fn_decors(func, *$3);
   func->attrs = *$1;
   builder->program.addFunction(func);
-  delete $1; delete $3; delete $4; delete $6;
+  delete $1; delete $3; delete $4; delete $5; delete $7;
 }
 ;
 
@@ -199,24 +226,13 @@ supplied via the command line */
 }
 ;
 
-node : TNODE TIDENTIFIER TLPAREN TIDENTIFIER TRPAREN TLBRACE node_body TRBRACE {
-  $7->name = *$2;
-  $7->args.push_back(*$4);
-  builder->program.addNode(*$7);
-  delete $2; delete $4; delete $7;
-}
-| attr_list TNODE TIDENTIFIER TLPAREN TIDENTIFIER TRPAREN TLBRACE node_body TRBRACE {
+node :
+attr_list TNODE TIDENTIFIER TLPAREN TIDENTIFIER TRPAREN TLBRACE node_body TRBRACE {
   $8->name = *$3;
   $8->args.push_back(*$5);
   $8->attrs = *$1;
   builder->program.addNode(*$8);
   delete $1; delete $3; delete $5; delete $8;
-}
-| TNODE TIDENTIFIER TLBRACE node_body TRBRACE {
-  $4->name = *$2;
-  $4->abstract = true;
-  builder->program.addNode(*$4);
-  delete $2; delete $4;
 }
 | attr_list TNODE TIDENTIFIER TLBRACE node_body TRBRACE {
   $5->name = *$3;
@@ -224,9 +240,6 @@ node : TNODE TIDENTIFIER TLPAREN TIDENTIFIER TRPAREN TLBRACE node_body TRBRACE {
   $5->abstract = true;
   builder->program.addNode(*$5);
   delete $1; delete $3; delete $5;
-}
-| TNODE TIDENTIFIER TSEMICOLON {
-  builder->program.addNode(dmpl::Node(*$2, true));
 }
 | attr_list TNODE TIDENTIFIER TSEMICOLON {
   builder->program.addNode(dmpl::Node(*$3, *$1, true));
@@ -335,6 +348,11 @@ type : simp_type { $$ = $1; }
 | TUNSIGNED simp_type { $$ = $2; (*$$)->setQual(TUNSIGNED); }
 ;
 
+fn_type : type { $$ = $1; }
+| TTHREAD { $$ = new dmpl::Type(dmpl::threadType()); }
+;
+
+
 simp_type : TBOOL { $$ = new dmpl::Type(dmpl::boolType()); }
 | TINT { $$ = new dmpl::Type(dmpl::intType()); }
 | TDOUBLE_TYPE { $$ = new dmpl::Type(dmpl::doubleType()); }
@@ -342,39 +360,29 @@ simp_type : TBOOL { $$ = new dmpl::Type(dmpl::boolType()); }
 | TCHAR { $$ = new dmpl::Type(dmpl::charType()); }
 ;
 
-procedure : type TIDENTIFIER TLPAREN param_list TRPAREN TLBRACE var_decl_list stmt_list TRBRACE {
+procedure :
+attr_list fn_decors fn_type TIDENTIFIER TLPAREN param_list TRPAREN TLBRACE var_decl_list stmt_list TRBRACE {
   /** set scope of parameters and temporary variables */
-  BOOST_FOREACH(dmpl::Var &v,*$4) v->scope = dmpl::Variable::PARAM;
-  BOOST_FOREACH(dmpl::Var &v,*$7) v->scope = dmpl::Variable::TEMP;
+  BOOST_FOREACH(dmpl::Var &v,*$6) v->scope = dmpl::Variable::PARAM;
+  BOOST_FOREACH(dmpl::Var &v,*$9) v->scope = dmpl::Variable::TEMP;
   /** create and add function to the node */
-  $$ = new dmpl::Func(boost::make_shared<dmpl::Func::element_type>(*$1,*$2,*$4,*$7,*$8));
-  delete $1; delete $2; delete $4; delete $7; delete $8;       
+  $$ = new dmpl::Func(boost::make_shared<dmpl::Func::element_type>(*$3,*$4,*$6,*$9,*$10,*$1));
+  apply_fn_decors(*$$, *$2);
+  delete $1; delete $2; delete $3; delete $4; delete $6; delete $9; delete $10;
 }
-| attr_list type TIDENTIFIER TLPAREN param_list TRPAREN TLBRACE var_decl_list stmt_list TRBRACE {
-  /** set scope of parameters and temporary variables */
-  BOOST_FOREACH(dmpl::Var &v,*$5) v->scope = dmpl::Variable::PARAM;
-  BOOST_FOREACH(dmpl::Var &v,*$8) v->scope = dmpl::Variable::TEMP;
-  /** create and add function to the node */
-  $$ = new dmpl::Func(boost::make_shared<dmpl::Func::element_type>(*$2,*$3,*$5,*$8,*$9,*$1));
-  delete $2; delete $3; delete $5; delete $8; delete $9; delete $1;
-}
-| TIDENTIFIER TLPAREN TRPAREN TSEMICOLON {
-  $$ = new dmpl::Func(boost::make_shared<dmpl::Func::element_type>(*$1));
-  delete $1;
-}
-| attr_list TIDENTIFIER TLPAREN TRPAREN TSEMICOLON {
-  $$ = new dmpl::Func(boost::make_shared<dmpl::Func::element_type>(*$2, *$1));
-  delete $1; delete $2;
+| attr_list fn_decors TIDENTIFIER TLPAREN TRPAREN TSEMICOLON {
+  $$ = new dmpl::Func(boost::make_shared<dmpl::Func::element_type>(*$3, *$1));
+  apply_fn_decors(*$$, *$2);
+  delete $1; delete $2; delete $3;
 }
 ;
 
-attr_list : attr {
+attr_list : {
   $$ = new dmpl::Attributes();
-  (*$$)[$1->name] = *$1;
 }
-| attr_list attr {
-  $$ = $1;
-  (*$$)[$2->name] = *$2;
+| attr attr_list {
+  $$ = $2;
+  (*$$)[$1->name] = *$1;
 }
 ;
 
@@ -434,7 +442,15 @@ stmt_list : stmt { $$ = new dmpl::StmtList(); $$->push_back(*$1); delete $1; }
 
 cond_kind : TIF {} | TREQUIRE {} | TEXPECT {} ;
 
-cond_stmt : cond_kind stmt_name TLPAREN expr TRPAREN stmt {
+cond_stmt : attr_list cond_stmt_impl
+{
+  (*$2)->attrs = *$1;
+  $$ = $2;
+  delete $1;
+}
+;
+
+cond_stmt_impl : cond_kind stmt_name TLPAREN expr TRPAREN stmt {
   $$ = new dmpl::Stmt(new dmpl::CondStmt(*$2, *$1, *$4, *$6));
   delete $1; delete $2; delete $4; delete $6; printStmt(*$$);
 }
@@ -458,8 +474,7 @@ stmt_name : { $$ = new std::string(); }
 }
 ;
 
-stmt : TPRIVATE stmt { $$ = new dmpl::Stmt(new dmpl::PrivateStmt(*$2)); delete $2; }
-| TLBRACE stmt_list TRBRACE { $$ = new dmpl::Stmt(new dmpl::BlockStmt(*$2)); delete $2; }
+stmt : TLBRACE stmt_list TRBRACE { $$ = new dmpl::Stmt(new dmpl::BlockStmt(*$2)); delete $2; }
 | lval TEQUAL expr TSEMICOLON { 
   $$ = new dmpl::Stmt(new dmpl::AsgnStmt(dmpl::Expr($1),*$3));
   delete $3;

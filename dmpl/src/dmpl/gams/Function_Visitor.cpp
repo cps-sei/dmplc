@@ -61,9 +61,19 @@
 dmpl::madara::Function_Visitor::Function_Visitor (
   const Func & function, const Node & node,
   DmplBuilder & builder, std::stringstream & buffer, bool do_vrep, bool do_analyzer)
-  : function_ (function), node_ (node),
+  : function_ (function), statement_(Stmt()), node_ (node),
     builder_ (builder), buffer_ (buffer), do_vrep_(do_vrep), do_analyzer_(do_analyzer),
-    indentation_ (2), privatize_ (false), assignment_ (0)
+    indentation_ (2), assignment_ (0)
+{
+
+}
+
+dmpl::madara::Function_Visitor::Function_Visitor (
+  const Stmt & statement, const Node & node,
+  DmplBuilder & builder, std::stringstream & buffer, bool do_vrep, bool do_analyzer)
+  : function_ (Func()), statement_(statement), node_ (node),
+    builder_ (builder), buffer_ (buffer), do_vrep_(do_vrep), do_analyzer_(do_analyzer),
+    indentation_ (2), assignment_ (0)
 {
 
 }
@@ -244,10 +254,18 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
   LvalExpr &lval = expression.func->requireLval ();
   if(!do_analyzer_ && lval.node != NULL)
   {
-    std::cerr << "Error: cannot use @ operator on function calls not supported in this output mode" << std::endl;
+    std::cerr << "Error: using @ operator on function calls not supported in this output mode" << std::endl;
     exit(1);
   }
   std::string func_name = lval.var;
+  Sym sym = lval.sym;
+  Func func = boost::dynamic_pointer_cast<Function>(sym);
+
+  if (sym != NULL && func == NULL)
+  {
+    std::cerr << "Error: " << func_name << " is not a function" << std::endl;
+    exit(1);
+  }
 
   //if (do_vrep_ && func_name == "MOVE_TO") func_name = "VREP_MOVE_TO";
 
@@ -264,14 +282,25 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
 
   buffer_ << "(";
 
-  if (isNodeFunc || isProgFunc)
+  if(function_ && function_->isPure && func && !func->isPure)
+  {
+    std::cerr << "Error: cannot call non-PURE function \"" << func_name << "\" from PURE function \"" << function_->getName() << "\"" << std::endl;
+    exit(1);
+  }
+
+  if (func != NULL && !func->isExtern)
   {
     if(lval.node != NULL)
     {
       std::cerr << "Error: @ operator on function calls only supported for EXTERN functions" << std::endl;
       exit(1);
     }
-    const Func &func = (isNodeFunc ? nodeFunc->second : progFunc->second);
+    if(inExpect() && !func->isPure)
+    {
+      std::cerr << "Error: calling non-PURE function \"" << func_name << "\" from expect clause" << std::endl;
+      exit(1);
+    }
+    //const Func &func = (isNodeFunc ? nodeFunc->second : progFunc->second);
     /*if (assignment_)
     {
       // complete the assignment and redo it later;
@@ -396,7 +425,30 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
       if (func_name == "ASSUME")
         buffer_ << "assert";
       else
+      {
+        if (inExpect())
+        {
+          if(!func)
+          {
+            std::cerr << "Error: cannot call undefined function from expect (unknown if PURE)" << std::endl;
+            exit(1);
+          }
+          else if(!func->isPure)
+          {
+            std::cerr << "Error: calling non-PURE function \"" << func_name << "\" from expect clause" << std::endl;
+            exit(1);
+          }
+        }
+        if (function_->isPure)
+        {
+          if(!func)
+          {
+            std::cerr << "Error: cannot call undefined function from pure funtion " << function_->getName() << std::endl;
+            exit(1);
+          }
+        }
         buffer_ << func_name;
+      }
 
       buffer_ << " (";
     

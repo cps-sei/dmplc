@@ -68,6 +68,7 @@
 #include <vector>
 #include <boost/shared_ptr.hpp>
 #include <boost/foreach.hpp>
+#include "Attribute.h"
 #include "Expression.h"
 #include "Symbol.h"
 
@@ -91,17 +92,21 @@ namespace dmpl
     * @class Statement
     * @brief An abstract base class for all statements
     */
-  class Statement : public SymbolUser
+  class Statement : public SymbolUser, public HasAttributes
   {
   public:
     virtual std::string toString() const = 0;
     virtual void print (std::ostream &os,unsigned int indent) const = 0;
+
+    virtual std::string getName() const { return ""; }
   };
 
   class NamedStmt : public Statement
   {
   public:
     std::string name;
+
+    virtual std::string getName() const { return name; }
      
     virtual bool recordUse()
     {

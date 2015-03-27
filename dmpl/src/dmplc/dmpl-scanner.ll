@@ -33,11 +33,17 @@ extern "C" int yywrap() { return 1; }
                  }
 [ \t\n]                     ;
 "CONST"                     PRINT_TOKEN; return TOKEN(TCONST);
+"const"                     PRINT_TOKEN; return TOKEN(TCONST);
 "NODE"                      PRINT_TOKEN; return TOKEN(TNODE);
+"node"                      PRINT_TOKEN; return TOKEN(TNODE);
 "GLOBAL"                    PRINT_TOKEN; return TOKEN(TGLOBAL);
+"global"                    PRINT_TOKEN; return TOKEN(TGLOBAL);
 "LOCAL"                     PRINT_TOKEN; return TOKEN(TLOCAL);
+"local"                     PRINT_TOKEN; return TOKEN(TLOCAL);
 "TARGET"                    PRINT_TOKEN; return TOKEN(TTARGET);
+"target"                    PRINT_TOKEN; return TOKEN(TTARGET);
 "_Bool"                     PRINT_TOKEN; return TOKEN(TBOOL);
+"bool"                      PRINT_TOKEN; return TOKEN(TBOOL);
 "int"                       PRINT_TOKEN; return TOKEN(TINT);
 "double"                    PRINT_TOKEN; return TOKEN(TDOUBLE_TYPE);
 "void"                      PRINT_TOKEN; return TOKEN(TVOID);
@@ -45,8 +51,12 @@ extern "C" int yywrap() { return 1; }
 "signed"                    PRINT_TOKEN; return TOKEN(TSIGNED);
 "unsigned"                  PRINT_TOKEN; return TOKEN(TUNSIGNED);
 "#N"                        PRINT_TOKEN; return TOKEN(TNODENUM);
-"PRIVATE"                   PRINT_TOKEN; return TOKEN(TPRIVATE);
 "EXTERN"                    PRINT_TOKEN; return TOKEN(TEXTERN);
+"extern"                    PRINT_TOKEN; return TOKEN(TEXTERN);
+"PURE"                      PRINT_TOKEN; return TOKEN(TPURE);
+"pure"                      PRINT_TOKEN; return TOKEN(TPURE);
+"THREAD"                    PRINT_TOKEN; return TOKEN(TTHREAD);
+"thread"                    PRINT_TOKEN; return TOKEN(TTHREAD);
 "if"                        SAVE_TOKEN; return TIF;
 "require"                   SAVE_TOKEN; return TREQUIRE;
 "expect"                    SAVE_TOKEN; return TEXPECT;
@@ -59,6 +69,9 @@ extern "C" int yywrap() { return 1; }
 "EXISTS_OTHER"              PRINT_TOKEN; return TOKEN(TEXO);
 "EXISTS_HIGHER"             PRINT_TOKEN; return TOKEN(TEXH);
 "EXISTS_LOWER"              PRINT_TOKEN; return TOKEN(TEXL);
+"exists_other"              PRINT_TOKEN; return TOKEN(TEXO);
+"exists_higher"             PRINT_TOKEN; return TOKEN(TEXH);
+"exists_lower"              PRINT_TOKEN; return TOKEN(TEXL);
   /*"PROGRAM"                   PRINT_TOKEN; return TOKEN(TPROGRAM); */
   /*"INIT"                      PRINT_TOKEN; return TOKEN(TINIT); */
   /*"SAFETY"                    PRINT_TOKEN; return TOKEN(TSAFETY); */
@@ -67,6 +80,11 @@ extern "C" int yywrap() { return 1; }
 "FORALL_OTHER"              PRINT_TOKEN; return TOKEN(TFAO);
 "FORALL_OTHER_LOWER"        PRINT_TOKEN; return TOKEN(TFAOL);
 "FORALL_OTHER_HIGHER"       PRINT_TOKEN; return TOKEN(TFAOH);
+"forall_node"               PRINT_TOKEN; return TOKEN(TFAN);
+"forall_distinct_node_pair" PRINT_TOKEN; return TOKEN(TFADNP);
+"forall_other"              PRINT_TOKEN; return TOKEN(TFAO);
+"forall_other_lower"        PRINT_TOKEN; return TOKEN(TFAOL);
+"forall_other_higher"       PRINT_TOKEN; return TOKEN(TFAOH);
   /*"@TRACK_LOCATIONS"          PRINT_TOKEN; return TOKEN(TTRACK_LOCATIONS);
     "@SEND_HEARTBEATS"          PRINT_TOKEN; return TOKEN(TSEND_HEARTBEATS);
     "@ON_PRE_ROUND_BARRIER_TIMEOUT"  PRINT_TOKEN; return TOKEN(TON_PRE_TIMEOUT);

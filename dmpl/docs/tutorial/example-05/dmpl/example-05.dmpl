@@ -10,7 +10,7 @@
 //-- and loose. the timing characteristics for various thread
 //-- (periods, WCETs etc.) are specified in a separate DMPL file.
 
-TARGET GNU_CPP,WIN_CPP %%{
+target GNU_CPP,WIN_CPP %%{
 #define GNU_WIN
 #include <stdlib.h>
 #include <sys/resource.h>
@@ -95,33 +95,32 @@ CONST X = 20;
 CONST Y = 20;
 
 //states of each node
-CONST INITS = 0;
-CONST NEXT = 1;
-CONST REQUEST = 2;
-CONST WAITING = 3;
-CONST MOVE = 4;
+const INITS = 0;
+const NEXT = 1;
+const REQUEST = 2;
+const WAITING = 3;
+const MOVE = 4;
 
-CONST TopY = 13;
-CONST LeftX = -12.5;
-CONST BottomY = -6;
-CONST RightX = 6.5;
+const TopY = 13;
+const LeftX = -12.5;
+const BottomY = -6;
+const RightX = 6.5;
 
 //-- assume that formation change takes 20 seconds
-CONST FORM_CHANGE_TIME = 20.0;
+const FORM_CHANGE_TIME = 20.0;
 
-//EXTERN int MOVE_TO(unsigned char x,unsigned char y);
-EXTERN int my_sleep(int seconds);
-EXTERN void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
-EXTERN void print_int(int i);
-EXTERN void print_labeled_int(int i);
-EXTERN double wall_time();
-EXTERN double accumulate_risk(double risk);
-EXTERN double GET_LAT();
-EXTERN double GET_LNG();
+//extern int MOVE_TO(unsigned char x,unsigned char y);
+extern int my_sleep(int seconds);
+extern void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
+extern void print_int(int i);
+extern void print_labeled_int(int i);
+extern PURE double wall_time();
+extern PURE double GET_LAT();
+extern PURE double GET_LNG();
 
 //-- the external function implementing the adaptation
 //-- manager. returns 0 for loose formation and 1 for tight formation.
-EXTERN int adaptation_manager
+extern int adaptation_manager
 (
  int current_formation, //-- 0 loose, 1 tight
  int changing, //-- whether in process of changing to other formation
@@ -147,7 +146,7 @@ EXTERN int adaptation_manager
 
 //-- a random implementation of the adaptation manager. returns 0 for
 //-- loose formation and 1 for tight formation. useful for testing.
-EXTERN int adaptation_manager_random
+extern int adaptation_manager_random
 (
  int current_formation, //-- 0 loose, 1 tight
  int changing, //-- whether in process of changing to other formation
@@ -171,61 +170,61 @@ EXTERN int adaptation_manager_random
  double remaining_flight_time //-- how much flight time the formation has left
  );
 
-NODE uav (id)
+node uav (id)
 {
   //shared variables -- visible across nodes. 
   //must be accessed via R() and W()
-  GLOBAL _Bool lock [X][Y];
-  GLOBAL unsigned char lx,ly; //leader's destination coordinates
-  GLOBAL _Bool init; //node is initialized
+  global _Bool lock [X][Y];
+  global unsigned char lx,ly; //leader's destination coordinates
+  global _Bool init; //node is initialized
 
   //-- these variables are used to interact with the adaptation
   //-- manager
-  GLOBAL _Bool formation; //0 = loose, 1 = tight
-  LOCAL _Bool changing; //are we changing formation now?
-  LOCAL double remaining_time; //how much time left to complete formation change 
-  LOCAL double hazards[X][Y]; //map from cells to hazards
-  LOCAL double current_hazard; //hazard of current x and y
-  LOCAL double variances[X][Y]; //map from cells to variances in hazard predictions
+  global _Bool formation; //0 = loose, 1 = tight
+  local _Bool changing; //are we changing formation now?
+  local double remaining_time; //how much time left to complete formation change 
+  local double hazards[X][Y]; //map from cells to hazards
+  local double current_hazard; //hazard of current x and y
+  local double variances[X][Y]; //map from cells to variances in hazard predictions
   //-- next 5 waypoints
-  LOCAL unsigned char next_wp_x[5]; 
-  LOCAL unsigned char next_wp_y[5]; 
+  local unsigned char next_wp_x[5]; 
+  local unsigned char next_wp_y[5]; 
   //-- next 5 hazards
-  LOCAL double hazard1, hazard2, hazard3, hazard4, hazard5;
+  local double hazard1, hazard2, hazard3, hazard4, hazard5;
   //-- next 5 hazard variances
-  LOCAL double variance1, variance2, variance3, variance4, variance5;
+  local double variance1, variance2, variance3, variance4, variance5;
   //-- speeds in loose and tight formations
-  LOCAL double loose_speed;
-  LOCAL double tight_speed;
+  local double loose_speed;
+  local double tight_speed;
   //-- segment length and remaining segments
-  LOCAL double seg_len;
-  LOCAL unsigned char remaining_segs;
+  local double seg_len;
+  local unsigned char remaining_segs;
   //-- remaining flight time
-  LOCAL double remaining_flt_time;
+  local double remaining_flt_time;
   //-- total mission time, and mission start time
-  LOCAL double total_time;
-  LOCAL double start_time;
+  local double total_time;
+  local double start_time;
 
   //-- scenario selector
-  LOCAL unsigned char scenario;
+  local unsigned char scenario;
   
   //-- we use counters for the number of formation changes by each
   //-- node. when the leader initiates a formation change, it
   //-- increments its counter. it waits for the other counters to
   //-- catch up detect that the formation change has completed.
-  GLOBAL _Bool num_changes;
+  global _Bool num_changes;
   
   //private variables -- local to the node.
   //preserved across rounds
-  LOCAL unsigned char state; //the state
-  LOCAL unsigned char x,y; //current coordinates
-  LOCAL unsigned char xp,yp; //next coordinates
-  LOCAL unsigned char xt,yt; //current target coordinates
-  LOCAL _Bool waypointValid; //xt, yt are valid
+  local unsigned char state; //the state
+  local unsigned char x,y; //current coordinates
+  local unsigned char xp,yp; //next coordinates
+  local unsigned char xt,yt; //current target coordinates
+  local _Bool waypointValid; //xt, yt are valid
 
-  expect IN_BOUNDS(GET_LAT() > 40 && GET_LAT() < 41 && GET_LNG() > -80 && GET_LNG() < -79);
+  //expect IN_BOUNDS(GET_LAT() > 40 && GET_LAT() < 41 && GET_LNG() > -80 && GET_LNG() < -79);
   
-  double coverage()
+  PURE double coverage()
   {
     // Made up; depends on formation
     return formation@0 ? 0.7 : 0.3;
@@ -234,7 +233,7 @@ NODE uav (id)
   //@AT_LEAST(0.5)
   //expect COVERAGE(hazard[x][y] > 0.5 ? coverage() > 0.5 : 1);
 
-  double risk_integral()
+  PURE double risk_integral()
   {
     if(id == 0)
       //return accumulate_risk(current_hazard * (1-coverage()) * 0.2);
@@ -252,7 +251,7 @@ NODE uav (id)
   
   // Completed and good coverage
   // 0.105 is -ln(0.9), 0.9 is desired success probability
-  //@AT_END
+  @AtEnd
   expect REACHED_END_AND_RISK_INTEGRAL(risk_integral() < 0.105 && x@0 == xt@0 && y@0 == yt@0);
   
   //-- return the next waypoint value
@@ -314,7 +313,7 @@ NODE uav (id)
   //-- the task that invokes the adaptation manager. this task only
   //-- does something meaningful for the leader node (i.e., id =
   //-- 0). otherwise it is a NOP.
-  void ADAPTATION_MANAGER()
+  thread ADAPTATION_MANAGER()
   {
     _Bool last_formation;    
     unsigned char num_protectors_changing;
@@ -323,8 +322,8 @@ NODE uav (id)
     if(id != 0 || init@0 == 0) return;
 
     //-- check if formation change is still happening
-    if(EXISTS_LOWER(idp,num_changes@idp != num_changes@id) ||
-       EXISTS_HIGHER(idp,num_changes@idp != num_changes@id)) {
+    if(exists_lower(idp,num_changes@idp != num_changes@id) ||
+       exists_higher(idp,num_changes@idp != num_changes@id)) {
       changing = 1;
     } else {
       changing = 0;
@@ -335,7 +334,7 @@ NODE uav (id)
     //-- change
     if(changing) {
       num_protectors_changing = 0;
-      FORALL_OTHER(idp) {
+      forall_other(idp) {
         if(num_changes@idp != num_changes@id) {
           num_protectors_changing = num_protectors_changing + 1;
         }
@@ -368,7 +367,7 @@ NODE uav (id)
   }
 
   //-- the task that computes the next waypoint.
-  void WAYPOINT()
+  thread WAYPOINT()
   {
     if(id != 0 && init@0 == 0) {
       waypointValid = 0;
@@ -589,9 +588,9 @@ NODE uav (id)
   
   //-- the task that moves the node to its next waypoint while
   //-- avoiding collisions.
-  @BARRIER_SYNC
-  @PLATFORM_CONTROLLER
-  void COLLISION_AVOIDANCE ()
+  @BarrierSync
+  @PlatformController
+  thread COLLISION_AVOIDANCE ()
   {
     print_state(X,Y,id,x,y,xt,yt);
     //my_sleep(1);
@@ -602,19 +601,19 @@ NODE uav (id)
       //-- if reached destination, nothing to do
       if(x == xt && y == yt) return;
       //-- the leader does not move if formation change is going on
-      if(id == 0 && changing) return;
+      if(id == 2 && changing) return;
       //-- get the next waypoint
       if(NEXT_XY()) return;
       state = REQUEST;
     } else if(state == REQUEST) {
       //request the lock but only if it is free
-      if(EXISTS_LOWER(idp,lock[xp][yp]@idp != 0)) return;
+      if(exists_lower(idp,lock[xp][yp]@idp != 0)) return;
       lock[xp][yp] = 1;
       state = WAITING;
     } else if(state == WAITING) {
       //grab the lock if we are the highest 
       //id node to request or hold the lock
-      if(EXISTS_HIGHER(idp, lock[xp][yp]@idp != 0)) return;
+      if(exists_higher(idp, lock[xp][yp]@idp != 0)) return;
       state = MOVE;
     } else if(state == MOVE) {
       //now we have the lock on (x’,y’)
@@ -624,7 +623,7 @@ NODE uav (id)
     }
   }
 
-  @INIT_SIM
+  @InitSim
   void StartingPosition ()
   {
     GRID_INIT(X, Y, LeftX, RightX, TopY, BottomY);
@@ -636,7 +635,7 @@ NODE uav (id)
 @INIT
 void NodeInit () 
 {
-  FORALL_NODE(id) {
+  forall_node(id) {
     state@id = INITS;
     ND(x@id); ND(y@id);
     ASSUME(0 <= x@id && x@id < X && 0 <= y@id && y@id < Y);
@@ -645,7 +644,7 @@ void NodeInit ()
     waypointValid@id = 1;
   }
 
-  FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+  forall_distinct_node_pair (id1,id2) {
     ASSUME(x@id1 != x@id2 || y@id1 != y@id2);
   }
 }
@@ -654,7 +653,7 @@ void NodeInit ()
 @SAFETY
 void NoCollisions ()
 {
-  FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+  forall_distinct_node_pair (id1,id2) {
     ASSERT(x@id1 != x@id2 || y@id1 != y@id2);
   }
 }

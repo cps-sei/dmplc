@@ -176,7 +176,7 @@ dmpl::gams::Analyzer_Builder::build_common_global_variables ()
   buffer_ << "  double orig = rec.to_double();\n";
   buffer_ << "  double ret = orig + value * 0.2;\n";
   buffer_ << "  knowledge.set(ref, ret);\n";
-  buffer_ << "  std::cout << name << \": \" << ret << \"  (+\" << ret - orig << \")\" << std::endl;\n";
+  //buffer_ << "  std::cout << name << \": \" << ret << \"  (+\" << ret - orig << \")\" << std::endl;\n";
   buffer_ << "  return ret;\n";
   buffer_ << "}\n";
   buffer_ << "\n";
@@ -987,6 +987,7 @@ dmpl::gams::Analyzer_Builder::build_main_function ()
   buffer_ << "\n";
   buffer_ << "  LogAnalyzer analyzer(std::cin, knowledge);\n";
 
+  buffer_ << "  std::cout << \"Time,Name,Node,Value\" << std::endl;\n";
   buffer_ << "  for(;;) {\n";
   buffer_ << "    bool done = !analyzer.next_step();\n";
   
@@ -996,16 +997,24 @@ dmpl::gams::Analyzer_Builder::build_main_function ()
     CondStmt *cond = dynamic_cast<CondStmt*>(stmt.get());
     if(cond->kind == "expect")
     {
+      Attribute *attrAtEnd = cond->getAttribute("AtEnd", 0);
       buffer_ << "    for(int n = 0; n < processes; n++) {" << std::endl;
 
       buffer_ << "      engine::Variables vars;" << std::endl;
       buffer_ << "      " << node.idVar->getName() << " = n;" << std::endl;
       buffer_ << "      bool value = (";
-      dmpl::madara::Function_Visitor visitor (Func(), node, builder_, buffer_, false, true);
+      dmpl::madara::Function_Visitor visitor (stmt, node, builder_, buffer_, false, true);
       visitor.visit(cond->cond);
       buffer_ << ");" << std::endl;
 
-      buffer_ << "      std::cout << analyzer.get_cur_frame() << \"," << cond->name << ",\" << n << \",\" << value << std::endl;" << std::endl;
+      if (attrAtEnd)
+      {
+        buffer_ << "      knowledge.set(\"AtEnd_RESULT.\"+to_string(n)+\"." << cond->name << "\", Integer(value?1:0));\n";
+      }
+      else
+      {
+        buffer_ << "      std::cout << analyzer.get_cur_frame() << \"," << cond->name << ",\" << n << \",\" << value << std::endl;" << std::endl;
+      }
 
       buffer_ << "    }" << std::endl;
     }
@@ -1013,6 +1022,21 @@ dmpl::gams::Analyzer_Builder::build_main_function ()
 
   buffer_ << "    if(done) break;\n";
   buffer_ << "  }\n";
+  BOOST_FOREACH(Stmt stmt, stmts)
+  {
+    CondStmt *cond = dynamic_cast<CondStmt*>(stmt.get());
+    if(cond->kind == "expect")
+    {
+      Attribute *attrAtEnd = cond->getAttribute("AtEnd", 0);
+      if(attrAtEnd)
+      {
+        buffer_ << "    for(int n = 0; n < processes; n++) {" << std::endl;
+        buffer_ << "    bool value = knowledge.get(\"AtEnd_RESULT.\"+to_string(n)+\"." << cond->name << "\").to_integer() == 1;\n";
+        buffer_ << "    std::cout << \"AtEnd," << cond->name << ",\" << n << \",\" << value << std::endl;" << std::endl;
+        buffer_ << "  }\n";
+      }
+    }
+  }
 
   buffer_ << "  return 0;\n";
   buffer_ << "}\n";
@@ -1051,7 +1075,7 @@ dmpl::gams::Analyzer_Builder::build_main_define_function (const Node & node,
                                                       Func & function)
 {
   if (!(function->isExtern || function->attrs.count("INIT") > 0 || function->attrs.count("SAFETY") > 0 ||
-        !function->usage_summary.anyNonExpect().any()))
+        !function->usage_summary.anyExpect().any()))
     {
       buffer_ << "  knowledge.define_function (\"";
       buffer_ << function->name;

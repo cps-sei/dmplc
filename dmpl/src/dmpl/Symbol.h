@@ -253,7 +253,7 @@ namespace dmpl
     SymbolUseInfo usage_summary;
     SymUserSet users;
 
-    virtual const std::string &getName() = 0;
+    virtual std::string getName() const = 0;
     virtual const Type &getType() = 0;
     virtual int getScope() { return LOCAL; }
 

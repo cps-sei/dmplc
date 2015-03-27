@@ -83,6 +83,10 @@ namespace dmpl
       Function_Visitor (const Func & function, const Node & node,
                         DmplBuilder & builder, std::stringstream & buffer,
                         bool do_vrep, bool do_analyzer = false);
+
+      Function_Visitor (const Stmt & statement, const Node & node,
+                        DmplBuilder & builder, std::stringstream & buffer,
+                        bool do_vrep, bool do_analyzer = false);
       
     /**
      * Returns whether or not to visit the Integer's subfields first.
@@ -383,6 +387,20 @@ namespace dmpl
       /// current function
       Func function_;
 
+      /// current top-level statement (e.g., expect or require)
+      Stmt statement_;
+
+      CondStmt *getCondStmt()
+      {
+        return dynamic_cast<CondStmt*>(statement_.get());
+      }
+
+      bool inExpect()
+      {
+        CondStmt *cs = getCondStmt();
+        return cs && cs->kind == "expect";
+      }
+
       /// current node
       const Node & node_;
 
@@ -403,9 +421,6 @@ namespace dmpl
 
       /// special identifier map, generally used by dmpl specific functions
       std::map <Var, int> id_map_;
-
-      /// privatized section (force globals to have only local modifications)
-      bool privatize_;
 
       /// keep track of if we are in an ongoing assignment operation
       AsgnStmt * assignment_;

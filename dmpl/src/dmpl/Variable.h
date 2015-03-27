@@ -84,7 +84,7 @@ namespace dmpl
      **/
     std::string name;
 
-    virtual const std::string &getName() { return name; }
+    virtual std::string getName() const { return name; }
     
     /**
      * The variable type
