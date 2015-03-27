@@ -30,7 +30,7 @@ Options:
 
 == Analyze Results ==
 
-dmpl-analyze.sh -p Predicate example.mission output.csv
+dmpl-analyze.sh [-p Predicate] example.mission output.csv
 dmpl-analyze.sh [-p Predicate] example.mission input.csv output.csv
 
 Source files same as above. Input and output files can be "-" for stdin/stdout (TODO) 

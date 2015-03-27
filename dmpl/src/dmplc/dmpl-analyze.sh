@@ -14,7 +14,15 @@ OUTLOG="$3"
 #get the directory where this script is located
 SCDIR=$(dirname $(realpath $0))
 
-if [ "$#" != "3" ]; then
+if [ "$#" == "2" ]; then
+    echo Node,Predicate > $INLOG
+    echo 0,REACHED_END_AND_RISK_INTEGRAL >> $INLOG
+    echo 1,REACHED_END_AND_RISK_INTEGRAL >> $INLOG
+    echo 2,REACHED_END_AND_RISK_INTEGRAL >> $INLOG
+    echo 3,REACHED_END_AND_RISK_INTEGRAL >> $INLOG
+    echo 4,REACHED_END_AND_RISK_INTEGRAL >> $INLOG
+    exit 0
+elif [ "$#" != "3" ]; then
     usage
     exit 1
 fi
