@@ -106,6 +106,9 @@ const LeftX = -12.5;
 const BottomY = -6;
 const RightX = 6.5;
 
+//-- radius of a node
+CONST NODE_RAD = 0.25;
+
 //-- assume that formation change takes 20 seconds
 const FORM_CHANGE_TIME = 20.0;
 
@@ -224,10 +227,36 @@ node uav (id)
 
   //expect IN_BOUNDS(GET_LAT() > 40 && GET_LAT() < 41 && GET_LNG() > -80 && GET_LNG() < -79);
   
+  //-- the function that computes the coverage of the
+  //-- leader. currently we assume that protectors do not provide
+  //-- overlapping coverage.
   PURE double coverage()
   {
+    double cover, dist;
+    double lat0,lng0,lat,lng;
+    cover = 0.0;
+
+    lat0 = GET_LAT()@0;
+    lng0 = GET_LNG()@0;
+
+    FORALL_NODE(nid) {
+      if(nid == 0) continue;
+      lat = GET_LAT()@nid;
+      lng = GET_LNG()@nid;
+      dist = sqrt((lat - lat0) * (lat - lat0) +
+                  (lng - lng0) * (lng - lng0));
+
+      //-- to avoid the call to asin() from crashing. should never
+      //-- happen.
+      if(dist == 0.0) continue;
+      
+      cover = cover + 2 * asin(NODE_RAD/dist);
+    }
+
+    return cover;
+    
     // Made up; depends on formation
-    return formation@0 ? 0.7 : 0.3;
+    //return formation@0 ? 0.7 : 0.3;
   }
 
   //@AT_LEAST(0.5)
