@@ -13,6 +13,7 @@
 target GNU_CPP,WIN_CPP %%{
 #define GNU_WIN
 #include <stdlib.h>
+#include <math.h>
 #include <sys/resource.h>
 #include "madara/utility/Utility.h"
 #include "./adaptation_manager.h"
@@ -63,6 +64,11 @@ void print_line(int _X)
   printf("-");
   for(int i = 0;i < _X;++i) printf("--");
   printf("\n");
+}
+
+void LOG(double x)
+{
+  std::cerr << "LOG: " << x << std::endl;
 }
 
 void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
@@ -120,6 +126,9 @@ extern void print_labeled_int(int i);
 extern PURE double wall_time();
 extern PURE double GET_LAT();
 extern PURE double GET_LNG();
+extern PURE double sqrt(double x);
+extern PURE double asin(double x);
+extern PURE void LOG(double x);
 
 //-- the external function implementing the adaptation
 //-- manager. returns 0 for loose formation and 1 for tight formation.
@@ -239,17 +248,26 @@ node uav (id)
     lat0 = GET_LAT()@0;
     lng0 = GET_LNG()@0;
 
+    LOG(lat0);
+    if(lat0 == NAN || lng0 == NAN)
+      return cover;
+
     FORALL_NODE(nid) {
       if(nid == 0) continue;
       lat = GET_LAT()@nid;
       lng = GET_LNG()@nid;
-      dist = sqrt((lat - lat0) * (lat - lat0) +
+      //Convert from lat/lng to meters (rough)
+      dist = 1113190 * sqrt((lat - lat0) * (lat - lat0) +
                   (lng - lng0) * (lng - lng0));
 
       //-- to avoid the call to asin() from crashing. should never
       //-- happen.
-      if(dist == 0.0) continue;
+      if(dist == 0.0 || dist == NAN) continue;
       
+      LOG(-1);
+      LOG(NODE_RAD);
+      LOG(dist);
+      LOG(-2);
       cover = cover + 2 * asin(NODE_RAD/dist);
     }
 

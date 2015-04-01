@@ -5,22 +5,22 @@
 @MADARA_WCET_OVERLOAD(20000)
 NODE uav
 {
-  @HERTZ(1)  //-- this will be made fractional once dmplc is updated
-  @CRITICALITY(2)
-  @WCET_NOMINAL(10000)
-  @WCET_OVERLOAD(20000)
+  @Period(4000000)
+  @Criticality(2)
+  @WCExecTimeNominal(10000)
+  @WCExecTimeOverload(20000)
   ADAPTATION_MANAGER();
 
-  @HERTZ(10)
-  @CRITICALITY(3)
-  @WCET_NOMINAL(10000)
-  @WCET_OVERLOAD(20000)
+  @Period(100000)
+  @Criticality(3)
+  @WCExecTimeNominal(10000)
+  @WCExecTimeOverload(20000)
   WAYPOINT();
 
-  @HERTZ(5)
-  @CRITICALITY(4)
-  @WCET_NOMINAL(15000)
-  @WCET_OVERLOAD(30000)
-  @BARRIER_SYNC
+  @Period(200000)
+  @Criticality(4)
+  @WCExecTimeNominal(15000)
+  @WCExecTimeOverload(30000)
+  @BarrierSync
   COLLISION_AVOIDANCE();
 }

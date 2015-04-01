@@ -97,7 +97,7 @@ SDF=$VREP_ROOT/system/settings.dat
 cp $SDF $SDF.saved.mcda-vrep
 #start vrep
 echo "starting VREP .. output is in $OUTDIR/vrep.out ..."
-(cd $VREP_ROOT ; ./vrep.sh -q $MAPFILE &> $OUTDIR/vrep.out &)
+(cd $VREP_ROOT ; ./vrep.sh -h -q $MAPFILE &> $OUTDIR/vrep.out &)
 sleep 5
 
 #restore old VREP remoteApiConnections.txt file

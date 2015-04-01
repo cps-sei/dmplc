@@ -403,7 +403,7 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
   }
   else
   {
-    if(do_analyzer_ && func_name == "INTEGRATE" && expression.args.size() == 1)
+    if(func_name == "INTEGRATE" && expression.args.size() == 1)
     {
       static int integrate_id = 0;
       buffer_ << "integrate_knowledge((\".INTEGRAL." << integrate_id++
@@ -689,7 +689,7 @@ dmpl::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
   if (lhs)
   {
     int indices = lhs->indices.size();
-    bool isAnalyzerLocal = do_analyzer_ && lhs->sym->getScope() == Variable::LOCAL;
+    bool isAnalyzerLocal = do_analyzer_ && lhs->sym && lhs->sym->getScope() == Variable::LOCAL;
     bool isGlobal = lhs->sym != NULL && (lhs->sym->getScope() == Variable::GLOBAL || isAnalyzerLocal);
     if(isGlobal)
       indices++;

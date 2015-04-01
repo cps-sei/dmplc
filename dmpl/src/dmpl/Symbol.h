@@ -414,6 +414,7 @@ namespace dmpl
     public:
       Node *node;
       CStmt clause;
+      Func thread;
       Func curFunc;
       bool isLHS;
       std::deque<const SymbolBinder*> binders;

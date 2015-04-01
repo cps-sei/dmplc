@@ -160,6 +160,7 @@ dmpl::gams::Analyzer_Builder::build_common_global_variables ()
   buffer_ << "using containers::ArrayReference;\n\n";
   buffer_ << "\n";
   buffer_ << "engine::Knowledge_Base knowledge;\n";
+  buffer_ << "int verbosity = 0;\n";
   buffer_ << "\n";
 
   buffer_ << "template<class T> std::string to_string(const T &in)\n";
@@ -176,7 +177,8 @@ dmpl::gams::Analyzer_Builder::build_common_global_variables ()
   buffer_ << "  double orig = rec.to_double();\n";
   buffer_ << "  double ret = orig + value * 0.2;\n";
   buffer_ << "  knowledge.set(ref, ret);\n";
-  //buffer_ << "  std::cout << name << \": \" << ret << \"  (+\" << ret - orig << \")\" << std::endl;\n";
+  buffer_ << "  if(::dmpl::verbosity > 0)\n";
+  buffer_ << "    std::cerr << name << \": \" << ret << \"  (+\" << ret - orig << \")\" << std::endl;\n";
   buffer_ << "  return ret;\n";
   buffer_ << "}\n";
   buffer_ << "\n";
@@ -660,6 +662,10 @@ dmpl::gams::Analyzer_Builder::build_parse_args ()
   buffer_ << "      \n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
+  buffer_ << "    else if (arg1 == \"-v\" || arg1 == \"--verbose\")\n";
+  buffer_ << "    {\n";
+  buffer_ << "      ::dmpl::verbosity++;\n";
+  buffer_ << "    }\n";
   buffer_ << "    else if (arg1 == \"-l\" || arg1 == \"--level\")\n";
   buffer_ << "    {\n";
   buffer_ << "      if (i + 1 < argc)\n";
@@ -773,6 +779,7 @@ dmpl::gams::Analyzer_Builder::build_parse_args ()
   buffer_ << "    {\n";
   buffer_ << "      MADARA_DEBUG (MADARA_LOG_EMERGENCY, (LM_DEBUG, \n";
   buffer_ << "        \"\\nProgram summary for %s:\\n\\n\"\\\n";
+  buffer_ << "        \" [-v|--verbose]           output additional information to stderr\\n\"\\\n";
   buffer_ << "        \" [-p|--platform type]     platform for loop (vrep, dronerk)\\n\"\\\n";
   buffer_ << "        \" [-b|--broadcast ip:port] the broadcast ip to send and listen to\\n\"\\\n";
   buffer_ << "        \" [-d|--domain domain]     the knowledge domain to send and listen to\\n\"\\\n";
@@ -1030,7 +1037,7 @@ dmpl::gams::Analyzer_Builder::build_main_function ()
       Attribute *attrAtEnd = cond->getAttribute("AtEnd", 0);
       if(attrAtEnd)
       {
-        buffer_ << "    for(int n = 0; n < processes; n++) {" << std::endl;
+        buffer_ << "  for(int n = 0; n < processes; n++) {" << std::endl;
         buffer_ << "    bool value = knowledge.get(\"AtEnd_RESULT.\"+to_string(n)+\"." << cond->name << "\").to_integer() == 1;\n";
         buffer_ << "    std::cout << \"AtEnd," << cond->name << ",\" << n << \",\" << value << std::endl;" << std::endl;
         buffer_ << "  }\n";

@@ -172,30 +172,7 @@ namespace dmpl
       return ret;
     }
 
-    virtual Context useSymbols(const SymUser &self, Context con)
-    {
-      {
-        Context con2 = con;
-        con.isLHS = false;
-        if(node)
-        {
-          node->useSymbols(node, con2);
-          inherit(self, node);
-        }
-        BOOST_FOREACH(Expr e, indices)
-        {
-          e->useSymbols(e, con2);
-          inherit(self, e);
-        }
-      }
-      
-      sym = con.findSym(var);
-      if(sym)
-        sym.use(self, con.isLHS, node != NULL, con.inExpect());
-      else
-        std::cerr << "Couldn't find symbol: " << var << std::endl;
-      return con;
-    }
+    virtual Context useSymbols(const SymUser &self, Context con);
 
     LvalExpr(const std::string &v) : var(v) {}
     LvalExpr(const std::string &v,const Expr &n) : var(v), node(n) {}

@@ -103,6 +103,7 @@ namespace dmpl
       {
         Context con;
         con.node = &n;
+        con.thread = f.second;
         con.curFunc = f.second;
         Sym fsym = Sym(f.second);
         fsym.use();

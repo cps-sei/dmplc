@@ -11,9 +11,6 @@ MISSION="$1"
 INLOG="$2"
 OUTLOG="$3"
 
-#get the directory where this script is located
-SCDIR=$(dirname $(realpath $0))
-
 if [ "$#" == "2" ]; then
     echo Node,Predicate > $INLOG
     echo 0,REACHED_END_AND_RISK_INTEGRAL >> $INLOG
@@ -22,10 +19,17 @@ if [ "$#" == "2" ]; then
     echo 3,REACHED_END_AND_RISK_INTEGRAL >> $INLOG
     echo 4,REACHED_END_AND_RISK_INTEGRAL >> $INLOG
     exit 0
-elif [ "$#" != "3" ]; then
+elif [ "$#" -lt "3" ]; then
     usage
     exit 1
 fi
+
+shift
+shift
+shift
+
+#get the directory where this script is located
+SCDIR=$(dirname $(realpath $0))
 
 . $MISSION
 
@@ -35,4 +39,4 @@ CFLAGS="-g -Og -std=c++11 -I$DMPL_ROOT/src -I$VREP_ROOT/programming/remoteApi -I
 LIBS="$LIBS $MADARA_ROOT/libMADARA.so $ACE_ROOT/lib/libACE.so $GAMS_ROOT/lib/libGAMS.so -lpthread"
 g++ $CFLAGS -o $BIN-analyze ${BIN}-analyze.cpp $LIBS
 
-cat $INLOG | ./$BIN-analyze > $OUTLOG
+cat $INLOG | ./$BIN-analyze "$@" > $OUTLOG
