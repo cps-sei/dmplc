@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DEBUG=1
+DEBUG=0
 
 function usage {
     echo "Usage : $0 file.mission output.log"
@@ -97,7 +97,7 @@ SDF=$VREP_ROOT/system/settings.dat
 cp $SDF $SDF.saved.mcda-vrep
 #start vrep
 echo "starting VREP .. output is in $OUTDIR/vrep.out ..."
-(cd $VREP_ROOT ; ./vrep.sh -h -q $MAPFILE &> $OUTDIR/vrep.out &)
+(cd $VREP_ROOT ; ./vrep.sh -q $MAPFILE &> $OUTDIR/vrep.out &)
 sleep 5
 
 #restore old VREP remoteApiConnections.txt file
@@ -106,13 +106,13 @@ mv $RAC.saved.mcda-vrep $RAC
 #start the nodes
 GDB=""
 [ "$DEBUG" -ne 0 ] && GDB="gdb -ex=r --args"
-for x in `seq 1 $NODENUM`; do
+for x in `seq 1 $((NODENUM - 1))`; do
 echo $x
 args_var=ARGS_$x
 args="$(eval echo \$$args_var)"
-$GDB $BIN -e $OUTDIR/expect${x}.log --platform vrep::::0.2 --id $x $args &> $OUTDIR/node${x}.out &
+$GDB ./$BIN -e $OUTDIR/expect${x}.log --platform vrep::::0.2 --id $x $args &> $OUTDIR/node${x}.out &
 done
-$GDB $BIN -e $OUTDIR/expect0.log --platform vrep::::0.2 --id 0 $ARGS_0 &> $OUTDIR/node0.out &
+$GDB ./$BIN -e $OUTDIR/expect0.log --platform vrep::::0.2 --id 0 $ARGS_0 &> $OUTDIR/node0.out &
 
 printf "press Ctrl-C to terminate the simulation ..."
 

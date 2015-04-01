@@ -19,8 +19,22 @@ LIB+= $(JAVA_ROOT)/jre/lib/amd64/server/libjvm.so
 endif
 CFLAGS=-g -O0 -fno-inline -DUSE_MZSRM=$(MZSRM)
 CXX=g++
+VREP_FILES=remoteApi.so vrep.py vrepConst.py
+BITNESS=32Bit
+ifeq ($(shell arch),x86_64)
+BITNESS=64Bit
+endif
 
-all : dmplc
+all : $(VREP_FILES) dmplc
+
+remoteApi.so :
+	cp $(VREP_ROOT)/programming/remoteApiBindings/lib/lib/$(BITNESS)/remoteApi.so .
+
+vrep.py :
+	cp $(VREP_ROOT)/programming/remoteApiBindings/python/python/vrep.py .
+
+vrepConst.py :
+	cp $(VREP_ROOT)/programming/remoteApiBindings/python/python/vrepConst.py .
 
 dmplc : dmpl-parser.hpp dmplc.cpp $(OBJ)
 	$(CXX) $(CFLAGS) -o $@ $(INC) dmplc.cpp $(OBJ) $(LIB)
@@ -39,7 +53,7 @@ dmpl-parser.cpp dmpl-parser.hpp : dmpl-parser.yy
 
 clean :
 	rm -f dmplc dmpl-scanner.cpp dmpl-parser.cpp dmpl-parser.hpp \
-stack.hh position.hh location.hh $(OBJ) $(SRC:.cpp=.d)
+stack.hh position.hh location.hh $(OBJ) $(SRC:.cpp=.d) $(VREP_FILES)
 
 -include $(SRC:.cpp=.d)
 
