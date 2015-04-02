@@ -263,7 +263,7 @@ node uav (id)
       //-- happen.
       if(dist == 0.0 || dist == NAN) continue;
       
-      cover = cover + 2 * asin(NODE_RAD/dist);
+      cover = cover + asin(NODE_RAD/dist) / M_PI;
     }
 
     return cover;
