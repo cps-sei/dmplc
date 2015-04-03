@@ -17,10 +17,10 @@ typedef LOCK2 { LOCK1 d[Y]; }
 typedef COORD { byte x; byte y; };
 
 LOCK2 locks[X], locks_f[X];
-COORD pos[N],pos_f[N];
-COORD posp[N],posp_f[N];
-COORD posf[N],posf_f[N];
-byte state[N],state_f[N];
+COORD pos[N];
+COORD posp[N];
+COORD posf[N];
+byte state[N];
  
 inline myselect(a,b,r)
 {
@@ -39,13 +39,13 @@ inline nondet_bool(_r) { select(b:0..1); }
 
 inline next_xy(id)
 {
-  posp_f[id].x = pos[id].x;
-  posp_f[id].y = pos[id].y;
+  posp[id].x = pos[id].x;
+  posp[id].y = pos[id].y;
   if
-    ::(pos[id].x < posf[id].x) -> posp_f[id].x = pos[id].x+1;
-    ::(pos[id].x > posf[id].x) -> posp_f[id].x = pos[id].x-1;
-    ::(pos[id].x == posf[id].x) && (pos[id].y < posf[id].y) -> posp_f[id].y = pos[id].y+1;
-    ::(pos[id].x == posf[id].x) && (pos[id].y > posf[id].y) -> posp_f[id].y = pos[id].y-1;
+    ::(pos[id].x < posf[id].x) -> posp[id].x = pos[id].x+1;
+    ::(pos[id].x > posf[id].x) -> posp[id].x = pos[id].x-1;
+    ::(pos[id].x == posf[id].x) && (pos[id].y < posf[id].y) -> posp[id].y = pos[id].y+1;
+    ::(pos[id].x == posf[id].x) && (pos[id].y > posf[id].y) -> posp[id].y = pos[id].y-1;
   fi
 }
 
@@ -122,20 +122,6 @@ inline copy_fwd()
   byte i = 0, j = 0, k = 0;
   bool l = 0;
 
-  /* copy state, pos */
-  do
-    :: (i >= N) -> break;
-    :: (i < N) ->
-       pos_f[i].x = pos[i].x;
-       pos_f[i].y = pos[i].y;
-       posp_f[i].x = posp[i].x;
-       posp_f[i].y = posp[i].y;
-       posf_f[i].x = posf[i].x;
-       posf_f[i].y = posf[i].y;
-       state_f[i] = state[i];
-       i++;
-  od
-
   /* copy locks */
   i = 0;
   do
@@ -166,20 +152,6 @@ inline copy_back()
 {
   byte i = 0, j = 0, k = 0;
   bool l = 0;
-
-  /* copy state, pos */
-  do
-    :: (i >= N) -> break;
-    :: (i < N) ->
-       pos[i].x = pos_f[i].x;
-       pos[i].y = pos_f[i].y;
-       posp[i].x = posp_f[i].x;
-       posp[i].y = posp_f[i].y;
-       posf[i].x = posf_f[i].x;
-       posf[i].y = posf_f[i].y;
-       state[i] = state_f[i];
-       i++;
-  od
 
   /* copy locks */
   i = 0;
@@ -237,7 +209,7 @@ inline run_node_round(id)
          ::nd -> skip;
          ::!nd ->
             next_xy(id);
-            state_f[id] = REQUEST;
+            state[id] = REQUEST;
        fi
     }
     :: state[id] == REQUEST -> {
@@ -246,7 +218,7 @@ inline run_node_round(id)
         ::nd -> skip;
         ::!nd -> {
           set_lock_f(posp[id].x, posp[id].y, id, 1);
-          state_f[id] = WAITING;
+          state[id] = WAITING;
         }
       fi
     }
@@ -254,7 +226,7 @@ inline run_node_round(id)
       exists_higher(id,nd);
       if
         ::nd -> skip;
-        ::!nd -> state_f[id] = MOVE;
+        ::!nd -> state[id] = MOVE;
       fi      
     }
     :: state[id] == MOVE -> {
@@ -263,9 +235,9 @@ inline run_node_round(id)
         ::nd -> skip;
         ::!nd -> {
           set_lock_f(pos[id].x, pos[id].y, id, 0);
-          pos_f[id].x = posp[id].x;
-          pos_f[id].y = posp[id].y;
-          state_f[id] = NEXT;
+          pos[id].x = posp[id].x;
+          pos[id].y = posp[id].y;
+          state[id] = NEXT;
         }
       fi
     }
