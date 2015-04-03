@@ -46,7 +46,6 @@ inline next_xy(id)
     ::(pos[id].x > posf[id].x) -> posp_f[id].x = pos[id].x-1;
     ::(pos[id].x == posf[id].x) && (pos[id].y < posf[id].y) -> posp_f[id].y = pos[id].y+1;
     ::(pos[id].x == posf[id].x) && (pos[id].y > posf[id].y) -> posp_f[id].y = pos[id].y-1;
-    ::skip;
   fi
 }
 
