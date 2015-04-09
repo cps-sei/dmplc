@@ -267,8 +267,8 @@ active proctype main()
   byte ii = 0;
   init_state();
   do
-  ::check_safety();
-  atomic{
+  ::atomic{
+    check_safety();
     copy_fwd();
     /* make sure no collisions */
     ii = 0;
