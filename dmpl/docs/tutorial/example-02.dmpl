@@ -83,7 +83,7 @@ EXTERN void GRID_INIT(int _X,int _Y,double _LeftX,double _RightX,double _TopY,do
 EXTERN void GRID_PLACE(unsigned char x,unsigned char y, double z);
 EXTERN int GRID_MOVE(unsigned char x,unsigned char y, double z);
 EXTERN int my_sleep(int seconds);
-EXTERN void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
+EXTERN void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf);
 EXTERN void print_int(int i);
 EXTERN double GET_LAT();
 EXTERN double GET_LNG();
