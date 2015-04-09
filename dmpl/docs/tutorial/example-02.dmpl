@@ -166,6 +166,7 @@ NODE uav (id)
     //my_sleep(1);
     if(state == INITS) {
       lock[x][y] = 1;
+      lock[xp][yp] = 1;
       if(id == 0) {
         lx = x;
         ly = y;
@@ -226,7 +227,58 @@ void NodeInit ()
 @SAFETY
 void NoCollisions ()
 {
+  _Bool allIn,noneIn;
+
+  FORALL_NODE(id) {
+    /** state has to be between 0 and 4, (x,y), (xf,yf), and (xp,yp)
+        have to be between 0 and X-1,Y-1 */
+    ASSERT(state@id >= 0 && state@id <= 4);
+    ASSERT(x@id >= 0 && x@id < X);
+    ASSERT(y@id >= 0 && y@id < Y);
+    ASSERT(xt@id >= 0 && xt@id < X);
+    ASSERT(yt@id >= 0 && yt@id < Y);
+    ASSERT(xp@id >= 0 && xp@id < X);
+    ASSERT(yp@id >= 0 && yp@id < Y);
+    /** if we are in not in INITS or NEXT, then xp,yp != x,y */
+    ASSERT(state@id == INITS || state@id == NEXT || x@id != xp@id || y@id != yp@id);
+    /** if we are in NEXT, REQUEST, WAITING or MOVE, we have lock on
+        x,y */
+    ASSERT((state@id != NEXT && state@id != REQUEST && state@id != WAITING && state@id != MOVE) ||
+           lock[x@id][y@id]@id);
+    /** if we are in NEXT, WAITING or MOVE, then we have lock on x,y
+        and xp,yp */
+    ASSERT((state@id != NEXT && state@id != WAITING && state@id != MOVE) ||
+           (lock[x@id][y@id]@id && lock[xp@id][yp@id]@id));
+    /** if we are not in INITS or NEXT, then x,y and xp,yp are
+        adjacent */
+    ASSERT(state@id == INITS || state@id == NEXT || (((x@id == xp@id - 1) || (x@id == xp@id + 1)) ^ ((y@id == yp@id - 1) || (y@id == yp@id + 1))));
+  }
+
+  /** either all nodes are in INITS or none is */
+  allIn = 1; noneIn = 1;
+  FORALL_NODE(id) {
+    if(state@id == INITS) { noneIn = 0; }
+    if(state@id != INITS) { allIn = 0; }
+  }
+  ASSERT(allIn || noneIn);
+
   FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+    /** if node1 is in MOVE/NEXT and has lower id than node2 which is
+        WAITING then they have different xp,yp */
+    ASSERT((state@id1 != NEXT && state@id1 != MOVE) || state@id2 != WAITING || id1 >= id2 || xp@id1 != xp@id2 || yp@id1 != yp@id2);
+    /** if two distinct nodes are in MOVE, they have different
+        (xp,yp) */
+    ASSERT(state@id1 != MOVE || state@id2 != MOVE ||                        
+           ((xp@id1 != xp@id2 || yp@id1 != yp@id2) &&             
+            (xp@id1 != x@id2 || yp@id1 != y@id2) &&               
+            (x@id1 != xp@id2 || y@id1 != yp@id2) &&               
+            (x@id1 != x@id2 || y@id1 != y@id2)));
+    /** if node2 in WAITING, and node1 has lower id than node 2, then
+        node1.(x,y) != node2.(xp,yp) */
+    ASSERT(state@id2 != WAITING || id1 >= id2 || x@id1 != xp@id2 || y@id1 != yp@id2);
+    /** if node2 in MOVE, then node1.(x,y) != node2.(xp,yp) */
+    ASSERT((state@id2 != MOVE || x@id1 != xp@id2 || y@id1 != yp@id2) && (state@id1 != 4 || xp@id1 != x@id2 || yp@id1 != y@id2));
+    /** two distinct nodes have different (x,y) */
     ASSERT(x@id1 != x@id2 || y@id1 != y@id2);
   }
 }
