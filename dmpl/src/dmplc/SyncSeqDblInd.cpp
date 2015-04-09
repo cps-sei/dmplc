@@ -132,7 +132,8 @@ void dmpl::syncseqdblind::GlobalTransformer::exitLval(dmpl::LvalExpr &expr)
 
   //handle assume and assert
   if(newName == "ASSUME") newName = "__CPROVER_assume";
-  else if(newName == "ASSERT") newName = "assert";
+  else if(newName == "ASSERT")
+    newName = assertToAssume ? "__CPROVER_assume" : "assert";
 
   //handle global variables
   Node &node = prog.nodes.begin()->second;
@@ -614,7 +615,7 @@ void dmpl::SyncSeqDblInd::createInit()
 
     //transform the body of init
     BOOST_FOREACH(const Stmt &st,f.second->body) {
-      syncseqdblind::GlobalTransformer gt(*this,builder.program,nodeNum);
+      syncseqdblind::GlobalTransformer gt(*this,builder.program,nodeNum,false);
       gt.visit(st);
       fnBody.push_back(gt.stmtMap[st]);
     }
@@ -664,7 +665,7 @@ void dmpl::SyncSeqDblInd::createSafety()
 
     //transform the body of safety
     BOOST_FOREACH(const Stmt &st,f.second->body) {
-      syncseqdblind::GlobalTransformer gt(*this,builder.program,nodeNum);
+      syncseqdblind::GlobalTransformer gt(*this,builder.program,nodeNum,false);
       gt.visit(st);
       fnBody.push_back(gt.stmtMap[st]);
     }
@@ -681,6 +682,57 @@ void dmpl::SyncSeqDblInd::createSafety()
   dmpl::VarList fnParams, fnTemps;
 
   Func func(new Function(dmpl::voidType(),"__SAFETY",fnParams,fnTemps,safetyFnBody));
+  cprog.addFunction(func);
+}
+
+/*********************************************************************/
+//create the ASSUME() function. this is identical to SAFETY() with
+//each call to assert replaced by __CPROVER_assume().
+/*********************************************************************/
+void dmpl::SyncSeqDblInd::createAssume()
+{
+  StmtList assumeFnBody;
+
+  BOOST_FOREACH(Funcs::value_type &f, builder.program.funcs) {
+    if(f.second->isExtern == true)
+      continue;
+
+    int safety = f.second->attrs.count("SAFETY");
+    if(safety < 1)
+      continue;
+    else if(safety > 1)
+      std::cerr << "Warning: function " << f.second->name <<
+        " has more than one @SAFETY attribute" << std::endl;
+
+    dmpl::VarList fnParams,fnTemps;
+    StmtList fnBody;
+    //create parameters
+    BOOST_FOREACH(Vars::value_type &v,f.second->params)
+      fnParams.push_back(Var(new Variable(*v.second)));
+
+    //create temporary variables
+    BOOST_FOREACH(Vars::value_type &v,f.second->temps)
+      fnTemps.push_back(Var(new Variable(*v.second)));
+
+    //transform the body of safety
+    BOOST_FOREACH(const Stmt &st,f.second->body) {
+      syncseqdblind::GlobalTransformer gt(*this,builder.program,nodeNum,true);
+      gt.visit(st);
+      fnBody.push_back(gt.stmtMap[st]);
+    }
+
+    std::string fname = "__ASSUME_" + f.second->name;
+    Func func(new Function(dmpl::voidType(), fname, fnParams,fnTemps,fnBody));
+    cprog.addFunction(func);
+
+    Expr callExpr(new LvalExpr(fname));
+    Stmt callStmt(new CallStmt(callExpr,dmpl::ExprList()));
+    assumeFnBody.push_back(callStmt);
+  }
+
+  dmpl::VarList fnParams, fnTemps;
+
+  Func func(new Function(dmpl::voidType(),"__ASSUME",fnParams,fnTemps,assumeFnBody));
   cprog.addFunction(func);
 }
 
@@ -707,7 +759,7 @@ void dmpl::SyncSeqDblInd::createNodeFuncs()
         StmtList fnBody;
 
         BOOST_FOREACH(const Stmt &st,f.second->body) {
-          syncseqdblind::NodeTransformer nt(*this,builder.program,nodeNum,i,true);
+          syncseqdblind::NodeTransformer nt(*this,builder.program,nodeNum,false,i,true);
           std::string nodeId = *node.args.begin();
           nt.addIdMap(nodeId,i);
           nt.visit(st);
@@ -717,25 +769,6 @@ void dmpl::SyncSeqDblInd::createNodeFuncs()
         
         std::string fnName = node.name + "__" + f.second->name + "_" + 
           boost::lexical_cast<std::string>(i) + "_fwd";
-        Func func(new Function(f.second->retType,fnName,fnParams,fnTemps,fnBody));
-        cprog.addFunction(func);
-      }
-
-      //create the backward version
-      {
-        StmtList fnBody;
-
-        BOOST_FOREACH(const Stmt &st,f.second->body) {
-          syncseqdblind::NodeTransformer nt(*this,builder.program,nodeNum,i,false);
-          std::string nodeId = *node.args.begin();
-          nt.addIdMap(nodeId,i);
-          nt.visit(st);
-          nt.delIdMap(nodeId);
-          fnBody.push_back(nt.stmtMap[st]);
-        }
-        
-        std::string fnName = node.name + "__" + f.second->name + "_" + 
-          boost::lexical_cast<std::string>(i) + "_bwd";
         Func func(new Function(f.second->retType,fnName,fnParams,fnTemps,fnBody));
         cprog.addFunction(func);
       }
@@ -838,6 +871,7 @@ void dmpl::SyncSeqDblInd::run()
   createMainFunc();
   createInit();
   createSafety();
+  createAssume();
   createNodeFuncs();
 
   //instantiate functions

@@ -90,12 +90,16 @@ namespace dmpl {
       //the number of nodes
       size_t nodeNum;
 
+      //-- whether calls to assert should be replaced by
+      //-- __CPROVER_assume
+      bool assertToAssume;
+      
       //map from variables to constants for substitution
       std::map<std::string,size_t> idMap;
 
       //constructors
-      GlobalTransformer(SyncSeqDblInd &ss,dmpl::Program &p,size_t n) 
-        : syncSeq(ss),prog(p),nodeNum(n) {}
+      GlobalTransformer(SyncSeqDblInd &ss,dmpl::Program &p,size_t n,bool a2a) 
+        : syncSeq(ss),prog(p),nodeNum(n),assertToAssume(a2a) {}
 
       //update substitution mapping
       void addIdMap(const std::string &s,size_t i);
@@ -129,8 +133,8 @@ namespace dmpl {
       //direction -- true if forward, false if backward
       bool fwd;
 
-      NodeTransformer(SyncSeqDblInd &ss,Program &p,size_t n,size_t i,bool f)
-        : GlobalTransformer(ss,p,n),nodeId(i),inCall(0),inLhs(0),fwd(f) {}
+      NodeTransformer(SyncSeqDblInd &ss,Program &p,size_t n,bool a2a,size_t i,bool f)
+        : GlobalTransformer(ss,p,n,a2a),nodeId(i),inCall(0),inLhs(0),fwd(f) {}
 
       void exitLval(LvalExpr &expr);
       bool enterCall(CallExpr &expr) { return false; }
@@ -171,6 +175,7 @@ namespace dmpl {
     void createMainFunc();
     void createInit();
     void createSafety();
+    void createAssume();
     void createNodeFuncs();
     Expr createNondetFunc(const Expr &expr);
     void processExternFuncs();
