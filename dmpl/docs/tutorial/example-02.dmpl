@@ -88,7 +88,6 @@ EXTERN void print_int(int i);
 EXTERN double GET_LAT();
 EXTERN double GET_LNG();
 
-
 NODE uav (id)
 {
   //shared variables -- visible across nodes. 
