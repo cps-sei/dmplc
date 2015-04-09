@@ -63,6 +63,7 @@
 #include "dmpl/gams/Sync_Builder.hpp"
 #include "dmpl/gams/Analyzer_Builder.hpp"
 #include "SyncSeqDbl.hpp"
+#include "SyncSeqDblInd.hpp"
 //#include "ArrayElim.hpp"
 
 /*********************************************************************/
@@ -71,7 +72,7 @@
 std::list<std::string> file_names;
 std::string out_file;
 std::string madara_target ("GNU_CPP");
-bool do_print = false, do_seq = false, do_gams = false;
+bool do_print = false, do_seq = false, do_seq_ind = false, do_gams = false;
 bool do_vrep = false, do_expect = false, do_analyzer = false;
 bool debug = false;
 bool seq_no_array = false, init_globals = false;
@@ -212,6 +213,42 @@ int main (int argc, char **argv)
       }
   }
 
+  //sequentialize for inductive check and print result
+  if (do_seq_ind)
+  {
+    //fill in the processes with seq_node_num nodes
+    dmpl::Program & program = builder.program;
+    const std::string & nodeName = program.nodes.begin ()->first;
+    program.processes.clear ();
+    for (size_t i = 0;i < nodes;++i)
+      program.processes.push_back (dmpl::Process (nodeName, i));
+
+    //the C program produced by sequentialization
+    dmpl::CProgram cprog;
+    
+    dmpl::SyncSeqDblInd syncSeqDblInd (builder, round_num);
+    syncSeqDblInd.run ();
+    cprog = syncSeqDblInd.cprog;
+    
+    //eliminate arrays
+    /*if (seq_no_array) {
+      dmpl::ArrayElim ae (cprog, init_globals);
+      ae.run ();
+      cprog = ae.outProg;
+    }*/
+    
+    if (out_file.empty ())
+      {
+        cprog.print (std::cout, 0);
+      }
+    else
+      {
+        std::ofstream os (out_file.c_str ());
+        cprog.print (os, 0);
+        os.close ();
+      }
+  }
+
   //all done
   return 0;
 }
@@ -323,6 +360,10 @@ void parse_options (int argc, char **argv)
     {
       do_seq = true;
     }
+    else if (arg1 == "-si" || arg1 == "--seq-ind")
+    {
+      do_seq_ind = true;
+    }
     else if (arg1 == "-r" || arg1 == "--rounds")
     {
       if (i + 1 < argc)
@@ -402,6 +443,7 @@ void usage (char *cmd)
   std::cerr << "  -mz|--mzsrm              generate code that targets MZSRM scheduler\n";
 #endif
   std::cerr << "  -s|--seq                 generate sequentialized code to verify\n";
+  std::cerr << "  -si|--seq-ind            generate sequentialized code to verify inductiveness\n";
   std::cerr << "  -r|--rounds rounds       number of verification rounds\n";
   //std::cerr << "  --seq-no-array           do not use arrays during verification\n";
   std::cerr << "  -i|--init-globals        initialize global variables\n";
