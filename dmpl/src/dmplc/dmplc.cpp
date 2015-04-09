@@ -394,7 +394,7 @@ void usage (char *cmd)
   std::cerr << "  -g|--gams                generate C++/GAMS code to run\n";
   std::cerr << "  -e|--expect              check and log 'expect' statements\n";
   std::cerr << "  -t|--target|--platform p specify a target platform\n";
-  std::cerr << "        Available platforms: WIN_CPP, GNU_CPP (default)\n";
+  std::cerr << "                           Available platforms: WIN_CPP, GNU_CPP (default)\n";
   std::cerr << "  -vr|--vrep               generate code that targets VREP\n";
   std::cerr << "  -st|--statistic          include statistical model checking support\n";
   std::cerr << "  -sh|--stat-hertz [hertz] gathered stats at hertz rate (default " << stat_hertz << ")\n";
