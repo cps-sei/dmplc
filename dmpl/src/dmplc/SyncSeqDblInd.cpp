@@ -508,111 +508,77 @@ void dmpl::SyncSeqDblInd::createRoundCopier()
 void dmpl::SyncSeqDblInd::createMainFunc()
 {
   dmpl::VarList mainParams,mainTemps;
-  StmtList mainBody,roundBody;
+  StmtList mainBody;
 
-  //call SAFETY()
-  Expr callExpr1(new LvalExpr("__SAFETY"));
-  Stmt callStmt1(new CallStmt(callExpr1,dmpl::ExprList()));
-  roundBody.push_back(callStmt1);
-
-  //call forward round copier
-  Expr callExpr4(new LvalExpr("round_fwd_copier"));
-  Stmt callStmt4(new CallStmt(callExpr4,dmpl::ExprList()));
-  roundBody.push_back(callStmt4);
-
-  Func roundFunc;
-  const Node &node = builder.program.nodes.begin()->second;
-  BOOST_FOREACH(const Funcs::value_type &f, node.funcs) {
-    int barSync = f.second->attrs.count("BARRIER_SYNC");
-    if(barSync < 1)
-      continue;
-    else if(barSync > 1)
-      std::cerr << "Warning: function " << f.second->name <<
-        " has more than one @BARRIER_SYNC attribute" << std::endl;
-    if(roundFunc != NULL) {
-      std::cerr << "Warning: function " << roundFunc->name << " is not the " <<
-        "only @BARRIER_SYNC function; also found: " << f.second->name <<
-        " which will be ignored." << std::endl;
-    }
-    roundFunc = f.second;
-  }
-
-  if(roundFunc == NULL) {
-    std::cerr << "Error: no @BARRIER_SYNC function found." << std::endl;
-    exit(1);
-  }
-
-  //call ROUND function of each node -- forward version
-  for(size_t i = 0;i < nodeNum;++i) {
-    //call the _fwd version of the ROUND function of the node. this
-    //copies from _i to _f
-    std::string callNameFwd = node.name + "__" + roundFunc->name + "_" + 
-      boost::lexical_cast<std::string>(i) + "_fwd";
-    Expr callExprFwd(new LvalExpr(callNameFwd));
-    Stmt callStmtFwd(new CallStmt(callExprFwd,dmpl::ExprList()));
-    roundBody.push_back(callStmtFwd);
-  }
-
-  //call SAFETY()
-  roundBody.push_back(callStmt1);
-
-  //call backward round copier
-  Expr callExpr2(new LvalExpr("round_bwd_copier"));
-  Stmt callStmt2(new CallStmt(callExpr2,dmpl::ExprList()));
-  roundBody.push_back(callStmt2);
-
-  //call ROUND function of each node -- backward version
-  for(size_t i = 0;i < nodeNum;++i) {
-    //call the _bwd version of the ROUND function of the node. this
-    //copies from _f to _i
-    std::string callNameBwd = node.name + "__" + roundFunc->name + "_" + 
-      boost::lexical_cast<std::string>(i) + "_bwd";
-    Expr callExprBwd(new LvalExpr(callNameBwd));
-    Stmt callStmtBwd(new CallStmt(callExprBwd,dmpl::ExprList()));
-    roundBody.push_back(callStmtBwd);
-  }
-
-  //add call to INIT()
-  Expr callExpr3(new LvalExpr("__INIT"));
-  Stmt callStmt3(new CallStmt(callExpr3,dmpl::ExprList()));
-  mainBody.push_back(callStmt3);
-
-  //if number of rounds not specified, add an infinite loop
-  if(roundNum == -1) {
-    Stmt forBody(new BlockStmt(roundBody));
-    mainBody.push_back(Stmt(new ForStmt(StmtList(),ExprList(),StmtList(),forBody)));
-  }
-  //otherwise statically unroll the loop roundNum times and the call
-  //SAFETY again one more time
-  else {
-    for(int i = 0;i < roundNum / 2;++i)
-      mainBody.insert(mainBody.end(),roundBody.begin(),roundBody.end());
-    
-    //call SAFETY
+  {
+    //add call to INIT()
+    Expr callExpr1(new LvalExpr("__INIT"));
+    Stmt callStmt1(new CallStmt(callExpr1,dmpl::ExprList()));
     mainBody.push_back(callStmt1);
+    
+    //-- add call to SAFETY()
+    Expr callExpr2(new LvalExpr("__SAFETY"));
+    Stmt callStmt2(new CallStmt(callExpr2,dmpl::ExprList()));
+    mainBody.push_back(callStmt2);
+    
+    //-- add call to HAVOC()
+    Expr callExpr3(new LvalExpr("__HAVOC"));
+    Stmt callStmt3(new CallStmt(callExpr3,dmpl::ExprList()));
+    mainBody.push_back(callStmt3);
+    
+    //-- add call to ASSUME()
+    Expr callExpr4(new LvalExpr("__ASSUME"));
+    Stmt callStmt4(new CallStmt(callExpr4,dmpl::ExprList()));
+    mainBody.push_back(callStmt4);
 
-    //if roundNum is odd
-    if(roundNum % 2) {
-      //call forward copier
-      mainBody.push_back(callStmt4);
+    //-- call forward round copier
+    Expr callExpr5(new LvalExpr("round_fwd_copier"));
+    Stmt callStmt5(new CallStmt(callExpr5,dmpl::ExprList()));
+    mainBody.push_back(callStmt5);
 
-      //call ROUND function of each node, but just the fwd
-      //version. this takes care of the case when roundNum is odd
-      for(size_t i = 0;i < nodeNum;++i) {
-        //call the _fwd version of the ROUND function of the
-        //node. this copies from _i to _f
-        std::string callNameFwd = node.name + "__" + roundFunc->name + "_" + 
-          boost::lexical_cast<std::string>(i) + "_fwd";
-        Expr callExprFwd(new LvalExpr(callNameFwd));
-        Stmt callStmtFwd(new CallStmt(callExprFwd,dmpl::ExprList()));
-        mainBody.push_back(callStmtFwd);
+    //-- find the ROUND functions
+    Func roundFunc;
+    const Node &node = builder.program.nodes.begin()->second;
+    BOOST_FOREACH(const Funcs::value_type &f, node.funcs) {
+      int barSync = f.second->attrs.count("BARRIER_SYNC");
+      if(barSync < 1)
+        continue;
+      else if(barSync > 1)
+        std::cerr << "Warning: function " << f.second->name <<
+          " has more than one @BARRIER_SYNC attribute" << std::endl;
+      if(roundFunc != NULL) {
+        std::cerr << "Warning: function " << roundFunc->name << " is not the " <<
+          "only @BARRIER_SYNC function; also found: " << f.second->name <<
+          " which will be ignored." << std::endl;
       }
-
-      //call SAFETY
-      mainBody.push_back(callStmt1);
+      roundFunc = f.second;
     }
-  }
 
+    if(roundFunc == NULL) {
+      std::cerr << "Error: no @BARRIER_SYNC function found." << std::endl;
+      exit(1);
+    }
+
+    //call ROUND function of each node -- forward version
+    for(size_t i = 0;i < nodeNum;++i) {
+      //call the _fwd version of the ROUND function of the node. this
+      //copies from _i to _f
+      std::string callNameFwd = node.name + "__" + roundFunc->name + "_" + 
+        boost::lexical_cast<std::string>(i) + "_fwd";
+      Expr callExprFwd(new LvalExpr(callNameFwd));
+      Stmt callStmtFwd(new CallStmt(callExprFwd,dmpl::ExprList()));
+      mainBody.push_back(callStmtFwd);
+    }
+
+    //call backward round copier
+    Expr callExpr6(new LvalExpr("round_bwd_copier"));
+    Stmt callStmt6(new CallStmt(callExpr6,dmpl::ExprList()));
+    mainBody.push_back(callStmt6);
+
+    //call SAFETY()
+    mainBody.push_back(callStmt2);
+  }
+  
   Func mainFunc(new Function(dmpl::intType(),"main",mainParams,mainTemps,mainBody));
   cprog.addFunction(mainFunc);
 }
