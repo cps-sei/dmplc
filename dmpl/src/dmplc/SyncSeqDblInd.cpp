@@ -737,6 +737,66 @@ void dmpl::SyncSeqDblInd::createAssume()
 }
 
 /*********************************************************************/
+//create list of statements that assign a non-deterministic value to
+//old value of var. append list of statements to res.
+/*********************************************************************/
+void dmpl::SyncSeqDblInd::createNDAssignStmts(bool isGlob,const Var &var,StmtList &res,ExprList indx,int node)
+{
+  //non-array type
+  if(var->type->dims.empty()) {
+    std::string n = boost::lexical_cast<std::string>(node);
+    Expr lhs(new LvalExpr(var->name + std::string(isGlob ? "_i_" : "_") + n,indx));
+    Expr ndfn = createNondetFunc(lhs);
+    Expr ndcall(new CallExpr(ndfn,ExprList()));
+    Stmt stmt(new AsgnStmt(lhs,ndcall));
+    res.push_back(stmt);
+  }
+  else
+  {
+    //array type -- peel off the first dimension and iterate over it
+    //recursively
+    int dim = *(var->type->dims.begin());
+    for(int i = 0;i < dim;++i) {
+      ExprList newIndx = indx;
+      newIndx.push_back(Expr(new IntExpr(i)));
+      Var newVar = var->decrDim();
+      createNDAssignStmts(isGlob,newVar,res,newIndx,node);
+    }
+  }
+}
+
+/*********************************************************************/
+//create the HAVOC() function. this assigns non-deterministic values
+//to all local shared variables and initial values of global shared
+//variables.
+/*********************************************************************/
+void dmpl::SyncSeqDblInd::createHavoc()
+{
+  Node &node = builder.program.nodes.begin()->second;
+  StmtList havocFnBody;
+  dmpl::VarList fnParams, fnTemps;
+
+  //-- assign non-deterministic values to global variables
+  for(size_t i = 0;i < nodeNum;++i) {
+    BOOST_FOREACH(Vars::value_type &v,node.globVars) {
+      Var var = v.second->instDim(nodeNum);
+      createNDAssignStmts(true,var,havocFnBody,ExprList(),i);
+    }
+  }
+
+  //-- assign non-deterministic values to local variables
+  for(size_t i = 0;i < nodeNum;++i) {
+    BOOST_FOREACH(Vars::value_type &v,node.locVars) {
+      Var var = v.second->instDim(nodeNum);
+      createNDAssignStmts(false,var,havocFnBody,ExprList(),i);
+    }
+  }
+
+  Func func(new Function(dmpl::voidType(),"__HAVOC",fnParams,fnTemps,havocFnBody));
+  cprog.addFunction(func);
+}
+
+/*********************************************************************/
 //create the functions for nodes
 /*********************************************************************/
 void dmpl::SyncSeqDblInd::createNodeFuncs()
@@ -872,6 +932,7 @@ void dmpl::SyncSeqDblInd::run()
   createInit();
   createSafety();
   createAssume();
+  createHavoc();
   createNodeFuncs();
 
   //instantiate functions
