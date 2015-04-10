@@ -183,10 +183,12 @@ void dmpl::syncseqdbl::GlobalTransformer::exitFAN(dmpl::FANStmt &stmt)
   StmtList sl;
 
   for(size_t i = 0;i < nodeNum;++i) {
-    addIdMap(stmt.id,i);
-    visit(stmt.data);
-    sl.push_back(stmtMap[stmt.data]);
-    delIdMap(stmt.id);
+    syncseqdbl::NodeTransformer nt(syncSeq,prog,nodeNum,i,true);
+    nt.idMap = idMap;
+    nt.addIdMap(stmt.id,i);
+    nt.visit(stmt.data);
+    sl.push_back(nt.stmtMap[stmt.data]);
+    nt.delIdMap(stmt.id);
   }
 
   stmtMap[shost] = Stmt(new dmpl::BlockStmt(sl));
@@ -199,12 +201,14 @@ void dmpl::syncseqdbl::GlobalTransformer::exitFADNP(dmpl::FADNPStmt &stmt)
 
   for(size_t i1 = 0;i1 < nodeNum;++i1) {
     for(size_t i2 = i1+1;i2 < nodeNum;++i2) {
-      addIdMap(stmt.id1,i1);
-      addIdMap(stmt.id2,i2);
-      visit(stmt.data);
-      sl.push_back(stmtMap[stmt.data]);
-      delIdMap(stmt.id1);
-      delIdMap(stmt.id2);
+      syncseqdbl::NodeTransformer nt(syncSeq,prog,nodeNum,i1,true);
+      nt.idMap = idMap;
+      nt.addIdMap(stmt.id1,i1);
+      nt.addIdMap(stmt.id2,i2);
+      nt.visit(stmt.data);
+      sl.push_back(nt.stmtMap[stmt.data]);
+      nt.delIdMap(stmt.id1);
+      nt.delIdMap(stmt.id2);
     }
   }
 
@@ -225,13 +229,19 @@ void dmpl::syncseqdbl::NodeTransformer::exitLval(dmpl::LvalExpr &expr)
   //assumes a single node
   Node &node = prog.nodes.begin()->second;
 
+  //create the string for the nodeId part of the expression, if any
+  std::string nodeIdStr = (expr.node != NULL) ? getNodeStr(expr) : boost::lexical_cast<std::string>(nodeId);
+
+  //handle assume and assert
+  if(newName == "ASSUME") newName = "__CPROVER_assume";
+  else if(newName == "ASSERT")
+    newName = "assert";
   //handle function call -- change name if the function is defined at top-level
-  if(inCall && prog.isInternalFunction(newName)) 
+  else if(inCall && prog.isInternalFunction(newName)) 
     newName += (std::string("_") + (fwd ? "fwd" : "bwd"));
   //handle function call -- change name if the function is defined in node
   else if(inCall && node.isFunction(newName)) 
-    newName = (node.name + "__" + newName + "_" + boost::lexical_cast<std::string>(nodeId) +
-                "_" + (fwd ? "fwd" : "bwd"));
+    newName = (node.name + "__" + newName + "_" + nodeIdStr + "_" + (fwd ? "fwd" : "bwd"));
   else
   {
     bool isGlob = node.globVars.count(expr.var) > 0;
@@ -258,13 +268,7 @@ void dmpl::syncseqdbl::NodeTransformer::exitLval(dmpl::LvalExpr &expr)
     std::map<std::string,size_t>::const_iterator iit = idMap.find(expr.var);
     newName = iit == idMap.end() ? newName : boost::lexical_cast<std::string>(iit->second);
 
-    if(isGlob || isLoc) 
-    {
-      if(expr.node != NULL)
-        newName = newName + "_" + getNodeStr(expr);
-      else
-        newName += "_" + boost::lexical_cast<std::string>(nodeId);
-    }
+    if(isGlob || isLoc) newName += "_" + nodeIdStr;
   }
 
   exprMap[hostExpr] = dmpl::Expr(new dmpl::LvalExpr(newName,collect(expr.indices)));
