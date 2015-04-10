@@ -931,7 +931,7 @@ dmpl::gams::Analyzer_Builder::build_function (
   
   //buffer_ << "  Integer result (0);\n";
   int i = 0;
-  BOOST_FOREACH (Vars::value_type & variable, function->params)
+  BOOST_FOREACH (Vars::value_type & variable, function->paramSet)
   {
     buffer_ << "  " << get_type_name(variable.second) << " ";
     buffer_ << variable.second->name;

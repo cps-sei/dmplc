@@ -105,9 +105,11 @@ namespace dmpl
     virtual bool canWrite() { return false; }
 
     /**
-     * The function parameters
+     * The function parameters. we maintain both a list because order
+     * matters and a set for quick lookup.
      **/
-    Vars params;
+    VarList params;
+    Vars paramSet;
     
     ///function local variables -- we call them temporary variables
     ///since their scope is only the function body
@@ -147,8 +149,8 @@ namespace dmpl
       Vars::const_iterator ret = temps.find(name);
       if(ret != temps.end())
         return ret->second;
-      ret = params.find(name);
-      if(ret != params.end())
+      ret = paramSet.find(name);
+      if(ret != paramSet.end())
         return ret->second;
       return Var();
     }
@@ -170,14 +172,17 @@ namespace dmpl
     Function(const Type &rt,const std::string &n,const Vars &p,
              const Vars &t,const StmtList &b,
              const Attributes &a = Attributes())
-      : retType(rt),name(n),body(b),HasAttributes(a),params(p),temps(t),isExtern(false)
-    { }
+      : retType(rt),name(n),body(b),HasAttributes(a),paramSet(p),temps(t),isExtern(false)
+    {
+      BOOST_FOREACH(const Vars::value_type &v,p) { params.push_back(v.second); }
+    }
 
     void mergeWith (const Func &of);
 
     void setParams (const VarList &p)
     {
-      doSetVars(p, params);
+      params = p;
+      doSetVars(p, paramSet);
     }
 
     void setTemps (const VarList &t)

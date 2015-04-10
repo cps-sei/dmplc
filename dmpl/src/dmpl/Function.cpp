@@ -106,9 +106,9 @@ dmpl::Function::print (std::ostream &os,unsigned int indent)
   os << spacer << retType->toString() << " " << name << "(";
 
   size_t count = 0;
-  for (dmpl::Vars::iterator i = params.begin (); i != params.end (); ++i) {
+  for (dmpl::VarList::iterator i = params.begin (); i != params.end (); ++i) {
     if(count) os << ",";
-    os << i->second->toString();
+    os << (*i)->toString();
     count++;
   }
 
@@ -138,9 +138,9 @@ dmpl::Function::printDecl (std::ostream &os,unsigned int indent)
   os << spacer << retType->toString() << " " << name << "(";
 
   size_t count = 0;
-  for (dmpl::Vars::iterator i = params.begin (); i != params.end (); ++i) {
+  for (dmpl::VarList::iterator i = params.begin (); i != params.end (); ++i) {
     if(count) os << ",";
-    os << i->second->toString();
+    os << (*i)->toString();
     count++;
   }
 

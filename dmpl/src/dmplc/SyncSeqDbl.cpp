@@ -644,8 +644,7 @@ void dmpl::SyncSeqDbl::createInit()
     StmtList fnBody;
 
     //create parameters
-    BOOST_FOREACH(Vars::value_type &v,f.second->params)
-      fnParams.push_back(v.second);
+    fnParams = f.second->params;
 
     //create temporary variables
     BOOST_FOREACH(Vars::value_type &v,f.second->temps)
@@ -693,9 +692,9 @@ void dmpl::SyncSeqDbl::createSafety()
 
     dmpl::VarList fnParams,fnTemps;
     StmtList fnBody;
+    
     //create parameters
-    BOOST_FOREACH(Vars::value_type &v,f.second->params)
-      fnParams.push_back(Var(new Variable(*v.second)));
+    fnParams = f.second->params;
 
     //create temporary variables
     BOOST_FOREACH(Vars::value_type &v,f.second->temps)
@@ -734,8 +733,7 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
       dmpl::VarList fnParams,fnTemps;
 
       //create parameters
-      BOOST_FOREACH(Vars::value_type &v,f.second->params)
-        fnParams.push_back(v.second);
+      fnParams = f.second->params;
 
       //create temporary variables
       BOOST_FOREACH(Vars::value_type &v,f.second->temps)
@@ -853,8 +851,7 @@ void dmpl::SyncSeqDbl::processExternFuncs()
       exit(1);
     }
 
-
-    Func func(new Function(ef.second->retType,ef.second->name,ef.second->params,fnTemps,fnBody));
+    Func func(new Function(ef.second->retType,ef.second->name,ef.second->paramSet,fnTemps,fnBody));
     func->isExtern = true;
     cprog.addFunction(func);
   }
