@@ -714,7 +714,7 @@ void dmpl::SyncSeqDblInd::createAssume()
     BOOST_FOREACH(Vars::value_type &v,f.second->temps)
       fnTemps.push_back(Var(new Variable(*v.second)));
 
-    //transform the body of safety
+    //transform the body of assume
     BOOST_FOREACH(const Stmt &st,f.second->body) {
       syncseqdblind::GlobalTransformer gt(*this,builder.program,nodeNum,true);
       gt.visit(st);
