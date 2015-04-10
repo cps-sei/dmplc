@@ -500,6 +500,10 @@ stmt : TLBRACE stmt_list TRBRACE { $$ = new dmpl::Stmt(new dmpl::BlockStmt(*$2))
   //$$ = new dmpl::Stmt(new dmpl::CallExpr(dmpl::Expr($1),*$3));
   //delete $3; printExpr(*$$);
 }
+| TIDENTIFIER TLPAREN arg_list TRPAREN TATTRIBUTE TSEMICOLON {
+  $$ = new dmpl::Stmt(new dmpl::CallStmt(dmpl::Expr(new dmpl::LvalExpr(*$1,dmpl::Expr(new dmpl::LvalExpr($5->substr(1))))), *$3));
+  delete $1; delete $3; delete $5;
+}
 | TFAN TLPAREN TIDENTIFIER TRPAREN stmt { 
   $$ = new dmpl::Stmt(new dmpl::FANStmt(*$3,*$5));
   delete $3; delete $5;
