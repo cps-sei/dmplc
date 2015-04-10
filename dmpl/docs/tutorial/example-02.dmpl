@@ -262,6 +262,8 @@ void NoCollisions ()
     ASSERT((cstate@id != CMOVE || state@id == MOVE) &&                     
            (state@id != MOVE || cstate@id != CMOVE ||                    
             (x@id == cx@id && y@id == cy@id && xp@id == cxp@id && yp@id == cyp@id)));
+    /** (x,y) of node and controller match */
+    ASSERT(x@id == cx@id && y@id == cy@id);
   }
 
   /** either all nodes are in INITS or none is */
@@ -290,5 +292,30 @@ void NoCollisions ()
     ASSERT((state@id2 != MOVE || x@id1 != xp@id2 || y@id1 != yp@id2) && (state@id1 != 4 || xp@id1 != x@id2 || yp@id1 != y@id2));
     /** two distinct nodes have different (x,y) */
     ASSERT(x@id1 != x@id2 || y@id1 != y@id2);
+
+    /** this is AC2 */
+    /** if node 1 and node 2 are in MOVE, then node1.(x,y) and
+        node1.(xp,yp) are distinct from node.(x,y) and
+        node2.(xp,yp) */
+    ASSERT(cstate@id1 != CMOVE || cstate@id2 != CMOVE ||                  
+           ((cx@id1 != cx@id2 || cy@id1 != cy@id2) &&               
+            (cx@id1 != cxp@id2 || cy@id1 != cyp@id2) &&               
+            (cxp@id1 != cx@id2 || cyp@id1 != cy@id2) &&               
+            (cxp@id1 != cxp@id2 || cyp@id1 != cyp@id2)));
+
+    /** this is AC3 */
+    /** if node 1 is in HOVER and node 2 is in MOVE, then node1.(x,y)
+        is distinct from node2.(x,y) and node2.(xp,yp) */
+    ASSERT((cstate@id1 != CHOVER || cstate@id2 != CMOVE || 
+                           ((cx@id1 != cx@id2 || cy@id1 != cy@id2) && 
+                            (cx@id1 != cxp@id2 || cy@id1 != cyp@id2))) &&
+           (cstate@id2 != CHOVER || cstate@id1 != CMOVE || 
+                           ((cx@id2 != cx@id1 || cy@id2 != cy@id1) && 
+                            (cx@id2 != cxp@id1 || cy@id2 != cyp@id1))));
+
+    /** this is AC4 */
+    /** if two distinct controllers are in HOVER, they have different
+        (x,y) */
+    ASSERT(cstate@id1 != CHOVER || cstate@id2 != CHOVER || cx@id1 != cx@id2 || cy@id1 != cy@id2);
   }
 }
