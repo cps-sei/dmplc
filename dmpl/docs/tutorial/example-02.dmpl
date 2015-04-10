@@ -12,7 +12,7 @@ TARGET GNU_CPP,WIN_CPP %%{
 #include <stdlib.h>
 #include "madara/utility/Utility.h"
 
-int MOVE_TO(unsigned char x,unsigned char y)
+int GRID_MOVE(unsigned char x,unsigned char y,unsigned char xp,unsigned char yp,double z)
 {
   return rand() < (RAND_MAX / 10 * 6);
 }
@@ -79,9 +79,10 @@ CONST LeftX = -12.5;
 CONST BottomY = -6;
 CONST RightX = 6.5;
 
+EXTERN void INIT_CONTROLLER(unsigned char x,unsigned char y);
 EXTERN void GRID_INIT(int _X,int _Y,double _LeftX,double _RightX,double _TopY,double _BottomY);
 EXTERN void GRID_PLACE(unsigned char x,unsigned char y, double z);
-EXTERN int GRID_MOVE(unsigned char x,unsigned char y, double z);
+EXTERN int GRID_MOVE(unsigned char x,unsigned char y, unsigned char xp,unsigned char yp, double z);
 EXTERN int my_sleep(int seconds);
 EXTERN void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf);
 EXTERN void print_int(int i);
@@ -190,7 +191,7 @@ NODE uav (id)
       state = MOVE;
     } else if(state == MOVE) {
       //now we have the lock on (x’,y’)
-      if(GRID_MOVE(xp,yp,0.5)) return;
+      if(GRID_MOVE(x,y,xp,yp,0.5)) return;
       lock[x][y] = 0; 
       x = xp; y = yp;
       state = NEXT;
@@ -216,6 +217,7 @@ void NodeInit ()
     ND(xt@id); ND(yt@id);
     ASSUME(0 <= xt@id && xt@id < X && 0 <= yt@id && yt@id < Y);
     waypointValid@id = 1;
+    INIT_CONTROLLER(x@id,y@id)@id;
   }
 
   FORALL_DISTINCT_NODE_PAIR (id1,id2) {
@@ -252,6 +254,14 @@ void NoCollisions ()
     /** if we are not in INITS or NEXT, then x,y and xp,yp are
         adjacent */
     ASSERT(state@id == INITS || state@id == NEXT || (((x@id == xp@id - 1) || (x@id == xp@id + 1)) ^ ((y@id == yp@id - 1) || (y@id == yp@id + 1))));
+    /** controller always moves between adjacent cells*/
+    ASSERT(cstate@id != CMOVE || (((cx@id == cxp@id - 1) || (cx@id == cxp@id + 1)) ^ ((cy@id == cyp@id - 1) || (cy@id == cyp@id + 1))));
+    /** if controller is in MOVE, then node must also be in move, and
+        if node and controller are both in MOVE, then their (x,y) and
+        (xp,yp) agree */
+    ASSERT((cstate@id != CMOVE || state@id == MOVE) &&                     
+           (state@id != MOVE || cstate@id != CMOVE ||                    
+            (x@id == cx@id && y@id == cy@id && xp@id == cxp@id && yp@id == cyp@id)));
   }
 
   /** either all nodes are in INITS or none is */
