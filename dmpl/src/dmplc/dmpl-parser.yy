@@ -496,7 +496,7 @@ stmt : TLBRACE stmt_list TRBRACE { $$ = new dmpl::Stmt(new dmpl::BlockStmt(*$2))
 | TRETURN TSEMICOLON { $$ = new dmpl::Stmt(new dmpl::RetVoidStmt()); }
 | TIDENTIFIER TLPAREN arg_list TRPAREN TSEMICOLON {
   $$ = new dmpl::Stmt(new dmpl::CallStmt(dmpl::Expr(new dmpl::LvalExpr(*$1)), *$3));
-  delete $3;
+  delete $1; delete $3;
   //$$ = new dmpl::Stmt(new dmpl::CallExpr(dmpl::Expr($1),*$3));
   //delete $3; printExpr(*$$);
 }
