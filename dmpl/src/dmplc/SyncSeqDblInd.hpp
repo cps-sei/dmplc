@@ -172,6 +172,8 @@ namespace dmpl {
     void createGlobVars();
     void createCopyStmts(bool fwd,const Var &var,StmtList &res,ExprList indx,int node);
     void createRoundCopier();
+    void callFunction(const std::string &funcName,StmtList &body);
+    void callRoundFuncs(Func &roundFunc,StmtList &body);
     void createMainFunc();
     void createInit();
     void createSafety();
