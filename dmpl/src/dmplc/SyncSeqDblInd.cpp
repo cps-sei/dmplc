@@ -570,14 +570,26 @@ void dmpl::SyncSeqDblInd::createMainFunc()
   //-- for K-induction, generate additional rounds and SAFETY checks
   if(roundNum > 0) {
     for(size_t i = 0;i < roundNum;++i) {
+      callFunction("round_fwd_copier",mainBody);
       callRoundFuncs(roundFunc,mainBody);
+      callFunction("round_bwd_copier",mainBody);
       callFunction("__SAFETY",mainBody);
     }
   }
   
   //-- add call to HAVOC(), ASSUME(), forward_copier(), round
-  //-- functions, backward copier(), and SAFETY().
+  //-- functions, backward copier(), and SAFETY(). for K-induction you
+  //-- have to do this K+1 times with as ASSUME() after the first K
+  //-- times, and SAFETY() after the last one.
   callFunction("__HAVOC",mainBody);
+  if(roundNum > 0) {
+    for(size_t i = 0;i < roundNum;++i) {
+      callFunction("__ASSUME",mainBody);
+      callFunction("round_fwd_copier",mainBody);
+      callRoundFuncs(roundFunc,mainBody);
+      callFunction("round_bwd_copier",mainBody);
+    }
+  }
   callFunction("__ASSUME",mainBody);
   callFunction("round_fwd_copier",mainBody);
   callRoundFuncs(roundFunc,mainBody);
