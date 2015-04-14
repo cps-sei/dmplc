@@ -254,6 +254,7 @@ void NoCollisions ()
     /** if we are not in INITS or NEXT, then x,y and xp,yp are
         adjacent */
     ASSERT(state@id == INITS || state@id == NEXT || (((x@id == xp@id - 1) || (x@id == xp@id + 1)) ^ ((y@id == yp@id - 1) || (y@id == yp@id + 1))));
+    /** this is AC1 */
     /** controller always moves between adjacent cells*/
     ASSERT(cstate@id != CMOVE || (((cx@id == cxp@id - 1) || (cx@id == cxp@id + 1)) ^ ((cy@id == cyp@id - 1) || (cy@id == cyp@id + 1))));
     /** if controller is in MOVE, then node must also be in move, and
@@ -265,34 +266,8 @@ void NoCollisions ()
     /** (x,y) of node and controller match */
     ASSERT(x@id == cx@id && y@id == cy@id);
   }
-
-  /** either all nodes are in INITS or none is */
-  allIn = 1; noneIn = 1;
-  FORALL_NODE(id) {
-    if(state@id == INITS) { noneIn = 0; }
-    if(state@id != INITS) { allIn = 0; }
-  }
-  ASSERT(allIn || noneIn);
-
+  
   FORALL_DISTINCT_NODE_PAIR (id1,id2) {
-    /** if node1 is in MOVE/NEXT and has lower id than node2 which is
-        WAITING then they have different xp,yp */
-    ASSERT((state@id1 != NEXT && state@id1 != MOVE) || state@id2 != WAITING || id1 >= id2 || xp@id1 != xp@id2 || yp@id1 != yp@id2);
-    /** if two distinct nodes are in MOVE, they have different
-        (xp,yp) */
-    ASSERT(state@id1 != MOVE || state@id2 != MOVE ||                        
-           ((xp@id1 != xp@id2 || yp@id1 != yp@id2) &&             
-            (xp@id1 != x@id2 || yp@id1 != y@id2) &&               
-            (x@id1 != xp@id2 || y@id1 != yp@id2) &&               
-            (x@id1 != x@id2 || y@id1 != y@id2)));
-    /** if node2 in WAITING, and node1 has lower id than node 2, then
-        node1.(x,y) != node2.(xp,yp) */
-    ASSERT(state@id2 != WAITING || id1 >= id2 || x@id1 != xp@id2 || y@id1 != yp@id2);
-    /** if node2 in MOVE, then node1.(x,y) != node2.(xp,yp) */
-    ASSERT((state@id2 != MOVE || x@id1 != xp@id2 || y@id1 != yp@id2) && (state@id1 != 4 || xp@id1 != x@id2 || yp@id1 != y@id2));
-    /** two distinct nodes have different (x,y) */
-    ASSERT(x@id1 != x@id2 || y@id1 != y@id2);
-
     /** this is AC2 */
     /** if node 1 and node 2 are in MOVE, then node1.(x,y) and
         node1.(xp,yp) are distinct from node.(x,y) and
@@ -317,5 +292,39 @@ void NoCollisions ()
     /** if two distinct controllers are in HOVER, they have different
         (x,y) */
     ASSERT(cstate@id1 != CHOVER || cstate@id2 != CHOVER || cx@id1 != cx@id2 || cy@id1 != cy@id2);
+  }
+
+  //-- the rest are supporting invariants. you only need them for
+  //-- plain induction. you can skip them (by uncommenting the
+  //-- following return statement) out if you are doing K-induction
+  //-- with K>=3.
+  //return;
+    
+  /** either all nodes are in INITS or none is */
+  allIn = 1; noneIn = 1;
+  FORALL_NODE(id) {
+    if(state@id == INITS) { noneIn = 0; }
+    if(state@id != INITS) { allIn = 0; }
+  }
+  ASSERT(allIn || noneIn);
+  
+  FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+    /** if node1 is in MOVE/NEXT and has lower id than node2 which is
+        WAITING then they have different xp,yp */
+    ASSERT((state@id1 != NEXT && state@id1 != MOVE) || state@id2 != WAITING || id1 >= id2 || xp@id1 != xp@id2 || yp@id1 != yp@id2);
+    /** if two distinct nodes are in MOVE, they have different
+        (xp,yp) */
+    ASSERT(state@id1 != MOVE || state@id2 != MOVE ||                        
+           ((xp@id1 != xp@id2 || yp@id1 != yp@id2) &&             
+            (xp@id1 != x@id2 || yp@id1 != y@id2) &&               
+            (x@id1 != xp@id2 || y@id1 != yp@id2) &&               
+            (x@id1 != x@id2 || y@id1 != y@id2)));
+    /** if node2 in WAITING, and node1 has lower id than node 2, then
+        node1.(x,y) != node2.(xp,yp) */
+    ASSERT(state@id2 != WAITING || id1 >= id2 || x@id1 != xp@id2 || y@id1 != yp@id2);
+    /** if node2 in MOVE, then node1.(x,y) != node2.(xp,yp) */
+    ASSERT((state@id2 != MOVE || x@id1 != xp@id2 || y@id1 != yp@id2) && (state@id1 != 4 || xp@id1 != x@id2 || yp@id1 != y@id2));
+    /** two distinct nodes have different (x,y) */
+    ASSERT(x@id1 != x@id2 || y@id1 != y@id2);
   }
 }
