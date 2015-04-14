@@ -15,6 +15,6 @@ NODE uav
   @WCET_NOMINAL(15000)
   @WCET_OVERLOAD(30000)
   @ZS_NS(20000)
-  @BARRIER_SYNC
+  @BarrierSync
   ROUND();
 }
