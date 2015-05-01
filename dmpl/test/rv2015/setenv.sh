@@ -1,0 +1,12 @@
+export PKGROOT=$(pwd)
+export ACE_ROOT=$PKGROOT/ace/ACE_wrappers
+export MADARA_ROOT=$PKGROOT/madara 
+export LD_LIBRARY_PATH=$ACE_ROOT/lib:$MADARA_ROOT/lib:$LD_LIBRARY_PATH
+export PATH=$ACE_ROOT/bin:$MADARA_ROOT/bin:$PATH 
+export GAMS_ROOT=$PKGROOT/gams
+export LD_LIBRARY_PATH=$GAMS_ROOT/lib:$LD_LIBRARY_PATH
+export PATH=$GAMS_ROOT/bin:$PATH
+export VREP_ROOT=$PKGROOT/vrep
+export DMPL_ROOT=$PKGROOT/dart/dmpl
+export PATH=$DMPL_ROOT/src/dmplc:$PATH
+export PATH=$DMPL_ROOT/src/vrep:$PATH
