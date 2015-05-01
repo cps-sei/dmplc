@@ -1,8 +1,8 @@
 #!/bin/bash
 
-DMPL="example-05.dmpl example-05-AADL.dmpl"
+DMPL="exp2 AADL.dmpl"
 LIBS="dartam/Debug/adaptation_manager.o dartam/Debug/AdaptationPlanner.o"
-BIN=example-05
+BIN=exp2
 
 OUTDIR=outdir
 MAPNAME=small

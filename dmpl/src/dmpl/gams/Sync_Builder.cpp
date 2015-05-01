@@ -133,13 +133,16 @@ dmpl::gams::Sync_Builder::build_header_includes ()
   buffer_ << "#include \"madara/knowledge_engine/containers/Integer_Vector.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/containers/Double_Vector.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/containers/Vector_N.h\"\n";
+  buffer_ << "#include \"madara/transport/Packet_Scheduler.h\"\n";
   buffer_ << "#include \"madara/threads/Threader.h\"\n";
   buffer_ << "#include \"madara/filters/Generic_Filters.h\"\n";
   buffer_ << "\n";
+  buffer_ << "#define _GAMS_VREP_ 1\n";
   buffer_ << "#include \"gams/controllers/Base_Controller.h\"\n";
   buffer_ << "#include \"gams/algorithms/Base_Algorithm.h\"\n";
   buffer_ << "#include \"gams/variables/Sensor.h\"\n";
   buffer_ << "#include \"gams/platforms/Base_Platform.h\"\n";
+  buffer_ << "#include \"gams/platforms/vrep/VREP_Base.h\"\n";
   buffer_ << "#include \"gams/variables/Algorithm.h\"\n";
   buffer_ << "#include \"gams/variables/Self.h\"\n";
   buffer_ << "#include \"gams/utility/GPS_Position.h\"\n";
@@ -209,9 +212,23 @@ dmpl::gams::Sync_Builder::build_common_global_variables ()
   buffer_ << "// Containers for commonly used variables\n";
   buffer_ << "// Global variables\n";
   //buffer_ << "containers::Integer_Array barrier;\n";
-
   buffer_ << "Reference<unsigned int> id(knowledge, \".id\");\n";
   buffer_ << "Reference<unsigned int>  num_processes(knowledge, \".num_processes\");\n";
+  Node &node = builder_.program.nodes.begin()->second;
+  BOOST_FOREACH(Funcs::value_type &f, node.funcs)
+  {
+    if (!f.second->isThread())
+      continue;
+    Attribute *attrBarSync = f.second->getAttribute("BarrierSync", 0);
+    if(attrBarSync)
+    {
+      buffer_ << "ArrayReference<unsigned int, ";
+      buffer_ << builder_.program.processes.size ();
+      buffer_ << "> mbarrier_" << f.second->getName();
+      buffer_ << "(knowledge, \"mbarrier_" << f.second->getName() << "\");\n";
+    }
+  }
+
   buffer_ << "double max_barrier_time (-1);\n";
   buffer_ << "engine::Knowledge_Update_Settings private_update (true);\n";
   buffer_ << "\n";
@@ -663,9 +680,10 @@ dmpl::gams::Sync_Builder::build_parse_args ()
   buffer_ << "        double drop_rate;\n";
   buffer_ << "        std::stringstream buffer (argv[i + 1]);\n";
   buffer_ << "        buffer >> drop_rate;\n";
-  buffer_ << "        \n";
+  buffer_ << "        std::cerr << \"drop_rate: \" << drop_rate << std::endl;\n";
+  buffer_ << "        Madara::Transport::Packet_Scheduler::drop_rate_override = drop_rate;\n";
   buffer_ << "        settings.update_drop_rate (drop_rate,\n";
-  buffer_ << "          Madara::Transport::PACKET_DROP_DETERMINISTIC);\n";
+  buffer_ << "          Madara::Transport::PACKET_DROP_PROBABLISTIC);\n";
   buffer_ << "      }\n";
   buffer_ << "      \n";
   buffer_ << "      ++i;\n";
@@ -849,12 +867,32 @@ void
 dmpl::gams::Sync_Builder::build_refresh_modify_globals ()
 {
   buffer_ << "Madara::Knowledge_Record\n";
-  buffer_ << "REMODIFY_GLOBALS";
+  buffer_ << "REMODIFY_BARRIERS";
   buffer_ << " (engine::Function_Arguments &,\n";
+  buffer_ << "  engine::Variables & vars)\n";
+  buffer_ << "{\n";
+  Node &node = builder_.program.nodes.begin()->second;
+  BOOST_FOREACH(Funcs::value_type &f, node.funcs)
+  {
+    if (!f.second->isThread())
+      continue;
+    Attribute *attrBarSync = f.second->getAttribute("BarrierSync", 0);
+    if(attrBarSync)
+    {
+      buffer_ << "  mbarrier_" << f.second->getName() << "[id].mark_modified();\n\n";
+    }
+  }
+  buffer_ << "  return Integer (0);\n";
+  buffer_ << "}\n\n";
+
+  buffer_ << "Madara::Knowledge_Record\n";
+  buffer_ << "REMODIFY_GLOBALS";
+  buffer_ << " (engine::Function_Arguments & args,\n";
   buffer_ << "  engine::Variables & vars)\n";
   buffer_ << "{\n";
   
   buffer_ << "  // Remodifying common global variables\n";
+  buffer_ << "  REMODIFY_BARRIERS(args, vars);\n";
   //buffer_ << "  barrier.set (*id, barrier[*id]);\n\n";
 
   Nodes & nodes = builder_.program.nodes;
@@ -1035,7 +1073,7 @@ dmpl::gams::Sync_Builder::build_gams_function (std::string &dmpl_name, std::stri
 void
 dmpl::gams::Sync_Builder::build_gams_functions ()
 {
-  buffer_ << "gams::platforms::Base *platform;\n";
+  buffer_ << "gams::platforms::Base *platform = NULL;\n";
 
   buffer_ << "int grid_x = 0, grid_y = 0;\n";
   buffer_ << "double grid_leftX = NAN, grid_rightX = NAN, grid_topY = NAN, grid_bottomY = NAN, grid_cellX = NAN, grid_cellY = NAN;\n";
@@ -1060,12 +1098,32 @@ dmpl::gams::Sync_Builder::build_gams_functions ()
   buffer_ << "}\n";
   buffer_ << "\n";
 
-  buffer_ << "int GRID_MOVE(int x, int y, double alt = NAN, double epsilon = 0.1)\n";
+  buffer_ << "int GRID_MOVE(int x, int y, double alt = NAN, double epsilon = 0.2)\n";
   buffer_ << "{\n";
   buffer_ << "  int ret = platform->move(gams::utility::Position(grid_leftX + x * grid_cellX, grid_topY + y * grid_cellY, alt), epsilon);\n";
   //buffer_ << "  std::cerr << grid_leftX + x * grid_cellX << \"/\" << grid_topY + y * grid_cellY << std::endl;\n";
   //buffer_ << "  std::cerr << \"PLAT_MOVE \" << platform->get_name() << \" \" << ret << std::endl;\n";
   buffer_ << "  return ret != 2;\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "double GET_X()\n";
+  buffer_ << "{\n";
+  buffer_ << "  gams::platforms::VREP_Base *vrep_platform = dynamic_cast<gams::platforms::VREP_Base *>(platform);\n";
+  buffer_ << "  if(vrep_platform == NULL) return NAN;\n";
+  buffer_ << "  gams::utility::Position pos = vrep_platform->get_vrep_position();\n";
+  buffer_ << "  double x = pos.x;\n";
+  buffer_ << "  return x;\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "double GET_Y()\n";
+  buffer_ << "{\n";
+  buffer_ << "  gams::platforms::VREP_Base *vrep_platform = dynamic_cast<gams::platforms::VREP_Base *>(platform);\n";
+  buffer_ << "  if(vrep_platform == NULL) return NAN;\n";
+  buffer_ << "  gams::utility::Position pos = vrep_platform->get_vrep_position();\n";
+  buffer_ << "  double y = pos.y;\n";
+  buffer_ << "  return y;\n";
   buffer_ << "}\n";
   buffer_ << "\n";
 
@@ -1267,8 +1325,9 @@ dmpl::gams::Sync_Builder::build_algo_declaration ()
   buffer_ << "  Madara::Knowledge_Engine::Wait_Settings wait_settings;\n";
   buffer_ << "  engine::Compiled_Expression round_logic;\n";
   buffer_ << "  std::map <std::string, bool>  barrier_send_list;\n";
-  buffer_ << "  std::stringstream barrier_string, barrier_sync;\n";
+  buffer_ << "  std::stringstream barrier_string, barrier_data_string, barrier_sync;\n";
   buffer_ << "  engine::Compiled_Expression barrier_logic;\n";
+  buffer_ << "  engine::Compiled_Expression barrier_data_logic;\n";
   buffer_ << "  engine::Compiled_Expression barrier_sync_logic;\n";
   buffer_ << "};\n";
   buffer_ << "\n";
@@ -1513,7 +1572,8 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "  barrier_send_list [knowledge_->expand_statement (";
   buffer_ << "\"\" + mbarrier + \".{.id}\")] = true;\n\n";
   
-  buffer_ << "  barrier_string << \"REMODIFY_GLOBALS () ;> \";\n";
+  buffer_ << "  barrier_string << \"REMODIFY_BARRIERS () ;> \";\n";
+  buffer_ << "  barrier_data_string << \"REMODIFY_GLOBALS () ;> \";\n";
   buffer_ << "  barrier_sync << \"\" + mbarrier + \".\";\n";
   buffer_ << "  barrier_sync << settings.id;\n";
   buffer_ << "  barrier_sync << \" = (\" + mbarrier + \".\";\n";
@@ -1524,12 +1584,17 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "    if (started)\n";
   buffer_ << "    {\n";
   buffer_ << "      barrier_string << \" && \";\n";
+  buffer_ << "      barrier_data_string << \" && \";\n";
   buffer_ << "    }\n\n";
 
   buffer_ << "    barrier_string << \"\" + mbarrier + \".\";\n";
   buffer_ << "    barrier_string << i;\n";
   buffer_ << "    barrier_string << \" >= \" + mbarrier + \".\";\n";
   buffer_ << "    barrier_string << settings.id;\n";
+  buffer_ << "    barrier_data_string << \"\" + mbarrier + \".\";\n";
+  buffer_ << "    barrier_data_string << i;\n";
+  buffer_ << "    barrier_data_string << \" >= \" + mbarrier + \".\";\n";
+  buffer_ << "    barrier_data_string << settings.id;\n";
   buffer_ << "    barrier_sync << \" ; \";\n";
   buffer_ << "    barrier_sync << \"\" + mbarrier + \".\";\n";
   buffer_ << "    barrier_sync << i;\n\n";
@@ -1542,12 +1607,17 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "    if (started)\n";
   buffer_ << "    {\n";
   buffer_ << "      barrier_string << \" && \";\n";
+  buffer_ << "      barrier_data_string << \" && \";\n";
   buffer_ << "    }\n\n";
 
   buffer_ << "    barrier_string << \"\" + mbarrier + \".\";\n";
   buffer_ << "    barrier_string << i;\n";
   buffer_ << "    barrier_string << \" >= \" + mbarrier + \".\";\n";
   buffer_ << "    barrier_string << settings.id;\n";
+  buffer_ << "    barrier_data_string << \"\" + mbarrier + \".\";\n";
+  buffer_ << "    barrier_data_string << i;\n";
+  buffer_ << "    barrier_data_string << \" >= \" + mbarrier + \".\";\n";
+  buffer_ << "    barrier_data_string << settings.id;\n";
   buffer_ << "    barrier_sync << \" ; \";\n";
   buffer_ << "    barrier_sync << \"\" + mbarrier + \".\";\n";
   buffer_ << "    barrier_sync << i;\n\n";
@@ -1562,6 +1632,7 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "  std::cout << \"barrier_string: \" << barrier_string.str() << std::endl;\n";
 
   buffer_ << "  barrier_logic = knowledge_->compile (barrier_string.str ());\n";
+  buffer_ << "  barrier_data_logic = knowledge_->compile (barrier_data_string.str ());\n";
   buffer_ << "  barrier_sync_logic = knowledge_->compile (barrier_sync.str ());\n";
 
   buffer_ << "  Algo::init(context);\n";
@@ -1613,7 +1684,7 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "      wait_settings.send_list.clear (); \n";
   buffer_ << "      wait_settings.delay_sending_modifieds = false; \n";
   buffer_ << "      // first barrier for new data from previous round \n";
-  buffer_ << "      if(knowledge_->evaluate (barrier_logic, wait_settings).to_integer()) \n";
+  buffer_ << "      if(knowledge_->evaluate (barrier_data_logic, wait_settings).to_integer()) \n";
   buffer_ << "        phase++;\n";
   buffer_ << "    }\n";
 
@@ -1818,6 +1889,7 @@ dmpl::gams::Sync_Builder::build_main_function ()
   buffer_ << "int main (int argc, char ** argv)\n";
   buffer_ << "{\n";
   //buffer_ << "  Madara::Utility::set_log_level(Madara::Utility::LOG_DETAILED_TRACE);\n";
+  //buffer_ << "  Madara::Utility::set_log_level(Madara::Utility::LOG_MAJOR_DEBUG_INFO);\n";
   buffer_ << "  settings.type = Madara::Transport::MULTICAST;\n";
   //buffer_ << "  settings.type = Madara::Transport::BROADCAST;\n";
   buffer_ << "  platform_init_fns[\"vrep\"] = init_vrep;\n";
@@ -1837,7 +1909,7 @@ dmpl::gams::Sync_Builder::build_main_function ()
   buffer_ << "  }\n\n";
   
   buffer_ << "  settings.queue_length = 1000000;\n\n";
-  buffer_ << "  settings.set_deadline(2);\n\n";
+  buffer_ << "  settings.set_deadline(1);\n\n";
 
 
 #if 0
@@ -1947,12 +2019,12 @@ dmpl::gams::Sync_Builder::build_main_function ()
 #if USE_MZSRM==1
           if(schedType_ == MZSRM) {
             if (platformFunction == f.second)
-              buffer_ << "  algo = new SyncAlgo(" <<
+              buffer_ << "  algo = new SyncAlgo("
                       << period << ", " << priority << ", " 
                       << criticality << ", " << zsinst << ", \"" << f.second->name 
                       << "\", &knowledge, platform_name);\n";
             else
-              buffer_ << "  algo = new SyncAlgo(" <<
+              buffer_ << "  algo = new SyncAlgo("
                       << period << ", " << priority << ", " 
                       << criticality << ", " << zsinst << ", \"" << f.second->name 
                       << "\", &knowledge);\n";
@@ -2014,6 +2086,9 @@ void
 dmpl::gams::Sync_Builder::build_main_define_functions ()
 {
   buffer_ << "  // Defining common functions\n\n";
+
+  buffer_ << "  knowledge.define_function (\"REMODIFY_BARRIERS\", ";
+  buffer_ << "REMODIFY_BARRIERS);\n\n";
 
   buffer_ << "  knowledge.define_function (\"REMODIFY_GLOBALS\", ";
   buffer_ << "REMODIFY_GLOBALS);\n\n";

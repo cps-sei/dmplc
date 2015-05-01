@@ -1,8 +1,8 @@
 #!/bin/bash
 
-DMPL="example-05.dmpl example-05-AADL.dmpl"
+DMPL="exp2 AADL.dmpl"
 LIBS="dartam/Debug/adaptation_manager.o dartam/Debug/AdaptationPlanner.o"
-BIN=example-05
+BIN=exp2
 
 OUTDIR=outdir
 MAPNAME=small
@@ -18,7 +18,7 @@ IY=2
 FX=7
 FY=7
 
-DROP_RATE=`awk -v "seed=$[(RANDOM & 32767) + 32768 * (RANDOM & 32767)]" 'BEGIN { srand(seed); printf("%.5f\n", rand() * 0.2) }'`
+DROP_RATE=`awk -v "seed=$[(RANDOM & 32767) + 32768 * (RANDOM & 32767)]" 'BEGIN { srand(seed); printf("%.5f\n", rand() * 0.2 + 0.2) }'`
 
 echo $DROP_RATE
 

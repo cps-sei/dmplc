@@ -17,7 +17,7 @@ LIB=$(MADARA_ROOT)/libMADARA.so
 ifeq "$(MZSRM)" "1"
 LIB+= $(JAVA_ROOT)/jre/lib/amd64/server/libjvm.so
 endif
-CFLAGS=-g -O0 -fno-inline -DUSE_MZSRM=$(MZSRM)
+CFLAGS=-g -O0 -fno-inline -DUSE_MZSRM=$(MZSRM) -ftime-report
 CXX=g++
 VREP_FILES=remoteApi.so vrep.py vrepConst.py
 BITNESS=32Bit

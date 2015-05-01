@@ -53,12 +53,6 @@
  * DM-0001023
 **/
 
-#if USE_MZSRM==1
-extern "C" {
-#include <stdio.h>
-#include <jni.h>
-}
-#endif
 
 #include "Analyzer_Builder.hpp"
 #include <dmpl/gams/Function_Visitor.hpp>
@@ -87,9 +81,6 @@ dmpl::gams::Analyzer_Builder::build ()
   // close dmpl namespace
   close_dmpl_namespace ();
   buffer_ << "using namespace dmpl;\n";
-#if USE_MZSRM==1
-  if(schedType_ == MZSRM) compute_priorities ();
-#endif
   build_main_function ();
 }
 
@@ -103,18 +94,6 @@ dmpl::gams::Analyzer_Builder::build_header_includes ()
   buffer_ << "#include <assert.h>\n";
   buffer_ << "#include <math.h>\n";
   buffer_ << "\n";
-#if USE_MZSRM==1
-  if(schedType_ == MZSRM) {
-    buffer_ << "extern \"C\" {\n";
-    buffer_ << "#include <stdio.h>\n";
-    buffer_ << "#include <stdlib.h>\n";
-    buffer_ << "#include <time.h>\n";
-    buffer_ << "#include <sched.h>\n";
-    buffer_ << "#include <zsrm.h>\n";
-    buffer_ << "}\n";
-    buffer_ << "\n";
-  }
-#endif
   buffer_ << "#include \"madara/knowledge_engine/Knowledge_Base.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/Knowledge_Record.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/Functions.h\"\n";
@@ -1005,10 +984,21 @@ dmpl::gams::Analyzer_Builder::build_main_function ()
     if(cond->kind == "expect")
     {
       Attribute *attrAtEnd = cond->getAttribute("AtEnd", 0);
-      buffer_ << "    for(int n = 0; n < processes; n++) {" << std::endl;
+      Attribute *attrAtLeast = cond->getAttribute("AtLeast", 1);
+      Attribute *attrAtNode = cond->getAttribute("AtNode", 1);
+      if (attrAtNode)
+      {
+        buffer_ << "    {" << std::endl;
+        buffer_ << "      " << node.idVar->getName() << " = " << attrAtNode->paramList.front()->requireInt() << ";" << std::endl;
+        buffer_ << "      int n = " << node.idVar->getName() << ";" << std::endl;
+      }
+      else
+      {
+        buffer_ << "    for(int n = 0; n < processes; n++) {" << std::endl;
 
+        buffer_ << "      " << node.idVar->getName() << " = n;" << std::endl;
+      }
       buffer_ << "      engine::Variables vars;" << std::endl;
-      buffer_ << "      " << node.idVar->getName() << " = n;" << std::endl;
       buffer_ << "      bool value = (";
       dmpl::madara::Function_Visitor visitor (stmt, node, builder_, buffer_, false, true);
       visitor.visit(cond->cond);
@@ -1018,9 +1008,18 @@ dmpl::gams::Analyzer_Builder::build_main_function ()
       {
         buffer_ << "      knowledge.set(\"AtEnd_RESULT.\"+to_string(n)+\"." << cond->name << "\", Integer(value?1:0));\n";
       }
+      else if (attrAtLeast)
+      {
+        buffer_ << "      int total_so_far = knowledge.get(\"AtLeast_TOTAL.\"+to_string(n)+\"." << cond->name << "\").to_integer();\n";
+        buffer_ << "      int count_so_far = knowledge.get(\"AtLeast_COUNT.\"+to_string(n)+\"." << cond->name << "\").to_integer();\n";
+        buffer_ << "      knowledge.set(\"AtLeast_TOTAL.\"+to_string(n)+\"." << cond->name << "\", total_so_far + Integer(value?1:0));\n";
+        buffer_ << "      knowledge.set(\"AtLeast_COUNT.\"+to_string(n)+\"." << cond->name << "\", Integer(count_so_far + 1));\n";
+      }
       else
       {
-        buffer_ << "      std::cout << analyzer.get_cur_frame() << \"," << cond->name << ",\" << n << \",\" << value << std::endl;" << std::endl;
+        buffer_ << "      std::cout << analyzer.get_cur_frame() << \"," << cond->name << ",\" << ";
+        buffer_ << "n";
+        buffer_ << " << \",\" << value << std::endl;" << std::endl;
       }
 
       buffer_ << "    }" << std::endl;
@@ -1034,12 +1033,29 @@ dmpl::gams::Analyzer_Builder::build_main_function ()
     CondStmt *cond = dynamic_cast<CondStmt*>(stmt.get());
     if(cond->kind == "expect")
     {
+      Attribute *attrAtNode = cond->getAttribute("AtNode", 1);
       Attribute *attrAtEnd = cond->getAttribute("AtEnd", 0);
+      Attribute *attrAtLeast = cond->getAttribute("AtLeast", 1);
       if(attrAtEnd)
       {
-        buffer_ << "  for(int n = 0; n < processes; n++) {" << std::endl;
+        if (attrAtNode)
+          buffer_ << "  { int n = " << node.idVar->getName() << ";" << std::endl;
+        else
+          buffer_ << "  for(int n = 0; n < processes; n++) {" << std::endl;
         buffer_ << "    bool value = knowledge.get(\"AtEnd_RESULT.\"+to_string(n)+\"." << cond->name << "\").to_integer() == 1;\n";
         buffer_ << "    std::cout << \"AtEnd," << cond->name << ",\" << n << \",\" << value << std::endl;" << std::endl;
+        buffer_ << "  }\n";
+      }
+      else if(attrAtLeast)
+      {
+        if (attrAtNode)
+          buffer_ << "  { int n = " << node.idVar->getName() << ";" << std::endl;
+        else
+          buffer_ << "  for(int n = 0; n < processes; n++) {" << std::endl;
+        buffer_ << "    double total = knowledge.get(\"AtLeast_TOTAL.\"+to_string(n)+\"." << cond->name << "\").to_double();\n";
+        buffer_ << "    double count = knowledge.get(\"AtLeast_COUNT.\"+to_string(n)+\"." << cond->name << "\").to_double();\n";
+        buffer_ << "    bool value = (total / count) >= " << attrAtLeast->paramList.front()->requireDouble() << ";\n";
+        buffer_ << "    std::cout << \"AtLeast," << cond->name << ",\" << n << \",\" << value << std::endl;" << std::endl;
         buffer_ << "  }\n";
       }
     }

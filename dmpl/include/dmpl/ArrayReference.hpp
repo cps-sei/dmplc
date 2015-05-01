@@ -226,7 +226,7 @@ public:
 
   void mark_modified()
   {
-    std::cerr << "Reference mark_modified " << this->get_name() << std::endl;
+    //std::cerr << "Reference mark_modified " << this->get_name() << std::endl;
     get_array().mark_modified(*this);
   }
 
@@ -719,7 +719,7 @@ private:
 public:
   void mark_modified()
   {
-    std::cerr << "Array mark_modified " << this->get_name() << std::endl;
+    //std::cerr << "Array mark_modified " << this->get_name() << std::endl;
     check_var_len("mark_modified");
     for(int i = 0; i < get_size<0>(); i++)
     {
@@ -801,7 +801,7 @@ public:
 protected:
   void mark_modified(reference_type ref)
   {
-    std::cerr << "Array sub mark_modified " << ref.get_name() << std::endl;
+    //std::cerr << "Array sub mark_modified " << ref.get_name() << std::endl;
     check_var_len("mark_modified");
     for(int i = 0; i < get_size<0>(); i++)
     {
@@ -1182,7 +1182,7 @@ public:
 
   void mark_modified(reference_type in)
   {
-    std::cerr << "Base mark_modified " << in.get_name() << std::endl;
+    //std::cerr << "Base mark_modified " << in.get_name() << std::endl;
     in.mark_modified();
   }
 

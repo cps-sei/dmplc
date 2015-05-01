@@ -80,11 +80,11 @@ CONST BottomY = -6;
 CONST RightX = 6.5;
 
 EXTERN void INIT_CONTROLLER(unsigned char x,unsigned char y);
-EXTERN void GRID_INIT(int _X,int _Y,double _LeftX,double _RightX,double _TopY,double _BottomY);
+EXTERN void GRID_INIT(int XX,int YY,double LeftX,double RightX,double TopY,double BottomY);
 EXTERN void GRID_PLACE(unsigned char x,unsigned char y, double z);
 EXTERN int GRID_MOVE(unsigned char x,unsigned char y, unsigned char xp,unsigned char yp, double z);
 EXTERN int my_sleep(int seconds);
-EXTERN void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf);
+EXTERN void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
 EXTERN void print_int(int i);
 EXTERN double GET_LAT();
 EXTERN double GET_LNG();
@@ -116,7 +116,7 @@ NODE uav (id)
   //@AT_LEAST(0.5)
   expect COVERAGE(coverage() > 0.9);
   
-  _Bool NEXT_XY () {
+  Bool NEXT_XY () {
     if(!waypointValid)
       return 1;
     xp = x; yp = y;

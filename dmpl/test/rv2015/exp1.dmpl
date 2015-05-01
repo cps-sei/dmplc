@@ -740,10 +740,6 @@ node uav (id)
   @AtNode(0)
   expect COVERAGE_95_95(current_hazard * (1-coverage()) < 0.95);
 
-  @AtEnd
-  @AtNode(0)
-  expect REACHED_END(x@0 == xt@0 && y@0 == yt@0);
-
   PURE double risk_integral()
   {
     if(id == 0)
