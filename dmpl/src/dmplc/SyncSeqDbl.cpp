@@ -528,22 +528,22 @@ void dmpl::SyncSeqDbl::createMainFunc()
   Func roundFunc;
   const Node &node = builder.program.nodes.begin()->second;
   BOOST_FOREACH(const Funcs::value_type &f, node.funcs) {
-    int barSync = f.second->attrs.count("BARRIER_SYNC");
+    int barSync = f.second->attrs.count("BarrierSync");
     if(barSync < 1)
       continue;
     else if(barSync > 1)
       std::cerr << "Warning: function " << f.second->name <<
-        " has more than one @BARRIER_SYNC attribute" << std::endl;
+        " has more than one @BarrierSync attribute" << std::endl;
     if(roundFunc != NULL) {
       std::cerr << "Warning: function " << roundFunc->name << " is not the " <<
-        "only @BARRIER_SYNC function; also found: " << f.second->name <<
+        "only @BarrierSync function; also found: " << f.second->name <<
         " which will be ignored." << std::endl;
     }
     roundFunc = f.second;
   }
 
   if(roundFunc == NULL) {
-    std::cerr << "Error: no @BARRIER_SYNC function found." << std::endl;
+    std::cerr << "Error: no @BarrierSync function found." << std::endl;
     exit(1);
   }
 

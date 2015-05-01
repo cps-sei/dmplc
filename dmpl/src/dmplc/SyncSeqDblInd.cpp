@@ -508,6 +508,31 @@ void dmpl::SyncSeqDblInd::createRoundCopier()
 }
 
 /*********************************************************************/
+//-- call the function that asserts the safety properties
+/*********************************************************************/
+void dmpl::SyncSeqDblInd::callFunction(const std::string &funcName,StmtList &body)
+{
+  Expr callExpr(new LvalExpr(funcName));
+  Stmt callStmt(new CallStmt(callExpr,dmpl::ExprList()));
+  body.push_back(callStmt);
+}
+
+/*********************************************************************/
+//-- call round functions of each node once
+/*********************************************************************/
+void dmpl::SyncSeqDblInd::callRoundFuncs(Func &roundFunc,StmtList &body)
+{
+  const Node &node = builder.program.nodes.begin()->second;
+  for(size_t i = 0;i < nodeNum;++i) {
+    //call the _fwd version of the ROUND function of the node. this
+    //copies from _i to _f
+    std::string callNameFwd = node.name + "__" + roundFunc->name + "_" + 
+      boost::lexical_cast<std::string>(i) + "_fwd";
+    callFunction(callNameFwd,body);
+  }
+}
+
+/*********************************************************************/
 //create the main function
 /*********************************************************************/
 void dmpl::SyncSeqDblInd::createMainFunc()
@@ -515,74 +540,61 @@ void dmpl::SyncSeqDblInd::createMainFunc()
   dmpl::VarList mainParams,mainTemps;
   StmtList mainBody;
 
-  {
-    //add call to INIT()
-    Expr callExpr1(new LvalExpr("__INIT"));
-    Stmt callStmt1(new CallStmt(callExpr1,dmpl::ExprList()));
-    mainBody.push_back(callStmt1);
-    
-    //-- add call to SAFETY()
-    Expr callExpr2(new LvalExpr("__SAFETY"));
-    Stmt callStmt2(new CallStmt(callExpr2,dmpl::ExprList()));
-    mainBody.push_back(callStmt2);
-    
-    //-- add call to HAVOC()
-    Expr callExpr3(new LvalExpr("__HAVOC"));
-    Stmt callStmt3(new CallStmt(callExpr3,dmpl::ExprList()));
-    mainBody.push_back(callStmt3);
-    
-    //-- add call to ASSUME()
-    Expr callExpr4(new LvalExpr("__ASSUME"));
-    Stmt callStmt4(new CallStmt(callExpr4,dmpl::ExprList()));
-    mainBody.push_back(callStmt4);
-
-    //-- call forward round copier
-    Expr callExpr5(new LvalExpr("round_fwd_copier"));
-    Stmt callStmt5(new CallStmt(callExpr5,dmpl::ExprList()));
-    mainBody.push_back(callStmt5);
-
-    //-- find the ROUND functions
-    Func roundFunc;
-    const Node &node = builder.program.nodes.begin()->second;
-    BOOST_FOREACH(const Funcs::value_type &f, node.funcs) {
-      int barSync = f.second->attrs.count("BARRIER_SYNC");
-      if(barSync < 1)
-        continue;
-      else if(barSync > 1)
-        std::cerr << "Warning: function " << f.second->name <<
-          " has more than one @BARRIER_SYNC attribute" << std::endl;
-      if(roundFunc != NULL) {
-        std::cerr << "Warning: function " << roundFunc->name << " is not the " <<
-          "only @BARRIER_SYNC function; also found: " << f.second->name <<
-          " which will be ignored." << std::endl;
-      }
-      roundFunc = f.second;
+  //-- find the ROUND functions
+  Func roundFunc;
+  const Node &node = builder.program.nodes.begin()->second;
+  BOOST_FOREACH(const Funcs::value_type &f, node.funcs) {
+    int barSync = f.second->attrs.count("BarrierSync");
+    if(barSync < 1)
+      continue;
+    else if(barSync > 1)
+      std::cerr << "Warning: function " << f.second->name <<
+        " has more than one @BarrierSync attribute" << std::endl;
+    if(roundFunc != NULL) {
+      std::cerr << "Warning: function " << roundFunc->name << " is not the " <<
+        "only @BarrierSync function; also found: " << f.second->name <<
+        " which will be ignored." << std::endl;
     }
-
-    if(roundFunc == NULL) {
-      std::cerr << "Error: no @BARRIER_SYNC function found." << std::endl;
-      exit(1);
-    }
-
-    //call ROUND function of each node -- forward version
-    for(size_t i = 0;i < nodeNum;++i) {
-      //call the _fwd version of the ROUND function of the node. this
-      //copies from _i to _f
-      std::string callNameFwd = node.name + "__" + roundFunc->name + "_" + 
-        boost::lexical_cast<std::string>(i) + "_fwd";
-      Expr callExprFwd(new LvalExpr(callNameFwd));
-      Stmt callStmtFwd(new CallStmt(callExprFwd,dmpl::ExprList()));
-      mainBody.push_back(callStmtFwd);
-    }
-
-    //call backward round copier
-    Expr callExpr6(new LvalExpr("round_bwd_copier"));
-    Stmt callStmt6(new CallStmt(callExpr6,dmpl::ExprList()));
-    mainBody.push_back(callStmt6);
-
-    //call SAFETY()
-    mainBody.push_back(callStmt2);
+    roundFunc = f.second;
   }
+
+  if(roundFunc == NULL) {
+    std::cerr << "Error: no @BarrierSync function found." << std::endl;
+    exit(1);
+  }
+
+  //add call to INIT() and SAFETY()
+  callFunction("__INIT",mainBody);
+  callFunction("__SAFETY",mainBody);
+
+  //-- for K-induction, generate additional rounds and SAFETY checks
+  if(roundNum > 0) {
+    for(size_t i = 0;i < roundNum;++i) {
+      callFunction("round_fwd_copier",mainBody);
+      callRoundFuncs(roundFunc,mainBody);
+      callFunction("round_bwd_copier",mainBody);
+      callFunction("__SAFETY",mainBody);
+    }
+  }
+  
+  //-- add call to HAVOC(), ASSUME(), forward_copier(), round
+  //-- functions, backward copier(), and SAFETY(). for K-induction you
+  //-- have to do this K+1 times with as ASSUME() after the first K
+  //-- times, and SAFETY() after the last one.
+  callFunction("__HAVOC",mainBody);
+  if(roundNum > 0) {
+    for(size_t i = 0;i < roundNum;++i) {
+      callFunction("__ASSUME",mainBody);
+      callFunction("round_fwd_copier",mainBody);
+      callRoundFuncs(roundFunc,mainBody);
+      callFunction("round_bwd_copier",mainBody);
+    }
+  }
+  callFunction("__ASSUME",mainBody);
+  callFunction("round_fwd_copier",mainBody);
+  callRoundFuncs(roundFunc,mainBody);
+  callFunction("round_bwd_copier",mainBody);
+  callFunction("__SAFETY",mainBody);
   
   Func mainFunc(new Function(dmpl::intType(),"main",mainParams,mainTemps,mainBody));
   cprog.addFunction(mainFunc);

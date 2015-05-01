@@ -109,6 +109,14 @@ namespace dmpl
 
     ///add a function
     void addFunction(const Func &f) { funcs[f->name] = f; }
+
+    ///add an external function
+    void addExternalFunction(const Func &f) { externalFuncs[f->name] = f; }
+
+    ///check if an external function with given name exists already
+    bool hasExternalFunc(const std::string &fn) {
+      return externalFuncs.find(fn) != externalFuncs.end();
+    }
   };
 }
 
