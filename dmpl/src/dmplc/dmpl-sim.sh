@@ -167,14 +167,16 @@ mv $RAC.saved.mcda-vrep $RAC
 
 #start the nodes
 GDB=""
+NUMCPU=$(grep -c ^processor /proc/cpuinfo)
 [ "$DEBUG" -ne 0 ] && GDB="gdb -ex=r --args"
 for x in `seq 1 $((NODENUM - 1))`; do
-echo $x
-args_var=ARGS_$x
-args="$(eval echo \$$args_var)"
-taskset -c ${x} $GDB ./$BIN -e $OUTDIR/expect${x}.log --platform vrep::::0.1 --id $x $args &> $OUTDIR/node${x}.out &
+  echo $x
+  args_var=ARGS_$x
+  cpu_id=$(expr $x % $NUMCPU)
+  args="$(eval echo \$$args_var)"
+  taskset -c ${cpu_id} $GDB ./$BIN -e $OUTDIR/expect${x}.log --platform vrep::::0.1 --id $x $args &> $OUTDIR/node${x}.out &
 done
-#gdb --args $GDB ./$BIN --drop-rate 1 -e $OUTDIR/expect0.log --platform vrep::::0.1 --id 0 $ARGS_0 # &> $OUTDIR/node0.out &
+#gdb --args $GDB ./$BIN -e $OUTDIR/expect0.log --platform vrep::::0.1 --id 0 $ARGS_0 # &> $OUTDIR/node0.out &
 taskset -c 0 $GDB ./$BIN -e $OUTDIR/expect0.log --platform vrep::::0.1 --id 0 $ARGS_0 &> $OUTDIR/node0.out &
 
 printf "press Ctrl-C to terminate the simulation ..."

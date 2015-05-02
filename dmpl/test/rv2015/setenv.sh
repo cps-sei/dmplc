@@ -10,3 +10,5 @@ export VREP_ROOT=$PKGROOT/vrep
 export DMPL_ROOT=$PKGROOT/dart/dmpl
 export PATH=$DMPL_ROOT/src/dmplc:$PATH
 export PATH=$DMPL_ROOT/src/vrep:$PATH
+export JAVA_ROOT=/usr/lib/jvm/java-7-openjdk-amd64
+export LD_LIBRARY_PATH=$JAVA_ROOT/jre/lib/amd64/server:$LD_LIBRARY_PATH

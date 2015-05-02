@@ -1,68 +1,81 @@
-This software was developed and tested on Xubuntu 14.04. In the
+This software was developed and tested on 64bit Xubuntu 14.04. In the
 following, lines starting with '$' indicate commands to be entered
 into a bash terminal. We assume that this package was unpacked in
-$HOME, i.e., the path of this file is $HOME/smc-dart/README.txt.
+$HOME, i.e., the path of this file is $HOME/smc-dart/README.txt. We
+are assuming you have a single machine on which all experiments will
+be done.
 
 Note: we have not included the ZSRM scheduler because it is kernel
 specific, and could lead to compilation issues on your machine. We
 believe the default Linux scheduler will provide similar results for
 these examples.
 
-=== Install Packages ===
+=== One-Time Setup ===
 
-The following Ubuntu packages are required:
+The following has to be done once on your machine.
 
-$ sudo apt-get install perl git build-essential subversion libboost-all-dev bison flex realpath tk
+1. Install packages
 
-=== Set Environment Variables ===
+$ sudo apt-get install perl git build-essential subversion libboost-all-dev bison flex realpath tk xvfb openjdk-7-jdk
 
-=== Install V-REP ===
+2. Install PRISM from http://www.prismmodelchecker.org/. We used
+version 4.1.beta-2. We recommend you download PRISM source and
+compile. Make sure the program "prism" is on your PATH, and runs
+without errors.
 
-$ cd $HOME/smc-dart
-$ source ./setenv.sh
-$ ./install-vrep.sh
+3. Install V-REP and then compile GAMS.
 
-=== Compile GAMS ===
+$ cd $HOME/smc-dart && source ./setenv.sh && ./setup.sh
 
-As GAMS depends on V-REP, you must compile it after installing V-REP.
+=== Running Experiments ===
 
-$ cd $PKGROOT/gams
-$ make vrep=1
+1. Run Aggregator
 
-=== Run Aggregator ===
+Open a terminal (Term1) and run the following commands:
 
-$ cd $HOME/smc-dart
-$ source ./setenv.sh
-$ cd $PKGROOT/dart-smc
-$ ./dart-smc
+$ cd $HOME/smc-dart && source ./setenv.sh && cd $PKGROOT/dart-smc && ./dart-smc
 
-Select the experiment from the drop-down list. You must select your
-desired experiment before starting any simulation clients.
+A new Aggregator window (GUI) will pop up. Select the experiment from
+the drop-down list. You must select your desired experiment before
+starting any simulation clients.
 
 -- Experiment 1 in the paper is exp1.
 
 -- Experiment 2 in the paper is composed of exp2a, exp2b, exp2c, exp2d,
 for the High, Medium, Low, and Poor network qualities, respectively.
 
-=== Run Simulation Client ===
+2. Run Simulation Client
 
-$ cd $HOME/smc-dart
-$ source ./setenv.sh
-$ cd $DMPL_ROOT/test/rv2015/
-$ $PKGROOT/dart-smc/smc-client $IP
+Open another terminal (Term2) and run the following commands:
 
-Where $IP is the ip address of the aggregator. If this is omitted, it
-defaults to localhost.
+$ cd $HOME/smc-dart && source ./setenv.sh && cd $DMPL_ROOT/test/rv2015 && $PKGROOT/dart-smc/smc-client
 
-=== Run Simulation ===
+3. Start experiments
 
-Once all simulation clients have connected, click Run to begin the
-experiment. Experiment will stop once target relative error is met for
-all properties, or you can stop early with the Stop
+Switch back to the GUI. You should see a new client in the pane called
+"Connections". Click Run to begin the experiment. The main pane of the
+GUI shows each property, and its currently computed probability and
+relative error (RE). Experiment will stop once target relative error
+is met for all properties, or you can stop early with the Stop
 button. Experiments can be stopped and resumed later.
 
 Results are stored in .state files in $PKGROOT/dart-smc with name
-corresponding to experiment name.  The package includes the .state
-files we generated, so new results will add to those by default.  To
-produce fresh experimental results, delete these files before
-beginning.
+corresponding to experiment name. For reference, the .state files we
+generated for the paper are in $PKGROOT/dart-smc/paper-states.
+
+NOTE: "Samples" in the GUI shows the number of valid simulation
+results. If this value does not increase for a while (5 minutes), then
+it means no new valid simulation results are being received by the
+Aggregator. Simply restart the client as follows:
+
+a) Switch to the GUI, click Stop.
+
+b) Switch to Term2. Hit Ctrl-C to stop the client and restart it with:
+
+$ $PKGROOT/dart-smc/smc-client
+
+c) Switch back to GUI, and click Run.
+
+The experiment will resume, and previous valid results will be
+retained. If you want to restart an experiment from scratch, delete
+the corresponding ".state" file.
