@@ -22,6 +22,13 @@ $ cd $HOME/smc-dart
 $ source ./setenv.sh
 $ ./install-vrep.sh
 
+=== Compile GAMS ===
+
+As GAMS depends on V-REP, you must compile it after installing V-REP.
+
+$ cd $PKGROOT/gams
+$ make vrep=1
+
 === Run Aggregator ===
 
 $ cd $HOME/smc-dart
@@ -29,7 +36,8 @@ $ source ./setenv.sh
 $ cd $PKGROOT/dart-smc
 $ ./dart-smc
 
-Select the experiment from the drop-down list.
+Select the experiment from the drop-down list. You must select your
+desired experiment before starting any simulation clients.
 
 -- Experiment 1 in the paper is exp1.
 
