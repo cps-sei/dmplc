@@ -1,6 +1,7 @@
 This software was developed and tested on Xubuntu 14.04. In the
 following, lines starting with '$' indicate commands to be entered
-into a bash terminal.
+into a bash terminal. We assume that this package was unpacked in
+$HOME, i.e., the path of this file is $HOME/smc-dart/README.txt.
 
 Note: we have not included the ZSRM scheduler because it is kernel
 specific, and could lead to compilation issues on your machine. We
@@ -15,14 +16,16 @@ $ sudo apt-get install perl git build-essential subversion libboost-all-dev biso
 
 === Set Environment Variables ===
 
-$ source ./setenv.sh
-
 === Install V-REP ===
 
+$ cd $HOME/smc-dart
+$ source ./setenv.sh
 $ ./install-vrep.sh
 
 === Run Aggregator ===
 
+$ cd $HOME/smc-dart
+$ source ./setenv.sh
 $ cd $PKGROOT/dart-smc
 $ ./dart-smc
 
@@ -35,8 +38,8 @@ for the High, Medium, Low, and Poor network qualities, respectively.
 
 === Run Simulation Client ===
 
-On the machine or VM you want to run simulations on:
-
+$ cd $HOME/smc-dart
+$ source ./setenv.sh
 $ cd $DMPL_ROOT/test/rv2015/
 $ $PKGROOT/dart-smc/smc-client $IP
 
