@@ -1,9 +1,9 @@
-This software was developed and tested on 64bit Xubuntu 14.04. In the
-following, lines starting with '$' indicate commands to be entered
-into a bash terminal. We assume that this package was unpacked in
-$HOME, i.e., the path of this file is $HOME/smc-dart/README.txt. We
-are assuming you have a single machine on which all experiments will
-be done.
+This software was tested on 64bit Xubuntu 14.04 using bash as
+shell. In the following, lines starting with '$' indicate commands to
+be entered into a bash terminal. We assume that this package was
+unpacked in $HOME, i.e., the path of this file is
+$HOME/smc-dart/README.txt. We are assuming you have a single machine
+on which all experiments will be done.
 
 Note: we have not included the ZSRM scheduler because it is kernel
 specific, and could lead to compilation issues on your machine. We
