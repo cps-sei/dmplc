@@ -103,10 +103,10 @@ NODE uav (id)
 
 NODE uav (id)
 {
-  @HERTZ(10)
-  @BARRIER_SYNC
-  @PLATFORM_CONTROLLER
-  void ROUND () {
+  @Period(250000)
+  @BarrierSync
+  @PlatformController
+  void COLLISION_AVOIDANCE () {
     print_state(X,Y,id,x,y,xf,yf);
     //my_sleep(1);
     if IF_INIT (state == INITS) {
@@ -136,7 +136,7 @@ NODE uav (id)
     }
   }
 
-  @INIT_SIM
+  @InitSim
   void StartingPosition ()
   {
     GRID_INIT(X, Y, LeftX, RightX, TopY, BottomY);
