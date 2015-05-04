@@ -681,7 +681,8 @@ dmpl::gams::Sync_Builder::build_parse_args ()
   buffer_ << "        std::stringstream buffer (argv[i + 1]);\n";
   buffer_ << "        buffer >> drop_rate;\n";
   buffer_ << "        std::cerr << \"drop_rate: \" << drop_rate << std::endl;\n";
-  buffer_ << "        Madara::Transport::Packet_Scheduler::drop_rate_override = drop_rate;\n";
+  //TODO: fix handling of packet drops in MADARA
+  //buffer_ << "        Madara::Transport::Packet_Scheduler::drop_rate_override = drop_rate;\n";
   buffer_ << "        settings.update_drop_rate (drop_rate,\n";
   buffer_ << "          Madara::Transport::PACKET_DROP_PROBABLISTIC);\n";
   buffer_ << "      }\n";
