@@ -238,8 +238,10 @@ global bool formation; //0 = loose, 1 = tight
 local bool changing; //are we changing formation now?
 local double remaining_time; //how much time left to complete formation change 
 
-local double hazards[X][Y], //map from cells to hazards
-local double variances[X][Y] { //map from cells to variances in hazard predictions
+{
+  local double hazards[X][Y]; //map from cells to hazards
+  local double variances[X][Y]; //map from cells to variances in hazard predictions
+} << {
   //-- initialize hazards and variances arrays
   for(i = 0;i < X;) {
     for(j = 0;j < Y;) {
@@ -253,9 +255,6 @@ local double variances[X][Y] { //map from cells to variances in hazard predictio
 }
 
 local double current_hazard; //hazard of current x and y
-
-local double variances[X][Y] { //map from cells to variances in hazard predictions
-}
 
 //-- next 5 waypoints
 local unsigned char next_wp_x[5]; 
