@@ -3,33 +3,54 @@
 DEBUG=0
 
 function usage {
-    echo "Usage : $0 file.mission [output.log]"
+    echo "Usage : dmpl-sim.sh [-args] file.mission [output.log]"
+    echo "  Optional Arguments:"
+    echo "    -h | --headless     Run V-REP in headless mode"
+    echo "    -r | --realtime     Run V-REP in realtime mode"
 }
 
 #flags
 HEADLESS=0
+REALTIME=0
+
+argc=0
 
 #get flags
 while true; do
   case "$1" in
-  -h)
+  -h|--headless)
     HEADLESS=1
     ;;
-  *)
+  -r|--realtime)
+    REALTIME=1
+    ;;
+  "")
     break
+    ;;
+  *)
+    case "$argc" in
+    0)
+      MISSION="$1"
+      ;;
+    1)
+      OUTLOG="$1"
+      ;;
+    *)
+      echo Unexpected argument: $1
+      usage
+      exit 1
+    esac
+    argc=$((argc+1))
     ;;
   esac
   shift
 done
 
-#get inputs
-MISSION="$1"
-OUTLOG="$2"
-
 #get the directory where this script is located
 SCDIR=$(dirname $(realpath $0))
 
-if [ "$#" -lt 1 -o "$#" -gt 2 ]; then
+if [ -z "$MISSION" ]; then
+    echo No .mission file specified
     usage
     exit 1
 fi
@@ -82,7 +103,11 @@ trap "cleanup" SIGINT SIGTERM SIGHUP
 
 INIT_PORT="19905"
 
-MAPFILE=$SCDIR/../../docs/tutorial/dart-${MAPNAME}.ttt
+if [ "$REALTIME" -eq 1 ]; then
+  MAPFILE=$SCDIR/../../docs/tutorial/dart-${MAPNAME}-rt.ttt
+else
+  MAPFILE=$SCDIR/../../docs/tutorial/dart-${MAPNAME}.ttt
+fi
 
 if [ ! -e "$MAPFILE" ]; then
     echo "Map file $MAPFILE does not exist!!"

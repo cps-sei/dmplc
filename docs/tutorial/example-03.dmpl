@@ -104,7 +104,7 @@ node uav (id)
     else yp = y - 1;
   }
 
-  void WAYPOINT() {
+  thread WAYPOINT() {
     if(id != 0 && init@0 == 0) {
       waypointValid = 0;
       return;
@@ -112,8 +112,8 @@ node uav (id)
       waypointValid = 1;
     }
     if(id == 0) {
-      ly@0 = yp;
-      lx@0 = xp;
+      ly = yp;
+      lx = xp;
     } else if(id == 1) {
       xt = lx@0 + 2;
       yt = ly@0 + 2;
@@ -143,16 +143,16 @@ node uav (id)
 
   @BarrierSync
   @PlatformController
-  void COLLISION_AVOIDANCE () {
+  thread COLLISION_AVOIDANCE () {
     print_state(X,Y,id,x,y,xt,yt);
     //my_sleep(1);
     if(state == INITS) {
-      lock[x][y]@id = 1;
+      lock[x][y] = 1;
       if(id == 0) {
-        lx@0 = x;
-        ly@0 = y;
+        lx = x;
+        ly = y;
       }
-      init[id] = 1;
+      init = 1;
       state = NEXT;
     } if(state == NEXT) {
       //compute next point on route
@@ -162,7 +162,7 @@ node uav (id)
     } else if(state == REQUEST) {
       //request the lock but only if it is free
       if(EXISTS_LOWER(idp,lock[xp][yp]@idp != 0)) return;
-      lock[xp][yp]@id = 1;
+      lock[xp][yp] = 1;
       state = WAITING;
     } else if(state == WAITING) {
       //grab the lock if we are the highest 
@@ -172,7 +172,7 @@ node uav (id)
     } else if(state == MOVE) {
       //now we have the lock on (x’,y’)
       if(GRID_MOVE(xp,yp,0.5)) return;
-      lock[x][y]@id = 0; 
+      lock[x][y] = 0; 
       x = xp; y = yp;
       state = NEXT;
     }
