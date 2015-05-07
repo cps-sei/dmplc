@@ -1,0 +1,39 @@
+//-- here we model the controller. each node has its own controller
+//-- that mediates interaction between the application and the
+//-- platform. the controller has two types of states -- HOVER and MOVE
+
+//-- controller states
+CONST CHOVER = 0;
+CONST CMOVE = 1;
+
+NODE uav(id)
+{
+  LOCAL _Bool cstate;
+  LOCAL unsigned char cx,cy,cxp,cyp;
+
+  void INIT_CONTROLLER(unsigned char _x,unsigned char _y)
+  {
+    cstate = CHOVER;
+    cx = _x; cy = _y;
+    cxp = 0; cyp = 0;
+  }
+
+  int GRID_MOVE(unsigned char _xp,unsigned char _yp, double _z)
+  {
+    if(cstate == CHOVER) {
+      cstate = CMOVE;
+      cxp = _xp; cyp = _yp;
+      if(nondet_bool()) {
+        cx = cxp; cy = cyp;
+        cstate = CHOVER;
+        return 0;
+      } else return 1;
+    } else {
+      if(nondet_bool()) {
+        cx = cxp; cy = cyp;
+        cstate = CHOVER;
+        return 0;
+      } else return 1;
+    }
+  }
+}
