@@ -82,7 +82,7 @@ const BottomY = -6;
 const RightX = 6.5;
 
 extern void INIT_CONTROLLER(unsigned char x,unsigned char y);
-extern void GRID_INIT(int XX,int YY,double LeftX,double RightX,double TopY,double BottomY);
+extern void GRID_INIT(int XX,int YY,double leftX,double rightX,double topY,double bottomY);
 extern void GRID_PLACE(unsigned char x,unsigned char y, double z);
 extern int GRID_MOVE(unsigned char x,unsigned char y, unsigned char xp,unsigned char yp, double z);
 extern int my_sleep(int seconds);
