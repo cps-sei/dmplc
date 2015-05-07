@@ -3,8 +3,24 @@
 DEBUG=0
 
 function usage {
-    echo "Usage : $0 file.mission output.log"
+    echo "Usage : $0 file.mission [output.log]"
 }
+
+#flags
+HEADLESS=0
+
+#get flags
+while true; do
+  case "$1" in
+  -h)
+    HEADLESS=1
+    ;;
+  *)
+    break
+    ;;
+  esac
+  shift
+done
 
 #get inputs
 MISSION="$1"
@@ -13,7 +29,7 @@ OUTLOG="$2"
 #get the directory where this script is located
 SCDIR=$(dirname $(realpath $0))
 
-if [ "$#" != "2" ]; then
+if [ "$#" -lt 1 -o "$#" -gt 2 ]; then
     usage
     exit 1
 fi
@@ -47,10 +63,14 @@ function cleanup {
     echo $bin_count  $NODENUM $VREP_GRACEFUL_EXIT
     if [ "$bin_count" -eq $NODENUM ] && [ "$VREP_GRACEFUL_EXIT" -ge 1 ]; then
       #collate output log
-      $SCDIR/expect_merge.py $EXPECT_LOG_PERIOD $OUTDIR/expect*.log > $OUTLOG
+      if [ -n "$OUTLOG" ]; then
+        $SCDIR/expect_merge.py $EXPECT_LOG_PERIOD $OUTDIR/expect*.log > $OUTLOG
+      fi
     else
       echo "Something crashed; aborting logging"
-      rm $OUTLOG
+      if [ -n "$OUTLOG" ]; then
+        rm $OUTLOG
+      fi
       exit 1
     fi
     
@@ -132,10 +152,11 @@ status_file=`tempfile`
 function run_vrep()
 {
   cd $VREP_ROOT
-  # Uncomment, and comment next line, to run V-REP in GUI mode
-  #./vrep.sh "-g$MISSION_TIME" "-g$1" -q "-b$DMPL_ROOT/src/vrep/timer.lua" $MAPFILE &> $OUTDIR/vrep.out
-  # Uncomment, and comment previous line, to run V-REP in headless mode
-  xvfb-run --auto-servernum --server-num=1 -s "-screen 0 640x480x24" ./vrep.sh "-g$MISSION_TIME" "-g$1" -h -q "-b$DMPL_ROOT/src/vrep/timer.lua" $MAPFILE &> $OUTDIR/vrep.out
+  if [ "$HEADLESS" -eq 1 ]; then
+    xvfb-run --auto-servernum --server-num=1 -s "-screen 0 640x480x24" ./vrep.sh "-g$MISSION_TIME" "-g$1" -h -q "-b$DMPL_ROOT/src/vrep/timer.lua" $MAPFILE &> $OUTDIR/vrep.out
+  else
+    ./vrep.sh "-g$MISSION_TIME" "-g$1" -q "-b$DMPL_ROOT/src/vrep/timer.lua" $MAPFILE &> $OUTDIR/vrep.out
+  fi
 }
 
 (run_vrep "$status_file" &)
@@ -174,10 +195,14 @@ for x in `seq 1 $((NODENUM - 1))`; do
   args_var=ARGS_$x
   cpu_id=$(expr $x % $NUMCPU)
   args="$(eval echo \$$args_var)"
-  taskset -c ${cpu_id} $GDB ./$BIN -e $OUTDIR/expect${x}.log --platform vrep::::0.1 --id $x $args &> $OUTDIR/node${x}.out &
+  ELOG=""
+  [ -n "$OUTLOG" ] && ELOG="-e $OUTDIR/expect${0}.log"
+  taskset -c ${cpu_id} $GDB ./$BIN $ELOG --platform vrep::::0.1 --id $x $args &> $OUTDIR/node${x}.out &
 done
-#gdb --args $GDB ./$BIN -e $OUTDIR/expect0.log --platform vrep::::0.1 --id 0 $ARGS_0 # &> $OUTDIR/node0.out &
-taskset -c 0 $GDB ./$BIN -e $OUTDIR/expect0.log --platform vrep::::0.1 --id 0 $ARGS_0 &> $OUTDIR/node0.out &
+ELOG=""
+[ -n "$OUTLOG" ] && ELOG="-e $OUTDIR/expect0.log"
+#gdb --args $GDB ./$BIN $ELOG --platform vrep::::0.1 --id 0 $ARGS_0 # &> $OUTDIR/node0.out &
+taskset -c 0 $GDB ./$BIN $ELOG --platform vrep::::0.1 --id 0 $ARGS_0 &> $OUTDIR/node0.out &
 
 printf "press Ctrl-C to terminate the simulation ..."
 

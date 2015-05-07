@@ -1,7 +1,7 @@
 //-- this is a generic example demonstrating the synchronous collision
 //-- avoidance algorithm
 
-TARGET GNU_CPP,WIN_CPP %%{
+target GNU_CPP,WIN_CPP %%{
 #define GNU_WIN
 #include <stdlib.h>
 #include "madara/utility/Utility.h"
@@ -58,38 +58,38 @@ void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
 %%}
 
 //number of X and Y coordinates
-CONST X = 10;
-CONST Y = 10;
+const X = 10;
+const Y = 10;
 
 //states of each node
-CONST INITS = 0;
-CONST NEXT = 1;
-CONST REQUEST = 2;
-CONST WAITING = 3;
-CONST MOVE = 4;
+const INITS = 0;
+const NEXT = 1;
+const REQUEST = 2;
+const WAITING = 3;
+const MOVE = 4;
 
-CONST TopY = -2.25;
-CONST LeftX = -2.25;
-CONST BottomY = 2.25;
-CONST RightX = 2.25;
+const TopY = -2.25;
+const LeftX = -2.25;
+const BottomY = 2.25;
+const RightX = 2.25;
 
-//EXTERN int MOVE_TO(unsigned char x,unsigned char y);
-EXTERN int my_sleep(int seconds);
-EXTERN void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
-EXTERN void print_int(int i);
+//extern int MOVE_TO(unsigned char x,unsigned char y);
+extern int my_sleep(int seconds);
+extern void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
+extern void print_int(int i);
 
 
-NODE uav (id)
+node uav (id)
 {
   //shared variables -- visible across nodes. 
-  GLOBAL _Bool lock [X][Y];
+  global _Bool lock [X][Y];
 
   //private variables -- local to the node.
   //preserved across rounds
-  LOCAL unsigned char state; //the state
-  LOCAL unsigned char x,y; //current coordinates
-  LOCAL unsigned char xp,yp; //next coordinates
-  LOCAL unsigned char xf,yf; //final coordinates
+  local unsigned char state; //the state
+  local unsigned char x,y; //current coordinates
+  local unsigned char xp,yp; //next coordinates
+  local unsigned char xf,yf; //final coordinates
 
   //-- saves the next waypoint in (xp,yp)
   void NEXT_XY () {
@@ -101,16 +101,16 @@ NODE uav (id)
   }
 }
 
-NODE uav (id)
+node uav (id)
 {
   @Period(250000)
   @BarrierSync
   @PlatformController
-  void COLLISION_AVOIDANCE () {
+  thread COLLISION_AVOIDANCE () {
     print_state(X,Y,id,x,y,xf,yf);
     //my_sleep(1);
     if IF_INIT (state == INITS) {
-      lock[x][y]@id = 1;
+      lock[x][y] = 1;
       state = NEXT;
     } if IF_NEXT (state == NEXT) {
       //compute next point on route
@@ -120,17 +120,18 @@ NODE uav (id)
     } else if IF_REQUEST (state == REQUEST) {
       //request the lock but only if it is free
       if(EXISTS_LOWER(idp,lock[xp][yp]@idp != 0)) return;
-      lock[xp][yp]@id = 1;
+      lock[xp][yp] = 1;
       state = WAITING;
     } else if IF_WAITING (state == WAITING) {
       //grab the lock if we are the highest 
       //id node to request or hold the lock
+      //commented out to induce a bug
       //if(EXISTS_HIGHER(idp, lock[xp][yp]@idp != 0)) return;
       state = MOVE;
     } else if IF_MOVE (state == MOVE) {
       //now we have the lock on (x’,y’)
       if(GRID_MOVE(xp,yp,0.5)) return;
-      lock[x][y]@id = 0; 
+      lock[x][y] = 0; 
       x = xp; y = yp;
       state = NEXT;
     }

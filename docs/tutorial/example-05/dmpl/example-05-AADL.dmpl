@@ -1,8 +1,8 @@
 //-- there is an implicit MADARA receiver thread
-@MADARA_HERTZ(20)
-@MADARA_CRITICALITY(1)
-@MADARA_WCET_NOMINAL(10000)
-@MADARA_WCET_OVERLOAD(20000)
+@MadaraPeriod(100000)
+@MadaraCriticality(1)
+@MadaraWCExecTimeNominal(10000)
+@MadaraWCExecTimeOverload(20000)
 NODE uav
 {
   @Period(4000000)

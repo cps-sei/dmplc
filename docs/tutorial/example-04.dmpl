@@ -1,6 +1,6 @@
 //-- TBD: describe what this example is about
 
-TARGET GNU_CPP,WIN_CPP %%{
+target GNU_CPP,WIN_CPP %%{
 #define GNU_WIN
 #include <stdlib.h>
 #include "madara/utility/Utility.h"
@@ -58,56 +58,56 @@ void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf, int xp, int
 %%}
 
 //number of X and Y coordinates
-CONST X = 10;
-CONST Y = 10;
+const X = 10;
+const Y = 10;
 
 //states of each node
-CONST INITS = 0;
-CONST NEXT = 1;
-CONST REQUEST = 2;
-CONST WAITING = 3;
-CONST MOVE = 4;
+const INITS = 0;
+const NEXT = 1;
+const REQUEST = 2;
+const WAITING = 3;
+const MOVE = 4;
 
-CONST STILL = 0;
-CONST UP = 1;
-CONST DOWN = 2;
-CONST LEFT = 4;
-CONST RIGHT = 8;
-CONST ALL = 15;
+const STILL = 0;
+const UP = 1;
+const DOWN = 2;
+const LEFT = 4;
+const RIGHT = 8;
+const ALL = 15;
 
-CONST TopY = -2.25;
-CONST LeftX = -2.25;
-CONST BottomY = 2.25;
-CONST RightX = 2.25;
+const TopY = -2.25;
+const LeftX = -2.25;
+const BottomY = 2.25;
+const RightX = 2.25;
 
-//EXTERN int MOVE_TO(unsigned char x,unsigned char y);
-EXTERN int my_sleep(int seconds);
-EXTERN void print_state(int XX,int YY,int id, int x, int y, int xf, int yf, int xp, int yp, int d, int s);
-EXTERN void print_int(int i);
+//extern int MOVE_TO(unsigned char x,unsigned char y);
+extern int my_sleep(int seconds);
+extern void print_state(int XX,int YY,int id, int x, int y, int xf, int yf, int xp, int yp, int d, int s);
+extern void print_int(int i);
 
-EXTERN int GRID_MOVE(int x, int y);
-EXTERN void GRID_INIT(int x, int y);
-EXTERN void GRID_PLACE(int x, int y);
+extern int GRID_MOVE(int x, int y);
+extern void GRID_INIT(int x, int y);
+extern void GRID_PLACE(int x, int y);
 
 
-NODE uav (id)
+node uav (id)
 {
   //shared variables -- visible across nodes. 
   //must be accessed via R() and W()
-  GLOBAL unsigned char lock [X][Y];
-  GLOBAL unsigned char lx,ly; //leader's destination coordinates
-  GLOBAL _Bool init; //node is initialized
+  global unsigned char lock [X][Y];
+  global unsigned char lx,ly; //leader's destination coordinates
+  global bool init; //node is initialized
 
   //private variables -- local to the node.
   //preserved across rounds
-  LOCAL unsigned char state; //the state
-  LOCAL unsigned char x,y; //current coordinates
-  LOCAL unsigned char xp,yp; //next coordinates
-  LOCAL unsigned char xt,yt; //current target coordinates
-  LOCAL unsigned char dir;
-  LOCAL _Bool waypointValid; //xt, yt are valid
+  local unsigned char state; //the state
+  local unsigned char x,y; //current coordinates
+  local unsigned char xp,yp; //next coordinates
+  local unsigned char xt,yt; //current target coordinates
+  local unsigned char dir;
+  local bool waypointValid; //xt, yt are valid
   
-  _Bool NEXT_XY () {
+  bool NEXT_XY () {
     if(!waypointValid)
       return 1;
     xp = x; yp = y;
@@ -126,8 +126,7 @@ NODE uav (id)
     }
   }
 
-  @HERTZ(5)
-  void WAYPOINT() {
+  thread WAYPOINT() {
     if(id != 0 && init@0 == 0) {
       waypointValid = 0;
       return;
@@ -135,8 +134,8 @@ NODE uav (id)
       waypointValid = 1;
     }
     if(id == 0) {
-      ly@0 = yp;
-      lx@0 = xp;
+      ly = yp;
+      lx = xp;
     } else if(id == 1) {
       xt = lx@0 + 1;
       yt = ly@0 + 1;
@@ -164,26 +163,25 @@ NODE uav (id)
     }
   }
 
-  @HERTZ(5)
-  @BARRIER_SYNC
-  @PLATFORM_CONTROLLER
-  void ROUND () {
+  @BarrierSync
+  @PlatformController
+  thread COLLISION_AVOIDANCE () {
     print_state(X,Y,id,x,y,xt,yt,xp,yp,dir,state);
     //my_sleep(1);
     if(state == INITS) {
-      lock[x][y]@id = ALL;
+      lock[x][y] = ALL;
       xp = x;
       yp = y;
       dir = STILL;
       if(id == 0) {
-        lx@0 = x;
-        ly@0 = y;
+        lx = x;
+        ly = y;
       }
-      init@id = 1;
+      init = 1;
       state = NEXT;
     } else if(state == NEXT) {
       //compute next point on route
-      lock[x][y]@id = ALL;
+      lock[x][y] = ALL;
       if(x == xt && y == yt) {
         dir = STILL;
         return;
@@ -194,26 +192,26 @@ NODE uav (id)
       //request the lock but only if it is free
       if(dir == STILL || EXISTS_LOWER(idp, (lock[xp][yp]@idp & dir) != 0))
         return;
-      lock[xp][yp]@id = ALL;
+      lock[xp][yp] = ALL;
       state = WAITING;
     } else if(state == WAITING) {
       //grab the lock if we are the highest 
       //id node to request or hold the lock
       if(dir == STILL || EXISTS_HIGHER(idp, (lock[xp][yp]@idp & dir) != 0))
         return;
-      lock[x][y]@id = ALL & ~dir;
+      lock[x][y] = ALL & ~dir;
       state = MOVE;
     } else if(state == MOVE) {
       //now we have the lock on (x’,y’)
       if(GRID_MOVE(xp,yp,0.5)) return;
-      lock[x][y]@id = 0; 
+      lock[x][y] = 0; 
       x = xp; y = yp;
       dir = STILL;
       state = NEXT;
     }
   }
 
-  @INIT_SIM
+  @InitSim
   void StartingPosition ()
   {
     GRID_INIT(X, Y, LeftX, RightX, TopY, BottomY);

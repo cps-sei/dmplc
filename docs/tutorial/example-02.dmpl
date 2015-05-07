@@ -64,46 +64,46 @@ void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
 %%}
 
 //number of X and Y coordinates
-CONST X = 20;
-CONST Y = 20;
+const X = 20;
+const Y = 20;
 
 //states of each node
-CONST INITS = 0;
-CONST NEXT = 1;
-CONST REQUEST = 2;
-CONST WAITING = 3;
-CONST MOVE = 4;
+const INITS = 0;
+const NEXT = 1;
+const REQUEST = 2;
+const WAITING = 3;
+const MOVE = 4;
 
-CONST TopY = 13;
-CONST LeftX = -12.5;
-CONST BottomY = -6;
-CONST RightX = 6.5;
+const TopY = 13;
+const LeftX = -12.5;
+const BottomY = -6;
+const RightX = 6.5;
 
-EXTERN void INIT_CONTROLLER(unsigned char x,unsigned char y);
-EXTERN void GRID_INIT(int XX,int YY,double LeftX,double RightX,double TopY,double BottomY);
-EXTERN void GRID_PLACE(unsigned char x,unsigned char y, double z);
-EXTERN int GRID_MOVE(unsigned char x,unsigned char y, unsigned char xp,unsigned char yp, double z);
-EXTERN int my_sleep(int seconds);
-EXTERN void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
-EXTERN void print_int(int i);
-EXTERN double GET_LAT();
-EXTERN double GET_LNG();
+extern void INIT_CONTROLLER(unsigned char x,unsigned char y);
+extern void GRID_INIT(int XX,int YY,double LeftX,double RightX,double TopY,double BottomY);
+extern void GRID_PLACE(unsigned char x,unsigned char y, double z);
+extern int GRID_MOVE(unsigned char x,unsigned char y, unsigned char xp,unsigned char yp, double z);
+extern int my_sleep(int seconds);
+extern void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
+extern void print_int(int i);
+extern double GET_LAT();
+extern double GET_LNG();
 
-NODE uav (id)
+node uav (id)
 {
   //shared variables -- visible across nodes. 
   //must be accessed via R() and W()
-  GLOBAL _Bool lock [X][Y];
-  GLOBAL unsigned char lx,ly; //leader's destination coordinates
-  GLOBAL _Bool init; //node is initialized
+  global bool lock [X][Y];
+  global unsigned char lx,ly; //leader's destination coordinates
+  global bool init; //node is initialized
 
   //private variables -- local to the node.
   //preserved across rounds
-  LOCAL unsigned char state; //the state
-  LOCAL unsigned char x,y; //current coordinates
-  LOCAL unsigned char xp,yp; //next coordinates
-  LOCAL unsigned char xt,yt; //current target coordinates
-  LOCAL _Bool waypointValid; //xt, yt are valid
+  local unsigned char state; //the state
+  local unsigned char x,y; //current coordinates
+  local unsigned char xp,yp; //next coordinates
+  local unsigned char xt,yt; //current target coordinates
+  local bool waypointValid; //xt, yt are valid
 
   expect (x < 5);
   expect YLT5(y < 5);
@@ -116,7 +116,7 @@ NODE uav (id)
   //@AT_LEAST(0.5)
   expect COVERAGE(coverage() > 0.9);
   
-  Bool NEXT_XY () {
+  bool NEXT_XY () {
     if(!waypointValid)
       return 1;
     xp = x; yp = y;
@@ -127,11 +127,7 @@ NODE uav (id)
     return 0;
   }
 
-//  @HERTZ(10)
-//  @CRITICALITY(1)
-//  @WCET_NOMINAL(10000)
-//  @WCET_OVERLOAD(20000)
-  void WAYPOINT() {
+  thread WAYPOINT() {
     if(id != 0 && init@0 == 0) {
       waypointValid = 0;
       return;
@@ -156,13 +152,9 @@ NODE uav (id)
     }
   }
 
-  //@HERTZ(10)
-  //@CRITICALITY(2)
-  //@WCET_NOMINAL(15000)
-  //@WCET_OVERLOAD(30000)
-  //@BARRIER_SYNC
-  @PLATFORM_CONTROLLER
-  void ROUND () {
+  @BarrierSync
+  @PlatformController
+  thread COLLISION_AVOIDANCE () {
     print_state(X,Y,id,x,y,xt,yt);
     //my_sleep(1);
     if(state == INITS) {
@@ -198,7 +190,7 @@ NODE uav (id)
     }
   }
 
-  @INIT_SIM
+  @InitSim
   void StartingPosition ()
   {
     GRID_INIT(X, Y, LeftX, RightX, TopY, BottomY);
@@ -229,7 +221,7 @@ void NodeInit ()
 @SAFETY
 void NoCollisions ()
 {
-  _Bool allIn,noneIn;
+  bool allIn,noneIn;
 
   FORALL_NODE(id) {
     /** state has to be between 0 and 4, (x,y), (xf,yf), and (xp,yp)

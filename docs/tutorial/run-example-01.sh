@@ -45,7 +45,8 @@ rm -fr $OUTDIR; mkdir $OUTDIR
 OUTDIR=$(realpath $OUTDIR)
 
 #compile and get the node executable
-rm -f example-01.cpp example-01 && make example-01
+#rm -f example-01.cpp example-01 && make example-01
+make example-01
 NODECMD="./example-01"
 
 #get the node arguments
@@ -101,6 +102,7 @@ for i in `seq 1 $NODENUM`; do
     ($NODECMD --platform vrep::::0.2 ${NODEARGS[${i}]} &> $OUTDIR/node-$i.out &)
     PORT=$(expr $PORT + 1)
 done
+#(gdb --args $NODECMD --platform vrep::::0.2 ${NODEARGS[1]})
 
 printf "press enter terminate the simulation ..."
 read X
