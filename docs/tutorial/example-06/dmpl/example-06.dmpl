@@ -227,7 +227,7 @@ NODE uav (id)
   //-- the task that invokes the adaptation manager. this task only
   //-- does something meaningful for the leader node (i.e., id =
   //-- 0). otherwise it is a NOP.
-  void ADAPTATION_MANAGER()
+  thread ADAPTATION_MANAGER()
   {
     _Bool last_formation;    
     unsigned char num_protectors_changing;
@@ -262,26 +262,26 @@ NODE uav (id)
     //-- if the leader has reached the destination, no more formation
     //-- changes are needed
     if(x != xt || y != yt) {
-      formation@0 = adaptation_manager(formation@id,changing,remaining_time,
-                                       //--XXX: this is broken: hazards[1][1],
-                                       1, 2, 3, 2, 1,
-                                       //--XXX: this is broken: variances[1][1],
-                                       0.1, 0.3, 0.4, 0.7, 0.3,
-                                       loose_speed, tight_speed,
-                                       seg_len, remaining_segs,
-                                       total_time - (wall_time() - start_time));
+      formation = adaptation_manager(formation@id,changing,remaining_time,
+                                     //--XXX: this is broken: hazards[1][1],
+                                     1, 2, 3, 2, 1,
+                                     //--XXX: this is broken: variances[1][1],
+                                     0.1, 0.3, 0.4, 0.7, 0.3,
+                                     loose_speed, tight_speed,
+                                     seg_len, remaining_segs,
+                                     total_time - (wall_time() - start_time));
     }
     
     //-- update the flag to indicate if a change formation is
     //-- triggered, and increment number of formation changes.
     if(!changing && last_formation != formation@0) {
       changing = 1;
-      num_changes@id = 1 - num_changes@id;
+      num_changes = 1 - num_changes@id;
     }
   }
 
   //-- the task that computes the next waypoint.
-  void WAYPOINT()
+  thread WAYPOINT()
   {
     if(id != 0 && init@0 == 0) {
       waypointValid = 0;
@@ -293,8 +293,8 @@ NODE uav (id)
     //-- note that while a formation change is happening, there will
     //-- be no change in xp and yp for the leader.
     if(id == 0) {
-      ly@0 = yp;
-      lx@0 = xp;
+      ly = yp;
+      lx = xp;
       return;
     }
 
@@ -336,15 +336,15 @@ NODE uav (id)
   void INITIALIZE_STATE()
   {
     unsigned char i,j;
-    lock[x][y]@id = 1;
-    num_changes@id = 0;
+    lock[x][y] = 1;
+    num_changes = 0;
     
     if(id != 0) return;
 
     //-- the rest of this stuff is only done by the leader
-    lx@id = x;
-    ly@id = y;
-    formation@id = 0;
+    lx = x;
+    ly = y;
+    formation = 0;
     changing = 0;
     remaining_time = 0.0;
       
@@ -380,7 +380,7 @@ NODE uav (id)
     remaining_segs = REMAINING_SEGMENTS();
     start_time = wall_time();
     
-    init@id = 1;
+    init = 1;
   }
 
   //-- stuff to do once the next waypoint is reached
@@ -388,7 +388,7 @@ NODE uav (id)
   {
     unsigned char i;
 
-    lock[x][y]@id = 0; 
+    lock[x][y] = 0; 
     x = xp; y = yp;
     xp = xpp; yp = ypp;
     
@@ -396,7 +396,7 @@ NODE uav (id)
     //-- happening, and i have reached the end-point, then formation
     //-- change is complete.
     if(id != 0 && num_changes@id != num_changes@0 && x == xt && y == yt) {
-      num_changes@id = 1 - num_changes@id;
+      num_changes = 1 - num_changes@id;
     }
     //For leader, update remaining segments, and next 5 waypoints
     if(id == 0) {
@@ -415,7 +415,7 @@ NODE uav (id)
   //-- avoiding collisions.
   @BARRIER_SYNC
   @PLATFORM_CONTROLLER
-  void COLLISION_AVOIDANCE ()
+  thread COLLISION_AVOIDANCE ()
   {
     //-- flags to indicate status of ongoing operations
     _Bool wait1,wait2;
@@ -437,7 +437,7 @@ NODE uav (id)
     } else if(state == REQUEST) {
       //request the lock but only if it is free
       if(EXISTS_LOWER(idp,lock[xp][yp]@idp != 0)) return;
-      lock[xp][yp]@id = 1;
+      lock[xp][yp] = 1;
       state = WAITING;
     } else if(state == WAITING) {
       //grab the lock if we are the highest 
