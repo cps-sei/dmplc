@@ -116,7 +116,7 @@ fi
 
 #compile tutorial 2
 
-if [ "$MAPNAME" == "small" ]; then
+if [ "$MAPNAME" == "small" ] || [ "$MAPNAME" == "small-hazard" ]; then
     TopY=2.25
     LeftX=-2.25
     BottomY=-2.25

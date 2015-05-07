@@ -5,7 +5,7 @@ LIBS="dartam/Debug/adaptation_manager.o dartam/Debug/AdaptationPlanner.o"
 BIN=example-05
 
 OUTDIR=outdir
-MAPNAME=small
+MAPNAME=small-hazard
 GRIDSIZE=10
 NODENUM=5
 
