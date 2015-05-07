@@ -12,10 +12,12 @@ TARGET GNU_CPP,WIN_CPP %%{
 #include <stdlib.h>
 #include "madara/utility/Utility.h"
 
-int GRID_MOVE(unsigned char x,unsigned char y,unsigned char xp,unsigned char yp,double z)
+/*
+int GRID_MOVE(unsigned char xp,unsigned char yp,double z)
 {
   return rand() < (RAND_MAX / 10 * 6);
 }
+*/
 
 int my_sleep (int seconds)
 {
