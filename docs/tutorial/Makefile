@@ -24,7 +24,7 @@ all: $(EXE) Makefile
 	g++ $(CFLAGS) -o $@ $< $(LIBS)
 
 example-01.cpp: example-01.dmpl $(DMPL_ROOT)/src/dmplc/dmplc
-	dmplc -n 3 -g -o $@ $<
+	dmplc -n 3 --DX $(GRIDSIZE) --DY $(GRIDSIZE) --DTopY $(TopY) --DBottomY $(BottomY) --DLeftX $(LeftX) --DRightX $(RightX) -g -o $@ $<
 
 example-02.cpp: example-02.dmpl example-02-AADL.dmpl $(DMPL_ROOT)/src/dmplc/dmplc
 	dmplc -e -n 5 --DX $(GRIDSIZE) --DY $(GRIDSIZE) --DTopY $(TopY) --DBottomY $(BottomY) --DLeftX $(LeftX) --DRightX $(RightX) -g -o $@ $< example-02-AADL.dmpl
