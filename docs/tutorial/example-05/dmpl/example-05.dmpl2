@@ -236,7 +236,7 @@ global bool init; //node is initialized
 //-- manager
 global bool formation; //0 = loose, 1 = tight
 local bool changing; //are we changing formation now?
-local double remaining_time; //how much time left to complete formation change 
+local double remaining_time = 120; //how much time left to complete formation change 
 
 {
   local double hazards[X][Y]; //map from cells to hazards
@@ -254,23 +254,6 @@ local double remaining_time; //how much time left to complete formation change
   }
 }
 
-//-- speeds in loose and tight formations
-local double loose_speed;
-local double tight_speed;
-//-- factor between speeds
-local double speed_factor;
-//-- segment length and remaining segments
-local double seg_len;
-local unsigned char remaining_segs;
-//-- remaining flight time
-local double remaining_flt_time;
-//-- total mission time, and mission start time
-local double total_time;
-local double start_time;
-
-//-- scenario selector
-local unsigned char scenario;
-
 //-- we use counters for the number of formation changes by each
 //-- node. when the leader initiates a formation change, it
 //-- increments its counter. it waits for the other counters to
@@ -280,9 +263,9 @@ global bool num_changes;
 //private variables -- local to the node.
 //preserved across rounds
 local unsigned char state = INITS; //the state
-local unsigned char x,y; //current coordinates
-local unsigned char xp,yp; //next coordinates
+local unsigned char x = input,y = input; //current coordinates
 local unsigned char xt,yt; //current target coordinates
+local unsigned char xp = x,yp = y; //next coordinates
 local bool waypointValid; //xt, yt are valid
 local double started_move;
 local double delay_until;
@@ -410,14 +393,6 @@ unsigned char REMAINING_SEGMENTS()
   return res;
 }
 
-//-- initialize state
-void INITIALIZE_STATE()
-{
-  unsigned char i,j;
-  lock[x][y] = 1;
-  num_changes = 0;
-}
-
 //-- stuff to do once the next waypoint is reached
 void REACHED_NEXT_XY()
 {
@@ -445,7 +420,9 @@ thread COLLISION_AVOIDANCE ()
   print_state(X,Y,id,x,y,xt,yt);
   //my_sleep(1);
   if(state == INITS) {
-    INITIALIZE_STATE();
+    lock[x][y] = 1;
+    lock[xp][yp] = 1;
+    init = 1;
     state = NEXT;
   }
   if(wall_time() < delay_until)
@@ -478,18 +455,14 @@ thread COLLISION_AVOIDANCE ()
     }
     if(GRID_MOVE(xp,yp,0.5)) return;
     REACHED_NEXT_XY();
-    state = NEXT;
-    if(id == 0 && started_move > 0 && formation@0 == 1 && speed_factor > 1)
-    {
-      delay_until = speed_factor * wall_time() - (speed_factor - 1) * started_move;
-    }
     started_move = 0;
+    state = NEXT;
   }
 }
 
 role Protector
 {
-  thread BARRIER_SYNC;
+  thread COLLISION_AVOIDANCE;
 
   //-- the task that computes the next waypoint.
   thread WAYPOINT()
@@ -537,17 +510,112 @@ role Protector
 
 role Leader
 {
-  local double current_hazard; //hazard of current x and y
+  override local unsigned char xt = input,yt = input; //final target coordinates
+  override global unsigned char lx = x, ly = y;
 
   //-- next 5 waypoints
-  local unsigned char next_wp_x[5]; 
-  local unsigned char next_wp_y[5]; 
-  //-- next 5 hazards
-  local double hazard1, hazard2, hazard3, hazard4, hazard5;
-  //-- next 5 hazard variances
-  local double variance1, variance2, variance3, variance4, variance5;
+  {
+    local unsigned char next_wp_x[5]; 
+    local unsigned char next_wp_y[5]; 
+  } << {
+    int i;
+    next_wp_x[0] = x;
+    next_wp_y[0] = y;
 
-  thread BARRIER_SYNC;
+    //for(i = 1;i < 5;) {        
+    i = 1;
+    while(i < 5) {
+      next_wp_x[i] = NEXT_X(next_wp_x[i - 1],next_wp_y[i - 1]);
+      next_wp_y[i] = NEXT_Y(next_wp_y[i - 1],next_wp_y[i - 1]);
+      i = i+1;
+    }
+  }
+
+  //-- next 5 hazards and hazard variances
+  {
+    local double hazard1, hazard2, hazard3, hazard4, hazard5;
+    local double variance1, variance2, variance3, variance4, variance5;
+    local double current_hazard; //hazard of current x and y
+  } << {
+    INIT_HAZARDS(X,Y,xt,yt);
+    current_hazard = GET_HAZARD(x,y); //hazard of current x and y
+    SET_HAZARDS();
+    SET_VARIANCES();
+  }
+
+  local unsigned char scenario = input;
+
+  //-- scenario selector
+  {
+    //-- speeds in loose and tight formations
+    local double loose_speed;
+    local double tight_speed;
+    //-- factor between speeds
+    local double speed_factor;
+    //-- segment length
+    local double seg_len;
+    //-- total mission time
+    local double total_time;
+  } << {
+    //-- we set default values of some system parameters here. they
+    //-- will likely be initialized from the command line.
+
+    //-- NOTE: the difference between loose and tight speeds should
+    //-- not be very small. otherwise, the prism model becomes too
+    //-- hard to solve
+
+    //-- NOTE: in the adaptation manager, the exposures for loose and
+    //-- tight formations are set to 0.8 and 0.2. the ratio is 4.
+
+    //-----------------------------------------------------------------
+    //-- begin scenarios
+    //-----------------------------------------------------------------
+    
+    //-- SCENARIO 1: the ratio of loose and tight speeds is > 4. in
+    //-- this case, there is no benefit to switch to tight formation.
+    if(scenario == 1) {
+      loose_speed = 50.0;
+      tight_speed = 12.0;
+      seg_len = 50.0;
+      total_time = 15.0;
+    }
+    
+    //-- SCENARIO 2: the ratio of loose and tight speeds is < 4. in
+    //-- this case, there is benefit to switch to a tight formation.
+    if(scenario == 2) {
+      loose_speed = 50.0;
+      tight_speed = 25.0;
+      seg_len = 50.0;
+      total_time = 15.0;
+    }
+
+    //-- SCENARIO 3: similar to scenario 2 but slightly longer mission
+    //-- time so that the switch back to loose formation happens
+    //-- later.
+    if(scenario == 3) {
+      loose_speed = 50.0;
+      tight_speed = 25.0;
+      seg_len = 50.0;
+      total_time = 18.0;
+    }
+
+    speed_factor = loose_speed / tight_speed;
+  }
+
+  {
+    //-- remaining segments
+    local unsigned char remaining_segs;
+    //-- remaining flight time
+    local double remaining_flt_time;
+    //-- mission start time
+    local double start_time;
+  } << {
+    remaining_segs = REMAINING_SEGMENTS();
+    remaining_flt_time = total_time;
+    start_time = wall_time();
+  }
+
+  thread COLLISION_AVOIDANCE;
 
   //-- the task that computes the next waypoint.
   thread WAYPOINT()
@@ -604,112 +672,16 @@ role Leader
     }
   }
 
-  //-- initialize Leader state
-  append void INITIALIZE_STATE()
-  {
-    lx = x;
-    ly = y;
-    current_hazard = GET_HAZARD(x,y);
-    formation = 0;
-    changing = 0;
-    remaining_time = 0.0;
-
-    delay_until = 0.0;
-      
-    //-- also initialize next_wp_x and next_wp_y.
-    next_wp_x[0] = x;
-    next_wp_y[0] = y;
-
-    //for(i = 1;i < 5;) {        
-    i = 1;
-    while(i < 5) {
-      next_wp_x[i] = NEXT_X(next_wp_x[i - 1],next_wp_y[i - 1]);
-      next_wp_y[i] = NEXT_Y(next_wp_y[i - 1],next_wp_y[i - 1]);
-      i = i+1;
-    }
-
-    INIT_HAZARDS(X,Y,xt,yt);
-    //initialize the next 5 hazards and variances
-    SET_HAZARDS();
-    SET_VARIANCES();
-    
-    //-- we set default values of some system parameters here. they
-    //-- will likely be initialized from the command line.
-
-    //-- NOTE: the difference between loose and tight speeds should
-    //-- not be very small. otherwise, the prism model becomes too
-    //-- hard to solve
-
-    //-- NOTE: in the adaptation manager, the exposures for loose and
-    //-- tight formations are set to 0.8 and 0.2. the ratio is 4.
-
-    //-- select the scenario
-    scenario = 2;
-    
-    //-----------------------------------------------------------------
-    //-- begin scenarios
-    //-----------------------------------------------------------------
-    
-    //-- SCENARIO 1: the ratio of loose and tight speeds is > 4. in
-    //-- this case, there is no benefit to switch to tight formation.
-    if(scenario == 1) {
-      loose_speed = 50.0;
-      tight_speed = 12.0;
-      seg_len = 50.0;
-      total_time = 15.0;
-    }
-    
-    //-- SCENARIO 2: the ratio of loose and tight speeds is < 4. in
-    //-- this case, there is benefit to switch to a tight formation.
-    if(scenario == 2) {
-      loose_speed = 50.0;
-      tight_speed = 25.0;
-      seg_len = 50.0;
-      total_time = 15.0;
-    }
-
-    //-- SCENARIO 3: similar to scenario 2 but slightly longer mission
-    //-- time so that the switch back to loose formation happens
-    //-- later.
-    if(scenario == 3) {
-      loose_speed = 50.0;
-      tight_speed = 25.0;
-      seg_len = 50.0;
-      total_time = 18.0;
-    }
-
-    speed_factor = loose_speed / tight_speed;
-
-    //-----------------------------------------------------------------
-    //-- begin scenarios
-    //-----------------------------------------------------------------
-    
-    remaining_segs = REMAINING_SEGMENTS();
-    remaining_flt_time = total_time;
-    start_time = wall_time();
-    
-    init = 1;
-  }
-
-  //-- stuff to do once the next waypoint is reached
-  void REACHED_NEXT_XY()
-  {
-    unsigned char i;
-
-    lock[x][y] = 0; 
-    x = xp; y = yp;
-    current_hazard = GET_HAZARD(x,y);
-    //-- if i am not the leader and a formation change was
-    //-- happening, and i have reached the end-point, then formation
-    //-- change is complete.
-    if(id != 0 && num_changes@id != num_changes@0 && x == xt && y == yt) {
-      num_changes = 1 - num_changes@id;
-    }
-  }
-
   //-- stuff for Leader do once the next waypoint is reached
-  append void REACHED_NEXT_XY()
+  override void REACHED_NEXT_XY()
   {
+    base.REACHED_NEXT_XY();
+
+    if(started_move > 0 && formation@id == 1 && speed_factor > 1)
+    {
+      delay_until = speed_factor * wall_time() - (speed_factor - 1) * started_move;
+    }
+
     current_hazard = GET_HAZARD(x,y);
     //for(i = 1;i < 5;) {        
     i = 1;
