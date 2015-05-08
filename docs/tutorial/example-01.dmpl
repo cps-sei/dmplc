@@ -103,7 +103,7 @@ node uav (id)
 
 node uav (id)
 {
-  @Period(250000)
+  @Period(100000)
   @BarrierSync
   @PlatformController
   thread COLLISION_AVOIDANCE () {
