@@ -1099,7 +1099,7 @@ dmpl::gams::Sync_Builder::build_gams_functions ()
   buffer_ << "}\n";
   buffer_ << "\n";
 
-  buffer_ << "int GRID_MOVE(int x, int y, double alt = NAN, double epsilon = 0.2)\n";
+  buffer_ << "int GRID_MOVE(int x, int y, double alt = NAN, double epsilon = 0.1)\n";
   buffer_ << "{\n";
   buffer_ << "  int ret = platform->move(gams::utility::Position(grid_leftX + x * grid_cellX, grid_topY + y * grid_cellY, alt), epsilon);\n";
   //buffer_ << "  std::cerr << grid_leftX + x * grid_cellX << \"/\" << grid_topY + y * grid_cellY << std::endl;\n";
