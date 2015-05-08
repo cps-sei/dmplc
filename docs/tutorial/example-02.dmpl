@@ -85,11 +85,11 @@ extern void INIT_CONTROLLER(unsigned char x,unsigned char y);
 extern void GRID_INIT(int XX,int YY,double leftX,double rightX,double topY,double bottomY);
 extern void GRID_PLACE(unsigned char x,unsigned char y, double z);
 extern int GRID_MOVE(unsigned char xp,unsigned char yp, double z);
-extern int my_sleep(int seconds);
-extern void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
-extern void print_int(int i);
-extern double GET_LAT();
-extern double GET_LNG();
+extern pure int my_sleep(int seconds);
+extern pure void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
+extern pure void print_int(int i);
+extern pure double GET_LAT();
+extern pure double GET_LNG();
 
 node uav (id)
 {
@@ -110,7 +110,7 @@ node uav (id)
   expect (x < 5);
   expect YLT5(y < 5);
 
-  double coverage()
+  pure double coverage()
   {
     return GET_LAT() - GET_LNG()@0;
   }
