@@ -1895,6 +1895,7 @@ dmpl::gams::Sync_Builder::build_main_function ()
   //buffer_ << "  settings.type = Madara::Transport::BROADCAST;\n";
   buffer_ << "  platform_init_fns[\"vrep\"] = init_vrep;\n";
   buffer_ << "  platform_init_fns[\"vrep-uav\"] = init_vrep;\n";
+  buffer_ << "  platform_init_fns[\"vrep-heli\"] = init_vrep;\n";
   buffer_ << "  platform_init_fns[\"vrep-ant\"] = init_vrep;\n";
   buffer_ << "\n";
   buffer_ << "  // handle any command line arguments\n";
