@@ -68,9 +68,9 @@ const REQUEST = 2;
 const WAITING = 3;
 const MOVE = 4;
 
-const TopY = -2.25;
+const TopY = 2.25;
 const LeftX = -2.25;
-const BottomY = 2.25;
+const BottomY = -2.25;
 const RightX = 2.25;
 
 //extern int MOVE_TO(unsigned char x,unsigned char y);
@@ -103,7 +103,7 @@ node uav (id)
 
 node uav (id)
 {
-  @Period(250000)
+  @Period(100000)
   @BarrierSync
   @PlatformController
   thread COLLISION_AVOIDANCE () {
