@@ -225,6 +225,8 @@ end waypoint_thread.i;
 process protector_sw extends dart_sw
 features
   publish_lock : out data port lock_update_type.i;
+properties
+  DART::Role => "Protector";
 end protector_sw;
 
 -- the implementation of process running on a protector node. it adds
@@ -326,6 +328,8 @@ process leader_sw extends dart_sw
 features
   leader_destination: out data port coordinate;
   publish_lock: out data port lock_update_type.i;
+properties
+  DART::Role => "Leader";
 end leader_sw;
 
 -- the implementation of process running on a leader node. it adds
@@ -403,6 +407,11 @@ connections
   c3: port protectors.publish_lock->leader.input_lock{Connection_Pattern => ((All_to_One));};
   c4: port protectors.publish_lock->protectors.input_lock {Connection_Pattern => ((All_to_All));};
 properties
+  DART::Node_Id => 0 applies to leader.sw;
+  DART::Node_Id => 1 applies to protectors[0].sw;
+  DART::Node_Id => 2 applies to protectors[1].sw;
+  DART::Node_Id => 3 applies to protectors[2].sw;
+  DART::Node_Id => 4 applies to protectors[3].sw;
   DART::DMPL_TIMING_PARAMETERS_TEXT => "/tmp/dmpl_nodes.dmpl";
 end protector_swarm.i;	
 
