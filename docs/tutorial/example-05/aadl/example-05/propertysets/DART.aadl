@@ -1,5 +1,8 @@
 property set DART is
   -- property to support security level analysis
-  Node_Id : inherit aadlinteger applies to (system);
+  Node_Id : inherit aadlinteger applies to (process);
   DMPL_TIMING_PARAMETERS_TEXT : aadlstring applies to (system);
+
+  -- property to specify the role of a node
+  Role : aadlstring applies to (process);
 end DART;

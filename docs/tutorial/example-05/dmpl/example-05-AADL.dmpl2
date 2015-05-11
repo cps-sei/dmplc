@@ -1,0 +1,110 @@
+//-- there is an implicit MADARA receiver thread
+node uav
+{
+  @MadaraPeriod(100000)
+  @MadaraCriticality(1)
+  @MadaraWCExecTimeNominal(10000)
+  @MadaraWCExecTimeOverload(20000)
+  role protector id 1
+  {
+    @Period(250000)
+    @Criticality(4)
+    @WCExecTimeNominal(15000)
+    @WCExecTimeOverload(30000)
+    @BarrierSync
+    COLLISION_AVOIDANCE();
+
+    @Period(200000)
+    @Criticality(3)
+    @WCExecTimeNominal(10000)
+    @WCExecTimeOverload(20000)
+    WAYPOINT();
+  }
+
+  @MadaraPeriod(100000)
+  @MadaraCriticality(1)
+  @MadaraWCExecTimeNominal(10000)
+  @MadaraWCExecTimeOverload(20000)
+  role protector id 2
+  {
+    @Period(250010)
+    @Criticality(4)
+    @WCExecTimeNominal(15000)
+    @WCExecTimeOverload(30000)
+    @BarrierSync
+    COLLISION_AVOIDANCE();
+
+    @Period(200000)
+    @Criticality(3)
+    @WCExecTimeNominal(10000)
+    @WCExecTimeOverload(20000)
+    WAYPOINT();
+  }
+
+  @MadaraPeriod(100000)
+  @MadaraCriticality(1)
+  @MadaraWCExecTimeNominal(10000)
+  @MadaraWCExecTimeOverload(20000)
+  role protector id 3
+  {
+
+    @Period(250010)
+    @Criticality(4)
+    @WCExecTimeNominal(15000)
+    @WCExecTimeOverload(30000)
+    @BarrierSync
+    COLLISION_AVOIDANCE();
+
+    @Period(200000)
+    @Criticality(3)
+    @WCExecTimeNominal(10000)
+    @WCExecTimeOverload(20000)
+    WAYPOINT();
+  }
+
+  @MadaraPeriod(100000)
+  @MadaraCriticality(1)
+  @MadaraWCExecTimeNominal(10000)
+  @MadaraWCExecTimeOverload(20000)
+  role protector id 4
+  {
+    @Period(250010)
+    @Criticality(4)
+    @WCExecTimeNominal(15000)
+    @WCExecTimeOverload(30000)
+    @BarrierSync
+    COLLISION_AVOIDANCE();
+
+    @Period(200000)
+    @Criticality(3)
+    @WCExecTimeNominal(10000)
+    @WCExecTimeOverload(20000)
+    WAYPOINT();
+  }
+
+  @MadaraPeriod(100000)
+  @MadaraCriticality(1)
+  @MadaraWCExecTimeNominal(10000)
+  @MadaraWCExecTimeOverload(20000)
+  role Leader id 0
+  {
+    @Period(250010)
+    @Criticality(4)
+    @WCExecTimeNominal(15000)
+    @WCExecTimeOverload(30000)
+    @BarrierSync
+    COLLISION_AVOIDANCE();
+
+    @Period(200000)
+    @Criticality(3)
+    @WCExecTimeNominal(10000)
+    @WCExecTimeOverload(20000)
+    WAYPOINT();
+    
+    @Period(4000000)
+    @Criticality(2)
+    @WCExecTimeNominal(10000)
+    @WCExecTimeOverload(20000)
+    ADAPTATION_MANAGER();
+  }
+}
