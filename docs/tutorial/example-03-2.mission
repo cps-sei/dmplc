@@ -4,7 +4,7 @@ DMPL="example-03.dmpl example-03-AADL.dmpl"
 BIN=example-03
 
 OUTDIR=outdir
-MAPNAME=large
+MAPNAME=small
 GRIDSIZE=10
 NODENUM=9
 
