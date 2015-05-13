@@ -1135,7 +1135,7 @@ node uav (id)
       //-- if reached destination, nothing to do
       if(x == xt && y == yt) return;
       //-- the leader does not move if formation change is going on
-      if(id == 2 && changing) return;
+      if(id == 0 && changing) return;
       //-- get the next waypoint
       if(NEXT_XY()) return;
       state = REQUEST;
