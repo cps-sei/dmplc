@@ -1,4 +1,4 @@
-Copyright (c) 2014 Carnegie Mellon University. All Rights Reserved.
+Copyright (c) 2015 Carnegie Mellon University. All Rights Reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -25,6 +25,9 @@ permission@sei.cmu.edu.
 5. Redistributions of any form whatsoever must retain the following
 acknowledgment:
 
+
+Copyright 2015 Carnegie Mellon University
+
 This material is based upon work funded and supported by the
 Department of Defense under Contract No. FA8721-05-C-0003 with
 Carnegie Mellon University for the operation of the Software
@@ -47,4 +50,4 @@ TRADEMARK, OR COPYRIGHT INFRINGEMENT.
 This material has been approved for public release and unlimited
 distribution.
 
-DM-0001023
+DM-0002494

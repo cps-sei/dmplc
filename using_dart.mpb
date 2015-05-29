@@ -1,6 +1,0 @@
-project {
-  after += dart
-  includes += $(DMPL_ROOT)/dmpl/src
-  libpaths += $(DMPL_ROOT)/dmpl/lib
-  libs += dart
-}
