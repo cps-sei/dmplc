@@ -5,24 +5,45 @@ DEBUG=0
 function usage {
     echo "Usage : dmpl-sim.sh [-args] file.mission [output.log]"
     echo "  Optional Arguments:"
+    echo "    -b | --force-build  Fully rebuild the cpp file, and recompile it"
+    echo "    -B | --build-only   Only build the software, don't run the simulation"
+    echo "    -d | --debug        Run with debug options (uses and dmplc --debug, and gdb)"
     echo "    -h | --headless     Run V-REP in headless mode"
+    echo '    -p | --platform $P  Pass $P as the --platform option to the executable'
     echo "    -r | --realtime     Run V-REP in realtime mode"
 }
 
 #flags
 HEADLESS=0
 REALTIME=0
+FORCEBUILD=0
+BUILDONLY=0
+
+PLATFORM=vrep::::0.1
 
 argc=0
 
 #get flags
 while true; do
   case "$1" in
+  -d|--debug)
+    DEBUG=1
+    ;;
+  -b|--force-build)
+    FORCEBUILD=1
+    ;;
+  -B|--build-only)
+    BUILDONLY=1
+    ;;
   -h|--headless)
     HEADLESS=1
     ;;
   -r|--realtime)
     REALTIME=1
+    ;;
+  -p|--platform)
+    shift
+    PLATFORM="$1"
     ;;
   "")
     break
@@ -45,6 +66,9 @@ while true; do
   esac
   shift
 done
+
+GDB=""
+[ "$DEBUG" -eq 1 ] && GDB="gdb -ex=r --args"
 
 #get the directory where this script is located
 SCDIR=$(dirname $(realpath $0))
@@ -116,21 +140,27 @@ fi
 
 #compile tutorial 2
 
-if [ "$MAPNAME" == "small" ] || [ "$MAPNAME" == "small-hazard" ]; then
+MAPSIZE=`echo $MAPNAME | cut -f1 -d'-'`
+
+if [ "$MAPSIZE" == "small" ]; then
     TopY=2.25
     LeftX=-2.25
     BottomY=-2.25
     RightX=2.25
-elif [ "$MAPNAME" == "large" ]; then
+elif [ "$MAPSIZE" == "large" ]; then
     TopY=13
     LeftX=-12.5
     BottomY=-6
     RightX=6.5
 fi
 
+DMPLC_FLAGS="-g -n $NODENUM --DX $GRIDSIZE --DY $GRIDSIZE --DTopY $TopY --DBottomY $BottomY --DLeftX $LeftX --DRightX $RightX"
+[ "$DEBUG" -eq 1 ] && DMPLC_FLAGS="$DMPLC_FLAGS --debug"
+[ -n "$OUTLOG" ] && DMPLC_FLAGS="$DMPLC_FLAGS -e"
+
 for file in `which dmplc` $DMPL $MISSION; do
-if [ $file -nt ${BIN}.cpp ]; then
-dmplc -e -n $NODENUM --DX $GRIDSIZE --DY $GRIDSIZE --DTopY $TopY --DBottomY $BottomY --DLeftX $LeftX --DRightX $RightX -g -o ${BIN}.cpp $DMPL
+if [ $FORCEBUILD -eq 1 ] || [ $file -nt ${BIN}.cpp ]; then
+$GDB dmplc $DMPLC_FLAGS -o ${BIN}.cpp $DMPL
 break
 fi
 done
@@ -139,6 +169,8 @@ CFLAGS="-g -Og -std=c++11 -I$DMPL_ROOT/src -I$VREP_ROOT/programming/remoteApi -I
 LIBS="$LIBS $MADARA_ROOT/libMADARA.so $ACE_ROOT/lib/libACE.so $GAMS_ROOT/lib/libGAMS.so -lpthread"
 g++ $CFLAGS -o $BIN ${BIN}.cpp $LIBS
 fi
+
+[ "$BUILDONLY" -eq 1 ] && exit 0
 
 #create the output directory and get its realpath
 rm -fr $OUTDIR; mkdir $OUTDIR
@@ -212,9 +244,7 @@ cat $status_file
 mv $RAC.saved.mcda-vrep $RAC
 
 #start the nodes
-GDB=""
 NUMCPU=$(grep -c ^processor /proc/cpuinfo)
-[ "$DEBUG" -ne 0 ] && GDB="gdb -ex=r --args"
 for x in `seq 1 $((NODENUM - 1))`; do
   echo $x
   args_var=ARGS_$x
@@ -222,16 +252,20 @@ for x in `seq 1 $((NODENUM - 1))`; do
   args="$(eval echo \$$args_var)"
   ELOG=""
   [ -n "$OUTLOG" ] && ELOG="-e $OUTDIR/expect${0}.log"
-  taskset -c ${cpu_id} $GDB ./$BIN $ELOG --platform vrep::::0.1 --id $x $args &> $OUTDIR/node${x}.out &
+  taskset -c ${cpu_id} $GDB ./$BIN $ELOG --platform $PLATFORM --id $x $args &> $OUTDIR/node${x}.out &
 done
 ELOG=""
 [ -n "$OUTLOG" ] && ELOG="-e $OUTDIR/expect0.log"
-#gdb --args $GDB ./$BIN $ELOG --platform vrep::::0.1 --id 0 $ARGS_0 # &> $OUTDIR/node0.out &
-taskset -c 0 $GDB ./$BIN $ELOG --platform vrep::::0.1 --id 0 $ARGS_0 &> $OUTDIR/node0.out &
+#gdb --args $GDB ./$BIN $ELOG --platform $PLATFORM --id 0 $ARGS_0 # &> $OUTDIR/node0.out &
+taskset -c 0 $GDB ./$BIN $ELOG --platform $PLATFORM --id 0 $ARGS_0 &> $OUTDIR/node0.out &
 
 printf "press Ctrl-C to terminate the simulation ..."
 
-sleep 2
+if [ "$DEBUG" -eq 1 ]; then
+  sleep 5
+else
+  sleep 2
+fi
 
 ( cd $SCDIR; ./startSim.py )
 
