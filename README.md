@@ -1,29 +1,6 @@
-INTRODUCTION
+#DMPLC
 
-Welcome to the Model Checking for Distributed Algorithms code repository!
-
-The MCDA project attempts to formally verify the correctness, safety or
-other critical properties of distributed algorithm implementations, before
-they are deployed. Our current approach involves sequentialization techniques
-to analyze the structure of a program and its execution mechanics for each
-participant in the networked application.
-
-LICENSE.txt : License for this software.
-
-INSTALL.txt: Compiling and Installation instructions.
-
-DIRECTORIES
-
-  /simulation
-  
-  The simulation directory contains code to run VREP simulations of the area
-  coverage.
-  
-  /examples
-
-  Contains various examples used to drive our work. This is very much
-  a scratch area.
-
-  /tools
-
-  Contains tools such as the dmpl compiler and dmpl
+This is the repository for DMPLC, the compiler for the DART Modeling
+and Programming Language (DMPL). It must be installed as part of the
+[DART](http://cps-sei.github.io/dart) toolchain. Here are the
+instructions.
