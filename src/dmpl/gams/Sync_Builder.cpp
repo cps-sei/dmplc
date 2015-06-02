@@ -143,7 +143,6 @@ dmpl::gams::Sync_Builder::build_header_includes ()
   buffer_ << "#include \"gams/variables/Sensor.h\"\n";
   buffer_ << "#include \"gams/platforms/Base_Platform.h\"\n";
   buffer_ << "#include \"gams/platforms/vrep/VREP_Base.h\"\n";
-  buffer_ << "#include \"gams/variables/Algorithm.h\"\n";
   buffer_ << "#include \"gams/variables/Self.h\"\n";
   buffer_ << "#include \"gams/utility/GPS_Position.h\"\n";
   buffer_ << "\n";
@@ -1108,6 +1107,8 @@ dmpl::gams::Sync_Builder::build_gams_functions ()
   buffer_ << "}\n";
   buffer_ << "\n";
 
+//TODO add support to GAMS to bring these back
+#if 0
   buffer_ << "double GET_X()\n";
   buffer_ << "{\n";
   buffer_ << "  gams::platforms::VREP_Base *vrep_platform = dynamic_cast<gams::platforms::VREP_Base *>(platform);\n";
@@ -1127,6 +1128,19 @@ dmpl::gams::Sync_Builder::build_gams_functions ()
   buffer_ << "  return y;\n";
   buffer_ << "}\n";
   buffer_ << "\n";
+#else
+  buffer_ << "double GET_X()\n";
+  buffer_ << "{\n";
+  buffer_ << "  return 0;\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "double GET_Y()\n";
+  buffer_ << "{\n";
+  buffer_ << "  return 0;\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+#endif
 
   buffer_ << "double GET_LAT()\n";
   buffer_ << "{\n";
@@ -1237,7 +1251,7 @@ dmpl::gams::Sync_Builder::build_expect_thread_definition (void)
 void
 dmpl::gams::Sync_Builder::build_algo_declaration ()
 {
-  buffer_ << "class Algo : public gams::algorithms::Base, protected threads::Base_Thread\n";
+  buffer_ << "class Algo : public gams::algorithms::Base_Algorithm, protected threads::Base_Thread\n";
   buffer_ << "{\n";
   buffer_ << "public:\n";
   buffer_ << "  Algo (\n";
@@ -1280,7 +1294,7 @@ dmpl::gams::Sync_Builder::build_algo_declaration ()
   }
 #endif
 
-  buffer_ << "  controllers::Base loop;\n";
+  buffer_ << "  controllers::Base_Controller loop;\n";
   buffer_ << "  engine::Knowledge_Base *knowledge_;\n";
   buffer_ << "  std::string _exec_func, _platform_name;\n";
 
@@ -1364,7 +1378,7 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
     buffer_ << "    variables::Self * self) : loop(*knowledge), _platform_name(platform_name),\n";
   }
 
-  buffer_ << "      Base (knowledge, 0, sensors, self), knowledge_(knowledge),\n";
+  buffer_ << "      Base_Algorithm (knowledge, 0, sensors, self), knowledge_(knowledge),\n";
 
 #if USE_MZSRM==1
   if(schedType_ == MZSRM) {
@@ -1881,9 +1895,9 @@ dmpl::gams::Sync_Builder::build_main_function ()
   buffer_ << "  else\n";
   buffer_ << "    knowledge.set(\".vrep_sw_position\", \"40.4464255,-79.9499426\");\n";
   buffer_ << "  if(params.size() >= 5 && params[4].size() > 0)\n";
-  buffer_ << "    knowledge.set(\".move_speed\", params[4]);\n";
+  buffer_ << "    knowledge.set(\".vrep_uav_move_speed\", params[4]);\n";
   buffer_ << "  else\n";
-  buffer_ << "    knowledge.set(\".move_speed\", \"0.4\");\n";
+  buffer_ << "    knowledge.set(\".vrep_uav_move_speed\", \"0.4\");\n";
   buffer_ << "  knowledge.set(\"vrep_ready\", \"1\");\n";
   buffer_ << "}\n";
   buffer_ << "\n";
