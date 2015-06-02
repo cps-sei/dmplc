@@ -64,14 +64,53 @@
 //-- and loose. the timing characteristics for various thread
 //-- (periods, WCETs etc.) are specified in a separate DMPL file.
 
-TARGET GNU_CPP,WIN_CPP %%{
+target GNU_CPP,WIN_CPP %%{
 #define GNU_WIN
 #include <stdlib.h>
+#include <math.h>
 #include <sys/resource.h>
+#include <map>
 #include "madara/utility/Utility.h"
 #include "./adaptation_manager.h"
 #include "./dartam/adaptation_manager.h"
   
+double accumulated_risk = 0.0;
+
+std::map<int,std::map<int,double> > hazard_map;
+
+void INIT_HAZARDS(int _X, int _Y, int tx, int ty)
+{
+  for(int x = 0; x < _X; x++)
+  {
+    for(int y = 0; y < _Y; y++)
+    {
+      if(x == tx && y == ty)
+      {
+        hazard_map[x][y] = 0;
+      }
+      else if(x > 4 && y <= 4)
+      {
+        hazard_map[x][y] = (rand() * 1.0 / RAND_MAX) * 0.4 + 0.5;
+      }
+      else
+      {
+        hazard_map[x][y] = (rand() * 1.0 / RAND_MAX) * 0.4;
+      }
+    }
+  }
+}
+
+double GET_HAZARD(int x, int y)
+{
+  return hazard_map[x][y];
+}
+
+double accumulate_risk(double risk)
+{
+  printf("Risk: %f (+%f)\n", accumulated_risk, risk);
+  return accumulated_risk += risk;
+}
+
 int MOVE_TO(unsigned char x,unsigned char y)
 {
   return rand() < (RAND_MAX / 10 * 6);
@@ -111,6 +150,21 @@ void print_line(int _X)
   printf("\n");
 }
 
+void print_cover(double d)
+{
+  printf("cover: %f\n", d);
+}
+
+void print_hazard(double d)
+{
+  printf("hazard: %f\n", d);
+}
+
+void LOG(double x)
+{
+  std::cerr << "LOG: " << x << std::endl;
+}
+
 void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
 {
   if(round == 0) {
@@ -141,30 +195,42 @@ CONST X = 20;
 CONST Y = 20;
 
 //states of each node
-CONST INITS = 0;
-CONST NEXT = 1;
-CONST REQUEST = 2;
-CONST WAITING = 3;
-CONST MOVE = 4;
+const INITS = 0;
+const NEXT = 1;
+const REQUEST = 2;
+const WAITING = 3;
+const MOVE = 4;
 
-CONST TopY = 13;
-CONST LeftX = -12.5;
-CONST BottomY = -6;
-CONST RightX = 6.5;
+const TopY = 13;
+const LeftX = -12.5;
+const BottomY = -6;
+const RightX = 6.5;
+
+//-- radius of a node
+CONST NODE_RAD = 0.25;
 
 //-- assume that formation change takes 20 seconds
-CONST FORM_CHANGE_TIME = 20.0;
+const FORM_CHANGE_TIME = 20.0;
 
-//EXTERN int MOVE_TO(unsigned char x,unsigned char y);
-EXTERN int my_sleep(int seconds);
-EXTERN void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
-EXTERN void print_int(int i);
-EXTERN void print_labeled_int(int i);
-EXTERN double wall_time();
+//extern int MOVE_TO(unsigned char x,unsigned char y);
+extern int my_sleep(int seconds);
+extern void INIT_HAZARDS(int XX, int YY, int tx, int ty);
+extern PURE double GET_HAZARD(int x, int y);
+extern PURE void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
+extern PURE void print_int(int i);
+extern PURE void print_labeled_int(int i);
+extern PURE void print_cover(double d);
+extern PURE void print_hazard(double d);
+extern PURE double wall_time();
+extern PURE double GET_X();
+extern PURE double GET_Y();
+extern PURE double sqrt(double x);
+extern PURE double asin(double x);
+extern PURE void LOG(double x);
 
 //-- the external function implementing the adaptation
 //-- manager. returns 0 for loose formation and 1 for tight formation.
-EXTERN int adaptation_manager
+extern int adaptation_manager
 (
  int current_formation, //-- 0 loose, 1 tight
  int changing, //-- whether in process of changing to other formation
@@ -190,7 +256,7 @@ EXTERN int adaptation_manager
 
 //-- a random implementation of the adaptation manager. returns 0 for
 //-- loose formation and 1 for tight formation. useful for testing.
-EXTERN int adaptation_manager_random
+extern int adaptation_manager_random
 (
  int current_formation, //-- 0 loose, 1 tight
  int changing, //-- whether in process of changing to other formation
@@ -214,88 +280,542 @@ EXTERN int adaptation_manager_random
  double remaining_flight_time //-- how much flight time the formation has left
  );
 
-NODE uav (id)
+node uav (id)
 {
   //shared variables -- visible across nodes. 
   //must be accessed via R() and W()
-  GLOBAL _Bool lock [X][Y];
-  GLOBAL unsigned char lx,ly; //leader's destination coordinates
-  GLOBAL _Bool init; //node is initialized
+  global _Bool lock [X][Y];
+  global unsigned char lx,ly; //leader's destination coordinates
+  global _Bool init; //node is initialized
 
   //-- these variables are used to interact with the adaptation
   //-- manager
-  GLOBAL _Bool formation; //0 = loose, 1 = tight
-  LOCAL _Bool changing; //are we changing formation now?
-  LOCAL double remaining_time; //how much time left to complete formation change 
-  LOCAL double hazards[X][Y]; //map from cells to hazards
-  LOCAL double current_hazard; //hazard of current x and y
-  LOCAL double variances[X][Y]; //map from cells to variances in hazard predictions
+  global _Bool formation; //0 = loose, 1 = tight
+  local _Bool changing; //are we changing formation now?
+  local double remaining_time; //how much time left to complete formation change 
+  //local double hazards[X][Y]; //map from cells to hazards
+  local double current_hazard; //hazard of current x and y
+  //local double variances[X][Y]; //map from cells to variances in hazard predictions
   //-- next 5 waypoints
-  LOCAL unsigned char next_wp_x[5]; 
-  LOCAL unsigned char next_wp_y[5]; 
+  local unsigned char next_wp_x[5]; 
+  local unsigned char next_wp_y[5]; 
   //-- next 5 hazards
-  LOCAL double hazard1, hazard2, hazard3, hazard4, hazard5;
+  local double hazard1, hazard2, hazard3, hazard4, hazard5;
   //-- next 5 hazard variances
-  LOCAL double variance1, variance2, variance3, variance4, variance5;
+  local double variance1, variance2, variance3, variance4, variance5;
   //-- speeds in loose and tight formations
-  LOCAL double loose_speed;
-  LOCAL double tight_speed;
+  local double loose_speed;
+  local double tight_speed;
+  //-- factor between speeds
+  local double speed_factor;
   //-- segment length and remaining segments
-  LOCAL double seg_len;
-  LOCAL unsigned char remaining_segs;
+  local double seg_len;
+  local unsigned char remaining_segs;
   //-- remaining flight time
-  LOCAL double remaining_flt_time;
+  local double remaining_flt_time;
   //-- total mission time, and mission start time
-  LOCAL double total_time;
-  LOCAL double start_time;
+  local double total_time;
+  local double start_time;
 
   //-- scenario selector
-  LOCAL unsigned char scenario;
+  local unsigned char scenario;
   
   //-- we use counters for the number of formation changes by each
   //-- node. when the leader initiates a formation change, it
   //-- increments its counter. it waits for the other counters to
   //-- catch up detect that the formation change has completed.
-  GLOBAL _Bool num_changes;
+  global _Bool num_changes;
   
   //private variables -- local to the node.
   //preserved across rounds
-  LOCAL unsigned char state; //the state
-  LOCAL unsigned char x,y; //current coordinates
-  LOCAL unsigned char xp,yp; //next coordinates
-  LOCAL unsigned char xt,yt; //current target coordinates
-  LOCAL _Bool waypointValid; //xt, yt are valid
-  
-  expect (x < 5);
-  expect YLT5(y < 5);
+  local unsigned char state; //the state
+  local unsigned char x,y; //current coordinates
+  local unsigned char xp,yp; //next coordinates
+  local unsigned char xt,yt; //current target coordinates
+  local _Bool waypointValid; //xt, yt are valid
+  local double started_move;
+  local double delay_until;
 
-  double coverage()
+  //-- the function that computes the coverage of the
+  //-- leader. currently we assume that protectors do not provide
+  //-- overlapping coverage.
+  PURE double coverage()
   {
+    double cover, dist;
+    double lat0,lng0,lat,lng;
+    cover = 0.0;
+
+    lat0 = GET_X()@id;
+    lng0 = GET_Y()@id;
+
+    FORALL_NODE(nid) {
+      if(nid != id) {
+        lat = GET_X()@nid;
+        lng = GET_Y()@nid;
+        
+        dist = sqrt((lat - lat0) * (lat - lat0) +
+                    (lng - lng0) * (lng - lng0));
+
+        //-- to avoid the call to asin() from crashing. should never
+        //-- happen.
+        if(dist != 0.0) {
+          cover = cover + asin(NODE_RAD/dist) / 3.1415926;
+        }
+      }
+    }
+
+    //print_cover(cover);
+    //print_hazard(current_hazard);
+    return cover;
+    
     // Made up; depends on formation
-    return formation@0 ? 0.7 : 0.3;
+    //return formation@0 ? 0.7 : 0.3;
   }
 
-  //@AT_LEAST(0.5)
-  //expect COVERAGE(hazard[x][y] > 0.5 ? coverage() > 0.5 : 1);
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_02(current_hazard * (1-coverage()) < 0.02);
 
-  LOCAL double accumulated_risk;
-  double risk_integral()
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_05(current_hazard * (1-coverage()) < 0.05);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_08(current_hazard * (1-coverage()) < 0.08);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_10(current_hazard * (1-coverage()) < 0.1);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_15(current_hazard * (1-coverage()) < 0.15);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_20(current_hazard * (1-coverage()) < 0.2);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_25(current_hazard * (1-coverage()) < 0.25);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_30(current_hazard * (1-coverage()) < 0.3);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_40(current_hazard * (1-coverage()) < 0.4);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_50(current_hazard * (1-coverage()) < 0.5);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_60(current_hazard * (1-coverage()) < 0.6);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_70(current_hazard * (1-coverage()) < 0.7);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_80(current_hazard * (1-coverage()) < 0.8);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_90(current_hazard * (1-coverage()) < 0.9);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_95(current_hazard * (1-coverage()) < 0.95);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_02(current_hazard * (1-coverage()) < 0.02);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_05(current_hazard * (1-coverage()) < 0.05);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_08(current_hazard * (1-coverage()) < 0.08);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_10(current_hazard * (1-coverage()) < 0.1);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_15(current_hazard * (1-coverage()) < 0.15);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_20(current_hazard * (1-coverage()) < 0.2);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_25(current_hazard * (1-coverage()) < 0.25);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_30(current_hazard * (1-coverage()) < 0.3);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_40(current_hazard * (1-coverage()) < 0.4);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_50(current_hazard * (1-coverage()) < 0.5);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_60(current_hazard * (1-coverage()) < 0.6);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_70(current_hazard * (1-coverage()) < 0.7);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_80(current_hazard * (1-coverage()) < 0.8);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_90(current_hazard * (1-coverage()) < 0.9);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_95(current_hazard * (1-coverage()) < 0.95);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_02(current_hazard * (1-coverage()) < 0.02);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_05(current_hazard * (1-coverage()) < 0.05);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_08(current_hazard * (1-coverage()) < 0.08);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_10(current_hazard * (1-coverage()) < 0.1);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_15(current_hazard * (1-coverage()) < 0.15);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_20(current_hazard * (1-coverage()) < 0.2);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_25(current_hazard * (1-coverage()) < 0.25);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_30(current_hazard * (1-coverage()) < 0.3);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_40(current_hazard * (1-coverage()) < 0.4);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_50(current_hazard * (1-coverage()) < 0.5);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_60(current_hazard * (1-coverage()) < 0.6);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_70(current_hazard * (1-coverage()) < 0.7);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_80(current_hazard * (1-coverage()) < 0.8);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_90(current_hazard * (1-coverage()) < 0.9);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_95(current_hazard * (1-coverage()) < 0.95);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_02(current_hazard * (1-coverage()) < 0.02);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_05(current_hazard * (1-coverage()) < 0.05);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_08(current_hazard * (1-coverage()) < 0.08);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_10(current_hazard * (1-coverage()) < 0.1);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_15(current_hazard * (1-coverage()) < 0.15);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_20(current_hazard * (1-coverage()) < 0.2);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_25(current_hazard * (1-coverage()) < 0.25);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_30(current_hazard * (1-coverage()) < 0.3);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_40(current_hazard * (1-coverage()) < 0.4);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_50(current_hazard * (1-coverage()) < 0.5);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_60(current_hazard * (1-coverage()) < 0.6);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_70(current_hazard * (1-coverage()) < 0.7);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_80(current_hazard * (1-coverage()) < 0.8);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_90(current_hazard * (1-coverage()) < 0.9);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_95(current_hazard * (1-coverage()) < 0.95);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_02(current_hazard * (1-coverage()) < 0.02);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_05(current_hazard * (1-coverage()) < 0.05);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_08(current_hazard * (1-coverage()) < 0.08);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_10(current_hazard * (1-coverage()) < 0.1);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_15(current_hazard * (1-coverage()) < 0.15);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_20(current_hazard * (1-coverage()) < 0.2);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_25(current_hazard * (1-coverage()) < 0.25);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_30(current_hazard * (1-coverage()) < 0.3);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_40(current_hazard * (1-coverage()) < 0.4);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_50(current_hazard * (1-coverage()) < 0.5);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_60(current_hazard * (1-coverage()) < 0.6);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_70(current_hazard * (1-coverage()) < 0.7);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_80(current_hazard * (1-coverage()) < 0.8);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_90(current_hazard * (1-coverage()) < 0.9);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_95(current_hazard * (1-coverage()) < 0.95);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_02(current_hazard * (1-coverage()) < 0.02);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_05(current_hazard * (1-coverage()) < 0.05);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_08(current_hazard * (1-coverage()) < 0.08);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_10(current_hazard * (1-coverage()) < 0.1);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_15(current_hazard * (1-coverage()) < 0.15);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_20(current_hazard * (1-coverage()) < 0.2);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_25(current_hazard * (1-coverage()) < 0.25);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_30(current_hazard * (1-coverage()) < 0.3);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_40(current_hazard * (1-coverage()) < 0.4);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_50(current_hazard * (1-coverage()) < 0.5);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_60(current_hazard * (1-coverage()) < 0.6);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_70(current_hazard * (1-coverage()) < 0.7);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_80(current_hazard * (1-coverage()) < 0.8);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_90(current_hazard * (1-coverage()) < 0.9);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_95(current_hazard * (1-coverage()) < 0.95);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_02(current_hazard * (1-coverage()) < 0.02);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_05(current_hazard * (1-coverage()) < 0.05);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_08(current_hazard * (1-coverage()) < 0.08);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_10(current_hazard * (1-coverage()) < 0.1);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_15(current_hazard * (1-coverage()) < 0.15);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_20(current_hazard * (1-coverage()) < 0.2);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_25(current_hazard * (1-coverage()) < 0.25);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_30(current_hazard * (1-coverage()) < 0.3);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_40(current_hazard * (1-coverage()) < 0.4);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_50(current_hazard * (1-coverage()) < 0.5);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_60(current_hazard * (1-coverage()) < 0.6);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_70(current_hazard * (1-coverage()) < 0.7);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_80(current_hazard * (1-coverage()) < 0.8);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_90(current_hazard * (1-coverage()) < 0.9);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_95(current_hazard * (1-coverage()) < 0.95);
+
+  @AtEnd
+  @AtNode(0)
+  expect REACHED_END(x@0 == xt@0 && y@0 == yt@0);
+
+  PURE double risk_integral()
   {
-    accumulated_risk = accumulated_risk + current_hazard * (1-coverage()) * 0.1;
-    return accumulated_risk;
+    if(id == 0)
+      //return accumulate_risk(current_hazard * (1-coverage()) * 0.2);
+      return INTEGRATE(current_hazard * (1-coverage()));
+    else
+      return 0.0;
   }
 
   //@AT_END
-  expect RISK_INTEGRAL(risk_integral() < 0.105);
+  //expect RISK_INTEGRAL(risk_integral() < 0.105);
 
   // True if you reach destination by end of mission time
   //@AT_END
-  expect REACHED_END(x@0 == xt@0 && y@0 == yt@0);
+  //expect REACHED_END(x@0 == xt@0 && y@0 == yt@0);
   
   // Completed and good coverage
   // 0.105 is -ln(0.9), 0.9 is desired success probability
-  //@AT_END
-  expect REACHED_END_AND_RISK_INTEGRAL(risk_integral() < 0.105 && x@0 == xt@0 && y@0 == yt@0);
+  //@AtEnd
+  //expect REACHED_END_AND_RISK_INTEGRAL(risk_integral() < 0.105 && x@0 == xt@0 && y@0 == yt@0);
   
   //-- return the next waypoint value
   _Bool NEXT_XY ()
@@ -356,7 +876,7 @@ NODE uav (id)
   //-- the task that invokes the adaptation manager. this task only
   //-- does something meaningful for the leader node (i.e., id =
   //-- 0). otherwise it is a NOP.
-  void ADAPTATION_MANAGER()
+  thread ADAPTATION_MANAGER()
   {
     _Bool last_formation;    
     unsigned char num_protectors_changing;
@@ -365,8 +885,8 @@ NODE uav (id)
     if(id != 0 || init@0 == 0) return;
 
     //-- check if formation change is still happening
-    if(EXISTS_LOWER(idp,num_changes@idp != num_changes@id) ||
-       EXISTS_HIGHER(idp,num_changes@idp != num_changes@id)) {
+    if(exists_lower(idp,num_changes@idp != num_changes@id) ||
+       exists_higher(idp,num_changes@idp != num_changes@id)) {
       changing = 1;
     } else {
       changing = 0;
@@ -377,7 +897,7 @@ NODE uav (id)
     //-- change
     if(changing) {
       num_protectors_changing = 0;
-      FORALL_OTHER(idp) {
+      forall_other(idp) {
         if(num_changes@idp != num_changes@id) {
           num_protectors_changing = num_protectors_changing + 1;
         }
@@ -410,7 +930,7 @@ NODE uav (id)
   }
 
   //-- the task that computes the next waypoint.
-  void WAYPOINT()
+  thread WAYPOINT()
   {
     if(id != 0 && init@0 == 0) {
       waypointValid = 0;
@@ -461,15 +981,34 @@ NODE uav (id)
     }
   }
 
+  //double GET_HAZARD(int curx, int cury)
+  //{
+    //if(id == 0 && curx == xt && cury == yt)
+      //return 0.0;
+    //else
+      //return (curx > 4 && cury <= 4) ? 0.09 : 0.01;
+  //}
+
   //-- set the next 5 hazards based on the next 5 waypoints. XXX: this
   //-- should be fixed once compiler support is added.
   void SET_HAZARDS()
   {
-    hazard1 = (next_wp_x[0] > 4 && next_wp_y[0] <= 4) ? 0.9 : 0.1;
-    hazard2 = (next_wp_x[1] > 4 && next_wp_y[1] <= 4) ? 0.9 : 0.1;
-    hazard3 = (next_wp_x[2] > 4 && next_wp_y[2] <= 4) ? 0.9 : 0.1;
-    hazard4 = (next_wp_x[3] > 4 && next_wp_y[3] <= 4) ? 0.9 : 0.1;
-    hazard5 = (next_wp_x[4] > 4 && next_wp_y[4] <= 4) ? 0.9 : 0.1;
+    if(id == 0)
+    {
+      hazard1 = GET_HAZARD(next_wp_x[0], next_wp_y[0]);
+      hazard2 = GET_HAZARD(next_wp_x[1], next_wp_y[1]);
+      hazard3 = GET_HAZARD(next_wp_x[2], next_wp_y[2]);
+      hazard4 = GET_HAZARD(next_wp_x[3], next_wp_y[3]);
+      hazard5 = GET_HAZARD(next_wp_x[4], next_wp_y[4]);
+    }
+    else
+    {
+      hazard1 = 0;
+      hazard2 = 0;
+      hazard3 = 0;
+      hazard4 = 0;
+      hazard5 = 0;
+    }
   }
 
   //-- set the next 5 variances based on the next 5 waypoints. XXX:
@@ -484,6 +1023,8 @@ NODE uav (id)
   {
     unsigned char i,j;
     lock[x][y] = 1;
+    lock[xp][yp] = 1;
+
     num_changes = 0;
     
     if(id != 0) return;
@@ -491,27 +1032,29 @@ NODE uav (id)
     //-- the rest of this stuff is only done by the leader
     lx = x;
     ly = y;
-    current_hazard = hazards[x][y];
+    current_hazard = GET_HAZARD(x,y);
     formation = 0;
     changing = 0;
     remaining_time = 0.0;
+
+    delay_until = 0.0;
       
     //-- initialize hazards and variances arrays
     //for(i = 0;i < X;) {
-    i=0;
-    while(i < x) {
+    //i=0;
+    //while(i < x) {
       //for(j = 0;j < Y;) {
-      j=0;
-      while(j < Y) {
+      //j=0;
+      //while(j < Y) {
         //-- we start with a simple hazard mapping
-        if(x > 4 && y <= 4) hazards[i][j] = 0.9;
-        else hazards[i][j] = 0.9;
+        //if(x > 4 && y <= 4) hazards[i][j] = 0.9;
+        //else hazards[i][j] = 0.9;
         //-- variances are fixed and low
-        variances[i][j] = 0.01;
-        j = j+1;
-      }
-      i = i+1; //XXX: this should be part of the for loop header
-    }
+        //variances[i][j] = 0.01;
+        //j = j+1;
+      //}
+      //i = i+1; //XXX: this should be part of the for loop header
+    //}
     
     //-- also initialize next_wp_x and next_wp_y.
     next_wp_x[0] = x;
@@ -525,6 +1068,7 @@ NODE uav (id)
       i = i+1;
     }
 
+    INIT_HAZARDS(X,Y,xt,yt);
     //initialize the next 5 hazards and variances
     SET_HAZARDS();
     SET_VARIANCES();
@@ -540,7 +1084,7 @@ NODE uav (id)
     //-- tight formations are set to 0.8 and 0.2. the ratio is 4.
 
     //-- select the scenario
-    scenario = 3;
+    scenario = 2;
     
     //-----------------------------------------------------------------
     //-- begin scenarios
@@ -574,6 +1118,8 @@ NODE uav (id)
       total_time = 18.0;
     }
 
+    speed_factor = loose_speed / tight_speed;
+
     //-----------------------------------------------------------------
     //-- begin scenarios
     //-----------------------------------------------------------------
@@ -592,7 +1138,7 @@ NODE uav (id)
 
     lock[x][y] = 0; 
     x = xp; y = yp;
-    current_hazard = hazards[x][y];
+    current_hazard = GET_HAZARD(x,y);
     //-- if i am not the leader and a formation change was
     //-- happening, and i have reached the end-point, then formation
     //-- change is complete.
@@ -623,16 +1169,21 @@ NODE uav (id)
   
   //-- the task that moves the node to its next waypoint while
   //-- avoiding collisions.
-  @BARRIER_SYNC
-  @PLATFORM_CONTROLLER
-  void COLLISION_AVOIDANCE ()
+  @BarrierSync
+  @PlatformController
+  thread COLLISION_AVOIDANCE ()
   {
     print_state(X,Y,id,x,y,xt,yt);
     //my_sleep(1);
     if(state == INITS) {
       INITIALIZE_STATE();
       state = NEXT;
-    } if(state == NEXT) {
+    }
+    if(wall_time() < delay_until)
+    {
+      return;
+    }
+    if(state == NEXT) {
       //-- if reached destination, nothing to do
       if(x == xt && y == yt) return;
       //-- the leader does not move if formation change is going on
@@ -642,23 +1193,32 @@ NODE uav (id)
       state = REQUEST;
     } else if(state == REQUEST) {
       //request the lock but only if it is free
-      //if(EXISTS_LOWER(idp,lock[xp][yp]@idp != 0)) return;
+      //if(exists_lower(idp,lock[xp][yp]@idp != 0)) return;
       lock[xp][yp] = 1;
       state = WAITING;
     } else if(state == WAITING) {
       //grab the lock if we are the highest 
       //id node to request or hold the lock
-      if(EXISTS_HIGHER(idp, lock[xp][yp]@idp != 0)) return;
+      if(exists_higher(idp, lock[xp][yp]@idp != 0)) return;
       state = MOVE;
     } else if(state == MOVE) {
       //now we have the lock on (x’,y’)
+      if(started_move == 0)
+      {
+        started_move = wall_time();
+      }
       if(GRID_MOVE(xp,yp,0.5)) return;
       REACHED_NEXT_XY();
       state = NEXT;
+      if(id == 0 && started_move > 0 && formation@0 == 1 && speed_factor > 1)
+      {
+        delay_until = speed_factor * wall_time() - (speed_factor - 1) * started_move;
+      }
+      started_move = 0;
     }
   }
 
-  @INIT_SIM
+  @InitSim
   void StartingPosition ()
   {
     GRID_INIT(X, Y, LeftX, RightX, TopY, BottomY);
@@ -670,16 +1230,17 @@ NODE uav (id)
 @INIT
 void NodeInit () 
 {
-  FORALL_NODE(id) {
+  forall_node(id) {
     state@id = INITS;
     ND(x@id); ND(y@id);
     ASSUME(0 <= x@id && x@id < X && 0 <= y@id && y@id < Y);
     ND(xt@id); ND(yt@id);
     ASSUME(0 <= xt@id && xt@id < X && 0 <= yt@id && yt@id < Y);
     waypointValid@id = 1;
+    INIT_CONTROLLER(x@id,y@id)@id;
   }
 
-  FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+  forall_distinct_node_pair (id1,id2) {
     ASSUME(x@id1 != x@id2 || y@id1 != y@id2);
   }
 }
@@ -688,7 +1249,7 @@ void NodeInit ()
 @SAFETY
 void NoCollisions ()
 {
-  FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+  forall_distinct_node_pair (id1,id2) {
     ASSERT(x@id1 != x@id2 || y@id1 != y@id2);
   }
 }
