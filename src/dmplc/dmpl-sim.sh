@@ -181,16 +181,18 @@ elif [ "$MAPNAME" == "large" ]; then
     RightX=6.5
 fi
 
+CPP_FILE=${MISSION}_${BIN}.cpp
+
 for file in `which dmplc` $DMPL $MISSION; do
-if [ $file -nt ${BIN}.cpp ]; then
-dmplc -e -n $NODENUM --DX $GRIDSIZE --DY $GRIDSIZE --DTopY $TopY --DBottomY $BottomY --DLeftX $LeftX --DRightX $RightX -g -o ${BIN}.cpp $DMPL
+if [ $file -nt $CPP_FILE ]; then
+dmplc -e -n $NODENUM --DX $GRIDSIZE --DY $GRIDSIZE --DTopY $TopY --DBottomY $BottomY --DLeftX $LeftX --DRightX $RightX -g -o $CPP_FILE $DMPL
 break
 fi
 done
-if [ ${BIN}.cpp -nt ${BIN} ]; then
+if [ $CPP_FILE -nt ${BIN} ]; then
 CFLAGS="-g -Og -std=c++11 -I$DMPL_ROOT/src -I$VREP_ROOT/programming/remoteApi -I$ACE_ROOT -I$MADARA_ROOT/include -I$GAMS_ROOT/src -I$DMPL_ROOT/include"
 LIBS="$LIBS $MADARA_ROOT/libMADARA.so $ACE_ROOT/lib/libACE.so $GAMS_ROOT/lib/libGAMS.so -lpthread"
-g++ $CFLAGS -o $BIN ${BIN}.cpp $LIBS
+g++ $CFLAGS -o $BIN $CPP_FILE $LIBS
 fi
 
 #create the output directory and get its realpath
