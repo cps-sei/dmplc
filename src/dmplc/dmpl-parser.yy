@@ -143,10 +143,10 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
  */
 %token <string> TIDENTIFIER TINTEGER TDOUBLE TATTRIBUTE
 %token <string> TIF TREQUIRE TEXPECT
-%token <token> TSEMICOLON TCONST TNODE
-%token <token> TGLOBAL TLOCAL TALIAS TTARGET TTHUNK
+%token <token> TSEMICOLON TCONST TNODE TROLE
+%token <token> TGLOBAL TLOCAL TALIAS TTARGET TTHUNK TID
 %token <token> TBOOL TINT TDOUBLE_TYPE TVOID TCHAR TSIGNED TUNSIGNED
-%token <token> TNODENUM TEXTERN TTHREAD TPURE
+%token <token> TNODENUM TEXTERN TTHREAD TPURE TOVERRIDE
 %token <token> TELSE TFOR TWHILE
 %token <token> TBREAK TCONTINUE TRETURN TEXO TEXH TEXL /*TPROGRAM*/
 %token <token> /*TINIT TSAFETY*/ TFAN TFADNP TFAO TFAOL TFAOH
@@ -165,11 +165,11 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
    we call an ident (defined by union type ident) we are really
    calling an (NIdentifier*). It makes the compiler happy.
  */
-%type <token> program constant node
-%type <string> cond_kind stmt_name
-%type <node> node_body
-%type <varList> node_var
-%type <function> procedure
+%type <token> program constant
+%type <string> cond_kind stmt_name role role_body
+%type <node> node_body node
+%type <varList> node_var var_group var_block
+%type <function> procedure fn_body fn_prototype
 %type <varList> global_var local_var
 %type <token> dimension fn_decor
 %type <tokenList> fn_decors
@@ -210,16 +210,17 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
 %start program
 
 %%
-program :
-  program_element {}
+program : {}
 | program program_element {}
 ;
 
 program_element
   : target {}
   | constant {}
-  | extern_fn_decl {}
-  | node {}
+  | node {
+    builder->program.addNode(*$1);
+    delete $1;
+  }
   | procedure {
     builder->program.addFunction(*$1);
     delete $1;
@@ -243,26 +244,6 @@ target_id_list : TIDENTIFIER {
 }
 ;
 
-fn_decor : TPURE;
-
-fn_decors : { $$ = new std::list<int>(); }
-| fn_decor fn_decors {
-  $$ = $2;
-  $$->push_back($1);
-}
-;
-
-extern_fn_decl :
-attr_list TEXTERN fn_decors type TIDENTIFIER TLPAREN param_list TRPAREN TSEMICOLON {
-  dmpl::Func func = boost::make_shared<dmpl::Func::element_type>(*$4,*$5,*$7,dmpl::VarList(),dmpl::StmtList());
-  $3->push_back(TEXTERN);
-  apply_fn_decors(func, *$3);
-  func->attrs = *$1;
-  builder->program.addFunction(func);
-  delete $1; delete $3; delete $4; delete $5; delete $7;
-}
-;
-
 constant : TCONST TIDENTIFIER TEQUAL TINTEGER TSEMICOLON {
   if(builder->program.constDef.find(*$2) == builder->program.constDef.end())
     builder->program.constDef[*$2] = *$4;
@@ -282,48 +263,32 @@ supplied via the command line */
 ;
 
 node :
-attr_list TNODE TIDENTIFIER TLPAREN TIDENTIFIER TRPAREN TLBRACE node_body TRBRACE {
-  $8->name = *$3;
-  $8->args.push_back(*$5);
-  $8->attrs = *$1;
-  builder->program.addNode(*$8);
-  delete $1; delete $3; delete $5; delete $8;
-}
-| attr_list TNODE TIDENTIFIER TLBRACE node_body TRBRACE {
+attr_list TNODE TIDENTIFIER TLBRACE node_body TRBRACE {
   $5->name = *$3;
+  $5->args.push_back("id");
   $5->attrs = *$1;
-  $5->abstract = true;
-  builder->program.addNode(*$5);
-  delete $1; delete $3; delete $5;
+  $$ = $5;
+  delete $1; delete $3;
 }
 | attr_list TNODE TIDENTIFIER TSEMICOLON {
-  builder->program.addNode(dmpl::Node(*$3, *$1, true));
+  $$ = new dmpl::Node(*$3, *$1, true);
 }
 ;
 
-node_body:
-  node_var {
+node_body: {
     $$ = new dmpl::Node();
-    $$->addVar(*$1);
-    delete $1;
 }
-| node_body node_var {
+| node_body var_block {
     $1->addVar(*$2);
     delete $2;
-}
-| procedure {
-    $$ = new dmpl::Node();
-    $$->addFunction(*$1);
-    delete $1;
 }
 | node_body procedure {
     $1->addFunction(*$2);
     delete $2;
 }
-| cond_stmt {
-    $$ = new dmpl::Node();
-    $$->addStatement(*$1);
-    delete $1;
+| node_body role {
+    std::cerr << "role: " << *$2 << std::endl;
+    delete $2;
 }
 | node_body cond_stmt {
     $1->addStatement(*$2);
@@ -331,14 +296,66 @@ node_body:
 }
 ;
 
-node_var : global_var{
+role: attr_list TROLE TIDENTIFIER TLBRACE role_body TRBRACE {
+  $$ = new std::string(*$5 + " " + *$3);
+  delete $3; delete $5;
+}
+|
+attr_list TROLE TIDENTIFIER TID TINTEGER TLBRACE role_body TRBRACE {
+  $$ = new std::string(*$7 + " " + *$3 + " " + *$5);
+  delete $3; delete $5; delete $7;
+}
+;
+
+role_body: {
+  $$ = new std::string("hello world");
+}
+| role_body var_block {
+  $$ = new std::string(*$1 + " var_block");
+  delete $2;
+}
+| role_body procedure {
+  $$ = new std::string(*$1 + " procedure");
+  delete $2;
+}
+| role_body cond_stmt {
+  $$ = new std::string(*$1 + " cond_stmt");
+  delete $2;
+}
+;
+
+var_block : node_var TSEMICOLON {
+  $$ = $1;
+}
+| TINIT TLPAREN var_group TRPAREN fn_body {
+  $$ = $3;
+  (*$5)->retType = dmpl::voidType();
+  BOOST_FOREACH(const dmpl::Var &v, *$$) {
+    v->initFunc = *$5;
+  }
+  delete $5;
+}
+;
+
+var_group : node_var TSEMICOLON {
+  $$ = $1;
+}
+| var_group node_var TSEMICOLON {
+  BOOST_FOREACH(const dmpl::Var &v, *$2) {
+    $$->push_back(v);
+  }
+  delete $2;
+}
+;
+
+node_var : global_var {
   $$ = $1;
 }
 | local_var {
   $$ = $1;
 }
 
-global_var : TGLOBAL var_decl TSEMICOLON {
+global_var : TGLOBAL var_decl {
   BOOST_FOREACH(dmpl::Var &v, *$2)
   {
     v->scope = dmpl::Variable::GLOBAL;
@@ -347,7 +364,7 @@ global_var : TGLOBAL var_decl TSEMICOLON {
 }
 ;
 
-local_var : TLOCAL var_decl TSEMICOLON {
+local_var : TLOCAL var_decl {
   BOOST_FOREACH(dmpl::Var &v, *$2)
   {
     v->scope = dmpl::Variable::LOCAL;
@@ -375,6 +392,16 @@ var_list : var {
 ;
 
 var : TIDENTIFIER { $$ = new dmpl::Var(boost::make_shared<dmpl::Var::element_type>(*$1)); delete $1; }
+| TIDENTIFIER TEQUAL expr {
+  $$ = new dmpl::Var(boost::make_shared<dmpl::Var::element_type>(*$1));
+  (*$$)->initExpr = *$3;
+  delete $1; delete $3;
+}
+| TIDENTIFIER TEQUAL TEXTERN {
+  $$ = new dmpl::Var(boost::make_shared<dmpl::Var::element_type>(*$1));
+  (*$$)->isExternInit = true;
+  delete $1;
+}
 | TIDENTIFIER dimensions {
   $$ = new dmpl::Var(boost::make_shared<dmpl::Var::element_type>(*$1,*$2)); 
   delete $1; delete $2;
@@ -404,7 +431,6 @@ type : simp_type { $$ = $1; }
 ;
 
 fn_type : type { $$ = $1; }
-| TTHREAD { $$ = new dmpl::Type(dmpl::threadType()); }
 ;
 
 
@@ -416,19 +442,63 @@ simp_type : TBOOL { $$ = new dmpl::Type(dmpl::boolType()); }
 ;
 
 procedure :
-attr_list fn_decors fn_type TIDENTIFIER TLPAREN param_list TRPAREN TLBRACE var_decl_list stmt_list TRBRACE {
-  /** set scope of parameters and temporary variables */
-  BOOST_FOREACH(dmpl::Var &v,*$6) v->scope = dmpl::Variable::PARAM;
-  BOOST_FOREACH(dmpl::Var &v,*$9) v->scope = dmpl::Variable::TEMP;
-  /** create and add function to the node */
-  $$ = new dmpl::Func(boost::make_shared<dmpl::Func::element_type>(*$3,*$4,*$6,*$9,*$10,*$1));
-  apply_fn_decors(*$$, *$2);
-  delete $1; delete $2; delete $3; delete $4; delete $6; delete $9; delete $10;
+attr_list fn_prototype fn_body {
+  $$ = $2;
+  (*$$)->mergeWith(*$3, false);
+  (*$$)->attrs = *$1;
+  delete $1; delete $3;
 }
-| attr_list fn_decors TIDENTIFIER TLPAREN TRPAREN TSEMICOLON {
-  $$ = new dmpl::Func(boost::make_shared<dmpl::Func::element_type>(*$3, *$1));
-  apply_fn_decors(*$$, *$2);
-  delete $1; delete $2; delete $3;
+| attr_list fn_prototype TSEMICOLON {
+  $$ = $2;
+  (*$$)->attrs = *$1;
+  delete $1;
+}
+;
+
+fn_body :
+TLBRACE var_decl_list stmt_list TRBRACE {
+  /** create and add function to the node */
+  $$ = new dmpl::Func(boost::make_shared<dmpl::Func::element_type>());
+  /** set scope of temporary variables */
+  BOOST_FOREACH(dmpl::Var &v,*$2) v->scope = dmpl::Variable::TEMP;
+  (*$$)->setTemps(*$2);
+  (*$$)->body = *$3;
+  delete $2; delete $3;
+}
+;
+
+fn_decor : TPURE | TEXTERN | TOVERRIDE ;
+
+fn_decors : { $$ = new std::list<int>(); }
+| fn_decor fn_decors {
+  $$ = $2;
+  $$->push_back($1);
+}
+;
+
+fn_prototype :
+fn_decors fn_type TIDENTIFIER TLPAREN param_list TRPAREN {
+  $$ = new dmpl::Func(boost::make_shared<dmpl::Func::element_type>());
+  (*$$)->retType = *$2;
+  (*$$)->name = *$3;
+  /** set scope of parameter variables */
+  BOOST_FOREACH(dmpl::Var &v,*$5) v->scope = dmpl::Variable::PARAM;
+  (*$$)->setParams(*$5);
+  apply_fn_decors(*$$, *$1);
+  delete $1; delete $2; delete $3; delete $5;
+}
+| fn_decors TIDENTIFIER TLPAREN TRPAREN {
+  $$ = new dmpl::Func(boost::make_shared<dmpl::Func::element_type>());
+  (*$$)->name = *$2;
+  apply_fn_decors(*$$, *$1);
+  delete $1; delete $2;
+}
+| fn_decors TTHREAD TIDENTIFIER {
+  $$ = new dmpl::Func(boost::make_shared<dmpl::Func::element_type>());
+  (*$$)->name = *$3;
+  (*$$)->retType = dmpl::Type(dmpl::threadType());
+  apply_fn_decors(*$$, *$1);
+  delete $1; delete $3;
 }
 ;
 
@@ -491,7 +561,7 @@ var_decl_list : { $$ = new dmpl::VarList(); }
 }
 ;
 
-stmt_list : stmt { $$ = new dmpl::StmtList(); $$->push_back(*$1); delete $1; }
+stmt_list : { $$ = new dmpl::StmtList(); }
 | stmt_list stmt { $$ = $1; $$->push_back(*$2); delete $2; }
 ;
 
@@ -633,6 +703,10 @@ for_update : {  $$ = new dmpl::StmtList(); }
 ;
 
 expr : lval { $$ = new dmpl::Expr($1); printExpr(*$$); }
+| TID { 
+  $$ = new dmpl::Expr(new dmpl::LvalExpr("id"));
+  printExpr(*$$);
+}
 | TINTEGER { 
   $$ = new dmpl::Expr(new dmpl::IntExpr(atoi($1->c_str()))); 
   delete $1; printExpr(*$$); 

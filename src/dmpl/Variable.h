@@ -65,12 +65,16 @@
 
 #include <map>
 #include <string>
+#include <exception>
+#include <boost/shared_ptr.hpp>
 #include "Type.h"
 #include "Symbol.h"
 
-
 namespace dmpl
 {
+  class Expression;
+  typedef boost::shared_ptr<Expression> Expr;
+
   /**
     * @class Variable
     * @brief A variable
@@ -98,6 +102,21 @@ namespace dmpl
      **/
     int scope;
 
+    /**
+     * Is the variable "= extern" ?
+     **/
+    bool isExternInit;
+
+    /**
+     * The variable's "=" initializer
+     **/
+    Expr initExpr;
+
+    /**
+     * The variable's functional initializer
+     **/
+    Func initFunc;
+
     virtual int getScope() { return scope; }
 
     Func owner;
@@ -106,7 +125,7 @@ namespace dmpl
     FuncList writers;
 
     //constructors
-    Variable() {}
+    Variable() : scope(0), isExternInit(false) {}
     Variable(const std::string &n);
     Variable(const std::string &n,const Type &t);
     Variable(const std::string &n,const Dims &d);
@@ -130,9 +149,9 @@ namespace dmpl
     Var decrDim() const;
   };
 
-  inline Var Sym::asVar()
+  inline Var Symbol::asVar()
   {
-    return boost::dynamic_pointer_cast<Var::element_type>(*this);
+    return boost::dynamic_pointer_cast<Var::element_type>(shared_from_this());
   }
 }
 

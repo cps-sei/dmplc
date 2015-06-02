@@ -81,7 +81,7 @@ namespace dmpl
     * @class Function
     * @brief Represents a function definition
     */
-  class Function : public Symbol, public SymbolUser, public HasAttributes
+  class Function : public Symbol, public SymbolUser
   {
   public:
     /**
@@ -156,15 +156,15 @@ namespace dmpl
     }
 
     //constructors
-    Function() : isExtern(false) {}
+    Function() : isExtern(false), isPure(false) {}
     Function(const std::string &n)
-      : name(n), isExtern(false) {}
+      : name(n), isExtern(false), isPure(false) {}
     Function(const std::string &n, const Attributes &a)
-      : name(n),HasAttributes(a) {}
+      : name(n),Symbol(a) {}
     Function(const Type &rt,const std::string &n,const VarList &p,
              const VarList &t,const StmtList &b,
              const Attributes &a = Attributes())
-      : retType(rt),name(n),body(b),HasAttributes(a),isExtern(false)
+      : retType(rt),name(n),body(b),Symbol(a),isExtern(false),isPure(false)
     {
       setParams(p);
       setTemps(t);
@@ -172,12 +172,12 @@ namespace dmpl
     Function(const Type &rt,const std::string &n,const Vars &p,
              const Vars &t,const StmtList &b,
              const Attributes &a = Attributes())
-      : retType(rt),name(n),body(b),HasAttributes(a),paramSet(p),temps(t),isExtern(false)
+      : retType(rt),name(n),body(b),Symbol(a),paramSet(p),temps(t),isExtern(false),isPure(false)
     {
       BOOST_FOREACH(const Vars::value_type &v,p) { params.push_back(v.second); }
     }
 
-    void mergeWith (const Func &of);
+    void mergeWith (const Func &of, bool checkDecors = true);
 
     void setParams (const VarList &p)
     {
@@ -208,9 +208,9 @@ namespace dmpl
   typedef std::map <std::string, Func> Funcs;
   typedef std::map <std::string, Function> Functions;
 
-  inline Func Sym::asFunc()
+  inline Func Symbol::asFunc()
   {
-    return boost::dynamic_pointer_cast<Func::element_type>(*this);
+    return boost::dynamic_pointer_cast<Func::element_type>(shared_from_this());
   }
 
   /*

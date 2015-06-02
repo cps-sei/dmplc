@@ -63,22 +63,22 @@
 
 namespace dmpl
 {
-  void Sym::use(const SymUser &suser = SymUser(), bool isWrite = false, bool isRemote = false, bool isExpect = false)
+  void Symbol::use(const SymUser &suser = SymUser(), bool isWrite = false, bool isRemote = false, bool isExpect = false)
   {
     //std::cerr << "Using symbol " << (*this)->getName() << " " << isWrite << " " << isRemote << " " << isExpect << std::endl;
     SymbolAccess sa(isWrite, isRemote, isExpect);
     //std::cerr << "sa: " << sa << std::endl;
-    (*this)->usage_summary.set(sa);
+    this->usage_summary.set(sa);
     if(suser != NULL)
     {
-      SymbolUse &su = suser->findOrAddSymbol(*this);
+      SymbolUse &su = suser->findOrAddSymbol(shared_from_this());
       su.info.set(sa);
       //std::cerr << "su: " << su.info << std::endl;
 
       suser->summary |= su;
 
       if(suser->recordUse())
-        (*this)->users.insert(suser);
+        this->users.insert(suser);
     }
   }
 
@@ -106,7 +106,7 @@ namespace dmpl
         con.thread = f.second;
         con.curFunc = f.second;
         Sym fsym = Sym(f.second);
-        fsym.use();
+        fsym->use();
         f.second->useSymbols(f.second, con);
       }
     }

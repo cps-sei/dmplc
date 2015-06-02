@@ -57,19 +57,21 @@
 #include "Function.h"
 
 void
-dmpl::Function::mergeWith (const Func &of)
+dmpl::Function::mergeWith (const Func &of, bool checkDecors)
 {
   Function &f = *this;
 
   if (f.name == "")
     f.name = of->name;
+  else if (of->name == "")
+    /* do nothing */;
   else if (f.name != of->name)
     throw std::runtime_error("Cannot merge functions of->differing names: " + f.name + " and " + of->name);
 
   if (f.retType.get() == NULL)
     f.retType = of->retType;
-  else if (of->retType.get() != NULL && f.retType != of->retType)
-    throw std::runtime_error("Cannot merge functions of->differing return types: for " + f.name);
+  else if (of->retType.get() != NULL && !f.retType->equals(of->retType))
+    throw std::runtime_error("Cannot merge functions of differing return types: for " + f.name);
 
   if (f.params.size() == 0)
     f.params = of->params;
@@ -85,6 +87,13 @@ dmpl::Function::mergeWith (const Func &of)
     f.body = of->body;
   else if (of->body.size() != 0)
     throw std::runtime_error("Cannot merge functions which both have bodies: for " + f.name);
+
+  if(checkDecors) {
+    if(f.isExtern != of->isExtern)
+      throw std::runtime_error("Declarations have differeing extern-ness: for " + f.name);
+    if(f.isPure != of->isPure)
+      throw std::runtime_error("Declarations have differeing pure-ity: for " + f.name);
+  }
 
   BOOST_FOREACH(const Attributes::value_type &a, of->attrs)
   {
@@ -167,7 +176,7 @@ dmpl::LvalExpr::useSymbols(const SymUser &self, Context con)
   
   sym = con.findSym(var);
   if(sym)
-    sym.use(self, con.isLHS, node != NULL, con.inExpect());
+    sym->use(self, con.isLHS, node != NULL, con.inExpect());
   Func func = boost::dynamic_pointer_cast<Function>(sym);
   if(func)
   {

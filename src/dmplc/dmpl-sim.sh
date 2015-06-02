@@ -62,6 +62,7 @@ function usage {
     echo "    -B | --build-only   Only build the software, don't run the simulation"
     echo "    -d | --debug        Run with debug options (uses and dmplc --debug, and gdb)"
     echo "    -h | --headless     Run V-REP in headless mode"
+    echo "    -M | --manual-start Don't start the simulation automatically"
     echo '    -p | --platform $P  Pass $P as the --platform option to the executable'
     echo "    -r | --realtime     Run V-REP in realtime mode"
 }
@@ -71,6 +72,7 @@ HEADLESS=0
 REALTIME=0
 FORCEBUILD=0
 BUILDONLY=0
+MANUALSTART=0
 
 PLATFORM=vrep::::0.1
 
@@ -90,6 +92,9 @@ while true; do
     ;;
   -h|--headless)
     HEADLESS=1
+    ;;
+  -M|--manual-start)
+    MANUALSTART=1
     ;;
   -r|--realtime)
     REALTIME=1
@@ -320,7 +325,7 @@ else
   sleep 2
 fi
 
-( cd $SCDIR; ./startSim.py )
+[ "$MANUALSTART" -ne 1 ] && ( cd $SCDIR; ./startSim.py )
 
 SAFETY_TIME=240
 START_TIME=`date +%s`

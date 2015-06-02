@@ -67,10 +67,22 @@
 #include <exception>
 #include <map>
 #include <string>
-#include "Expression.h"
+#include <boost/lexical_cast.hpp>
+//#include "Expression.h"
 
 namespace dmpl
 {
+  //forward declaration
+  class Expression;
+
+  //share pointer to a base expression -- this is the type we will
+  //mostly use
+  typedef boost::shared_ptr<Expression> Expr;
+  typedef boost::shared_ptr<Expression const> CExpr;
+
+  //a list of expressions
+  typedef std::list <Expr> ExprList;
+
   class Attribute
   {
   public:

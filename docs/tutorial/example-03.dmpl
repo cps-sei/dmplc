@@ -144,9 +144,15 @@ node uav (id)
 
   //private variables -- local to the node.
   //preserved across rounds
-  local unsigned char state; //the state
-  local unsigned char x,y; //current coordinates
-  local unsigned char xp,yp; //next coordinates
+  local unsigned char state = INITS; //the state
+  {
+    local unsigned char x = 0, y = 0; //current coordinates
+    local unsigned char xp, yp; //next coordinates
+  } << {
+    xp = 0;
+    yp = 0;
+  }
+
   local unsigned char xt,yt; //current target coordinates
   local bool waypointValid; //xt, yt are valid
   

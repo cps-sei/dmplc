@@ -293,13 +293,13 @@ global bool formation; //0 = loose, 1 = tight
 local bool changing; //are we changing formation now?
 local double remaining_time = 120; //how much time left to complete formation change 
 
-{
+initialize (
   local double hazards[X][Y]; //map from cells to hazards
   local double variances[X][Y]; //map from cells to variances in hazard predictions
-} << {
+) {
   //-- initialize hazards and variances arrays
-  for(i = 0;i < X;) {
-    for(j = 0;j < Y;) {
+  for(i = 0;i < X;i++) {
+    for(j = 0;j < Y;j++) {
       //-- we start with a simple hazard mapping
       if(x > 4 && y <= 4) hazards[i][j] = 0.9;
       else hazards[i][j] = 0.9;

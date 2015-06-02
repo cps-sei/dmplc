@@ -129,21 +129,26 @@ const RightX = 2.25;
 
 //extern int MOVE_TO(unsigned char x,unsigned char y);
 extern int my_sleep(int seconds);
-extern void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
+extern void print_state(int XX,int YY,int my_id, int x, int y, int xf, int yf);
 extern void print_int(int i);
 
 
-node uav (id)
+node uav
 {
   //shared variables -- visible across nodes. 
-  global _Bool lock [X][Y];
+  {
+    global _Bool lock [X][Y];
+  } << {
+    int a = 0;
+    a = a + 1;
+  }
 
   //private variables -- local to the node.
   //preserved across rounds
-  local unsigned char state; //the state
-  local unsigned char x,y; //current coordinates
-  local unsigned char xp,yp; //next coordinates
-  local unsigned char xf,yf; //final coordinates
+  local unsigned char state = INITS; //the state
+  local unsigned char x = extern, y = extern; //current coordinates
+  local unsigned char xp = x, yp = y; //next coordinates
+  local unsigned char xf = extern, yf = extern; //final coordinates
 
   //-- saves the next waypoint in (xp,yp)
   void NEXT_XY () {
@@ -153,14 +158,28 @@ node uav (id)
     else if(y < yf) yp = y + 1;
     else yp = y - 1;
   }
+
+  role asdf
+  {
+    local int x;
+    void TEST() {
+    }
+  }
+
+  role asdf id 0
+  {
+    local double x;
+    void TEST() {
+    }
+  }
 }
 
-node uav (id)
+node uav
 {
   @Period(100000)
   @BarrierSync
   @PlatformController
-  thread COLLISION_AVOIDANCE () {
+  thread COLLISION_AVOIDANCE {
     print_state(X,Y,id,x,y,xf,yf);
     //my_sleep(1);
     if IF_INIT (state == INITS) {
@@ -202,12 +221,12 @@ node uav (id)
 @INIT
 void NodeInit () 
 {
-  FORALL_NODE(id) {
-    state@id = INITS;
-    ND(x@id); ND(y@id);
-    ASSUME(0 <= x@id && x@id < X && 0 <= y@id && y@id < Y);
-    ND(xf@id); ND(yf@id);
-    ASSUME(0 <= xf@id && xf@id < X && 0 <= yf@id && yf@id < Y);
+  FORALL_NODE(cid) {
+    state@cid = INITS;
+    ND(x@cid); ND(y@cid);
+    ASSUME(0 <= x@cid && x@cid < X && 0 <= y@cid && y@cid < Y);
+    ND(xf@cid); ND(yf@cid);
+    ASSUME(0 <= xf@cid && xf@cid < X && 0 <= yf@cid && yf@cid < Y);
   }
 
   FORALL_DISTINCT_NODE_PAIR (id1,id2) {

@@ -61,7 +61,7 @@
 #include "dmpl/Statement.h"
 #include "DmplBuilder.hpp"
 #include "dmpl-parser.hpp"
-extern dmpl::DmplBuilder *builder; /* the dag builder */
+extern dmpl::DmplBuilder *builder; /* the dmpl builder */
 #define PRINT_TOKEN if(builder->debug) printf("%s\n",yytext)
 #define SAVE_TOKEN PRINT_TOKEN; yylval.string = new std::string(yytext, yyleng)
 #define TOKEN(t) (yylval.token = t)
@@ -91,10 +91,12 @@ extern "C" int yywrap() { return 1; }
 "const"                     PRINT_TOKEN; return TOKEN(TCONST);
 "NODE"                      PRINT_TOKEN; return TOKEN(TNODE);
 "node"                      PRINT_TOKEN; return TOKEN(TNODE);
+"role"                      PRINT_TOKEN; return TOKEN(TROLE);
 "GLOBAL"                    PRINT_TOKEN; return TOKEN(TGLOBAL);
 "global"                    PRINT_TOKEN; return TOKEN(TGLOBAL);
 "LOCAL"                     PRINT_TOKEN; return TOKEN(TLOCAL);
 "local"                     PRINT_TOKEN; return TOKEN(TLOCAL);
+"initialize"                PRINT_TOKEN; return TOKEN(TINIT);
 "TARGET"                    PRINT_TOKEN; return TOKEN(TTARGET);
 "target"                    PRINT_TOKEN; return TOKEN(TTARGET);
 "_Bool"                     PRINT_TOKEN; return TOKEN(TBOOL);
@@ -110,8 +112,8 @@ extern "C" int yywrap() { return 1; }
 "extern"                    PRINT_TOKEN; return TOKEN(TEXTERN);
 "PURE"                      PRINT_TOKEN; return TOKEN(TPURE);
 "pure"                      PRINT_TOKEN; return TOKEN(TPURE);
-"THREAD"                    PRINT_TOKEN; return TOKEN(TTHREAD);
 "thread"                    PRINT_TOKEN; return TOKEN(TTHREAD);
+"override"                  PRINT_TOKEN; return TOKEN(TOVERRIDE);
 "if"                        SAVE_TOKEN; return TIF;
 "require"                   SAVE_TOKEN; return TREQUIRE;
 "expect"                    SAVE_TOKEN; return TEXPECT;
@@ -127,9 +129,6 @@ extern "C" int yywrap() { return 1; }
 "exists_other"              PRINT_TOKEN; return TOKEN(TEXO);
 "exists_higher"             PRINT_TOKEN; return TOKEN(TEXH);
 "exists_lower"              PRINT_TOKEN; return TOKEN(TEXL);
-  /*"PROGRAM"                   PRINT_TOKEN; return TOKEN(TPROGRAM); */
-  /*"INIT"                      PRINT_TOKEN; return TOKEN(TINIT); */
-  /*"SAFETY"                    PRINT_TOKEN; return TOKEN(TSAFETY); */
 "FORALL_NODE"               PRINT_TOKEN; return TOKEN(TFAN);
 "FORALL_DISTINCT_NODE_PAIR" PRINT_TOKEN; return TOKEN(TFADNP);
 "FORALL_OTHER"              PRINT_TOKEN; return TOKEN(TFAO);
@@ -140,15 +139,10 @@ extern "C" int yywrap() { return 1; }
 "forall_other"              PRINT_TOKEN; return TOKEN(TFAO);
 "forall_other_lower"        PRINT_TOKEN; return TOKEN(TFAOL);
 "forall_other_higher"       PRINT_TOKEN; return TOKEN(TFAOH);
-  /*"@TRACK_LOCATIONS"          PRINT_TOKEN; return TOKEN(TTRACK_LOCATIONS);
-    "@SEND_HEARTBEATS"          PRINT_TOKEN; return TOKEN(TSEND_HEARTBEATS);
-    "@ON_PRE_ROUND_BARRIER_TIMEOUT"  PRINT_TOKEN; return TOKEN(TON_PRE_TIMEOUT);
-    "@ON_POST_ROUND_BARRIER_TIMEOUT" PRINT_TOKEN; return TOKEN(TON_POST_TIMEOUT);
-    "@ON_RECEIVE_FILTER"        PRINT_TOKEN; return TOKEN(TON_RECV_FILTER); */
+"id"                        PRINT_TOKEN; return TID;
 "NAN"                       SAVE_TOKEN; return TDOUBLE;
 -?[0-9]+\.[0-9]*            SAVE_TOKEN; return TDOUBLE;
 -?[0-9]+                    SAVE_TOKEN; return TINTEGER;
-  /*"NODE_INIT"                 PRINT_TOKEN; return TOKEN(TNODE_INIT); */
   /* [a-zA-Z_][a-zA-Z0-9_]*(::[a-zA-Z_][a-zA-Z0-9_]*)+  SAVE_TOKEN; return TNAMESPACE; */
 [a-zA-Z_][a-zA-Z0-9_]*  {
                           /** substitute constant definitions */

@@ -134,6 +134,11 @@ namespace dmpl
 
     ///return the first dimension
     int getFirstDim() const;
+
+    bool equals(const Type &o) const
+    {
+      return qual == o->qual && type == o->type && dims == o->dims;
+    }
   };
 }
 

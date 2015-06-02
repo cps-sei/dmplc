@@ -63,6 +63,7 @@
  * This file contains a class definition for the DMPL model of computation.
  **/
 
+#include <exception>
 #include <map>
 #include <set>
 #include <string>
@@ -71,6 +72,9 @@
 //#include "SelfRef.h"
 //#include "Function.h"
 #include "Type.h"
+#include "Attribute.h"
+#include <boost/shared_ptr.hpp>
+#include <boost/enable_shared_from_this.hpp>
 
 
 namespace dmpl
@@ -240,9 +244,18 @@ namespace dmpl
   typedef std::vector<SymUser> SymUserList;
   typedef std::set<SymUser> SymUserSet;
 
-  class Symbol
+  class Symbol;
+  typedef boost::shared_ptr<Symbol> Sym;
+
+  class Namespace;
+  boost::shared_ptr<Namespace> NSpace;
+
+  class Symbol : public HasAttributes, public boost::enable_shared_from_this<Symbol>
   {
   public:
+    Symbol() : HasAttributes(), usage_summary(), users(), owner() {}
+    Symbol(const Attributes &a) : HasAttributes(a), usage_summary(), users(), owner() {}
+
     static const int LOCAL = 501;
     static const int GLOBAL = 502;
     static const int PARAM = 503;
@@ -252,6 +265,7 @@ namespace dmpl
 
     SymbolUseInfo usage_summary;
     SymUserSet users;
+    NSpace owner;
 
     virtual std::string getName() const = 0;
     virtual const Type &getType() = 0;
@@ -259,20 +273,16 @@ namespace dmpl
 
     virtual bool canRead() { return true; }
     virtual bool canWrite() { return true; }
-  };
 
-  typedef boost::shared_ptr<Symbol> SymBase;
+    virtual void mergeWith(const Symbol &other)
+    {
+      throw std::runtime_error("Symbol merging not supported for symbol " + getName());
+    }
 
-  class Sym : public SymBase
-  {
-  public:
+    Sym asSym() { return boost::dynamic_pointer_cast<Symbol>(shared_from_this()); }
     Func asFunc();
     Var asVar();
-
-    Sym() : SymBase() {}
-    Sym(const SymBase &o) : SymBase(o) {}
-
-    void use(const SymUser &suser, bool isWrite, bool isRemote, bool isExpect);
+    virtual void use(const SymUser &suser, bool isWrite, bool isRemote, bool isExpect);
   };
 
   typedef std::list <Sym> SymList;
@@ -446,7 +456,7 @@ namespace dmpl
       return NULL;
     }
 
-    friend class Sym;
+    friend class Symbol;
   protected:
     static void analyzeSymbolUsage(const SymUser &cur, Context con);
 
@@ -461,6 +471,71 @@ namespace dmpl
       }
       allUsedSymbols.push_back(SymbolUse(s));
       return allUsedSymbols.back();
+    }
+  };
+
+  class Namespace : public Symbol, public std::map<std::string, Sym>
+  {
+  public:
+    std::string name;
+
+    Namespace(const std::string &n = "") : name(n) {}
+
+    std::string getName() const
+    {
+      return name;
+    }
+    /**
+     * Add symbol to this namespace. If one already exists with same type,
+     * merge with it. If differing types, raise exception.
+     */
+    template<class T>
+    void addSym(const boost::shared_ptr<T> &symbol)
+    {
+      std::string name(symbol->getName());
+      if(count(name))
+      {
+        Sym orig_sym = (*this)[name];
+        boost::shared_ptr<T> orig = boost::dynamic_pointer_cast<T>(orig_sym);
+        if(orig.get() == NULL)
+        {
+          throw std::runtime_error("Conficting types for symbol " + name);
+        }
+        else
+        {
+          orig.mergeWith(symbol->asSym());
+        }
+      }
+      else
+      {
+        (*this)[name] = symbol->asSym();
+      }
+    }
+
+    /**
+     * Get shared_ptr to object by name. If object does not exist, or has
+     * a type not compatible with T, return NULL.
+     */
+    template<class T>
+    boost::shared_ptr<T> getSym(const std::string &name)
+    {
+      if(count(name))
+      {
+        Sym orig_sym = (*this)[name];
+        boost::shared_ptr<T> orig = boost::dynamic_pointer_cast<T>(orig_sym);
+        if(orig.get() == NULL)
+        {
+          throw NULL;
+        }
+        else
+        {
+          return orig;
+        }
+      }
+      else
+      {
+        return NULL;
+      }
     }
   };
 }
