@@ -126,7 +126,9 @@ const LeftX = -2.25;
 const BottomY = 2.25;
 const RightX = 2.25;
 
-//extern int MOVE_TO(unsigned char x,unsigned char y);
+extern void GRID_INIT(int XX,int YY,double leftX,double rightX,double topY,double bottomY);
+extern void GRID_PLACE(unsigned char x,unsigned char y, double z);
+extern int GRID_MOVE(unsigned char xp,unsigned char yp, double z);
 extern int my_sleep(int seconds);
 extern void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
 extern void print_int(int i);
@@ -248,8 +250,8 @@ void NodeInit ()
     state@id = INITS;
     ND(x@id); ND(y@id);
     ASSUME(0 <= x@id && x@id < X && 0 <= y@id && y@id < Y);
-    ND(xf@id); ND(yf@id);
-    ASSUME(0 <= xf@id && xf@id < X && 0 <= yf@id && yf@id < Y);
+    ND(xt@id); ND(yt@id);
+    ASSUME(0 <= xt@id && xt@id < X && 0 <= yt@id && yt@id < Y);
     waypointValid@id = 1;
   }
 
