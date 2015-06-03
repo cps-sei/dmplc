@@ -52,6 +52,7 @@
 
  * DM-0002494
 **/
+
 //-- there is an implicit MADARA receiver thread
 @MadaraPeriod(50000)
 @MadaraCriticality(1)
