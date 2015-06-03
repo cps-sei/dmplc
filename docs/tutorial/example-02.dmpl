@@ -52,6 +52,7 @@
 
  * DM-0002494
 **/
+
 //-- an example with 5 nodes -- a leader in the middle and four
 //-- protectors surrounding it. the leader moves from an initial to a
 //-- target coordinate, going from one waypoint to the next following

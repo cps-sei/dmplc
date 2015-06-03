@@ -52,7 +52,8 @@
 
  * DM-0002494
 **/
-//-- TBD: describe what this example is about
+
+//-- 9 nodes, loose formation.
 
 target GNU_CPP,WIN_CPP %%{
 #define GNU_WIN
