@@ -87,15 +87,15 @@ void print_line(int _X)
   printf("\n");
 }
 
-void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf, int xp, int yp, int d, int s)
+void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
 {
   if(round == 0) {
     xi = x; yi = y;
   }
 
-  for(int i = 0;i < 10;++i) printf("\n");
+  for(int i = 0;i < 150;++i) printf("\n");
   
-  printf("round = %d : id = %d   dir = %d   state = %d\n", ++round, id, d, s);
+  printf("round = %d : id = %d\n", ++round, id);
   printf("_X = %d _Y = %d\n",_X,_Y);
   print_line(_X);
   for(int i = 0;i < _Y;++i) {
@@ -104,7 +104,6 @@ void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf, int xp, int
       //printf("i = %d j = %d\n", i, j);
       if(j == xf && i == yf) printf("o|");        
       else if(j == x && i == y) printf("%d|",id);
-      else if(j == xp && i == yp) printf("+|");
       else printf(" |");
     }
     printf("\n");
@@ -124,13 +123,6 @@ const REQUEST = 2;
 const WAITING = 3;
 const MOVE = 4;
 
-const STILL = 0;
-const UP = 1;
-const DOWN = 2;
-const LEFT = 4;
-const RIGHT = 8;
-const ALL = 15;
-
 const TopY = -2.25;
 const LeftX = -2.25;
 const BottomY = 2.25;
@@ -138,7 +130,7 @@ const RightX = 2.25;
 
 //extern int MOVE_TO(unsigned char x,unsigned char y);
 extern int my_sleep(int seconds);
-extern void print_state(int XX,int YY,int id, int x, int y, int xf, int yf, int xp, int yp, int d, int s);
+extern pure void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
 extern void print_int(int i);
 
 extern void GRID_INIT(int XX,int YY,double leftX,double rightX,double topY,double bottomY);
@@ -150,6 +142,8 @@ node uav (id)
   //shared variables -- visible across nodes. 
   //must be accessed via R() and W()
   global unsigned char lock [X][Y];
+  global double lock_0 [X][Y];
+  global double lock_1 [X][Y];
   global unsigned char lx,ly; //leader's destination coordinates
   global bool init; //node is initialized
 
@@ -159,7 +153,6 @@ node uav (id)
   local unsigned char x,y; //current coordinates
   local unsigned char xp,yp; //next coordinates
   local unsigned char xt,yt; //current target coordinates
-  local unsigned char dir;
   local bool waypointValid; //xt, yt are valid
   
   bool NEXT_XY () {
@@ -168,16 +161,12 @@ node uav (id)
     xp = x; yp = y;
     if(x < xt) {
       xp = x + 1;
-      dir = RIGHT;
     } else if(x > xt) {
       xp = x - 1;
-      dir = LEFT;
     } else if(y < yt) {
       yp = y + 1;
-      dir = DOWN;
     } else {
       yp = y - 1;
-      dir = UP;
     }
   }
 
@@ -221,47 +210,37 @@ node uav (id)
   @BarrierSync
   @PlatformController
   thread COLLISION_AVOIDANCE () {
-    print_state(X,Y,id,x,y,xt,yt,xp,yp,dir,state);
+    print_state(X,Y,id,x,y,xt,yt);
     //my_sleep(1);
     if(state == INITS) {
-      lock[x][y] = ALL;
-      xp = x;
-      yp = y;
-      dir = STILL;
+      lock[x][y] = 1;
+      lock[xp][yp] = 1;
       if(id == 0) {
         lx = x;
         ly = y;
       }
       init = 1;
       state = NEXT;
-    } else if(state == NEXT) {
+    } if(state == NEXT) {
       //compute next point on route
-      lock[x][y] = ALL;
-      if(x == xt && y == yt) {
-        dir = STILL;
-        return;
-      }
+      if(x == xt && y == yt) return;
       if(NEXT_XY()) return;
       state = REQUEST;
     } else if(state == REQUEST) {
       //request the lock but only if it is free
-      if(dir == STILL || EXISTS_LOWER(idp, (lock[xp][yp]@idp & dir) != 0))
-        return;
-      lock[xp][yp] = ALL;
+      if(EXISTS_LOWER(idp,lock[xp][yp]@idp != 0)) return;
+      lock[xp][yp] = 1;
       state = WAITING;
     } else if(state == WAITING) {
       //grab the lock if we are the highest 
       //id node to request or hold the lock
-      if(dir == STILL || EXISTS_HIGHER(idp, (lock[xp][yp]@idp & dir) != 0))
-        return;
-      lock[x][y] = ALL & ~dir;
+      if(EXISTS_HIGHER(idp, lock[xp][yp]@idp != 0)) return;
       state = MOVE;
     } else if(state == MOVE) {
       //now we have the lock on (x’,y’)
       if(GRID_MOVE(xp,yp,0.5)) return;
       lock[x][y] = 0; 
       x = xp; y = yp;
-      dir = STILL;
       state = NEXT;
     }
   }
