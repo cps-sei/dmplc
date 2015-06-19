@@ -132,7 +132,6 @@ dmpl::gams::Sync_Builder::build_header_includes ()
   buffer_ << "#include \"madara/knowledge_engine/Functions.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/containers/Integer_Vector.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/containers/Double_Vector.h\"\n";
-  buffer_ << "#include \"madara/knowledge_engine/containers/Vector_N.h\"\n";
   buffer_ << "#include \"madara/transport/Packet_Scheduler.h\"\n";
   buffer_ << "#include \"madara/threads/Threader.h\"\n";
   buffer_ << "#include \"madara/filters/Generic_Filters.h\"\n";
@@ -143,8 +142,10 @@ dmpl::gams::Sync_Builder::build_header_includes ()
   buffer_ << "#include \"gams/variables/Sensor.h\"\n";
   buffer_ << "#include \"gams/platforms/Base_Platform.h\"\n";
   buffer_ << "#include \"gams/platforms/vrep/VREP_Base.h\"\n";
+  buffer_ << "#include \"gams/platforms/vrep/VREP_UAV_Ranger.h\"\n";
   buffer_ << "#include \"gams/variables/Self.h\"\n";
   buffer_ << "#include \"gams/utility/GPS_Position.h\"\n";
+  buffer_ << "#include \"gams/utility/Axes.h\"\n";
   buffer_ << "\n";
   buffer_ << "#include \"dmpl/Reference.hpp\"\n";
   buffer_ << "#include \"dmpl/ArrayReference.hpp\"\n";
@@ -1073,7 +1074,7 @@ dmpl::gams::Sync_Builder::build_gams_function (std::string &dmpl_name, std::stri
 void
 dmpl::gams::Sync_Builder::build_gams_functions ()
 {
-  buffer_ << "gams::platforms::Base *platform = NULL;\n";
+  buffer_ << "gams::platforms::Base_Platform *platform = NULL;\n";
 
   buffer_ << "int grid_x = 0, grid_y = 0;\n";
   buffer_ << "double grid_leftX = NAN, grid_rightX = NAN, grid_topY = NAN, grid_bottomY = NAN, grid_cellX = NAN, grid_cellY = NAN;\n";
@@ -1159,6 +1160,23 @@ dmpl::gams::Sync_Builder::build_gams_functions ()
   buffer_ << "  double lng = pos->y;\n";
   buffer_ << "  delete pos;\n";
   buffer_ << "  return lng;\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "int ROTATE(double angle)\n";
+  buffer_ << "{\n";
+  buffer_ << "  std::cout << \"Rotate: \" << angle << std::endl;\n";
+  buffer_ << "  return platform->rotate(gams::utility::Axes(0, 0, angle));\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "double GET_RANGE()\n";
+  buffer_ << "{\n";
+  buffer_ << "  using gams::platforms::Has_Range_Sensor;\n";
+  buffer_ << "  const Has_Range_Sensor *s = dynamic_cast<const Has_Range_Sensor *>(platform);\n";
+  buffer_ << "  if(s == NULL) return NAN;\n";
+  buffer_ << "  double dist = s->get_range();\n";
+  buffer_ << "  return dist;\n";
   buffer_ << "}\n";
   buffer_ << "\n";
 }
@@ -1911,6 +1929,7 @@ dmpl::gams::Sync_Builder::build_main_function ()
   buffer_ << "  platform_init_fns[\"vrep-uav\"] = init_vrep;\n";
   buffer_ << "  platform_init_fns[\"vrep-heli\"] = init_vrep;\n";
   buffer_ << "  platform_init_fns[\"vrep-ant\"] = init_vrep;\n";
+  buffer_ << "  platform_init_fns[\"vrep-uav-ranger\"] = init_vrep;\n";
   buffer_ << "\n";
   buffer_ << "  // handle any command line arguments\n";
   buffer_ << "  handle_arguments (argc, argv);\n";
