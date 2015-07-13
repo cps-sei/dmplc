@@ -149,6 +149,7 @@ dmpl::gams::Sync_Builder::build_header_includes ()
   buffer_ << "\n";
   buffer_ << "#include \"dmpl/Reference.hpp\"\n";
   buffer_ << "#include \"dmpl/ArrayReference.hpp\"\n";
+  buffer_ << "#include \"dmpl/Default_Logger.hpp\"\n";
   if(do_expect_) {
     buffer_ << "extern \"C\" {\n";
     buffer_ << "#include <sys/time.h>\n";
@@ -667,8 +668,10 @@ dmpl::gams::Sync_Builder::build_parse_args ()
   buffer_ << "    {\n";
   buffer_ << "      if (i + 1 < argc)\n";
   buffer_ << "      {\n";
+  buffer_ << "        int log_level = 0;\n";
   buffer_ << "        std::stringstream buffer (argv[i + 1]);\n";
-  buffer_ << "        buffer >> MADARA_debug_level;\n";
+  buffer_ << "        buffer >> log_level;\n";
+  buffer_ << "        Madara::Logger::global_logger->set_level(log_level);\n";
   buffer_ << "      }\n";
   buffer_ << "      \n";
   buffer_ << "      ++i;\n";
@@ -702,7 +705,8 @@ dmpl::gams::Sync_Builder::build_parse_args ()
   buffer_ << "    {\n";
   buffer_ << "      if (i + 1 < argc)\n";
   buffer_ << "      {\n";
-  buffer_ << "        Madara::Knowledge_Engine::Knowledge_Base::log_to_file (argv[i + 1]);\n";
+  buffer_ << "        ::Madara::Logger::global_logger->clear();\n";
+  buffer_ << "        ::Madara::Logger::global_logger->add_file(argv[i + 1]);\n";
   buffer_ << "      }\n";
   buffer_ << "      \n";
   buffer_ << "      ++i;\n";
@@ -776,7 +780,7 @@ dmpl::gams::Sync_Builder::build_parse_args ()
 
   buffer_ << "    else\n";
   buffer_ << "    {\n";
-  buffer_ << "      MADARA_DEBUG (MADARA_LOG_EMERGENCY, (LM_DEBUG, \n";
+  buffer_ << "      madara_log (Madara::Logger::LOG_EMERGENCY, (LM_DEBUG, \n";
   buffer_ << "        \"\\nProgram summary for %s:\\n\\n\"\\\n";
   buffer_ << "        \" [-p|--platform type]     platform for loop (vrep, dronerk)\\n\"\\\n";
   buffer_ << "        \" [-b|--broadcast ip:port] the broadcast ip to send and listen to\\n\"\\\n";
@@ -1166,7 +1170,9 @@ dmpl::gams::Sync_Builder::build_gams_functions ()
   buffer_ << "int ROTATE(double angle)\n";
   buffer_ << "{\n";
   buffer_ << "  std::cout << \"Rotate: \" << angle << std::endl;\n";
-  buffer_ << "  return platform->rotate(gams::utility::Axes(0, 0, angle));\n";
+  buffer_ << "  int ret = platform->rotate(gams::utility::Axes(0, 0, angle));\n";
+  buffer_ << "  std::cout << \"Rotate ret: \" << ret << std::endl;\n";
+  buffer_ << "  return ret != 2;\n";
   buffer_ << "}\n";
   buffer_ << "\n";
 

@@ -385,8 +385,10 @@ struct Proactive
   class RefBaseMixin
   {
   public:
-    typedef storage_type  element_reference_type;
-    typedef storage_type  element_rvalue_type;
+    typedef storage_type  &element_reference_type;
+#ifdef USE_RVAL_REF
+    typedef storage_type  &&element_rvalue_type;
+#endif
 
     typedef typename ArrayReference_0<typename A::storage_specifier>::type base_array_type;
     typedef ArrayReferenceReference<base_array_type> base_ref_type;

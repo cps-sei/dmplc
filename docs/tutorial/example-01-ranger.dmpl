@@ -169,7 +169,7 @@ node uav (id)
     double range;
     print_state(X,Y,id,x,y,xf,yf);
     //my_sleep(1);
-    ROTATE(90);
+    if(ROTATE(90)) return;
     range = GET_RANGE();
     print_range(range);
     if(range > 0)

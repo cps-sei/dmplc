@@ -58,7 +58,6 @@
 #include <boost/lexical_cast.hpp>
 #include <madara/knowledge_engine/containers/Integer.h>
 #include <madara/knowledge_engine/containers/Integer_Vector.h>
-#include <madara/knowledge_engine/containers/Vector_N.h>
 #include "ArrayReference.hpp"
 #include <ctime>
 
@@ -67,7 +66,6 @@ using Madara::knowledge_cast;
 using Madara::Knowledge_Engine::Containers::ArrayReference;
 using Madara::Knowledge_Engine::Containers::Reference;
 using Madara::Knowledge_Engine::Containers::CachedReference;
-using Madara::Knowledge_Engine::Containers::Vector_N;
 using Madara::Knowledge_Engine::Containers::Integer_Vector;
 using Madara::Knowledge_Engine::Containers::VAR_LEN;
 using Madara::Knowledge_Engine::Containers::StorageManager::Lazy;
@@ -87,6 +85,7 @@ static unsigned int FAIL_count = 0;
     (ok ? OK_count : FAIL_count)++; \
   } while(0)
 
+/*
 void perf_test()
 {
   clock_t vector_N_start = clock();
@@ -170,6 +169,7 @@ void perf_test()
   LOG(proactiveArray_init - proactiveArray_start);
   LOG(proactiveArray_end - proactiveArray_start);
 }
+*/
 
 void takes_krec(Knowledge_Record foo)
 {
@@ -395,7 +395,11 @@ int main()
   uncached_array[1] = 10;
   LOG(uncached_array[0]);
   LOG(cached_array[1]);
+#ifdef USE_TYPE_TRAITS
+  cached_array.for_all<&CachedReference<int>::pull>();
+#else
   cached_array[1].pull();
+#endif
   LOG(cached_array[1]);
 
   uncached_array.mark_modified();
