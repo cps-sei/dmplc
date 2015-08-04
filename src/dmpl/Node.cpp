@@ -162,3 +162,22 @@ dmpl::Node::findFunc(const std::string& name) const
     return ret->second;
   return program->findFunc(name);
 }
+
+
+void
+dmpl::Node::analyzeThreads()
+{
+  threads.clear();
+  int curID = 0;
+  BOOST_FOREACH(const Funcs::value_type &f, funcs)
+  {
+    const Func &func = f.second;
+    if(func->isThread())
+    {
+      func->threadID = curID;
+      ++curID;
+      threads.push_back(func);
+    }
+  }
+  SymbolUser::analyzeSymbolUsage(*this);
+}

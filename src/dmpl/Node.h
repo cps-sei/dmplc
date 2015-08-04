@@ -70,6 +70,7 @@
 #include "Function.h"
 #include "Variable.h"
 #include "Attribute.h"
+#include "Role.h"
 
 namespace dmpl
 {
@@ -94,6 +95,8 @@ namespace dmpl
     ///the node arguments
     std::vector<std::string> args;
 
+    Roles roles;
+
     ///id variable (named by the single entry in args).
     Var idVar;
 
@@ -112,6 +115,11 @@ namespace dmpl
      * A map of function names to function definitions
      **/
     Funcs funcs;
+
+    /**
+     * A list of functions that are threads. Each thread gets a unique index
+     **/
+    std::vector<Func> threads;
 
     ///list of statements (expect or require) declared at node level
     StmtList stmts;
@@ -230,6 +238,8 @@ namespace dmpl
     }
 
     void mergeWith(const Node &on);
+
+    void analyzeThreads();
 
     /**
      * Prints function information

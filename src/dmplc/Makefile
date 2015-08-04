@@ -5,7 +5,7 @@ SyncSeqDbl.cpp SyncSeqDblInd.cpp \
 ../dmpl/Expression.cpp ../dmpl/Function.cpp \
 ../dmpl/Node.cpp ../dmpl/Program.cpp ../dmpl/Symbol.cpp \
 ../dmpl/Variable.cpp ../dmpl/Statement.cpp ../dmpl/Type.cpp \
-../dmpl/CProgram.cpp ../dmpl/Visitor.cpp \
+../dmpl/CProgram.cpp ../dmpl/Visitor.cpp ../dmpl/Role.cpp \
 ../dmpl/gams/Sync_Builder.cpp \
 ../dmpl/gams/Analyzer_Builder.cpp \
 ../dmpl/gams/Function_Visitor.cpp
@@ -17,7 +17,7 @@ LIB=$(MADARA_ROOT)/libMADARA.so
 ifeq "$(MZSRM)" "1"
 LIB+= $(JAVA_ROOT)/jre/lib/amd64/server/libjvm.so
 endif
-CFLAGS=-g -O0 -fno-inline -DUSE_MZSRM=$(MZSRM)
+CFLAGS=-g -O0 -fno-inline -DUSE_MZSRM=$(MZSRM) -std=c++11
 CXX=g++
 VREP_FILES=remoteApi.so vrep.py vrepConst.py
 BITNESS=32Bit

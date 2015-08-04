@@ -248,6 +248,16 @@ dmpl::Program::sanityCheck()
 #endif
 }
 
+void
+dmpl::Program::analyzeThreads()
+{
+  BOOST_FOREACH(Nodes::value_type &node, nodes)
+  {
+    node.second.analyzeThreads();
+    SymbolUser::analyzeSymbolUsage(node.second);
+  }
+}
+
 /*********************************************************************/
 //end of file
 /*********************************************************************/

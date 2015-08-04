@@ -128,21 +128,21 @@ std::string dmpl::CompExpr::toString() const
   return "";
 }
 
-dmpl::CallExpr::Context dmpl::CallExpr::useSymbols(const SymUser &self, Context con)
+dmpl::CallExpr::Context dmpl::CallExpr::useSymbols(Context con)
 {
-  func->useSymbols(func, con);
-  inherit(self, func);
+  func->useSymbols(con);
+  inherit(func);
   BOOST_FOREACH(const Expr &su, args)
   {
-    su->useSymbols(su, con);
-    inherit(self, su);
+    su->useSymbols(con);
+    inherit(su);
   }
   LvalExpr &lval = func->requireLval();
   Func f = boost::dynamic_pointer_cast<Function>(lval.sym);
   if(f != NULL)
   {
-    f->useSymbols(f, con);
-    inherit(self, f);
+    f->useSymbols(con);
+    inherit(f);
   }
   else
   {

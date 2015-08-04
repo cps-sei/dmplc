@@ -81,10 +81,12 @@ namespace dmpl
        * @param  buffer    the buffer being used to create the program text
        **/
       Function_Visitor (const Func & function, const Node & node,
+                        const Func & thread,
                         DmplBuilder & builder, std::stringstream & buffer,
                         bool do_vrep, bool do_analyzer = false);
 
       Function_Visitor (const Stmt & statement, const Node & node,
+                        const Func & thread,
                         DmplBuilder & builder, std::stringstream & buffer,
                         bool do_vrep, bool do_analyzer = false);
       
@@ -386,6 +388,9 @@ namespace dmpl
       
       /// current function
       Func function_;
+
+      /// current thread
+      Func thread_;
 
       /// current top-level statement (e.g., expect or require)
       Stmt statement_;

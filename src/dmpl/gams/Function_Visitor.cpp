@@ -59,9 +59,9 @@
 
 
 dmpl::madara::Function_Visitor::Function_Visitor (
-  const Func & function, const Node & node,
+  const Func & function, const Node & node, const Func & thread,
   DmplBuilder & builder, std::stringstream & buffer, bool do_vrep, bool do_analyzer)
-  : function_ (function), statement_(Stmt()), node_ (node),
+  : function_ (function), statement_(Stmt()), node_ (node), thread_ (thread)
     builder_ (builder), buffer_ (buffer), do_vrep_(do_vrep), do_analyzer_(do_analyzer),
     indentation_ (2), assignment_ (0)
 {
@@ -69,9 +69,9 @@ dmpl::madara::Function_Visitor::Function_Visitor (
 }
 
 dmpl::madara::Function_Visitor::Function_Visitor (
-  const Stmt & statement, const Node & node,
+  const Stmt & statement, const Node & node, const Func & thread,
   DmplBuilder & builder, std::stringstream & buffer, bool do_vrep, bool do_analyzer)
-  : function_ (Func()), statement_(statement), node_ (node),
+  : function_ (Func()), statement_(statement), node_ (node), thread_ (thread)
     builder_ (builder), buffer_ (buffer), do_vrep_(do_vrep), do_analyzer_(do_analyzer),
     indentation_ (2), assignment_ (0)
 {
@@ -144,7 +144,7 @@ dmpl::madara::Function_Visitor::exitLval (LvalExpr & expression)
     bool isGlobal = var->getScope() == Variable::GLOBAL;
     if(atNode || isGlobal || isAnalyzerLocal)
       indices++;
-    buffer_ << symbol->getName();
+    buffer_ << "thread" << thread->threadID << symbol->getName();
     if (indices > 0)
     {
       // iterate over each index
@@ -312,7 +312,7 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
       buffer_ << node_.name << "_";
     }
 
-    buffer_ << func_name << " (\n";
+    buffer_ << "thread" << thread->threadID << "_" << func_name << " (\n";
 
     buffer_ << sub_spacer << "     ";
 

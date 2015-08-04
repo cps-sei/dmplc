@@ -248,7 +248,7 @@ namespace dmpl
   typedef boost::shared_ptr<Symbol> Sym;
 
   class Namespace;
-  boost::shared_ptr<Namespace> NSpace;
+  typedef boost::shared_ptr<Namespace> NSpace;
 
   class Symbol : public HasAttributes, public boost::enable_shared_from_this<Symbol>
   {
@@ -413,7 +413,7 @@ namespace dmpl
 
   class Node;
 
-  class SymbolUser
+  class SymbolUser : public boost::enable_shared_from_this<SymbolUser>
   {
   public:
     SymbolUseSummary summary;
@@ -438,11 +438,11 @@ namespace dmpl
 
       bool inExpect();
     };
-  
+
     virtual bool recordUse() { return false; }
 
     virtual SymUserList getParents(Context &con) { return SymUserList(); }
-    virtual Context useSymbols(const SymUser &self, Context con);
+    virtual Context useSymbols(Context con);
 
     static void analyzeSymbolUsage(Node &n);
 
@@ -458,9 +458,9 @@ namespace dmpl
 
     friend class Symbol;
   protected:
-    static void analyzeSymbolUsage(const SymUser &cur, Context con);
+    void analyzeSymbolUsage(Context con);
 
-    static void inherit(const SymUser &me, const SymUser &o);
+    void inherit(const SymUser &o);
 
     SymbolUse &findOrAddSymbol(const Sym &s)
     {

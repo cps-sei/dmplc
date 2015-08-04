@@ -177,6 +177,8 @@ dmpl::gams::Sync_Builder::build_common_global_variables ()
   buffer_ << "namespace variables = gams::variables;\n\n";
   buffer_ << "using containers::Reference;\n\n";
   buffer_ << "using containers::ArrayReference;\n\n";
+  buffer_ << "using containers::CachedReference;\n\n";
+  buffer_ << "using containers::StorageManager::Proactive;\n\n";
   buffer_ << "using Madara::knowledge_cast;\n\n";
   buffer_ << "\n";
   buffer_ << "engine::Knowledge_Base knowledge;\n";
@@ -366,6 +368,25 @@ dmpl::gams::Sync_Builder::build_program_variables ()
       Var & var = i->second;
       build_program_variable (var);
     }
+
+    for (const Func &thread : n->second.threads)
+    {
+      for (auto i : vars)
+      {
+        buffer_ << "// Defining thread-specific global variables\n";
+        Var & var = i.second;
+        if(thread->findSymbol(var) != NULL)
+          build_thread_variable (thread, var);
+      }
+
+      for (auto i : locals)
+      {
+        buffer_ << "// Defining thread-specific local variables\n";
+        Var & var = i.second;
+        if(thread->findSymbol(var) != NULL)
+          build_thread_variable (thread, var);
+      }
+    }
   }
 
   buffer_ << "\n";
@@ -400,32 +421,6 @@ dmpl::gams::Sync_Builder::build_program_variable_init (
 void
 dmpl::gams::Sync_Builder::build_program_variable (const Var & var)
 {
-#if 0
-  // is this an array type?
-  if (var->type->dims.size () == 1)
-  {
-    if (var->type->type == TINT)
-    {
-      buffer_ << "containers::Integer_Array ";
-    }
-    else if (var->type->type == TDOUBLE_TYPE)
-    {
-      buffer_ << "containers::Double_Array ";
-    }
-    else
-    {
-      // Default to integer array
-      buffer_ << "containers::Integer_Array ";
-    }
-  }
-  // multi-dimensional array type?
-  else if (var->type->dims.size () > 1)
-  {
-    buffer_ << "containers::Array_N ";
-  }
-  // non-array type
-#endif
-
   // is this an array type?
   if (var->type->dims.size () >= 1)
   {
@@ -453,6 +448,36 @@ dmpl::gams::Sync_Builder::build_program_variable (const Var & var)
 
   build_program_variable_init (var);
   buffer_ << "\n";
+}
+
+void
+dmpl::gams::Sync_Builder::build_thread_variable (const Func &thread, const Var & var)
+{
+  // is this an array type?
+  if (var->type->dims.size () >= 1)
+  {
+    buffer_ << "ArrayReference<Proactive<" << get_type_name(var);
+    buffer_ << ", CachedReference<" << get_type_name(var) << ">";
+    BOOST_FOREACH(int dim, var->type->dims)
+    {
+      buffer_ << ", ";
+      if(dim > 0)
+        buffer_ << dim;
+      else
+        buffer_ << builder_.program.processes.size ();
+    }
+    buffer_ << "> ";
+  }
+  else
+  {
+    buffer_ << "CachedReference<" << get_type_name(var) << "> ";
+  }
+  buffer_ << "thread" << thread->threadID << "_" << var->name;
+  buffer_ << "(knowledge, \"";
+  if(var->scope == Variable::LOCAL)
+    buffer_ << ".";
+  buffer_ << var->name << "\")";
+  buffer_ << ";\n";
 }
 
 void
@@ -851,12 +876,16 @@ dmpl::gams::Sync_Builder::build_functions_declarations ()
   
   buffer_ << "\n// Forward declaring node functions\n\n";
   Nodes & nodes = builder_.program.nodes;
-  for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
+  for (auto n : nodes)
   {
-    Funcs & funcs = n->second.funcs;
-    for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
+    for (Func thread : n.second.threads)
     {
-      build_function_declaration (n->second, i->second);
+      Funcs & funcs = n.second.funcs;
+      for (auto i : funcs)
+      {
+        if(thread->findSymbol(i.second) != NULL)
+          build_function_declaration (thread, n.second, i.second);
+      }
     }
   }
 
@@ -981,10 +1010,14 @@ dmpl::gams::Sync_Builder::build_functions (void)
   Nodes & nodes = builder_.program.nodes;
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
-    Funcs & funcs = n->second.funcs;
-    for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
+    for (Func thread : n.second.threads)
     {
-      build_function (n->second, i->second);
+      Funcs & funcs = n->second.funcs;
+      for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
+      {
+        if(thread->findSymbol(i->second) != NULL)
+          build_function (thread, n->second, i->second);
+      }
     }
   }
 
@@ -1000,19 +1033,19 @@ bool skip_func(dmpl::Func & function)
 
 void
 dmpl::gams::Sync_Builder::build_function_declaration (
-  const dmpl::Node & node, dmpl::Func & function)
+  const Func & thread, const dmpl::Node & node, dmpl::Func & function)
 {
   if (skip_func(function))
     return;
 
   buffer_ << "Madara::Knowledge_Record\n";
-  buffer_ << node.name << "_" << function->name;
+  buffer_ << node.name << "_" << "thread" << thread->threadID << "_" << function->name;
   buffer_ << " (engine::Function_Arguments & args, engine::Variables & vars);\n";
 }
 
 void
 dmpl::gams::Sync_Builder::build_function (
-  const dmpl::Node & node, dmpl::Func & function)
+  const Func& thread, const dmpl::Node & node, dmpl::Func & function)
 {
   if (skip_func(function))
     return;
@@ -1028,7 +1061,7 @@ dmpl::gams::Sync_Builder::build_function (
   }
 
   buffer_ << "Madara::Knowledge_Record\n";
-  buffer_ << node.name << "_" << function->name;
+  buffer_ << node.name << "_" << "thread" << thread->threadID << "_" << function->name;
   buffer_ << " (engine::Function_Arguments & args, engine::Variables & vars)\n";
   buffer_ << "{\n";
   buffer_ << "  // Declare local variables\n";
@@ -1052,7 +1085,7 @@ dmpl::gams::Sync_Builder::build_function (
   
   buffer_ << "\n";
 
-  dmpl::madara::Function_Visitor visitor (function, node, builder_, buffer_, false);
+  dmpl::madara::Function_Visitor visitor (function, node, thread, builder_, buffer_, false);
 
   //transform the body of safety
   BOOST_FOREACH (const Stmt & statement, function->body)

@@ -100,6 +100,10 @@ namespace dmpl
     ///the return type of the function
     Type retType;
 
+    ///each thread function gets a unique id; all thread IDs are contiguous,
+    //starting with 0. A non-thread function has id -1
+    int threadID;
+
     virtual const Type &getType() { return retType; }
 
     virtual bool canWrite() { return false; }
@@ -156,15 +160,15 @@ namespace dmpl
     }
 
     //constructors
-    Function() : isExtern(false), isPure(false) {}
+    Function() : isExtern(false), isPure(false), threadID(-1) {}
     Function(const std::string &n)
-      : name(n), isExtern(false), isPure(false) {}
+      : name(n), isExtern(false), isPure(false), threadID(-1) {}
     Function(const std::string &n, const Attributes &a)
-      : name(n),Symbol(a) {}
+      : name(n),Symbol(a), threadID(-1) {}
     Function(const Type &rt,const std::string &n,const VarList &p,
              const VarList &t,const StmtList &b,
              const Attributes &a = Attributes())
-      : retType(rt),name(n),body(b),Symbol(a),isExtern(false),isPure(false)
+      : retType(rt),name(n),body(b),Symbol(a),isExtern(false),isPure(false),threadID(-1)
     {
       setParams(p);
       setTemps(t);
@@ -172,7 +176,7 @@ namespace dmpl
     Function(const Type &rt,const std::string &n,const Vars &p,
              const Vars &t,const StmtList &b,
              const Attributes &a = Attributes())
-      : retType(rt),name(n),body(b),Symbol(a),paramSet(p),temps(t),isExtern(false),isPure(false)
+      : retType(rt),name(n),body(b),Symbol(a),paramSet(p),temps(t),isExtern(false),isPure(false),threadID(-1)
     {
       BOOST_FOREACH(const Vars::value_type &v,p) { params.push_back(v.second); }
     }

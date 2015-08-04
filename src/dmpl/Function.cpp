@@ -157,33 +157,33 @@ dmpl::Function::printDecl (std::ostream &os,unsigned int indent)
 }
 
 dmpl::LvalExpr::Context
-dmpl::LvalExpr::useSymbols(const SymUser &self, Context con)
+dmpl::LvalExpr::useSymbols(Context con)
 {
   {
     Context con2 = con;
     con.isLHS = false;
     if(node)
     {
-      node->useSymbols(node, con2);
-      inherit(self, node);
+      node->useSymbols(con2);
+      inherit(node);
     }
     BOOST_FOREACH(Expr e, indices)
     {
-      e->useSymbols(e, con2);
-      inherit(self, e);
+      e->useSymbols(con2);
+      inherit(e);
     }
   }
   
   sym = con.findSym(var);
   if(sym)
-    sym->use(self, con.isLHS, node != NULL, con.inExpect());
+    sym->use(shared_from_this(), con.isLHS, node != NULL, con.inExpect());
   Func func = boost::dynamic_pointer_cast<Function>(sym);
   if(func)
   {
     Context con2 = con;
     con2.curFunc = func;
     con2.isLHS = false;
-    func->useSymbols(func, con);
+    func->useSymbols(con);
   }
   //else
     //std::cerr << "Couldn't find symbol: " << var << std::endl;

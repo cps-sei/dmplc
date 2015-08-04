@@ -119,6 +119,11 @@ namespace dmpl
       void build_program_variable (const Var & var);
       
       /**
+       * Builds a threads's MADARA generated variables
+       **/
+      void build_thread_variable (const Func &thread, const Var & var);
+      
+      /**
        * Builds the program's MADARA generated variables
        **/
       void build_program_variable_init (const Var & var);
@@ -168,7 +173,7 @@ namespace dmpl
        * Builds a function
        * @param  function  a defined function in the parsed program
        **/
-      void build_function_declaration (const dmpl::Node & node, dmpl::Func& function);
+      void build_function_declaration (const Func & thread, const dmpl::Node & node, dmpl::Func& function);
 
       /**
        * Computes priorities, criticalities, and zero slack instants
@@ -205,7 +210,7 @@ namespace dmpl
        * Builds a function
        * @param  function  a defined function in the parsed program
        **/
-      void build_function (const dmpl::Node & node, dmpl::Func& function);
+      void build_function (const Func& thread, const dmpl::Node & node, dmpl::Func& function);
       
       /**
        * Builds commonly used filters

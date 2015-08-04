@@ -172,7 +172,7 @@ namespace dmpl
       return ret;
     }
 
-    virtual Context useSymbols(const SymUser &self, Context con);
+    virtual Context useSymbols(Context con);
 
     LvalExpr(const std::string &v) : var(v) {}
     LvalExpr(const std::string &v,const Expr &n) : var(v), node(n) {}
@@ -244,7 +244,7 @@ namespace dmpl
       return ret;
     }
 
-    virtual Context useSymbols(const SymUser &self, Context con);
+    virtual Context useSymbols(Context con);
 
 
     bool ignore_return;

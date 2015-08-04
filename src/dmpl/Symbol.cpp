@@ -82,16 +82,16 @@ namespace dmpl
     }
   }
 
-  void SymbolUser::inherit(const SymUser &me, const SymUser &o)
+  void SymbolUser::inherit(const SymUser &o)
   {
-    me->summary |= o->summary;
+    summary |= o->summary;
     BOOST_FOREACH(const SymbolUse &c, o->allUsedSymbols)
     {
-      SymbolUse &t = me->findOrAddSymbol(c.sym);
+      SymbolUse &t = findOrAddSymbol(c.sym);
       t.info |= c.info;
 
-      if(me->recordUse())
-        c.sym->users.insert(me);
+      if(recordUse())
+        c.sym->users.insert(shared_from_this());
     }
   }
 
@@ -107,7 +107,7 @@ namespace dmpl
         con.curFunc = f.second;
         Sym fsym = Sym(f.second);
         fsym->use();
-        f.second->useSymbols(f.second, con);
+        f.second->useSymbols(con);
       }
     }
     BOOST_FOREACH(const Stmt &s, n.stmts)
@@ -116,15 +116,15 @@ namespace dmpl
       con.node = &n;
       con.clause = boost::dynamic_pointer_cast<CStmt::element_type>(s);
       //std::cerr << s->toString() << std::endl;
-      s->useSymbols(s, con);
+      s->useSymbols(con);
     }
   }
 
-  SymbolUser::Context SymbolUser::useSymbols(const SymUser &cur, Context con) {
-    BOOST_FOREACH(const SymUser &su, cur->getParents(con))
+  SymbolUser::Context SymbolUser::useSymbols(Context con) {
+    BOOST_FOREACH(const SymUser &su, getParents(con))
     {
-      su->useSymbols(su, con);
-      inherit(cur, su);
+      su->useSymbols(con);
+      inherit(su);
     }
     return con;
   }

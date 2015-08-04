@@ -177,13 +177,13 @@ namespace dmpl
       os << spacer << lhs->toString() << " = " << rhs->toString() << ";\n";
     }
 
-    virtual Context useSymbols(const SymUser &self, Context con) {
+    virtual Context useSymbols(Context con) {
       {
         Context conW = con;
         conW.isLHS = true;
-        lhs->useSymbols(lhs, conW);
+        lhs->useSymbols(conW);
       }
-      rhs->useSymbols(rhs, con);
+      rhs->useSymbols(con);
       return con;
     }
   };

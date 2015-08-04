@@ -149,7 +149,7 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
 %token <token> TNODENUM TEXTERN TTHREAD TPURE TOVERRIDE
 %token <token> TELSE TFOR TWHILE
 %token <token> TBREAK TCONTINUE TRETURN TEXO TEXH TEXL /*TPROGRAM*/
-%token <token> /*TINIT TSAFETY*/ TFAN TFADNP TFAO TFAOL TFAOH
+%token <token> TINIT /*TSAFETY*/ TFAN TFADNP TFAO TFAOL TFAOH
 %token <token> TCEQ TCNE TCLT TCLE TCGT TCGE TEQUAL
 %token <token> TLAND TLOR TLNOT TQUEST TCOLON
 %token <token> TLPAREN TRPAREN TLBRACE TRBRACE 
