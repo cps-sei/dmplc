@@ -118,8 +118,8 @@ int main (int argc, char **argv)
     }
   }
   
-  // right now, we're just using a realize flag to indicate madara
-  // generation
+  //right now, we're just using a realize flag to indicate madara
+  //generation
   if (do_gams)
   {
     //fill in the processes with nodes nodes
@@ -129,7 +129,7 @@ int main (int argc, char **argv)
     for (size_t i = 0;i < nodes;++i)
       program.processes.push_back (dmpl::Process (nodeName, i));
 
-    // create a madara builder instance of the dmpl builder parse
+    //create a madara builder instance of the dmpl builder parse
     dmpl::gams::GAMS_Builder *gams_builder = new dmpl::gams::Sync_Builder (builder, madara_target, schedType, do_expect);
 
     //build the generated code
@@ -157,7 +157,7 @@ int main (int argc, char **argv)
     for (size_t i = 0;i < nodes;++i)
       program.processes.push_back (dmpl::Process (nodeName, i));
 
-    // create a madara builder instance of the dmpl builder parse
+    //create a madara builder instance of the dmpl builder parse
     dmpl::gams::Analyzer_Builder *ana_builder = new dmpl::gams::Analyzer_Builder (builder, madara_target);
 
     //build the generated code
