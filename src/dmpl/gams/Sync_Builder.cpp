@@ -871,7 +871,7 @@ dmpl::gams::Sync_Builder::build_functions_declarations ()
   Funcs & funcs = builder_.program.funcs;
   for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
   {
-    build_function_declaration (Node (), i->second);
+    build_function_declaration (NULL, Node (), i->second);
   }
   
   buffer_ << "\n// Forward declaring node functions\n\n";
@@ -1003,14 +1003,14 @@ dmpl::gams::Sync_Builder::build_functions (void)
   Funcs & funcs = builder_.program.funcs;
   for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
   {
-    build_function (Node (), i->second);
+    build_function (NULL, Node (), i->second);
   }
 
   buffer_ << "// Defining node functions\n\n";
   Nodes & nodes = builder_.program.nodes;
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
-    for (Func thread : n.second.threads)
+    for (Func thread : n->second.threads)
     {
       Funcs & funcs = n->second.funcs;
       for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
@@ -1039,7 +1039,10 @@ dmpl::gams::Sync_Builder::build_function_declaration (
     return;
 
   buffer_ << "Madara::Knowledge_Record\n";
-  buffer_ << node.name << "_" << "thread" << thread->threadID << "_" << function->name;
+  buffer_ << node.name;
+  if(thread)
+    buffer_ << "_" << "thread" << thread->threadID;
+  buffer_ << "_" << function->name;
   buffer_ << " (engine::Function_Arguments & args, engine::Variables & vars);\n";
 }
 
@@ -1061,7 +1064,10 @@ dmpl::gams::Sync_Builder::build_function (
   }
 
   buffer_ << "Madara::Knowledge_Record\n";
-  buffer_ << node.name << "_" << "thread" << thread->threadID << "_" << function->name;
+  buffer_ << node.name << "_";
+  if(thread)
+    buffer_ << "_" << "thread" << thread->threadID;
+  buffer_ << "_" << function->name;
   buffer_ << " (engine::Function_Arguments & args, engine::Variables & vars)\n";
   buffer_ << "{\n";
   buffer_ << "  // Declare local variables\n";
