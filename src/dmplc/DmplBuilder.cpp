@@ -90,6 +90,8 @@ dmpl::DmplBuilder::DmplBuilder(const std::list<std::string> &fns,
 void dmpl::DmplBuilder::run()
 {
   ::builder = this;
+
+  //-- open the file and parse
   BOOST_FOREACH(std::string fileName, fileNames)
   {
     ::yyin = fopen(fileName.c_str(),"r");
@@ -101,7 +103,11 @@ void dmpl::DmplBuilder::run()
     ::yyparse();
     fclose(::yyin);
   }
+
+  //-- do some sanity checks on the parsed program
   program.sanityCheck();
+
+  //-- gather info about every symbol usage in the program
   BOOST_FOREACH(Nodes::value_type &node, program.nodes)
   {
     SymbolUser::analyzeSymbolUsage(node.second);
