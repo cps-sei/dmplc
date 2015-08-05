@@ -79,6 +79,10 @@
 
 namespace dmpl
 {
+  /*******************************************************************/
+  //-- forward declarations and pointer typedefs
+  /*******************************************************************/
+
   class Variable;
   typedef boost::shared_ptr<Variable> Var;
   typedef std::list <Var> VarList;
