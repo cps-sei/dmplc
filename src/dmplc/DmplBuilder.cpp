@@ -96,7 +96,7 @@ void dmpl::DmplBuilder::run()
   {
     ::yyin = fopen(fileName.c_str(),"r");
     if(!::yyin) {
-      std::cerr << "ERROR: could not open file " << fileName << '\n';
+      std::cerr << "ERROR: could not open file " << fileName << " for parsing!\n";
       exit(1);
     }
   
