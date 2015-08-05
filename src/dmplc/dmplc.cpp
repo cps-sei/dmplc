@@ -195,11 +195,13 @@ int main (int argc, char **argv)
     cprog = syncSeqDbl.cprog;
     
     //eliminate arrays
-    /*if (seq_no_array) {
+    /*
+    if (seq_no_array) {
       dmpl::ArrayElim ae (cprog, init_globals);
       ae.run ();
       cprog = ae.outProg;
-    }*/
+    }
+    */
     
     if (out_file.empty ())
       {
