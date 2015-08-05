@@ -123,28 +123,37 @@ namespace dmpl
 
   namespace
   {
+    //-- we use three bits to represent attributes of a symbolc access
     const size_t symacc_size = 3;
     typedef std::bitset<symacc_size> sa_bitset;
   }
 
+  //-- a class representing a symbol access
   class SymbolAccess : public sa_bitset
   {
   public:
+    //-- the three attributes of a symbol access. they equal indices
+    //-- in the bit array where the attribute's value is stored.
     enum SymbolAccessType {
       WRITE = 0, REMOTE, EXPECT
     };
 
+    //-- default constructor -- sets all attributes to OFF
     SymbolAccess() : sa_bitset() {}
 
+    //-- constructor with initial values of attributes
     SymbolAccess(bool write = 0, bool remote = 0, bool expect = 0)
       : sa_bitset((write << WRITE) | (remote << REMOTE) | (expect << EXPECT)) {}
 
+    //-- get value and reference to WRITE attribute
     bool write() const { return (*this)[WRITE]; }
     reference write() { return (*this)[WRITE]; }
 
+    //-- get value and reference to REMOTE attribute
     bool remote() const { return (*this)[REMOTE]; }
     reference remote() { return (*this)[REMOTE]; }
 
+    //-- get value and reference to EXPECT attribute
     bool expect() const { return (*this)[EXPECT]; }
     reference expect() { return (*this)[EXPECT]; }
   };
