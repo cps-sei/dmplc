@@ -228,7 +228,6 @@ namespace dmpl
     {
       return (*this)[SymbolAccess(write, remote, expect)];
     }
-  public:
 
     //-- mask for write access
     static const unsigned long write_mask =
