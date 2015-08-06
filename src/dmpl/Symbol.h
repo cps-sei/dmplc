@@ -80,7 +80,7 @@
 namespace dmpl
 {
   /*******************************************************************/
-  //-- forward declarations and pointer typedefs
+  //-- forward declarations and typedefs
   /*******************************************************************/
 
   class Variable;
@@ -132,7 +132,9 @@ namespace dmpl
     typedef std::bitset<symacc_size> sa_bitset;
   }
 
+  /*******************************************************************/
   //-- a class representing a symbol access
+  /*******************************************************************/
   class SymbolAccess : public sa_bitset
   {
   public:
@@ -164,94 +166,119 @@ namespace dmpl
 
   namespace
   {
+    //-- for each 2^symacc_size possible types of symbol access, we
+    //-- use a bit to record if the synbol was accessed that way.
     const size_t symuse_size = 1 << symacc_size;
     typedef std::bitset<symuse_size> su_bitset;
   }
 
+  /*******************************************************************/
+  //-- a class representing a symbol usage. for each possible symbol 
+  /*******************************************************************/
   class SymbolUseInfo : public su_bitset
   {
   public:
+    //-- default constructor
     SymbolUseInfo() : su_bitset() {}
+
+    //-- constructor with an initial value
     SymbolUseInfo(unsigned long i) : su_bitset(i) {}
 
+    //-- const reader of a specific symbol access
     bool operator[](const SymbolAccess &sa) const
     {
       return su_bitset::operator[](sa.to_ulong());
     }
 
+    //-- non-const reader of a specific symbol access
     reference operator[](const SymbolAccess &sa)
     {
       return su_bitset::operator[](sa.to_ulong());
     }
 
+    //-- set a symbol access flag
     SymbolUseInfo &set(const SymbolAccess &sa, bool val = true)
     {
       su_bitset::set(sa.to_ulong(), val);
       return *this;
     }
 
+    //-- reset all symbol access flags
     SymbolUseInfo &reset(const SymbolAccess &sa)
     {
       su_bitset::reset(sa.to_ulong());
       return *this;
     }
 
+    //-- flip a symbol access flag
     SymbolUseInfo &flip(const SymbolAccess &sa)
     {
       su_bitset::flip(sa.to_ulong());
       return *this;
     }
 
+    //-- const reader given the attributes of a symbol access
     bool operator()(bool write = false, bool remote = false, bool expect = false) const
     {
       return (*this)[SymbolAccess(write, remote, expect)];
     }
 
+    //-- non-const reader given the attributes of a symbol access
     reference operator()(bool write = false, bool remote = false, bool expect = false)
     {
       return (*this)[SymbolAccess(write, remote, expect)];
     }
   public:
 
+    //-- mask for write access
     static const unsigned long write_mask =
           1 << ((1 << SymbolAccess::WRITE)) |
           1 << ((1 << SymbolAccess::WRITE | 1 << SymbolAccess::REMOTE )) |
           1 << ((1 << SymbolAccess::WRITE | 1 << SymbolAccess::EXPECT )) |
           1 << ((1 << SymbolAccess::WRITE | 1 << SymbolAccess::REMOTE | 1 << SymbolAccess::EXPECT )) ;
 
+    //-- mask for remote access
     static const unsigned long remote_mask =
           1 << ((1 << SymbolAccess::REMOTE)) |
           1 << ((1 << SymbolAccess::WRITE | 1 << SymbolAccess::REMOTE )) |
           1 << ((1 << SymbolAccess::REMOTE | 1 << SymbolAccess::EXPECT )) |
           1 << ((1 << SymbolAccess::WRITE | 1 << SymbolAccess::REMOTE | 1 << SymbolAccess::EXPECT )) ;
 
+    //-- mask for expect access
     static const unsigned long expect_mask =
           1 << ((1 << SymbolAccess::EXPECT)) |
           1 << ((1 << SymbolAccess::EXPECT | 1 << SymbolAccess::REMOTE )) |
           1 << ((1 << SymbolAccess::WRITE | 1 << SymbolAccess::EXPECT )) |
           1 << ((1 << SymbolAccess::WRITE | 1 << SymbolAccess::REMOTE | 1 << SymbolAccess::EXPECT )) ;
 
+    //-- project on write accesses
     SymbolUseInfo anyWrite()
     {
       return SymbolUseInfo(to_ulong() & write_mask);
     }
 
+    //-- project on remote accesses
     SymbolUseInfo anyRemote()
     {
       return SymbolUseInfo(to_ulong() & remote_mask);
     }
 
+    //-- project on expect accesses
     SymbolUseInfo anyExpect()
     {
       return SymbolUseInfo(to_ulong() & expect_mask);
     }
 
+    //-- project on non-expect accesses
     SymbolUseInfo anyNonExpect()
     {
       return SymbolUseInfo(to_ulong() & ~expect_mask);
     }
   };
 
+  /*******************************************************************/
+  //-- forward declarations and typedefs
+  /*******************************************************************/
   class SymbolUser;
   typedef boost::shared_ptr<SymbolUser> SymUser;
   typedef std::vector<SymUser> SymUserList;
