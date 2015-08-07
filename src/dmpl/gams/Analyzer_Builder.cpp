@@ -927,7 +927,7 @@ dmpl::gams::Analyzer_Builder::build_function (
   
   buffer_ << "\n";
 
-  dmpl::madara::Function_Visitor visitor (function, node, builder_, buffer_, false, true);
+  dmpl::madara::Function_Visitor visitor (function, node, NULL, builder_, buffer_, false, true);
 
   //transform the body of safety
   BOOST_FOREACH (const Stmt & statement, function->body)
@@ -1000,7 +1000,7 @@ dmpl::gams::Analyzer_Builder::build_main_function ()
       }
       buffer_ << "      engine::Variables vars;" << std::endl;
       buffer_ << "      bool value = (";
-      dmpl::madara::Function_Visitor visitor (stmt, node, builder_, buffer_, false, true);
+      dmpl::madara::Function_Visitor visitor (stmt, node, NULL, builder_, buffer_, false, true);
       visitor.visit(cond->cond);
       buffer_ << ");" << std::endl;
 

@@ -66,9 +66,7 @@
 #include <vector>
 #include <map>
 #include <string>
-#include <boost/make_shared.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/enable_shared_from_this.hpp>
+#include <memory>
 #include "Function.h"
 #include "Variable.h"
 #include "Attribute.h"
@@ -79,7 +77,7 @@ namespace dmpl
 
   class RoleClass;
 
-  typedef boost::shared_ptr<RoleClass> Role;
+  typedef std::shared_ptr<RoleClass> Role;
 
   typedef std::vector<Role> Roles;
 
@@ -114,7 +112,7 @@ namespace dmpl
     * @class RoleClass
     * @brief Represents a node's particular role; use the Role typedef
     */
-  class RoleClass : public HasAttributes, public boost::enable_shared_from_this<RoleClass>
+  class RoleClass : public HasAttributes, public std::enable_shared_from_this<RoleClass>
   {
   public:    
     /// Owning Node object
@@ -175,10 +173,10 @@ namespace dmpl
     {
       Var v = findVar(name);
       if(v)
-        return Sym(boost::static_pointer_cast<Sym::element_type>(v));
+        return Sym(std::static_pointer_cast<Sym::element_type>(v));
       Func f = findFunc(name);
       if(f)
-        return Sym(boost::static_pointer_cast<Sym::element_type>(f));
+        return Sym(std::static_pointer_cast<Sym::element_type>(f));
       return Sym();
     }
 
@@ -237,7 +235,7 @@ namespace dmpl
     ///add a Statement; must be "expect" or "require"
     void addStatement(const Stmt &s)
     {
-      boost::shared_ptr<CondStmt> cs( boost::dynamic_pointer_cast<CondStmt>(s) );
+      std::shared_ptr<CondStmt> cs( std::dynamic_pointer_cast<CondStmt>(s) );
       assert(cs != NULL && (cs->kind == "expect" || cs->kind == "require") &&
         "ERROR: Node-level statement an expect or require statement");
       stmts.push_back(s);

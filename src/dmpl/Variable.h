@@ -66,14 +66,14 @@
 #include <map>
 #include <string>
 #include <exception>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "Type.h"
 #include "Symbol.h"
 
 namespace dmpl
 {
   class Expression;
-  typedef boost::shared_ptr<Expression> Expr;
+  typedef std::shared_ptr<Expression> Expr;
 
   /**
     * @class Variable
@@ -151,7 +151,7 @@ namespace dmpl
 
   inline Var Symbol::asVar()
   {
-    return boost::dynamic_pointer_cast<Var::element_type>(shared_from_this());
+    return std::dynamic_pointer_cast<Var::element_type>(shared_from_this());
   }
 }
 

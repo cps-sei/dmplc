@@ -110,7 +110,7 @@ void dmpl::DmplBuilder::run()
   //-- gather info about every symbol usage in the program
   BOOST_FOREACH(Nodes::value_type &node, program.nodes)
   {
-    SymbolUser::analyzeSymbolUsage(node.second);
+    node.second.analyzeThreads();
   }
 }
 

@@ -66,7 +66,7 @@
 #include <vector>
 #include <map>
 #include <string>
-#include <boost/make_shared.hpp>
+#include <memory>
 #include "Function.h"
 #include "Variable.h"
 #include "Attribute.h"
@@ -135,7 +135,7 @@ namespace dmpl
     {
       if(idVar == NULL && args.size() == 1)
       {
-        idVar = boost::make_shared<Var::element_type>(args[0], intType());
+        idVar = std::make_shared<Var::element_type>(args[0], intType());
         idVar->scope = Variable::SELF_ID;
       }
       else
@@ -163,10 +163,10 @@ namespace dmpl
     {
       Var v = findVar(name);
       if(v)
-        return Sym(boost::static_pointer_cast<Sym::element_type>(v));
+        return Sym(std::static_pointer_cast<Sym::element_type>(v));
       Func f = findFunc(name);
       if(f)
-        return Sym(boost::static_pointer_cast<Sym::element_type>(f));
+        return Sym(std::static_pointer_cast<Sym::element_type>(f));
       return Sym();
     }
 
@@ -225,7 +225,7 @@ namespace dmpl
     ///add a Statement; must be "expect" or "require"
     void addStatement(const Stmt &s)
     {
-      boost::shared_ptr<CondStmt> cs( boost::dynamic_pointer_cast<CondStmt>(s) );
+      std::shared_ptr<CondStmt> cs( std::dynamic_pointer_cast<CondStmt>(s) );
       assert(cs != NULL && (cs->kind == "expect" || cs->kind == "require") &&
         "ERROR: Node-level statement an expect or require statement");
       stmts.push_back(s);

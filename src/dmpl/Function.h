@@ -67,7 +67,6 @@
 #include <map>
 #include <set>
 #include <string>
-#include <boost/ref.hpp>
 #include "Symbol.h"
 #include "Variable.h"
 #include "Statement.h"
@@ -214,7 +213,7 @@ namespace dmpl
 
   inline Func Symbol::asFunc()
   {
-    return boost::dynamic_pointer_cast<Func::element_type>(shared_from_this());
+    return std::dynamic_pointer_cast<Func::element_type>(shared_from_this());
   }
 
   /*

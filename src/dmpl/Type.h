@@ -66,7 +66,7 @@
 #include <stdio.h>
 #include <list>
 #include <vector>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <boost/foreach.hpp>
 
 namespace dmpl
@@ -76,7 +76,7 @@ namespace dmpl
 
   //share pointer to a base type -- this is the type we will
   //mostly use
-  typedef boost::shared_ptr<BaseType> Type;
+  typedef std::shared_ptr<BaseType> Type;
 
   //a list of types
   typedef std::list <Type> TypeList;

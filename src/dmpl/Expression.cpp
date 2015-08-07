@@ -138,7 +138,7 @@ dmpl::CallExpr::Context dmpl::CallExpr::useSymbols(Context con)
     inherit(su);
   }
   LvalExpr &lval = func->requireLval();
-  Func f = boost::dynamic_pointer_cast<Function>(lval.sym);
+  Func f = std::dynamic_pointer_cast<Function>(lval.sym);
   if(f != NULL)
   {
     f->useSymbols(con);

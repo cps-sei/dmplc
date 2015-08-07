@@ -56,7 +56,6 @@
 #include <iostream>
 #include <stdio.h>
 #include <boost/foreach.hpp>
-#include <boost/lexical_cast.hpp>
 #include "Symbol.h"
 #include "Node.h"
 #include "Statement.h"
@@ -114,7 +113,7 @@ namespace dmpl
     {
       Context con;
       con.node = &n;
-      con.clause = boost::dynamic_pointer_cast<CStmt::element_type>(s);
+      con.clause = std::dynamic_pointer_cast<CStmt::element_type>(s);
       //std::cerr << s->toString() << std::endl;
       s->useSymbols(con);
     }
@@ -141,7 +140,7 @@ namespace dmpl
     {
       Var v = curFunc->findVar(name);
       if(v)
-        return boost::static_pointer_cast<Sym::element_type>(v);
+        return std::static_pointer_cast<Sym::element_type>(v);
     }
     if(node)
       return node->findSym(name);

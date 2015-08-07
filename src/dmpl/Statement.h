@@ -66,7 +66,7 @@
 #include <stdio.h>
 #include <list>
 #include <vector>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <boost/foreach.hpp>
 #include "Attribute.h"
 #include "Expression.h"
@@ -80,7 +80,7 @@ namespace dmpl
 
   //share pointer to a base statement -- this is the type we will
   //mostly use
-  typedef boost::shared_ptr<Statement> Stmt;
+  typedef std::shared_ptr<Statement> Stmt;
 
   //a list of expressions
   typedef std::list <Stmt> StmtList;
@@ -257,7 +257,7 @@ namespace dmpl
     }
   };
 
-  typedef boost::shared_ptr<CondStmt> CStmt;
+  typedef std::shared_ptr<CondStmt> CStmt;
 
   //an if-then-else statement
   /*

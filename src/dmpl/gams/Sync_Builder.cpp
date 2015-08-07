@@ -130,8 +130,6 @@ dmpl::gams::Sync_Builder::build_header_includes ()
   buffer_ << "#include \"madara/knowledge_engine/Knowledge_Base.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/Knowledge_Record.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/Functions.h\"\n";
-  buffer_ << "#include \"madara/knowledge_engine/containers/Integer_Vector.h\"\n";
-  buffer_ << "#include \"madara/knowledge_engine/containers/Double_Vector.h\"\n";
   buffer_ << "#include \"madara/transport/Packet_Scheduler.h\"\n";
   buffer_ << "#include \"madara/threads/Threader.h\"\n";
   buffer_ << "#include \"madara/filters/Generic_Filters.h\"\n";
@@ -142,7 +140,7 @@ dmpl::gams::Sync_Builder::build_header_includes ()
   buffer_ << "#include \"gams/variables/Sensor.h\"\n";
   buffer_ << "#include \"gams/platforms/Base_Platform.h\"\n";
   buffer_ << "#include \"gams/platforms/vrep/VREP_Base.h\"\n";
-  buffer_ << "#include \"gams/platforms/vrep/VREP_UAV_Ranger.h\"\n";
+  //buffer_ << "#include \"gams/platforms/vrep/VREP_UAV_Ranger.h\"\n";
   buffer_ << "#include \"gams/variables/Self.h\"\n";
   buffer_ << "#include \"gams/utility/GPS_Position.h\"\n";
   buffer_ << "#include \"gams/utility/Axes.h\"\n";
@@ -373,17 +371,17 @@ dmpl::gams::Sync_Builder::build_program_variables ()
 
     for (const Func &thread : n->second.threads)
     {
+      buffer_ << "// Defining thread-specific global variables\n";
       for (auto i : vars)
       {
-        buffer_ << "// Defining thread-specific global variables\n";
         Var & var = i.second;
         if(thread->findSymbol(var) != NULL)
           build_thread_variable (thread, var);
       }
 
+      buffer_ << "// Defining thread-specific local variables\n";
       for (auto i : locals)
       {
-        buffer_ << "// Defining thread-specific local variables\n";
         Var & var = i.second;
         if(thread->findSymbol(var) != NULL)
           build_thread_variable (thread, var);
@@ -459,7 +457,7 @@ dmpl::gams::Sync_Builder::build_thread_variable (const Func &thread, const Var &
   if (var->type->dims.size () >= 1)
   {
     buffer_ << "ArrayReference<Proactive<" << get_type_name(var);
-    buffer_ << ", CachedReference<" << get_type_name(var) << ">";
+    buffer_ << ", CachedReference<" << get_type_name(var) << "> >";
     BOOST_FOREACH(int dim, var->type->dims)
     {
       buffer_ << ", ";
@@ -886,6 +884,7 @@ dmpl::gams::Sync_Builder::build_functions_declarations ()
     for (Func thread : n.second.threads)
     {
       Funcs & funcs = n.second.funcs;
+      build_function_declaration (thread, n.second, thread);
       for (auto i : funcs)
       {
         if(thread->findSymbol(i.second) != NULL)
@@ -1018,6 +1017,7 @@ dmpl::gams::Sync_Builder::build_functions (void)
     for (Func thread : n->second.threads)
     {
       Funcs & funcs = n->second.funcs;
+      build_function (thread, n->second, thread);
       for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
       {
         if(thread->findSymbol(i->second) != NULL)
@@ -1052,6 +1052,30 @@ dmpl::gams::Sync_Builder::build_function_declaration (
 }
 
 void
+dmpl::gams::Sync_Builder::build_push_pull(const Func &thread, bool push)
+{
+  buffer_ << "  // " << (push?"Push":"Pull") << " all referenced locals/globals\n";
+  for(const SymbolUse &use : thread->allUsedSymbols)
+  {
+    Var var = use.sym->asVar();
+    if(var)
+    {
+      switch (var->scope)
+      {
+      case Variable::LOCAL:
+        buffer_ << "  thread" << thread->threadID << "_"
+                << var->getName() << (push?".push();":".pull();") << std::endl;
+        break;
+      case Variable::GLOBAL:
+        buffer_ << "  thread" << thread->threadID << "_"
+                << var->getName() << (push?"[id].push();":"[id].pull();") << std::endl;
+        break;
+      }
+    }
+  }
+}
+
+void
 dmpl::gams::Sync_Builder::build_function (
   const Func& thread, const dmpl::Node & node, dmpl::Func & function)
 {
@@ -1071,10 +1095,14 @@ dmpl::gams::Sync_Builder::build_function (
   buffer_ << "Madara::Knowledge_Record\n";
   buffer_ << node.name << "_";
   if(thread)
-    buffer_ << "_" << "thread" << thread->threadID;
+    buffer_ << "thread" << thread->threadID;
   buffer_ << "_" << function->name;
   buffer_ << " (engine::Function_Arguments & args, engine::Variables & vars)\n";
   buffer_ << "{\n";
+
+  if(function == thread)
+    build_push_pull(thread, false);
+
   buffer_ << "  // Declare local variables\n";
   
   //buffer_ << "  Integer result (0);\n";
@@ -1103,6 +1131,9 @@ dmpl::gams::Sync_Builder::build_function (
   {
     visitor.visit (statement);
   }
+
+  if(function == thread)
+    build_push_pull(thread, true);
 
   buffer_ << "\n  // Insert return statement, in case user program did not\n";
   buffer_ << "  return Integer(0);\n";
@@ -1215,6 +1246,7 @@ dmpl::gams::Sync_Builder::build_gams_functions ()
   buffer_ << "}\n";
   buffer_ << "\n";
 
+  /*
   buffer_ << "double GET_RANGE()\n";
   buffer_ << "{\n";
   buffer_ << "  using gams::platforms::Has_Range_Sensor;\n";
@@ -1224,6 +1256,7 @@ dmpl::gams::Sync_Builder::build_gams_functions ()
   buffer_ << "  return dist;\n";
   buffer_ << "}\n";
   buffer_ << "\n";
+  */
 }
 
 void
@@ -2173,6 +2206,7 @@ dmpl::gams::Sync_Builder::build_main_define_functions ()
   buffer_ << "  knowledge.define_function (\"REMODIFY_GLOBALS\", ";
   buffer_ << "REMODIFY_GLOBALS);\n\n";
 
+  /*
   buffer_ << "  // Defining global functions for MADARA\n\n";
   Funcs & funcs = builder_.program.funcs;
   for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
@@ -2181,17 +2215,16 @@ dmpl::gams::Sync_Builder::build_main_define_functions ()
     }
   
   buffer_ << "\n";
+  */
 
-  buffer_ << "  // Defining node functions for MADARA\n\n";
-  Nodes & nodes = builder_.program.nodes;
-  for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
+  buffer_ << "  // Defining thread functions for MADARA\n\n";
+  for (const auto &n : builder_.program.nodes)
+  {
+    for (Func thread : n.second.threads)
     {
-      Funcs & funcs = n->second.funcs;
-      for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
-        {
-          build_main_define_function (n->second, i->second);
-        }
+      build_main_define_function (n.second, thread);
     }
+  }
 
   buffer_ << "\n";
 }
@@ -2206,7 +2239,7 @@ dmpl::gams::Sync_Builder::build_main_define_function (const Node & node,
       buffer_ << "  knowledge.define_function (\"";
       buffer_ << function->name;
       buffer_ << "\", ";
-      buffer_ << node.name << "_" << function->name;
+      buffer_ << node.name << "_" << "thread" << function->threadID << "_" << function->name;
       buffer_ << ");\n";
     }
 }

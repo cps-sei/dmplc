@@ -67,7 +67,7 @@
 #include <list>
 #include <vector>
 #include <exception>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 #include "Variable.h"
@@ -80,8 +80,8 @@ namespace dmpl
 
   //share pointer to a base expression -- this is the type we will
   //mostly use
-  typedef boost::shared_ptr<Expression> Expr;
-  typedef boost::shared_ptr<Expression const> CExpr;
+  typedef std::shared_ptr<Expression> Expr;
+  typedef std::shared_ptr<Expression const> CExpr;
 
   //a list of expressions
   typedef std::list <Expr> ExprList;
@@ -273,7 +273,7 @@ namespace dmpl
     virtual Sym findSym(const std::string &name) const
     {
       if(idVar && idVar->name == name)
-        return boost::static_pointer_cast<Sym::element_type>(idVar);
+        return std::static_pointer_cast<Sym::element_type>(idVar);
       return Sym();
     }
 
@@ -297,9 +297,9 @@ namespace dmpl
     virtual Sym findSym(const std::string &name) const
     {
       if(id1Var && id1Var->name == name)
-        return boost::static_pointer_cast<Sym::element_type>(id1Var);
+        return std::static_pointer_cast<Sym::element_type>(id1Var);
       if(id2Var && id2Var->name == name)
-        return boost::static_pointer_cast<Sym::element_type>(id1Var);
+        return std::static_pointer_cast<Sym::element_type>(id1Var);
       return Sym();
     }
 

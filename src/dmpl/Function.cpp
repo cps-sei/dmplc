@@ -177,7 +177,7 @@ dmpl::LvalExpr::useSymbols(Context con)
   sym = con.findSym(var);
   if(sym)
     sym->use(shared_from_this(), con.isLHS, node != NULL, con.inExpect());
-  Func func = boost::dynamic_pointer_cast<Function>(sym);
+  Func func = std::dynamic_pointer_cast<Function>(sym);
   if(func)
   {
     Context con2 = con;

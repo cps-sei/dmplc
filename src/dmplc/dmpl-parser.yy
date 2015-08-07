@@ -58,7 +58,7 @@
 #include <list>
 #include <map>
 #include <string>
-#include <boost/make_shared.hpp>
+#include <memory>
 #include <boost/foreach.hpp>
 #include "dmpl/Program.h"
 #include "dmpl/Type.h"
@@ -327,7 +327,7 @@ role_body: {
 var_block : node_var TSEMICOLON {
   $$ = $1;
 }
-| TINIT TLPAREN var_group TRPAREN fn_body {
+| TINIT TLBRACE var_group TRBRACE fn_body {
   $$ = $3;
   (*$5)->retType = dmpl::voidType();
   BOOST_FOREACH(const dmpl::Var &v, *$$) {
@@ -376,9 +376,9 @@ local_var : TLOCAL var_decl {
 var_decl : type var_list {
   $$ = new dmpl::VarList();
   BOOST_FOREACH(const dmpl::Var &v,*$2) {
-    dmpl::Type t = boost::make_shared<dmpl::BaseType>(**$1);
+    dmpl::Type t = std::make_shared<dmpl::BaseType>(**$1);
     t->dims = v->type->dims;
-    dmpl::Var newVar = boost::make_shared<dmpl::Var::element_type>(*v);
+    dmpl::Var newVar = std::make_shared<dmpl::Var::element_type>(*v);
     newVar->type = t;//dmpl::Type(t);
     $$->push_back(newVar);
   }
@@ -391,19 +391,19 @@ var_list : var {
 | var_list TCOMMA var { $$ = $1; $$->push_back(*$3); delete $3; }
 ;
 
-var : TIDENTIFIER { $$ = new dmpl::Var(boost::make_shared<dmpl::Var::element_type>(*$1)); delete $1; }
+var : TIDENTIFIER { $$ = new dmpl::Var(std::make_shared<dmpl::Var::element_type>(*$1)); delete $1; }
 | TIDENTIFIER TEQUAL expr {
-  $$ = new dmpl::Var(boost::make_shared<dmpl::Var::element_type>(*$1));
+  $$ = new dmpl::Var(std::make_shared<dmpl::Var::element_type>(*$1));
   (*$$)->initExpr = *$3;
   delete $1; delete $3;
 }
 | TIDENTIFIER TEQUAL TEXTERN {
-  $$ = new dmpl::Var(boost::make_shared<dmpl::Var::element_type>(*$1));
+  $$ = new dmpl::Var(std::make_shared<dmpl::Var::element_type>(*$1));
   (*$$)->isExternInit = true;
   delete $1;
 }
 | TIDENTIFIER dimensions {
-  $$ = new dmpl::Var(boost::make_shared<dmpl::Var::element_type>(*$1,*$2)); 
+  $$ = new dmpl::Var(std::make_shared<dmpl::Var::element_type>(*$1,*$2)); 
   delete $1; delete $2;
 }
 ;
@@ -458,7 +458,7 @@ attr_list fn_prototype fn_body {
 fn_body :
 TLBRACE var_decl_list stmt_list TRBRACE {
   /** create and add function to the node */
-  $$ = new dmpl::Func(boost::make_shared<dmpl::Func::element_type>());
+  $$ = new dmpl::Func(std::make_shared<dmpl::Func::element_type>());
   /** set scope of temporary variables */
   BOOST_FOREACH(dmpl::Var &v,*$2) v->scope = dmpl::Variable::TEMP;
   (*$$)->setTemps(*$2);
@@ -478,7 +478,7 @@ fn_decors : { $$ = new std::list<int>(); }
 
 fn_prototype :
 fn_decors fn_type TIDENTIFIER TLPAREN param_list TRPAREN {
-  $$ = new dmpl::Func(boost::make_shared<dmpl::Func::element_type>());
+  $$ = new dmpl::Func(std::make_shared<dmpl::Func::element_type>());
   (*$$)->retType = *$2;
   (*$$)->name = *$3;
   /** set scope of parameter variables */
@@ -488,13 +488,13 @@ fn_decors fn_type TIDENTIFIER TLPAREN param_list TRPAREN {
   delete $1; delete $2; delete $3; delete $5;
 }
 | fn_decors TIDENTIFIER TLPAREN TRPAREN {
-  $$ = new dmpl::Func(boost::make_shared<dmpl::Func::element_type>());
+  $$ = new dmpl::Func(std::make_shared<dmpl::Func::element_type>());
   (*$$)->name = *$2;
   apply_fn_decors(*$$, *$1);
   delete $1; delete $2;
 }
 | fn_decors TTHREAD TIDENTIFIER {
-  $$ = new dmpl::Func(boost::make_shared<dmpl::Func::element_type>());
+  $$ = new dmpl::Func(std::make_shared<dmpl::Func::element_type>());
   (*$$)->name = *$3;
   (*$$)->retType = dmpl::Type(dmpl::threadType());
   apply_fn_decors(*$$, *$1);

@@ -74,7 +74,7 @@ FORCEBUILD=0
 BUILDONLY=0
 MANUALSTART=0
 
-PLATFORM=vrep::::0.1
+PLATFORM=vrep_uav::::0.1
 
 argc=0
 

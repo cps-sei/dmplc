@@ -77,8 +77,8 @@ namespace dmpl
 
   //share pointer to a base expression -- this is the type we will
   //mostly use
-  typedef boost::shared_ptr<Expression> Expr;
-  typedef boost::shared_ptr<Expression const> CExpr;
+  typedef std::shared_ptr<Expression> Expr;
+  typedef std::shared_ptr<Expression const> CExpr;
 
   //a list of expressions
   typedef std::list <Expr> ExprList;

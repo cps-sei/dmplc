@@ -61,7 +61,7 @@
 dmpl::madara::Function_Visitor::Function_Visitor (
   const Func & function, const Node & node, const Func & thread,
   DmplBuilder & builder, std::stringstream & buffer, bool do_vrep, bool do_analyzer)
-  : function_ (function), statement_(Stmt()), node_ (node), thread_ (thread)
+  : function_ (function), statement_(Stmt()), node_ (node), thread_ (thread),
     builder_ (builder), buffer_ (buffer), do_vrep_(do_vrep), do_analyzer_(do_analyzer),
     indentation_ (2), assignment_ (0)
 {
@@ -71,7 +71,7 @@ dmpl::madara::Function_Visitor::Function_Visitor (
 dmpl::madara::Function_Visitor::Function_Visitor (
   const Stmt & statement, const Node & node, const Func & thread,
   DmplBuilder & builder, std::stringstream & buffer, bool do_vrep, bool do_analyzer)
-  : function_ (Func()), statement_(statement), node_ (node), thread_ (thread)
+  : function_ (Func()), statement_(statement), node_ (node), thread_ (thread),
     builder_ (builder), buffer_ (buffer), do_vrep_(do_vrep), do_analyzer_(do_analyzer),
     indentation_ (2), assignment_ (0)
 {
@@ -127,7 +127,7 @@ void
 dmpl::madara::Function_Visitor::exitLval (LvalExpr & expression)
 {
   Sym symbol = expression.sym;
-  Var var = boost::dynamic_pointer_cast<Variable>(symbol);
+  Var var = std::dynamic_pointer_cast<Variable>(symbol);
   if (symbol == NULL)
   {
     buffer_ << expression.var;
@@ -140,11 +140,14 @@ dmpl::madara::Function_Visitor::exitLval (LvalExpr & expression)
   {
     int indices = expression.indices.size();
     bool atNode = expression.node != NULL;
-    bool isAnalyzerLocal = do_analyzer_ && var->getScope() == Variable::LOCAL;
+    bool isLocal = var->getScope() == Variable::LOCAL;
+    bool isAnalyzerLocal = do_analyzer_ && isLocal;
     bool isGlobal = var->getScope() == Variable::GLOBAL;
     if(atNode || isGlobal || isAnalyzerLocal)
       indices++;
-    buffer_ << "thread" << thread->threadID << symbol->getName();
+    if(thread_ && (isGlobal || isLocal))
+      buffer_ << "thread" << thread_->threadID << "_";
+    buffer_ << symbol->getName();
     if (indices > 0)
     {
       // iterate over each index
@@ -259,7 +262,7 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
   }
   std::string func_name = lval.var;
   Sym sym = lval.sym;
-  Func func = boost::dynamic_pointer_cast<Function>(sym);
+  Func func = std::dynamic_pointer_cast<Function>(sym);
 
   if (sym != NULL && func == NULL)
   {
@@ -312,7 +315,9 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
       buffer_ << node_.name << "_";
     }
 
-    buffer_ << "thread" << thread->threadID << "_" << func_name << " (\n";
+    if(thread_)
+      buffer_ << "thread" << thread_->threadID << "_";
+    buffer_ << func_name << " (\n";
 
     buffer_ << sub_spacer << "     ";
 
@@ -684,12 +689,13 @@ dmpl::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
   // keep track of assignment;
   assignment_ = &statement;
 
-  boost::shared_ptr<LvalExpr> lhs  = boost::dynamic_pointer_cast<LvalExpr>(statement.lhs);
+  std::shared_ptr<LvalExpr> lhs  = std::dynamic_pointer_cast<LvalExpr>(statement.lhs);
   
   if (lhs)
   {
     int indices = lhs->indices.size();
-    bool isAnalyzerLocal = do_analyzer_ && lhs->sym && lhs->sym->getScope() == Variable::LOCAL;
+    bool isLocal = lhs->sym != NULL && (lhs->sym->getScope() == Variable::LOCAL);
+    bool isAnalyzerLocal = do_analyzer_ && isLocal;
     bool isGlobal = lhs->sym != NULL && (lhs->sym->getScope() == Variable::GLOBAL || isAnalyzerLocal);
     if(isGlobal)
       indices++;
@@ -726,6 +732,8 @@ dmpl::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
       */
 
       buffer_ << spacer;
+      if(thread_ && (isGlobal || isLocal))
+        buffer_ << "thread" << thread_->threadID << "_";
       buffer_ << lhs->var;
       buffer_ << " = ";
       visit (statement.rhs);
@@ -747,6 +755,9 @@ dmpl::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
     {
       if (indices >= 1)
       {
+        buffer_ << spacer;
+        if(thread_ && (isGlobal || isLocal))
+          buffer_ << "thread" << thread_->threadID << "_";
         buffer_ << lhs->var;
 
 

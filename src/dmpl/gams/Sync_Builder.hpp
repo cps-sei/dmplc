@@ -206,6 +206,8 @@ namespace dmpl
        **/
       void build_functions (void);
 
+      void build_push_pull (const Func& thread, bool push);
+
       /**
        * Builds a function
        * @param  function  a defined function in the parsed program

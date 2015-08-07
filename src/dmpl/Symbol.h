@@ -73,9 +73,7 @@
 //#include "Function.h"
 #include "Type.h"
 #include "Attribute.h"
-#include <boost/shared_ptr.hpp>
-#include <boost/enable_shared_from_this.hpp>
-
+#include <memory>
 
 namespace dmpl
 {
@@ -84,20 +82,34 @@ namespace dmpl
   /*******************************************************************/
 
   class Variable;
-  typedef boost::shared_ptr<Variable> Var;
+  typedef std::shared_ptr<Variable> Var;
   typedef std::list <Var> VarList;
   typedef std::list <Variable> VariablesList;
   typedef std::map <std::string, Var> Vars;
   typedef std::map <std::string, Variable> Variables;
 
   class Function;
-  typedef boost::shared_ptr<Function> Func;
+  typedef std::shared_ptr<Function> Func;
   typedef std::list <Func> FuncList;
 
   class Statement;
-  typedef boost::shared_ptr<Statement> Stmt;
+  typedef std::shared_ptr<Statement> Stmt;
   class CondStmt;
-  typedef boost::shared_ptr<CondStmt> CStmt;
+  typedef std::shared_ptr<CondStmt> CStmt;
+
+  struct virtual_enable_shared_from_this_base:
+   std::enable_shared_from_this<virtual_enable_shared_from_this_base> {
+   virtual ~virtual_enable_shared_from_this_base() {}
+  };
+
+  template<typename T>
+  struct virtual_enable_shared_from_this:
+  virtual virtual_enable_shared_from_this_base {
+     std::shared_ptr<T> shared_from_this() {
+        return std::dynamic_pointer_cast<T>(
+           virtual_enable_shared_from_this_base::shared_from_this());
+     }
+  };
 
   template<class I> class AsInt
   {
@@ -253,17 +265,17 @@ namespace dmpl
   };
 
   class SymbolUser;
-  typedef boost::shared_ptr<SymbolUser> SymUser;
+  typedef std::shared_ptr<SymbolUser> SymUser;
   typedef std::vector<SymUser> SymUserList;
   typedef std::set<SymUser> SymUserSet;
 
   class Symbol;
-  typedef boost::shared_ptr<Symbol> Sym;
+  typedef std::shared_ptr<Symbol> Sym;
 
   class Namespace;
-  typedef boost::shared_ptr<Namespace> NSpace;
+  typedef std::shared_ptr<Namespace> NSpace;
 
-  class Symbol : public HasAttributes, public boost::enable_shared_from_this<Symbol>
+  class Symbol : public HasAttributes, public virtual_enable_shared_from_this<Symbol>
   {
   public:
     Symbol() : HasAttributes(), usage_summary(), users(), owner() {}
@@ -292,7 +304,7 @@ namespace dmpl
       throw std::runtime_error("Symbol merging not supported for symbol " + getName());
     }
 
-    Sym asSym() { return boost::dynamic_pointer_cast<Symbol>(shared_from_this()); }
+    Sym asSym() { return std::dynamic_pointer_cast<Symbol>(shared_from_this()); }
     Func asFunc();
     Var asVar();
     virtual void use(const SymUser &suser, bool isWrite, bool isRemote, bool isExpect);
@@ -307,7 +319,7 @@ namespace dmpl
     virtual Sym findSym(const std::string &name) const = 0;
   };
 
-  typedef boost::shared_ptr<SymbolBinder> SymBinder;
+  typedef std::shared_ptr<SymbolBinder> SymBinder;
   
   class SymbolUse
   {
@@ -426,7 +438,7 @@ namespace dmpl
 
   class Node;
 
-  class SymbolUser : public boost::enable_shared_from_this<SymbolUser>
+  class SymbolUser : public virtual_enable_shared_from_this<SymbolUser>
   {
   public:
     SymbolUseSummary summary;
@@ -503,13 +515,13 @@ namespace dmpl
      * merge with it. If differing types, raise exception.
      */
     template<class T>
-    void addSym(const boost::shared_ptr<T> &symbol)
+    void addSym(const std::shared_ptr<T> &symbol)
     {
       std::string name(symbol->getName());
       if(count(name))
       {
         Sym orig_sym = (*this)[name];
-        boost::shared_ptr<T> orig = boost::dynamic_pointer_cast<T>(orig_sym);
+        std::shared_ptr<T> orig = std::dynamic_pointer_cast<T>(orig_sym);
         if(orig.get() == NULL)
         {
           throw std::runtime_error("Conficting types for symbol " + name);
@@ -530,12 +542,12 @@ namespace dmpl
      * a type not compatible with T, return NULL.
      */
     template<class T>
-    boost::shared_ptr<T> getSym(const std::string &name)
+    std::shared_ptr<T> getSym(const std::string &name)
     {
       if(count(name))
       {
         Sym orig_sym = (*this)[name];
-        boost::shared_ptr<T> orig = boost::dynamic_pointer_cast<T>(orig_sym);
+        std::shared_ptr<T> orig = std::dynamic_pointer_cast<T>(orig_sym);
         if(orig.get() == NULL)
         {
           throw NULL;

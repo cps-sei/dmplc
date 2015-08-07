@@ -287,6 +287,18 @@ public:
     get_array().mark_modified(*this);
   }
 
+  void pull()
+  {
+    //std::cerr << "Reference pull " << this->get_name() << std::endl;
+    get_array().pull(*this);
+  }
+
+  void push()
+  {
+    //std::cerr << "Reference push " << this->get_name() << std::endl;
+    get_array().push(*this);
+  }
+
   /**
    * C++11 support is highly recommended for multi-dimensional arrays;
    * without it, each index operation creates pointless copies of ArrayReferenceReference
@@ -516,7 +528,7 @@ inline typename ArrayReferenceReference<T>::rvalue_indexed_type ArrayReferenceRe
     throw_range_error(this->get_name(), i, this->get_size());
   //std::cerr << "index op rvalue: " << this->get_name() << std::endl;
   this->append_index(i);
-  return std::move(static_cast<sub_type&>(*this)).dereference();
+  return std::move(static_cast<sub_type&>(*this).dereference());
 }
 #endif
 
@@ -828,7 +840,25 @@ public:
     check_var_len("mark_modified");
     for(int i = 0; i < get_size<0>(); i++)
     {
-      raw_subarray_type::mark_modified((*this)[i]);
+      (*this)[i].mark_modified();
+    }
+  }
+
+  void pull()
+  {
+    check_var_len("pull");
+    for(int i = 0; i < get_size<0>(); i++)
+    {
+      (*this)[i].pull();
+    }
+  }
+
+  void push()
+  {
+    check_var_len("push");
+    for(int i = 0; i < get_size<0>(); i++)
+    {
+      (*this)[i].push();
     }
   }
 
@@ -934,7 +964,25 @@ protected:
     check_var_len("mark_modified");
     for(int i = 0; i < get_size<0>(); i++)
     {
-      raw_subarray_type::mark_modified(ref[i]);
+      ref[i].mark_modified();
+    }
+  }
+
+  void pull(reference_type ref)
+  {
+    check_var_len("pull");
+    for(int i = 0; i < get_size<0>(); i++)
+    {
+      ref[i].pull();
+    }
+  }
+
+  void push(reference_type ref)
+  {
+    check_var_len("push");
+    for(int i = 0; i < get_size<0>(); i++)
+    {
+      ref[i].push();
     }
   }
 
@@ -1323,6 +1371,18 @@ public:
   {
     //std::cerr << "Base mark_modified " << in.get_name() << std::endl;
     in.mark_modified();
+  }
+
+  void pull(reference_type in)
+  {
+    //std::cerr << "Base pull " << in.get_name() << std::endl;
+    in.pull();
+  }
+
+  void push(reference_type in)
+  {
+    //std::cerr << "Base push " << in.get_name() << std::endl;
+    in.push();
   }
 
   //typedef this_type forwarded_type;
