@@ -52,7 +52,6 @@
 
  * DM-0002494
 **/
-
 //-- this is a generic example demonstrating the synchronous collision
 //-- avoidance algorithm
 
@@ -78,6 +77,11 @@ int xi,yi;
 void print_int(int i)
 {
   printf("%i\n", i);
+}
+
+void print_range(double r)
+{
+  printf("Range: %f\n", r);
 }
 
 void print_line(int _X)
@@ -162,8 +166,16 @@ node uav (id)
   @BarrierSync
   @PlatformController
   thread COLLISION_AVOIDANCE () {
+    double range;
     print_state(X,Y,id,x,y,xf,yf);
     //my_sleep(1);
+    if(ROTATE(90)) return;
+    range = GET_RANGE();
+    print_range(range);
+    if(range > 0)
+    {
+      return;
+    }
     if IF_INIT (state == INITS) {
       lock[x][y] = 1;
       state = NEXT;
@@ -180,8 +192,7 @@ node uav (id)
     } else if IF_WAITING (state == WAITING) {
       //grab the lock if we are the highest 
       //id node to request or hold the lock
-      //commented out to induce a bug
-      //if(EXISTS_HIGHER(idp, lock[xp][yp]@idp != 0)) return;
+      if(EXISTS_HIGHER(idp, lock[xp][yp]@idp != 0)) return;
       state = MOVE;
     } else if IF_MOVE (state == MOVE) {
       //now we have the lock on (x’,y’)

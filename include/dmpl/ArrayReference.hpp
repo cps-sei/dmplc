@@ -73,6 +73,7 @@
 
 #if __cplusplus >= 201103L
 #include <array>
+#include <type_traits>
 
 #define USE_RVAL_REF
 #define USE_VAR_TMPL
@@ -81,6 +82,7 @@
 #define USE_EMPLACE
 #define USE_USING_TYPE
 #define USE_STATIC_ASSERT
+#define USE_TYPE_TRAITS
 #else
 #define nullptr NULL
 #endif
@@ -520,6 +522,52 @@ inline typename ArrayReferenceReference<T>::rvalue_indexed_type ArrayReferenceRe
 
 } // end __INTERNAL__
 
+#ifdef USE_TYPE_TRAITS
+template <typename T, bool = std::is_class<T>::value>
+struct for_all_param_type
+{
+  typedef void (*value)(T &);
+
+  template <value Op>
+  static void apply(T &in)
+  {
+    Op(in);
+  }
+};
+
+template <typename T>
+struct for_all_param_type<T, true>
+{
+  typedef void (T::* value)();
+
+  template <value Op>
+  static void apply(T &in)
+  {
+    (in.*Op)();
+  }
+};
+
+template <typename T, bool = std::is_lvalue_reference<T>::value >
+struct handle_index_type
+{
+  template <typename B>
+  static T do_index(B &base, unsigned int i)
+  {
+    return std::move(std::move(base)[i]);
+  }
+};
+
+template <typename T>
+struct handle_index_type<T, true>
+{
+  template <typename B>
+  static T do_index(B &base, unsigned int i)
+  {
+    return base[i];
+  }
+};
+#endif
+
 
 #ifdef USE_VAR_TMPL
 template <typename T, unsigned int d0, unsigned int ...dN>
@@ -549,6 +597,7 @@ public:
   typedef StorageManager::get_sm_info<T> sm_info;
   typedef typename sm_info::sm_type sm_type;
   typedef typename sm_info::data_type value_type;
+  typedef typename sm_info::storage_type storage_type;
   typedef raw_subarray_type subarray_type;
   //typedef typename raw_subarray_type::forwarded_type subarray_type;
 
@@ -562,6 +611,7 @@ public:
   typedef __INTERNAL__::ArrayReferenceReference<this_type> reference_type;
   typedef __INTERNAL__::ArrayReferenceReference<base_type> base_reference_type;
   typedef typename __INTERNAL__::ArrayReferenceReference<subarray_type>::index_as_type index_type;
+  typedef typename __INTERNAL__::ArrayReferenceReference<base_type>::index_as_type base_index_type;
 public:
   const static unsigned int static_size = d0;
   const static unsigned int dims = raw_subarray_type::dims + 1;
@@ -782,6 +832,18 @@ public:
     }
   }
 
+#ifdef USE_TYPE_TRAITS
+  template<typename for_all_param_type<storage_type>::value Op>
+  void for_all()
+  {
+    check_var_len("for_all");
+    for(int i = 0; i < get_size<0>(); i++)
+    {
+      raw_subarray_type::template for_all<Op>((*this)[i]);
+    }
+  }
+#endif
+
   template<class E>
   void get_into(E &out)
   {
@@ -854,6 +916,18 @@ public:
   }
 
 protected:
+#ifdef USE_TYPE_TRAITS
+  template<typename for_all_param_type<storage_type>::value Op>
+  void for_all(reference_type ref)
+  {
+    check_var_len("for_all");
+    for(int i = 0; i < get_size<0>(); i++)
+    {
+      raw_subarray_type::for_all<Op>(ref[i]);
+    }
+  }
+#endif
+
   void mark_modified(reference_type ref)
   {
     //std::cerr << "Array sub mark_modified " << ref.get_name() << std::endl;
@@ -973,7 +1047,8 @@ public:
   {
     reference_type ret(*this);
 #ifdef USE_RVAL_REF
-    return std::move(std::move(ret)[i]);
+    return handle_index_type<index_type>::do_index(ret, i);
+    //return std::move(std::move(ret)[i]);
 #else
     return ret[i];
 #endif
@@ -1061,6 +1136,7 @@ public:
   typedef StorageManager::get_sm_info<T> sm_info;
   typedef typename sm_info::sm_type sm_type;
   typedef typename sm_info::data_type value_type;
+  typedef typename sm_info::storage_type storage_type;
 
   typedef typename sm_type::template BaseMixin<this_type> storage_mixin;
 
@@ -1223,6 +1299,14 @@ public:
   {
     in.pull_keep_local();
   }
+
+#ifdef USE_TYPE_TRAITS
+  template<typename for_all_param_type<storage_type>::value Op, typename E>
+  void for_all(E &in)
+  {
+    for_all_param_type<storage_type>::template apply<Op>(in);
+  }
+#endif
 
   void set_from(const value_type &in, reference_type v)
   {

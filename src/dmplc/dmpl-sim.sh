@@ -212,20 +212,21 @@ elif [ "$MAPSIZE" == "large" ]; then
     RightX=6.5
 fi
 
+CPP_FILE=${MISSION}_${BIN}.cpp
 DMPLC_FLAGS="-g -n $NODENUM --DX $GRIDSIZE --DY $GRIDSIZE --DTopY $TopY --DBottomY $BottomY --DLeftX $LeftX --DRightX $RightX"
 [ "$DEBUG" -eq 1 ] && DMPLC_FLAGS="$DMPLC_FLAGS --debug"
 [ -n "$OUTLOG" ] && DMPLC_FLAGS="$DMPLC_FLAGS -e"
 
 for file in `which dmplc` $DMPL $MISSION; do
-if [ $FORCEBUILD -eq 1 ] || [ $file -nt ${BIN}.cpp ]; then
-$GDB dmplc $DMPLC_FLAGS -o ${BIN}.cpp $DMPL
+if [ $FORCEBUILD -eq 1 ] || [ $file -nt $CPP_FILE ]; then
+$GDB dmplc $DMPLC_FLAGS -o $CPP_FILE $DMPL
 break
 fi
 done
-if [ ${BIN}.cpp -nt ${BIN} ]; then
+if [ $CPP_FILE -nt ${BIN} ]; then
 CFLAGS="-g -Og -std=c++11 -I$DMPL_ROOT/src -I$VREP_ROOT/programming/remoteApi -I$ACE_ROOT -I$MADARA_ROOT/include -I$GAMS_ROOT/src -I$DMPL_ROOT/include"
 LIBS="$LIBS $MADARA_ROOT/libMADARA.so $ACE_ROOT/lib/libACE.so $GAMS_ROOT/lib/libGAMS.so -lpthread"
-g++ $CFLAGS -o $BIN ${BIN}.cpp $LIBS
+g++ $CFLAGS -o $BIN $CPP_FILE $LIBS
 fi
 
 [ "$BUILDONLY" -eq 1 ] && exit 0

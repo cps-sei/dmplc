@@ -556,6 +556,7 @@ struct get_sm_info<__INTERNAL__::Stateless<T> >
 {
   typedef __INTERNAL__::Stateless<T> sm_type;
   typedef T data_type;
+  typedef T storage_type;
 };
 
 }
