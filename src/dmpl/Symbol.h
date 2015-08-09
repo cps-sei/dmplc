@@ -281,9 +281,12 @@ namespace dmpl
   class Symbol : public HasAttributes, public virtual_enable_shared_from_this<Symbol>
   {
   public:
+    //-- default constructor
     Symbol() : HasAttributes(), usage_summary(), users(), owner() {}
+    //-- constructor with attributes
     Symbol(const Attributes &a) : HasAttributes(a), usage_summary(), users(), owner() {}
 
+    //-- different symbol scopes
     static const int LOCAL = 501;
     static const int GLOBAL = 502;
     static const int PARAM = 503;
@@ -295,24 +298,33 @@ namespace dmpl
     SymUserSet users;
     NSpace owner;
 
+    //-- return name, type and scope
     virtual std::string getName() const = 0;
     virtual const Type &getType() = 0;
     virtual int getScope() { return LOCAL; }
 
+    //-- return attributes
     virtual bool canRead() { return true; }
     virtual bool canWrite() { return true; }
 
+    //-- merge with another symbolc
     virtual void mergeWith(const Symbol &other)
     {
       throw std::runtime_error("Symbol merging not supported for symbol " + getName());
     }
 
+    //-- convert another object to a Symbol
     Sym asSym() { return std::dynamic_pointer_cast<Symbol>(shared_from_this()); }
+    //-- convert a sumbol to a function
     Func asFunc();
+    //-- convert a symbol to a variable
     Var asVar();
+
+    //-- record the use of a symbol
     virtual void use(const SymUser &suser, bool isWrite, bool isRemote, bool isExpect);
   };
 
+  //-- typdefs for a list of symbols and a map from names to symbols
   typedef std::list <Sym> SymList;
   typedef std::map <std::string, Sym> Syms;
 
@@ -324,6 +336,9 @@ namespace dmpl
 
   typedef std::shared_ptr<SymbolBinder> SymBinder;
   
+  /*******************************************************************/
+  //-- a class representing a symbol usage
+  /*******************************************************************/
   class SymbolUse
   {
   public:
@@ -334,6 +349,7 @@ namespace dmpl
     Sym sym;
   };
 
+  //-- a vector of symbol usage
   typedef std::vector<SymbolUse> UsedSymbols;
 
   namespace
@@ -570,3 +586,7 @@ namespace dmpl
 
 
 #endif // _DMPL_SYMBOL_
+
+/*********************************************************************/
+//-- end of Symbol.h
+/*********************************************************************/
