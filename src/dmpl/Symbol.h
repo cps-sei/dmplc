@@ -275,6 +275,9 @@ namespace dmpl
   class Namespace;
   typedef std::shared_ptr<Namespace> NSpace;
 
+  /*******************************************************************/
+  //-- a class representing a symbol
+  /*******************************************************************/
   class Symbol : public HasAttributes, public virtual_enable_shared_from_this<Symbol>
   {
   public:

@@ -83,27 +83,42 @@ namespace dmpl
   //a list of expressions
   typedef std::list <Expr> ExprList;
 
+  /*******************************************************************/
+  //-- a class representing an attribute
+  /*******************************************************************/
   class Attribute
   {
   public:
+    //-- attribute name
     std::string name;
-
+    //-- attribute parameters (if any)
     ExprList paramList;
 
+    //-- default constructor
     Attribute() {}
+    //-- constructor with name
     Attribute(const std::string &n) : name(n) {}
+    //-- constructor with name and parameters
     Attribute(const std::string &n, const ExprList &p) : name(n),  paramList(p) {}
 
+    //-- if attribute has a single parameter, return it. otherwise,
+    //-- throw an exception.
     Expr requireSingleParam()
     {
       if(paramList.size() != 1)
-        throw std::runtime_error("Expected 1 parameter for attribute @" + name +".");
+        throw std::runtime_error("Expected 1 parameter for attribute @" + name + ".");
       return paramList.front();
     }
   };
 
+  /*******************************************************************/
+  //-- map from names to attributes
+  /*******************************************************************/
   typedef std::map <std::string, Attribute> Attributes;
 
+  /*******************************************************************/
+  //-- a base class denoting all classes that have attributes
+  /*******************************************************************/
   class HasAttributes
   {
   public:
