@@ -56,13 +56,6 @@
 #ifndef _DMPL_ATTRIBUTE_H_
 #define _DMPL_ATTRIBUTE_H_
 
-/**
- * @file Function.h
- * @author James Edmondson <jedmondson@gmail.com>
- *
- * This file contains a class definition for function definitions.
- **/
-
 #include <vector>
 #include <exception>
 #include <map>
