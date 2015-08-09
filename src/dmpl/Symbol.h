@@ -111,32 +111,6 @@ namespace dmpl
      }
   };
 
-  template<class I> class AsInt
-  {
-  public:
-    I asInt() const
-    {
-      return reinterpret_cast<const I &>(*this);
-    }
-
-    I &asInt()
-    {
-      return reinterpret_cast<I &>(*this);
-    }
-
-    AsInt() { }
-
-    AsInt(I i)
-    {
-      asInt() = i;
-    }
-
-    AsInt(const AsInt<I> &o)
-    {
-      asInt() = o.asInt();
-    }
-  };
-
   namespace
   {
     //-- we use three bits to represent attributes of a symbolc access
