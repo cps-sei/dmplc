@@ -137,10 +137,9 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
     std::list<int> *tokenList;
 }
 
-/* Define our terminal symbols (tokens). This should
-   match our tokens.l lex file. We also define the node type
-   they represent.
- */
+/* Define our terminal symbols (tokens). This should match our
+   dmpl-scanner.ll lex file. We also define the node type they
+   represent.  */
 %token <string> TIDENTIFIER TINTEGER TDOUBLE TATTRIBUTE
 %token <string> TIF TREQUIRE TEXPECT
 %token <token> TSEMICOLON TCONST TNODE TROLE
