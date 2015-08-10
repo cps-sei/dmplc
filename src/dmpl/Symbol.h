@@ -328,6 +328,9 @@ namespace dmpl
   typedef std::list <Sym> SymList;
   typedef std::map <std::string, Sym> Syms;
 
+  /*******************************************************************/
+  //-- an abstract class representing a map from names to symbols
+  /*******************************************************************/
   class SymbolBinder
   {
   public:
@@ -352,23 +355,32 @@ namespace dmpl
   //-- a vector of symbol usage
   typedef std::vector<SymbolUse> UsedSymbols;
 
+  //-- the summary of a symbol's usage. represents its usage as a
+  //-- local and as a global.
   namespace
   {
     const size_t symsum_size = symuse_size * 2;
     typedef std::bitset<symsum_size> ss_bitset;
   }
 
+  /*******************************************************************/
+  //-- a class representing the summary of a symbol's usage
+  /*******************************************************************/
   class SymbolUseSummary : public ss_bitset
   {
   public:
+    //-- default constructor
     SymbolUseSummary() : ss_bitset() {}
+    //-- constructor from a value
     SymbolUseSummary(unsigned long i) : ss_bitset(i) {}
 
+    //-- return the usage as a local
     SymbolUseInfo local() const
     {
       return SymbolUseInfo(to_ulong() & ( (1 << symuse_size) - 1 ));
     }
 
+    //-- return the usage as a global
     SymbolUseInfo global() const
     {
       return SymbolUseInfo(to_ulong() >> symuse_size);
@@ -376,13 +388,19 @@ namespace dmpl
 
     using ss_bitset::operator|=;
 
+    //-- a class representing a reference to a subset of the symbol
+    //-- usage. has the full usage plus an on offset denoting the
+    //-- start of the offset
     class sub_ref
     {
     protected:
       SymbolUseSummary &sum;
       unsigned short offset;
 
+      //-- constructor. SC: seems like i can be either 0 or 1. why not
+      //-- make it a bool?
       sub_ref(SymbolUseSummary &s, unsigned short i) : sum(s), offset(i * symuse_size) {}
+
     public:
       friend class SymbolUseSummary;
 
@@ -391,11 +409,14 @@ namespace dmpl
         return SymbolUseInfo((sum.to_ulong() >> offset) & ((1 << symuse_size) - 1));
       }
 
+      //-- SC: Do we need this unsafe cast?
       SymbolUseInfo get()
       {
         return (SymbolUseInfo)(*this);
       }
 
+      //-- various operators. SC: I need to understand these (and the
+      //-- sub_ref class) better.
       sub_ref &operator=(const SymbolUseInfo &o)
       {
         unsigned long mask = ~(((1 << symuse_size) - 1) << offset);
@@ -423,21 +444,25 @@ namespace dmpl
       }
     };
 
+    //-- return the local usage
     sub_ref local()
     {
       return sub_ref(*this, 0);
     }
 
+    //-- return the global usage
     sub_ref global()
     {
       return sub_ref(*this, 1);
     }
 
+    //-- return the summary obtained by adding a new usage
     SymbolUseSummary operator|(const SymbolUse &o) const
     {
       return SymbolUseSummary(*this) |= o;
     }
 
+    //-- update the summary in place by adding a usage
     SymbolUseSummary &operator|=(const SymbolUse &o)
     {
       switch(o.sym->getScope())
@@ -455,14 +480,21 @@ namespace dmpl
     }
   };
 
+  /*******************************************************************/
+  //-- forward declaration
+  /*******************************************************************/
   class Node;
 
+  /*******************************************************************/
+  //-- a class representing a symbol user
+  /*******************************************************************/
   class SymbolUser : public virtual_enable_shared_from_this<SymbolUser>
   {
   public:
     SymbolUseSummary summary;
     UsedSymbols allUsedSymbols;
 
+    //-- the context for a symbol user
     class Context
     {
     public:
@@ -501,6 +533,7 @@ namespace dmpl
     }
 
     friend class Symbol;
+    
   protected:
     void analyzeSymbolUsage(Context con);
 
@@ -518,6 +551,10 @@ namespace dmpl
     }
   };
 
+  /*******************************************************************/
+  //-- a class representing a namespace. SC: My understanding is that
+  //-- this class is defunct and can be removed.
+  /*******************************************************************/
   class Namespace : public Symbol, public std::map<std::string, Sym>
   {
   public:
