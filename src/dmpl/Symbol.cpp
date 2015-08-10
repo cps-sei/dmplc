@@ -84,6 +84,7 @@ namespace dmpl
     }
   }
 
+  //-- inherit usage from another user
   void SymbolUser::inherit(const SymUser &o)
   {
     summary |= o->summary;
@@ -97,6 +98,7 @@ namespace dmpl
     }
   }
 
+  //-- analyze symbol usage by a node
   void SymbolUser::analyzeSymbolUsage(Node &n)
   {
     BOOST_FOREACH(const Funcs::value_type &f, n.funcs)
@@ -122,7 +124,9 @@ namespace dmpl
     }
   }
 
-  SymbolUser::Context SymbolUser::useSymbols(Context con) {
+  //-- inherit symbol usage from parents
+  SymbolUser::Context SymbolUser::useSymbols(Context con)
+  {
     BOOST_FOREACH(const SymUser &su, getParents(con))
     {
       su->useSymbols(con);
@@ -130,26 +134,29 @@ namespace dmpl
     }
     return con;
   }
-
+  
+  //-- find a symbol given its name
   Sym SymbolUser::Context::findSym(const std::string &name)
   {
+    //-- first check enclosing scopes
     BOOST_FOREACH(const SymbolBinder *b, binders)
     {
       Sym v = b->findSym(name);
-      if(v)
-        return v;
+      if(v) return v;
     }
+    //-- next check the enclosing function
     if(curFunc)
     {
       Var v = curFunc->findVar(name);
-      if(v)
-        return std::static_pointer_cast<Sym::element_type>(v);
+      if(v) return std::static_pointer_cast<Sym::element_type>(v);
     }
-    if(node)
-      return node->findSym(name);
+    //-- finally check the enclosing node
+    if(node) return node->findSym(name);
+    //-- if all fails, return default symbol
     return Sym();
   }
 
+  //-- return true if the context corresponds to an expect clause
   bool SymbolUser::Context::inExpect()
   {
     return clause != NULL && clause->kind == "expect";
