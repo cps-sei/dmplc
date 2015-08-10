@@ -113,7 +113,7 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
 }
 }
 
-/* expect 3 shift reduce conflicts */
+/* expect 1 shift reduce conflict */
 %expect 1
 
 /* Represents the many different ways we can access our data */
