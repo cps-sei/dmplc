@@ -63,7 +63,8 @@
 namespace dmpl
 {
   //-- record the use of a symbol
-  void Symbol::use(const SymUser &suser = SymUser(), bool isWrite = false, bool isRemote = false, bool isExpect = false)
+  void Symbol::use(const SymUser &suser = SymUser(), bool isWrite = false,
+                   bool isRemote = false, bool isExpect = false)
   {
     //std::cerr << "Using symbol " << (*this)->getName() << " " <<
     //isWrite << " " << isRemote << " " << isExpect << std::endl;
