@@ -226,8 +226,7 @@ program_element
   }
 ;
 
-target :
-  TTARGET target_id_list TTHUNK {
+target : TTARGET target_id_list TTHUNK {
   BOOST_FOREACH(const std::string &t,*$2) builder->program.addTarget(t,thunk);
   delete $2;
 }
