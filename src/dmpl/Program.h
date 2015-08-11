@@ -96,12 +96,12 @@ namespace dmpl
     /**
      * Default constructor
      **/
-    Program ();
+    Program () {}
     
     /**
      * Destructor
      **/
-    ~Program ();
+    ~Program () {}
 
     /**
      * Prints variable information
