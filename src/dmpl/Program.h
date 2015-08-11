@@ -114,11 +114,6 @@ namespace dmpl
      **/
 
     /**
-     * If true, track sender locations with x, y, z globals
-     **/
-    bool trackLocations;
-    
-    /**
      * If true, send heartbeats
      **/
     bool sendHeartbeats;

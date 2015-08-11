@@ -116,9 +116,7 @@ void dmpl::program::SanityChecker::exitFADNP(dmpl::FADNPStmt &stmt)
   delIdMap(stmt.id2);
 }
 
-dmpl::Program::Program ()
-  : trackLocations (false), sendHeartbeats (false), period(0)
-{}
+dmpl::Program::Program () : sendHeartbeats (false), period(0) {}
 
 dmpl::Program::~Program () {}
 
@@ -213,28 +211,6 @@ dmpl::Program::sanityCheck()
 #endif
 
 #if 0
-  // if track locations is set, then add the x, y, z variables to
-  // declarations
-  if (trackLocations)
-  {
-    std::vector<std::string> vars;
-    vars.push_back ("x");
-    vars.push_back ("y");
-    vars.push_back ("z");
-    
-    // x, y, z are 1 dimensional arrays of length nodes.size ()
-    BOOST_FOREACH(std::string & var_name, vars) {
-      // we blow away any existing var.name and prefer our version
-      dmpl::BaseType *t = new dmpl::BaseType(TINT);
-      //-- set the dimension to -1 since this will be replaced by the
-      //-- number of nodes later on
-      t->dims.push_back(-1);
-      dmpl::Var var (new dmpl::Variable(var_name, dmpl::Type(t)));
-      var.scope = Variable::GLOBAL;
-      node.globVars[var.name] = var;
-    }
-  }
-
   if (sendHeartbeats)
   {
     dmpl::BaseType *t = new dmpl::BaseType(TINT);
