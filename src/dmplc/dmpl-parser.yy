@@ -247,12 +247,6 @@ constant : TCONST TIDENTIFIER TEQUAL TINTEGER TSEMICOLON {
     builder->program.constDef[*$2] = *$4;
   delete $2; delete $4;
 }
-/** this is needed to handle constant definitions that have also been
-supplied via the command line */
-| TCONST TINTEGER TEQUAL TINTEGER TSEMICOLON {
-  assert(0 && "ERROR: should not get here now that constants are not replaced by the lexer!!");
-  delete $2; delete $4;
-}
 | TCONST TIDENTIFIER TEQUAL TDOUBLE TSEMICOLON {
   if(builder->program.constDef.find(*$2) == builder->program.constDef.end())
     builder->program.constDef[*$2] = *$4;
