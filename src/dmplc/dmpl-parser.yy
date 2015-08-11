@@ -254,8 +254,7 @@ constant : TCONST TIDENTIFIER TEQUAL TINTEGER TSEMICOLON {
 }
 ;
 
-node :
-attr_list TNODE TIDENTIFIER TLBRACE node_body TRBRACE {
+node : attr_list TNODE TIDENTIFIER TLBRACE node_body TRBRACE {
   $5->name = *$3;
   $5->args.push_back("id");
   $5->attrs = *$1;
@@ -267,7 +266,7 @@ attr_list TNODE TIDENTIFIER TLBRACE node_body TRBRACE {
 }
 ;
 
-node_body: {
+node_body : {
     $$ = new dmpl::Node();
 }
 | node_body var_block {
@@ -288,7 +287,7 @@ node_body: {
 }
 ;
 
-role: attr_list TROLE TIDENTIFIER TLBRACE role_body TRBRACE {
+role : attr_list TROLE TIDENTIFIER TLBRACE role_body TRBRACE {
   $$ = new std::string(*$5 + " " + *$3);
   delete $3; delete $5;
 }
@@ -299,7 +298,7 @@ attr_list TROLE TIDENTIFIER TID TINTEGER TLBRACE role_body TRBRACE {
 }
 ;
 
-role_body: {
+role_body : {
   $$ = new std::string("hello world");
 }
 | role_body var_block {
