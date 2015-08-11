@@ -432,8 +432,7 @@ simp_type : TBOOL { $$ = new dmpl::Type(dmpl::boolType()); }
 | TCHAR { $$ = new dmpl::Type(dmpl::charType()); }
 ;
 
-procedure :
-attr_list fn_prototype fn_body {
+procedure : attr_list fn_prototype fn_body {
   $$ = $2;
   (*$$)->mergeWith(*$3, false);
   (*$$)->attrs = *$1;
@@ -446,8 +445,7 @@ attr_list fn_prototype fn_body {
 }
 ;
 
-fn_body :
-TLBRACE var_decl_list stmt_list TRBRACE {
+fn_body : TLBRACE var_decl_list stmt_list TRBRACE {
   /** create and add function to the node */
   $$ = new dmpl::Func(std::make_shared<dmpl::Func::element_type>());
   /** set scope of temporary variables */
@@ -467,8 +465,7 @@ fn_decors : { $$ = new std::list<int>(); }
 }
 ;
 
-fn_prototype :
-fn_decors fn_type TIDENTIFIER TLPAREN param_list TRPAREN {
+fn_prototype : fn_decors fn_type TIDENTIFIER TLPAREN param_list TRPAREN {
   $$ = new dmpl::Func(std::make_shared<dmpl::Func::element_type>());
   (*$$)->retType = *$2;
   (*$$)->name = *$3;
