@@ -114,7 +114,8 @@ namespace dmpl
     TargetType targets;
 
     /// callbacks : a map from callback types to callback names
-    /// callback types are "on_pre_round_barrier_timeout", "on_post_round_barrier_timeout", and "on_receive_filter"
+    /// callback types are "on_pre_round_barrier_timeout",
+    /// "on_post_round_barrier_timeout", and "on_receive_filter"
     typedef std::map<std::string,std::string> Callbacks;
     Callbacks callbacks;
 
