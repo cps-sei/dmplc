@@ -109,10 +109,6 @@ namespace dmpl
      **/
     void print (std::ostream &os,unsigned int indent);
     
-    /**
-     *
-     **/
-
     ///target thunks
     typedef std::map<std::string,std::string> TargetType;
     TargetType targets;
@@ -121,9 +117,6 @@ namespace dmpl
     /// callback types are "on_pre_round_barrier_timeout", "on_post_round_barrier_timeout", and "on_receive_filter"
     typedef std::map<std::string,std::string> Callbacks;
     Callbacks callbacks;
-
-    ///period in milliseconds. 0 means no period.
-    int period;
 
     //constant definitions
     typedef std::map<std::string,std::string> ConstDef;
@@ -224,9 +217,6 @@ namespace dmpl
     {
       return isFunction(fn) && funcs.find(fn)->second->isExtern == false;
     }
-
-    ///set the period
-    void setPeriod(int p) { period = p; }
 
     ///check various sanity conditions on the program
     void sanityCheck();

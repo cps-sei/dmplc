@@ -116,7 +116,7 @@ void dmpl::program::SanityChecker::exitFADNP(dmpl::FADNPStmt &stmt)
   delIdMap(stmt.id2);
 }
 
-dmpl::Program::Program () : period(0) {}
+dmpl::Program::Program () {}
 
 dmpl::Program::~Program () {}
 
