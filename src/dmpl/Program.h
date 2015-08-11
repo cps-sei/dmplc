@@ -113,11 +113,6 @@ namespace dmpl
      *
      **/
 
-    /**
-     * If true, send heartbeats
-     **/
-    bool sendHeartbeats;
-
     ///target thunks
     typedef std::map<std::string,std::string> TargetType;
     TargetType targets;

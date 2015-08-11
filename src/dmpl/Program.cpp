@@ -116,7 +116,7 @@ void dmpl::program::SanityChecker::exitFADNP(dmpl::FADNPStmt &stmt)
   delIdMap(stmt.id2);
 }
 
-dmpl::Program::Program () : sendHeartbeats (false), period(0) {}
+dmpl::Program::Program () : period(0) {}
 
 dmpl::Program::~Program () {}
 
@@ -207,19 +207,6 @@ dmpl::Program::sanityCheck()
     //last dimension of global variables must be #N
     assert(*(v.second->type->dims.rbegin()) == -1 &&
            "ERROR: last dimension of global variables must be #N");
-  }
-#endif
-
-#if 0
-  if (sendHeartbeats)
-  {
-    dmpl::BaseType *t = new dmpl::BaseType(TINT);
-    //-- set the dimension to -1 since this will be replaced by the
-    //-- number of nodes later on
-    t->dims.push_back(-1);
-    dmpl::Variable var ("heartbeats", dmpl::Type(t));
-    var.scope = Variable::LOCAL;
-    node.locVars[var.name] = var;
   }
 #endif
 }
