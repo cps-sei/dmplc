@@ -113,12 +113,6 @@ namespace dmpl
     typedef std::map<std::string,std::string> TargetType;
     TargetType targets;
 
-    /// callbacks : a map from callback types to callback names
-    /// callback types are "on_pre_round_barrier_timeout",
-    /// "on_post_round_barrier_timeout", and "on_receive_filter"
-    typedef std::map<std::string,std::string> Callbacks;
-    Callbacks callbacks;
-
     //constant definitions
     typedef std::map<std::string,std::string> ConstDef;
     ConstDef constDef;
@@ -164,33 +158,6 @@ namespace dmpl
 
     ///add a function
     void addFunction(const Func &f) { funcs[f->name] = f; }
-
-    ///add a callback
-    void addCallback(const std::string &callback_type, const std::string &callback_name)
-    {
-      if (!callbacks.insert(Callbacks::value_type(callback_type, callback_name)).second) {
-        std::cerr << "Callback of type " << callback_type << " already exists.\n";
-        assert(0);
-      }
-    }
-
-    ///check if callback exists
-    bool callbackExists(const std::string &callback_type)
-    {
-      return callbacks.find(callback_type) != callbacks.end();
-    }
-
-    ///get a callback
-    const std::string & getCallback(const std::string &callback_type)
-    {
-      Callbacks::const_iterator it = callbacks.find(callback_type);
-      if (it == callbacks.end())
-      {
-        std::cerr << "Callback of type " << callback_type << " not found.\n";
-        assert(0);
-      }
-      return it->second;
-    }
 
     ///return true if the argument is the name of a function
     bool isFunction(const std::string &fn) const 

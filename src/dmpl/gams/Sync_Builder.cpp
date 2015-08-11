@@ -2024,28 +2024,6 @@ dmpl::gams::Sync_Builder::build_main_function ()
   buffer_ << "  settings.queue_length = 1000000;\n\n";
   buffer_ << "  settings.set_deadline(1);\n\n";
 
-
-#if 0
-  //-- if either callbacks or heartbeats
-  if(!builder_.program.callbacks.empty()) {
-    buffer_ << "  // add commonly used filters\n";
-    buffer_ << "  settings.add_send_filter (add_auxiliaries);\n";
-
-    if (builder_.program.callbackExists ("on_receive_filter"))
-      {
-        buffer_ << "  // add user-defined receive filter\n";
-        std::string usr_filter =
-          builder_.program.getCallback ("on_receive_filter");
-        buffer_ << "  settings.add_receive_filter (" <<
-          usr_filter << ");\n";
-      }
-
-    buffer_ << "  settings.add_receive_filter (set_heartbeat);\n";
-    buffer_ << "  settings.add_receive_filter (remove_auxiliaries);\n";
-    buffer_ << "\n";
-  }
-#endif
-
   buffer_ << "  // configure the knowledge base with the transport settings\n";
   buffer_ << "  knowledge.attach_transport(host, settings);\n\n";
 
