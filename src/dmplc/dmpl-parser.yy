@@ -71,7 +71,7 @@
 #include <math.h>
 #
 
-extern dmpl::DmplBuilder *builder; /* the dag builder */
+extern dmpl::DmplBuilder *builder; /* the DMPL program builder */
 
 extern int yylex();
 void yyerror(const char *s) {
