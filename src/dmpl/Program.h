@@ -136,12 +136,6 @@ namespace dmpl
       return Func();
     }
 
-
-    /**
-     * A map of thread start function names to thread objects
-     **/
-    //Threads threads;
-
     /**
      * The node definitions
      **/
@@ -167,9 +161,6 @@ namespace dmpl
         nodes[node.name].program = this;
       }
     }
-
-    ///add an external function
-    //void addExternalFunction(const Function &f) { externalFuncs[f.name] = f; }
 
     ///add a function
     void addFunction(const Func &f) { funcs[f->name] = f; }
