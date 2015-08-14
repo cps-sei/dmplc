@@ -126,18 +126,18 @@ dmpl::Program::print (std::ostream &os,unsigned int indent)
 
   //print target thunks
   BOOST_FOREACH(TargetType::value_type &tt,targets)
-    os << spacer << "TARGET " << tt.first << " %%{" << tt.second << "%%}\n";
+    os << spacer << "target " << tt.first << " %%{" << tt.second << "%%}\n";
 
   //print CONST definitions
   BOOST_FOREACH(ConstDef::value_type &cd,constDef)
-    os << spacer << "CONST " << cd.first << " = " << cd.second << ";\n";
+    os << spacer << "const " << cd.first << " = " << cd.second << ";\n";
   os << '\n';
 
   //print external function declarations
   BOOST_FOREACH(dmpl::Funcs::value_type &v, funcs) {
     if(v.second->isExtern == false)
       continue;
-    os << spacer << "EXTERN";
+    os << spacer << "extern";
     v.second->printDecl(os, 1);
   }
   os << '\n';
@@ -145,16 +145,7 @@ dmpl::Program::print (std::ostream &os,unsigned int indent)
   //print nodes
   for (dmpl::Nodes::iterator i = nodes.begin (); i != nodes.end (); ++i)
     i->second.print (os,indent);
-
-  //print program definition
-  os << spacer << "PROGRAM = ";
-  size_t count = 0;
-  BOOST_FOREACH(const Process &p,processes) {
-    if(count) os << " || ";
-    os << p.getNode() << '(' << p.getId() << ")";
-    ++count;
-  }
-  os << ";\n\n";
+  os << '\n';
 
   //print functions like INIT and safety
   for (dmpl::Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)

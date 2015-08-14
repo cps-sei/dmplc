@@ -144,16 +144,14 @@ namespace dmpl
 
     void addNode(const Node &node)
     {
-      if(nodes.count(node.name) == 0)
-      {
-        nodes[node.name] = node;
-        nodes[node.name].program = this;
-      }
+      auto it = nodes.find(node.name);
+
+      if(it == nodes.end())
+        it = nodes.insert(std::pair<std::string,Node>(node.name,node)).first;
       else
-      {
-        nodes[node.name].mergeWith(node);
-        nodes[node.name].program = this;
-      }
+        it->second.mergeWith(node);
+
+      it->second.program = this;
     }
 
     ///add a function
@@ -162,7 +160,7 @@ namespace dmpl
     ///return true if the argument is the name of a function
     bool isFunction(const std::string &fn) const 
     {
-      return funcs.count(fn) > 0;
+      return funcs.find(fn) != funcs.end(); 
     }
 
     ///return true if the argument is the name of an external function

@@ -108,25 +108,22 @@ dmpl::Node::mergeWith(const Node &on)
   }
 }
 
+/*********************************************************************/
+//-- print a node to an output stream with indentation
+/*********************************************************************/
 void
 dmpl::Node::print (std::ostream &os,unsigned int indent)
 {
   std::string spacer (indent, ' ');
 
-  os << spacer << "NODE " << name << "(";
-  size_t count = 0;
-  BOOST_FOREACH(const std::string &a,args) {
-    os << (count ? "," : "") << a;
-    count++;
-  }
-  os << ")\n" << spacer << "{\n";  
+  os << spacer << "node " << name << "\n" << spacer << "{\n";  
 
   for (dmpl::Vars::iterator i = globVars.begin ();i != globVars.end (); ++i)
-    os << spacer << "  GLOBAL " << i->second->toString() << ";\n";
+    os << spacer << "  global " << i->second->toString() << ";\n";
   os << "\n";
 
   for (dmpl::Vars::iterator i = locVars.begin ();i != locVars.end (); ++i)
-    os << spacer << "  LOCAL " << i->second->toString() << ";\n";
+    os << spacer << "  local " << i->second->toString() << ";\n";
   os << "\n";
 
   for (dmpl::Funcs::iterator i = funcs.begin ();i != funcs.end (); ++i)
@@ -134,24 +131,6 @@ dmpl::Node::print (std::ostream &os,unsigned int indent)
   os << "\n";
 
   os << spacer << "}\n\n";
-
-
-  /*
-  std::cout << "Node::global_variables:\n";
-
-  for (dmpl::Variables::iterator i = globVars.begin ();i != globVars.end (); ++i)
-    i->second.print (2);
-
-  std::cout << "Node::local_variables:\n";
-
-  for (dmpl::Variables::iterator i = locVars.begin ();i != locVars.end (); ++i)
-    i->second.print (2);
-  
-  std::cout << "Node::functions:\n";
-
-  for (dmpl::Functions::iterator i = funcs.begin ();i != funcs.end (); ++i)
-    i->second.print (2);
-  */
 }
 
 dmpl::Func
