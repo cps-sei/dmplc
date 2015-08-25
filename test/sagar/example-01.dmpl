@@ -162,14 +162,14 @@ node uav
 
   role asdf
   {
-    local int x;
+    local int x = 0;
     void TEST() {
     }
   }
 
   role asdf id 0
   {
-    local double x;
+    local double x = 0.1;
     void TEST() {
     }
   }

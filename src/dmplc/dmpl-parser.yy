@@ -167,9 +167,8 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
 %type <token> program constant
 %type <string> cond_kind stmt_name role role_body
 %type <node> node_body node
-%type <varList> node_var var_group var_block
+%type <varList> node_var_init node_var_decl var_group var_block
 %type <function> procedure fn_body fn_prototype
-%type <varList> global_var local_var
 %type <token> dimension fn_decor
 %type <tokenList> fn_decors
 %type <strList> target_id_list
@@ -180,8 +179,9 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
 %type <stmt> stmt cond_stmt cond_stmt_impl
 %type <stmtList> stmt_list for_init for_update
 %type <dims> dimensions
-%type <var> var
-%type <varList> var_list var_decl param_list var_decl_list
+%type <var> var var_asgn
+%type <varList> var_list var_decl var_asgn_list var_init
+%type <varList> param_list var_init_list
 %type <attr> attr
 %type <attrList> attr_list
 %type <exprlist> attr_param_list
@@ -315,7 +315,7 @@ role_body : {
 }
 ;
 
-var_block : node_var TSEMICOLON {
+var_block : node_var_init TSEMICOLON {
   $$ = $1;
 }
 | TINIT TLBRACE var_group TRBRACE fn_body {
@@ -328,10 +328,22 @@ var_block : node_var TSEMICOLON {
 }
 ;
 
-var_group : node_var TSEMICOLON {
+/** declaring and initializing local and global variables */
+node_var_init : TGLOBAL var_init {
+  BOOST_FOREACH(dmpl::Var &v, *$2) v->scope = dmpl::Variable::GLOBAL;
+  $$ = $2;
+}
+| TLOCAL var_init {
+  BOOST_FOREACH(dmpl::Var &v, *$2) v->scope = dmpl::Variable::LOCAL;
+  $$ = $2;
+}
+;
+
+/** a group of local and global variable declarations */
+var_group : node_var_decl TSEMICOLON {
   $$ = $1;
 }
-| var_group node_var TSEMICOLON {
+| var_group node_var_decl TSEMICOLON {
   BOOST_FOREACH(const dmpl::Var &v, *$2) {
     $$->push_back(v);
   }
@@ -339,38 +351,25 @@ var_group : node_var TSEMICOLON {
 }
 ;
 
-node_var : global_var {
-  $$ = $1;
+/** declaring local and global variables */
+node_var_decl : TGLOBAL var_decl {
+  BOOST_FOREACH(dmpl::Var &v, *$2) v->scope = dmpl::Variable::GLOBAL;
+  $$ = $2;
 }
-| local_var {
-  $$ = $1;
-}
-
-global_var : TGLOBAL var_decl {
-  BOOST_FOREACH(dmpl::Var &v, *$2)
-  {
-    v->scope = dmpl::Variable::GLOBAL;
-  }
+| TLOCAL var_decl {
+  BOOST_FOREACH(dmpl::Var &v, *$2) v->scope = dmpl::Variable::LOCAL;
   $$ = $2;
 }
 ;
 
-local_var : TLOCAL var_decl {
-  BOOST_FOREACH(dmpl::Var &v, *$2)
-  {
-    v->scope = dmpl::Variable::LOCAL;
-  }
-  $$ = $2;
-}
-;
-
+/** declaring variables */
 var_decl : type var_list {
   $$ = new dmpl::VarList();
   BOOST_FOREACH(const dmpl::Var &v,*$2) {
     dmpl::Type t = std::make_shared<dmpl::BaseType>(**$1);
     t->dims = v->type->dims;
     dmpl::Var newVar = std::make_shared<dmpl::Var::element_type>(*v);
-    newVar->type = t;//dmpl::Type(t);
+    newVar->type = t; //dmpl::Type(t);
     $$->push_back(newVar);
   }
   delete $1; delete $2;
@@ -382,22 +381,45 @@ var_list : var {
 | var_list TCOMMA var { $$ = $1; $$->push_back(*$3); delete $3; }
 ;
 
-var : TIDENTIFIER { $$ = new dmpl::Var(std::make_shared<dmpl::Var::element_type>(*$1)); delete $1; }
-| TIDENTIFIER TEQUAL expr {
-  $$ = new dmpl::Var(std::make_shared<dmpl::Var::element_type>(*$1));
+/** declaring and initializing variables */
+var_init : type var_asgn_list {
+  $$ = new dmpl::VarList();
+  BOOST_FOREACH(const dmpl::Var &v,*$2) {
+    dmpl::Type t = std::make_shared<dmpl::BaseType>(**$1);
+    t->dims = v->type->dims;
+    dmpl::Var newVar = std::make_shared<dmpl::Var::element_type>(*v);
+    newVar->type = t;//dmpl::Type(t);
+    $$->push_back(newVar);
+  }
+  delete $1; delete $2;
+};
+
+/** list of assignments to variables */
+var_asgn_list : var_asgn {
+  $$ = new dmpl::VarList(); $$->push_back(*$1); delete $1;
+}
+| var_asgn_list TCOMMA var_asgn { $$ = $1; $$->push_back(*$3); delete $3; }
+;
+;
+
+/** variable assignment */
+var_asgn : var TEQUAL expr {
+  $$ = $1;
   (*$$)->initExpr = *$3;
-  delete $1; delete $3;
+  delete $3;
 }
-| TIDENTIFIER TEQUAL TEXTERN {
-  $$ = new dmpl::Var(std::make_shared<dmpl::Var::element_type>(*$1));
+| var TEQUAL TEXTERN {
+  $$ = $1;
   (*$$)->isExternInit = true;
-  delete $1;
 }
+;
+
+/** variable */
+var : TIDENTIFIER { $$ = new dmpl::Var(std::make_shared<dmpl::Var::element_type>(*$1)); delete $1; }
 | TIDENTIFIER dimensions {
   $$ = new dmpl::Var(std::make_shared<dmpl::Var::element_type>(*$1,*$2)); 
   delete $1; delete $2;
 }
-;
 
 dimensions : TLBRACKET dimension TRBRACKET {
   $$ = new dmpl::Dims(); $$->push_back($2);
@@ -445,7 +467,7 @@ procedure : attr_list fn_prototype fn_body {
 }
 ;
 
-fn_body : TLBRACE var_decl_list stmt_list TRBRACE {
+fn_body : TLBRACE var_init_list stmt_list TRBRACE {
   /** create and add function to the node */
   $$ = new dmpl::Func(std::make_shared<dmpl::Func::element_type>());
   /** set scope of temporary variables */
@@ -542,8 +564,8 @@ param_list : { $$ = new dmpl::VarList(); }
 }
 ;
 
-var_decl_list : { $$ = new dmpl::VarList(); }
-| var_decl_list var_decl TSEMICOLON {
+var_init_list : { $$ = new dmpl::VarList(); }
+| var_init_list var_init TSEMICOLON {
   $$ = $1; $$->insert($$->end(),$2->begin(),$2->end());
   delete $2;
 }
