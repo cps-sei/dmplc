@@ -405,7 +405,10 @@ var_asgn_list : var_asgn {
 /** variable assignment */
 var_asgn : var TEQUAL expr {
   $$ = $1;
-  (*$$)->initExpr = *$3;
+  dmpl::LvalExpr *lhs = new dmpl::LvalExpr((*$1)->name);
+  dmpl::Stmt asgn(new dmpl::AsgnStmt(dmpl::Expr(lhs),*$3));
+  (*$$)->initFunc = dmpl::Func(std::make_shared<dmpl::Func::element_type>());
+  (*$$)->initFunc->body.push_back(asgn);
   delete $3;
 }
 | var TEQUAL TEXTERN {
