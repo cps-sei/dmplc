@@ -69,8 +69,6 @@
 #include <string>
 #include <bitset>
 #include <deque>
-//#include "SelfRef.h"
-//#include "Function.h"
 #include "Type.h"
 #include "Attribute.h"
 #include <memory>
