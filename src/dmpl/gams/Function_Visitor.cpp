@@ -105,14 +105,7 @@ dmpl::madara::Function_Visitor::enterDouble (DoubleExpr & expression)
 void
 dmpl::madara::Function_Visitor::exitDouble (DoubleExpr & expression)
 {
-  if (expression.is_special_data)
-  {
-    buffer_ << expression.special_data;
-  }
-  else
-  {
-    buffer_ << expression.data;
-  }
+  buffer_ << expression.data;
 }
 
 

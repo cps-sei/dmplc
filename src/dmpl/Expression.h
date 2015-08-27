@@ -134,20 +134,15 @@ namespace dmpl
   class DoubleExpr : public Expression
   {
   public:
-    double data;
-    // special double value, e.g., NAN
-    // use string to represent special value
-    std::string special_data;
-    bool is_special_data;
-    DoubleExpr(double d) : data(d), is_special_data(false) {}
-    DoubleExpr(std::string s) : special_data(s), is_special_data(true) {}
-    std::string toString() const { if (is_special_data) return special_data;
-                                 else return boost::lexical_cast<std::string>(data);}
+    //-- we store the data as a string so we don't lose precision
+    std::string data;
+    DoubleExpr(const std::string &s) : data(s) {}
+    std::string toString() const { return data; }
   };
 
   inline double Expression::requireDouble() const
   {
-    return dynamic_cast<const DoubleExpr &>(*this).data;
+    return strtod(dynamic_cast<const DoubleExpr &>(*this).data.c_str(), NULL);
   }
 
   //an lvalue expression

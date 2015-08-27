@@ -726,7 +726,7 @@ expr : lval { $$ = new dmpl::Expr($1); printExpr(*$$); }
 }
 | TDOUBLE {
   if (*$1 == "NAN") $$ = new dmpl::Expr(new dmpl::DoubleExpr(*$1)); 
-  else $$ = new dmpl::Expr(new dmpl::DoubleExpr(atof($1->c_str())));
+  else $$ = new dmpl::Expr(new dmpl::DoubleExpr(*$1));
   delete $1; printExpr(*$$);
 }
 | TNODENUM { MAKE_NULL($$,$1); }
