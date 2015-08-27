@@ -388,7 +388,7 @@ var_init : type var_asgn_list {
     dmpl::Type t = std::make_shared<dmpl::BaseType>(**$1);
     t->dims = v->type->dims;
     dmpl::Var newVar = std::make_shared<dmpl::Var::element_type>(*v);
-    newVar->type = t;//dmpl::Type(t);
+    newVar->type = t; //dmpl::Type(t);
     $$->push_back(newVar);
   }
   delete $1; delete $2;
