@@ -120,14 +120,15 @@ namespace dmpl
   class IntExpr : public Expression
   {
   public:
-    int data;
-    IntExpr(int d) : data(d) {}
-    std::string toString() const { return boost::lexical_cast<std::string>(data); }
+    //-- we store the data as a string so we don't lose precision
+    std::string data;
+    IntExpr(const std::string &d) : data(d) {}
+    std::string toString() const { return data; }
   };
 
   inline int Expression::requireInt() const
   {
-    return dynamic_cast<const IntExpr &>(*this).data;
+    return atoi(dynamic_cast<const IntExpr &>(*this).data.c_str());
   }
 
   //a double expression

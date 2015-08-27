@@ -721,7 +721,7 @@ expr : lval { $$ = new dmpl::Expr($1); printExpr(*$$); }
   printExpr(*$$);
 }
 | TINTEGER { 
-  $$ = new dmpl::Expr(new dmpl::IntExpr(atoi($1->c_str()))); 
+  $$ = new dmpl::Expr(new dmpl::IntExpr(*$1)); 
   delete $1; printExpr(*$$); 
 }
 | TDOUBLE {

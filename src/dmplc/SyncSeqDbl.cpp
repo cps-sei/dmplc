@@ -87,7 +87,7 @@ void dmpl::syncseqdbl::GlobalTransformer::delIdMap(const std::string &s)
 void dmpl::syncseqdbl::GlobalTransformer::exitComp(dmpl::CompExpr &expr)
 {
   if(expr.op == TNODENUM)
-    exprMap[hostExpr] = Expr(new IntExpr(nodeNum));
+    exprMap[hostExpr] = Expr(new IntExpr(boost::lexical_cast<std::string>(nodeNum)));
   else
     exprMap[hostExpr] = dmpl::Expr(new dmpl::CompExpr(expr.op,collect(expr.args)));
 }
@@ -467,7 +467,7 @@ void dmpl::SyncSeqDbl::createCopyStmts(bool fwd,const Var &var,StmtList &res,Exp
     int dim = *(var->type->dims.begin());
     for(int i = 0;i < dim;++i) {
       ExprList newIndx = indx;
-      newIndx.push_back(Expr(new IntExpr(i)));
+      newIndx.push_back(Expr(new IntExpr(boost::lexical_cast<std::string>(i))));
       Var newVar = var->decrDim();
       createCopyStmts(fwd,newVar,res,newIndx,node);
     }
