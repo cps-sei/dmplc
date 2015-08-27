@@ -58,6 +58,7 @@
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 #include "Variable.h"
+#include "Function.h"
 
 /*********************************************************************/
 //constructors
@@ -125,6 +126,18 @@ dmpl::Var dmpl::Variable::decrDim() const
   Var res(new Variable(*this));
   res->type = res->type->decrDim();
   return res;  
+}
+
+/*********************************************************************/
+///return the initial expression
+/*********************************************************************/
+dmpl::Expr dmpl::Variable::initExpr() const
+{
+  assert(initFunc->body.size() == 1);
+  const Stmt &s = *(initFunc->body.begin());
+  const AsgnStmt *asgn = dynamic_cast<const AsgnStmt*>(&*s);
+  assert(asgn);
+  return asgn->rhs;
 }
 
 /*********************************************************************/

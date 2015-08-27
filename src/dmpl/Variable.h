@@ -142,6 +142,12 @@ namespace dmpl
 
     ///return a copy with one less dimension
     Var decrDim() const;
+
+    ///return the initial expression for the variable. this assumes
+    ///that the variable was initialized via direct assignment and not
+    ///a constructor. the return value is the RHS of the first
+    ///statement in the body of the constructor.
+    Expr initExpr() const;
   };
 
   inline Var Symbol::asVar()
