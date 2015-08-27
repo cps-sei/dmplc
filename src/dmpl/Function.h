@@ -142,6 +142,7 @@ namespace dmpl
       return &attrs[name];
     }
 
+    //-- return true if this function is a thread
     bool isThread()
     {
       return retType->type == TTHREAD;
