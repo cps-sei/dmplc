@@ -101,17 +101,17 @@ namespace dmpl
     virtual std::string getName() const { return ""; }
   };
 
+  //-- a statement with a name by which it can be refered to in
+  //-- specifications etc.
   class NamedStmt : public Statement
   {
   public:
     std::string name;
 
     virtual std::string getName() const { return name; }
-     
-    virtual bool recordUse()
-    {
-      return (name != "");
-    }
+
+    //-- whether there is a non-trivial name
+    virtual bool recordUse() { return !name.empty(); }
 
   protected:
     NamedStmt() : name() {}
@@ -221,7 +221,7 @@ namespace dmpl
         NamedStmt(n), kind(k), cond(c),tbranch(tb),ebranch(eb) {}
 
     std::string toString() const { 
-      return kind + (name != "" ? " /* " + name + " */ " : "") + "(" + cond->toString() + ")" +
+      return kind + (name.empty() ? "" : " " + name) + " (" + cond->toString() + ")" +
         (tbranch ? tbranch->toString() : "") +
         (ebranch ? " else " + tbranch->toString() : "") +
         (!ebranch && !tbranch ? ";" : ""); 
@@ -230,7 +230,8 @@ namespace dmpl
     void print (std::ostream &os,unsigned int indent) const
     {
       std::string spacer (indent, ' ');
-      os << spacer << kind << (name != "" ? " /* " + name + " */ " : "") << "(" + cond->toString() + ")" << std::endl;
+      os << spacer << kind << (name.empty() ? "" : " " + name)
+         << " (" + cond->toString() + ")" << std::endl;
       if(tbranch != NULL)
       {
         tbranch->print(os,isBlock(tbranch) ? indent : indent+2); 
@@ -306,7 +307,7 @@ namespace dmpl
     ForStmt(const std::string &n, const StmtList &i,const ExprList &t,const StmtList &u,const Stmt &b) 
       : NamedStmt(n), init(i),update(u),test(t),body(b) {}
     std::string toString() const { 
-      std::string res = "for" + (name != "" ? " /* " + name + " */ " : "") + "(";
+      std::string res = "for" + (name.empty() ? "" : " " + name) + " (";
       BOOST_FOREACH(const Stmt &s,init) res += s->toString();
       BOOST_FOREACH(const Expr &e,test) res += e->toString() + ";";
       BOOST_FOREACH(const Stmt &s,update) res += s->toString();
@@ -315,7 +316,7 @@ namespace dmpl
     void print (std::ostream &os,unsigned int indent) const
     {
       std::string spacer (indent, ' ');
-      os << spacer << "for" + (name != "" ? " /* " + name + " */ " : "") + "(";
+      os << spacer << "for" + (name.empty() ? "" : " " + name) + " (";
       size_t count = 0;
       BOOST_FOREACH(const Stmt &s,init) {        
         os << (count ? "," : "") << s->toString();
@@ -353,12 +354,12 @@ namespace dmpl
     WhileStmt(const Expr &c,const Stmt &b) : cond(c),body(b) {}
     WhileStmt(const std::string &n,const Expr &c,const Stmt &b) : NamedStmt(n),cond(c),body(b) {}
     std::string toString() const { 
-      return "while" + (name != "" ? " /* " + name + " */ " : "") + "(" + cond->toString() + ")" + body->toString(); 
+      return "while" + (name.empty() ? "" : " " + name) + " (" + cond->toString() + ")" + body->toString(); 
     }
     void print (std::ostream &os,unsigned int indent) const
     {
       std::string spacer (indent, ' ');
-      os << spacer << "while" + (name != "" ? " /* " + name + " */ " : "") + "(" << cond->toString() << ")\n";
+      os << spacer << "while" + (name.empty() ? "" : " " + name) + " (" << cond->toString() << ")\n";
       body->print(os,isBlock(body) ? indent : indent+2);      
     }
   };
