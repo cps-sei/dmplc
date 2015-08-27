@@ -61,7 +61,6 @@
 #include <map>
 #include <string>
 #include <boost/lexical_cast.hpp>
-//#include "Expression.h"
 
 namespace dmpl
 {
@@ -94,6 +93,9 @@ namespace dmpl
     //-- constructor with name and parameters
     Attribute(const std::string &n, const ExprList &p) : name(n),  paramList(p) {}
 
+    //-- return a string representation
+    std::string toString() const;
+    
     //-- if attribute has a single parameter, return it. otherwise,
     //-- throw an exception.
     Expr requireSingleParam()

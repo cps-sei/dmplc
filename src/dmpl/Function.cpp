@@ -112,8 +112,13 @@ dmpl::Function::print (std::ostream &os,unsigned int indent)
 {
   std::string spacer (indent, ' ');
 
+  //-- print attributes
+  for(const auto &a : attrs) os << spacer << '@' << a.second.toString() << '\n';
+  
+  //-- print return type and name
   os << spacer << retType->toString() << " " << name << "(";
 
+  //-- print parameters
   size_t count = 0;
   for (dmpl::VarList::iterator i = params.begin (); i != params.end (); ++i) {
     if(count) os << ",";
@@ -123,15 +128,15 @@ dmpl::Function::print (std::ostream &os,unsigned int indent)
 
   os << ")\n";
   os << spacer << "{\n";
-  
+
+  //-- print temporary variables
   for (dmpl::Vars::iterator i = temps.begin (); i != temps.end (); ++i) {
     i->second->print (os,indent + 2);
     os << ";\n";
   }
 
-  BOOST_FOREACH(const Stmt &st,body) {
-    st->print (os,indent + 2);
-  }
+  //-- print statements
+  BOOST_FOREACH(const Stmt &st,body) st->print (os,indent + 2);
 
   os << spacer << "}\n\n";
 }
