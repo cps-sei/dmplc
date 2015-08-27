@@ -86,7 +86,7 @@ std::string dmpl::BaseType::toString() const
   else assert(qual == 0 && "ERROR : illegal type qualifier");
 
   if(type == TVOID) res += "void";
-  else if(type == TTHREAD) res += "void /* THREAD */ ";
+  else if(type == TTHREAD) res += "thread ";
   else if(type == TBOOL) res += "_Bool";
   else if(type == TINT) res += "int";
   else if(type == TDOUBLE_TYPE) res += "double";
