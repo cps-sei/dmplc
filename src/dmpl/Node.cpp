@@ -118,13 +118,42 @@ dmpl::Node::print (std::ostream &os,unsigned int indent)
 
   os << spacer << "node " << name << "\n" << spacer << "{\n";  
 
-  for (dmpl::Vars::iterator i = globVars.begin ();i != globVars.end (); ++i)
-    os << spacer << "  global " << i->second->toString() << ";\n";
-  os << "\n";
+  //-- group all variables by init functions, and then print groups
+  //-- one by one. as a special case, if the initFunc is an empty
+  //-- pointer then the variable is an input.
+  std::map< dmpl::Func,std::set<dmpl::Var> > init2Vars;
+  for (const auto &i : globVars) init2Vars[i.second->initFunc].insert(i.second);
+  for (const auto &i : locVars) init2Vars[i.second->initFunc].insert(i.second);
+  for (const auto &i : init2Vars) {
+    //-- if input variable
+    if(i.first.use_count() == 0) {
+      for (const Var &v : i.second) {
+        if(globVars.count(v->name))
+          os << spacer << "  global " << v->toString() << " = extern;\n";
+        else
+          os << spacer << "  local " << v->toString() << " = extern;\n";
+      }
+      continue;
+    }
 
-  for (dmpl::Vars::iterator i = locVars.begin ();i != locVars.end (); ++i)
-    os << spacer << "  local " << i->second->toString() << ";\n";
-  os << "\n";
+    //-- otherwise, initialized variable
+    os << spacer << "  initialize {\n";
+      for (const Var &v : i.second) {
+        if(globVars.count(v->name))
+          os << spacer << "    global " << v->toString() << ";\n";
+        else
+          os << spacer << "    local " << v->toString() << ";\n";
+      }
+    os << spacer << "  } {\n";
+    //-- print temporary variables in constructor
+    for(const auto &tv : i.first->temps) {
+      tv.second->print(os, indent+4);
+      os << " = " << tv.second->initExpr()->toString() << ";\n";
+    }
+    //-- print statements in constructor
+    for(const Stmt &st : i.first->body) st->print(os, indent+4);
+    os << spacer << "  }\n\n";
+  }
 
   for (dmpl::Funcs::iterator i = funcs.begin ();i != funcs.end (); ++i)
     i->second->print (os,indent+2);
