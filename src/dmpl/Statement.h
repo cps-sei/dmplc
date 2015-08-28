@@ -82,7 +82,7 @@ namespace dmpl
   //mostly use
   typedef std::shared_ptr<Statement> Stmt;
 
-  //a list of expressions
+  //a list of statements
   typedef std::list <Stmt> StmtList;
 
   ///check if the argument is a BlockStmt
