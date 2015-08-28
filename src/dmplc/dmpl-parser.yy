@@ -518,8 +518,8 @@ fn_prototype : fn_decors fn_type TIDENTIFIER TLPAREN param_list TRPAREN {
 attr_list : {
   $$ = new dmpl::Attributes();
 }
-| attr attr_list {
-  $$ = $2;
+| attr TSEMICOLON attr_list {
+  $$ = $3;
   (*$$)[$1->name] = *$1;
   delete $1;
 }

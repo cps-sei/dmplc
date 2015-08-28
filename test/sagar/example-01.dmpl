@@ -177,9 +177,9 @@ node uav
 
 node uav
 {
-  @Period(100000)
-  @BarrierSync
-  @PlatformController
+  @Period(100000);
+  @BarrierSync;
+  @PlatformController;
   thread COLLISION_AVOIDANCE {
     print_state(X,Y,id,x,y,xf,yf);
     //my_sleep(1);
@@ -210,7 +210,7 @@ node uav
     }
   }
 
-  @InitSim
+  @InitSim;
   void StartingPosition ()
   {
     GRID_INIT(X, Y, LeftX, RightX, TopY, BottomY);
@@ -219,7 +219,7 @@ node uav
 }
 
 //initial state
-@INIT
+@INIT;
 void NodeInit () 
 {
   FORALL_NODE(cid) {
@@ -236,7 +236,7 @@ void NodeInit ()
 }
 
 //the safety property checked at the beginning of each round
-@SAFETY
+@SAFETY;
 void NoCollisions ()
 {
   FORALL_DISTINCT_NODE_PAIR (id1,id2) {
