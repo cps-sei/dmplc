@@ -521,6 +521,7 @@ attr_list : {
 | attr attr_list {
   $$ = $2;
   (*$$)[$1->name] = *$1;
+  delete $1;
 }
 ;
 
