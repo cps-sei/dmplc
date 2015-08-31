@@ -144,7 +144,8 @@ namespace dmpl
       }
     }
 
-    //-- find variable with given name. return empty variable
+    //-- find variable with given name. return empty variable if no
+    //-- such variable found.
     Var findVar(const std::string& name) const
     {
       if(idVar && idVar->name == name)
@@ -160,6 +161,8 @@ namespace dmpl
 
     Func findFunc(const std::string& name) const;
 
+    //-- find symbol with given name. return empty symbol if no such
+    //-- symbol found.
     Sym findSym(const std::string& name) const
     {
       Var v = findVar(name);
