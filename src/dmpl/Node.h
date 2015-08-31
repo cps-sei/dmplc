@@ -231,7 +231,7 @@ namespace dmpl
     void addSpecification(const Spec &s)
     {
       if(!specs.insert(std::make_pair(s->name,s)).second)
-        throw std::runtime_error("ERROR: duplication specificaion " + s->name);
+        throw std::runtime_error("ERROR: duplicate specificaion " + s->name);
     }
 
     ///return true if the argument is the name of a defined DMPL function of this node

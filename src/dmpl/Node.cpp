@@ -109,7 +109,7 @@ dmpl::Node::mergeWith(const Node &on)
 
   BOOST_FOREACH(const Specs::value_type &s, on.specs) {
     if(!specs.insert(s).second)
-      throw std::runtime_error("ERROR: duplication specificaion " + s.first);
+      throw std::runtime_error("ERROR: duplicate specificaion " + s.first);
   }
 }
 
