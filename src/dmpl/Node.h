@@ -230,9 +230,8 @@ namespace dmpl
     ///add a specification
     void addSpecification(const Spec &s)
     {
-      auto it = specs.find(s->name);
-      assert(it == specs.end() && "ERROR: duplicate specification with same name!!");
-      specs.emplace(s->name,s);
+      if(!specs.insert(std::make_pair(s->name,s)).second)
+        throw std::runtime_error("ERROR: duplication specificaion " + s->name);
     }
 
     ///return true if the argument is the name of a defined DMPL function of this node
