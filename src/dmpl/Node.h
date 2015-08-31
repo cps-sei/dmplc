@@ -71,6 +71,7 @@
 #include "Variable.h"
 #include "Attribute.h"
 #include "Role.h"
+#include "Specification.hpp"
 
 namespace dmpl
 {
@@ -121,8 +122,9 @@ namespace dmpl
      **/
     std::vector<Func> threads;
 
-    ///list of statements (expect or require) declared at node level
-    StmtList stmts;
+    ///map from names to specifications (expect or require) declared
+    ///at node level
+    Specs specs;
 
     ///constructors
     Node(bool abst = false) : program(NULL), abstract(abst) {}
@@ -225,14 +227,12 @@ namespace dmpl
       }
     }
 
-
-    ///add a Statement; must be "expect" or "require"
-    void addStatement(const Stmt &s)
+    ///add a specification
+    void addSpecification(const Spec &s)
     {
-      std::shared_ptr<CondStmt> cs( std::dynamic_pointer_cast<CondStmt>(s) );
-      assert(cs != NULL && (cs->kind == "expect" || cs->kind == "require") &&
-        "ERROR: Node-level statement an expect or require statement");
-      stmts.push_back(s);
+      auto it = specs.find(s->name);
+      assert(it == specs.end() && "ERROR: duplicate specification with same name!!");
+      specs.emplace(s->name,s);
     }
 
     ///return true if the argument is the name of a defined DMPL function of this node

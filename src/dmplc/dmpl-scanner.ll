@@ -59,6 +59,7 @@
 #include "dmpl/Type.h"
 #include "dmpl/Expression.h"
 #include "dmpl/Statement.h"
+#include "dmpl/Specification.hpp"
 #include "DmplBuilder.hpp"
 #include "dmpl-parser.hpp"
 extern dmpl::DmplBuilder *builder; /* the dmpl builder */
@@ -139,6 +140,8 @@ extern "C" int yywrap() { return 1; }
 "forall_other"              PRINT_TOKEN; return TOKEN(TFAO);
 "forall_other_lower"        PRINT_TOKEN; return TOKEN(TFAOL);
 "forall_other_higher"       PRINT_TOKEN; return TOKEN(TFAOH);
+"at_end"                    PRINT_TOKEN; return TOKEN(TATEND);
+"at_least"                  PRINT_TOKEN; return TOKEN(TATLEAST);
 "id"                        PRINT_TOKEN; return TID;
 "NAN"                       SAVE_TOKEN; return TDOUBLE;
 -?[0-9]+\.[0-9]*            SAVE_TOKEN; return TDOUBLE;
@@ -159,6 +162,7 @@ extern "C" int yywrap() { return 1; }
 @[a-zA-Z_][a-zA-Z0-9_]* SAVE_TOKEN; return TATTRIBUTE;
 "="                     PRINT_TOKEN; return TOKEN(TEQUAL);
 "=="                    PRINT_TOKEN; return TOKEN(TCEQ);
+"=>"                    PRINT_TOKEN; return TOKEN(TIMPLIES);
 "!="                    PRINT_TOKEN; return TOKEN(TCNE);
 "<"                     PRINT_TOKEN; return TOKEN(TCLT);
 "<="                    PRINT_TOKEN; return TOKEN(TCLE);

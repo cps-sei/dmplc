@@ -59,6 +59,7 @@
 #include "Symbol.h"
 #include "Node.h"
 #include "Statement.h"
+#include "Specification.hpp"
 
 namespace dmpl
 {
@@ -114,13 +115,13 @@ namespace dmpl
         f.second->useSymbols(con);
       }
     }
-    BOOST_FOREACH(const Stmt &s, n.stmts)
+    BOOST_FOREACH(const Specs::value_type &s, n.specs)
     {
       Context con;
       con.node = &n;
-      con.clause = std::dynamic_pointer_cast<CStmt::element_type>(s);
+      con.spec = s.second;
       //std::cerr << s->toString() << std::endl;
-      s->useSymbols(con);
+      s.second->useSymbols(con);
     }
   }
 
@@ -159,7 +160,7 @@ namespace dmpl
   //-- return true if the context corresponds to an expect clause
   bool SymbolUser::Context::inExpect()
   {
-    return clause != NULL && clause->kind == "expect";
+    return dynamic_cast<ExpectSpec*>(&*spec) != NULL;
   }
 }
 

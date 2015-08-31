@@ -71,6 +71,7 @@
 #include "Variable.h"
 #include "Statement.h"
 #include "Attribute.h"
+#include "Specification.hpp"
 #include "../dmplc/dmpl-parser.hpp"
 
 

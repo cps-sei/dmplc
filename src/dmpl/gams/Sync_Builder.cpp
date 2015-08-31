@@ -220,7 +220,7 @@ dmpl::gams::Sync_Builder::build_common_global_variables ()
   {
     if (!f.second->isThread())
       continue;
-    Attribute *attrBarSync = f.second->getAttribute("BarrierSync", 0);
+    const Attribute *attrBarSync = f.second->getAttribute("BarrierSync", 0);
     if(attrBarSync)
     {
       buffer_ << "ArrayReference<unsigned int, ";
@@ -909,7 +909,7 @@ dmpl::gams::Sync_Builder::build_refresh_modify_globals ()
   {
     if (!f.second->isThread())
       continue;
-    Attribute *attrBarSync = f.second->getAttribute("BarrierSync", 0);
+    const Attribute *attrBarSync = f.second->getAttribute("BarrierSync", 0);
     if(attrBarSync)
     {
       buffer_ << "  mbarrier_" << f.second->getName() << "[id].mark_modified();\n\n";

@@ -977,88 +977,90 @@ dmpl::gams::Analyzer_Builder::build_main_function ()
   buffer_ << "  for(;;) {\n";
   buffer_ << "    bool done = !analyzer.next_step();\n";
   
-  StmtList &stmts = node.stmts;
-  BOOST_FOREACH(Stmt stmt, stmts)
+  BOOST_FOREACH(const Specs::value_type &spec, node.specs)
   {
-    CondStmt *cond = dynamic_cast<CondStmt*>(stmt.get());
-    if(cond->kind == "expect")
+    //-- skip anything that is not an expect spec
+    const ExpectSpec *expectSpec = dynamic_cast<ExpectSpec*>(&*spec.second);
+    if(expectSpec == NULL) continue;
+    
+    const Attribute *attrAtNode = expectSpec->getAttribute("AtNode", 1);
+    if (attrAtNode)
     {
-      Attribute *attrAtEnd = cond->getAttribute("AtEnd", 0);
-      Attribute *attrAtLeast = cond->getAttribute("AtLeast", 1);
-      Attribute *attrAtNode = cond->getAttribute("AtNode", 1);
-      if (attrAtNode)
-      {
-        buffer_ << "    {" << std::endl;
-        buffer_ << "      " << node.idVar->getName() << " = " << attrAtNode->paramList.front()->requireInt() << ";" << std::endl;
-        buffer_ << "      int n = " << node.idVar->getName() << ";" << std::endl;
-      }
-      else
-      {
-        buffer_ << "    for(int n = 0; n < processes; n++) {" << std::endl;
-
-        buffer_ << "      " << node.idVar->getName() << " = n;" << std::endl;
-      }
-      buffer_ << "      engine::Variables vars;" << std::endl;
-      buffer_ << "      bool value = (";
-      dmpl::madara::Function_Visitor visitor (stmt, node, NULL, builder_, buffer_, false, true);
-      visitor.visit(cond->cond);
-      buffer_ << ");" << std::endl;
-
-      if (attrAtEnd)
-      {
-        buffer_ << "      knowledge.set(\"AtEnd_RESULT.\"+to_string(n)+\"." << cond->name << "\", Integer(value?1:0));\n";
-      }
-      else if (attrAtLeast)
-      {
-        buffer_ << "      int total_so_far = knowledge.get(\"AtLeast_TOTAL.\"+to_string(n)+\"." << cond->name << "\").to_integer();\n";
-        buffer_ << "      int count_so_far = knowledge.get(\"AtLeast_COUNT.\"+to_string(n)+\"." << cond->name << "\").to_integer();\n";
-        buffer_ << "      knowledge.set(\"AtLeast_TOTAL.\"+to_string(n)+\"." << cond->name << "\", total_so_far + Integer(value?1:0));\n";
-        buffer_ << "      knowledge.set(\"AtLeast_COUNT.\"+to_string(n)+\"." << cond->name << "\", Integer(count_so_far + 1));\n";
-      }
-      else
-      {
-        buffer_ << "      std::cout << analyzer.get_cur_frame() << \"," << cond->name << ",\" << ";
-        buffer_ << "n";
-        buffer_ << " << \",\" << value << std::endl;" << std::endl;
-      }
-
-      buffer_ << "    }" << std::endl;
+      buffer_ << "    {" << std::endl;
+      buffer_ << "      " << node.idVar->getName() << " = " << attrAtNode->paramList.front()->requireInt() << ";" << std::endl;
+      buffer_ << "      int n = " << node.idVar->getName() << ";" << std::endl;
     }
+    else
+    {
+      buffer_ << "    for(int n = 0; n < processes; n++) {" << std::endl;
+      buffer_ << "      " << node.idVar->getName() << " = n;" << std::endl;
+    }
+    buffer_ << "      engine::Variables vars;" << std::endl;
+    buffer_ << "      bool value = " << expectSpec->func << "();\n";
+
+    AtEndSpec *atEndSpec = dynamic_cast<AtEndSpec*>(&*spec.second);
+    AtLeastSpec *atLeastSpec = dynamic_cast<AtLeastSpec*>(&*spec.second);
+    if (atEndSpec)
+    {
+      buffer_ << "      knowledge.set(\"AtEnd_RESULT.\"+to_string(n)+\"." << expectSpec->name << "\", Integer(value?1:0));\n";
+    }
+    else if (atLeastSpec)
+    {
+      buffer_ << "      int total_so_far = knowledge.get(\"AtLeast_TOTAL.\"+to_string(n)+\"." << expectSpec->name << "\").to_integer();\n";
+      buffer_ << "      int count_so_far = knowledge.get(\"AtLeast_COUNT.\"+to_string(n)+\"." << expectSpec->name << "\").to_integer();\n";
+      buffer_ << "      knowledge.set(\"AtLeast_TOTAL.\"+to_string(n)+\"." << expectSpec->name << "\", total_so_far + Integer(value?1:0));\n";
+      buffer_ << "      knowledge.set(\"AtLeast_COUNT.\"+to_string(n)+\"." << expectSpec->name << "\", Integer(count_so_far + 1));\n";
+    }
+    else
+    {
+      assert(0 && "ERROR: expect specification must be at_end or at_least!!");
+      /*
+      buffer_ << "      std::cout << analyzer.get_cur_frame() << \"," << expectSpec->name << ",\" << ";
+      buffer_ << "n";
+      buffer_ << " << \",\" << value << std::endl;" << std::endl;
+      */
+    }
+    
+    buffer_ << "    }" << std::endl;
   }
 
   buffer_ << "    if(done) break;\n";
   buffer_ << "  }\n";
-  BOOST_FOREACH(Stmt stmt, stmts)
+  BOOST_FOREACH(const Specs::value_type &spec, node.specs)
   {
-    CondStmt *cond = dynamic_cast<CondStmt*>(stmt.get());
-    if(cond->kind == "expect")
+    //-- skip anything that is not an expect spec
+    const ExpectSpec *expectSpec = dynamic_cast<ExpectSpec*>(&*spec.second);
+    if(expectSpec == NULL) continue;
+
+    const Attribute *attrAtNode = expectSpec->getAttribute("AtNode", 1);
+    AtEndSpec *atEndSpec = dynamic_cast<AtEndSpec*>(&*spec.second);
+    AtLeastSpec *atLeastSpec = dynamic_cast<AtLeastSpec*>(&*spec.second);
+    if(atEndSpec)
     {
-      Attribute *attrAtNode = cond->getAttribute("AtNode", 1);
-      Attribute *attrAtEnd = cond->getAttribute("AtEnd", 0);
-      Attribute *attrAtLeast = cond->getAttribute("AtLeast", 1);
-      if(attrAtEnd)
-      {
-        if (attrAtNode)
-          buffer_ << "  { int n = " << node.idVar->getName() << ";" << std::endl;
-        else
-          buffer_ << "  for(int n = 0; n < processes; n++) {" << std::endl;
-        buffer_ << "    bool value = knowledge.get(\"AtEnd_RESULT.\"+to_string(n)+\"." << cond->name << "\").to_integer() == 1;\n";
-        buffer_ << "    std::cout << \"AtEnd," << cond->name << ",\" << n << \",\" << value << std::endl;" << std::endl;
-        buffer_ << "  }\n";
-      }
-      else if(attrAtLeast)
-      {
-        if (attrAtNode)
-          buffer_ << "  { int n = " << node.idVar->getName() << ";" << std::endl;
-        else
-          buffer_ << "  for(int n = 0; n < processes; n++) {" << std::endl;
-        buffer_ << "    double total = knowledge.get(\"AtLeast_TOTAL.\"+to_string(n)+\"." << cond->name << "\").to_double();\n";
-        buffer_ << "    double count = knowledge.get(\"AtLeast_COUNT.\"+to_string(n)+\"." << cond->name << "\").to_double();\n";
-        buffer_ << "    bool value = (total / count) >= " << attrAtLeast->paramList.front()->requireDouble() << ";\n";
-        buffer_ << "    std::cout << \"AtLeast," << cond->name << ",\" << n << \",\" << value << std::endl;" << std::endl;
-        buffer_ << "  }\n";
-      }
+      if (attrAtNode)
+        buffer_ << "  { int n = " << node.idVar->getName() << ";" << std::endl;
+      else
+        buffer_ << "  for(int n = 0; n < processes; n++) {" << std::endl;
+
+      buffer_ << "    bool value = knowledge.get(\"AtEnd_RESULT.\"+to_string(n)+\"." << expectSpec->name << "\").to_integer() == 1;\n";
+      buffer_ << "    std::cout << \"AtEnd," << expectSpec->name << ",\" << n << \",\" << value << std::endl;" << std::endl;
+      buffer_ << "  }\n";
     }
+    else if(atLeastSpec)
+    {
+      if (attrAtNode)
+        buffer_ << "  { int n = " << node.idVar->getName() << ";" << std::endl;
+      else
+        buffer_ << "  for(int n = 0; n < processes; n++) {" << std::endl;
+
+      buffer_ << "    double total = knowledge.get(\"AtLeast_TOTAL.\"+to_string(n)+\"." << expectSpec->name << "\").to_double();\n";
+      buffer_ << "    double count = knowledge.get(\"AtLeast_COUNT.\"+to_string(n)+\"." << expectSpec->name << "\").to_double();\n";
+      buffer_ << "    bool value = (total / count) >= " << atLeastSpec->threshold << ";\n";
+      buffer_ << "    std::cout << \"AtLeast," << expectSpec->name << ",\" << n << \",\" << value << std::endl;" << std::endl;
+      buffer_ << "  }\n";
+    }
+    else
+      assert(0 && "ERROR: expect specification must be at_end or at_least!!");
   }
 
   buffer_ << "  return 0;\n";

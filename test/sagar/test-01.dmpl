@@ -123,25 +123,34 @@ node uav
   thread COLLISION_AVOIDANCE {
     print_state(X,Y,id,x,y,xf,yf);
     //my_sleep(1);
-    if IF_INIT (state == INITS) {
+    @IF_INIT;
+    if (state == INITS) {
       lock[x][y] = 1;
       state = NEXT;
-    } if IF_NEXT (state == NEXT) {
+    }
+    @IF_NEXT;
+    if (state == NEXT) {
       //compute next point on route
       if(x == xf && y == yf) return;
       NEXT_XY();
       state = REQUEST;
-    } else if IF_REQUEST (state == REQUEST) {
+    } else
+    @IF_REQUEST;
+    if (state == REQUEST) {
       //request the lock but only if it is free
       if(EXISTS_LOWER(idp,lock[xp][yp]@idp != 0)) return;
       lock[xp][yp] = 1;
       state = WAITING;
-    } else if IF_WAITING (state == WAITING) {
+    } else
+    @IF_WAITING;
+    if (state == WAITING) {
       //grab the lock if we are the highest 
       //id node to request or hold the lock
       if(EXISTS_HIGHER(idp, lock[xp][yp]@idp != 0)) return;
       state = MOVE;
-    } else if IF_MOVE (state == MOVE) {
+    } else
+    @IF_MOVE;
+    if (state == MOVE) {
       //now we have the lock on (x’,y’)
       if(GRID_MOVE(xp,yp,0.5)) return;
       lock[x][y] = 0; 
@@ -156,30 +165,38 @@ node uav
     GRID_INIT(X, Y, LeftX, RightX, TopY, BottomY);
     GRID_PLACE(x, y, 0.5);
   }
-}
 
-//initial state
-@INIT;
-void NodeInit () 
-{
-  FORALL_NODE(cid) {
-    state@cid = INITS;
-    ND(x@cid); ND(y@cid);
-    ASSUME(0 <= x@cid && x@cid < X && 0 <= y@cid && y@cid < Y);
-    ND(xf@cid); ND(yf@cid);
-    ASSUME(0 <= xf@cid && xf@cid < X && 0 <= yf@cid && yf@cid < Y);
+  //initial state
+  @INIT;
+  void NodeInit () 
+  {
+    FORALL_NODE(cid) {
+      state@cid = INITS;
+      ND(x@cid); ND(y@cid);
+      ASSUME(0 <= x@cid && x@cid < X && 0 <= y@cid && y@cid < Y);
+      ND(xf@cid); ND(yf@cid);
+      ASSUME(0 <= xf@cid && xf@cid < X && 0 <= yf@cid && yf@cid < Y);
+    }
+    
+    FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+      ASSUME(x@id1 != x@id2 || y@id1 != y@id2);
+    }
   }
 
-  FORALL_DISTINCT_NODE_PAIR (id1,id2) {
-    ASSUME(x@id1 != x@id2 || y@id1 != y@id2);
+  //the safety property checked at the beginning of each round
+  @SAFETY;
+  bool NoCollisions ()
+  {
+    FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+      if(x@id1 == x@id2 && y@id1 == y@id2) return false;
+    }
+    return true;
   }
-}
 
-//the safety property checked at the beginning of each round
-@SAFETY;
-void NoCollisions ()
-{
-  FORALL_DISTINCT_NODE_PAIR (id1,id2) {
-    ASSERT(x@id1 != x@id2 || y@id1 != y@id2);
-  }
+  //-- guaranteed properties
+  //require NoCollision : COLLISION_AVOIDANCE => NoCollisions;
+
+  //-- best-effort properties
+  expect AtEndProtect : at_end => NoCollisions;
+  //expect AtLeastProtect : at_least 0.9 => NoCollisions;
 }

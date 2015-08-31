@@ -392,20 +392,6 @@ namespace dmpl
       /// current thread
       Func thread_;
 
-      /// current top-level statement (e.g., expect or require)
-      Stmt statement_;
-
-      CondStmt *getCondStmt()
-      {
-        return dynamic_cast<CondStmt*>(statement_.get());
-      }
-
-      bool inExpect()
-      {
-        CondStmt *cs = getCondStmt();
-        return cs && cs->kind == "expect";
-      }
-
       /// current node
       const Node & node_;
 

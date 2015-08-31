@@ -119,43 +119,44 @@ namespace dmpl
   public:
     Attributes attrs;
 
-    virtual std::string getName() const = 0;
-
     HasAttributes() {}
     HasAttributes(const Attributes &a) : attrs(a) { }
 
-    Attribute *getAttribute(std::string name) {
-      if (attrs.count(name) == 0)
-        return NULL;
-      else
-        return &attrs[name];
+    const Attribute *getAttribute(std::string name) const
+    {
+      auto it = attrs.find(name);
+      if(it == attrs.end()) return NULL;
+      return &(it->second);
     }
 
-    Attribute *getAttribute(std::string name, int expectedArgs) {
-      if (attrs.count(name) == 0)
-        return NULL;
-      else if (attrs[name].paramList.size() != expectedArgs)
-        return NULL;
-      else
-        return &attrs[name];
+    const Attribute *getAttribute(std::string name, int expectedArgs) const
+    {
+      auto it = attrs.find(name);
+      if(it == attrs.end()) return NULL;
+      if(it->second.paramList.size() != expectedArgs) return NULL;
+      return &(it->second);
     }
 
-    Attribute &requireAttribute(std::string name) {
-      Attribute *ret = getAttribute(name);
+    const Attribute &requireAttribute(std::string name) const
+    {
+      const Attribute *ret = getAttribute(name);
       if (ret == NULL)
-        throw std::runtime_error("Required attribute @" + name + " not found for " + getName());
+        throw std::runtime_error("Required attribute @" + name + " not found!!");
       return *ret;
     }
 
-    Attribute &requireAttribute(std::string name, int expectedArgs) {
-      if (attrs.count(name) == 0)
-        throw std::runtime_error("Required attribute @" + name + " not found for " + getName());
-      else if (attrs[name].paramList.size() != expectedArgs)
-        throw std::runtime_error("Required attribute @" + name + " for " + getName() +
-                " must have " + boost::lexical_cast<std::string>(expectedArgs) + " arguments; has " +
-                boost::lexical_cast<std::string>(attrs[name].paramList.size()));
+    const Attribute &requireAttribute(std::string name, int expectedArgs) const
+    {
+      auto it = attrs.find(name);
+      if (it == attrs.end())
+        throw std::runtime_error("Required attribute @" + name + " not found!!");
+      else if (it->second.paramList.size() != expectedArgs)
+        throw std::runtime_error("Required attribute @" + name
+                                 + " must have " + boost::lexical_cast<std::string>(expectedArgs)
+                                 + " arguments; has "
+                                 + boost::lexical_cast<std::string>(it->second.paramList.size()));
       else
-        return attrs[name];
+        return it->second;
     }
 
   };

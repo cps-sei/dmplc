@@ -61,23 +61,12 @@
 dmpl::madara::Function_Visitor::Function_Visitor (
   const Func & function, const Node & node, const Func & thread,
   DmplBuilder & builder, std::stringstream & buffer, bool do_vrep, bool do_analyzer)
-  : function_ (function), statement_(Stmt()), node_ (node), thread_ (thread),
+  : function_ (function), node_ (node), thread_ (thread),
     builder_ (builder), buffer_ (buffer), do_vrep_(do_vrep), do_analyzer_(do_analyzer),
     indentation_ (2), assignment_ (0)
 {
 
 }
-
-dmpl::madara::Function_Visitor::Function_Visitor (
-  const Stmt & statement, const Node & node, const Func & thread,
-  DmplBuilder & builder, std::stringstream & buffer, bool do_vrep, bool do_analyzer)
-  : function_ (Func()), statement_(statement), node_ (node), thread_ (thread),
-    builder_ (builder), buffer_ (buffer), do_vrep_(do_vrep), do_analyzer_(do_analyzer),
-    indentation_ (2), assignment_ (0)
-{
-
-}
-
 
 bool
 dmpl::madara::Function_Visitor::enterInt (IntExpr & expression)
@@ -291,11 +280,6 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
       std::cerr << "Error: @ operator on function calls only supported for EXTERN functions" << std::endl;
       exit(1);
     }
-    if(inExpect() && !func->isPure)
-    {
-      std::cerr << "Error: calling non-PURE function \"" << func_name << "\" from expect clause" << std::endl;
-      exit(1);
-    }
     //const Func &func = (isNodeFunc ? nodeFunc->second : progFunc->second);
     /*if (assignment_)
     {
@@ -423,31 +407,8 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
       if (func_name == "ASSUME")
         buffer_ << "assert";
       else
-      {
-        if (inExpect())
-        {
-          if(!func)
-          {
-            std::cerr << "Error: cannot call undefined function from expect (unknown if PURE)" << std::endl;
-            exit(1);
-          }
-          else if(!func->isPure)
-          {
-            std::cerr << "Error: calling non-PURE function \"" << func_name << "\" from expect clause" << std::endl;
-            exit(1);
-          }
-        }
-        if (function_->isPure)
-        {
-          if(!func)
-          {
-            std::cerr << "Error: cannot call undefined function from pure funtion " << function_->getName() << std::endl;
-            exit(1);
-          }
-        }
         buffer_ << func_name;
-      }
-
+      
       buffer_ << " (";
     
       bool started = false;
@@ -800,48 +761,21 @@ dmpl::madara::Function_Visitor::exitCond (CondStmt & statement)
 
   std::string spacer (indentation_, ' ');
 
-  if(statement.kind == "if")
-  {
-    buffer_ << spacer << "if ";
-    if(statement.name != "")
-    {
-      buffer_ << "/* " << statement.name << " */ ";
-    }
-    buffer_ << "(";
+  buffer_ << spacer << "if (";
+  visit (statement.cond);
+  buffer_ << ")\n";
 
-    visit (statement.cond);
+  indentation_ += 2;
+  
+  buffer_ << spacer << "{\n";
+  visit (statement.tbranch);
+  buffer_ << spacer << "}\n";
 
-    buffer_ << ")\n";
-
-    indentation_ += 2;
-    
-    buffer_ << spacer << "{\n";
-    
-    if(statement.tbranch)
-    {
-      visit (statement.tbranch);
-    }
-    else
-    {
-      buffer_ << spacer << "  { /* Do Nothing */ }\n";
-    }
-
+  if(statement.ebranch) {
+    buffer_ << spacer << "else\n";
+    buffer_ << spacer << "{\n";  
+    visit (statement.ebranch);
     buffer_ << spacer << "}\n";
-
-    if(statement.ebranch)
-    {
-      buffer_ << spacer << "else\n";
-      buffer_ << spacer << "{\n";
-      
-      visit (statement.ebranch);
-
-      buffer_ << spacer << "}\n";
-    }
-  }
-  else
-  {
-    buffer_ << spacer << "/* Ommited " << statement.kind << " statement. */" << std::endl;
-    std::cerr << "Warning: " << statement.kind << " not supported by this output mode; ignored." << std::endl;
   }
 
   indentation_ -= 2;
@@ -859,12 +793,7 @@ dmpl::madara::Function_Visitor::exitFor (ForStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
-  buffer_ << spacer << "for ";
-  if(statement.name != "")
-  {
-    buffer_ << "/* " << statement.name << " */ ";
-  }
-  buffer_ << "(";
+  buffer_ << spacer << "for (";
   
   BOOST_FOREACH (const Stmt & init, statement.init)
   {
@@ -910,15 +839,8 @@ dmpl::madara::Function_Visitor::exitWhile (WhileStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
-  buffer_ << spacer << "while ";
-  if(statement.name != "")
-  {
-    buffer_ << "/* " << statement.name << " */ ";
-  }
-  buffer_ << "(";
-  
-  visit (statement.cond);
-  
+  buffer_ << spacer << "while (";
+  visit (statement.cond);  
   buffer_ << ")\n";
 
   indentation_ += 2;

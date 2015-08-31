@@ -135,8 +135,7 @@ dmpl::Program::print (std::ostream &os,unsigned int indent)
 
   //print external function declarations
   BOOST_FOREACH(dmpl::Funcs::value_type &v, funcs) {
-    if(v.second->isExtern == false)
-      continue;
+    if(!v.second->isExtern) continue;
     os << spacer << "extern";
     v.second->printDecl(os, 1);
   }
@@ -147,9 +146,9 @@ dmpl::Program::print (std::ostream &os,unsigned int indent)
     i->second.print (os,indent);
   os << '\n';
 
-  //print functions like INIT and safety
-  for (dmpl::Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
-    i->second->print (os,indent);
+  //print internal functions
+  BOOST_FOREACH(dmpl::Funcs::value_type &v, funcs)
+    if(!v.second->isExtern) v.second->print (os,indent);
 }
 
 /*********************************************************************/

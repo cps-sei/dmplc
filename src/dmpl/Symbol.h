@@ -92,9 +92,11 @@ namespace dmpl
 
   class Statement;
   typedef std::shared_ptr<Statement> Stmt;
-  class CondStmt;
-  typedef std::shared_ptr<CondStmt> CStmt;
 
+  class Specification;
+  typedef std::shared_ptr<Specification> Spec;
+  typedef std::map<std::string,Spec> Specs;
+    
   struct virtual_enable_shared_from_this_base:
    std::enable_shared_from_this<virtual_enable_shared_from_this_base> {
    virtual ~virtual_enable_shared_from_this_base() {}
@@ -497,7 +499,7 @@ namespace dmpl
     {
     public:
       Node *node;
-      CStmt clause;
+      Spec spec;
       Func thread;
       Func curFunc;
       bool isLHS;

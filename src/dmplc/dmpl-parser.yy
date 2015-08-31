@@ -67,6 +67,7 @@
 #include "dmpl/Statement.h"
 #include "dmpl/Function.h"
 #include "dmpl/Node.h"
+#include "dmpl/Specification.hpp"
 #include "DmplBuilder.hpp"
 #include <math.h>
 #
@@ -131,6 +132,7 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
     dmpl::Node *node;
     dmpl::Func *function;
     dmpl::Dims *dims;
+    dmpl::Spec *spec;
     std::string *string;
     std::list<std::string> *strList;
     int token;
@@ -141,23 +143,20 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
    dmpl-scanner.ll lex file. We also define the node type they
    represent.  */
 %token <string> TIDENTIFIER TINTEGER TDOUBLE TATTRIBUTE
-%token <string> TIF TREQUIRE TEXPECT
+%token <string> TIF TREQUIRE TEXPECT TATEND TATLEAST
 %token <token> TSEMICOLON TCONST TNODE TROLE
 %token <token> TGLOBAL TLOCAL TALIAS TTARGET TTHUNK TID
 %token <token> TBOOL TINT TDOUBLE_TYPE TVOID TCHAR TSIGNED TUNSIGNED
 %token <token> TNODENUM TEXTERN TTHREAD TPURE TOVERRIDE
 %token <token> TELSE TFOR TWHILE
-%token <token> TBREAK TCONTINUE TRETURN TEXO TEXH TEXL /*TPROGRAM*/
-%token <token> TINIT /*TSAFETY*/ TFAN TFADNP TFAO TFAOL TFAOH
+%token <token> TBREAK TCONTINUE TRETURN TEXO TEXH TEXL
+%token <token> TINIT TFAN TFADNP TFAO TFAOL TFAOH
 %token <token> TCEQ TCNE TCLT TCLE TCGT TCGE TEQUAL
 %token <token> TLAND TLOR TLNOT TQUEST TCOLON
 %token <token> TLPAREN TRPAREN TLBRACE TRBRACE 
 %token <token> TLBRACKET TRBRACKET TCOMMA TDOT TAT
-%token <token> TPLUS TMINUS TMUL TDIV TMOD
+%token <token> TPLUS TMINUS TMUL TDIV TMOD TIMPLIES
 %token <token> TBWNOT TBWAND TBWOR TBWXOR TBWLSH TBWRSH
-/*%token <token> TON_PRE_TIMEOUT TON_POST_TIMEOUT TON_RECV_FILTER
-%token <token> TTRACK_LOCATIONS TSEND_HEARTBEATS
-%token <token> TNODE_INIT TONCE_EVERY*/
 
 /* Define the type of node our nonterminal symbols represent.
    The types refer to the %union declaration above. Ex: when
@@ -165,7 +164,7 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
    calling an (NIdentifier*). It makes the compiler happy.
  */
 %type <token> program constant
-%type <string> cond_kind stmt_name role role_body
+%type <string> role role_body
 %type <node> node_body node
 %type <varList> node_var_init node_var_decl var_group var_block
 %type <function> procedure fn_body fn_prototype
@@ -179,6 +178,7 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
 %type <stmt> stmt cond_stmt cond_stmt_impl
 %type <stmtList> stmt_list for_init for_update
 %type <dims> dimensions
+%type <spec> specification
 %type <var> var var_asgn
 %type <varList> var_list var_decl var_asgn_list var_init
 %type <varList> param_list var_init_list
@@ -263,54 +263,65 @@ node : attr_list TNODE TIDENTIFIER TLBRACE node_body TRBRACE {
 }
 | attr_list TNODE TIDENTIFIER TSEMICOLON {
   $$ = new dmpl::Node(*$3, *$1, true);
+  delete $1; delete $3;
+}
+;
+
+specification : TEXPECT TIDENTIFIER TCOLON TATEND TIMPLIES TIDENTIFIER TSEMICOLON {
+  $$ = new dmpl::Spec(new dmpl::AtEndSpec(*$2,*$6));
+  delete $2; delete $6;
 }
 ;
 
 node_body : {
-    $$ = new dmpl::Node();
+  $$ = new dmpl::Node();
 }
 | node_body var_block {
-    $1->addVar(*$2);
-    delete $2;
+  $1->addVar(*$2);
+  $$ = $1;
+  delete $2;
 }
 | node_body procedure {
-    $1->addFunction(*$2);
-    delete $2;
+  $1->addFunction(*$2);
+  $$ = $1;
+  delete $2;
 }
 | node_body role {
-    std::cerr << "role: " << *$2 << std::endl;
-    delete $2;
+  //std::cerr << "role: " << *$2 << std::endl;
+  $$ = $1;
+  delete $2;
 }
-| node_body cond_stmt {
-    $1->addStatement(*$2);
-    delete $2;
+| node_body specification {
+  $1->addSpecification(*$2);
+  $$ = $1;
+  delete $2;
 }
 ;
 
 role : attr_list TROLE TIDENTIFIER TLBRACE role_body TRBRACE {
   $$ = new std::string(*$5 + " " + *$3);
-  delete $3; delete $5;
+  delete $1; delete $3; delete $5;
 }
 | attr_list TROLE TIDENTIFIER TID TINTEGER TLBRACE role_body TRBRACE {
   $$ = new std::string(*$7 + " " + *$3 + " " + *$5);
-  delete $3; delete $5; delete $7;
+  delete $1; delete $3; delete $5; delete $7;
 }
 ;
 
 role_body : {
-  $$ = new std::string("hello world");
+  $$ = new std::string("role = ");
 }
 | role_body var_block {
   $$ = new std::string(*$1 + " var_block");
-  delete $2;
+  delete $1; delete $2;
 }
 | role_body procedure {
   $$ = new std::string(*$1 + " procedure");
-  delete $2;
+  delete $1; delete $2;
 }
-| role_body cond_stmt {
-  $$ = new std::string(*$1 + " cond_stmt");
-  delete $2;
+| role_body specification {
+  $$ = new std::string(*$1 + " specification");
+  delete $1; delete $2;
 }
 ;
 
@@ -578,8 +589,6 @@ stmt_list : { $$ = new dmpl::StmtList(); }
 | stmt_list stmt { $$ = $1; $$->push_back(*$2); delete $2; }
 ;
 
-cond_kind : TIF {} | TREQUIRE {} | TEXPECT {} ;
-
 cond_stmt : attr_list cond_stmt_impl
 {
   (*$2)->attrs = *$1;
@@ -588,27 +597,13 @@ cond_stmt : attr_list cond_stmt_impl
 }
 ;
 
-cond_stmt_impl : cond_kind stmt_name TLPAREN expr TRPAREN stmt {
-  $$ = new dmpl::Stmt(new dmpl::CondStmt(*$2, *$1, *$4, *$6));
-  delete $1; delete $2; delete $4; delete $6; printStmt(*$$);
+cond_stmt_impl : TIF TLPAREN expr TRPAREN stmt {
+  $$ = new dmpl::Stmt(new dmpl::CondStmt(*$3, *$5));
+  delete $3; delete $5; printStmt(*$$);
 }
-| cond_kind stmt_name TLPAREN expr TRPAREN TSEMICOLON {
-  $$ = new dmpl::Stmt(new dmpl::CondStmt(*$2, *$1, *$4));
-  delete $1; delete $2; delete $4; printStmt(*$$);
-}
-| cond_kind stmt_name TLPAREN expr TRPAREN TELSE stmt {
-  $$ = new dmpl::Stmt(new dmpl::CondStmt(*$2, *$1, *$4, NULL, *$7));
-  delete $1; delete $2; delete $4; delete $7; printStmt(*$$);
-}
-| cond_kind stmt_name TLPAREN expr TRPAREN stmt TELSE stmt {
-  $$ = new dmpl::Stmt(new dmpl::CondStmt(*$2, *$1, *$4, *$6, *$8));
-  delete $1; delete $2; delete $4; delete $6; delete $8; printStmt(*$$);
-}
-;
-
-stmt_name : { $$ = new std::string(); }
-| TIDENTIFIER {
-  $$ = $1;
+| TIF TLPAREN expr TRPAREN stmt TELSE stmt {
+  $$ = new dmpl::Stmt(new dmpl::CondStmt(*$3, *$5, *$7));
+  delete $3; delete $5; delete $7; printStmt(*$$);
 }
 ;
 
@@ -617,13 +612,13 @@ stmt : TLBRACE stmt_list TRBRACE { $$ = new dmpl::Stmt(new dmpl::BlockStmt(*$2))
   $$ = new dmpl::Stmt(new dmpl::AsgnStmt(dmpl::Expr($1),*$3));
   delete $3;
 }
-| TWHILE stmt_name TLPAREN expr TRPAREN stmt {
-  $$ = new dmpl::Stmt(new dmpl::WhileStmt(*$2, *$4,*$6));
-  delete $2; delete $4; delete $6;
+| TWHILE TLPAREN expr TRPAREN stmt {
+  $$ = new dmpl::Stmt(new dmpl::WhileStmt(*$3,*$5));
+  delete $3; delete $5;
 }
-| TFOR stmt_name TLPAREN for_init TSEMICOLON for_test TSEMICOLON for_update TRPAREN stmt {
-  $$ = new dmpl::Stmt(new dmpl::ForStmt(*$2, *$4,*$6,*$8,*$10));
-  delete $2; delete $4; delete $6; delete $8; delete $10;
+| TFOR TLPAREN for_init TSEMICOLON for_test TSEMICOLON for_update TRPAREN stmt {
+  $$ = new dmpl::Stmt(new dmpl::ForStmt(*$3,*$5,*$7,*$9));
+  delete $3; delete $5; delete $7; delete $9;
 }
 | cond_stmt {
   $$ = $1;
