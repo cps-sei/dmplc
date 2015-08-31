@@ -106,6 +106,11 @@ dmpl::Node::mergeWith(const Node &on)
     else if (n.attrs[a.second.name].paramList != a.second.paramList)
       throw std::runtime_error("Cannot merge nodes with attributes of differing parameters: @" + a.second.name + " in " + n.name);
   }
+
+  BOOST_FOREACH(const Specs::value_type &s, on.specs) {
+    if(!specs.insert(s).second)
+      throw std::runtime_error("ERROR: duplication specificaion " + s.first);
+  }
 }
 
 /*********************************************************************/
