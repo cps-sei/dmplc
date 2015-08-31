@@ -164,6 +164,10 @@ dmpl::Node::print (std::ostream &os,unsigned int indent)
     i->second->print (os,indent+2);
   os << "\n";
 
+  for (auto i = specs.begin ();i != specs.end (); ++i)
+    i->second->print (os,indent+2);
+  os << "\n";
+
   os << spacer << "}\n\n";
 }
 
