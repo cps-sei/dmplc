@@ -144,6 +144,7 @@ namespace dmpl
       }
     }
 
+    //-- find variable with given name. return empty variable
     Var findVar(const std::string& name) const
     {
       if(idVar && idVar->name == name)
