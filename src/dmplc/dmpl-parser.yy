@@ -291,8 +291,7 @@ role : attr_list TROLE TIDENTIFIER TLBRACE role_body TRBRACE {
   $$ = new std::string(*$5 + " " + *$3);
   delete $3; delete $5;
 }
-|
-attr_list TROLE TIDENTIFIER TID TINTEGER TLBRACE role_body TRBRACE {
+| attr_list TROLE TIDENTIFIER TID TINTEGER TLBRACE role_body TRBRACE {
   $$ = new std::string(*$7 + " " + *$3 + " " + *$5);
   delete $3; delete $5; delete $7;
 }
