@@ -135,10 +135,14 @@ namespace dmpl
     ///return the first dimension
     int getFirstDim() const;
 
+    ///equality check
     bool equals(const Type &o) const
     {
       return qual == o->qual && type == o->type && dims == o->dims;
     }
+
+    ///check if this is a thread type
+    bool isThread() const;
   };
 }
 

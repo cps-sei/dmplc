@@ -116,17 +116,25 @@ dmpl::Function::print (std::ostream &os,unsigned int indent)
   for(const auto &a : attrs) os << spacer << '@' << a.second.toString() << ";\n";
   
   //-- print return type and name
-  os << spacer << retType->toString() << " " << name << "(";
+  os << spacer << retType->toString() << " " << name;
 
-  //-- print parameters
-  size_t count = 0;
-  for (dmpl::VarList::iterator i = params.begin (); i != params.end (); ++i) {
-    if(count) os << ",";
-    os << (*i)->toString();
-    count++;
+  //-- handle thread function
+  if(retType->isThread()) os << '\n';
+  //-- handle normal function
+  else {
+    os << "(";
+
+    //-- print parameters
+    size_t count = 0;
+    for (dmpl::VarList::iterator i = params.begin (); i != params.end (); ++i) {
+      if(count) os << ",";
+      os << (*i)->toString();
+      count++;
+    }
+
+    os << ")\n";
   }
-
-  os << ")\n";
+  
   os << spacer << "{\n";
 
   //-- print temporary variables
@@ -149,7 +157,13 @@ dmpl::Function::printDecl (std::ostream &os,unsigned int indent)
 {
   std::string spacer (indent, ' ');
 
-  os << spacer << retType->toString() << " " << name << "(";
+  os << spacer << retType->toString() << " " << name;
+
+  //-- handle thread function
+  if(retType->isThread()) { os << ";\n"; return; }
+
+  //-- handle normal function
+  os << "(";
 
   size_t count = 0;
   for (dmpl::VarList::iterator i = params.begin (); i != params.end (); ++i) {
