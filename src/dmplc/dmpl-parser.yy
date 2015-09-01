@@ -374,9 +374,8 @@ var_group : node_var_decl TSEMICOLON {
   $$ = $1;
 }
 | var_group node_var_decl TSEMICOLON {
-  BOOST_FOREACH(const dmpl::Var &v, *$2) {
-    $$->push_back(v);
-  }
+  $$ = $1;
+  BOOST_FOREACH(const dmpl::Var &v, *$2) $$->push_back(v);
   delete $2;
 }
 ;
