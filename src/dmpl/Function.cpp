@@ -113,7 +113,7 @@ dmpl::Function::print (std::ostream &os,unsigned int indent)
   std::string spacer (indent, ' ');
 
   //-- print attributes
-  for(const auto &a : attrs) os << spacer << '@' << a.second.toString() << '\n';
+  for(const auto &a : attrs) os << spacer << '@' << a.second.toString() << ";\n";
   
   //-- print return type and name
   os << spacer << retType->toString() << " " << name << "(";
