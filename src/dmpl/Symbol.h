@@ -96,7 +96,13 @@ namespace dmpl
   class Specification;
   typedef std::shared_ptr<Specification> Spec;
   typedef std::map<std::string,Spec> Specs;
-    
+
+  class Node;
+
+  class RoleClass;
+  typedef std::shared_ptr<RoleClass> Role;
+  typedef std::map<std::string,Role> Roles;
+  
   struct virtual_enable_shared_from_this_base:
    std::enable_shared_from_this<virtual_enable_shared_from_this_base> {
    virtual ~virtual_enable_shared_from_this_base() {}

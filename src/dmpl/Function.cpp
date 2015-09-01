@@ -66,7 +66,7 @@ dmpl::Function::mergeWith (const Func &of, bool checkDecors)
   else if (of->name == "")
     /* do nothing */;
   else if (f.name != of->name)
-    throw std::runtime_error("Cannot merge functions of->differing names: " + f.name + " and " + of->name);
+    throw std::runtime_error("Cannot merge functions of differing names: " + f.name + " and " + of->name);
 
   if (f.retType.get() == NULL)
     f.retType = of->retType;

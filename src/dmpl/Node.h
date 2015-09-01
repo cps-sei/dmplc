@@ -96,6 +96,7 @@ namespace dmpl
     ///the node arguments
     std::vector<std::string> args;
 
+    ///map from names to roles
     Roles roles;
 
     ///id variable (named by the single entry in args).
@@ -150,14 +151,14 @@ namespace dmpl
     //-- such variable found.
     Var findVar(const std::string& name) const
     {
-      if(idVar && idVar->name == name)
-        return idVar;
+      if(idVar && idVar->name == name) return idVar;
+
       Vars::const_iterator ret = locVars.find(name);
-      if(ret != locVars.end())
-        return ret->second;
+      if(ret != locVars.end()) return ret->second;
+
       ret = globVars.find(name);
-      if(ret != globVars.end())
-        return ret->second;
+      if(ret != globVars.end()) return ret->second;
+
       return Var();
     }
 
@@ -168,11 +169,11 @@ namespace dmpl
     Sym findSym(const std::string& name) const
     {
       Var v = findVar(name);
-      if(v)
-        return Sym(std::static_pointer_cast<Sym::element_type>(v));
+      if(v) return Sym(std::static_pointer_cast<Sym::element_type>(v));
+
       Func f = findFunc(name);
-      if(f)
-        return Sym(std::static_pointer_cast<Sym::element_type>(f));
+      if(f) return Sym(std::static_pointer_cast<Sym::element_type>(f));
+
       return Sym();
     }
 
@@ -217,14 +218,17 @@ namespace dmpl
     ///add a function
     void addFunction(const Func &f)
     {
-      if(funcs.count(f->name) > 0) {
-        Func &of = funcs[f->name];
-        of->mergeWith(f);
-      }
-      else
-      {
-        funcs[f->name] = f;
-      }
+      auto it = funcs.find(f->name);
+      if(it == funcs.end()) funcs.insert(std::make_pair(f->name, f));
+      else it->second->mergeWith(f);
+    }
+
+    ///add a role
+    void addRole(const Role &r)
+    {
+      auto it = roles.find(r->name);
+      if(it == roles.end()) roles.insert(std::make_pair(r->name, r));
+      else it->second->mergeWith(r);
     }
 
     ///add a specification

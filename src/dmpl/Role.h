@@ -74,14 +74,6 @@
 
 namespace dmpl
 {
-  class Node;
-
-  class RoleClass;
-
-  typedef std::shared_ptr<RoleClass> Role;
-
-  typedef std::vector<Role> Roles;
-
   /**
    * @class IdSpec
    * Contains info from ID-based specializations (a block with a role and id

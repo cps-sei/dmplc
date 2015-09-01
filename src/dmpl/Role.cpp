@@ -62,14 +62,17 @@ dmpl::RoleClass::mergeWith(const Role &other)
 {
   RoleClass &oth = *other;
 
+  //-- merge abstract
   if (abstract && !oth.abstract)
     abstract = false;
 
+  //-- merge name
   if (name == "")
     name = oth.name;
   else if (name != oth.name)
     throw std::runtime_error("Cannot merge roles of differing names: " + name + " and " + oth.name);
 
+  //-- merge global vars
   BOOST_FOREACH(const Vars::value_type &v, oth.globVars)
   {
     if(globVars.count(v.second->name) == 0)
@@ -78,6 +81,7 @@ dmpl::RoleClass::mergeWith(const Role &other)
       throw std::runtime_error("Collision while merging role globals: " + v.second->name + " in " + name);
   }
 
+  //-- merge local vars
   BOOST_FOREACH(const Vars::value_type &v, oth.locVars)
   {
     if(locVars.count(v.second->name) == 0)
@@ -86,6 +90,7 @@ dmpl::RoleClass::mergeWith(const Role &other)
       throw std::runtime_error("Collision while merging role locals: " + v.second->name + " in " + name);
   }
 
+  //-- merge functions
   BOOST_FOREACH(const Funcs::value_type &f, oth.funcs)
   {
     if(funcs.count(f.second->name) == 0)
@@ -94,12 +99,19 @@ dmpl::RoleClass::mergeWith(const Role &other)
       funcs[f.second->name]->mergeWith(f.second);
   }
 
+  //-- merge attributes
   BOOST_FOREACH(const Attributes::value_type &a, oth.attrs)
   {
     if(attrs.count(a.second.name) == 0)
       attrs[a.second.name] = a.second;
     else if (attrs[a.second.name].paramList != a.second.paramList)
       throw std::runtime_error("Cannot merge role with attributes of differing parameters: @" + a.second.name + " in " + name);
+  }
+
+  //-- merge specifications
+  BOOST_FOREACH(const Specs::value_type &s, oth.specs) {
+    if(!specs.insert(s).second)
+      throw std::runtime_error("ERROR: duplicate specificaion " + s.first);
   }
 }
 
@@ -108,23 +120,56 @@ dmpl::RoleClass::print (std::ostream &os,unsigned int indent)
 {
   std::string spacer (indent, ' ');
 
-  os << spacer << "ROLE " << name;
-  os << "\n" << spacer << "{\n";  
+  os << spacer << "role " << name << "\n" << spacer << "{\n";  
 
-  for (dmpl::Vars::iterator i = globVars.begin ();i != globVars.end (); ++i)
-    os << spacer << "  GLOBAL " << i->second->toString() << ";\n";
-  os << "\n";
+  //-- group all variables by init functions, and then print groups
+  //-- one by one. as a special case, if the initFunc is an empty
+  //-- pointer then the variable is an input.
+  std::map< dmpl::Func,std::set<dmpl::Var> > init2Vars;
+  for (const auto &i : globVars) init2Vars[i.second->initFunc].insert(i.second);
+  for (const auto &i : locVars) init2Vars[i.second->initFunc].insert(i.second);
+  for (const auto &i : init2Vars) {
+    //-- if input variable
+    if(i.first.use_count() == 0) {
+      for (const Var &v : i.second) {
+        if(globVars.count(v->name))
+          os << spacer << "  global " << v->toString() << " = extern;\n";
+        else
+          os << spacer << "  local " << v->toString() << " = extern;\n";
+      }
+      continue;
+    }
 
-  for (dmpl::Vars::iterator i = locVars.begin ();i != locVars.end (); ++i)
-    os << spacer << "  LOCAL " << i->second->toString() << ";\n";
-  os << "\n";
+    //-- otherwise, initialized variable
+    os << spacer << "  initialize {\n";
+      for (const Var &v : i.second) {
+        if(globVars.count(v->name))
+          os << spacer << "    global " << v->toString() << ";\n";
+        else
+          os << spacer << "    local " << v->toString() << ";\n";
+      }
+    os << spacer << "  } {\n";
+    //-- print temporary variables in constructor
+    for(const auto &tv : i.first->temps) {
+      tv.second->print(os, indent+4);
+      os << " = " << tv.second->initExpr()->toString() << ";\n";
+    }
+    //-- print statements in constructor
+    for(const Stmt &st : i.first->body) st->print(os, indent+4);
+    os << spacer << "  }\n\n";
+  }
 
+  //-- print functions
   for (dmpl::Funcs::iterator i = funcs.begin ();i != funcs.end (); ++i)
     i->second->print (os,indent+2);
   os << "\n";
 
-  os << spacer << "}\n\n";
+  //-- print specifications
+  for (auto i = specs.begin ();i != specs.end (); ++i)
+    i->second->print (os,indent+2);
+  os << "\n";
 
+  os << spacer << "}\n\n";
 }
 
 dmpl::Func

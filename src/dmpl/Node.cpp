@@ -62,19 +62,23 @@ dmpl::Node::mergeWith(const Node &on)
 {
   Node &n = *this;
 
+  //-- merge abstract
   if (n.abstract && !on.abstract)
     n.abstract = false;
 
+  //-- merge name
   if (n.name == "")
     n.name = on.name;
   else if (n.name != on.name)
     throw std::runtime_error("Cannot merge nodes of differing names: " + n.name + " and " + on.name);
 
+  //-- marge args
   if (n.args.size() == 0)
     n.args = on.args;
   else if (!on.abstract && n.args != on.args)
     throw std::runtime_error("Cannot merge nodes which have different arguments: for " + n.name);
 
+  //-- merge global vars
   BOOST_FOREACH(const Vars::value_type &v, on.globVars)
   {
     if(n.globVars.count(v.second->name) == 0)
@@ -83,6 +87,7 @@ dmpl::Node::mergeWith(const Node &on)
       throw std::runtime_error("Collision while merging node globals: " + v.second->name + " in " + n.name);
   }
 
+  //-- merge local vars
   BOOST_FOREACH(const Vars::value_type &v, on.locVars)
   {
     if(n.locVars.count(v.second->name) == 0)
@@ -91,6 +96,7 @@ dmpl::Node::mergeWith(const Node &on)
       throw std::runtime_error("Collision while merging node locals: " + v.second->name + " in " + n.name);
   }
 
+  //-- merge functions
   BOOST_FOREACH(const Funcs::value_type &f, on.funcs)
   {
     if(n.funcs.count(f.second->name) == 0)
@@ -99,6 +105,7 @@ dmpl::Node::mergeWith(const Node &on)
       n.funcs[f.second->name]->mergeWith(f.second);
   }
 
+  //-- merge attributes
   BOOST_FOREACH(const Attributes::value_type &a, on.attrs)
   {
     if(n.attrs.count(a.second.name) == 0)
@@ -107,6 +114,10 @@ dmpl::Node::mergeWith(const Node &on)
       throw std::runtime_error("Cannot merge nodes with attributes of differing parameters: @" + a.second.name + " in " + n.name);
   }
 
+  //-- merge roles
+  BOOST_FOREACH(const Roles::value_type &r, on.roles) addRole(r.second);
+
+  //-- merge specifications
   BOOST_FOREACH(const Specs::value_type &s, on.specs) {
     if(!specs.insert(s).second)
       throw std::runtime_error("ERROR: duplicate specificaion " + s.first);
@@ -160,10 +171,17 @@ dmpl::Node::print (std::ostream &os,unsigned int indent)
     os << spacer << "  }\n\n";
   }
 
+  //-- print functions
   for (dmpl::Funcs::iterator i = funcs.begin ();i != funcs.end (); ++i)
     i->second->print (os,indent+2);
   os << "\n";
 
+  //-- print roles
+  for (dmpl::Roles::iterator i = roles.begin ();i != roles.end (); ++i)
+    i->second->print (os,indent+2);
+  os << "\n";
+
+  //-- print specifications
   for (auto i = specs.begin ();i != specs.end (); ++i)
     i->second->print (os,indent+2);
   os << "\n";

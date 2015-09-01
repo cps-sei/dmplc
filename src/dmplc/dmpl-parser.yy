@@ -133,6 +133,7 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
     dmpl::Func *function;
     dmpl::Dims *dims;
     dmpl::Spec *spec;
+    dmpl::Role *role;
     std::string *string;
     std::list<std::string> *strList;
     int token;
@@ -164,7 +165,7 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
    calling an (NIdentifier*). It makes the compiler happy.
  */
 %type <token> program constant
-%type <string> role role_body
+%type <role> role role_body
 %type <node> node_body node
 %type <varList> node_var_init node_var_decl var_group var_block
 %type <function> procedure fn_body fn_prototype
@@ -295,7 +296,7 @@ node_body : {
   delete $2;
 }
 | node_body role {
-  //std::cerr << "role: " << *$2 << std::endl;
+  $1->addRole(*$2);
   $$ = $1;
   delete $2;
 }
@@ -307,29 +308,36 @@ node_body : {
 ;
 
 role : attr_list TROLE TIDENTIFIER TLBRACE role_body TRBRACE {
-  $$ = new std::string(*$5 + " " + *$3);
-  delete $1; delete $3; delete $5;
+  (*$5)->name = *$3;
+  (*$5)->attrs = *$1;
+  $$ = $5;
+  delete $1; delete $3;
 }
 | attr_list TROLE TIDENTIFIER TID TINTEGER TLBRACE role_body TRBRACE {
-  $$ = new std::string(*$7 + " " + *$3 + " " + *$5);
-  delete $1; delete $3; delete $5; delete $7;
+  (*$7)->name = *$3;
+  (*$7)->attrs = *$1;
+  $$ = $7;
+  delete $1; delete $3; delete $5;
 }
 ;
 
 role_body : {
-  $$ = new std::string("role = ");
+  $$ = new dmpl::Role(new dmpl::RoleClass());
 }
 | role_body var_block {
-  $$ = new std::string(*$1 + " var_block");
-  delete $1; delete $2;
+  (*$1)->addVar(*$2);
+  $$ = $1;
+  delete $2;
 }
 | role_body procedure {
-  $$ = new std::string(*$1 + " procedure");
-  delete $1; delete $2;
+  (*$1)->addFunction(*$2);
+  $$ = $1;
+  delete $2;
 }
 | role_body specification {
-  $$ = new std::string(*$1 + " specification");
-  delete $1; delete $2;
+  (*$1)->addSpecification(*$2);
+  $$ = $1;
+  delete $2;
 }
 ;
 
