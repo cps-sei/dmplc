@@ -120,7 +120,7 @@ namespace dmpl
     Node *node;
 
     /**
-     * The node name
+     * The role name
      **/
     std::string name;
 
