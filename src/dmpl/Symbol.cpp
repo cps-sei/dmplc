@@ -100,7 +100,7 @@ namespace dmpl
   }
 
   //-- analyze symbol usage by a node
-  void SymbolUser::analyzeSymbolUsage(Node &n)
+  void SymbolUser::analyzeSymbolUsage(BaseNode &n)
   {
     BOOST_FOREACH(const Funcs::value_type &f, n.funcs)
     {

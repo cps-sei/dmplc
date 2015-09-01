@@ -216,7 +216,7 @@ dmpl::gams::Sync_Builder::build_common_global_variables ()
   buffer_ << "Reference<unsigned int> id(knowledge, \".id\");\n";
   buffer_ << "Reference<unsigned int>  num_processes(knowledge, \".num_processes\");\n";
   Node &node = builder_.program.nodes.begin()->second;
-  BOOST_FOREACH(Funcs::value_type &f, node.funcs)
+  BOOST_FOREACH(Funcs::value_type &f, node->funcs)
   {
     if (!f.second->isThread())
       continue;
@@ -353,7 +353,7 @@ dmpl::gams::Sync_Builder::build_program_variables ()
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
     buffer_ << "// Defining program-specific global variables\n";
-    Vars & vars = n->second.globVars;
+    Vars & vars = n->second->globVars;
     for (Vars::iterator i = vars.begin (); i != vars.end (); ++i)
     {
       Var & var = i->second;
@@ -362,14 +362,14 @@ dmpl::gams::Sync_Builder::build_program_variables ()
     }
     
     buffer_ << "\n// Defining program-specific local variables\n";
-    Vars & locals = n->second.locVars;
+    Vars & locals = n->second->locVars;
     for (Vars::iterator i = locals.begin (); i != locals.end (); ++i)
     {
       Var & var = i->second;
       build_program_variable (var);
     }
 
-    for (const Func &thread : n->second.threads)
+    for (const Func &thread : n->second->threads)
     {
       buffer_ << "// Defining thread-specific global variables\n";
       for (auto i : vars)
@@ -496,7 +496,7 @@ dmpl::gams::Sync_Builder::build_program_variables_bindings ()
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
     buffer_ << "  // Binding program-specific global variables\n";
-    Vars & vars = n->second.globVars;
+    Vars & vars = n->second->globVars;
     for (Vars::iterator i = vars.begin (); i != vars.end (); ++i)
     {
       Var & var = i->second;
@@ -504,7 +504,7 @@ dmpl::gams::Sync_Builder::build_program_variables_bindings ()
     }
     
     buffer_ << "\n  // Binding program-specific local variables\n";
-    Vars & locals = n->second.locVars;
+    Vars & locals = n->second->locVars;
     for (Vars::iterator i = locals.begin (); i != locals.end (); ++i)
     {
       Var & var = i->second;
@@ -753,7 +753,7 @@ dmpl::gams::Sync_Builder::build_parse_args ()
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
     buffer_ << "\n    // Providing init for global variables\n";
-    Vars & vars = n->second.globVars;
+    Vars & vars = n->second->globVars;
     for (Vars::iterator i = vars.begin (); i != vars.end (); ++i)
     {
       Var& var = i->second;
@@ -761,7 +761,7 @@ dmpl::gams::Sync_Builder::build_parse_args ()
     }
     
     buffer_ << "\n    // Providing init for local variables\n";
-    Vars & locals = n->second.locVars;
+    Vars & locals = n->second->locVars;
     for (Vars::iterator i = locals.begin (); i != locals.end (); ++i)
     {
       Var& var = i->second;
@@ -881,9 +881,9 @@ dmpl::gams::Sync_Builder::build_functions_declarations ()
   Nodes & nodes = builder_.program.nodes;
   for (auto n : nodes)
   {
-    for (Func thread : n.second.threads)
+    for (Func thread : n.second->threads)
     {
-      Funcs & funcs = n.second.funcs;
+      Funcs & funcs = n.second->funcs;
       build_function_declaration (thread, n.second, thread);
       for (auto i : funcs)
       {
@@ -905,7 +905,7 @@ dmpl::gams::Sync_Builder::build_refresh_modify_globals ()
   buffer_ << "  engine::Variables & vars)\n";
   buffer_ << "{\n";
   Node &node = builder_.program.nodes.begin()->second;
-  BOOST_FOREACH(Funcs::value_type &f, node.funcs)
+  BOOST_FOREACH(Funcs::value_type &f, node->funcs)
   {
     if (!f.second->isThread())
       continue;
@@ -932,7 +932,7 @@ dmpl::gams::Sync_Builder::build_refresh_modify_globals ()
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
     buffer_ << "  // Remodifying program-specific global variables\n";
-    Vars & vars = n->second.globVars;
+    Vars & vars = n->second->globVars;
     for (Vars::iterator i = vars.begin (); i != vars.end (); ++i)
     {
       Var & var = i->second;
@@ -1014,9 +1014,9 @@ dmpl::gams::Sync_Builder::build_functions (void)
   Nodes & nodes = builder_.program.nodes;
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
-    for (Func thread : n->second.threads)
+    for (Func thread : n->second->threads)
     {
-      Funcs & funcs = n->second.funcs;
+      Funcs & funcs = n->second->funcs;
       build_function (thread, n->second, thread);
       for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
       {
@@ -1044,7 +1044,7 @@ dmpl::gams::Sync_Builder::build_function_declaration (
     return;
 
   buffer_ << "Madara::Knowledge_Record\n";
-  buffer_ << node.name;
+  buffer_ << node->name;
   if(thread)
     buffer_ << "_" << "thread" << thread->threadID;
   buffer_ << "_" << function->name;
@@ -1093,7 +1093,7 @@ dmpl::gams::Sync_Builder::build_function (
   }
 
   buffer_ << "Madara::Knowledge_Record\n";
-  buffer_ << node.name << "_";
+  buffer_ << node->name << "_";
   if(thread)
     buffer_ << "thread" << thread->threadID;
   buffer_ << "_" << function->name;
@@ -1296,7 +1296,7 @@ dmpl::gams::Sync_Builder::build_expect_thread_definition (void)
 
   Node &node = builder_.program.nodes.begin()->second;
 
-  BOOST_FOREACH(Vars::value_type &it, node.locVars)
+  BOOST_FOREACH(Vars::value_type &it, node->locVars)
   {
     Var var = it.second;
     if(var->type->dims.size() != 0)
@@ -1309,7 +1309,7 @@ dmpl::gams::Sync_Builder::build_expect_thread_definition (void)
     }
   }
 
-  BOOST_FOREACH(Vars::value_type &it, node.globVars)
+  BOOST_FOREACH(Vars::value_type &it, node->globVars)
   {
     Var var = it.second;
     if(var->type->dims.size() != 1)
@@ -1866,7 +1866,7 @@ dmpl::gams::Sync_Builder::compute_priorities ()
 
   //-- assign priorities rate monotonically
   std::multimap<int,std::string> period2Func;
-  BOOST_FOREACH(Funcs::value_type &f, node.funcs)
+  BOOST_FOREACH(Funcs::value_type &f, node->funcs)
     {
       if (f.second->attrs.count("Period") == 0)
         continue;
@@ -1886,7 +1886,7 @@ dmpl::gams::Sync_Builder::compute_priorities ()
   //-- get the criticalities from the dmpl file. also compute the
   //-- maximum criticality
   unsigned maxCrit = 0;
-  BOOST_FOREACH(Funcs::value_type &f, node.funcs)
+  BOOST_FOREACH(Funcs::value_type &f, node->funcs)
     {
       if (f.second->attrs.count("Criticality") == 0)
         continue;
@@ -1905,7 +1905,7 @@ dmpl::gams::Sync_Builder::compute_priorities ()
 
   //-- create the string argument to the scheduler
   std::string jvmArg;
-  BOOST_FOREACH(Funcs::value_type &f, node.funcs)
+  BOOST_FOREACH(Funcs::value_type &f, node->funcs)
     {
       if (f.second->attrs.count("Period") == 0)
         continue;
@@ -2029,8 +2029,8 @@ dmpl::gams::Sync_Builder::build_main_function ()
 
   Node &node = builder_.program.nodes.begin()->second;
 
-  buffer_ << "  // NODE: " << node.name << "\n";
-  BOOST_FOREACH (Attributes::value_type & attr, node.attrs)
+  buffer_ << "  // NODE: " << node->name << "\n";
+  BOOST_FOREACH (Attributes::value_type & attr, node->attrs)
     {
       buffer_ << "  // @" << attr.second.name;
       BOOST_FOREACH (Expr p, attr.second.paramList)
@@ -2058,7 +2058,7 @@ dmpl::gams::Sync_Builder::build_main_function ()
   buffer_ << "    init_fn->second(platform_params, knowledge);\n";
 
 
-  BOOST_FOREACH(Funcs::value_type &f, node.funcs)
+  BOOST_FOREACH(Funcs::value_type &f, node->funcs)
     {
       if (f.second->attrs.count("InitSim") == 1)
         {
@@ -2072,7 +2072,7 @@ dmpl::gams::Sync_Builder::build_main_function ()
   Func platformFunction;
   buffer_ << "  std::vector<Algo *> algos;\n";
   buffer_ << "  Algo *algo;\n\n";
-  BOOST_FOREACH(Funcs::value_type &f, node.funcs)
+  BOOST_FOREACH(Funcs::value_type &f, node->funcs)
     {
       if (!f.second->isThread())
         continue;
@@ -2198,7 +2198,7 @@ dmpl::gams::Sync_Builder::build_main_define_functions ()
   buffer_ << "  // Defining thread functions for MADARA\n\n";
   for (const auto &n : builder_.program.nodes)
   {
-    for (Func thread : n.second.threads)
+    for (Func thread : n.second->threads)
     {
       build_main_define_function (n.second, thread);
     }
@@ -2217,7 +2217,7 @@ dmpl::gams::Sync_Builder::build_main_define_function (const Node & node,
       buffer_ << "  knowledge.define_function (\"";
       buffer_ << function->name;
       buffer_ << "\", ";
-      buffer_ << node.name << "_" << "thread" << function->threadID << "_" << function->name;
+      buffer_ << node->name << "_" << "thread" << function->threadID << "_" << function->name;
       buffer_ << ");\n";
     }
 }

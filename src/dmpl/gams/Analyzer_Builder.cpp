@@ -327,7 +327,7 @@ dmpl::gams::Analyzer_Builder::build_program_variables ()
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
     buffer_ << "// Defining program-specific global variables\n";
-    Vars & vars = n->second.globVars;
+    Vars & vars = n->second->globVars;
     for (Vars::iterator i = vars.begin (); i != vars.end (); ++i)
     {
       Var & var = i->second;
@@ -336,7 +336,7 @@ dmpl::gams::Analyzer_Builder::build_program_variables ()
     }
     
     buffer_ << "\n// Defining program-specific local variables\n";
-    Vars & locals = n->second.locVars;
+    Vars & locals = n->second->locVars;
     for (Vars::iterator i = locals.begin (); i != locals.end (); ++i)
     {
       Var & var = i->second;
@@ -450,7 +450,7 @@ dmpl::gams::Analyzer_Builder::build_program_variables_bindings ()
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
     buffer_ << "  // Binding program-specific global variables\n";
-    Vars & vars = n->second.globVars;
+    Vars & vars = n->second->globVars;
     for (Vars::iterator i = vars.begin (); i != vars.end (); ++i)
     {
       Var & var = i->second;
@@ -458,7 +458,7 @@ dmpl::gams::Analyzer_Builder::build_program_variables_bindings ()
     }
     
     buffer_ << "\n  // Binding program-specific local variables\n";
-    Vars & locals = n->second.locVars;
+    Vars & locals = n->second->locVars;
     for (Vars::iterator i = locals.begin (); i != locals.end (); ++i)
     {
       Var & var = i->second;
@@ -706,7 +706,7 @@ dmpl::gams::Analyzer_Builder::build_parse_args ()
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
     buffer_ << "\n    // Providing init for global variables\n";
-    Vars & vars = n->second.globVars;
+    Vars & vars = n->second->globVars;
     for (Vars::iterator i = vars.begin (); i != vars.end (); ++i)
     {
       Var& var = i->second;
@@ -714,7 +714,7 @@ dmpl::gams::Analyzer_Builder::build_parse_args ()
     }
     
     buffer_ << "\n    // Providing init for local variables\n";
-    Vars & locals = n->second.locVars;
+    Vars & locals = n->second->locVars;
     for (Vars::iterator i = locals.begin (); i != locals.end (); ++i)
     {
       Var& var = i->second;
@@ -836,7 +836,7 @@ dmpl::gams::Analyzer_Builder::build_functions_declarations ()
   buffer_ << "// Nodes: " << builder_.program.nodes.size() << std::endl;
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
-    Funcs & funcs = n->second.funcs;
+    Funcs & funcs = n->second->funcs;
     buffer_ << "// Funcs: " << funcs.size() << std::endl;
     for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
     {
@@ -861,7 +861,7 @@ dmpl::gams::Analyzer_Builder::build_functions (void)
   Nodes & nodes = builder_.program.nodes;
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
-    Funcs & funcs = n->second.funcs;
+    Funcs & funcs = n->second->funcs;
     for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
     {
       build_function (n->second, i->second);
@@ -880,7 +880,7 @@ dmpl::gams::Analyzer_Builder::build_function_declaration (
     return;
 
   buffer_ << "Madara::Knowledge_Record\n";
-  buffer_ << node.name << "_" << function->name;
+  buffer_ << node->name << "_" << function->name;
   buffer_ << " (engine::Function_Arguments & args, engine::Variables & vars);\n";
 }
 
@@ -903,7 +903,7 @@ dmpl::gams::Analyzer_Builder::build_function (
   }
 
   buffer_ << "Madara::Knowledge_Record\n";
-  buffer_ << node.name << "_" << function->name;
+  buffer_ << node->name << "_" << function->name;
   buffer_ << " (engine::Function_Arguments & args, engine::Variables & vars)\n";
   buffer_ << "{\n";
   buffer_ << "  // Declare local variables\n";
@@ -951,8 +951,8 @@ dmpl::gams::Analyzer_Builder::build_main_function ()
 
   Node &node = builder_.program.nodes.begin()->second;
 
-  buffer_ << "  // NODE: " << node.name << "\n";
-  BOOST_FOREACH (Attributes::value_type & attr, node.attrs)
+  buffer_ << "  // NODE: " << node->name << "\n";
+  BOOST_FOREACH (Attributes::value_type & attr, node->attrs)
     {
       buffer_ << "  // @" << attr.second.name;
       BOOST_FOREACH (Expr p, attr.second.paramList)
@@ -977,7 +977,7 @@ dmpl::gams::Analyzer_Builder::build_main_function ()
   buffer_ << "  for(;;) {\n";
   buffer_ << "    bool done = !analyzer.next_step();\n";
   
-  BOOST_FOREACH(const Specs::value_type &spec, node.specs)
+  BOOST_FOREACH(const Specs::value_type &spec, node->specs)
   {
     //-- skip anything that is not an expect spec
     const ExpectSpec *expectSpec = dynamic_cast<ExpectSpec*>(&*spec.second);
@@ -987,13 +987,13 @@ dmpl::gams::Analyzer_Builder::build_main_function ()
     if (attrAtNode)
     {
       buffer_ << "    {" << std::endl;
-      buffer_ << "      " << node.idVar->getName() << " = " << attrAtNode->paramList.front()->requireInt() << ";" << std::endl;
-      buffer_ << "      int n = " << node.idVar->getName() << ";" << std::endl;
+      buffer_ << "      " << node->idVar->getName() << " = " << attrAtNode->paramList.front()->requireInt() << ";" << std::endl;
+      buffer_ << "      int n = " << node->idVar->getName() << ";" << std::endl;
     }
     else
     {
       buffer_ << "    for(int n = 0; n < processes; n++) {" << std::endl;
-      buffer_ << "      " << node.idVar->getName() << " = n;" << std::endl;
+      buffer_ << "      " << node->idVar->getName() << " = n;" << std::endl;
     }
     buffer_ << "      engine::Variables vars;" << std::endl;
     buffer_ << "      bool value = " << expectSpec->func << "();\n";
@@ -1026,7 +1026,7 @@ dmpl::gams::Analyzer_Builder::build_main_function ()
 
   buffer_ << "    if(done) break;\n";
   buffer_ << "  }\n";
-  BOOST_FOREACH(const Specs::value_type &spec, node.specs)
+  BOOST_FOREACH(const Specs::value_type &spec, node->specs)
   {
     //-- skip anything that is not an expect spec
     const ExpectSpec *expectSpec = dynamic_cast<ExpectSpec*>(&*spec.second);
@@ -1038,7 +1038,7 @@ dmpl::gams::Analyzer_Builder::build_main_function ()
     if(atEndSpec)
     {
       if (attrAtNode)
-        buffer_ << "  { int n = " << node.idVar->getName() << ";" << std::endl;
+        buffer_ << "  { int n = " << node->idVar->getName() << ";" << std::endl;
       else
         buffer_ << "  for(int n = 0; n < processes; n++) {" << std::endl;
 
@@ -1049,7 +1049,7 @@ dmpl::gams::Analyzer_Builder::build_main_function ()
     else if(atLeastSpec)
     {
       if (attrAtNode)
-        buffer_ << "  { int n = " << node.idVar->getName() << ";" << std::endl;
+        buffer_ << "  { int n = " << node->idVar->getName() << ";" << std::endl;
       else
         buffer_ << "  for(int n = 0; n < processes; n++) {" << std::endl;
 
@@ -1085,7 +1085,7 @@ dmpl::gams::Analyzer_Builder::build_main_define_functions ()
   Nodes & nodes = builder_.program.nodes;
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
     {
-      Funcs & funcs = n->second.funcs;
+      Funcs & funcs = n->second->funcs;
       for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
         {
           build_main_define_function (n->second, i->second);
@@ -1105,7 +1105,7 @@ dmpl::gams::Analyzer_Builder::build_main_define_function (const Node & node,
       buffer_ << "  knowledge.define_function (\"";
       buffer_ << function->name;
       buffer_ << "\", ";
-      buffer_ << node.name << "_" << function->name;
+      buffer_ << node->name << "_" << function->name;
       buffer_ << ");\n";
     }
 }

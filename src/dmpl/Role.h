@@ -109,7 +109,7 @@ namespace dmpl
   {
   public:    
     /// Owning Node object
-    Node *node;
+    Node node;
 
     /**
      * The role name
@@ -144,11 +144,10 @@ namespace dmpl
     Specs specs;
 
     ///constructors
-    RoleClass(bool abst = false) : node(NULL), abstract(abst) {}
-    RoleClass(const std::string &n, bool abst = false)
-        : node(NULL), name(n), abstract(abst) {}
+    RoleClass(bool abst = false) : abstract(abst) {}
+    RoleClass(const std::string &n, bool abst = false) : name(n), abstract(abst) {}
     RoleClass(const std::string &n, const Attributes& a, bool abst = false)
-        : node(NULL), name(n), HasAttributes(a), abstract(abst) {}
+      : name(n), HasAttributes(a), abstract(abst) {}
 
     Var findVar(const std::string& name) const
     {

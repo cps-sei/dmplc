@@ -143,7 +143,7 @@ dmpl::Program::print (std::ostream &os,unsigned int indent)
 
   //print nodes
   for (dmpl::Nodes::iterator i = nodes.begin (); i != nodes.end (); ++i)
-    i->second.print (os,indent);
+    i->second->print (os,indent);
   os << '\n';
 
   //print internal functions
@@ -170,12 +170,12 @@ dmpl::Program::sanityCheck()
 
   //nodes have just one parameter -- its id
   Node &node = nodes.begin()->second;
-  assert(node.args.size() == 1 && "ERROR: node must have one id!");
-  node.initArgs();
-  const std::string &nodeId = *(node.args.begin());
+  assert(node->args.size() == 1 && "ERROR: node must have one id!");
+  node->initArgs();
+  const std::string &nodeId = *(node->args.begin());
 
   //check node functions
-  BOOST_FOREACH(Funcs::value_type &v,node.funcs) {
+  BOOST_FOREACH(Funcs::value_type &v,node->funcs) {
     BOOST_FOREACH(Stmt &s, v.second->body) {
       dmpl::program::SanityChecker sc(*this);
       sc.addIdMap(nodeId,0);
@@ -185,7 +185,7 @@ dmpl::Program::sanityCheck()
 
 #if 0
   //check node global variables
-  BOOST_FOREACH(Vars::value_type &v,node.globVars) {
+  BOOST_FOREACH(Vars::value_type &v,node->globVars) {
     //non-array types of global variables are illegal
     assert(!v.second->type->dims.empty() && 
            "ERROR: all global variables must be of array type");
@@ -202,8 +202,8 @@ dmpl::Program::analyzeThreads()
 {
   BOOST_FOREACH(Nodes::value_type &node, nodes)
   {
-    node.second.analyzeThreads();
-    SymbolUser::analyzeSymbolUsage(node.second);
+    node.second->analyzeThreads();
+    SymbolUser::analyzeSymbolUsage(*(node.second));
   }
 }
 

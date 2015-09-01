@@ -58,28 +58,28 @@
 #include <iostream>
 
 void
-dmpl::Node::mergeWith(const Node &on)
+dmpl::BaseNode::mergeWith(const Node &on)
 {
-  Node &n = *this;
+  BaseNode &n = *this;
 
   //-- merge abstract
-  if (n.abstract && !on.abstract)
+  if (n.abstract && !on->abstract)
     n.abstract = false;
 
   //-- merge name
   if (n.name == "")
-    n.name = on.name;
-  else if (n.name != on.name)
-    throw std::runtime_error("Cannot merge nodes of differing names: " + n.name + " and " + on.name);
+    n.name = on->name;
+  else if (n.name != on->name)
+    throw std::runtime_error("Cannot merge nodes of differing names: " + n.name + " and " + on->name);
 
   //-- marge args
   if (n.args.size() == 0)
-    n.args = on.args;
-  else if (!on.abstract && n.args != on.args)
+    n.args = on->args;
+  else if (!on->abstract && n.args != on->args)
     throw std::runtime_error("Cannot merge nodes which have different arguments: for " + n.name);
 
   //-- merge global vars
-  BOOST_FOREACH(const Vars::value_type &v, on.globVars)
+  BOOST_FOREACH(const Vars::value_type &v, on->globVars)
   {
     if(n.globVars.count(v.second->name) == 0)
       n.globVars[v.second->name] = v.second;
@@ -88,7 +88,7 @@ dmpl::Node::mergeWith(const Node &on)
   }
 
   //-- merge local vars
-  BOOST_FOREACH(const Vars::value_type &v, on.locVars)
+  BOOST_FOREACH(const Vars::value_type &v, on->locVars)
   {
     if(n.locVars.count(v.second->name) == 0)
       n.locVars[v.second->name] = v.second;
@@ -97,7 +97,7 @@ dmpl::Node::mergeWith(const Node &on)
   }
 
   //-- merge functions
-  BOOST_FOREACH(const Funcs::value_type &f, on.funcs)
+  BOOST_FOREACH(const Funcs::value_type &f, on->funcs)
   {
     if(n.funcs.count(f.second->name) == 0)
       n.funcs[f.second->name] = f.second;
@@ -106,7 +106,7 @@ dmpl::Node::mergeWith(const Node &on)
   }
 
   //-- merge attributes
-  BOOST_FOREACH(const Attributes::value_type &a, on.attrs)
+  BOOST_FOREACH(const Attributes::value_type &a, on->attrs)
   {
     if(n.attrs.count(a.second.name) == 0)
       n.attrs[a.second.name] = a.second;
@@ -115,10 +115,10 @@ dmpl::Node::mergeWith(const Node &on)
   }
 
   //-- merge roles
-  BOOST_FOREACH(const Roles::value_type &r, on.roles) addRole(r.second);
+  BOOST_FOREACH(const Roles::value_type &r, on->roles) addRole(r.second);
 
   //-- merge specifications
-  BOOST_FOREACH(const Specs::value_type &s, on.specs) {
+  BOOST_FOREACH(const Specs::value_type &s, on->specs) {
     if(!specs.insert(s).second)
       throw std::runtime_error("ERROR: duplicate specificaion " + s.first);
   }
@@ -128,7 +128,7 @@ dmpl::Node::mergeWith(const Node &on)
 //-- print a node to an output stream with indentation
 /*********************************************************************/
 void
-dmpl::Node::print (std::ostream &os,unsigned int indent)
+dmpl::BaseNode::print (std::ostream &os,unsigned int indent)
 {
   std::string spacer (indent, ' ');
 
@@ -190,7 +190,7 @@ dmpl::Node::print (std::ostream &os,unsigned int indent)
 }
 
 dmpl::Func
-dmpl::Node::findFunc(const std::string& name) const
+dmpl::BaseNode::findFunc(const std::string& name) const
 {
   Funcs::const_iterator ret = funcs.find(name);
   if(ret != funcs.end())
@@ -200,7 +200,7 @@ dmpl::Node::findFunc(const std::string& name) const
 
 
 void
-dmpl::Node::analyzeThreads()
+dmpl::BaseNode::analyzeThreads()
 {
   threads.clear();
   int curID = 0;
@@ -216,3 +216,7 @@ dmpl::Node::analyzeThreads()
   }
   SymbolUser::analyzeSymbolUsage(*this);
 }
+
+/*********************************************************************/
+//-- end of file
+/*********************************************************************/

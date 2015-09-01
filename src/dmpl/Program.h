@@ -144,14 +144,14 @@ namespace dmpl
 
     void addNode(const Node &node)
     {
-      auto it = nodes.find(node.name);
+      auto it = nodes.find(node->name);
 
       if(it == nodes.end())
-        it = nodes.insert(std::pair<std::string,Node>(node.name,node)).first;
+        it = nodes.insert(std::pair<std::string,Node>(node->name,node)).first;
       else
-        it->second.mergeWith(node);
+        it->second->mergeWith(node);
 
-      it->second.program = this;
+      it->second->program = this;
     }
 
     ///add a function

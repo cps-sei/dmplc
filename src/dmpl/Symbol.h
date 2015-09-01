@@ -97,7 +97,8 @@ namespace dmpl
   typedef std::shared_ptr<Specification> Spec;
   typedef std::map<std::string,Spec> Specs;
 
-  class Node;
+  class BaseNode;
+  typedef std::shared_ptr<BaseNode> Node;
 
   class RoleClass;
   typedef std::shared_ptr<RoleClass> Role;
@@ -487,11 +488,6 @@ namespace dmpl
   };
 
   /*******************************************************************/
-  //-- forward declaration
-  /*******************************************************************/
-  class Node;
-
-  /*******************************************************************/
   //-- a class representing a symbol user
   /*******************************************************************/
   class SymbolUser : public virtual_enable_shared_from_this<SymbolUser>
@@ -504,7 +500,7 @@ namespace dmpl
     class Context
     {
     public:
-      Node *node;
+      BaseNode *node;
       Spec spec;
       Func thread;
       Func curFunc;
@@ -526,7 +522,7 @@ namespace dmpl
     virtual SymUserList getParents(Context &con) { return SymUserList(); }
     virtual Context useSymbols(Context con);
 
-    static void analyzeSymbolUsage(Node &n);
+    static void analyzeSymbolUsage(BaseNode &n);
 
     SymbolUse *findSymbol(const Sym &s)
     {

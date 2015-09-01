@@ -256,14 +256,14 @@ constant : TCONST TIDENTIFIER TEQUAL TINTEGER TSEMICOLON {
 ;
 
 node : attr_list TNODE TIDENTIFIER TLBRACE node_body TRBRACE {
-  $5->name = *$3;
-  $5->args.push_back("id");
-  $5->attrs = *$1;
+  (*$5)->name = *$3;
+  (*$5)->args.push_back("id");
+  (*$5)->attrs = *$1;
   $$ = $5;
   delete $1; delete $3;
 }
 | attr_list TNODE TIDENTIFIER TSEMICOLON {
-  $$ = new dmpl::Node(*$3, *$1, true);
+  $$ = new dmpl::Node(new dmpl::BaseNode(*$3, *$1, true));
   delete $1; delete $3;
 }
 ;
@@ -283,25 +283,26 @@ specification : TEXPECT TIDENTIFIER TCOLON TATEND TIMPLIES TIDENTIFIER TSEMICOLO
 ;
 
 node_body : {
-  $$ = new dmpl::Node();
+  $$ = new dmpl::Node(new dmpl::BaseNode());
 }
 | node_body var_block {
-  $1->addVar(*$2);
+  (*$1)->addVar(*$2);
   $$ = $1;
   delete $2;
 }
 | node_body procedure {
-  $1->addFunction(*$2);
+  (*$1)->addFunction(*$2);
   $$ = $1;
   delete $2;
 }
 | node_body role {
-  $1->addRole(*$2);
+  (*$2)->node = *$1;
+  (*$1)->addRole(*$2);
   $$ = $1;
   delete $2;
 }
 | node_body specification {
-  $1->addSpecification(*$2);
+  (*$1)->addSpecification(*$2);
   $$ = $1;
   delete $2;
 }

@@ -137,7 +137,7 @@ void dmpl::syncseqdbl::GlobalTransformer::exitLval(dmpl::LvalExpr &expr)
 
   //handle global variables
   Node &node = prog.nodes.begin()->second;
-  if(node.globVars.count(expr.var)) newName += "_i";
+  if(node->globVars.count(expr.var)) newName += "_i";
 
   //substitute .id with its mapping in idMap
   std::map<std::string,size_t>::const_iterator iit = idMap.find(expr.var);
@@ -240,12 +240,12 @@ void dmpl::syncseqdbl::NodeTransformer::exitLval(dmpl::LvalExpr &expr)
   else if(inCall && prog.isInternalFunction(newName)) 
     newName += (std::string("_") + (fwd ? "fwd" : "bwd"));
   //handle function call -- change name if the function is defined in node
-  else if(inCall && node.isFunction(newName)) 
-    newName = (node.name + "__" + newName + "_" + nodeIdStr + "_" + (fwd ? "fwd" : "bwd"));
+  else if(inCall && node->isFunction(newName)) 
+    newName = (node->name + "__" + newName + "_" + nodeIdStr + "_" + (fwd ? "fwd" : "bwd"));
   else
   {
-    bool isGlob = node.globVars.count(expr.var) > 0;
-    bool isLoc = node.locVars.count(expr.var) > 0;
+    bool isGlob = node->globVars.count(expr.var) > 0;
+    bool isLoc = node->locVars.count(expr.var) > 0;
 
     //handle global variables -- distinguishing between lhs of
     //assignments and other cases, and between forward and backward
@@ -261,7 +261,7 @@ void dmpl::syncseqdbl::NodeTransformer::exitLval(dmpl::LvalExpr &expr)
     }
 
     //handle local variables
-    //if(node.locVars.count(expr.var))
+    //if(node->locVars.count(expr.var))
       //newName += "_" + boost::lexical_cast<std::string>(nodeId);
 
     //substitute .id with its mapping in idMap
@@ -426,7 +426,7 @@ void dmpl::SyncSeqDbl::createGlobVars()
   //nodeNum -- make two copies, one for initial value for a round, and
   //the other for the final value for a round
   dmpl::VarList gvars;
-  BOOST_FOREACH(Vars::value_type &v,node.globVars) {
+  BOOST_FOREACH(Vars::value_type &v,node->globVars) {
     gvars.push_back(v.second->instDim(nodeNum));
   }
   BOOST_FOREACH(const Var &v,gvars) {
@@ -437,7 +437,7 @@ void dmpl::SyncSeqDbl::createGlobVars()
   }
 
   //instantiate node-local variables by adding _i for each node id i
-  BOOST_FOREACH(Vars::value_type &v,node.locVars) {
+  BOOST_FOREACH(Vars::value_type &v,node->locVars) {
     for(size_t i = 0;i < nodeNum;++i) {
       cprog.addGlobVar(v.second->instName(std::string("_") + 
                                          boost::lexical_cast<std::string>(i)));
@@ -485,7 +485,7 @@ void dmpl::SyncSeqDbl::createRoundCopier()
   //create the copier from _f to _i
   StmtList fnBody1;
   for(size_t i = 0;i < nodeNum;++i) {
-    BOOST_FOREACH(Vars::value_type &v,node.globVars) {
+    BOOST_FOREACH(Vars::value_type &v,node->globVars) {
       Var var = v.second->instDim(nodeNum);
       createCopyStmts(0,var,fnBody1,ExprList(),i);
     }
@@ -497,7 +497,7 @@ void dmpl::SyncSeqDbl::createRoundCopier()
   //create the copier from _i to _f
   StmtList fnBody2;
   for(size_t i = 0;i < nodeNum;++i) {
-    BOOST_FOREACH(Vars::value_type &v,node.globVars) {
+    BOOST_FOREACH(Vars::value_type &v,node->globVars) {
       Var var = v.second->instDim(nodeNum);
       createCopyStmts(1,var,fnBody2,ExprList(),i);
     }
@@ -527,7 +527,7 @@ void dmpl::SyncSeqDbl::createMainFunc()
 
   Func roundFunc;
   const Node &node = builder.program.nodes.begin()->second;
-  BOOST_FOREACH(const Funcs::value_type &f, node.funcs) {
+  BOOST_FOREACH(const Funcs::value_type &f, node->funcs) {
     int barSync = f.second->attrs.count("BarrierSync");
     if(barSync < 1)
       continue;
@@ -551,7 +551,7 @@ void dmpl::SyncSeqDbl::createMainFunc()
   for(size_t i = 0;i < nodeNum;++i) {
     //call the _fwd version of the ROUND function of the node. this
     //copies from _i to _f
-    std::string callNameFwd = node.name + "__" + roundFunc->name + "_" + 
+    std::string callNameFwd = node->name + "__" + roundFunc->name + "_" + 
       boost::lexical_cast<std::string>(i) + "_fwd";
     Expr callExprFwd(new LvalExpr(callNameFwd));
     Stmt callStmtFwd(new CallStmt(callExprFwd,dmpl::ExprList()));
@@ -570,7 +570,7 @@ void dmpl::SyncSeqDbl::createMainFunc()
   for(size_t i = 0;i < nodeNum;++i) {
     //call the _bwd version of the ROUND function of the node. this
     //copies from _f to _i
-    std::string callNameBwd = node.name + "__" + roundFunc->name + "_" + 
+    std::string callNameBwd = node->name + "__" + roundFunc->name + "_" + 
       boost::lexical_cast<std::string>(i) + "_bwd";
     Expr callExprBwd(new LvalExpr(callNameBwd));
     Stmt callStmtBwd(new CallStmt(callExprBwd,dmpl::ExprList()));
@@ -606,7 +606,7 @@ void dmpl::SyncSeqDbl::createMainFunc()
       for(size_t i = 0;i < nodeNum;++i) {
         //call the _fwd version of the ROUND function of the
         //node. this copies from _i to _f
-        std::string callNameFwd = node.name + "__" + roundFunc->name + "_" + 
+        std::string callNameFwd = node->name + "__" + roundFunc->name + "_" + 
           boost::lexical_cast<std::string>(i) + "_fwd";
         Expr callExprFwd(new LvalExpr(callNameFwd));
         Stmt callStmtFwd(new CallStmt(callExprFwd,dmpl::ExprList()));
@@ -729,7 +729,7 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
 {
   Node &node = builder.program.nodes.begin()->second;
   for(size_t i = 0;i < nodeNum;++i) {
-    BOOST_FOREACH(Funcs::value_type &f,node.funcs) {
+    BOOST_FOREACH(Funcs::value_type &f,node->funcs) {
       dmpl::VarList fnParams,fnTemps;
 
       //create parameters
@@ -745,14 +745,14 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
 
         BOOST_FOREACH(const Stmt &st,f.second->body) {
           syncseqdbl::NodeTransformer nt(*this,builder.program,nodeNum,i,true);
-          std::string nodeId = *node.args.begin();
+          std::string nodeId = *node->args.begin();
           nt.addIdMap(nodeId,i);
           nt.visit(st);
           nt.delIdMap(nodeId);
           fnBody.push_back(nt.stmtMap[st]);
         }
         
-        std::string fnName = node.name + "__" + f.second->name + "_" + 
+        std::string fnName = node->name + "__" + f.second->name + "_" + 
           boost::lexical_cast<std::string>(i) + "_fwd";
         Func func(new Function(f.second->retType,fnName,fnParams,fnTemps,fnBody));
         cprog.addFunction(func);
@@ -764,14 +764,14 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
 
         BOOST_FOREACH(const Stmt &st,f.second->body) {
           syncseqdbl::NodeTransformer nt(*this,builder.program,nodeNum,i,false);
-          std::string nodeId = *node.args.begin();
+          std::string nodeId = *node->args.begin();
           nt.addIdMap(nodeId,i);
           nt.visit(st);
           nt.delIdMap(nodeId);
           fnBody.push_back(nt.stmtMap[st]);
         }
         
-        std::string fnName = node.name + "__" + f.second->name + "_" + 
+        std::string fnName = node->name + "__" + f.second->name + "_" + 
           boost::lexical_cast<std::string>(i) + "_bwd";
         Func func(new Function(f.second->retType,fnName,fnParams,fnTemps,fnBody));
         cprog.addFunction(func);

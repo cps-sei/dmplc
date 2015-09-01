@@ -75,12 +75,14 @@
 
 namespace dmpl
 {
+  //-- forward declarations
   class Program;
+
   /**
     * @class Node
     * @brief Represents a process in a distributed program
     */
-  class Node : public HasAttributes
+  class BaseNode : public HasAttributes
   {
   public:    
     /// Owning Program object
@@ -128,11 +130,11 @@ namespace dmpl
     Specs specs;
 
     ///constructors
-    Node(bool abst = false) : program(NULL), abstract(abst) {}
-    Node(const std::string &n, bool abst = false)
-        : program(NULL), name(n), abstract(abst) {}
-    Node(const std::string &n, const Attributes& a, bool abst = false)
-        : program(NULL), name(n), HasAttributes(a), abstract(abst) {}
+    BaseNode(bool abst = false) : program(NULL), abstract(abst) {}
+    BaseNode(const std::string &n, bool abst = false)
+      : program(NULL), name(n), abstract(abst) {}
+    BaseNode(const std::string &n, const Attributes& a, bool abst = false)
+      : program(NULL), name(n), HasAttributes(a), abstract(abst) {}
 
     void initArgs()
     {

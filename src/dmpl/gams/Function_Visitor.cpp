@@ -142,7 +142,7 @@ dmpl::madara::Function_Visitor::exitLval (LvalExpr & expression)
       else if(isGlobal || isAnalyzerLocal)
       {
         buffer_ << "[";
-        buffer_ << node_.idVar->getName();
+        buffer_ << node_->idVar->getName();
         buffer_ << "]";
       }
       BOOST_FOREACH (Expr & expr, expression.indices)
@@ -257,9 +257,9 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
   //dmpl::Functions & externs = builder_.program.externalFuncs;
 
   //bool isExtern = (externs.find (func_name) != externs.end ());
-  Funcs::const_iterator nodeFunc = node_.funcs.find (func_name);
+  Funcs::const_iterator nodeFunc = node_->funcs.find (func_name);
   Funcs::const_iterator progFunc = builder_.program.funcs.find (func_name);
-  bool isNodeFunc = nodeFunc != node_.funcs.end();
+  bool isNodeFunc = nodeFunc != node_->funcs.end();
   bool isProgFunc = progFunc != builder_.program.funcs.end() && progFunc->second->isExtern == false;
 
   if (expression.ignore_return)
@@ -289,7 +289,7 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
 
     if (isNodeFunc)
     {
-      buffer_ << node_.name << "_";
+      buffer_ << node_->name << "_";
     }
 
     if(thread_)
@@ -389,7 +389,7 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
     {
       static int integrate_id = 0;
       buffer_ << "integrate_knowledge((\".INTEGRAL." << integrate_id++
-              << ".\" + to_string(" << node_.idVar->getName() << ")), (";
+              << ".\" + to_string(" << node_->idVar->getName() << ")), (";
       visit(expression.args.front());
       buffer_ << "))";
     }
@@ -397,7 +397,7 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
     {
       buffer_ << "EXTERN_" << func_name << "[";
       if(lval.node == NULL)
-        buffer_ << node_.idVar->getName();
+        buffer_ << node_->idVar->getName();
       else
         visit(lval.node);
       buffer_ << "]";
@@ -719,7 +719,7 @@ dmpl::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
         if(isGlobal)
         {
           buffer_ << "[";
-          buffer_ << node_.idVar->getName();
+          buffer_ << node_->idVar->getName();
           buffer_ << "]";
         }
         BOOST_FOREACH (Expr & expr, lhs->indices)
