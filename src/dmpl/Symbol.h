@@ -100,8 +100,8 @@ namespace dmpl
   class BaseNode;
   typedef std::shared_ptr<BaseNode> Node;
 
-  class RoleClass;
-  typedef std::shared_ptr<RoleClass> Role;
+  class BaseRole;
+  typedef std::shared_ptr<BaseRole> Role;
   typedef std::map<std::string,Role> Roles;
   
   struct virtual_enable_shared_from_this_base:

@@ -58,9 +58,9 @@
 #include <iostream>
 
 void
-dmpl::RoleClass::mergeWith(const Role &other)
+dmpl::BaseRole::mergeWith(const Role &other)
 {
-  RoleClass &oth = *other;
+  BaseRole &oth = *other;
 
   //-- merge abstract
   if (abstract && !oth.abstract)
@@ -116,7 +116,7 @@ dmpl::RoleClass::mergeWith(const Role &other)
 }
 
 void
-dmpl::RoleClass::print (std::ostream &os,unsigned int indent)
+dmpl::BaseRole::print (std::ostream &os,unsigned int indent)
 {
   std::string spacer (indent, ' ');
 
@@ -173,7 +173,7 @@ dmpl::RoleClass::print (std::ostream &os,unsigned int indent)
 }
 
 dmpl::Func
-dmpl::RoleClass::findFunc(const std::string& name) const
+dmpl::BaseRole::findFunc(const std::string& name) const
 {
   Funcs::const_iterator ret = funcs.find(name);
   if(ret != funcs.end())

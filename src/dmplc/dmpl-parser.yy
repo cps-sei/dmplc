@@ -323,7 +323,7 @@ role : attr_list TROLE TIDENTIFIER TLBRACE role_body TRBRACE {
 ;
 
 role_body : {
-  $$ = new dmpl::Role(new dmpl::RoleClass());
+  $$ = new dmpl::Role(new dmpl::BaseRole());
 }
 | role_body var_block {
   (*$1)->addVar(*$2);

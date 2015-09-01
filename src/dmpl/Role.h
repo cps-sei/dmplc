@@ -102,10 +102,10 @@ namespace dmpl
   typedef std::vector<IdSpec> IdSpecs;
 
   /**
-    * @class RoleClass
+    * @class BaseRole
     * @brief Represents a node's particular role; use the Role typedef
     */
-  class RoleClass : public HasAttributes, public std::enable_shared_from_this<RoleClass>
+  class BaseRole : public HasAttributes, public std::enable_shared_from_this<BaseRole>
   {
   public:    
     /// Owning Node object
@@ -144,9 +144,9 @@ namespace dmpl
     Specs specs;
 
     ///constructors
-    RoleClass(bool abst = false) : abstract(abst) {}
-    RoleClass(const std::string &n, bool abst = false) : name(n), abstract(abst) {}
-    RoleClass(const std::string &n, const Attributes& a, bool abst = false)
+    BaseRole(bool abst = false) : abstract(abst) {}
+    BaseRole(const std::string &n, bool abst = false) : name(n), abstract(abst) {}
+    BaseRole(const std::string &n, const Attributes& a, bool abst = false)
       : name(n), HasAttributes(a), abstract(abst) {}
 
     Var findVar(const std::string& name) const
