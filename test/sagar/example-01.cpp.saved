@@ -148,7 +148,7 @@ CachedReference<short> thread0_yp(knowledge, ".yp");
 
 #define GNU_WIN
 
-int MOVE_TO(unsigned char x,unsigned char y)
+int GRID_MOVE(unsigned char x,unsigned char y,double z)
 {
   return rand() < (RAND_MAX / 10 * 6);
 }
