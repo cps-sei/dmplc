@@ -139,6 +139,31 @@ namespace dmpl
          << " => " << func << ";\n";
     }
   };
+
+  //a require specification
+  class RequireSpec : public Specification
+  {
+  public:
+    //-- the target synchronous thread
+    std::string thread;
+
+    //-- the function evaluating target property
+    std::string func;
+    
+    RequireSpec(const std::string &n, const std::string &t, const std::string &f)
+      : Specification(n), thread(t), func(f) {}
+
+    std::string toString() const
+    {
+      return std::string("require ") + name + " : " + thread + " => " + func;
+    }
+    
+    void print (std::ostream &os,unsigned int indent) const
+    {
+      std::string spacer (indent, ' ');
+      os << spacer << "require " << name << " : " << thread << " => " << func << ";\n";
+    }
+  };
 }
 
 #endif // _DMPL_SPECIFICATION_HPP_

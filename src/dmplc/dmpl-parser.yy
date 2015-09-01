@@ -275,6 +275,10 @@ specification : TEXPECT TIDENTIFIER TCOLON TATEND TIMPLIES TIDENTIFIER TSEMICOLO
   $$ = new dmpl::Spec(new dmpl::AtLeastSpec(*$2,*$7,*$5));
   delete $2; delete $5; delete $7;
 }
+| TREQUIRE TIDENTIFIER TCOLON TIDENTIFIER TIMPLIES TIDENTIFIER TSEMICOLON {
+  $$ = new dmpl::Spec(new dmpl::RequireSpec(*$2,*$4,*$6));
+  delete $2; delete $4; delete $6;
+}
 ;
 
 node_body : {
