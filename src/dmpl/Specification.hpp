@@ -127,11 +127,16 @@ namespace dmpl
     AtLeastSpec(const std::string &n, const std::string &f, const std::string &t)
       : ExpectSpec(n,f), threshold(t) {}
 
+    std::string toString() const
+    {
+      return std::string("expect ") + name + " : at_least " + threshold + " => " + func;
+    }
+
     void print (std::ostream &os,unsigned int indent) const
     {
       std::string spacer (indent, ' ');
       os << spacer << "expect " << name << " : at_least " << threshold
-         << " => " << func << ";";
+         << " => " << func << ";\n";
     }
   };
 }
