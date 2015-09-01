@@ -101,18 +101,16 @@ node uav
     else yp = y - 1;
   }
 
-  role asdf
+  role Protector
   {
-    local int x = 0;
-    void TEST() {
-    }
+    local int dummy = 0;
+    thread COLLISION_AVOIDANCE;
   }
 
-  role asdf id 0
+  role Leader id 0
   {
-    local double y = 0.1;
-    void TEST() {
-    }
+    local double dummy = 0.42;
+    thread COLLISION_AVOIDANCE;
   }
 }
 
