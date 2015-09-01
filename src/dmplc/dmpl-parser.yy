@@ -475,7 +475,6 @@ type : simp_type { $$ = $1; }
 fn_type : type { $$ = $1; }
 ;
 
-
 simp_type : TBOOL { $$ = new dmpl::Type(dmpl::boolType()); }
 | TINT { $$ = new dmpl::Type(dmpl::intType()); }
 | TDOUBLE_TYPE { $$ = new dmpl::Type(dmpl::doubleType()); }
