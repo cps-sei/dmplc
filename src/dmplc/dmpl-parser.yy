@@ -268,17 +268,20 @@ node : attr_list TNODE TIDENTIFIER TLBRACE node_body TRBRACE {
 }
 ;
 
-specification : TEXPECT TIDENTIFIER TCOLON TATEND TIMPLIES TIDENTIFIER TSEMICOLON {
-  $$ = new dmpl::Spec(new dmpl::AtEndSpec(*$2,*$6));
-  delete $2; delete $6;
+specification : attr_list TEXPECT TIDENTIFIER TCOLON TATEND TIMPLIES TIDENTIFIER TSEMICOLON {
+  $$ = new dmpl::Spec(new dmpl::AtEndSpec(*$3,*$7));
+  (*$$)->attrs = *$1;
+  delete $1; delete $3; delete $7;
 }
-| TEXPECT TIDENTIFIER TCOLON TATLEAST TDOUBLE TIMPLIES TIDENTIFIER TSEMICOLON {
-  $$ = new dmpl::Spec(new dmpl::AtLeastSpec(*$2,*$7,*$5));
-  delete $2; delete $5; delete $7;
+| attr_list TEXPECT TIDENTIFIER TCOLON TATLEAST TDOUBLE TIMPLIES TIDENTIFIER TSEMICOLON {
+  $$ = new dmpl::Spec(new dmpl::AtLeastSpec(*$3,*$8,*$6));
+  (*$$)->attrs = *$1;
+  delete $1; delete $3; delete $6; delete $8;
 }
-| TREQUIRE TIDENTIFIER TCOLON TIDENTIFIER TIMPLIES TIDENTIFIER TSEMICOLON {
-  $$ = new dmpl::Spec(new dmpl::RequireSpec(*$2,*$4,*$6));
-  delete $2; delete $4; delete $6;
+| attr_list TREQUIRE TIDENTIFIER TCOLON TIDENTIFIER TIMPLIES TIDENTIFIER TSEMICOLON {
+  $$ = new dmpl::Spec(new dmpl::RequireSpec(*$3,*$5,*$7));
+  (*$$)->attrs = *$1;
+  delete $1; delete $3; delete $5; delete $7;
 }
 ;
 
