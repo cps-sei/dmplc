@@ -184,6 +184,18 @@ namespace dmpl
       if(node != NULL) res += "@" + node->toString();
       return res;
     }
+
+    std::string toStringWithoutNodeId() const
+    {
+      std::string res = var;
+      BOOST_FOREACH(const Expr &ep,indices) res += "[" + ep->toString() + "]";
+      return res;
+    }
+
+    std::string getNodeId() const
+    {
+      return (node != NULL) ? "@" + node->toString() : "";
+    }
   };
 
   inline LvalExpr &Expression::requireLval()
@@ -251,7 +263,8 @@ namespace dmpl
 
     std::string toString() const
     {
-      std::string res = func->toString() + "(";
+      const LvalExpr &funcLval = func->requireLval();
+      std::string res = funcLval.toStringWithoutNodeId() + "(";
 
       size_t count = 0;
       BOOST_FOREACH(const Expr &a,args) {
@@ -260,7 +273,7 @@ namespace dmpl
         ++count;
       }
 
-      return res + ")";
+      return res + ")" + funcLval.getNodeId();
     }
   };
 
