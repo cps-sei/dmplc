@@ -24,3 +24,4 @@ function test_double_parse {
 
 test_double_parse example-01.dmpl
 test_double_parse test-01.dmpl
+test_double_parse example-05.dmpl

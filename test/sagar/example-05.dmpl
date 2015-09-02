@@ -174,7 +174,7 @@ void print_state(int _X,int _Y,int _id, int x, int y, int xf, int yf)
 
   for(int i = 0;i < 150;++i) printf("\n");
   
-  printf("round = %d : id = %d\n", ++round, _id);
+  printf("round = %d : id = %d\n", ++round, id);
   printf("_X = %d _Y = %d\n",_X,_Y);
   print_line(_X);
   for(int i = 0;i < _Y;++i) {
@@ -182,7 +182,7 @@ void print_state(int _X,int _Y,int _id, int x, int y, int xf, int yf)
     for(int j = 0;j < _X;++j) {
       //printf("i = %d j = %d\n", i, j);
       if(j == xf && i == yf) printf("o|");        
-      else if(j == x && i == y) printf("%d|",_id);
+      else if(j == x && i == y) printf("%d|",id);
       else printf(" |");
     }
     printf("\n");
@@ -281,28 +281,32 @@ extern int adaptation_manager_random
  double remaining_flight_time //-- how much flight time the formation has left
  );
 
-//-- node begins
+//-- begin node
 node uav {
 
   //shared variables -- visible across nodes.  must be accessed via
   //R() and W()
-  global bool lock [X][Y];
-  global unsigned char lx,ly; //leader's destination coordinates
-  global bool init; //node is initialized
+  initialize {
+    global bool lock [X][Y];
+    global unsigned char lx,ly; //leader's destination coordinates
+    global bool init; //node is initialized
   
-  //-- these variables are used to interact with the adaptation
-  //-- manager
-  global bool formation; //0 = loose, 1 = tight
-  local bool changing; //are we changing formation now?
+    //-- these variables are used to interact with the adaptation
+    //-- manager
+    global bool formation; //0 = loose, 1 = tight
+    local bool changing; //are we changing formation now?
+  } {}
+  
   local double remaining_time = 120; //how much time left to complete formation change 
   
-  {
+  initialize {
     local double hazards[X][Y]; //map from cells to hazards
     local double variances[X][Y]; //map from cells to variances in hazard predictions
-  } << {
+  } {
     //-- initialize hazards and variances arrays
-    for(i = 0;i < X;) {
-      for(j = 0;j < Y;) {
+    int i = 0,j = 0;
+    for(i = 0;i < X;i=i+1) {
+      for(j = 0;j < Y;j=j+1) {
         //-- we start with a simple hazard mapping
         if(x > 4 && y <= 4) hazards[i][j] = 0.9;
         else hazards[i][j] = 0.9;
@@ -316,26 +320,32 @@ node uav {
   //-- node. when the leader initiates a formation change, it
   //-- increments its counter. it waits for the other counters to
   //-- catch up detect that the formation change has completed.
-  global bool num_changes;
-  
+  global bool num_changes = 0;
+
   //private variables -- local to the node.
   //preserved across rounds
   local unsigned char state = INITS; //the state
-  local unsigned char x = input,y = input; //current coordinates
-  local unsigned char xt,yt; //current target coordinates
+  local unsigned char x = extern,y = extern; //current coordinates
+
+  initialize {
+    local unsigned char xt,yt; //current target coordinates
+  } {}
+
   local unsigned char xp = x,yp = y; //next coordinates
-  local bool waypointValid; //xt, yt are valid
-  local double started_move;
-  local double delay_until;
+  
+  initialize {
+    local bool waypointValid; //xt, yt are valid
+    local double started_move;
+    local double delay_until;
+  } {}
   
   //-- the function that computes the coverage of the
   //-- leader. currently we assume that protectors do not provide
   //-- overlapping coverage.
   pure double coverage()
   {
-    double cover, dist;
-    double lat0,lng0,lat,lng;
-    cover = 0.0;
+    double cover = 0.0, dist = 0.0;
+    double lat0 = 0.0,lng0 = 0.0,lat = 0.0,lng = 0.0;
     
     lat0 = GET_X()@id;
     lng0 = GET_Y()@id;
@@ -347,7 +357,7 @@ node uav {
       if(nid == id) continue;
       lat = GET_X()@nid;
       lng = GET_Y()@nid;
-
+      
       dist = sqrt((lat - lat0) * (lat - lat0) +
                   (lng - lng0) * (lng - lng0));
       
@@ -366,13 +376,18 @@ node uav {
     //return formation@0 ? 0.7 : 0.3;
   }
 
-  @AtLeast(0.85);
+  bool COVERAGE_FUNC ()
+  {
+    return (current_hazard * (1-coverage()) < 0.1);
+  }
+      
   @AtNode(0);
-  expect COVERAGE(current_hazard * (1-coverage()) < 0.1);
+  expect COVERAGE : at_least 0.85 => COVERAGE_FUNC;
+
+  bool REACHED_END_FUNC () { return (x@0 == xt@0 && y@0 == yt@0); }
   
-  @AtEnd;
   @AtNode(0);
-  expect REACHED_END(x@0 == xt@0 && y@0 == yt@0);
+  expect REACHED_END : at_end => REACHED_END_FUNC;
 
   pure double risk_integral()
   {
@@ -382,7 +397,7 @@ node uav {
     else
       return 0.0;
   }
-
+  
   //@AT_END
   //expect RISK_INTEGRAL(risk_integral() < 0.105);
   
@@ -394,7 +409,7 @@ node uav {
   // 0.105 is -ln(0.9), 0.9 is desired success probability
   //@AtEnd
   //expect REACHED_END_AND_RISK_INTEGRAL(risk_integral() < 0.105 && x@0 == xt@0 && y@0 == yt@0);
-  
+
   //-- return the next waypoint value
   bool NEXT_XY ()
   {
@@ -422,7 +437,7 @@ node uav {
     if(y > yt) yp = y - 1;
     return 0;
   }
-  
+
   //-- only return the next waypoint X value given the current waypoint
   unsigned char NEXT_X (unsigned char curr_x, unsigned char curr_y)
   {
@@ -430,7 +445,7 @@ node uav {
     if(curr_x > xt) return curr_x - 1;
     return curr_x;
   }
-  
+
   //-- only return the next waypoint Y value given the current waypoint
   unsigned char NEXT_Y (unsigned char curr_x, unsigned char curr_y)
   {
@@ -438,12 +453,11 @@ node uav {
     if(curr_y > yt) return curr_y - 1;
     return curr_y;
   }
-  
+
   //-- manhattan distance between (x,y) and (xt,yt)
   unsigned char REMAINING_SEGMENTS()
   {
-    unsigned char res;
-    res = 0;
+    unsigned char res = 0;
     if(x < xt) res = res + (xt - x);
     else if(x > xt) res = res + (x - xt);
     if(y < yt) res = res + (yt - y);
@@ -454,8 +468,6 @@ node uav {
   //-- stuff to do once the next waypoint is reached
   void REACHED_NEXT_XY()
   {
-    unsigned char i;
-    
     lock[x][y] = 0; 
     x = xp; y = yp;
     //-- if i am not the leader and a formation change was
@@ -465,15 +477,15 @@ node uav {
       num_changes = 1 - num_changes@id;
     }
   }
-  
+
   //-- Declare WAYPOINT thread; will be defined in roles below
   thread WAYPOINT;
-  
+
   //-- the task that moves the node to its next waypoint while
   //-- avoiding collisions.
   @BarrierSync;
   @PlatformController;
-  thread COLLISION_AVOIDANCE ()
+  thread COLLISION_AVOIDANCE
   {
     print_state(X,Y,id,x,y,xt,yt);
     //my_sleep(1);
@@ -514,19 +526,19 @@ node uav {
       state = NEXT;
     }
   }
-  
+
   role Protector
   {
     thread COLLISION_AVOIDANCE;
-    
+
     //-- the task that computes the next waypoint.
-    thread WAYPOINT()
+    thread WAYPOINT
     {
       if(init@0 == 0) {
         waypointValid = 0;
         return;
       }
-      
+
       //-- loose formation
       if(formation@0 == 0) {
         if(id == 1) {
@@ -560,23 +572,23 @@ node uav {
         yt = ly@0 - 1;
       }
     }
-    
+
   }
 
   role Leader
   {
-    override local unsigned char xt = input,yt = input; //final target coordinates
+    override local unsigned char xt = extern,yt = extern; //final target coordinates
     override global unsigned char lx = x, ly = y;
-    
+
     //-- next 5 waypoints
-    {
+    initialize {
       local unsigned char next_wp_x[5]; 
       local unsigned char next_wp_y[5]; 
-    } << {
-      int i;
+    } {
+      int i = 0;
       next_wp_x[0] = x;
       next_wp_y[0] = y;
-      
+
       //for(i = 1;i < 5;) {        
       i = 1;
       while(i < 5) {
@@ -585,23 +597,23 @@ node uav {
         i = i+1;
       }
     }
-    
+
     //-- next 5 hazards and hazard variances
-    {
+    initialize {
       local double hazard1, hazard2, hazard3, hazard4, hazard5;
       local double variance1, variance2, variance3, variance4, variance5;
       local double current_hazard; //hazard of current x and y
-    } << {
+    } {
       INIT_HAZARDS(X,Y,xt,yt);
       current_hazard = GET_HAZARD(x,y); //hazard of current x and y
       SET_HAZARDS();
       SET_VARIANCES();
     }
 
-    local unsigned char scenario = input;
-    
+    local unsigned char scenario = extern;
+
     //-- scenario selector
-    {
+    initialize {
       //-- speeds in loose and tight formations
       local double loose_speed;
       local double tight_speed;
@@ -611,21 +623,21 @@ node uav {
       local double seg_len;
       //-- total mission time
       local double total_time;
-    } << {
+    } {
       //-- we set default values of some system parameters here. they
       //-- will likely be initialized from the command line.
-      
+
       //-- NOTE: the difference between loose and tight speeds should
       //-- not be very small. otherwise, the prism model becomes too
       //-- hard to solve
-      
+
       //-- NOTE: in the adaptation manager, the exposures for loose and
       //-- tight formations are set to 0.8 and 0.2. the ratio is 4.
-      
+
       //-----------------------------------------------------------------
       //-- begin scenarios
       //-----------------------------------------------------------------
-      
+    
       //-- SCENARIO 1: the ratio of loose and tight speeds is > 4. in
       //-- this case, there is no benefit to switch to tight formation.
       if(scenario == 1) {
@@ -634,7 +646,7 @@ node uav {
         seg_len = 50.0;
         total_time = 15.0;
       }
-      
+    
       //-- SCENARIO 2: the ratio of loose and tight speeds is < 4. in
       //-- this case, there is benefit to switch to a tight formation.
       if(scenario == 2) {
@@ -643,7 +655,7 @@ node uav {
         seg_len = 50.0;
         total_time = 15.0;
       }
-      
+
       //-- SCENARIO 3: similar to scenario 2 but slightly longer mission
       //-- time so that the switch back to loose formation happens
       //-- later.
@@ -653,83 +665,90 @@ node uav {
         seg_len = 50.0;
         total_time = 18.0;
       }
-      
+
       speed_factor = loose_speed / tight_speed;
     }
-    
-    {
+
+    initialize {
       //-- remaining segments
       local unsigned char remaining_segs;
       //-- remaining flight time
       local double remaining_flt_time;
       //-- mission start time
       local double start_time;
-    } << {
+    } {
       remaining_segs = REMAINING_SEGMENTS();
       remaining_flt_time = total_time;
       start_time = wall_time();
     }
-    
+
     thread COLLISION_AVOIDANCE;
-    
+
     //-- the task that computes the next waypoint.
-    thread WAYPOINT()
+    thread WAYPOINT
     {
       waypointValid = 1;
-      
+
       //-- note that while a formation change is happening, there will
       //-- be no change in xp and yp for the leader.
       ly = yp;
       lx = xp;
     }
-    
+
     //-- set the next 5 hazards based on the next 5 waypoints. XXX: this
     //-- should be fixed once compiler support is added.
     void SET_HAZARDS()
     {
-      if(id == 0) {
-        hazard1 = hazards[next_wp_x[0], next_wp_y[0]];
-        hazard2 = hazards[next_wp_x[1], next_wp_y[1]];
-        hazard3 = hazards[next_wp_x[2], next_wp_y[2]];
-        hazard4 = hazards[next_wp_x[3], next_wp_y[3]];
-        hazard5 = hazards[next_wp_x[4], next_wp_y[4]];
-      } else {
-        hazard1 = 0;
-        hazard2 = 0;
-        hazard3 = 0;
-        hazard4 = 0;
-        hazard5 = 0;
-      }
+      if(id == 0)
+        {
+          hazard1 = hazards[next_wp_x[0]][next_wp_y[0]];
+          hazard2 = hazards[next_wp_x[1]][next_wp_y[1]];
+          hazard3 = hazards[next_wp_x[2]][next_wp_y[2]];
+          hazard4 = hazards[next_wp_x[3]][next_wp_y[3]];
+          hazard5 = hazards[next_wp_x[4]][next_wp_y[4]];
+        }
+      else
+        {
+          hazard1 = 0;
+          hazard2 = 0;
+          hazard3 = 0;
+          hazard4 = 0;
+          hazard5 = 0;
+        }
     }
-    
+
     //-- set the next 5 variances based on the next 5 waypoints. XXX:
     //-- this should be fixed once compiler support is added.
     void SET_VARIANCES()
     {
-      if(id == 0) {
-        variance1 = variances[next_wp_x[0], next_wp_y[0]];
-        variance2 = variances[next_wp_x[1], next_wp_y[1]];
-        variance3 = variances[next_wp_x[2], next_wp_y[2]];
-        variance4 = variances[next_wp_x[3], next_wp_y[3]];
-        variance5 = variances[next_wp_x[4], next_wp_y[4]];
-      } else {
-        variance1 = 0;
-        variance2 = 0;
-        variance3 = 0;
-        variance4 = 0;
-        variance5 = 0;
-      }
+      if(id == 0)
+        {
+          variance1 = variances[next_wp_x[0]][next_wp_y[0]];
+          variance2 = variances[next_wp_x[1]][next_wp_y[1]];
+          variance3 = variances[next_wp_x[2]][next_wp_y[2]];
+          variance4 = variances[next_wp_x[3]][next_wp_y[3]];
+          variance5 = variances[next_wp_x[4]][next_wp_y[4]];
+        }
+      else
+        {
+          variance1 = 0;
+          variance2 = 0;
+          variance3 = 0;
+          variance4 = 0;
+          variance5 = 0;
+        }
     }
-    
+
     //-- stuff for Leader do once the next waypoint is reached
     override void REACHED_NEXT_XY()
     {
       base.REACHED_NEXT_XY();
-      
-      if(started_move > 0 && formation@id == 1 && speed_factor > 1) {
-        delay_until = speed_factor * wall_time() - (speed_factor - 1) * started_move;
-      }
-      
+
+      if(started_move > 0 && formation@id == 1 && speed_factor > 1)
+        {
+          delay_until = speed_factor * wall_time() - (speed_factor - 1) * started_move;
+        }
+
       current_hazard = GET_HAZARD(x,y);
       //for(i = 1;i < 5;) {        
       i = 1;
@@ -749,18 +768,18 @@ node uav {
       //-- one less segment to go
       remaining_segs = remaining_segs - 1;
     }
-    
+
     //-- the task that invokes the adaptation manager. this task only
     //-- does something meaningful for the leader node (i.e., id =
     //-- 0). otherwise it is a NOP.
-    thread ADAPTATION_MANAGER()
+    thread ADAPTATION_MANAGER
     {
-      bool last_formation;    
-      unsigned char num_protectors_changing;
-      
+      bool last_formation = 0;    
+      unsigned char num_protectors_changing = 0;
+    
       //-- not leader or uninitialized
       if(id != 0 || init@0 == 0) return;
-      
+
       //-- check if formation change is still happening
       if(exists_lower(idp,num_changes@idp != num_changes@id) ||
          exists_higher(idp,num_changes@idp != num_changes@id)) {
@@ -768,7 +787,7 @@ node uav {
       } else {
         changing = 0;
       }
-      
+
       //-- estimate the remaining time for formation change as the
       //-- fraction of protectors that are yet to complete formation
       //-- change
@@ -781,10 +800,10 @@ node uav {
         }
         remaining_time = num_protectors_changing * FORM_CHANGE_TIME / 4;
       }
-      
+    
       //-- call the external adapatation manager
       last_formation = formation@0;
-      
+
       //-- if the leader has reached the destination, no more formation
       //-- changes are needed
       if(x != xt || y != yt) {
@@ -797,7 +816,7 @@ node uav {
                                        remaining_flt_time);
         print_labeled_int(formation@id);
       }
-      
+    
       //-- update the flag to indicate if a change formation is
       //-- triggered, and increment number of formation changes.
       if(!changing && last_formation != formation@0) {
@@ -807,21 +826,22 @@ node uav {
     }
   }
 
+
   @InitSim;
   void StartingPosition ()
   {
     GRID_INIT(X, Y, LeftX, RightX, TopY, BottomY);
     GRID_PLACE(x, y, 0.5);
   }
-  
+
   pure void InRange () 
   {
-    forall_node(id) {
-      ASSERT(0 <= x@id && x@id < X && 0 <= y@id && y@id < Y);
-      ASSERT(0 <= xt@id && xt@id < X && 0 <= yt@id && yt@id < Y);
+    forall_node(tid) {
+      ASSERT(0 <= x@tid && x@tid < X && 0 <= y@tid && y@tid < Y);
+      ASSERT(0 <= xt@tid && xt@tid < X && 0 <= yt@tid && yt@tid < Y);
     }
   }
-  
+
   //the safety property checked at the beginning of each round
   pure void NoCollisions ()
   {
@@ -829,10 +849,10 @@ node uav {
       ASSERT(x@id1 != x@id2 || y@id1 != y@id2);
     }
   }
-  
-  require(InRange());
-  
-  require(NoCollisions());
+
+  require IN_RANGE : COLLISION_AVOIDANCE => InRange;
+  require NO_COLLISIONS : COLLISION_AVOIDANCE => NoCollisions;
+
 } //-- end node
 
 /*********************************************************************/
