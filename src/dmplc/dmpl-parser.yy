@@ -568,11 +568,14 @@ attr : TATTRIBUTE {
 }
 ;
 
-attr_param_list : { $$ = new dmpl::ExprList(); }
-| expr { $$ = new dmpl::ExprList(); $$->push_back(*$1); }
+attr_param_list : expr {
+  $$ = new dmpl::ExprList(); $$->push_back(*$1);
+  delete $1;
+}
 | arg_list TCOMMA expr {
   $$ = $1;
   $$->push_back(*$3);
+  delete $3;
 }
 ;
 
