@@ -140,7 +140,7 @@ dmpl::Function::print (std::ostream &os,unsigned int indent)
   //-- print temporary variables
   for (dmpl::Vars::iterator i = temps.begin (); i != temps.end (); ++i) {
     i->second->print (os,indent + 2);
-    os << ";\n";
+    os << " = " << i->second->initExpr()->toString() << ";\n";
   }
 
   //-- print statements
