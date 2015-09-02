@@ -159,7 +159,8 @@ namespace dmpl
     //a list of indices
     ExprList indices;
 
-    virtual SymUserList getParents(Context &con) {
+    virtual SymUserList getParents(Context &con)
+    {
       SymUserList ret;
       if(node != NULL)
         ret.push_back(node);
@@ -175,7 +176,9 @@ namespace dmpl
     LvalExpr(const std::string &v,const ExprList &i) : var(v), indices(i) {}
     LvalExpr(const std::string &v,const Expr &n,const ExprList &i)
       : var(v), node(n), indices(i) {}
-    std::string toString() const {
+
+    std::string toString() const
+    {
       std::string res = var;
       BOOST_FOREACH(const Expr &ep,indices) res += "[" + ep->toString() + "]";
       if(node != NULL) res += "@" + node->toString();
@@ -242,11 +245,12 @@ namespace dmpl
 
     virtual Context useSymbols(Context con);
 
-
     bool ignore_return;
 
     CallExpr(const Expr &f,const ExprList &a) : func(f),args(a),ignore_return(false) {}
-    std::string toString() const {
+
+    std::string toString() const
+    {
       std::string res = func->toString() + "(";
 
       size_t count = 0;
