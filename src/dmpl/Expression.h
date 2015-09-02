@@ -194,7 +194,7 @@ namespace dmpl
 
     std::string getNodeId() const
     {
-      return (node != NULL) ? "@" + node->toString() : "";
+      return (node != NULL) ? "@(" + node->toString() + ")" : "";
     }
   };
 
