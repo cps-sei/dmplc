@@ -121,6 +121,9 @@ node uav
       uav.NEXT_XY()@id;
       NEXT_XY()@(x+1);
       uav.NEXT_XY()@(x+1);
+
+      x = NEXT_XY()@x+1;
+      x = uav.NEXT_XY()@x+1;
     }
   }
 
