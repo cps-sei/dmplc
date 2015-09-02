@@ -174,7 +174,7 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
 %type <strList> target_id_list
 %type <type> simp_type type fn_type
 %type <lvalExpr> lval
-%type <expr> expr
+%type <expr> call_expr expr
 %type <exprlist> indices arg_list for_test
 %type <stmt> stmt cond_stmt cond_stmt_no_attr
 %type <stmtList> stmt_list for_init for_update
@@ -693,17 +693,9 @@ stmt : TLBRACE stmt_list TRBRACE { $$ = new dmpl::Stmt(new dmpl::BlockStmt(*$2))
 | TCONTINUE TSEMICOLON { $$ = new dmpl::Stmt(new dmpl::ContStmt()); }
 | TRETURN expr TSEMICOLON { $$ = new dmpl::Stmt(new dmpl::RetStmt(*$2)); delete $2; }
 | TRETURN TSEMICOLON { $$ = new dmpl::Stmt(new dmpl::RetVoidStmt()); }
-| TIDENTIFIER TLPAREN arg_list TRPAREN TSEMICOLON {
-  $$ = new dmpl::Stmt(new dmpl::CallStmt(dmpl::Expr(new dmpl::LvalExpr(*$1)), *$3));
-  delete $1; delete $3;
-}
-| TIDENTIFIER TDOT TIDENTIFIER TLPAREN arg_list TRPAREN TSEMICOLON {
-  $$ = new dmpl::Stmt(new dmpl::CallStmt(dmpl::Expr(new dmpl::LvalExpr(*$1 + "." + *$3)), *$5));
-  delete $1; delete $3; delete $5;
-}
-| TIDENTIFIER TLPAREN arg_list TRPAREN TATTRIBUTE TSEMICOLON {
-  $$ = new dmpl::Stmt(new dmpl::CallStmt(dmpl::Expr(new dmpl::LvalExpr(*$1,dmpl::Expr(new dmpl::LvalExpr($5->substr(1))))), *$3));
-  delete $1; delete $3; delete $5;
+| call_expr TSEMICOLON {
+  $$ = new dmpl::Stmt(new dmpl::CallStmt(*$1));
+  delete $1;
 }
 | TFAN TLPAREN TIDENTIFIER TRPAREN stmt { 
   $$ = new dmpl::Stmt(new dmpl::FANStmt(*$3,*$5));
@@ -816,23 +808,7 @@ expr : lval { $$ = new dmpl::Expr($1); printExpr(*$$); }
 | expr TQUEST expr TCOLON expr { MAKE_TRI($$,$2,$1,$3,$5); }
 | TLNOT expr { MAKE_UN($$,$1,$2); }
 | TBWNOT expr { MAKE_UN($$,$1,$2); }
-| TIDENTIFIER TLPAREN arg_list TRPAREN { 
-  $$ = new dmpl::Expr(new dmpl::CallExpr(dmpl::Expr(new dmpl::LvalExpr(*$1)),*$3));
-  delete $1; delete $3; printExpr(*$$);
-}
-| TIDENTIFIER TDOT TIDENTIFIER TLPAREN arg_list TRPAREN { 
-  $$ = new dmpl::Expr(new dmpl::CallExpr(dmpl::Expr(new dmpl::LvalExpr(*$1+"."+*$3)),*$5));
-  delete $1; delete $3; delete $5; printExpr(*$$);
-}
-| TIDENTIFIER TLPAREN arg_list TRPAREN TAT expr { 
-  $$ = new dmpl::Expr(new dmpl::CallExpr(dmpl::Expr(new dmpl::LvalExpr(*$1, *$6)),*$3));
-  delete $1; delete $3; delete $6; printExpr(*$$);
-} 
-| TIDENTIFIER TLPAREN arg_list TRPAREN TATTRIBUTE { 
-  $$ = new dmpl::Expr(new dmpl::CallExpr(
-    dmpl::Expr(new dmpl::LvalExpr(*$1, dmpl::Expr(new dmpl::LvalExpr($5->substr(1))))),*$3));
-  delete $1; delete $3; delete $5; printExpr(*$$);
-} 
+| call_expr { $$ = $1; }
 | TEXO TLPAREN TIDENTIFIER TCOMMA expr TRPAREN {
   $$ = new dmpl::Expr(new dmpl::EXOExpr(*$3,dmpl::Expr(*$5)));
   delete $3; delete $5;
@@ -846,6 +822,34 @@ expr : lval { $$ = new dmpl::Expr($1); printExpr(*$$); }
   delete $3; delete $5;
 }
 | TLPAREN expr TRPAREN { $$ = $2; }
+;
+
+call_expr : TIDENTIFIER TLPAREN arg_list TRPAREN { 
+  $$ = new dmpl::Expr(new dmpl::CallExpr(dmpl::Expr(new dmpl::LvalExpr(*$1)),*$3));
+  delete $1; delete $3; printExpr(*$$);
+}
+| TIDENTIFIER TDOT TIDENTIFIER TLPAREN arg_list TRPAREN { 
+  $$ = new dmpl::Expr(new dmpl::CallExpr(dmpl::Expr(new dmpl::LvalExpr(*$1+"."+*$3)),*$5));
+  delete $1; delete $3; delete $5; printExpr(*$$);
+}
+| TIDENTIFIER TLPAREN arg_list TRPAREN TAT expr { 
+  $$ = new dmpl::Expr(new dmpl::CallExpr(dmpl::Expr(new dmpl::LvalExpr(*$1, *$6)),*$3));
+  delete $1; delete $3; delete $6; printExpr(*$$);
+}
+| TIDENTIFIER TDOT TIDENTIFIER TLPAREN arg_list TRPAREN TAT expr { 
+  $$ = new dmpl::Expr(new dmpl::CallExpr(dmpl::Expr(new dmpl::LvalExpr(*$1+"."+*$3, *$8)),*$5));
+  delete $1; delete $3; delete $5; delete $8; printExpr(*$$);
+}
+| TIDENTIFIER TLPAREN arg_list TRPAREN TATTRIBUTE { 
+  $$ = new dmpl::Expr(new dmpl::CallExpr(
+    dmpl::Expr(new dmpl::LvalExpr(*$1, dmpl::Expr(new dmpl::LvalExpr($5->substr(1))))),*$3));
+  delete $1; delete $3; delete $5; printExpr(*$$);
+}
+| TIDENTIFIER TDOT TIDENTIFIER TLPAREN arg_list TRPAREN TATTRIBUTE { 
+  $$ = new dmpl::Expr(new dmpl::CallExpr(
+    dmpl::Expr(new dmpl::LvalExpr(*$1+"."+*$3, dmpl::Expr(new dmpl::LvalExpr($7->substr(1))))),*$5));
+  delete $1; delete $3; delete $5; delete $7; printExpr(*$$);
+}
 ;
 
 indices : TLBRACKET expr TRBRACKET {
