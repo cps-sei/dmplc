@@ -168,8 +168,8 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
 %type <role> role role_body
 %type <node> node_body node
 %type <varList> node_var_init node_var_decl var_group var_block
-%type <function> procedure fn_body fn_prototype
-%type <token> dimension fn_decor
+%type <function> procedure fn_body fn_prototype_no_decors fn_prototype
+%type <token> dimension
 %type <tokenList> fn_decors
 %type <strList> target_id_list
 %type <type> simp_type type fn_type
@@ -509,37 +509,38 @@ fn_body : TLBRACE var_init_list stmt_list TRBRACE {
 }
 ;
 
-fn_decor : TPURE | TEXTERN | TOVERRIDE ;
+fn_decors : TPURE { $$ = new std::list<int>{$1}; }
+| TEXTERN { $$ = new std::list<int>{$1}; }
+| TEXTERN TPURE { $$ = new std::list<int>{$1,$2}; }
+;
 
-fn_decors : { $$ = new std::list<int>(); }
-| fn_decor fn_decors {
+fn_prototype : fn_prototype_no_decors { $$ = $1; }
+| fn_decors fn_prototype_no_decors {
   $$ = $2;
-  $$->push_back($1);
+  apply_fn_decors(*$$, *$1);
+  delete $1;
 }
 ;
 
-fn_prototype : fn_decors fn_type TIDENTIFIER TLPAREN param_list TRPAREN {
+fn_prototype_no_decors : fn_type TIDENTIFIER TLPAREN param_list TRPAREN {
   $$ = new dmpl::Func(std::make_shared<dmpl::Func::element_type>());
-  (*$$)->retType = *$2;
-  (*$$)->name = *$3;
+  (*$$)->retType = *$1;
+  (*$$)->name = *$2;
   /** set scope of parameter variables */
-  BOOST_FOREACH(dmpl::Var &v,*$5) v->scope = dmpl::Variable::PARAM;
-  (*$$)->setParams(*$5);
-  apply_fn_decors(*$$, *$1);
-  delete $1; delete $2; delete $3; delete $5;
+  BOOST_FOREACH(dmpl::Var &v,*$4) v->scope = dmpl::Variable::PARAM;
+  (*$$)->setParams(*$4);
+  delete $1; delete $2; delete $4;
 }
-| fn_decors TIDENTIFIER TLPAREN TRPAREN {
+| TIDENTIFIER TLPAREN TRPAREN {
+  $$ = new dmpl::Func(std::make_shared<dmpl::Func::element_type>());
+  (*$$)->name = *$1;
+  delete $1;
+}
+| TTHREAD TIDENTIFIER {
   $$ = new dmpl::Func(std::make_shared<dmpl::Func::element_type>());
   (*$$)->name = *$2;
-  apply_fn_decors(*$$, *$1);
-  delete $1; delete $2;
-}
-| fn_decors TTHREAD TIDENTIFIER {
-  $$ = new dmpl::Func(std::make_shared<dmpl::Func::element_type>());
-  (*$$)->name = *$3;
   (*$$)->retType = dmpl::Type(dmpl::threadType());
-  apply_fn_decors(*$$, *$1);
-  delete $1; delete $3;
+  delete $2;
 }
 ;
 
