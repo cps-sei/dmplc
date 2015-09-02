@@ -696,8 +696,10 @@ stmt : TLBRACE stmt_list TRBRACE { $$ = new dmpl::Stmt(new dmpl::BlockStmt(*$2))
 | TIDENTIFIER TLPAREN arg_list TRPAREN TSEMICOLON {
   $$ = new dmpl::Stmt(new dmpl::CallStmt(dmpl::Expr(new dmpl::LvalExpr(*$1)), *$3));
   delete $1; delete $3;
-  //$$ = new dmpl::Stmt(new dmpl::CallExpr(dmpl::Expr($1),*$3));
-  //delete $3; printExpr(*$$);
+}
+| TIDENTIFIER TDOT TIDENTIFIER TLPAREN arg_list TRPAREN TSEMICOLON {
+  $$ = new dmpl::Stmt(new dmpl::CallStmt(dmpl::Expr(new dmpl::LvalExpr(*$1 + "." + *$3)), *$5));
+  delete $1; delete $3; delete $5;
 }
 | TIDENTIFIER TLPAREN arg_list TRPAREN TATTRIBUTE TSEMICOLON {
   $$ = new dmpl::Stmt(new dmpl::CallStmt(dmpl::Expr(new dmpl::LvalExpr(*$1,dmpl::Expr(new dmpl::LvalExpr($5->substr(1))))), *$3));
@@ -817,7 +819,11 @@ expr : lval { $$ = new dmpl::Expr($1); printExpr(*$$); }
 | TIDENTIFIER TLPAREN arg_list TRPAREN { 
   $$ = new dmpl::Expr(new dmpl::CallExpr(dmpl::Expr(new dmpl::LvalExpr(*$1)),*$3));
   delete $1; delete $3; printExpr(*$$);
-} 
+}
+| TIDENTIFIER TDOT TIDENTIFIER TLPAREN arg_list TRPAREN { 
+  $$ = new dmpl::Expr(new dmpl::CallExpr(dmpl::Expr(new dmpl::LvalExpr(*$1+"."+*$3)),*$5));
+  delete $1; delete $3; delete $5; printExpr(*$$);
+}
 | TIDENTIFIER TLPAREN arg_list TRPAREN TAT expr { 
   $$ = new dmpl::Expr(new dmpl::CallExpr(dmpl::Expr(new dmpl::LvalExpr(*$1, *$6)),*$3));
   delete $1; delete $3; delete $6; printExpr(*$$);
