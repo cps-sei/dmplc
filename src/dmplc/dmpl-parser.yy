@@ -366,6 +366,9 @@ role_body : {
 var_block : node_var_init TSEMICOLON {
   $$ = $1;
 }
+| TOVERRIDE node_var_init TSEMICOLON {
+  $$ = $2;
+}
 | TINIT TLBRACE var_group TRBRACE fn_body {
   $$ = $3;
   (*$5)->retType = dmpl::voidType();
@@ -403,9 +406,17 @@ node_var_decl : TGLOBAL var_decl {
   BOOST_FOREACH(dmpl::Var &v, *$2) v->scope = dmpl::Variable::GLOBAL;
   $$ = $2;
 }
+| TOVERRIDE TGLOBAL var_decl {
+  BOOST_FOREACH(dmpl::Var &v, *$3) v->scope = dmpl::Variable::GLOBAL;
+  $$ = $3;
+}
 | TLOCAL var_decl {
   BOOST_FOREACH(dmpl::Var &v, *$2) v->scope = dmpl::Variable::LOCAL;
   $$ = $2;
+}
+| TOVERRIDE TLOCAL var_decl {
+  BOOST_FOREACH(dmpl::Var &v, *$3) v->scope = dmpl::Variable::LOCAL;
+  $$ = $3;
 }
 ;
 
@@ -504,8 +515,14 @@ simp_type : TBOOL { $$ = new dmpl::Type(dmpl::boolType()); }
 ;
 
 procedure : proc_no_attr { $$ = $1; }
+| TOVERRIDE proc_no_attr { $$ = $2; }
 | attr_list proc_no_attr {
   $$ = $2;
+  (*$$)->attrs = *$1;
+  delete $1;
+}
+| attr_list TOVERRIDE proc_no_attr {
+  $$ = $3;
   (*$$)->attrs = *$1;
   delete $1;
 }
