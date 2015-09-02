@@ -165,10 +165,10 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
    calling an (NIdentifier*). It makes the compiler happy.
  */
 %type <token> program constant
-%type <role> role role_body
-%type <node> node_body node
+%type <role> role role_no_attr role_body
+%type <node> node_body node_no_attr node
 %type <varList> node_var_init node_var_decl var_group var_block
-%type <function> procedure fn_body fn_prototype_no_decors fn_prototype
+%type <function> procedure proc_no_attr fn_body fn_prototype_no_decors fn_prototype
 %type <token> dimension
 %type <tokenList> fn_decors
 %type <strList> target_id_list
@@ -176,10 +176,10 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
 %type <lvalExpr> lval
 %type <expr> expr
 %type <exprlist> indices arg_list for_test
-%type <stmt> stmt cond_stmt cond_stmt_impl
+%type <stmt> stmt cond_stmt cond_stmt_no_attr
 %type <stmtList> stmt_list for_init for_update
 %type <dims> dimensions
-%type <spec> specification
+%type <spec> spec_no_attr specification
 %type <var> var var_asgn
 %type <varList> var_list var_decl var_asgn_list var_init
 %type <varList> param_list var_init_list
@@ -255,33 +255,45 @@ constant : TCONST TIDENTIFIER TEQUAL TINTEGER TSEMICOLON {
 }
 ;
 
-node : attr_list TNODE TIDENTIFIER TLBRACE node_body TRBRACE {
-  (*$5)->name = *$3;
-  (*$5)->args.push_back("id");
-  (*$5)->attrs = *$1;
-  $$ = $5;
-  delete $1; delete $3;
-}
-| attr_list TNODE TIDENTIFIER TSEMICOLON {
-  $$ = new dmpl::Node(new dmpl::BaseNode(*$3, *$1, true));
-  delete $1; delete $3;
+node : node_no_attr { $$ = $1; }
+| attr_list node_no_attr {
+  $$ = $2;
+  (*$$)->attrs = *$1;
+  delete $1;
 }
 ;
 
-specification : attr_list TEXPECT TIDENTIFIER TCOLON TATEND TIMPLIES TIDENTIFIER TSEMICOLON {
-  $$ = new dmpl::Spec(new dmpl::AtEndSpec(*$3,*$7));
-  (*$$)->attrs = *$1;
-  delete $1; delete $3; delete $7;
+node_no_attr : TNODE TIDENTIFIER TLBRACE node_body TRBRACE {
+  (*$4)->name = *$2;
+  (*$4)->args.push_back("id");
+  $$ = $4;
+  delete $2;
 }
-| attr_list TEXPECT TIDENTIFIER TCOLON TATLEAST TDOUBLE TIMPLIES TIDENTIFIER TSEMICOLON {
-  $$ = new dmpl::Spec(new dmpl::AtLeastSpec(*$3,*$8,*$6));
-  (*$$)->attrs = *$1;
-  delete $1; delete $3; delete $6; delete $8;
+| TNODE TIDENTIFIER TSEMICOLON {
+  $$ = new dmpl::Node(new dmpl::BaseNode(*$2, true));
+  delete $2;
 }
-| attr_list TREQUIRE TIDENTIFIER TCOLON TIDENTIFIER TIMPLIES TIDENTIFIER TSEMICOLON {
-  $$ = new dmpl::Spec(new dmpl::RequireSpec(*$3,*$5,*$7));
+;
+
+specification : spec_no_attr { $$ = $1; }
+| attr_list spec_no_attr {
+  $$ = $2;
   (*$$)->attrs = *$1;
-  delete $1; delete $3; delete $5; delete $7;
+  delete $1;
+}
+;
+
+spec_no_attr : TEXPECT TIDENTIFIER TCOLON TATEND TIMPLIES TIDENTIFIER TSEMICOLON {
+  $$ = new dmpl::Spec(new dmpl::AtEndSpec(*$2,*$6));
+  delete $2; delete $6;
+}
+| TEXPECT TIDENTIFIER TCOLON TATLEAST TDOUBLE TIMPLIES TIDENTIFIER TSEMICOLON {
+  $$ = new dmpl::Spec(new dmpl::AtLeastSpec(*$2,*$7,*$5));
+  delete $2; delete $5; delete $7;
+}
+| TREQUIRE TIDENTIFIER TCOLON TIDENTIFIER TIMPLIES TIDENTIFIER TSEMICOLON {
+  $$ = new dmpl::Spec(new dmpl::RequireSpec(*$2,*$4,*$6));
+  delete $2; delete $4; delete $6;
 }
 ;
 
@@ -311,17 +323,23 @@ node_body : {
 }
 ;
 
-role : attr_list TROLE TIDENTIFIER TLBRACE role_body TRBRACE {
-  (*$5)->name = *$3;
-  (*$5)->attrs = *$1;
-  $$ = $5;
-  delete $1; delete $3;
+role : role_no_attr { $$ = $1; }
+| attr_list role_no_attr {
+  $$ = $2;
+  (*$$)->attrs = *$1;
+  delete $1;
 }
-| attr_list TROLE TIDENTIFIER TID TINTEGER TLBRACE role_body TRBRACE {
-  (*$7)->name = *$3;
-  (*$7)->attrs = *$1;
-  $$ = $7;
-  delete $1; delete $3; delete $5;
+;
+
+role_no_attr : TROLE TIDENTIFIER TLBRACE role_body TRBRACE {
+  (*$4)->name = *$2;
+  $$ = $4;
+  delete $2;
+}
+| TROLE TIDENTIFIER TID TINTEGER TLBRACE role_body TRBRACE {
+  (*$6)->name = *$2;
+  $$ = $6;
+  delete $2; delete $4;
 }
 ;
 
@@ -485,16 +503,21 @@ simp_type : TBOOL { $$ = new dmpl::Type(dmpl::boolType()); }
 | TCHAR { $$ = new dmpl::Type(dmpl::charType()); }
 ;
 
-procedure : attr_list fn_prototype fn_body {
-  $$ = $2;
-  (*$$)->mergeWith(*$3, false);
-  (*$$)->attrs = *$1;
-  delete $1; delete $3;
-}
-| attr_list fn_prototype TSEMICOLON {
+procedure : proc_no_attr { $$ = $1; }
+| attr_list proc_no_attr {
   $$ = $2;
   (*$$)->attrs = *$1;
   delete $1;
+}
+;
+
+proc_no_attr : fn_prototype fn_body {
+  $$ = $1;
+  (*$$)->mergeWith(*$2, false);
+  delete $2;
+}
+| fn_prototype TSEMICOLON {
+  $$ = $1;
 }
 ;
 
@@ -544,8 +567,10 @@ fn_prototype_no_decors : fn_type TIDENTIFIER TLPAREN param_list TRPAREN {
 }
 ;
 
-attr_list : {
+attr_list : attr TSEMICOLON {
   $$ = new dmpl::Attributes();
+  (*$$)[$1->name] = *$1;
+  delete $1;
 }
 | attr TSEMICOLON attr_list {
   $$ = $3;
@@ -611,15 +636,17 @@ stmt_list : { $$ = new dmpl::StmtList(); }
 | stmt_list stmt { $$ = $1; $$->push_back(*$2); delete $2; }
 ;
 
-cond_stmt : attr_list cond_stmt_impl
-{
-  (*$2)->attrs = *$1;
+cond_stmt : cond_stmt_no_attr {
+  $$ = $1;
+}
+| attr_list cond_stmt_no_attr {
   $$ = $2;
+  (*$$)->attrs = *$1;
   delete $1;
 }
 ;
 
-cond_stmt_impl : TIF TLPAREN expr TRPAREN stmt {
+cond_stmt_no_attr : TIF TLPAREN expr TRPAREN stmt {
   $$ = new dmpl::Stmt(new dmpl::CondStmt(*$3, *$5));
   delete $3; delete $5; printStmt(*$$);
 }
