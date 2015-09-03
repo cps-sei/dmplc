@@ -286,23 +286,23 @@ node uav {
 
   //shared variables -- visible across nodes.  must be accessed via
   //R() and W()
-  initialize {
+  {
     global bool lock [X][Y];
     global unsigned char lx,ly; //leader's destination coordinates
     global bool init; //node is initialized
-  
+    
     //-- these variables are used to interact with the adaptation
     //-- manager
     global bool formation; //0 = loose, 1 = tight
     local bool changing; //are we changing formation now?
-  } {}
+  } = {}
   
   local double remaining_time = 120; //how much time left to complete formation change 
   
-  initialize {
+  {
     local double hazards[X][Y]; //map from cells to hazards
     local double variances[X][Y]; //map from cells to variances in hazard predictions
-  } {
+  } = {
     //-- initialize hazards and variances arrays
     int i = 0,j = 0;
     for(i = 0;i < X;i=i+1) {
@@ -327,17 +327,17 @@ node uav {
   local unsigned char state = INITS; //the state
   local unsigned char x = extern,y = extern; //current coordinates
 
-  initialize {
+  {
     local unsigned char xt,yt; //current target coordinates
-  } {}
+  } = {}
 
   local unsigned char xp = x,yp = y; //next coordinates
   
-  initialize {
+  {
     local bool waypointValid; //xt, yt are valid
     local double started_move;
     local double delay_until;
-  } {}
+  } = {}
   
   //-- the function that computes the coverage of the
   //-- leader. currently we assume that protectors do not provide
@@ -581,10 +581,10 @@ node uav {
     override global unsigned char lx = x, ly = y;
 
     //-- next 5 waypoints
-    initialize {
+    {
       local unsigned char next_wp_x[5]; 
       local unsigned char next_wp_y[5]; 
-    } {
+    } = {
       int i = 0;
       next_wp_x[0] = x;
       next_wp_y[0] = y;
@@ -599,11 +599,11 @@ node uav {
     }
 
     //-- next 5 hazards and hazard variances
-    initialize {
+    {
       local double hazard1, hazard2, hazard3, hazard4, hazard5;
       local double variance1, variance2, variance3, variance4, variance5;
       local double current_hazard; //hazard of current x and y
-    } {
+    } = {
       INIT_HAZARDS(X,Y,xt,yt);
       current_hazard = GET_HAZARD(x,y); //hazard of current x and y
       SET_HAZARDS();
@@ -613,7 +613,7 @@ node uav {
     local unsigned char scenario = extern;
 
     //-- scenario selector
-    initialize {
+    {
       //-- speeds in loose and tight formations
       local double loose_speed;
       local double tight_speed;
@@ -623,7 +623,7 @@ node uav {
       local double seg_len;
       //-- total mission time
       local double total_time;
-    } {
+    } = {
       //-- we set default values of some system parameters here. they
       //-- will likely be initialized from the command line.
 
@@ -669,14 +669,14 @@ node uav {
       speed_factor = loose_speed / tight_speed;
     }
 
-    initialize {
+    {
       //-- remaining segments
       local unsigned char remaining_segs;
       //-- remaining flight time
       local double remaining_flt_time;
       //-- mission start time
       local double start_time;
-    } {
+    } = {
       remaining_segs = REMAINING_SEGMENTS();
       remaining_flt_time = total_time;
       start_time = wall_time();

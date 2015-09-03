@@ -74,9 +74,9 @@ extern void print_state(int XX,int YY,int my_id,int x,int y,int xf,int yf);
 node uav
 {
   //shared variables -- visible across nodes. 
-  initialize {
+  {
     global _Bool lock [X][Y];
-  } {
+  } = {
     int i = 0,j = 0;
     for(i = 0;i < X;i=i+1) {
       for(i = 0;i < X;i=i+1) {

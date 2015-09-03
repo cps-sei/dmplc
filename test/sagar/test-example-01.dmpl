@@ -137,9 +137,9 @@ extern void print_int(int i);
 node uav
 {
   //shared variables -- visible across nodes. 
-  initialize {
+  {
     global _Bool lock [X][Y];
-  } {
+  } = {     
     int a = 0;
     a = a + 1;
   }

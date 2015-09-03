@@ -151,7 +151,7 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
 %token <token> TNODENUM TEXTERN TTHREAD TPURE TOVERRIDE
 %token <token> TELSE TFOR TWHILE
 %token <token> TBREAK TCONTINUE TRETURN TEXO TEXH TEXL
-%token <token> TINIT TFAN TFADNP TFAO TFAOL TFAOH
+%token <token> TFAN TFADNP TFAO TFAOL TFAOH
 %token <token> TCEQ TCNE TCLT TCLE TCGT TCGE TEQUAL
 %token <token> TLAND TLOR TLNOT TQUEST TCOLON
 %token <token> TLPAREN TRPAREN TLBRACE TRBRACE 
@@ -369,8 +369,8 @@ var_block : node_var_init TSEMICOLON {
 | TOVERRIDE node_var_init TSEMICOLON {
   $$ = $2;
 }
-| TINIT TLBRACE var_group TRBRACE fn_body {
-  $$ = $3;
+| TLBRACE var_group TRBRACE TEQUAL fn_body {
+  $$ = $2;
   (*$5)->retType = dmpl::voidType();
   BOOST_FOREACH(const dmpl::Var &v, *$$) {
     v->initFunc = *$5;
