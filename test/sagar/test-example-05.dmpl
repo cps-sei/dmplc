@@ -742,7 +742,7 @@ node uav {
     //-- stuff for Leader do once the next waypoint is reached
     override void REACHED_NEXT_XY()
     {
-      base.REACHED_NEXT_XY();
+      uav::REACHED_NEXT_XY();
 
       if(started_move > 0 && formation@id == 1 && speed_factor > 1)
         {

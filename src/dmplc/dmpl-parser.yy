@@ -155,7 +155,7 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
 %token <token> TCEQ TCNE TCLT TCLE TCGT TCGE TEQUAL
 %token <token> TLAND TLOR TLNOT TQUEST TCOLON
 %token <token> TLPAREN TRPAREN TLBRACE TRBRACE 
-%token <token> TLBRACKET TRBRACKET TCOMMA TDOT TAT
+%token <token> TLBRACKET TRBRACKET TCOMMA TDCOLON TAT
 %token <token> TPLUS TMINUS TMUL TDIV TMOD TIMPLIES
 %token <token> TBWNOT TBWAND TBWOR TBWXOR TBWLSH TBWRSH
 
@@ -828,16 +828,16 @@ call_expr : TIDENTIFIER TLPAREN arg_list TRPAREN {
   $$ = new dmpl::Expr(new dmpl::CallExpr(dmpl::Expr(new dmpl::LvalExpr(*$1)),*$3));
   delete $1; delete $3; printExpr(*$$);
 }
-| TIDENTIFIER TDOT TIDENTIFIER TLPAREN arg_list TRPAREN { 
-  $$ = new dmpl::Expr(new dmpl::CallExpr(dmpl::Expr(new dmpl::LvalExpr(*$1+"."+*$3)),*$5));
+| TIDENTIFIER TDCOLON TIDENTIFIER TLPAREN arg_list TRPAREN { 
+  $$ = new dmpl::Expr(new dmpl::CallExpr(dmpl::Expr(new dmpl::LvalExpr(*$1, *$3)),*$5));
   delete $1; delete $3; delete $5; printExpr(*$$);
 }
 | TIDENTIFIER TLPAREN arg_list TRPAREN TAT expr { 
   $$ = new dmpl::Expr(new dmpl::CallExpr(dmpl::Expr(new dmpl::LvalExpr(*$1, *$6)),*$3));
   delete $1; delete $3; delete $6; printExpr(*$$);
 }
-| TIDENTIFIER TDOT TIDENTIFIER TLPAREN arg_list TRPAREN TAT expr { 
-  $$ = new dmpl::Expr(new dmpl::CallExpr(dmpl::Expr(new dmpl::LvalExpr(*$1+"."+*$3, *$8)),*$5));
+| TIDENTIFIER TDCOLON TIDENTIFIER TLPAREN arg_list TRPAREN TAT expr { 
+  $$ = new dmpl::Expr(new dmpl::CallExpr(dmpl::Expr(new dmpl::LvalExpr(*$1, *$3, *$8)),*$5));
   delete $1; delete $3; delete $5; delete $8; printExpr(*$$);
 }
 | TIDENTIFIER TLPAREN arg_list TRPAREN TATTRIBUTE { 
@@ -845,9 +845,9 @@ call_expr : TIDENTIFIER TLPAREN arg_list TRPAREN {
     dmpl::Expr(new dmpl::LvalExpr(*$1, dmpl::Expr(new dmpl::LvalExpr($5->substr(1))))),*$3));
   delete $1; delete $3; delete $5; printExpr(*$$);
 }
-| TIDENTIFIER TDOT TIDENTIFIER TLPAREN arg_list TRPAREN TATTRIBUTE { 
+| TIDENTIFIER TDCOLON TIDENTIFIER TLPAREN arg_list TRPAREN TATTRIBUTE { 
   $$ = new dmpl::Expr(new dmpl::CallExpr(
-    dmpl::Expr(new dmpl::LvalExpr(*$1+"."+*$3, dmpl::Expr(new dmpl::LvalExpr($7->substr(1))))),*$5));
+    dmpl::Expr(new dmpl::LvalExpr(*$1, *$3, dmpl::Expr(new dmpl::LvalExpr($7->substr(1))))),*$5));
   delete $1; delete $3; delete $5; delete $7; printExpr(*$$);
 }
 ;

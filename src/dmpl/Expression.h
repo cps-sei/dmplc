@@ -150,6 +150,8 @@ namespace dmpl
   class LvalExpr : public Expression
   {
   public:
+    //an optional namespace -- can be empty
+    std::string nameSpace;
     //the base variable name -- this is always non-empty
     std::string var; 
     //the Var or Func object this references -- populated by symbolic analysis
@@ -172,14 +174,17 @@ namespace dmpl
     virtual Context useSymbols(Context con);
 
     LvalExpr(const std::string &v) : var(v) {}
+    LvalExpr(const std::string &ns,const std::string &v) : nameSpace(ns), var(v) {}
     LvalExpr(const std::string &v,const Expr &n) : var(v), node(n) {}
+    LvalExpr(const std::string &ns,const std::string &v,const Expr &n)
+      : nameSpace(ns), var(v), node(n) {}
     LvalExpr(const std::string &v,const ExprList &i) : var(v), indices(i) {}
     LvalExpr(const std::string &v,const Expr &n,const ExprList &i)
       : var(v), node(n), indices(i) {}
 
     std::string toString() const
     {
-      std::string res = var;
+      std::string res = nameSpace.empty() ? var : nameSpace + "::" + var;
       BOOST_FOREACH(const Expr &ep,indices) res += "[" + ep->toString() + "]";
       if(node != NULL) res += "@" + node->toString();
       return res;
@@ -187,7 +192,7 @@ namespace dmpl
 
     std::string toStringWithoutNodeId() const
     {
-      std::string res = var;
+      std::string res = nameSpace.empty() ? var : nameSpace + "::" + var;
       BOOST_FOREACH(const Expr &ep,indices) res += "[" + ep->toString() + "]";
       return res;
     }

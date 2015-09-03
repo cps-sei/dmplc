@@ -179,7 +179,7 @@ extern "C" int yywrap() { return 1; }
 "}"                     PRINT_TOKEN; return TOKEN(TRBRACE);
 "["                     PRINT_TOKEN; return TOKEN(TLBRACKET);
 "]"                     PRINT_TOKEN; return TOKEN(TRBRACKET);
-"."                     PRINT_TOKEN; return TOKEN(TDOT);
+"::"                    PRINT_TOKEN; return TOKEN(TDCOLON);
 ","                     PRINT_TOKEN; return TOKEN(TCOMMA);
 "+"                     PRINT_TOKEN; return TOKEN(TPLUS);
 "-"                     PRINT_TOKEN; return TOKEN(TMINUS);

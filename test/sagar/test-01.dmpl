@@ -109,21 +109,21 @@ node uav
     override void NEXT_XY () {
       int x = 0;
       x = NEXT_XY();
-      x = uav.NEXT_XY();
+      x = uav::NEXT_XY();
       x = NEXT_XY()@id;
-      x = uav.NEXT_XY()@id;
+      x = uav::NEXT_XY()@id;
       x = NEXT_XY()@(x+1);
-      x = uav.NEXT_XY()@(x+1);
+      x = uav::NEXT_XY()@(x+1);
       
       NEXT_XY();
-      uav.NEXT_XY();
+      uav::NEXT_XY();
       NEXT_XY()@id;
-      uav.NEXT_XY()@id;
+      uav::NEXT_XY()@id;
       NEXT_XY()@(x+1);
-      uav.NEXT_XY()@(x+1);
+      uav::NEXT_XY()@(x+1);
 
       x = NEXT_XY()@x+1;
-      x = uav.NEXT_XY()@x+1;
+      x = uav::NEXT_XY()@x+1;
     }
   }
 
