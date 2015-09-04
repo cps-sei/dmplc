@@ -301,7 +301,7 @@ node_body : {
   $$ = new dmpl::Node(new dmpl::BaseNode());
 }
 | node_body var_block {
-  (*$1)->addVar(*$2);
+  (*$1)->addVarBlock(*$2);
   $$ = $1;
   delete $2;
 }
@@ -347,7 +347,7 @@ role_body : {
   $$ = new dmpl::Role(new dmpl::BaseRole());
 }
 | role_body var_block {
-  (*$1)->addVar(*$2);
+  (*$1)->addVarBlock(*$2);
   $$ = $1;
   delete $2;
 }

@@ -187,10 +187,10 @@ namespace dmpl
       funcs.clear(); attrs.clear();
     }
 
-    ///add variables, with scope already set
-    void addVar(const VarList &v1)
+    ///add a block of variables, with scope already set
+    void addVarBlock(const VarList &vb)
     {
-      BOOST_FOREACH(const Var &v,v1) {
+      BOOST_FOREACH(const Var &v,vb) {
         Vars &vars = v->scope == Variable::LOCAL ? locVars : globVars;
         assert(vars.count(v->name) == 0 && "ERROR: variable redeclared!!");
         vars[v->name] = v;
