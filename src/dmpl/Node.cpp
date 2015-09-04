@@ -142,7 +142,7 @@ dmpl::BaseNode::print (std::ostream &os,unsigned int indent)
   for (const auto &i : locVars) init2Vars[i.second->initFunc].insert(i.second);
   for (const auto &i : init2Vars) {
     //-- if input variable
-    if(i.first.use_count() == 0) {
+    if(i.first == NULL) {
       for (const Var &v : i.second) {
         if(globVars.count(v->name))
           os << spacer << "  global " << v->toString() << " = extern;\n";
