@@ -108,7 +108,7 @@ namespace dmpl
     bool isExternInit;
 
     /**
-     * The variable's functional initializer
+     * The function initializing the variable
      **/
     Func initFunc;
 
