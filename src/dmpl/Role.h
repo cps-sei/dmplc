@@ -181,26 +181,6 @@ namespace dmpl
       funcs.clear(); attrs.clear();
     }
 
-    ///add a global variable
-    void addGlobalVar(const VarList &vl)
-    {
-      BOOST_FOREACH(const Var &v,vl) {
-        assert(globVars.count(v->name) == 0 && "ERROR: global variable redeclared!!");
-        globVars[v->name] = v;
-        globVars[v->name]->scope = Variable::GLOBAL;
-      }
-    }
-
-    ///add a local variable
-    void addLocalVar(const VarList &vl)
-    {
-      BOOST_FOREACH(const Var &v,vl) {
-        assert(locVars.count(v->name) == 0 && "ERROR: loc variable redeclared!!");
-        locVars[v->name] = v;
-        locVars[v->name]->scope = Variable::LOCAL;
-      }
-    }
-
     ///add variables, with scope already set
     void addVar(const VarList &v1)
     {
