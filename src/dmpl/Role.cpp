@@ -142,12 +142,12 @@ dmpl::BaseRole::print (std::ostream &os,unsigned int indent)
 
     //-- otherwise, initialized variable
     os << spacer << "  {\n";
-      for (const Var &v : i.second) {
-        if(globVars.count(v->name))
-          os << spacer << "    global " << v->toString() << ";\n";
-        else
-          os << spacer << "    local " << v->toString() << ";\n";
-      }
+    for (const Var &v : i.second) {
+      if(globVars.count(v->name))
+        os << spacer << "    global " << v->toString() << ";\n";
+      else
+        os << spacer << "    local " << v->toString() << ";\n";
+    }
     os << spacer << "  } = {\n";
     //-- print temporary variables in constructor
     for(const auto &tv : i.first->temps) {
