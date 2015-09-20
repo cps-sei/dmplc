@@ -145,9 +145,9 @@ node uav
   //private variables -- local to the node.
   //preserved across rounds
   local unsigned char state = INITS; //the state
-  local unsigned char x = extern, y = extern; //current coordinates
+  local unsigned char input x, input y; //current coordinates
   local unsigned char xp = x, yp = y; //next coordinates
-  local unsigned char xf = extern, yf = extern; //final coordinates
+  local unsigned char input xf, input yf; //final coordinates
 
   //-- saves the next waypoint in (xp,yp)
   void NEXT_XY () {

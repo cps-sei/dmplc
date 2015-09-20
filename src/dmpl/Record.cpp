@@ -70,15 +70,23 @@ dmpl::RecordBase::print (std::ostream &os,unsigned int indent) const
   std::string spacer(indent, ' ');
   os << spacer << "record " << name << " {\n";
   for(const Var &v : vars) v->printInit(os, indent+2);
-
-  if(initFunc == NULL)
-    os << spacer << "}\n\n";
-  else {
-    os << spacer << "} = {\n";
+  os << spacer << '}';
+  
+  if(initFunc != NULL) {
+    os << " = {\n";
     for(const auto &tv : initFunc->temps) tv.second->printInit(os, indent+2);
     for(const Stmt &st : initFunc->body) st->print(os, indent+2);    
-    os << spacer << "}\n\n";
+    os << spacer << '}';
   }
+
+  if(assumeFunc != NULL) {
+    os << " ~ {\n";
+    for(const auto &tv : assumeFunc->temps) tv.second->printInit(os, indent+2);
+    for(const Stmt &st : assumeFunc->body) st->print(os, indent+2);    
+    os << spacer << '}';
+  }
+  
+  os << "\n\n";
 }
 
 /*********************************************************************/

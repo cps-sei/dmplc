@@ -85,19 +85,52 @@ node uav
 
   local int dummy1;
 
-  record dummyrec {
+  record dummyrec1 {
     local int dummy2, dummy3 = 0;
   } = {
     int t1 = 0, t2;
     dummy2 = t1 * t2 - 1;
   }
+
+  local unsigned char input dummy4, input dummy5 ~ (0 < dummy5 && dummy5 < 10);
+
+  record dummyrec2 {
+    local char input dummy6 ~ (20 < dummy6 && dummy6 < dummy5 + 30), input dummy7 ~ {
+      if (dummy7 < dummy6) return 0;
+      else if (dummy7 > dummy5 + dummy2) return 0;
+      return 1;
+    };
+    local unsigned char dummy8, dummy9 = 10, input dummy10;
+  } = {
+    dummy8 = dummy6 + dummy9;
+  } ~ {
+    if (dummy10 < dummy6) return 0;
+    else if (dummy10 > dummy5 + dummy2) return 0;
+    return 1;
+  }
+
+  record dummyrec3 {
+    global int input dummy20, dummy21;
+  } = {
+    dummy21 = 21;
+  }
+
+  record dummyrec4 {
+    local int input dummy30, dummy31;
+  } ~ {
+    return dummy30 == 30;
+  }
+
+  record dummyrec5 {
+    global int input dummy40, dummy41;
+  }
   
   //private variables -- local to the node.
   //preserved across rounds
   local unsigned char state = INITS; //the state
-  local unsigned char x = extern, y = extern; //current coordinates
+  local unsigned char input x, input y; //current coordinates
   local unsigned char xp = x, yp = y; //next coordinates
-  local unsigned char xf = extern, yf = extern; //final coordinates
+  local unsigned char input xf, input yf; //final coordinates
 
   //-- saves the next waypoint in (xp,yp)
   void NEXT_XY () {

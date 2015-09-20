@@ -147,7 +147,7 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
    represent.  */
 %token <string> TIDENTIFIER TINTEGER TDOUBLE TATTRIBUTE
 %token <string> TIF TREQUIRE TEXPECT TATEND TATLEAST
-%token <token> TSEMICOLON TCONST TNODE TROLE
+%token <token> TSEMICOLON TCONST TNODE TROLE TINPUT
 %token <token> TGLOBAL TLOCAL TALIAS TTARGET TTHUNK TID
 %token <token> TBOOL TINT TDOUBLE_TYPE TVOID TCHAR TSIGNED TUNSIGNED
 %token <token> TNODENUM TEXTERN TTHREAD TPURE TOVERRIDE TRECORD
@@ -413,9 +413,19 @@ record : TRECORD TIDENTIFIER TLBRACE node_var_init_list TRBRACE {
   delete $2; delete $4;
 }
 | TRECORD TIDENTIFIER TLBRACE node_var_init_list TRBRACE TEQUAL fn_body {
-  $$ = new dmpl::Record(new dmpl::RecordBase(*$2, *$4, *$7));
+  $$ = new dmpl::Record(new dmpl::RecordBase(*$2, *$4, *$7, dmpl::Func()));
   BOOST_FOREACH(const dmpl::Var &v,*$4) v->record = *$2;
   delete $2; delete $4; delete $7;
+}
+| TRECORD TIDENTIFIER TLBRACE node_var_init_list TRBRACE TBWNOT fn_body {
+  $$ = new dmpl::Record(new dmpl::RecordBase(*$2, *$4, dmpl::Func(), *$7));
+  BOOST_FOREACH(const dmpl::Var &v,*$4) v->record = *$2;
+  delete $2; delete $4; delete $7;
+}
+| TRECORD TIDENTIFIER TLBRACE node_var_init_list TRBRACE TEQUAL fn_body TBWNOT fn_body {
+  $$ = new dmpl::Record(new dmpl::RecordBase(*$2, *$4, *$7, *$9));
+  BOOST_FOREACH(const dmpl::Var &v,*$4) v->record = *$2;
+  delete $2; delete $4; delete $7; delete $9;
 }
 ;
 
@@ -443,14 +453,22 @@ var_init : type var_asgn_list {
 ;
 
 /** list of assignments to variables */
-var_asgn_list : var_asgn {
+var_asgn_list : var {
   $$ = new dmpl::VarList(); $$->push_back(*$1); delete $1;
 }
-| var {
+| TINPUT var {
+  (*$2)->isInput = true;
+  $$ = new dmpl::VarList(); $$->push_back(*$2); delete $2;
+}
+| var_asgn {
   $$ = new dmpl::VarList(); $$->push_back(*$1); delete $1;
+}
+| var_asgn_list TCOMMA var { $$ = $1; $$->push_back(*$3); delete $3; }
+| var_asgn_list TCOMMA TINPUT var {
+  (*$4)->isInput = true;
+  $$ = $1; $$->push_back(*$4); delete $4;
 }
 | var_asgn_list TCOMMA var_asgn { $$ = $1; $$->push_back(*$3); delete $3; }
-| var_asgn_list TCOMMA var { $$ = $1; $$->push_back(*$3); delete $3; }
 ;
 
 /** variable assignment */
@@ -467,9 +485,19 @@ var_asgn : var TEQUAL expr {
   (*$$)->initFunc = *$3;
   delete $3;
 }
-| var TEQUAL TEXTERN {
-  $$ = $1;
+| TINPUT var TBWNOT expr {
+  $$ = $2;
   (*$$)->isInput = true;
+  dmpl::Stmt ret(new dmpl::RetStmt(*$4));
+  (*$$)->initFunc = dmpl::Func(std::make_shared<dmpl::Func::element_type>());
+  (*$$)->initFunc->body.push_back(ret);
+  delete $4;
+}
+| TINPUT var TBWNOT fn_body {
+  $$ = $2;
+  (*$$)->isInput = true;
+  (*$$)->initFunc = *$4;
+  delete $4;
 }
 ;
 

@@ -86,10 +86,13 @@ namespace dmpl
     //-- initializer, if any
     Func initFunc;
 
+    //-- assume function, if any
+    Func assumeFunc;
+    
     //-- constructors
     RecordBase(const std::string &n,const VarList &v) : name(n), vars(v) {}
-    RecordBase(const std::string &n,const VarList &v,const Func &f)
-      : name(n), vars(v), initFunc(f) {}
+    RecordBase(const std::string &n,const VarList &v,const Func &ifn, const Func &afn)
+      : name(n), vars(v), initFunc(ifn), assumeFunc(afn) {}
     
     void print (std::ostream &os,unsigned int indent) const;
     std::string getName() const { return name; }

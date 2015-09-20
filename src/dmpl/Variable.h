@@ -159,6 +159,11 @@ namespace dmpl
     ///a constructor. the return value is the RHS of the first
     ///statement in the body of the constructor.
     Expr initExpr() const;
+
+    ///return the expression constraining the value of the variable
+    ///(assuming it is an input), i.e., the return value of the single
+    ///return statement in the body of the initializer function.
+    Expr assumeExpr() const;
   };
 
   inline Var Symbol::asVar()

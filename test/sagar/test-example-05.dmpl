@@ -325,7 +325,7 @@ node uav {
   //private variables -- local to the node.
   //preserved across rounds
   local unsigned char state = INITS; //the state
-  local unsigned char x = extern,y = extern; //current coordinates
+  local unsigned char input x, input y; //current coordinates
 
   record rec3 {
     local unsigned char xt,yt; //current target coordinates
@@ -577,7 +577,7 @@ node uav {
 
   role Leader
   {
-    override local unsigned char xt = extern,yt = extern; //final target coordinates
+    override local unsigned char input xt, input yt; //final target coordinates
     override global unsigned char lx = x, ly = y;
 
     //-- next 5 waypoints
@@ -610,7 +610,7 @@ node uav {
       SET_VARIANCES();
     }
 
-    local unsigned char scenario = extern;
+    local unsigned char input scenario;
 
     //-- scenario selector
     record rec7 {

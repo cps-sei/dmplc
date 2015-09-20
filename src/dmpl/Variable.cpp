@@ -81,7 +81,7 @@ dmpl::Variable::Variable(const std::string &n,const Dims &d)
 /*********************************************************************/
 std::string dmpl::Variable::toString() const
 {
-  std::string res = type->toString() + " " + name;
+  std::string res = type->toString() + " " + (isInput ? "input " : "") + name;
   BOOST_FOREACH(int d,type->dims) {
     res += "[" + ((d == -1) ? "#N" : boost::lexical_cast<std::string>(d)) + "]";
   }
@@ -106,6 +106,7 @@ dmpl::Variable::printInit (std::ostream &os,unsigned int indent)
 {
   std::string spacer(indent, ' ');
 
+  //-- print scope and variable
   if(scope == GLOBAL)
     os << spacer << "global " << toString();
   else if(scope == LOCAL)
@@ -113,15 +114,12 @@ dmpl::Variable::printInit (std::ostream &os,unsigned int indent)
   else
     os << spacer << toString();
 
-  //-- input variable
-  if(isInput) { os << " = extern;\n"; return; }
-
   //-- print initializer
   if(initFunc != NULL) {
-    Expr ie = initExpr();
-    if (ie != NULL) os << " = " << ie->toString() << ";\n";
+    Expr ie = isInput ? assumeExpr() : initExpr();
+    if (ie != NULL) os << ' ' << (isInput ? '~' : '=') << ' ' << ie->toString() << ";\n";
     else {
-      os << " = {\n";
+      os << ' ' << (isInput ? '~' : '=') << " {\n";
 
       //-- print temporary variables in constructor
       for(const auto &tv : initFunc->temps)
@@ -176,6 +174,17 @@ dmpl::Expr dmpl::Variable::initExpr() const
   if(!asgn) return Expr();
   if(asgn->lhs->toString() != name) return Expr();
   return asgn->rhs;
+}
+
+/*********************************************************************/
+///return the constraining expression of an input variable
+/*********************************************************************/
+dmpl::Expr dmpl::Variable::assumeExpr() const
+{
+  if(initFunc->body.size() != 1) return Expr();
+  const Stmt &s = *(initFunc->body.begin());
+  const RetStmt *ret = dynamic_cast<const RetStmt*>(&*s);
+  return ret ? ret->retVal : Expr();
 }
 
 /*********************************************************************/
