@@ -105,7 +105,10 @@ void
 dmpl::Variable::printInit (std::ostream &os,unsigned int indent)
 {
   print(os, indent);
-  if(initFunc != NULL) os << " = " << initExpr()->toString();
+  if(initFunc != NULL) {
+    Expr ie = initExpr();
+    if (ie != NULL) os << " = " << ie->toString();
+  }
   os << ";\n";
 }
 
@@ -144,10 +147,11 @@ dmpl::Var dmpl::Variable::decrDim() const
 /*********************************************************************/
 dmpl::Expr dmpl::Variable::initExpr() const
 {
-  assert(initFunc->body.size() == 1);
+  if(initFunc->body.size() != 1) return Expr();
   const Stmt &s = *(initFunc->body.begin());
   const AsgnStmt *asgn = dynamic_cast<const AsgnStmt*>(&*s);
-  assert(asgn);
+  if(!asgn) return Expr();
+  if(asgn->lhs->toString() != name) return Expr();
   return asgn->rhs;
 }
 
