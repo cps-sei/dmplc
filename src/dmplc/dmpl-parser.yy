@@ -166,6 +166,7 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
    we call an ident (defined by union type ident) we are really
    calling an (NIdentifier*). It makes the compiler happy.
  */
+%type <string> int_const double_const
 %type <token> program constant
 %type <role> role role_no_attr role_body
 %type <node> node_body node_no_attr node
@@ -246,16 +247,26 @@ target_id_list : TIDENTIFIER {
 }
 ;
 
-constant : TCONST TIDENTIFIER TEQUAL TINTEGER TSEMICOLON {
+constant : TCONST TIDENTIFIER TEQUAL int_const TSEMICOLON {
   if(builder->program.constDef.find(*$2) == builder->program.constDef.end())
     builder->program.constDef[*$2] = *$4;
   delete $2; delete $4;
 }
-| TCONST TIDENTIFIER TEQUAL TDOUBLE TSEMICOLON {
+| TCONST TIDENTIFIER TEQUAL double_const TSEMICOLON {
   if(builder->program.constDef.find(*$2) == builder->program.constDef.end())
     builder->program.constDef[*$2] = *$4;
   delete $2; delete $4;
 }
+;
+
+int_const : TINTEGER { $$ = $1; }
+| TPLUS TINTEGER { $$ = $2; }
+| TMINUS TINTEGER { $$ = $2; *$$ = "-" + *$$; }
+;
+
+double_const : TDOUBLE { $$ = $1; }
+| TPLUS TDOUBLE { $$ = $2; }
+| TMINUS TDOUBLE { $$ = $2; *$$ = "-" + *$$; }
 ;
 
 node : node_no_attr { $$ = $1; }
@@ -290,7 +301,7 @@ spec_no_attr : TEXPECT TIDENTIFIER TCOLON TATEND TIMPLIES TIDENTIFIER TSEMICOLON
   $$ = new dmpl::Spec(new dmpl::AtEndSpec(*$2,*$6));
   delete $2; delete $6;
 }
-| TEXPECT TIDENTIFIER TCOLON TATLEAST TDOUBLE TIMPLIES TIDENTIFIER TSEMICOLON {
+| TEXPECT TIDENTIFIER TCOLON TATLEAST double_const TIMPLIES TIDENTIFIER TSEMICOLON {
   $$ = new dmpl::Spec(new dmpl::AtLeastSpec(*$2,*$7,*$5));
   delete $2; delete $5; delete $7;
 }

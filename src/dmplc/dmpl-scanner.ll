@@ -144,8 +144,8 @@ extern "C" int yywrap() { return 1; }
 "at_least"                  PRINT_TOKEN; return TOKEN(TATLEAST);
 "id"                        PRINT_TOKEN; return TID;
 "NAN"                       SAVE_TOKEN; return TDOUBLE;
--?[0-9]+\.[0-9]*            SAVE_TOKEN; return TDOUBLE;
--?[0-9]+                    SAVE_TOKEN; return TINTEGER;
+[0-9]+\.[0-9]*              SAVE_TOKEN; return TDOUBLE;
+[0-9]+                      SAVE_TOKEN; return TINTEGER;
   /* [a-zA-Z_][a-zA-Z0-9_]*(::[a-zA-Z_][a-zA-Z0-9_]*)+  SAVE_TOKEN; return TNAMESPACE; */
 [a-zA-Z_][a-zA-Z0-9_]*  {
                           /** substitute constant definitions */
