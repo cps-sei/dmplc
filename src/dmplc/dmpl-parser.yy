@@ -68,6 +68,7 @@
 #include "dmpl/Function.h"
 #include "dmpl/Node.h"
 #include "dmpl/Specification.hpp"
+#include "dmpl/Record.hpp"
 #include "DmplBuilder.hpp"
 #include <math.h>
 #
@@ -134,6 +135,7 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
     dmpl::Dims *dims;
     dmpl::Spec *spec;
     dmpl::Role *role;
+    dmpl::Record *record;
     std::string *string;
     std::list<std::string> *strList;
     int token;
@@ -148,7 +150,7 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
 %token <token> TSEMICOLON TCONST TNODE TROLE
 %token <token> TGLOBAL TLOCAL TALIAS TTARGET TTHUNK TID
 %token <token> TBOOL TINT TDOUBLE_TYPE TVOID TCHAR TSIGNED TUNSIGNED
-%token <token> TNODENUM TEXTERN TTHREAD TPURE TOVERRIDE
+%token <token> TNODENUM TEXTERN TTHREAD TPURE TOVERRIDE TRECORD
 %token <token> TELSE TFOR TWHILE
 %token <token> TBREAK TCONTINUE TRETURN TEXO TEXH TEXL
 %token <token> TFAN TFADNP TFAO TFAOL TFAOH
@@ -167,7 +169,8 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
 %type <token> program constant
 %type <role> role role_no_attr role_body
 %type <node> node_body node_no_attr node
-%type <varList> node_var_init node_var_decl var_group var_block
+%type <varList> node_var_init node_var_init_list var_block
+%type <record> record_block record
 %type <function> procedure proc_no_attr fn_body fn_prototype_no_decors fn_prototype
 %type <token> dimension
 %type <tokenList> fn_decors
@@ -181,7 +184,7 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
 %type <dims> dimensions
 %type <spec> spec_no_attr specification
 %type <var> var var_asgn
-%type <varList> var_list var_decl var_asgn_list var_init
+%type <varList> var_asgn_list var_init
 %type <varList> param_list var_init_list
 %type <attr> attr
 %type <attrList> attr_list
@@ -305,6 +308,11 @@ node_body : {
   $$ = $1;
   delete $2;
 }
+| node_body record_block {
+  (*$1)->addRecord(*$2);
+  $$ = $1;
+  delete $2;
+}
 | node_body procedure {
   (*$1)->addFunction(*$2);
   $$ = $1;
@@ -351,6 +359,11 @@ role_body : {
   $$ = $1;
   delete $2;
 }
+| role_body record_block {
+  (*$1)->addRecord(*$2);
+  $$ = $1;
+  delete $2;
+}
 | role_body procedure {
   (*$1)->addFunction(*$2);
   $$ = $1;
@@ -363,20 +376,12 @@ role_body : {
 }
 ;
 
-var_block : node_var_init TSEMICOLON {
-  $$ = $1;
-}
-| TOVERRIDE node_var_init TSEMICOLON {
-  $$ = $2;
-}
-| TLBRACE var_group TRBRACE TEQUAL fn_body {
-  $$ = $2;
-  (*$5)->retType = dmpl::voidType();
-  BOOST_FOREACH(const dmpl::Var &v, *$$) {
-    v->initFunc = *$5;
-  }
-  delete $5;
-}
+var_block : node_var_init TSEMICOLON { $$ = $1; }
+| TOVERRIDE node_var_init TSEMICOLON { $$ = $2; }
+;
+
+record_block : record { $$ = $1; }
+| TOVERRIDE record { $$ = $2; }
 ;
 
 /** declaring and initializing local and global variables */
@@ -390,53 +395,26 @@ node_var_init : TGLOBAL var_init {
 }
 ;
 
-/** a group of local and global variable declarations */
-var_group : node_var_decl TSEMICOLON {
-  $$ = $1;
+/** record definition */
+record : TRECORD TIDENTIFIER TLBRACE node_var_init_list TRBRACE {
+  $$ = new dmpl::Record(new dmpl::RecordBase(*$2, *$4));
+  BOOST_FOREACH(const dmpl::Var &v,*$4) v->record = *$2;
+  delete $2; delete $4;
 }
-| var_group node_var_decl TSEMICOLON {
+| TRECORD TIDENTIFIER TLBRACE node_var_init_list TRBRACE TEQUAL fn_body {
+  $$ = new dmpl::Record(new dmpl::RecordBase(*$2, *$4, *$7));
+  BOOST_FOREACH(const dmpl::Var &v,*$4) v->record = *$2;
+  delete $2; delete $4; delete $7;
+}
+;
+
+/** list of variable initializations */
+node_var_init_list : node_var_init TSEMICOLON { $$ = $1; }
+| node_var_init_list node_var_init TSEMICOLON {
   $$ = $1;
-  BOOST_FOREACH(const dmpl::Var &v, *$2) $$->push_back(v);
+  $$->insert($$->end(), $2->begin(), $2->end());
   delete $2;
 }
-;
-
-/** declaring local and global variables */
-node_var_decl : TGLOBAL var_decl {
-  BOOST_FOREACH(dmpl::Var &v, *$2) v->scope = dmpl::Variable::GLOBAL;
-  $$ = $2;
-}
-| TOVERRIDE TGLOBAL var_decl {
-  BOOST_FOREACH(dmpl::Var &v, *$3) v->scope = dmpl::Variable::GLOBAL;
-  $$ = $3;
-}
-| TLOCAL var_decl {
-  BOOST_FOREACH(dmpl::Var &v, *$2) v->scope = dmpl::Variable::LOCAL;
-  $$ = $2;
-}
-| TOVERRIDE TLOCAL var_decl {
-  BOOST_FOREACH(dmpl::Var &v, *$3) v->scope = dmpl::Variable::LOCAL;
-  $$ = $3;
-}
-;
-
-/** declaring variables */
-var_decl : type var_list {
-  $$ = new dmpl::VarList();
-  BOOST_FOREACH(const dmpl::Var &v,*$2) {
-    dmpl::Type t = std::make_shared<dmpl::BaseType>(**$1);
-    t->dims = v->type->dims;
-    dmpl::Var newVar = std::make_shared<dmpl::Var::element_type>(*v);
-    newVar->type = t; //dmpl::Type(t);
-    $$->push_back(newVar);
-  }
-  delete $1; delete $2;
-};
-
-var_list : var {
-  $$ = new dmpl::VarList(); $$->push_back(*$1); delete $1;
-}
-| var_list TCOMMA var { $$ = $1; $$->push_back(*$3); delete $3; }
 ;
 
 /** declaring and initializing variables */
@@ -450,14 +428,18 @@ var_init : type var_asgn_list {
     $$->push_back(newVar);
   }
   delete $1; delete $2;
-};
+}
+;
 
 /** list of assignments to variables */
 var_asgn_list : var_asgn {
   $$ = new dmpl::VarList(); $$->push_back(*$1); delete $1;
 }
+| var {
+  $$ = new dmpl::VarList(); $$->push_back(*$1); delete $1;
+}
 | var_asgn_list TCOMMA var_asgn { $$ = $1; $$->push_back(*$3); delete $3; }
-;
+| var_asgn_list TCOMMA var { $$ = $1; $$->push_back(*$3); delete $3; }
 ;
 
 /** variable assignment */
@@ -469,9 +451,14 @@ var_asgn : var TEQUAL expr {
   (*$$)->initFunc->body.push_back(asgn);
   delete $3;
 }
+| var TEQUAL fn_body {
+  $$ = $1;
+  (*$$)->initFunc = *$3;
+  delete $3;
+}
 | var TEQUAL TEXTERN {
   $$ = $1;
-  (*$$)->isExternInit = true;
+  (*$$)->isInput = true;
 }
 ;
 

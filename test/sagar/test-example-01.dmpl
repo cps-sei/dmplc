@@ -137,12 +137,10 @@ extern void print_int(int i);
 node uav
 {
   //shared variables -- visible across nodes. 
-  {
-    global _Bool lock [X][Y];
-  } = {     
+  global _Bool lock [X][Y] = {     
     int a = 0;
     a = a + 1;
-  }
+  };
 
   //private variables -- local to the node.
   //preserved across rounds

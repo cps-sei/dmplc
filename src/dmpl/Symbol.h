@@ -97,6 +97,11 @@ namespace dmpl
   typedef std::shared_ptr<Specification> Spec;
   typedef std::map<std::string,Spec> Specs;
 
+  class RecordBase;
+  typedef std::shared_ptr<RecordBase> Record;
+  typedef std::list<Record> RecordList;
+  typedef std::map<std::string,Record> Records;
+
   class BaseNode;
   typedef std::shared_ptr<BaseNode> Node;
 

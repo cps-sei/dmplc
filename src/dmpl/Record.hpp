@@ -53,120 +53,48 @@
  * DM-0002494
 **/
 
-#ifndef _DMPL_VARIABLE_
-#define _DMPL_VARIABLE_
+#ifndef _DMPL_RECORD_HPP_
+#define _DMPL_RECORD_HPP_
 
 /**
- * @file Variable.h
- * @author James Edmondson <jedmondson@gmail.com>
+ * @file Record.hpp
+ * @author Sagar Chaki <chaki@sei.cmu.edu>
  *
- * This file contains a class definition for the DMPL model of computation.
+ * This file contains a class definition for records
  **/
 
-#include <map>
-#include <string>
-#include <exception>
+#include <stdio.h>
+#include <list>
 #include <memory>
-#include "Type.h"
 #include "Symbol.h"
 
 namespace dmpl
 {
-  class Expression;
-  typedef std::shared_ptr<Expression> Expr;
-
   /**
-    * @class Variable
-    * @brief A variable
+    * @class RceordBase
+    * @brief An abstract base class for records
     */
-  class Variable : public Symbol
+  class RecordBase
   {
   public:
-
-    /**
-     * The variable name
-     **/
+    //-- name of the record
     std::string name;
 
-    virtual std::string getName() const { return name; }
-    
-    /**
-     * The variable type
-     **/
-    Type type;
+    //-- list of variables in the record
+    VarList vars;
 
-    virtual const Type &getType() { return type; }
-    
-    /**
-     * The variable scope
-     **/
-    int scope;
-
-    /**
-     * Is the variable an input ?
-     **/
-    bool isInput;
-
-    /**
-     * The function initializing the variable
-     **/
+    //-- initializer, if any
     Func initFunc;
+
+    //-- constructors
+    RecordBase(const std::string &n,const VarList &v) : name(n), vars(v) {}
+    RecordBase(const std::string &n,const VarList &v,const Func &f)
+      : name(n), vars(v), initFunc(f) {}
     
-    /**
-     * The name of the record to which this variable belongs
-     **/
-    std::string record;
-    
-    virtual int getScope() { return scope; }
-
-    Func owner;
-
-    FuncList readers;
-    FuncList writers;
-
-    //constructors
-    Variable() : scope(0), isInput(false) {}
-    Variable(const std::string &n);
-    Variable(const std::string &n,const Type &t);
-    Variable(const std::string &n,const Dims &d);
-
-    //convert to string
-    std::string toString() const;
-
-    /**
-     * Prints variable information
-     * @param  indent  spaces to indent printout
-     **/
-    void print (std::ostream &os,unsigned int indent);
-
-    /**
-     * Prints variable with initialization, if any
-     * @param  indent  spaces to indent printout
-     **/
-    void printInit (std::ostream &os,unsigned int indent);
-
-    ///return a copy but instantiate dimension #N with nodeNum
-    Var instDim(size_t nodeNum) const;
-
-    ///return a copy but change name to name+ext
-    Var instName(std::string ext) const;
-
-    ///return a copy with one less dimension
-    Var decrDim() const;
-
-    ///return the initial expression for the variable. this assumes
-    ///that the variable was initialized via direct assignment and not
-    ///a constructor. the return value is the RHS of the first
-    ///statement in the body of the constructor.
-    Expr initExpr() const;
+    //virtual std::string toString() const = 0;
+    //virtual void print (std::ostream &os,unsigned int indent) const = 0;
+    std::string getName() const { return name; }
   };
-
-  inline Var Symbol::asVar()
-  {
-    return std::dynamic_pointer_cast<Var::element_type>(shared_from_this());
-  }
 }
 
-
-
-#endif // _DMPL_VARIABLE_
+#endif // _DMPL_RECORD_HPP_

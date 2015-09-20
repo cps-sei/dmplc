@@ -65,16 +65,16 @@
 /*********************************************************************/
 //constructor with name only -- assigns a default type and scope
 dmpl::Variable::Variable(const std::string &n) 
-  : name(n),type(dmpl::Type(new BaseType())),scope(0),isExternInit(false) {}
+  : name(n),type(dmpl::Type(new BaseType())),scope(0),isInput(false) {}
 
 //constructor with name and type -- assigns a default scope
 dmpl::Variable::Variable(const std::string &n,const dmpl::Type &t) 
-  : name(n),type(t),scope(0),isExternInit(false) {}
+  : name(n),type(t),scope(0),isInput(false) {}
 
 //constructor with name and dimensions -- assigns a default base type
 //and scope
 dmpl::Variable::Variable(const std::string &n,const Dims &d) 
-  : name(n),type(dmpl::Type(new BaseType(d))),scope(0),isExternInit(false) {}
+  : name(n),type(dmpl::Type(new BaseType(d))),scope(0),isInput(false) {}
 
 /*********************************************************************/
 ///convert to string
@@ -96,6 +96,17 @@ dmpl::Variable::print (std::ostream &os,unsigned int indent)
 {
   std::string spacer(indent, ' ');
   os << spacer << toString();
+}
+
+/*********************************************************************/
+///print with indentation and initialization, if any
+/*********************************************************************/
+void
+dmpl::Variable::printInit (std::ostream &os,unsigned int indent)
+{
+  print(os, indent);
+  if(initFunc != NULL) os << " = " << initExpr()->toString();
+  os << ";\n";
 }
 
 /*********************************************************************/

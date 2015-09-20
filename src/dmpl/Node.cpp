@@ -132,43 +132,73 @@ dmpl::BaseNode::print (std::ostream &os,unsigned int indent)
 {
   std::string spacer (indent, ' ');
 
-  os << spacer << "node " << name << "\n" << spacer << "{\n";  
+  os << spacer << "node " << name << "\n" << spacer << "{\n";
 
-  //-- group all variables by init functions, and then print groups
-  //-- one by one. as a special case, if the initFunc is an empty
-  //-- pointer then the variable is an input.
-  std::map< dmpl::Func,std::set<dmpl::Var> > init2Vars;
-  for (const auto &i : globVars) init2Vars[i.second->initFunc].insert(i.second);
-  for (const auto &i : locVars) init2Vars[i.second->initFunc].insert(i.second);
-  for (const auto &i : init2Vars) {
-    //-- if input variable
-    if(i.first == NULL) {
-      for (const Var &v : i.second) {
+  //-- group all variables by their record names
+  std::map< std::string,std::set<dmpl::Var> > rec2Vars;
+  for (const auto &i : globVars) rec2Vars[i.second->record].insert(i.second);
+  for (const auto &i : locVars) rec2Vars[i.second->record].insert(i.second);
+  for (const auto &r2v : rec2Vars) {
+    std::string varSpacer = spacer;
+
+    //-- begin record
+    if(!r2v.first.empty()) {
+      os << spacer << "  record " << r2v.first << " {\n";
+      varSpacer += "  ";
+    }
+
+    //-- process each variable in the record
+    for(const Var &v : r2v.second) {
+      //-- process an input variable
+      if(v->isInput) {
         if(globVars.count(v->name))
-          os << spacer << "  global " << v->toString() << " = extern;\n";
+          os << varSpacer << "  global " << v->toString() << " = extern;\n";
         else
-          os << spacer << "  local " << v->toString() << " = extern;\n";
+          os << varSpacer << "  local " << v->toString() << " = extern;\n";
+        continue;
       }
-      continue;
+
+      //-- process non-initialized variable
+      if(v->initFunc == NULL) {
+        if(globVars.count(v->name))
+          os << varSpacer << "  global " << v->toString() << ";\n";
+        else
+          os << varSpacer << "  local " << v->toString() << ";\n";
+        continue;
+      }
+
+      //-- process initialized variable
+      if(globVars.count(v->name))
+        os << varSpacer << "  global " << v->toString() << " = {\n";
+      else
+        os << varSpacer << "  local " << v->toString() << " = {\n";
+
+      //-- print temporary variables in constructor
+      for(const auto &tv : v->initFunc->temps)
+        tv.second->printInit(os, r2v.first.empty() ? indent+4 : indent+6);
+
+      //-- print statements in constructor
+      for(const Stmt &st : v->initFunc->body)
+        st->print(os, r2v.first.empty() ? indent+4 : indent+6);
+      os << varSpacer << "  };\n\n";
     }
 
-    //-- otherwise, initialized variable
-    os << spacer << "  {\n";
-    for (const Var &v : i.second) {
-      if(globVars.count(v->name))
-        os << spacer << "    global " << v->toString() << ";\n";
-      else
-        os << spacer << "    local " << v->toString() << ";\n";
+    //-- end record
+    if(!r2v.first.empty()) {
+      const Record &r = records[r2v.first];
+      if(r->initFunc == NULL) os << spacer << "  }\n\n";
+      else {
+        os << spacer << "  } = {\n";
+
+        //-- print temporary variables in constructor
+        for(const auto &tv : r->initFunc->temps) tv.second->printInit(os, indent+4);
+
+        //-- print statements in constructor
+        for(const Stmt &st : r->initFunc->body) st->print(os, indent+4);
+
+        os << spacer << "  }\n\n";
+      }
     }
-    os << spacer << "  } = {\n";
-    //-- print temporary variables in constructor
-    for(const auto &tv : i.first->temps) {
-      tv.second->print(os, indent+4);
-      os << " = " << tv.second->initExpr()->toString() << ";\n";
-    }
-    //-- print statements in constructor
-    for(const Stmt &st : i.first->body) st->print(os, indent+4);
-    os << spacer << "  }\n\n";
   }
 
   //-- print functions

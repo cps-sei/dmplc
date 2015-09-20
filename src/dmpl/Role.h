@@ -71,6 +71,7 @@
 #include "Variable.h"
 #include "Attribute.h"
 #include "Specification.hpp"
+#include "Record.hpp"
 
 namespace dmpl
 {
@@ -128,6 +129,11 @@ namespace dmpl
 
     ///list of local variables
     Vars locVars;
+
+    /**
+     * records
+     **/
+    Records records;
     
     /**
      * A map of function names to function definitions
@@ -185,6 +191,17 @@ namespace dmpl
     void addVarBlock(const VarList &vb)
     {
       BOOST_FOREACH(const Var &v,vb) {
+        Vars &vars = v->scope == Variable::LOCAL ? locVars : globVars;
+        assert(vars.count(v->name) == 0 && "ERROR: variable redeclared!!");
+        vars[v->name] = v;
+      }
+    }
+
+    ///add a record
+    void addRecord(const Record &r)
+    {
+      records.insert(std::make_pair(r->name,r));
+      BOOST_FOREACH(const Var &v,r->vars) {
         Vars &vars = v->scope == Variable::LOCAL ? locVars : globVars;
         assert(vars.count(v->name) == 0 && "ERROR: variable redeclared!!");
         vars[v->name] = v;

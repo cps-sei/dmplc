@@ -114,6 +114,7 @@ extern "C" int yywrap() { return 1; }
 "pure"                      PRINT_TOKEN; return TOKEN(TPURE);
 "thread"                    PRINT_TOKEN; return TOKEN(TTHREAD);
 "override"                  PRINT_TOKEN; return TOKEN(TOVERRIDE);
+"record"                    PRINT_TOKEN; return TOKEN(TRECORD);
 "if"                        SAVE_TOKEN; return TIF;
 "require"                   SAVE_TOKEN; return TREQUIRE;
 "expect"                    SAVE_TOKEN; return TEXPECT;

@@ -286,20 +286,20 @@ node uav {
 
   //shared variables -- visible across nodes.  must be accessed via
   //R() and W()
-  {
+  record rec1 {
     global bool lock [X][Y];
     global unsigned char lx,ly; //leader's destination coordinates
     global bool init; //node is initialized
     
     //-- these variables are used to interact with the adaptation
     //-- manager
-    global bool formation; //0 = loose, 1 = tight
-    local bool changing; //are we changing formation now?
+    global bool formation = 0; //0 = loose, 1 = tight
+    local bool changing = 0; //are we changing formation now?
   } = {}
   
   local double remaining_time = 120; //how much time left to complete formation change 
   
-  {
+  record rec2 {
     local double hazards[X][Y]; //map from cells to hazards
     local double variances[X][Y]; //map from cells to variances in hazard predictions
   } = {
@@ -327,13 +327,13 @@ node uav {
   local unsigned char state = INITS; //the state
   local unsigned char x = extern,y = extern; //current coordinates
 
-  {
+  record rec3 {
     local unsigned char xt,yt; //current target coordinates
   } = {}
 
   local unsigned char xp = x,yp = y; //next coordinates
   
-  {
+  record rec4 {
     local bool waypointValid; //xt, yt are valid
     local double started_move;
     local double delay_until;
@@ -581,7 +581,7 @@ node uav {
     override global unsigned char lx = x, ly = y;
 
     //-- next 5 waypoints
-    {
+    record rec5 {
       local unsigned char next_wp_x[5]; 
       local unsigned char next_wp_y[5]; 
     } = {
@@ -599,7 +599,7 @@ node uav {
     }
 
     //-- next 5 hazards and hazard variances
-    {
+    record rec6 {
       local double hazard1, hazard2, hazard3, hazard4, hazard5;
       local double variance1, variance2, variance3, variance4, variance5;
       local double current_hazard; //hazard of current x and y
@@ -613,7 +613,7 @@ node uav {
     local unsigned char scenario = extern;
 
     //-- scenario selector
-    {
+    record rec7 {
       //-- speeds in loose and tight formations
       local double loose_speed;
       local double tight_speed;
@@ -669,7 +669,7 @@ node uav {
       speed_factor = loose_speed / tight_speed;
     }
 
-    {
+    record rec8 {
       //-- remaining segments
       local unsigned char remaining_segs;
       //-- remaining flight time
