@@ -114,12 +114,12 @@ node uav
     thread COLLISION_AVOIDANCE;
 
     override void NEXT_XY () {
-      int x = 0;
+      int x = 0, y;
       x = NEXT_XY();
       x = uav::NEXT_XY();
       x = NEXT_XY()@id;
       x = uav::NEXT_XY()@id;
-      x = NEXT_XY()@(x+1);
+      x = NEXT_XY()@(x+y+1);
       x = uav::NEXT_XY()@(x+1);
       
       NEXT_XY();
