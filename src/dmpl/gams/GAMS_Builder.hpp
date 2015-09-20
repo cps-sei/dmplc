@@ -105,7 +105,7 @@ namespace dmpl
 
     protected:
       
-      /// the result of the DASL parsing function
+      /// the result of the DMPL parsing function
       DmplBuilder & builder_;
 
       /// the target to build against
