@@ -151,7 +151,7 @@ dmpl::BaseNode::print (std::ostream &os,unsigned int indent)
     for(const Var &v : r2v.second) {
       //-- process an input variable
       if(v->isInput) {
-        if(globVars.count(v->name))
+        if(v->getScope() == dmpl::Variable::GLOBAL)
           os << varSpacer << "  global " << v->toString() << " = extern;\n";
         else
           os << varSpacer << "  local " << v->toString() << " = extern;\n";
@@ -160,7 +160,7 @@ dmpl::BaseNode::print (std::ostream &os,unsigned int indent)
 
       //-- process non-initialized variable
       if(v->initFunc == NULL) {
-        if(globVars.count(v->name))
+        if(v->getScope() == dmpl::Variable::GLOBAL)
           os << varSpacer << "  global " << v->toString() << ";\n";
         else
           os << varSpacer << "  local " << v->toString() << ";\n";
@@ -168,7 +168,7 @@ dmpl::BaseNode::print (std::ostream &os,unsigned int indent)
       }
 
       //-- process initialized variable
-      if(globVars.count(v->name))
+      if(v->getScope() == dmpl::Variable::GLOBAL)
         os << varSpacer << "  global " << v->toString() << " = {\n";
       else
         os << varSpacer << "  local " << v->toString() << " = {\n";
