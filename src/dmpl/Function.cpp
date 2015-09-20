@@ -139,10 +139,8 @@ dmpl::Function::print (std::ostream &os,unsigned int indent)
   os << spacer << "{\n";
 
   //-- print temporary variables
-  for (dmpl::Vars::iterator i = temps.begin (); i != temps.end (); ++i) {
-    i->second->print (os,indent + 2);
-    os << " = " << i->second->initExpr()->toString() << ";\n";
-  }
+  for (dmpl::Vars::iterator i = temps.begin (); i != temps.end (); ++i)
+    i->second->printInit (os,indent + 2);
 
   //-- print statements
   BOOST_FOREACH(const Stmt &st,body) st->print (os,indent + 2);
