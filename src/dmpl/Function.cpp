@@ -118,10 +118,8 @@ dmpl::Function::print (std::ostream &os,unsigned int indent)
   //-- print return type and name
   os << spacer << retType->toString() << " " << name;
 
-  //-- handle thread function
-  if(retType->isThread()) os << '\n';
-  //-- handle normal function
-  else {
+  //-- handle non-thread function
+  if(!retType->isThread()) {
     os << "(";
 
     //-- print parameters
@@ -132,8 +130,11 @@ dmpl::Function::print (std::ostream &os,unsigned int indent)
       count++;
     }
 
-    os << ")\n";
+    os << ")";
   }
+
+  if(isPrototype) { os << ";\n"; return; }
+  else os << "\n";
   
   os << spacer << "{\n";
 

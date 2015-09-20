@@ -522,6 +522,7 @@ proc_no_attr : fn_prototype fn_body {
 }
 | fn_prototype TSEMICOLON {
   $$ = $1;
+  (*$$)->isPrototype = true;
 }
 ;
 

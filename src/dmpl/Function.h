@@ -97,6 +97,9 @@ namespace dmpl
     ///Is this function PURE? i.e., no side effects (but may read MADARA vars)
     bool isPure;
 
+    ///Is this just a prototype without a body
+    bool isPrototype;
+
     ///the return type of the function
     Type retType;
 
@@ -161,15 +164,16 @@ namespace dmpl
     }
 
     //constructors
-    Function() : isExtern(false), isPure(false), threadID(-1) {}
+    Function() : isExtern(false), isPure(false), isPrototype(false), threadID(-1) {}
     Function(const std::string &n)
-      : name(n), isExtern(false), isPure(false), threadID(-1) {}
+      : name(n), isExtern(false), isPure(false), isPrototype(false), threadID(-1) {}
     Function(const std::string &n, const Attributes &a)
       : name(n),Symbol(a), threadID(-1) {}
     Function(const Type &rt,const std::string &n,const VarList &p,
              const VarList &t,const StmtList &b,
              const Attributes &a = Attributes())
-      : retType(rt),name(n),body(b),Symbol(a),isExtern(false),isPure(false),threadID(-1)
+      : retType(rt),name(n),body(b),Symbol(a),isExtern(false),
+      isPure(false),isPrototype(false), threadID(-1)
     {
       setParams(p);
       setTemps(t);
@@ -177,7 +181,8 @@ namespace dmpl
     Function(const Type &rt,const std::string &n,const Vars &p,
              const Vars &t,const StmtList &b,
              const Attributes &a = Attributes())
-      : retType(rt),name(n),body(b),Symbol(a),paramSet(p),temps(t),isExtern(false),isPure(false),threadID(-1)
+      : retType(rt),name(n),body(b),Symbol(a),paramSet(p),temps(t),
+      isExtern(false),isPure(false),isPrototype(false),threadID(-1)
     {
       BOOST_FOREACH(const Vars::value_type &v,p) { params.push_back(v.second); }
     }
@@ -203,6 +208,7 @@ namespace dmpl
 
     ///print just the function declaration
     void printDecl (std::ostream &os,unsigned int indent);    
+
   private:
     void doSetVars (const VarList &vars, Vars &dest)
     {
