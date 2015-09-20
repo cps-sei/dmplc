@@ -53,47 +53,35 @@
  * DM-0002494
 **/
 
-#ifndef _DMPL_RECORD_HPP_
-#define _DMPL_RECORD_HPP_
-
-/**
- * @file Record.hpp
- * @author Sagar Chaki <chaki@sei.cmu.edu>
- *
- * This file contains a class definition for records
- **/
-
+#include <iostream>
 #include <stdio.h>
-#include <list>
-#include <memory>
-#include "Symbol.h"
+#include <boost/foreach.hpp>
+#include <boost/lexical_cast.hpp>
+#include "Record.hpp"
+#include "Variable.h"
+#include "Function.h"
 
-namespace dmpl
+/*********************************************************************/
+///print with indentation
+/*********************************************************************/
+void
+dmpl::RecordBase::print (std::ostream &os,unsigned int indent) const
 {
-  /**
-    * @class RceordBase
-    * @brief An abstract base class for records
-    */
-  class RecordBase
-  {
-  public:
-    //-- name of the record
-    std::string name;
+  std::string spacer(indent, ' ');
+  os << spacer << "record " << name << " {\n";
+  for(const Var &v : vars) v->printInit(os, indent+2);
 
-    //-- list of variables in the record
-    VarList vars;
-
-    //-- initializer, if any
-    Func initFunc;
-
-    //-- constructors
-    RecordBase(const std::string &n,const VarList &v) : name(n), vars(v) {}
-    RecordBase(const std::string &n,const VarList &v,const Func &f)
-      : name(n), vars(v), initFunc(f) {}
-    
-    void print (std::ostream &os,unsigned int indent) const;
-    std::string getName() const { return name; }
-  };
+  if(initFunc == NULL)
+    os << spacer << "}\n\n";
+  else {
+    os << spacer << "} = {\n";
+    for(const auto &tv : initFunc->temps) tv.second->printInit(os, indent+2);
+    for(const Stmt &st : initFunc->body) st->print(os, indent+2);    
+    os << spacer << "}\n\n";
+  }
 }
 
-#endif // _DMPL_RECORD_HPP_
+/*********************************************************************/
+//end of file
+/*********************************************************************/
+

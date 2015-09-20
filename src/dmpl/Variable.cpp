@@ -104,12 +104,35 @@ dmpl::Variable::print (std::ostream &os,unsigned int indent)
 void
 dmpl::Variable::printInit (std::ostream &os,unsigned int indent)
 {
-  print(os, indent);
+  std::string spacer(indent, ' ');
+
+  if(scope == GLOBAL)
+    os << spacer << "global " << toString();
+  else if(scope == LOCAL)
+    os << spacer << "local " << toString();
+  else
+    os << spacer << toString();
+
+  //-- input variable
+  if(isInput) { os << " = extern;\n"; return; }
+
+  //-- print initializer
   if(initFunc != NULL) {
     Expr ie = initExpr();
-    if (ie != NULL) os << " = " << ie->toString();
-  }
-  os << ";\n";
+    if (ie != NULL) os << " = " << ie->toString() << ";\n";
+    else {
+      os << " = {\n";
+
+      //-- print temporary variables in constructor
+      for(const auto &tv : initFunc->temps)
+        tv.second->printInit(os, indent+2);
+
+      //-- print statements in constructor
+      for(const Stmt &st : initFunc->body)
+        st->print(os, indent+2);
+      os << spacer << "};\n";
+    }
+  } else os << ";\n";
 }
 
 /*********************************************************************/
