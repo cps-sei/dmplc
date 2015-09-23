@@ -67,12 +67,18 @@ extern "C" {
 #include <map>
 #include <dmplc/dmpl-parser.hpp>
 
+/*********************************************************************/
+//-- constructor
+/*********************************************************************/
 dmpl::gams::Sync_Builder::Sync_Builder (dmpl::DmplBuilder & builder,
                                         const std::string &target, 
                                         SchedType & schedType,
                                         bool do_expect)
   : GAMS_Builder(builder,target, schedType, do_expect) {}
 
+/*********************************************************************/
+//-- top level code generator
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::build ()
 {
@@ -105,6 +111,9 @@ dmpl::gams::Sync_Builder::build ()
   build_main_function ();
 }
 
+/*********************************************************************/
+//-- generate header files
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::build_header_includes ()
 {
@@ -239,6 +248,9 @@ dmpl::gams::Sync_Builder::build_common_global_variables ()
   buffer_ << ");\n\n";
 }
 
+/*********************************************************************/
+//-- generate target thunks verbatim
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::build_target_thunk (void)
 {
