@@ -88,11 +88,6 @@ namespace dmpl
        **/
       void build_header_includes (void);
 
-      /**
-       * Builds the target thunk includes
-       */
-      void build_target_thunk_includes (void);
-
       void build_gams_function (std::string &dmpl_name, std::string &gams_name, int nargs = 0);
       void build_gams_functions (void);
       void build_algo_declaration (void);
@@ -262,18 +257,6 @@ namespace dmpl
       void build_common_filters_helper (const std::string filter_name,
                                         std::stringstream & filter_content);
 
-      /**
-       * Removes #include lines from target thunk and returns them
-       */
-      std::string remove_include_lines_from_target_thunk (void);
-
-      /**
-       * Splits target_str into 2 blocks of code;
-       * first block contains lines starting with #include;
-       * second block contains lines not starting with #include
-       */
-      std::pair<std::string, std::string>
-      split_include_and_non_include_blocks (const std::string target_str);
     };
   } // namespace gams
 } //namespace dmpl

@@ -82,15 +82,13 @@ dmpl::gams::Sync_Builder::Sync_Builder (dmpl::DmplBuilder & builder,
 void
 dmpl::gams::Sync_Builder::build ()
 {
+  build_target_thunk ();
   build_header_includes ();
-  build_target_thunk_includes ();
   // open dmpl namespace after including ALL libraries
   open_dmpl_namespace ();
   build_common_global_variables ();
   build_program_variables ();
   build_common_filters ();
-  // build target thunk WITHOUT includes
-  build_target_thunk ();
   build_parse_args ();
   build_functions_declarations ();
   build_gams_functions ();
@@ -109,6 +107,25 @@ dmpl::gams::Sync_Builder::build ()
   if(schedType_ == MZSRM) compute_priorities ();
 #endif
   build_main_function ();
+}
+
+/*********************************************************************/
+//-- generate target thunks verbatim
+/*********************************************************************/
+void
+dmpl::gams::Sync_Builder::build_target_thunk (void)
+{
+  buffer_ << "// target (" << target_ << ") specific thunk\n";
+
+  // we use target_ as a key to all related thunks
+  Program::TargetType::const_iterator it =
+    builder_.program.targets.find (target_);
+  
+  // if there was any such target, print it
+  if (it != builder_.program.targets.end ())
+  {
+    buffer_ << it->second << "\n\n";
+  }
 }
 
 /*********************************************************************/
@@ -163,13 +180,6 @@ dmpl::gams::Sync_Builder::build_header_includes ()
     buffer_ << "}\n";
     buffer_ << "\n";
   }
-}
-
-void
-dmpl::gams::Sync_Builder::build_target_thunk_includes ()
-{
-  const std::string include_lines = remove_include_lines_from_target_thunk ();
-  buffer_ << include_lines << '\n';
 }
 
 void
@@ -248,25 +258,6 @@ dmpl::gams::Sync_Builder::build_common_global_variables ()
   buffer_ << ");\n\n";
 }
 
-/*********************************************************************/
-//-- generate target thunks verbatim
-/*********************************************************************/
-void
-dmpl::gams::Sync_Builder::build_target_thunk (void)
-{
-  buffer_ << "// target (" << target_ << ") specific thunk\n";
-
-  // we use target_ as a key to all related thunks
-  Program::TargetType::const_iterator it =
-    builder_.program.targets.find (target_);
-  
-  // if there was any such target, print it
-  if (it != builder_.program.targets.end ())
-  {
-    buffer_ << it->second << "\n\n";
-  }
-}
-
 void
 dmpl::gams::Sync_Builder::build_common_filters (void)
 {
@@ -286,62 +277,6 @@ dmpl::gams::Sync_Builder::build_common_filters_helper (
   buffer_ << filter_content.str ();
   buffer_ << "  return result;\n";
   buffer_ << "}\n\n";
-}
-
-std::string
-dmpl::gams::Sync_Builder::remove_include_lines_from_target_thunk (void)
-{
-  Program::TargetType::const_iterator it =
-    builder_.program.targets.find (target_);
-
-  if (it != builder_.program.targets.end ())
-  {
-    std::pair<std::string, std::string> blocks = split_include_and_non_include_blocks (it->second);
-    builder_.program.targets[target_] = blocks.second;
-
-    return blocks.first;
-  }
-
-  return "";
-}
-
-std::pair<std::string, std::string>
-dmpl::gams::Sync_Builder::split_include_and_non_include_blocks (const std::string target_str)
-{
-  std::vector<std::string> all_lines;
-  std::vector<std::string> include_lines;
-  std::vector<std::string> non_include_lines;
-
-  boost::split (all_lines, target_str, boost::is_any_of ("\n"));
-  for (std::vector<std::string>::iterator it = all_lines.begin (); it != all_lines.end (); ++it)
-  {
-    std::string line = *it;
-    if (line.find ("#include") == 0)
-    {
-      include_lines.push_back (line);
-    }
-    else
-    {
-      non_include_lines.push_back (line);
-    }
-  }
-
-  // all lines starting with #include
-  std::string include_str ("");
-  for (std::vector<std::string>::iterator it = include_lines.begin (); it != include_lines.end (); ++it)
-  {
-    include_str += *it + "\n";
-  }
-
-  // all lines not starting with #include
-  std::string non_include_str ("");
-  for (std::vector<std::string>::iterator it = non_include_lines.begin (); it != non_include_lines.end (); ++it)
-  {
-    non_include_str += *it + "\n";
-  }
-
-  std::pair<std::string, std::string> blocks (include_str, non_include_str);
-  return blocks;
 }
 
 void
