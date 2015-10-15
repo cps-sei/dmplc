@@ -115,7 +115,9 @@ dmpl::gams::Sync_Builder::build ()
 void
 dmpl::gams::Sync_Builder::build_target_thunk (void)
 {
-  buffer_ << "// target (" << target_ << ") specific thunk\n";
+  buffer_ << "/**********************************************************/\n";
+  buffer_ << "// begin target (" << target_ << ") specific thunk\n";
+  buffer_ << "/**********************************************************/\n";
 
   // we use target_ as a key to all related thunks
   Program::TargetType::const_iterator it =
@@ -123,9 +125,13 @@ dmpl::gams::Sync_Builder::build_target_thunk (void)
   
   // if there was any such target, print it
   if (it != builder_.program.targets.end ())
-  {
     buffer_ << it->second << "\n\n";
-  }
+  else
+    buffer_ << "//-- no thunk for target (" << target_ << ")\n";
+
+  buffer_ << "/**********************************************************/\n";
+  buffer_ << "// end target (" << target_ << ") specific thunk\n";
+  buffer_ << "/**********************************************************/\n";
 }
 
 /*********************************************************************/
