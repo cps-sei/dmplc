@@ -232,6 +232,9 @@ namespace dmpl
 
 
     private:
+      /// comment marker
+      const static std::string commentMarker;
+      
       /// character buffer for holding results of build
       std::stringstream buffer_;
 
