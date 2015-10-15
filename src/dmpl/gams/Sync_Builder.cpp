@@ -285,10 +285,10 @@ dmpl::gams::Sync_Builder::build_common_global_variables ()
   buffer_ << "Reference<unsigned int> id(knowledge, \".id\");\n";
   buffer_ << "Reference<unsigned int>  num_processes(knowledge, \".num_processes\");\n";
   Node &node = builder_.program.nodes.begin()->second;
-  BOOST_FOREACH(Funcs::value_type &f, node->funcs)
+  BOOST_FOREACH(const Funcs::value_type &f, node->funcs)
   {
-    if (!f.second->isThread())
-      continue;
+    if (!f.second->isThread()) continue;
+
     const Attribute *attrBarSync = f.second->getAttribute("BarrierSync", 0);
     if(attrBarSync)
     {
@@ -317,10 +317,12 @@ dmpl::gams::Sync_Builder::build_common_global_variables ()
 void
 dmpl::gams::Sync_Builder::build_program_variables ()
 {
-  buffer_ << "// Defining program-specific constants\n";
+  buffer_ << commentMarker << '\n';
+  buffer_ << "//-- Defining program-specific constants\n";
+  buffer_ << commentMarker << '\n';
   
   Program::ConstDef & consts = builder_.program.constDef;
-  for (Program::ConstDef::iterator i = consts.begin (); i != consts.end (); ++i)
+  for (Program::ConstDef::const_iterator i = consts.begin (); i != consts.end (); ++i)
   {
     buffer_ << "#define ";
     buffer_ << i->first;
@@ -332,28 +334,36 @@ dmpl::gams::Sync_Builder::build_program_variables ()
   buffer_ << "\n";
   
   Nodes & nodes = builder_.program.nodes;
-  for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
+  for (Nodes::const_iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
-    buffer_ << "// Defining program-specific global variables\n";
+    buffer_ << commentMarker << '\n';
+    buffer_ << "//-- Defining program-specific global variables\n";
+    buffer_ << commentMarker << '\n';
     Vars & vars = n->second->globVars;
-    for (Vars::iterator i = vars.begin (); i != vars.end (); ++i)
+    for (Vars::const_iterator i = vars.begin (); i != vars.end (); ++i)
     {
-      Var & var = i->second;
+      const Var & var = i->second;
       var->type = var->type->incrDim(-1);
-      build_program_variable (var);
+      build_program_variable_decl (var);
+      build_program_variable_init (var);
     }
     
-    buffer_ << "\n// Defining program-specific local variables\n";
+    buffer_ << '\n' << commentMarker << '\n';
+    buffer_ << "//-- Defining program-specific local variables\n";
+    buffer_ << commentMarker << '\n';
     Vars & locals = n->second->locVars;
-    for (Vars::iterator i = locals.begin (); i != locals.end (); ++i)
+    for (Vars::const_iterator i = locals.begin (); i != locals.end (); ++i)
     {
-      Var & var = i->second;
-      build_program_variable (var);
+      const Var & var = i->second;
+      build_program_variable_decl (var);
+      build_program_variable_init (var);
     }
 
     for (const Func &thread : n->second->threads)
     {
-      buffer_ << "// Defining thread-specific global variables\n";
+      buffer_ << '\n' << commentMarker << '\n';
+      buffer_ << "//-- Defining thread-specific global variables\n";
+      buffer_ << commentMarker << '\n';
       for (auto i : vars)
       {
         Var & var = i.second;
@@ -361,7 +371,9 @@ dmpl::gams::Sync_Builder::build_program_variables ()
           build_thread_variable (thread, var);
       }
 
-      buffer_ << "// Defining thread-specific local variables\n";
+      buffer_ << '\n' << commentMarker << '\n';
+      buffer_ << "//-- Defining thread-specific local variables\n";
+      buffer_ << commentMarker << '\n';
       for (auto i : locals)
       {
         Var & var = i.second;
@@ -406,23 +418,11 @@ namespace
   }
 }
 
+/*********************************************************************/
+//-- declare a DMPL program specific global variable
+/*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_program_variable_init (
-  const Var & var)
-{
-  if (var->type->dims.size () <= 1)
-  {
-    buffer_ << get_type_name(var) << " var_init_";
-    buffer_ << var->name;
-    if (var->type->type == TDOUBLE_TYPE)
-      buffer_ << " (0.0);\n";
-    else
-      buffer_ << " (0);\n";
-  }
-}
-
-void
-dmpl::gams::Sync_Builder::build_program_variable (const Var & var)
+dmpl::gams::Sync_Builder::build_program_variable_decl (const Var & var)
 {
   // is this an array type?
   if (var->type->dims.size () >= 1)
@@ -448,9 +448,23 @@ dmpl::gams::Sync_Builder::build_program_variable (const Var & var)
     buffer_ << ".";
   buffer_ << var->name << "\")";
   buffer_ << ";\n";
+}
 
-  build_program_variable_init (var);
-  buffer_ << "\n";
+/*********************************************************************/
+//-- initialize a DMPL program specific global variable
+/*********************************************************************/
+void
+dmpl::gams::Sync_Builder::build_program_variable_init (const Var & var)
+{
+  if (var->type->dims.size () <= 1)
+  {
+    buffer_ << get_type_name(var) << " var_init_";
+    buffer_ << var->name;
+    if (var->type->type == TDOUBLE_TYPE)
+      buffer_ << " (0.0);\n";
+    else
+      buffer_ << " (0);\n";
+  }
 }
 
 void

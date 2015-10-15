@@ -111,17 +111,17 @@ namespace dmpl
       /**
        * Builds the program's MADARA generated variables
        **/
-      void build_program_variable (const Var & var);
-      
-      /**
-       * Builds a threads's MADARA generated variables
-       **/
-      void build_thread_variable (const Func &thread, const Var & var);
+      void build_program_variable_decl (const Var & var);
       
       /**
        * Builds the program's MADARA generated variables
        **/
       void build_program_variable_init (const Var & var);
+      
+      /**
+       * Builds a threads's MADARA generated variables
+       **/
+      void build_thread_variable (const Func &thread, const Var & var);
       
       /**
        * Builds the program's MADARA generated variable bindings in main
