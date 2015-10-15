@@ -122,9 +122,9 @@ dmpl::gams::Sync_Builder::build ()
 void
 dmpl::gams::Sync_Builder::build_target_thunk (void)
 {
-  buffer_ << commentMarker << "\n";
-  buffer_ << "// begin target (" << target_ << ") specific thunk\n";
-  buffer_ << commentMarker << "\n";
+  buffer_ << commentMarker << '\n';
+  buffer_ << "//-- begin target (" << target_ << ") specific thunk\n";
+  buffer_ << commentMarker << '\n';
 
   // we use target_ as a key to all related thunks
   Program::TargetType::const_iterator it =
@@ -136,8 +136,8 @@ dmpl::gams::Sync_Builder::build_target_thunk (void)
   else
     buffer_ << "//-- no thunk for target (" << target_ << ")\n";
 
-  buffer_ << commentMarker << "\n";
-  buffer_ << "// end target (" << target_ << ") specific thunk\n";
+  buffer_ << commentMarker << '\n';
+  buffer_ << "//-- end target (" << target_ << ") specific thunk\n";
   buffer_ << commentMarker << "\n\n";
 }
 
@@ -147,6 +147,10 @@ dmpl::gams::Sync_Builder::build_target_thunk (void)
 void
 dmpl::gams::Sync_Builder::build_header_includes ()
 {
+  buffer_ << commentMarker << '\n';
+  buffer_ << "//-- begin header files\n";
+  buffer_ << commentMarker << "\n\n";
+
   buffer_ << "#include <string>\n";
   buffer_ << "#include <vector>\n";
   buffer_ << "#include <sstream>\n";
@@ -193,6 +197,10 @@ dmpl::gams::Sync_Builder::build_header_includes ()
     buffer_ << "}\n";
     buffer_ << "\n";
   }
+
+  buffer_ << '\n' << commentMarker << "\n";
+  buffer_ << "//-- end header files\n";
+  buffer_ << commentMarker << "\n\n";
 }
 
 void
