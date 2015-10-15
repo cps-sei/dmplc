@@ -207,6 +207,9 @@ dmpl::gams::Sync_Builder::build_header_includes ()
   buffer_ << commentMarker << "\n\n";
 }
 
+/*********************************************************************/
+//-- generate global variables needed for all DMPL programs
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::build_common_global_variables ()
 {
@@ -308,27 +311,9 @@ dmpl::gams::Sync_Builder::build_common_global_variables ()
   buffer_ << ");\n\n";
 }
 
-void
-dmpl::gams::Sync_Builder::build_common_filters (void)
-{
-}
-
-void
-dmpl::gams::Sync_Builder::build_common_filters_helper (
-    const std::string filter_name,
-    std::stringstream & filter_content)
-{
-  buffer_ << "Madara::Knowledge_Record\n";
-  buffer_ << filter_name << " (Madara::Knowledge_Map & records,\n";
-  buffer_ << "  const Madara::Transport::Transport_Context & context,\n";
-  buffer_ << "  Madara::Knowledge_Engine::Variables & vars)\n";
-  buffer_ << "{\n";
-  buffer_ << "  Madara::Knowledge_Record result;\n";
-  buffer_ << filter_content.str ();
-  buffer_ << "  return result;\n";
-  buffer_ << "}\n\n";
-}
-
+/*********************************************************************/
+//-- generate program-specific global variables
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::build_program_variables ()
 {
@@ -387,6 +372,27 @@ dmpl::gams::Sync_Builder::build_program_variables ()
   }
 
   buffer_ << "\n";
+}
+
+void
+dmpl::gams::Sync_Builder::build_common_filters (void)
+{
+}
+
+void
+dmpl::gams::Sync_Builder::build_common_filters_helper (
+    const std::string filter_name,
+    std::stringstream & filter_content)
+{
+  buffer_ << "Madara::Knowledge_Record\n";
+  buffer_ << filter_name << " (Madara::Knowledge_Map & records,\n";
+  buffer_ << "  const Madara::Transport::Transport_Context & context,\n";
+  buffer_ << "  Madara::Knowledge_Engine::Variables & vars)\n";
+  buffer_ << "{\n";
+  buffer_ << "  Madara::Knowledge_Record result;\n";
+  buffer_ << filter_content.str ();
+  buffer_ << "  return result;\n";
+  buffer_ << "}\n\n";
 }
 
 namespace

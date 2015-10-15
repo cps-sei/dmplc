@@ -82,11 +82,6 @@ namespace dmpl
        * Builds the underlying character stream that can then be printed
        **/
       void build (void);
-      
-      /**
-       * Builds the header includes
-       **/
-      void build_header_includes (void);
 
       void build_gams_function (std::string &dmpl_name, std::string &gams_name, int nargs = 0);
       void build_gams_functions (void);
@@ -94,14 +89,19 @@ namespace dmpl
       void build_algo_functions (void);
 
       /**
-       * Builds the common global MADARA generated variables
-       **/
-      void build_common_global_variables (void);
-
-      /**
        * Builds the target-specific thunk from the DASL program
        */
       void build_target_thunk (void);
+      
+      /**
+       * Builds the header includes
+       **/
+      void build_header_includes (void);
+
+      /**
+       * Builds the common global MADARA generated variables
+       **/
+      void build_common_global_variables (void);
       
       /**
        * Builds the program's MADARA generated variables
