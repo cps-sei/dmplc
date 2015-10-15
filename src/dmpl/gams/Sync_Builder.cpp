@@ -91,8 +91,10 @@ dmpl::gams::Sync_Builder::build ()
 {
   build_target_thunk ();
   build_header_includes ();
+
   // open dmpl namespace after including ALL libraries
   open_dmpl_namespace ();
+
   build_common_global_variables ();
   build_program_variables ();
   build_common_filters ();
@@ -107,9 +109,11 @@ dmpl::gams::Sync_Builder::build ()
   }
   build_algo_declaration ();
   build_algo_functions ();
+
   // close dmpl namespace
   close_dmpl_namespace ();
   buffer_ << "using namespace dmpl;\n";
+
 #if USE_MZSRM==1
   if(schedType_ == MZSRM) compute_priorities ();
 #endif
@@ -206,30 +210,48 @@ dmpl::gams::Sync_Builder::build_header_includes ()
 void
 dmpl::gams::Sync_Builder::build_common_global_variables ()
 {
-  buffer_ << "// typedefs\n";
+  buffer_ << '\n' << commentMarker << '\n';
+  buffer_ << "//-- typedefs\n";
+  buffer_ << commentMarker << '\n';
   buffer_ << "typedef   Madara::Knowledge_Record::Integer   Integer;\n\n";
-  buffer_ << "// namespace shortcuts\n";
+
+  buffer_ << commentMarker << '\n';
+  buffer_ << "//-- namespace shortcuts\n";
+  buffer_ << commentMarker << '\n';
   buffer_ << "namespace engine = Madara::Knowledge_Engine;\n";
-  buffer_ << "namespace threads = Madara::Threads;\n\n";
-  buffer_ << "namespace containers = engine::Containers;\n\n";
-  buffer_ << "namespace controllers = gams::controllers;\n\n";
-  buffer_ << "namespace platforms = gams::platforms;\n\n";
-  buffer_ << "namespace variables = gams::variables;\n\n";
-  buffer_ << "using containers::Reference;\n\n";
-  buffer_ << "using containers::ArrayReference;\n\n";
-  buffer_ << "using containers::CachedReference;\n\n";
-  buffer_ << "using containers::StorageManager::Proactive;\n\n";
-  buffer_ << "using Madara::knowledge_cast;\n\n";
+  buffer_ << "namespace threads = Madara::Threads;\n";
+  buffer_ << "namespace containers = engine::Containers;\n";
+  buffer_ << "namespace controllers = gams::controllers;\n";
+  buffer_ << "namespace platforms = gams::platforms;\n";
+  buffer_ << "namespace variables = gams::variables;\n";
   buffer_ << "\n";
+
+  buffer_ << commentMarker << '\n';
+  buffer_ << "//-- for readability so we don't have to use full namespaces\n";
+  buffer_ << commentMarker << '\n';
+  buffer_ << "using containers::Reference;\n";
+  buffer_ << "using containers::ArrayReference;\n";
+  buffer_ << "using containers::CachedReference;\n";
+  buffer_ << "using containers::StorageManager::Proactive;\n";
+  buffer_ << "using Madara::knowledge_cast;\n";
+  buffer_ << "\n";
+
+  buffer_ << commentMarker << '\n';
+  buffer_ << "//-- declare knowledge base\n";
+  buffer_ << commentMarker << '\n';
   buffer_ << "engine::Knowledge_Base knowledge;\n";
   buffer_ << "\n";
 
-  buffer_ << "// Needed as a workaround for non-const-correctness in Madara; use carefully\n";
+  buffer_ << commentMarker << '\n';
+  buffer_ << "//-- Needed as a workaround for non-const-correctness in Madara;\n";
+  buffer_ << "//-- Use carefully\n";
+  buffer_ << commentMarker << '\n';
   buffer_ << "inline engine::Function_Arguments &__strip_const(const engine::Function_Arguments &c)\n";
   buffer_ << "{\n";
   buffer_ << "  return const_cast<engine::Function_Arguments &>(c);\n";
   buffer_ << "}\n";
   buffer_ << "\n";
+
   buffer_ << "inline engine::Function_Arguments &__chain_set(engine::Function_Arguments &c, int i, Madara::Knowledge_Record v)\n";
   buffer_ << "{\n";
   buffer_ << "  c[i] = v;\n";
@@ -237,7 +259,9 @@ dmpl::gams::Sync_Builder::build_common_global_variables ()
   buffer_ << "}\n";
   buffer_ << "\n";
 
-  buffer_ << "// default transport variables\n";
+  buffer_ << commentMarker << '\n';
+  buffer_ << "//-- default transport variables\n";
+  buffer_ << commentMarker << '\n';
   buffer_ << "std::string host (\"\");\n";
   buffer_ << "std::vector<std::string> platform_params;\n";
   buffer_ << "std::string platform_name (\"debug\");\n";
@@ -250,8 +274,10 @@ dmpl::gams::Sync_Builder::build_common_global_variables ()
   buffer_ << "ofstream expect_file;\n";
   buffer_ << "\n";
 
-  buffer_ << "// Containers for commonly used variables\n";
-  buffer_ << "// Global variables\n";
+  buffer_ << commentMarker << '\n';
+  buffer_ << "//-- Containers for commonly used variables\n";
+  buffer_ << "//-- Global variables\n";
+  buffer_ << commentMarker << '\n';
   //buffer_ << "containers::Integer_Array barrier;\n";
   buffer_ << "Reference<unsigned int> id(knowledge, \".id\");\n";
   buffer_ << "Reference<unsigned int>  num_processes(knowledge, \".num_processes\");\n";
@@ -273,7 +299,10 @@ dmpl::gams::Sync_Builder::build_common_global_variables ()
   buffer_ << "double max_barrier_time (-1);\n";
   buffer_ << "engine::Knowledge_Update_Settings private_update (true);\n";
   buffer_ << "\n";
-  buffer_ << "// number of participating processes\n";
+
+  buffer_ << commentMarker << '\n';
+  buffer_ << "//-- number of participating processes\n";
+  buffer_ << commentMarker << '\n';
   buffer_ << "unsigned int processes (";
   buffer_ << builder_.program.processes.size ();
   buffer_ << ");\n\n";
