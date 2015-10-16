@@ -386,11 +386,17 @@ dmpl::gams::Sync_Builder::build_program_variables ()
   buffer_ << "\n";
 }
 
+/*********************************************************************/
+//-- generate network filters for MADARA
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::build_common_filters (void)
 {
 }
 
+/*********************************************************************/
+//-- generate helper function for MADARA network filters
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::build_common_filters_helper (
     const std::string filter_name,
