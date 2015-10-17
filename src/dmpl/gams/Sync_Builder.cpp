@@ -473,6 +473,9 @@ dmpl::gams::Sync_Builder::build_common_filters_helper (
   buffer_ << "}\n\n";
 }
 
+/*********************************************************************/
+//-- generate a shared variable for a thread
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::build_thread_variable (const Func &thread, const Var & var)
 {
@@ -503,6 +506,9 @@ dmpl::gams::Sync_Builder::build_thread_variable (const Func &thread, const Var &
   buffer_ << ";\n";
 }
 
+/*********************************************************************/
+//-- generate bindings for all program variables
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::build_program_variables_bindings ()
 { 
@@ -538,6 +544,9 @@ dmpl::gams::Sync_Builder::build_program_variables_bindings ()
   buffer_ << "\n";
 }
 
+/*********************************************************************/
+//-- generate binding for a program variable
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::build_program_variable_binding (
   const Var & var)
@@ -595,6 +604,9 @@ dmpl::gams::Sync_Builder::build_program_variable_assignment (
   }
 }
 
+/*********************************************************************/
+//-- generate method to parse command line arguments
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::build_parse_args ()
 {
