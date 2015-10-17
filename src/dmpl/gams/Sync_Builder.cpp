@@ -386,33 +386,6 @@ dmpl::gams::Sync_Builder::build_program_variables ()
   buffer_ << "\n";
 }
 
-/*********************************************************************/
-//-- generate network filters for MADARA
-/*********************************************************************/
-void
-dmpl::gams::Sync_Builder::build_common_filters (void)
-{
-}
-
-/*********************************************************************/
-//-- generate helper function for MADARA network filters
-/*********************************************************************/
-void
-dmpl::gams::Sync_Builder::build_common_filters_helper (
-    const std::string filter_name,
-    std::stringstream & filter_content)
-{
-  buffer_ << "Madara::Knowledge_Record\n";
-  buffer_ << filter_name << " (Madara::Knowledge_Map & records,\n";
-  buffer_ << "  const Madara::Transport::Transport_Context & context,\n";
-  buffer_ << "  Madara::Knowledge_Engine::Variables & vars)\n";
-  buffer_ << "{\n";
-  buffer_ << "  Madara::Knowledge_Record result;\n";
-  buffer_ << filter_content.str ();
-  buffer_ << "  return result;\n";
-  buffer_ << "}\n\n";
-}
-
 namespace
 {
   std::string get_type_name(const dmpl::Var &var)
@@ -471,6 +444,33 @@ dmpl::gams::Sync_Builder::build_program_variable_init (const Var & var)
     else
       buffer_ << " (0);\n";
   }
+}
+
+/*********************************************************************/
+//-- generate network filters for MADARA
+/*********************************************************************/
+void
+dmpl::gams::Sync_Builder::build_common_filters (void)
+{
+}
+
+/*********************************************************************/
+//-- generate helper function for MADARA network filters
+/*********************************************************************/
+void
+dmpl::gams::Sync_Builder::build_common_filters_helper (
+    const std::string filter_name,
+    std::stringstream & filter_content)
+{
+  buffer_ << "Madara::Knowledge_Record\n";
+  buffer_ << filter_name << " (Madara::Knowledge_Map & records,\n";
+  buffer_ << "  const Madara::Transport::Transport_Context & context,\n";
+  buffer_ << "  Madara::Knowledge_Engine::Variables & vars)\n";
+  buffer_ << "{\n";
+  buffer_ << "  Madara::Knowledge_Record result;\n";
+  buffer_ << filter_content.str ();
+  buffer_ << "  return result;\n";
+  buffer_ << "}\n\n";
 }
 
 void
