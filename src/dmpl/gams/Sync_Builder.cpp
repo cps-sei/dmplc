@@ -512,7 +512,9 @@ dmpl::gams::Sync_Builder::build_thread_variable (const Func &thread, const Var &
 void
 dmpl::gams::Sync_Builder::build_program_variables_bindings ()
 { 
-  buffer_ << "  // Binding common variables\n";
+  buffer_ << "\n  " << commentMarker << '\n';
+  buffer_ << "  //-- Binding common variables\n";
+  buffer_ << "  " << commentMarker << '\n';
   //buffer_ << "  barrier.set_name (\"mbarrier\", *knowledge, ";
   //buffer_ << builder_.program.processes.size ();
   //buffer_ << ");\n";
@@ -524,7 +526,9 @@ dmpl::gams::Sync_Builder::build_program_variables_bindings ()
   Nodes & nodes = builder_.program.nodes;
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
-    buffer_ << "  // Binding program-specific global variables\n";
+    buffer_ << "  " << commentMarker << '\n';
+    buffer_ << "  //-- Binding program-specific global variables\n";
+    buffer_ << "  " << commentMarker << '\n';
     Vars & vars = n->second->globVars;
     for (Vars::iterator i = vars.begin (); i != vars.end (); ++i)
     {
@@ -532,7 +536,9 @@ dmpl::gams::Sync_Builder::build_program_variables_bindings ()
       build_program_variable_binding (var);
     }
     
-    buffer_ << "\n  // Binding program-specific local variables\n";
+    buffer_ << "\n  " << commentMarker << '\n';
+    buffer_ << "  //-- Binding program-specific local variables\n";
+    buffer_ << "  " << commentMarker << '\n';
     Vars & locals = n->second->locVars;
     for (Vars::iterator i = locals.begin (); i != locals.end (); ++i)
     {
@@ -612,6 +618,9 @@ dmpl::gams::Sync_Builder::build_parse_args ()
 {
   std::stringstream variable_help;
 
+  buffer_ << commentMarker << '\n';
+  buffer_ << "//-- helper tokenizer method to handle command line arguments\n";
+  buffer_ << commentMarker << '\n';
   buffer_ << "template < class ContainerT >\n";
   buffer_ << "void tokenize(const std::string& str, ContainerT& tokens,\n";
   buffer_ << "              const std::string& delimiters = \" \", bool trimEmpty = false)\n";
@@ -645,7 +654,9 @@ dmpl::gams::Sync_Builder::build_parse_args ()
   buffer_ << "   }\n";
   buffer_ << "}\n";
   buffer_ << "\n";
-  buffer_ << "// handle arguments from the command line\n";
+  buffer_ << commentMarker << '\n';
+  buffer_ << "//-- handle arguments from the command line\n";
+  buffer_ << commentMarker << '\n';
   buffer_ << "void handle_arguments (int argc, char ** argv)\n";
   buffer_ << "{\n";
   buffer_ << "  for (int i = 1; i < argc; ++i)\n";
@@ -787,7 +798,7 @@ dmpl::gams::Sync_Builder::build_parse_args ()
   Nodes & nodes = builder_.program.nodes;
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
-    buffer_ << "\n    // Providing init for global variables\n";
+    buffer_ << "\n    //-- Providing init for global variables\n";
     Vars & vars = n->second->globVars;
     for (Vars::iterator i = vars.begin (); i != vars.end (); ++i)
     {
@@ -795,7 +806,7 @@ dmpl::gams::Sync_Builder::build_parse_args ()
       variable_help << build_parse_args (var);
     }
     
-    buffer_ << "\n    // Providing init for local variables\n";
+    buffer_ << "\n    //-- Providing init for local variables\n";
     Vars & locals = n->second->locVars;
     for (Vars::iterator i = locals.begin (); i != locals.end (); ++i)
     {
@@ -806,7 +817,7 @@ dmpl::gams::Sync_Builder::build_parse_args ()
 
   if (false)
   {
-    buffer_ << "\n    // Providing init for VREP variables";
+    buffer_ << "\n    //-- Providing init for VREP variables";
     buffer_ << "\n    else if (arg1 == \"-vq\" || arg1 == \"--vrep-quad\")";
     buffer_ << "\n    {";
     buffer_ << "\n       vrep_model = 1;";
@@ -2064,7 +2075,9 @@ dmpl::gams::Sync_Builder::build_main_function ()
 
   Node &node = builder_.program.nodes.begin()->second;
 
+  buffer_ << "  " << commentMarker << '\n';
   buffer_ << "  // NODE: " << node->name << "\n";
+  buffer_ << "  " << commentMarker << '\n';
   BOOST_FOREACH (Attributes::value_type & attr, node->attrs)
     {
       buffer_ << "  // @" << attr.second.name;
