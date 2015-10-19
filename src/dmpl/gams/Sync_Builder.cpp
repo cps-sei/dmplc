@@ -954,6 +954,128 @@ dmpl::gams::Sync_Builder::build_functions_declarations ()
 }
 
 void
+dmpl::gams::Sync_Builder::build_gams_function (std::string &dmpl_name, std::string &gams_name, int nargs)
+{
+}
+
+/*********************************************************************/
+//-- generate functions and variables used to interact with GAMS
+/*********************************************************************/
+void
+dmpl::gams::Sync_Builder::build_gams_functions ()
+{
+  buffer_ << "gams::platforms::Base_Platform *platform = NULL;\n";
+
+  buffer_ << "int grid_x = 0, grid_y = 0;\n";
+  buffer_ << "double grid_leftX = NAN, grid_rightX = NAN, grid_topY = NAN, grid_bottomY = NAN, grid_cellX = NAN, grid_cellY = NAN;\n";
+  buffer_ << "void GRID_INIT(int x, int y, double leftX, double rightX, double topY, double bottomY)\n";
+  buffer_ << "{\n";
+  buffer_ << "  grid_x = x;\n";
+  buffer_ << "  grid_y = y;\n";
+  buffer_ << "  grid_leftX = leftX;\n";
+  buffer_ << "  grid_rightX = rightX;\n";
+  buffer_ << "  grid_topY = topY;\n";
+  buffer_ << "  grid_bottomY = bottomY;\n";
+  buffer_ << "  grid_cellX = (grid_rightX - grid_leftX) / (grid_x-1);\n";
+  buffer_ << "  grid_cellY = (grid_bottomY - grid_topY) / (grid_y-1);\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "void GRID_PLACE(int x, int y, double alt = 0.0)\n";
+  buffer_ << "{\n";
+  buffer_ << "  knowledge.set(\".initial_x\", grid_leftX + x * grid_cellX);\n";
+  buffer_ << "  knowledge.set(\".initial_y\", grid_topY + y * grid_cellY);\n";
+  buffer_ << "  knowledge.set(\".initial_alt\", alt);\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "int GRID_MOVE(int x, int y, double alt = NAN, double epsilon = 0.1)\n";
+  buffer_ << "{\n";
+  buffer_ << "  int ret = platform->move(gams::utility::Position(grid_leftX + x * grid_cellX, grid_topY + y * grid_cellY, alt), epsilon);\n";
+  //buffer_ << "  std::cerr << grid_leftX + x * grid_cellX << \"/\" << grid_topY + y * grid_cellY << std::endl;\n";
+  //buffer_ << "  std::cerr << \"PLAT_MOVE \" << platform->get_name() << \" \" << ret << std::endl;\n";
+  buffer_ << "  return ret != 2;\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+//TODO add support to GAMS to bring these back
+#if 0
+  buffer_ << "double GET_X()\n";
+  buffer_ << "{\n";
+  buffer_ << "  gams::platforms::VREP_Base *vrep_platform = dynamic_cast<gams::platforms::VREP_Base *>(platform);\n";
+  buffer_ << "  if(vrep_platform == NULL) return NAN;\n";
+  buffer_ << "  gams::utility::Position pos = vrep_platform->get_vrep_position();\n";
+  buffer_ << "  double x = pos.x;\n";
+  buffer_ << "  return x;\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "double GET_Y()\n";
+  buffer_ << "{\n";
+  buffer_ << "  gams::platforms::VREP_Base *vrep_platform = dynamic_cast<gams::platforms::VREP_Base *>(platform);\n";
+  buffer_ << "  if(vrep_platform == NULL) return NAN;\n";
+  buffer_ << "  gams::utility::Position pos = vrep_platform->get_vrep_position();\n";
+  buffer_ << "  double y = pos.y;\n";
+  buffer_ << "  return y;\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+#else
+  buffer_ << "double GET_X()\n";
+  buffer_ << "{\n";
+  buffer_ << "  return 0;\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "double GET_Y()\n";
+  buffer_ << "{\n";
+  buffer_ << "  return 0;\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+#endif
+
+  buffer_ << "double GET_LAT()\n";
+  buffer_ << "{\n";
+  buffer_ << "  if(platform == NULL) return NAN;\n";
+  buffer_ << "  gams::utility::Position *pos = platform->get_position();\n";
+  buffer_ << "  double lat = pos->x;\n";
+  buffer_ << "  delete pos;\n";
+  buffer_ << "  return lat;\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "double GET_LNG()\n";
+  buffer_ << "{\n";
+  buffer_ << "  if(platform == NULL) return NAN;\n";
+  buffer_ << "  gams::utility::Position *pos = platform->get_position();\n";
+  buffer_ << "  double lng = pos->y;\n";
+  buffer_ << "  delete pos;\n";
+  buffer_ << "  return lng;\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  buffer_ << "int ROTATE(double angle)\n";
+  buffer_ << "{\n";
+  buffer_ << "  std::cout << \"Rotate: \" << angle << std::endl;\n";
+  buffer_ << "  int ret = platform->rotate(gams::utility::Axes(0, 0, angle));\n";
+  buffer_ << "  std::cout << \"Rotate ret: \" << ret << std::endl;\n";
+  buffer_ << "  return ret != 2;\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+
+  /*
+  buffer_ << "double GET_RANGE()\n";
+  buffer_ << "{\n";
+  buffer_ << "  using gams::platforms::Has_Range_Sensor;\n";
+  buffer_ << "  const Has_Range_Sensor *s = dynamic_cast<const Has_Range_Sensor *>(platform);\n";
+  buffer_ << "  if(s == NULL) return NAN;\n";
+  buffer_ << "  double dist = s->get_range();\n";
+  buffer_ << "  return dist;\n";
+  buffer_ << "}\n";
+  buffer_ << "\n";
+  */
+}
+
+void
 dmpl::gams::Sync_Builder::build_refresh_modify_globals ()
 {
   buffer_ << "Madara::Knowledge_Record\n";
@@ -1195,125 +1317,6 @@ dmpl::gams::Sync_Builder::build_function (
   buffer_ << "\n  // Insert return statement, in case user program did not\n";
   buffer_ << "  return Integer(0);\n";
   buffer_ << "}\n\n";
-}
-
-void
-dmpl::gams::Sync_Builder::build_gams_function (std::string &dmpl_name, std::string &gams_name, int nargs)
-{
-}
-
-void
-dmpl::gams::Sync_Builder::build_gams_functions ()
-{
-  buffer_ << "gams::platforms::Base_Platform *platform = NULL;\n";
-
-  buffer_ << "int grid_x = 0, grid_y = 0;\n";
-  buffer_ << "double grid_leftX = NAN, grid_rightX = NAN, grid_topY = NAN, grid_bottomY = NAN, grid_cellX = NAN, grid_cellY = NAN;\n";
-  buffer_ << "void GRID_INIT(int x, int y, double leftX, double rightX, double topY, double bottomY)\n";
-  buffer_ << "{\n";
-  buffer_ << "  grid_x = x;\n";
-  buffer_ << "  grid_y = y;\n";
-  buffer_ << "  grid_leftX = leftX;\n";
-  buffer_ << "  grid_rightX = rightX;\n";
-  buffer_ << "  grid_topY = topY;\n";
-  buffer_ << "  grid_bottomY = bottomY;\n";
-  buffer_ << "  grid_cellX = (grid_rightX - grid_leftX) / (grid_x-1);\n";
-  buffer_ << "  grid_cellY = (grid_bottomY - grid_topY) / (grid_y-1);\n";
-  buffer_ << "}\n";
-  buffer_ << "\n";
-
-  buffer_ << "void GRID_PLACE(int x, int y, double alt = 0.0)\n";
-  buffer_ << "{\n";
-  buffer_ << "  knowledge.set(\".initial_x\", grid_leftX + x * grid_cellX);\n";
-  buffer_ << "  knowledge.set(\".initial_y\", grid_topY + y * grid_cellY);\n";
-  buffer_ << "  knowledge.set(\".initial_alt\", alt);\n";
-  buffer_ << "}\n";
-  buffer_ << "\n";
-
-  buffer_ << "int GRID_MOVE(int x, int y, double alt = NAN, double epsilon = 0.1)\n";
-  buffer_ << "{\n";
-  buffer_ << "  int ret = platform->move(gams::utility::Position(grid_leftX + x * grid_cellX, grid_topY + y * grid_cellY, alt), epsilon);\n";
-  //buffer_ << "  std::cerr << grid_leftX + x * grid_cellX << \"/\" << grid_topY + y * grid_cellY << std::endl;\n";
-  //buffer_ << "  std::cerr << \"PLAT_MOVE \" << platform->get_name() << \" \" << ret << std::endl;\n";
-  buffer_ << "  return ret != 2;\n";
-  buffer_ << "}\n";
-  buffer_ << "\n";
-
-//TODO add support to GAMS to bring these back
-#if 0
-  buffer_ << "double GET_X()\n";
-  buffer_ << "{\n";
-  buffer_ << "  gams::platforms::VREP_Base *vrep_platform = dynamic_cast<gams::platforms::VREP_Base *>(platform);\n";
-  buffer_ << "  if(vrep_platform == NULL) return NAN;\n";
-  buffer_ << "  gams::utility::Position pos = vrep_platform->get_vrep_position();\n";
-  buffer_ << "  double x = pos.x;\n";
-  buffer_ << "  return x;\n";
-  buffer_ << "}\n";
-  buffer_ << "\n";
-
-  buffer_ << "double GET_Y()\n";
-  buffer_ << "{\n";
-  buffer_ << "  gams::platforms::VREP_Base *vrep_platform = dynamic_cast<gams::platforms::VREP_Base *>(platform);\n";
-  buffer_ << "  if(vrep_platform == NULL) return NAN;\n";
-  buffer_ << "  gams::utility::Position pos = vrep_platform->get_vrep_position();\n";
-  buffer_ << "  double y = pos.y;\n";
-  buffer_ << "  return y;\n";
-  buffer_ << "}\n";
-  buffer_ << "\n";
-#else
-  buffer_ << "double GET_X()\n";
-  buffer_ << "{\n";
-  buffer_ << "  return 0;\n";
-  buffer_ << "}\n";
-  buffer_ << "\n";
-
-  buffer_ << "double GET_Y()\n";
-  buffer_ << "{\n";
-  buffer_ << "  return 0;\n";
-  buffer_ << "}\n";
-  buffer_ << "\n";
-#endif
-
-  buffer_ << "double GET_LAT()\n";
-  buffer_ << "{\n";
-  buffer_ << "  if(platform == NULL) return NAN;\n";
-  buffer_ << "  gams::utility::Position *pos = platform->get_position();\n";
-  buffer_ << "  double lat = pos->x;\n";
-  buffer_ << "  delete pos;\n";
-  buffer_ << "  return lat;\n";
-  buffer_ << "}\n";
-  buffer_ << "\n";
-
-  buffer_ << "double GET_LNG()\n";
-  buffer_ << "{\n";
-  buffer_ << "  if(platform == NULL) return NAN;\n";
-  buffer_ << "  gams::utility::Position *pos = platform->get_position();\n";
-  buffer_ << "  double lng = pos->y;\n";
-  buffer_ << "  delete pos;\n";
-  buffer_ << "  return lng;\n";
-  buffer_ << "}\n";
-  buffer_ << "\n";
-
-  buffer_ << "int ROTATE(double angle)\n";
-  buffer_ << "{\n";
-  buffer_ << "  std::cout << \"Rotate: \" << angle << std::endl;\n";
-  buffer_ << "  int ret = platform->rotate(gams::utility::Axes(0, 0, angle));\n";
-  buffer_ << "  std::cout << \"Rotate ret: \" << ret << std::endl;\n";
-  buffer_ << "  return ret != 2;\n";
-  buffer_ << "}\n";
-  buffer_ << "\n";
-
-  /*
-  buffer_ << "double GET_RANGE()\n";
-  buffer_ << "{\n";
-  buffer_ << "  using gams::platforms::Has_Range_Sensor;\n";
-  buffer_ << "  const Has_Range_Sensor *s = dynamic_cast<const Has_Range_Sensor *>(platform);\n";
-  buffer_ << "  if(s == NULL) return NAN;\n";
-  buffer_ << "  double dist = s->get_range();\n";
-  buffer_ << "  return dist;\n";
-  buffer_ << "}\n";
-  buffer_ << "\n";
-  */
 }
 
 void
