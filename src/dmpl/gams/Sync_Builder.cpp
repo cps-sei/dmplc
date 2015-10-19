@@ -2317,6 +2317,9 @@ dmpl::gams::Sync_Builder::print (std::ostream & os)
   os << buffer_.str ();
 }
 
+/*********************************************************************/
+//-- generate code to open dmpl namespace
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::open_dmpl_namespace ()
 {
@@ -2325,9 +2328,16 @@ dmpl::gams::Sync_Builder::open_dmpl_namespace ()
   buffer_ << "{\n";
 }
 
+/*********************************************************************/
+//-- generate code to close dmpl namespace
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::close_dmpl_namespace ()
 {
   buffer_ << "} // end dmpl namespace\n";
   buffer_ << "\n";
 }
+
+/*********************************************************************/
+//-- end of file
+/*********************************************************************/
