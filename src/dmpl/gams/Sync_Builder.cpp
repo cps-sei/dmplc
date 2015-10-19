@@ -917,17 +917,24 @@ dmpl::gams::Sync_Builder::build_parse_args (const Var& var)
   return return_value.str ();
 }
 
+/*********************************************************************/
+//-- generate function declarations.
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::build_functions_declarations ()
 {
-  buffer_ << "// Forward declaring global functions\n\n";
+  buffer_ << commentMarker << '\n';
+  buffer_ << "//-- Forward declaring global functions\n";
+  buffer_ << commentMarker << '\n';
   Funcs & funcs = builder_.program.funcs;
   for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
   {
     build_function_declaration (NULL, Node (), i->second);
   }
   
-  buffer_ << "\n// Forward declaring node functions\n\n";
+  buffer_ << '\n' << commentMarker << '\n';
+  buffer_ << "//-- Forward declaring node functions\n";
+  buffer_ << commentMarker << '\n';
   Nodes & nodes = builder_.program.nodes;
   for (auto n : nodes)
   {
