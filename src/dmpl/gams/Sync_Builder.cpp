@@ -897,16 +897,12 @@ dmpl::gams::Sync_Builder::build_parse_args (const Var& var)
   // we do not allow setting multi-dimensional vars from command line
   if (var->type->dims.size () <= 1)
   {
-    buffer_ << "    else if (arg1 == \"--var_";
-    buffer_ << var->name;
-    buffer_ << "\")\n";
+    buffer_ << "    else if (arg1 == \"--var_" << var->name << "\")\n";
     buffer_ << "    {\n";
     buffer_ << "      if (i + 1 < argc)\n";
     buffer_ << "      {\n";
     buffer_ << "        std::stringstream buffer (argv[i + 1]);\n";
-    buffer_ << "        buffer >> var_init_";
-    buffer_ << var->name;
-    buffer_ << ";\n";
+    buffer_ << "        buffer >> var_init_" << var->name << ";\n";
     buffer_ << "      }\n";
     buffer_ << "      \n";
     buffer_ << "      ++i;\n";
