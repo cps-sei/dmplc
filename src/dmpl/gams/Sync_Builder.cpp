@@ -949,13 +949,6 @@ dmpl::gams::Sync_Builder::build_functions_declarations ()
       }
     }
   }
-
-  buffer_ << "\n";
-}
-
-void
-dmpl::gams::Sync_Builder::build_gams_function (std::string &dmpl_name, std::string &gams_name, int nargs)
-{
 }
 
 /*********************************************************************/
@@ -964,10 +957,17 @@ dmpl::gams::Sync_Builder::build_gams_function (std::string &dmpl_name, std::stri
 void
 dmpl::gams::Sync_Builder::build_gams_functions ()
 {
+  buffer_ << '\n' << commentMarker << '\n';
+  buffer_ << "//-- GAMS variables\n";
+  buffer_ << commentMarker << '\n';
   buffer_ << "gams::platforms::Base_Platform *platform = NULL;\n";
 
   buffer_ << "int grid_x = 0, grid_y = 0;\n";
   buffer_ << "double grid_leftX = NAN, grid_rightX = NAN, grid_topY = NAN, grid_bottomY = NAN, grid_cellX = NAN, grid_cellY = NAN;\n";
+
+  buffer_ << '\n' << commentMarker << '\n';
+  buffer_ << "//-- GAMS functions\n";
+  buffer_ << commentMarker << '\n';
   buffer_ << "void GRID_INIT(int x, int y, double leftX, double rightX, double topY, double bottomY)\n";
   buffer_ << "{\n";
   buffer_ << "  grid_x = x;\n";
@@ -1075,9 +1075,54 @@ dmpl::gams::Sync_Builder::build_gams_functions ()
   */
 }
 
+/*********************************************************************/
+//-- generate functions
+/*********************************************************************/
+void
+dmpl::gams::Sync_Builder::build_functions (void)
+{
+  build_refresh_modify_globals ();
+
+  buffer_ << '\n' << commentMarker << '\n';
+  buffer_ << "//-- Defining global functions\n";
+  buffer_ << commentMarker << "\n\n";
+  Funcs & funcs = builder_.program.funcs;
+  for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
+  {
+    build_function (NULL, Node (), i->second);
+  }
+
+  buffer_ << '\n' << commentMarker << '\n';
+  buffer_ << "//-- Defining node functions\n";
+  buffer_ << commentMarker << "\n\n";
+  Nodes & nodes = builder_.program.nodes;
+  for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
+  {
+    for (Func thread : n->second->threads)
+    {
+      Funcs & funcs = n->second->funcs;
+      build_function (thread, n->second, thread);
+      for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
+      {
+        if(thread->findSymbol(i->second) != NULL)
+          build_function (thread, n->second, i->second);
+      }
+    }
+  }
+
+  buffer_ << "\n";
+}
+
+/*********************************************************************/
+//-- generate functions that remodify global shared and barrier
+//-- variables to force retransmit by MADARA.
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::build_refresh_modify_globals ()
 {
+  buffer_ << '\n' << commentMarker << '\n';
+  buffer_ << "//-- Remodify barries variables to force MADARA retransmit\n";
+  buffer_ << commentMarker << "\n\n";
   buffer_ << "Madara::Knowledge_Record\n";
   buffer_ << "REMODIFY_BARRIERS";
   buffer_ << " (engine::Function_Arguments &,\n";
@@ -1097,6 +1142,9 @@ dmpl::gams::Sync_Builder::build_refresh_modify_globals ()
   buffer_ << "  return Integer (0);\n";
   buffer_ << "}\n\n";
 
+  buffer_ << '\n' << commentMarker << '\n';
+  buffer_ << "//-- Remodify global shared variables to force MADARA retransmit\n";
+  buffer_ << commentMarker << "\n\n";
   buffer_ << "Madara::Knowledge_Record\n";
   buffer_ << "REMODIFY_GLOBALS";
   buffer_ << " (engine::Function_Arguments & args,\n";
@@ -1123,6 +1171,10 @@ dmpl::gams::Sync_Builder::build_refresh_modify_globals ()
   buffer_ << "}\n\n";
 }
 
+/*********************************************************************/
+//-- generate functions that remodifies a global shared variable to
+//-- force retransmit by MADARA.
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::build_refresh_modify_global (const Var & var)
 {
@@ -1175,37 +1227,6 @@ dmpl::gams::Sync_Builder::build_refresh_modify_global (const Var & var)
   {
     buffer_ << "  " << var->name << ".mark_modified()";
   }
-}
-
-void
-dmpl::gams::Sync_Builder::build_functions (void)
-{
-  build_refresh_modify_globals ();
-
-  buffer_ << "// Defining global functions\n\n";
-  Funcs & funcs = builder_.program.funcs;
-  for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
-  {
-    build_function (NULL, Node (), i->second);
-  }
-
-  buffer_ << "// Defining node functions\n\n";
-  Nodes & nodes = builder_.program.nodes;
-  for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
-  {
-    for (Func thread : n->second->threads)
-    {
-      Funcs & funcs = n->second->funcs;
-      build_function (thread, n->second, thread);
-      for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
-      {
-        if(thread->findSymbol(i->second) != NULL)
-          build_function (thread, n->second, i->second);
-      }
-    }
-  }
-
-  buffer_ << "\n";
 }
 
 bool skip_func(dmpl::Func & function)
