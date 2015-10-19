@@ -952,6 +952,35 @@ dmpl::gams::Sync_Builder::build_functions_declarations ()
 }
 
 /*********************************************************************/
+//-- return true if the argument function should not be declared or
+//-- defined.
+/*********************************************************************/
+bool skip_func(dmpl::Func & function)
+{
+  return (function->attrs.count("InitSim") == 0 && (function->isExtern ||
+      function->attrs.count("INIT") > 0 || function->attrs.count("SAFETY") > 0 ||
+      !function->usage_summary.anyNonExpect().any()));
+}
+
+/*********************************************************************/
+//-- generate function declaration
+/*********************************************************************/
+void
+dmpl::gams::Sync_Builder::build_function_declaration (
+  const Func & thread, const dmpl::Node & node, dmpl::Func & function)
+{
+  if (skip_func(function))
+    return;
+
+  buffer_ << "Madara::Knowledge_Record\n";
+  buffer_ << node->name;
+  if(thread)
+    buffer_ << "_" << "thread" << thread->threadID;
+  buffer_ << "_" << function->name;
+  buffer_ << " (engine::Function_Arguments & args, engine::Variables & vars);\n";
+}
+
+/*********************************************************************/
 //-- generate functions and variables used to interact with GAMS
 /*********************************************************************/
 void
@@ -1227,28 +1256,6 @@ dmpl::gams::Sync_Builder::build_refresh_modify_global (const Var & var)
   {
     buffer_ << "  " << var->name << ".mark_modified()";
   }
-}
-
-bool skip_func(dmpl::Func & function)
-{
-  return (function->attrs.count("InitSim") == 0 && (function->isExtern ||
-      function->attrs.count("INIT") > 0 || function->attrs.count("SAFETY") > 0 ||
-      !function->usage_summary.anyNonExpect().any()));
-}
-
-void
-dmpl::gams::Sync_Builder::build_function_declaration (
-  const Func & thread, const dmpl::Node & node, dmpl::Func & function)
-{
-  if (skip_func(function))
-    return;
-
-  buffer_ << "Madara::Knowledge_Record\n";
-  buffer_ << node->name;
-  if(thread)
-    buffer_ << "_" << "thread" << thread->threadID;
-  buffer_ << "_" << function->name;
-  buffer_ << " (engine::Function_Arguments & args, engine::Variables & vars);\n";
 }
 
 void
