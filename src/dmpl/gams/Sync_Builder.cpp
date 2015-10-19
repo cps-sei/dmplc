@@ -616,8 +616,11 @@ dmpl::gams::Sync_Builder::build_program_variable_assignment (
 void
 dmpl::gams::Sync_Builder::build_parse_args ()
 {
+  //-- we use this to build up the help message
   std::stringstream variable_help;
 
+  //-- generate code to initialze common variables from the command
+  //-- line
   buffer_ << commentMarker << '\n';
   buffer_ << "//-- helper tokenizer method to handle command line arguments\n";
   buffer_ << commentMarker << '\n';
@@ -795,6 +798,7 @@ dmpl::gams::Sync_Builder::build_parse_args ()
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
 
+  //-- generate code for initializing DMPL variable from the command line
   Nodes & nodes = builder_.program.nodes;
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
@@ -881,6 +885,10 @@ dmpl::gams::Sync_Builder::build_parse_args ()
   buffer_ << "}\n\n";
 }
 
+/*********************************************************************/
+//-- generate code to parse command line options for initializing a
+//-- DMPL variable.
+/*********************************************************************/
 std::string
 dmpl::gams::Sync_Builder::build_parse_args (const Var& var)
 {
