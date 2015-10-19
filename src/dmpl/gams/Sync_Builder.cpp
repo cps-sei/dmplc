@@ -2305,12 +2305,18 @@ dmpl::gams::Sync_Builder::build_main_define_function (const Node & node,
     }
 }
 
+/*********************************************************************/
+//-- clear the buffer
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::clear_buffer ()
 {
   buffer_.str ("");
 }
 
+/*********************************************************************/
+//-- print the buffer
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::print (std::ostream & os)
 {
