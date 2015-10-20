@@ -132,24 +132,23 @@ const RightX = 2.25;
 extern int my_sleep(int seconds);
 extern void print_state(int XX,int YY,int my_id, int x, int y, int xf, int yf);
 extern void print_int(int i);
-
+extern int GRID_MOVE(unsigned char x,unsigned char y,double z);
 
 node uav
 {
   //shared variables -- visible across nodes. 
-  initialize {
-    global _Bool lock [X][Y];
-  } {
-    int a = 0;
-    a = a + 1;
-  }
+  global _Bool lock [X][Y] = {
+    lock[x][y] = 1;
+  }; 
 
   //private variables -- local to the node.
   //preserved across rounds
   local unsigned char state = INITS; //the state
-  local unsigned char x = extern, y = extern; //current coordinates
+  //current coordinates
+  local unsigned char input x ~ (0 <= x && x < X), input y ~ (0 <= y && y < Y);
   local unsigned char xp = x, yp = y; //next coordinates
-  local unsigned char xf = extern, yf = extern; //final coordinates
+  //final coordinates
+  local unsigned char input xf ~ (0 <= xf && xf < X), input yf ~ (0 <= yf && yf < Y);
 
   //-- saves the next waypoint in (xp,yp)
   void NEXT_XY () {
@@ -159,49 +158,35 @@ node uav
     else if(y < yf) yp = y + 1;
     else yp = y - 1;
   }
-
-  role asdf
-  {
-    local int x;
-    void TEST() {
-    }
-  }
-
-  role asdf id 0
-  {
-    local double x;
-    void TEST() {
-    }
-  }
 }
 
 node uav
 {
-  @Period(100000)
-  @BarrierSync
-  @PlatformController
+  @Period(100000);
+  @BarrierSync;
+  @PlatformController;
   thread COLLISION_AVOIDANCE {
     print_state(X,Y,id,x,y,xf,yf);
     //my_sleep(1);
-    if IF_INIT (state == INITS) {
+    if (state == INITS) {
       lock[x][y] = 1;
       state = NEXT;
-    } if IF_NEXT (state == NEXT) {
+    } if (state == NEXT) {
       //compute next point on route
       if(x == xf && y == yf) return;
       NEXT_XY();
       state = REQUEST;
-    } else if IF_REQUEST (state == REQUEST) {
+    } else if (state == REQUEST) {
       //request the lock but only if it is free
       if(EXISTS_LOWER(idp,lock[xp][yp]@idp != 0)) return;
       lock[xp][yp] = 1;
       state = WAITING;
-    } else if IF_WAITING (state == WAITING) {
+    } else if (state == WAITING) {
       //grab the lock if we are the highest 
       //id node to request or hold the lock
       if(EXISTS_HIGHER(idp, lock[xp][yp]@idp != 0)) return;
       state = MOVE;
-    } else if IF_MOVE (state == MOVE) {
+    } else if (state == MOVE) {
       //now we have the lock on (x’,y’)
       if(GRID_MOVE(xp,yp,0.5)) return;
       lock[x][y] = 0; 
@@ -210,36 +195,26 @@ node uav
     }
   }
 
-  @InitSim
+  role Uav {
+    thread COLLISION_AVOIDANCE;
+  }
+
+  @InitSim;
   void StartingPosition ()
   {
     GRID_INIT(X, Y, LeftX, RightX, TopY, BottomY);
     GRID_PLACE(x, y, 0.5);
   }
-}
 
-//initial state
-@INIT
-void NodeInit () 
-{
-  FORALL_NODE(cid) {
-    state@cid = INITS;
-    ND(x@cid); ND(y@cid);
-    ASSUME(0 <= x@cid && x@cid < X && 0 <= y@cid && y@cid < Y);
-    ND(xf@cid); ND(yf@cid);
-    ASSUME(0 <= xf@cid && xf@cid < X && 0 <= yf@cid && yf@cid < Y);
+  //the safety property checked at the beginning of each round
+  bool NoCollisions ()
+  {
+    FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+      if(x@id1 == x@id2 && y@id1 == y@id2) return false;
+    }
+    return true;
   }
 
-  FORALL_DISTINCT_NODE_PAIR (id1,id2) {
-    ASSUME(x@id1 != x@id2 || y@id1 != y@id2);
-  }
-}
-
-//the safety property checked at the beginning of each round
-@SAFETY
-void NoCollisions ()
-{
-  FORALL_DISTINCT_NODE_PAIR (id1,id2) {
-    ASSERT(x@id1 != x@id2 || y@id1 != y@id2);
-  }
+  //-- guaranteed properties
+  require NoCollision : COLLISION_AVOIDANCE => NoCollisions;
 }
