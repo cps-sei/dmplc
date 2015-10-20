@@ -118,6 +118,10 @@ dmpl::gams::Sync_Builder::build ()
   if(schedType_ == MZSRM) compute_priorities ();
 #endif
   build_main_function ();
+
+  buffer_ << '\n' << commentMarker << '\n';
+  buffer_ << "//-- End of generated code\n";
+  buffer_ << commentMarker << "\n\n";
 }
 
 /*********************************************************************/
