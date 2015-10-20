@@ -301,7 +301,6 @@ dmpl::gams::Sync_Builder::build_common_global_variables ()
     }
   }
 
-  buffer_ << "double max_barrier_time (-1);\n";
   buffer_ << "engine::Knowledge_Update_Settings private_update (true);\n";
   buffer_ << "\n";
 
@@ -710,16 +709,6 @@ dmpl::gams::Sync_Builder::build_parse_args ()
   buffer_ << "      if (i + 1 < argc)\n";
   buffer_ << "        host = argv[i + 1];\n";
   buffer_ << "        \n";
-  buffer_ << "      ++i;\n";
-  buffer_ << "    }\n";
-  buffer_ << "    else if (arg1 == \"-mb\" || arg1 == \"--max-barrier-time\")\n";
-  buffer_ << "    {\n";
-  buffer_ << "      if (i + 1 < argc)\n";
-  buffer_ << "      {\n";
-  buffer_ << "        std::stringstream buffer (argv[i + 1]);\n";
-  buffer_ << "        buffer >> max_barrier_time;\n";
-  buffer_ << "      }\n";
-  buffer_ << "      \n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
   buffer_ << "    else if (arg1 == \"-d\" || arg1 == \"--domain\")\n";
