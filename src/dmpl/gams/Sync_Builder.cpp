@@ -159,8 +159,8 @@ dmpl::gams::Sync_Builder::build_header_includes ()
   buffer_ << "#include <vector>\n";
   buffer_ << "#include <sstream>\n";
   buffer_ << "#include <fstream>\n";
-  buffer_ << "#include <assert.h>\n";
-  buffer_ << "#include <math.h>\n";
+  buffer_ << "#include <cassert>\n";
+  buffer_ << "#include <cmath>\n";
   buffer_ << "\n";
 #if USE_MZSRM==1
   if(schedType_ == MZSRM) {
