@@ -584,10 +584,11 @@ dmpl::gams::Sync_Builder::build_program_variable_binding (
 #endif
 
   build_program_variable_assignment (var);
-
-  buffer_ << "\n";
 }
 
+/*********************************************************************/
+//-- generate code to assign initial value to a variable.
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::build_program_variable_assignment (
   const Var & var)
@@ -1989,7 +1990,7 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
 
   buffer_ << '\n' << commentMarker << '\n';
   buffer_ << "//-- End SyncAlgo class methods\n";
-  buffer_ << commentMarker << "\n\n";
+  buffer_ << commentMarker << "\n";
 }
 
 /*********************************************************************/
@@ -2108,13 +2109,19 @@ dmpl::gams::Sync_Builder::compute_priorities ()
 void
 dmpl::gams::Sync_Builder::build_main_function ()
 {
+  buffer_ << '\n' << commentMarker << '\n';
+  buffer_ << "//-- Helper function to convert objects to strings\n";
+  buffer_ << commentMarker << "\n\n";
   buffer_ << "template<class T> std::string to_string(const T &in)\n";
   buffer_ << "{\n";
   buffer_ << "  std::stringstream ss;\n";
   buffer_ << "  ss << in;\n";
   buffer_ << "  return ss.str();\n";
   buffer_ << "}\n";
-  buffer_ << "\n";
+
+  buffer_ << '\n' << commentMarker << '\n';
+  buffer_ << "//-- Initialize VREP\n";
+  buffer_ << commentMarker << "\n\n";
   buffer_ << "void init_vrep(const std::vector<std::string> &params, engine::Knowledge_Base &knowledge)\n";
   buffer_ << "{\n";
   buffer_ << "  if(params.size() >= 2 && params[1].size() > 0)\n";
@@ -2135,7 +2142,10 @@ dmpl::gams::Sync_Builder::build_main_function ()
   buffer_ << "    knowledge.set(\".vrep_uav_move_speed\", \"0.4\");\n";
   buffer_ << "  knowledge.set(\"vrep_ready\", \"1\");\n";
   buffer_ << "}\n";
-  buffer_ << "\n";
+
+  buffer_ << '\n' << commentMarker << '\n';
+  buffer_ << "//-- The main function. This is where everything starts.\n";
+  buffer_ << commentMarker << "\n\n";
   buffer_ << "int main (int argc, char ** argv)\n";
   buffer_ << "{\n";
   //buffer_ << "  Madara::Utility::set_log_level(Madara::Utility::LOG_DETAILED_TRACE);\n";
@@ -2148,12 +2158,12 @@ dmpl::gams::Sync_Builder::build_main_function ()
   buffer_ << "  platform_init_fns[\"vrep-ant\"] = init_vrep;\n";
   buffer_ << "  platform_init_fns[\"vrep-uav-ranger\"] = init_vrep;\n";
   buffer_ << "\n";
-  buffer_ << "  // handle any command line arguments\n";
+  buffer_ << "  //-- handle any command line arguments\n";
   buffer_ << "  handle_arguments (argc, argv);\n";
   buffer_ << "\n";
   buffer_ << "  if (settings.hosts.size () == 0)\n";
   buffer_ << "  {\n";
-  buffer_ << "    // setup default transport as multicast\n";
+  buffer_ << "    //-- setup default transport as multicast\n";
   buffer_ << "    settings.hosts.push_back (default_multicast);\n";
   //buffer_ << "    settings.hosts.push_back (\"127.0.0.1:4150\");\n";
   buffer_ << "    settings.add_receive_filter (Madara::Filters::log_aggregate);\n";
@@ -2163,17 +2173,17 @@ dmpl::gams::Sync_Builder::build_main_function ()
   buffer_ << "  settings.queue_length = 1000000;\n\n";
   buffer_ << "  settings.set_deadline(1);\n\n";
 
-  buffer_ << "  // configure the knowledge base with the transport settings\n";
+  buffer_ << "  //-- configure the knowledge base with the transport settings\n";
   buffer_ << "  knowledge.attach_transport(host, settings);\n\n";
 
   Node &node = builder_.program.nodes.begin()->second;
 
   buffer_ << "  " << commentMarker << '\n';
-  buffer_ << "  // NODE: " << node->name << "\n";
+  buffer_ << "  //-- NODE: " << node->name << "\n";
   buffer_ << "  " << commentMarker << '\n';
   BOOST_FOREACH (Attributes::value_type & attr, node->attrs)
     {
-      buffer_ << "  // @" << attr.second.name;
+      buffer_ << "  //-- @" << attr.second.name;
       BOOST_FOREACH (Expr p, attr.second.paramList)
         {
           buffer_ << " " << p->toString();
@@ -2181,12 +2191,11 @@ dmpl::gams::Sync_Builder::build_main_function ()
       buffer_ << "\n";
     }
 
-
   build_program_variables_bindings ();
   build_main_define_functions ();
 
   // set the values for id and processes
-  buffer_ << "  // Initialize commonly used local variables\n";  
+  buffer_ << "  //-- Initialize commonly used local variables\n";  
   buffer_ << "  id = settings.id;\n";
   buffer_ << "  num_processes = processes;\n";
   buffer_ << "  if(id < 0 || id >= processes) {\n";
@@ -2314,13 +2323,15 @@ dmpl::gams::Sync_Builder::build_main_function ()
   buffer_ << "}\n";
 }
 
+/*********************************************************************/
+//-- generate code to define functions within MADARA
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::build_main_define_functions ()
 {
-  buffer_ << "  // Defining common functions\n\n";
-
+  buffer_ << "  //-- Defining common functions\n";
   buffer_ << "  knowledge.define_function (\"REMODIFY_BARRIERS\", ";
-  buffer_ << "REMODIFY_BARRIERS);\n\n";
+  buffer_ << "REMODIFY_BARRIERS);\n";
 
   buffer_ << "  knowledge.define_function (\"REMODIFY_GLOBALS\", ";
   buffer_ << "REMODIFY_GLOBALS);\n\n";
@@ -2336,7 +2347,7 @@ dmpl::gams::Sync_Builder::build_main_define_functions ()
   buffer_ << "\n";
   */
 
-  buffer_ << "  // Defining thread functions for MADARA\n\n";
+  buffer_ << "  //-- Defining thread functions for MADARA\n";
   for (const auto &n : builder_.program.nodes)
   {
     for (Func thread : n.second->threads)
@@ -2348,7 +2359,9 @@ dmpl::gams::Sync_Builder::build_main_define_functions ()
   buffer_ << "\n";
 }
 
-
+/*********************************************************************/
+//-- generate code to define a function within MADARA
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::build_main_define_function (const Node & node,
                                                       Func & function)
