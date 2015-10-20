@@ -364,6 +364,7 @@ dmpl::gams::Sync_Builder::build_program_variables ()
     {
       buffer_ << '\n' << commentMarker << '\n';
       buffer_ << "//-- Defining thread-specific global variables\n";
+      buffer_ << "//-- Used to implement Read-Execute-Write semantics\n";
       buffer_ << commentMarker << '\n';
       for (auto i : vars)
       {
@@ -374,6 +375,7 @@ dmpl::gams::Sync_Builder::build_program_variables ()
 
       buffer_ << '\n' << commentMarker << '\n';
       buffer_ << "//-- Defining thread-specific local variables\n";
+      buffer_ << "//-- Used to implement Read-Execute-Write semantics\n";
       buffer_ << commentMarker << '\n';
       for (auto i : locals)
       {
