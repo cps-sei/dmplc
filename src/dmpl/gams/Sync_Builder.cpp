@@ -112,7 +112,7 @@ dmpl::gams::Sync_Builder::build ()
 
   // close dmpl namespace
   close_dmpl_namespace ();
-  buffer_ << "using namespace dmpl;\n";
+  buffer_ << "using namespace dmpl;\n\n";
 
 #if USE_MZSRM==1
   if(schedType_ == MZSRM) compute_priorities ();
@@ -1258,10 +1258,14 @@ dmpl::gams::Sync_Builder::build_refresh_modify_global (const Var & var)
   }
 }
 
+/*********************************************************************/
+//-- generate code to pull/push all necessary variables at the
+//-- start/end of each thread function (i.e., job)
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::build_push_pull(const Func &thread, bool push)
 {
-  buffer_ << "  // " << (push?"Push":"Pull") << " all referenced locals/globals\n";
+  buffer_ << "  //-- " << (push?"Push":"Pull") << " all referenced locals/globals\n";
   for(const SymbolUse &use : thread->allUsedSymbols)
   {
     Var var = use.sym->asVar();
@@ -1282,6 +1286,9 @@ dmpl::gams::Sync_Builder::build_push_pull(const Func &thread, bool push)
   }
 }
 
+/*********************************************************************/
+//-- generate code for a function
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::build_function (
   const Func& thread, const dmpl::Node & node, dmpl::Func & function)
@@ -1291,7 +1298,7 @@ dmpl::gams::Sync_Builder::build_function (
 
   BOOST_FOREACH (Attributes::value_type & attr, function->attrs)
   {
-    buffer_ << "// @" << attr.second.name;
+    buffer_ << "//-- @" << attr.second.name;
     BOOST_FOREACH (Expr p, attr.second.paramList)
     {
       buffer_ << " " << p->toString();
@@ -1310,7 +1317,7 @@ dmpl::gams::Sync_Builder::build_function (
   if(function == thread)
     build_push_pull(thread, false);
 
-  buffer_ << "  // Declare local variables\n";
+  buffer_ << "  //-- Declare local variables\n";
   
   //buffer_ << "  Integer result (0);\n";
   int i = 0;
@@ -1342,14 +1349,20 @@ dmpl::gams::Sync_Builder::build_function (
   if(function == thread)
     build_push_pull(thread, true);
 
-  buffer_ << "\n  // Insert return statement, in case user program did not\n";
+  buffer_ << "\n  //-- Insert return statement, in case user program did not\n";
   buffer_ << "  return Integer(0);\n";
   buffer_ << "}\n\n";
 }
 
+/*********************************************************************/
+//-- generate class for the expect thread
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::build_expect_thread_declaration (void)
 {
+  buffer_ << '\n' << commentMarker << '\n';
+  buffer_ << "//-- Thread class to monitor for expect statements\n";
+  buffer_ << commentMarker << "\n\n";
   buffer_ << "class ExpectThread : public threads::Base_Thread\n";
   buffer_ << "{\n";
   buffer_ << "public:\n";
@@ -1365,9 +1378,15 @@ dmpl::gams::Sync_Builder::build_expect_thread_declaration (void)
   buffer_ << "};\n";
 }
 
+/*********************************************************************/
+//-- generate methods of expect thread
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::build_expect_thread_definition (void)
 {
+  buffer_ << '\n' << commentMarker << '\n';
+  buffer_ << "//-- Methods for thread class to monitor for expect statements\n";
+  buffer_ << commentMarker << "\n\n";
   buffer_ << "void ExpectThread::init (engine::Knowledge_Base & context)\n";
   buffer_ << "{\n";
   buffer_ << "  _knowledge = &context;\n";
@@ -1432,9 +1451,15 @@ dmpl::gams::Sync_Builder::build_expect_thread_definition (void)
   buffer_ << "\n";
 }
 
+/*********************************************************************/
+//-- generate algorithm and synchronous algorithm classes.
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::build_algo_declaration ()
 {
+  buffer_ << commentMarker << '\n';
+  buffer_ << "//-- Class that encapsulates a periodic thread\n";
+  buffer_ << commentMarker << "\n\n";
   buffer_ << "class Algo : public gams::algorithms::Base_Algorithm, protected threads::Base_Thread\n";
   buffer_ << "{\n";
   buffer_ << "public:\n";
@@ -1490,7 +1515,10 @@ dmpl::gams::Sync_Builder::build_algo_declaration ()
 #endif
 
   buffer_ << "};\n";
-  buffer_ << "\n";
+
+  buffer_ << '\n' << commentMarker << '\n';
+  buffer_ << "//-- Class that encapsulates a synchronous periodic thread\n";
+  buffer_ << commentMarker << "\n\n";
   buffer_ << "class SyncAlgo : public Algo\n";
   buffer_ << "{\n";
   buffer_ << "public:\n";
@@ -1532,9 +1560,16 @@ dmpl::gams::Sync_Builder::build_algo_declaration ()
   buffer_ << "\n";
 }
 
+/*********************************************************************/
+//-- generate algorithm and synchronous algorithm class methods.
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::build_algo_functions ()
 {
+  buffer_ << '\n' << commentMarker << '\n';
+  buffer_ << "//-- Begin Algo class methods\n";
+  buffer_ << commentMarker << "\n\n";
+
   buffer_ << "Algo::Algo (\n";
   buffer_ << "    unsigned period,\n";
 
@@ -1715,7 +1750,14 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "  knowledge_->evaluate (_exec_func + \"()\");\n";
   buffer_ << "  return 0;\n";
   buffer_ << "}\n";
-  buffer_ << "\n";
+
+  buffer_ << '\n' << commentMarker << '\n';
+  buffer_ << "//-- End Algo class methods\n";
+  buffer_ << commentMarker << "\n\n";
+
+  buffer_ << commentMarker << '\n';
+  buffer_ << "//-- Begin SyncAlgo class methods\n";
+  buffer_ << commentMarker << "\n\n";
 
   buffer_ << "SyncAlgo::SyncAlgo (\n";
   buffer_ << "    unsigned period,\n";
@@ -1944,7 +1986,10 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << "  knowledge_->evaluate (round_logic, wait_settings);\n";
   buffer_ << "  return 0;\n";
   buffer_ << "}\n";
-  buffer_ << "\n";
+
+  buffer_ << '\n' << commentMarker << '\n';
+  buffer_ << "//-- End SyncAlgo class methods\n";
+  buffer_ << commentMarker << "\n\n";
 }
 
 void
