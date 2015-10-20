@@ -253,8 +253,10 @@ dmpl::gams::Sync_Builder::build_common_global_variables ()
   buffer_ << "{\n";
   buffer_ << "  return const_cast<engine::Function_Arguments &>(c);\n";
   buffer_ << "}\n";
-  buffer_ << "\n";
 
+  buffer_ << '\n' << commentMarker << '\n';
+  buffer_ << "//-- Needed to construct function arguments\n";
+  buffer_ << commentMarker << '\n';
   buffer_ << "inline engine::Function_Arguments &__chain_set(engine::Function_Arguments &c, int i, Madara::Knowledge_Record v)\n";
   buffer_ << "{\n";
   buffer_ << "  c[i] = v;\n";
