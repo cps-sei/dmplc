@@ -1992,6 +1992,9 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
   buffer_ << commentMarker << "\n\n";
 }
 
+/*********************************************************************/
+//-- compute priorities and criticalities of threads
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::compute_priorities ()
 {
@@ -2099,6 +2102,9 @@ dmpl::gams::Sync_Builder::compute_priorities ()
 #endif
 }
 
+/*********************************************************************/
+//-- generate the main function
+/*********************************************************************/
 void
 dmpl::gams::Sync_Builder::build_main_function ()
 {
