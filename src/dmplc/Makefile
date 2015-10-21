@@ -6,7 +6,7 @@ SyncSeqDbl.cpp SyncSeqDblInd.cpp ../dmpl/Attribute.cpp \
 ../dmpl/Node.cpp ../dmpl/Program.cpp ../dmpl/Symbol.cpp \
 ../dmpl/Variable.cpp ../dmpl/Statement.cpp ../dmpl/Type.cpp \
 ../dmpl/CProgram.cpp ../dmpl/Visitor.cpp ../dmpl/Role.cpp \
-../dmpl/gams/Sync_Builder.cpp \
+../dmpl/gams/GAMS_Builder.cpp \
 ../dmpl/gams/Analyzer_Builder.cpp \
 ../dmpl/gams/Function_Visitor.cpp
 # ArrayElim.cpp

@@ -57,67 +57,210 @@
 #ifndef __GAMS_GAMS_BUILDER_H__
 #define __GAMS_GAMS_BUILDER_H__
 
-#include <dmplc/DmplBuilder.hpp>
+#include "dmplc/DmplBuilder.hpp"
+#include "dmplc/CodeGenerator.hpp"
 
 namespace dmpl
 {
-
-  //-- the types of schedulers targeted by code generators
-  typedef enum {
-    NON_RT,  //-- non-real time : default: for laptop demos
-#if USE_MZSRM==1
-    MZSRM    //-- ZSRM mixed-criticality : the real-thing
-#endif
-  } SchedType;
-
   namespace gams
   {
     /*******************************************************************/
-    // this is the base class for various code generators for DMPL
-    // programs that target MADARA
+    // Synchronous program builder for GAMS
     /*******************************************************************/
-    class GAMS_Builder
+    class GAMS_Builder : public CodeGenerator
     {
     public:
       /**
        * Constructor
        * @param  builder   the source for building a program
        **/
-      GAMS_Builder (DmplBuilder & builder,const std::string &target,
-                    SchedType & schedType, bool do_expect)
-        : builder_ (builder), target_ (target),
-          schedType_(schedType), do_expect_(do_expect) {}
-
-      ///we need a virtual destructor
-      virtual ~GAMS_Builder() {}
+      GAMS_Builder (DmplBuilder & builder,const std::string &target, 
+                    SchedType & schedType, bool do_expect);
 
       /**
        * Builds the underlying character stream that can then be printed
        **/
-      virtual void build (void) = 0;
+      void build (void);
+
+      void build_gams_function (std::string &dmpl_name, std::string &gams_name, int nargs = 0);
+      void build_gams_functions (void);
+      void build_algo_declaration (void);
+      void build_algo_functions (void);
+
+      /**
+       * Builds the target-specific thunk from the DASL program
+       */
+      void build_target_thunk (void);
+      
+      /**
+       * Builds the header includes
+       **/
+      void build_header_includes (void);
+
+      /**
+       * Builds the common global MADARA generated variables
+       **/
+      void build_common_global_variables (void);
+      
+      /**
+       * Builds the program's MADARA generated variables
+       **/
+      void build_program_variables (void);
+      
+      /**
+       * Builds the program's MADARA generated variables
+       **/
+      void build_program_variable_decl (const Var & var);
+      
+      /**
+       * Builds the program's MADARA generated variables
+       **/
+      void build_program_variable_init (const Var & var);
+      
+      /**
+       * Builds a threads's MADARA generated variables
+       **/
+      void build_thread_variable (const Func &thread, const Var & var);
+      
+      /**
+       * Builds the program's MADARA generated variable bindings in main
+       **/
+      void build_program_variables_bindings (void);
+      
+      /**
+       * Builds a MADARA generated variable binding in main
+       **/
+      void build_program_variable_binding (const Var & var);
+      
+      /**
+       * Builds a MADARA generated variable binding in main
+       **/
+      void build_program_variable_assignment (const Var & var);
+
+      /**
+       * Builds the arguments parser
+       **/
+      void build_parse_args (void);
+      
+      /**
+       * Builds variable value parsing
+       * @return help printout for variable
+       **/
+      std::string build_parse_args (const Var& var);
+
+      /**
+       * Builds all function declarations to prevent undefined references
+       **/
+      void build_functions_declarations (void);
+      
+      /**
+       * Builds a function for refreshing modification flag on globals
+       **/
+      void build_refresh_modify_globals (void);
+      
+      /**
+       * Builds a refresh statement for modification on a global
+       **/
+      void build_refresh_modify_global (const Var& var);
+
+      /**
+       * Builds a function
+       * @param  function  a defined function in the parsed program
+       **/
+      void build_function_declaration (const Func & thread, const dmpl::Node & node, dmpl::Func& function);
+
+      /**
+       * Computes priorities, criticalities, and zero slack instants
+       * of functions.
+       **/
+      void compute_priorities (void);
+
+      void build_expect_thread_declaration (void);
+      void build_expect_thread_definition (void);
+
+      /**
+       * Builds the main function
+       **/
+      void build_main_function (void);
+
+      /**
+       * Builds the section of main that defines MADARA callable functions
+       **/
+      void build_main_define_functions (void);
+      
+      /**
+       * Builds a function definition for MADARA
+       * @param  function  a defined function in the parsed program
+       **/
+      void build_main_define_function (const dmpl::Node & node,
+        dmpl::Func& function);
+
+      /**
+       * Builds all functions
+       **/
+      void build_functions (void);
+
+      void build_push_pull (const Func& thread, bool push);
+
+      /**
+       * Builds a function
+       * @param  function  a defined function in the parsed program
+       **/
+      void build_function (const Func& thread, const dmpl::Node & node, dmpl::Func& function);
+      
+      /**
+       * Builds commonly used filters
+       */
+      void build_common_filters (void);
+      
+      /**
+       * Builds the main logic loop for execution of ROUND
+       **/
+      void build_main_logic (void);
+
+      /**
+       * Clears the underlying buffer
+       **/
+      void clear_buffer (void);
 
       /**
        * Prints the MADARA program to a stream
        * @param  os  the stream to print to
        **/
-      virtual void print (std::ostream & os) = 0;
+      void print (std::ostream & os);
 
 
-    protected:
+    private:
+      /// comment marker
+      const static std::string commentMarker;
       
-      /// the result of the DMPL parsing function
-      DmplBuilder & builder_;
+      /// character buffer for holding results of build
+      std::stringstream buffer_;
 
-      /// the target to build against
-      std::string target_;
+      //-- map from function names to priorities, criticalities and
+      //-- Zero-Slack instants
+      std::map<std::string,unsigned> funcPrios;
+      std::map<std::string,unsigned> funcCrits;
+      std::map<std::string,unsigned> funcZsinsts;
 
-      /// the targeted scheduler
-      SchedType schedType_;
+      /**
+       * Begins dmpl namespace
+       */
+      void open_dmpl_namespace (void);
 
-      /// output expect logging
-      bool do_expect_;
+      /**
+       * Ends dmpl namespace
+       */
+      void close_dmpl_namespace (void);
+
+      /**
+       * Helper function of build_common_filters
+       */
+      void build_common_filters_helper (const std::string filter_name,
+                                        std::stringstream & filter_content);
+
     };
   } // namespace gams
 } //namespace dmpl
 
-#endif //__MADARA_MADARA_BUILDER_H__
+#endif //__GAMS_GAMS_BUILDER_H__

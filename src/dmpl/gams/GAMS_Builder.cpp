@@ -60,7 +60,7 @@ extern "C" {
 }
 #endif
 
-#include "Sync_Builder.hpp"
+#include "GAMS_Builder.hpp"
 #include <dmpl/gams/Function_Visitor.hpp>
 #include <boost/algorithm/string.hpp>
 #include <vector>
@@ -71,23 +71,23 @@ extern "C" {
 /*********************************************************************/
 //-- static const field definitions
 /*********************************************************************/
-const std::string dmpl::gams::Sync_Builder::commentMarker =
+const std::string dmpl::gams::GAMS_Builder::commentMarker =
   "/********************************************************************/";
 
 /*********************************************************************/
 //-- constructor
 /*********************************************************************/
-dmpl::gams::Sync_Builder::Sync_Builder (dmpl::DmplBuilder & builder,
+dmpl::gams::GAMS_Builder::GAMS_Builder (dmpl::DmplBuilder & builder,
                                         const std::string &target, 
                                         SchedType & schedType,
                                         bool do_expect)
-  : GAMS_Builder(builder,target, schedType, do_expect) {}
+  : CodeGenerator(builder,target, schedType, do_expect) {}
 
 /*********************************************************************/
 //-- top level code generator
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build ()
+dmpl::gams::GAMS_Builder::build ()
 {
   build_target_thunk ();
   build_header_includes ();
@@ -128,7 +128,7 @@ dmpl::gams::Sync_Builder::build ()
 //-- generate target thunks verbatim
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_target_thunk (void)
+dmpl::gams::GAMS_Builder::build_target_thunk (void)
 {
   buffer_ << commentMarker << '\n';
   buffer_ << "//-- begin target (" << target_ << ") specific thunk\n";
@@ -153,7 +153,7 @@ dmpl::gams::Sync_Builder::build_target_thunk (void)
 //-- generate header files
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_header_includes ()
+dmpl::gams::GAMS_Builder::build_header_includes ()
 {
   buffer_ << commentMarker << '\n';
   buffer_ << "//-- begin header files\n";
@@ -215,7 +215,7 @@ dmpl::gams::Sync_Builder::build_header_includes ()
 //-- generate global variables needed for all DMPL programs
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_common_global_variables ()
+dmpl::gams::GAMS_Builder::build_common_global_variables ()
 {
   buffer_ << '\n' << commentMarker << '\n';
   buffer_ << "//-- typedefs\n";
@@ -320,7 +320,7 @@ dmpl::gams::Sync_Builder::build_common_global_variables ()
 //-- generate program-specific global variables
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_program_variables ()
+dmpl::gams::GAMS_Builder::build_program_variables ()
 {
   buffer_ << commentMarker << '\n';
   buffer_ << "//-- Defining program-specific constants\n";
@@ -408,7 +408,7 @@ namespace
 //-- declare a DMPL program specific global variable
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_program_variable_decl (const Var & var)
+dmpl::gams::GAMS_Builder::build_program_variable_decl (const Var & var)
 {
   // is this an array type?
   if (var->type->dims.size () >= 1)
@@ -440,7 +440,7 @@ dmpl::gams::Sync_Builder::build_program_variable_decl (const Var & var)
 //-- initialize a DMPL program specific global variable
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_program_variable_init (const Var & var)
+dmpl::gams::GAMS_Builder::build_program_variable_init (const Var & var)
 {
   if (var->type->dims.size () <= 1)
   {
@@ -457,7 +457,7 @@ dmpl::gams::Sync_Builder::build_program_variable_init (const Var & var)
 //-- generate network filters for MADARA
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_common_filters (void)
+dmpl::gams::GAMS_Builder::build_common_filters (void)
 {
 }
 
@@ -465,7 +465,7 @@ dmpl::gams::Sync_Builder::build_common_filters (void)
 //-- generate helper function for MADARA network filters
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_common_filters_helper (
+dmpl::gams::GAMS_Builder::build_common_filters_helper (
     const std::string filter_name,
     std::stringstream & filter_content)
 {
@@ -484,7 +484,7 @@ dmpl::gams::Sync_Builder::build_common_filters_helper (
 //-- generate a shared variable for a thread
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_thread_variable (const Func &thread, const Var & var)
+dmpl::gams::GAMS_Builder::build_thread_variable (const Func &thread, const Var & var)
 {
   // is this an array type?
   if (var->type->dims.size () >= 1)
@@ -517,7 +517,7 @@ dmpl::gams::Sync_Builder::build_thread_variable (const Func &thread, const Var &
 //-- generate bindings for all program variables
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_program_variables_bindings ()
+dmpl::gams::GAMS_Builder::build_program_variables_bindings ()
 { 
   buffer_ << "\n  " << commentMarker << '\n';
   buffer_ << "  //-- Binding common variables\n";
@@ -561,7 +561,7 @@ dmpl::gams::Sync_Builder::build_program_variables_bindings ()
 //-- generate binding for a program variable
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_program_variable_binding (
+dmpl::gams::GAMS_Builder::build_program_variable_binding (
   const Var & var)
 {
 #if 0
@@ -597,7 +597,7 @@ dmpl::gams::Sync_Builder::build_program_variable_binding (
 //-- generate code to assign initial value to a variable.
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_program_variable_assignment (
+dmpl::gams::GAMS_Builder::build_program_variable_assignment (
   const Var & var)
 {
   // is this a GLOBAL scalar (i.e., 1-dimensional array)?
@@ -622,7 +622,7 @@ dmpl::gams::Sync_Builder::build_program_variable_assignment (
 //-- generate method to parse command line arguments
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_parse_args ()
+dmpl::gams::GAMS_Builder::build_parse_args ()
 {
   //-- we use this to build up the help message
   std::stringstream variable_help;
@@ -888,7 +888,7 @@ dmpl::gams::Sync_Builder::build_parse_args ()
 //-- DMPL variable.
 /*********************************************************************/
 std::string
-dmpl::gams::Sync_Builder::build_parse_args (const Var& var)
+dmpl::gams::GAMS_Builder::build_parse_args (const Var& var)
 {
   std::stringstream return_value;
   
@@ -919,7 +919,7 @@ dmpl::gams::Sync_Builder::build_parse_args (const Var& var)
 //-- generate function declarations.
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_functions_declarations ()
+dmpl::gams::GAMS_Builder::build_functions_declarations ()
 {
   buffer_ << commentMarker << '\n';
   buffer_ << "//-- Forward declaring global functions\n";
@@ -964,7 +964,7 @@ bool skip_func(dmpl::Func & function)
 //-- generate function declaration
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_function_declaration (
+dmpl::gams::GAMS_Builder::build_function_declaration (
   const Func & thread, const dmpl::Node & node, dmpl::Func & function)
 {
   if (skip_func(function))
@@ -982,7 +982,7 @@ dmpl::gams::Sync_Builder::build_function_declaration (
 //-- generate functions and variables used to interact with GAMS
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_gams_functions ()
+dmpl::gams::GAMS_Builder::build_gams_functions ()
 {
   buffer_ << '\n' << commentMarker << '\n';
   buffer_ << "//-- GAMS variables\n";
@@ -1106,7 +1106,7 @@ dmpl::gams::Sync_Builder::build_gams_functions ()
 //-- generate functions
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_functions (void)
+dmpl::gams::GAMS_Builder::build_functions (void)
 {
   build_refresh_modify_globals ();
 
@@ -1145,7 +1145,7 @@ dmpl::gams::Sync_Builder::build_functions (void)
 //-- variables to force retransmit by MADARA.
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_refresh_modify_globals ()
+dmpl::gams::GAMS_Builder::build_refresh_modify_globals ()
 {
   buffer_ << '\n' << commentMarker << '\n';
   buffer_ << "//-- Remodify barries variables to force MADARA retransmit\n";
@@ -1203,7 +1203,7 @@ dmpl::gams::Sync_Builder::build_refresh_modify_globals ()
 //-- force retransmit by MADARA.
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_refresh_modify_global (const Var & var)
+dmpl::gams::GAMS_Builder::build_refresh_modify_global (const Var & var)
 {
 #if 0
   // is this an array type?
@@ -1261,7 +1261,7 @@ dmpl::gams::Sync_Builder::build_refresh_modify_global (const Var & var)
 //-- start/end of each thread function (i.e., job)
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_push_pull(const Func &thread, bool push)
+dmpl::gams::GAMS_Builder::build_push_pull(const Func &thread, bool push)
 {
   buffer_ << "  //-- " << (push?"Push":"Pull") << " all referenced locals/globals\n";
   for(const SymbolUse &use : thread->allUsedSymbols)
@@ -1288,7 +1288,7 @@ dmpl::gams::Sync_Builder::build_push_pull(const Func &thread, bool push)
 //-- generate code for a function
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_function (
+dmpl::gams::GAMS_Builder::build_function (
   const Func& thread, const dmpl::Node & node, dmpl::Func & function)
 {
   if (skip_func(function))
@@ -1356,7 +1356,7 @@ dmpl::gams::Sync_Builder::build_function (
 //-- generate class for the expect thread
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_expect_thread_declaration (void)
+dmpl::gams::GAMS_Builder::build_expect_thread_declaration (void)
 {
   buffer_ << '\n' << commentMarker << '\n';
   buffer_ << "//-- Thread class to monitor for expect statements\n";
@@ -1380,7 +1380,7 @@ dmpl::gams::Sync_Builder::build_expect_thread_declaration (void)
 //-- generate methods of expect thread
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_expect_thread_definition (void)
+dmpl::gams::GAMS_Builder::build_expect_thread_definition (void)
 {
   buffer_ << '\n' << commentMarker << '\n';
   buffer_ << "//-- Methods for thread class to monitor for expect statements\n";
@@ -1453,7 +1453,7 @@ dmpl::gams::Sync_Builder::build_expect_thread_definition (void)
 //-- generate algorithm and synchronous algorithm classes.
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_algo_declaration ()
+dmpl::gams::GAMS_Builder::build_algo_declaration ()
 {
   buffer_ << commentMarker << '\n';
   buffer_ << "//-- Class that encapsulates a periodic thread\n";
@@ -1562,7 +1562,7 @@ dmpl::gams::Sync_Builder::build_algo_declaration ()
 //-- generate algorithm and synchronous algorithm class methods.
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_algo_functions ()
+dmpl::gams::GAMS_Builder::build_algo_functions ()
 {
   buffer_ << '\n' << commentMarker << '\n';
   buffer_ << "//-- Begin Algo class methods\n";
@@ -1994,7 +1994,7 @@ dmpl::gams::Sync_Builder::build_algo_functions ()
 //-- compute priorities and criticalities of threads
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::compute_priorities ()
+dmpl::gams::GAMS_Builder::compute_priorities ()
 {
   Node &node = builder_.program.nodes.begin()->second;
 
@@ -2104,7 +2104,7 @@ dmpl::gams::Sync_Builder::compute_priorities ()
 //-- generate the main function
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_main_function ()
+dmpl::gams::GAMS_Builder::build_main_function ()
 {
   buffer_ << '\n' << commentMarker << '\n';
   buffer_ << "//-- Helper function to convert objects to strings\n";
@@ -2324,7 +2324,7 @@ dmpl::gams::Sync_Builder::build_main_function ()
 //-- generate code to define functions within MADARA
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_main_define_functions ()
+dmpl::gams::GAMS_Builder::build_main_define_functions ()
 {
   buffer_ << "  //-- Defining common functions\n";
   buffer_ << "  knowledge.define_function (\"REMODIFY_BARRIERS\", ";
@@ -2360,7 +2360,7 @@ dmpl::gams::Sync_Builder::build_main_define_functions ()
 //-- generate code to define a function within MADARA
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::build_main_define_function (const Node & node,
+dmpl::gams::GAMS_Builder::build_main_define_function (const Node & node,
                                                       Func & function)
 {
   if (!(skip_func(function)))
@@ -2377,7 +2377,7 @@ dmpl::gams::Sync_Builder::build_main_define_function (const Node & node,
 //-- clear the buffer
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::clear_buffer ()
+dmpl::gams::GAMS_Builder::clear_buffer ()
 {
   buffer_.str ("");
 }
@@ -2386,7 +2386,7 @@ dmpl::gams::Sync_Builder::clear_buffer ()
 //-- print the buffer
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::print (std::ostream & os)
+dmpl::gams::GAMS_Builder::print (std::ostream & os)
 {
   os << buffer_.str ();
 }
@@ -2395,7 +2395,7 @@ dmpl::gams::Sync_Builder::print (std::ostream & os)
 //-- generate code to open dmpl namespace
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::open_dmpl_namespace ()
+dmpl::gams::GAMS_Builder::open_dmpl_namespace ()
 {
   buffer_ << "// begin dmpl namespace\n";
   buffer_ << "namespace dmpl\n";
@@ -2406,7 +2406,7 @@ dmpl::gams::Sync_Builder::open_dmpl_namespace ()
 //-- generate code to close dmpl namespace
 /*********************************************************************/
 void
-dmpl::gams::Sync_Builder::close_dmpl_namespace ()
+dmpl::gams::GAMS_Builder::close_dmpl_namespace ()
 {
   buffer_ << "} // end dmpl namespace\n";
   buffer_ << "\n";

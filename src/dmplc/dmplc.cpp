@@ -60,7 +60,7 @@
 #include <fstream>
 #include <string>
 #include "DmplBuilder.hpp"
-#include "dmpl/gams/Sync_Builder.hpp"
+#include "dmpl/gams/GAMS_Builder.hpp"
 #include "dmpl/gams/Analyzer_Builder.hpp"
 #include "SyncSeqDbl.hpp"
 #include "SyncSeqDblInd.hpp"
@@ -130,7 +130,7 @@ int main (int argc, char **argv)
       program.processes.push_back (dmpl::Process (nodeName, i));
 
     //create a madara builder instance of the dmpl builder parse
-    dmpl::gams::GAMS_Builder *gams_builder = new dmpl::gams::Sync_Builder (builder, madara_target, schedType, do_expect);
+    dmpl::CodeGenerator *gams_builder = new dmpl::gams::GAMS_Builder (builder, madara_target, schedType, do_expect);
 
     //build the generated code
     gams_builder->build ();
