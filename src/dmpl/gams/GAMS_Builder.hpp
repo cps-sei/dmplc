@@ -196,9 +196,14 @@ namespace dmpl
         dmpl::Func& function);
 
       /**
-       * Builds all functions
+       * Builds global functions
        **/
-      void build_functions (void);
+      void build_global_functions (void);
+
+      /**
+       * Builds nodes
+       **/
+      void build_nodes (void);
 
       void build_push_pull (const Func& thread, bool push);
 

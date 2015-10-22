@@ -101,7 +101,8 @@ dmpl::gams::GAMS_Builder::build ()
   build_parse_args ();
   build_functions_declarations ();
   build_gams_functions ();
-  build_functions ();
+  build_global_functions ();
+  build_nodes ();
   if(do_expect_)
   {
     build_expect_thread_declaration ();
@@ -936,6 +937,7 @@ dmpl::gams::GAMS_Builder::build_functions_declarations ()
   Nodes & nodes = builder_.program.nodes;
   for (auto n : nodes)
   {
+    buffer_ << "namespace node_" << n.second->name << " {\n";
     for (Func thread : n.second->threads)
     {
       Funcs & funcs = n.second->funcs;
@@ -946,6 +948,7 @@ dmpl::gams::GAMS_Builder::build_functions_declarations ()
           build_function_declaration (thread, n.second, i.second);
       }
     }
+    buffer_ << "} //-- end namespace node_" << n.second->name << "\n";
   }
 }
 
@@ -1103,10 +1106,10 @@ dmpl::gams::GAMS_Builder::build_gams_functions ()
 }
 
 /*********************************************************************/
-//-- generate functions
+//-- generate functions at the global scope
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_functions (void)
+dmpl::gams::GAMS_Builder::build_global_functions (void)
 {
   build_refresh_modify_globals ();
 
@@ -1118,13 +1121,22 @@ dmpl::gams::GAMS_Builder::build_functions (void)
   {
     build_function (NULL, Node (), i->second);
   }
+}
 
-  buffer_ << '\n' << commentMarker << '\n';
-  buffer_ << "//-- Defining node functions\n";
-  buffer_ << commentMarker << "\n\n";
+/*********************************************************************/
+//-- generate code for nodes
+/*********************************************************************/
+void
+dmpl::gams::GAMS_Builder::build_nodes (void)
+{
   Nodes & nodes = builder_.program.nodes;
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
+    buffer_ << '\n' << commentMarker << '\n';
+    buffer_ << "//-- Begin node " << n->second->name << "\n";
+    buffer_ << commentMarker << "\n\n";
+    buffer_ << "namespace node_" << n->second->name << " {\n\n";
+    
     for (Func thread : n->second->threads)
     {
       Funcs & funcs = n->second->funcs;
@@ -1135,6 +1147,11 @@ dmpl::gams::GAMS_Builder::build_functions (void)
           build_function (thread, n->second, i->second);
       }
     }
+
+    buffer_ << "\n} //-- end namespace node_" << n->second->name << "\n";
+    buffer_ << '\n' << commentMarker << '\n';
+    buffer_ << "//-- End node " << n->second->name << "\n";
+    buffer_ << commentMarker << "\n\n";
   }
 
   buffer_ << "\n";
@@ -2368,7 +2385,8 @@ dmpl::gams::GAMS_Builder::build_main_define_function (const Node & node,
       buffer_ << "  knowledge.define_function (\"";
       buffer_ << function->name;
       buffer_ << "\", ";
-      buffer_ << node->name << "_" << "thread" << function->threadID << "_" << function->name;
+      buffer_ << "dmpl::node_" << node->name << "::" << node->name
+              << "_" << "thread" << function->threadID << "_" << function->name;
       buffer_ << ");\n";
     }
 }
