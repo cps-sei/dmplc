@@ -1359,9 +1359,11 @@ dmpl::gams::GAMS_Builder::build_function (
     visitor.visit (statement);
   }
 
-  if(function == thread)
+  if(function == thread) {
+    buffer_ << "\n";
     build_push_pull(thread, true);
-
+  }
+  
   buffer_ << "\n  //-- Insert return statement, in case user program did not\n";
   buffer_ << "  return Integer(0);\n";
   buffer_ << "}\n\n";
