@@ -974,9 +974,8 @@ dmpl::gams::GAMS_Builder::build_function_declaration (
     return;
 
   buffer_ << "Madara::Knowledge_Record\n";
-  buffer_ << node->name;
   if(thread)
-    buffer_ << "_" << "thread" << thread->threadID;
+    buffer_ << "thread" << thread->threadID;
   buffer_ << "_" << function->name;
   buffer_ << " (engine::Function_Arguments & args, engine::Variables & vars);\n";
 }
@@ -2385,8 +2384,8 @@ dmpl::gams::GAMS_Builder::build_main_define_function (const Node & node,
       buffer_ << "  knowledge.define_function (\"";
       buffer_ << function->name;
       buffer_ << "\", ";
-      buffer_ << "dmpl::node_" << node->name << "::" << node->name
-              << "_" << "thread" << function->threadID << "_" << function->name;
+      buffer_ << "dmpl::node_" << node->name << "::"
+              << "thread" << function->threadID << "_" << function->name;
       buffer_ << ");\n";
     }
 }

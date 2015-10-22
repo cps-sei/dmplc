@@ -287,11 +287,6 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
       buffer_ << "0;\n";
     }*/
 
-    if (isNodeFunc)
-    {
-      buffer_ << node_->name << "_";
-    }
-
     if(thread_)
       buffer_ << "thread" << thread_->threadID << "_";
     buffer_ << func_name << " (\n";
