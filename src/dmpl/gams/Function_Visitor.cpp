@@ -153,26 +153,6 @@ dmpl::madara::Function_Visitor::exitLval (LvalExpr & expression)
       }
     }
   }
-#if 0
-  else
-  {
-    // if this is substitution variable, do the substitution
-    if (id_map_.find (expression.var) != id_map_.end ())
-      buffer_ << id_map_[expression.var];
-
-    // otherwise, we need to determine if this is a MADARA container or not
-    else
-    {
-      /*if (function_ && function_->temps.count (expression.var) == 0 &&
-          function_->params.count (expression.var) == 0 &&
-          builder_.program.constDef.count (expression.var) == 0)
-      {
-        buffer_ << "*";
-      }*/
-      buffer_ << expression.var;
-    }
-  }
-#endif
 }
 
 
@@ -252,11 +232,6 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
     exit(1);
   }
 
-  //if (do_vrep_ && func_name == "MOVE_TO") func_name = "VREP_MOVE_TO";
-
-  //dmpl::Functions & externs = builder_.program.externalFuncs;
-
-  //bool isExtern = (externs.find (func_name) != externs.end ());
   Funcs::const_iterator nodeFunc = node_->funcs.find (func_name);
   Funcs::const_iterator progFunc = builder_.program.funcs.find (func_name);
   bool isNodeFunc = nodeFunc != node_->funcs.end();
@@ -280,12 +255,6 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
       std::cerr << "Error: @ operator on function calls only supported for EXTERN functions" << std::endl;
       exit(1);
     }
-    //const Func &func = (isNodeFunc ? nodeFunc->second : progFunc->second);
-    /*if (assignment_)
-    {
-      // complete the assignment and redo it later;
-      buffer_ << "0;\n";
-    }*/
 
     if(thread_)
       buffer_ << "thread" << thread_->threadID << "_";
@@ -299,13 +268,6 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
     }
 
     buffer_ << "__strip_const(engine::Function_Arguments(" << expression.args.size() << "))";
-    /*if (data->args.size () > 0)
-    {
-      buffer_ << " (";
-      buffer_ << data->args.size ();
-      buffer_ << ")";
-    }*/
-
     buffer_ << "\n";
 
     unsigned int i = 0;
@@ -320,44 +282,6 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
       buffer_ << "))\n";
       ++i;
     }
-
-    /*
-    if (assignment_)
-    {
-      buffer_ << sub_spacer;
-
-      LvalExpr * lhs  = dynamic_cast<LvalExpr*>(assignment_->lhs.get ());
-
-      if (lhs)
-      {
-        if (lhs->indices.size () == 0)
-        {
-          bool is_private = false;
-          if (privatize_ &&
-              node_.globVars.find (lhs->var) != node_.globVars.end ())
-          {
-            is_private = true;
-            buffer_ << spacer;
-            buffer_ << "// treat global variable change as a local update\n";
-            buffer_ << spacer;
-            buffer_ << "engine::Knowledge_Update_Settings old_update_settings (\n";
-            buffer_ << sub_spacer;
-            buffer_ << lhs->var;
-            buffer_ << ".set_settings (private_update));\n";
-          }
-
-          buffer_ << spacer;
-          buffer_ << lhs->var;
-          buffer_ << " = ";
-
-        }
-      }
-    }
-    else
-    {
-      buffer_ << sub_spacer;
-    }
-    */
 
     buffer_ << sub_spacer << "    , vars)";
 
@@ -587,19 +511,6 @@ void
 dmpl::madara::Function_Visitor::exitPrivate (PrivateStmt & statement)
 {
   throw std::runtime_error("PRIVATE not supported");
-  /*
-  std::string spacer (indentation_, ' ');
-
-  buffer_ << "\n" << spacer << "// Enabling PRIVATE-only modifications\n\n";
-
-  privatize_ = true;
-
-  visit (statement.data);
-
-  privatize_ = false;
-
-  buffer_ << spacer << "// Disabling PRIVATE-only modifications\n\n";
-  */
 }
 
 
@@ -661,44 +572,16 @@ dmpl::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
         exit(1);
       }
     }
-    //buffer_ << "/* Assign " << lhs->toString() << "  atNode: " << lhs->node << "  " << lhs->node.get() << "  " << indices << " */";
+
     if (indices == 0)
     {
-      /*
-      bool is_private = false;
-      if (privatize_ &&
-          node_.globVars.find (lhs->var) != node_.globVars.end ())
-      {
-        is_private = true;
-        buffer_ << spacer;
-        buffer_ << "// treat global variable change as a local update\n";
-        buffer_ << spacer;
-        buffer_ << "engine::Knowledge_Update_Settings old_update_settings (\n";
-        buffer_ << sub_spacer;
-        buffer_ << lhs->var;
-        buffer_ << ".set_settings (private_update));\n";
-      }
-      */
-
       buffer_ << spacer;
       if(thread_ && (isGlobal || isLocal))
         buffer_ << "thread" << thread_->threadID << "_";
       buffer_ << lhs->var;
       buffer_ << " = ";
       visit (statement.rhs);
-
       buffer_ << ";\n";
-
-      /*
-      if (is_private)
-      {
-        buffer_ << spacer;
-        buffer_ << "// revert global variable update settings\n";
-        buffer_ << spacer;
-        buffer_ << lhs->var;
-        buffer_ << ".set_settings (old_update_settings);\n\n";
-      }
-      */
     }
     else
     {
@@ -728,11 +611,6 @@ dmpl::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
 
         visit (statement.rhs);
         buffer_ << ";\n";
-
-        /*
-        if (privatize_)
-          buffer_ << ", private_update";
-        */
       }
     }
   }
@@ -794,8 +672,6 @@ dmpl::madara::Function_Visitor::exitFor (ForStmt & statement)
   {
     visit (init);
   }
-
-  //buffer_ << "; ";
 
   BOOST_FOREACH (const Expr & expr, statement.test)
   {
@@ -943,137 +819,15 @@ dmpl::madara::Function_Visitor::exitCall (CallStmt & statement)
   
   if (data)
   {
-    buffer_ << spacer << "{\n";
-      
+    buffer_ << spacer << "{\n";      
     buffer_ << sub_spacer;
-
+    
     data -> ignore_return = true;
     exitCall(*data);
 
     buffer_ << ";\n";
-
     buffer_ << spacer << "}\n";
 
-    #if 0
-    std::string func_name = data->func->toString ();
-
-    //if (do_vrep_ && func_name == "MOVE_TO") func_name = "VREP_MOVE_TO";
-
-    dmpl::Functions & externs = builder_.program.externalFuncs;
-
-    bool isExtern = (externs.find (func_name) != externs.end ());
-    bool isNodeFunc = (node_.funcs.find (func_name) != node_.funcs.end ());
-    bool isProgFunc = (builder_.program.funcs.find (func_name) != builder_.program.funcs.end ());
-
-    if (isNodeFunc || isProgFunc)
-    {
-      /*if (assignment_)
-      {
-        // complete the assignment and redo it later;
-        buffer_ << "0;\n";
-      }*/
-
-      if (node_.funcs.find (func_name) != node_.funcs.end ())
-      {
-        buffer_ << node_.name << "_";
-      }
-
-      buffer_ << func_name << " (\n";
-
-      buffer_ << sub_spacer << "     ";
-
-      BOOST_FOREACH (Expr & expr, data->args)
-      {
-        buffer_ << "__chain_push_back(";
-      }
-
-      buffer_ << "__strip_const(engine::Function_Arguments())";
-      /*if (data->args.size () > 0)
-      {
-        buffer_ << " (";
-        buffer_ << data->args.size ();
-        buffer_ << ")";
-      }*/
-
-      buffer_ << "\n";
-
-      unsigned int i = 0;
-      BOOST_FOREACH (Expr & expr, data->args)
-      {
-        buffer_ << sub_spacer << "       ";
-        buffer_ << ", ";
-        //buffer_ << "args [" << i << "] = ";
-
-        visit (expr);
-
-        buffer_ << ")\n";
-        ++i;
-      }
-
-      /*
-      if (assignment_)
-      {
-        buffer_ << sub_spacer;
-
-        LvalExpr * lhs  = dynamic_cast<LvalExpr*>(assignment_->lhs.get ());
-  
-        if (lhs)
-        {
-          if (lhs->indices.size () == 0)
-          {
-            bool is_private = false;
-            if (privatize_ &&
-                node_.globVars.find (lhs->var) != node_.globVars.end ())
-            {
-              is_private = true;
-              buffer_ << spacer;
-              buffer_ << "// treat global variable change as a local update\n";
-              buffer_ << spacer;
-              buffer_ << "engine::Knowledge_Update_Settings old_update_settings (\n";
-              buffer_ << sub_spacer;
-              buffer_ << lhs->var;
-              buffer_ << ".set_settings (private_update));\n";
-            }
-
-            buffer_ << spacer;
-            buffer_ << lhs->var;
-            buffer_ << " = ";
-
-          }
-        }
-      }
-      else
-      {
-        buffer_ << sub_spacer;
-      }
-      */
-
-      buffer_ << sub_spacer << "    , vars);\n";
-    }
-    else
-    {
-      if (func_name == "ASSUME")
-        buffer_ << "assert";
-      else
-        buffer_ << func_name;
-
-      buffer_ << " (";
-    
-      bool started = false;
-      BOOST_FOREACH (Expr & expr, data->args)
-      {
-        if (started)
-          buffer_ << ", ";
-
-        visit (expr);
-
-        if (!started)
-          started = true;
-      }
-
-      buffer_ << ");\n";
-    }
-    #endif
   }
 }
 
@@ -1346,3 +1100,7 @@ dmpl::madara::Function_Visitor::exitFAOH (FAOHStmt & statement)
   buffer_ << spacer << "}\n\n";
   indentation_ -= 2;
 }
+
+/*********************************************************************/
+//-- end of file
+/*********************************************************************/
