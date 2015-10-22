@@ -1321,7 +1321,6 @@ dmpl::gams::GAMS_Builder::build_function (
   }
 
   buffer_ << "Madara::Knowledge_Record\n";
-  buffer_ << node->name << "_";
   if(thread)
     buffer_ << "thread" << thread->threadID;
   buffer_ << "_" << function->name;
