@@ -249,14 +249,14 @@ namespace dmpl
       std::map<std::string,unsigned> funcZsinsts;
 
       /**
-       * Begins dmpl namespace
+       * Begins a namespace
        */
-      void open_dmpl_namespace (void);
+      void open_namespace (const std::string &ns);
 
       /**
-       * Ends dmpl namespace
+       * Ends a namespace
        */
-      void close_dmpl_namespace (void);
+      void close_namespace (const std::string &ns);
 
       /**
        * Helper function of build_common_filters

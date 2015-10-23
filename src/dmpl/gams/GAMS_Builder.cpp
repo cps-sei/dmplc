@@ -93,7 +93,7 @@ dmpl::gams::GAMS_Builder::build ()
   build_header_includes ();
 
   // open dmpl namespace after including ALL libraries
-  open_dmpl_namespace ();
+  open_namespace ("dmpl");
 
   build_common_global_variables ();
   build_program_variables ();
@@ -112,7 +112,7 @@ dmpl::gams::GAMS_Builder::build ()
   build_algo_functions ();
 
   // close dmpl namespace
-  close_dmpl_namespace ();
+  close_namespace ("dmpl");
   buffer_ << "using namespace dmpl;\n\n";
 
 #if USE_MZSRM==1
@@ -347,7 +347,7 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
     buffer_ << commentMarker << '\n';
     buffer_ << "//-- Begin defining variables for node " << n->second->name << "\n";
     buffer_ << commentMarker << "\n\n";
-    buffer_ << "namespace node_" << n->second->name << " {\n\n";
+    open_namespace("node_" + n->second->name);
 
     buffer_ << commentMarker << '\n';
     buffer_ << "//-- Defining global variables at node scope\n";
@@ -397,7 +397,7 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
       }
     }
 
-    buffer_ << "\n} //-- end namespace node_" << n->second->name << "\n\n";
+    close_namespace("node_" + n->second->name);
     buffer_ << commentMarker << '\n';
     buffer_ << "//-- End defining variables for node " << n->second->name << "\n";
     buffer_ << commentMarker << "\n";
@@ -944,7 +944,7 @@ dmpl::gams::GAMS_Builder::build_functions_declarations ()
   Nodes & nodes = builder_.program.nodes;
   for (auto n : nodes)
   {
-    buffer_ << "namespace node_" << n.second->name << " {\n";
+    open_namespace("node_" + n.second->name);
     for (Func thread : n.second->threads)
     {
       Funcs & funcs = n.second->funcs;
@@ -955,7 +955,7 @@ dmpl::gams::GAMS_Builder::build_functions_declarations ()
           build_function_declaration (thread, n.second, i.second);
       }
     }
-    buffer_ << "} //-- end namespace node_" << n.second->name << "\n";
+    close_namespace("node_" + n.second->name);
   }
 }
 
@@ -1141,7 +1141,7 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
     buffer_ << '\n' << commentMarker << '\n';
     buffer_ << "//-- Begin node " << n->second->name << "\n";
     buffer_ << commentMarker << "\n\n";
-    buffer_ << "namespace node_" << n->second->name << " {\n\n";
+    open_namespace("node_" + n->second->name);
     
     for (Func thread : n->second->threads)
     {
@@ -1154,7 +1154,7 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
       }
     }
 
-    buffer_ << "\n} //-- end namespace node_" << n->second->name << "\n";
+    close_namespace("node_" + n->second->name);
     buffer_ << '\n' << commentMarker << '\n';
     buffer_ << "//-- End node " << n->second->name << "\n";
     buffer_ << commentMarker << "\n\n";
@@ -2421,10 +2421,10 @@ dmpl::gams::GAMS_Builder::print (std::ostream & os)
 //-- generate code to open dmpl namespace
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::open_dmpl_namespace ()
+dmpl::gams::GAMS_Builder::open_namespace (const std::string &ns)
 {
-  buffer_ << "// begin dmpl namespace\n";
-  buffer_ << "namespace dmpl\n";
+  buffer_ << "// begin " << ns << " namespace\n";
+  buffer_ << "namespace " << ns << "\n";
   buffer_ << "{\n";
 }
 
@@ -2432,9 +2432,9 @@ dmpl::gams::GAMS_Builder::open_dmpl_namespace ()
 //-- generate code to close dmpl namespace
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::close_dmpl_namespace ()
+dmpl::gams::GAMS_Builder::close_namespace (const std::string &ns)
 {
-  buffer_ << "} // end dmpl namespace\n";
+  buffer_ << "} // end " << ns << " namespace\n";
   buffer_ << "\n";
 }
 
