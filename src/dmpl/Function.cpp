@@ -194,17 +194,19 @@ dmpl::LvalExpr::useSymbols(Context con)
   
   sym = con.findSym(var);
   if(sym)
-    sym->use(shared_from_this(), con.isLHS, node != NULL, con.inExpect());
-  Func func = std::dynamic_pointer_cast<Function>(sym);
-  if(func)
   {
-    Context con2 = con;
-    con2.curFunc = func;
-    con2.isLHS = false;
-    func->useSymbols(con);
+    sym->use(shared_from_this(), con.isLHS, node != NULL, con.inExpect());
+    Func func = std::dynamic_pointer_cast<Function>(sym);
+    if(func)
+    {
+      Context con2 = con;
+      con2.curFunc = func;
+      con2.isLHS = false;
+      func->useSymbols(con);
+    }
   }
   //else
-    //std::cerr << "Couldn't find symbol: " << var << std::endl;
+  //std::cerr << "Couldn't find symbol: " << var << std::endl;
   return con;
 }
 
