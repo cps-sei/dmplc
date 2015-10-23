@@ -1184,7 +1184,7 @@ dmpl::gams::GAMS_Builder::build_refresh_modify_globals ()
     const Attribute *attrBarSync = f.second->getAttribute("BarrierSync", 0);
     if(attrBarSync)
     {
-      buffer_ << "  mbarrier_" << f.second->getName() << "[id].mark_modified();\n\n";
+      buffer_ << "  mbarrier_" << f.second->getName() << "[id].mark_modified();\n";
     }
   }
   buffer_ << "  return Integer (0);\n";
