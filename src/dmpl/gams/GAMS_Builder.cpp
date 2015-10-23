@@ -323,6 +323,7 @@ dmpl::gams::GAMS_Builder::build_common_global_variables ()
 void
 dmpl::gams::GAMS_Builder::build_program_variables ()
 {
+  //-- generate constants as #define statements
   buffer_ << commentMarker << '\n';
   buffer_ << "//-- Defining program-specific constants\n";
   buffer_ << commentMarker << '\n';
@@ -338,7 +339,8 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
   }
 
   buffer_ << "\n";
-  
+
+  //-- define variables for each node
   Nodes & nodes = builder_.program.nodes;
   for (Nodes::const_iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
