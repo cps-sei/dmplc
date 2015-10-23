@@ -343,7 +343,12 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
   for (Nodes::const_iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
     buffer_ << commentMarker << '\n';
-    buffer_ << "//-- Defining program-specific global variables\n";
+    buffer_ << "//-- Begin defining variables for node " << n->second->name << "\n";
+    buffer_ << commentMarker << "\n\n";
+    buffer_ << "namespace node_" << n->second->name << " {\n\n";
+
+    buffer_ << commentMarker << '\n';
+    buffer_ << "//-- Defining global variables at node scope\n";
     buffer_ << commentMarker << '\n';
     Vars & vars = n->second->globVars;
     for (Vars::const_iterator i = vars.begin (); i != vars.end (); ++i)
@@ -355,7 +360,7 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
     }
     
     buffer_ << '\n' << commentMarker << '\n';
-    buffer_ << "//-- Defining program-specific local variables\n";
+    buffer_ << "//-- Defining local variables at node scope\n";
     buffer_ << commentMarker << '\n';
     Vars & locals = n->second->locVars;
     for (Vars::const_iterator i = locals.begin (); i != locals.end (); ++i)
@@ -368,7 +373,7 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
     for (const Func &thread : n->second->threads)
     {
       buffer_ << '\n' << commentMarker << '\n';
-      buffer_ << "//-- Defining thread-specific global variables\n";
+      buffer_ << "//-- Defining global variables at scope of thread" << thread->threadID << '\n';
       buffer_ << "//-- Used to implement Read-Execute-Write semantics\n";
       buffer_ << commentMarker << '\n';
       for (auto i : vars)
@@ -379,7 +384,7 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
       }
 
       buffer_ << '\n' << commentMarker << '\n';
-      buffer_ << "//-- Defining thread-specific local variables\n";
+      buffer_ << "//-- Defining local variables at scope of thread" << thread->threadID << '\n';
       buffer_ << "//-- Used to implement Read-Execute-Write semantics\n";
       buffer_ << commentMarker << '\n';
       for (auto i : locals)
@@ -389,6 +394,11 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
           build_thread_variable (thread, var);
       }
     }
+
+    buffer_ << "\n} //-- end namespace node_" << n->second->name << "\n\n";
+    buffer_ << commentMarker << '\n';
+    buffer_ << "//-- End defining variables for node " << n->second->name << "\n";
+    buffer_ << commentMarker << "\n";
   }
 
   buffer_ << "\n";
@@ -541,7 +551,7 @@ dmpl::gams::GAMS_Builder::build_program_variables_bindings ()
     for (Vars::iterator i = vars.begin (); i != vars.end (); ++i)
     {
       Var & var = i->second;
-      build_program_variable_binding (var);
+      build_program_variable_binding (n->second, var);
     }
     
     buffer_ << "\n  " << commentMarker << '\n';
@@ -551,7 +561,7 @@ dmpl::gams::GAMS_Builder::build_program_variables_bindings ()
     for (Vars::iterator i = locals.begin (); i != locals.end (); ++i)
     {
       Var & var = i->second;
-      build_program_variable_binding (var);
+      build_program_variable_binding (n->second, var);
     }
   }
 
@@ -562,8 +572,7 @@ dmpl::gams::GAMS_Builder::build_program_variables_bindings ()
 //-- generate binding for a program variable
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_program_variable_binding (
-  const Var & var)
+dmpl::gams::GAMS_Builder::build_program_variable_binding (const Node &node, const Var & var)
 {
 #if 0
   // if scalar, already bound
@@ -591,31 +600,27 @@ dmpl::gams::GAMS_Builder::build_program_variable_binding (
   }
 #endif
 
-  build_program_variable_assignment (var);
+  build_program_variable_assignment (node, var);
 }
 
 /*********************************************************************/
 //-- generate code to assign initial value to a variable.
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_program_variable_assignment (
-  const Var & var)
+dmpl::gams::GAMS_Builder::build_program_variable_assignment (const Node &node, const Var & var)
 {
   // is this a GLOBAL scalar (i.e., 1-dimensional array)?
   if (var->scope == Variable::GLOBAL && var->type->dims.size () == 1)
   {
-    buffer_ << "  " << var->name;
-    buffer_ << "[settings.id] = var_init_";
-    buffer_ << var->name;
-    buffer_ << ";\n";
+    buffer_ << "  node_" << node->name << "::" << var->name;
+    buffer_ << "[settings.id] = node_" << node->name << "::var_init_";
+    buffer_ << var->name << ";\n";
   }
   else if (var->type->dims.size () == 0)
   {
-    buffer_ << "  " << var->name;
-    buffer_ << " = ";
-    buffer_ << "var_init_";
-    buffer_ << var->name;
-    buffer_ << ";\n";
+    buffer_ << "  node_" << node->name << "::" << var->name;
+    buffer_ << " = node_" << node->name << "::var_init_";
+    buffer_ << var->name << ";\n";
   }
 }
 
@@ -806,7 +811,7 @@ dmpl::gams::GAMS_Builder::build_parse_args ()
     for (Vars::iterator i = vars.begin (); i != vars.end (); ++i)
     {
       Var& var = i->second;
-      variable_help << build_parse_args (var);
+      variable_help << build_parse_args (n->second, var);
     }
     
     buffer_ << "\n    //-- Providing init for local variables\n";
@@ -814,7 +819,7 @@ dmpl::gams::GAMS_Builder::build_parse_args ()
     for (Vars::iterator i = locals.begin (); i != locals.end (); ++i)
     {
       Var& var = i->second;
-      variable_help << build_parse_args (var);
+      variable_help << build_parse_args (n->second, var);
     }
   }
 
@@ -889,7 +894,7 @@ dmpl::gams::GAMS_Builder::build_parse_args ()
 //-- DMPL variable.
 /*********************************************************************/
 std::string
-dmpl::gams::GAMS_Builder::build_parse_args (const Var& var)
+dmpl::gams::GAMS_Builder::build_parse_args (const Node &node, const Var& var)
 {
   std::stringstream return_value;
   
@@ -901,7 +906,7 @@ dmpl::gams::GAMS_Builder::build_parse_args (const Var& var)
     buffer_ << "      if (i + 1 < argc)\n";
     buffer_ << "      {\n";
     buffer_ << "        std::stringstream buffer (argv[i + 1]);\n";
-    buffer_ << "        buffer >> var_init_" << var->name << ";\n";
+    buffer_ << "        buffer >> node_" << node->name << "::var_init_" << var->name << ";\n";
     buffer_ << "      }\n";
     buffer_ << "      \n";
     buffer_ << "      ++i;\n";
@@ -1206,7 +1211,7 @@ dmpl::gams::GAMS_Builder::build_refresh_modify_globals ()
     for (Vars::iterator i = vars.begin (); i != vars.end (); ++i)
     {
       Var & var = i->second;
-      build_refresh_modify_global (var);
+      build_refresh_modify_global (n->second, var);
     }
   }
   
@@ -1219,7 +1224,7 @@ dmpl::gams::GAMS_Builder::build_refresh_modify_globals ()
 //-- force retransmit by MADARA.
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_refresh_modify_global (const Var & var)
+dmpl::gams::GAMS_Builder::build_refresh_modify_global (const Node &node, const Var & var)
 {
 #if 0
   // is this an array type?
@@ -1262,9 +1267,10 @@ dmpl::gams::GAMS_Builder::build_refresh_modify_global (const Var & var)
     // we currently have no way of specifying owned locations in an array
     buffer_ << "\n";
 #endif
+    
   if (var->scope == Variable::GLOBAL)
   {
-    buffer_ << "  " << var->name << "[id].mark_modified();\n";
+    buffer_ << "  node_" << node->name << "::" << var->name << "[id].mark_modified();\n";
   }
   else
   {

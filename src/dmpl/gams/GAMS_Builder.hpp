@@ -130,12 +130,12 @@ namespace dmpl
       /**
        * Builds a MADARA generated variable binding in main
        **/
-      void build_program_variable_binding (const Var & var);
+      void build_program_variable_binding (const Node &node, const Var & var);
       
       /**
        * Builds a MADARA generated variable binding in main
        **/
-      void build_program_variable_assignment (const Var & var);
+      void build_program_variable_assignment (const Node &node, const Var & var);
 
       /**
        * Builds the arguments parser
@@ -146,7 +146,7 @@ namespace dmpl
        * Builds variable value parsing
        * @return help printout for variable
        **/
-      std::string build_parse_args (const Var& var);
+      std::string build_parse_args (const Node &node, const Var& var);
 
       /**
        * Builds all function declarations to prevent undefined references
@@ -161,7 +161,7 @@ namespace dmpl
       /**
        * Builds a refresh statement for modification on a global
        **/
-      void build_refresh_modify_global (const Var& var);
+      void build_refresh_modify_global (const Node &node, const Var& var);
 
       /**
        * Builds a function
