@@ -330,13 +330,7 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
   
   Program::ConstDef & consts = builder_.program.constDef;
   for (Program::ConstDef::const_iterator i = consts.begin (); i != consts.end (); ++i)
-  {
-    buffer_ << "#define ";
-    buffer_ << i->first;
-    buffer_ << " ";
-    buffer_ << i->second;
-    buffer_ << "\n";
-  }
+    buffer_ << "#define " << i->first << ' ' << i->second << '\n';
 
   buffer_ << "\n";
 
