@@ -67,13 +67,6 @@ extern "C" {
 #include <map>
 #include <dmplc/dmpl-parser.hpp>
 
-
-/*********************************************************************/
-//-- static const field definitions
-/*********************************************************************/
-const std::string dmpl::gams::GAMS_Builder::commentMarker =
-  "/*********************************************************************/";
-
 /*********************************************************************/
 //-- constructor
 /*********************************************************************/
@@ -120,9 +113,7 @@ dmpl::gams::GAMS_Builder::build ()
 #endif
   build_main_function ();
 
-  buffer_ << '\n' << commentMarker << '\n';
-  buffer_ << "//-- End of generated code\n";
-  buffer_ << commentMarker << "\n\n";
+  build_comment("//-- End of generated code", "\n", "", 0);
 }
 
 /*********************************************************************/
@@ -131,9 +122,7 @@ dmpl::gams::GAMS_Builder::build ()
 void
 dmpl::gams::GAMS_Builder::build_target_thunk (void)
 {
-  buffer_ << commentMarker << '\n';
-  buffer_ << "//-- begin target (" << target_ << ") specific thunk\n";
-  buffer_ << commentMarker << '\n';
+  build_comment("//-- begin target (" + target_ + ") specific thunk", "", "", 0);
 
   // we use target_ as a key to all related thunks
   Program::TargetType::const_iterator it =
@@ -145,9 +134,7 @@ dmpl::gams::GAMS_Builder::build_target_thunk (void)
   else
     buffer_ << "//-- no thunk for target (" << target_ << ")\n";
 
-  buffer_ << commentMarker << '\n';
-  buffer_ << "//-- end target (" << target_ << ") specific thunk\n";
-  buffer_ << commentMarker << "\n\n";
+  build_comment("//-- end target (" + target_ + ") specific thunk", "", "\n", 0);
 }
 
 /*********************************************************************/
@@ -156,9 +143,7 @@ dmpl::gams::GAMS_Builder::build_target_thunk (void)
 void
 dmpl::gams::GAMS_Builder::build_header_includes ()
 {
-  buffer_ << commentMarker << '\n';
-  buffer_ << "//-- begin header files\n";
-  buffer_ << commentMarker << "\n\n";
+  build_comment("//-- begin header files", "", "\n", 0);
 
   buffer_ << "#include <string>\n";
   buffer_ << "#include <vector>\n";
@@ -207,9 +192,7 @@ dmpl::gams::GAMS_Builder::build_header_includes ()
     buffer_ << "\n";
   }
 
-  buffer_ << '\n' << commentMarker << "\n";
-  buffer_ << "//-- end header files\n";
-  buffer_ << commentMarker << "\n\n";
+  build_comment("//-- end header files", "\n", "\n", 0);
 }
 
 /*********************************************************************/
@@ -218,14 +201,10 @@ dmpl::gams::GAMS_Builder::build_header_includes ()
 void
 dmpl::gams::GAMS_Builder::build_common_global_variables ()
 {
-  buffer_ << '\n' << commentMarker << '\n';
-  buffer_ << "//-- typedefs\n";
-  buffer_ << commentMarker << '\n';
+  build_comment("//-- typedefs", "\n", "", 0);
   buffer_ << "typedef   Madara::Knowledge_Record::Integer   Integer;\n\n";
 
-  buffer_ << commentMarker << '\n';
-  buffer_ << "//-- namespace shortcuts\n";
-  buffer_ << commentMarker << '\n';
+  build_comment("//-- namespace shortcuts", "", "", 0);
   buffer_ << "namespace engine = Madara::Knowledge_Engine;\n";
   buffer_ << "namespace threads = Madara::Threads;\n";
   buffer_ << "namespace containers = engine::Containers;\n";
@@ -234,9 +213,7 @@ dmpl::gams::GAMS_Builder::build_common_global_variables ()
   buffer_ << "namespace variables = gams::variables;\n";
   buffer_ << "\n";
 
-  buffer_ << commentMarker << '\n';
-  buffer_ << "//-- for readability so we don't have to use full namespaces\n";
-  buffer_ << commentMarker << '\n';
+  build_comment("//-- for readability so we don't have to use full namespaces", "", "", 0);
   buffer_ << "using containers::Reference;\n";
   buffer_ << "using containers::ArrayReference;\n";
   buffer_ << "using containers::CachedReference;\n";
@@ -244,24 +221,18 @@ dmpl::gams::GAMS_Builder::build_common_global_variables ()
   buffer_ << "using Madara::knowledge_cast;\n";
   buffer_ << "\n";
 
-  buffer_ << commentMarker << '\n';
-  buffer_ << "//-- declare knowledge base\n";
-  buffer_ << commentMarker << '\n';
+  build_comment("//-- declare knowledge base", "", "", 0);
   buffer_ << "engine::Knowledge_Base knowledge;\n";
   buffer_ << "\n";
 
-  buffer_ << commentMarker << '\n';
-  buffer_ << "//-- Needed as a workaround for non-const-correctness in Madara;\n";
-  buffer_ << "//-- Use carefully\n";
-  buffer_ << commentMarker << '\n';
+  build_comment("//-- Needed as a workaround for non-const-correctness in Madara;\n"
+                "//-- Use carefully", "", "", 0);
   buffer_ << "inline engine::Function_Arguments &__strip_const(const engine::Function_Arguments &c)\n";
   buffer_ << "{\n";
   buffer_ << "  return const_cast<engine::Function_Arguments &>(c);\n";
   buffer_ << "}\n";
 
-  buffer_ << '\n' << commentMarker << '\n';
-  buffer_ << "//-- Needed to construct function arguments\n";
-  buffer_ << commentMarker << '\n';
+  build_comment("//-- Needed to construct function arguments", "\n", "", 0);
   buffer_ << "inline engine::Function_Arguments &__chain_set(engine::Function_Arguments &c, int i, Madara::Knowledge_Record v)\n";
   buffer_ << "{\n";
   buffer_ << "  c[i] = v;\n";
@@ -269,9 +240,7 @@ dmpl::gams::GAMS_Builder::build_common_global_variables ()
   buffer_ << "}\n";
   buffer_ << "\n";
 
-  buffer_ << commentMarker << '\n';
-  buffer_ << "//-- default transport variables\n";
-  buffer_ << commentMarker << '\n';
+  build_comment("//-- default transport variables", "", "", 0);
   buffer_ << "std::string host (\"\");\n";
   buffer_ << "std::vector<std::string> platform_params;\n";
   buffer_ << "std::string platform_name (\"debug\");\n";
@@ -284,10 +253,7 @@ dmpl::gams::GAMS_Builder::build_common_global_variables ()
   buffer_ << "ofstream expect_file;\n";
   buffer_ << "\n";
 
-  buffer_ << commentMarker << '\n';
-  buffer_ << "//-- Containers for commonly used variables\n";
-  buffer_ << "//-- Global variables\n";
-  buffer_ << commentMarker << '\n';
+  build_comment("//-- Containers for commonly used global variables", "", "", 0);
   //buffer_ << "containers::Integer_Array barrier;\n";
   buffer_ << "Reference<unsigned int> id(knowledge, \".id\");\n";
   buffer_ << "Reference<unsigned int>  num_processes(knowledge, \".num_processes\");\n";
@@ -309,9 +275,7 @@ dmpl::gams::GAMS_Builder::build_common_global_variables ()
   buffer_ << "engine::Knowledge_Update_Settings private_update (true);\n";
   buffer_ << "\n";
 
-  buffer_ << commentMarker << '\n';
-  buffer_ << "//-- number of participating processes\n";
-  buffer_ << commentMarker << '\n';
+  build_comment("//-- number of participating processes", "", "", 0);
   buffer_ << "unsigned int processes (";
   buffer_ << builder_.program.processes.size ();
   buffer_ << ");\n\n";
@@ -324,28 +288,20 @@ void
 dmpl::gams::GAMS_Builder::build_program_variables ()
 {
   //-- generate constants as #define statements
-  buffer_ << commentMarker << '\n';
-  buffer_ << "//-- Defining program-specific constants\n";
-  buffer_ << commentMarker << '\n';
+  build_comment("//-- Defining program-specific constants", "", "", 0);
   
   Program::ConstDef & consts = builder_.program.constDef;
   for (Program::ConstDef::const_iterator i = consts.begin (); i != consts.end (); ++i)
     buffer_ << "#define " << i->first << ' ' << i->second << '\n';
 
-  buffer_ << "\n";
-
   //-- define variables for each node
   Nodes & nodes = builder_.program.nodes;
   for (Nodes::const_iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
-    buffer_ << commentMarker << '\n';
-    buffer_ << "//-- Begin defining variables for node " << n->second->name << "\n";
-    buffer_ << commentMarker << "\n\n";
+    build_comment("//-- Begin defining variables for node " + n->second->name, "\n", "\n", 0);
     open_namespace("node_" + n->second->name);
 
-    buffer_ << commentMarker << '\n';
-    buffer_ << "//-- Defining global variables at node scope\n";
-    buffer_ << commentMarker << '\n';
+    build_comment("//-- Defining global variables at node scope", "\n", "", 0);
     Vars & vars = n->second->globVars;
     for (Vars::const_iterator i = vars.begin (); i != vars.end (); ++i)
     {
@@ -355,9 +311,7 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
       build_program_variable_init (var);
     }
     
-    buffer_ << '\n' << commentMarker << '\n';
-    buffer_ << "//-- Defining local variables at node scope\n";
-    buffer_ << commentMarker << '\n';
+    build_comment("//-- Defining local variables at node scope", "\n", "", 0);
     Vars & locals = n->second->locVars;
     for (Vars::const_iterator i = locals.begin (); i != locals.end (); ++i)
     {
@@ -368,10 +322,8 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
 
     for (const Func &thread : n->second->threads)
     {
-      buffer_ << '\n' << commentMarker << '\n';
-      buffer_ << "//-- Defining global variables at scope of thread" << thread->threadID << '\n';
-      buffer_ << "//-- Used to implement Read-Execute-Write semantics\n";
-      buffer_ << commentMarker << '\n';
+      build_comment("//-- Defining global variables at scope of thread " + thread->name +
+                    "\n//-- Used to implement Read-Execute-Write semantics", "\n", "", 0);
       for (auto i : vars)
       {
         Var & var = i.second;
@@ -379,10 +331,8 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
           build_thread_variable (thread, var);
       }
 
-      buffer_ << '\n' << commentMarker << '\n';
-      buffer_ << "//-- Defining local variables at scope of thread" << thread->threadID << '\n';
-      buffer_ << "//-- Used to implement Read-Execute-Write semantics\n";
-      buffer_ << commentMarker << '\n';
+      build_comment("//-- Defining local variables at scope of thread " + thread->name +
+                    "\n//-- Used to implement Read-Execute-Write semantics", "\n", "", 0);
       for (auto i : locals)
       {
         Var & var = i.second;
@@ -392,12 +342,8 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
     }
 
     close_namespace("node_" + n->second->name);
-    buffer_ << commentMarker << '\n';
-    buffer_ << "//-- End defining variables for node " << n->second->name << "\n";
-    buffer_ << commentMarker << "\n";
+    build_comment("//-- End defining variables for node " + n->second->name, "", "", 0);
   }
-
-  buffer_ << "\n";
 }
 
 namespace
@@ -526,23 +472,18 @@ dmpl::gams::GAMS_Builder::build_thread_variable (const Func &thread, const Var &
 void
 dmpl::gams::GAMS_Builder::build_program_variables_bindings ()
 { 
-  buffer_ << "\n  " << commentMarker << '\n';
-  buffer_ << "  //-- Binding common variables\n";
-  buffer_ << "  " << commentMarker << '\n';
+  build_comment("//-- Binding common variables", "\n", "", 2);
   //buffer_ << "  barrier.set_name (\"mbarrier\", *knowledge, ";
   //buffer_ << builder_.program.processes.size ();
   //buffer_ << ");\n";
 
   //buffer_ << "  id.set_name (\".id\", knowledge);\n";
   //buffer_ << "  num_processes.set_name (\".processes\", knowledge);\n";
-  buffer_ << "\n";
 
   Nodes & nodes = builder_.program.nodes;
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
-    buffer_ << "  " << commentMarker << '\n';
-    buffer_ << "  //-- Binding program-specific global variables\n";
-    buffer_ << "  " << commentMarker << '\n';
+    build_comment("//-- Binding program-specific global variables", "\n", "", 2);
     Vars & vars = n->second->globVars;
     for (Vars::iterator i = vars.begin (); i != vars.end (); ++i)
     {
@@ -550,9 +491,7 @@ dmpl::gams::GAMS_Builder::build_program_variables_bindings ()
       build_program_variable_binding (n->second, var);
     }
     
-    buffer_ << "\n  " << commentMarker << '\n';
-    buffer_ << "  //-- Binding program-specific local variables\n";
-    buffer_ << "  " << commentMarker << '\n';
+    build_comment("//-- Binding program-specific local variables", "\n", "", 2);
     Vars & locals = n->second->locVars;
     for (Vars::iterator i = locals.begin (); i != locals.end (); ++i)
     {
@@ -631,9 +570,7 @@ dmpl::gams::GAMS_Builder::build_parse_args ()
 
   //-- generate code to initialze common variables from the command
   //-- line
-  buffer_ << commentMarker << '\n';
-  buffer_ << "//-- helper tokenizer method to handle command line arguments\n";
-  buffer_ << commentMarker << '\n';
+  build_comment("//-- helper tokenizer method to handle command line arguments", "\n", "", 0);
   buffer_ << "template < class ContainerT >\n";
   buffer_ << "void tokenize(const std::string& str, ContainerT& tokens,\n";
   buffer_ << "              const std::string& delimiters = \" \", bool trimEmpty = false)\n";
@@ -666,10 +603,8 @@ dmpl::gams::GAMS_Builder::build_parse_args ()
   buffer_ << "      lastPos = pos + 1;\n";
   buffer_ << "   }\n";
   buffer_ << "}\n";
-  buffer_ << "\n";
-  buffer_ << commentMarker << '\n';
-  buffer_ << "//-- handle arguments from the command line\n";
-  buffer_ << commentMarker << '\n';
+
+  build_comment("//-- handle arguments from the command line", "\n", "", 0);
   buffer_ << "void handle_arguments (int argc, char ** argv)\n";
   buffer_ << "{\n";
   buffer_ << "  for (int i = 1; i < argc; ++i)\n";
@@ -923,18 +858,14 @@ dmpl::gams::GAMS_Builder::build_parse_args (const Node &node, const Var& var)
 void
 dmpl::gams::GAMS_Builder::build_functions_declarations ()
 {
-  buffer_ << commentMarker << '\n';
-  buffer_ << "//-- Forward declaring global functions\n";
-  buffer_ << commentMarker << '\n';
+  build_comment("//-- Forward declaring global functions", "", "", 0);
   Funcs & funcs = builder_.program.funcs;
   for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
   {
     build_function_declaration (NULL, Node (), i->second);
   }
   
-  buffer_ << '\n' << commentMarker << '\n';
-  buffer_ << "//-- Forward declaring node functions\n";
-  buffer_ << commentMarker << '\n';
+  build_comment("//-- Forward declaring node functions", "\n", "", 0);
   Nodes & nodes = builder_.program.nodes;
   for (auto n : nodes)
   {
@@ -987,17 +918,13 @@ dmpl::gams::GAMS_Builder::build_function_declaration (
 void
 dmpl::gams::GAMS_Builder::build_gams_functions ()
 {
-  buffer_ << '\n' << commentMarker << '\n';
-  buffer_ << "//-- GAMS variables\n";
-  buffer_ << commentMarker << '\n';
+  build_comment("//-- GAMS variables", "\n", "", 0);
   buffer_ << "gams::platforms::Base_Platform *platform = NULL;\n";
 
   buffer_ << "int grid_x = 0, grid_y = 0;\n";
   buffer_ << "double grid_leftX = NAN, grid_rightX = NAN, grid_topY = NAN, grid_bottomY = NAN, grid_cellX = NAN, grid_cellY = NAN;\n";
 
-  buffer_ << '\n' << commentMarker << '\n';
-  buffer_ << "//-- GAMS functions\n";
-  buffer_ << commentMarker << '\n';
+  build_comment("//-- GAMS functions", "\n", "", 0);
   buffer_ << "void GRID_INIT(int x, int y, double leftX, double rightX, double topY, double bottomY)\n";
   buffer_ << "{\n";
   buffer_ << "  grid_x = x;\n";
@@ -1113,9 +1040,7 @@ dmpl::gams::GAMS_Builder::build_global_functions (void)
 {
   build_refresh_modify_globals ();
 
-  buffer_ << '\n' << commentMarker << '\n';
-  buffer_ << "//-- Defining global functions\n";
-  buffer_ << commentMarker << "\n\n";
+  build_comment("//-- Defining global functions", "\n", "\n", 0);
   Funcs & funcs = builder_.program.funcs;
   for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
   {
@@ -1132,9 +1057,7 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
   Nodes & nodes = builder_.program.nodes;
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
-    buffer_ << '\n' << commentMarker << '\n';
-    buffer_ << "//-- Begin node " << n->second->name << "\n";
-    buffer_ << commentMarker << "\n\n";
+    build_comment("//-- Begin node " + n->second->name, "\n", "\n", 0);
     open_namespace("node_" + n->second->name);
     
     for (Func thread : n->second->threads)
@@ -1149,9 +1072,7 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
     }
 
     close_namespace("node_" + n->second->name);
-    buffer_ << '\n' << commentMarker << '\n';
-    buffer_ << "//-- End node " << n->second->name << "\n";
-    buffer_ << commentMarker << "\n\n";
+    build_comment("//-- End node " + n->second->name, "\n", "\n", 0);
   }
 
   buffer_ << "\n";
@@ -1164,9 +1085,7 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
 void
 dmpl::gams::GAMS_Builder::build_refresh_modify_globals ()
 {
-  buffer_ << '\n' << commentMarker << '\n';
-  buffer_ << "//-- Remodify barries variables to force MADARA retransmit\n";
-  buffer_ << commentMarker << "\n\n";
+  build_comment("//-- Remodify barries variables to force MADARA retransmit", "\n", "", 0);
   buffer_ << "Madara::Knowledge_Record\n";
   buffer_ << "REMODIFY_BARRIERS";
   buffer_ << " (engine::Function_Arguments &,\n";
@@ -1184,11 +1103,9 @@ dmpl::gams::GAMS_Builder::build_refresh_modify_globals ()
     }
   }
   buffer_ << "  return Integer (0);\n";
-  buffer_ << "}\n\n";
+  buffer_ << "}\n";
 
-  buffer_ << '\n' << commentMarker << '\n';
-  buffer_ << "//-- Remodify global shared variables to force MADARA retransmit\n";
-  buffer_ << commentMarker << "\n\n";
+  build_comment("//-- Remodify global shared variables to force MADARA retransmit", "\n", "", 0);
   buffer_ << "Madara::Knowledge_Record\n";
   buffer_ << "REMODIFY_GLOBALS";
   buffer_ << " (engine::Function_Arguments & args,\n";
@@ -1212,7 +1129,7 @@ dmpl::gams::GAMS_Builder::build_refresh_modify_globals ()
   }
   
   buffer_ << "  return Integer (0);\n";
-  buffer_ << "}\n\n";
+  buffer_ << "}\n";
 }
 
 /*********************************************************************/
@@ -1377,9 +1294,7 @@ dmpl::gams::GAMS_Builder::build_function (
 void
 dmpl::gams::GAMS_Builder::build_expect_thread_declaration (void)
 {
-  buffer_ << '\n' << commentMarker << '\n';
-  buffer_ << "//-- Thread class to monitor for expect statements\n";
-  buffer_ << commentMarker << "\n\n";
+  build_comment("//-- Thread class to monitor for expect statements", "\n", "\n", 0);
   buffer_ << "class ExpectThread : public threads::Base_Thread\n";
   buffer_ << "{\n";
   buffer_ << "public:\n";
@@ -1401,9 +1316,7 @@ dmpl::gams::GAMS_Builder::build_expect_thread_declaration (void)
 void
 dmpl::gams::GAMS_Builder::build_expect_thread_definition (void)
 {
-  buffer_ << '\n' << commentMarker << '\n';
-  buffer_ << "//-- Methods for thread class to monitor for expect statements\n";
-  buffer_ << commentMarker << "\n\n";
+  build_comment("//-- Methods for thread class to monitor for expect statements", "\n", "\n", 0);
   buffer_ << "void ExpectThread::init (engine::Knowledge_Base & context)\n";
   buffer_ << "{\n";
   buffer_ << "  _knowledge = &context;\n";
@@ -1474,9 +1387,7 @@ dmpl::gams::GAMS_Builder::build_expect_thread_definition (void)
 void
 dmpl::gams::GAMS_Builder::build_algo_declaration ()
 {
-  buffer_ << commentMarker << '\n';
-  buffer_ << "//-- Class that encapsulates a periodic thread\n";
-  buffer_ << commentMarker << "\n\n";
+  build_comment("//-- Class that encapsulates a periodic thread", "", "\n", 0);
   buffer_ << "class Algo : public gams::algorithms::Base_Algorithm, protected threads::Base_Thread\n";
   buffer_ << "{\n";
   buffer_ << "public:\n";
@@ -1533,9 +1444,7 @@ dmpl::gams::GAMS_Builder::build_algo_declaration ()
 
   buffer_ << "};\n";
 
-  buffer_ << '\n' << commentMarker << '\n';
-  buffer_ << "//-- Class that encapsulates a synchronous periodic thread\n";
-  buffer_ << commentMarker << "\n\n";
+  build_comment("//-- Class that encapsulates a synchronous periodic thread", "\n", "\n", 0);
   buffer_ << "class SyncAlgo : public Algo\n";
   buffer_ << "{\n";
   buffer_ << "public:\n";
@@ -1583,9 +1492,7 @@ dmpl::gams::GAMS_Builder::build_algo_declaration ()
 void
 dmpl::gams::GAMS_Builder::build_algo_functions ()
 {
-  buffer_ << '\n' << commentMarker << '\n';
-  buffer_ << "//-- Begin Algo class methods\n";
-  buffer_ << commentMarker << "\n\n";
+  build_comment("//-- Begin Algo class methods", "\n", "\n", 0);
 
   buffer_ << "Algo::Algo (\n";
   buffer_ << "    unsigned period,\n";
@@ -1768,14 +1675,9 @@ dmpl::gams::GAMS_Builder::build_algo_functions ()
   buffer_ << "  return 0;\n";
   buffer_ << "}\n";
 
-  buffer_ << '\n' << commentMarker << '\n';
-  buffer_ << "//-- End Algo class methods\n";
-  buffer_ << commentMarker << "\n\n";
+  build_comment("//-- End Algo class methods", "\n", "\n", 0);
 
-  buffer_ << commentMarker << '\n';
-  buffer_ << "//-- Begin SyncAlgo class methods\n";
-  buffer_ << commentMarker << "\n\n";
-
+  build_comment("//-- Begin SyncAlgo class methods", "", "\n", 0);
   buffer_ << "SyncAlgo::SyncAlgo (\n";
   buffer_ << "    unsigned period,\n";
 
@@ -2004,9 +1906,7 @@ dmpl::gams::GAMS_Builder::build_algo_functions ()
   buffer_ << "  return 0;\n";
   buffer_ << "}\n";
 
-  buffer_ << '\n' << commentMarker << '\n';
-  buffer_ << "//-- End SyncAlgo class methods\n";
-  buffer_ << commentMarker << "\n";
+  build_comment("//-- End SyncAlgo class methods", "\n", "", 0);
 }
 
 /*********************************************************************/
@@ -2125,9 +2025,7 @@ dmpl::gams::GAMS_Builder::compute_priorities ()
 void
 dmpl::gams::GAMS_Builder::build_main_function ()
 {
-  buffer_ << '\n' << commentMarker << '\n';
-  buffer_ << "//-- Helper function to convert objects to strings\n";
-  buffer_ << commentMarker << "\n\n";
+  build_comment("//-- Helper function to convert objects to strings", "\n", "\n", 0);
   buffer_ << "template<class T> std::string to_string(const T &in)\n";
   buffer_ << "{\n";
   buffer_ << "  std::stringstream ss;\n";
@@ -2135,9 +2033,7 @@ dmpl::gams::GAMS_Builder::build_main_function ()
   buffer_ << "  return ss.str();\n";
   buffer_ << "}\n";
 
-  buffer_ << '\n' << commentMarker << '\n';
-  buffer_ << "//-- Initialize VREP\n";
-  buffer_ << commentMarker << "\n\n";
+  build_comment("//-- Initialize VREP", "\n", "\n", 0);
   buffer_ << "void init_vrep(const std::vector<std::string> &params, engine::Knowledge_Base &knowledge)\n";
   buffer_ << "{\n";
   buffer_ << "  if(params.size() >= 2 && params[1].size() > 0)\n";
@@ -2159,9 +2055,7 @@ dmpl::gams::GAMS_Builder::build_main_function ()
   buffer_ << "  knowledge.set(\"vrep_ready\", \"1\");\n";
   buffer_ << "}\n";
 
-  buffer_ << '\n' << commentMarker << '\n';
-  buffer_ << "//-- The main function. This is where everything starts.\n";
-  buffer_ << commentMarker << "\n\n";
+  build_comment("//-- The main function. This is where everything starts.", "\n", "\n", 0);
   buffer_ << "int main (int argc, char ** argv)\n";
   buffer_ << "{\n";
   //buffer_ << "  Madara::Utility::set_log_level(Madara::Utility::LOG_DETAILED_TRACE);\n";
@@ -2194,9 +2088,7 @@ dmpl::gams::GAMS_Builder::build_main_function ()
 
   Node &node = builder_.program.nodes.begin()->second;
 
-  buffer_ << "  " << commentMarker << '\n';
-  buffer_ << "  //-- NODE: " << node->name << "\n";
-  buffer_ << "  " << commentMarker << '\n';
+  build_comment("//-- NODE: " + node->name, "", "", 2);
   BOOST_FOREACH (Attributes::value_type & attr, node->attrs)
     {
       buffer_ << "  //-- @" << attr.second.name;
@@ -2430,6 +2322,19 @@ dmpl::gams::GAMS_Builder::close_namespace (const std::string &ns)
 {
   buffer_ << "} // end " << ns << " namespace\n";
   buffer_ << "\n";
+}
+ 
+/*********************************************************************/
+//-- Build a comment with prefix and suffix
+/*********************************************************************/
+void
+dmpl::gams::GAMS_Builder::build_comment (const std::string &comment, const std::string &prefix,
+                                         const std::string &suffix, size_t indent)
+{
+  std::string spacer(indent, ' ');
+  std::string commentMarker = "/" + std::string(68-indent,'*') + "/";
+  buffer_ << prefix << spacer << commentMarker << '\n' << spacer << comment << '\n'
+          << spacer << commentMarker << suffix << '\n';
 }
 
 /*********************************************************************/

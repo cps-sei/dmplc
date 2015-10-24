@@ -235,10 +235,7 @@ namespace dmpl
       void print (std::ostream & os);
 
 
-    private:
-      /// comment marker
-      const static std::string commentMarker;
-      
+    private:      
       /// character buffer for holding results of build
       std::stringstream buffer_;
 
@@ -257,6 +254,12 @@ namespace dmpl
        * Ends a namespace
        */
       void close_namespace (const std::string &ns);
+
+      /**
+       * Build a comment with prefix and suffix
+       */
+      void build_comment (const std::string &comment, const std::string &prefix,
+                          const std::string &suffix, size_t indent);
 
       /**
        * Helper function of build_common_filters
