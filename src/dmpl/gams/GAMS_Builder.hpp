@@ -118,7 +118,12 @@ namespace dmpl
       void build_program_variable_init (const Var & var);
       
       /**
-       * Builds a threads's MADARA generated variables
+       * Builds a threads's variables for Read-Execute-Write semantics
+       **/
+      void build_thread_variables (const Func &thread, const Vars & vars, bool isGlob);
+
+      /**
+       * Builds a threads's variable for Read-Execute-Write semantics
        **/
       void build_thread_variable (const Func &thread, const Var & var);
       

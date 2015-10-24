@@ -320,25 +320,10 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
       build_program_variable_init (var);
     }
 
-    for (const Func &thread : n->second->threads)
-    {
-      build_comment("//-- Defining global variables at scope of thread " + thread->name +
-                    "\n//-- Used to implement Read-Execute-Write semantics", "\n", "", 0);
-      for (auto i : vars)
-      {
-        Var & var = i.second;
-        if(thread->findSymbol(var) != NULL)
-          build_thread_variable (thread, var);
-      }
-
-      build_comment("//-- Defining local variables at scope of thread " + thread->name +
-                    "\n//-- Used to implement Read-Execute-Write semantics", "\n", "", 0);
-      for (auto i : locals)
-      {
-        Var & var = i.second;
-        if(thread->findSymbol(var) != NULL)
-          build_thread_variable (thread, var);
-      }
+    //-- generate thread-read-execute-write variables
+    for (const Func &thread : n->second->threads) {
+      build_thread_variables(thread, vars, true);
+      build_thread_variables(thread, locals, false);
     }
 
     close_namespace("node_" + n->second->name);
@@ -431,6 +416,22 @@ dmpl::gams::GAMS_Builder::build_common_filters_helper (
   buffer_ << filter_content.str ();
   buffer_ << "  return result;\n";
   buffer_ << "}\n\n";
+}
+
+/*********************************************************************/
+//-- generate shared variables for a thread
+/*********************************************************************/
+void
+dmpl::gams::GAMS_Builder::build_thread_variables (const Func &thread, const Vars & vars, bool isGlob)
+{
+  build_comment("//-- Defining " + std::string(isGlob? "global" : "local") +
+                " variables at scope of thread " + thread->name +
+                "\n//-- Used to implement Read-Execute-Write semantics", "\n", "", 0);
+  for (auto i : vars) {
+    Var & var = i.second;
+    if(thread->findSymbol(var) != NULL)
+      build_thread_variable (thread, var);
+  }
 }
 
 /*********************************************************************/
