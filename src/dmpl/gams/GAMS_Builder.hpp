@@ -108,6 +108,11 @@ namespace dmpl
       void build_program_variables (void);
       
       /**
+       * Declare and initialize node-level variables
+       **/
+      void build_node_variables (const Node &node, bool isGlob);
+
+      /**
        * Builds the program's MADARA generated variables
        **/
       void build_program_variable_decl (const Var & var);

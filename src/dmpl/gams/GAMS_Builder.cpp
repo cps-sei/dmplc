@@ -298,32 +298,16 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
   Nodes & nodes = builder_.program.nodes;
   for (Nodes::const_iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
+    //-- generate node-level variables
     build_comment("//-- Begin defining variables for node " + n->second->name, "\n", "\n", 0);
     open_namespace("node_" + n->second->name);
-
-    build_comment("//-- Defining global variables at node scope", "\n", "", 0);
-    Vars & vars = n->second->globVars;
-    for (Vars::const_iterator i = vars.begin (); i != vars.end (); ++i)
-    {
-      const Var & var = i->second;
-      var->type = var->type->incrDim(-1);
-      build_program_variable_decl (var);
-      build_program_variable_init (var);
-    }
-    
-    build_comment("//-- Defining local variables at node scope", "\n", "", 0);
-    Vars & locals = n->second->locVars;
-    for (Vars::const_iterator i = locals.begin (); i != locals.end (); ++i)
-    {
-      const Var & var = i->second;
-      build_program_variable_decl (var);
-      build_program_variable_init (var);
-    }
+    build_node_variables(n->second, true);
+    build_node_variables(n->second, false);
 
     //-- generate thread-read-execute-write variables
     for (const Func &thread : n->second->threads) {
-      build_thread_variables(thread, vars, true);
-      build_thread_variables(thread, locals, false);
+      build_thread_variables(thread, n->second->globVars, true);
+      build_thread_variables(thread, n->second->locVars, false);
     }
 
     close_namespace("node_" + n->second->name);
@@ -339,6 +323,23 @@ namespace
       return "short";
     else
       return var->type->toString();
+  }
+}
+
+/*********************************************************************/
+//-- declare and initialize node-level variables
+/*********************************************************************/
+void
+dmpl::gams::GAMS_Builder::build_node_variables (const Node &node, bool isGlob)
+{
+  build_comment("//-- Defining " + std::string(isGlob? "global" : "local") +
+                " variables at node scope", "\n", "", 0);
+  Vars & vars = isGlob? node->globVars : node->locVars;
+  for (Vars::const_iterator i = vars.begin (); i != vars.end (); ++i) {
+    const Var & var = i->second;
+    if(isGlob) var->type = var->type->incrDim(-1);
+    build_program_variable_decl (var);
+    build_program_variable_init (var);
   }
 }
 
