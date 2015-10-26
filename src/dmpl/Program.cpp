@@ -199,8 +199,22 @@ dmpl::Program::sanityCheck()
       throw std::runtime_error("ERROR: Role " + r.second->name + " inside node " + node->name +
                                " declares variable " + cv + " as both local and global!!");
   }
+
+  //-- roles must override only variables, records, and functions that
+  //-- belong to the node
   for(const auto &r : node->roles) {
+    for(const auto &v : r.second->globVars) {
+      if(v.second->isOverride && !node->hasVar(v.second))
+        throw std::runtime_error("Role " + r.second->name +
+                                 " cannot override global variable " + v.second->name + "!!");
+    }
+    for(const auto &v : r.second->locVars) {
+      if(v.second->isOverride && !node->hasVar(v.second))
+        throw std::runtime_error("Role " + r.second->name +
+                                 " cannot override local variable " + v.second->name + "!!");
+    }
   }
+
   //check node functions
   BOOST_FOREACH(Funcs::value_type &v,node->funcs) {
     BOOST_FOREACH(Stmt &s, v.second->body) {
