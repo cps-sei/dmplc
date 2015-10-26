@@ -83,6 +83,11 @@ namespace dmpl
     //-- list of variables in the record
     VarList vars;
 
+    /**
+     * Is the record overriding another
+     **/
+    bool isOverride;
+
     //-- initializer, if any
     Func initFunc;
 
@@ -90,9 +95,9 @@ namespace dmpl
     Func assumeFunc;
     
     //-- constructors
-    RecordBase(const std::string &n,const VarList &v) : name(n), vars(v) {}
+    RecordBase(const std::string &n,const VarList &v) : name(n), vars(v), isOverride(false) {}
     RecordBase(const std::string &n,const VarList &v,const Func &ifn, const Func &afn)
-      : name(n), vars(v), initFunc(ifn), assumeFunc(afn) {}
+      : name(n), vars(v), isOverride(false), initFunc(ifn), assumeFunc(afn) {}
     
     void print (std::ostream &os,unsigned int indent) const;
     std::string getName() const { return name; }

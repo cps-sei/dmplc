@@ -108,6 +108,11 @@ namespace dmpl
     bool isInput;
 
     /**
+     * Is the variable overriding another
+     **/
+    bool isOverride;
+
+    /**
      * The function initializing the variable
      **/
     Func initFunc;
@@ -125,7 +130,7 @@ namespace dmpl
     FuncList writers;
 
     //constructors
-    Variable() : scope(0), isInput(false) {}
+  Variable() : scope(0), isInput(false), isOverride(false) {}
     Variable(const std::string &n);
     Variable(const std::string &n,const Type &t);
     Variable(const std::string &n,const Dims &d);

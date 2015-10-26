@@ -65,16 +65,16 @@
 /*********************************************************************/
 //constructor with name only -- assigns a default type and scope
 dmpl::Variable::Variable(const std::string &n) 
-  : name(n),type(dmpl::Type(new BaseType())),scope(0),isInput(false) {}
+  : name(n),type(dmpl::Type(new BaseType())),scope(0),isInput(false),isOverride(false) {}
 
 //constructor with name and type -- assigns a default scope
 dmpl::Variable::Variable(const std::string &n,const dmpl::Type &t) 
-  : name(n),type(t),scope(0),isInput(false) {}
+  : name(n),type(t),scope(0),isInput(false),isOverride(false) {}
 
 //constructor with name and dimensions -- assigns a default base type
 //and scope
 dmpl::Variable::Variable(const std::string &n,const Dims &d) 
-  : name(n),type(dmpl::Type(new BaseType(d))),scope(0),isInput(false) {}
+  : name(n),type(dmpl::Type(new BaseType(d))),scope(0),isInput(false),isOverride(false) {}
 
 /*********************************************************************/
 ///convert to string

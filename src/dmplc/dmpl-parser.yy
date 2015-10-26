@@ -388,11 +388,17 @@ role_body : {
 ;
 
 var_block : node_var_init TSEMICOLON { $$ = $1; }
-| TOVERRIDE node_var_init TSEMICOLON { $$ = $2; }
+| TOVERRIDE node_var_init TSEMICOLON {
+  $$ = $2;
+  for(dmpl::Var &v : *$$) v->isOverride = true;
+}
 ;
 
 record_block : record { $$ = $1; }
-| TOVERRIDE record { $$ = $2; }
+| TOVERRIDE record {
+  $$ = $2;
+  (*$$)->isOverride = true;
+}
 ;
 
 /** declaring and initializing local and global variables */
