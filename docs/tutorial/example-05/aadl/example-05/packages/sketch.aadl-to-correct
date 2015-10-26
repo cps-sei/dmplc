@@ -1,0 +1,93 @@
+system dmpl_system
+   annex dmpl (**
+    external thunk;
+    const X=10;
+    const Y=10;
+    const INITS=0;
+
+    extern int my_sleep(int seconds);	       
+   **);
+end system;
+
+thread collision_avoidance
+   annex dmpl (**
+     thread collision_avoidance {
+         print_state(X,Y,id,x,y,xf,yf);
+	 yyyy=yyyy+33;
+	 if (state==INITS){
+	 ...
+	 }
+	 if (state = NEXT){
+	 if (x==xf && y == yf) return;
+	 NEXT_XY();
+	 state=REQUEST;
+	 }
+	 ...
+     }
+   **);
+end thread;
+
+system node
+  subcomponents
+    t1: thread collision_avoidance;
+  annex dmpl (**
+    global bool lock[X][Y] = {
+      lock[x][y] = 1;
+    };
+
+    local unsigned char state=INITS;
+
+    local unsigned char input x ~ (0 <= x && x< X);
+
+    void NEXT_XY () {
+       xp = x; yp = y;
+       if (x < xf) xp = x + 1;
+       else if (x > xf) xp = x -1;
+       else if (y < yf) yp = y+1;
+       else yp = y -1;
+    }
+  **);
+end system;
+
+thread adaptation_manager
+   annex dmpl(**
+     thead adaptation_manager{
+      /*body of am */
+     }
+   **);
+end thread;
+
+thread way_point_leader
+  annex dmpl (**
+  **);
+end thread;
+
+thread way_point_protector
+   annex dmpl (**
+   **);
+end thread;
+
+system leader extends node
+  subcomponents
+   t1: thread collision_avoidance;
+   t2: thread adaptation_manager;
+   t3: thread way_point_leader;
+   p1: processor;
+ properties
+   actual_processor_binding => p1 applies to t1,t2,t3;
+end system;
+
+system protector extends node
+   subcomponents
+     t1: thread collision_avoidance;
+     t2: thread way_point_protector;
+     p1: processor;
+   properties
+     actual_processor_binding => p1 applies to t1,t2;
+end system;
+
+system main
+  subcomponents
+   leader : system leader;
+   protectors : system protector[4];
+end system;
