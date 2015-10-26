@@ -182,19 +182,6 @@ dmpl::Program::sanityCheck()
       sc.visit(s);
     }
   }
-
-#if 0
-  //check node global variables
-  BOOST_FOREACH(Vars::value_type &v,node->globVars) {
-    //non-array types of global variables are illegal
-    assert(!v.second->type->dims.empty() && 
-           "ERROR: all global variables must be of array type");
-
-    //last dimension of global variables must be #N
-    assert(*(v.second->type->dims.rbegin()) == -1 &&
-           "ERROR: last dimension of global variables must be #N");
-  }
-#endif
 }
 
 /*********************************************************************/
