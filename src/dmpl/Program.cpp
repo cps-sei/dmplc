@@ -193,6 +193,12 @@ dmpl::Program::sanityCheck()
   if(!cv.empty())
     throw std::runtime_error("ERROR: Node " + node->name + " declares variable " + cv +
                              " as both local and global!!");
+  for(const auto &r : node->roles) {  std::string cv = commonVar(node->locVars, node->globVars);
+    cv = commonVar(r.second->locVars, r.second->globVars);
+    if(!cv.empty())
+      throw std::runtime_error("ERROR: Role " + r.second->name + " inside node " + node->name +
+                               " declares variable " + cv + " as both local and global!!");
+  }
   for(const auto &r : node->roles) {
   }
   //check node functions
