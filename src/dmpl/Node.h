@@ -198,19 +198,28 @@ namespace dmpl
     {
       BOOST_FOREACH(const Var &v,vb) {
         Vars &vars = v->scope == Variable::LOCAL ? locVars : globVars;
-        assert(vars.count(v->name) == 0 && "ERROR: variable redeclared!!");
-        vars[v->name] = v;
+        if(!vars.insert(std::make_pair(v->name,v)).second) {
+          throw std::runtime_error("ERROR: " +
+                                   std::string(v->scope == Variable::LOCAL ? "local" : "global") +
+                                   " variable " + v->name + " redeclared by node " + name + "!!");
+        }
       }
     }
 
     ///add a record
     void addRecord(const Record &r)
     {
-      records.insert(std::make_pair(r->name,r));
+      if(!records.insert(std::make_pair(r->name,r)).second)
+        throw std::runtime_error("ERROR: record " + r->name + " redeclared by node " + name + "!!");
+      
       BOOST_FOREACH(const Var &v,r->vars) {
         Vars &vars = v->scope == Variable::LOCAL ? locVars : globVars;
-        assert(vars.count(v->name) == 0 && "ERROR: variable redeclared!!");
-        vars[v->name] = v;
+        if(!vars.insert(std::make_pair(v->name,v)).second) {
+          throw std::runtime_error("ERROR: " +
+                                   std::string(v->scope == Variable::LOCAL ? "local" : "global") +
+                                   " variable " + v->name + " redeclared by node " + name +
+                                   "inside record " + r->name + "!!");
+        }
       }
     }
 
