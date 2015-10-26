@@ -152,6 +152,20 @@ dmpl::Program::print (std::ostream &os,unsigned int indent)
 }
 
 /*********************************************************************/
+//-- return the name of common variables between the two sets of
+//-- variables. return the empty string if no common variable exists.
+/*********************************************************************/
+std::string dmpl::Program::commonVar(const Vars &vars1, const Vars &vars2)
+{
+  for(const auto &v1 : vars1) {
+    const auto it = vars2.find(v1.first);
+    if(it != vars2.end()) return v1.first;
+  }
+  
+  return std::string();
+}
+
+/*********************************************************************/
 //check various sanity conditions
 /*********************************************************************/
 void
@@ -174,6 +188,13 @@ dmpl::Program::sanityCheck()
   node->initArgs();
   const std::string &nodeId = *(node->args.begin());
 
+  //-- local and global variables must have distinct names
+  std::string cv = commonVar(node->locVars, node->globVars);
+  if(!cv.empty())
+    throw std::runtime_error("ERROR: Node " + node->name + " declares variable " + cv +
+                             " as both local and global!!");
+  for(const auto &r : node->roles) {
+  }
   //check node functions
   BOOST_FOREACH(Funcs::value_type &v,node->funcs) {
     BOOST_FOREACH(Stmt &s, v.second->body) {

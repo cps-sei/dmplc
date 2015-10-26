@@ -175,6 +175,10 @@ namespace dmpl
       return isFunction(fn) && funcs.find(fn)->second->isExtern == false;
     }
 
+    ///return name of variable common to vars1 and vars2. empty string
+    ///otherwise.
+    std::string commonVar(const Vars &vars1, const Vars &vars2);
+
     ///check various sanity conditions on the program
     void sanityCheck();
 
