@@ -197,6 +197,10 @@ dmpl::Program::sanityCheck()
 #endif
 }
 
+/*********************************************************************/
+//-- extract threads from functions, assign threadIDs, and compute
+//-- their symbol usage.
+/*********************************************************************/
 void
 dmpl::Program::analyzeThreads()
 {
