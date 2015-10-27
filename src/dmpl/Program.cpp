@@ -201,17 +201,39 @@ dmpl::Program::sanityCheck()
   }
 
   //-- roles must override only variables, records, and functions that
-  //-- belong to the node
+  //-- belong to the node. they cannot redeclare such variables,
+  //-- records and functions without overriding them.
   for(const auto &r : node->roles) {
+    //-- check global variables
     for(const auto &v : r.second->globVars) {
       if(v.second->isOverride && !node->hasVar(v.second))
         throw std::runtime_error("Role " + r.second->name +
-                                 " cannot override global variable " + v.second->name + "!!");
+                                 " cannot override (missing or wrong type in parent node " +
+                                 node->name + ") global variable " + v.second->name + "!!");
+      if(!v.second->isOverride && node->findVar(v.second->name))
+        throw std::runtime_error("Role " + r.second->name +
+                                 " cannot declare without override global variable " +
+                                 v.second->name + "!!");
     }
+    //-- check local variables
     for(const auto &v : r.second->locVars) {
       if(v.second->isOverride && !node->hasVar(v.second))
         throw std::runtime_error("Role " + r.second->name +
-                                 " cannot override local variable " + v.second->name + "!!");
+                                 " cannot override (missing or wrong type in parent node " +
+                                 node->name + ") local variable " + v.second->name + "!!");
+      if(!v.second->isOverride && node->findVar(v.second->name))
+        throw std::runtime_error("Role " + r.second->name +
+                                 " cannot declare without override local variable " +
+                                 v.second->name + "!!");
+    }
+    //-- check records
+    for(const auto &rec : r.second->records) {
+      if(rec.second->isOverride && !node->hasRecord(rec.second))
+        throw std::runtime_error("Role " + r.second->name +
+                                 " cannot override (field mismatch) record " + rec.second->name + "!!");
+      if(!rec.second->isOverride && node->hasRecord(rec.second))
+        throw std::runtime_error("Role " + r.second->name +
+                                 " must override record " + rec.second->name + "!!");
     }
   }
 
