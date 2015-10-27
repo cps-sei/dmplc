@@ -210,17 +210,22 @@ namespace dmpl
       funcs.clear(); attrs.clear();
     }
 
+    ///add a variable with scope already set
+    void addVar(const Var &v)
+    {
+      Vars &vars = v->scope == Variable::LOCAL ? locVars : globVars;
+      if(!vars.insert(std::make_pair(v->name,v)).second) {
+        throw std::runtime_error("ERROR: " +
+                                 std::string(v->scope == Variable::LOCAL ? "local" : "global") +
+                                 " variable " + v->name + " redeclared by node " + name + "!!");
+      }
+    }
+    
     ///add a block of variables, with scope already set
     void addVarBlock(const VarList &vb)
     {
-      BOOST_FOREACH(const Var &v,vb) {
-        Vars &vars = v->scope == Variable::LOCAL ? locVars : globVars;
-        if(!vars.insert(std::make_pair(v->name,v)).second) {
-          throw std::runtime_error("ERROR: " +
-                                   std::string(v->scope == Variable::LOCAL ? "local" : "global") +
-                                   " variable " + v->name + " redeclared by node " + name + "!!");
-        }
-      }
+      BOOST_FOREACH(const Var &v,vb) addVar(v);
+    }
     }
 
     ///add a record
