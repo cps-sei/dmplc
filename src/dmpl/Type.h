@@ -138,7 +138,7 @@ namespace dmpl
     ///equality check
     bool operator == (const BaseType &rhs) const
     {
-      return qual == rhs.qual && type == rhs.type && dims == rhs.dims;
+      return this == &rhs || (qual == rhs.qual && type == rhs.type && dims == rhs.dims);
     }
     
     ///check if this is a thread type
