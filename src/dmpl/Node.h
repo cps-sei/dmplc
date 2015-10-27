@@ -205,6 +205,9 @@ namespace dmpl
       Var v = findVar(name);
       if(v) return Sym(std::static_pointer_cast<Sym::element_type>(v));
 
+      Record r = findRecord(name);
+      if(r) return Sym(std::static_pointer_cast<Sym::element_type>(r));
+
       Func f = findFunc(name);
       if(f) return Sym(std::static_pointer_cast<Sym::element_type>(f));
 
