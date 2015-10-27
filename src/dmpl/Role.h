@@ -205,16 +205,6 @@ namespace dmpl
     {
       if(!records.insert(std::make_pair(r->name,r)).second)
         throw std::runtime_error("ERROR: record " + r->name + " redeclared by role " + name + "!!");
-      
-      BOOST_FOREACH(const Var &v,r->vars) {
-        Vars &vars = v->scope == Variable::LOCAL ? locVars : globVars;
-        if(!vars.insert(std::make_pair(v->name,v)).second) {
-          throw std::runtime_error("ERROR: " +
-                                   std::string(v->scope == Variable::LOCAL ? "local" : "global") +
-                                   " variable " + v->name + " redeclared by role " + name +
-                                   "inside record " + r->name + "!!");
-        }
-      }
     }
 
     ///add a function

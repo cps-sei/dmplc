@@ -321,6 +321,7 @@ node_body : {
 }
 | node_body record_block {
   (*$1)->addRecord(*$2);
+  (*$1)->addVarBlock((*$2)->vars);
   $$ = $1;
   delete $2;
 }
@@ -372,6 +373,7 @@ role_body : {
 }
 | role_body record_block {
   (*$1)->addRecord(*$2);
+  (*$1)->addVarBlock((*$2)->vars);
   $$ = $1;
   delete $2;
 }
