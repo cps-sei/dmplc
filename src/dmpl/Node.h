@@ -193,7 +193,9 @@ namespace dmpl
       Record r = findRecord(rec->name);
       return r && (*r == *rec);
     }
-    
+
+    //-- find function with given name. either in this node or at the
+    //-- program level.
     Func findFunc(const std::string& name) const;
 
     //-- find symbol with given name. return empty symbol if no such
