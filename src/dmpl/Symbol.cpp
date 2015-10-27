@@ -151,6 +151,11 @@ namespace dmpl
       Var v = curFunc->findVar(name);
       if(v) return std::static_pointer_cast<Sym::element_type>(v);
     }
+    //-- next check the enclosing role
+    if(role) {
+      Sym s = role->findSym(name);
+      if(s) return s;
+    }
     //-- finally check the enclosing node
     if(node) return node->findSym(name);
     //-- if all fails, return default symbol
