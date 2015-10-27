@@ -506,7 +506,7 @@ namespace dmpl
     {
     public:
       BaseNode *node;
-      Role role;
+      BaseRole *role;
       Spec spec;
       Func thread;
       Func curFunc;
