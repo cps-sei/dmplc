@@ -74,11 +74,14 @@ namespace dmpl
     * @class RceordBase
     * @brief An abstract base class for records
     */
-  class RecordBase
+  class RecordBase : public Symbol, public SymbolUser
   {
   public:
     //-- name of the record
     std::string name;
+
+    //-- the type. this is always a record type
+    Type type;
 
     //-- list of variables in the record
     VarList vars;
@@ -95,12 +98,16 @@ namespace dmpl
     Func assumeFunc;
     
     //-- constructors
-    RecordBase(const std::string &n,const VarList &v) : name(n), vars(v), isOverride(false) {}
+    RecordBase(const std::string &n,const VarList &v)
+      : name(n), type(recordType()), vars(v), isOverride(false) {}
     RecordBase(const std::string &n,const VarList &v,const Func &ifn, const Func &afn)
-      : name(n), vars(v), isOverride(false), initFunc(ifn), assumeFunc(afn) {}
+      : name(n), type(recordType()), vars(v), isOverride(false), initFunc(ifn), assumeFunc(afn) {}
 
     //-- equality operator. compares name and variables.
     bool operator == (const RecordBase &rhs) const;
+
+    //-- return the type
+    virtual const Type &getType() { return type; }
     
     void print (std::ostream &os,unsigned int indent) const;
     std::string getName() const { return name; }
