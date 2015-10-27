@@ -96,6 +96,9 @@ dmpl::BaseNode::mergeWith(const Node &on)
       throw std::runtime_error("Collision while merging node locals: " + v.second->name + " in " + n.name);
   }
 
+  //-- merge records
+  BOOST_FOREACH(const Records::value_type &r, on->records) addRecord(r.second);
+
   //-- merge functions
   BOOST_FOREACH(const Funcs::value_type &f, on->funcs)
   {
