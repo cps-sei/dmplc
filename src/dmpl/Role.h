@@ -252,8 +252,6 @@ namespace dmpl
     ///merge with another role
     void mergeWith(const Role &on);
 
-    void analyzeThreads();
-
     /**
      * Prints function information
      * @param  indent  spaces to indent printout
