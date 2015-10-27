@@ -310,6 +310,26 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
       build_thread_variables(thread, n->second->locVars, false);
     }
 
+    //-- generate variables for roles
+    for (const auto r : n->second->roles) {
+      //-- generate role-level variables
+      build_comment("//-- Begin defining variables for role " + r.second->name, "\n", "\n", 0);
+      open_namespace("node_" + n->second->name + "_role_" + r.second->name);
+      build_role_variables(r.second, true);
+      build_role_variables(r.second, false);
+
+      //-- generate thread-read-execute-write variables
+      for (const Func &thread : r.second->threads) {
+        build_thread_variables(thread, r.second->globVars, true);
+        build_thread_variables(thread, r.second->locVars, false);
+      }
+      
+      buffer_ << '\n';
+      close_namespace("node_" + n->second->name + "_role_" + r.second->name);
+      build_comment("//-- End defining variables for role " + r.second->name, "", "", 0);
+    }
+
+    buffer_ << '\n';
     close_namespace("node_" + n->second->name);
     build_comment("//-- End defining variables for node " + n->second->name, "", "", 0);
   }
@@ -327,7 +347,7 @@ namespace
 }
 
 /*********************************************************************/
-//-- declare and initialize node-level variables
+//-- declare and initialize node variables
 /*********************************************************************/
 void
 dmpl::gams::GAMS_Builder::build_node_variables (const Node &node, bool isGlob)
@@ -337,6 +357,24 @@ dmpl::gams::GAMS_Builder::build_node_variables (const Node &node, bool isGlob)
   Vars & vars = isGlob? node->globVars : node->locVars;
   for (Vars::const_iterator i = vars.begin (); i != vars.end (); ++i) {
     const Var & var = i->second;
+    if(isGlob) var->type = var->type->incrDim(-1);
+    build_program_variable_decl (var);
+    build_program_variable_init (var);
+  }
+}
+
+/*********************************************************************/
+//-- declare and initialize role variables
+/*********************************************************************/
+void
+dmpl::gams::GAMS_Builder::build_role_variables (const Role &role, bool isGlob)
+{
+  build_comment("//-- Defining " + std::string(isGlob? "global" : "local") +
+                " variables at role scope", "\n", "", 0);
+  Vars & vars = isGlob? role->globVars : role->locVars;
+  for (Vars::const_iterator i = vars.begin (); i != vars.end (); ++i) {
+    const Var & var = i->second;
+    if(var->isOverride) continue;
     if(isGlob) var->type = var->type->incrDim(-1);
     build_program_variable_decl (var);
     build_program_variable_init (var);

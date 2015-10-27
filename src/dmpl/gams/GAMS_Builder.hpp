@@ -111,6 +111,11 @@ namespace dmpl
        * Declare and initialize node-level variables
        **/
       void build_node_variables (const Node &node, bool isGlob);
+      
+      /**
+       * Declare and initialize role-level variables
+       **/
+      void build_role_variables (const Role &role, bool isGlob);
 
       /**
        * Builds the program's MADARA generated variables
