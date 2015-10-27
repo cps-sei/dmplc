@@ -167,6 +167,14 @@ namespace dmpl
 
       return Var();
     }
+    
+    //-- find record with given name. return empty record if no such
+    //-- record found.
+    Record findRecord(const std::string& name) const
+    {
+      auto it = records.find(name);
+      return it == records.end() ? Record() : it->second;
+    }
 
     //-- find function with given name. either in this role or at the
     //-- node level.
@@ -176,6 +184,9 @@ namespace dmpl
     {
       Var v = findVar(name);
       if(v) return Sym(std::static_pointer_cast<Sym::element_type>(v));
+
+      Record r = findRecord(name);
+      if(r) return Sym(std::static_pointer_cast<Sym::element_type>(r));
 
       Func f = findFunc(name);
       if(f) return Sym(std::static_pointer_cast<Sym::element_type>(f));
