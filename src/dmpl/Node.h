@@ -170,6 +170,13 @@ namespace dmpl
       return Var();
     }
 
+    //-- return true iff the node has a variable with the same name,
+    //-- type and scope
+    bool hasVar(const Var &var)
+    {
+      Var v = findVar(var->name);
+      return v && (*v == *var);
+    }
     Func findFunc(const std::string& name) const;
 
     //-- find symbol with given name. return empty symbol if no such
