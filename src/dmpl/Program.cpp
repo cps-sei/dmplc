@@ -235,12 +235,6 @@ dmpl::Program::sanityCheck()
   if(!cv.empty())
     throw std::runtime_error("ERROR: Node " + node->name + " declares variable " + cv +
                              " as both local and global!!");
-  for(const auto &r : node->roles) {
-    cv = commonStr(varNames(r.second->locVars), varNames(r.second->globVars));
-    if(!cv.empty())
-      throw std::runtime_error("ERROR: Role " + r.second->name + " inside node " + node->name +
-                               " declares variable " + cv + " as both local and global!!");
-  }
 
   //-- records and variables should have distinct names
   cv = commonStr(varNames(node->locVars), recNames(node->records));
@@ -262,6 +256,47 @@ dmpl::Program::sanityCheck()
     throw std::runtime_error("ERROR : Node " + node->name + " declares " + cv +
                              " as both function and global variable!!\n");
 
+  //-- functions and record should have distinct names
+  cv = commonStr(recNames(node->records), funcNames(node->funcs));
+  if(!cv.empty())
+    throw std::runtime_error("ERROR : Node " + node->name + " declares " + cv +
+                             " as both function and record!!\n");
+
+  //-- check name distinctness for roles
+  for(const auto &r : node->roles) {
+    //-- local and global variables must have distinct names
+    cv = commonStr(varNames(r.second->locVars), varNames(r.second->globVars));
+    if(!cv.empty())
+      throw std::runtime_error("ERROR: Role " + r.second->name + " inside node " + node->name +
+                               " declares variable " + cv + " as both local and global!!");
+
+    //-- records and variables should have distinct names
+    cv = commonStr(varNames(r.second->locVars), recNames(r.second->records));
+    if(!cv.empty())
+      throw std::runtime_error("ERROR: Role " + r.second->name + " inside node " + node->name +
+                               " declares " + cv + " as both record and local variable!!\n");
+    cv = commonStr(varNames(r.second->globVars), recNames(r.second->records));
+    if(!cv.empty())
+      throw std::runtime_error("ERROR: Role " + r.second->name + " inside node " + node->name +
+                               " declares " + cv + " as both record and global variable!!\n");
+
+    //-- functions and variables should have distinct names
+    cv = commonStr(varNames(r.second->locVars), funcNames(r.second->funcs));
+    if(!cv.empty())
+      throw std::runtime_error("ERROR: Role " + r.second->name + " inside node " + node->name +
+                               " declares " + cv + " as both function and local variable!!\n");
+    cv = commonStr(varNames(r.second->globVars), funcNames(r.second->funcs));
+    if(!cv.empty())
+      throw std::runtime_error("ERROR: Role " + r.second->name + " inside node " + node->name +
+                               " declares " + cv + " as both function and global variable!!\n");
+
+    //-- functions and record should have distinct names
+    cv = commonStr(recNames(r.second->records), funcNames(r.second->funcs));
+    if(!cv.empty())
+      throw std::runtime_error("ERROR: Role " + r.second->name + " inside node " + node->name +
+                               " declares " + cv + " as both function and record!!\n");
+  }
+  
   //-- roles must override only variables, records, and functions that
   //-- belong to the node. they cannot redeclare such variables,
   //-- records and functions without overriding them.
