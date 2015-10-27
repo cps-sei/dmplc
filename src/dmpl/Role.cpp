@@ -57,6 +57,9 @@
 #include "Program.h"
 #include <iostream>
 
+/*********************************************************************/
+//-- merge with another role
+/*********************************************************************/
 void
 dmpl::BaseRole::mergeWith(const Role &other)
 {
@@ -115,6 +118,9 @@ dmpl::BaseRole::mergeWith(const Role &other)
   }
 }
 
+/*********************************************************************/
+//-- print with indentation
+/*********************************************************************/
 void
 dmpl::BaseRole::print (std::ostream &os,unsigned int indent)
 {
@@ -146,6 +152,10 @@ dmpl::BaseRole::print (std::ostream &os,unsigned int indent)
   os << spacer << "}\n\n";
 }
 
+/*********************************************************************/
+//-- find function with given name. either in this role or at the node
+//-- level.
+/*********************************************************************/
 dmpl::Func
 dmpl::BaseRole::findFunc(const std::string& name) const
 {
@@ -154,3 +164,7 @@ dmpl::BaseRole::findFunc(const std::string& name) const
     return ret->second;
   return node->findFunc(name);
 }
+
+/*********************************************************************/
+//-- end of file
+/*********************************************************************/
