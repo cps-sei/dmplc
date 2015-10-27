@@ -62,6 +62,26 @@
 #include "Function.h"
 
 /*********************************************************************/
+//-- equality operator
+/*********************************************************************/
+bool dmpl::RecordBase::operator == (const dmpl::RecordBase &rhs) const
+{
+  if(this == &rhs) return true;
+  if(name != rhs.name) return false;
+  if(vars.size() != rhs.vars.size()) return false;
+  
+  for(const auto &v1 : vars) {
+    bool found = false;
+    for(const auto &v2 : rhs.vars) {
+      if(*v1 == *v2) { found = true; break; }
+    }
+    if(!found) return false;
+  }
+  
+  return true;
+}
+
+/*********************************************************************/
 ///print with indentation
 /*********************************************************************/
 void

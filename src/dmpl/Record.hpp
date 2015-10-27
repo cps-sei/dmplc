@@ -98,6 +98,9 @@ namespace dmpl
     RecordBase(const std::string &n,const VarList &v) : name(n), vars(v), isOverride(false) {}
     RecordBase(const std::string &n,const VarList &v,const Func &ifn, const Func &afn)
       : name(n), vars(v), isOverride(false), initFunc(ifn), assumeFunc(afn) {}
+
+    //-- equality operator. compares name and variables.
+    bool operator == (const RecordBase &rhs) const;
     
     void print (std::ostream &os,unsigned int indent) const;
     std::string getName() const { return name; }
