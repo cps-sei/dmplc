@@ -115,6 +115,7 @@ namespace dmpl
         f.second->useSymbols(con);
       }
     }
+    //-- analyse specifications
     BOOST_FOREACH(const Specs::value_type &s, n.specs)
     {
       Context con;
