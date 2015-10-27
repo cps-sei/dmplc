@@ -130,7 +130,7 @@ namespace dmpl
     FuncList writers;
 
     //constructors
-  Variable() : scope(0), isInput(false), isOverride(false) {}
+    Variable() : scope(0), isInput(false), isOverride(false) {}
     Variable(const std::string &n);
     Variable(const std::string &n,const Type &t);
     Variable(const std::string &n,const Dims &d);
