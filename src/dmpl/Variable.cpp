@@ -108,9 +108,9 @@ dmpl::Variable::printInit (std::ostream &os,unsigned int indent)
 
   //-- print scope and variable
   if(scope == GLOBAL)
-    os << spacer << "global " << toString();
+    os << spacer << (isOverride ? "override " : "") << "global " << toString();
   else if(scope == LOCAL)
-    os << spacer << "local " << toString();
+    os << spacer << (isOverride ? "override " : "") << "local " << toString();
   else
     os << spacer << toString();
 

@@ -88,7 +88,7 @@ void
 dmpl::RecordBase::print (std::ostream &os,unsigned int indent) const
 {
   std::string spacer(indent, ' ');
-  os << spacer << "record " << name << " {\n";
+  os << spacer << (isOverride ? "override " : "") << "record " << name << " {\n";
   for(const Var &v : vars) v->printInit(os, indent+2);
   os << spacer << '}';
   
