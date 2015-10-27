@@ -102,6 +102,7 @@ namespace dmpl
   //-- analyze symbol usage by a node
   void SymbolUser::analyzeSymbolUsage(BaseNode &n)
   {
+    //-- analyse threads
     BOOST_FOREACH(const Funcs::value_type &f, n.funcs)
     {
       if(f.second->isThread())
