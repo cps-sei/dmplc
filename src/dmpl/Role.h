@@ -155,6 +155,8 @@ namespace dmpl
     BaseRole(const std::string &n, const Attributes& a, bool abst = false)
       : name(n), HasAttributes(a), abstract(abst) {}
 
+    //-- find variable with given name. return empty variable if no
+    //-- such variable found.
     Var findVar(const std::string& name) const
     {
       Vars::const_iterator ret = locVars.find(name);
@@ -166,6 +168,8 @@ namespace dmpl
       return Var();
     }
 
+    //-- find function with given name. either in this role or at the
+    //-- node level.
     Func findFunc(const std::string& name) const;
 
     Sym findSym(const std::string& name) const
@@ -234,6 +238,7 @@ namespace dmpl
       return funcs.count(fn) > 0;
     }
 
+    ///merge with another role
     void mergeWith(const Role &on);
 
     void analyzeThreads();
