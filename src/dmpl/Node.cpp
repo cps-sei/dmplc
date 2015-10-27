@@ -154,6 +154,10 @@ dmpl::BaseNode::print (std::ostream &os,unsigned int indent)
   os << spacer << "}\n\n";
 }
 
+/*********************************************************************/
+//-- find function with given name. either in this node or at the
+//-- program level.
+/*********************************************************************/
 dmpl::Func
 dmpl::BaseNode::findFunc(const std::string& name) const
 {
@@ -163,7 +167,9 @@ dmpl::BaseNode::findFunc(const std::string& name) const
   return program->findFunc(name);
 }
 
-
+/*********************************************************************/
+//-- assign ids to threads and do symbol usage analysis
+/*********************************************************************/
 void
 dmpl::BaseNode::analyzeThreads()
 {
