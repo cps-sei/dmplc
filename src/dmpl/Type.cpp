@@ -73,6 +73,7 @@ dmpl::Type dmpl::doubleType() { return Type(new dmpl::BaseType(TDOUBLE_TYPE)); }
 dmpl::Type dmpl::charType() { return Type(new dmpl::BaseType(TCHAR)); }
 dmpl::Type dmpl::ucharType() { return Type(new dmpl::BaseType(TUNSIGNED,TCHAR)); }
 dmpl::Type dmpl::boolType() { return Type(new dmpl::BaseType(TBOOL)); }
+dmpl::Type dmpl::recordType() { return Type(new dmpl::BaseType(TRECORD)); }
 
 /*********************************************************************/
 ///convert base type to string

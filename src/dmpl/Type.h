@@ -89,6 +89,7 @@ namespace dmpl
   Type charType();
   Type ucharType();
   Type boolType();
+  Type recordType();
 
   typedef std::vector <int> Dims;
 
