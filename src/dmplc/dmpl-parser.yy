@@ -398,6 +398,7 @@ record_block : record { $$ = $1; }
 | TOVERRIDE record {
   $$ = $2;
   (*$$)->isOverride = true;
+  for(dmpl::Var &v : (*$$)->vars) v->isOverride = true;
 }
 ;
 
