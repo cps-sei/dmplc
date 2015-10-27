@@ -160,8 +160,7 @@ dmpl::Func
 dmpl::BaseRole::findFunc(const std::string& name) const
 {
   Funcs::const_iterator ret = funcs.find(name);
-  if(ret != funcs.end())
-    return ret->second;
+  if(ret != funcs.end()) return ret->second;
   return node->findFunc(name);
 }
 
