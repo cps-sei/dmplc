@@ -160,11 +160,11 @@ namespace dmpl
     Var findVar(const std::string& name) const
     {
       Vars::const_iterator ret = locVars.find(name);
-      if(ret != locVars.end())
-        return ret->second;
+      if(ret != locVars.end()) return ret->second;
+
       ret = globVars.find(name);
-      if(ret != globVars.end())
-        return ret->second;
+      if(ret != globVars.end()) return ret->second;
+
       return Var();
     }
 
@@ -175,11 +175,11 @@ namespace dmpl
     Sym findSym(const std::string& name) const
     {
       Var v = findVar(name);
-      if(v)
-        return Sym(std::static_pointer_cast<Sym::element_type>(v));
+      if(v) return Sym(std::static_pointer_cast<Sym::element_type>(v));
+
       Func f = findFunc(name);
-      if(f)
-        return Sym(std::static_pointer_cast<Sym::element_type>(f));
+      if(f) return Sym(std::static_pointer_cast<Sym::element_type>(f));
+
       return Sym();
     }
 
