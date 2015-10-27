@@ -142,6 +142,8 @@ namespace dmpl
     void addTarget(const std::string &tgt,const std::string &thk)
     { targets[tgt] += thk; }
 
+    ///add a node to the program. merge with any existing node with
+    ///same name.
     void addNode(const Node &node)
     {
       auto it = nodes.find(node->name);
