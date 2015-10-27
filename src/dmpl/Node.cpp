@@ -79,23 +79,11 @@ dmpl::BaseNode::mergeWith(const Node &on)
     throw std::runtime_error("Cannot merge nodes which have different arguments: for " + n.name);
 
   //-- merge global vars
-  BOOST_FOREACH(const Vars::value_type &v, on->globVars)
-  {
-    if(n.globVars.count(v.second->name) == 0)
-      n.globVars[v.second->name] = v.second;
-    else if(n.globVars[v.second->name]->type != v.second->type)
-      throw std::runtime_error("Collision while merging node globals: " + v.second->name + " in " + n.name);
-  }
+  addVars(on->globVars);
 
   //-- merge local vars
-  BOOST_FOREACH(const Vars::value_type &v, on->locVars)
-  {
-    if(n.locVars.count(v.second->name) == 0)
-      n.locVars[v.second->name] = v.second;
-    else if(n.locVars[v.second->name]->type != v.second->type)
-      throw std::runtime_error("Collision while merging node locals: " + v.second->name + " in " + n.name);
-  }
-
+  addVars(on->locVars);
+  
   //-- merge records
   BOOST_FOREACH(const Records::value_type &r, on->records) addRecord(r.second);
 

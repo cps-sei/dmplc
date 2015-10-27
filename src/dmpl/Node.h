@@ -226,6 +226,11 @@ namespace dmpl
     {
       BOOST_FOREACH(const Var &v,vb) addVar(v);
     }
+
+    ///add variables from a map, with scope already set
+    void addVars(const Vars &vars)
+    {
+      for(const auto v : vars) addVar(v.second);
     }
 
     ///add a record
