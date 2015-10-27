@@ -135,7 +135,7 @@ namespace dmpl
     Variable(const std::string &n,const Type &t);
     Variable(const std::string &n,const Dims &d);
 
-    //equality operator
+    //equality operator. compares name, scope and type.
     bool operator == (const Variable &rhs) const
     {
       if(this == &rhs) return true;
