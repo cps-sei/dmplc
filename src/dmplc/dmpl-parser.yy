@@ -550,7 +550,7 @@ simp_type : TBOOL { $$ = new dmpl::Type(dmpl::boolType()); }
 ;
 
 procedure : proc_no_attr { $$ = $1; }
-| TOVERRIDE proc_no_attr { $$ = $2; }
+| TOVERRIDE proc_no_attr { $$ = $2; (*$$)->isOverride = true; }
 | attr_list proc_no_attr {
   $$ = $2;
   (*$$)->attrs = *$1;
@@ -559,6 +559,7 @@ procedure : proc_no_attr { $$ = $1; }
 | attr_list TOVERRIDE proc_no_attr {
   $$ = $3;
   (*$$)->attrs = *$1;
+  (*$$)->isOverride = true;
   delete $1;
 }
 ;
