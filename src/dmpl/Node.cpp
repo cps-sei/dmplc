@@ -169,16 +169,61 @@ dmpl::BaseNode::analyzeThreads()
 {
   threads.clear();
   int curID = 0;
+
+  //-- go over each function and identify threads
   BOOST_FOREACH(const Funcs::value_type &f, funcs)
   {
     const Func &func = f.second;
-    if(func->isThread())
-    {
-      func->threadID = curID;
-      ++curID;
-      threads.push_back(func);
+
+    //-- ignore non-thread functions
+    if(!func->isThread()) continue;
+
+    //-- assign fresh ID to thread functions
+    func->threadID = curID;
+    ++curID;
+    threads.push_back(func);
+  }
+
+  //-- process each role
+  for(auto &r : roles) {
+    Role &role = r.second;
+    role->threads.clear();
+    for(const Funcs::value_type &f : role->funcs) {
+      const Func &func = f.second;
+
+      //-- ignore non-thread functions
+      if(!func->isThread()) continue;
+
+      //-- assign new thread functions fresh id
+      const auto it = funcs.find(func->name);
+      if(it == funcs.end()) {
+        func->threadID = curID;
+        ++curID;
+        role->threads.push_back(func);
+        continue;
+      }
+
+      //-- now we have a function with same name in parent node
+
+      //-- sanity check -- function in node should also be a thread
+      const Func &nodeFunc = it->second;
+      if(!nodeFunc->isThread())
+        throw std::runtime_error("ERROR: role " + role->name + " declares thread " + func->name +
+                                 " but parent node " + name +
+                                 " has non-thread function with same name!!");
+
+      //-- if this thread is not a prototype, it must override
+      if(!func->isPrototype && !func->isOverride)
+        throw std::runtime_error("ERROR: role " + role->name + " must override non-prototype thread " +
+                                 func->name + " since parent node " + name +
+                                 " has thread with same name!!");
+
+      //-- assign this thread same threadID as the one in node
+      func->threadID = nodeFunc->threadID;
+      role->threads.push_back(func);
     }
   }
+    
   SymbolUser::analyzeSymbolUsage(*this);
 }
 
