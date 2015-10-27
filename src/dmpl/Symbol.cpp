@@ -121,7 +121,6 @@ namespace dmpl
       Context con;
       con.node = &n;
       con.spec = s.second;
-      //std::cerr << s->toString() << std::endl;
       s.second->useSymbols(con);
     }
   }
