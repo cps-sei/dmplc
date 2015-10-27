@@ -152,18 +152,60 @@ dmpl::Program::print (std::ostream &os,unsigned int indent)
 }
 
 /*********************************************************************/
-//-- return the name of common variables between the two sets of
-//-- variables. return the empty string if no common variable exists.
+//-- utility functions
 /*********************************************************************/
-std::string dmpl::Program::commonVar(const Vars &vars1, const Vars &vars2)
-{
-  for(const auto &v1 : vars1) {
-    const auto it = vars2.find(v1.first);
-    if(it != vars2.end()) return v1.first;
+namespace {
+
+  /*******************************************************************/
+  //-- extract the set of keys from a map
+  /*******************************************************************/
+  template<typename T1, typename T2>
+  std::set<T1> key_set(const std::map<T1,T2> &arg)
+  {
+    std::set<T1> res;
+    for(const auto &kv : arg) res.insert(kv.first);
+    return res;
   }
-  
-  return std::string();
+
+  /*******************************************************************/
+  //-- extract variable names
+  /*******************************************************************/
+  std::set<std::string> varNames(const dmpl::Vars &vars)
+  {
+    return key_set(vars);
+  }
+
+  /*******************************************************************/
+  //-- extract record names
+  /*******************************************************************/
+  std::set<std::string> recNames(const dmpl::Records &recs)
+  {
+    return key_set(recs);
+  }
+
+  /*******************************************************************/
+  //-- extract function names
+  /*******************************************************************/
+  std::set<std::string> funcNames(const dmpl::Funcs &funcs)
+  {
+    return key_set(funcs);
+  }
+
+  /*******************************************************************/
+  //-- return a common string between two sets. empty string if the
+  //-- two sets are disjoint.
+  /*******************************************************************/
+  std::string commonStr(const std::set<std::string> &ss1, const std::set<std::string> &ss2)
+  {
+    for(const auto &s1 : ss1) {
+      const auto it = ss2.find(s1);
+      if(it != ss2.end()) return s1;
+    }
+    
+    return std::string();
+  }
 }
+
 
 /*********************************************************************/
 //check various sanity conditions
@@ -189,16 +231,32 @@ dmpl::Program::sanityCheck()
   const std::string &nodeId = *(node->args.begin());
 
   //-- local and global variables must have distinct names
-  std::string cv = commonVar(node->locVars, node->globVars);
+  std::string cv = commonStr(varNames(node->locVars), varNames(node->globVars));
   if(!cv.empty())
     throw std::runtime_error("ERROR: Node " + node->name + " declares variable " + cv +
                              " as both local and global!!");
-  for(const auto &r : node->roles) {  std::string cv = commonVar(node->locVars, node->globVars);
-    cv = commonVar(r.second->locVars, r.second->globVars);
+  for(const auto &r : node->roles) {
+    cv = commonStr(varNames(r.second->locVars), varNames(r.second->globVars));
     if(!cv.empty())
       throw std::runtime_error("ERROR: Role " + r.second->name + " inside node " + node->name +
                                " declares variable " + cv + " as both local and global!!");
   }
+
+  //-- records and variables should have distinct names
+  cv = commonStr(varNames(node->locVars), recNames(node->records));
+  if(!cv.empty())
+    throw std::runtime_error("ERROR : " + cv + " declared as both record and local variable!!\n");
+  cv = commonStr(varNames(node->globVars), recNames(node->records));
+  if(!cv.empty())
+    throw std::runtime_error("ERROR : " + cv + " declared as both record and global variable!!\n");
+
+  //-- functions and variables should have distinct names
+  cv = commonStr(varNames(node->locVars), funcNames(node->funcs));
+  if(!cv.empty())
+    throw std::runtime_error("ERROR : " + cv + " declared as both function and local variable!!\n");
+  cv = commonStr(varNames(node->globVars), funcNames(node->funcs));
+  if(!cv.empty())
+    throw std::runtime_error("ERROR : " + cv + " declared as both function and global variable!!\n");
 
   //-- roles must override only variables, records, and functions that
   //-- belong to the node. they cannot redeclare such variables,
