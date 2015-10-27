@@ -177,6 +177,16 @@ namespace dmpl
       Var v = findVar(var->name);
       return v && (*v == *var);
     }
+
+    //-- return true iff the node has a record with the same name, and
+    //-- same set of variables.
+    bool hasRecord(const Record &rec)
+    {
+      auto it = records.find(rec->name);
+      if(it == records.end()) return false;
+      return *rec == *(it->second);
+    }
+    
     Func findFunc(const std::string& name) const;
 
     //-- find symbol with given name. return empty symbol if no such
