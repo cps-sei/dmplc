@@ -70,7 +70,7 @@ dmpl::Function::mergeWith (const Func &of, bool checkDecors)
 
   if (f.retType.get() == NULL)
     f.retType = of->retType;
-  else if (of->retType.get() != NULL && !f.retType->equals(of->retType))
+  else if (of->retType.get() != NULL && *(f.retType) == *(of->retType))
     throw std::runtime_error("Cannot merge functions of differing return types: for " + f.name);
 
   if (f.params.size() == 0)

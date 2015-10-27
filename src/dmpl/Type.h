@@ -136,11 +136,11 @@ namespace dmpl
     int getFirstDim() const;
 
     ///equality check
-    bool equals(const Type &o) const
+    bool operator == (const BaseType &rhs) const
     {
-      return qual == o->qual && type == o->type && dims == o->dims;
+      return qual == rhs.qual && type == rhs.type && dims == rhs.dims;
     }
-
+    
     ///check if this is a thread type
     bool isThread() const;
   };
