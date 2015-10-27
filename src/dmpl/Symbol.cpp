@@ -105,10 +105,22 @@ namespace dmpl
     //-- analyse threads
     BOOST_FOREACH(const Funcs::value_type &f, n.funcs)
     {
-      if(f.second->isThread())
-      {
+      if(!f.second->isThread()) continue;
+      Context con;
+      con.node = &n;
+      con.thread = f.second;
+      con.curFunc = f.second;
+      Sym fsym = Sym(f.second);
+      fsym->use();
+      f.second->useSymbols(con);
+    }
+    //-- analyse roles
+    for(const Roles::value_type &r : n.roles) {
+      for(const Funcs::value_type &f : r.second->funcs) {
+        if(!f.second->isThread()) continue;
         Context con;
         con.node = &n;
+        con.role = r.second.get();
         con.thread = f.second;
         con.curFunc = f.second;
         Sym fsym = Sym(f.second);
