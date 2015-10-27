@@ -513,6 +513,9 @@ namespace dmpl
       bool isLHS;
       std::deque<const SymbolBinder*> binders;
 
+      //constructors
+      Context() : node(0), role(0) {}
+      
       Sym findSym(const std::string &name);
 
       void addBinder(const SymbolBinder *binder)
