@@ -245,18 +245,22 @@ dmpl::Program::sanityCheck()
   //-- records and variables should have distinct names
   cv = commonStr(varNames(node->locVars), recNames(node->records));
   if(!cv.empty())
-    throw std::runtime_error("ERROR : " + cv + " declared as both record and local variable!!\n");
+    throw std::runtime_error("ERROR : Node " + node->name + " declares " + cv +
+                             " as both record and local variable!!\n");
   cv = commonStr(varNames(node->globVars), recNames(node->records));
   if(!cv.empty())
-    throw std::runtime_error("ERROR : " + cv + " declared as both record and global variable!!\n");
+    throw std::runtime_error("ERROR : Node " + node->name + " declares " + cv +
+                             " as both record and global variable!!\n");
 
   //-- functions and variables should have distinct names
   cv = commonStr(varNames(node->locVars), funcNames(node->funcs));
   if(!cv.empty())
-    throw std::runtime_error("ERROR : " + cv + " declared as both function and local variable!!\n");
+    throw std::runtime_error("ERROR : Node " + node->name + " declares " + cv +
+                             " as both function and local variable!!\n");
   cv = commonStr(varNames(node->globVars), funcNames(node->funcs));
   if(!cv.empty())
-    throw std::runtime_error("ERROR : " + cv + " declared as both function and global variable!!\n");
+    throw std::runtime_error("ERROR : Node " + node->name + " declares " + cv +
+                             " as both function and global variable!!\n");
 
   //-- roles must override only variables, records, and functions that
   //-- belong to the node. they cannot redeclare such variables,
