@@ -530,7 +530,8 @@ namespace dmpl
 
     virtual SymUserList getParents(Context &con) { return SymUserList(); }
     virtual Context useSymbols(Context con);
-
+    virtual std::string toString() const = 0;
+    
     static void analyzeSymbolUsage(BaseNode &n);
 
     SymbolUse *findSymbol(const Sym &s)
