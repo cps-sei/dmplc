@@ -897,7 +897,7 @@ dmpl::gams::GAMS_Builder::build_parse_args (const Node &node, const Var& var)
     // build the help string
     return_value << "        \" [--var_";
     return_value << var->name;
-    return_value << "] sets the initial value of a generated variable\\n\"\\\n";
+    return_value << "] sets the initial value of variable " << var->name << "\\n\"\\\n";
   }
 
   return return_value.str ();
