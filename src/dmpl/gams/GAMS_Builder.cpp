@@ -950,9 +950,9 @@ dmpl::gams::GAMS_Builder::build_function_declaration (const Func & thread, const
   if (skip_func(function))
     return;
 
-  buffer_ << "  Madara::Knowledge_Record\n";
+  buffer_ << "Madara::Knowledge_Record\n";
   if(thread)
-    buffer_ << "  thread" << thread->threadID;
+    buffer_ << "thread" << thread->threadID;
   buffer_ << "_" << function->name;
   buffer_ << " (engine::Function_Arguments & args, engine::Variables & vars);\n";
 }
