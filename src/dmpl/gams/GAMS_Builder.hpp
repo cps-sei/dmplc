@@ -82,11 +82,6 @@ namespace dmpl
        **/
       void build (void);
 
-      void build_gams_function (std::string &dmpl_name, std::string &gams_name, int nargs = 0);
-      void build_gams_functions (void);
-      void build_algo_declaration (void);
-      void build_algo_functions (void);
-
       /**
        * Builds the target-specific thunk from the DASL program
        */
@@ -128,6 +123,17 @@ namespace dmpl
       void build_program_variable_init (const Var & var);
       
       /**
+       * Builds commonly used filters
+       */
+      void build_common_filters (void);
+
+      /**
+       * Helper function of build_common_filters
+       */
+      void build_common_filters_helper (const std::string filter_name,
+                                        std::stringstream & filter_content);
+      
+      /**
        * Builds a threads's variables for Read-Execute-Write semantics
        **/
       void build_thread_variables (const Func &thread, const Vars & vars, bool isGlob);
@@ -167,16 +173,6 @@ namespace dmpl
        * Builds all function declarations to prevent undefined references
        **/
       void build_function_declarations (void);
-      
-      /**
-       * Builds a function for refreshing modification flag on globals
-       **/
-      void build_refresh_modify_globals (void);
-      
-      /**
-       * Builds a refresh statement for modification on a global
-       **/
-      void build_refresh_modify_global (const Node &node, const Var& var);
 
       //-- build function declarations for a thread
       void build_function_declarations_for_thread (const Func & thread, const Funcs & funcs);
@@ -187,35 +183,8 @@ namespace dmpl
        **/
       void build_function_declaration (const Func & thread, const Func & function);
 
-      /**
-       * Computes priorities, criticalities, and zero slack instants
-       * of functions.
-       **/
-      void compute_priorities (void);
+      void build_gams_functions (void);
 
-      void build_expect_thread_declaration (void);
-      void build_expect_thread_definition (void);
-
-      /**
-       * Builds the main function
-       **/
-      void build_main_function (void);
-
-      /**
-       * Builds the section of main that defines MADARA callable functions
-       **/
-      void build_main_define_functions (void);
-      
-      /**
-       * Builds a function definition for MADARA
-       * @param  function  a defined function in the parsed program
-       **/
-      void build_main_define_function (const dmpl::Node & node,
-        dmpl::Func& function);
-
-      //-- generate constructors for input variables from a set
-      void build_constructors(const Vars &vars);
-      
       /**
        * Builds global functions
        **/
@@ -225,6 +194,19 @@ namespace dmpl
        * Builds nodes
        **/
       void build_nodes (void);
+
+      //-- generate constructors for input variables from a set
+      void build_constructors(const Vars &vars);
+      
+      /**
+       * Builds a function for refreshing modification flag on globals
+       **/
+      void build_refresh_modify_globals (void);
+      
+      /**
+       * Builds a refresh statement for modification on a global
+       **/
+      void build_refresh_modify_global (const Node &node, const Var& var);
 
       void build_push_pull (const Func& thread, bool push);
 
@@ -244,16 +226,36 @@ namespace dmpl
        **/
       void build_function (const Func& thread, const dmpl::Node & node, const dmpl::Func& function);
       
+      void build_expect_thread_declaration (void);
+      void build_expect_thread_definition (void);
+
+      void build_algo_declaration (void);
+      void build_algo_functions (void);
+
       /**
-       * Builds commonly used filters
-       */
-      void build_common_filters (void);
+       * Computes priorities, criticalities, and zero slack instants
+       * of functions.
+       **/
+      void compute_priorities (void);
+
+
+      /**
+       * Builds the main function
+       **/
+      void build_main_function (void);
+
+      /**
+       * Builds the section of main that defines MADARA callable functions
+       **/
+      void build_main_define_functions (void);
       
       /**
-       * Builds the main logic loop for execution of ROUND
+       * Builds a function definition for MADARA
+       * @param  function  a defined function in the parsed program
        **/
-      void build_main_logic (void);
-
+      void build_main_define_function (const dmpl::Node & node,
+        dmpl::Func& function);
+      
       /**
        * Clears the underlying buffer
        **/
@@ -264,17 +266,6 @@ namespace dmpl
        * @param  os  the stream to print to
        **/
       void print (std::ostream & os);
-
-
-    private:      
-      /// character buffer for holding results of build
-      std::stringstream buffer_;
-
-      //-- map from function names to priorities, criticalities and
-      //-- Zero-Slack instants
-      std::map<std::string,unsigned> funcPrios;
-      std::map<std::string,unsigned> funcCrits;
-      std::map<std::string,unsigned> funcZsinsts;
 
       /**
        * Begins a namespace
@@ -292,12 +283,15 @@ namespace dmpl
       void build_comment (const std::string &comment, const std::string &prefix,
                           const std::string &suffix, size_t indent);
 
-      /**
-       * Helper function of build_common_filters
-       */
-      void build_common_filters_helper (const std::string filter_name,
-                                        std::stringstream & filter_content);
+    private:      
+      /// character buffer for holding results of build
+      std::stringstream buffer_;
 
+      //-- map from function names to priorities, criticalities and
+      //-- Zero-Slack instants
+      std::map<std::string,unsigned> funcPrios;
+      std::map<std::string,unsigned> funcCrits;
+      std::map<std::string,unsigned> funcZsinsts;
     };
   } // namespace gams
 } //namespace dmpl
