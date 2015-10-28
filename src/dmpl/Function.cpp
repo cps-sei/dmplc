@@ -174,6 +174,12 @@ dmpl::Function::printDecl (std::ostream &os,unsigned int indent)
   os << ");\n";
 }
 
+/*********************************************************************/
+//-- NOTE: this is a method of LvalExpr class but had to be defined
+//-- here to avoid circular dependencies during compilation. It
+//-- assigns the correct symbol to each lvalue expression.
+//-- TBD: move this to Expression.cpp.
+/*********************************************************************/
 dmpl::LvalExpr::Context
 dmpl::LvalExpr::useSymbols(Context con)
 {
