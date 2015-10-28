@@ -916,8 +916,14 @@ dmpl::gams::GAMS_Builder::build_functions_declarations ()
       build_function_declaration (thread, n.second, thread);
       for (auto i : funcs)
       {
-        if(thread->findSymbol(i.second) != NULL)
-          build_function_declaration (thread, n.second, i.second);
+        if(thread->findSymbol(i.second) == NULL) continue;
+
+        //-- sanity check: threads cannot be called as functions
+        if(i.second->isThread())
+          throw std::runtime_error("ERROR: thread " + thread->name + " in node " + n.second->name +
+                                   " calls thread " + i.second->name + " as a function!!");
+
+        build_function_declaration (thread, n.second, i.second);
       }
     }
     close_namespace("node_" + n.second->name);
