@@ -146,6 +146,8 @@ namespace dmpl
     ///same name.
     void addNode(const Node &node)
     {
+      node->program = this;
+      
       auto it = nodes.find(node->name);
 
       if(it == nodes.end())
