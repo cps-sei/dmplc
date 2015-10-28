@@ -213,6 +213,9 @@ namespace dmpl
       void build_main_define_function (const dmpl::Node & node,
         dmpl::Func& function);
 
+      //-- generate constructors for input variables from a set
+      void build_constructors(const Vars &vars);
+      
       /**
        * Builds global functions
        **/
