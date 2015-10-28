@@ -197,8 +197,36 @@ dmpl::BaseNode::analyzeThreads()
       const Func &func = f.second;
 
       //-- ignore non-thread functions
-      if(!func->isThread()) continue;
+      if(!func->isThread()) {
+        //-- sanity check. if the parent node contains a function with
+        //-- same name then it must not be a thread and this one must
+        //-- override.
+        Func nodeFunc = findFunc(func->name);
+        if(nodeFunc == NULL) {
+          if(func->isOverride)
+            throw std::runtime_error("ERROR: role " + role->name + " cannot override function " +
+                                     func->name + " since parent node " + name +
+                                     " has no function with same name!!");
+          continue;
+        }
+        
+        if(nodeFunc->isThread())
+          throw std::runtime_error("ERROR: role " + role->name + " declares function " +
+                                   func->name + " but parent node " + name +
+                                   " has thread with same name!!");
+        if(!func->isOverride)
+          throw std::runtime_error("ERROR: role " + role->name + " must override function " +
+                                   func->name + " since parent node " + name +
+                                   " has function with same name!!");
 
+        if(!(*(func->getType()) == *(nodeFunc->getType())))
+          throw std::runtime_error("ERROR: role " + role->name + " declares function " +
+                                   func->name + " but parent node " + name +
+                                   " has function with same name but different type!!");
+        
+        continue;
+      }
+      
       //-- assign new thread functions fresh id
       const auto it = funcs.find(func->name);
       if(it == funcs.end()) {
