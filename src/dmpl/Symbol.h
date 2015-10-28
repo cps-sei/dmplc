@@ -561,6 +561,16 @@ namespace dmpl
       allUsedSymbols.push_back(SymbolUse(s));
       return allUsedSymbols.back();
     }
+
+    //-- return a list of all used symbol names
+    std::string usedSymStr() const
+    {
+      std::string res = "(";
+      for(const SymbolUse &su : allUsedSymbols) {
+        res = res + " " + su.sym->getName();
+      }
+      return res + ")";
+    }
   };
 
   /*******************************************************************/
