@@ -789,21 +789,18 @@ dmpl::gams::GAMS_Builder::build_parse_args ()
   Nodes & nodes = builder_.program.nodes;
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
-    buffer_ << "\n    //-- Providing init for global variables\n";
-    Vars & vars = n->second->globVars;
-    for (Vars::iterator i = vars.begin (); i != vars.end (); ++i)
-    {
-      Var& var = i->second;
-      variable_help << build_parse_args (n->second, var);
+    //-- collect all input variables
+    std::set<Var> inputVars;
+    for (auto & var : n->second->globVars) if(var.second->isInput) inputVars.insert(var.second);
+    for (auto & var : n->second->locVars) if(var.second->isInput) inputVars.insert(var.second);
+    for (auto & r : n->second->roles) {
+      for (auto & var : r.second->globVars) if(var.second->isInput) inputVars.insert(var.second);
+      for (auto & var : r.second->locVars) if(var.second->isInput) inputVars.insert(var.second);
     }
-    
-    buffer_ << "\n    //-- Providing init for local variables\n";
-    Vars & locals = n->second->locVars;
-    for (Vars::iterator i = locals.begin (); i != locals.end (); ++i)
-    {
-      Var& var = i->second;
+
+    buffer_ << "\n    //-- Providing init for input variables of node " << n->second->name << "\n";
+    for (auto & var : inputVars)
       variable_help << build_parse_args (n->second, var);
-    }
   }
 
   if (false)
