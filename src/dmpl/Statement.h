@@ -163,8 +163,10 @@ namespace dmpl
         Context conW = con;
         conW.isLHS = true;
         lhs->useSymbols(conW);
+        inherit(lhs);
       }
       rhs->useSymbols(con);
+      inherit(rhs);
       return con;
     }
   };
