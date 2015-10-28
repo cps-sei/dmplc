@@ -1292,11 +1292,25 @@ dmpl::gams::GAMS_Builder::build_push_pull(const Func &thread, bool push)
 }
 
 /*********************************************************************/
+//-- generate code for all functions specific to a thread
+/*********************************************************************/
+void
+dmpl::gams::GAMS_Builder::build_functions_for_thread (
+  const Func& thread, const dmpl::Node & node, dmpl::Funcs & funcs)
+{
+  build_function (thread, node, thread);
+  for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i) {
+    if(thread->findSymbol(i->second) != NULL)
+      build_function (thread, node, i->second);
+  }
+}
+ 
+/*********************************************************************/
 //-- generate code for a function
 /*********************************************************************/
 void
 dmpl::gams::GAMS_Builder::build_function (
-  const Func& thread, const dmpl::Node & node, dmpl::Func & function)
+  const Func& thread, const dmpl::Node & node, const dmpl::Func & function)
 {
   if (skip_func(function))
     return;

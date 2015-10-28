@@ -226,10 +226,20 @@ namespace dmpl
       void build_push_pull (const Func& thread, bool push);
 
       /**
-       * Builds a function
+       * Builds all functions for a specific thread
+       * @param  thread  the target thread
+       * @node  thread  the target node
        * @param  function  a defined function in the parsed program
        **/
-      void build_function (const Func& thread, const dmpl::Node & node, dmpl::Func& function);
+      void build_functions_for_thread (const Func& thread, const dmpl::Node & node, dmpl::Funcs & funcs);
+
+      /**
+       * Builds a function
+       * @param  thread  the target thread
+       * @node  thread  the target node
+       * @param  function  a defined function in the parsed program
+       **/
+      void build_function (const Func& thread, const dmpl::Node & node, const dmpl::Func& function);
       
       /**
        * Builds commonly used filters
