@@ -772,7 +772,7 @@ dmpl::gams::GAMS_Builder::build_parse_args ()
   buffer_ << "    {\n";
   buffer_ << "      if (i + 1 < argc)\n";
   buffer_ << "      {\n";
-  buffer_ << "        node_name = (argv[i + 1]);\n";
+  buffer_ << "        node_name = argv[i + 1];\n";
   buffer_ << "      }\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
@@ -780,7 +780,7 @@ dmpl::gams::GAMS_Builder::build_parse_args ()
   buffer_ << "    {\n";
   buffer_ << "      if (i + 1 < argc)\n";
   buffer_ << "      {\n";
-  buffer_ << "        role_name = (argv[i + 1]);\n";
+  buffer_ << "        role_name = argv[i + 1];\n";
   buffer_ << "      }\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
