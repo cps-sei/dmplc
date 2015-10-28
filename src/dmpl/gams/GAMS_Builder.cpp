@@ -854,6 +854,8 @@ dmpl::gams::GAMS_Builder::build_parse_args ()
   buffer_ << "        \" [-o|--host hostname]     the hostname of this process (def:localhost)\\n\"\\\n";
   buffer_ << "        \" [-r|--reduced]           use the reduced message header\\n\"\\\n";
   buffer_ << "        \" [-u|--udp ip:port]       the udp ips to send to (first is self to bind to)\\n\"\\\n";
+  buffer_ << "        \" [--node name]            select the node name\\n\"\\\n";
+  buffer_ << "        \" [--role name]            select the role name\\n\"\\\n";
 
   buffer_ << variable_help.str ();
 
