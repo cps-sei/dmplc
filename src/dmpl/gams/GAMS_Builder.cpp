@@ -868,6 +868,18 @@ dmpl::gams::GAMS_Builder::build_parse_args ()
   buffer_ << "      exit (0);\n";
   buffer_ << "    }\n";
   buffer_ << "  }\n";
+  buffer_ << "}\n";
+  
+  build_comment("//-- helper function to check validity of supplied arguments", "\n", "", 0);
+  buffer_ << "void check_argument_sanity()\n";
+  buffer_ << "{\n";
+  for (auto & n : nodes) {
+    for(auto & r : n.second->roles)
+      buffer_ << "  if(node_name == \"" << n.second->name << "\" && role_name == \""
+              << r.second->name << "\") return;\n";
+  }  
+  buffer_ << "  throw std::runtime_error(\"ERROR : illegal node and role combination :(\"\n"
+          << "                           + node_name + \",\" + role_name + \")\");\n";
   buffer_ << "}\n\n";
 }
 
@@ -2184,8 +2196,9 @@ dmpl::gams::GAMS_Builder::build_main_function ()
   buffer_ << "  platform_init_fns[\"vrep-ant\"] = init_vrep;\n";
   buffer_ << "  platform_init_fns[\"vrep-uav-ranger\"] = init_vrep;\n";
   buffer_ << "\n";
-  buffer_ << "  //-- handle any command line arguments\n";
+  buffer_ << "  //-- handle any command line arguments and check their sanity\n";
   buffer_ << "  handle_arguments (argc, argv);\n";
+  buffer_ << "  check_argument_sanity ();\n";
   buffer_ << "\n";
   buffer_ << "  if (settings.hosts.size () == 0)\n";
   buffer_ << "  {\n";
