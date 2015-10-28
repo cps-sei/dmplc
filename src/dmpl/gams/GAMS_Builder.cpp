@@ -902,7 +902,7 @@ dmpl::gams::GAMS_Builder::build_functions_declarations ()
   Funcs & funcs = builder_.program.funcs;
   for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
   {
-    build_function_declaration (NULL, Node (), i->second);
+    build_function_declaration (NULL, i->second);
   }
   
   build_comment("//-- Forward declaring node and role functions", "\n", "", 0);
