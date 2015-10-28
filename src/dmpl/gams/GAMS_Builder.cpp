@@ -1312,8 +1312,7 @@ dmpl::gams::GAMS_Builder::build_function (
   }
 
   buffer_ << "Madara::Knowledge_Record\n";
-  if(thread)
-    buffer_ << "thread" << thread->threadID;
+  if(thread) buffer_ << "thread" << thread->threadID;
   buffer_ << "_" << function->name;
   buffer_ << " (engine::Function_Arguments & args, engine::Variables & vars)\n";
   buffer_ << "{\n";
