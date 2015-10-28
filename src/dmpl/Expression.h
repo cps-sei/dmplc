@@ -171,6 +171,8 @@ namespace dmpl
       return ret;
     }
 
+    //-- NOTE: this method is define in Function.cpp. It assigns the
+    //-- correct symbol to each lvalue expression.
     virtual Context useSymbols(Context con);
 
     LvalExpr(const std::string &v) : var(v) {}
