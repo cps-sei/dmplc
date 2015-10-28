@@ -913,7 +913,24 @@ dmpl::gams::GAMS_Builder::build_functions_declarations ()
     for (Func thread : n.second->threads)
       build_function_declarations_for_thread(thread, n.second->funcs);
 
+    //-- process roles
+    for(const auto &r : n.second->roles) {
+      build_comment("//-- declaring functions for role " + r.second->name, "\n", "\n", 0);
+      open_namespace("node_" + n.second->name + "_role_" + r.second->name);
+
+      for (Func thread : r.second->threads) {
+        //-- collect functions. for this role, and if the thread is
+        //-- new for this role then function for parent node as well.
+        Funcs funcs = r.second->funcs;
+        funcs.insert(n.second->funcs.begin(), n.second->funcs.end());
+                       
+        //-- declare all functions
+        build_function_declarations_for_thread(thread, funcs);
+      }
+      
+      close_namespace("node_" + n.second->name + "_role_" + r.second->name);
     }
+
     close_namespace("node_" + n.second->name);
   }
 }
