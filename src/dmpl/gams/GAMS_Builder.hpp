@@ -178,6 +178,9 @@ namespace dmpl
        **/
       void build_refresh_modify_global (const Node &node, const Var& var);
 
+      //-- build function declarations for a thread
+      void build_function_declarations_for_thread (const Func & thread, const Funcs & funcs);
+
       /**
        * Builds a function
        * @param  function  a defined function in the parsed program

@@ -907,24 +907,12 @@ dmpl::gams::GAMS_Builder::build_functions_declarations ()
   
   build_comment("//-- Forward declaring node and role functions", "\n", "", 0);
   Nodes & nodes = builder_.program.nodes;
-  for (auto n : nodes)
+  for (const auto &n : nodes)
   {
     open_namespace("node_" + n.second->name);
     for (Func thread : n.second->threads)
-    {
-      Funcs & funcs = n.second->funcs;
-      build_function_declaration (thread, n.second, thread);
-      for (auto i : funcs)
-      {
-        if(thread->findSymbol(i.second) == NULL) continue;
+      build_function_declarations_for_thread(thread, n.second->funcs);
 
-        //-- sanity check: threads cannot be called as functions
-        if(i.second->isThread())
-          throw std::runtime_error("ERROR: thread " + thread->name + " in node " + n.second->name +
-                                   " calls thread " + i.second->name + " as a function!!");
-
-        build_function_declaration (thread, n.second, i.second);
-      }
     }
     close_namespace("node_" + n.second->name);
   }
@@ -943,6 +931,26 @@ namespace {
   }
 }
 
+/*********************************************************************/
+//-- build function declarations for a thread
+/*********************************************************************/
+void
+dmpl::gams::GAMS_Builder::build_function_declarations_for_thread (const Func & thread,
+                                                                  const Funcs & funcs)
+{
+  build_function_declaration (thread, thread);
+  for (auto i : funcs) {
+    if(thread->findSymbol(i.second) == NULL) continue;
+    
+    //-- sanity check: threads cannot be called as functions
+    if(i.second->isThread())
+      throw std::runtime_error("ERROR: thread " + thread->name + " calls thread " +
+                               i.second->name + " as a function!!");
+    
+    build_function_declaration (thread, i.second);
+  }
+}
+  
 /*********************************************************************/
 //-- generate function declaration
 /*********************************************************************/
