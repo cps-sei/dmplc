@@ -155,14 +155,16 @@ namespace dmpl
       return retType->type == TTHREAD;
     }
 
+    //-- find variable with given name. return empty variable if no
+    //-- such variable exists.
     Var findVar(const std::string& name) const
     {
       Vars::const_iterator ret = temps.find(name);
-      if(ret != temps.end())
-        return ret->second;
+      if(ret != temps.end()) return ret->second;
+
       ret = paramSet.find(name);
-      if(ret != paramSet.end())
-        return ret->second;
+      if(ret != paramSet.end()) return ret->second;
+
       return Var();
     }
 
