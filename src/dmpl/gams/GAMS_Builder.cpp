@@ -251,6 +251,8 @@ dmpl::gams::GAMS_Builder::build_common_global_variables ()
   buffer_ << "Madara::Transport::QoS_Transport_Settings settings;\n";
   buffer_ << "int write_fd (-1);\n";
   buffer_ << "ofstream expect_file;\n";
+  buffer_ << "std::string node_name (\"none\");\n";
+  buffer_ << "std::string role_name (\"none\");\n";
   buffer_ << "\n";
 
   build_comment("//-- Containers for commonly used global variables", "", "", 0);
@@ -708,7 +710,6 @@ dmpl::gams::GAMS_Builder::build_parse_args ()
   buffer_ << "        std::stringstream buffer (argv[i + 1]);\n";
   buffer_ << "        buffer >> settings.id;\n";
   buffer_ << "      }\n";
-  buffer_ << "      \n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
   buffer_ << "    else if (arg1 == \"-l\" || arg1 == \"--level\")\n";
@@ -720,7 +721,6 @@ dmpl::gams::GAMS_Builder::build_parse_args ()
   buffer_ << "        buffer >> log_level;\n";
   buffer_ << "        Madara::Logger::global_logger->set_level(log_level);\n";
   buffer_ << "      }\n";
-  buffer_ << "      \n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
   buffer_ << "    else if (arg1 == \"--drop-rate\")\n";
@@ -736,7 +736,6 @@ dmpl::gams::GAMS_Builder::build_parse_args ()
   buffer_ << "        settings.update_drop_rate (drop_rate,\n";
   buffer_ << "          Madara::Transport::PACKET_DROP_PROBABLISTIC);\n";
   buffer_ << "      }\n";
-  buffer_ << "      \n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
   buffer_ << "    else if (arg1 == \"-e\" || arg1 == \"--expect-log\")\n";
@@ -745,7 +744,6 @@ dmpl::gams::GAMS_Builder::build_parse_args ()
   buffer_ << "      {\n";
   buffer_ << "        expect_file.open(argv[i + 1], ios::out | ios::trunc);\n";
   buffer_ << "      }\n";
-  buffer_ << "      \n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
   buffer_ << "    else if (arg1 == \"-f\" || arg1 == \"--logfile\")\n";
@@ -755,7 +753,6 @@ dmpl::gams::GAMS_Builder::build_parse_args ()
   buffer_ << "        ::Madara::Logger::global_logger->clear();\n";
   buffer_ << "        ::Madara::Logger::global_logger->add_file(argv[i + 1]);\n";
   buffer_ << "      }\n";
-  buffer_ << "      \n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
   buffer_ << "    else if (arg1 == \"-r\" || arg1 == \"--reduced\")\n";
@@ -769,7 +766,22 @@ dmpl::gams::GAMS_Builder::build_parse_args ()
   buffer_ << "        std::stringstream buffer (argv[i + 1]);\n";
   buffer_ << "        buffer >> write_fd;\n";
   buffer_ << "      }\n";
-  buffer_ << "      \n";
+  buffer_ << "      ++i;\n";
+  buffer_ << "    }\n";
+  buffer_ << "    else if (arg1 == \"--node\")\n";
+  buffer_ << "    {\n";
+  buffer_ << "      if (i + 1 < argc)\n";
+  buffer_ << "      {\n";
+  buffer_ << "        node_name = (argv[i + 1]);\n";
+  buffer_ << "      }\n";
+  buffer_ << "      ++i;\n";
+  buffer_ << "    }\n";
+  buffer_ << "    else if (arg1 == \"--role\")\n";
+  buffer_ << "    {\n";
+  buffer_ << "      if (i + 1 < argc)\n";
+  buffer_ << "      {\n";
+  buffer_ << "        role_name = (argv[i + 1]);\n";
+  buffer_ << "      }\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
 
