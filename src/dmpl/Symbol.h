@@ -514,7 +514,7 @@ namespace dmpl
       std::deque<const SymbolBinder*> binders;
 
       //constructors
-      Context() : node(0), role(0) {}
+      Context() : node(0), role(0), isLHS(false) {}
       
       Sym findSym(const std::string &name);
 
