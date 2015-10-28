@@ -217,6 +217,23 @@ namespace dmpl
 
     //-- return a string representation. just the name.
     std::string toString() const { return "function : " + name; }
+
+    //-- compare with another function in terms of name and types
+    //-- (return as well as parameter)
+    bool equalType(const Function &rhs) const
+    {
+      //-- compare name, return type, and number of parameters
+      if(name != rhs.name) return false;
+      if(!(*retType == *(rhs.retType))) return false;
+      if(params.size() != rhs.params.size()) return false;
+
+      //-- compare parameter types
+      auto it1 = params.begin(), it2 = rhs.params.begin();
+      for(;it1 != params.end();++it1, ++it2)
+        if(!(*((*it1)->type) == *((*it2)->type))) return false;
+
+      return true;
+    }
     
   private:
     void doSetVars (const VarList &vars, Vars &dest)

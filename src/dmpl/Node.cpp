@@ -219,7 +219,7 @@ dmpl::BaseNode::analyzeThreads()
                                    func->name + " since parent node " + name +
                                    " has function with same name!!");
 
-        if(!(*(func->getType()) == *(nodeFunc->getType())))
+        if(!func->equalType(*nodeFunc))
           throw std::runtime_error("ERROR: role " + role->name + " declares function " +
                                    func->name + " but parent node " + name +
                                    " has function with same name but different type!!");
