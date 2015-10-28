@@ -1132,15 +1132,26 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
     build_comment("//-- Begin node " + n->second->name, "\n", "\n", 0);
     open_namespace("node_" + n->second->name);
     
+    //-- build all functions for the node
     for (Func thread : n->second->threads)
-    {
-      Funcs & funcs = n->second->funcs;
-      build_function (thread, n->second, thread);
-      for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
-      {
-        if(thread->findSymbol(i->second) != NULL)
-          build_function (thread, n->second, i->second);
+      build_functions_for_thread(thread, n->second, n->second->funcs);
+
+    //-- process roles
+    for(const auto &r : n->second->roles) {
+      build_comment("//-- Defining functions for role " + r.second->name, "\n", "\n", 0);
+      open_namespace("node_" + n->second->name + "_role_" + r.second->name);
+
+      for (Func thread : r.second->threads) {
+        //-- collect functions. for this role, and if the thread is
+        //-- new for this role then function for parent node as well.
+        Funcs funcs = r.second->funcs;
+        funcs.insert(n->second->funcs.begin(), n->second->funcs.end());
+                       
+        //-- declare all functions
+        build_functions_for_thread(thread, n->second, funcs);
       }
+      
+      close_namespace("node_" + n->second->name + "_role_" + r.second->name);
     }
 
     close_namespace("node_" + n->second->name);
@@ -1331,6 +1342,15 @@ dmpl::gams::GAMS_Builder::build_function (
   buffer_ << " (engine::Function_Arguments & args, engine::Variables & vars)\n";
   buffer_ << "{\n";
 
+  //-- inherited prototype functions call the base version
+  if(function->isPrototype) {
+    buffer_ << "  return node_" << node->name << "::";
+    if(thread) buffer_ << "thread" << thread->threadID;
+    buffer_ << "_" << function->name << "(args, vars);\n";
+    buffer_ << "}\n\n";
+    return;
+  }
+  
   if(function == thread)
     build_push_pull(thread, false);
 
