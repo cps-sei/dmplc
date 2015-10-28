@@ -92,7 +92,7 @@ dmpl::gams::GAMS_Builder::build ()
   build_program_variables ();
   build_common_filters ();
   build_parse_args ();
-  build_functions_declarations ();
+  build_function_declarations ();
   build_gams_functions ();
   build_global_functions ();
   build_nodes ();
@@ -896,7 +896,7 @@ dmpl::gams::GAMS_Builder::build_parse_args (const Node &node, const Var& var)
 //-- generate function declarations.
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_functions_declarations ()
+dmpl::gams::GAMS_Builder::build_function_declarations ()
 {
   build_comment("//-- Forward declaring global functions", "", "", 0);
   Funcs & funcs = builder_.program.funcs;

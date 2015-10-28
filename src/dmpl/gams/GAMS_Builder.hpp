@@ -166,7 +166,7 @@ namespace dmpl
       /**
        * Builds all function declarations to prevent undefined references
        **/
-      void build_functions_declarations (void);
+      void build_function_declarations (void);
       
       /**
        * Builds a function for refreshing modification flag on globals
