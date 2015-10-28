@@ -111,6 +111,9 @@ namespace dmpl
     
     void print (std::ostream &os,unsigned int indent) const;
     std::string getName() const { return name; }
+
+    //-- return a string representation. just the name.
+    std::string toString() const { return "record : " + name; }
   };
 }
 
