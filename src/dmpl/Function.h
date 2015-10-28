@@ -215,6 +215,9 @@ namespace dmpl
     ///print just the function declaration
     void printDecl (std::ostream &os,unsigned int indent);    
 
+    //-- return a string representation. just the name.
+    std::string toString() const { return "function : " + name; }
+    
   private:
     void doSetVars (const VarList &vars, Vars &dest)
     {
