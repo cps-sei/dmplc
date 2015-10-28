@@ -908,6 +908,8 @@ dmpl::gams::GAMS_Builder::build_functions_declarations ()
   for (const auto &n : nodes)
   {
     open_namespace("node_" + n.second->name);
+
+    //-- declare all functions for the node
     for (Func thread : n.second->threads)
       build_function_declarations_for_thread(thread, n.second->funcs);
 
