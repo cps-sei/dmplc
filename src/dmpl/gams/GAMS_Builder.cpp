@@ -1159,6 +1159,10 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
     for (Func thread : n->second->threads)
       build_functions_for_thread(thread, n->second, n->second->funcs);
 
+    //-- build all constructors for the node
+    build_constructors(n->second->locVars);
+    build_constructors(n->second->globVars);
+    
     //-- process roles
     for(const auto &r : n->second->roles) {
       build_comment("//-- Defining functions for role " + r.second->name, "\n", "\n", 0);
@@ -1182,6 +1186,14 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
   }
 
   buffer_ << "\n";
+}
+
+/*********************************************************************/
+//-- generate constructors for given set of variables. for input
+//-- variables, check initial values.
+/*********************************************************************/
+void dmpl::gams::GAMS_Builder::build_constructors(const Vars &vars)
+{
 }
 
 /*********************************************************************/
