@@ -182,7 +182,7 @@ namespace dmpl
        * Builds a function
        * @param  function  a defined function in the parsed program
        **/
-      void build_function_declaration (const Func & thread, const dmpl::Node & node, dmpl::Func& function);
+      void build_function_declaration (const Func & thread, const Func & function);
 
       /**
        * Computes priorities, criticalities, and zero slack instants

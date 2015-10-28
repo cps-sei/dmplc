@@ -945,8 +945,7 @@ bool skip_func(dmpl::Func & function)
 //-- generate function declaration
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_function_declaration (
-  const Func & thread, const dmpl::Node & node, dmpl::Func & function)
+dmpl::gams::GAMS_Builder::build_function_declaration (const Func & thread, const Func & function)
 {
   if (skip_func(function))
     return;
