@@ -284,6 +284,7 @@ namespace dmpl
     ///merge with another node
     void mergeWith(const Node &on);
 
+    //-- assign ids to threads and do symbol usage analysis
     void analyzeThreads();
 
     /**

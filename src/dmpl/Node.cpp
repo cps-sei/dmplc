@@ -57,6 +57,9 @@
 #include "Program.h"
 #include <iostream>
 
+/*********************************************************************/
+//-- merge with another node
+/*********************************************************************/
 void
 dmpl::BaseNode::mergeWith(const Node &on)
 {
