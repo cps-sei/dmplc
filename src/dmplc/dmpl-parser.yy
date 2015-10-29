@@ -423,16 +423,20 @@ record : TRECORD TIDENTIFIER TLBRACE node_var_init_list TRBRACE {
 }
 | TRECORD TIDENTIFIER TLBRACE node_var_init_list TRBRACE TEQUAL fn_body {
   $$ = new dmpl::Record(new dmpl::RecordBase(*$2, *$4, *$7, dmpl::Func()));
+  (*$$)->initFunc->retType = dmpl::voidType();
   BOOST_FOREACH(const dmpl::Var &v,*$4) v->record = *$2;
   delete $2; delete $4; delete $7;
 }
 | TRECORD TIDENTIFIER TLBRACE node_var_init_list TRBRACE TBWNOT fn_body {
   $$ = new dmpl::Record(new dmpl::RecordBase(*$2, *$4, dmpl::Func(), *$7));
+  (*$$)->assumeFunc->retType = dmpl::intType();
   BOOST_FOREACH(const dmpl::Var &v,*$4) v->record = *$2;
   delete $2; delete $4; delete $7;
 }
 | TRECORD TIDENTIFIER TLBRACE node_var_init_list TRBRACE TEQUAL fn_body TBWNOT fn_body {
   $$ = new dmpl::Record(new dmpl::RecordBase(*$2, *$4, *$7, *$9));
+  (*$$)->initFunc->retType = dmpl::voidType();
+  (*$$)->assumeFunc->retType = dmpl::intType();
   BOOST_FOREACH(const dmpl::Var &v,*$4) v->record = *$2;
   delete $2; delete $4; delete $7; delete $9;
 }
@@ -487,11 +491,13 @@ var_asgn : var TEQUAL expr {
   dmpl::Stmt asgn(new dmpl::AsgnStmt(dmpl::Expr(lhs),*$3));
   (*$$)->initFunc = dmpl::Func(std::make_shared<dmpl::Func::element_type>());
   (*$$)->initFunc->body.push_back(asgn);
+  (*$$)->initFunc->retType = dmpl::voidType();
   delete $3;
 }
 | var TEQUAL fn_body {
   $$ = $1;
   (*$$)->initFunc = *$3;
+  (*$$)->initFunc->retType = dmpl::voidType();
   delete $3;
 }
 | TINPUT var TBWNOT expr {
@@ -500,12 +506,14 @@ var_asgn : var TEQUAL expr {
   dmpl::Stmt ret(new dmpl::RetStmt(*$4));
   (*$$)->initFunc = dmpl::Func(std::make_shared<dmpl::Func::element_type>());
   (*$$)->initFunc->body.push_back(ret);
+  (*$$)->initFunc->retType = dmpl::intType();
   delete $4;
 }
 | TINPUT var TBWNOT fn_body {
   $$ = $2;
   (*$$)->isInput = true;
   (*$$)->initFunc = *$4;
+  (*$$)->initFunc->retType = dmpl::intType();
   delete $4;
 }
 ;
