@@ -155,6 +155,15 @@ namespace dmpl
       }
     }
 
+    //-- return a list of local and global variables
+    VarList allVars() const
+    {
+      VarList res;
+      for(const auto &v : globVars) res.push_back(v.second);
+      for(const auto &v : locVars) res.push_back(v.second);
+      return res;
+    }
+    
     //-- find variable with given name. return empty variable if no
     //-- such variable found.
     Var findVar(const std::string& name) const

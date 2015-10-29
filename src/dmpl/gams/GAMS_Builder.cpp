@@ -791,11 +791,9 @@ dmpl::gams::GAMS_Builder::build_parse_args ()
   {
     //-- collect all input variables
     std::set<Var> inputVars;
-    for (auto & var : n->second->globVars) if(var.second->isInput) inputVars.insert(var.second);
-    for (auto & var : n->second->locVars) if(var.second->isInput) inputVars.insert(var.second);
+    for (auto & var : n->second->allVars()) if(var->isInput) inputVars.insert(var);
     for (auto & r : n->second->roles) {
-      for (auto & var : r.second->globVars) if(var.second->isInput) inputVars.insert(var.second);
-      for (auto & var : r.second->locVars) if(var.second->isInput) inputVars.insert(var.second);
+      for (auto & var : r.second->allVars()) if(var->isInput) inputVars.insert(var);
     }
 
     buffer_ << "\n    //-- Providing init for input variables of node " << n->second->name << "\n";
