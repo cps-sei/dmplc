@@ -155,7 +155,7 @@ namespace dmpl
       }
     }
 
-    //-- return a list of local and global variables
+    //-- return all local and global variables declared in this node
     VarList allVars() const
     {
       VarList res;

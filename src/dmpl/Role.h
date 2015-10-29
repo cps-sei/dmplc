@@ -155,7 +155,7 @@ namespace dmpl
     BaseRole(const std::string &n, const Attributes& a, bool abst = false)
       : name(n), HasAttributes(a), abstract(abst) {}
 
-    //-- return a list of local and global variables
+    //-- return all local and global variables declared in this role
     VarList allVars() const
     {
       VarList res;
