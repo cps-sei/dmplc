@@ -63,7 +63,9 @@
 
 namespace dmpl
 {
+  /*******************************************************************/
   //-- record the use of a symbol
+  /*******************************************************************/
   void Symbol::use(const SymUser &suser = SymUser(), bool isWrite = false,
                    bool isRemote = false, bool isExpect = false)
   {
@@ -85,7 +87,9 @@ namespace dmpl
     }
   }
 
+  /*******************************************************************/
   //-- inherit usage from another user
+  /*******************************************************************/
   void SymbolUser::inherit(const SymUser &o)
   {
     summary |= o->summary;
@@ -99,7 +103,9 @@ namespace dmpl
     }
   }
 
+  /*******************************************************************/
   //-- analyze symbol usage by a node
+  /*******************************************************************/
   void SymbolUser::analyzeSymbolUsage(BaseNode &n)
   {
     //-- analyse threads
@@ -138,7 +144,9 @@ namespace dmpl
     }
   }
 
+  /*******************************************************************/
   //-- inherit symbol usage from parents
+  /*******************************************************************/
   SymbolUser::Context SymbolUser::useSymbols(Context con)
   {
     BOOST_FOREACH(const SymUser &su, getParents(con))
@@ -149,7 +157,9 @@ namespace dmpl
     return con;
   }
   
+  /*******************************************************************/
   //-- find a symbol given its name
+  /*******************************************************************/
   Sym SymbolUser::Context::findSym(const std::string &name)
   {
     //-- first check enclosing scopes
@@ -175,7 +185,9 @@ namespace dmpl
     return Sym();
   }
 
+  /*******************************************************************/
   //-- return true if the context corresponds to an expect clause
+  /*******************************************************************/
   bool SymbolUser::Context::inExpect()
   {
     return dynamic_cast<ExpectSpec*>(&*spec) != NULL;
