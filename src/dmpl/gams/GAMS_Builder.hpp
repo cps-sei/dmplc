@@ -195,9 +195,6 @@ namespace dmpl
        **/
       void build_nodes (void);
 
-      //-- generate constructors for input variables from a set
-      void build_constructors(const Vars &vars);
-      
       /**
        * Builds a function for refreshing modification flag on globals
        **/
