@@ -117,14 +117,32 @@ namespace dmpl
       fsym->use();
       f.second->useSymbols(con);
     }
+    //-- analyse constructors of local and global variables
+    for(const auto &v : n.allVars()) {
+      if(v->initFunc == NULL) continue;
+      Context con(&n, NULL, Spec(), Func(), v->initFunc, false);
+      Sym fsym = Sym(v->initFunc);
+      fsym->use();
+      v->initFunc->useSymbols(con);
+    }
+
     //-- analyse roles
     for(const Roles::value_type &r : n.roles) {
+      //-- analyse threads
       for(const Funcs::value_type &f : r.second->funcs) {
         if(!f.second->isThread()) continue;
         Context con(&n, r.second.get(), Spec(), f.second, f.second, false);
         Sym fsym = Sym(f.second);
         fsym->use();
         f.second->useSymbols(con);
+      }
+      //-- analyse constructors of local and global variables
+      for(const auto &v : r.second->allVars()) {
+        if(v->initFunc == NULL) continue;
+        Context con(&n, r.second.get(), Spec(), Func(), v->initFunc, false);
+        Sym fsym = Sym(v->initFunc);
+        fsym->use();
+        v->initFunc->useSymbols(con);
       }
     }
     //-- analyse specifications
