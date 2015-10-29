@@ -1171,6 +1171,43 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
         //-- declare all functions
         build_functions_for_thread(thread, n->second, funcs);
       }
+
+      //-- build constructors for the role
+      build_comment("//-- Begin constructors for role " + r.second->name, "", "", 0);
+
+      for(auto &v : r.second->allVarsInScope()) {
+        if(v->initFunc == NULL || v->initFunc->body.empty()) continue;
+        
+        if(v->isInput)
+          buffer_ << "int check_init_" << v->name << " ()\n{\n";
+        else
+          buffer_ << "void initialize_" << v->name << " ()\n{\n";
+        
+        BOOST_FOREACH (Vars::value_type & variable, v->initFunc->temps) {
+          buffer_ << "  " << get_type_name(variable.second);
+          buffer_ << " " << variable.second->name;
+          buffer_ << ";\n";
+        }
+        
+        //-- transform statements
+        dmpl::madara::Function_Visitor visitor (v->initFunc, n->second, Func(),
+                                                builder_, buffer_, false);
+        for (const Stmt & statement : v->initFunc->body)
+          visitor.visit (statement);
+        buffer_ << "}\n";
+      }
+      
+      buffer_ << "void constructor()\n{\n";
+      for(auto &v : r.second->allVarsInScope()) {
+        if(v->initFunc == NULL || v->initFunc->body.empty()) continue;
+        if(v->isInput)
+          buffer_ << "  if(!check_init_" << v->name
+                  << " ()) throw std::runtime_error(\"ERROR: illegal initial value of variable "
+                  << v->name << "\");\n";
+        else
+          buffer_ << "  initialize_" << v->name << " ();\n";
+      }
+      buffer_ << "}\n\n";
       
       close_namespace("node_" + n->second->name + "_role_" + r.second->name);
     }
