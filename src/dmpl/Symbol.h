@@ -515,6 +515,8 @@ namespace dmpl
 
       //constructors
       Context() : node(0), role(0), isLHS(false) {}
+      Context(BaseNode *n, BaseRole *r, const Spec &s, const Func &t, const Func &cf, const bool il)
+        : node(n), role(r), spec(s), thread(t), curFunc(cf), isLHS(il) {}
       
       Sym findSym(const std::string &name);
 

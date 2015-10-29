@@ -112,10 +112,7 @@ namespace dmpl
     BOOST_FOREACH(const Funcs::value_type &f, n.funcs)
     {
       if(!f.second->isThread()) continue;
-      Context con;
-      con.node = &n;
-      con.thread = f.second;
-      con.curFunc = f.second;
+      Context con(&n, NULL, Spec(), f.second, f.second, false);
       Sym fsym = Sym(f.second);
       fsym->use();
       f.second->useSymbols(con);
@@ -124,11 +121,7 @@ namespace dmpl
     for(const Roles::value_type &r : n.roles) {
       for(const Funcs::value_type &f : r.second->funcs) {
         if(!f.second->isThread()) continue;
-        Context con;
-        con.node = &n;
-        con.role = r.second.get();
-        con.thread = f.second;
-        con.curFunc = f.second;
+        Context con(&n, r.second.get(), Spec(), f.second, f.second, false);
         Sym fsym = Sym(f.second);
         fsym->use();
         f.second->useSymbols(con);
@@ -137,9 +130,7 @@ namespace dmpl
     //-- analyse specifications
     BOOST_FOREACH(const Specs::value_type &s, n.specs)
     {
-      Context con;
-      con.node = &n;
-      con.spec = s.second;
+      Context con(&n, NULL, s.second, Func(), Func(), false);
       s.second->useSymbols(con);
     }
   }
