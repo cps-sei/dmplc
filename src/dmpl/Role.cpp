@@ -58,6 +58,25 @@
 #include <iostream>
 
 /*********************************************************************/
+//-- return all local and global variables in scope, i.e., including
+//-- the parent node as well.
+/*********************************************************************/
+dmpl::VarList dmpl::BaseRole::allVarsInScope() const
+{  
+  //-- collect all variables from parent node in a map
+  Vars allVars = node->locVars;
+  allVars.insert(node->globVars.begin(), node->globVars.end());
+
+  //-- overwrite with variables declared in this role
+  allVars.insert(locVars.begin(), locVars.end());
+  allVars.insert(globVars.begin(), globVars.end());
+  
+  VarList res;
+  for(const auto &v : allVars) res.push_back(v.second);
+  return res;
+}
+
+/*********************************************************************/
 //-- find function with given name. either in this role or at the node
 //-- level.
 /*********************************************************************/

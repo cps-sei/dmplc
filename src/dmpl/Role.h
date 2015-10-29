@@ -164,6 +164,10 @@ namespace dmpl
       return res;
     }
 
+    //-- return all local and global variables in scope, i.e.,
+    //-- including the parent node as well.
+    VarList allVarsInScope() const;
+
     //-- find variable with given name. return empty variable if no
     //-- such variable found.
     Var findVar(const std::string& name) const
