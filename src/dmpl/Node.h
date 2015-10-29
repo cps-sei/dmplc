@@ -281,6 +281,7 @@ namespace dmpl
       return funcs.count(fn) > 0;
     }
 
+    ///merge with another node
     void mergeWith(const Node &on);
 
     void analyzeThreads();
