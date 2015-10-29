@@ -152,9 +152,11 @@ namespace dmpl
 
       if(it == nodes.end())
         it = nodes.insert(std::pair<std::string,Node>(node->name,node)).first;
-      else
+      else {
+        for(auto &r : node->roles) r.second->node = it->second;
         it->second->mergeWith(node);
-
+      }
+      
       it->second->program = this;
     }
 
