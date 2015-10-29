@@ -769,7 +769,6 @@ dmpl::madara::Function_Visitor::exitRet (RetStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
-  buffer_ << spacer << "// retType->type == " << function_->retType->type << std::endl;
   buffer_ << spacer << "return (";
   
   switch(function_->retType->type)
