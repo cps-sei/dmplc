@@ -58,6 +58,18 @@
 #include <iostream>
 
 /*********************************************************************/
+//-- find function with given name. either in this role or at the node
+//-- level.
+/*********************************************************************/
+dmpl::Func
+dmpl::BaseRole::findFunc(const std::string& name) const
+{
+  Funcs::const_iterator ret = funcs.find(name);
+  if(ret != funcs.end()) return ret->second;
+  return node->findFunc(name);
+}
+
+/*********************************************************************/
 //-- merge with another role
 /*********************************************************************/
 void
@@ -150,18 +162,6 @@ dmpl::BaseRole::print (std::ostream &os,unsigned int indent)
   os << "\n";
 
   os << spacer << "}\n\n";
-}
-
-/*********************************************************************/
-//-- find function with given name. either in this role or at the node
-//-- level.
-/*********************************************************************/
-dmpl::Func
-dmpl::BaseRole::findFunc(const std::string& name) const
-{
-  Funcs::const_iterator ret = funcs.find(name);
-  if(ret != funcs.end()) return ret->second;
-  return node->findFunc(name);
 }
 
 /*********************************************************************/
