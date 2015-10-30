@@ -825,8 +825,8 @@ dmpl::gams::GAMS_Builder::build_parse_args ()
       buffer_ << "  if(node_name == \"" << n.second->name << "\" && role_name == \""
               << r.second->name << "\") return;\n";
   }  
-  buffer_ << "  throw std::runtime_error(\"ERROR : illegal node and role combination :(\"\n"
-          << "                           + node_name + \",\" + role_name + \")\");\n";
+  buffer_ << "  throw std::runtime_error(\"ERROR : illegal node and role combination : (\"\n"
+          << "                           + node_name + \" , \" + role_name + \")\");\n";
   buffer_ << "}\n\n";
 }
 
