@@ -63,13 +63,13 @@
 /*********************************************************************/
 dmpl::VarList dmpl::BaseRole::allVarsInScope() const
 {  
-  //-- collect all variables from parent node in a map
-  Vars allVars = node->locVars;
-  allVars.insert(node->globVars.begin(), node->globVars.end());
-
-  //-- overwrite with variables declared in this role
-  allVars.insert(locVars.begin(), locVars.end());
+  //-- collect all variables from this role
+  Vars allVars = locVars;
   allVars.insert(globVars.begin(), globVars.end());
+
+  //-- add variables declared in parent node
+  allVars.insert(node->locVars.begin(), node->locVars.end());
+  allVars.insert(node->globVars.begin(), node->globVars.end());
   
   VarList res;
   for(const auto &v : allVars) res.push_back(v.second);
