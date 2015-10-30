@@ -144,19 +144,14 @@ namespace dmpl
       void build_thread_variable (const Func &thread, const Var & var);
       
       /**
-       * Builds the program's MADARA generated variable bindings in main
+       * Generate constructor invocation for all program variables
        **/
-      void build_program_variables_bindings (void);
+      void build_constructors (void);
       
       /**
        * Builds a MADARA generated variable binding in main
        **/
-      void build_program_variable_binding (const Node &node, const Var & var);
-      
-      /**
-       * Builds a MADARA generated variable binding in main
-       **/
-      void build_program_variable_assignment (const Node &node, const Var & var);
+      void build_program_variable_assignment (const Var & var);
 
       /**
        * Builds the arguments parser

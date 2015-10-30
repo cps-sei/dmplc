@@ -521,96 +521,33 @@ dmpl::gams::GAMS_Builder::build_thread_variable (const Func &thread, const Var &
 }
 
 /*********************************************************************/
-//-- generate bindings for all program variables
+//-- generate constructor invocation for all program variables
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_program_variables_bindings ()
+dmpl::gams::GAMS_Builder::build_constructors ()
 { 
-  build_comment("//-- Binding common variables", "\n", "", 2);
-  //buffer_ << "  barrier.set_name (\"mbarrier\", *knowledge, ";
-  //buffer_ << builder_.program.processes.size ();
-  //buffer_ << ");\n";
-
-  //buffer_ << "  id.set_name (\".id\", knowledge);\n";
-  //buffer_ << "  num_processes.set_name (\".processes\", knowledge);\n";
-
-  Nodes & nodes = builder_.program.nodes;
-  for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
-  {
-    build_comment("//-- Binding program-specific global variables", "\n", "", 2);
-    Vars & vars = n->second->globVars;
-    for (Vars::iterator i = vars.begin (); i != vars.end (); ++i)
-    {
-      Var & var = i->second;
-      build_program_variable_binding (n->second, var);
-    }
-    
-    build_comment("//-- Binding program-specific local variables", "\n", "", 2);
-    Vars & locals = n->second->locVars;
-    for (Vars::iterator i = locals.begin (); i != locals.end (); ++i)
-    {
-      Var & var = i->second;
-      build_program_variable_binding (n->second, var);
-    }
-  }
-
+  build_comment("//-- Invoking constructors", "\n", "", 2);
+  for (auto & n : builder_.program.nodes) {
+    for(auto & r : n.second->roles)
+      buffer_ << "  if(node_name == \"" << n.second->name << "\" && role_name == \""
+              << r.second->name << "\") node_" << n.second->name
+              << "::node_" << n.second->name << "_role_" << r.second->name << "::constructor ();\n";
+  }  
   buffer_ << "\n";
-}
-
-/*********************************************************************/
-//-- generate binding for a program variable
-/*********************************************************************/
-void
-dmpl::gams::GAMS_Builder::build_program_variable_binding (const Node &node, const Var & var)
-{
-#if 0
-  // if scalar, already bound
-  if (var->type->dims.size () > 0)
-  {
-    buffer_ << "  ";
-    buffer_ << var->name;
-    buffer_ << ".set_name (\"";
-
-    // local variables will have a period in front of them
-    if (var->scope == Variable::LOCAL)
-      buffer_ << ".";
-
-    buffer_ << var->name;
-    buffer_ << "\", knowledge";
-
-    // is this an array type?
-    if (var->type->dims.size () == 1)
-    {
-      buffer_ << ", ";
-      buffer_ << builder_.program.processes.size ();
-    }
-
-    buffer_ << ");\n";
-  }
-#endif
-
-  build_program_variable_assignment (node, var);
 }
 
 /*********************************************************************/
 //-- generate code to assign initial value to a variable.
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_program_variable_assignment (const Node &node, const Var & var)
+dmpl::gams::GAMS_Builder::build_program_variable_assignment (const Var & var)
 {
   // is this a GLOBAL scalar (i.e., 1-dimensional array)?
   if (var->scope == Variable::GLOBAL && var->type->dims.size () == 1)
-  {
-    buffer_ << "  node_" << node->name << "::" << var->name;
-    buffer_ << "[settings.id] = node_" << node->name << "::var_init_";
-    buffer_ << var->name << ";\n";
-  }
+    buffer_ << "  " << var->name << "[settings.id] = var_init_" << var->name << ";\n";
+  // otherwise for local variables
   else if (var->type->dims.size () == 0)
-  {
-    buffer_ << "  node_" << node->name << "::" << var->name;
-    buffer_ << " = node_" << node->name << "::var_init_";
-    buffer_ << var->name << ";\n";
-  }
+    buffer_ << "  " << var->name << " = var_init_" << var->name << ";\n";
 }
 
 /*********************************************************************/
@@ -2295,7 +2232,7 @@ dmpl::gams::GAMS_Builder::build_main_function ()
       buffer_ << "\n";
     }
 
-  build_program_variables_bindings ();
+  build_constructors ();
   build_main_define_functions ();
 
   // set the values for id and processes
