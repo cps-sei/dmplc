@@ -1190,15 +1190,21 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
       //-- generator constructors and initial value checkers for
       //-- variables
       for(auto &v : r.second->allVarsInScope()) {
-        if(v->initFunc == NULL || v->initFunc->body.empty()) continue;
         buffer_ << (v->isInput ? "int check_init_" : "void initialize_") << v->name << " ()\n{\n";
-        print_vars(buffer_, v->initFunc->temps, false);
+
+        //-- bind initial value for inputs
+        if(v->isInput) build_program_variable_assignment(v);
+
+        //-- generate constructor if one was defined
+        if(v->initFunc != NULL) {
+          print_vars(buffer_, v->initFunc->temps, false);
         
-        //-- transform statements
-        dmpl::madara::Function_Visitor visitor (v->initFunc, n->second, Func(),
-                                                builder_, buffer_, false);
-        for (const Stmt & statement : v->initFunc->body)
-          visitor.visit (statement);
+          //-- transform statements
+          dmpl::madara::Function_Visitor visitor (v->initFunc, n->second, Func(),
+                                                  builder_, buffer_, false);
+          for (const Stmt & statement : v->initFunc->body)
+            visitor.visit (statement);
+        }
         buffer_ << "}\n";
       }
       
@@ -1232,7 +1238,6 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
       
       buffer_ << "void constructor()\n{\n";
       for(auto &v : r.second->allVarsInScope()) {
-        if(v->initFunc == NULL || v->initFunc->body.empty()) continue;
         if(v->isInput)
           buffer_ << "  if(!check_init_" << v->name
                   << " ()) throw std::runtime_error(\"ERROR: illegal initial value of variable "
