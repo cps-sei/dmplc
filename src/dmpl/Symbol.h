@@ -534,6 +534,11 @@ namespace dmpl
     virtual Context useSymbols(Context con);
     virtual std::string toString() const = 0;
     
+
+    //-- analyze symbol usage by a function under a context
+    static void analyzeSymbolUsage(const Func &func, Context con);
+
+    //-- analyze symbol usage by a node
     static void analyzeSymbolUsage(BaseNode &n);
 
     SymbolUse *findSymbol(const Sym &s)

@@ -104,6 +104,16 @@ namespace dmpl
   }
 
   /*******************************************************************/
+  //-- analyze symbol usage by a function under a context
+  /*******************************************************************/
+  void SymbolUser::analyzeSymbolUsage(const Func &func, Context con)
+  {
+    Sym fsym = Sym(func);
+    fsym->use();
+    func->useSymbols(con);
+  }
+  
+  /*******************************************************************/
   //-- analyze symbol usage by a node
   /*******************************************************************/
   void SymbolUser::analyzeSymbolUsage(BaseNode &n)
@@ -111,38 +121,28 @@ namespace dmpl
     //-- analyse threads
     BOOST_FOREACH(const Funcs::value_type &f, n.funcs)
     {
-      if(!f.second->isThread()) continue;
-      Context con(&n, NULL, Spec(), f.second, f.second, false);
-      Sym fsym = Sym(f.second);
-      fsym->use();
-      f.second->useSymbols(con);
+      if(f.second->isThread())
+        analyzeSymbolUsage(f.second, Context(&n, NULL, Spec(), f.second, f.second, false));
     }
     //-- analyse constructors of local and global variables
     for(const auto &v : n.allVars()) {
-      if(v->initFunc == NULL) continue;
-      Context con(&n, NULL, Spec(), Func(), v->initFunc, false);
-      Sym fsym = Sym(v->initFunc);
-      fsym->use();
-      v->initFunc->useSymbols(con);
+      if(v->initFunc != NULL)
+        analyzeSymbolUsage(v->initFunc, Context(&n, NULL, Spec(), Func(), v->initFunc, false));
+    }
     }
 
     //-- analyse roles
     for(const Roles::value_type &r : n.roles) {
       //-- analyse threads
       for(const Funcs::value_type &f : r.second->funcs) {
-        if(!f.second->isThread()) continue;
-        Context con(&n, r.second.get(), Spec(), f.second, f.second, false);
-        Sym fsym = Sym(f.second);
-        fsym->use();
-        f.second->useSymbols(con);
+        if(f.second->isThread())
+          analyzeSymbolUsage(f.second, Context(&n, r.second.get(), Spec(), f.second, f.second, false));
       }
       //-- analyse constructors of local and global variables
       for(const auto &v : r.second->allVars()) {
-        if(v->initFunc == NULL) continue;
-        Context con(&n, r.second.get(), Spec(), Func(), v->initFunc, false);
-        Sym fsym = Sym(v->initFunc);
-        fsym->use();
-        v->initFunc->useSymbols(con);
+        if(v->initFunc != NULL)
+          analyzeSymbolUsage(v->initFunc,
+                             Context(&n, r.second.get(), Spec(), Func(), v->initFunc, false));
       }
     }
     //-- analyse specifications
