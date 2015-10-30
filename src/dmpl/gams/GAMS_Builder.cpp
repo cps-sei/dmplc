@@ -2221,17 +2221,6 @@ dmpl::gams::GAMS_Builder::build_main_function ()
 
   Node &node = builder_.program.nodes.begin()->second;
 
-  build_comment("//-- NODE: " + node->name, "", "", 2);
-  BOOST_FOREACH (Attributes::value_type & attr, node->attrs)
-    {
-      buffer_ << "  //-- @" << attr.second.name;
-      BOOST_FOREACH (Expr p, attr.second.paramList)
-        {
-          buffer_ << " " << p->toString();
-        }
-      buffer_ << "\n";
-    }
-
   build_constructors ();
   build_main_define_functions ();
 
