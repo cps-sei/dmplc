@@ -129,6 +129,15 @@ namespace dmpl
       if(v->initFunc != NULL)
         analyzeSymbolUsage(v->initFunc, Context(&n, NULL, Spec(), Func(), v->initFunc, false));
     }
+    //-- analyse constructors and assumption functions of all records
+    for(const auto &rec : n.records) {
+      if(rec.second->initFunc != NULL)
+        analyzeSymbolUsage(rec.second->initFunc,
+                           Context(&n, NULL, Spec(), Func(), rec.second->initFunc, false));
+      
+      if(rec.second->assumeFunc != NULL)
+        analyzeSymbolUsage(rec.second->assumeFunc,
+                           Context(&n, NULL, Spec(), Func(), rec.second->assumeFunc, false));
     }
 
     //-- analyse roles
@@ -143,6 +152,16 @@ namespace dmpl
         if(v->initFunc != NULL)
           analyzeSymbolUsage(v->initFunc,
                              Context(&n, r.second.get(), Spec(), Func(), v->initFunc, false));
+      }
+      //-- analyse constructors and assumption functions of all records
+      for(const auto &rec : r.second->records) {
+        if(rec.second->initFunc != NULL)
+          analyzeSymbolUsage(rec.second->initFunc,
+                             Context(&n, r.second.get(), Spec(), Func(), rec.second->initFunc, false));
+      
+        if(rec.second->assumeFunc != NULL)
+          analyzeSymbolUsage(rec.second->assumeFunc,
+                             Context(&n, r.second.get(), Spec(), Func(), rec.second->assumeFunc, false));
       }
     }
     //-- analyse specifications
