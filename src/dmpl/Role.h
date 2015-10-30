@@ -180,6 +180,10 @@ namespace dmpl
 
       return Var();
     }
+
+    //-- return all records in scope, i.e., including the parent node
+    //-- as well.
+    RecordList allRecordsInScope() const;
     
     //-- find record with given name. return empty record if no such
     //-- record found.

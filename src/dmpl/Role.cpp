@@ -76,6 +76,24 @@ dmpl::VarList dmpl::BaseRole::allVarsInScope() const
   return res;
 }
 
+
+/*********************************************************************/
+//-- return all records in scope, i.e., including the parent node as
+//-- well.
+/*********************************************************************/
+dmpl::RecordList dmpl::BaseRole::allRecordsInScope() const
+{
+  //-- collect all records from this role
+  Records allRecs = records;
+
+  //-- add variables declared in parent node
+  allRecs.insert(node->records.begin(), node->records.end());
+  
+  RecordList res;
+  for(const auto &r : allRecs) res.push_back(r.second);
+  return res;
+}
+
 /*********************************************************************/
 //-- find function with given name. either in this role or at the node
 //-- level.
