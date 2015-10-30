@@ -1175,6 +1175,8 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
       //-- build constructors for the role
       build_comment("//-- Begin constructors for role " + r.second->name, "", "", 0);
 
+      //-- generator constructors and initial value checkers for
+      //-- variables
       for(auto &v : r.second->allVarsInScope()) {
         if(v->initFunc == NULL || v->initFunc->body.empty()) continue;
         
