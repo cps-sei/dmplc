@@ -1199,6 +1199,44 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
         buffer_ << "}\n";
       }
       
+      //-- generator constructors and initial value checkers for
+      //-- records
+      for(auto &rec : r.second->allRecordsInScope()) {
+        if(rec->initFunc != NULL && !rec->initFunc->body.empty()) {
+          buffer_ << "void initialize_" << rec->name << " ()\n{\n";
+        
+          BOOST_FOREACH (Vars::value_type & variable, rec->initFunc->temps) {
+            buffer_ << "  " << get_type_name(variable.second);
+            buffer_ << " " << variable.second->name;
+            buffer_ << ";\n";
+          }
+        
+          //-- transform statements
+          dmpl::madara::Function_Visitor visitor (rec->initFunc, n->second, Func(),
+                                                  builder_, buffer_, false);
+          for (const Stmt & statement : rec->initFunc->body)
+            visitor.visit (statement);
+          buffer_ << "}\n";
+        }
+        
+        if(rec->assumeFunc != NULL && !rec->assumeFunc->body.empty()) {
+          buffer_ << "int check_init_" << rec->name << " ()\n{\n";
+        
+          BOOST_FOREACH (Vars::value_type & variable, rec->assumeFunc->temps) {
+            buffer_ << "  " << get_type_name(variable.second);
+            buffer_ << " " << variable.second->name;
+            buffer_ << ";\n";
+          }
+        
+          //-- transform statements
+          dmpl::madara::Function_Visitor visitor (rec->assumeFunc, n->second, Func(),
+                                                  builder_, buffer_, false);
+          for (const Stmt & statement : rec->assumeFunc->body)
+            visitor.visit (statement);
+          buffer_ << "}\n";
+        }
+      }
+      
       buffer_ << "void constructor()\n{\n";
       for(auto &v : r.second->allVarsInScope()) {
         if(v->initFunc == NULL || v->initFunc->body.empty()) continue;
@@ -1208,6 +1246,15 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
                   << v->name << "\");\n";
         else
           buffer_ << "  initialize_" << v->name << " ();\n";
+      }
+      for(auto &rec : r.second->allRecordsInScope()) {
+        if(rec->initFunc != NULL && !rec->initFunc->body.empty())
+          buffer_ << "  initialize_" << rec->name << " ();\n";
+        
+        if(rec->assumeFunc != NULL && !rec->assumeFunc->body.empty())
+          buffer_ << "  if(!check_init_" << rec->name
+                  << " ()) throw std::runtime_error(\"ERROR: illegal initial value of rec "
+                  << rec->name << "\");\n";
       }
       buffer_ << "}\n\n";
       
