@@ -2240,7 +2240,8 @@ dmpl::gams::GAMS_Builder::build_main_function ()
   buffer_ << "  id = settings.id;\n";
   buffer_ << "  num_processes = processes;\n";
   buffer_ << "  if(id < 0 || id >= processes) {\n";
-  buffer_ << "    std::cerr << \"Invalid node id: \" << settings.id << \"  valid range: [0, \" << processes - 1 << \"]\" << std::endl;\n";
+  buffer_ << "    std::cerr << \"ERROR: Invalid node id: \" << settings.id \n"
+             "              << \"  valid range: [0, \" << processes - 1 << \"]\" << std::endl;\n";
   buffer_ << "    exit(1);\n";
   buffer_ << "  }\n";
 
@@ -2263,6 +2264,7 @@ dmpl::gams::GAMS_Builder::build_main_function ()
   Func platformFunction;
   buffer_ << "  std::vector<Algo *> algos;\n";
   buffer_ << "  Algo *algo;\n\n";
+  
   BOOST_FOREACH(Funcs::value_type &f, node->funcs)
     {
       if (!f.second->isThread())
