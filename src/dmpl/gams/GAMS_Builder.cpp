@@ -1246,7 +1246,7 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
         
         if(rec->assumeFunc != NULL && !rec->assumeFunc->body.empty())
           buffer_ << "  if(!check_init_" << rec->name
-                  << " ()) throw std::runtime_error(\"ERROR: illegal initial value of rec "
+                  << " ()) throw std::runtime_error(\"ERROR: illegal initial value of record "
                   << rec->name << "\");\n";
       }
       buffer_ << "}\n\n";
