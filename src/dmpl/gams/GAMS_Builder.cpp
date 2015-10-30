@@ -346,6 +346,18 @@ namespace
     else
       return var->type->toString();
   }
+
+  void print_vars(std::stringstream &buffer_, const dmpl::Vars& vars, bool isParam)
+  {
+    int i = 0;
+    BOOST_FOREACH (const dmpl::Vars::value_type & variable, vars) {
+      buffer_ << "  " << get_type_name(variable.second);
+      buffer_ << " " << variable.second->name;
+      if(isParam) buffer_ << " = args[" << i << "].to_double();\n";
+      buffer_ << ";\n";
+      ++i;
+    }
+  }
 }
 
 /*********************************************************************/
@@ -1179,17 +1191,8 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
       //-- variables
       for(auto &v : r.second->allVarsInScope()) {
         if(v->initFunc == NULL || v->initFunc->body.empty()) continue;
-        
-        if(v->isInput)
-          buffer_ << "int check_init_" << v->name << " ()\n{\n";
-        else
-          buffer_ << "void initialize_" << v->name << " ()\n{\n";
-        
-        BOOST_FOREACH (Vars::value_type & variable, v->initFunc->temps) {
-          buffer_ << "  " << get_type_name(variable.second);
-          buffer_ << " " << variable.second->name;
-          buffer_ << ";\n";
-        }
+        buffer_ << (v->isInput ? "int check_init_" : "void initialize_") << v->name << " ()\n{\n";
+        print_vars(buffer_, v->initFunc->temps, false);
         
         //-- transform statements
         dmpl::madara::Function_Visitor visitor (v->initFunc, n->second, Func(),
@@ -1203,13 +1206,8 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
       //-- records
       for(auto &rec : r.second->allRecordsInScope()) {
         if(rec->initFunc != NULL && !rec->initFunc->body.empty()) {
-          buffer_ << "void initialize_" << rec->name << " ()\n{\n";
-        
-          BOOST_FOREACH (Vars::value_type & variable, rec->initFunc->temps) {
-            buffer_ << "  " << get_type_name(variable.second);
-            buffer_ << " " << variable.second->name;
-            buffer_ << ";\n";
-          }
+          buffer_ << "void initialize_" << rec->name << " ()\n{\n";        
+          print_vars(buffer_, rec->initFunc->temps, false);
         
           //-- transform statements
           dmpl::madara::Function_Visitor visitor (rec->initFunc, n->second, Func(),
@@ -1221,12 +1219,7 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
         
         if(rec->assumeFunc != NULL && !rec->assumeFunc->body.empty()) {
           buffer_ << "int check_init_" << rec->name << " ()\n{\n";
-        
-          BOOST_FOREACH (Vars::value_type & variable, rec->assumeFunc->temps) {
-            buffer_ << "  " << get_type_name(variable.second);
-            buffer_ << " " << variable.second->name;
-            buffer_ << ";\n";
-          }
+          print_vars(buffer_, rec->assumeFunc->temps, false);
         
           //-- transform statements
           dmpl::madara::Function_Visitor visitor (rec->assumeFunc, n->second, Func(),
@@ -1461,27 +1454,12 @@ dmpl::gams::GAMS_Builder::build_function (
   if(function == thread)
     build_push_pull(thread, false);
 
-  buffer_ << "  //-- Declare local variables\n";
-  
-  //buffer_ << "  Integer result (0);\n";
-  int i = 0;
-  BOOST_FOREACH (Vars::value_type & variable, function->paramSet)
-  {
-    buffer_ << "  " << get_type_name(variable.second) << " ";
-    buffer_ << variable.second->name;
-    buffer_ << " = args[" << i << "].to_double();\n";
-    buffer_ << ";\n";
-    ++i;
-  }
-  BOOST_FOREACH (Vars::value_type & variable, function->temps)
-  {
-    buffer_ << "  " << get_type_name(variable.second);
-    buffer_ << " " << variable.second->name;
-    buffer_ << ";\n";
-  }
-  
+  buffer_ << "\n  //-- Declare local (parameter and temporary) variables\n";
+  print_vars(buffer_, function->paramSet, true);
+  print_vars(buffer_, function->temps, false);
   buffer_ << "\n";
 
+  buffer_ << "\n  //-- Begin function body\n";
   dmpl::madara::Function_Visitor visitor (function, node, thread, builder_, buffer_, false);
 
   //transform the body of safety
