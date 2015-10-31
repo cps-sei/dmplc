@@ -2339,6 +2339,7 @@ dmpl::gams::GAMS_Builder::build_main_function ()
       buffer_ << "  algos.push_back(algo);\n\n";
     }
 
+  buffer_ << "  //-- start threads and simulation\n";
   buffer_ << "  for(int i = 0; i < algos.size(); i++)\n";
   buffer_ << "    algos[i]->start(threader);\n";
 
@@ -2349,6 +2350,7 @@ dmpl::gams::GAMS_Builder::build_main_function ()
     buffer_ << "  threader.run(5.0, \"expect_thread\", new ExpectThread(expect_file.is_open()?expect_file:std::cout));\n";
   }
 
+  buffer_ << "\n  //-- wait for all threads to terminate\n";
   buffer_ << "  threader.wait();\n";
 
   buffer_ << "  return 0;\n";
