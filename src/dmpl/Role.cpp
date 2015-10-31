@@ -120,7 +120,7 @@ const dmpl::Attribute *dmpl::BaseRole::getAttribute(const Func &func, const std:
   
   if(!func->isPrototype) return NULL;
   
-  const auto &it = node->funcs.find(name);
+  const auto &it = node->funcs.find(func->name);
   if(it == node->funcs.end()) return NULL;
   
   return it->second->getAttribute(name, expectedArgs);
