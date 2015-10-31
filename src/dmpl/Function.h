@@ -138,17 +138,7 @@ namespace dmpl
     }
 
     virtual bool recordUse() { return true; }
-
-    Attribute *getSingleAttribute(const std::string &name)
-    {
-      int c = attrs.count(name);
-      if (c == 0)
-        return NULL;
-      if (c != 1)
-        throw std::runtime_error("Invalid @" + name + " attribute.");
-      return &attrs[name];
-    }
-
+    
     //-- return true if this function is a thread
     bool isThread()
     {
