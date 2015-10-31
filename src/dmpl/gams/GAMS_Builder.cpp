@@ -2232,11 +2232,12 @@ dmpl::gams::GAMS_Builder::build_main_function ()
   buffer_ << "    exit(1);\n";
   buffer_ << "  }\n";
 
+  buffer_ << "\n  //-- Initializing platform\n";
   buffer_ << "  PlatformInitFns::iterator init_fn = platform_init_fns.find(platform_name);\n";
   buffer_ << "  if(init_fn != platform_init_fns.end())\n";
   buffer_ << "    init_fn->second(platform_params, knowledge);\n";
 
-
+  buffer_ << "\n  //-- Initializing simulation\n";
   for (const auto &n : builder_.program.nodes) {
     buffer_ << "  if(node_name == \"" << n.second->name << "\") {\n";
     BOOST_FOREACH(Funcs::value_type &f, n.second->funcs) {
@@ -2247,17 +2248,15 @@ dmpl::gams::GAMS_Builder::build_main_function ()
   }
   //buffer_ << "  knowledge.set(\"S\" + to_string(settings.id) + \".init\", \"1\");\n";
 
-  buffer_ << "  threads::Threader threader(knowledge);\n";
-
+  buffer_ << "\n  //-- Creating algorithms\n";
   buffer_ << "  std::vector<Algo *> algos;\n";
-  buffer_ << "  Algo *algo;\n\n";
-
-  buffer_ << "  //-- Creating algorithms\n";
+  buffer_ << "  Algo *algo;\n";
   for (const auto &n : builder_.program.nodes)
     for (const auto &r : n.second->roles)
       build_algo_creation(n.second, r.second);
   
-  buffer_ << "  //-- start threads and simulation\n";
+  buffer_ << "\n  //-- start threads and simulation\n";
+  buffer_ << "  threads::Threader threader(knowledge);\n";
   buffer_ << "  for(int i = 0; i < algos.size(); i++)\n";
   buffer_ << "    algos[i]->start(threader);\n";
   
