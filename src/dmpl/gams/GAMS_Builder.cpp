@@ -1173,7 +1173,7 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
         }
       }
       
-      buffer_ << "void constructor()\n{\n";
+      buffer_ << "void constructor ()\n{\n";
       for(auto &v : r.second->allVarsInScope()) {
         if(v->isInput)
           buffer_ << "  if(!check_init_" << v->name
