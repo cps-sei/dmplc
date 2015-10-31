@@ -1117,7 +1117,7 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
         Funcs funcs = r.second->funcs;
         funcs.insert(n->second->funcs.begin(), n->second->funcs.end());
                        
-        //-- declare all functions
+        //-- generate code for all functions
         build_functions_for_thread(thread, n->second, funcs);
       }
 
