@@ -1173,7 +1173,9 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
         }
       }
       
+      //-- generate the role level constructor
       buffer_ << "void constructor ()\n{\n";
+      //-- invoke variable constructors
       for(auto &v : r.second->allVarsInScope()) {
         if(v->isInput)
           buffer_ << "  if(!check_init_" << v->name
@@ -1182,6 +1184,7 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
         else
           buffer_ << "  initialize_" << v->name << " ();\n";
       }
+      //-- invoke record constructors
       for(auto &rec : r.second->allRecordsInScope()) {
         if(rec->initFunc != NULL && !rec->initFunc->body.empty())
           buffer_ << "  initialize_" << rec->name << " ();\n";
