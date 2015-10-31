@@ -2239,13 +2239,10 @@ dmpl::gams::GAMS_Builder::build_main_function ()
   buffer_ << "    init_fn->second(platform_params, knowledge);\n";
 
 
-  BOOST_FOREACH(Funcs::value_type &f, node->funcs)
-    {
-      if (f.second->attrs.count("InitSim") == 1)
-        {
-          buffer_ << "  knowledge.evaluate(\"" << f.second->name << "()\");\n";
-        }
-    }
+  BOOST_FOREACH(Funcs::value_type &f, node->funcs) {
+    if (f.second->attrs.count("InitSim") == 1)
+      buffer_ << "  knowledge.evaluate(\"" << f.second->name << "()\");\n";
+  }
   //buffer_ << "  knowledge.set(\"S\" + to_string(settings.id) + \".init\", \"1\");\n";
 
   buffer_ << "  threads::Threader threader(knowledge);\n";
@@ -2254,101 +2251,90 @@ dmpl::gams::GAMS_Builder::build_main_function ()
   buffer_ << "  std::vector<Algo *> algos;\n";
   buffer_ << "  Algo *algo;\n\n";
   
-  BOOST_FOREACH(Funcs::value_type &f, node->funcs)
-    {
-      if (!f.second->isThread())
-        continue;
-      int period;
-      if (f.second->attrs.count("Period") == 0)
-        period = 100000; // Default to 10 Hz
-      else if (f.second->attrs.count("Period") != 1 || f.second->attrs["Period"].paramList.size() != 1)
-        throw std::runtime_error("Invalid @Period attribute.");
+  BOOST_FOREACH(Funcs::value_type &f, node->funcs) {
+    if (!f.second->isThread()) continue;
+
+    int period;
+    if (f.second->attrs.count("Period") == 0)
+      period = 100000; // Default to 10 Hz
+    else if (f.second->attrs.count("Period") != 1 || f.second->attrs["Period"].paramList.size() != 1)
+      throw std::runtime_error("Invalid @Period attribute.");
+    else
+      period = f.second->attrs["Period"].paramList.front()->requireInt(); //-- get the period, in us
+
+#if USE_MZSRM==1
+    //-- get the priority, criticality, and zero slack instant
+    unsigned priority = funcPrios[f.second->name];
+    unsigned criticality = funcCrits[f.second->name];
+    unsigned zsinst = funcZsinsts[f.second->name];
+#endif
+
+    if (f.second->attrs.count("PlatformController") == 1) {
+      if (platformFunction == NULL) platformFunction = f.second;
       else
-        period = f.second->attrs["Period"].paramList.front()->requireInt(); //-- get the period, in us
-
-
-#if USE_MZSRM==1
-      //-- get the priority, criticality, and zero slack instant
-      unsigned priority = funcPrios[f.second->name];
-      unsigned criticality = funcCrits[f.second->name];
-      unsigned zsinst = funcZsinsts[f.second->name];
-#endif
-
-      if (f.second->attrs.count("PlatformController") == 1)
-        {
-          if (platformFunction == NULL)
-            {
-              platformFunction = f.second;
-            }
-          else
-            {
-              throw std::runtime_error("Multiple @PLATFORM_CONTROLLER functions are not supported.");
-            }
-        }
-
-      //-- for synchronous function
-      if (f.second->attrs.count("BarrierSync") == 1)
-        {
-#if USE_MZSRM==1
-          if(schedType_ == MZSRM) {
-            if (platformFunction == f.second)
-              buffer_ << "  algo = new SyncAlgo("
-                      << period << ", " << priority << ", " 
-                      << criticality << ", " << zsinst << ", \"" << f.second->name 
-                      << "\", &knowledge, platform_name);\n";
-            else
-              buffer_ << "  algo = new SyncAlgo("
-                      << period << ", " << priority << ", " 
-                      << criticality << ", " << zsinst << ", \"" << f.second->name 
-                      << "\", &knowledge);\n";
-          }
-          else
-#endif
-          {
-            if (platformFunction == f.second)
-              buffer_ << "  algo = new SyncAlgo(" << period << ", \"" << f.second->name << "\", &knowledge, platform_name);\n";
-            else
-              buffer_ << "  algo = new SyncAlgo(" << period << ", \"" << f.second->name << "\", &knowledge);\n";
-          }
-        }
-      //-- for asynchronous function
-      else
-        {
-#if USE_MZSRM==1
-          if(schedType_ == MZSRM) {
-            if (platformFunction == f.second)
-              buffer_ << "  algo = new Algo(" << period << ", " 
-                      << period << ", " << priority << ", " 
-                      << criticality << ", " << zsinst << ", \"" << f.second->name 
-                      << "\", &knowledge, platform_name);\n";
-            else
-              buffer_ << "  algo = new Algo(" << period << ", "
-                      << period << ", " << priority << ", " 
-                      << criticality << ", " << zsinst << ", \"" << f.second->name 
-                      << "\", &knowledge);\n";
-          }
-          else
-#endif
-          {
-            if (platformFunction == f.second)
-              buffer_ << "  algo = new Algo(" << period << ", \"" << f.second->name << "\", &knowledge, platform_name);\n";
-            else
-              buffer_ << "  algo = new Algo(" << period << ", \"" << f.second->name << "\", &knowledge);\n";
-          }
-        }
-      buffer_ << "  algos.push_back(algo);\n\n";
+        throw std::runtime_error("Multiple @PLATFORM_CONTROLLER functions are not supported.");
     }
 
+    //-- for synchronous function
+    if (f.second->attrs.count("BarrierSync") == 1) {
+#if USE_MZSRM==1
+      if(schedType_ == MZSRM) {
+        if (platformFunction == f.second)
+          buffer_ << "  algo = new SyncAlgo("
+                  << period << ", " << priority << ", " 
+                  << criticality << ", " << zsinst << ", \"" << f.second->name 
+                  << "\", &knowledge, platform_name);\n";
+        else
+          buffer_ << "  algo = new SyncAlgo("
+                  << period << ", " << priority << ", " 
+                  << criticality << ", " << zsinst << ", \"" << f.second->name 
+                  << "\", &knowledge);\n";
+      }
+      else
+#endif
+        {
+          if (platformFunction == f.second)
+            buffer_ << "  algo = new SyncAlgo(" << period << ", \"" << f.second->name << "\", &knowledge, platform_name);\n";
+          else
+            buffer_ << "  algo = new SyncAlgo(" << period << ", \"" << f.second->name << "\", &knowledge);\n";
+        }
+    }
+    //-- for asynchronous function
+    else {
+#if USE_MZSRM==1
+      if(schedType_ == MZSRM) {
+        if (platformFunction == f.second)
+          buffer_ << "  algo = new Algo(" << period << ", " 
+                  << period << ", " << priority << ", " 
+                  << criticality << ", " << zsinst << ", \"" << f.second->name 
+                  << "\", &knowledge, platform_name);\n";
+        else
+          buffer_ << "  algo = new Algo(" << period << ", "
+                  << period << ", " << priority << ", " 
+                  << criticality << ", " << zsinst << ", \"" << f.second->name 
+                  << "\", &knowledge);\n";
+      }
+      else
+#endif
+        {
+          if (platformFunction == f.second)
+            buffer_ << "  algo = new Algo(" << period << ", \"" << f.second->name << "\", &knowledge, platform_name);\n";
+          else
+            buffer_ << "  algo = new Algo(" << period << ", \"" << f.second->name << "\", &knowledge);\n";
+        }
+    }
+    buffer_ << "  algos.push_back(algo);\n\n";
+  }
+  
   buffer_ << "  //-- start threads and simulation\n";
   buffer_ << "  for(int i = 0; i < algos.size(); i++)\n";
   buffer_ << "    algos[i]->start(threader);\n";
-
+  
   buffer_ << "  knowledge.set(\"begin_sim\", \"1\");\n";
-
+  
   if(do_expect_)
-  {
-    buffer_ << "  threader.run(5.0, \"expect_thread\", new ExpectThread(expect_file.is_open()?expect_file:std::cout));\n";
-  }
+    buffer_ << "  threader.run(5.0, \"expect_thread\", "
+            << "new ExpectThread(expect_file.is_open()?expect_file:std::cout));\n";
 
   buffer_ << "\n  //-- wait for all threads to terminate\n";
   buffer_ << "  threader.wait();\n";
