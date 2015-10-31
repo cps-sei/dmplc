@@ -879,7 +879,11 @@ dmpl::gams::GAMS_Builder::build_function_declarations ()
   {
     open_namespace("node_" + n.second->name);
 
-    //-- declare all functions for the node
+    //-- declare all functions for the node with NULL thread. needed
+    //-- for functions that must be executed before thread creation.
+    build_function_declarations_for_thread(Func(), n.second->funcs);
+
+    //-- declare all functions for the node and for each thread
     for (Func thread : n.second->threads)
       build_function_declarations_for_thread(thread, n.second->funcs);
 
@@ -887,6 +891,10 @@ dmpl::gams::GAMS_Builder::build_function_declarations ()
     for(const auto &r : n.second->roles) {
       build_comment("//-- Declaring functions for role " + r.second->name, "\n", "\n", 0);
       open_namespace("node_" + n.second->name + "_role_" + r.second->name);
+
+      //-- declare all functions for the role with NULL thread. needed
+      //-- for functions that must be executed before thread creation.
+      build_function_declarations_for_thread(Func(), r.second->funcs);
 
       for (Func thread : r.second->threads) {
         //-- collect functions. for this role, and if the thread is
@@ -925,6 +933,14 @@ void
 dmpl::gams::GAMS_Builder::build_function_declarations_for_thread (const Func & thread,
                                                                   const Funcs & funcs)
 {
+  //-- NULL thread. needed for functions that must be executed before
+  //-- thread creation.
+  if(thread == NULL) {
+    for (auto i : funcs)
+      build_function_declaration (thread, i.second);
+    return;
+  }
+  
   build_function_declaration (thread, thread);
   for (auto i : funcs) {
     if(thread->findSymbol(i.second) == NULL) continue;
@@ -1101,7 +1117,11 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
     build_comment("//-- Begin node " + n->second->name, "\n", "\n", 0);
     open_namespace("node_" + n->second->name);
     
-    //-- build all functions for the node
+    //-- build all functions for the node with NULL thread. needed for
+    //-- functions that must be executed before thread creation.
+    build_functions_for_thread(Func(), n->second, n->second->funcs);
+
+    //-- build all functions for the node and for each thread
     for (Func thread : n->second->threads)
       build_functions_for_thread(thread, n->second, n->second->funcs);
 
@@ -1110,6 +1130,10 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
       build_comment("//-- Defining functions for role " + r.second->name, "\n", "\n", 0);
       open_namespace("node_" + n->second->name + "_role_" + r.second->name);
 
+      //-- build all functions for the role with NULL thread. needed
+      //-- for functions that must be executed before thread creation.
+      build_functions_for_thread(Func(), n->second, r.second->funcs);
+      
       for (Func thread : r.second->threads) {
         //-- collect functions. for this role, and if the thread is
         //-- new for this role then function for parent node as well.
@@ -1353,6 +1377,15 @@ void
 dmpl::gams::GAMS_Builder::build_functions_for_thread (
   const Func& thread, const dmpl::Node & node, dmpl::Funcs & funcs)
 {
+  //-- if thread is NULL. need for functions that must be executed
+  //-- before thread creation.
+  if(thread == NULL) {
+    for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i) {
+      build_function (thread, node, i->second);
+    }
+    return;
+  }
+  
   build_function (thread, node, thread);
   for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i) {
     if(thread->findSymbol(i->second) != NULL)
