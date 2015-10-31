@@ -934,10 +934,10 @@ dmpl::gams::GAMS_Builder::build_function_declarations_for_thread (const Func & t
                                                                   const Funcs & funcs)
 {
   //-- NULL thread. needed for functions that must be executed before
-  //-- thread creation.
+  //-- thread creation. but don't declare thread functions.
   if(thread == NULL) {
     for (auto i : funcs)
-      build_function_declaration (thread, i.second);
+      if(!i.second->isThread()) build_function_declaration (thread, i.second);
     return;
   }
   
@@ -1378,11 +1378,10 @@ dmpl::gams::GAMS_Builder::build_functions_for_thread (
   const Func& thread, const dmpl::Node & node, dmpl::Funcs & funcs)
 {
   //-- if thread is NULL. need for functions that must be executed
-  //-- before thread creation.
+  //-- before thread creation. but don't build thread functions.
   if(thread == NULL) {
-    for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i) {
-      build_function (thread, node, i->second);
-    }
+    for(const auto &f : funcs)
+      if(!f.second->isThread()) build_function (thread, node, f.second);
     return;
   }
   
