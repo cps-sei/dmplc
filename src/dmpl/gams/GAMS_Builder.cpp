@@ -885,7 +885,7 @@ dmpl::gams::GAMS_Builder::build_function_declarations ()
 
     //-- process roles
     for(const auto &r : n.second->roles) {
-      build_comment("//-- declaring functions for role " + r.second->name, "\n", "\n", 0);
+      build_comment("//-- Declaring functions for role " + r.second->name, "\n", "\n", 0);
       open_namespace("node_" + n.second->name + "_role_" + r.second->name);
 
       for (Func thread : r.second->threads) {
