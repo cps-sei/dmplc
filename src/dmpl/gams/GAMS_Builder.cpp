@@ -2368,17 +2368,6 @@ dmpl::gams::GAMS_Builder::build_main_define_functions ()
   buffer_ << "  knowledge.define_function (\"REMODIFY_GLOBALS\", ";
   buffer_ << "REMODIFY_GLOBALS);\n\n";
 
-  /*
-  buffer_ << "  // Defining global functions for MADARA\n\n";
-  Funcs & funcs = builder_.program.funcs;
-  for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
-    {
-      build_main_define_function (Node (), i->second);
-    }
-  
-  buffer_ << "\n";
-  */
-
   buffer_ << "  //-- Defining thread functions for MADARA\n";
   for (const auto &n : builder_.program.nodes)
     for (const auto &r : n.second->roles)
