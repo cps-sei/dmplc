@@ -245,8 +245,8 @@ namespace dmpl
        * Builds a function definition for MADARA
        * @param  function  a defined function in the parsed program
        **/
-      void build_main_define_function (const dmpl::Node & node,
-        dmpl::Func& function);
+      void build_main_define_function (const dmpl::Node & node, const dmpl::Role &role,
+                                       const dmpl::Func& function);
       
       /**
        * Clears the underlying buffer

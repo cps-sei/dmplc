@@ -2381,12 +2381,9 @@ dmpl::gams::GAMS_Builder::build_main_define_functions ()
 
   buffer_ << "  //-- Defining thread functions for MADARA\n";
   for (const auto &n : builder_.program.nodes)
-  {
-    for (Func thread : n.second->threads)
-    {
-      build_main_define_function (n.second, thread);
-    }
-  }
+    for (const auto &r : n.second->roles)
+      for (const auto &thread : r.second->threads)
+        build_main_define_function (n.second, r.second, thread);
 
   buffer_ << "\n";
 }
@@ -2395,18 +2392,16 @@ dmpl::gams::GAMS_Builder::build_main_define_functions ()
 //-- generate code to define a function within MADARA
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_main_define_function (const Node & node,
-                                                      Func & function)
+dmpl::gams::GAMS_Builder::build_main_define_function (const Node & node, const Role &role,
+                                                      const Func & function)
 {
-  if (!(skip_func(function)))
-    {
-      buffer_ << "  knowledge.define_function (\"";
-      buffer_ << function->name;
-      buffer_ << "\", ";
-      buffer_ << "dmpl::node_" << node->name << "::"
-              << "thread" << function->threadID << "_" << function->name;
-      buffer_ << ");\n";
-    }
+  if (skip_func(function)) return;
+
+  buffer_ << "  knowledge.define_function (\"node_" << node->name << "_role_" << role->name;
+  buffer_ << "_" << function->name << "\",\n";
+  buffer_ << "                              node_" << node->name << "::node_" << node->name
+          << "_role_" << role->name << "::thread" << function->threadID << "_" << function->name;
+  buffer_ << ");\n";
 }
 
 /*********************************************************************/
