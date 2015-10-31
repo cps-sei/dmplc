@@ -948,9 +948,8 @@ dmpl::gams::GAMS_Builder::build_function_declaration (const Func & thread, const
     return;
 
   buffer_ << "Madara::Knowledge_Record\n";
-  if(thread)
-    buffer_ << "thread" << thread->threadID;
-  buffer_ << "_" << function->name;
+  if(thread) buffer_ << "thread" << thread->threadID << "_";
+  buffer_ << function->name;
   buffer_ << " (engine::Function_Arguments & args, engine::Variables & vars);\n";
 }
 
@@ -1382,16 +1381,16 @@ dmpl::gams::GAMS_Builder::build_function (
   }
 
   buffer_ << "Madara::Knowledge_Record\n";
-  if(thread) buffer_ << "thread" << thread->threadID;
-  buffer_ << "_" << function->name;
+  if(thread) buffer_ << "thread" << thread->threadID << "_";
+  buffer_ << function->name;
   buffer_ << " (engine::Function_Arguments & args, engine::Variables & vars)\n";
   buffer_ << "{\n";
 
   //-- inherited prototype functions call the base version
   if(function->isPrototype) {
     buffer_ << "  return node_" << node->name << "::";
-    if(thread) buffer_ << "thread" << thread->threadID;
-    buffer_ << "_" << function->name << "(args, vars);\n";
+    if(thread) buffer_ << "thread" << thread->threadID << "_";
+    buffer_ << function->name << "(args, vars);\n";
     buffer_ << "}\n\n";
     return;
   }
