@@ -237,6 +237,11 @@ namespace dmpl
       void build_main_function (void);
 
       /**
+       * Generate code to create functions for a role
+       **/
+      void build_algo_creation (const Node &node, const dmpl::Role &role);
+
+      /**
        * Builds the section of main that defines MADARA callable functions
        **/
       void build_main_define_functions (void);

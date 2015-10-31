@@ -2219,8 +2219,6 @@ dmpl::gams::GAMS_Builder::build_main_function ()
   buffer_ << "  //-- configure the knowledge base with the transport settings\n";
   buffer_ << "  knowledge.attach_transport(host, settings);\n\n";
 
-  Node &node = builder_.program.nodes.begin()->second;
-
   build_constructors ();
   build_main_define_functions ();
 
@@ -2239,92 +2237,25 @@ dmpl::gams::GAMS_Builder::build_main_function ()
   buffer_ << "    init_fn->second(platform_params, knowledge);\n";
 
 
-  BOOST_FOREACH(Funcs::value_type &f, node->funcs) {
-    if (f.second->attrs.count("InitSim") == 1)
-      buffer_ << "  knowledge.evaluate(\"" << f.second->name << "()\");\n";
+  for (const auto &n : builder_.program.nodes) {
+    buffer_ << "  if(node_name == \"" << n.second->name << "\") {\n";
+    BOOST_FOREACH(Funcs::value_type &f, n.second->funcs) {
+      if (f.second->attrs.count("InitSim") == 1)
+        buffer_ << "    knowledge.evaluate(\"" << f.second->name << "()\");\n";
+    }
+    buffer_ << "  }\n";
   }
   //buffer_ << "  knowledge.set(\"S\" + to_string(settings.id) + \".init\", \"1\");\n";
 
   buffer_ << "  threads::Threader threader(knowledge);\n";
 
-  Func platformFunction;
   buffer_ << "  std::vector<Algo *> algos;\n";
   buffer_ << "  Algo *algo;\n\n";
-  
-  BOOST_FOREACH(Funcs::value_type &f, node->funcs) {
-    if (!f.second->isThread()) continue;
 
-    int period;
-    if (f.second->attrs.count("Period") == 0)
-      period = 100000; // Default to 10 Hz
-    else if (f.second->attrs.count("Period") != 1 || f.second->attrs["Period"].paramList.size() != 1)
-      throw std::runtime_error("Invalid @Period attribute.");
-    else
-      period = f.second->attrs["Period"].paramList.front()->requireInt(); //-- get the period, in us
-
-#if USE_MZSRM==1
-    //-- get the priority, criticality, and zero slack instant
-    unsigned priority = funcPrios[f.second->name];
-    unsigned criticality = funcCrits[f.second->name];
-    unsigned zsinst = funcZsinsts[f.second->name];
-#endif
-
-    if (f.second->attrs.count("PlatformController") == 1) {
-      if (platformFunction == NULL) platformFunction = f.second;
-      else
-        throw std::runtime_error("Multiple @PLATFORM_CONTROLLER functions are not supported.");
-    }
-
-    //-- for synchronous function
-    if (f.second->attrs.count("BarrierSync") == 1) {
-#if USE_MZSRM==1
-      if(schedType_ == MZSRM) {
-        if (platformFunction == f.second)
-          buffer_ << "  algo = new SyncAlgo("
-                  << period << ", " << priority << ", " 
-                  << criticality << ", " << zsinst << ", \"" << f.second->name 
-                  << "\", &knowledge, platform_name);\n";
-        else
-          buffer_ << "  algo = new SyncAlgo("
-                  << period << ", " << priority << ", " 
-                  << criticality << ", " << zsinst << ", \"" << f.second->name 
-                  << "\", &knowledge);\n";
-      }
-      else
-#endif
-        {
-          if (platformFunction == f.second)
-            buffer_ << "  algo = new SyncAlgo(" << period << ", \"" << f.second->name << "\", &knowledge, platform_name);\n";
-          else
-            buffer_ << "  algo = new SyncAlgo(" << period << ", \"" << f.second->name << "\", &knowledge);\n";
-        }
-    }
-    //-- for asynchronous function
-    else {
-#if USE_MZSRM==1
-      if(schedType_ == MZSRM) {
-        if (platformFunction == f.second)
-          buffer_ << "  algo = new Algo(" << period << ", " 
-                  << period << ", " << priority << ", " 
-                  << criticality << ", " << zsinst << ", \"" << f.second->name 
-                  << "\", &knowledge, platform_name);\n";
-        else
-          buffer_ << "  algo = new Algo(" << period << ", "
-                  << period << ", " << priority << ", " 
-                  << criticality << ", " << zsinst << ", \"" << f.second->name 
-                  << "\", &knowledge);\n";
-      }
-      else
-#endif
-        {
-          if (platformFunction == f.second)
-            buffer_ << "  algo = new Algo(" << period << ", \"" << f.second->name << "\", &knowledge, platform_name);\n";
-          else
-            buffer_ << "  algo = new Algo(" << period << ", \"" << f.second->name << "\", &knowledge);\n";
-        }
-    }
-    buffer_ << "  algos.push_back(algo);\n\n";
-  }
+  buffer_ << "  //-- Creating algorithms\n";
+  for (const auto &n : builder_.program.nodes)
+    for (const auto &r : n.second->roles)
+      build_algo_creation(n.second, r.second);
   
   buffer_ << "  //-- start threads and simulation\n";
   buffer_ << "  for(int i = 0; i < algos.size(); i++)\n";
@@ -2341,6 +2272,100 @@ dmpl::gams::GAMS_Builder::build_main_function ()
 
   buffer_ << "  return 0;\n";
   buffer_ << "}\n";
+}
+
+/*********************************************************************/
+//-- generate code to create functions for a role
+/*********************************************************************/
+void dmpl::gams::GAMS_Builder::build_algo_creation (const Node &node, const Role &role)
+{
+  buffer_ << "  if(node_name == \"" << node->name << "\" && role_name == \""
+          << role->name << "\") {\n";
+  
+  Func platformFunction;
+  for(const auto &thread : role->threads) {
+    const Attribute *periodAttr = role->getAttribute(thread, "Period", 1);
+    if(!periodAttr)
+      throw std::runtime_error("ERROR: thread " + thread->name + " in role " + role->name +
+                               " in node " + node->name + " has no period!!");
+    int period = periodAttr->paramList.front()->requireInt();
+    
+#if USE_MZSRM==1
+    //-- get the priority, criticality, and zero slack instant
+    unsigned priority = funcPrios[thread->name];
+    unsigned criticality = funcCrits[thread->name];
+    unsigned zsinst = funcZsinsts[thread->name];
+#endif
+    
+    const Attribute *contAttr = role->getAttribute(thread, "PlatformController", 0);
+    if(contAttr) {
+      if (platformFunction == NULL) platformFunction = thread;
+      else
+        throw std::runtime_error("ERROR: threads " + thread->name + " and " + platformFunction->name +
+                                 " in role " + role->name + " in node " + node->name +
+                                 " both have PlatformController attributes!!");
+    }
+    
+    //-- for synchronous function
+    if (thread->attrs.count("BarrierSync") == 1) {
+#if USE_MZSRM==1
+      if(schedType_ == MZSRM) {
+        if (platformFunction == thread)
+          buffer_ << "    algo = new SyncAlgo("
+                  << period << ", " << priority << ", " 
+                  << criticality << ", " << zsinst << ", \"" << thread->name 
+                  << "\", &knowledge, platform_name);\n";
+        else
+          buffer_ << "    algo = new SyncAlgo("
+                  << period << ", " << priority << ", " 
+                  << criticality << ", " << zsinst << ", \"" << thread->name 
+                  << "\", &knowledge);\n";
+      }
+      else
+#endif
+        {
+          if (platformFunction == thread)
+            buffer_ << "    algo = new SyncAlgo(" << period << ", \"" << thread->name << "\", &knowledge, platform_name);\n";
+          else
+            buffer_ << "    algo = new SyncAlgo(" << period << ", \"" << thread->name << "\", &knowledge);\n";
+        }
+    }
+    //-- for asynchronous function
+    else {
+#if USE_MZSRM==1
+      if(schedType_ == MZSRM) {
+        if (platformFunction == thread)
+          buffer_ << "    algo = new Algo(" << period << ", " 
+                  << period << ", " << priority << ", " 
+                  << criticality << ", " << zsinst << ", \"node_" << node->name
+                  << "_role_" << role->name << "_" << thread->name 
+                  << "\", &knowledge, platform_name);\n";
+        else
+          buffer_ << "    algo = new Algo(" << period << ", "
+                  << period << ", " << priority << ", " 
+                  << criticality << ", " << zsinst << ", \"node_" << node->name
+                  << "_role_" << role->name << "_" << thread->name 
+                  << "\", &knowledge);\n";
+      }
+      else
+#endif
+        {
+          if (platformFunction == thread)
+            buffer_ << "    algo = new Algo(" << period << ", \"node_" << node->name
+                    << "_role_" << role->name << "_" << thread->name
+                    << "\", &knowledge, platform_name);\n";
+          else
+            buffer_ << "    algo = new Algo(" << period << ", \"node_" << node->name
+                    << "_role_" << role->name << "_" << thread->name << "\", &knowledge);\n";
+        }
+    }    
+    buffer_ << "    algos.push_back(algo);\n";
+  }
+  buffer_ << "  }\n";
+
+  if (platformFunction == NULL)
+    throw std::runtime_error("ERROR: no threads in role " + role->name + " in node " + node->name +
+                             " have PlatformController attributes!!");
 }
 
 /*********************************************************************/
