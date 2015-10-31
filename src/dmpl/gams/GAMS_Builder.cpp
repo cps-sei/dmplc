@@ -1386,10 +1386,9 @@ dmpl::gams::GAMS_Builder::build_functions_for_thread (
   }
   
   build_function (thread, node, thread);
-  for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i) {
-    if(thread->findSymbol(i->second) != NULL)
-      build_function (thread, node, i->second);
-  }
+  for(const auto &f : funcs)
+    if(thread->findSymbol(f.second) != NULL)
+      build_function (thread, node, f.second);
 }
  
 /*********************************************************************/
