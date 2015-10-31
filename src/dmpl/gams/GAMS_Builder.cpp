@@ -2366,18 +2366,18 @@ dmpl::gams::GAMS_Builder::build_main_define_functions ()
 }
 
 /*********************************************************************/
-//-- generate code to define a function within MADARA
+//-- generate code to define a thread function within MADARA
 /*********************************************************************/
 void
 dmpl::gams::GAMS_Builder::build_main_define_function (const Node & node, const Role &role,
-                                                      const Func & function)
+                                                      const Func & thread)
 {
-  if (skip_func(function)) return;
+  if (skip_func(thread)) return;
 
   buffer_ << "  knowledge.define_function (\"node_" << node->name << "_role_" << role->name;
-  buffer_ << "_" << function->name << "\",\n";
+  buffer_ << "_" << thread->name << "\",\n";
   buffer_ << "                              node_" << node->name << "::node_" << node->name
-          << "_role_" << role->name << "::thread" << function->threadID << "_" << function->name;
+          << "_role_" << role->name << "::thread" << thread->threadID << "_" << thread->name;
   buffer_ << ");\n";
 }
 

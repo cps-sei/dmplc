@@ -246,7 +246,7 @@ namespace dmpl
        * @param  function  a defined function in the parsed program
        **/
       void build_main_define_function (const dmpl::Node & node, const dmpl::Role &role,
-                                       const dmpl::Func& function);
+                                       const dmpl::Func& thread);
       
       /**
        * Clears the underlying buffer
