@@ -107,6 +107,26 @@ dmpl::BaseRole::findFunc(const std::string& name) const
 }
 
 /*********************************************************************/
+///return a pointer to the attribute with given name and number of
+///arguments in the given function. if the function itself does not
+///have the attributed, then look in the function it inherits (if any)
+///from in the parent node. return NULL if no such attribute found.
+/*********************************************************************/
+const dmpl::Attribute *dmpl::BaseRole::getAttribute(const Func &func, const std::string &name,
+                                                    int expectedArgs) const
+{
+  const Attribute *res = func->getAttribute(name, expectedArgs);
+  if(res) return res;
+  
+  if(!func->isPrototype) return NULL;
+  
+  const auto &it = node->funcs.find(name);
+  if(it == node->funcs.end()) return NULL;
+  
+  return it->second->getAttribute(name, expectedArgs);
+}
+
+/*********************************************************************/
 //-- merge with another role
 /*********************************************************************/
 void

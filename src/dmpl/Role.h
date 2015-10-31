@@ -252,6 +252,13 @@ namespace dmpl
       }
     }
 
+    ///return a pointer to the attribute with given name and number of
+    ///arguments in the given function. if the function itself does
+    ///not have the attributed, then look in the function it inherits
+    ///(if any) from in the parent node. return NULL if no such
+    ///attribute found.
+    const Attribute *getAttribute(const Func &func, const std::string &name, int expectedArgs) const;
+    
     ///add a specification
     void addSpecification(const Spec &s)
     {
