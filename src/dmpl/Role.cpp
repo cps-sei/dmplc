@@ -127,8 +127,7 @@ const dmpl::Attribute *dmpl::BaseRole::getAttribute(const Func &func, const std:
 }
 
 /*********************************************************************/
-///find the platform initialzer function in this role or in the parent
-///node
+///find the platform initialzer function in this role
 /*********************************************************************/
 dmpl::Func dmpl::BaseRole::findPlatformInitializer()
 {
@@ -149,8 +148,8 @@ dmpl::Func dmpl::BaseRole::findPlatformInitializer()
     }
   }
 
-  //-- if found in the role return, else check parent node
-  return (res != NULL) ? res : node->findPlatformInitializer();
+  //-- all done
+  return res;
 }
 
 /*********************************************************************/
