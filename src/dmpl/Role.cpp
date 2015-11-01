@@ -127,6 +127,33 @@ const dmpl::Attribute *dmpl::BaseRole::getAttribute(const Func &func, const std:
 }
 
 /*********************************************************************/
+///find the platform initialzer function in this role or in the parent
+///node
+/*********************************************************************/
+dmpl::Func dmpl::BaseRole::findPlatformInitializer()
+{
+  Func res;
+
+  //-- first check the role
+  for(auto &f : funcs) {
+    if(getAttribute(f.second, "InitSim", 0) != NULL) {
+      if(res == NULL) {
+        if(f.second->isThread())
+          throw std::runtime_error("ERROR: role " + name + " in node " + node->name +
+                                   " has thread " + f.second->name +
+                                   " as platform initialization function!!");
+        res = f.second;
+      } else throw std::runtime_error("ERROR: role " + name + " in node " + node->name +
+                                    " has multiple platform initialization functions: " +
+                                    res->name + " and " + f.second->name + "!!");
+    }
+  }
+
+  //-- if found in the role return, else check parent node
+  return (res != NULL) ? res : node->findPlatformInitializer();
+}
+
+/*********************************************************************/
 //-- merge with another role
 /*********************************************************************/
 void

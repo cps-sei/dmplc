@@ -258,6 +258,10 @@ namespace dmpl
     ///(if any) from in the parent node. return NULL if no such
     ///attribute found.
     const Attribute *getAttribute(const Func &func, const std::string &name, int expectedArgs) const;
+
+    ///find the platform initialzer function in this role or in the
+    ///parent node
+    Func findPlatformInitializer();
     
     ///add a specification
     void addSpecification(const Spec &s)
