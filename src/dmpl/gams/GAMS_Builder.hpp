@@ -191,6 +191,11 @@ namespace dmpl
       void build_nodes (void);
 
       /**
+       * Generate constructor for a variable
+       **/
+      void build_constructor_for_variable (Var &v, Node &node);
+
+      /**
        * Builds a function for refreshing modification flag on globals
        **/
       void build_refresh_modify_globals (void);

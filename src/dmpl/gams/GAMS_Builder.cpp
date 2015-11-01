@@ -1149,24 +1149,7 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
 
       //-- generator constructors and initial value checkers for
       //-- variables
-      for(auto &v : r.second->allVarsInScope()) {
-        buffer_ << (v->isInput ? "int check_init_" : "void initialize_") << v->name << " ()\n{\n";
-
-        //-- bind initial value for inputs
-        if(v->isInput) build_program_variable_assignment(v);
-
-        //-- generate constructor if one was defined
-        if(v->initFunc != NULL) {
-          print_vars(buffer_, v->initFunc->temps, false);
-        
-          //-- transform statements
-          dmpl::madara::Function_Visitor visitor (v->initFunc, n->second, Func(),
-                                                  builder_, buffer_, false);
-          for (const Stmt & statement : v->initFunc->body)
-            visitor.visit (statement);
-        }
-        buffer_ << "}\n";
-      }
+      for(auto &v : r.second->allVarsInScope()) build_constructor_for_variable(v, n->second);
       
       //-- generator constructors and initial value checkers for
       //-- records
@@ -1227,6 +1210,30 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
   }
 
   buffer_ << "\n";
+}
+
+/*********************************************************************/
+//-- generate constructor for a variable
+/*********************************************************************/
+void
+dmpl::gams::GAMS_Builder::build_constructor_for_variable (Var &v, Node &node)
+{
+  buffer_ << (v->isInput ? "int check_init_" : "void initialize_") << v->name << " ()\n{\n";
+  
+  //-- bind initial value for inputs
+  if(v->isInput) build_program_variable_assignment(v);
+  
+  //-- generate constructor if one was defined
+  if(v->initFunc != NULL) {
+    print_vars(buffer_, v->initFunc->temps, false);
+    
+    //-- transform statements
+    dmpl::madara::Function_Visitor visitor (v->initFunc, node, Func(),
+                                            builder_, buffer_, false);
+    for (const Stmt & statement : v->initFunc->body)
+      visitor.visit (statement);
+  }
+  buffer_ << "}\n";
 }
 
 /*********************************************************************/
