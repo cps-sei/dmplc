@@ -2270,14 +2270,19 @@ dmpl::gams::GAMS_Builder::build_main_function ()
   buffer_ << "  if(init_fn != platform_init_fns.end())\n";
   buffer_ << "    init_fn->second(platform_params, knowledge);\n";
 
+  //-- generate simulation initialization
   buffer_ << "\n  //-- Initializing simulation\n";
   for (const auto &n : builder_.program.nodes) {
-    buffer_ << "  if(node_name == \"" << n.second->name << "\") {\n";
-    BOOST_FOREACH(Funcs::value_type &f, n.second->funcs) {
-      if (f.second->attrs.count("InitSim") == 1)
-        buffer_ << "    knowledge.evaluate(\"" << f.second->name << "()\");\n";
+    for (const auto &r : n.second->roles) {
+      buffer_ << "  if(node_name == \"" << n.second->name << "\" && role_name == \""
+              << r.second->name << "\") {\n";
+      Func platInit = r.second->findPlatformInitializer();
+      if(platInit == NULL)
+        throw std::runtime_error("ERROR: role " + r.second->name + " in node " +
+                                 n.second->name + " has no platform initializer function!!");
+      buffer_ << "    knowledge.evaluate(\"" << platInit->name << " ()\");\n";
+      buffer_ << "  }\n";
     }
-    buffer_ << "  }\n";
   }
   //buffer_ << "  knowledge.set(\"S\" + to_string(settings.id) + \".init\", \"1\");\n";
 
