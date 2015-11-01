@@ -1181,14 +1181,19 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
       
       //-- generate the role level constructor
       buffer_ << "void constructor ()\n{\n";
-      //-- invoke variable constructors
+      //-- invoke variable constructors. for now we invoke input
+      //-- variables first, and then the non-input variables. later
+      //-- one, we should do a more systematic ordering based on
+      //-- dataflow analysis.
       for(auto &v : r.second->allVarsInScope()) {
-        if(v->isInput)
-          buffer_ << "  if(!check_init_" << v->name
-                  << " ()) throw std::runtime_error(\"ERROR: illegal initial value of variable "
-                  << v->name << "\");\n";
-        else
-          buffer_ << "  initialize_" << v->name << " ();\n";
+        if(!v->isInput) continue;
+        buffer_ << "  if(!check_init_" << v->name
+                << " ()) throw std::runtime_error(\"ERROR: illegal initial value of variable "
+                << v->name << "\");\n";
+      }
+      for(auto &v : r.second->allVarsInScope()) {
+        if(v->isInput) continue;
+        buffer_ << "  initialize_" << v->name << " ();\n";
       }
       //-- invoke record constructors
       for(auto &rec : r.second->allRecordsInScope()) {
