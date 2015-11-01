@@ -268,6 +268,9 @@ namespace dmpl
       if(it == funcs.end()) funcs.insert(std::make_pair(f->name, f));
       else it->second->mergeWith(f);
     }
+    
+    ///find the platform initialzer function in this node
+    Func findPlatformInitializer();
 
     ///add a role
     void addRole(const Role &r)

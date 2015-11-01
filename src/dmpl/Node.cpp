@@ -58,6 +58,31 @@
 #include <iostream>
 
 /*********************************************************************/
+///find the platform initialzer function in this role or in the parent
+///node
+/*********************************************************************/
+dmpl::Func dmpl::BaseNode::findPlatformInitializer()
+{
+  Func res;
+
+  for(auto &f : funcs) {
+    if(f.second->getAttribute("InitSim", 0) != NULL) {
+      if(res == NULL) {
+        if(f.second->isThread())
+          throw std::runtime_error("ERROR: node " + name +
+                                   " has thread " + f.second->name +
+                                   " as platform initialization function!!");
+        res = f.second;
+      } else throw std::runtime_error("ERROR: node " + name +
+                                      " has multiple platform initialization functions: " +
+                                      res->name + " and " + f.second->name + "!!");
+    }
+  }
+  
+  return res;
+}
+
+/*********************************************************************/
 //-- merge with another node
 /*********************************************************************/
 void
