@@ -2277,13 +2277,23 @@ dmpl::gams::GAMS_Builder::build_main_function ()
       buffer_ << "  if(node_name == \"" << n.second->name << "\" && role_name == \""
               << r.second->name << "\") {\n";
       Func platInit = r.second->findPlatformInitializer();
-      if(platInit == NULL)
-        throw std::runtime_error("ERROR: role " + r.second->name + " in node " +
-                                 n.second->name + " has no platform initializer function!!");
-      buffer_ << "    knowledge.evaluate(\"" << platInit->name << " ()\");\n";
+      if(platInit != NULL) {
+        buffer_ << "    knowledge.define_function (\"initialize_platform\", node_"
+                << n.second->name << "::node_" << n.second->name
+                << "_role_" << r.second->name << "::" << platInit->name << ");\n";
+      } else {
+        platInit = n.second->findPlatformInitializer();
+        if(platInit != NULL)
+          buffer_ << "    knowledge.define_function (\"initialize_platform\", node_"
+                  << n.second->name << "::" << platInit->name << ");\n";
+        else
+          throw std::runtime_error("ERROR: role " + r.second->name + " in node " +
+                                   n.second->name + " has no platform initializer function!!");
+      }
       buffer_ << "  }\n";
     }
   }
+  buffer_ << "  knowledge.evaluate(\"initialize_platform ()\");\n";
   //buffer_ << "  knowledge.set(\"S\" + to_string(settings.id) + \".init\", \"1\");\n";
 
   buffer_ << "\n  //-- Creating algorithms\n";
