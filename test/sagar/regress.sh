@@ -1,11 +1,11 @@
 #!/bin/bash
 
-printf "testing %35s : " "test-example-01.dmpl"
-rm -f test-example-01.cpp
-dmplc -n 3 --DX 10 --DY 10 --DTopY 2.25 --DBottomY -2.25 --DLeftX -2.25 \
-      --DRightX 2.25 -g -o test-example-01.cpp test-example-01.dmpl &> /dev/null
-diff test-example-01.cpp test-example-01.cpp.saved &> /dev/null
-if [ "$?" == "0" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
+# printf "testing %35s : " "test-example-01.dmpl"
+# rm -f test-example-01.cpp
+# dmplc -n 3 --DX 10 --DY 10 --DTopY 2.25 --DBottomY -2.25 --DLeftX -2.25 \
+#       --DRightX 2.25 -g -o test-example-01.cpp test-example-01.dmpl &> /dev/null
+# diff test-example-01.cpp test-example-01.cpp.saved &> /dev/null
+# if [ "$?" == "0" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
 
 ##parse a file and output. then parse this output and output
 ##again. the two outputs should be identical.
