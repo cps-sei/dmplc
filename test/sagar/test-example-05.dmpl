@@ -217,6 +217,7 @@ const FORM_CHANGE_TIME = 20.0;
 extern int my_sleep(int seconds);
 extern void INIT_HAZARDS(int XX, int YY, int tx, int ty);
 extern pure double GET_HAZARD(int x, int y);
+extern int GRID_MOVE(unsigned char x,unsigned char y,double z);
 extern pure void print_state(int XX,int YY,int _id, int x, int y, int xf, int yf);
 extern pure void print_int(int i);
 extern pure void print_labeled_int(int i);
