@@ -417,6 +417,7 @@ noexcept
 
   const Knowledge_Record &set_knowledge_record(const Knowledge_Record &in, const Knowledge_Update_Settings &settings)
   {
+    //std::cerr << "setting " << get_name() << " to " << in << std::endl;
     this->get_context().set(var_ref, in, settings);
     return in;
   }
@@ -455,6 +456,20 @@ protected:
       var_ref(exist ? con.get_ref(name) : Variable_Reference()),
       data(exist ? knowledge_cast<T>(con.get(name)) : T()),
       ref_count(1) {}
+
+    Variable_Reference &get_ref(Thread_Safe_Context &con)
+    {
+      if(exist)
+      {
+        return var_ref;
+      }
+      else
+      {
+        var_ref = con.get_ref(name);
+        exist = true;
+        return var_ref;
+      }
+    }
 
     data_t *new_ref()
 #ifdef USE_RVAL_REF
@@ -587,7 +602,7 @@ protected:
   {
     if(data->create)
     {
-      data->var_ref = this->get_context().get_ref(data->name, this->get_settings_cref());
+      data->get_ref(this->get_context()) = this->get_context().get_ref(data->name, this->get_settings_cref());
       data->create = false;
     }
   }
@@ -595,24 +610,28 @@ protected:
 public:
   void push()
   {
+    //std::cerr<<"push @ " << this->get_name() << ": dirty " << is_dirty() << std::endl;
     if(is_dirty())
     {
       ensure_exists();
-      this->get_context().set(data->var_ref, knowledge_cast(data->data), this->get_settings_cref());
+      this->get_context().set(data->get_ref(this->get_context()), knowledge_cast(data->data), this->get_settings_cref());
       data->dirty = false;
     }
   }
 
   void pull()
   {
+    //std::cerr<<"pull @ " << this->get_name() << ": dirty " << is_dirty() << std::endl;
     ensure_exists();
-    data->data = knowledge_cast<T>(this->get_context().get(data->var_ref, this->get_settings_cref()));
+    data->data = knowledge_cast<T>(this->get_context().get(
+                     data->get_ref(this->get_context()), this->get_settings_cref()));
+    //std::cerr<<"pulled " << data->data << " from " << this->get_name() << std::endl;
     data->dirty = false;
   }
 
   void pull_keep_local()
   {
-    //std::cerr<<"pull_keep_local @ " << this->get_name() << ": dirty " << dirty << std::endl;
+    //std::cerr<<"pull_keep_local @ " << this->get_name() << ": dirty " << is_dirty() << std::endl;
     if(is_dirty())
       pull();
   }

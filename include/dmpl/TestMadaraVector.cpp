@@ -75,13 +75,13 @@ static unsigned int OK_count = 0;
 static unsigned int FAIL_count = 0;
 
 #define LOG(expr) \
-  std::cout << #expr << " == " << (expr) << std::endl
+  std::cerr << #expr << " == " << (expr) << std::endl
 
 #define TEST(expr, expect) \
   do {\
     std::string v = boost::lexical_cast<std::string>(expr); \
     int ok = (v == #expect); \
-    std::cout << #expr << " ?= " << expect << "  " << (ok ? "OK" : "FAILED! got " + v + " instead" ) << std::endl; \
+    std::cerr << #expr << " ?= " << expect << "  " << (ok ? "OK" : "FAILED! got " + v + " instead" ) << std::endl; \
     (ok ? OK_count : FAIL_count)++; \
   } while(0)
 
@@ -180,34 +180,34 @@ int main()
 {
   Madara::Knowledge_Engine::Knowledge_Base kbase;
   Madara::Knowledge_Engine::Containers::ArrayReference<int, 5, 6, 7, 8, 9> v(kbase.get_context(), "vec");
-  std::cout << v[1][2][3][4][5] << std::endl;
+  std::cerr << v[1][2][3][4][5] << std::endl;
   Madara::Knowledge_Engine::Containers::ArrayReference<int, 5, 6, 7> vec(kbase.get_context(), "vec");
   //auto r1 = vec[1];
   //auto r2 = vec[1][2];
   int r2 = vec[3][1][1];
   vec[1][1][1] = vec[1][1][1];
-  std::cout << r2 << "  " << sizeof(r2) << std::endl;
+  std::cerr << r2 << "  " << sizeof(r2) << std::endl;
   Madara::Knowledge_Engine::Containers::Reference<int> r3 = vec[4][2][3];
-  std::cout << r3 << "  " << sizeof(r3) << std::endl;
+  std::cerr << r3 << "  " << sizeof(r3) << std::endl;
   r3 = 18;
-  std::cout << r3 << "  " << sizeof(r3) << std::endl;
-  std::cout << vec[4][2][3] << std::endl;
-  //std::cout << &vec[1][2][3].get_context() << std::endl;
-  std::cout << vec[1][2][3].get_name() << std::endl;
-  std::cout << sizeof(vec) << "  " << sizeof(vec[1][3][2]) << "  " << sizeof(Madara::Knowledge_Record) << std::endl;
+  std::cerr << r3 << "  " << sizeof(r3) << std::endl;
+  std::cerr << vec[4][2][3] << std::endl;
+  //std::cerr << &vec[1][2][3].get_context() << std::endl;
+  std::cerr << vec[1][2][3].get_name() << std::endl;
+  std::cerr << sizeof(vec) << "  " << sizeof(vec[1][3][2]) << "  " << sizeof(Madara::Knowledge_Record) << std::endl;
   vec[1][2][3] = 42;
   vec[1][2][3] <<= 1;
   vec[1][2][4] = 32.7;
   vec[1][2][4] *= 2;
-  std::cout << vec[1][2][3] << std::endl;
-  std::cout << vec[1][2][4] + 10 << std::endl;
+  std::cerr << vec[1][2][3] << std::endl;
+  std::cerr << vec[1][2][4] + 10 << std::endl;
   BOOST_FOREACH(int i, vec.get_dims())
   {
-    std::cout << i << " ";
+    std::cerr << i << " ";
   }
-  std::cout << std::endl;
-  //std::cout << vec.dims << " " << vec.dim << " " << vec.subarray_type::dim << " " << vec.subarray_type::subarray_type::dim << std::endl;
-  //std::cout << "Lookup: " << vec.dim0 << " " << vec.dim1 << " " << vec.dim2 << " " << vec.dim9 << std::endl;
+  std::cerr << std::endl;
+  //std::cerr << vec.dims << " " << vec.dim << " " << vec.subarray_type::dim << " " << vec.subarray_type::subarray_type::dim << std::endl;
+  //std::cerr << "Lookup: " << vec.dim0 << " " << vec.dim1 << " " << vec.dim2 << " " << vec.dim9 << std::endl;
 
 #ifdef USE_USING_TYPE
   decltype(vec)::array_type array;
@@ -215,12 +215,12 @@ int main()
   ArrayReference<int, 5, 6, 7>::array_type array;
 #endif
   vec.get_into(array);
-  std::cout << "Local ArrayReference: " << array[1][2][3] << std::endl;
+  std::cerr << "Local ArrayReference: " << array[1][2][3] << std::endl;
   array[1][2][3] += 1;
-  std::cout << "Base ArrayReference: " << vec[1][2][3] << std::endl;
+  std::cerr << "Base ArrayReference: " << vec[1][2][3] << std::endl;
   //vec.set_from(array);
   vec.update_from(array);
-  std::cout << "Base ArrayReference: " << vec[1][2][3] << std::endl;
+  std::cerr << "Base ArrayReference: " << vec[1][2][3] << std::endl;
 
 #ifdef USE_USING_TYPE
   decltype(vec)::get_vector_type<Reference<int> > ref_vector;
@@ -228,11 +228,11 @@ int main()
   ArrayReference<int, 5, 6, 7>::get_vector_type_compat<Reference<int> >::type ref_vector;
 #endif
   vec.get_into(ref_vector);
-  std::cout << "Reference ArrayReference: " << ref_vector[1][2][3] << std::endl;
-  std::cout << "Reference ArrayReference: " << ref_vector[1][2][3].get_name() << std::endl;
+  std::cerr << "Reference ArrayReference: " << ref_vector[1][2][3] << std::endl;
+  std::cerr << "Reference ArrayReference: " << ref_vector[1][2][3].get_name() << std::endl;
   ref_vector[1][2][3] += 1;
-  std::cout << "Reference ArrayReference: " << ref_vector[1][2][3] << std::endl;
-  std::cout << "Base ArrayReference: " << vec[1][2][3] << std::endl;
+  std::cerr << "Reference ArrayReference: " << ref_vector[1][2][3] << std::endl;
+  std::cerr << "Base ArrayReference: " << vec[1][2][3] << std::endl;
 
 #ifdef USE_USING_TYPE
   decltype(vec)::get_vector_type<CachedReference<int> > carray;
@@ -240,55 +240,55 @@ int main()
   ArrayReference<int, 5, 6, 7>::get_vector_type_compat<CachedReference<int> >::type carray;
 #endif
   vec.get_into(carray);
-  std::cout << "Cached ArrayReference: " << carray[1][2][3] << std::endl;
+  std::cerr << "Cached ArrayReference: " << carray[1][2][3] << std::endl;
   carray[1][2][3] += 1;
-  std::cout << "Cached ArrayReference: " << carray[1][2][3] << std::endl;
-  std::cout << "Base ArrayReference before push: " << vec[1][2][3] << std::endl;
+  std::cerr << "Cached ArrayReference: " << carray[1][2][3] << std::endl;
+  std::cerr << "Base ArrayReference before push: " << vec[1][2][3] << std::endl;
   vec.push_all(carray);
-  std::cout << "Base ArrayReference after push: " << vec[1][2][3] << std::endl;
+  std::cerr << "Base ArrayReference after push: " << vec[1][2][3] << std::endl;
   vec[1][2][3] += 1;
   carray[1][2][3] = 42;
-  std::cout << "Base ArrayReference before pull: " << vec[1][2][3] << std::endl;
-  std::cout << "Cached ArrayReference before pull: " << carray[1][2][3] << std::endl;
+  std::cerr << "Base ArrayReference before pull: " << vec[1][2][3] << std::endl;
+  std::cerr << "Cached ArrayReference before pull: " << carray[1][2][3] << std::endl;
   vec.pull_all(carray);
-  std::cout << "Cached ArrayReference after pull: " << carray[1][2][3] << std::endl;
+  std::cerr << "Cached ArrayReference after pull: " << carray[1][2][3] << std::endl;
   carray[1][2][3] = 13;
   vec[1][2][3] += 1;
-  std::cout << "Cached ArrayReference before pull_keep_local: " << carray[1][2][3] << std::endl;
+  std::cerr << "Cached ArrayReference before pull_keep_local: " << carray[1][2][3] << std::endl;
   vec.pull_all_keep_local(carray);
-  std::cout << "Cached ArrayReference after pull_keep_local: " << carray[1][2][3] << std::endl;
+  std::cerr << "Cached ArrayReference after pull_keep_local: " << carray[1][2][3] << std::endl;
 
   vec[1][2][0] = 123;
   vec[1][2][2] = vec[1][2][0];
-  std::cout << "After copying assigment: " << vec[1][2][2] << std::endl;
+  std::cerr << "After copying assigment: " << vec[1][2][2] << std::endl;
   Reference<int> test = vec[1][3][0];
   vec[1][3][0] = 135;
-  std::cout << "test container: " << test << " == " << vec[1][3][0] << std::endl;
-  std::cout << "test temp: " << (int)Reference<int>(vec[1][3][0]) << " == " << vec[1][3][0] << std::endl;
+  std::cerr << "test container: " << test << " == " << vec[1][3][0] << std::endl;
+  std::cerr << "test temp: " << (int)Reference<int>(vec[1][3][0]) << " == " << vec[1][3][0] << std::endl;
   test = vec[1][2][0];
-  std::cout << "test container: " << test << " == " << vec[1][3][0] << std::endl;
+  std::cerr << "test container: " << test << " == " << vec[1][3][0] << std::endl;
   test = CachedReference<int>(kbase, "testing");
-  std::cout << "test attempted overwrite: " << test << " == " << vec[1][3][0] << std::endl;
+  std::cerr << "test attempted overwrite: " << test << " == " << vec[1][3][0] << std::endl;
 
   vec[4][2][0] = vec[4][2][1] = vec[4][2][1] = 1234;
-  std::cout << "test chained assign: " << vec[4][2][0] << " == " << vec[4][2][1] << " == 1234" << std::endl;
+  std::cerr << "test chained assign: " << vec[4][2][0] << " == " << vec[4][2][1] << " == 1234" << std::endl;
   vec[4][2][1] += 1;
-  std::cout << "test chained assign: " << vec[4][2][0] << " != " << vec[4][2][1] << " == 1235" << std::endl;
+  std::cerr << "test chained assign: " << vec[4][2][0] << " != " << vec[4][2][1] << " == 1235" << std::endl;
 
   Madara::Knowledge_Engine::Containers::ArrayReference<Madara::Knowledge_Record, 8, 4, 3> kvec(kbase.get_context(), "kvec");
   kvec[1][1][1] = (long int)5;
-  std::cout << kvec[1][1][1].get().to_integer() << std::endl;
+  std::cerr << kvec[1][1][1].get().to_integer() << std::endl;
 
   Madara::Knowledge_Engine::Containers::ArrayReference<int, 6, 7> sub_vec(vec[1]);
-  std::cout << sub_vec[2][3] << std::endl;
+  std::cerr << sub_vec[2][3] << std::endl;
   Madara::Knowledge_Engine::Containers::ArrayReference<int, 7> sub_sub_vec(sub_vec[2]);
-  std::cout << sub_sub_vec[4] << std::endl;
+  std::cerr << sub_sub_vec[4] << std::endl;
 
 #ifdef USE_VAR_TMPL
   ArrayReference<int, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15> big_array(kbase.get_context(), "big_array");
   Reference<int> e = big_array[0][1][2][3][4][5][6][7][8][9][10][11][12][13][14];
   e = 123;
-  std::cout << e << "  " << big_array[0][1][2][3][4][5][6][7][8][9][10][11][12][13][14] << std::endl;
+  std::cerr << e << "  " << big_array[0][1][2][3][4][5][6][7][8][9][10][11][12][13][14] << std::endl;
 #endif
 
   ArrayReference<int, 6, VAR_LEN> var_arr(kbase, "variable_array", 0, 20);
@@ -301,7 +301,7 @@ int main()
   }
   catch(std::range_error err)
   {
-    std::cout << err.what() << std::endl;
+    std::cerr << err.what() << std::endl;
   }
   var_arr.resize<1>(30);
   var_arr[1][25] = 55;
@@ -309,7 +309,7 @@ int main()
 
 #ifdef USE_VAR_TMPL
   ArrayReference<int, 6, 30> resized_arr(var_arr);
-  std::cout << "resized_arr[1][25] == " << resized_arr[1][25] << std::endl;
+  std::cerr << "resized_arr[1][25] == " << resized_arr[1][25] << std::endl;
 #endif
 
   ArrayReference< ::Madara::Knowledge_Engine::Containers::StorageManager::__INTERNAL__::Stateless<int>, 6, VAR_LEN, VAR_LEN> var_arr2(kbase, "variable_array");
@@ -342,7 +342,7 @@ int main()
   }
   catch(std::range_error err)
   {
-    std::cout << err.what() << std::endl;
+    std::cerr << err.what() << std::endl;
   }
   try
   {
@@ -350,7 +350,7 @@ int main()
   }
   catch(std::range_error err)
   {
-    std::cout << err.what() << std::endl;
+    std::cerr << err.what() << std::endl;
   }
   var_arr.resize<1>(40);
   LOG(var_arr[1][35] = 12343);
@@ -405,6 +405,22 @@ int main()
   uncached_array.mark_modified();
 
   takes_krec(knowledge_cast(uncached_array[0]));
+
+  Reference<int> foo(kbase, "foo");
+  CachedReference<int> cache_foo(kbase, "foo");
+
+  LOG(kbase.get("foo").to_integer());
+  foo = 42;
+  LOG(kbase.get("foo").to_integer());
+  LOG(foo);
+  LOG(cache_foo);
+  cache_foo.pull();
+  LOG(cache_foo);
+  cache_foo = 24;
+  LOG(cache_foo);
+  LOG(foo);
+  cache_foo.push();
+  LOG(foo);
 
   LOG(OK_count);
   LOG(FAIL_count);
