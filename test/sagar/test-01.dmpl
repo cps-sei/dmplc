@@ -253,18 +253,18 @@ node uav
   }
 
   //-- guaranteed properties
-  require NoCollision1 : COLLISION_AVOIDANCE => NoCollisions;
+  require NoCollision1 => NoCollisions;
 
   //-- best-effort properties
   expect AtEndProtect1 : at_end => NoCollisions;
   expect AtEndProtect2 : at_end => NoCollisions;  
   expect AtLeastProtect1 : at_least 0.9 => NoCollisions;
 
-  require NoCollision3 : COLLISION_AVOIDANCE => NoCollisions;
+  require NoCollision3 => NoCollisions;
 }
 
 node uav {
   expect AtEndProtect3 : at_end => NoCollisions;  
   expect AtLeastProtect2 : at_least 0.42 => NoCollisions;
-  require NoCollision2 : COLLISION_AVOIDANCE => NoCollisions;
+  require NoCollision2 => NoCollisions;
 }

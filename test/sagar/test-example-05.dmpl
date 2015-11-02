@@ -848,8 +848,8 @@ node uav {
     }
   }
 
-  require IN_RANGE : COLLISION_AVOIDANCE => InRange;
-  require NO_COLLISIONS : COLLISION_AVOIDANCE => NoCollisions;
+  require IN_RANGE => InRange;
+  require NO_COLLISIONS => NoCollisions;
 
 } //-- end node
 

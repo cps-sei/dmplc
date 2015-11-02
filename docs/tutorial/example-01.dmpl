@@ -216,5 +216,5 @@ node uav
   }
 
   //-- guaranteed properties
-  require NoCollision : COLLISION_AVOIDANCE => NoCollisions;
+  require NoCollision => NoCollisions;
 }
