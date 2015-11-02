@@ -528,7 +528,7 @@ inline typename ArrayReferenceReference<T>::rvalue_indexed_type ArrayReferenceRe
     throw_range_error(this->get_name(), i, this->get_size());
   //std::cerr << "index op rvalue: " << this->get_name() << std::endl;
   this->append_index(i);
-  return std::move(static_cast<sub_type&>(*this).dereference());
+  return std::move(std::move(static_cast<sub_type&>(*this)).dereference());
 }
 #endif
 
