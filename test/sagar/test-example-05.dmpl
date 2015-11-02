@@ -479,9 +479,6 @@ node uav {
     }
   }
 
-  //-- Declare WAYPOINT thread; will be defined in roles below
-  thread WAYPOINT;
-
   //-- the task that moves the node to its next waypoint while
   //-- avoiding collisions.
   @BarrierSync;
