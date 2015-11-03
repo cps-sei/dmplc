@@ -72,7 +72,7 @@ int my_sleep (int seconds)
   return 0;
 }
 
-int round = 0;
+int roundNum = 0;
 int xi,yi;
 
 void print_int(int i)
@@ -89,13 +89,13 @@ void print_line(int _X)
 
 void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
 {
-  if(round == 0) {
+  if(roundNum == 0) {
     xi = x; yi = y;
   }
 
   for(int i = 0;i < 150;++i) printf("\n");
   
-  printf("round = %d : id = %d\n", ++round, id);
+  printf("round = %d : id = %d\n", ++roundNum, id);
   printf("_X = %d _Y = %d\n",_X,_Y);
   print_line(_X);
   for(int i = 0;i < _Y;++i) {
@@ -117,7 +117,6 @@ const X = 10;
 const Y = 10;
 
 //states of each node
-const INITS = 0;
 const NEXT = 1;
 const REQUEST = 2;
 const WAITING = 3;
@@ -130,21 +129,25 @@ const RightX = 2.25;
 
 //extern int MOVE_TO(unsigned char x,unsigned char y);
 extern int my_sleep(int seconds);
-extern void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
+extern void print_state(int XX,int YY,int my_id, int x, int y, int xf, int yf);
 extern void print_int(int i);
+extern int GRID_MOVE(unsigned char x,unsigned char y,double z);
 
-
-node uav (id)
+node uav
 {
   //shared variables -- visible across nodes. 
-  global _Bool lock [X][Y];
+  global _Bool lock [X][Y] = {
+    lock[x][y] = 1;
+  }; 
 
   //private variables -- local to the node.
   //preserved across rounds
-  local unsigned char state; //the state
-  local unsigned char x,y; //current coordinates
-  local unsigned char xp,yp; //next coordinates
-  local unsigned char xf,yf; //final coordinates
+  local unsigned char state = NEXT; //the state
+  //current coordinates
+  local unsigned char input x ~ (0 <= x && x < X), input y ~ (0 <= y && y < Y);
+  local unsigned char xp = x, yp = y; //next coordinates
+  //final coordinates
+  local unsigned char input xf ~ (0 <= xf && xf < X), input yf ~ (0 <= yf && yf < Y);
 
   //-- saves the next waypoint in (xp,yp)
   void NEXT_XY () {
@@ -156,34 +159,31 @@ node uav (id)
   }
 }
 
-node uav (id)
+node uav
 {
-  @Period(100000)
-  @BarrierSync
-  @PlatformController
-  thread COLLISION_AVOIDANCE () {
+  @Period(100000);
+  @BarrierSync;
+  @PlatformController;
+  thread COLLISION_AVOIDANCE {
     print_state(X,Y,id,x,y,xf,yf);
     //my_sleep(1);
-    if IF_INIT (state == INITS) {
-      lock[x][y] = 1;
-      state = NEXT;
-    } if IF_NEXT (state == NEXT) {
+    if (state == NEXT) {
       //compute next point on route
       if(x == xf && y == yf) return;
       NEXT_XY();
       state = REQUEST;
-    } else if IF_REQUEST (state == REQUEST) {
+    } else if (state == REQUEST) {
       //request the lock but only if it is free
       //commented out to induce a bug
       //if(EXISTS_LOWER(idp,lock[xp][yp]@idp != 0)) return;
       lock[xp][yp] = 1;
       state = WAITING;
-    } else if IF_WAITING (state == WAITING) {
+    } else if (state == WAITING) {
       //grab the lock if we are the highest 
       //id node to request or hold the lock
       if(EXISTS_HIGHER(idp, lock[xp][yp]@idp != 0)) return;
       state = MOVE;
-    } else if IF_MOVE (state == MOVE) {
+    } else if (state == MOVE) {
       //now we have the lock on (x’,y’)
       if(GRID_MOVE(xp,yp,0.5)) return;
       lock[x][y] = 0; 
@@ -192,36 +192,26 @@ node uav (id)
     }
   }
 
-  @InitSim
+  role Uav {
+    thread COLLISION_AVOIDANCE;
+  }
+
+  @InitSim;
   void StartingPosition ()
   {
     GRID_INIT(X, Y, LeftX, RightX, TopY, BottomY);
     GRID_PLACE(x, y, 0.5);
   }
-}
 
-//initial state
-@INIT
-void NodeInit () 
-{
-  FORALL_NODE(id) {
-    state@id = INITS;
-    ND(x@id); ND(y@id);
-    ASSUME(0 <= x@id && x@id < X && 0 <= y@id && y@id < Y);
-    ND(xf@id); ND(yf@id);
-    ASSUME(0 <= xf@id && xf@id < X && 0 <= yf@id && yf@id < Y);
+  //the safety property checked at the beginning of each round
+  bool NoCollisions ()
+  {
+    FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+      if(x@id1 == x@id2 && y@id1 == y@id2) return false;
+    }
+    return true;
   }
 
-  FORALL_DISTINCT_NODE_PAIR (id1,id2) {
-    ASSUME(x@id1 != x@id2 || y@id1 != y@id2);
-  }
-}
-
-//the safety property checked at the beginning of each round
-@SAFETY
-void NoCollisions ()
-{
-  FORALL_DISTINCT_NODE_PAIR (id1,id2) {
-    ASSERT(x@id1 != x@id2 || y@id1 != y@id2);
-  }
+  //-- guaranteed properties
+  require NoCollision => NoCollisions;
 }
