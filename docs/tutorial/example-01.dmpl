@@ -117,7 +117,6 @@ const X = 10;
 const Y = 10;
 
 //states of each node
-const INITS = 0;
 const NEXT = 1;
 const REQUEST = 2;
 const WAITING = 3;
@@ -143,7 +142,7 @@ node uav
 
   //private variables -- local to the node.
   //preserved across rounds
-  local unsigned char state = INITS; //the state
+  local unsigned char state = NEXT; //the state
   //current coordinates
   local unsigned char input x ~ (0 <= x && x < X), input y ~ (0 <= y && y < Y);
   local unsigned char xp = x, yp = y; //next coordinates
@@ -168,10 +167,7 @@ node uav
   thread COLLISION_AVOIDANCE {
     print_state(X,Y,id,x,y,xf,yf);
     //my_sleep(1);
-    if (state == INITS) {
-      lock[x][y] = 1;
-      state = NEXT;
-    } if (state == NEXT) {
+    if (state == NEXT) {
       //compute next point on route
       if(x == xf && y == yf) return;
       NEXT_XY();
