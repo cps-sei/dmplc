@@ -213,7 +213,8 @@ elif [ "$MAPSIZE" == "large" ]; then
 fi
 
 CPP_FILE=${MISSION}_${BIN}.cpp
-DMPLC_FLAGS="-g -n $NODENUM --DX $GRIDSIZE --DY $GRIDSIZE --DTopY $TopY --DBottomY $BottomY --DLeftX $LeftX --DRightX $RightX"
+DMPLC_FLAGS="-g -n $NODENUM --DX $GRIDSIZE --DY $GRIDSIZE --DTopY $TopY --DBottomY $BottomY "
+DMPLC_FLAGS+="--DLeftX $LeftX --DRightX $RightX"
 [ "$DEBUG" -eq 1 ] && DMPLC_FLAGS="$DMPLC_FLAGS --debug"
 [ -n "$OUTLOG" ] && DMPLC_FLAGS="$DMPLC_FLAGS -e"
 
@@ -224,7 +225,8 @@ break
 fi
 done
 if [ $CPP_FILE -nt ${BIN} ]; then
-CFLAGS="-g -Og -std=c++11 -I$DMPL_ROOT/src -I$VREP_ROOT/programming/remoteApi -I$ACE_ROOT -I$MADARA_ROOT/include -I$GAMS_ROOT/src -I$DMPL_ROOT/include"
+CFLAGS="-g -Og -std=c++11 -I$DMPL_ROOT/src -I$VREP_ROOT/programming/remoteApi -I$ACE_ROOT "
+CFLAGS+="-I$MADARA_ROOT/include -I$GAMS_ROOT/src -I$DMPL_ROOT/include -Wno-deprecated-declarations"
 LIBS="$LIBS $MADARA_ROOT/libMADARA.so $ACE_ROOT/lib/libACE.so $GAMS_ROOT/lib/libGAMS.so -lpthread"
 g++ $CFLAGS -o $BIN $CPP_FILE $LIBS
 fi
