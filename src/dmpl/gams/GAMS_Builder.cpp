@@ -1375,7 +1375,7 @@ dmpl::gams::GAMS_Builder::build_push_pull(const Func &thread, bool push)
         break;
       case Variable::GLOBAL:
         buffer_ << "  thread" << thread->threadID << "_"
-                << var->getName() << (push?"[id].push();":"[id].pull();") << std::endl;
+                << var->getName() << (push?"[id].push();":".pull();") << std::endl;
         break;
       }
     }
