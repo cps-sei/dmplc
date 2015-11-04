@@ -409,8 +409,8 @@ void dmpl::syncseqdbl::NodeTransformer::exitFAOH(dmpl::FAOHStmt &stmt)
 /*********************************************************************/
 //constructor
 /*********************************************************************/
-dmpl::SyncSeqDbl::SyncSeqDbl(dmpl::DmplBuilder &b,int r) 
-  : builder(b),roundNum(r)
+dmpl::SyncSeqDbl::SyncSeqDbl(dmpl::DmplBuilder &b, const std::string &p, int r) 
+  : builder(b), property(p), roundNum(r)
 {
   nodeNum = builder.program.processes.size();
 }

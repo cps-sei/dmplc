@@ -158,12 +158,12 @@ namespace dmpl {
   {
   public:
     DmplBuilder &builder;  //-- the builder containing parsed DMPL file
-    std::string prop;      //-- the name of target require property
+    std::string property;  //-- the name of target require property
     size_t nodeNum;        //-- the number of nodes in the system
     int roundNum;          //-- the number of rounds
     CProgram cprog;        //-- the generated C program
 
-    SyncSeqDbl(DmplBuilder &b,int r);
+    SyncSeqDbl(DmplBuilder &b, const std::string &p, int r);
     void createGlobVars();
     void createCopyStmts(bool fwd,const Var &var,StmtList &res,ExprList indx,int node);
     void createRoundCopier();

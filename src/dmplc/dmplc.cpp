@@ -220,7 +220,7 @@ int main (int argc, char **argv)
     //the C program produced by sequentialization
     dmpl::CProgram cprog;
     
-    dmpl::SyncSeqDbl syncSeqDbl (builder, round_num);
+    dmpl::SyncSeqDbl syncSeqDbl (builder, reqProp, round_num);
     syncSeqDbl.run ();
     cprog = syncSeqDbl.cprog;
     
@@ -246,7 +246,7 @@ int main (int argc, char **argv)
     //the C program produced by sequentialization
     dmpl::CProgram cprog;
     
-    dmpl::SyncSeqDblInd syncSeqDblInd (builder, round_num);
+    dmpl::SyncSeqDblInd syncSeqDblInd (builder, reqProp, round_num);
     syncSeqDblInd.run ();
     cprog = syncSeqDblInd.cprog;
     
