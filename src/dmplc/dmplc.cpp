@@ -79,9 +79,6 @@ std::string out_file;
 //-- name of target thunk to dump from the DMPL file.
 std::string madara_target ("GNU_CPP");
 
-//-- number of nodes in system (to generate code for, verify etc.)
-size_t nodes = 0;
-
 //-- parse and print the DMPL file
 bool do_print = false;
 
@@ -94,6 +91,12 @@ bool do_seq_ind = false;
 
 //-- number of rounds to sequentialize for (-1 means infinity)
 int round_num = -1;
+
+//-- the list of descriptors for roles to verify against. a role
+//-- desciptor is X:Y:n where X is the name of the node, Y is the name
+//-- of a role inside it, and n is the number of such roles. node id's
+//-- will be assigned in the order in which the roles are specified.
+std::list<std::string> roleDescs;
 
 //-- generate code against the GAMS platform
 bool do_gams = false;
@@ -119,8 +122,9 @@ std::map<std::string, std::string> const_def;
 /*********************************************************************/
 //function declarations
 /*********************************************************************/
-void usage (char *cmd);
 void parse_options (int argc, char **argv);
+void usage (char *cmd);
+void addProcesses(dmpl::Program &program);
 
 /*********************************************************************/
 //the main function
@@ -129,9 +133,10 @@ int main (int argc, char **argv)
 {
   parse_options (argc, argv);
 
-  //create the program
+  //create the program and fill in the processes
   dmpl::DmplBuilder builder (file_names, const_def, debug);
   builder.run ();
+  addProcesses(builder.program);
 
   //print the program
   if (do_print)
@@ -152,13 +157,6 @@ int main (int argc, char **argv)
   //generation
   if (do_gams)
   {
-    //fill in the processes with nodes nodes
-    dmpl::Program & program = builder.program;
-    const std::string & nodeName = program.nodes.begin ()->first;
-    program.processes.clear ();
-    for (size_t i = 0;i < nodes;++i)
-      program.processes.push_back (dmpl::Process (nodeName, i));
-
     //create a madara builder instance of the dmpl builder parse
     dmpl::CodeGenerator *gams_builder
       = new dmpl::gams::GAMS_Builder (builder, madara_target, schedType, do_expect);
@@ -181,13 +179,6 @@ int main (int argc, char **argv)
   }
   else if(do_analyzer)
   {
-    //fill in the processes with nodes nodes
-    dmpl::Program & program = builder.program;
-    const std::string & nodeName = program.nodes.begin ()->first;
-    program.processes.clear ();
-    for (size_t i = 0;i < nodes;++i)
-      program.processes.push_back (dmpl::Process (nodeName, i));
-
     //create a madara builder instance of the dmpl builder parse
     dmpl::gams::Analyzer_Builder *ana_builder = new dmpl::gams::Analyzer_Builder (builder, madara_target);
 
@@ -210,13 +201,6 @@ int main (int argc, char **argv)
   //sequentialize and print result
   if (do_seq)
   {
-    //fill in the processes with seq_node_num nodes
-    dmpl::Program & program = builder.program;
-    const std::string & nodeName = program.nodes.begin ()->first;
-    program.processes.clear ();
-    for (size_t i = 0;i < nodes;++i)
-      program.processes.push_back (dmpl::Process (nodeName, i));
-
     //the C program produced by sequentialization
     dmpl::CProgram cprog;
     
@@ -236,13 +220,6 @@ int main (int argc, char **argv)
   //sequentialize for inductive check and print result
   if (do_seq_ind)
   {
-    //fill in the processes with seq_node_num nodes
-    dmpl::Program & program = builder.program;
-    const std::string & nodeName = program.nodes.begin ()->first;
-    program.processes.clear ();
-    for (size_t i = 0;i < nodes;++i)
-      program.processes.push_back (dmpl::Process (nodeName, i));
-
     //the C program produced by sequentialization
     dmpl::CProgram cprog;
     
@@ -297,16 +274,15 @@ void parse_options (int argc, char **argv)
     {
       do_print = true;
     }
-    else if (arg1 == "-n" || arg1 == "--nodes")
+    else if (arg1 == "--roles")
     {
       if (i + 1 < argc)
       {
-        std::stringstream buffer (argv[i + 1]);
-        buffer >> nodes;
+        roleDescs.push_back(argv[i + 1]);
       }
       else
       {
-        std::cerr << "ERROR: nodes (-n|--nodes) must have value (e.g. -n 5)\n";
+        std::cerr << "ERROR: role desciptors (--roles) must have value (e.g. --roles uav:Uav:3)\n";
         usage (argv[0]);
       }
       ++i;
@@ -417,25 +393,67 @@ void usage (char *cmd)
 {
   std::cerr << "Usage : " << cmd << " <options optionval> filename [filename ...]\n";
   std::cerr << "Options :\n";
-  std::cerr << "  -d|--debug               print debugging information\n";
-  std::cerr << "  -h|--help                print help and usage\n";
-  std::cerr << "  -o|--out file            output file, default is stdout\n";
-  std::cerr << "  -p|--print               parse and print DASL file\n";
-  std::cerr << "  -n|--nodes nodes         number of nodes\n";
-  std::cerr << "  -rp|--reqProp name       name of require property to verify\n";
-  std::cerr << "  -a|--analyzer            generate C++ for expect log analyzer\n";
-  std::cerr << "  -g|--gams                generate C++/GAMS code to run\n";
-  std::cerr << "  -e|--expect              check and log 'expect' statements\n";
-  std::cerr << "  -t|--target|--platform p specify a target platform\n";
-  std::cerr << "                           Available platforms: WIN_CPP, GNU_CPP (default)\n";
+  std::cerr << "  -d|--debug                 print debugging information\n";
+  std::cerr << "  -h|--help                  print help and usage\n";
+  std::cerr << "  -o|--out file              output file, default is stdout\n";
+  std::cerr << "  -p|--print                 parse and print DASL file\n";
+  std::cerr << "  --roles X:Y:n[:X:Y:n...]   list of roles descriptors specified as X:Y:n\n";
+  std::cerr << "                             where X=node name, Y=role name, n=number of roles\n";
+  std::cerr << "  -rp|--reqProp name         name of require property to verify\n";
+  std::cerr << "  -a|--analyzer              generate C++ for expect log analyzer\n";
+  std::cerr << "  -g|--gams                  generate C++/GAMS code to run\n";
+  std::cerr << "  -e|--expect                check and log 'expect' statements\n";
+  std::cerr << "  -t|--target|--platform p   specify a target platform\n";
+  std::cerr << "                             Available platforms: WIN_CPP, GNU_CPP (default)\n";
 #if MZSRM==1
-  std::cerr << "  -mz|--mzsrm              generate code that targets MZSRM scheduler\n";
+  std::cerr << "  -mz|--mzsrm                generate code that targets MZSRM scheduler\n";
 #endif
-  std::cerr << "  -s|--seq                 generate sequentialized code to verify\n";
-  std::cerr << "  -si|--seq-ind            generate sequentialized code to verify inductiveness\n";
-  std::cerr << "  -r|--rounds rounds       number of verification rounds\n";
-  std::cerr << "  --D<const_name> value    set a const to a value\n";
+  std::cerr << "  -s|--seq                   generate sequentialized code to verify\n";
+  std::cerr << "  -si|--seq-ind              generate sequentialized code to verify inductiveness\n";
+  std::cerr << "  -r|--rounds rounds         number of verification rounds\n";
+  std::cerr << "  --D<const_name> value      set a const to a value\n";
   exit (0);
+}
+
+/*********************************************************************/
+//-- add processes to the program based on role descriptors supplied
+//-- via the command line. a role descriptor is of the form
+//-- X:Y:n[:X:Y:n...] where X is a node name, Y is a role name, and n
+//-- is the number of roles
+/*********************************************************************/
+void addProcesses(dmpl::Program &program)
+{
+  program.processes.clear ();
+  int nodeId = 0;
+  for(const std::string &rd : roleDescs) {
+    size_t pos1 = 0, pos2 = 0, pos3 = 0;
+
+    for(;;) {
+      pos1 = rd.find(':', pos3);
+      if(pos1 == std::string::npos)
+        throw std::runtime_error("ERROR: illegal role descriptor " + rd + " : must be X:Y:n!!");
+      std::string nodeName = rd.substr(pos3, pos1-pos3);
+
+      pos2 = rd.find(':', ++pos1);
+      if(pos2 == std::string::npos)
+        throw std::runtime_error("ERROR: illegal role descriptor " + rd + " : must be X:Y:n!!");
+      std::string roleName = rd.substr(pos1, pos2-pos1);
+
+      pos3 = rd.find(':', ++pos2);
+      int roleNum = atoi(rd.substr(pos2, pos3 == std::string::npos ? pos3 : pos3-pos2).c_str());
+      if(roleNum <= 0)
+        throw std::runtime_error("ERROR: illegal role descriptor " + rd + " : must be X:Y:n!!");
+
+      for(int i = 0;i < roleNum;++i)
+        program.addProcess(nodeName, roleName, nodeId++);
+
+      if(pos3 == std::string::npos) break;
+      else ++pos3;
+    }
+  }
+
+  if(program.processes.empty())
+    throw std::runtime_error("ERROR: no roles specified!!");
 }
 
 /*********************************************************************/

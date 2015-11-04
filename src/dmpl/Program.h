@@ -75,15 +75,20 @@
 
 namespace dmpl
 {
-  //a process is a node name and a node id
-  class Process : public std::pair<std::string,int>
+  //a process is a node name, a role name, and a node id
+  class Process
   {
   public:
-    Process(const std::string &n,const int id)
-      : std::pair<std::string,int>(n,id) {}
+    std::string node;
+    std::string role;
+    int id;
+    
+    Process(const std::string &n, const std::string &r, const int i)
+      : node(n), role(r), id(i) {}
 
-    const std::string &getNode() const { return first; }
-    int getId() const { return second; }
+    const std::string &getNode() const { return node; }
+    const std::string &getRole() const { return role; }
+    int getId() const { return id; }
   };
 
   /**
@@ -181,6 +186,29 @@ namespace dmpl
       return isFunction(fn) && funcs.find(fn)->second->isExtern == false;
     }
 
+    ///add a process with a role and an id. abort if no such role
+    ///exists.
+    void addProcess(const std::string &nodeName, const std::string &roleName, int nodeId)
+    {
+      const auto it1 = nodes.find(nodeName);
+      if(it1 == nodes.end())
+        throw std::runtime_error("ERROR: program has no node called " + nodeName + "!!");
+
+      const auto it2 = it1->second.get()->roles.find(roleName);
+      if(it2 == it1->second.get()->roles.end())
+        throw std::runtime_error("ERROR: program has no role called " + roleName +
+                                 " in node " + nodeName + "!!");
+
+      if(nodeId != processes.size())
+        throw std::runtime_error(std::string("ERROR: adding process with node ") + nodeName +
+                                 " and role " + roleName + " and id " +
+                                 boost::lexical_cast<std::string>(nodeId) +
+                                 " when next id should be " +
+                                 boost::lexical_cast<std::string>(processes.size()) + "!!");
+        
+      processes.push_back(Process(nodeName, roleName, nodeId));
+    }
+    
     ///check various sanity conditions on the program
     void sanityCheck();
 
