@@ -78,6 +78,7 @@ bool debug = false;
 bool seq_no_array = false, init_globals = false;
 bool statistical = false;
 double stat_hertz = 10;
+std::string reqProp; //-- name of the require property to verify
 size_t nodes = 0;
 int round_num = -1;
 
@@ -303,6 +304,16 @@ void parse_options (int argc, char **argv)
       }
       ++i;
     }
+    else if (arg1 == "-rp" || arg1 == "--reqProp")
+    {
+      if (i + 1 < argc) reqProp = argv[i+1]; 
+      else
+      {
+        std::cerr << "ERROR: require property (-rp|--reqProp) must have value (e.g. -rp NoCollision)\n";
+        usage (argv[0]);
+      }
+      ++i;
+    }
     else if (arg1 == "-a" || arg1 == "--analyzer")
     {
       do_analyzer = true;
@@ -433,6 +444,7 @@ void usage (char *cmd)
   std::cerr << "  -o|--out file            output file, default is stdout\n";
   std::cerr << "  -p|--print               parse and print DASL file\n";
   std::cerr << "  -n|--nodes nodes         number of nodes\n";
+  std::cerr << "  -rp|--reqProp prop_name  name of require property to verify\n";
   std::cerr << "  -a|--analyzer            generate C++ for expect log analyzer\n";
   std::cerr << "  -g|--gams                generate C++/GAMS code to run\n";
   std::cerr << "  -e|--expect              check and log 'expect' statements\n";
