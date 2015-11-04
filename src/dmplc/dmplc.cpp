@@ -403,7 +403,9 @@ void parse_options (int argc, char **argv)
     }
   }
 
+  //-- sanity checks
   if (file_names.empty ()) {
+    std::cerr << "ERROR: no DMPL file names specified!!\n";
     usage (argv[0]);
   }
 }
