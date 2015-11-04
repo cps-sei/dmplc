@@ -213,7 +213,7 @@ elif [ "$MAPSIZE" == "large" ]; then
 fi
 
 CPP_FILE=${MISSION}_${BIN}.cpp
-DMPLC_FLAGS="-g -n $NODENUM --DX $GRIDSIZE --DY $GRIDSIZE --DTopY $TopY --DBottomY $BottomY "
+DMPLC_FLAGS="-g --roles $ROLEDESC --DX $GRIDSIZE --DY $GRIDSIZE --DTopY $TopY --DBottomY $BottomY "
 DMPLC_FLAGS+="--DLeftX $LeftX --DRightX $RightX"
 [ "$DEBUG" -eq 1 ] && DMPLC_FLAGS="$DMPLC_FLAGS --debug"
 [ -n "$OUTLOG" ] && DMPLC_FLAGS="$DMPLC_FLAGS -e"
