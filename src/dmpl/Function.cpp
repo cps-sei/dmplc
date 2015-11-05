@@ -100,7 +100,8 @@ dmpl::Function::mergeWith (const Func &of, bool checkDecors)
     if(f.attrs.count(a.second.name) == 0)
       f.attrs[a.second.name] = a.second;
     else if (f.attrs[a.second.name].paramList != a.second.paramList)
-      throw std::runtime_error("Cannot merge functions with attributes of->differing parameters: @" + a.second.name + " in " + f.name);
+      throw std::runtime_error("Cannot merge functions with attributes of->differing parameters: @" +
+                               a.second.name + " in " + f.name);
   }
 }
 
