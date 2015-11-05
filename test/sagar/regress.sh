@@ -23,6 +23,7 @@ function test_double_parse {
     if [ "$?" == "0" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
 }
 
-test_double_parse test-example-01.dmpl uav:Uav:3
+test_double_parse test-example-01a.dmpl uav:Uav:3
+test_double_parse test-example-01b.dmpl uav:Uav1:2:uav:Uav2:1
 test_double_parse test-01.dmpl uav:Leader:1:uav:Protector:4
 test_double_parse test-example-05.dmpl uav:Leader:1:uav:Protector:4
