@@ -69,26 +69,40 @@
 #include "Variable.h"
 #include "Function.h"
 #include "Node.h"
+#include "Role.h"
 #include "Visitor.h"
 #include <iostream>
 
 
 namespace dmpl
 {
-  //a process is a node name, a role name, and a node id
+  //a process is a role, and a node id
   class Process
   {
   public:
-    std::string node;
-    std::string role;
+    Role role;
     int id;
-    
-    Process(const std::string &n, const std::string &r, const int i)
-      : node(n), role(r), id(i) {}
 
-    const std::string &getNode() const { return node; }
-    const std::string &getRole() const { return role; }
+    //-- constructors
+    Process(const Role &r, const int i) : role(r), id(i) {}
+
+    //-- get the name of the node
+    const std::string &getNode() const { return role->node->name; }
+    //-- get the name of the role
+    const std::string &getRole() const { return role->name; }
+    //-- get the node id
     int getId() const { return id; }
+
+    //-- comparator
+    bool operator < (const Process &rhs) const
+    {
+      if(this == &rhs) return false;
+      if(getNode() < rhs.getNode()) return true;
+      if(getNode() > rhs.getNode()) return false;
+      if(getRole() < rhs.getRole()) return true;
+      if(getRole() > rhs.getRole()) return false;
+      return id < rhs.id;
+    }
   };
 
   /**
@@ -205,7 +219,7 @@ namespace dmpl
                                  " when next id should be " +
                                  boost::lexical_cast<std::string>(processes.size()) + "!!");
         
-      processes.push_back(Process(nodeName, roleName, nodeId));
+      processes.push_back(Process(it2->second, nodeId));
     }
     
     ///check various sanity conditions on the program
