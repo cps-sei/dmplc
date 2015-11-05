@@ -541,6 +541,7 @@ namespace dmpl
     //-- analyze symbol usage by a node
     static void analyzeSymbolUsage(BaseNode &n);
 
+    //-- return the use of the argument symbol. NULL is not used.
     SymbolUse *findSymbol(const Sym &s)
     {
       BOOST_FOREACH(SymbolUse &c, allUsedSymbols)
