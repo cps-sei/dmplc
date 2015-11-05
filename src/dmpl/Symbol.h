@@ -545,10 +545,8 @@ namespace dmpl
     SymbolUse *findSymbol(const Sym &s)
     {
       BOOST_FOREACH(SymbolUse &c, allUsedSymbols)
-      {
-        if(c.sym == s)
-          return &c;
-      }
+        if(c.sym == s) return &c;
+
       return NULL;
     }
 
