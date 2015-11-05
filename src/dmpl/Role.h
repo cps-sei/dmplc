@@ -193,6 +193,10 @@ namespace dmpl
       return it == records.end() ? Record() : it->second;
     }
 
+    //-- return list of all functions in scope, either in this role or
+    //-- in parent node
+    FuncList allFuncsInScope() const;
+    
     //-- find function with given name. either in this role or at the
     //-- node level.
     Func findFunc(const std::string& name) const;

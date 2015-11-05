@@ -95,6 +95,26 @@ dmpl::RecordList dmpl::BaseRole::allRecordsInScope() const
 }
 
 /*********************************************************************/
+//-- return list of all functions in scope, either in this role or in
+//-- parent node
+/*********************************************************************/
+dmpl::FuncList dmpl::BaseRole::allFuncsInScope() const
+{
+  //-- collect all non-overridden funcs from this role
+  Funcs allFuncs;
+  for(const auto &f : funcs)
+    if(!f.second->isOverride) allFuncs.insert(f);
+  
+  //-- add all functions from the parent
+  allFuncs.insert(node->funcs.begin(), node->funcs.end());
+
+  //-- create result and return
+  FuncList res;
+  for(const auto &f : allFuncs) res.push_back(f.second);
+  return res;
+}
+
+/*********************************************************************/
 //-- find function with given name. either in this role or at the node
 //-- level.
 /*********************************************************************/
