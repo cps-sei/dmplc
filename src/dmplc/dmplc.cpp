@@ -373,6 +373,7 @@ void parse_options (int argc, char **argv)
       ++i;
 
     }
+    else if (arg1.c_str()[0] == '-') usage(argv[0]);
     else
     {
       file_names.push_back(std::string (argv[i]));
