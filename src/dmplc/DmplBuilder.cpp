@@ -107,6 +107,9 @@ void dmpl::DmplBuilder::run()
   //-- do some sanity checks on the parsed program
   program.sanityCheck();
 
+  //-- assign ids to program threads
+  program.analyzeThreads();
+
   //-- gather info about every symbol usage in the program
   program.analyzeSymbolUsage();
 }
