@@ -103,6 +103,9 @@ namespace dmpl
     
     ExpectSpec(const std::string &n,const std::string &f)
       : Specification(n), funcName(f) {}
+
+    //-- compute the set of parents. needed for symbol usage analysis.
+    virtual SymUserList getParents(Context &con);
   };
 
   //an at_end expect specification
@@ -171,6 +174,9 @@ namespace dmpl
       std::string spacer (indent, ' ');
       os << spacer << "require " << name << " => " << funcName << ";\n";
     }
+
+    //-- compute the set of parents. needed for symbol usage analysis.
+    virtual SymUserList getParents(Context &con);
   };
 }
 
