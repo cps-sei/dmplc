@@ -163,7 +163,15 @@ namespace dmpl {
     int roundNum;          //-- the number of rounds
     CProgram cprog;        //-- the generated C program
 
+    //-- map from processes to functions that are relevant to the
+    //-- target property
+    std::map<Process,std::set<Func>> relevantFuncs;
+    
     SyncSeqDbl(DmplBuilder &b, const std::string &p, int r);
+
+    //-- compute relevant functions for each process
+    void computeRelevantFunctions();
+
     void createGlobVars();
     void createCopyStmts(bool fwd,const Var &var,StmtList &res,ExprList indx,int node);
     void createRoundCopier();

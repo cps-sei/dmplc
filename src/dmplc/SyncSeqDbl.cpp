@@ -416,6 +416,45 @@ dmpl::SyncSeqDbl::SyncSeqDbl(dmpl::DmplBuilder &b, const std::string &p, int r)
 }
 
 /*********************************************************************/
+//-- compute the property relevant functions for each process
+/*********************************************************************/
+void dmpl::SyncSeqDbl::computeRelevantFunctions()
+{
+  //-- iterate over all program processes
+  for(const Process &proc : builder.program.processes) {
+    //-- compute the property function
+    Func propFunc = proc.role->node->getRequireFunc(property);
+    if(propFunc == NULL) {
+      std::cout << "WARNING: role " << proc.role->name << " does not have require specification named "
+                << property << " : skipping ...\n";
+      continue;
+    }
+    
+    //-- compute the set of local and global variables used by the
+    //-- spec function
+    VarList specVars;
+    for(const auto &v : proc.role->allVarsInScope()) {
+      for(const auto &use : propFunc->allUsedSymbols) {
+        Var var = use.sym->asVar();
+        if(var == NULL) continue;
+        if(v->name == var->name && v->scope == var->scope) {
+          std::cout << "role " << proc.role->name << " spec " << property
+                    << " var " << var->toString() << '\n';
+          specVars.push_back(var);
+          break;
+        }
+      }
+    }
+  
+    relevantFuncs[proc] = std::set<Func>();
+  }
+
+  //-- sanity check
+  if(relevantFuncs.empty())
+    throw std::runtime_error("ERROR: no relevant functions found for property " + property + "!!");
+}
+
+/*********************************************************************/
 //create the global variables
 /*********************************************************************/
 void dmpl::SyncSeqDbl::createGlobVars()
@@ -865,9 +904,13 @@ void dmpl::SyncSeqDbl::run()
   std::cout << "Sequentializing with double-buffering and " 
             << nodeNum << " nodes ...\n";
 
-  //copy over constants
+  //-- copy over constants
   cprog.constDef = builder.program.constDef;
 
+  //-- create the property relevant functions for each process
+  computeRelevantFunctions();
+  
+  /*
   createGlobVars();
   processExternFuncs();
   createRoundCopier();
@@ -875,8 +918,7 @@ void dmpl::SyncSeqDbl::run()
   createInit();
   createSafety();
   createNodeFuncs();
-
-  //instantiate functions
+  */
 }
 
 /*********************************************************************/
