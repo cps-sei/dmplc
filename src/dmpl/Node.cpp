@@ -284,9 +284,6 @@ dmpl::BaseNode::analyzeThreads()
       role->threads.push_back(func);
     }
   }
-
-  //-- analyse symbol usage
-  SymbolUser::analyzeSymbolUsage(*this);
 }
 
 /*********************************************************************/
