@@ -312,6 +312,18 @@ namespace dmpl
      * @param  indent  spaces to indent printout
      **/
     void print (std::ostream &os,unsigned int indent);
+
+    //-- return the function corresponding to the "require"
+    //-- specification with given name. return a NULL function if so
+    //-- such specification exists
+    Func getRequireFunc(const std::string &specName) const
+    {
+      const auto &it = specs.find(specName);
+      if(it == specs.end()) return Func();
+      
+      RequireSpec *rs = static_cast<RequireSpec*>(it->second.get());
+      return rs == NULL ? Func() : rs->func;
+    }
   };
 
 
