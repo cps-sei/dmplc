@@ -225,7 +225,7 @@ namespace dmpl
     ///check various sanity conditions on the program
     void sanityCheck();
 
-    ///look for threads, analyze variable usage
+    ///look for threads
     void analyzeThreads();
   };
 
