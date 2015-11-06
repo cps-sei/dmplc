@@ -268,6 +268,14 @@ namespace dmpl
       if(it == funcs.end()) funcs.insert(std::make_pair(f->name, f));
       else it->second->mergeWith(f);
     }
+
+    ///find function with given name. return NULL function if none
+    ///exists.
+    Func findFunc(const std::string &funcName)
+    {
+      const auto &it = funcs.find(funcName);
+      return it == funcs.end() ? Func() : it->second;
+    }
     
     ///find the platform initialzer function in this node
     Func findPlatformInitializer();
