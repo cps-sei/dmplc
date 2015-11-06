@@ -206,6 +206,37 @@ namespace {
   }
 }
 
+/*********************************************************************/
+//-- fill in various details of the program that could not be done
+//-- during parse time
+/*********************************************************************/
+void dmpl::Program::complete()
+{
+  //-- add nodes to specifications
+  for(auto &n : nodes) {
+    for(auto &sp : n.second->specs) {
+      sp.second->node = n.second;
+
+      ExpectSpec *ep = static_cast<ExpectSpec*>(sp.second.get());
+      if(ep) {
+        ep->func = n.second->findFunc(ep->funcName);
+        if(ep->func == NULL)
+          throw std::runtime_error("ERROR: function " + ep->funcName + " for expect spec " +
+                                   ep->name + " not found in node " + n.second->name + "!!");
+        continue;
+      }
+      
+      RequireSpec *rp = static_cast<RequireSpec*>(sp.second.get());
+      if(rp) {
+        rp->func = n.second->findFunc(rp->funcName);
+        if(rp->func == NULL)
+          throw std::runtime_error("ERROR: function " + rp->funcName + " for require spec " +
+                                   rp->name + " not found in node " + n.second->name + "!!");
+        continue;
+      }
+    }
+  }
+}
 
 /*********************************************************************/
 //check various sanity conditions

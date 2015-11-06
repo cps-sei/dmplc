@@ -104,6 +104,9 @@ void dmpl::DmplBuilder::run()
     fclose(::yyin);
   }
 
+  //-- fill in various details of the program
+  program.complete();
+  
   //-- do some sanity checks on the parsed program
   program.sanityCheck();
 

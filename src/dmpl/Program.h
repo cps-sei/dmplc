@@ -222,6 +222,10 @@ namespace dmpl
       processes.push_back(Process(it2->second, nodeId));
     }
     
+    //-- fill in various details of the program that could not be done
+    //-- during parse time
+    void complete();
+
     ///check various sanity conditions on the program
     void sanityCheck();
 
