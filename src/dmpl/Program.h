@@ -230,7 +230,8 @@ namespace dmpl
   };
 
   //new namespace to avoid name collisions
-  namespace program {
+  namespace program
+  {
     /*****************************************************************/
     //a visitor that checks for various sanity conditions
     /*****************************************************************/
