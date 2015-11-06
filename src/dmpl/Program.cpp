@@ -407,10 +407,17 @@ void
 dmpl::Program::analyzeThreads()
 {
   BOOST_FOREACH(Nodes::value_type &node, nodes)
-  {
     node.second->analyzeThreads();
+}
+
+/*********************************************************************/
+//-- compute symbol usage of nodes and their components.
+/*********************************************************************/
+void
+dmpl::Program::analyzeSymbolUsage()
+{
+  BOOST_FOREACH(Nodes::value_type &node, nodes)
     SymbolUser::analyzeSymbolUsage(*(node.second));
-  }
 }
 
 /*********************************************************************/

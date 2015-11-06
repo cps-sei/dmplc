@@ -227,6 +227,9 @@ namespace dmpl
 
     ///look for threads
     void analyzeThreads();
+
+    ///analyze symbol usage
+    void analyzeSymbolUsage();
   };
 
   //new namespace to avoid name collisions
