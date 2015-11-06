@@ -80,6 +80,9 @@ namespace dmpl
     //-- name of the specification
     std::string name;
 
+    //-- the node to which the specification belong
+    Node node;
+    
     Specification(const std::string &n) : name(n) {}
     
     virtual std::string toString() const = 0;
@@ -92,10 +95,14 @@ namespace dmpl
   {
   public:
     //-- name of function that evaluates the property
-    std::string func;
+    std::string funcName;
 
+    //-- function that evaluates the property. this is set after
+    //-- parsing but prior to symbol usage analysis.
+    Func func;
+    
     ExpectSpec(const std::string &n,const std::string &f)
-      : Specification(n), func(f) {}
+      : Specification(n), funcName(f) {}
   };
 
   //an at_end expect specification
@@ -106,13 +113,13 @@ namespace dmpl
 
     std::string toString() const
     {
-      return std::string("expect ") + name + " : at_end => " + func;
+      return std::string("expect ") + name + " : at_end => " + funcName;
     }
     
     void print (std::ostream &os,unsigned int indent) const
     {
       std::string spacer (indent, ' ');
-      os << spacer << "expect " << name << " : at_end => " << func << ";\n";
+      os << spacer << "expect " << name << " : at_end => " << funcName << ";\n";
     }
   };
 
@@ -129,14 +136,14 @@ namespace dmpl
 
     std::string toString() const
     {
-      return std::string("expect ") + name + " : at_least " + threshold + " => " + func;
+      return std::string("expect ") + name + " : at_least " + threshold + " => " + funcName;
     }
 
     void print (std::ostream &os,unsigned int indent) const
     {
       std::string spacer (indent, ' ');
       os << spacer << "expect " << name << " : at_least " << threshold
-         << " => " << func << ";\n";
+         << " => " << funcName << ";\n";
     }
   };
 
@@ -144,21 +151,25 @@ namespace dmpl
   class RequireSpec : public Specification
   {
   public:
-    //-- the function evaluating target property
-    std::string func;
+    //-- name of function evaluating target property
+    std::string funcName;
+
+    //-- function that evaluates the property. this is set after
+    //-- parsing but prior to symbol usage analysis.
+    Func func;
     
     RequireSpec(const std::string &n, const std::string &f)
-      : Specification(n), func(f) {}
+      : Specification(n), funcName(f) {}
 
     std::string toString() const
     {
-      return std::string("require ") + name + " => " + func;
+      return std::string("require ") + name + " => " + funcName;
     }
     
     void print (std::ostream &os,unsigned int indent) const
     {
       std::string spacer (indent, ' ');
-      os << spacer << "require " << name << " => " << func << ";\n";
+      os << spacer << "require " << name << " => " << funcName << ";\n";
     }
   };
 }
