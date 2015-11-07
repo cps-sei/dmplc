@@ -486,13 +486,16 @@ void dmpl::SyncSeqDbl::computeRelevantFunctions()
       //-- skip threads and the property function itself
       if(f->isThread() || f == propFunc) continue;
 
+      bool done = false;
       for(const auto &use : f->allUsedSymbols) {
+        if(done) break;
         Var var = use.sym->asVar();
         if(var == NULL) continue;
         for(const Var &v : specVars) {
           if(*v == *var) {
             std::cout << "relevant function : " << f->name << '\n';
             relevantFuncs[proc].insert(f);
+            done = true;
             break;
           }
         }
