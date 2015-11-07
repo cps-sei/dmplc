@@ -219,7 +219,7 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
   LvalExpr &lval = expression.func->requireLval ();
   if(!do_analyzer_ && lval.node != NULL)
   {
-    std::cerr << "Error: using @ operator on function calls not supported in this output mode" << std::endl;
+    std::cerr << "ERROR: using @ operator on function calls not supported in this output mode\n";
     exit(1);
   }
   std::string func_name = lval.var;
@@ -244,7 +244,8 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
 
   if(function_ && function_->isPure && func && !func->isPure)
   {
-    std::cerr << "Error: cannot call non-PURE function \"" << func_name << "\" from PURE function \"" << function_->getName() << "\"" << std::endl;
+    std::cerr << "ERROR: cannot call non-PURE function \"" << func_name
+              << "\" from PURE function \"" << function_->getName() << "\"" << std::endl;
     exit(1);
   }
 
