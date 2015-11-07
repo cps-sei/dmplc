@@ -448,17 +448,32 @@ void dmpl::SyncSeqDbl::computeRelevantFunctions()
 
     //-- go over each thread in the role and collect the ones that use
     //-- a spec relevant variable
-    for(const Func &f : proc.role->threads) {
-      //-- if the thread is overridden and also is a prototype, then
-      //-- use the base node's
-      
+    for(Func f : proc.role->threads) {
+      //-- if the thread is a prototype, use base node's version
+      if(f->isPrototype) f = proc.role->node->findFunc(f->name);
+
+      bool done = false;
       for(const auto &use : f->allUsedSymbols) {
+        if(done) break;
         Var var = use.sym->asVar();
         if(var == NULL) continue;
         for(const Var &v : specVars) {
           if(*v == *var) {
-            std::cout << "relevant function : " << f->name << '\n';
+            std::cout << "relevant thread : " << f->name << '\n';
+
+            if(proc.role->getAttribute(f, "BarrierSync", 0) == NULL)
+              throw std::runtime_error("ERROR: role " + proc.role->name + " in node " +
+                                       proc.role->node->name + " has asynchronous thread " +
+                                       f->name + " relevant to require property " + property + "!!");
+            
+            if(!relevantFuncs[proc].empty())
+              throw std::runtime_error("ERROR: role " + proc.role->name + " in node " +
+                                       proc.role->node->name + " has multiple threads (" +
+                                       relevantFuncs[proc].begin()->get()->name + " and " + f->name +
+                                       ") relevant to require property " + property + "!!");
+            
             relevantFuncs[proc].insert(f);
+            done = true;
             break;
           }
         }
