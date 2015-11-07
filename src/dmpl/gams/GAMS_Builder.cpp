@@ -68,6 +68,75 @@ extern "C" {
 #include <dmplc/dmpl-parser.hpp>
 
 /*********************************************************************/
+//-- utility functions
+/*********************************************************************/
+namespace
+{
+  /*******************************************************************/
+  //-- return true if the argument function should not be declared or
+  //-- defined.
+  /*******************************************************************/
+  bool skip_func(const dmpl::Func & function)
+  {
+    return (function->attrs.count("InitSim") == 0 && (function->isExtern ||
+      function->attrs.count("INIT") > 0 || function->attrs.count("SAFETY") > 0 ||
+      !function->usage_summary.anyNonExpect().any()));
+  }
+  
+  /*******************************************************************/
+  //-- return fully expanded node name
+  /*******************************************************************/
+  std::string nodeName(const dmpl::Node &node)
+  {
+    return "node_" + node->name;
+  }
+  
+  /*******************************************************************/
+  //-- return fully expanded role name
+  /*******************************************************************/
+  std::string roleName(const dmpl::Node &node, const dmpl::Role &role)
+  {
+    return "node_" + node->name + "_role_" + role->name;
+  }
+  
+  /*******************************************************************/
+  //-- return fully expanded function name
+  /*******************************************************************/
+  std::string funcName(const dmpl::Node &node, const dmpl::Role &role, const dmpl::Func & func)
+  {
+    return "node_" + node->name + "_role_" + role->name + "_" + func->name;
+  }
+
+  /*******************************************************************/
+  //-- return type of a variable. promote char to short since MADARA
+  //-- does not supprt char currently.
+  /*******************************************************************/
+  std::string get_type_name(const dmpl::Var &var)
+  {
+    if(var->type->type == TCHAR)
+      return "short";
+    else
+      return var->type->toString();
+  }
+
+  /*******************************************************************/
+  //-- print a set of variable declarations, and initialize them
+  //-- appropriately if they are also parameters.
+  /*******************************************************************/
+  void print_vars(std::stringstream &buffer_, const dmpl::Vars& vars, bool isParam)
+  {
+    int i = 0;
+    BOOST_FOREACH (const dmpl::Vars::value_type & variable, vars) {
+      buffer_ << "  " << get_type_name(variable.second);
+      buffer_ << " " << variable.second->name;
+      if(isParam) buffer_ << " = args[" << i << "].to_double();\n";
+      buffer_ << ";\n";
+      ++i;
+    }
+  }
+}
+
+/*********************************************************************/
 //-- constructor
 /*********************************************************************/
 dmpl::gams::GAMS_Builder::GAMS_Builder (dmpl::DmplBuilder & builder,
@@ -302,7 +371,7 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
   {
     //-- generate node-level variables
     build_comment("//-- Begin defining variables for node " + n->second->name, "\n", "\n", 0);
-    open_namespace("node_" + n->second->name);
+    open_namespace(nodeName(n->second));
     build_node_variables(n->second, true);
     build_node_variables(n->second, false);
 
@@ -316,7 +385,7 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
     for (const auto r : n->second->roles) {
       //-- generate role-level variables
       build_comment("//-- Begin defining variables for role " + r.second->name, "\n", "\n", 0);
-      open_namespace("node_" + n->second->name + "_role_" + r.second->name);
+      open_namespace(roleName(n->second, r.second));
       build_role_variables(r.second, true);
       build_role_variables(r.second, false);
 
@@ -327,36 +396,13 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
       }
       
       buffer_ << '\n';
-      close_namespace("node_" + n->second->name + "_role_" + r.second->name);
+      close_namespace(roleName(n->second, r.second));
       build_comment("//-- End defining variables for role " + r.second->name, "", "", 0);
     }
 
     buffer_ << '\n';
-    close_namespace("node_" + n->second->name);
+    close_namespace(nodeName(n->second));
     build_comment("//-- End defining variables for node " + n->second->name, "", "", 0);
-  }
-}
-
-namespace
-{
-  std::string get_type_name(const dmpl::Var &var)
-  {
-    if(var->type->type == TCHAR)
-      return "short";
-    else
-      return var->type->toString();
-  }
-
-  void print_vars(std::stringstream &buffer_, const dmpl::Vars& vars, bool isParam)
-  {
-    int i = 0;
-    BOOST_FOREACH (const dmpl::Vars::value_type & variable, vars) {
-      buffer_ << "  " << get_type_name(variable.second);
-      buffer_ << " " << variable.second->name;
-      if(isParam) buffer_ << " = args[" << i << "].to_double();\n";
-      buffer_ << ";\n";
-      ++i;
-    }
   }
 }
 
@@ -530,8 +576,8 @@ dmpl::gams::GAMS_Builder::build_constructors ()
   for (auto & n : builder_.program.nodes) {
     for(auto & r : n.second->roles)
       buffer_ << "  if(node_name == \"" << n.second->name << "\" && role_name == \""
-              << r.second->name << "\") node_" << n.second->name
-              << "::node_" << n.second->name << "_role_" << r.second->name << "::constructor ();\n";
+              << r.second->name << "\") " << nodeName(n.second) << "::"
+              << roleName(n.second, r.second) << "::constructor ();\n";
   }  
   buffer_ << "\n";
 }
@@ -847,7 +893,7 @@ dmpl::gams::GAMS_Builder::build_parse_args (const Node &node, const Var& var)
     buffer_ << "      if (i + 1 < argc)\n";
     buffer_ << "      {\n";
     buffer_ << "        std::stringstream buffer (argv[i + 1]);\n";
-    buffer_ << "        buffer >> node_" << node->name << "::var_init_" << var->name << ";\n";
+    buffer_ << "        buffer >> " << nodeName(node) << "::var_init_" << var->name << ";\n";
     buffer_ << "      }\n";
     buffer_ << "      \n";
     buffer_ << "      ++i;\n";
@@ -877,7 +923,7 @@ dmpl::gams::GAMS_Builder::build_function_declarations ()
   Nodes & nodes = builder_.program.nodes;
   for (const auto &n : nodes)
   {
-    open_namespace("node_" + n.second->name);
+    open_namespace(nodeName(n.second));
 
     //-- declare all functions for the node with NULL thread. needed
     //-- for functions that must be executed before thread creation.
@@ -890,7 +936,7 @@ dmpl::gams::GAMS_Builder::build_function_declarations ()
     //-- process roles
     for(const auto &r : n.second->roles) {
       build_comment("//-- Declaring functions for role " + r.second->name, "\n", "\n", 0);
-      open_namespace("node_" + n.second->name + "_role_" + r.second->name);
+      open_namespace(roleName(n.second, r.second));
 
       //-- declare all functions for the role with NULL thread. needed
       //-- for functions that must be executed before thread creation.
@@ -906,23 +952,10 @@ dmpl::gams::GAMS_Builder::build_function_declarations ()
         build_function_declarations_for_thread(thread, funcs);
       }
       
-      close_namespace("node_" + n.second->name + "_role_" + r.second->name);
+      close_namespace(roleName(n.second, r.second));
     }
 
-    close_namespace("node_" + n.second->name);
-  }
-}
-
-/*********************************************************************/
-//-- return true if the argument function should not be declared or
-//-- defined.
-/*********************************************************************/
-namespace {
-  bool skip_func(const dmpl::Func & function)
-  {
-    return (function->attrs.count("InitSim") == 0 && (function->isExtern ||
-      function->attrs.count("INIT") > 0 || function->attrs.count("SAFETY") > 0 ||
-      !function->usage_summary.anyNonExpect().any()));
+    close_namespace(nodeName(n.second));
   }
 }
 
@@ -1115,7 +1148,7 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
     build_comment("//-- Begin node " + n->second->name, "\n", "\n", 0);
-    open_namespace("node_" + n->second->name);
+    open_namespace(nodeName(n->second));
     
     //-- build all functions for the node with NULL thread. needed for
     //-- functions that must be executed before thread creation.
@@ -1128,7 +1161,7 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
     //-- process roles
     for(const auto &r : n->second->roles) {
       build_comment("//-- Defining functions for role " + r.second->name, "\n", "\n", 0);
-      open_namespace("node_" + n->second->name + "_role_" + r.second->name);
+      open_namespace(roleName(n->second, r.second));
 
       //-- build all functions for the role with NULL thread. needed
       //-- for functions that must be executed before thread creation.
@@ -1207,10 +1240,10 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
       }
       buffer_ << "}\n\n";
       
-      close_namespace("node_" + n->second->name + "_role_" + r.second->name);
+      close_namespace(roleName(n->second, r.second));
     }
 
-    close_namespace("node_" + n->second->name);
+    close_namespace(nodeName(n->second));
     build_comment("//-- End node " + n->second->name, "\n", "\n", 0);
   }
 
@@ -1346,7 +1379,7 @@ dmpl::gams::GAMS_Builder::build_refresh_modify_global (const Node &node, const V
     
   if (var->scope == Variable::GLOBAL)
   {
-    buffer_ << "  node_" << node->name << "::" << var->name << "[id].mark_modified();\n";
+    buffer_ << "  " << nodeName(node) << "::" << var->name << "[id].mark_modified();\n";
   }
   else
   {
@@ -1431,7 +1464,7 @@ dmpl::gams::GAMS_Builder::build_function (
 
   //-- inherited prototype functions call the base version
   if(function->isPrototype) {
-    buffer_ << "  return node_" << node->name << "::";
+    buffer_ << "  return " << nodeName(node) << "::";
     if(thread) buffer_ << "thread" << thread->threadID << "_";
     buffer_ << function->name << "(args, vars);\n";
     buffer_ << "}\n\n";
@@ -2290,14 +2323,14 @@ dmpl::gams::GAMS_Builder::build_main_function ()
               << r.second->name << "\") {\n";
       Func platInit = r.second->findPlatformInitializer();
       if(platInit != NULL) {
-        buffer_ << "    knowledge.define_function (\"initialize_platform\", node_"
-                << n.second->name << "::node_" << n.second->name
-                << "_role_" << r.second->name << "::" << platInit->name << ");\n";
+        buffer_ << "    knowledge.define_function (\"initialize_platform\", "
+                << nodeName(n.second) << "::" << roleName(n.second, r.second)
+                << "::" << platInit->name << ");\n";
       } else {
         platInit = n.second->findPlatformInitializer();
         if(platInit != NULL)
-          buffer_ << "    knowledge.define_function (\"initialize_platform\", node_"
-                  << n.second->name << "::" << platInit->name << ");\n";
+          buffer_ << "    knowledge.define_function (\"initialize_platform\", "
+                  << nodeName(n.second) << "::" << platInit->name << ");\n";
         else
           throw std::runtime_error("ERROR: role " + r.second->name + " in node " +
                                    n.second->name + " has no platform initializer function!!");
@@ -2396,26 +2429,23 @@ void dmpl::gams::GAMS_Builder::build_algo_creation (const Node &node, const Role
         if (platformFunction == thread)
           buffer_ << "    algo = new Algo(" << period << ", " 
                   << period << ", " << priority << ", " 
-                  << criticality << ", " << zsinst << ", \"node_" << node->name
-                  << "_role_" << role->name << "_" << thread->name 
+                  << criticality << ", " << zsinst << ", \"" << funcName(node, role, thread)
                   << "\", &knowledge, platform_name);\n";
         else
           buffer_ << "    algo = new Algo(" << period << ", "
                   << period << ", " << priority << ", " 
-                  << criticality << ", " << zsinst << ", \"node_" << node->name
-                  << "_role_" << role->name << "_" << thread->name 
+                  << criticality << ", " << zsinst << ", \"" << funcName(node, role, thread)
                   << "\", &knowledge);\n";
       }
       else
 #endif
         {
           if (platformFunction == thread)
-            buffer_ << "    algo = new Algo(" << period << ", \"node_" << node->name
-                    << "_role_" << role->name << "_" << thread->name
+            buffer_ << "    algo = new Algo(" << period << ", \"" << funcName(node, role, thread)
                     << "\", &knowledge, platform_name);\n";
           else
-            buffer_ << "    algo = new Algo(" << period << ", \"node_" << node->name
-                    << "_role_" << role->name << "_" << thread->name << "\", &knowledge);\n";
+            buffer_ << "    algo = new Algo(" << period << ", \"" << funcName(node, role, thread)
+                    << "\", &knowledge);\n";
         }
     }    
     buffer_ << "    algos.push_back(algo);\n";
@@ -2458,10 +2488,9 @@ dmpl::gams::GAMS_Builder::build_main_define_function (const Node & node, const R
 {
   if (skip_func(thread)) return;
 
-  buffer_ << "  knowledge.define_function (\"node_" << node->name << "_role_" << role->name;
-  buffer_ << "_" << thread->name << "\",\n";
-  buffer_ << "                              node_" << node->name << "::node_" << node->name
-          << "_role_" << role->name << "::thread" << thread->threadID << "_" << thread->name;
+  buffer_ << "  knowledge.define_function (\"" << funcName(node, role, thread) << "\",\n";
+  buffer_ << "                              " << nodeName(node) << "::"
+          << roleName(node, role) << "::thread" << thread->threadID << "_" << thread->name;
   buffer_ << ");\n";
 }
 
