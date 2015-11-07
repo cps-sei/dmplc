@@ -2398,28 +2398,31 @@ void dmpl::gams::GAMS_Builder::build_algo_creation (const Node &node, const Role
                                  " both have PlatformController attributes!!");
     }
     
+    const Attribute *syncAttr = role->getAttribute(thread, "BarrierSync", 0);
     //-- for synchronous function
-    if (thread->attrs.count("BarrierSync") == 1) {
+    if(syncAttr) {
 #if USE_MZSRM==1
       if(schedType_ == MZSRM) {
         if (platformFunction == thread)
           buffer_ << "    algo = new SyncAlgo("
                   << period << ", " << priority << ", " 
-                  << criticality << ", " << zsinst << ", \"" << thread->name 
+                  << criticality << ", " << zsinst << ", \"" << funcName(node, role, thread) 
                   << "\", &knowledge, platform_name);\n";
         else
           buffer_ << "    algo = new SyncAlgo("
                   << period << ", " << priority << ", " 
-                  << criticality << ", " << zsinst << ", \"" << thread->name 
+                  << criticality << ", " << zsinst << ", \"" << funcName(node, role, thread)
                   << "\", &knowledge);\n";
       }
       else
 #endif
         {
           if (platformFunction == thread)
-            buffer_ << "    algo = new SyncAlgo(" << period << ", \"" << thread->name << "\", &knowledge, platform_name);\n";
+            buffer_ << "    algo = new SyncAlgo(" << period << ", \"" << funcName(node, role, thread)
+                    << "\", &knowledge, platform_name);\n";
           else
-            buffer_ << "    algo = new SyncAlgo(" << period << ", \"" << thread->name << "\", &knowledge);\n";
+            buffer_ << "    algo = new SyncAlgo(" << period << ", \"" << funcName(node, role, thread)
+                    << "\", &knowledge);\n";
         }
     }
     //-- for asynchronous function
