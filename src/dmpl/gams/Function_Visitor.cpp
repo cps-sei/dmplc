@@ -57,7 +57,7 @@
 #include <dmplc/dmpl-parser.hpp>
 #include "boost/foreach.hpp"
 
-
+/*********************************************************************/
 dmpl::madara::Function_Visitor::Function_Visitor (
   const Func & function, const Node & node, const Func & thread,
   DmplBuilder & builder, std::stringstream & buffer, bool do_vrep, bool do_analyzer)
@@ -68,13 +68,14 @@ dmpl::madara::Function_Visitor::Function_Visitor (
 
 }
 
+/*********************************************************************/
 bool
 dmpl::madara::Function_Visitor::enterInt (IntExpr & expression)
 {
   return false;
 }
 
-
+/*********************************************************************/
 void
 dmpl::madara::Function_Visitor::exitInt (IntExpr & expression)
 {
@@ -83,28 +84,28 @@ dmpl::madara::Function_Visitor::exitInt (IntExpr & expression)
   buffer_ << ")";
 }
 
-
+/*********************************************************************/
 bool
 dmpl::madara::Function_Visitor::enterDouble (DoubleExpr & expression)
 {
   return false;
 }
 
-
+/*********************************************************************/
 void
 dmpl::madara::Function_Visitor::exitDouble (DoubleExpr & expression)
 {
   buffer_ << expression.data;
 }
 
-
+/*********************************************************************/
 bool
 dmpl::madara::Function_Visitor::enterLval (LvalExpr & expression)
 {
   return false;
 }
 
-
+/*********************************************************************/
 void
 dmpl::madara::Function_Visitor::exitLval (LvalExpr & expression)
 {
@@ -155,14 +156,14 @@ dmpl::madara::Function_Visitor::exitLval (LvalExpr & expression)
   }
 }
 
-
+/*********************************************************************/
 bool
 dmpl::madara::Function_Visitor::enterComp (CompExpr & expression)
 {
   return false;
 }
 
-
+/*********************************************************************/
 void
 dmpl::madara::Function_Visitor::exitComp (CompExpr & expression)
 {
@@ -202,15 +203,14 @@ dmpl::madara::Function_Visitor::exitComp (CompExpr & expression)
   return;
 }
 
-
+/*********************************************************************/
 bool
 dmpl::madara::Function_Visitor::enterCall (CallExpr & expression)
 {
   return false;
 }
 
-
-
+/*********************************************************************/
 void
 dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
 {
@@ -349,14 +349,14 @@ dmpl::madara::Function_Visitor::exitCall (CallExpr & expression)
   buffer_ << ")";
 }
 
-
+/*********************************************************************/
 bool
 dmpl::madara::Function_Visitor::enterEXO (EXOExpr & expression)
 {
   return false;
 }
 
-
+/*********************************************************************/
 void
 dmpl::madara::Function_Visitor::exitEXO (EXOExpr & expression)
 {
@@ -402,14 +402,14 @@ dmpl::madara::Function_Visitor::exitEXO (EXOExpr & expression)
   }
 }
 
-
+/*********************************************************************/
 bool
 dmpl::madara::Function_Visitor::enterEXH (EXHExpr & expression)
 {
   return false;
 }
 
-
+/*********************************************************************/
 void
 dmpl::madara::Function_Visitor::exitEXH (EXHExpr & expression)
 {
@@ -451,14 +451,14 @@ dmpl::madara::Function_Visitor::exitEXH (EXHExpr & expression)
   }
 }
 
-
+/*********************************************************************/
 bool
 dmpl::madara::Function_Visitor::enterEXL (EXLExpr & expression)
 {
   return false;
 }
 
-
+/*********************************************************************/
 void
 dmpl::madara::Function_Visitor::exitEXL (EXLExpr & expression)
 {
@@ -500,28 +500,28 @@ dmpl::madara::Function_Visitor::exitEXL (EXLExpr & expression)
   }
 }
 
-
+/*********************************************************************/
 bool
 dmpl::madara::Function_Visitor::enterPrivate (PrivateStmt & statement)
 {
   return false;
 }
 
-
+/*********************************************************************/
 void
 dmpl::madara::Function_Visitor::exitPrivate (PrivateStmt & statement)
 {
   throw std::runtime_error("PRIVATE not supported");
 }
 
-
+/*********************************************************************/
 bool
 dmpl::madara::Function_Visitor::enterBlock (BlockStmt & statement)
 {
   return false;
 }
 
-
+/*********************************************************************/
 void
 dmpl::madara::Function_Visitor::exitBlock (BlockStmt & statement)
 {
@@ -534,14 +534,14 @@ dmpl::madara::Function_Visitor::exitBlock (BlockStmt & statement)
   }
 }
 
-
+/*********************************************************************/
 bool
 dmpl::madara::Function_Visitor::enterAsgn (AsgnStmt & statement)
 {
   return false;
 }
 
-
+/*********************************************************************/
 void
 dmpl::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
 {
@@ -620,14 +620,14 @@ dmpl::madara::Function_Visitor::exitAsgn (AsgnStmt & statement)
   assignment_ = 0;
 }
 
-
+/*********************************************************************/
 bool
 dmpl::madara::Function_Visitor::enterCond (CondStmt & statement)
 {
   return false;
 }
 
-
+/*********************************************************************/
 void
 dmpl::madara::Function_Visitor::exitCond (CondStmt & statement)
 {
@@ -655,13 +655,14 @@ dmpl::madara::Function_Visitor::exitCond (CondStmt & statement)
   indentation_ -= 2;
 }
 
+/*********************************************************************/
 bool
 dmpl::madara::Function_Visitor::enterFor (ForStmt & statement)
 {
   return false;
 }
 
-
+/*********************************************************************/
 void
 dmpl::madara::Function_Visitor::exitFor (ForStmt & statement)
 {
@@ -698,14 +699,14 @@ dmpl::madara::Function_Visitor::exitFor (ForStmt & statement)
   indentation_ -= 2;
 }
 
-
+/*********************************************************************/
 bool
 dmpl::madara::Function_Visitor::enterWhile (WhileStmt & statement)
 {
   return false;
 }
 
-
+/*********************************************************************/
 void
 dmpl::madara::Function_Visitor::exitWhile (WhileStmt & statement)
 {
@@ -725,14 +726,14 @@ dmpl::madara::Function_Visitor::exitWhile (WhileStmt & statement)
   indentation_ -= 2;
 }
 
-
+/*********************************************************************/
 bool
 dmpl::madara::Function_Visitor::enterBreak (BreakStmt & statement)
 {
   return false;
 }
 
-
+/*********************************************************************/
 void
 dmpl::madara::Function_Visitor::exitBreak (BreakStmt & statement)
 {
@@ -741,14 +742,14 @@ dmpl::madara::Function_Visitor::exitBreak (BreakStmt & statement)
   buffer_ << spacer << "break;\n";
 }
 
-
+/*********************************************************************/
 bool
 dmpl::madara::Function_Visitor::enterCont (ContStmt & statement)
 {
   return false;
 }
 
-
+/*********************************************************************/
 void
 dmpl::madara::Function_Visitor::exitCont (ContStmt & statement)
 {
@@ -757,14 +758,14 @@ dmpl::madara::Function_Visitor::exitCont (ContStmt & statement)
   buffer_ << spacer << "continue;\n";
 }
 
-
+/*********************************************************************/
 bool
 dmpl::madara::Function_Visitor::enterRet (RetStmt & statement)
 {
   return false;
 }
 
-
+/*********************************************************************/
 void
 dmpl::madara::Function_Visitor::exitRet (RetStmt & statement)
 {
@@ -786,14 +787,14 @@ dmpl::madara::Function_Visitor::exitRet (RetStmt & statement)
   buffer_ << "));\n";
 }
 
-
+/*********************************************************************/
 bool
 dmpl::madara::Function_Visitor::enterRetVoid (RetVoidStmt & statement)
 {
   return false;
 }
 
-
+/*********************************************************************/
 void
 dmpl::madara::Function_Visitor::exitRetVoid (RetVoidStmt & statement)
 {
@@ -802,14 +803,14 @@ dmpl::madara::Function_Visitor::exitRetVoid (RetVoidStmt & statement)
   buffer_ << spacer << "return Integer(0);\n";
 }
 
-
+/*********************************************************************/
 bool
 dmpl::madara::Function_Visitor::enterCall (CallStmt & statement)
 {
   return false;
 }
 
-
+/*********************************************************************/
 void
 dmpl::madara::Function_Visitor::exitCall (CallStmt & statement)
 {
@@ -831,14 +832,14 @@ dmpl::madara::Function_Visitor::exitCall (CallStmt & statement)
   }
 }
 
-
+/*********************************************************************/
 bool
 dmpl::madara::Function_Visitor::enterFAN (FANStmt & statement)
 {
   return false;
 }
 
-
+/*********************************************************************/
 void
 dmpl::madara::Function_Visitor::exitFAN (FANStmt & statement)
 {
@@ -879,14 +880,14 @@ dmpl::madara::Function_Visitor::exitFAN (FANStmt & statement)
   indentation_ -= 2;
 }
 
-
+/*********************************************************************/
 bool
 dmpl::madara::Function_Visitor::enterFADNP (FADNPStmt & statement)
 {
   return false;
 }
 
-
+/*********************************************************************/
 void
 dmpl::madara::Function_Visitor::exitFADNP (FADNPStmt & statement)
 {
@@ -957,14 +958,14 @@ dmpl::madara::Function_Visitor::exitFADNP (FADNPStmt & statement)
   indentation_ -= 4;
 }
 
-
+/*********************************************************************/
 bool
 dmpl::madara::Function_Visitor::enterFAO (FAOStmt & statement)
 {
   return false;
 }
 
-
+/*********************************************************************/
 void
 dmpl::madara::Function_Visitor::exitFAO (FAOStmt & statement)
 {
@@ -1007,14 +1008,14 @@ dmpl::madara::Function_Visitor::exitFAO (FAOStmt & statement)
   indentation_ -= 2;
 }
 
-
+/*********************************************************************/
 bool
 dmpl::madara::Function_Visitor::enterFAOL (FAOLStmt & statement)
 {
   return false;
 }
 
-
+/*********************************************************************/
 void
 dmpl::madara::Function_Visitor::exitFAOL (FAOLStmt & statement)
 {
@@ -1054,14 +1055,14 @@ dmpl::madara::Function_Visitor::exitFAOL (FAOLStmt & statement)
   indentation_ -= 2;
 }
 
-
+/*********************************************************************/
 bool
 dmpl::madara::Function_Visitor::enterFAOH (FAOHStmt & statement)
 {
   return false;
 }
 
-
+/*********************************************************************/
 void
 dmpl::madara::Function_Visitor::exitFAOH (FAOHStmt & statement)
 {
