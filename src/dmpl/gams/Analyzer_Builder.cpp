@@ -55,7 +55,7 @@
 
 
 #include "Analyzer_Builder.hpp"
-#include <dmpl/gams/Function_Visitor.hpp>
+#include <dmpl/gams/GAMS_Visitor.hpp>
 #include <boost/algorithm/string.hpp>
 #include <vector>
 #include <map>
@@ -927,7 +927,7 @@ dmpl::gams::Analyzer_Builder::build_function (
   
   buffer_ << "\n";
 
-  dmpl::madara::Function_Visitor visitor (function, node, NULL, builder_, buffer_, false, true);
+  dmpl::madara::GAMS_Visitor visitor (function, node, NULL, builder_, buffer_, false, true);
 
   //transform the body of safety
   BOOST_FOREACH (const Stmt & statement, function->body)

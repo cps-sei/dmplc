@@ -8,7 +8,7 @@ SyncSeqDbl.cpp SyncSeqDblInd.cpp ../dmpl/Attribute.cpp \
 ../dmpl/CProgram.cpp ../dmpl/Visitor.cpp ../dmpl/Role.cpp \
 ../dmpl/Specification.cpp ../dmpl/gams/GAMS_Builder.cpp \
 ../dmpl/gams/Analyzer_Builder.cpp \
-../dmpl/gams/Function_Visitor.cpp
+../dmpl/gams/GAMS_Visitor.cpp
 # ArrayElim.cpp
 
 OBJ=$(SRC:.cpp=.o)

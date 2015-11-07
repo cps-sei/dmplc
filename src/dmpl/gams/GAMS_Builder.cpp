@@ -61,7 +61,7 @@ extern "C" {
 #endif
 
 #include "GAMS_Builder.hpp"
-#include <dmpl/gams/Function_Visitor.hpp>
+#include <dmpl/gams/GAMS_Visitor.hpp>
 #include <boost/algorithm/string.hpp>
 #include <vector>
 #include <map>
@@ -1082,7 +1082,7 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
           print_vars(buffer_, rec->initFunc->temps, false);
         
           //-- transform statements
-          dmpl::madara::Function_Visitor visitor (rec->initFunc, n->second, Func(),
+          dmpl::madara::GAMS_Visitor visitor (rec->initFunc, n->second, Func(),
                                                   builder_, buffer_, false);
           for (const Stmt & statement : rec->initFunc->body)
             visitor.visit (statement);
@@ -1094,7 +1094,7 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
           print_vars(buffer_, rec->assumeFunc->temps, false);
         
           //-- transform statements
-          dmpl::madara::Function_Visitor visitor (rec->assumeFunc, n->second, Func(),
+          dmpl::madara::GAMS_Visitor visitor (rec->assumeFunc, n->second, Func(),
                                                   builder_, buffer_, false);
           for (const Stmt & statement : rec->assumeFunc->body)
             visitor.visit (statement);
@@ -1156,7 +1156,7 @@ dmpl::gams::GAMS_Builder::build_constructor_for_variable (Var &v, Node &node)
     print_vars(buffer_, v->initFunc->temps, false);
     
     //-- transform statements
-    dmpl::madara::Function_Visitor visitor (v->initFunc, node, Func(),
+    dmpl::madara::GAMS_Visitor visitor (v->initFunc, node, Func(),
                                             builder_, buffer_, false);
     for (const Stmt & statement : v->initFunc->body)
       visitor.visit (statement);
@@ -1370,7 +1370,7 @@ dmpl::gams::GAMS_Builder::build_function (
   buffer_ << "\n";
 
   buffer_ << "\n  //-- Begin function body\n";
-  dmpl::madara::Function_Visitor visitor (function, node, thread, builder_, buffer_, false);
+  dmpl::madara::GAMS_Visitor visitor (function, node, thread, builder_, buffer_, false);
 
   //transform the body of safety
   BOOST_FOREACH (const Stmt & statement, function->body)

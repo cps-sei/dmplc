@@ -54,8 +54,8 @@
 **/
 
 
-#ifndef __MADARA_FUNCTION_VISITOR_H__
-#define __MADARA_FUNCTION_VISITOR_H__
+#ifndef __GAMS_VISITOR_H__
+#define __GAMS_VISITOR_H__
 
 #include <iostream>
 #include <sstream>
@@ -72,7 +72,7 @@ namespace dmpl
     /*******************************************************************/
     // Visitor for function elements
     /*******************************************************************/
-    class Function_Visitor : public Visitor
+    class GAMS_Visitor : public Visitor
     {
     public:
       /**
@@ -80,15 +80,15 @@ namespace dmpl
        * @param  builder   the source for building a program
        * @param  buffer    the buffer being used to create the program text
        **/
-      Function_Visitor (const Func & function, const Node & node,
-                        const Func & thread,
-                        DmplBuilder & builder, std::stringstream & buffer,
-                        bool do_vrep, bool do_analyzer = false);
+      GAMS_Visitor (const Func & function, const Node & node,
+                    const Func & thread,
+                    DmplBuilder & builder, std::stringstream & buffer,
+                    bool do_vrep, bool do_analyzer = false);
 
-      Function_Visitor (const Stmt & statement, const Node & node,
-                        const Func & thread,
-                        DmplBuilder & builder, std::stringstream & buffer,
-                        bool do_vrep, bool do_analyzer = false);
+      GAMS_Visitor (const Stmt & statement, const Node & node,
+                    const Func & thread,
+                    DmplBuilder & builder, std::stringstream & buffer,
+                    bool do_vrep, bool do_analyzer = false);
       
     /**
      * Returns whether or not to visit the Integer's subfields first.
@@ -419,4 +419,4 @@ namespace dmpl
   } // namespace madara
 } //namespace dmpl
 
-#endif //__MADARA_FUNCTION_VISITOR_H__
+#endif //__GAMS_VISITOR_H__
