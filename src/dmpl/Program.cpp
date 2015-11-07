@@ -212,6 +212,17 @@ namespace {
 /*********************************************************************/
 void dmpl::Program::complete()
 {
+  //-- add nodes and roles to functions
+  for(auto &n : nodes) {
+    for(auto &f : n.second->funcs) f.second->node = n.second;
+
+    for(auto &r : n.second->roles)
+      for(auto &f : r.second->funcs) {
+        f.second->node = n.second;
+        f.second->role = r.second;
+      }
+  }
+  
   //-- add nodes to specifications
   for(auto &n : nodes) {
     for(auto &sp : n.second->specs) {

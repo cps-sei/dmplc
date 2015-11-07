@@ -110,6 +110,11 @@ namespace dmpl
     //starting with 0. A non-thread function has id -1
     int threadID;
 
+    //-- the node and role which this function belongs to. these are
+    //-- assigned after parsing.
+    Node node;
+    Role role;
+    
     virtual const Type &getType() { return retType; }
 
     virtual bool canWrite() { return false; }
