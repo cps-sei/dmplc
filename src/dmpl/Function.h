@@ -125,8 +125,8 @@ namespace dmpl
     ///since their scope is only the function body
     Vars temps;
 
-    VarList writesTo;
-    VarList readsFrom;
+    //VarList writesTo;
+    //VarList readsFrom;
 
     /**
      * The function body
