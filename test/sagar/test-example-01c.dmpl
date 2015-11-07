@@ -259,8 +259,10 @@ node uav
 
     @Period(888);
     @PlatformController;
+    @BarrierSync;
     override thread COLLISION_AVOIDANCE {
       d3l = 10;
+      foo4();
     }
   }
 
