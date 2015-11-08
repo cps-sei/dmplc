@@ -241,14 +241,7 @@ dmpl::madara::GAMS_Visitor::exitCall (CallExpr & expression)
     buffer_ << "(void) ";
 
   buffer_ << "(";
-
-  if(function_ && function_->isPure && func && !func->isPure)
-  {
-    std::cerr << "ERROR: cannot call non-PURE function \"" << func_name
-              << "\" from PURE function \"" << function_->getName() << "\"" << std::endl;
-    exit(1);
-  }
-
+  
   if (func != NULL && !func->isExtern)
   {
     if(lval.node != NULL)

@@ -102,6 +102,26 @@ void dmpl::program::SanityChecker::exitCall(dmpl::CallStmt &stmt)
                                " in node " + (node ? node->name : "null") +
                                " does not have 1 argument!!");
   }
+
+  //-- pure functions must only call other pure functions
+  if(func->isPure) {
+    if(func->role) {
+      Func f = func->role->findFunc(expr->func->toString());
+      if(f != NULL && !f->isPure)
+        throw std::runtime_error("ERROR: pure function " + func->name +
+                                 " in role " + (role ? role->name : "null") +
+                                 " in node " + (node ? node->name : "null") +
+                                 " calls non-pure function " + f->name + "!!");
+    }
+    else if(func->node) {
+      Func f = func->node->findFunc(expr->func->toString());
+      if(f != NULL && !f->isPure)
+        throw std::runtime_error("ERROR: pure function " + func->name +
+                                 " in role " + (role ? role->name : "null") +
+                                 " in node " + (node ? node->name : "null") +
+                                 " calls non-pure function " + f->name + "!!");
+    }
+  }
 }
 
 void dmpl::program::SanityChecker::exitFAN(dmpl::FANStmt &stmt) 
