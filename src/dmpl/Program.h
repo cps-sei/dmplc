@@ -226,6 +226,9 @@ namespace dmpl
     //-- during parse time
     void complete();
 
+    //-- sanity check a set of functions
+    void sanityCheckFuncs(const Funcs &arg, const Node &node, const Role &role);
+    
     ///check various sanity conditions on the program
     void sanityCheck();
 

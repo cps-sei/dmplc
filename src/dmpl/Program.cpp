@@ -250,6 +250,20 @@ void dmpl::Program::complete()
 }
 
 /*********************************************************************/
+//-- sanity check a set of functions
+/*********************************************************************/
+void dmpl::Program::sanityCheckFuncs(const Funcs &arg, const Node &node, const Role &role)
+{
+  BOOST_FOREACH(const Funcs::value_type &v,arg) {
+    BOOST_FOREACH(Stmt &s, v.second->body) {
+      dmpl::program::SanityChecker sc(*this, node, role, v.second);
+      if(node != NULL) sc.addIdMap(*(node->args.begin()), 0);
+      sc.visit(s);
+    }
+  }
+}
+
+/*********************************************************************/
 //check various sanity conditions
 /*********************************************************************/
 void
