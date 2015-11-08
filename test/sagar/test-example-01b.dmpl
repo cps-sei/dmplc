@@ -235,7 +235,15 @@ node uav
   }
 
   void foo3(int xx, int yy) {}
-  void foo5(int zz) { zz = d2g; }
+  void foo5(int zz)
+  {
+    FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+      FORALL_DISTINCT_NODE_PAIR (id3,id4) {
+        d2l = 20;
+      }
+    }
+    zz = d2g;
+  }
   
   //------------------------------------------------//
   role Uav2 {
@@ -255,7 +263,15 @@ node uav
     }
 
     @Period(777);
-    thread foo2 { d2l = -50; foo3(11, 33); }
+    thread foo2 {
+      d2l = -50; foo3(11, 33);
+      FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+        FORALL_DISTINCT_NODE_PAIR (id3,id4) {
+          d2l = 20;
+        }
+      }
+
+    }
 
     @Period(888);
     @PlatformController;
