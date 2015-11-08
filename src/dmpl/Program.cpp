@@ -96,8 +96,11 @@ void dmpl::program::SanityChecker::exitCall(dmpl::CallStmt &stmt)
   CallExpr *expr = dynamic_cast<CallExpr*>(stmt.data.get());
   if(!expr) assert(0 && "ERROR: argument to call statement not a CallExpr!");
   if(expr->func->toString() == "ND") {
-    assert(expr->args.size() == 1 && 
-           "ERROR: call to ND() must have one argument!");
+    if(expr->args.size() != 1)
+      throw std::runtime_error("ERROR: call to ND in function " + func->name +
+                               " in role " + (role ? role->name : "null") +
+                               " in node " + (node ? node->name : "null") +
+                               " does not have 1 argument!!");
   }
 }
 
