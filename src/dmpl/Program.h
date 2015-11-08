@@ -244,14 +244,18 @@ namespace dmpl
     /*****************************************************************/
     struct SanityChecker : public Visitor
     {
-      //the DMPL program being checked
+      //the DMPL program, node, role and function being checked
       Program &prog;
-
+      Node node;
+      Role role;
+      Func func;
+      
       //map from variables to constants for substitution
       std::map<std::string,size_t> idMap;
 
       //constructors
-      SanityChecker(Program &p) : prog(p) {}
+      SanityChecker(Program &p, Node n, Role r, Func f)
+        : prog(p), node(n), role(r), func(f) {}
 
       //update substitution mapping
       void addIdMap(const std::string &s,size_t i);
