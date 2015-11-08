@@ -227,7 +227,7 @@ namespace dmpl
     void complete();
 
     //-- sanity check a set of functions
-    void sanityCheckFuncs(const Funcs &arg, const Node &node, const Role &role);
+    void sanityCheckFuncs(const Funcs &arg);
     
     ///check various sanity conditions on the program
     void sanityCheck();
@@ -257,8 +257,7 @@ namespace dmpl
       std::map<std::string,size_t> idMap;
 
       //constructors
-      SanityChecker(Program &p, Node n, Role r, Func f)
-        : prog(p), node(n), role(r), func(f) {}
+      SanityChecker(Program &p, Func f) : prog(p), node(f->node), role(f->role), func(f) {}
 
       //update substitution mapping
       void addIdMap(const std::string &s,size_t i);

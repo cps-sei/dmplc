@@ -256,12 +256,12 @@ void dmpl::Program::complete()
 /*********************************************************************/
 //-- sanity check a set of functions
 /*********************************************************************/
-void dmpl::Program::sanityCheckFuncs(const Funcs &arg, const Node &node, const Role &role)
+void dmpl::Program::sanityCheckFuncs(const Funcs &arg)
 {
   BOOST_FOREACH(const Funcs::value_type &v,arg) {
     BOOST_FOREACH(Stmt &s, v.second->body) {
-      dmpl::program::SanityChecker sc(*this, node, role, v.second);
-      if(node != NULL) sc.addIdMap(*(node->args.begin()), 0);
+      dmpl::program::SanityChecker sc(*this, v.second);
+      if(v.second->node != NULL) sc.addIdMap(*(v.second->node->args.begin()), 0);
       sc.visit(s);
     }
   }
@@ -282,13 +282,12 @@ dmpl::Program::sanityCheck()
   node->initArgs();
 
   //check global functions
-  sanityCheckFuncs(funcs, Node(), Role());
+  sanityCheckFuncs(funcs);
 
   //check node and role functions
   for(auto &n : nodes) {
-    sanityCheckFuncs(n.second->funcs, n.second, Role());
-    for(auto &r : n.second->roles)
-      sanityCheckFuncs(r.second->funcs, n.second, r.second);
+    sanityCheckFuncs(n.second->funcs);
+    for(auto &r : n.second->roles) sanityCheckFuncs(r.second->funcs);
   }
 
   //-- local and global variables must have distinct names
