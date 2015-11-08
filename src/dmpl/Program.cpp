@@ -68,20 +68,21 @@
 //add id to int mapping
 void dmpl::program::SanityChecker::addIdMap(const std::string &s,size_t i)
 {
-  if(idMap.count(s)) {
-    std::cerr << "ERROR: substitution mapping for " << s << " exists already!!\n";
-    assert(0);
-  }
+  if(idMap.count(s))
+    throw std::runtime_error("ERROR: illegal scoping of id variable " + s + " in function " +
+                             func->name + " in role " + (role ? role->name : "null") +
+                             " in node " + (node ? node->name : "null") + "!!");
   idMap[s] = i;
 }
 
 //remove id to int mappiing
 void dmpl::program::SanityChecker::delIdMap(const std::string &s)
 {
-  if(!idMap.count(s)) {
-    std::cerr << "ERROR: substitution mapping for " << s << " doesn't exist!!\n";
-    assert(0);
-  }
+  if(!idMap.count(s))
+    throw std::runtime_error("ERROR: illegal scoping of id variable " + s + " in function " +
+                             func->name + " in role " + (role ? role->name : "null") +
+                             " in node " + (node ? node->name : "null") + "!!");
+
   idMap.erase(s);
 }
 
