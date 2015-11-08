@@ -244,7 +244,7 @@ namespace dmpl
     /*****************************************************************/
     struct SanityChecker : public Visitor
     {
-      //the DASL program being checked
+      //the DMPL program being checked
       Program &prog;
 
       //map from variables to constants for substitution
