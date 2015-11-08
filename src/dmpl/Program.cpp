@@ -276,19 +276,20 @@ dmpl::Program::sanityCheck()
   //only one type of node
   assert(nodes.size() == 1 && "ERROR: only a single node type supported!");
 
-  //check global functions
-  BOOST_FOREACH(Funcs::value_type &v,funcs) {
-    BOOST_FOREACH(Stmt &s, v.second->body) {
-      dmpl::program::SanityChecker sc(*this);
-      sc.visit(s);
-    }
-  }
-
   //nodes have just one parameter -- its id
   Node &node = nodes.begin()->second;
   assert(node->args.size() == 1 && "ERROR: node must have one id!");
   node->initArgs();
-  const std::string &nodeId = *(node->args.begin());
+
+  //check global functions
+  sanityCheckFuncs(funcs, Node(), Role());
+
+  //check node and role functions
+  for(auto &n : nodes) {
+    sanityCheckFuncs(n.second->funcs, n.second, Role());
+    for(auto &r : n.second->roles)
+      sanityCheckFuncs(r.second->funcs, n.second, r.second);
+  }
 
   //-- local and global variables must have distinct names
   std::string cv = commonStr(varNames(node->locVars), varNames(node->globVars));
@@ -446,15 +447,6 @@ dmpl::Program::sanityCheck()
       if(!rec.second->isOverride && node->hasRecord(rec.second))
         throw std::runtime_error("Role " + r.second->name +
                                  " must override record " + rec.second->name + "!!");
-    }
-  }
-
-  //check node functions
-  BOOST_FOREACH(Funcs::value_type &v,node->funcs) {
-    BOOST_FOREACH(Stmt &s, v.second->body) {
-      dmpl::program::SanityChecker sc(*this);
-      sc.addIdMap(nodeId,0);
-      sc.visit(s);
     }
   }
 }
