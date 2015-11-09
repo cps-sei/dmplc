@@ -117,7 +117,8 @@ dmpl::Function::print (std::ostream &os,unsigned int indent)
   for(const auto &a : attrs) os << spacer << '@' << a.second.toString() << ";\n";
   
   //-- print return type and name
-  os << spacer << (isOverride ? "override " : "") << retType->toString() << " " << name;
+  os << spacer << (isOverride ? "override " : "") << (isPure ? "pure " : "")
+     << retType->toString() << " " << name;
 
   //-- handle non-thread function
   if(!retType->isThread()) {
