@@ -235,6 +235,7 @@ node uav
   }
 
   void foo3(int xx, int yy) {}
+  pure void foo4(int zz) { int zzt; zzt = zz + d2l; }
   void foo5(int zz)
   {
     FORALL_DISTINCT_NODE_PAIR (id1,id2) {
@@ -253,7 +254,7 @@ node uav
       d4g = xx + 2;
     };
 
-    void foo4(int zz) { zz = 11; }
+    override pure void foo4(int zz) { int zzt; zzt = zz + d2l; }
     override void foo5(int zz) { zz = 22222; zz = d4g; }
     override void foo3(int yy, int zz) { foo4(yy); foo5(yy); }
     
