@@ -275,7 +275,8 @@ namespace dmpl
       specs.emplace(s->name,s);
     }
 
-    ///return true if the argument is the name of a defined DMPL function of this node
+    ///return true if the argument is the name of a defined DMPL
+    ///function of this role
     bool isFunction(const std::string &fn)
     {
       return funcs.count(fn) > 0;
