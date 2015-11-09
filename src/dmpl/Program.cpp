@@ -296,10 +296,10 @@ void dmpl::Program::complete()
     for(auto &sp : n.second->specs) {
       sp.second->node = n.second;
 
-      ExpectSpec *ep = static_cast<ExpectSpec*>(sp.second.get());
+      ExpectSpec *ep = dynamic_cast<ExpectSpec*>(sp.second.get());
       if(ep) { ep->setFunc(); continue; }
       
-      RequireSpec *rp = static_cast<RequireSpec*>(sp.second.get());
+      RequireSpec *rp = dynamic_cast<RequireSpec*>(sp.second.get());
       if(rp) { rp->setFunc(); continue; }
     }
     
@@ -310,10 +310,10 @@ void dmpl::Program::complete()
         sp.second->node = n.second;
         sp.second->role = r.second;
         
-        ExpectSpec *ep = static_cast<ExpectSpec*>(sp.second.get());
+        ExpectSpec *ep = dynamic_cast<ExpectSpec*>(sp.second.get());
         if(ep) { ep->setFunc(); continue; }
         
-        RequireSpec *rp = static_cast<RequireSpec*>(sp.second.get());
+        RequireSpec *rp = dynamic_cast<RequireSpec*>(sp.second.get());
         if(rp) { rp->setFunc(); continue; }
       }
     }
