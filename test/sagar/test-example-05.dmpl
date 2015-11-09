@@ -594,7 +594,7 @@ node uav {
       //return formation@0 ? 0.7 : 0.3;
     }
     
-    bool COVERAGE_FUNC ()
+    pure bool COVERAGE_FUNC ()
     {
       return (current_hazard * (1-coverage()) < 0.1);
     }
@@ -611,7 +611,7 @@ node uav {
     @AtNode(0);
     expect COVERAGE : at_least 0.85 => COVERAGE_FUNC;
     
-    bool REACHED_END_FUNC () { return (x@0 == xt@0 && y@0 == yt@0); }
+    pure bool REACHED_END_FUNC () { return (x@0 == xt@0 && y@0 == yt@0); }
     
     @AtNode(0);
     expect REACHED_END : at_end => REACHED_END_FUNC;

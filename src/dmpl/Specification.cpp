@@ -77,11 +77,18 @@ void dmpl::ExpectSpec::setFunc()
     if(func == NULL)
       throw std::runtime_error("ERROR: function " + funcName + " for expect spec " +
                                name + " not found in node " + node->name + "!!");
+    if(!func->isPure)
+      throw std::runtime_error("ERROR: non-pure function " + funcName + " for expect spec " +
+                               name + " in node " + node->name + "!!");    
   } else {
     func = role->findFunc(funcName);
     if(func == NULL)
       throw std::runtime_error("ERROR: function " + funcName + " for expect spec " +
                                name + " not found in role " + role->name +
+                               " of node " + node->name + "!!");
+    if(!func->isPure)
+      throw std::runtime_error("ERROR: non-pure function " + funcName + " for expect spec " +
+                               name + " in role " + role->name +
                                " of node " + node->name + "!!");
   }
 }
@@ -107,11 +114,18 @@ void dmpl::RequireSpec::setFunc()
     if(func == NULL)
       throw std::runtime_error("ERROR: function " + funcName + " for require spec " +
                                name + " not found in node " + node->name + "!!");
+    if(!func->isPure)
+      throw std::runtime_error("ERROR: non-pure function " + funcName + " for require spec " +
+                               name + " in node " + node->name + "!!");    
   } else {
     func = role->findFunc(funcName);
     if(func == NULL)
       throw std::runtime_error("ERROR: function " + funcName + " for require spec " +
                                name + " not found in role " + role->name +
+                               " of node " + node->name + "!!");
+    if(!func->isPure)
+      throw std::runtime_error("ERROR: non-pure function " + funcName + " for require spec " +
+                               name + " in role " + role->name +
                                " of node " + node->name + "!!");
   }
 }

@@ -291,7 +291,7 @@ node uav
   }
 
   //the safety property checked at the beginning of each round
-  bool NoCollisions ()
+  pure bool NoCollisions ()
   {
     FORALL_DISTINCT_NODE_PAIR (id1,id2) {
       if(x@id1 == x@id2 && y@id1 == y@id2) return false;
