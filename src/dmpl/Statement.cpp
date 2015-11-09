@@ -66,5 +66,25 @@ bool dmpl::isBlock(const dmpl::Stmt &stmt)
 }
 
 /*********************************************************************/
+//-- methods of AsgnStmt class
+/*********************************************************************/
+dmpl::Statement::Context dmpl::AsgnStmt::useSymbols(dmpl::Statement::Context con)
+{
+  //-- process lhs
+  {
+    Context conW = con;
+    conW.isLHS = true;
+    lhs->useSymbols(conW);
+    inherit(lhs);
+  }
+  
+  //-- process rhs
+  rhs->useSymbols(con);
+  inherit(rhs);
+  
+  return con;
+}
+
+/*********************************************************************/
 //end of file
 /*********************************************************************/

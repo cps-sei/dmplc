@@ -149,26 +149,20 @@ namespace dmpl
     Expr lhs,rhs;
 
     AsgnStmt(const Expr &l,const Expr &r) : lhs(l),rhs(r) {}
-    std::string toString() const { 
+    
+    std::string toString() const
+    { 
       return lhs->toString() + " = " + rhs->toString(); 
     }
+
     void print (std::ostream &os,unsigned int indent) const
     {
       std::string spacer (indent, ' ');
       os << spacer << lhs->toString() << " = " << rhs->toString() << ";\n";
     }
 
-    virtual Context useSymbols(Context con) {
-      {
-        Context conW = con;
-        conW.isLHS = true;
-        lhs->useSymbols(conW);
-        inherit(lhs);
-      }
-      rhs->useSymbols(con);
-      inherit(rhs);
-      return con;
-    }
+    //-- symbol usage analysis
+    virtual Context useSymbols(Context con);
   };
 
   //an if-then statement
