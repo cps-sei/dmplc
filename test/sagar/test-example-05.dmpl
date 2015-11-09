@@ -189,6 +189,13 @@ void print_state(int _X,int _Y,int _id, int x, int y, int xf, int yf)
     print_line(_X);
   }
 }
+
+//-- update the cover value
+double update_cover(double old_cover, double node_rad, double dist)
+{
+  return old_cover + asin(node_rad/dist) / M_PI;
+}
+
 %%}
 
 //number of X and Y coordinates
@@ -229,6 +236,7 @@ extern pure double GET_Y();
 extern pure double sqrt(double x);
 extern pure double asin(double x);
 extern pure void LOG(double x);
+extern double update_cover(double old_cover, double node_rad, double dist);
 
 //-- the external function implementing the adaptation
 //-- manager. returns 0 for loose formation and 1 for tight formation.
@@ -339,65 +347,6 @@ node uav {
     local double started_move;
     local double delay_until;
   } = {}
-  
-  //-- the function that computes the coverage of the
-  //-- leader. currently we assume that protectors do not provide
-  //-- overlapping coverage.
-  pure double coverage()
-  {
-    double cover = 0.0, dist = 0.0;
-    double lat0 = 0.0,lng0 = 0.0,lat = 0.0,lng = 0.0;
-    
-    lat0 = GET_X()@id;
-    lng0 = GET_Y()@id;
-    
-    if(lat0 == NAN || lng0 == NAN)
-      return cover;
-    
-    FORALL_NODE(nid) {
-      if(nid == id) continue;
-      lat = GET_X()@nid;
-      lng = GET_Y()@nid;
-      
-      dist = sqrt((lat - lat0) * (lat - lat0) +
-                  (lng - lng0) * (lng - lng0));
-      
-      //-- to avoid the call to asin() from crashing. should never
-      //-- happen.
-      if(dist == 0.0 || dist == NAN) continue;
-      
-      cover = cover + asin(NODE_RAD/dist) / M_PI;
-    }
-    
-    //print_cover(cover);
-    //print_hazard(current_hazard);
-    return cover;
-    
-    // Made up; depends on formation
-    //return formation@0 ? 0.7 : 0.3;
-  }
-
-  bool COVERAGE_FUNC ()
-  {
-    return (current_hazard * (1-coverage()) < 0.1);
-  }
-      
-  @AtNode(0);
-  expect COVERAGE : at_least 0.85 => COVERAGE_FUNC;
-
-  bool REACHED_END_FUNC () { return (x@0 == xt@0 && y@0 == yt@0); }
-  
-  @AtNode(0);
-  expect REACHED_END : at_end => REACHED_END_FUNC;
-
-  pure double risk_integral()
-  {
-    if(id == 0)
-      //return accumulate_risk(current_hazard * (1-coverage()) * 0.2);
-      return INTEGRATE(current_hazard * (1-coverage()));
-    else
-      return 0.0;
-  }
   
   //@AT_END
   //expect RISK_INTEGRAL(risk_integral() < 0.105);
@@ -607,7 +556,66 @@ node uav {
       SET_HAZARDS();
       SET_VARIANCES();
     }
+  
+    //-- the function that computes the coverage of the
+    //-- leader. currently we assume that protectors do not provide
+    //-- overlapping coverage.
+    pure double coverage()
+    {
+      double cover = 0.0, dist = 0.0;
+      double lat0 = 0.0,lng0 = 0.0,lat = 0.0,lng = 0.0;
+      
+      lat0 = GET_X()@id;
+      lng0 = GET_Y()@id;
+      
+      if(lat0 == NAN || lng0 == NAN)
+        return cover;
+      
+      FORALL_NODE(nid) {
+        if(nid == id) continue;
+        lat = GET_X()@nid;
+        lng = GET_Y()@nid;
+        
+        dist = sqrt((lat - lat0) * (lat - lat0) +
+                    (lng - lng0) * (lng - lng0));
+        
+        //-- to avoid the call to asin() from crashing. should never
+        //-- happen.
+        if(dist == 0.0 || dist == NAN) continue;
+        
+        cover = update_cover(cover, NODE_RAD, dist);
+      }
+      
+      //print_cover(cover);
+      //print_hazard(current_hazard);
+      return cover;
+      
+      // Made up; depends on formation
+      //return formation@0 ? 0.7 : 0.3;
+    }
+    
+    bool COVERAGE_FUNC ()
+    {
+      return (current_hazard * (1-coverage()) < 0.1);
+    }
 
+    pure double risk_integral()
+    {
+      if(id == 0)
+        //return accumulate_risk(current_hazard * (1-coverage()) * 0.2);
+        return INTEGRATE(current_hazard * (1-coverage()));
+      else
+        return 0.0;
+    }
+      
+    @AtNode(0);
+    expect COVERAGE : at_least 0.85 => COVERAGE_FUNC;
+    
+    bool REACHED_END_FUNC () { return (x@0 == xt@0 && y@0 == yt@0); }
+    
+    @AtNode(0);
+    expect REACHED_END : at_end => REACHED_END_FUNC;
+    
     local unsigned char input scenario;
 
     //-- scenario selector
@@ -740,6 +748,8 @@ node uav {
     //-- stuff for Leader do once the next waypoint is reached
     override void REACHED_NEXT_XY()
     {
+      int i;
+      
       uav::REACHED_NEXT_XY();
 
       if(started_move > 0 && formation@id == 1 && speed_factor > 1)

@@ -87,8 +87,38 @@ void dmpl::program::SanityChecker::delIdMap(const std::string &s)
 }
 
 /*********************************************************************/
-//dispatchers for statements
+//dispatchers for expressions and statements
 /*********************************************************************/
+
+//-- check for usage of out of scope variables
+void dmpl::program::SanityChecker::exitLval(dmpl::LvalExpr &expr)
+{
+  //-- check special cases and constants
+  if(expr.var == "true" || expr.var == "false") return;
+  if(expr.var == "ND" || expr.var == "ASSUME" ||
+     expr.var == "ASSERT" || expr.var == "INTEGRATE") return;
+  if(prog.constDef.find(expr.var) != prog.constDef.end()) return;
+
+  //-- check platform symbols
+  if(prog.platformSymbols.find(expr.var) != prog.platformSymbols.end()) return;
+  
+  //-- check external functions
+  if(prog.isFunction(expr.var)) return;
+  
+  //-- check local id variables
+  if(idMap.find(expr.var) != idMap.end()) return;
+
+  //-- finally check variables and functions in scope of the function
+  SymbolUser::Context ctx;
+  ctx.node = node.get();
+  ctx.role = role.get();
+  ctx.curFunc = func;
+  if(ctx.findSym(expr.var) == NULL)
+    throw std::runtime_error("ERROR: function " + func->name +
+                             " in role " + (role ? role->name : "null") +
+                             " in node " + (node ? node->name : "null") +
+                             " uses out of scope variable " + expr.var + "!!");
+}
 
 void dmpl::program::SanityChecker::exitAsgn(dmpl::AsgnStmt &stmt)
 {

@@ -275,6 +275,7 @@ namespace dmpl
       void delIdMap(const std::string &s);
 
       //dispatchers
+      void exitLval(LvalExpr &expr);
       void exitAsgn(AsgnStmt &stmt);
       void exitCall(CallStmt &stmt);
       bool enterFAN(FANStmt &stmt) { return false; }

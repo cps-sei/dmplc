@@ -207,7 +207,7 @@ node uav
     d1 = d1t * 5;
   };
 
-  thread foo1 { d1 = 44; }
+  thread foo1 { int bbbb; d1 = 44; bbbb = d1; }
   
   //------------------------------------------------//
   role Uav1 {
@@ -235,9 +235,11 @@ node uav
   }
 
   void foo3(int xx, int yy) {}
-  pure void foo4(int zz) { int zzt; zzt = zz + d2l; }
+  pure void foo4(int zz) { int zzt; zzt = zz + 10; }
   void foo5(int zz)
   {
+    int d2l;
+    char d2g;
     FORALL_DISTINCT_NODE_PAIR (id1,id2) {
       FORALL_DISTINCT_NODE_PAIR (id3,id4) {
         d2l = 20;
