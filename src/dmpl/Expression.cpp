@@ -146,7 +146,8 @@ dmpl::CallExpr::Context dmpl::CallExpr::useSymbols(Context con)
   }
   else
   {
-    std::cerr << "Symbol not found: " << lval.var << std::endl;
+    if(lval.var != "ASSERT")
+      std::cerr << "Symbol not found: " << lval.var << std::endl;
   }
   return con;
 }
