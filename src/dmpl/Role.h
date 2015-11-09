@@ -279,7 +279,7 @@ namespace dmpl
     ///function of this role
     bool isFunction(const std::string &fn)
     {
-      return funcs.count(fn) > 0;
+      return funcs.find(fn) != funcs.end();
     }
 
     ///merge with another role
