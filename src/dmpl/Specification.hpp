@@ -82,6 +82,9 @@ namespace dmpl
 
     //-- the node to which the specification belong
     Node node;
+
+    //-- the role to which the specification belong
+    Role role;
     
     Specification(const std::string &n) : name(n) {}
     
@@ -106,6 +109,9 @@ namespace dmpl
 
     //-- compute the set of parents. needed for symbol usage analysis.
     virtual SymUserList getParents(Context &con);
+
+    //-- set the function
+    void setFunc();
   };
 
   //an at_end expect specification
@@ -177,6 +183,9 @@ namespace dmpl
 
     //-- compute the set of parents. needed for symbol usage analysis.
     virtual SymUserList getParents(Context &con);
+
+    //-- set the function
+    void setFunc();
   };
 }
 

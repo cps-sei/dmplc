@@ -54,6 +54,7 @@
 **/
 
 #include "Specification.hpp"
+#include "Node.h"
 #include "Function.h"
 
 /*********************************************************************/
@@ -66,6 +67,25 @@ dmpl::SymUserList dmpl::ExpectSpec::getParents(Context &con)
   return ret;
 }
 
+/*********************************************************************/
+//-- set function evaluating the property
+/*********************************************************************/
+void dmpl::ExpectSpec::setFunc()
+{
+  if(role == NULL) {
+    func = node->findFunc(funcName);
+    if(func == NULL)
+      throw std::runtime_error("ERROR: function " + funcName + " for expect spec " +
+                               name + " not found in node " + node->name + "!!");
+  } else {
+    func = role->findFunc(funcName);
+    if(func == NULL)
+      throw std::runtime_error("ERROR: function " + funcName + " for expect spec " +
+                               name + " not found in role " + role->name +
+                               " of node " + node->name + "!!");
+  }
+}
+
 
 /*********************************************************************/
 //-- needed for symbol usage analysis
@@ -75,6 +95,25 @@ dmpl::SymUserList dmpl::RequireSpec::getParents(Context &con)
   SymUserList ret;
   ret.push_back(func);
   return ret;
+}
+
+/*********************************************************************/
+//-- set function evaluating the property
+/*********************************************************************/
+void dmpl::RequireSpec::setFunc()
+{
+  if(role == NULL) {
+    func = node->findFunc(funcName);
+    if(func == NULL)
+      throw std::runtime_error("ERROR: function " + funcName + " for require spec " +
+                               name + " not found in node " + node->name + "!!");
+  } else {
+    func = role->findFunc(funcName);
+    if(func == NULL)
+      throw std::runtime_error("ERROR: function " + funcName + " for require spec " +
+                               name + " not found in role " + role->name +
+                               " of node " + node->name + "!!");
+  }
 }
 
 /*********************************************************************/

@@ -260,27 +260,31 @@ void dmpl::Program::complete()
       }
   }
   
-  //-- add nodes to specifications
+  //-- add nodes, roles and functions to specifications
   for(auto &n : nodes) {
+    //-- process specifications
     for(auto &sp : n.second->specs) {
       sp.second->node = n.second;
 
       ExpectSpec *ep = static_cast<ExpectSpec*>(sp.second.get());
-      if(ep) {
-        ep->func = n.second->findFunc(ep->funcName);
-        if(ep->func == NULL)
-          throw std::runtime_error("ERROR: function " + ep->funcName + " for expect spec " +
-                                   ep->name + " not found in node " + n.second->name + "!!");
-        continue;
-      }
+      if(ep) { ep->setFunc(); continue; }
       
       RequireSpec *rp = static_cast<RequireSpec*>(sp.second.get());
-      if(rp) {
-        rp->func = n.second->findFunc(rp->funcName);
-        if(rp->func == NULL)
-          throw std::runtime_error("ERROR: function " + rp->funcName + " for require spec " +
-                                   rp->name + " not found in node " + n.second->name + "!!");
-        continue;
+      if(rp) { rp->setFunc(); continue; }
+    }
+    
+    //-- process roles
+    for(auto &r : n.second->roles) {
+      //-- process specifications
+      for(auto &sp : r.second->specs) {
+        sp.second->node = n.second;
+        sp.second->role = r.second;
+        
+        ExpectSpec *ep = static_cast<ExpectSpec*>(sp.second.get());
+        if(ep) { ep->setFunc(); continue; }
+        
+        RequireSpec *rp = static_cast<RequireSpec*>(sp.second.get());
+        if(rp) { rp->setFunc(); continue; }
       }
     }
   }
