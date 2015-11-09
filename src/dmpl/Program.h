@@ -115,7 +115,14 @@ namespace dmpl
     /**
      * Default constructor
      **/
-    Program () {}
+    Program ()
+    {
+      //-- right now we hard code platform to GAMS
+      platformSymbols = { "platform", "grid_x", "grid_y", "grid_leftX", "grid_rightX",
+                          "grid_topY", "grid_bottomY", "grid_cellX", "grid_cellY",
+                          "GRID_INIT", "GRID_PLACE", "GRID_MOVE", "GET_X", "GET_Y",
+                          "GET_LAT", "GET_LNG", "ROTATE" };
+    }
     
     /**
      * Destructor
@@ -136,6 +143,10 @@ namespace dmpl
     typedef std::map<std::string,std::string> ConstDef;
     ConstDef constDef;
 
+    //platform function and variable names. these are set based on the
+    //selected platform.
+    std::set<std::string> platformSymbols;
+    
     /**
      * A map of function names to function definitions
      **/
