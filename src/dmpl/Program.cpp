@@ -90,6 +90,19 @@ void dmpl::program::SanityChecker::delIdMap(const std::string &s)
 //dispatchers for statements
 /*********************************************************************/
 
+void dmpl::program::SanityChecker::exitAsgn(dmpl::AsgnStmt &stmt)
+{
+  if(!func->isPure) return;
+
+  //-- pure functions should only assign to temporary and parameters
+  LvalExpr &lv = stmt.lhs->requireLval();
+  if(func->findVar(lv.var) == NULL)
+    throw std::runtime_error("ERROR: pure function " + func->name +
+                             " in role " + (role ? role->name : "null") +
+                             " in node " + (node ? node->name : "null") +
+                             " assigns non-temp non-param variable " + lv.var + "!!");
+}
+
 void dmpl::program::SanityChecker::exitCall(dmpl::CallStmt &stmt) 
 { 
   //handle calls to ND(x) -- assign x non-deterministically
