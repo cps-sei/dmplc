@@ -136,9 +136,7 @@ namespace dmpl
      **/
     StmtList body;
 
-    virtual SymUserList getParents(Context &con) {
-      return SymUserList(body.begin(), body.end());
-    }
+    virtual SymUserList getParents(Context &con);
 
     virtual bool recordUse() { return true; }
     

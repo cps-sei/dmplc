@@ -57,6 +57,14 @@
 #include "Function.h"
 
 /*********************************************************************/
+//-- return the set of parents needed for symbol usage analysis
+/*********************************************************************/
+dmpl::SymUserList dmpl::Function::getParents(dmpl::Function::Context &con)
+{
+  return SymUserList(body.begin(), body.end());
+}
+
+/*********************************************************************/
 //-- merge with another function, potentially checking consistency of
 //-- attributes and types.
 /*********************************************************************/
