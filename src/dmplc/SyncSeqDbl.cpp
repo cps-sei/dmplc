@@ -496,7 +496,7 @@ void dmpl::SyncSeqDbl::computeRelevantFunctions()
             break;
           }
         }
-      }      
+      }
     }
     
     relevantFuncs[proc] = std::set<Func>();
