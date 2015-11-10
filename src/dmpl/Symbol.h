@@ -315,10 +315,6 @@ namespace dmpl
     virtual const Type &getType() = 0;
     virtual int getScope() { return LOCAL; }
 
-    //-- return attributes
-    virtual bool canRead() { return true; }
-    virtual bool canWrite() { return true; }
-
     //-- merge with another symbolc
     virtual void mergeWith(const Symbol &other)
     {

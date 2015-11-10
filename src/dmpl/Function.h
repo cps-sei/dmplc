@@ -117,8 +117,6 @@ namespace dmpl
     
     virtual const Type &getType() { return retType; }
 
-    virtual bool canWrite() { return false; }
-
     /**
      * The function parameters. we maintain both a list because order
      * matters and a set for quick lookup.
