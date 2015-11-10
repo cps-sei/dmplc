@@ -449,9 +449,6 @@ void dmpl::SyncSeqDbl::computeRelevantFunctions()
     //-- go over each thread in the role and collect the ones that use
     //-- a spec relevant variable
     for(Func f : proc.role->threads) {
-      //-- if the thread is a prototype, use base node's version
-      if(f->isPrototype) f = proc.role->node->findFunc(f->name);
-
       bool done = false;
       for(const auto &use : f->allUsedSymbols) {
         if(done) break;
