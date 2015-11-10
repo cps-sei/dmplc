@@ -63,16 +63,6 @@
 /*********************************************************************/
 dmpl::SymUserList dmpl::Function::getParents(dmpl::Function::Context &con)
 {
-  //-- for threads in roles that inherit from the parent, use the
-  //-- function from the parent node
-  if(isThread() && isPrototype && role != NULL) {
-    Func f = node->findFunc(name);
-    if(f == NULL || !f->isThread())
-      throw std::runtime_error("ERROR: no thread " + name + " in parent node " +
-                               node->name + " of role " + role->name + " to inherit from!!");
-    return SymUserList(f->body.begin(), f->body.end());
-  }
-  
   return SymUserList(body.begin(), body.end());
 }
 
