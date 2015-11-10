@@ -56,6 +56,10 @@
 #include <iostream>
 #include "Function.h"
 
+/*********************************************************************/
+//-- merge with another function, potentially checking consistency of
+//-- attributes and types.
+/*********************************************************************/
 void
 dmpl::Function::mergeWith (const Func &of, bool checkDecors)
 {
