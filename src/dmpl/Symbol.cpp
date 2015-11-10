@@ -116,70 +116,70 @@ namespace dmpl
   /*******************************************************************/
   //-- analyze symbol usage by a node
   /*******************************************************************/
-  void SymbolUser::analyzeSymbolUsage(BaseNode &n)
+  void SymbolUser::analyzeSymbolUsage(BaseNode &node)
   {
     //-- analyse threads
-    BOOST_FOREACH(const Funcs::value_type &f, n.funcs)
+    BOOST_FOREACH(const Funcs::value_type &f, node.funcs)
     {
       if(f.second->isThread())
-        analyzeSymbolUsage(f.second, Context(&n, NULL, Spec(), f.second, f.second, false));
+        analyzeSymbolUsage(f.second, Context(&node, NULL, Spec(), f.second, f.second, false));
     }
     //-- analyse constructors of local and global variables
-    for(const auto &v : n.allVars()) {
+    for(const auto &v : node.allVars()) {
       if(v->initFunc != NULL)
-        analyzeSymbolUsage(v->initFunc, Context(&n, NULL, Spec(), Func(), v->initFunc, false));
+        analyzeSymbolUsage(v->initFunc, Context(&node, NULL, Spec(), Func(), v->initFunc, false));
     }
     //-- analyse constructors and assumption functions of all records
-    for(const auto &rec : n.records) {
+    for(const auto &rec : node.records) {
       if(rec.second->initFunc != NULL)
         analyzeSymbolUsage(rec.second->initFunc,
-                           Context(&n, NULL, Spec(), Func(), rec.second->initFunc, false));
+                           Context(&node, NULL, Spec(), Func(), rec.second->initFunc, false));
       
       if(rec.second->assumeFunc != NULL)
         analyzeSymbolUsage(rec.second->assumeFunc,
-                           Context(&n, NULL, Spec(), Func(), rec.second->assumeFunc, false));
+                           Context(&node, NULL, Spec(), Func(), rec.second->assumeFunc, false));
     }
 
     //-- analyse roles
-    for(const Roles::value_type &r : n.roles) {
+    for(const Roles::value_type &r : node.roles) {
       //-- analyse threads
       for(const Funcs::value_type &f : r.second->funcs) {
         if(f.second->isThread()) {
           //-- if prototype, inherit from node-level thread
           if(f.second->isPrototype) {            
-            Func nodeFunc = n.findFunc(f.second->name);
+            Func nodeFunc = node.findFunc(f.second->name);
             if(nodeFunc == NULL || !nodeFunc->isThread())
               throw std::runtime_error("ERROR: no thread " + f.second->name + " in parent node " +
-                                       n.name + " of role " + r.second->name +
+                                       node.name + " of role " + r.second->name +
                                        " to inherit from!!");
             f.second->inherit(nodeFunc);
           }
           //-- else analyze
           else
-            analyzeSymbolUsage(f.second, Context(&n, r.second.get(), Spec(), f.second, f.second, false));
+            analyzeSymbolUsage(f.second, Context(&node, r.second.get(), Spec(), f.second, f.second, false));
         }
       }
       //-- analyse constructors of local and global variables
       for(const auto &v : r.second->allVars()) {
         if(v->initFunc != NULL)
           analyzeSymbolUsage(v->initFunc,
-                             Context(&n, r.second.get(), Spec(), Func(), v->initFunc, false));
+                             Context(&node, r.second.get(), Spec(), Func(), v->initFunc, false));
       }
       //-- analyse constructors and assumption functions of all records
       for(const auto &rec : r.second->records) {
         if(rec.second->initFunc != NULL)
           analyzeSymbolUsage(rec.second->initFunc,
-                             Context(&n, r.second.get(), Spec(), Func(), rec.second->initFunc, false));
+                             Context(&node, r.second.get(), Spec(), Func(), rec.second->initFunc, false));
       
         if(rec.second->assumeFunc != NULL)
           analyzeSymbolUsage(rec.second->assumeFunc,
-                             Context(&n, r.second.get(), Spec(), Func(), rec.second->assumeFunc, false));
+                             Context(&node, r.second.get(), Spec(), Func(), rec.second->assumeFunc, false));
       }
     }
     //-- analyse specifications
-    BOOST_FOREACH(const Specs::value_type &s, n.specs)
+    BOOST_FOREACH(const Specs::value_type &s, node.specs)
     {
-      Context con(&n, NULL, s.second, Func(), Func(), false);
+      Context con(&node, NULL, s.second, Func(), Func(), false);
       s.second->useSymbols(con);
     }
   }

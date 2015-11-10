@@ -535,7 +535,7 @@ namespace dmpl
     static void analyzeSymbolUsage(const Func &func, Context con);
 
     //-- analyze symbol usage by a node
-    static void analyzeSymbolUsage(BaseNode &n);
+    static void analyzeSymbolUsage(BaseNode &node);
 
     //-- return the use of the argument symbol. NULL is not used.
     SymbolUse *findSymbol(const Sym &s)
