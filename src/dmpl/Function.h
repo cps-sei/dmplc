@@ -212,7 +212,7 @@ namespace dmpl
     void printDecl (std::ostream &os,unsigned int indent);    
 
     ///set accessed variables and functions
-    void setAccessed();
+    void computeAccessed();
     
     //-- return a string representation. just the name.
     std::string toString() const { return "function : " + name; }

@@ -124,13 +124,13 @@ namespace dmpl
       analyzeSymbolUsage(f, Context(&node, NULL, Spec(), f, f, false));
 
     //-- set accessed of funcs
-    for(auto &f : node.funcs) f.second->setAccessed();
+    for(auto &f : node.funcs) f.second->computeAccessed();
     
     //-- analyse constructors of local and global variables
     for(const auto &v : node.allVars()) {
       if(v->initFunc != NULL) {
         analyzeSymbolUsage(v->initFunc, Context(&node, NULL, Spec(), Func(), v->initFunc, false));
-        v->initFunc->setAccessed();
+        v->initFunc->computeAccessed();
       }
     }
     //-- analyse constructors and assumption functions of all records
@@ -138,12 +138,12 @@ namespace dmpl
       if(rec.second->initFunc != NULL) {
         analyzeSymbolUsage(rec.second->initFunc,
                            Context(&node, NULL, Spec(), Func(), rec.second->initFunc, false));
-        rec.second->initFunc->setAccessed();
+        rec.second->initFunc->computeAccessed();
       }
       if(rec.second->assumeFunc != NULL) {
         analyzeSymbolUsage(rec.second->assumeFunc,
                            Context(&node, NULL, Spec(), Func(), rec.second->assumeFunc, false));
-        rec.second->assumeFunc->setAccessed();
+        rec.second->assumeFunc->computeAccessed();
       }
     }
 
@@ -168,14 +168,14 @@ namespace dmpl
       }
 
       //-- set accessed of funcs
-      for(const Funcs::value_type &f : r.second->funcs) f.second->setAccessed();
+      for(const Funcs::value_type &f : r.second->funcs) f.second->computeAccessed();
 
       //-- analyse constructors of local and global variables
       for(const auto &v : r.second->allVars()) {
         if(v->initFunc != NULL) {
           analyzeSymbolUsage(v->initFunc,
                              Context(&node, r.second.get(), Spec(), Func(), v->initFunc, false));
-          v->initFunc->setAccessed();
+          v->initFunc->computeAccessed();
         }
       }
       //-- analyse constructors and assumption functions of all records
@@ -183,12 +183,12 @@ namespace dmpl
         if(rec.second->initFunc != NULL) {
           analyzeSymbolUsage(rec.second->initFunc,
                              Context(&node, r.second.get(), Spec(), Func(), rec.second->initFunc, false));
-          rec.second->initFunc->setAccessed();
+          rec.second->initFunc->computeAccessed();
         }
         if(rec.second->assumeFunc != NULL) {
           analyzeSymbolUsage(rec.second->assumeFunc,
                              Context(&node, r.second.get(), Spec(), Func(), rec.second->assumeFunc, false));
-          rec.second->assumeFunc->setAccessed();
+          rec.second->assumeFunc->computeAccessed();
         }
       }
     }

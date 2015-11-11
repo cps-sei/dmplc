@@ -193,7 +193,7 @@ dmpl::Function::printDecl (std::ostream &os,unsigned int indent)
 /*********************************************************************/
 //-- set the accessed variables and functions
 /*********************************************************************/
-void dmpl::Function::setAccessed()
+void dmpl::Function::computeAccessed()
 {
   for(const auto &use : allUsedSymbols) {
     //-- variables
