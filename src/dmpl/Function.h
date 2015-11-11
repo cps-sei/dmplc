@@ -128,8 +128,13 @@ namespace dmpl
     ///since their scope is only the function body
     Vars temps;
 
-    //VarList writesTo;
-    //VarList readsFrom;
+    //-- local and global variables that this function reads and
+    //-- writes
+    VarList writesLoc, writesGlob;
+    VarList readsLoc, readsGlob;
+
+    //-- functions that this function calls
+    FuncList calledFuncs;
 
     /**
      * The function body

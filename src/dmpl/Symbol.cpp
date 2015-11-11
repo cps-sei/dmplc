@@ -108,9 +108,31 @@ namespace dmpl
   /*******************************************************************/
   void SymbolUser::analyzeSymbolUsage(const Func &func, Context con)
   {
+    //-- analyze symbol usage
     Sym fsym = Sym(func);
     fsym->use();
     func->useSymbols(con);
+
+    //-- set variables accesses and functions called
+    for(const auto &use : func->allUsedSymbols) {
+      //-- variables
+      Var var = use.sym->asVar();
+      if(var != NULL) {
+        if(var->scope == Symbol::LOCAL) {
+          if(use.info.anyWrite()) func->writesLoc.push_back(var);
+          else func->readsLoc.push_back(var);
+        } else if(var->scope == Symbol::GLOBAL) {
+          if(use.info.anyWrite()) func->writesGlob.push_back(var);
+          else func->readsGlob.push_back(var);
+        }
+        continue;
+      }
+
+      //-- functions
+      Func f = use.sym->asFunc();
+      if(f != NULL) func->calledFuncs.push_back(f);
+    }
+    
   }
   
   /*******************************************************************/
