@@ -191,7 +191,13 @@ namespace dmpl
           rec.second->assumeFunc->computeAccessed();
         }
       }
+      //-- analyse specifications
+      BOOST_FOREACH(const Specs::value_type &s, r.second->specs) {
+        Context con(&node, r.second.get(), s.second, Func(), Func(), false);
+        s.second->useSymbols(con);
+      }
     }
+
     //-- analyse specifications
     BOOST_FOREACH(const Specs::value_type &s, node.specs)
     {
