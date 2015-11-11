@@ -112,39 +112,6 @@ namespace dmpl
     Sym fsym = Sym(func);
     fsym->use();
     func->useSymbols(con);
-
-    //-- set variables accesses and functions called
-    for(const auto &use : func->allUsedSymbols) {
-      //-- variables
-      Var var = use.sym->asVar();
-      if(var != NULL) {
-        if(var->scope == Symbol::LOCAL) {
-          if(use.info.anyWrite()) {
-            func->writesLoc.push_back(var);
-            std::cout << "** Function : " << func->name << " writes local " << var->name << '\n';
-          } else {
-            func->readsLoc.push_back(var);
-            std::cout << "** Function : " << func->name << " reads local " << var->name << '\n';
-          }
-        } else if(var->scope == Symbol::GLOBAL) {
-          if(use.info.anyWrite()) {
-            func->writesGlob.push_back(var);
-            std::cout << "** Function : " << func->name << " writes global " << var->name << '\n';
-          } else {
-            func->readsGlob.push_back(var);
-            std::cout << "** Function : " << func->name << " reads global " << var->name << '\n';
-          }
-        }
-        continue;
-      }
-
-      //-- functions
-      Func f = use.sym->asFunc();
-      if(f != NULL) {
-        func->calledFuncs.push_back(f);
-        std::cout << "** Function : " << func->name << " calls function " << f->name << '\n';
-      }
-    }
   }
   
   /*******************************************************************/
@@ -153,61 +120,76 @@ namespace dmpl
   void SymbolUser::analyzeSymbolUsage(BaseNode &node)
   {
     //-- analyse threads
-    BOOST_FOREACH(const Funcs::value_type &f, node.funcs)
-    {
-      if(f.second->isThread())
-        analyzeSymbolUsage(f.second, Context(&node, NULL, Spec(), f.second, f.second, false));
-    }
+    for(Func &f : node.threads)
+      analyzeSymbolUsage(f, Context(&node, NULL, Spec(), f, f, false));
+
+    //-- set accessed of funcs
+    for(auto &f : node.funcs) f.second->setAccessed();
+    
     //-- analyse constructors of local and global variables
     for(const auto &v : node.allVars()) {
-      if(v->initFunc != NULL)
+      if(v->initFunc != NULL) {
         analyzeSymbolUsage(v->initFunc, Context(&node, NULL, Spec(), Func(), v->initFunc, false));
+        v->initFunc->setAccessed();
+      }
     }
     //-- analyse constructors and assumption functions of all records
     for(const auto &rec : node.records) {
-      if(rec.second->initFunc != NULL)
+      if(rec.second->initFunc != NULL) {
         analyzeSymbolUsage(rec.second->initFunc,
                            Context(&node, NULL, Spec(), Func(), rec.second->initFunc, false));
-      
-      if(rec.second->assumeFunc != NULL)
+        rec.second->initFunc->setAccessed();
+      }
+      if(rec.second->assumeFunc != NULL) {
         analyzeSymbolUsage(rec.second->assumeFunc,
                            Context(&node, NULL, Spec(), Func(), rec.second->assumeFunc, false));
+        rec.second->assumeFunc->setAccessed();
+      }
     }
 
     //-- analyse roles
     for(const Roles::value_type &r : node.roles) {
       //-- analyse threads
-      for(const Funcs::value_type &f : r.second->funcs) {
-        if(f.second->isThread()) {
+      for(Func &f : r.second->threads) {
+        if(f->isThread()) {
           //-- if prototype, inherit from node-level thread
-          if(f.second->isPrototype) {            
-            Func nodeFunc = node.findFunc(f.second->name);
+          if(f->isPrototype) {            
+            Func nodeFunc = node.findFunc(f->name);
             if(nodeFunc == NULL || !nodeFunc->isThread())
-              throw std::runtime_error("ERROR: no thread " + f.second->name + " in parent node " +
+              throw std::runtime_error("ERROR: no thread " + f->name + " in parent node " +
                                        node.name + " of role " + r.second->name +
                                        " to inherit from!!");
-            f.second->inherit(nodeFunc);
+            f->inherit(nodeFunc);
           }
           //-- else analyze
           else
-            analyzeSymbolUsage(f.second, Context(&node, r.second.get(), Spec(), f.second, f.second, false));
+            analyzeSymbolUsage(f, Context(&node, r.second.get(), Spec(), f, f, false));
         }
       }
+
+      //-- set accessed of funcs
+      for(const Funcs::value_type &f : r.second->funcs) f.second->setAccessed();
+
       //-- analyse constructors of local and global variables
       for(const auto &v : r.second->allVars()) {
-        if(v->initFunc != NULL)
+        if(v->initFunc != NULL) {
           analyzeSymbolUsage(v->initFunc,
                              Context(&node, r.second.get(), Spec(), Func(), v->initFunc, false));
+          v->initFunc->setAccessed();
+        }
       }
       //-- analyse constructors and assumption functions of all records
       for(const auto &rec : r.second->records) {
-        if(rec.second->initFunc != NULL)
+        if(rec.second->initFunc != NULL) {
           analyzeSymbolUsage(rec.second->initFunc,
                              Context(&node, r.second.get(), Spec(), Func(), rec.second->initFunc, false));
-      
-        if(rec.second->assumeFunc != NULL)
+          rec.second->initFunc->setAccessed();
+        }
+        if(rec.second->assumeFunc != NULL) {
           analyzeSymbolUsage(rec.second->assumeFunc,
                              Context(&node, r.second.get(), Spec(), Func(), rec.second->assumeFunc, false));
+          rec.second->assumeFunc->setAccessed();
+        }
       }
     }
     //-- analyse specifications

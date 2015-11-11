@@ -191,6 +191,44 @@ dmpl::Function::printDecl (std::ostream &os,unsigned int indent)
 }
 
 /*********************************************************************/
+//-- set the accessed variables and functions
+/*********************************************************************/
+void dmpl::Function::setAccessed()
+{
+  for(const auto &use : allUsedSymbols) {
+    //-- variables
+    Var var = use.sym->asVar();
+    if(var != NULL) {
+      if(var->scope == Symbol::LOCAL) {
+        if(use.info.anyWrite()) {
+          writesLoc.push_back(var);
+          std::cout << "** Function : " << name << " writes local " << var->name << '\n';
+        } else {
+          readsLoc.push_back(var);
+          std::cout << "** Function : " << name << " reads local " << var->name << '\n';
+        }
+      } else if(var->scope == Symbol::GLOBAL) {
+        if(use.info.anyWrite()) {
+          writesGlob.push_back(var);
+          std::cout << "** Function : " << name << " writes global " << var->name << '\n';
+        } else {
+          readsGlob.push_back(var);
+          std::cout << "** Function : " << name << " reads global " << var->name << '\n';
+        }
+      }
+        continue;
+    }
+    
+    //-- functions
+    Func func = use.sym->asFunc();
+    if(func != NULL) {
+      calledFuncs.push_back(func);
+      std::cout << "** Function : " << name << " calls function " << func->name << '\n';
+    }
+  }
+}
+
+/*********************************************************************/
 //-- NOTE: this is a method of LvalExpr class but had to be defined
 //-- here to avoid circular dependencies during compilation. It
 //-- assigns the correct symbol to each lvalue expression.
