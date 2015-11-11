@@ -145,7 +145,6 @@ namespace dmpl
         std::cout << "** Function : " << func->name << " calls function " << f->name << '\n';
       }
     }
-    
   }
   
   /*******************************************************************/
