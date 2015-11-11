@@ -252,25 +252,25 @@ namespace dmpl
           1 << ((1 << SymbolAccess::WRITE | 1 << SymbolAccess::REMOTE | 1 << SymbolAccess::EXPECT )) ;
 
     //-- project on write accesses
-    SymbolUseInfo anyWrite()
+    SymbolUseInfo anyWrite() const
     {
       return SymbolUseInfo(to_ulong() & write_mask);
     }
 
     //-- project on remote accesses
-    SymbolUseInfo anyRemote()
+    SymbolUseInfo anyRemote() const
     {
       return SymbolUseInfo(to_ulong() & remote_mask);
     }
 
     //-- project on expect accesses
-    SymbolUseInfo anyExpect()
+    SymbolUseInfo anyExpect() const
     {
       return SymbolUseInfo(to_ulong() & expect_mask);
     }
 
     //-- project on non-expect accesses
-    SymbolUseInfo anyNonExpect()
+    SymbolUseInfo anyNonExpect() const
     {
       return SymbolUseInfo(to_ulong() & ~expect_mask);
     }
