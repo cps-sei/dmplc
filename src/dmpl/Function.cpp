@@ -229,47 +229,5 @@ void dmpl::Function::computeAccessed()
 }
 
 /*********************************************************************/
-//-- NOTE: this is a method of LvalExpr class but had to be defined
-//-- here to avoid circular dependencies during compilation. It
-//-- assigns the correct symbol to each lvalue expression.
-//-- TBD: move this to Expression.cpp.
-/*********************************************************************/
-dmpl::LvalExpr::Context
-dmpl::LvalExpr::useSymbols(Context con)
-{
-  {
-    Context con2 = con;
-    con2.isLHS = false;
-    if(node)
-    {
-      node->useSymbols(con2);
-      inherit(node);
-    }
-    BOOST_FOREACH(Expr e, indices)
-    {
-      e->useSymbols(con2);
-      inherit(e);
-    }
-  }
-  
-  sym = con.findSym(var);
-  if(sym)
-  {
-    sym->use(shared_from_this(), con.isLHS, node != NULL, con.inExpect());
-    Func func = std::dynamic_pointer_cast<Function>(sym);
-    if(func)
-    {
-      Context con2 = con;
-      con2.curFunc = func;
-      con2.isLHS = false;
-      func->useSymbols(con);
-    }
-  }
-  //else
-  //std::cerr << "Couldn't find symbol: " << var << std::endl;
-  return con;
-}
-
-/*********************************************************************/
 //end of file
 /*********************************************************************/
