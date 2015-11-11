@@ -239,7 +239,7 @@ dmpl::LvalExpr::useSymbols(Context con)
 {
   {
     Context con2 = con;
-    con.isLHS = false;
+    con2.isLHS = false;
     if(node)
     {
       node->useSymbols(con2);
