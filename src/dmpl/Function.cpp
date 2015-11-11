@@ -202,18 +202,18 @@ void dmpl::Function::computeAccessed()
       if(var->scope == Symbol::LOCAL) {
         if(use.info.anyWrite()) {
           writesLoc.push_back(var);
-          std::cout << "** Function : " << name << " writes local " << var->name << '\n';
+          //std::cout << "** Function : " << name << " writes local " << var->name << '\n';
         } else {
           readsLoc.push_back(var);
-          std::cout << "** Function : " << name << " reads local " << var->name << '\n';
+          //std::cout << "** Function : " << name << " reads local " << var->name << '\n';
         }
       } else if(var->scope == Symbol::GLOBAL) {
         if(use.info.anyWrite()) {
           writesGlob.push_back(var);
-          std::cout << "** Function : " << name << " writes global " << var->name << '\n';
+          //std::cout << "** Function : " << name << " writes global " << var->name << '\n';
         } else {
           readsGlob.push_back(var);
-          std::cout << "** Function : " << name << " reads global " << var->name << '\n';
+          //std::cout << "** Function : " << name << " reads global " << var->name << '\n';
         }
       }
         continue;
@@ -223,7 +223,7 @@ void dmpl::Function::computeAccessed()
     Func func = use.sym->asFunc();
     if(func != NULL) {
       calledFuncs.push_back(func);
-      std::cout << "** Function : " << name << " calls function " << func->name << '\n';
+      //std::cout << "** Function : " << name << " calls function " << func->name << '\n';
     }
   }
 }
