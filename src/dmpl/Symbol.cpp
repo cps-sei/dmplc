@@ -148,20 +148,18 @@ namespace dmpl
     for(const Roles::value_type &r : node.roles) {
       //-- analyse threads
       for(Func &f : r.second->threads) {
-        if(f->isThread()) {
-          //-- if prototype, inherit from node-level thread
-          if(f->isPrototype) {            
-            Func nodeFunc = node.findFunc(f->name);
-            if(nodeFunc == NULL || !nodeFunc->isThread())
-              throw std::runtime_error("ERROR: no thread " + f->name + " in parent node " +
-                                       node.name + " of role " + r.second->name +
-                                       " to inherit from!!");
-            f->inherit(nodeFunc);
-          }
-          //-- else analyze
-          else
-            analyzeSymbolUsage(f, Context(&node, r.second.get(), Spec(), f, f, false));
+        //-- if prototype, inherit from node-level thread
+        if(f->isPrototype) {            
+          Func nodeFunc = node.findFunc(f->name);
+          if(nodeFunc == NULL || !nodeFunc->isThread())
+            throw std::runtime_error("ERROR: no thread " + f->name + " in parent node " +
+                                     node.name + " of role " + r.second->name +
+                                     " to inherit from!!");
+          f->inherit(nodeFunc);
         }
+        //-- else analyze
+        else
+          analyzeSymbolUsage(f, Context(&node, r.second.get(), Spec(), f, f, false));
       }
 
       //-- analyse constructors of local and global variables
