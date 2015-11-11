@@ -233,6 +233,40 @@ namespace dmpl
 
       return true;
     }
+
+    //-- return true if this function reads the argument variable
+    bool canRead(const Var &var) const
+    {
+      if(var->scope == LOCAL) {
+        for(const Var &v : readsLoc) if(*v == *var) return true;
+        return false;
+      }
+      if(var->scope == GLOBAL) {
+        for(const Var &v : readsGlob) if(*v == *var) return true;
+        return false;
+      }
+    }
+
+    //-- return true if this function writes the argument variable
+    bool canWrite(const Var &var) const
+    {
+      if(var->scope == LOCAL) {
+        for(const Var &v : writesLoc) if(*v == *var) return true;
+        return false;
+      }
+      if(var->scope == GLOBAL) {
+        for(const Var &v : writesGlob) if(*v == *var) return true;
+        return false;
+      }
+    }
+
+    //-- return true if this function calls the argument function
+    bool canCall(const Func &func) const
+    {
+      for(const Func &f : calledFuncs)
+        if(f->equalType(*func)) return true;
+      return false;
+    }
     
   private:
     void doSetVars (const VarList &vars, Vars &dest)
