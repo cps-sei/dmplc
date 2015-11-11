@@ -167,6 +167,9 @@ std::string dmpl::CompExpr::toString() const
   return "";
 }
 
+/*********************************************************************/
+//-- symbol analysis usage
+/*********************************************************************/
 dmpl::CallExpr::Context dmpl::CallExpr::useSymbols(Context con)
 {
   func->useSymbols(con);
