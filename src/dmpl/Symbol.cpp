@@ -119,18 +119,31 @@ namespace dmpl
       Var var = use.sym->asVar();
       if(var != NULL) {
         if(var->scope == Symbol::LOCAL) {
-          if(use.info.anyWrite()) func->writesLoc.push_back(var);
-          else func->readsLoc.push_back(var);
+          if(use.info.anyWrite()) {
+            func->writesLoc.push_back(var);
+            std::cout << "** Function : " << func->name << " writes local " << var->name << '\n';
+          } else {
+            func->readsLoc.push_back(var);
+            std::cout << "** Function : " << func->name << " reads local " << var->name << '\n';
+          }
         } else if(var->scope == Symbol::GLOBAL) {
-          if(use.info.anyWrite()) func->writesGlob.push_back(var);
-          else func->readsGlob.push_back(var);
+          if(use.info.anyWrite()) {
+            func->writesGlob.push_back(var);
+            std::cout << "** Function : " << func->name << " writes global " << var->name << '\n';
+          } else {
+            func->readsGlob.push_back(var);
+            std::cout << "** Function : " << func->name << " reads global " << var->name << '\n';
+          }
         }
         continue;
       }
 
       //-- functions
       Func f = use.sym->asFunc();
-      if(f != NULL) func->calledFuncs.push_back(f);
+      if(f != NULL) {
+        func->calledFuncs.push_back(f);
+        std::cout << "** Function : " << func->name << " calls function " << f->name << '\n';
+      }
     }
     
   }
