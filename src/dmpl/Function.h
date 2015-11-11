@@ -240,28 +240,6 @@ namespace dmpl
   {
     return std::dynamic_pointer_cast<Func::element_type>(shared_from_this());
   }
-
-  /*
-  class Thread
-  {
-  public:
-    const Function &startFunc;
-
-    std::set <const Function *> calledFuncs;
-    std::set <const Variable *> readVars;
-    std::set <const Variable *> writeVars;
-
-    Thread(const Function &f) : startFunc(f)
-    {
-      analyze(f);
-    }
-  private:
-    void analyze(const Function &function);
-    void analyze(const Stmt &statement);
-    void analyze(const Expr &expression);
-  };
-
-  typedef std::map <std::string, Thread> Threads;*/
 }
 
 #endif // _DMPL_FUNCTION_H_
