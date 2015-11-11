@@ -227,6 +227,9 @@ namespace dmpl
       return (*this)[SymbolAccess(write, remote, expect)];
     }
 
+    //-- convert to bool
+    explicit operator bool () const { return to_ulong(); }
+    
     //-- mask for write access
     static const unsigned long write_mask =
           1 << ((1 << SymbolAccess::WRITE)) |
