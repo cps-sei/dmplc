@@ -82,6 +82,7 @@ namespace dmpl
   class Variable;
   typedef std::shared_ptr<Variable> Var;
   typedef std::list <Var> VarList;
+  typedef std::set <Var> VarSet;
   typedef std::list <Variable> VariablesList;
   typedef std::map <std::string, Var> Vars;
   typedef std::map <std::string, Variable> Variables;

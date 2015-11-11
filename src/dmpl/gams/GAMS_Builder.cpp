@@ -785,7 +785,7 @@ dmpl::gams::GAMS_Builder::build_parse_args ()
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
   {
     //-- collect all input variables
-    std::set<Var> inputVars;
+    VarSet inputVars;
     for (auto & var : n->second->allVars()) if(var->isInput) inputVars.insert(var);
     for (auto & r : n->second->roles) {
       for (auto & var : r.second->allVars()) if(var->isInput) inputVars.insert(var);
