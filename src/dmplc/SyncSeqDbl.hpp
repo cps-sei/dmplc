@@ -168,6 +168,10 @@ namespace dmpl {
     std::map<Process,VarSet> relevantGlobs;
     std::map<Process,VarSet> relevantLocs;
 
+    //-- map from processes to threads that are relevant to the target
+    //-- property
+    std::map<Process,Func> relevantThreads;
+
     //-- map from processes to functions that are relevant to the
     //-- target property
     std::map<Process,std::set<Func>> relevantFuncs;

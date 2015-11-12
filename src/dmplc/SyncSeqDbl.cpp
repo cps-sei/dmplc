@@ -448,10 +448,10 @@ void dmpl::SyncSeqDbl::computeRelevant()
                                    proc.role->node->name + " has asynchronous thread " +
                                    f->name + " relevant to require property " + property + "!!");
         
-        if(!relevantFuncs[proc].empty())
+        if(relevantThreads[proc] != NULL)
           throw std::runtime_error("ERROR: role " + proc.role->name + " in node " +
                                    proc.role->node->name + " has multiple threads (" +
-                                   relevantFuncs[proc].begin()->get()->name + " and " + f->name +
+                                   relevantThreads[proc]->name + " and " + f->name +
                                    ") relevant to require property " + property + "!!");
         
         //-- currently we only support inherited threads
@@ -460,15 +460,16 @@ void dmpl::SyncSeqDbl::computeRelevant()
                                    proc.role->node->name + " has non-inherited thread " +
                                    f->name + " relevant to require property " + property + "!!");
 
-        relevantFuncs[proc].insert(f);
+        relevantThreads[proc] = f;
         break;
       }
     }
 
     //-- make variables read by relevant threads also spec relevant
-    for(const Func &f : relevantFuncs[proc]) {
-      specVars.insert(f->readsLoc.begin(), f->readsLoc.end());
-      specVars.insert(f->readsGlob.begin(), f->readsGlob.end());
+    Func thread = relevantThreads[proc];
+    if(thread != NULL) {
+      specVars.insert(thread->readsLoc.begin(), thread->readsLoc.end());
+      specVars.insert(thread->readsGlob.begin(), thread->readsGlob.end());
     }
     
     //-- go over each function in the role and collect the ones that
