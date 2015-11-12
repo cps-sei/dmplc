@@ -566,14 +566,13 @@ void dmpl::SyncSeqDbl::createCopyStmts(bool fwd,const Var &var,StmtList &res,Exp
 /*********************************************************************/
 void dmpl::SyncSeqDbl::createRoundCopier()
 {
-  Node &node = builder.program.nodes.begin()->second;
   dmpl::VarList fnParams,fnTemps;
 
   //create the copier from _f to _i
   StmtList fnBody1;
   for(size_t i = 0;i < nodeNum;++i) {
-    BOOST_FOREACH(Vars::value_type &v,node->globVars) {
-      Var var = v.second->instDim(nodeNum);
+    BOOST_FOREACH(const Var &v,relevantGlobs.begin()->second) {
+      Var var = v->instDim(nodeNum);
       createCopyStmts(0,var,fnBody1,ExprList(),i);
     }
   }
@@ -584,8 +583,8 @@ void dmpl::SyncSeqDbl::createRoundCopier()
   //create the copier from _i to _f
   StmtList fnBody2;
   for(size_t i = 0;i < nodeNum;++i) {
-    BOOST_FOREACH(Vars::value_type &v,node->globVars) {
-      Var var = v.second->instDim(nodeNum);
+    BOOST_FOREACH(const Var &v,relevantGlobs.begin()->second) {
+      Var var = v->instDim(nodeNum);
       createCopyStmts(1,var,fnBody2,ExprList(),i);
     }
   }
@@ -962,9 +961,9 @@ void dmpl::SyncSeqDbl::run()
   computeRelevant();
   
   createGlobVars();
-  /*
   processExternFuncs();
   createRoundCopier();
+  /*
   createMainFunc();
   createInit();
   createSafety();
