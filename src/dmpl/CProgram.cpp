@@ -91,10 +91,13 @@ dmpl::CProgram::print (std::ostream &os,unsigned int indent)
   os << '\n';
 
   //print function declarations
+  os << spacer << "/************* function declarations ***********/\n";
   for (dmpl::Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
     i->second->printDecl (os,indent);
+  os << '\n';
 
   //print functions
+  os << spacer << "/************* function definitions ***********/\n";
   for (dmpl::Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
     i->second->print (os,indent);
 }
