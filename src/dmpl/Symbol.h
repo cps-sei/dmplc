@@ -275,6 +275,12 @@ namespace dmpl
     {
       return SymbolUseInfo(to_ulong() & ~expect_mask);
     }
+
+    //-- check any read access
+    bool anyRead() const
+    {
+      return (*this)(0,0,0) || (*this)(0,0,1) || (*this)(0,1,0) || (*this)(0,1,1);
+    }
   };
 
   /*******************************************************************/
