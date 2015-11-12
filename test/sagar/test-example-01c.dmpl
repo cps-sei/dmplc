@@ -257,13 +257,18 @@ node uav
     @Period(777);
     thread foo2 { d2l = -50; foo3(11, 33); }
 
-    @Period(888);
-    @PlatformController;
-    @BarrierSync;
-    override thread COLLISION_AVOIDANCE {
+    //@Period(888);
+    //@PlatformController;
+    //@BarrierSync;
+    thread COLLISION_AVOIDANCE;
+    /*
+    {
+      d2l = x;
+      x = 10;
       d3l = 10;
       foo4();
     }
+    */
   }
 
   @InitSim;
