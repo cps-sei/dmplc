@@ -950,7 +950,7 @@ void dmpl::SyncSeqDbl::processExternFuncs()
 void dmpl::SyncSeqDbl::run()
 {
   std::cout << "Sequentializing with double-buffering and " 
-            << nodeNum << " nodes ...\n";
+            << nodeNum << " processes ...\n";
 
   //-- copy over constants
   cprog.constDef = builder.program.constDef;
