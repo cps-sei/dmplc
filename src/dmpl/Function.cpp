@@ -203,7 +203,8 @@ void dmpl::Function::computeAccessed()
         if(use.info.anyWrite()) {
           writesLoc.push_back(var);
           //std::cout << "** Function : " << name << " writes local " << var->name << '\n';
-        } else {
+        }
+        if(use.info.anyRead()) {
           readsLoc.push_back(var);
           //std::cout << "** Function : " << name << " reads local " << var->name << '\n';
         }
@@ -211,7 +212,8 @@ void dmpl::Function::computeAccessed()
         if(use.info.anyWrite()) {
           writesGlob.push_back(var);
           //std::cout << "** Function : " << name << " writes global " << var->name << '\n';
-        } else {
+        }
+        if(use.info.anyRead()) {
           readsGlob.push_back(var);
           //std::cout << "** Function : " << name << " reads global " << var->name << '\n';
         }
