@@ -879,6 +879,9 @@ dmpl::Expr dmpl::SyncSeqDbl::createNondetFunc(const Expr &expr)
   return Expr(new LvalExpr("nondet_" + lve->var));
 }
 
+/*********************************************************************/
+//-- process external function declarations
+/*********************************************************************/
 void dmpl::SyncSeqDbl::processExternFuncs()
 {
   BOOST_FOREACH(dmpl::Funcs::value_type &ef, builder.program.funcs)
