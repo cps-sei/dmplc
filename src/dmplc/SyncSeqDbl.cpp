@@ -416,9 +416,10 @@ dmpl::SyncSeqDbl::SyncSeqDbl(dmpl::DmplBuilder &b, const std::string &p, int r)
 }
 
 /*********************************************************************/
-//-- compute the property relevant functions for each process
+//-- compute property relevant variables and functions for each
+//-- process
 /*********************************************************************/
-void dmpl::SyncSeqDbl::computeRelevantFunctions()
+void dmpl::SyncSeqDbl::computeRelevant()
 {
   //-- iterate over all program processes
   for(const Process &proc : builder.program.processes) {
@@ -430,76 +431,65 @@ void dmpl::SyncSeqDbl::computeRelevantFunctions()
       continue;
     }
     
-    //-- compute the set of local and global variables used by the
+    //-- compute the set of local and global variables read by the
     //-- spec function
-    VarList specVars;
-    for(const auto &v : proc.role->allVarsInScope()) {
-      for(const auto &use : propFunc->allUsedSymbols) {
-        Var var = use.sym->asVar();
-        if(var == NULL) continue;
-        if(v->name == var->name && v->scope == var->scope) {
-          std::cout << "role " << proc.role->name << " spec " << property
-                    << " var " << var->toString() << '\n';
-          specVars.push_back(var);
-          break;
-        }
+    VarSet specVars;
+    specVars.insert(propFunc->readsLoc.begin(), propFunc->readsLoc.end());
+    specVars.insert(propFunc->readsGlob.begin(), propFunc->readsGlob.end());
+
+    //-- compute threads that write to variables read by the spec
+    for(Func f : proc.role->threads) {
+      for(const Var &v : specVars) {
+        if(!f->canWrite(v)) continue;
+        std::cout << "relevant thread : " << f->name << '\n';
+
+        if(proc.role->getAttribute(f, "BarrierSync", 0) == NULL)
+          throw std::runtime_error("ERROR: role " + proc.role->name + " in node " +
+                                   proc.role->node->name + " has asynchronous thread " +
+                                   f->name + " relevant to require property " + property + "!!");
+        
+        if(!relevantFuncs[proc].empty())
+          throw std::runtime_error("ERROR: role " + proc.role->name + " in node " +
+                                   proc.role->node->name + " has multiple threads (" +
+                                   relevantFuncs[proc].begin()->get()->name + " and " + f->name +
+                                   ") relevant to require property " + property + "!!");
+        
+        relevantFuncs[proc].insert(f);
+        break;
       }
     }
 
-    //-- go over each thread in the role and collect the ones that use
-    //-- a spec relevant variable
-    for(Func f : proc.role->threads) {
-      bool done = false;
-      for(const auto &use : f->allUsedSymbols) {
-        if(done) break;
-        Var var = use.sym->asVar();
-        if(var == NULL) continue;
-        for(const Var &v : specVars) {
-          if(*v == *var) {
-            std::cout << "relevant thread : " << f->name << '\n';
-
-            if(proc.role->getAttribute(f, "BarrierSync", 0) == NULL)
-              throw std::runtime_error("ERROR: role " + proc.role->name + " in node " +
-                                       proc.role->node->name + " has asynchronous thread " +
-                                       f->name + " relevant to require property " + property + "!!");
-            
-            if(!relevantFuncs[proc].empty())
-              throw std::runtime_error("ERROR: role " + proc.role->name + " in node " +
-                                       proc.role->node->name + " has multiple threads (" +
-                                       relevantFuncs[proc].begin()->get()->name + " and " + f->name +
-                                       ") relevant to require property " + property + "!!");
-            
-            relevantFuncs[proc].insert(f);
-            done = true;
-            break;
-          }
-        }
-      }      
+    //-- make variables read by relevant threads also spec relevant
+    for(const Func &f : relevantFuncs[proc]) {
+      specVars.insert(f->readsLoc.begin(), f->readsLoc.end());
+      specVars.insert(f->readsGlob.begin(), f->readsGlob.end());
     }
-
+    
     //-- go over each function in the role and collect the ones that
-    //-- use a spec relevant variable
+    //-- write to a
     for(const Func &f : proc.role->allFuncsInScope()) {
       //-- skip threads and the property function itself
       if(f->isThread() || f == propFunc) continue;
 
-      bool done = false;
-      for(const auto &use : f->allUsedSymbols) {
-        if(done) break;
-        Var var = use.sym->asVar();
-        if(var == NULL) continue;
-        for(const Var &v : specVars) {
-          if(*v == *var) {
-            std::cout << "relevant function : " << f->name << '\n';
-            relevantFuncs[proc].insert(f);
-            done = true;
-            break;
-          }
-        }
+      for(const Var &v : specVars) {
+        if(!f->canWrite(v)) continue;
+        std::cout << "relevant function : " << f->name << '\n';
+        relevantFuncs[proc].insert(f);
+        break;
       }
     }
-    
-    relevantFuncs[proc] = std::set<Func>();
+
+    //-- make variables read by relevant threads also spec relevant
+    for(const Func &f : relevantFuncs[proc]) {
+      specVars.insert(f->readsLoc.begin(), f->readsLoc.end());
+      specVars.insert(f->readsGlob.begin(), f->readsGlob.end());
+    }
+
+    //-- assign relevant local and global variables
+    for(const Var &v : specVars) {
+      if(v->scope == Symbol::LOCAL) relevantLocs[proc].insert(v);
+      else if(v->scope == Symbol::GLOBAL) relevantGlobs[proc].insert(v);
+    }
   }
 
   //-- sanity check
@@ -961,11 +951,11 @@ void dmpl::SyncSeqDbl::run()
   //-- copy over constants
   cprog.constDef = builder.program.constDef;
 
-  //-- create the property relevant functions for each process
-  computeRelevantFunctions();
+  //-- create the property relevant variables and functions
+  computeRelevant();
   
-  /*
   createGlobVars();
+  /*
   processExternFuncs();
   createRoundCopier();
   createMainFunc();
