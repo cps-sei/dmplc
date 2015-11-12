@@ -454,6 +454,12 @@ void dmpl::SyncSeqDbl::computeRelevant()
                                    relevantFuncs[proc].begin()->get()->name + " and " + f->name +
                                    ") relevant to require property " + property + "!!");
         
+        //-- currently we only support inherited threads
+        if(!f->isPrototype)
+          throw std::runtime_error("ERROR: role " + proc.role->name + " in node " +
+                                   proc.role->node->name + " has non-inherited thread " +
+                                   f->name + " relevant to require property " + property + "!!");
+
         relevantFuncs[proc].insert(f);
         break;
       }
