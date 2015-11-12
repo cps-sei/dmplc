@@ -509,15 +509,13 @@ void dmpl::SyncSeqDbl::computeRelevant()
 /*********************************************************************/
 void dmpl::SyncSeqDbl::createGlobVars()
 {
-  Node &node = builder.program.nodes.begin()->second;
-
   //instantiate node-global variables by replacing dimension #N with
   //nodeNum -- make two copies, one for initial value for a round, and
   //the other for the final value for a round
   dmpl::VarList gvars;
-  BOOST_FOREACH(Vars::value_type &v,node->globVars) {
-    gvars.push_back(v.second->instDim(nodeNum));
-  }
+  BOOST_FOREACH(const Var &v,relevantGlobs.begin()->second)
+    gvars.push_back(v->instDim(nodeNum));
+  
   BOOST_FOREACH(const Var &v,gvars) {
     for(size_t i = 0;i < nodeNum;++i) {
       cprog.addGlobVar(v->instName(std::string("_i_") + boost::lexical_cast<std::string>(i)));
@@ -526,10 +524,10 @@ void dmpl::SyncSeqDbl::createGlobVars()
   }
 
   //instantiate node-local variables by adding _i for each node id i
-  BOOST_FOREACH(Vars::value_type &v,node->locVars) {
+  BOOST_FOREACH(const Var &v, relevantLocs.begin()->second) {
     for(size_t i = 0;i < nodeNum;++i) {
-      cprog.addGlobVar(v.second->instName(std::string("_") + 
-                                         boost::lexical_cast<std::string>(i)));
+      cprog.addGlobVar(v->instName(std::string("_") + 
+                                   boost::lexical_cast<std::string>(i)));
     }
   }
 }
