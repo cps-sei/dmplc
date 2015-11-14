@@ -108,7 +108,7 @@ std::string dmpl::syncseqdbl::GlobalTransformer::getNodeStr(const dmpl::LvalExpr
       std::map<std::string,size_t>::const_iterator iit = idMap.find(nodeLVal.var);
       if(iit == idMap.end() || nodeLVal.node != NULL || nodeLVal.indices.size() > 0 )
       {
-        std::cerr << "Error: bad @node specifier. Unknown identifier: " << nodeExpr->toString() << std::endl;
+        std::cerr << "Error: bad @node specifier. Unknown identifier: " << nodeExpr->toString() << '\n';
         exit(1);
       }
       else
@@ -118,7 +118,8 @@ std::string dmpl::syncseqdbl::GlobalTransformer::getNodeStr(const dmpl::LvalExpr
     }
     catch(std::bad_cast)
     {
-      std::cerr << "Error: bad @node specifier (" << nodeExpr->toString() << "); must be integer, or identifier" << std::endl;
+      std::cerr << "Error: bad @node specifier (" << nodeExpr->toString()
+                << "); must be integer, or identifier" << std::endl;
       exit(1);
     }
   }
