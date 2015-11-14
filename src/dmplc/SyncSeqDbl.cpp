@@ -460,6 +460,8 @@ void dmpl::SyncSeqDbl::computeRelevant()
                                    proc.role->node->name + " has non-inherited thread " +
                                    f->name + " relevant to require property " + property + "!!");
 
+        //-- actually store the inherited function
+        f = proc.role->node->findFunc(f->name);        
         relevantThreads[proc] = f;
         break;
       }
