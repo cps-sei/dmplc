@@ -620,27 +620,8 @@ void dmpl::SyncSeqDbl::createMainFunc()
   Stmt callStmt4(new CallStmt(callExpr4,dmpl::ExprList()));
   roundBody.push_back(callStmt4);
 
-  Func roundFunc;
+  Func roundFunc = relevantThreads.begin()->second;
   const Node &node = builder.program.nodes.begin()->second;
-  BOOST_FOREACH(const Funcs::value_type &f, node->funcs) {
-    int barSync = f.second->attrs.count("BarrierSync");
-    if(barSync < 1)
-      continue;
-    else if(barSync > 1)
-      std::cerr << "Warning: function " << f.second->name <<
-        " has more than one @BarrierSync attribute" << std::endl;
-    if(roundFunc != NULL) {
-      std::cerr << "Warning: function " << roundFunc->name << " is not the " <<
-        "only @BarrierSync function; also found: " << f.second->name <<
-        " which will be ignored." << std::endl;
-    }
-    roundFunc = f.second;
-  }
-
-  if(roundFunc == NULL) {
-    std::cerr << "Error: no @BarrierSync function found." << std::endl;
-    exit(1);
-  }
 
   //call ROUND function of each node -- forward version
   for(size_t i = 0;i < nodeNum;++i) {
@@ -972,8 +953,8 @@ void dmpl::SyncSeqDbl::run()
   createGlobVars();
   processExternFuncs();
   createRoundCopier();
-  /*
   createMainFunc();
+  /*
   createInit();
   createSafety();
   createNodeFuncs();
