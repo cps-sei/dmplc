@@ -467,6 +467,12 @@ void dmpl::SyncSeqDbl::computeRelevant()
       }
     }
 
+    //-- sanity check
+    if(relevantThreads[proc] == NULL)
+      throw std::runtime_error("ERROR: role " + proc.role->name + " in node " +
+                               proc.role->node->name + " has no thread " +
+                               "relevant to require property " + property + "!!");
+
     //-- make variables read by relevant threads also spec relevant
     Func thread = relevantThreads[proc];
     if(thread != NULL) {
