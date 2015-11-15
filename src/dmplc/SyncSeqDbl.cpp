@@ -579,29 +579,19 @@ void dmpl::SyncSeqDbl::createRoundCopier()
   size_t nodeNum = builder.program.processes.size();
   dmpl::VarList fnParams,fnTemps;
 
-  //create the copier from _f to _i
-  StmtList fnBody1;
+  StmtList fnBody1,fnBody2;
   for(const auto &rg : relevantGlobs) {
     for(const Var &v : rg.second) {
       Var var = v->instDim(nodeNum);
+      //create the copier from _f to _i
       createCopyStmts(0,var,fnBody1,ExprList(),rg.first.id);
-    }
-  }
-
-  Func func1(new Function(dmpl::voidType(),"round_bwd_copier",fnParams,fnTemps,fnBody1));
-  cprog.addFunction(func1);
-
-  //create the copier from _i to _f
-  StmtList fnBody2;
-  for(const auto &rg : relevantGlobs) {
-    for(const Var &v : rg.second) {
-      Var var = v->instDim(nodeNum);
+      //create the copier from _i to _f
       createCopyStmts(1,var,fnBody2,ExprList(),rg.first.id);
     }
   }
 
-  Func func2(new Function(dmpl::voidType(),"round_fwd_copier",fnParams,fnTemps,fnBody2));
-  cprog.addFunction(func2);
+  cprog.addFunction(Func(new Function(dmpl::voidType(),"round_bwd_copier",fnParams,fnTemps,fnBody1)));
+  cprog.addFunction(Func(new Function(dmpl::voidType(),"round_fwd_copier",fnParams,fnTemps,fnBody2)));
 }
 
 /*********************************************************************/
