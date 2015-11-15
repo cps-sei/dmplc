@@ -534,11 +534,10 @@ void dmpl::SyncSeqDbl::createGlobVars()
   }
 
   //instantiate node-local variables by adding _i for each node id i
-  BOOST_FOREACH(const Var &v, relevantLocs.begin()->second) {
-    for(size_t i = 0;i < nodeNum;++i) {
+  for(const auto &rl : relevantLocs) {
+    for(const Var &v : rl.second)
       cprog.addGlobVar(v->instName(std::string("_") + 
-                                   boost::lexical_cast<std::string>(i)));
-    }
+                                   boost::lexical_cast<std::string>(rl.first.id)));
   }
 }
 
