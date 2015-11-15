@@ -504,11 +504,7 @@ void dmpl::SyncSeqDbl::computeRelevant()
     //-- assign relevant local and global variables
     for(const Var &v : specVars) {
       if(v->scope == Symbol::LOCAL) relevantLocs[proc].insert(v);
-      else if(v->scope == Symbol::GLOBAL) {
-        relevantGlobs[proc].insert(v);
-        //-- update global variable dimension
-        if(glob2Dim[v->name] < (proc.id + 1)) glob2Dim[v->name] = proc.id + 1;
-      }
+      else if(v->scope == Symbol::GLOBAL) relevantGlobs[proc].insert(v);
     }
   }
 
@@ -516,21 +512,6 @@ void dmpl::SyncSeqDbl::computeRelevant()
   if(relevantFuncs.empty())
     throw std::runtime_error("ERROR: no relevant functions found for property " +
                              property + "!!");
-}
-
-/*********************************************************************/
-//-- compute the dimension of a global variable, i.e., one more than
-//-- the largest process id that the global is relevant to
-/*********************************************************************/
-size_t dmpl::SyncSeqDbl::globVarDim(const Var &var)
-{
-  size_t res = glob2Dim[var->name];
-
-  //-- sanity check. dimension cannot be zero.
-  if(res == 0)
-    throw std::runtime_error("ERROR: global variable " + var->name + " not relevant to any process!!");
-
-  return res;
 }
 
 /*********************************************************************/
@@ -544,9 +525,8 @@ void dmpl::SyncSeqDbl::createGlobVars()
   for(const auto &rg : relevantGlobs) {
     //-- process each relevant global var
     for(const Var &v : rg.second) {
-      Var iv = v->instDim(globVarDim(v));
-      cprog.addGlobVar(iv->instName(std::string("_i_") + boost::lexical_cast<std::string>(rg.first.id)));
-      cprog.addGlobVar(iv->instName(std::string("_f_") + boost::lexical_cast<std::string>(rg.first.id)));
+      cprog.addGlobVar(v->instName(std::string("_i_") + boost::lexical_cast<std::string>(rg.first.id)));
+      cprog.addGlobVar(v->instName(std::string("_f_") + boost::lexical_cast<std::string>(rg.first.id)));
     }
   }
 
@@ -597,11 +577,10 @@ void dmpl::SyncSeqDbl::createRoundCopier()
   
   for(const auto &rg : relevantGlobs) {
     for(const Var &v : rg.second) {
-      Var var = v->instDim(globVarDim(v));
       //create the copier from _f to _i
-      createCopyStmts(0,var,fnBody1,ExprList(),rg.first.id);
+      createCopyStmts(0,v,fnBody1,ExprList(),rg.first.id);
       //create the copier from _i to _f
-      createCopyStmts(1,var,fnBody2,ExprList(),rg.first.id);
+      createCopyStmts(1,v,fnBody2,ExprList(),rg.first.id);
     }
   }
 
