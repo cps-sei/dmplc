@@ -93,6 +93,13 @@ namespace dmpl
     //-- get the node id
     int getId() const { return id; }
 
+    //-- equality operator
+    bool operator == (const Process &rhs) const
+    {
+      if(this == &rhs) return true;
+      return getNode() == rhs.getNode() && getRole() == rhs.getRole() && id == rhs.id;
+    }
+    
     //-- comparator
     bool operator < (const Process &rhs) const
     {
