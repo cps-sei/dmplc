@@ -787,49 +787,37 @@ void dmpl::SyncSeqDbl::createInit()
 /*********************************************************************/
 void dmpl::SyncSeqDbl::createSafety()
 {
-  StmtList safetyFnBody;
+  const Node &node = builder.program.nodes.begin()->second;
+  Func propFunc = node->getRequireFunc(property);
 
-  BOOST_FOREACH(Funcs::value_type &f, builder.program.funcs) {
-    if(f.second->isExtern == true)
-      continue;
-
-    int safety = f.second->attrs.count("SAFETY");
-    if(safety < 1)
-      continue;
-    else if(safety > 1)
-      std::cerr << "Warning: function " << f.second->name <<
-        " has more than one @SAFETY attribute" << std::endl;
-
-    dmpl::VarList fnParams,fnTemps;
-    StmtList fnBody;
-    
-    //create parameters
-    fnParams = f.second->params;
-
-    //create temporary variables
-    BOOST_FOREACH(Vars::value_type &v,f.second->temps)
-      fnTemps.push_back(Var(new Variable(*v.second)));
-
-    //transform the body of safety
-    BOOST_FOREACH(const Stmt &st,f.second->body) {
-      syncseqdbl::GlobalTransformer gt(*this,builder.program,nodeNum);
-      gt.visit(st);
-      fnBody.push_back(gt.stmtMap[st]);
-    }
-
-    std::string fname = "__SAFETY_" + f.second->name;
-    Func func(new Function(dmpl::voidType(), fname, fnParams,fnTemps,fnBody));
-    cprog.addFunction(func);
-
-    Expr callExpr(new LvalExpr(fname));
-    Stmt callStmt(new CallStmt(callExpr,dmpl::ExprList()));
-    safetyFnBody.push_back(callStmt);
+  //-- create the require property function
+  dmpl::VarList fnParams = propFunc->params,fnTemps;
+  for(const auto &v : propFunc->temps) fnTemps.push_back(v.second);
+  
+  //transform the body of safety
+  StmtList fnBody;
+  BOOST_FOREACH(const Stmt &st,propFunc->body) {
+    syncseqdbl::GlobalTransformer gt(*this,builder.program,nodeNum);
+    gt.visit(st);
+    fnBody.push_back(gt.stmtMap[st]);
   }
-
-  dmpl::VarList fnParams, fnTemps;
-
-  Func func(new Function(dmpl::voidType(),"__SAFETY",fnParams,fnTemps,safetyFnBody));
+  
+  std::string fname = "__SAFETY_" + property;
+  Func func(new Function(propFunc->retType, fname, fnParams, fnTemps, fnBody));
   cprog.addFunction(func);
+
+  //-- create the SAFETY function and call the property function  
+  StmtList safetyFnBody;
+  Expr callExpr(new LvalExpr(fname));
+  callExpr = Expr(new CallExpr(callExpr, dmpl::ExprList()));
+  dmpl::ExprList args = {callExpr};
+  callExpr = Expr(new CallExpr(Expr(new LvalExpr("assert")), args));
+  Stmt callStmt(new CallStmt(callExpr));
+  safetyFnBody.push_back(callStmt);
+
+  fnParams.clear(); fnTemps.clear();
+  Func safetyFunc(new Function(dmpl::voidType(),"__SAFETY",fnParams,fnTemps,safetyFnBody));
+  cprog.addFunction(safetyFunc);
 }
 
 /*********************************************************************/
@@ -989,8 +977,8 @@ void dmpl::SyncSeqDbl::run()
   createRoundCopier();
   createMainFunc();
   createInit();
-  /*
   createSafety();
+  /*
   createNodeFuncs();
   */
 }
