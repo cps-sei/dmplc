@@ -85,15 +85,12 @@ namespace dmpl {
       //the DASL program being transformed
       dmpl::Program &prog;
 
-      //the number of nodes
-      size_t nodeNum;
-
       //map from variables to constants for substitution
       std::map<std::string,size_t> idMap;
 
       //constructors
-      GlobalTransformer(SyncSeqDbl &ss,dmpl::Program &p,size_t n) 
-        : syncSeq(ss),prog(p),nodeNum(n) {}
+      GlobalTransformer(SyncSeqDbl &ss,dmpl::Program &p) 
+        : syncSeq(ss),prog(p) {}
 
       //update substitution mapping
       void addIdMap(const std::string &s,size_t i);
@@ -113,12 +110,12 @@ namespace dmpl {
     };
 
     /*****************************************************************/
-    //a visitor that transforms at the node level
+    //a visitor that transforms at the process level
     /*****************************************************************/
     struct NodeTransformer : public GlobalTransformer
     {
-      ///the id of the node being transformed
-      size_t nodeId;
+      ///the process being transformed
+      Process proc;
 
       //flags to indicate whether we are processing a function call, or
       //lhs of an assignment
@@ -127,8 +124,8 @@ namespace dmpl {
       //direction -- true if forward, false if backward
       bool fwd;
 
-      NodeTransformer(SyncSeqDbl &ss,Program &p,size_t n,size_t i,bool f)
-        : GlobalTransformer(ss,p,n),nodeId(i),inCall(0),inLhs(0),fwd(f) {}
+      NodeTransformer(SyncSeqDbl &ss,Program &p,const Process &pr,bool f)
+        : GlobalTransformer(ss,p),proc(pr),inCall(0),inLhs(0),fwd(f) {}
 
       void exitLval(LvalExpr &expr);
       bool enterCall(CallExpr &expr) { return false; }
@@ -186,7 +183,7 @@ namespace dmpl {
     void createCopyStmts(bool fwd,const Var &var,StmtList &res,ExprList indx,int node);
     void createRoundCopier();
     void createMainFunc();
-    Stmt createInitVar(const Var &var, size_t pid);
+    Stmt createInitVar(const Var &var, const Process &proc);
     void createInit();
     void createSafety();
     void createNodeFuncs();

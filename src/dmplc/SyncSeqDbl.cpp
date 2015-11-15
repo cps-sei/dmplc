@@ -87,7 +87,7 @@ void dmpl::syncseqdbl::GlobalTransformer::delIdMap(const std::string &s)
 void dmpl::syncseqdbl::GlobalTransformer::exitComp(dmpl::CompExpr &expr)
 {
   if(expr.op == TNODENUM)
-    exprMap[hostExpr] = Expr(new IntExpr(boost::lexical_cast<std::string>(nodeNum)));
+    throw std::runtime_error("ERROR: found unsupported #N dimension!!");
   else
     exprMap[hostExpr] = dmpl::Expr(new dmpl::CompExpr(expr.op,collect(expr.args)));
 }
@@ -183,10 +183,10 @@ void dmpl::syncseqdbl::GlobalTransformer::exitFAN(dmpl::FANStmt &stmt)
   Stmt shost = hostStmt;
   StmtList sl;
 
-  for(size_t i = 0;i < nodeNum;++i) {
-    syncseqdbl::NodeTransformer nt(syncSeq,prog,nodeNum,i,true);
+  for(const Process &pr : prog.processes) {
+    syncseqdbl::NodeTransformer nt(syncSeq,prog,pr,true);
     nt.idMap = idMap;
-    nt.addIdMap(stmt.id,i);
+    nt.addIdMap(stmt.id,pr.id);
     nt.visit(stmt.data);
     sl.push_back(nt.stmtMap[stmt.data]);
     nt.delIdMap(stmt.id);
@@ -200,12 +200,14 @@ void dmpl::syncseqdbl::GlobalTransformer::exitFADNP(dmpl::FADNPStmt &stmt)
   Stmt shost = hostStmt;
   StmtList sl;
 
-  for(size_t i1 = 0;i1 < nodeNum;++i1) {
-    for(size_t i2 = i1+1;i2 < nodeNum;++i2) {
-      syncseqdbl::NodeTransformer nt(syncSeq,prog,nodeNum,i1,true);
+  auto it1 = prog.processes.begin();
+  for(;it1 != prog.processes.end();++it1) {
+    auto it2 = it1; ++it2;
+    for(;it2 != prog.processes.end();++it2) {
+      syncseqdbl::NodeTransformer nt(syncSeq,prog,*it1,true);
       nt.idMap = idMap;
-      nt.addIdMap(stmt.id1,i1);
-      nt.addIdMap(stmt.id2,i2);
+      nt.addIdMap(stmt.id1,it1->id);
+      nt.addIdMap(stmt.id2,it2->id);
       nt.visit(stmt.data);
       sl.push_back(nt.stmtMap[stmt.data]);
       nt.delIdMap(stmt.id1);
@@ -228,10 +230,11 @@ void dmpl::syncseqdbl::NodeTransformer::exitLval(dmpl::LvalExpr &expr)
   std::string newName = expr.var;
 
   //assumes a single node
-  Node &node = prog.nodes.begin()->second;
+  Node &node = proc.role->node;
 
   //create the string for the nodeId part of the expression, if any
-  std::string nodeIdStr = (expr.node != NULL) ? getNodeStr(expr) : boost::lexical_cast<std::string>(nodeId);
+  std::string nodeIdStr = (expr.node != NULL) ? getNodeStr(expr)
+    : boost::lexical_cast<std::string>(proc.id);
 
   //handle assume and assert
   if(newName == "ASSUME") newName = "__CPROVER_assume";
@@ -294,9 +297,9 @@ void dmpl::syncseqdbl::NodeTransformer::exitEXO(dmpl::EXOExpr &expr)
 {
   Expr shost = hostExpr;
   exprMap[shost] = Expr();
-  for(size_t i = 0;i < nodeNum;++i) {
-    if(i == nodeId) continue;
-    addIdMap(expr.id,i);
+  for(const Process &pr : prog.processes) {
+    if(pr == proc) continue;
+    addIdMap(expr.id,pr.id);
     visit(expr.arg);
     delIdMap(expr.id);
     if(exprMap[shost].get()) 
@@ -316,8 +319,9 @@ void dmpl::syncseqdbl::NodeTransformer::exitEXH(dmpl::EXHExpr &expr)
 {
   Expr shost = hostExpr;
   exprMap[shost] = Expr();
-  for(size_t i = nodeId+1;i < nodeNum;++i) {
-    addIdMap(expr.id,i);
+  for(const Process &pr : prog.processes) {
+    if(pr.id <= proc.id) continue;
+    addIdMap(expr.id,pr.id);
     visit(expr.arg);
     delIdMap(expr.id);
     if(exprMap[shost].get()) 
@@ -337,8 +341,9 @@ void dmpl::syncseqdbl::NodeTransformer::exitEXL(dmpl::EXLExpr &expr)
 {
   Expr shost = hostExpr;
   exprMap[shost] = Expr();
-  for(size_t i = 0;i < nodeId;++i) {
-    addIdMap(expr.id,i);
+  for(const Process &pr : prog.processes) {
+    if(pr.id >= proc.id) continue;
+    addIdMap(expr.id,pr.id);
     visit(expr.arg);
     delIdMap(expr.id);
     if(exprMap[shost].get()) 
@@ -366,9 +371,9 @@ void dmpl::syncseqdbl::NodeTransformer::exitFAO(dmpl::FAOStmt &stmt)
   Stmt shost = hostStmt;
   StmtList sl;
 
-  for(size_t i = 0;i < nodeNum;++i) {
-    if(i == nodeId) continue;
-    addIdMap(stmt.id,i);
+  for(const Process &pr : prog.processes) {
+    if(pr == proc) continue;
+    addIdMap(stmt.id,pr.id);
     visit(stmt.data);
     sl.push_back(stmtMap[stmt.data]);
     delIdMap(stmt.id);
@@ -382,8 +387,9 @@ void dmpl::syncseqdbl::NodeTransformer::exitFAOL(dmpl::FAOLStmt &stmt)
   Stmt shost = hostStmt;
   StmtList sl;
 
-  for(size_t i = 0;i < nodeId;++i) {
-    addIdMap(stmt.id,i);
+  for(const Process &pr : prog.processes) {
+    if(pr.id >= proc.id) continue;
+    addIdMap(stmt.id,pr.id);
     visit(stmt.data);
     sl.push_back(stmtMap[stmt.data]);
     delIdMap(stmt.id);
@@ -397,8 +403,9 @@ void dmpl::syncseqdbl::NodeTransformer::exitFAOH(dmpl::FAOHStmt &stmt)
   Stmt shost = hostStmt;
   StmtList sl;
 
-  for(size_t i = nodeId+1;i < nodeNum;++i) {
-    addIdMap(stmt.id,i);
+  for(const Process &pr : prog.processes) {
+    if(pr.id <= proc.id) continue;
+    addIdMap(stmt.id,pr.id);
     visit(stmt.data);
     sl.push_back(stmtMap[stmt.data]);
     delIdMap(stmt.id);
@@ -695,27 +702,27 @@ void dmpl::SyncSeqDbl::createMainFunc()
 //-- id. return a statement that calls the function, or assumes it if
 //-- the variable is an input.
 /*********************************************************************/
-dmpl::Stmt dmpl::SyncSeqDbl::createInitVar(const Var &var, size_t pid)
+dmpl::Stmt dmpl::SyncSeqDbl::createInitVar(const Var &var, const Process &proc)
 {
-  Node &node = builder.program.nodes.begin()->second;
+  Node &node = proc.role->node;
   dmpl::VarList fnParams = var->initFunc->params,fnTemps;
   for(const auto &v : var->initFunc->temps) fnTemps.push_back(v.second);
   
   StmtList initFnBody;
-  std::string initFnName = "__INIT_" + var->name + "_" + boost::lexical_cast<std::string>(pid);
+  std::string initFnName = "__INIT_" + var->name + "_" + boost::lexical_cast<std::string>(proc.id);
 
   //-- if the variable is an input, assign it non-deterministically
   if(var->isInput) {
-    Expr varExpr(new LvalExpr(var->name + "_" + boost::lexical_cast<std::string>(pid)));
+    Expr varExpr(new LvalExpr(var->name + "_" + boost::lexical_cast<std::string>(proc.id)));
     Expr ndfn = createNondetFunc(varExpr);
     Expr ndcall(new CallExpr(ndfn,ExprList()));
     initFnBody.push_back(Stmt(new AsgnStmt(varExpr,ndcall)));
   }
   
   BOOST_FOREACH(const Stmt &st,var->initFunc->body) {
-    syncseqdbl::NodeTransformer nt(*this,builder.program,nodeNum,pid,true);
+    syncseqdbl::NodeTransformer nt(*this,builder.program,proc,true);
     std::string nodeId = *node->args.begin();
-    nt.addIdMap(nodeId,pid);
+    nt.addIdMap(nodeId,proc.id);
     nt.visit(st);
     nt.delIdMap(nodeId);
     initFnBody.push_back(nt.stmtMap[st]);
@@ -757,12 +764,12 @@ void dmpl::SyncSeqDbl::createInit()
     //-- generate INIT for input vars 
     for(const Var &v: inputVars) {
       if(v->initFunc == NULL) continue;
-      fnBody.push_back(createInitVar(v, rl.first.id));
+      fnBody.push_back(createInitVar(v, rl.first));
     }
     //-- generate INIT for non-input vars 
     for(const Var &v: nonInputVars) {
       if(v->initFunc == NULL) continue;
-      fnBody.push_back(createInitVar(v, rl.first.id));
+      fnBody.push_back(createInitVar(v, rl.first));
     }
   }
 
@@ -795,7 +802,7 @@ void dmpl::SyncSeqDbl::createSafety()
   //transform the body of safety
   StmtList fnBody;
   BOOST_FOREACH(const Stmt &st,propFunc->body) {
-    syncseqdbl::GlobalTransformer gt(*this,builder.program,nodeNum);
+    syncseqdbl::GlobalTransformer gt(*this,builder.program);
     gt.visit(st);
     fnBody.push_back(gt.stmtMap[st]);
   }
@@ -847,7 +854,7 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
         StmtList fnBody;
 
         BOOST_FOREACH(const Stmt &st,f->body) {
-          syncseqdbl::NodeTransformer nt(*this,builder.program,nodeNum,pr.id,true);
+          syncseqdbl::NodeTransformer nt(*this,builder.program,pr,true);
           std::string nodeId = *node->args.begin();
           nt.addIdMap(nodeId,pr.id);
           nt.visit(st);
@@ -867,7 +874,7 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
         StmtList fnBody;
 
         BOOST_FOREACH(const Stmt &st,f->body) {
-          syncseqdbl::NodeTransformer nt(*this,builder.program,nodeNum,pr.id,false);
+          syncseqdbl::NodeTransformer nt(*this,builder.program,pr,false);
           std::string nodeId = *node->args.begin();
           nt.addIdMap(nodeId,pr.id);
           nt.visit(st);
