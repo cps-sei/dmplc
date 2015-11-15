@@ -707,7 +707,9 @@ void dmpl::SyncSeqDbl::createMainFunc()
 dmpl::Stmt dmpl::SyncSeqDbl::createInitVar(const Var &var, size_t pid)
 {
   Node &node = builder.program.nodes.begin()->second;
-  dmpl::VarList fnParams,fnTemps;
+  dmpl::VarList fnParams = var->initFunc->params,fnTemps;
+  for(const auto &v : var->initFunc->temps) fnTemps.push_back(v.second);
+  
   StmtList initFnBody;
   std::string initFnName = "__INIT_" + var->name + "_" + boost::lexical_cast<std::string>(pid);
 
