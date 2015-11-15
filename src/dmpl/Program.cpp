@@ -203,8 +203,7 @@ dmpl::Program::print (std::ostream &os,unsigned int indent)
   //print external function declarations
   BOOST_FOREACH(dmpl::Funcs::value_type &v, funcs) {
     if(!v.second->isExtern) continue;
-    os << spacer << "extern";
-    v.second->printDecl(os, 1);
+    v.second->printDecl(os, indent);
   }
   os << '\n';
 

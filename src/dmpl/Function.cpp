@@ -172,7 +172,7 @@ dmpl::Function::printDecl (std::ostream &os,unsigned int indent)
 {
   std::string spacer (indent, ' ');
 
-  os << spacer << retType->toString() << " " << name;
+  os << spacer << (isExtern ? "extern " : "") << retType->toString() << " " << name;
 
   //-- handle thread function
   if(retType->isThread()) { os << ";\n"; return; }
