@@ -833,34 +833,42 @@ void dmpl::SyncSeqDbl::createSafety()
 /*********************************************************************/
 void dmpl::SyncSeqDbl::createNodeFuncs()
 {
-  Node &node = builder.program.nodes.begin()->second;
-  for(size_t i = 0;i < nodeNum;++i) {
-    BOOST_FOREACH(Funcs::value_type &f,node->funcs) {
+  //-- go over each process
+  for(const Process &pr : builder.program.processes) {
+    Node &node = pr.role->node;
+    
+    //-- collect functions
+    FuncList funcs = { relevantThreads[pr] };
+    funcs.insert(funcs.end(), relevantFuncs[pr].begin(), relevantFuncs[pr].end());
+
+    //-- process each function
+    for(const Func &f : funcs) {
       dmpl::VarList fnParams,fnTemps;
 
       //create parameters
-      fnParams = f.second->params;
+      fnParams = f->params;
 
       //create temporary variables
-      BOOST_FOREACH(Vars::value_type &v,f.second->temps)
+      BOOST_FOREACH(Vars::value_type &v,f->temps)
         fnTemps.push_back(v.second);
 
       //create the forward version
       {
         StmtList fnBody;
 
-        BOOST_FOREACH(const Stmt &st,f.second->body) {
-          syncseqdbl::NodeTransformer nt(*this,builder.program,nodeNum,i,true);
+        BOOST_FOREACH(const Stmt &st,f->body) {
+          syncseqdbl::NodeTransformer nt(*this,builder.program,nodeNum,pr.id,true);
           std::string nodeId = *node->args.begin();
-          nt.addIdMap(nodeId,i);
+          nt.addIdMap(nodeId,pr.id);
           nt.visit(st);
           nt.delIdMap(nodeId);
           fnBody.push_back(nt.stmtMap[st]);
         }
         
-        std::string fnName = node->name + "__" + f.second->name + "_" + 
-          boost::lexical_cast<std::string>(i) + "_fwd";
-        Func func(new Function(f.second->retType,fnName,fnParams,fnTemps,fnBody));
+        std::string fnName = node->name + "__" + f->name + "_" + 
+          boost::lexical_cast<std::string>(pr.id) + "_fwd";
+        Type retType = f->retType->isThread() ? voidType() : f->retType;
+        Func func(new Function(retType,fnName,fnParams,fnTemps,fnBody));
         cprog.addFunction(func);
       }
 
@@ -868,18 +876,19 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
       {
         StmtList fnBody;
 
-        BOOST_FOREACH(const Stmt &st,f.second->body) {
-          syncseqdbl::NodeTransformer nt(*this,builder.program,nodeNum,i,false);
+        BOOST_FOREACH(const Stmt &st,f->body) {
+          syncseqdbl::NodeTransformer nt(*this,builder.program,nodeNum,pr.id,false);
           std::string nodeId = *node->args.begin();
-          nt.addIdMap(nodeId,i);
+          nt.addIdMap(nodeId,pr.id);
           nt.visit(st);
           nt.delIdMap(nodeId);
           fnBody.push_back(nt.stmtMap[st]);
         }
         
-        std::string fnName = node->name + "__" + f.second->name + "_" + 
-          boost::lexical_cast<std::string>(i) + "_bwd";
-        Func func(new Function(f.second->retType,fnName,fnParams,fnTemps,fnBody));
+        std::string fnName = node->name + "__" + f->name + "_" + 
+          boost::lexical_cast<std::string>(pr.id) + "_bwd";
+        Type retType = f->retType->isThread() ? voidType() : f->retType;
+        Func func(new Function(retType,fnName,fnParams,fnTemps,fnBody));
         cprog.addFunction(func);
       }
     }
@@ -988,9 +997,7 @@ void dmpl::SyncSeqDbl::run()
   createMainFunc();
   createInit();
   createSafety();
-  /*
   createNodeFuncs();
-  */
 }
 
 /*********************************************************************/
