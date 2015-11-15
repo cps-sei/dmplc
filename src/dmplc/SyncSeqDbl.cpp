@@ -749,16 +749,15 @@ void dmpl::SyncSeqDbl::createInit()
 {
   StmtList fnBody;
   //-- create initializers for local variables
-  size_t i = 0;
-  for(const auto &vs: relevantLocs) {
+  for(const auto &rl: relevantLocs) {
     //-- collect the local and global variables, and sort them into
     //-- input and non-input
     VarSet inputVars, nonInputVars;
-    for(const Var &v: vs.second) {
+    for(const Var &v: rl.second) {
       if(v->isInput) inputVars.insert(v);
       else nonInputVars.insert(v);
     }
-    for(const Var &v: relevantGlobs[vs.first]) {
+    for(const Var &v: relevantGlobs[rl.first]) {
       if(v->isInput) inputVars.insert(v);
       else nonInputVars.insert(v);
     }
@@ -766,14 +765,13 @@ void dmpl::SyncSeqDbl::createInit()
     //-- generate INIT for input vars 
     for(const Var &v: inputVars) {
       if(v->initFunc == NULL) continue;
-      fnBody.push_back(createInitVar(v, i));
+      fnBody.push_back(createInitVar(v, rl.first.id));
     }
     //-- generate INIT for non-input vars 
     for(const Var &v: nonInputVars) {
       if(v->initFunc == NULL) continue;
-      fnBody.push_back(createInitVar(v, i));
+      fnBody.push_back(createInitVar(v, rl.first.id));
     }
-    ++i;
   }
 
   //-- also assume that the property holds after initialization
