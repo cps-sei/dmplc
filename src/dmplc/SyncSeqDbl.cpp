@@ -442,7 +442,7 @@ void dmpl::SyncSeqDbl::computeRelevant()
     for(Func f : proc.role->threads) {
       for(const Var &v : specVars) {
         if(!f->canWrite(v)) continue;
-        std::cout << "relevant thread : " << f->name << '\n';
+        //std::cout << "relevant thread : " << f->name << '\n';
 
         if(proc.role->getAttribute(f, "BarrierSync", 0) == NULL)
           throw std::runtime_error("ERROR: role " + proc.role->name + " in node " +
@@ -489,7 +489,7 @@ void dmpl::SyncSeqDbl::computeRelevant()
 
       for(const Var &v : specVars) {
         if(!f->canWrite(v)) continue;
-        std::cout << "relevant function : " << f->name << '\n';
+        //std::cout << "relevant function : " << f->name << '\n';
         relevantFuncs[proc].insert(f);
         break;
       }
