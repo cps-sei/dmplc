@@ -515,6 +515,30 @@ void dmpl::SyncSeqDbl::computeRelevant()
 }
 
 /*********************************************************************/
+//-- compute the dimension of a global variable, i.e., one more than
+//-- the largest process id that the global is relevant to
+/*********************************************************************/
+size_t dmpl::SyncSeqDbl::globVarDim(const Var &var)
+{
+  size_t res = 0;
+  
+  for(const auto &rg : relevantGlobs) {
+    for(const Var &v : rg.second) {
+      if(*var == *v) {
+        res = (res < (rg.first.id + 1)) ? (rg.first.id + 1) : res;
+        break;
+      }
+    }
+  }
+
+  //-- sanity check. dimension cannot be zero.
+  if(res == 0)
+    throw std::runtime_error("ERROR: global variable " + var->name + " not relevant to any process!!");
+
+  return res;
+}
+
+/*********************************************************************/
 //create the global variables
 /*********************************************************************/
 void dmpl::SyncSeqDbl::createGlobVars()
@@ -522,13 +546,10 @@ void dmpl::SyncSeqDbl::createGlobVars()
   //instantiate node-global variables by replacing dimension #N with
   //nodeNum -- make two copies, one for initial value for a round, and
   //the other for the final value for a round  
-  size_t nodeNum = builder.program.processes.size();
-
-  //-- process each role
   for(const auto &rg : relevantGlobs) {
     //-- process each relevant global var
     for(const Var &v : rg.second) {
-      Var iv = v->instDim(nodeNum);
+      Var iv = v->instDim(globVarDim(v));
       cprog.addGlobVar(iv->instName(std::string("_i_") + boost::lexical_cast<std::string>(rg.first.id)));
       cprog.addGlobVar(iv->instName(std::string("_f_") + boost::lexical_cast<std::string>(rg.first.id)));
     }
@@ -576,13 +597,12 @@ void dmpl::SyncSeqDbl::createCopyStmts(bool fwd,const Var &var,StmtList &res,Exp
 /*********************************************************************/
 void dmpl::SyncSeqDbl::createRoundCopier()
 {
-  size_t nodeNum = builder.program.processes.size();
   dmpl::VarList fnParams,fnTemps;
-
   StmtList fnBody1,fnBody2;
+  
   for(const auto &rg : relevantGlobs) {
     for(const Var &v : rg.second) {
-      Var var = v->instDim(nodeNum);
+      Var var = v->instDim(globVarDim(v));
       //create the copier from _f to _i
       createCopyStmts(0,var,fnBody1,ExprList(),rg.first.id);
       //create the copier from _i to _f

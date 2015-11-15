@@ -182,6 +182,7 @@ namespace dmpl {
     void computeRelevant();
 
     void createGlobVars();
+    size_t globVarDim(const Var &var);
     void createCopyStmts(bool fwd,const Var &var,StmtList &res,ExprList indx,int node);
     void createRoundCopier();
     void createMainFunc();
