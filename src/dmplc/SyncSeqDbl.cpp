@@ -418,10 +418,7 @@ void dmpl::syncseqdbl::NodeTransformer::exitFAOH(dmpl::FAOHStmt &stmt)
 //constructor
 /*********************************************************************/
 dmpl::SyncSeqDbl::SyncSeqDbl(dmpl::DmplBuilder &b, const std::string &p, int r) 
-  : builder(b), property(p), roundNum(r)
-{
-  nodeNum = builder.program.processes.size();
-}
+  : builder(b), property(p), roundNum(r) {}
 
 /*********************************************************************/
 //-- compute property relevant variables and functions for each
@@ -526,9 +523,9 @@ void dmpl::SyncSeqDbl::computeRelevant()
 /*********************************************************************/
 void dmpl::SyncSeqDbl::createGlobVars()
 {
-  //instantiate node-global variables by replacing dimension #N with
-  //nodeNum -- make two copies, one for initial value for a round, and
-  //the other for the final value for a round  
+  //instantiate node-global variables -- make two copies, one for
+  //initial value for a round, and the other for the final value for a
+  //round
   for(const auto &rg : relevantGlobs) {
     //-- process each relevant global var
     for(const Var &v : rg.second) {
@@ -978,7 +975,7 @@ void dmpl::SyncSeqDbl::processExternFuncs()
 void dmpl::SyncSeqDbl::run()
 {
   std::cout << "Sequentializing with double-buffering and " 
-            << nodeNum << " processes ...\n";
+            << builder.program.processes.size() << " processes ...\n";
 
   //-- copy over constants
   cprog.constDef = builder.program.constDef;

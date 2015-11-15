@@ -156,7 +156,6 @@ namespace dmpl {
   public:
     DmplBuilder &builder;  //-- the builder containing parsed DMPL file
     std::string property;  //-- the name of target require property
-    size_t nodeNum;        //-- the number of nodes in the system
     int roundNum;          //-- the number of rounds
     CProgram cprog;        //-- the generated C program
 
