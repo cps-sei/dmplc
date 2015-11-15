@@ -504,7 +504,11 @@ void dmpl::SyncSeqDbl::computeRelevant()
     //-- assign relevant local and global variables
     for(const Var &v : specVars) {
       if(v->scope == Symbol::LOCAL) relevantLocs[proc].insert(v);
-      else if(v->scope == Symbol::GLOBAL) relevantGlobs[proc].insert(v);
+      else if(v->scope == Symbol::GLOBAL) {
+        relevantGlobs[proc].insert(v);
+        //-- update global variable dimension
+        if(glob2Dim[v->name] < (proc.id + 1)) glob2Dim[v->name] = proc.id + 1;
+      }
     }
   }
 
@@ -520,16 +524,7 @@ void dmpl::SyncSeqDbl::computeRelevant()
 /*********************************************************************/
 size_t dmpl::SyncSeqDbl::globVarDim(const Var &var)
 {
-  size_t res = 0;
-  
-  for(const auto &rg : relevantGlobs) {
-    for(const Var &v : rg.second) {
-      if(*var == *v) {
-        res = (res < (rg.first.id + 1)) ? (rg.first.id + 1) : res;
-        break;
-      }
-    }
-  }
+  size_t res = glob2Dim[var->name];
 
   //-- sanity check. dimension cannot be zero.
   if(res == 0)

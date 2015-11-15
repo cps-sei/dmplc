@@ -168,6 +168,9 @@ namespace dmpl {
     std::map<Process,VarSet> relevantGlobs;
     std::map<Process,VarSet> relevantLocs;
 
+    //-- map from global variable names to dimensions
+    std::map<std::string,size_t> glob2Dim;
+    
     //-- map from processes to threads that are relevant to the target
     //-- property
     std::map<Process,Func> relevantThreads;
