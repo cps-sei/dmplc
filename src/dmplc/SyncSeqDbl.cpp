@@ -521,15 +521,16 @@ void dmpl::SyncSeqDbl::createGlobVars()
 {
   //instantiate node-global variables by replacing dimension #N with
   //nodeNum -- make two copies, one for initial value for a round, and
-  //the other for the final value for a round
-  dmpl::VarList gvars;
-  BOOST_FOREACH(const Var &v,relevantGlobs.begin()->second)
-    gvars.push_back(v->instDim(nodeNum));
-  
-  BOOST_FOREACH(const Var &v,gvars) {
-    for(size_t i = 0;i < nodeNum;++i) {
-      cprog.addGlobVar(v->instName(std::string("_i_") + boost::lexical_cast<std::string>(i)));
-      cprog.addGlobVar(v->instName(std::string("_f_") + boost::lexical_cast<std::string>(i)));
+  //the other for the final value for a round  
+  size_t nodeNum = builder.program.processes.size();
+
+  //-- process each role
+  for(const auto &rg : relevantGlobs) {
+    //-- process each relevant global var
+    for(const Var &v : rg.second) {
+      Var iv = v->instDim(nodeNum);
+      cprog.addGlobVar(iv->instName(std::string("_i_") + boost::lexical_cast<std::string>(rg.first.id)));
+      cprog.addGlobVar(iv->instName(std::string("_f_") + boost::lexical_cast<std::string>(rg.first.id)));
     }
   }
 
