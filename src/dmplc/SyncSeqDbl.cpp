@@ -700,52 +700,75 @@ void dmpl::SyncSeqDbl::createMainFunc()
 }
 
 /*********************************************************************/
+//-- create the INIT function for a variable, given a process
+//-- id. return a statement that calls the function, or assumes it if
+//-- the variable is an input.
+/*********************************************************************/
+dmpl::Stmt dmpl::SyncSeqDbl::createInitVar(const Var &var, size_t pid)
+{
+  Node &node = builder.program.nodes.begin()->second;
+  dmpl::VarList fnParams,fnTemps;
+  StmtList initFnBody;
+  std::string initFnName = "__INIT_" + var->name + "_" + boost::lexical_cast<std::string>(pid);
+
+  BOOST_FOREACH(const Stmt &st,var->initFunc->body) {
+    syncseqdbl::NodeTransformer nt(*this,builder.program,nodeNum,pid,true);
+    std::string nodeId = *node->args.begin();
+    nt.addIdMap(nodeId,pid);
+    nt.visit(st);
+    nt.delIdMap(nodeId);
+    initFnBody.push_back(nt.stmtMap[st]);
+  }
+      
+  Func func(new Function(var->initFunc->retType,initFnName,fnParams,fnTemps,initFnBody));
+  cprog.addFunction(func);
+
+  //-- create a call to the function and return it
+  Expr callExpr(new LvalExpr(initFnName));
+  callExpr = Expr(new CallExpr(callExpr, dmpl::ExprList()));
+  if(var->isInput) {
+    dmpl::ExprList args = {callExpr};
+    callExpr = Expr(new CallExpr(Expr(new LvalExpr("__CPROVER_assume")), args));
+  }
+  return Stmt(new CallStmt(callExpr));
+}
+
+/*********************************************************************/
 //create the INIT() function
 /*********************************************************************/
 void dmpl::SyncSeqDbl::createInit()
 {
-  StmtList initFnBody;
-
-  BOOST_FOREACH(Funcs::value_type &f, builder.program.funcs) {
-    if(f.second->isExtern == true)
-      continue;
-      
-    int init = f.second->attrs.count("INIT");
-    if(init < 1)
-      continue;
-    else if(init > 1)
-      std::cerr << "Warning: function " << f.second->name <<
-        " has more than one @INIT attribute" << std::endl;
-
-    dmpl::VarList fnParams,fnTemps;
-    StmtList fnBody;
-
-    //create parameters
-    fnParams = f.second->params;
-
-    //create temporary variables
-    BOOST_FOREACH(Vars::value_type &v,f.second->temps)
-      fnTemps.push_back(v.second);
-
-    //transform the body of init
-    BOOST_FOREACH(const Stmt &st,f.second->body) {
-      syncseqdbl::GlobalTransformer gt(*this,builder.program,nodeNum);
-      gt.visit(st);
-      fnBody.push_back(gt.stmtMap[st]);
+  StmtList fnBody;
+  //-- create initializers for local variables
+  size_t i = 0;
+  for(const auto &vs: relevantLocs) {
+    //-- collect the local and global variables, and sort them into
+    //-- input and non-input
+    VarSet inputVars, nonInputVars;
+    for(const Var &v: vs.second) {
+      if(v->isInput) inputVars.insert(v);
+      else nonInputVars.insert(v);
+    }
+    for(const Var &v: relevantGlobs[vs.first]) {
+      if(v->isInput) inputVars.insert(v);
+      else nonInputVars.insert(v);
     }
 
-    std::string fname = "__INIT_" + f.second->name;
-    Func func(new Function(dmpl::voidType(),fname,fnParams,fnTemps,fnBody));
-    cprog.addFunction(func);
-
-    Expr callExpr(new LvalExpr(fname));
-    Stmt callStmt(new CallStmt(callExpr,dmpl::ExprList()));
-    initFnBody.push_back(callStmt);
+    //-- generate INIT for input vars 
+    for(const Var &v: inputVars) {
+      if(v->initFunc == NULL) continue;
+      fnBody.push_back(createInitVar(v, i));
+    }
+    //-- generate INIT for non-input vars 
+    for(const Var &v: nonInputVars) {
+      if(v->initFunc == NULL) continue;
+      fnBody.push_back(createInitVar(v, i));
+    }
+    ++i;
   }
 
   dmpl::VarList fnParams, fnTemps;
-
-  Func func(new Function(dmpl::voidType(),"__INIT",fnParams,fnTemps,initFnBody));
+  Func func(new Function(dmpl::voidType(),"__INIT",fnParams,fnTemps,fnBody));
   cprog.addFunction(func);
 }
 
@@ -955,8 +978,8 @@ void dmpl::SyncSeqDbl::run()
   processExternFuncs();
   createRoundCopier();
   createMainFunc();
-  /*
   createInit();
+  /*
   createSafety();
   createNodeFuncs();
   */

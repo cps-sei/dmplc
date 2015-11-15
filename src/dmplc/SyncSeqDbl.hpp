@@ -185,6 +185,7 @@ namespace dmpl {
     void createCopyStmts(bool fwd,const Var &var,StmtList &res,ExprList indx,int node);
     void createRoundCopier();
     void createMainFunc();
+    Stmt createInitVar(const Var &var, size_t pid);
     void createInit();
     void createSafety();
     void createNodeFuncs();
