@@ -308,7 +308,7 @@ void dmpl::syncseqdbl::NodeTransformer::exitEXO(dmpl::EXOExpr &expr)
 
   //turn empty disjunct into "0"
   if(!exprMap[shost].get())
-    exprMap[shost] = Expr(new dmpl::IntExpr(0));
+    exprMap[shost] = Expr(new dmpl::IntExpr("0"));
 }
 
 //compute disjunction over all higher node ids
@@ -329,7 +329,7 @@ void dmpl::syncseqdbl::NodeTransformer::exitEXH(dmpl::EXHExpr &expr)
 
   //turn empty disjunct into "0"
   if(!exprMap[shost].get())
-    exprMap[shost] = Expr(new dmpl::IntExpr(0));
+    exprMap[shost] = Expr(new dmpl::IntExpr("0"));
 }
 
 //compute disjunction over all lower node ids
@@ -350,7 +350,7 @@ void dmpl::syncseqdbl::NodeTransformer::exitEXL(dmpl::EXLExpr &expr)
 
   //turn empty disjunct into "0"
   if(!exprMap[shost].get())
-    exprMap[shost] = Expr(new dmpl::IntExpr(0));
+    exprMap[shost] = Expr(new dmpl::IntExpr("0"));
 }
 
 void dmpl::syncseqdbl::NodeTransformer::exitAsgn(dmpl::AsgnStmt &stmt)

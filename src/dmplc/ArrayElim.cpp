@@ -114,7 +114,8 @@ void dmpl::ArrayElim::createGetterBody(const std::string &varName,const Expr &co
 
   for(int i = 0;i < dim;++i) {
     std::string newVarName = varName + "_" + boost::lexical_cast<std::string>(i);
-    Expr eq(new CompExpr(TCEQ,Expr(new LvalExpr(param.name)),Expr(new IntExpr(i))));
+    Expr eq(new CompExpr(TCEQ,Expr(new LvalExpr(param.name)),
+                         Expr(new IntExpr(boost::lexical_cast<std::string>(i)))));
     Expr newCond = cond.get() ? Expr(new CompExpr(TLAND, cond, eq)) : eq;
     createGetterBody(newVarName,newCond,newType,newParams,body);
   }
@@ -150,7 +151,7 @@ dmpl::Expr dmpl::ArrayElim::createGetter(const LvalExpr &expr)
   createGetterBody(expr.var,Expr(),git->second.type,params,body);
 
   //add a return 0 statement at the end
-  body.push_back(Stmt(new RetStmt(Expr(new IntExpr(0)))));
+  body.push_back(Stmt(new RetStmt(Expr(new IntExpr("0")))));
 
   //create and add the function to the result C program
   outProg.addFunction(Function(elemType,fnName,params,dmpl::VariablesList(),body));
@@ -185,7 +186,8 @@ void dmpl::ArrayElim::createSetterBody(const std::string &varName,const Expr &co
 
   for(int i = 0;i < dim;++i) {
     std::string newVarName = varName + "_" + boost::lexical_cast<std::string>(i);
-    Expr eq(new CompExpr(TCEQ,Expr(new LvalExpr(param.name)),Expr(new IntExpr(i))));
+    Expr eq(new CompExpr(TCEQ,Expr(new LvalExpr(param.name)),
+                         Expr(new IntExpr(boost::lexical_cast<std::string>(i)))));
     Expr newCond = cond.get() ? Expr(new CompExpr(TLAND, cond, eq)) : eq;
     createSetterBody(newVarName,newCond,newType,newParams,body);
   }
@@ -297,7 +299,7 @@ void dmpl::ArrayElim::run()
       dmpl::StmtList igBody;
       BOOST_FOREACH(const Variables::value_type &v,outProg.globVars) {
         igBody.push_back(Stmt(new AsgnStmt(Expr(new LvalExpr(v.second.name)),
-                                           Expr(new IntExpr(0)))));
+                                           Expr(new IntExpr("0")))));
       }
 
       outProg.addFunction(Function(dmpl::voidType(),"init_globals",dmpl::VariablesList(),
