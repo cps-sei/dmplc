@@ -157,6 +157,12 @@ namespace dmpl
      **/
     void printInit (std::ostream &os,unsigned int indent);
 
+    /**
+     * Prints variable in C syntax (e.g., no input keyword)
+     * @param indent spaces to indent printout
+     **/
+    void printC (std::ostream &os,unsigned int indent);
+
     ///return a copy but instantiate dimension #N with nodeNum
     Var instDim(size_t nodeNum) const;
 

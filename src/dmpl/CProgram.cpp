@@ -85,7 +85,7 @@ dmpl::CProgram::print (std::ostream &os,unsigned int indent)
   //print global variables
   os << spacer << "/************* global variables ***********/\n";
   for (dmpl::Vars::iterator i = globVars.begin (); i != globVars.end (); ++i) {
-    i->second->print (os,indent);
+    i->second->printC (os,indent);
     os << ";\n";
   }
   os << '\n';

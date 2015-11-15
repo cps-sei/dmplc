@@ -134,6 +134,22 @@ dmpl::Variable::printInit (std::ostream &os,unsigned int indent)
 }
 
 /*********************************************************************/
+///print in C syntax, e.g., no input keyword
+/*********************************************************************/
+void
+dmpl::Variable::printC (std::ostream &os,unsigned int indent)
+{
+  std::string res(indent, ' ');
+
+  res += type->toString() + " " + name;
+  BOOST_FOREACH(int d,type->dims) {
+    res += "[" + ((d == -1) ? "#N" : boost::lexical_cast<std::string>(d)) + "]";
+  }
+  
+  os << res;
+}
+
+/*********************************************************************/
 ///return a copy but instantiate dimension #N with nodeNum
 /*********************************************************************/
 dmpl::Var dmpl::Variable::instDim(size_t nodeNum) const
