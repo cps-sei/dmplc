@@ -711,6 +711,14 @@ dmpl::Stmt dmpl::SyncSeqDbl::createInitVar(const Var &var, size_t pid)
   StmtList initFnBody;
   std::string initFnName = "__INIT_" + var->name + "_" + boost::lexical_cast<std::string>(pid);
 
+  //-- if the variable is an input, assign it non-deterministically
+  if(var->isInput) {
+    Expr varExpr(new LvalExpr(var->name + "_" + boost::lexical_cast<std::string>(pid)));
+    Expr ndfn = createNondetFunc(varExpr);
+    Expr ndcall(new CallExpr(ndfn,ExprList()));
+    initFnBody.push_back(Stmt(new AsgnStmt(varExpr,ndcall)));
+  }
+  
   BOOST_FOREACH(const Stmt &st,var->initFunc->body) {
     syncseqdbl::NodeTransformer nt(*this,builder.program,nodeNum,pid,true);
     std::string nodeId = *node->args.begin();
