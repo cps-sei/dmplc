@@ -777,6 +777,15 @@ void dmpl::SyncSeqDbl::createInit()
     ++i;
   }
 
+  //-- also assume that the property holds after initialization
+  std::string fname = "__SAFETY_" + property;
+  Expr callExpr(new LvalExpr(fname));
+  callExpr = Expr(new CallExpr(callExpr, dmpl::ExprList()));
+  dmpl::ExprList args = {callExpr};
+  callExpr = Expr(new CallExpr(Expr(new LvalExpr("__CPROVER_assume")), args));
+  Stmt callStmt(new CallStmt(callExpr));
+  fnBody.push_back(callStmt);
+
   dmpl::VarList fnParams, fnTemps;
   Func func(new Function(dmpl::voidType(),"__INIT",fnParams,fnTemps,fnBody));
   cprog.addFunction(func);
