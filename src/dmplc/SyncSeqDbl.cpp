@@ -627,15 +627,15 @@ void dmpl::SyncSeqDbl::createMainFunc()
   Stmt callStmt4(new CallStmt(callExpr4,dmpl::ExprList()));
   roundBody.push_back(callStmt4);
 
-  Func roundFunc = relevantThreads.begin()->second;
-  const Node &node = builder.program.nodes.begin()->second;
-
   //call ROUND function of each node -- forward version
-  for(size_t i = 0;i < nodeNum;++i) {
+  for(const Process &pr : builder.program.processes) {
+    auto it = relevantThreads.find(pr);
+    if(it == relevantThreads.end()) continue;
+    
     //call the _fwd version of the ROUND function of the node. this
     //copies from _i to _f
-    std::string callNameFwd = node->name + "__" + roundFunc->name + "_" + 
-      boost::lexical_cast<std::string>(i) + "_fwd";
+    std::string callNameFwd = pr.getNode() + "__" + it->second->name + "_" + 
+      boost::lexical_cast<std::string>(pr.id) + "_fwd";
     Expr callExprFwd(new LvalExpr(callNameFwd));
     Stmt callStmtFwd(new CallStmt(callExprFwd,dmpl::ExprList()));
     roundBody.push_back(callStmtFwd);
@@ -650,11 +650,14 @@ void dmpl::SyncSeqDbl::createMainFunc()
   roundBody.push_back(callStmt2);
 
   //call ROUND function of each node -- backward version
-  for(size_t i = 0;i < nodeNum;++i) {
+  for(const Process &pr : builder.program.processes) {
+    auto it = relevantThreads.find(pr);
+    if(it == relevantThreads.end()) continue;
+    
     //call the _bwd version of the ROUND function of the node. this
     //copies from _f to _i
-    std::string callNameBwd = node->name + "__" + roundFunc->name + "_" + 
-      boost::lexical_cast<std::string>(i) + "_bwd";
+    std::string callNameBwd = pr.getNode() + "__" + it->second->name + "_" + 
+      boost::lexical_cast<std::string>(pr.id) + "_bwd";
     Expr callExprBwd(new LvalExpr(callNameBwd));
     Stmt callStmtBwd(new CallStmt(callExprBwd,dmpl::ExprList()));
     roundBody.push_back(callStmtBwd);
@@ -686,11 +689,14 @@ void dmpl::SyncSeqDbl::createMainFunc()
 
       //call ROUND function of each node, but just the fwd
       //version. this takes care of the case when roundNum is odd
-      for(size_t i = 0;i < nodeNum;++i) {
+      for(const Process &pr : builder.program.processes) {
+        auto it = relevantThreads.find(pr);
+        if(it == relevantThreads.end()) continue;
+
         //call the _fwd version of the ROUND function of the
         //node. this copies from _i to _f
-        std::string callNameFwd = node->name + "__" + roundFunc->name + "_" + 
-          boost::lexical_cast<std::string>(i) + "_fwd";
+        std::string callNameFwd = pr.getNode() + "__" + it->second->name + "_" + 
+          boost::lexical_cast<std::string>(pr.id) + "_fwd";
         Expr callExprFwd(new LvalExpr(callNameFwd));
         Stmt callStmtFwd(new CallStmt(callExprFwd,dmpl::ExprList()));
         mainBody.push_back(callStmtFwd);
