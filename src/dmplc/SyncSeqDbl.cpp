@@ -968,6 +968,8 @@ void dmpl::SyncSeqDbl::run()
 
   //-- copy over constants
   cprog.constDef = builder.program.constDef;
+  cprog.constDef["true"] = "1";
+  cprog.constDef["false"] = "0";
 
   //-- create the property relevant variables and functions
   computeRelevant();
