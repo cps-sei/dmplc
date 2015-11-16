@@ -168,10 +168,13 @@ void dmpl::syncseqdbl::GlobalTransformer::exitCall(dmpl::CallStmt &stmt)
   //handle calls to ND(x) -- assign x non-deterministically
   CallExpr *expr = dynamic_cast<CallExpr*>(stmt.data.get());
   if(expr->func->toString() == "ND") {
+    throw std::runtime_error("ERROR: found call to unsupported function ND()!!");
+    /*
     const Expr &arg = exprMap[*(expr->args.begin())];
     Expr ndfn = syncSeq.createNondetFunc(arg);
     Expr ndcall(new CallExpr(ndfn,ExprList()));
     stmtMap[hostStmt] = Stmt(new AsgnStmt(arg,ndcall));
+    */
     return;
   }
 
