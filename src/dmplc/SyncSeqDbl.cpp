@@ -702,7 +702,7 @@ dmpl::Stmt dmpl::SyncSeqDbl::createInitVar(const Var &var, const Process &proc)
   //-- if the variable is an input, assign it non-deterministically
   if(var->isInput) {
     Expr varExpr(new LvalExpr(var->name + "_" + boost::lexical_cast<std::string>(proc.id)));
-    Expr ndfn = createNondetFunc(varExpr);
+    Expr ndfn = createNondetFunc(varExpr, var->type);
     Expr ndcall(new CallExpr(ndfn,ExprList()));
     initFnBody.push_back(Stmt(new AsgnStmt(varExpr,ndcall)));
   }
@@ -884,11 +884,22 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
 //expression. add its declaration to the C program if a new function
 //was created
 /*********************************************************************/
-dmpl::Expr dmpl::SyncSeqDbl::createNondetFunc(const Expr &expr)
+dmpl::Expr dmpl::SyncSeqDbl::createNondetFunc(const Expr &expr, const Type &type)
 {
   const LvalExpr *lve = dynamic_cast<LvalExpr*>(expr.get());
   assert(lve && "ERROR: can only create nondet function for LvalExpr");
-  return Expr(new LvalExpr("nondet_" + lve->var));
+
+  std::string fnName = "nondet_" + lve->var;
+  
+  if(nondetFuncs.insert(lve->var).second) {
+    dmpl::VarList fnParams,fnTemps;
+    StmtList fnBody;
+    Func func(new Function(type,fnName,fnParams,fnTemps,fnBody));
+    func->isPrototype = true;
+    cprog.addFunction(func);
+  }
+  
+  return Expr(new LvalExpr(fnName));
 }
 
 /*********************************************************************/

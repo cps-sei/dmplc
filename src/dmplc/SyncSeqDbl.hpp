@@ -171,6 +171,9 @@ namespace dmpl {
     //-- map from processes to functions that are relevant to the
     //-- target property
     std::map<Process,std::set<Func>> relevantFuncs;
+
+    //-- set of variables for which non-det functions have been created
+    std::set<std::string> nondetFuncs;
     
     SyncSeqDbl(DmplBuilder &b, const std::string &p, int r);
 
@@ -186,7 +189,7 @@ namespace dmpl {
     void createInit();
     void createSafety();
     void createNodeFuncs();
-    Expr createNondetFunc(const Expr &expr);
+    Expr createNondetFunc(const Expr &expr, const Type &type);
     void processExternFuncs();
     void run();
   };
