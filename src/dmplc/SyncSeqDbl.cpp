@@ -183,10 +183,10 @@ void dmpl::syncseqdbl::GlobalTransformer::exitFAN(dmpl::FANStmt &stmt)
   Stmt shost = hostStmt;
   StmtList sl;
 
-  for(const Process &pr : prog.processes) {
-    syncseqdbl::NodeTransformer nt(syncSeq,prog,pr,true);
+  for(const auto &pr : syncSeq.relevantThreads) {
+    syncseqdbl::NodeTransformer nt(syncSeq,prog,pr.first,true);
     nt.idMap = idMap;
-    nt.addIdMap(stmt.id,pr.id);
+    nt.addIdMap(stmt.id,pr.first.id);
     nt.visit(stmt.data);
     sl.push_back(nt.stmtMap[stmt.data]);
     nt.delIdMap(stmt.id);
@@ -200,14 +200,14 @@ void dmpl::syncseqdbl::GlobalTransformer::exitFADNP(dmpl::FADNPStmt &stmt)
   Stmt shost = hostStmt;
   StmtList sl;
 
-  auto it1 = prog.processes.begin();
-  for(;it1 != prog.processes.end();++it1) {
+  auto it1 = syncSeq.relevantThreads.begin();
+  for(;it1 != syncSeq.relevantThreads.end();++it1) {
     auto it2 = it1; ++it2;
-    for(;it2 != prog.processes.end();++it2) {
-      syncseqdbl::NodeTransformer nt(syncSeq,prog,*it1,true);
+    for(;it2 != syncSeq.relevantThreads.end();++it2) {
+      syncseqdbl::NodeTransformer nt(syncSeq,prog,it1->first,true);
       nt.idMap = idMap;
-      nt.addIdMap(stmt.id1,it1->id);
-      nt.addIdMap(stmt.id2,it2->id);
+      nt.addIdMap(stmt.id1,it1->first.id);
+      nt.addIdMap(stmt.id2,it2->first.id);
       nt.visit(stmt.data);
       sl.push_back(nt.stmtMap[stmt.data]);
       nt.delIdMap(stmt.id1);
@@ -297,9 +297,9 @@ void dmpl::syncseqdbl::NodeTransformer::exitEXO(dmpl::EXOExpr &expr)
 {
   Expr shost = hostExpr;
   exprMap[shost] = Expr();
-  for(const Process &pr : prog.processes) {
-    if(pr == proc) continue;
-    addIdMap(expr.id,pr.id);
+  for(const auto &pr : syncSeq.relevantThreads) {
+    if(pr.first == proc) continue;
+    addIdMap(expr.id,pr.first.id);
     visit(expr.arg);
     delIdMap(expr.id);
     if(exprMap[shost].get()) 
@@ -319,9 +319,9 @@ void dmpl::syncseqdbl::NodeTransformer::exitEXH(dmpl::EXHExpr &expr)
 {
   Expr shost = hostExpr;
   exprMap[shost] = Expr();
-  for(const Process &pr : prog.processes) {
-    if(pr.id <= proc.id) continue;
-    addIdMap(expr.id,pr.id);
+  for(const auto &pr : syncSeq.relevantThreads) {
+    if(pr.first.id <= proc.id) continue;
+    addIdMap(expr.id,pr.first.id);
     visit(expr.arg);
     delIdMap(expr.id);
     if(exprMap[shost].get()) 
@@ -341,9 +341,9 @@ void dmpl::syncseqdbl::NodeTransformer::exitEXL(dmpl::EXLExpr &expr)
 {
   Expr shost = hostExpr;
   exprMap[shost] = Expr();
-  for(const Process &pr : prog.processes) {
-    if(pr.id >= proc.id) continue;
-    addIdMap(expr.id,pr.id);
+  for(const auto &pr : syncSeq.relevantThreads) {
+    if(pr.first.id >= proc.id) continue;
+    addIdMap(expr.id,pr.first.id);
     visit(expr.arg);
     delIdMap(expr.id);
     if(exprMap[shost].get()) 
@@ -371,9 +371,9 @@ void dmpl::syncseqdbl::NodeTransformer::exitFAO(dmpl::FAOStmt &stmt)
   Stmt shost = hostStmt;
   StmtList sl;
 
-  for(const Process &pr : prog.processes) {
-    if(pr == proc) continue;
-    addIdMap(stmt.id,pr.id);
+  for(const auto &pr : syncSeq.relevantThreads) {
+    if(pr.first == proc) continue;
+    addIdMap(stmt.id,pr.first.id);
     visit(stmt.data);
     sl.push_back(stmtMap[stmt.data]);
     delIdMap(stmt.id);
@@ -387,9 +387,9 @@ void dmpl::syncseqdbl::NodeTransformer::exitFAOL(dmpl::FAOLStmt &stmt)
   Stmt shost = hostStmt;
   StmtList sl;
 
-  for(const Process &pr : prog.processes) {
-    if(pr.id >= proc.id) continue;
-    addIdMap(stmt.id,pr.id);
+  for(const auto &pr : syncSeq.relevantThreads) {
+    if(pr.first.id >= proc.id) continue;
+    addIdMap(stmt.id,pr.first.id);
     visit(stmt.data);
     sl.push_back(stmtMap[stmt.data]);
     delIdMap(stmt.id);
@@ -403,9 +403,9 @@ void dmpl::syncseqdbl::NodeTransformer::exitFAOH(dmpl::FAOHStmt &stmt)
   Stmt shost = hostStmt;
   StmtList sl;
 
-  for(const Process &pr : prog.processes) {
-    if(pr.id <= proc.id) continue;
-    addIdMap(stmt.id,pr.id);
+  for(const auto &pr : syncSeq.relevantThreads) {
+    if(pr.first.id <= proc.id) continue;
+    addIdMap(stmt.id,pr.first.id);
     visit(stmt.data);
     sl.push_back(stmtMap[stmt.data]);
     delIdMap(stmt.id);
@@ -473,10 +473,7 @@ void dmpl::SyncSeqDbl::computeRelevant()
     }
 
     //-- sanity check
-    if(relevantThreads[proc] == NULL)
-      throw std::runtime_error("ERROR: role " + proc.role->name + " in node " +
-                               proc.role->node->name + " has no thread " +
-                               "relevant to require property " + property + "!!");
+    if(relevantThreads.find(proc) == relevantThreads.end()) continue;
 
     //-- make variables read by relevant threads also spec relevant
     Func thread = relevantThreads[proc];
@@ -611,14 +608,11 @@ void dmpl::SyncSeqDbl::createMainFunc()
   roundBody.push_back(callStmt4);
 
   //call ROUND function of each node -- forward version
-  for(const Process &pr : builder.program.processes) {
-    auto it = relevantThreads.find(pr);
-    if(it == relevantThreads.end()) continue;
-    
+  for(const auto &pr : relevantThreads) {
     //call the _fwd version of the ROUND function of the node. this
     //copies from _i to _f
-    std::string callNameFwd = pr.getNode() + "__" + it->second->name + "_" + 
-      boost::lexical_cast<std::string>(pr.id) + "_fwd";
+    std::string callNameFwd = pr.first.getNode() + "__" + pr.second->name + "_" + 
+      boost::lexical_cast<std::string>(pr.first.id) + "_fwd";
     Expr callExprFwd(new LvalExpr(callNameFwd));
     Stmt callStmtFwd(new CallStmt(callExprFwd,dmpl::ExprList()));
     roundBody.push_back(callStmtFwd);
@@ -633,14 +627,11 @@ void dmpl::SyncSeqDbl::createMainFunc()
   roundBody.push_back(callStmt2);
 
   //call ROUND function of each node -- backward version
-  for(const Process &pr : builder.program.processes) {
-    auto it = relevantThreads.find(pr);
-    if(it == relevantThreads.end()) continue;
-    
+  for(const auto &pr : relevantThreads) {
     //call the _bwd version of the ROUND function of the node. this
     //copies from _f to _i
-    std::string callNameBwd = pr.getNode() + "__" + it->second->name + "_" + 
-      boost::lexical_cast<std::string>(pr.id) + "_bwd";
+    std::string callNameBwd = pr.first.getNode() + "__" + pr.second->name + "_" + 
+      boost::lexical_cast<std::string>(pr.first.id) + "_bwd";
     Expr callExprBwd(new LvalExpr(callNameBwd));
     Stmt callStmtBwd(new CallStmt(callExprBwd,dmpl::ExprList()));
     roundBody.push_back(callStmtBwd);
@@ -672,14 +663,11 @@ void dmpl::SyncSeqDbl::createMainFunc()
 
       //call ROUND function of each node, but just the fwd
       //version. this takes care of the case when roundNum is odd
-      for(const Process &pr : builder.program.processes) {
-        auto it = relevantThreads.find(pr);
-        if(it == relevantThreads.end()) continue;
-
+      for(const auto &pr : relevantThreads) {
         //call the _fwd version of the ROUND function of the
         //node. this copies from _i to _f
-        std::string callNameFwd = pr.getNode() + "__" + it->second->name + "_" + 
-          boost::lexical_cast<std::string>(pr.id) + "_fwd";
+        std::string callNameFwd = pr.first.getNode() + "__" + pr.second->name + "_" + 
+          boost::lexical_cast<std::string>(pr.first.id) + "_fwd";
         Expr callExprFwd(new LvalExpr(callNameFwd));
         Stmt callStmtFwd(new CallStmt(callExprFwd,dmpl::ExprList()));
         mainBody.push_back(callStmtFwd);
@@ -828,14 +816,13 @@ void dmpl::SyncSeqDbl::createSafety()
 void dmpl::SyncSeqDbl::createNodeFuncs()
 {
   //-- go over each process
-  for(const Process &pr : builder.program.processes) {
-    Node &node = pr.role->node;
-    
+  for(const auto &pr : relevantThreads) {
     //-- collect functions
-    FuncList funcs = { relevantThreads[pr] };
-    funcs.insert(funcs.end(), relevantFuncs[pr].begin(), relevantFuncs[pr].end());
+    FuncList funcs = { pr.second };
+    funcs.insert(funcs.end(), relevantFuncs[pr.first].begin(), relevantFuncs[pr.first].end());
 
     //-- process each function
+    Node &node = pr.first.role->node;
     for(const Func &f : funcs) {
       dmpl::VarList fnParams,fnTemps;
 
@@ -851,16 +838,16 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
         StmtList fnBody;
 
         BOOST_FOREACH(const Stmt &st,f->body) {
-          syncseqdbl::NodeTransformer nt(*this,builder.program,pr,true);
+          syncseqdbl::NodeTransformer nt(*this,builder.program,pr.first,true);
           std::string nodeId = *node->args.begin();
-          nt.addIdMap(nodeId,pr.id);
+          nt.addIdMap(nodeId,pr.first.id);
           nt.visit(st);
           nt.delIdMap(nodeId);
           fnBody.push_back(nt.stmtMap[st]);
         }
         
         std::string fnName = node->name + "__" + f->name + "_" + 
-          boost::lexical_cast<std::string>(pr.id) + "_fwd";
+          boost::lexical_cast<std::string>(pr.first.id) + "_fwd";
         Type retType = f->retType->isThread() ? voidType() : f->retType;
         Func func(new Function(retType,fnName,fnParams,fnTemps,fnBody));
         cprog.addFunction(func);
@@ -871,16 +858,16 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
         StmtList fnBody;
 
         BOOST_FOREACH(const Stmt &st,f->body) {
-          syncseqdbl::NodeTransformer nt(*this,builder.program,pr,false);
+          syncseqdbl::NodeTransformer nt(*this,builder.program,pr.first,false);
           std::string nodeId = *node->args.begin();
-          nt.addIdMap(nodeId,pr.id);
+          nt.addIdMap(nodeId,pr.first.id);
           nt.visit(st);
           nt.delIdMap(nodeId);
           fnBody.push_back(nt.stmtMap[st]);
         }
         
         std::string fnName = node->name + "__" + f->name + "_" + 
-          boost::lexical_cast<std::string>(pr.id) + "_bwd";
+          boost::lexical_cast<std::string>(pr.first.id) + "_bwd";
         Type retType = f->retType->isThread() ? voidType() : f->retType;
         Func func(new Function(retType,fnName,fnParams,fnTemps,fnBody));
         cprog.addFunction(func);
