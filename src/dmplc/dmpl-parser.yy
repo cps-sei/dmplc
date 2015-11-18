@@ -616,11 +616,6 @@ fn_prototype_no_decors : fn_type TIDENTIFIER TLPAREN param_list TRPAREN {
   (*$$)->setParams(*$4);
   delete $1; delete $2; delete $4;
 }
-| TIDENTIFIER TLPAREN TRPAREN {
-  $$ = new dmpl::Func(std::make_shared<dmpl::Func::element_type>());
-  (*$$)->name = *$1;
-  delete $1;
-}
 | TTHREAD TIDENTIFIER {
   $$ = new dmpl::Func(std::make_shared<dmpl::Func::element_type>());
   (*$$)->name = *$2;
