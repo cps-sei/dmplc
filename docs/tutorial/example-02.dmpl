@@ -140,11 +140,11 @@ extern void INIT_CONTROLLER(unsigned char x,unsigned char y);
 extern void GRID_INIT(int XX,int YY,double leftX,double rightX,double topY,double bottomY);
 extern void GRID_PLACE(unsigned char x,unsigned char y, double z);
 extern int GRID_MOVE(unsigned char xp,unsigned char yp, double z);
-extern pure int my_sleep(int seconds);
+extern int my_sleep(int seconds);
 extern void print_state(int XX,int YY,int my_id, int x, int y, int xf, int yf);
-extern pure void print_int(int i);
-extern pure double GET_LAT();
-extern pure double GET_LNG();
+extern void print_int(int i);
+extern double GET_LAT();
+extern double GET_LNG();
 
 node uav
 {
@@ -154,8 +154,8 @@ node uav
     lock[x][y] = 1;
   };
   
-  global unsigned char lx,ly; //leader's destination coordinates
-  global bool init; //node is initialized
+  global unsigned char lx = 0,ly = 0; //leader's destination coordinates
+  global bool init = 0; //leader's destination has been initialized
 
   //private variables -- local to the node.
   //preserved across rounds
@@ -193,53 +193,19 @@ node uav
     return 0;
   }
 
-  thread WAYPOINT {
-    if(id != 0 && init@0 == 0) {
-      waypointValid = 0;
-      return;
-    } else {
-      waypointValid = 1;
-    }
-    if(id == 0) {
-      ly = yp;
-      lx = xp;
-    } if(id == 1) {
-      xt = lx@0 + 1;
-      yt = ly@0 + 1;
-    } else if(id == 2) {
-      xt = lx@0 - 1;
-      yt = ly@0 + 1;
-    } else if(id == 3) {
-      xt = lx@0 - 1;
-      yt = ly@0 - 1;
-    } else if(id == 4) {
-      xt = lx@0 + 1;
-      yt = ly@0 - 1;
-    }
-  }
-
   @BarrierSync;
   @PlatformController;
   thread COLLISION_AVOIDANCE {
     print_state(X,Y,id,x,y,xt,yt);
     //my_sleep(1);
-    if(state == INITS) {
-      lock[x][y] = 1;
-      lock[xp][yp] = 1;
-      if(id == 0) {
-        lx = x;
-        ly = y;
-      }
-      init = 1;
-      state = NEXT;
-    } if(state == NEXT) {
+    if(state == NEXT) {
       //compute next point on route
       if(x == xt && y == yt) return;
       if(NEXT_XY()) return;
       state = REQUEST;
     } else if(state == REQUEST) {
       //request the lock but only if it is free
-      if(EXISTS_LOWER(idp,lock[xp][yp]@idp != 0)) return;
+      //if(EXISTS_LOWER(idp,lock[xp][yp]@idp != 0)) return;
       lock[xp][yp] = 1;
       state = WAITING;
     } else if(state == WAITING) {
@@ -257,10 +223,42 @@ node uav
   }
 
   role Leader {
+    //-- leader-specific waypoint thread
+    override thread WAYPOINT {
+      waypointValid = 1;
+      ly = yp;
+      lx = xp;
+      init = 1;
+    }
+  
+    //-- inherit the collision avoidance thread
     thread COLLISION_AVOIDANCE;
   }
 
   role Protector {
+    //-- follower-specific waypoint thread
+    override thread WAYPOINT {
+      if(init@0 == 0) {
+        waypointValid = 0;
+        return;
+      }
+      
+      if(id == 1) {
+        xt = lx@0 + 1;
+        yt = ly@0 + 1;
+      } else if(id == 2) {
+        xt = lx@0 - 1;
+        yt = ly@0 + 1;
+      } else if(id == 3) {
+        xt = lx@0 - 1;
+        yt = ly@0 - 1;
+      } else if(id == 4) {
+        xt = lx@0 + 1;
+        yt = ly@0 - 1;
+      }
+    }
+
+    //-- inherit the collision avoidance thread
     thread COLLISION_AVOIDANCE;
   }
 
