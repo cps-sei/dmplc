@@ -137,16 +137,19 @@ void __INIT()
 
 void __INIT_lock_0()
 {
+  lock_i_0[x_0][y_0] = 1;
   lock_f_0[x_0][y_0] = 1;
 }
 
 void __INIT_lock_1()
 {
+  lock_i_1[x_1][y_1] = 1;
   lock_f_1[x_1][y_1] = 1;
 }
 
 void __INIT_lock_2()
 {
+  lock_i_2[x_2][y_2] = 1;
   lock_f_2[x_2][y_2] = 1;
 }
 
