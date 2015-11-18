@@ -63,7 +63,7 @@
  * This file contains a class definition for an expression.
  **/
 
-#include <stdio.h>
+#include <iostream>
 #include <list>
 #include <vector>
 #include <memory>
