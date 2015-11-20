@@ -198,7 +198,7 @@ namespace dmpl {
     void createInit();
     void createSafety();
     void createAssume();
-    void createNDAssignStmts(bool isGlob,const Var &var,StmtList &res,ExprList indx,int pid);
+    void createHavocStmts(bool isGlob,const Var &var,StmtList &res,ExprList indx,int pid);
     void createHavoc();
     void createNodeFuncs();
     Expr createNondetFunc(const Expr &expr, const Type &type);

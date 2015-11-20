@@ -869,8 +869,8 @@ void dmpl::SyncSeqDblInd::createAssume()
 //create list of statements that assign a non-deterministic value to
 //old value of var. append list of statements to res.
 /*********************************************************************/
-void dmpl::SyncSeqDblInd::createNDAssignStmts(bool isGlob,const Var &var,StmtList &res,
-                                              ExprList indx,int pid)
+void dmpl::SyncSeqDblInd::createHavocStmts(bool isGlob,const Var &var,StmtList &res,
+                                           ExprList indx,int pid)
 {
   //non-array type
   if(var->type->dims.empty()) {
@@ -890,7 +890,7 @@ void dmpl::SyncSeqDblInd::createNDAssignStmts(bool isGlob,const Var &var,StmtLis
       ExprList newIndx = indx;
       newIndx.push_back(Expr(new IntExpr(boost::lexical_cast<std::string>(i))));
       Var newVar = var->decrDim();
-      createNDAssignStmts(isGlob,newVar,res,newIndx,pid);
+      createHavocStmts(isGlob,newVar,res,newIndx,pid);
     }
   }
 }
@@ -909,10 +909,10 @@ void dmpl::SyncSeqDblInd::createHavoc()
   //-- create havoc for local and global variables
   for(const auto &rl: relevantLocs) {
     for(const Var &v: rl.second) {
-      createNDAssignStmts(false, v, havocFnBody, ExprList(), rl.first.id);
+      createHavocStmts(false, v, havocFnBody, ExprList(), rl.first.id);
     }
     for(const Var &v: relevantGlobs[rl.first]) {
-      createNDAssignStmts(true, v, havocFnBody, ExprList(), rl.first.id);
+      createHavocStmts(true, v, havocFnBody, ExprList(), rl.first.id);
     }
   }
 
@@ -958,7 +958,7 @@ void dmpl::SyncSeqDblInd::createNodeFuncs()
           }
           //-- havoc globals
           for(const Var &v : havocGlobs[pr.first])
-            createNDAssignStmts(true,v,fnBody,ExprList(),pr.first.id);
+            createHavocStmts(true,v,fnBody,ExprList(),pr.first.id);
         }
         
         BOOST_FOREACH(const Stmt &st,f->body) {
