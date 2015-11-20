@@ -924,20 +924,6 @@ void dmpl::SyncSeqDblInd::createNodeFuncs()
       {
         StmtList fnBody;
 
-        //-- if this is the thread, havoc variables
-        if(f->equalType(*pr.second)) {
-          //-- havoc locals
-          for(const Var &v : havocLocs[pr.first]) {
-            Expr varExpr(new LvalExpr(v->name + "_" + boost::lexical_cast<std::string>(pr.first.id)));
-            Expr ndfn = createNondetFunc(varExpr, v->type);
-            Expr ndcall(new CallExpr(ndfn,ExprList()));
-            fnBody.push_back(Stmt(new AsgnStmt(varExpr,ndcall)));
-          }
-          //-- havoc globals
-          for(const Var &v : havocGlobs[pr.first])
-            createHavocStmts(true,v,fnBody,ExprList(),pr.first.id);
-        }
-        
         BOOST_FOREACH(const Stmt &st,f->body) {
           syncseqdblind::NodeTransformer nt(*this,builder.program,pr.first,true);
           std::string nodeId = *node->args.begin();
