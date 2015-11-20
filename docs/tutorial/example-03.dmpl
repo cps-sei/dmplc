@@ -169,6 +169,7 @@ node uav
     return 0;
   }
 
+  @Period(100000);
   @BarrierSync;
   @PlatformController;
   thread COLLISION_AVOIDANCE {
@@ -200,6 +201,7 @@ node uav
 
   role Leader {
     //-- leader-specific waypoint thread
+    @Period(100000);
     thread WAYPOINT {
       waypointValid = 1;
       ly = yp;
@@ -213,6 +215,7 @@ node uav
 
   role Protector {
     //-- follower-specific waypoint thread
+    @Period(100000);
     thread WAYPOINT {
       if(init@0 == 0) return;
       waypointValid = 1;

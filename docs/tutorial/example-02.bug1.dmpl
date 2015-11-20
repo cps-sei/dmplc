@@ -224,6 +224,7 @@ node uav
 
   role Leader {
     //-- leader-specific waypoint thread
+    @Period(100000);
     override thread WAYPOINT {
       waypointValid = 1;
       ly = yp;
@@ -237,6 +238,7 @@ node uav
 
   role Protector {
     //-- follower-specific waypoint thread
+    @Period(100000);
     override thread WAYPOINT {
       if(init@0 == 0) return;
       waypointValid = 1;
