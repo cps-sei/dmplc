@@ -285,6 +285,8 @@ node uav
       if(!(y@idp >= 0 && y@idp < Y)) return false;
       if(!(xf@idp >= 0 && xf@idp < X)) return false;
       if(!(yf@idp >= 0 && yf@idp < Y)) return false;
+      if(!(xwp@idp >= 0 && xwp@idp < X)) return false;
+      if(!(ywp@idp >= 0 && ywp@idp < Y)) return false;
       if(!(xp@idp >= 0 && xp@idp < X)) return false;
       if(!(yp@idp >= 0 && yp@idp < Y)) return false;
       /** if we are in not in NEXT, then xp,yp != x,y */
