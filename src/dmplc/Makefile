@@ -13,11 +13,14 @@ SyncSeqDbl.cpp SyncSeqDblInd.cpp ../dmpl/Attribute.cpp \
 
 OBJ=$(SRC:.cpp=.o)
 INC=-I$(ACE_ROOT) -I$(MADARA_ROOT)/include -I$(JAVA_ROOT)/include -I..
-LIB=$(MADARA_ROOT)/libMADARA.so
+LIB=
 ifeq "$(MZSRM)" "1"
 LIB+= $(JAVA_ROOT)/jre/lib/amd64/server/libjvm.so
 endif
 CFLAGS=-g -Og -fno-inline -DUSE_MZSRM=$(MZSRM) -std=c++11
+ifeq "$(STATIC)" "1"
+CFLAGS+= -static
+endif
 CXX=g++
 VREP_FILES=remoteApi.so vrep.py vrepConst.py
 BITNESS=32Bit
