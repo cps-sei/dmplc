@@ -172,6 +172,12 @@ namespace dmpl {
     //-- target property
     std::map<Process,std::set<Func>> relevantFuncs;
 
+    //-- map from processes to local and global variables that must be
+    //-- havoced, i.e., variables written by other threads and
+    //-- accessed by this process
+    std::map<Process,VarSet> havocGlobs;
+    std::map<Process,VarSet> havocLocs;
+    
     //-- set of variables for which non-det functions have been created
     std::set<std::string> nondetFuncs;
     

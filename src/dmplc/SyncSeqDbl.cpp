@@ -510,6 +510,26 @@ void dmpl::SyncSeqDbl::computeRelevant()
       if(v->scope == Symbol::LOCAL) relevantLocs[proc].insert(v);
       else if(v->scope == Symbol::GLOBAL) relevantGlobs[proc].insert(v);
     }
+
+    //-- assign havoc locals
+    for(const Var &lv : relevantLocs[proc]) {
+      for(Func f : proc.role->threads) {
+        if(f->equalType(*relevantThreads[proc])) continue;
+        if(!f->canWrite(lv)) continue;
+        havocLocs[proc].insert(lv);
+        break;
+      }
+    }
+
+    //-- assign havoc locals
+    for(const Var &lv : relevantGlobs[proc]) {
+      for(Func f : proc.role->threads) {
+        if(f->equalType(*relevantThreads[proc])) continue;
+        if(!f->canWrite(lv)) continue;
+        havocGlobs[proc].insert(lv);
+        break;
+      }
+    }
   }
 
   //-- sanity check
