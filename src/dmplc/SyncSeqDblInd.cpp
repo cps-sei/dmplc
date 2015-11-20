@@ -437,7 +437,7 @@ void dmpl::SyncSeqDblInd::computeRelevant()
                 << property << " : skipping ...\n";
       continue;
     }
-    
+
     //-- compute the set of local and global variables read by the
     //-- spec function
     VarSet specVars;
