@@ -238,10 +238,8 @@ node uav
   role Protector {
     //-- follower-specific waypoint thread
     override thread WAYPOINT {
-      if(init@0 == 0) {
-        waypointValid = 0;
-        return;
-      }
+      if(init@0 == 0) return;
+      waypointValid = 1;
       
       if(id == 1) {
         xt = lx@0 + 1;
