@@ -767,7 +767,7 @@ dmpl::Stmt dmpl::SyncSeqDbl::createInitVar(const Var &var, const Process &proc)
 void dmpl::SyncSeqDbl::createInit()
 {
   StmtList fnBody;
-  //-- create initializers for local variables
+  //-- create initializers for local and global variables
   for(const auto &rl: relevantLocs) {
     //-- collect the local and global variables, and sort them into
     //-- input and non-input
