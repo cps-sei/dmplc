@@ -522,11 +522,13 @@ void dmpl::SyncSeqDbl::computeRelevant()
     }
 
     //-- assign havoc locals
-    for(const Var &lv : relevantGlobs[proc]) {
+    for(const Var &gv : relevantGlobs[proc]) {
       for(Func f : proc.role->threads) {
         if(f->equalType(*relevantThreads[proc])) continue;
-        if(!f->canWrite(lv)) continue;
-        havocGlobs[proc].insert(lv);
+        if(!f->canWrite(gv)) continue;
+        throw std::runtime_error("ERROR: global variable " + gv->name + " shared between threads " +
+                                 relevantThreads[proc]->name + " and " + f->name);
+        havocGlobs[proc].insert(gv);
         break;
       }
     }
@@ -873,6 +875,17 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
       {
         StmtList fnBody;
 
+        //-- if this is the thread, havoc variables
+        if(f->equalType(*pr.second)) {
+          assert(havocGlobs[pr.first].empty());
+          for(const Var &v : havocLocs[pr.first]) {
+            Expr varExpr(new LvalExpr(v->name + "_" + boost::lexical_cast<std::string>(pr.first.id)));
+            Expr ndfn = createNondetFunc(varExpr, v->type);
+            Expr ndcall(new CallExpr(ndfn,ExprList()));
+            fnBody.push_back(Stmt(new AsgnStmt(varExpr,ndcall)));
+          }
+        }
+        
         BOOST_FOREACH(const Stmt &st,f->body) {
           syncseqdbl::NodeTransformer nt(*this,builder.program,pr.first,true);
           std::string nodeId = *node->args.begin();
@@ -892,6 +905,17 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
       //create the backward version
       {
         StmtList fnBody;
+
+        //-- if this is the thread, havoc variables
+        if(f->equalType(*pr.second)) {
+          assert(havocGlobs[pr.first].empty());
+          for(const Var &v : havocLocs[pr.first]) {
+            Expr varExpr(new LvalExpr(v->name + "_" + boost::lexical_cast<std::string>(pr.first.id)));
+            Expr ndfn = createNondetFunc(varExpr, v->type);
+            Expr ndcall(new CallExpr(ndfn,ExprList()));
+            fnBody.push_back(Stmt(new AsgnStmt(varExpr,ndcall)));
+          }
+        }
 
         BOOST_FOREACH(const Stmt &st,f->body) {
           syncseqdbl::NodeTransformer nt(*this,builder.program,pr.first,false);
