@@ -578,7 +578,6 @@ void dmpl::SyncSeqDbl::createCopyStmts(bool fwd,const Var &var,StmtList &res,Exp
   }
   else
   {
-
     //array type -- peel off the first dimension and iterate over it
     //recursively
     int dim = *(var->type->dims.begin());
