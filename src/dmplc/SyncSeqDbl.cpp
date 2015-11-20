@@ -526,8 +526,6 @@ void dmpl::SyncSeqDbl::computeRelevant()
       for(Func f : proc.role->threads) {
         if(f->equalType(*relevantThreads[proc])) continue;
         if(!f->canWrite(gv)) continue;
-        throw std::runtime_error("ERROR: global variable " + gv->name + " shared between threads " +
-                                 relevantThreads[proc]->name + " and " + f->name);
         havocGlobs[proc].insert(gv);
         break;
       }
@@ -849,6 +847,34 @@ void dmpl::SyncSeqDbl::createSafety()
 }
 
 /*********************************************************************/
+//create list of statements that havoc a variable. append list of
+//statements to res.
+/*********************************************************************/
+void dmpl::SyncSeqDbl::createHavocStmts(bool fwd,const Var &var,StmtList &res,ExprList indx,int pid)
+{
+  //non-array type
+  if(var->type->dims.empty()) {
+    std::string pidStr = boost::lexical_cast<std::string>(pid);
+    Expr varExpr(new LvalExpr(var->name + std::string(fwd ? "_i_" : "_f_")  + pidStr,indx));
+    Expr ndfn = createNondetFunc(varExpr, var->type);
+    Expr ndcall(new CallExpr(ndfn,ExprList()));
+    res.push_back(Stmt(new AsgnStmt(varExpr,ndcall)));
+  }
+  else
+  {
+    //array type -- peel off the first dimension and iterate over it
+    //recursively
+    int dim = *(var->type->dims.begin());
+    for(int i = 0;i < dim;++i) {
+      ExprList newIndx = indx;
+      newIndx.push_back(Expr(new IntExpr(boost::lexical_cast<std::string>(i))));
+      Var newVar = var->decrDim();
+      createHavocStmts(fwd,newVar,res,newIndx,pid);
+    }
+  }
+}
+
+/*********************************************************************/
 //create the functions for nodes
 /*********************************************************************/
 void dmpl::SyncSeqDbl::createNodeFuncs()
@@ -877,13 +903,16 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
 
         //-- if this is the thread, havoc variables
         if(f->equalType(*pr.second)) {
-          assert(havocGlobs[pr.first].empty());
+          //-- havoc locals
           for(const Var &v : havocLocs[pr.first]) {
             Expr varExpr(new LvalExpr(v->name + "_" + boost::lexical_cast<std::string>(pr.first.id)));
             Expr ndfn = createNondetFunc(varExpr, v->type);
             Expr ndcall(new CallExpr(ndfn,ExprList()));
             fnBody.push_back(Stmt(new AsgnStmt(varExpr,ndcall)));
           }
+          //-- havoc globals
+          for(const Var &v : havocGlobs[pr.first])
+            createHavocStmts(true,v,fnBody,ExprList(),pr.first.id);
         }
         
         BOOST_FOREACH(const Stmt &st,f->body) {
@@ -908,13 +937,16 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
 
         //-- if this is the thread, havoc variables
         if(f->equalType(*pr.second)) {
-          assert(havocGlobs[pr.first].empty());
+          //-- havoc locals
           for(const Var &v : havocLocs[pr.first]) {
             Expr varExpr(new LvalExpr(v->name + "_" + boost::lexical_cast<std::string>(pr.first.id)));
             Expr ndfn = createNondetFunc(varExpr, v->type);
             Expr ndcall(new CallExpr(ndfn,ExprList()));
             fnBody.push_back(Stmt(new AsgnStmt(varExpr,ndcall)));
           }
+          //-- havoc globals
+          for(const Var &v : havocGlobs[pr.first])
+            createHavocStmts(false,v,fnBody,ExprList(),pr.first.id);
         }
 
         BOOST_FOREACH(const Stmt &st,f->body) {

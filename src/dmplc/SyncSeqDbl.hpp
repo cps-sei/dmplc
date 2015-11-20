@@ -194,6 +194,7 @@ namespace dmpl {
     Stmt createInitVar(const Var &var, const Process &proc);
     void createInit();
     void createSafety();
+    void createHavocStmts(bool fwd,const Var &var,StmtList &res,ExprList indx,int pid);
     void createNodeFuncs();
     Expr createNondetFunc(const Expr &expr, const Type &type);
     void processExternFuncs();
