@@ -192,7 +192,7 @@ namespace dmpl {
     void createCopyStmts(bool fwd,const Var &var,StmtList &res,ExprList indx,int node);
     void createRoundCopier();
     void callFunction(const std::string &funcName,StmtList &body);
-    void callRoundFuncs(Func &roundFunc,StmtList &body);
+    void callRoundFuncs(StmtList &body);
     void createMainFunc();
     Stmt createInitVar(const Var &var, const Process &proc);
     void createInit();

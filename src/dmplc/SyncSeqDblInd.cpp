@@ -624,7 +624,7 @@ void dmpl::SyncSeqDblInd::callFunction(const std::string &funcName,StmtList &bod
 /*********************************************************************/
 //-- call round functions of each node once
 /*********************************************************************/
-void dmpl::SyncSeqDblInd::callRoundFuncs(Func &roundFunc,StmtList &body)
+void dmpl::SyncSeqDblInd::callRoundFuncs(StmtList &body)
 {
   for(const auto &pr : relevantThreads) {
     //call the _fwd version of the ROUND function of the node. this
@@ -643,29 +643,6 @@ void dmpl::SyncSeqDblInd::createMainFunc()
   dmpl::VarList mainParams,mainTemps;
   StmtList mainBody;
 
-  //-- find the ROUND functions
-  Func roundFunc;
-  const Node &node = builder.program.nodes.begin()->second;
-  BOOST_FOREACH(const Funcs::value_type &f, node->funcs) {
-    int barSync = f.second->attrs.count("BarrierSync");
-    if(barSync < 1)
-      continue;
-    else if(barSync > 1)
-      std::cerr << "Warning: function " << f.second->name <<
-        " has more than one @BarrierSync attribute" << std::endl;
-    if(roundFunc != NULL) {
-      std::cerr << "Warning: function " << roundFunc->name << " is not the " <<
-        "only @BarrierSync function; also found: " << f.second->name <<
-        " which will be ignored." << std::endl;
-    }
-    roundFunc = f.second;
-  }
-
-  if(roundFunc == NULL) {
-    std::cerr << "Error: no @BarrierSync function found." << std::endl;
-    exit(1);
-  }
-
   //add call to INIT() and SAFETY()
   callFunction("__INIT",mainBody);
   callFunction("__SAFETY",mainBody);
@@ -674,7 +651,7 @@ void dmpl::SyncSeqDblInd::createMainFunc()
   if(roundNum > 0) {
     for(size_t i = 0;i < roundNum;++i) {
       callFunction("round_fwd_copier",mainBody);
-      callRoundFuncs(roundFunc,mainBody);
+      callRoundFuncs(mainBody);
       callFunction("round_bwd_copier",mainBody);
       callFunction("__SAFETY",mainBody);
     }
@@ -689,13 +666,13 @@ void dmpl::SyncSeqDblInd::createMainFunc()
     for(size_t i = 0;i < roundNum;++i) {
       callFunction("__ASSUME",mainBody);
       callFunction("round_fwd_copier",mainBody);
-      callRoundFuncs(roundFunc,mainBody);
+      callRoundFuncs(mainBody);
       callFunction("round_bwd_copier",mainBody);
     }
   }
   callFunction("__ASSUME",mainBody);
   callFunction("round_fwd_copier",mainBody);
-  callRoundFuncs(roundFunc,mainBody);
+  callRoundFuncs(mainBody);
   callFunction("round_bwd_copier",mainBody);
   callFunction("__SAFETY",mainBody);
   
