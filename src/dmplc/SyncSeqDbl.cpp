@@ -137,8 +137,8 @@ void dmpl::syncseqdbl::GlobalTransformer::exitLval(dmpl::LvalExpr &expr)
   else if(newName == "ASSERT") newName = "assert";
 
   //handle global variables
-  Node &node = prog.nodes.begin()->second;
-  if(node->globVars.count(expr.var)) newName += "_i";
+  Node &node = prog.nodes.begin()->second;  
+  if(node->globVars.count(expr.var)) newName += (fwd ? "_i" : "_f");
 
   //substitute .id with its mapping in idMap
   std::map<std::string,size_t>::const_iterator iit = idMap.find(expr.var);
@@ -187,7 +187,7 @@ void dmpl::syncseqdbl::GlobalTransformer::exitFAN(dmpl::FANStmt &stmt)
   StmtList sl;
 
   for(const auto &pr : syncSeq.relevantThreads) {
-    syncseqdbl::NodeTransformer nt(syncSeq,prog,pr.first,true);
+    syncseqdbl::NodeTransformer nt(syncSeq,prog,pr.first,fwd);
     nt.idMap = idMap;
     nt.addIdMap(stmt.id,pr.first.id);
     nt.visit(stmt.data);
@@ -207,7 +207,7 @@ void dmpl::syncseqdbl::GlobalTransformer::exitFADNP(dmpl::FADNPStmt &stmt)
   for(;it1 != syncSeq.relevantThreads.end();++it1) {
     auto it2 = it1; ++it2;
     for(;it2 != syncSeq.relevantThreads.end();++it2) {
-      syncseqdbl::NodeTransformer nt(syncSeq,prog,it1->first,true);
+      syncseqdbl::NodeTransformer nt(syncSeq,prog,it1->first,fwd);
       nt.idMap = idMap;
       nt.addIdMap(stmt.id1,it1->first.id);
       nt.addIdMap(stmt.id2,it2->first.id);
@@ -619,10 +619,10 @@ void dmpl::SyncSeqDbl::createMainFunc()
   dmpl::VarList mainParams,mainTemps;
   StmtList mainBody,roundBody;
 
-  //call SAFETY()
-  Expr callExpr1(new LvalExpr("__SAFETY"));
-  Stmt callStmt1(new CallStmt(callExpr1,dmpl::ExprList()));
-  roundBody.push_back(callStmt1);
+  //call SAFETY_fwd()
+  Expr callExpr1fwd(new LvalExpr("__SAFETY_fwd"));
+  Stmt callStmt1fwd(new CallStmt(callExpr1fwd,dmpl::ExprList()));
+  roundBody.push_back(callStmt1fwd);
 
   //call forward round copier
   Expr callExpr4(new LvalExpr("round_fwd_copier"));
@@ -640,8 +640,10 @@ void dmpl::SyncSeqDbl::createMainFunc()
     roundBody.push_back(callStmtFwd);
   }
 
-  //call SAFETY()
-  roundBody.push_back(callStmt1);
+  //call SAFETY_bwd()
+  Expr callExpr1bwd(new LvalExpr("__SAFETY_bwd"));
+  Stmt callStmt1bwd(new CallStmt(callExpr1bwd,dmpl::ExprList()));
+  roundBody.push_back(callStmt1bwd);
 
   //call backward round copier
   Expr callExpr2(new LvalExpr("round_bwd_copier"));
@@ -675,8 +677,8 @@ void dmpl::SyncSeqDbl::createMainFunc()
     for(int i = 0;i < roundNum / 2;++i)
       mainBody.insert(mainBody.end(),roundBody.begin(),roundBody.end());
     
-    //call SAFETY
-    mainBody.push_back(callStmt1);
+    //call SAFETY_fwd()
+    mainBody.push_back(callStmt1fwd);
 
     //if roundNum is odd
     if(roundNum % 2) {
@@ -695,8 +697,8 @@ void dmpl::SyncSeqDbl::createMainFunc()
         mainBody.push_back(callStmtFwd);
       }
 
-      //call SAFETY
-      mainBody.push_back(callStmt1);
+      //call SAFETY_bwd
+      mainBody.push_back(callStmt1bwd);
     }
   }
 
@@ -794,7 +796,7 @@ void dmpl::SyncSeqDbl::createInit()
   }
 
   //-- also assume that the property holds after initialization
-  std::string fname = "__SAFETY_" + property;
+  std::string fname = "__SAFETY_" + property + "_fwd";
   Expr callExpr(new LvalExpr(fname));
   callExpr = Expr(new CallExpr(callExpr, dmpl::ExprList()));
   dmpl::ExprList args = {callExpr};
@@ -808,9 +810,9 @@ void dmpl::SyncSeqDbl::createInit()
 }
 
 /*********************************************************************/
-//create the SAFETY() function
+//create the SAFETY() function in forward or backward direction
 /*********************************************************************/
-void dmpl::SyncSeqDbl::createSafety()
+void dmpl::SyncSeqDbl::createSafetyFwdBwd(bool fwd)
 {
   const Node &node = builder.program.nodes.begin()->second;
   Func propFunc = node->getRequireFunc(property);
@@ -822,12 +824,12 @@ void dmpl::SyncSeqDbl::createSafety()
   //transform the body of safety
   StmtList fnBody;
   BOOST_FOREACH(const Stmt &st,propFunc->body) {
-    syncseqdbl::GlobalTransformer gt(*this,builder.program);
+    syncseqdbl::GlobalTransformer gt(*this,builder.program,fwd);
     gt.visit(st);
     fnBody.push_back(gt.stmtMap[st]);
   }
   
-  std::string fname = "__SAFETY_" + property;
+  std::string fname = "__SAFETY_" + property + (fwd ? "_fwd" : "_bwd");
   Func func(new Function(propFunc->retType, fname, fnParams, fnTemps, fnBody));
   cprog.addFunction(func);
 
@@ -841,8 +843,19 @@ void dmpl::SyncSeqDbl::createSafety()
   safetyFnBody.push_back(callStmt);
 
   fnParams.clear(); fnTemps.clear();
-  Func safetyFunc(new Function(dmpl::voidType(),"__SAFETY",fnParams,fnTemps,safetyFnBody));
+  Func safetyFunc(new Function(dmpl::voidType(),
+                               std::string("__SAFETY") + (fwd ? "_fwd" : "_bwd"),
+                               fnParams,fnTemps,safetyFnBody));
   cprog.addFunction(safetyFunc);
+}
+
+/*********************************************************************/
+//create the SAFETY() functions in both directions
+/*********************************************************************/
+void dmpl::SyncSeqDbl::createSafety()
+{
+  createSafetyFwdBwd(true);
+  createSafetyFwdBwd(false);
 }
 
 /*********************************************************************/

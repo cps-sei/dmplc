@@ -85,12 +85,15 @@ namespace dmpl {
       //the DASL program being transformed
       dmpl::Program &prog;
 
+      //direction -- true if forward, false if backward
+      bool fwd;
+
       //map from variables to constants for substitution
       std::map<std::string,size_t> idMap;
 
       //constructors
-      GlobalTransformer(SyncSeqDbl &ss,dmpl::Program &p) 
-        : syncSeq(ss),prog(p) {}
+      GlobalTransformer(SyncSeqDbl &ss,dmpl::Program &p, bool f) 
+        : syncSeq(ss),prog(p),fwd(f) {}
 
       //update substitution mapping
       void addIdMap(const std::string &s,size_t i);
@@ -121,11 +124,8 @@ namespace dmpl {
       //lhs of an assignment
       bool inCall, inLhs;
 
-      //direction -- true if forward, false if backward
-      bool fwd;
-
       NodeTransformer(SyncSeqDbl &ss,Program &p,const Process &pr,bool f)
-        : GlobalTransformer(ss,p),proc(pr),inCall(0),inLhs(0),fwd(f) {}
+        : GlobalTransformer(ss,p,f),proc(pr),inCall(0),inLhs(0) {}
 
       void exitLval(LvalExpr &expr);
       bool enterCall(CallExpr &expr) { return false; }
@@ -193,6 +193,7 @@ namespace dmpl {
     void createMainFunc();
     Stmt createInitVar(const Var &var, const Process &proc);
     void createInit();
+    void createSafetyFwdBwd(bool fwd);
     void createSafety();
     void createHavocStmts(bool fwd,const Var &var,StmtList &res,ExprList indx,int pid);
     void createNodeFuncs();
