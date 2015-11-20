@@ -1,0 +1,35 @@
+#!/bin/bash
+
+DMPL="example-07-2.dmpl"
+BIN=example-07-2
+
+OUTDIR=outdir
+MAPNAME=small-0G
+GRIDSIZE=20
+NODENUM=9
+
+PLATFORM=vrep-spacetile::::0.5
+
+EXPECT_LOG_PERIOD=0.2
+
+MISSION_TIME=600
+
+function make_args
+{
+    diffx=$(expr $3 - $1 + 1)
+    diffy=$(expr $4 - $2 + 1)
+    rndx=$(expr $1 + $RANDOM % $diffx)
+    rndy=$(expr $2 + $RANDOM % $diffy)
+    echo --var_x $rndx --var_y $rndy --var_xf $5 --var_yf $6
+}
+
+ARGS_0="$(make_args 0 0 19 19 7 7)"
+ARGS_1="$(make_args 0 0 19 19 7 8)"
+ARGS_2="$(make_args 0 0 19 19 7 9)"
+ARGS_3="$(make_args 0 0 19 19 8 7)"
+ARGS_4="$(make_args 0 0 19 19 8 8)"
+ARGS_5="$(make_args 0 0 19 19 8 9)"
+ARGS_6="$(make_args 0 0 19 19 9 7)"
+ARGS_7="$(make_args 0 0 19 19 9 8)"
+ARGS_8="$(make_args 0 0 19 19 9 9)"
+

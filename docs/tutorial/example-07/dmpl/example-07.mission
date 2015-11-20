@@ -1,0 +1,30 @@
+#!/bin/bash
+
+DMPL="example-07.dmpl"
+BIN=example-07
+
+OUTDIR=outdir
+MAPNAME=small-0G
+GRIDSIZE=20
+NODENUM=9
+
+PLATFORM=vrep-spacetile::::0.5
+
+EXPECT_LOG_PERIOD=0.2
+
+MISSION_TIME=600
+
+function make_args
+{
+  echo --var_x $1 --var_y $2 --var_xf $3 --var_yf $4
+}
+
+ARGS_0="$(make_args 0 0 7 7)"
+ARGS_1="$(make_args 0 1 7 8)"
+ARGS_2="$(make_args 0 2 7 9)"
+ARGS_3="$(make_args 1 0 8 7)"
+ARGS_4="$(make_args 1 1 8 8)"
+ARGS_5="$(make_args 1 2 8 9)"
+ARGS_6="$(make_args 2 0 9 7)"
+ARGS_7="$(make_args 2 1 9 8)"
+ARGS_8="$(make_args 2 2 9 9)"
