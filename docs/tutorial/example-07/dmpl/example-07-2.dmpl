@@ -117,8 +117,8 @@ void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
 %%}
 
 //number of X and Y coordinates
-const X = 10;
-const Y = 10;
+const X = 20;
+const Y = 20;
 
 //states of each node
 const NEXT = 1;
