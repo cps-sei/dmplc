@@ -125,7 +125,6 @@ const X = 20;
 const Y = 20;
 
 //states of each node
-const INITS = 0;
 const NEXT = 1;
 const REQUEST = 2;
 const WAITING = 3;
