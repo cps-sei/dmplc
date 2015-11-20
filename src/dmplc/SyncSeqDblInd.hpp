@@ -87,19 +87,12 @@ namespace dmpl {
       //the DASL program being transformed
       dmpl::Program &prog;
 
-      //the number of nodes
-      size_t nodeNum;
-
-      //-- whether calls to assert should be replaced by
-      //-- __CPROVER_assume
-      bool assertToAssume;
-      
       //map from variables to constants for substitution
       std::map<std::string,size_t> idMap;
 
       //constructors
-      GlobalTransformer(SyncSeqDblInd &ss,dmpl::Program &p,size_t n,bool a2a) 
-        : syncSeq(ss),prog(p),nodeNum(n),assertToAssume(a2a) {}
+      GlobalTransformer(SyncSeqDblInd &ss,dmpl::Program &p) 
+        : syncSeq(ss),prog(p) {}
 
       //update substitution mapping
       void addIdMap(const std::string &s,size_t i);
@@ -123,8 +116,8 @@ namespace dmpl {
     /*****************************************************************/
     struct NodeTransformer : public GlobalTransformer
     {
-      ///the id of the node being transformed
-      size_t nodeId;
+      ///the process being transformed
+      Process proc;
 
       //flags to indicate whether we are processing a function call, or
       //lhs of an assignment
@@ -133,8 +126,8 @@ namespace dmpl {
       //direction -- true if forward, false if backward
       bool fwd;
 
-      NodeTransformer(SyncSeqDblInd &ss,Program &p,size_t n,bool a2a,size_t i,bool f)
-        : GlobalTransformer(ss,p,n,a2a),nodeId(i),inCall(0),inLhs(0),fwd(f) {}
+      NodeTransformer(SyncSeqDblInd &ss,Program &p,const Process &pr,bool f)
+        : GlobalTransformer(ss,p),proc(pr),inCall(0),inLhs(0),fwd(f) {}
 
       void exitLval(LvalExpr &expr);
       bool enterCall(CallExpr &expr) { return false; }
@@ -165,24 +158,50 @@ namespace dmpl {
   public:
     DmplBuilder &builder;  //-- the builder containing parsed DMPL file
     std::string property;  //-- the name of target require property
-    size_t nodeNum;        //-- the number of nodes in the system
     int roundNum;          //-- the number of rounds
     CProgram cprog;        //-- the generated C program
 
+    //-- map from processes to local and global variables that are
+    //-- relevant to the target property
+    std::map<Process,VarSet> relevantGlobs;
+    std::map<Process,VarSet> relevantLocs;
+
+    //-- map from processes to threads that are relevant to the target
+    //-- property
+    std::map<Process,Func> relevantThreads;
+
+    //-- map from processes to functions that are relevant to the
+    //-- target property
+    std::map<Process,std::set<Func>> relevantFuncs;
+
+    //-- map from processes to local and global variables that must be
+    //-- havoced, i.e., variables written by other threads and
+    //-- accessed by this process
+    std::map<Process,VarSet> havocGlobs;
+    std::map<Process,VarSet> havocLocs;
+    
+    //-- set of variables for which non-det functions have been created
+    std::set<std::string> nondetFuncs;
+
     SyncSeqDblInd(DmplBuilder &b, const std::string &p, int r);
+
+    //-- compute relevant variables and functions for each process
+    void computeRelevant();
+    
     void createGlobVars();
     void createCopyStmts(bool fwd,const Var &var,StmtList &res,ExprList indx,int node);
     void createRoundCopier();
     void callFunction(const std::string &funcName,StmtList &body);
     void callRoundFuncs(Func &roundFunc,StmtList &body);
     void createMainFunc();
+    Stmt createInitVar(const Var &var, const Process &proc);
     void createInit();
     void createSafety();
     void createAssume();
-    void createNDAssignStmts(bool isGlob,const Var &var,StmtList &res,ExprList indx,int node);
+    void createNDAssignStmts(bool isGlob,const Var &var,StmtList &res,ExprList indx,int pid);
     void createHavoc();
     void createNodeFuncs();
-    Expr createNondetFunc(const Expr &expr);
+    Expr createNondetFunc(const Expr &expr, const Type &type);
     void processExternFuncs();
     void run();
   };

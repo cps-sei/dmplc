@@ -86,7 +86,7 @@ void dmpl::syncseqdblind::GlobalTransformer::delIdMap(const std::string &s)
 void dmpl::syncseqdblind::GlobalTransformer::exitComp(dmpl::CompExpr &expr)
 {
   if(expr.op == TNODENUM)
-    exprMap[hostExpr] = Expr(new IntExpr(boost::lexical_cast<std::string>(nodeNum)));
+    throw std::runtime_error("ERROR: found unsupported #N dimension!!");
   else
     exprMap[hostExpr] = dmpl::Expr(new dmpl::CompExpr(expr.op,collect(expr.args)));
 }
@@ -107,7 +107,7 @@ std::string dmpl::syncseqdblind::GlobalTransformer::getNodeStr(const dmpl::LvalE
       std::map<std::string,size_t>::const_iterator iit = idMap.find(nodeLVal.var);
       if(iit == idMap.end() || nodeLVal.node != NULL || nodeLVal.indices.size() > 0 )
       {
-        std::cerr << "Error: bad @node specifier. Unknown identifier: " << nodeExpr->toString() << std::endl;
+        std::cerr << "Error: bad @node specifier. Unknown identifier: " << nodeExpr->toString() << '\n';
         exit(1);
       }
       else
@@ -117,7 +117,8 @@ std::string dmpl::syncseqdblind::GlobalTransformer::getNodeStr(const dmpl::LvalE
     }
     catch(std::bad_cast)
     {
-      std::cerr << "Error: bad @node specifier (" << nodeExpr->toString() << "); must be integer, or identifier" << std::endl;
+      std::cerr << "Error: bad @node specifier (" << nodeExpr->toString()
+                << "); must be integer, or identifier" << std::endl;
       exit(1);
     }
   }
@@ -132,8 +133,7 @@ void dmpl::syncseqdblind::GlobalTransformer::exitLval(dmpl::LvalExpr &expr)
 
   //handle assume and assert
   if(newName == "ASSUME") newName = "__CPROVER_assume";
-  else if(newName == "ASSERT")
-    newName = assertToAssume ? "__CPROVER_assume" : "assert";
+  else if(newName == "ASSERT") newName = "assert";
 
   //handle global variables
   Node &node = prog.nodes.begin()->second;
@@ -167,10 +167,13 @@ void dmpl::syncseqdblind::GlobalTransformer::exitCall(dmpl::CallStmt &stmt)
   //handle calls to ND(x) -- assign x non-deterministically
   CallExpr *expr = dynamic_cast<CallExpr*>(stmt.data.get());
   if(expr->func->toString() == "ND") {
+    throw std::runtime_error("ERROR: found call to unsupported function ND()!!");
+    /*
     const Expr &arg = exprMap[*(expr->args.begin())];
     Expr ndfn = syncSeq.createNondetFunc(arg);
     Expr ndcall(new CallExpr(ndfn,ExprList()));
     stmtMap[hostStmt] = Stmt(new AsgnStmt(arg,ndcall));
+    */
     return;
   }
 
@@ -182,10 +185,10 @@ void dmpl::syncseqdblind::GlobalTransformer::exitFAN(dmpl::FANStmt &stmt)
   Stmt shost = hostStmt;
   StmtList sl;
 
-  for(size_t i = 0;i < nodeNum;++i) {
-    syncseqdblind::NodeTransformer nt(syncSeq,prog,nodeNum,assertToAssume,i,true);
+  for(const auto &pr : syncSeq.relevantThreads) {
+    syncseqdblind::NodeTransformer nt(syncSeq,prog,pr.first,true);
     nt.idMap = idMap;
-    nt.addIdMap(stmt.id,i);
+    nt.addIdMap(stmt.id,pr.first.id);
     nt.visit(stmt.data);
     sl.push_back(nt.stmtMap[stmt.data]);
     nt.delIdMap(stmt.id);
@@ -199,12 +202,14 @@ void dmpl::syncseqdblind::GlobalTransformer::exitFADNP(dmpl::FADNPStmt &stmt)
   Stmt shost = hostStmt;
   StmtList sl;
 
-  for(size_t i1 = 0;i1 < nodeNum;++i1) {
-    for(size_t i2 = i1+1;i2 < nodeNum;++i2) {
-      syncseqdblind::NodeTransformer nt(syncSeq,prog,nodeNum,assertToAssume,i1,true);
+  auto it1 = syncSeq.relevantThreads.begin();
+  for(;it1 != syncSeq.relevantThreads.end();++it1) {
+    auto it2 = it1; ++it2;
+    for(;it2 != syncSeq.relevantThreads.end();++it2) {
+      syncseqdblind::NodeTransformer nt(syncSeq,prog,it1->first,true);
       nt.idMap = idMap;
-      nt.addIdMap(stmt.id1,i1);
-      nt.addIdMap(stmt.id2,i2);
+      nt.addIdMap(stmt.id1,it1->first.id);
+      nt.addIdMap(stmt.id2,it2->first.id);
       nt.visit(stmt.data);
       sl.push_back(nt.stmtMap[stmt.data]);
       nt.delIdMap(stmt.id1);
@@ -227,15 +232,16 @@ void dmpl::syncseqdblind::NodeTransformer::exitLval(dmpl::LvalExpr &expr)
   std::string newName = expr.var;
 
   //assumes a single node
-  Node &node = prog.nodes.begin()->second;
+  Node &node = proc.role->node;
 
   //create the string for the nodeId part of the expression, if any
-  std::string nodeIdStr = (expr.node != NULL) ? getNodeStr(expr) : boost::lexical_cast<std::string>(nodeId);
-  
+  std::string nodeIdStr = (expr.node != NULL) ? getNodeStr(expr)
+    : boost::lexical_cast<std::string>(proc.id);
+
   //handle assume and assert
   if(newName == "ASSUME") newName = "__CPROVER_assume";
   else if(newName == "ASSERT")
-    newName = assertToAssume ? "__CPROVER_assume" : "assert";
+    newName = "assert";
   //handle function call -- change name if the function is defined at top-level
   else if(inCall && prog.isInternalFunction(newName)) 
     newName += (std::string("_") + (fwd ? "fwd" : "bwd"));
@@ -293,9 +299,9 @@ void dmpl::syncseqdblind::NodeTransformer::exitEXO(dmpl::EXOExpr &expr)
 {
   Expr shost = hostExpr;
   exprMap[shost] = Expr();
-  for(size_t i = 0;i < nodeNum;++i) {
-    if(i == nodeId) continue;
-    addIdMap(expr.id,i);
+  for(const auto &pr : syncSeq.relevantThreads) {
+    if(pr.first == proc) continue;
+    addIdMap(expr.id,pr.first.id);
     visit(expr.arg);
     delIdMap(expr.id);
     if(exprMap[shost].get()) 
@@ -315,8 +321,9 @@ void dmpl::syncseqdblind::NodeTransformer::exitEXH(dmpl::EXHExpr &expr)
 {
   Expr shost = hostExpr;
   exprMap[shost] = Expr();
-  for(size_t i = nodeId+1;i < nodeNum;++i) {
-    addIdMap(expr.id,i);
+  for(const auto &pr : syncSeq.relevantThreads) {
+    if(pr.first.id <= proc.id) continue;
+    addIdMap(expr.id,pr.first.id);
     visit(expr.arg);
     delIdMap(expr.id);
     if(exprMap[shost].get()) 
@@ -336,8 +343,9 @@ void dmpl::syncseqdblind::NodeTransformer::exitEXL(dmpl::EXLExpr &expr)
 {
   Expr shost = hostExpr;
   exprMap[shost] = Expr();
-  for(size_t i = 0;i < nodeId;++i) {
-    addIdMap(expr.id,i);
+  for(const auto &pr : syncSeq.relevantThreads) {
+    if(pr.first.id >= proc.id) continue;
+    addIdMap(expr.id,pr.first.id);
     visit(expr.arg);
     delIdMap(expr.id);
     if(exprMap[shost].get()) 
@@ -365,9 +373,9 @@ void dmpl::syncseqdblind::NodeTransformer::exitFAO(dmpl::FAOStmt &stmt)
   Stmt shost = hostStmt;
   StmtList sl;
 
-  for(size_t i = 0;i < nodeNum;++i) {
-    if(i == nodeId) continue;
-    addIdMap(stmt.id,i);
+  for(const auto &pr : syncSeq.relevantThreads) {
+    if(pr.first == proc) continue;
+    addIdMap(stmt.id,pr.first.id);
     visit(stmt.data);
     sl.push_back(stmtMap[stmt.data]);
     delIdMap(stmt.id);
@@ -381,8 +389,9 @@ void dmpl::syncseqdblind::NodeTransformer::exitFAOL(dmpl::FAOLStmt &stmt)
   Stmt shost = hostStmt;
   StmtList sl;
 
-  for(size_t i = 0;i < nodeId;++i) {
-    addIdMap(stmt.id,i);
+  for(const auto &pr : syncSeq.relevantThreads) {
+    if(pr.first.id >= proc.id) continue;
+    addIdMap(stmt.id,pr.first.id);
     visit(stmt.data);
     sl.push_back(stmtMap[stmt.data]);
     delIdMap(stmt.id);
@@ -396,8 +405,9 @@ void dmpl::syncseqdblind::NodeTransformer::exitFAOH(dmpl::FAOHStmt &stmt)
   Stmt shost = hostStmt;
   StmtList sl;
 
-  for(size_t i = nodeId+1;i < nodeNum;++i) {
-    addIdMap(stmt.id,i);
+  for(const auto &pr : syncSeq.relevantThreads) {
+    if(pr.first.id <= proc.id) continue;
+    addIdMap(stmt.id,pr.first.id);
     visit(stmt.data);
     sl.push_back(stmtMap[stmt.data]);
     delIdMap(stmt.id);
@@ -410,9 +420,121 @@ void dmpl::syncseqdblind::NodeTransformer::exitFAOH(dmpl::FAOHStmt &stmt)
 //constructor
 /*********************************************************************/
 dmpl::SyncSeqDblInd::SyncSeqDblInd(dmpl::DmplBuilder &b, const std::string &p, int r) 
-  : builder(b), property(p), roundNum(r)
+  : builder(b), property(p), roundNum(r) {}
+
+/*********************************************************************/
+//-- compute property relevant variables and functions for each
+//-- process
+/*********************************************************************/
+void dmpl::SyncSeqDblInd::computeRelevant()
 {
-  nodeNum = builder.program.processes.size();
+  //-- iterate over all program processes
+  for(const Process &proc : builder.program.processes) {
+    //-- compute the property function
+    Func propFunc = proc.role->node->getRequireFunc(property);
+    if(propFunc == NULL) {
+      std::cout << "WARNING: role " << proc.role->name << " does not have require specification named "
+                << property << " : skipping ...\n";
+      continue;
+    }
+    
+    //-- compute the set of local and global variables read by the
+    //-- spec function
+    VarSet specVars;
+    specVars.insert(propFunc->readsLoc.begin(), propFunc->readsLoc.end());
+    specVars.insert(propFunc->readsGlob.begin(), propFunc->readsGlob.end());
+
+    //-- compute threads that write to variables read by the spec
+    for(Func f : proc.role->threads) {
+      for(const Var &v : specVars) {
+        if(!f->canWrite(v)) continue;
+        //std::cout << "relevant thread : " << f->name << '\n';
+
+        if(proc.role->getAttribute(f, "BarrierSync", 0) == NULL)
+          throw std::runtime_error("ERROR: role " + proc.role->name + " in node " +
+                                   proc.role->node->name + " has asynchronous thread " +
+                                   f->name + " relevant to require property " + property + "!!");
+        
+        if(relevantThreads[proc] != NULL)
+          throw std::runtime_error("ERROR: role " + proc.role->name + " in node " +
+                                   proc.role->node->name + " has multiple threads (" +
+                                   relevantThreads[proc]->name + " and " + f->name +
+                                   ") relevant to require property " + property + "!!");
+        
+        //-- currently we only support inherited threads
+        if(!f->isPrototype)
+          throw std::runtime_error("ERROR: role " + proc.role->name + " in node " +
+                                   proc.role->node->name + " has non-inherited thread " +
+                                   f->name + " relevant to require property " + property + "!!");
+
+        //-- actually store the inherited function
+        f = proc.role->node->findFunc(f->name);        
+        relevantThreads[proc] = f;
+        break;
+      }
+    }
+
+    //-- sanity check
+    if(relevantThreads.find(proc) == relevantThreads.end()) continue;
+
+    //-- make variables read by relevant threads also spec relevant
+    Func thread = relevantThreads[proc];
+    if(thread != NULL) {
+      specVars.insert(thread->readsLoc.begin(), thread->readsLoc.end());
+      specVars.insert(thread->readsGlob.begin(), thread->readsGlob.end());
+    }
+    
+    //-- go over each function in the role and collect the ones that
+    //-- write to a
+    for(const Func &f : proc.role->allFuncsInScope()) {
+      //-- skip threads and the property function itself
+      if(f->isThread() || f == propFunc) continue;
+
+      for(const Var &v : specVars) {
+        if(!f->canWrite(v)) continue;
+        //std::cout << "relevant function : " << f->name << '\n';
+        relevantFuncs[proc].insert(f);
+        break;
+      }
+    }
+
+    //-- make variables read by relevant threads also spec relevant
+    for(const Func &f : relevantFuncs[proc]) {
+      specVars.insert(f->readsLoc.begin(), f->readsLoc.end());
+      specVars.insert(f->readsGlob.begin(), f->readsGlob.end());
+    }
+
+    //-- assign relevant local and global variables
+    for(const Var &v : specVars) {
+      if(v->scope == Symbol::LOCAL) relevantLocs[proc].insert(v);
+      else if(v->scope == Symbol::GLOBAL) relevantGlobs[proc].insert(v);
+    }
+
+    //-- assign havoc locals
+    for(const Var &lv : relevantLocs[proc]) {
+      for(Func f : proc.role->threads) {
+        if(f->equalType(*relevantThreads[proc])) continue;
+        if(!f->canWrite(lv)) continue;
+        havocLocs[proc].insert(lv);
+        break;
+      }
+    }
+
+    //-- assign havoc locals
+    for(const Var &gv : relevantGlobs[proc]) {
+      for(Func f : proc.role->threads) {
+        if(f->equalType(*relevantThreads[proc])) continue;
+        if(!f->canWrite(gv)) continue;
+        havocGlobs[proc].insert(gv);
+        break;
+      }
+    }
+  }
+
+  //-- sanity check
+  if(relevantFuncs.empty())
+    throw std::runtime_error("ERROR: no relevant functions found for property " +
+                             property + "!!");
 }
 
 /*********************************************************************/
@@ -420,28 +542,22 @@ dmpl::SyncSeqDblInd::SyncSeqDblInd(dmpl::DmplBuilder &b, const std::string &p, i
 /*********************************************************************/
 void dmpl::SyncSeqDblInd::createGlobVars()
 {
-  Node &node = builder.program.nodes.begin()->second;
-
-  //instantiate node-global variables by replacing dimension #N with
-  //nodeNum -- make two copies, one for initial value for a round, and
-  //the other for the final value for a round
-  dmpl::VarList gvars;
-  BOOST_FOREACH(Vars::value_type &v,node->globVars) {
-    gvars.push_back(v.second->instDim(nodeNum));
-  }
-  BOOST_FOREACH(const Var &v,gvars) {
-    for(size_t i = 0;i < nodeNum;++i) {
-      cprog.addGlobVar(v->instName(std::string("_i_") + boost::lexical_cast<std::string>(i)));
-      cprog.addGlobVar(v->instName(std::string("_f_") + boost::lexical_cast<std::string>(i)));
+  //instantiate node-global variables -- make two copies, one for
+  //initial value for a round, and the other for the final value for a
+  //round
+  for(const auto &rg : relevantGlobs) {
+    //-- process each relevant global var
+    for(const Var &v : rg.second) {
+      cprog.addGlobVar(v->instName(std::string("_i_") + boost::lexical_cast<std::string>(rg.first.id)));
+      cprog.addGlobVar(v->instName(std::string("_f_") + boost::lexical_cast<std::string>(rg.first.id)));
     }
   }
 
   //instantiate node-local variables by adding _i for each node id i
-  BOOST_FOREACH(Vars::value_type &v,node->locVars) {
-    for(size_t i = 0;i < nodeNum;++i) {
-      cprog.addGlobVar(v.second->instName(std::string("_") + 
-                                         boost::lexical_cast<std::string>(i)));
-    }
+  for(const auto &rl : relevantLocs) {
+    for(const Var &v : rl.second)
+      cprog.addGlobVar(v->instName(std::string("_") + 
+                                   boost::lexical_cast<std::string>(rl.first.id)));
   }
 }
 
@@ -479,32 +595,20 @@ void dmpl::SyncSeqDblInd::createCopyStmts(bool fwd,const Var &var,StmtList &res,
 /*********************************************************************/
 void dmpl::SyncSeqDblInd::createRoundCopier()
 {
-  Node &node = builder.program.nodes.begin()->second;
   dmpl::VarList fnParams,fnTemps;
-
-  //create the copier from _f to _i
-  StmtList fnBody1;
-  for(size_t i = 0;i < nodeNum;++i) {
-    BOOST_FOREACH(Vars::value_type &v,node->globVars) {
-      Var var = v.second->instDim(nodeNum);
-      createCopyStmts(0,var,fnBody1,ExprList(),i);
+  StmtList fnBody1,fnBody2;
+  
+  for(const auto &rg : relevantGlobs) {
+    for(const Var &v : rg.second) {
+      //create the copier from _f to _i
+      createCopyStmts(false,v,fnBody1,ExprList(),rg.first.id);
+      //create the copier from _i to _f
+      createCopyStmts(true,v,fnBody2,ExprList(),rg.first.id);
     }
   }
 
-  Func func1(new Function(dmpl::voidType(),"round_bwd_copier",fnParams,fnTemps,fnBody1));
-  cprog.addFunction(func1);
-
-  //create the copier from _i to _f
-  StmtList fnBody2;
-  for(size_t i = 0;i < nodeNum;++i) {
-    BOOST_FOREACH(Vars::value_type &v,node->globVars) {
-      Var var = v.second->instDim(nodeNum);
-      createCopyStmts(1,var,fnBody2,ExprList(),i);
-    }
-  }
-
-  Func func2(new Function(dmpl::voidType(),"round_fwd_copier",fnParams,fnTemps,fnBody2));
-  cprog.addFunction(func2);
+  cprog.addFunction(Func(new Function(dmpl::voidType(),"round_bwd_copier",fnParams,fnTemps,fnBody1)));
+  cprog.addFunction(Func(new Function(dmpl::voidType(),"round_fwd_copier",fnParams,fnTemps,fnBody2)));
 }
 
 /*********************************************************************/
@@ -522,12 +626,11 @@ void dmpl::SyncSeqDblInd::callFunction(const std::string &funcName,StmtList &bod
 /*********************************************************************/
 void dmpl::SyncSeqDblInd::callRoundFuncs(Func &roundFunc,StmtList &body)
 {
-  const Node &node = builder.program.nodes.begin()->second;
-  for(size_t i = 0;i < nodeNum;++i) {
+  for(const auto &pr : relevantThreads) {
     //call the _fwd version of the ROUND function of the node. this
     //copies from _i to _f
-    std::string callNameFwd = node->name + "__" + roundFunc->name + "_" + 
-      boost::lexical_cast<std::string>(i) + "_fwd";
+    std::string callNameFwd = pr.first.getNode() + "__" + pr.second->name + "_" + 
+      boost::lexical_cast<std::string>(pr.first.id) + "_fwd";
     callFunction(callNameFwd,body);
   }
 }
@@ -601,52 +704,105 @@ void dmpl::SyncSeqDblInd::createMainFunc()
 }
 
 /*********************************************************************/
+//-- create the INIT function for a variable, given a process
+//-- id. return a statement that calls the function, or assumes it if
+//-- the variable is an input.
+/*********************************************************************/
+dmpl::Stmt dmpl::SyncSeqDblInd::createInitVar(const Var &var, const Process &proc)
+{
+  Node &node = proc.role->node;
+  dmpl::VarList fnParams = var->initFunc->params,fnTemps;
+  for(const auto &v : var->initFunc->temps) fnTemps.push_back(v.second);
+  
+  StmtList initFnBody;
+  std::string initFnName = "__INIT_" + var->name + "_" + boost::lexical_cast<std::string>(proc.id);
+
+  //-- if the variable is an input, assign it non-deterministically
+  if(var->isInput) {
+    Expr varExpr(new LvalExpr(var->name + "_" + boost::lexical_cast<std::string>(proc.id)));
+    Expr ndfn = createNondetFunc(varExpr, var->type);
+    Expr ndcall(new CallExpr(ndfn,ExprList()));
+    initFnBody.push_back(Stmt(new AsgnStmt(varExpr,ndcall)));
+  }
+
+  //-- initialize _i version
+  BOOST_FOREACH(const Stmt &st,var->initFunc->body) {
+    syncseqdblind::NodeTransformer nt(*this,builder.program,proc,false);
+    std::string nodeId = *node->args.begin();
+    nt.addIdMap(nodeId,proc.id);
+    nt.visit(st);
+    nt.delIdMap(nodeId);
+    initFnBody.push_back(nt.stmtMap[st]);
+  }
+
+  //-- for global variables, also initialize _f version
+  if(var->scope == Symbol::GLOBAL) {
+    BOOST_FOREACH(const Stmt &st,var->initFunc->body) {
+      syncseqdblind::NodeTransformer nt(*this,builder.program,proc,true);
+      std::string nodeId = *node->args.begin();
+      nt.addIdMap(nodeId,proc.id);
+      nt.visit(st);
+      nt.delIdMap(nodeId);
+      initFnBody.push_back(nt.stmtMap[st]);
+    }
+  }
+      
+  Func func(new Function(var->initFunc->retType,initFnName,fnParams,fnTemps,initFnBody));
+  cprog.addFunction(func);
+
+  //-- create a call to the function and return it
+  Expr callExpr(new LvalExpr(initFnName));
+  callExpr = Expr(new CallExpr(callExpr, dmpl::ExprList()));
+  if(var->isInput) {
+    dmpl::ExprList args = {callExpr};
+    callExpr = Expr(new CallExpr(Expr(new LvalExpr("__CPROVER_assume")), args));
+  }
+  return Stmt(new CallStmt(callExpr));
+}
+
+/*********************************************************************/
 //create the INIT() function
 /*********************************************************************/
 void dmpl::SyncSeqDblInd::createInit()
 {
-  StmtList initFnBody;
-
-  BOOST_FOREACH(Funcs::value_type &f, builder.program.funcs) {
-    if(f.second->isExtern == true)
-      continue;
-      
-    int init = f.second->attrs.count("INIT");
-    if(init < 1)
-      continue;
-    else if(init > 1)
-      std::cerr << "Warning: function " << f.second->name <<
-        " has more than one @INIT attribute" << std::endl;
-
-    dmpl::VarList fnParams,fnTemps;
-    StmtList fnBody;
-
-    //create parameters
-    fnParams = f.second->params;
-
-    //create temporary variables
-    BOOST_FOREACH(Vars::value_type &v,f.second->temps)
-      fnTemps.push_back(v.second);
-
-    //transform the body of init
-    BOOST_FOREACH(const Stmt &st,f.second->body) {
-      syncseqdblind::GlobalTransformer gt(*this,builder.program,nodeNum,false);
-      gt.visit(st);
-      fnBody.push_back(gt.stmtMap[st]);
+  StmtList fnBody;
+  //-- create initializers for local variables
+  for(const auto &rl: relevantLocs) {
+    //-- collect the local and global variables, and sort them into
+    //-- input and non-input
+    VarSet inputVars, nonInputVars;
+    for(const Var &v: rl.second) {
+      if(v->isInput) inputVars.insert(v);
+      else nonInputVars.insert(v);
+    }
+    for(const Var &v: relevantGlobs[rl.first]) {
+      if(v->isInput) inputVars.insert(v);
+      else nonInputVars.insert(v);
     }
 
-    std::string fname = "__INIT_" + f.second->name;
-    Func func(new Function(dmpl::voidType(),fname,fnParams,fnTemps,fnBody));
-    cprog.addFunction(func);
-
-    Expr callExpr(new LvalExpr(fname));
-    Stmt callStmt(new CallStmt(callExpr,dmpl::ExprList()));
-    initFnBody.push_back(callStmt);
+    //-- generate INIT for input vars 
+    for(const Var &v: inputVars) {
+      if(v->initFunc == NULL) continue;
+      fnBody.push_back(createInitVar(v, rl.first));
+    }
+    //-- generate INIT for non-input vars 
+    for(const Var &v: nonInputVars) {
+      if(v->initFunc == NULL) continue;
+      fnBody.push_back(createInitVar(v, rl.first));
+    }
   }
 
-  dmpl::VarList fnParams, fnTemps;
+  //-- also assume that the property holds after initialization
+  std::string fname = "__SAFETY_" + property;
+  Expr callExpr(new LvalExpr(fname));
+  callExpr = Expr(new CallExpr(callExpr, dmpl::ExprList()));
+  dmpl::ExprList args = {callExpr};
+  callExpr = Expr(new CallExpr(Expr(new LvalExpr("__CPROVER_assume")), args));
+  Stmt callStmt(new CallStmt(callExpr));
+  fnBody.push_back(callStmt);
 
-  Func func(new Function(dmpl::voidType(),"__INIT",fnParams,fnTemps,initFnBody));
+  dmpl::VarList fnParams, fnTemps;
+  Func func(new Function(dmpl::voidType(),"__INIT",fnParams,fnTemps,fnBody));
   cprog.addFunction(func);
 }
 
@@ -655,49 +811,37 @@ void dmpl::SyncSeqDblInd::createInit()
 /*********************************************************************/
 void dmpl::SyncSeqDblInd::createSafety()
 {
-  StmtList safetyFnBody;
+  const Node &node = builder.program.nodes.begin()->second;
+  Func propFunc = node->getRequireFunc(property);
 
-  BOOST_FOREACH(Funcs::value_type &f, builder.program.funcs) {
-    if(f.second->isExtern == true)
-      continue;
-
-    int safety = f.second->attrs.count("SAFETY");
-    if(safety < 1)
-      continue;
-    else if(safety > 1)
-      std::cerr << "Warning: function " << f.second->name <<
-        " has more than one @SAFETY attribute" << std::endl;
-
-    dmpl::VarList fnParams,fnTemps;
-    StmtList fnBody;
-
-    //create parameters
-    fnParams = f.second->params;
-
-    //create temporary variables
-    BOOST_FOREACH(Vars::value_type &v,f.second->temps)
-      fnTemps.push_back(Var(new Variable(*v.second)));
-
-    //transform the body of safety
-    BOOST_FOREACH(const Stmt &st,f.second->body) {
-      syncseqdblind::GlobalTransformer gt(*this,builder.program,nodeNum,false);
-      gt.visit(st);
-      fnBody.push_back(gt.stmtMap[st]);
-    }
-
-    std::string fname = "__SAFETY_" + f.second->name;
-    Func func(new Function(dmpl::voidType(), fname, fnParams,fnTemps,fnBody));
-    cprog.addFunction(func);
-
-    Expr callExpr(new LvalExpr(fname));
-    Stmt callStmt(new CallStmt(callExpr,dmpl::ExprList()));
-    safetyFnBody.push_back(callStmt);
+  //-- create the require property function
+  dmpl::VarList fnParams = propFunc->params,fnTemps;
+  for(const auto &v : propFunc->temps) fnTemps.push_back(v.second);
+  
+  //transform the body of safety
+  StmtList fnBody;
+  BOOST_FOREACH(const Stmt &st,propFunc->body) {
+    syncseqdblind::GlobalTransformer gt(*this,builder.program);
+    gt.visit(st);
+    fnBody.push_back(gt.stmtMap[st]);
   }
-
-  dmpl::VarList fnParams, fnTemps;
-
-  Func func(new Function(dmpl::voidType(),"__SAFETY",fnParams,fnTemps,safetyFnBody));
+  
+  std::string fname = "__SAFETY_" + property;
+  Func func(new Function(propFunc->retType, fname, fnParams, fnTemps, fnBody));
   cprog.addFunction(func);
+
+  //-- create the SAFETY function and call the property function  
+  StmtList safetyFnBody;
+  Expr callExpr(new LvalExpr(fname));
+  callExpr = Expr(new CallExpr(callExpr, dmpl::ExprList()));
+  dmpl::ExprList args = {callExpr};
+  callExpr = Expr(new CallExpr(Expr(new LvalExpr("assert")), args));
+  Stmt callStmt(new CallStmt(callExpr));
+  safetyFnBody.push_back(callStmt);
+
+  fnParams.clear(); fnTemps.clear();
+  Func safetyFunc(new Function(dmpl::voidType(),"__SAFETY",fnParams,fnTemps,safetyFnBody));
+  cprog.addFunction(safetyFunc);
 }
 
 /*********************************************************************/
@@ -706,62 +850,33 @@ void dmpl::SyncSeqDblInd::createSafety()
 /*********************************************************************/
 void dmpl::SyncSeqDblInd::createAssume()
 {
+  //-- call SAFETY function and assume it returns true  
+  std::string fname = "__SAFETY_" + property;
   StmtList assumeFnBody;
+  Expr callExpr(new LvalExpr(fname));
+  callExpr = Expr(new CallExpr(callExpr, dmpl::ExprList()));
+  dmpl::ExprList args = {callExpr};
+  callExpr = Expr(new CallExpr(Expr(new LvalExpr("__CPROVER_assume")), args));
+  Stmt callStmt(new CallStmt(callExpr));
+  assumeFnBody.push_back(callStmt);
 
-  BOOST_FOREACH(Funcs::value_type &f, builder.program.funcs) {
-    if(f.second->isExtern == true)
-      continue;
-
-    int safety = f.second->attrs.count("SAFETY");
-    if(safety < 1)
-      continue;
-    else if(safety > 1)
-      std::cerr << "Warning: function " << f.second->name <<
-        " has more than one @SAFETY attribute" << std::endl;
-
-    dmpl::VarList fnParams,fnTemps;
-    StmtList fnBody;
-
-    //create parameters
-    fnParams = f.second->params;
-
-    //create temporary variables
-    BOOST_FOREACH(Vars::value_type &v,f.second->temps)
-      fnTemps.push_back(Var(new Variable(*v.second)));
-
-    //transform the body of assume
-    BOOST_FOREACH(const Stmt &st,f.second->body) {
-      syncseqdblind::GlobalTransformer gt(*this,builder.program,nodeNum,true);
-      gt.visit(st);
-      fnBody.push_back(gt.stmtMap[st]);
-    }
-
-    std::string fname = "__ASSUME_" + f.second->name;
-    Func func(new Function(dmpl::voidType(), fname, fnParams,fnTemps,fnBody));
-    cprog.addFunction(func);
-
-    Expr callExpr(new LvalExpr(fname));
-    Stmt callStmt(new CallStmt(callExpr,dmpl::ExprList()));
-    assumeFnBody.push_back(callStmt);
-  }
-
-  dmpl::VarList fnParams, fnTemps;
-
-  Func func(new Function(dmpl::voidType(),"__ASSUME",fnParams,fnTemps,assumeFnBody));
-  cprog.addFunction(func);
+  dmpl::VarList fnParams,fnTemps;
+  Func assumeFunc(new Function(dmpl::voidType(),"__ASSUME",fnParams,fnTemps,assumeFnBody));
+  cprog.addFunction(assumeFunc);
 }
 
 /*********************************************************************/
 //create list of statements that assign a non-deterministic value to
 //old value of var. append list of statements to res.
 /*********************************************************************/
-void dmpl::SyncSeqDblInd::createNDAssignStmts(bool isGlob,const Var &var,StmtList &res,ExprList indx,int node)
+void dmpl::SyncSeqDblInd::createNDAssignStmts(bool isGlob,const Var &var,StmtList &res,
+                                              ExprList indx,int pid)
 {
   //non-array type
   if(var->type->dims.empty()) {
-    std::string n = boost::lexical_cast<std::string>(node);
-    Expr lhs(new LvalExpr(var->name + std::string(isGlob ? "_i_" : "_") + n,indx));
-    Expr ndfn = createNondetFunc(lhs);
+    std::string pidStr = boost::lexical_cast<std::string>(pid);
+    Expr lhs(new LvalExpr(var->name + std::string(isGlob ? "_i_" : "_") + pidStr,indx));
+    Expr ndfn = createNondetFunc(lhs, var->type);
     Expr ndcall(new CallExpr(ndfn,ExprList()));
     Stmt stmt(new AsgnStmt(lhs,ndcall));
     res.push_back(stmt);
@@ -775,7 +890,7 @@ void dmpl::SyncSeqDblInd::createNDAssignStmts(bool isGlob,const Var &var,StmtLis
       ExprList newIndx = indx;
       newIndx.push_back(Expr(new IntExpr(boost::lexical_cast<std::string>(i))));
       Var newVar = var->decrDim();
-      createNDAssignStmts(isGlob,newVar,res,newIndx,node);
+      createNDAssignStmts(isGlob,newVar,res,newIndx,pid);
     }
   }
 }
@@ -791,19 +906,13 @@ void dmpl::SyncSeqDblInd::createHavoc()
   StmtList havocFnBody;
   dmpl::VarList fnParams, fnTemps;
 
-  //-- assign non-deterministic values to global variables
-  for(size_t i = 0;i < nodeNum;++i) {
-    BOOST_FOREACH(Vars::value_type &v,node->globVars) {
-      Var var = v.second->instDim(nodeNum);
-      createNDAssignStmts(true,var,havocFnBody,ExprList(),i);
+  //-- create havoc for local and global variables
+  for(const auto &rl: relevantLocs) {
+    for(const Var &v: rl.second) {
+      createNDAssignStmts(false, v, havocFnBody, ExprList(), rl.first.id);
     }
-  }
-
-  //-- assign non-deterministic values to local variables
-  for(size_t i = 0;i < nodeNum;++i) {
-    BOOST_FOREACH(Vars::value_type &v,node->locVars) {
-      Var var = v.second->instDim(nodeNum);
-      createNDAssignStmts(false,var,havocFnBody,ExprList(),i);
+    for(const Var &v: relevantGlobs[rl.first]) {
+      createNDAssignStmts(true, v, havocFnBody, ExprList(), rl.first.id);
     }
   }
 
@@ -816,34 +925,55 @@ void dmpl::SyncSeqDblInd::createHavoc()
 /*********************************************************************/
 void dmpl::SyncSeqDblInd::createNodeFuncs()
 {
-  Node &node = builder.program.nodes.begin()->second;
-  for(size_t i = 0;i < nodeNum;++i) {
-    BOOST_FOREACH(Funcs::value_type &f,node->funcs) {
+  //-- go over each process
+  for(const auto &pr : relevantThreads) {
+    //-- collect functions
+    FuncList funcs = { pr.second };
+    funcs.insert(funcs.end(), relevantFuncs[pr.first].begin(), relevantFuncs[pr.first].end());
+
+    //-- process each function
+    Node &node = pr.first.role->node;
+    for(const Func &f : funcs) {
       dmpl::VarList fnParams,fnTemps;
 
       //create parameters
-      fnParams = f.second->params;
+      fnParams = f->params;
 
       //create temporary variables
-      BOOST_FOREACH(Vars::value_type &v,f.second->temps)
+      BOOST_FOREACH(Vars::value_type &v,f->temps)
         fnTemps.push_back(v.second);
 
       //create the forward version
       {
         StmtList fnBody;
 
-        BOOST_FOREACH(const Stmt &st,f.second->body) {
-          syncseqdblind::NodeTransformer nt(*this,builder.program,nodeNum,false,i,true);
+        //-- if this is the thread, havoc variables
+        if(f->equalType(*pr.second)) {
+          //-- havoc locals
+          for(const Var &v : havocLocs[pr.first]) {
+            Expr varExpr(new LvalExpr(v->name + "_" + boost::lexical_cast<std::string>(pr.first.id)));
+            Expr ndfn = createNondetFunc(varExpr, v->type);
+            Expr ndcall(new CallExpr(ndfn,ExprList()));
+            fnBody.push_back(Stmt(new AsgnStmt(varExpr,ndcall)));
+          }
+          //-- havoc globals
+          for(const Var &v : havocGlobs[pr.first])
+            createNDAssignStmts(true,v,fnBody,ExprList(),pr.first.id);
+        }
+        
+        BOOST_FOREACH(const Stmt &st,f->body) {
+          syncseqdblind::NodeTransformer nt(*this,builder.program,pr.first,true);
           std::string nodeId = *node->args.begin();
-          nt.addIdMap(nodeId,i);
+          nt.addIdMap(nodeId,pr.first.id);
           nt.visit(st);
           nt.delIdMap(nodeId);
           fnBody.push_back(nt.stmtMap[st]);
         }
         
-        std::string fnName = node->name + "__" + f.second->name + "_" + 
-          boost::lexical_cast<std::string>(i) + "_fwd";
-        Func func(new Function(f.second->retType,fnName,fnParams,fnTemps,fnBody));
+        std::string fnName = node->name + "__" + f->name + "_" + 
+          boost::lexical_cast<std::string>(pr.first.id) + "_fwd";
+        Type retType = f->retType->isThread() ? voidType() : f->retType;
+        Func func(new Function(retType,fnName,fnParams,fnTemps,fnBody));
         cprog.addFunction(func);
       }
     }
@@ -855,13 +985,27 @@ void dmpl::SyncSeqDblInd::createNodeFuncs()
 //expression. add its declaration to the C program if a new function
 //was created
 /*********************************************************************/
-dmpl::Expr dmpl::SyncSeqDblInd::createNondetFunc(const Expr &expr)
+dmpl::Expr dmpl::SyncSeqDblInd::createNondetFunc(const Expr &expr, const Type &type)
 {
   const LvalExpr *lve = dynamic_cast<LvalExpr*>(expr.get());
   assert(lve && "ERROR: can only create nondet function for LvalExpr");
-  return Expr(new LvalExpr("nondet_" + lve->var));
+
+  std::string fnName = "nondet_" + lve->var;
+  
+  if(nondetFuncs.insert(lve->var).second) {
+    dmpl::VarList fnParams,fnTemps;
+    StmtList fnBody;
+    Func func(new Function(type,fnName,fnParams,fnTemps,fnBody));
+    func->isPrototype = true;
+    cprog.addFunction(func);
+  }
+  
+  return Expr(new LvalExpr(fnName));
 }
 
+/*********************************************************************/
+//-- process external function declarations
+/*********************************************************************/
 void dmpl::SyncSeqDblInd::processExternFuncs()
 {
   BOOST_FOREACH(dmpl::Funcs::value_type &ef, builder.program.funcs)
@@ -934,10 +1078,15 @@ void dmpl::SyncSeqDblInd::processExternFuncs()
 void dmpl::SyncSeqDblInd::run()
 {
   std::cout << "Sequentializing for inductive check with double-buffering and " 
-            << nodeNum << " nodes ...\n";
+            << builder.program.processes.size() << " processes ...\n";
 
   //copy over constants
   cprog.constDef = builder.program.constDef;
+  cprog.constDef["true"] = "1";
+  cprog.constDef["false"] = "0";
+
+  //-- create the property relevant variables and functions
+  computeRelevant();
 
   createGlobVars();
   processExternFuncs();
