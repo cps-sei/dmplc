@@ -602,9 +602,9 @@ void dmpl::SyncSeqDbl::createRoundCopier()
   for(const auto &rg : relevantGlobs) {
     for(const Var &v : rg.second) {
       //create the copier from _f to _i
-      createCopyStmts(0,v,fnBody1,ExprList(),rg.first.id);
+      createCopyStmts(false,v,fnBody1,ExprList(),rg.first.id);
       //create the copier from _i to _f
-      createCopyStmts(1,v,fnBody2,ExprList(),rg.first.id);
+      createCopyStmts(true,v,fnBody2,ExprList(),rg.first.id);
     }
   }
 
