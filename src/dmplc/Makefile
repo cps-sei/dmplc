@@ -41,6 +41,9 @@ vrepConst.py :
 
 dmplc : dmpl-parser.hpp dmplc.cpp $(OBJ)
 	$(CXX) $(CFLAGS) -o $@ $(INC) dmplc.cpp $(OBJ) $(LIB)
+ifeq "$(STATIC)" "1"
+	strip $@
+endif
 
 dmpl-scanner.cpp : dmpl-scanner.ll
 	flex -o dmpl-scanner.cpp dmpl-scanner.ll
