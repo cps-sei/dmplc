@@ -188,7 +188,7 @@ namespace dmpl {
 
     void createGlobVars();
     size_t globVarDim(const Var &var);
-    void createCopyStmts(bool fwd,const Var &var,StmtList &res,ExprList indx,int node);
+    void createCopyStmts(bool fwd,const Var &var,StmtList &res,ExprList indx,int pid);
     void createRoundCopier();
     void createMainFunc();
     Stmt createInitVar(const Var &var, const Process &proc);
