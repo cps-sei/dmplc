@@ -233,6 +233,7 @@ node uav
       if(x == xwp && y == ywp) {
         UPDATE_WP();
       }
+      if(x == xwp && y == ywp) return;
       NEXT_XY();
       state = REQUEST;
     } else if (state == REQUEST) {
