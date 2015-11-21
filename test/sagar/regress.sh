@@ -54,6 +54,10 @@ test_double_parse ../../docs/tutorial/example-01.dmpl uav:Uav:3
 test_double_parse ../../docs/tutorial/example-01.bug1.dmpl uav:Uav:3
 test_double_parse ../../docs/tutorial/example-01.bug2.dmpl uav:Uav:3
 test_double_parse ../../docs/tutorial/example-02.dmpl uav:Leader:1:uav:Protector:4
+test_double_parse ../../docs/tutorial/example-02.bug1.dmpl uav:Leader:1:uav:Protector:4
+test_double_parse ../../docs/tutorial/example-03.dmpl uav:Leader:1:uav:Protector:8
+test_double_parse ../../docs/tutorial/example-05/dmpl/example-05.dmpl uav:Leader:1:uav:Protector:4
+test_double_parse ../../docs/tutorial/example-07/dmpl/example-07-2.dmpl uav:Tile:9
 
 #code generation tests
 test_code_gen test-example-01a.dmpl uav:Uav:3
