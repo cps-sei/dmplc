@@ -71,8 +71,10 @@ int __INIT_yf_2();
 void __INIT_yp_0();
 void __INIT_yp_1();
 void __INIT_yp_2();
-void __SAFETY();
-_Bool __SAFETY_NoCollision();
+_Bool __SAFETY_NoCollision_bwd();
+_Bool __SAFETY_NoCollision_fwd();
+void __SAFETY_bwd();
+void __SAFETY_fwd();
 int main();
 extern int my_sleep(int seconds);
 unsigned char nondet_x_0();
@@ -132,7 +134,7 @@ void __INIT()
   __INIT_state_2();
   __INIT_xp_2();
   __INIT_yp_2();
-  __CPROVER_assume(__SAFETY_NoCollision());
+  __CPROVER_assume(__SAFETY_NoCollision_fwd());
 }
 
 void __INIT_lock_0()
@@ -270,12 +272,7 @@ void __INIT_yp_2()
   yp_2 = y_2;
 }
 
-void __SAFETY()
-{
-  assert(__SAFETY_NoCollision());
-}
-
-_Bool __SAFETY_NoCollision()
+_Bool __SAFETY_NoCollision_bwd()
 {
   {
     {
@@ -294,35 +291,64 @@ _Bool __SAFETY_NoCollision()
   return true;
 }
 
+_Bool __SAFETY_NoCollision_fwd()
+{
+  {
+    {
+      if (((x_0)==(x_1))&&((y_0)==(y_1)))
+        return false;
+    }
+    {
+      if (((x_0)==(x_2))&&((y_0)==(y_2)))
+        return false;
+    }
+    {
+      if (((x_1)==(x_2))&&((y_1)==(y_2)))
+        return false;
+    }
+  }
+  return true;
+}
+
+void __SAFETY_bwd()
+{
+  assert(__SAFETY_NoCollision_bwd());
+}
+
+void __SAFETY_fwd()
+{
+  assert(__SAFETY_NoCollision_fwd());
+}
+
 int main()
 {
   __INIT();
-  __SAFETY();
+  __SAFETY_fwd();
   round_fwd_copier();
   uav__COLLISION_AVOIDANCE_0_fwd();
   uav__COLLISION_AVOIDANCE_1_fwd();
   uav__COLLISION_AVOIDANCE_2_fwd();
-  __SAFETY();
+  __SAFETY_bwd();
   round_bwd_copier();
   uav__COLLISION_AVOIDANCE_0_bwd();
   uav__COLLISION_AVOIDANCE_1_bwd();
   uav__COLLISION_AVOIDANCE_2_bwd();
-  __SAFETY();
+  __SAFETY_fwd();
   round_fwd_copier();
   uav__COLLISION_AVOIDANCE_0_fwd();
   uav__COLLISION_AVOIDANCE_1_fwd();
   uav__COLLISION_AVOIDANCE_2_fwd();
-  __SAFETY();
+  __SAFETY_bwd();
   round_bwd_copier();
   uav__COLLISION_AVOIDANCE_0_bwd();
   uav__COLLISION_AVOIDANCE_1_bwd();
   uav__COLLISION_AVOIDANCE_2_bwd();
-  __SAFETY();
+  __SAFETY_fwd();
   round_fwd_copier();
   uav__COLLISION_AVOIDANCE_0_fwd();
   uav__COLLISION_AVOIDANCE_1_fwd();
   uav__COLLISION_AVOIDANCE_2_fwd();
-  __SAFETY();
+  __SAFETY_bwd();
 }
 
 int my_sleep(int seconds);
