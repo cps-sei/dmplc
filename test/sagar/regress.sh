@@ -44,6 +44,20 @@ function test_double_parse {
     if [ "$?" == "0" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
 }
 
+##verify and check against expected output
+function test_verif {
+    DMPL="$1"
+    ROLES="$2"
+    OUTPUT="$3"
+    printf "verification %30s : " $(basename $DMPL)
+    BN=$(basename $DMPL .dmpl)
+    OUT1="$BN.c"
+    rm -f $OUT1
+    dmplc --roles $ROLES --DX 5 --DY 5 -r 5 -s -rp NoCollision -o $OUT1 $DMPL &> /dev/null
+    OUT2=$(cbmc $OUT1 2>&1 | grep VERIFICATION | awk '{print $2}')
+    if [ "$OUT2" == "$OUTPUT" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
+}
+
 #double parse tests
 test_double_parse test-example-01a.dmpl uav:Uav:3
 test_double_parse test-example-01b.dmpl uav:Uav1:2:uav:Uav2:1
@@ -64,3 +78,8 @@ test_code_gen test-example-01a.dmpl uav:Uav:3
 
 #sequentialization tests
 test_seq test-example-01c.dmpl uav:Uav1:2:uav:Uav2:1
+
+#verification tests
+test_verif ../../docs/tutorial/example-01.dmpl uav:Uav:2 SUCCESSFUL
+test_verif ../../docs/tutorial/example-01.bug1.dmpl uav:Uav:2 FAILED
+test_verif ../../docs/tutorial/example-01.bug2.dmpl uav:Uav:2 FAILED
