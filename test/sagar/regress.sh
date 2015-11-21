@@ -33,7 +33,7 @@ function test_seq {
 function test_double_parse {
     DMPL="$1"
     ROLES="$2"
-    printf "double parse %30s : " "$DMPL"
+    printf "double parse %30s : " $(basename $DMPL)
     BN=$(basename $DMPL .dmpl)
     OUT1="$BN.1.dmpl"
     OUT2="$BN.2.dmpl"
