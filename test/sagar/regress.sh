@@ -4,7 +4,7 @@
 function test_code_gen {
     DMPL="$1"
     ROLES="$2"
-    printf "code gen     %30s : " "$DMPL"
+    printf "code gen     %30s : " $(basename $DMPL)
     BN=$(basename $DMPL .dmpl)
     OUT1="$BN.cpp"
     OUT2="$BN.cpp.saved"
@@ -18,7 +18,7 @@ function test_code_gen {
 function test_seq {
     DMPL="$1"
     ROLES="$2"
-    printf "sequentialize%30s : " "$DMPL"
+    printf "sequentialize%30s : " $(basename $DMPL)
     BN=$(basename $DMPL .dmpl)
     OUT1="$BN.c"
     OUT2="$BN.c.saved"
