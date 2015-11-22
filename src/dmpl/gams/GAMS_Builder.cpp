@@ -387,10 +387,16 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
       build_role_variables(r.second, true);
       build_role_variables(r.second, false);
 
-      //-- generate thread-read-execute-write variables
+      //-- generate thread-read-execute-write variables. if the thread
+      //-- is new or overridden, then include node variables as well.
       for (const Func &thread : r.second->threads) {
+        bool newOrOverride = thread->isOverride || !n->second->hasFunction(thread->name);
+
         build_thread_variables(thread, r.second->globVars, true);
+        if(newOrOverride) build_thread_variables(thread, n->second->globVars, true);
+
         build_thread_variables(thread, r.second->locVars, false);
+        if(newOrOverride) build_thread_variables(thread, n->second->locVars, false);
       }
       
       buffer_ << '\n';
