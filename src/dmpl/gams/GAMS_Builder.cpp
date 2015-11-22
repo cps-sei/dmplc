@@ -944,7 +944,8 @@ dmpl::gams::GAMS_Builder::build_function_declarations ()
         //-- collect functions. for this role, and if the thread is
         //-- new for this role then function for parent node as well.
         Funcs funcs = r.second->funcs;
-        funcs.insert(n.second->funcs.begin(), n.second->funcs.end());
+        if(!r.second->node->isFunction(thread->name))
+          funcs.insert(n.second->funcs.begin(), n.second->funcs.end());
                        
         //-- declare all functions
         build_function_declarations_for_thread(thread, funcs);
@@ -1059,7 +1060,8 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
         //-- collect functions. for this role, and if the thread is
         //-- new for this role then function for parent node as well.
         Funcs funcs = r.second->funcs;
-        funcs.insert(n->second->funcs.begin(), n->second->funcs.end());
+        if(!r.second->node->isFunction(thread->name))
+          funcs.insert(n->second->funcs.begin(), n->second->funcs.end());
                        
         //-- generate code for all functions
         build_functions_for_thread(thread, n->second, funcs);
