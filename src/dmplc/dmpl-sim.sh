@@ -80,49 +80,49 @@ argc=0
 
 #get flags
 while true; do
-  case "$1" in
-  -d|--debug)
-    DEBUG=1
-    ;;
-  -b|--force-build)
-    FORCEBUILD=1
-    ;;
-  -B|--build-only)
-    BUILDONLY=1
-    ;;
-  -h|--headless)
-    HEADLESS=1
-    ;;
-  -M|--manual-start)
-    MANUALSTART=1
-    ;;
-  -r|--realtime)
-    REALTIME=1
-    ;;
-  -p|--platform)
-    shift
-    PLATFORM="$1"
-    ;;
-  "")
-    break
-    ;;
-  *)
-    case "$argc" in
-    0)
-      MISSION="$1"
-      ;;
-    1)
-      OUTLOG="$1"
-      ;;
-    *)
-      echo Unexpected argument: $1
-      usage
-      exit 1
+    case "$1" in
+        -d|--debug)
+            DEBUG=1
+            ;;
+        -b|--force-build)
+            FORCEBUILD=1
+            ;;
+        -B|--build-only)
+            BUILDONLY=1
+            ;;
+        -h|--headless)
+            HEADLESS=1
+            ;;
+        -M|--manual-start)
+            MANUALSTART=1
+            ;;
+        -r|--realtime)
+            REALTIME=1
+            ;;
+        -p|--platform)
+            shift
+            PLATFORM="$1"
+            ;;
+        "")
+            break
+            ;;
+        *)
+            case "$argc" in
+                0)
+                    MISSION="$1"
+                    ;;
+                1)
+                    OUTLOG="$1"
+                    ;;
+                *)
+                    echo Unexpected argument: $1
+                    usage
+                    exit 1
+            esac
+            argc=$((argc+1))
+            ;;
     esac
-    argc=$((argc+1))
-    ;;
-  esac
-  shift
+    shift
 done
 
 GDB=""
@@ -146,7 +146,7 @@ status_file=""
 function cleanup {
     echo "Cleaning up ..."
     [ -n "$status_file" ] && rm $status_file
-
+    
     bin_count=`ps --no-headers -C "$BIN" | wc -l`
 
     #kill nodes and VREP
@@ -157,24 +157,24 @@ function cleanup {
     killall gdb
 
     sleep 2
-
+    
     killall -9 gdb $BIN vrep vrep.sh
     
     #restore the VREP system/settings.dat
     cp $SDF.saved.mcda-vrep $SDF
-
+    
     echo $bin_count  $NODENUM $VREP_GRACEFUL_EXIT
     if [ "$bin_count" -eq $NODENUM ] && [ "$VREP_GRACEFUL_EXIT" -ge 1 ]; then
-      #collate output log
-      if [ -n "$OUTLOG" ]; then
-        $SCDIR/expect_merge.py $EXPECT_LOG_PERIOD $OUTDIR/expect*.log > $OUTLOG
-      fi
+        #collate output log
+        if [ -n "$OUTLOG" ]; then
+            $SCDIR/expect_merge.py $EXPECT_LOG_PERIOD $OUTDIR/expect*.log > $OUTLOG
+        fi
     else
-      echo "Something crashed; aborting logging"
-      if [ -n "$OUTLOG" ]; then
-        rm $OUTLOG
-      fi
-      exit 1
+        echo "Something crashed; aborting logging"
+        if [ -n "$OUTLOG" ]; then
+            rm $OUTLOG
+        fi
+        exit 1
     fi
     
     #all done
@@ -186,9 +186,9 @@ trap "cleanup" SIGINT SIGTERM SIGHUP
 INIT_PORT="19905"
 
 if [ "$REALTIME" -eq 1 ]; then
-  MAPFILE=$SCDIR/../../docs/tutorial/dart-${MAPNAME}-rt.ttt
+    MAPFILE=$SCDIR/../../docs/tutorial/dart-${MAPNAME}-rt.ttt
 else
-  MAPFILE=$SCDIR/../../docs/tutorial/dart-${MAPNAME}.ttt
+    MAPFILE=$SCDIR/../../docs/tutorial/dart-${MAPNAME}.ttt
 fi
 
 if [ ! -e "$MAPFILE" ]; then
@@ -219,16 +219,16 @@ DMPLC_FLAGS+="--DLeftX $LeftX --DRightX $RightX"
 [ -n "$OUTLOG" ] && DMPLC_FLAGS="$DMPLC_FLAGS -e"
 
 for file in `which dmplc` $DMPL $MISSION; do
-if [ $FORCEBUILD -eq 1 ] || [ $file -nt $CPP_FILE ]; then
-$GDB dmplc $DMPLC_FLAGS -o $CPP_FILE $DMPL
-break
-fi
+    if [ $FORCEBUILD -eq 1 ] || [ $file -nt $CPP_FILE ]; then
+        $GDB dmplc $DMPLC_FLAGS -o $CPP_FILE $DMPL
+        break
+    fi
 done
 if [ $CPP_FILE -nt ${BIN} ]; then
-CFLAGS="-g -Og -std=c++11 -I$DMPL_ROOT/src -I$VREP_ROOT/programming/remoteApi -I$ACE_ROOT "
-CFLAGS+="-I$MADARA_ROOT/include -I$GAMS_ROOT/src -I$DMPL_ROOT/include -Wno-deprecated-declarations"
-LIBS="$LIBS $MADARA_ROOT/libMADARA.so $ACE_ROOT/lib/libACE.so $GAMS_ROOT/lib/libGAMS.so -lpthread"
-g++ $CFLAGS -o $BIN $CPP_FILE $LIBS
+    CFLAGS="-g -Og -std=c++11 -I$DMPL_ROOT/src -I$VREP_ROOT/programming/remoteApi -I$ACE_ROOT "
+    CFLAGS+="-I$MADARA_ROOT/include -I$GAMS_ROOT/src -I$DMPL_ROOT/include -Wno-deprecated-declarations"
+    LIBS="$LIBS $MADARA_ROOT/libMADARA.so $ACE_ROOT/lib/libACE.so $GAMS_ROOT/lib/libGAMS.so -lpthread"
+    g++ $CFLAGS -o $BIN $CPP_FILE $LIBS
 fi
 
 [ "$BUILDONLY" -eq 1 ] && exit 0
@@ -269,12 +269,12 @@ status_file=`tempfile`
 
 function run_vrep()
 {
-  cd $VREP_ROOT
-  if [ "$HEADLESS" -eq 1 ]; then
-    xvfb-run --auto-servernum --server-num=1 -s "-screen 0 640x480x24" ./vrep.sh "-g$MISSION_TIME" "-g$1" -h -q "-b$DMPL_ROOT/src/vrep/timer.lua" $MAPFILE &> $OUTDIR/vrep.out
-  else
-    ./vrep.sh "-g$MISSION_TIME" "-g$1" -q "-b$DMPL_ROOT/src/vrep/timer.lua" $MAPFILE &> $OUTDIR/vrep.out
-  fi
+    cd $VREP_ROOT
+    if [ "$HEADLESS" -eq 1 ]; then
+        xvfb-run --auto-servernum --server-num=1 -s "-screen 0 640x480x24" ./vrep.sh "-g$MISSION_TIME" "-g$1" -h -q "-b$DMPL_ROOT/src/vrep/timer.lua" $MAPFILE &> $OUTDIR/vrep.out
+    else
+        ./vrep.sh "-g$MISSION_TIME" "-g$1" -q "-b$DMPL_ROOT/src/vrep/timer.lua" $MAPFILE &> $OUTDIR/vrep.out
+    fi
 }
 
 (run_vrep "$status_file" &)
@@ -284,19 +284,19 @@ sleep 1
 SAFETY_TIME=30
 START_TIME=`date +%s`
 while [ "`grep STARTED $status_file | wc -l`" -lt 1 ]; do
-  vrep_count=`ps --no-headers -C "vrep" | wc -l`
-  cur_time=`date +%s`
-  if [ $((START_TIME + SAFETY_TIME)) -lt "$cur_time" ]; then
-    echo Time limit exceeded\; crash assumed
-    cleanup
-    exit 1
-  fi
-  if [ "$vrep_count" -lt 1 ]; then
-    echo VREP crashed!
-    cleanup
-    exit 1
-  fi
-  sleep 0.2
+    vrep_count=`ps --no-headers -C "vrep" | wc -l`
+    cur_time=`date +%s`
+    if [ $((START_TIME + SAFETY_TIME)) -lt "$cur_time" ]; then
+        echo Time limit exceeded\; crash assumed
+        cleanup
+        exit 1
+    fi
+    if [ "$vrep_count" -lt 1 ]; then
+        echo VREP crashed!
+        cleanup
+        exit 1
+    fi
+    sleep 0.2
 done
 
 cat $status_file
@@ -307,13 +307,13 @@ mv $RAC.saved.mcda-vrep $RAC
 #start the nodes
 NUMCPU=$(grep -c ^processor /proc/cpuinfo)
 for x in `seq 1 $((NODENUM - 1))`; do
-  echo $x
-  args_var=ARGS_$x
-  cpu_id=$(expr $x % $NUMCPU)
-  args="$(eval echo \$$args_var)"
-  ELOG=""
-  [ -n "$OUTLOG" ] && ELOG="-e $OUTDIR/expect${0}.log"
-  taskset -c ${cpu_id} $GDB ./$BIN $ELOG --platform $PLATFORM --id $x $args &> $OUTDIR/node${x}.out &
+    echo $x
+    args_var=ARGS_$x
+    cpu_id=$(expr $x % $NUMCPU)
+    args="$(eval echo \$$args_var)"
+    ELOG=""
+    [ -n "$OUTLOG" ] && ELOG="-e $OUTDIR/expect${0}.log"
+    taskset -c ${cpu_id} $GDB ./$BIN $ELOG --platform $PLATFORM --id $x $args &> $OUTDIR/node${x}.out &
 done
 ELOG=""
 [ -n "$OUTLOG" ] && ELOG="-e $OUTDIR/expect0.log"
@@ -323,9 +323,9 @@ taskset -c 0 $GDB ./$BIN $ELOG --platform $PLATFORM --id 0 $ARGS_0 &> $OUTDIR/no
 printf "press Ctrl-C to terminate the simulation ..."
 
 if [ "$DEBUG" -eq 1 ]; then
-  sleep 5
+    sleep 5
 else
-  sleep 2
+    sleep 2
 fi
 
 [ "$MANUALSTART" -ne 1 ] && ( cd $SCDIR; ./startSim.py )
@@ -333,25 +333,25 @@ fi
 SAFETY_TIME=240
 START_TIME=`date +%s`
 while [ "`grep COMPLETE $status_file | wc -l`" -lt 1 ]; do
-  bin_count=`ps --no-headers -C "$BIN" | wc -l`
-  vrep_count=`ps --no-headers -C "vrep" | wc -l`
-  cur_time=`date +%s`
-  if [ $((START_TIME + SAFETY_TIME)) -lt "$cur_time" ]; then
-    echo Time limit exceeded\; crash assumed
-    cleanup
-    exit 1
-  fi
-  if [ "$bin_count" -ne $NODENUM ]; then
-    echo A controller crashed!
-    cleanup
-    exit 1
-  fi
-  if [ "$vrep_count" -lt 1 ]; then
-    echo VREP crashed!
-    cleanup
-    exit 1
-  fi
-  sleep 0.2
+    bin_count=`ps --no-headers -C "$BIN" | wc -l`
+    vrep_count=`ps --no-headers -C "vrep" | wc -l`
+    cur_time=`date +%s`
+    if [ $((START_TIME + SAFETY_TIME)) -lt "$cur_time" ]; then
+        echo Time limit exceeded\; crash assumed
+        cleanup
+        exit 1
+    fi
+    if [ "$bin_count" -ne $NODENUM ]; then
+        echo A controller crashed!
+        cleanup
+        exit 1
+    fi
+    if [ "$vrep_count" -lt 1 ]; then
+        echo VREP crashed!
+        cleanup
+        exit 1
+    fi
+    sleep 0.2
 done
 
 VREP_GRACEFUL_EXIT=1
