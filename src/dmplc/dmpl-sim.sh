@@ -236,6 +236,11 @@ if [ $CPP_FILE -nt ${BIN} ]; then
     CFLAGS+="-I$MADARA_ROOT/include -I$GAMS_ROOT/src -I$DMPL_ROOT/include -Wno-deprecated-declarations"
     LIBS="$LIBS $MADARA_ROOT/libMADARA.so $ACE_ROOT/lib/libACE.so $GAMS_ROOT/lib/libGAMS.so -lpthread"
     g++ $CFLAGS -o $BIN $CPP_FILE $LIBS
+
+    if [ "$?" != "0" ]; then
+        echo "ERROR: g++ failed on $CPP_FILE!!"
+        exit 0
+    fi
 fi
 
 [ "$BUILDONLY" -eq 1 ] && exit 0
