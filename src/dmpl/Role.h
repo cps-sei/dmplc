@@ -277,7 +277,7 @@ namespace dmpl
 
     ///return true if the argument is the name of a defined DMPL
     ///function of this role
-    bool isFunction(const std::string &fn)
+    bool hasFunction(const std::string &fn)
     {
       return funcs.find(fn) != funcs.end();
     }

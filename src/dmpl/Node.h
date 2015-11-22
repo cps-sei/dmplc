@@ -295,10 +295,11 @@ namespace dmpl
         throw std::runtime_error("ERROR: duplicate specificaion " + s->name);
     }
 
-    ///return true if the argument is the name of a defined DMPL function of this node
-    bool isFunction(const std::string &fn)
+    ///return true if the argument is the name of a defined DMPL
+    ///function of this node
+    bool hasFunction(const std::string &fn)
     {
-      return funcs.count(fn) > 0;
+      return funcs.find(fn) != funcs.end();
     }
 
     ///merge with another node

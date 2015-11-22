@@ -247,7 +247,7 @@ void dmpl::syncseqdbl::NodeTransformer::exitLval(dmpl::LvalExpr &expr)
   else if(inCall && prog.isInternalFunction(newName)) 
     newName += (std::string("_") + (fwd ? "fwd" : "bwd"));
   //handle function call -- change name if the function is defined in node
-  else if(inCall && node->isFunction(newName)) 
+  else if(inCall && node->hasFunction(newName)) 
     newName = (node->name + "__" + newName + "_" + nodeIdStr + "_" + (fwd ? "fwd" : "bwd"));
   else
   {
