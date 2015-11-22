@@ -218,12 +218,15 @@ DMPLC_FLAGS+="--DLeftX $LeftX --DRightX $RightX"
 [ "$DEBUG" -eq 1 ] && DMPLC_FLAGS="$DMPLC_FLAGS --debug"
 [ -n "$OUTLOG" ] && DMPLC_FLAGS="$DMPLC_FLAGS -e"
 
+#generate code with dmplc
 for file in `which dmplc` $DMPL $MISSION; do
     if [ $FORCEBUILD -eq 1 ] || [ $file -nt $CPP_FILE ]; then
         $GDB dmplc $DMPLC_FLAGS -o $CPP_FILE $DMPL
         break
     fi
 done
+
+#compile with g++
 if [ $CPP_FILE -nt ${BIN} ]; then
     CFLAGS="-g -Og -std=c++11 -I$DMPL_ROOT/src -I$VREP_ROOT/programming/remoteApi -I$ACE_ROOT "
     CFLAGS+="-I$MADARA_ROOT/include -I$GAMS_ROOT/src -I$DMPL_ROOT/include -Wno-deprecated-declarations"
