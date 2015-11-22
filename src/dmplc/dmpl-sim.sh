@@ -222,6 +222,10 @@ DMPLC_FLAGS+="--DLeftX $LeftX --DRightX $RightX"
 for file in `which dmplc` $DMPL $MISSION; do
     if [ $FORCEBUILD -eq 1 ] || [ $file -nt $CPP_FILE ]; then
         $GDB dmplc $DMPLC_FLAGS -o $CPP_FILE $DMPL
+        if [ "$?" != "0" ]; then
+            echo "ERROR: dmplc failed on $DMPL!!"
+            exit 0
+        fi
         break
     fi
 done
