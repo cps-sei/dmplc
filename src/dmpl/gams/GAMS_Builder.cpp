@@ -78,9 +78,7 @@ namespace
   /*******************************************************************/
   bool skip_func(const dmpl::Func & function)
   {
-    return (function->attrs.count("InitSim") == 0 && (function->isExtern ||
-      function->attrs.count("INIT") > 0 || function->attrs.count("SAFETY") > 0 ||
-      !function->usage_summary.anyNonExpect().any()));
+    return (function->attrs.count("InitSim") == 0 && function->isExtern);
   }
   
   /*******************************************************************/
