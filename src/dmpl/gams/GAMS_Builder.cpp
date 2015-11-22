@@ -966,10 +966,10 @@ dmpl::gams::GAMS_Builder::build_function_declarations_for_thread (const Func & t
                                                                   const Funcs & funcs)
 {
   //-- NULL thread. needed for functions that must be executed before
-  //-- thread creation. but don't declare thread functions.
+  //-- thread creation, e.g., initializing simulation.
   if(thread == NULL) {
     for (auto i : funcs)
-      if(!i.second->isThread()) build_function_declaration (thread, i.second);
+      if(i.second->getAttribute("InitSim",0)) build_function_declaration (thread, i.second);
     return;
   }
   
@@ -1312,11 +1312,11 @@ void
 dmpl::gams::GAMS_Builder::build_functions_for_thread (
   const Func& thread, const dmpl::Node & node, dmpl::Funcs & funcs)
 {
-  //-- if thread is NULL. need for functions that must be executed
-  //-- before thread creation. but don't build thread functions.
+  //-- NULL thread. needed for functions that must be executed before
+  //-- thread creation, e.g., initializing simulation.
   if(thread == NULL) {
     for(const auto &f : funcs)
-      if(!f.second->isThread()) build_function (thread, node, f.second);
+      if(f.second->getAttribute("InitSim",0)) build_function (thread, node, f.second);
     return;
   }
   
