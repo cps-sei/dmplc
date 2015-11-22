@@ -147,7 +147,7 @@ function cleanup {
     echo "Cleaning up ..."
     [ -n "$status_file" ] && rm $status_file
     
-    bin_count=`ps --no-headers -C "$BIN" | wc -l`
+    bin_count=$(ps --no-headers -C "$BIN" | wc -l)
 
     #kill nodes and VREP
     killall $BIN vrep vrep.sh
@@ -198,7 +198,7 @@ fi
 
 #compile tutorial 2
 
-MAPSIZE=`echo $MAPNAME | cut -f1 -d'-'`
+MAPSIZE=$(echo $MAPNAME | cut -f1 -d'-')
 
 if [ "$MAPSIZE" == "small" ]; then
     TopY=2.25
@@ -219,7 +219,7 @@ DMPLC_FLAGS+="--DLeftX $LeftX --DRightX $RightX"
 [ -n "$OUTLOG" ] && DMPLC_FLAGS="$DMPLC_FLAGS -e"
 
 #generate code with dmplc
-for file in `which dmplc` $DMPL $MISSION; do
+for file in $(which dmplc) $DMPL $MISSION; do
     if [ $FORCEBUILD -eq 1 ] || [ $file -nt $CPP_FILE ]; then
         $GDB dmplc $DMPLC_FLAGS -o $CPP_FILE $DMPL
         if [ "$?" != "0" ]; then
@@ -261,7 +261,7 @@ echo "portIndex1_debug                = false" >> $RAC
 echo "portIndex1_syncSimTrigger       = true" >> $RAC
 echo "" >> $RAC
 PORT=$INIT_PORT
-for i in `seq 2 $((NODENUM + 1))`; do 
+for i in $(seq 2 $((NODENUM + 1))); do 
     echo "portIndex${i}_port                 = $PORT" >> $RAC
     echo "portIndex${i}_debug                = false" >> $RAC
     echo "portIndex${i}_syncSimTrigger       = true" >> $RAC
@@ -277,7 +277,7 @@ cp $SDF $SDF.saved.mcda-vrep
 #start vrep
 echo "starting VREP .. output is in $OUTDIR/vrep.out ..."
 
-status_file=`tempfile`
+status_file=$(tempfile)
 
 function run_vrep()
 {
@@ -294,10 +294,10 @@ function run_vrep()
 sleep 1
 
 SAFETY_TIME=30
-START_TIME=`date +%s`
-while [ "`grep STARTED $status_file | wc -l`" -lt 1 ]; do
-    vrep_count=`ps --no-headers -C "vrep" | wc -l`
-    cur_time=`date +%s`
+START_TIME=$(date +%s)
+while [ "$(grep STARTED $status_file | wc -l)" -lt 1 ]; do
+    vrep_count=$(ps --no-headers -C "vrep" | wc -l)
+    cur_time=$(date +%s)
     if [ $((START_TIME + SAFETY_TIME)) -lt "$cur_time" ]; then
         echo Time limit exceeded\; crash assumed
         cleanup
@@ -318,7 +318,7 @@ mv $RAC.saved.mcda-vrep $RAC
 
 #start the nodes
 NUMCPU=$(grep -c ^processor /proc/cpuinfo)
-for x in `seq 1 $((NODENUM - 1))`; do
+for x in $(seq 1 $((NODENUM - 1))); do
     echo $x
     args_var=ARGS_$x
     cpu_id=$(expr $x % $NUMCPU)
@@ -343,11 +343,11 @@ fi
 [ "$MANUALSTART" -ne 1 ] && ( cd $SCDIR; ./startSim.py )
 
 SAFETY_TIME=240
-START_TIME=`date +%s`
-while [ "`grep COMPLETE $status_file | wc -l`" -lt 1 ]; do
-    bin_count=`ps --no-headers -C "$BIN" | wc -l`
-    vrep_count=`ps --no-headers -C "vrep" | wc -l`
-    cur_time=`date +%s`
+START_TIME=$(date +%s)
+while [ "$(grep COMPLETE $status_file | wc -l)" -lt 1 ]; do
+    bin_count=$(ps --no-headers -C "$BIN" | wc -l)
+    vrep_count=$(ps --no-headers -C "vrep" | wc -l)
+    cur_time=$(date +%s)
     if [ $((START_TIME + SAFETY_TIME)) -lt "$cur_time" ]; then
         echo Time limit exceeded\; crash assumed
         cleanup
