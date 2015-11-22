@@ -221,6 +221,7 @@ DMPLC_FLAGS+="--DLeftX $LeftX --DRightX $RightX"
 #generate code with dmplc
 for file in $(which dmplc) $DMPL $MISSION; do
     if [ $FORCEBUILD -eq 1 ] || [ $file -nt $CPP_FILE ]; then
+        echo "dmplc $DMPLC_FLAGS -o $CPP_FILE $DMPL"
         $GDB dmplc $DMPLC_FLAGS -o $CPP_FILE $DMPL
         if [ "$?" != "0" ]; then
             echo "ERROR: dmplc failed on $DMPL!!"
@@ -235,6 +236,7 @@ if [ $CPP_FILE -nt ${BIN} ]; then
     CFLAGS="-g -Og -std=c++11 -I$DMPL_ROOT/src -I$VREP_ROOT/programming/remoteApi -I$ACE_ROOT "
     CFLAGS+="-I$MADARA_ROOT/include -I$GAMS_ROOT/src -I$DMPL_ROOT/include -Wno-deprecated-declarations"
     LIBS="$LIBS $MADARA_ROOT/libMADARA.so $ACE_ROOT/lib/libACE.so $GAMS_ROOT/lib/libGAMS.so -lpthread"
+    echo "g++ $CFLAGS -o $BIN $CPP_FILE $LIBS"
     g++ $CFLAGS -o $BIN $CPP_FILE $LIBS
 
     if [ "$?" != "0" ]; then
