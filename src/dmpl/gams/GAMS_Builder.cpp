@@ -326,22 +326,34 @@ dmpl::gams::GAMS_Builder::build_common_global_variables ()
   //buffer_ << "containers::Integer_Array barrier;\n";
   buffer_ << "Reference<unsigned int> id(knowledge, \".id\");\n";
   buffer_ << "Reference<unsigned int>  num_processes(knowledge, \".num_processes\");\n";
-  Node &node = builder_.program.nodes.begin()->second;
-  BOOST_FOREACH(const Funcs::value_type &f, node->funcs)
-  {
-    if (!f.second->isThread()) continue;
+  buffer_ << "engine::Knowledge_Update_Settings private_update (true);\n";
 
-    const Attribute *attrBarSync = f.second->getAttribute("BarrierSync", 0);
-    if(attrBarSync)
-    {
-      buffer_ << "ArrayReference<unsigned int, ";
-      buffer_ << builder_.program.processes.size ();
-      buffer_ << "> mbarrier_" << f.second->getName();
-      buffer_ << "(knowledge, \"mbarrier_" << f.second->getName() << "\");\n";
+  //-- define barrier variables for all synchronous threads
+  build_comment("//-- barrier variables", "\n", "", 0);
+
+  //-- collect all synchronous threads
+  std::set<std::string> syncThreads;
+  for (const auto &n : builder_.program.nodes) {
+    for (const auto &thread : n.second->threads) {
+      if(thread->getAttribute("BarrierSync", 0) == NULL) continue;
+      syncThreads.insert(thread->name);
+    }
+    
+    for (const auto &r : n.second->roles) {
+      for (const auto &thread : r.second->threads) {
+        if(thread->getAttribute("BarrierSync", 0) == NULL) continue;
+        syncThreads.insert(thread->name);
+      }
     }
   }
 
-  buffer_ << "engine::Knowledge_Update_Settings private_update (true);\n";
+  //-- generate barrier variables
+  for(const std::string &st : syncThreads) {
+    buffer_ << "ArrayReference<unsigned int, ";
+    buffer_ << builder_.program.processes.size ();
+    buffer_ << "> mbarrier_" << st;
+    buffer_ << "(knowledge, \"mbarrier_" << st << "\");\n";
+  }
   buffer_ << "\n";
 
   build_comment("//-- number of participating processes", "", "", 0);
