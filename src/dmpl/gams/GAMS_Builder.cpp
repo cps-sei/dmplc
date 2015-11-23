@@ -341,7 +341,7 @@ dmpl::gams::GAMS_Builder::build_common_global_variables ()
     
     for (const auto &r : n.second->roles) {
       for (const auto &thread : r.second->threads) {
-        if(thread->getAttribute("BarrierSync", 0) == NULL) continue;
+        if(r.second->getAttribute(thread,"BarrierSync", 0) == NULL) continue;
         syncThreads.insert(thread->name);
       }
     }
