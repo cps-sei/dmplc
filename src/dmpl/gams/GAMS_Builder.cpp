@@ -1588,6 +1588,7 @@ dmpl::gams::GAMS_Builder::build_algo_declaration ()
 #endif
 
   buffer_ << "    const std::string &exec_func,\n";
+  buffer_ << "    const std::string &thread_name,\n";
   buffer_ << "    Madara::Knowledge_Engine::Knowledge_Base * knowledge = 0,\n";
   buffer_ << "    const std::string &platform_name = \"\",\n";
   buffer_ << "    variables::Sensors * sensors = 0,\n";
@@ -1819,10 +1820,11 @@ dmpl::gams::GAMS_Builder::build_algo_functions ()
 #endif
 
   buffer_ << "    const std::string &exec_func,\n";
+  buffer_ << "    const std::string &thread_name,\n";
   buffer_ << "    Madara::Knowledge_Engine::Knowledge_Base * knowledge,\n";
   buffer_ << "    const std::string &platform_name,\n";
   buffer_ << "    variables::Sensors * sensors,\n";
-  buffer_ << "    variables::Self * self) : phase(0), mbarrier(\"mbarrier_\" + exec_func),\n";
+  buffer_ << "    variables::Self * self) : phase(0), mbarrier(\"mbarrier_\" + thread_name),\n";
 
 #if USE_MZSRM==1
   if(schedType_ == MZSRM) {
@@ -2325,12 +2327,14 @@ void dmpl::gams::GAMS_Builder::build_algo_creation (const Node &node, const Role
         if (platformFunction == thread)
           buffer_ << "    algo = new SyncAlgo("
                   << period << ", " << priority << ", " 
-                  << criticality << ", " << zsinst << ", \"" << funcName(node, role, thread) 
+                  << criticality << ", " << zsinst << ", \"" << funcName(node, role, thread)
+                  << "\", \"" << thread->name 
                   << "\", &knowledge, platform_name);\n";
         else
           buffer_ << "    algo = new SyncAlgo("
                   << period << ", " << priority << ", " 
                   << criticality << ", " << zsinst << ", \"" << funcName(node, role, thread)
+                  << "\", \"" << thread->name 
                   << "\", &knowledge);\n";
       }
       else
@@ -2338,9 +2342,11 @@ void dmpl::gams::GAMS_Builder::build_algo_creation (const Node &node, const Role
         {
           if (platformFunction == thread)
             buffer_ << "    algo = new SyncAlgo(" << period << ", \"" << funcName(node, role, thread)
+                    << "\", \"" << thread->name 
                     << "\", &knowledge, platform_name);\n";
           else
             buffer_ << "    algo = new SyncAlgo(" << period << ", \"" << funcName(node, role, thread)
+                    << "\", \"" << thread->name 
                     << "\", &knowledge);\n";
         }
     }
