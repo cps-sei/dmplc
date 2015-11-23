@@ -1301,6 +1301,7 @@ dmpl::gams::GAMS_Builder::build_refresh_modify_global (const Node &node, const V
   }
   else
   {
+    throw std::runtime_error("ERROR: cannot modify non-global variable " + var->name + "!!");
     buffer_ << "  " << var->name << ".mark_modified()";
   }
 }
