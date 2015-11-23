@@ -1290,7 +1290,7 @@ dmpl::gams::GAMS_Builder::build_refresh_modify_global (const Node &node, const V
     
   if (var->scope == Variable::GLOBAL)
   {
-    buffer_ << "  " << nodeName(node) << "::" << var->name << "[id].mark_modified();\n";
+    buffer_ << "  " << var->name << "[id].mark_modified();\n";
   }
   else
   {
