@@ -198,7 +198,7 @@ namespace dmpl
       /**
        * Builds a function for refreshing modification flag on globals
        **/
-      void build_refresh_modify_globals (void);
+      void build_refresh_modify_globals (const Node &node, const Role &role, const Func &thread);
       
       /**
        * Builds a refresh statement for modification on a global

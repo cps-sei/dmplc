@@ -106,6 +106,22 @@ namespace
   }
 
   /*******************************************************************/
+  //-- return fully expanded remodify barriers function name
+  /*******************************************************************/
+  std::string remodifyBarriersName(const dmpl::Node &node, const dmpl::Role &role, const dmpl::Func & func)
+  {
+    return "node_" + node->name + "_role_" + role->name + "_" + func->name + "_REMODIFY_BARRIERS";
+  }
+
+  /*******************************************************************/
+  //-- return fully expanded remodify globals function name
+  /*******************************************************************/
+  std::string remodifyGlobalsName(const dmpl::Node &node, const dmpl::Role &role, const dmpl::Func & func)
+  {
+    return "node_" + node->name + "_role_" + role->name + "_" + func->name + "_REMODIFY_GLOBALS";
+  }
+
+  /*******************************************************************/
   //-- return type of a variable. promote char to short since MADARA
   //-- does not supprt char currently.
   /*******************************************************************/
@@ -1035,8 +1051,6 @@ dmpl::gams::GAMS_Builder::build_gams_functions ()
 void
 dmpl::gams::GAMS_Builder::build_global_functions (void)
 {
-  build_refresh_modify_globals ();
-
   build_comment("//-- Defining global functions", "\n", "\n", 0);
   Funcs & funcs = builder_.program.funcs;
   for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
@@ -1070,6 +1084,12 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
       build_comment("//-- Defining functions for role " + r.second->name, "\n", "\n", 0);
       open_namespace(roleName(n->second, r.second));
 
+      //-- build global and barrier modifiers for synchronous threads
+      for (Func thread : r.second->threads) {
+        if(r.second->getAttribute(thread,"BarrierSync", 0) == NULL) continue;
+        build_refresh_modify_globals(n->second, r.second, thread);
+      }
+      
       //-- build all functions for the role with NULL thread. needed
       //-- for functions that must be executed before thread creation.
       build_functions_for_thread(Func(), n->second, r.second->funcs);
@@ -1187,37 +1207,27 @@ dmpl::gams::GAMS_Builder::build_constructor_for_variable (Var &v, Node &node)
 //-- variables to force retransmit by MADARA.
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_refresh_modify_globals ()
+dmpl::gams::GAMS_Builder::build_refresh_modify_globals (const Node &node, const Role &role, const Func &thread)
 {
   build_comment("//-- Remodify barries variables to force MADARA retransmit", "\n", "", 0);
   buffer_ << "Madara::Knowledge_Record\n";
-  buffer_ << "REMODIFY_BARRIERS";
+  buffer_ << "REMODIFY_BARRIERS_" << thread->name;
   buffer_ << " (engine::Function_Arguments &,\n";
   buffer_ << "  engine::Variables & vars)\n";
   buffer_ << "{\n";
-  Node &node = builder_.program.nodes.begin()->second;
-  BOOST_FOREACH(Funcs::value_type &f, node->funcs)
-  {
-    if (!f.second->isThread())
-      continue;
-    const Attribute *attrBarSync = f.second->getAttribute("BarrierSync", 0);
-    if(attrBarSync)
-    {
-      buffer_ << "  mbarrier_" << f.second->getName() << "[id].mark_modified();\n";
-    }
-  }
+  buffer_ << "  mbarrier_" << thread->name << "[id].mark_modified();\n";
   buffer_ << "  return Integer (0);\n";
   buffer_ << "}\n";
 
   build_comment("//-- Remodify global shared variables to force MADARA retransmit", "\n", "", 0);
   buffer_ << "Madara::Knowledge_Record\n";
-  buffer_ << "REMODIFY_GLOBALS";
+  buffer_ << "REMODIFY_GLOBALS_" << thread->name;
   buffer_ << " (engine::Function_Arguments & args,\n";
   buffer_ << "  engine::Variables & vars)\n";
   buffer_ << "{\n";
   
   buffer_ << "  // Remodifying common global variables\n";
-  buffer_ << "  REMODIFY_BARRIERS(args, vars);\n";
+  buffer_ << "  REMODIFY_BARRIERS_" << thread->name << " (args, vars);\n";
   //buffer_ << "  barrier.set (*id, barrier[*id]);\n\n";
 
   Nodes & nodes = builder_.program.nodes;
@@ -2375,13 +2385,6 @@ void dmpl::gams::GAMS_Builder::build_algo_creation (const Node &node, const Role
 void
 dmpl::gams::GAMS_Builder::build_main_define_functions ()
 {
-  buffer_ << "  //-- Defining common functions\n";
-  buffer_ << "  knowledge.define_function (\"REMODIFY_BARRIERS\", ";
-  buffer_ << "REMODIFY_BARRIERS);\n";
-
-  buffer_ << "  knowledge.define_function (\"REMODIFY_GLOBALS\", ";
-  buffer_ << "REMODIFY_GLOBALS);\n\n";
-
   buffer_ << "  //-- Defining thread functions for MADARA\n";
   for (const auto &n : builder_.program.nodes)
     for (const auto &r : n.second->roles)
@@ -2399,6 +2402,20 @@ dmpl::gams::GAMS_Builder::build_main_define_function (const Node & node, const R
                                                       const Func & thread)
 {
   if (skip_func(thread)) return;
+
+  if(role->getAttribute(thread,"BarrierSync", 0) != NULL) {
+    //-- remodify barriers
+    buffer_ << "  knowledge.define_function (\"" << remodifyBarriersName(node, role, thread) << "\",\n";
+    buffer_ << "                              " << nodeName(node) << "::"
+            << roleName(node, role) << "::REMODIFY_BARRIERS_" << thread->name;
+    buffer_ << ");\n";
+    
+    //-- remodify globals
+    buffer_ << "  knowledge.define_function (\"" << remodifyGlobalsName(node, role, thread) << "\",\n";
+    buffer_ << "                              " << nodeName(node) << "::"
+            << roleName(node, role) << "::REMODIFY_GLOBALS_" << thread->name;
+    buffer_ << ");\n";
+  }
 
   buffer_ << "  knowledge.define_function (\"" << funcName(node, role, thread) << "\",\n";
   buffer_ << "                              " << nodeName(node) << "::"
