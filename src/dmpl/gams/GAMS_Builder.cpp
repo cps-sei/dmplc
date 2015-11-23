@@ -1863,8 +1863,8 @@ dmpl::gams::GAMS_Builder::build_algo_functions ()
   buffer_ << "  barrier_send_list [knowledge_->expand_statement (";
   buffer_ << "\"\" + mbarrier + \".{.id}\")] = true;\n\n";
   
-  buffer_ << "  barrier_string << \"REMODIFY_BARRIERS () ;> \";\n";
-  buffer_ << "  barrier_data_string << \"REMODIFY_GLOBALS () ;> \";\n";
+  buffer_ << "  barrier_string << _exec_func << \"_REMODIFY_BARRIERS () ;> \";\n";
+  buffer_ << "  barrier_data_string << _exec_func << \"_REMODIFY_GLOBALS () ;> \";\n";
   buffer_ << "  barrier_sync << \"\" + mbarrier + \".\";\n";
   buffer_ << "  barrier_sync << settings.id;\n";
   buffer_ << "  barrier_sync << \" = (\" + mbarrier + \".\";\n";
