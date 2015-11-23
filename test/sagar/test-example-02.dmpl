@@ -222,6 +222,10 @@ node uav
     }
   }
 
+  @BarrierSync;
+  thread COLLISION_AVOIDANCE2 {
+  }
+  
   role Leader {
     //-- leader-specific waypoint thread
     @Period(100000);
@@ -235,6 +239,15 @@ node uav
     //-- inherit the collision avoidance thread
     @Period(100000);
     thread COLLISION_AVOIDANCE;
+    
+    global char foo;
+    
+    //-- inherit the collision avoidance thread
+    @Period(100000);
+    @BarrierSync;
+    override thread COLLISION_AVOIDANCE2 {
+      foo = 10;
+    }
   }
 
   role Protector {
@@ -262,6 +275,10 @@ node uav
     //-- inherit the collision avoidance thread
     @Period(100000);
     thread COLLISION_AVOIDANCE;
+
+    //-- inherit the collision avoidance thread
+    @Period(100000);
+    thread COLLISION_AVOIDANCE2;
   }
 
   @InitSim;
