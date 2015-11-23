@@ -1231,18 +1231,10 @@ dmpl::gams::GAMS_Builder::build_refresh_modify_globals (const Node &node, const 
   buffer_ << "  REMODIFY_BARRIERS_" << thread->name << " (args, vars);\n";
   //buffer_ << "  barrier.set (*id, barrier[*id]);\n\n";
 
-  Nodes & nodes = builder_.program.nodes;
-  for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
-  {
-    buffer_ << "  // Remodifying program-specific global variables\n";
-    Vars & vars = n->second->globVars;
-    for (Vars::iterator i = vars.begin (); i != vars.end (); ++i)
-    {
-      Var & var = i->second;
-      build_refresh_modify_global (n->second, var);
-    }
-  }
-  
+  buffer_ << "  // Remodifying thread-specific global variables\n";
+  for(const Var &gv : thread->writesGlob)
+    build_refresh_modify_global (node, gv);
+    
   buffer_ << "  return Integer (0);\n";
   buffer_ << "}\n";
 }
