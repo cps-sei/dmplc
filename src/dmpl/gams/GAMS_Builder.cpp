@@ -1207,7 +1207,8 @@ dmpl::gams::GAMS_Builder::build_constructor_for_variable (Var &v, Node &node)
 //-- variables to force retransmit by MADARA.
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_refresh_modify_globals (const Node &node, const Role &role, const Func &thread)
+dmpl::gams::GAMS_Builder::build_refresh_modify_globals (const Node &node, const Role &role,
+                                                        const Func &thread)
 {
   build_comment("//-- Remodify barries variables to force MADARA retransmit", "\n", "", 0);
   buffer_ << "Madara::Knowledge_Record\n";
