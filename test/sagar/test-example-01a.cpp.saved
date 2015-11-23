@@ -169,8 +169,12 @@ std::string role_name ("none");
 /********************************************************************/
 Reference<unsigned int> id(knowledge, ".id");
 Reference<unsigned int>  num_processes(knowledge, ".num_processes");
-ArrayReference<unsigned int, 3> mbarrier_COLLISION_AVOIDANCE(knowledge, "mbarrier_COLLISION_AVOIDANCE");
 engine::Knowledge_Update_Settings private_update (true);
+
+/********************************************************************/
+//-- barrier variables
+/********************************************************************/
+ArrayReference<unsigned int, 3> mbarrier_COLLISION_AVOIDANCE(knowledge, "mbarrier_COLLISION_AVOIDANCE");
 
 /********************************************************************/
 //-- number of participating processes
@@ -571,31 +575,6 @@ thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variable
 #include "dmpl/PlatformGAMS.hpp"
 
 /********************************************************************/
-//-- Remodify barries variables to force MADARA retransmit
-/********************************************************************/
-Madara::Knowledge_Record
-REMODIFY_BARRIERS (engine::Function_Arguments &,
-  engine::Variables & vars)
-{
-  mbarrier_COLLISION_AVOIDANCE[id].mark_modified();
-  return Integer (0);
-}
-
-/********************************************************************/
-//-- Remodify global shared variables to force MADARA retransmit
-/********************************************************************/
-Madara::Knowledge_Record
-REMODIFY_GLOBALS (engine::Function_Arguments & args,
-  engine::Variables & vars)
-{
-  // Remodifying common global variables
-  REMODIFY_BARRIERS(args, vars);
-  // Remodifying program-specific global variables
-  node_uav::lock[id].mark_modified();
-  return Integer (0);
-}
-
-/********************************************************************/
 //-- Defining global functions
 /********************************************************************/
 
@@ -767,6 +746,31 @@ thread0_NEXT_XY (engine::Function_Arguments & args, engine::Variables & vars)
 // begin node_uav_role_Uav namespace
 namespace node_uav_role_Uav
 {
+
+/********************************************************************/
+//-- Remodify barries variables to force MADARA retransmit
+/********************************************************************/
+Madara::Knowledge_Record
+REMODIFY_BARRIERS_COLLISION_AVOIDANCE (engine::Function_Arguments &,
+  engine::Variables & vars)
+{
+  mbarrier_COLLISION_AVOIDANCE[id].mark_modified();
+  return Integer (0);
+}
+
+/********************************************************************/
+//-- Remodify global shared variables to force MADARA retransmit
+/********************************************************************/
+Madara::Knowledge_Record
+REMODIFY_GLOBALS_COLLISION_AVOIDANCE (engine::Function_Arguments & args,
+  engine::Variables & vars)
+{
+  // Remodifying common global variables
+  REMODIFY_BARRIERS_COLLISION_AVOIDANCE (args, vars);
+  // Remodifying thread-specific global variables
+  lock[id].mark_modified();
+  return Integer (0);
+}
 Madara::Knowledge_Record
 thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variables & vars)
 {
@@ -874,6 +878,7 @@ public:
   SyncAlgo (
     unsigned period,
     const std::string &exec_func,
+    const std::string &thread_name,
     Madara::Knowledge_Engine::Knowledge_Base * knowledge = 0,
     const std::string &platform_name = "",
     variables::Sensors * sensors = 0,
@@ -959,6 +964,7 @@ void Algo::start (threads::Threader &threader)
 
 int Algo::execute (void)
 {
+  std::cout << "Executing thread: " << _exec_func << " at period " << _period << " us" << std::endl;
   knowledge_->evaluate (_exec_func + "()");
   return 0;
 }
@@ -974,10 +980,11 @@ int Algo::execute (void)
 SyncAlgo::SyncAlgo (
     unsigned period,
     const std::string &exec_func,
+    const std::string &thread_name,
     Madara::Knowledge_Engine::Knowledge_Base * knowledge,
     const std::string &platform_name,
     variables::Sensors * sensors,
-    variables::Self * self) : phase(0), mbarrier("mbarrier_" + exec_func),
+    variables::Self * self) : phase(0), mbarrier("mbarrier_" + thread_name),
       Algo (period, exec_func, knowledge, platform_name, sensors, self)
 {
   wait_settings.max_wait_time = 0;
@@ -997,8 +1004,8 @@ void SyncAlgo::init (engine::Knowledge_Base & context)
 
   barrier_send_list [knowledge_->expand_statement ("" + mbarrier + ".{.id}")] = true;
 
-  barrier_string << "REMODIFY_BARRIERS () ;> ";
-  barrier_data_string << "REMODIFY_GLOBALS () ;> ";
+  barrier_string << _exec_func << "_REMODIFY_BARRIERS () ;> ";
+  barrier_data_string << _exec_func << "_REMODIFY_GLOBALS () ;> ";
   barrier_sync << "" + mbarrier + ".";
   barrier_sync << settings.id;
   barrier_sync << " = (" + mbarrier + ".";
@@ -1207,11 +1214,11 @@ int main (int argc, char ** argv)
   /******************************************************************/
   if(node_name == "uav" && role_name == "Uav") node_uav::node_uav_role_Uav::constructor ();
 
-  //-- Defining common functions
-  knowledge.define_function ("REMODIFY_BARRIERS", REMODIFY_BARRIERS);
-  knowledge.define_function ("REMODIFY_GLOBALS", REMODIFY_GLOBALS);
-
   //-- Defining thread functions for MADARA
+  knowledge.define_function ("node_uav_role_Uav_COLLISION_AVOIDANCE_REMODIFY_BARRIERS",
+                              node_uav::node_uav_role_Uav::REMODIFY_BARRIERS_COLLISION_AVOIDANCE);
+  knowledge.define_function ("node_uav_role_Uav_COLLISION_AVOIDANCE_REMODIFY_GLOBALS",
+                              node_uav::node_uav_role_Uav::REMODIFY_GLOBALS_COLLISION_AVOIDANCE);
   knowledge.define_function ("node_uav_role_Uav_COLLISION_AVOIDANCE",
                               node_uav::node_uav_role_Uav::thread0_COLLISION_AVOIDANCE);
 
@@ -1239,7 +1246,7 @@ int main (int argc, char ** argv)
   std::vector<Algo *> algos;
   Algo *algo;
   if(node_name == "uav" && role_name == "Uav") {
-    algo = new SyncAlgo(100000, "node_uav_role_Uav_COLLISION_AVOIDANCE", &knowledge, platform_name);
+    algo = new SyncAlgo(100000, "node_uav_role_Uav_COLLISION_AVOIDANCE", "COLLISION_AVOIDANCE", &knowledge, platform_name);
     algos.push_back(algo);
   }
 
