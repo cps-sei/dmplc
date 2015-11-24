@@ -2212,9 +2212,6 @@ dmpl::gams::GAMS_Builder::build_main_function ()
   buffer_ << "  //-- configure the knowledge base with the transport settings\n";
   buffer_ << "  knowledge.attach_transport(host, settings);\n\n";
 
-  build_constructors ();
-  build_main_define_functions ();
-
   // set the values for id and processes
   buffer_ << "  //-- Initialize commonly used local variables\n";  
   buffer_ << "  id = settings.id;\n";
@@ -2224,6 +2221,9 @@ dmpl::gams::GAMS_Builder::build_main_function ()
              "              << \"  valid range: [0, \" << processes - 1 << \"]\" << std::endl;\n";
   buffer_ << "    exit(1);\n";
   buffer_ << "  }\n";
+  
+  build_constructors ();
+  build_main_define_functions ();
 
   buffer_ << "\n  //-- Initializing platform\n";
   buffer_ << "  PlatformInitFns::iterator init_fn = platform_init_fns.find(platform_name);\n";
