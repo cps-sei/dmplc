@@ -90,6 +90,7 @@ test_double_parse ../../docs/tutorial/example-07/dmpl/example-07-2.dmpl uav:Tile
 
 #code generation tests
 test_code_gen test-example-01a.dmpl uav:Uav:3
+test_code_gen test-example-02.dmpl uav:Leader:1:uav:Protector:4
 
 #sequentialization tests
 test_seq test-example-01c.dmpl uav:Uav1:2:uav:Uav2:1
