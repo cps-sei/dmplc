@@ -67,6 +67,7 @@
 
 target GNU_CPP,WIN_CPP %%{
 #define GNU_WIN
+#include <iostream>
 #include <stdlib.h>
 #include <math.h>
 #include <sys/resource.h>
@@ -131,7 +132,7 @@ double wall_time()
   return tv.tv_sec + 0.000001 * tv.tv_usec;
 }
  
-int round = 0;
+int roundNum = 0;
 int xi,yi;
 
 void print_int(int i)
@@ -168,13 +169,13 @@ void LOG(double x)
 
 void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
 {
-  if(round == 0) {
+  if(roundNum == 0) {
     xi = x; yi = y;
   }
 
   for(int i = 0;i < 150;++i) printf("\n");
   
-  printf("round = %d : id = %d\n", ++round, id);
+  printf("round = %d : id = %d\n", ++roundNum, id);
   printf("_X = %d _Y = %d\n",_X,_Y);
   print_line(_X);
   for(int i = 0;i < _Y;++i) {
@@ -831,6 +832,7 @@ node uav
   }
   
   //-- only return the next waypoint X value given the current waypoint
+  @Helper;
   unsigned char NEXT_X (unsigned char curr_x, unsigned char curr_y)
   {
     if(curr_x < xt) return curr_x + 1;
@@ -839,6 +841,7 @@ node uav
   }
 
   //-- only return the next waypoint Y value given the current waypoint
+  @Helper;
   unsigned char NEXT_Y (unsigned char curr_x, unsigned char curr_y)
   {
     if(curr_y < yt) return curr_y + 1;
@@ -847,6 +850,7 @@ node uav
   }
 
   //-- manhattan distance between (x,y) and (xt,yt)
+  @Helper;
   unsigned char REMAINING_SEGMENTS()
   {
     unsigned char res;
@@ -876,10 +880,6 @@ node uav
   
   //-- the task that moves the node to its next waypoint while
   //-- avoiding collisions.
-  @Period(100000);
-  @Criticality(4);
-  @WCExecTimeNominal(15000);
-  @WCExecTimeOverload(30000);
   @BarrierSync;
   @PlatformController;
   thread COLLISION_AVOIDANCE
@@ -957,6 +957,7 @@ node uav
     
     //-- set the next 5 hazards based on the next 5 waypoints. XXX: this
     //-- should be fixed once compiler support is added.
+    @Helper;
     void SET_HAZARDS()
     {
       hazard1 = GET_HAZARD(next_wp_x[0], next_wp_y[0]);
@@ -970,12 +971,13 @@ node uav
     record hazards {
       local double hazard1, hazard2, hazard3, hazard4, hazard5;
     } = {
-      INIT_HAZARDS();
+      INIT_HAZARDS(X, Y, xt, yt);
       SET_HAZARDS();
     }
 
     //-- set the next 5 variances based on the next 5 waypoints. XXX:
     //-- this should be fixed once compiler support is added.
+    @Helper;
     void SET_VARIANCES()
     {
       variance1 = 0.1; variance2 = 0.1; variance3 = 0.1; variance4 = 0.1; variance5 = 0.1;
@@ -987,9 +989,9 @@ node uav
     } = {
       SET_VARIANCES();
     }
-    
 
-    local unsigned char input scenario;
+    //-- selected scenario. this should be made an input.
+    local unsigned char scenario = 2;
 
     //-- scenario selector
     record scenarios {
@@ -1074,7 +1076,7 @@ node uav
     @Criticality(2);
     @WCExecTimeNominal(10000);
     @WCExecTimeOverload(20000);
-    thread ADAPTATION_MANAGER
+    override thread ADAPTATION_MANAGER
     {
       bool last_formation;    
       unsigned char num_protectors_changing;
@@ -1134,7 +1136,7 @@ node uav
     @Criticality(3);
     @WCExecTimeNominal(10000);
     @WCExecTimeOverload(20000);
-    thread WAYPOINT
+    override thread WAYPOINT
     {
       waypointValid = 1;
       ly = yp;
@@ -1165,7 +1167,7 @@ node uav
     @Criticality(3);
     @WCExecTimeNominal(10000);
     @WCExecTimeOverload(20000);
-    thread WAYPOINT
+    override thread WAYPOINT
     {
       if(init@0 == 0) return;
       waypointValid = 1;

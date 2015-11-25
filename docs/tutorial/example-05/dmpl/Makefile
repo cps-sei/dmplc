@@ -4,7 +4,7 @@ LIBS=$(MADARA_ROOT)/libMADARA.so $(ACE_ROOT)/lib/libACE.so \
 	$(GAMS_ROOT)/lib/libGAMS.so -lpthread
 DMPL=example-05.dmpl
 SRC=$(patsubst %.dmpl,%.cpp,$(DMPL))
-EXE=$(patsubst %.dmpl,%,$(DMPL)) example-05-analyzer
+EXE=$(patsubst %.dmpl,%,$(DMPL)) #example-05-analyzer
 
 ifdef MZSRM_ROOT
 CFLAGS += -I$(MZSRM_ROOT)/zsrmm
@@ -33,10 +33,10 @@ $(AM_OBJS) :
 	make -C dartam/Debug
 
 example-05.cpp: example-05.dmpl example-05-AADL.dmpl $(DMPL_ROOT)/src/dmplc/dmplc
-	dmplc -e -n 5 --DX $(GRIDSIZE) --DY $(GRIDSIZE) --DTopY $(TopY) --DBottomY $(BottomY) --DLeftX $(LeftX) --DRightX $(RightX) -g -o $@ $< example-05-AADL.dmpl
+	dmplc --roles uav:Leader:1:uav:Protector:4 --DX $(GRIDSIZE) --DY $(GRIDSIZE) --DTopY $(TopY) --DBottomY $(BottomY) --DLeftX $(LeftX) --DRightX $(RightX) -g -o $@ $< example-05-AADL.dmpl
 
 example-05-analyzer.cpp: example-05.dmpl $(DMPL_ROOT)/src/dmplc/dmplc $(DMPL_ROOT)/include/dmpl/LogAnalyzer.hpp
-	dmplc -a -n 5 --DX $(GRIDSIZE) --DY $(GRIDSIZE) -o $@ $<
+	dmplc -a --roles uav:Leader:1:uav:Protector:4 --DX $(GRIDSIZE) --DY $(GRIDSIZE) -o $@ $<
 
 clean:
 	make -C dartam/Debug clean
