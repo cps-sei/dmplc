@@ -8,6 +8,7 @@ OUTDIR=outdir
 MAPNAME=small-hazard
 GRIDSIZE=10
 NODENUM=5
+ROLEDESC=uav:Leader:1:uav:Protector:4
 
 EXPECT_LOG_PERIOD=0.2
 
@@ -22,8 +23,8 @@ DROP_RATE=`awk -v "seed=$[(RANDOM & 32767) + 32768 * (RANDOM & 32767)]" 'BEGIN {
 
 echo $DROP_RATE
 
-ARGS_0="--var_x $IX --var_y $IY --var_xt $FX --var_yt $FY --drop-rate $DROP_RATE"
-ARGS_1="--var_x $((IX+2)) --var_y $((IY+2)) --drop-rate $DROP_RATE"
-ARGS_2="--var_x $((IX-2)) --var_y $((IY+2)) --drop-rate $DROP_RATE"
-ARGS_3="--var_x $((IX-2)) --var_y $((IY-2)) --drop-rate $DROP_RATE"
-ARGS_4="--var_x $((IX+2)) --var_y $((IY-2)) --drop-rate $DROP_RATE"
+ARGS_0="--node uav --role Leader --var_x $IX --var_y $IY --var_xt $FX --var_yt $FY --drop-rate $DROP_RATE"
+ARGS_1="--node uav --role Protector --var_x $((IX+2)) --var_y $((IY+2)) --drop-rate $DROP_RATE"
+ARGS_2="--node uav --role Protector --var_x $((IX-2)) --var_y $((IY+2)) --drop-rate $DROP_RATE"
+ARGS_3="--node uav --role Protector --var_x $((IX-2)) --var_y $((IY-2)) --drop-rate $DROP_RATE"
+ARGS_4="--node uav --role Protector --var_x $((IX+2)) --var_y $((IY-2)) --drop-rate $DROP_RATE"
