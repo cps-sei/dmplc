@@ -318,6 +318,9 @@ cat $status_file
 #restore old VREP remoteApiConnections.txt file
 mv $RAC.saved.mcda-vrep $RAC
 
+#map from node pids to command lines
+declare -A pid2cmd
+
 #start the nodes
 NUMCPU=$(grep -c ^processor /proc/cpuinfo)
 for x in $(seq 1 $((NODENUM - 1))); do
@@ -327,12 +330,20 @@ for x in $(seq 1 $((NODENUM - 1))); do
     args="$(eval echo \$$args_var)"
     ELOG=""
     [ -n "$OUTLOG" ] && ELOG="-e $OUTDIR/expect${0}.log"
-    taskset -c ${cpu_id} $GDB ./$BIN $ELOG --platform $PLATFORM --id $x $args &> $OUTDIR/node${x}.out &
+    cmd="$GDB ./$BIN $ELOG --platform $PLATFORM --id $x $args"
+    taskset -c ${cpu_id} $cmd &> $OUTDIR/node${x}.out &
+    pid=$!
+    echo "started pid=$pid : cmd=$cmd"
+    pid2cmd[$pid]="$cmd"
 done
 ELOG=""
 [ -n "$OUTLOG" ] && ELOG="-e $OUTDIR/expect0.log"
 #gdb --args $GDB ./$BIN $ELOG --platform $PLATFORM --id 0 $ARGS_0 # &> $OUTDIR/node0.out &
-taskset -c 0 $GDB ./$BIN $ELOG --platform $PLATFORM --id 0 $ARGS_0 &> $OUTDIR/node0.out &
+cmd="$GDB ./$BIN $ELOG --platform $PLATFORM --id 0 $ARGS_0"
+taskset -c 0 $cmd &> $OUTDIR/node0.out &
+pid=$!
+echo "started pid=$pid : cmd=$cmd" 
+pid2cmd[$pid]="$cmd"
 
 printf "press Ctrl-C to terminate the simulation ..."
 
@@ -350,16 +361,27 @@ while [ "$(grep COMPLETE $status_file | wc -l)" -lt 1 ]; do
     bin_count=$(ps --no-headers -C "$BIN" | wc -l)
     vrep_count=$(ps --no-headers -C "vrep" | wc -l)
     cur_time=$(date +%s)
+
+    #check for timeout
     if [ $((START_TIME + SAFETY_TIME)) -lt "$cur_time" ]; then
         echo Time limit exceeded\; crash assumed
         cleanup
         exit 1
     fi
-    if [ "$bin_count" -ne $NODENUM ]; then
-        echo A controller crashed!
-        cleanup
-        exit 1
-    fi
+
+    #check if all nodes are alive
+    for k in "${!pid2cmd[@]}"
+    do
+        node_alive=$(ps --no-headers ax | awk '{print $1}' | grep "${k}$" | wc -l)
+        if [ "$node_alive" == "0" ]; then
+            echo A controller crashed!
+            echo "pid = $k : cmd = ${pid2cmd[$k]}"
+            cleanup
+            exit 1
+        fi
+    done
+
+    #check if VREP is alive
     if [ "$vrep_count" -lt 1 ]; then
         echo VREP crashed!
         cleanup
