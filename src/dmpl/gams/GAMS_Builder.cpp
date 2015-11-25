@@ -2401,8 +2401,6 @@ void
 dmpl::gams::GAMS_Builder::build_main_define_function (const Node & node, const Role &role,
                                                       const Func & thread)
 {
-  if (skip_func(thread)) return;
-
   if(role->getAttribute(thread,"BarrierSync", 0) != NULL) {
     //-- remodify barriers
     buffer_ << "  knowledge.define_function (\"" << remodifyBarriersName(node, role, thread) << "\",\n";
