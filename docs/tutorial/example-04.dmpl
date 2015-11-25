@@ -139,7 +139,7 @@ extern void GRID_INIT(int XX,int YY,double leftX,double rightX,double topY,doubl
 extern void GRID_PLACE(unsigned char x,unsigned char y, double z);
 extern int GRID_MOVE(unsigned char xp,unsigned char yp, double z);
 extern int my_sleep(int seconds);
-extern void print_state(int XX,int YY,int my_id, int x, int y, int xf, int yf);
+extern void print_state(int _X,int _Y,int _id, int x, int y, int xf, int yf, int xp, int yp, int d, int s);
 extern void print_int(int i);
 
 node uav
