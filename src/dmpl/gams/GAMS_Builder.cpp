@@ -1116,7 +1116,8 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
       //-- records
       for(auto &rec : r.second->allRecordsInScope()) {
         if(rec->initFunc != NULL && !rec->initFunc->body.empty()) {
-          buffer_ << "void initialize_" << rec->name << " ()\n{\n";        
+          buffer_ << "void initialize_" << rec->name << " ()\n{\n";
+          buffer_ << "  engine::Variables vars;\n";
           print_vars(buffer_, rec->initFunc->temps, false);
         
           //-- transform statements
@@ -1185,6 +1186,7 @@ void
 dmpl::gams::GAMS_Builder::build_constructor_for_variable (Var &v, Node &node)
 {
   buffer_ << (v->isInput ? "int check_init_" : "void initialize_") << v->name << " ()\n{\n";
+  buffer_ << "  engine::Variables vars;\n";
   
   //-- bind initial value for inputs
   if(v->isInput) build_program_variable_assignment(v);
