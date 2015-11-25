@@ -773,15 +773,18 @@ Madara::Knowledge_Record
 thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variables & vars)
 {
   //-- Pull all referenced locals/globals
-  thread0_x.pull();
-  thread0_y.pull();
-  thread0_xt.pull();
-  thread0_yt.pull();
-  thread0_state.pull();
-  thread0_waypointValid.pull();
-  thread0_xp.pull();
-  thread0_yp.pull();
-  thread0_lock.pull();
+  {
+    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread0_x.pull();
+    thread0_y.pull();
+    thread0_xt.pull();
+    thread0_yt.pull();
+    thread0_state.pull();
+    thread0_waypointValid.pull();
+    thread0_xp.pull();
+    thread0_yp.pull();
+    thread0_lock.pull();
+  }
 
   //-- Declare local (parameter and temporary) variables
 
@@ -849,15 +852,18 @@ thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variable
   }
 
   //-- Push all referenced locals/globals
-  thread0_x.push();
-  thread0_y.push();
-  thread0_xt.push();
-  thread0_yt.push();
-  thread0_state.push();
-  thread0_waypointValid.push();
-  thread0_xp.push();
-  thread0_yp.push();
-  thread0_lock[id].push();
+  {
+    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread0_x.push();
+    thread0_y.push();
+    thread0_xt.push();
+    thread0_yt.push();
+    thread0_state.push();
+    thread0_waypointValid.push();
+    thread0_xp.push();
+    thread0_yp.push();
+    thread0_lock[id].push();
+  }
 
   //-- Insert return statement, in case user program did not
   return Integer(0);
@@ -914,6 +920,9 @@ Madara::Knowledge_Record
 thread1_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args, engine::Variables & vars)
 {
   //-- Pull all referenced locals/globals
+  {
+    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+  }
 
   //-- Declare local (parameter and temporary) variables
 
@@ -921,6 +930,9 @@ thread1_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args, engine::Variabl
   //-- Begin function body
 
   //-- Push all referenced locals/globals
+  {
+    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+  }
 
   //-- Insert return statement, in case user program did not
   return Integer(0);
@@ -997,7 +1009,10 @@ Madara::Knowledge_Record
 thread1_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args, engine::Variables & vars)
 {
   //-- Pull all referenced locals/globals
-  thread1_foo.pull();
+  {
+    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread1_foo.pull();
+  }
 
   //-- Declare local (parameter and temporary) variables
 
@@ -1006,7 +1021,10 @@ thread1_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args, engine::Variabl
   thread1_foo[id] = Integer (10);
 
   //-- Push all referenced locals/globals
-  thread1_foo[id].push();
+  {
+    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread1_foo[id].push();
+  }
 
   //-- Insert return statement, in case user program did not
   return Integer(0);
@@ -1017,12 +1035,15 @@ Madara::Knowledge_Record
 thread2_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars)
 {
   //-- Pull all referenced locals/globals
-  thread2_waypointValid.pull();
-  thread2_ly.pull();
-  thread2_yp.pull();
-  thread2_lx.pull();
-  thread2_xp.pull();
-  thread2_init.pull();
+  {
+    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread2_waypointValid.pull();
+    thread2_ly.pull();
+    thread2_yp.pull();
+    thread2_lx.pull();
+    thread2_xp.pull();
+    thread2_init.pull();
+  }
 
   //-- Declare local (parameter and temporary) variables
 
@@ -1034,12 +1055,15 @@ thread2_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars)
   thread2_init[id] = Integer (1);
 
   //-- Push all referenced locals/globals
-  thread2_waypointValid.push();
-  thread2_ly[id].push();
-  thread2_yp.push();
-  thread2_lx[id].push();
-  thread2_xp.push();
-  thread2_init[id].push();
+  {
+    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread2_waypointValid.push();
+    thread2_ly[id].push();
+    thread2_yp.push();
+    thread2_lx[id].push();
+    thread2_xp.push();
+    thread2_init[id].push();
+  }
 
   //-- Insert return statement, in case user program did not
   return Integer(0);
@@ -1211,12 +1235,15 @@ Madara::Knowledge_Record
 thread3_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars)
 {
   //-- Pull all referenced locals/globals
-  thread3_init.pull();
-  thread3_waypointValid.pull();
-  thread3_xt.pull();
-  thread3_lx.pull();
-  thread3_yt.pull();
-  thread3_ly.pull();
+  {
+    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread3_init.pull();
+    thread3_waypointValid.pull();
+    thread3_xt.pull();
+    thread3_lx.pull();
+    thread3_yt.pull();
+    thread3_ly.pull();
+  }
 
   //-- Declare local (parameter and temporary) variables
 
@@ -1258,12 +1285,15 @@ thread3_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars)
   }
 
   //-- Push all referenced locals/globals
-  thread3_init[id].push();
-  thread3_waypointValid.push();
-  thread3_xt.push();
-  thread3_lx[id].push();
-  thread3_yt.push();
-  thread3_ly[id].push();
+  {
+    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread3_init[id].push();
+    thread3_waypointValid.push();
+    thread3_xt.push();
+    thread3_lx[id].push();
+    thread3_yt.push();
+    thread3_ly[id].push();
+  }
 
   //-- Insert return statement, in case user program did not
   return Integer(0);
