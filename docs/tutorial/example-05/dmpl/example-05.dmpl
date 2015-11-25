@@ -1159,8 +1159,6 @@ node uav
     //-- stuff to do once the next waypoint is reached
     override void REACHED_NEXT_XY()
     {
-      lock[x][y] = 0; 
-      x = xp; y = yp;
       //-- if i am not the leader and a formation change was
       //-- happening, and i have reached the end-point, then formation
       //-- change is complete.
