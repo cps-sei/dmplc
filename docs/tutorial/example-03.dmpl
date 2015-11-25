@@ -158,9 +158,9 @@ node uav
   local bool waypointValid = 0; //xt, yt are valid
 
   bool NEXT_XY () {
-    if(!waypointValid)
-      return 1;
+    if(!waypointValid) return 1;
     if(xt < 0 || xt >= X || yt < 0 || yt >= Y) return 1;
+
     xp = x; yp = y;
     if(x < xt) xp = x + 1;
     else if(x > xt) xp = x - 1;
