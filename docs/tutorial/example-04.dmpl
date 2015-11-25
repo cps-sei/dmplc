@@ -149,7 +149,7 @@ node uav (id)
 {
   //shared variables -- visible across nodes. 
   //must be accessed via R() and W()
-  global bool lock [X][Y];
+  global unsigned char lock [X][Y];
   global unsigned char lx,ly; //leader's destination coordinates
   global bool init; //node is initialized
 
