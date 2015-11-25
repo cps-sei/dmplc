@@ -1026,8 +1026,7 @@ dmpl::gams::GAMS_Builder::build_function_declarations_for_thread (const Func & t
 void
 dmpl::gams::GAMS_Builder::build_function_declaration (const Func & thread, const Func & function)
 {
-  if (skip_func(function))
-    return;
+  if (skip_func(function)) return;
 
   buffer_ << "Madara::Knowledge_Record\n";
   if(thread) buffer_ << "thread" << thread->threadID << "_";
@@ -1357,8 +1356,7 @@ void
 dmpl::gams::GAMS_Builder::build_function (
   const Func& thread, const dmpl::Node & node, const dmpl::Func & function)
 {
-  if (skip_func(function))
-    return;
+  if (skip_func(function)) return;
 
   BOOST_FOREACH (Attributes::value_type & attr, function->attrs)
   {
