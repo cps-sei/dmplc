@@ -1707,6 +1707,14 @@ int main (int argc, char ** argv)
   //-- configure the knowledge base with the transport settings
   knowledge.attach_transport(host, settings);
 
+  //-- Initialize commonly used local variables
+  id = settings.id;
+  num_processes = processes;
+  if(id < 0 || id >= processes) {
+    std::cerr << "ERROR: Invalid node id: " << settings.id 
+              << "  valid range: [0, " << processes - 1 << "]" << std::endl;
+    exit(1);
+  }
 
   /******************************************************************/
   //-- Invoking constructors
@@ -1744,14 +1752,6 @@ int main (int argc, char ** argv)
   knowledge.define_function ("node_uav_role_Protector_WAYPOINT",
                               node_uav::node_uav_role_Protector::thread3_WAYPOINT);
 
-  //-- Initialize commonly used local variables
-  id = settings.id;
-  num_processes = processes;
-  if(id < 0 || id >= processes) {
-    std::cerr << "ERROR: Invalid node id: " << settings.id 
-              << "  valid range: [0, " << processes - 1 << "]" << std::endl;
-    exit(1);
-  }
 
   //-- Initializing platform
   PlatformInitFns::iterator init_fn = platform_init_fns.find(platform_name);
