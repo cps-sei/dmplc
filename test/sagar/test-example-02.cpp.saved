@@ -1050,56 +1050,69 @@ thread2_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars)
 /********************************************************************/
 void initialize_foo ()
 {
+  engine::Variables vars;
 }
 void initialize_init ()
 {
+  engine::Variables vars;
   init[id] = Integer (0);
 }
 void initialize_lock ()
 {
+  engine::Variables vars;
   lock[id][x][y] = Integer (1);
 }
 void initialize_lx ()
 {
+  engine::Variables vars;
   lx[id] = Integer (0);
 }
 void initialize_ly ()
 {
+  engine::Variables vars;
   ly[id] = Integer (0);
 }
 void initialize_state ()
 {
+  engine::Variables vars;
   state = NEXT;
 }
 void initialize_waypointValid ()
 {
+  engine::Variables vars;
   waypointValid = Integer (0);
 }
 int check_init_x ()
 {
+  engine::Variables vars;
   x = var_init_x;
   return (Integer(((Integer (0) <= x) && (x < X))));
 }
 void initialize_xp ()
 {
+  engine::Variables vars;
   xp = x;
 }
 int check_init_xt ()
 {
+  engine::Variables vars;
   xt = var_init_xt;
   return (Integer(((Integer (0) <= xt) && (xt < X))));
 }
 int check_init_y ()
 {
+  engine::Variables vars;
   y = var_init_y;
   return (Integer(((Integer (0) <= y) && (y < Y))));
 }
 void initialize_yp ()
 {
+  engine::Variables vars;
   yp = y;
 }
 int check_init_yt ()
 {
+  engine::Variables vars;
   yt = var_init_yt;
   return (Integer(((Integer (0) <= yt) && (yt < Y))));
 }
@@ -1261,53 +1274,65 @@ thread3_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars)
 /********************************************************************/
 void initialize_init ()
 {
+  engine::Variables vars;
   init[id] = Integer (0);
 }
 void initialize_lock ()
 {
+  engine::Variables vars;
   lock[id][x][y] = Integer (1);
 }
 void initialize_lx ()
 {
+  engine::Variables vars;
   lx[id] = Integer (0);
 }
 void initialize_ly ()
 {
+  engine::Variables vars;
   ly[id] = Integer (0);
 }
 void initialize_state ()
 {
+  engine::Variables vars;
   state = NEXT;
 }
 void initialize_waypointValid ()
 {
+  engine::Variables vars;
   waypointValid = Integer (0);
 }
 int check_init_x ()
 {
+  engine::Variables vars;
   x = var_init_x;
   return (Integer(((Integer (0) <= x) && (x < X))));
 }
 void initialize_xp ()
 {
+  engine::Variables vars;
   xp = x;
 }
 int check_init_xt ()
 {
+  engine::Variables vars;
   xt = var_init_xt;
   return (Integer(((Integer (0) <= xt) && (xt < X))));
 }
 int check_init_y ()
 {
+  engine::Variables vars;
   y = var_init_y;
   return (Integer(((Integer (0) <= y) && (y < Y))));
 }
 void initialize_yp ()
 {
+  engine::Variables vars;
   yp = y;
 }
 int check_init_yt ()
 {
+  engine::Variables vars;
   yt = var_init_yt;
   return (Integer(((Integer (0) <= yt) && (yt < Y))));
 }
