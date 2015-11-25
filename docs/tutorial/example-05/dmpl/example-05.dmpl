@@ -167,7 +167,7 @@ void LOG(double x)
   std::cerr << "LOG: " << x << std::endl;
 }
 
-void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
+void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf,int _st, int wpv)
 {
   if(roundNum == 0) {
     xi = x; yi = y;
@@ -175,7 +175,9 @@ void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
 
   for(int i = 0;i < 150;++i) printf("\n");
   
+  printf("state = %d : wpv = %d\n", _st, wpv);
   printf("round = %d : id = %d\n", ++roundNum, id);
+  printf("xt = %d yt = %d\n",xf,yf);
   printf("_X = %d _Y = %d\n",_X,_Y);
   print_line(_X);
   for(int i = 0;i < _Y;++i) {
@@ -884,13 +886,13 @@ node uav
   @PlatformController;
   thread COLLISION_AVOIDANCE
   {
-    print_state(X,Y,id,x,y,xt,yt);
     //my_sleep(1);
     if(wall_time() < delay_until)
     {
       return;
     }
 
+    print_state(X,Y,id,x,y,xt,yt,state,waypointValid);
     if(state == NEXT) {
       //-- if reached destination, nothing to do
       if(x == xt && y == yt) return;
