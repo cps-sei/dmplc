@@ -815,9 +815,9 @@ node uav
   //-- return the next waypoint value
   bool NEXT_XY ()
   {
-    if(!waypointValid)
-      return 1;
+    if(!waypointValid) return 1;
     if(xt < 0 || xt >= X || yt < 0 || yt >= Y) return 1;
+
     //-- set next coordinates
     xp = x; yp = y;
     if(xp < xt) xp = xp + 1;
