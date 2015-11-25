@@ -4,7 +4,7 @@ DMPL="example-02.dmpl example-02-AADL.dmpl"
 BIN=example-02
 
 OUTDIR=outdir
-MAPNAME=large
+MAPNAME=small
 GRIDSIZE=10
 NODENUM=5
 ROLEDESC=uav:Leader:1:uav:Protector:4
