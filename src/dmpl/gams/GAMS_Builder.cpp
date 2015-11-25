@@ -1309,6 +1309,8 @@ void
 dmpl::gams::GAMS_Builder::build_push_pull(const Func &thread, bool push)
 {
   buffer_ << "  //-- " << (push?"Push":"Pull") << " all referenced locals/globals\n";
+  buffer_ << "  {\n";
+  buffer_ << "    Madara::Knowledge_Engine::Context_Guard guard(knowledge);\n";
   for(const SymbolUse &use : thread->allUsedSymbols)
   {
     Var var = use.sym->asVar();
@@ -1317,16 +1319,17 @@ dmpl::gams::GAMS_Builder::build_push_pull(const Func &thread, bool push)
       switch (var->scope)
       {
       case Variable::LOCAL:
-        buffer_ << "  thread" << thread->threadID << "_"
+        buffer_ << "    thread" << thread->threadID << "_"
                 << var->getName() << (push?".push();":".pull();") << std::endl;
         break;
       case Variable::GLOBAL:
-        buffer_ << "  thread" << thread->threadID << "_"
+        buffer_ << "    thread" << thread->threadID << "_"
                 << var->getName() << (push?"[id].push();":".pull();") << std::endl;
         break;
       }
     }
   }
+  buffer_ << "  }\n";
 }
 
 /*********************************************************************/
