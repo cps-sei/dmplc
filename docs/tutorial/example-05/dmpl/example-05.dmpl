@@ -192,6 +192,13 @@ void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf,int _st, int
     print_line(_X);
   }
 }
+
+void print_waypoint(int _init, int _lx, int _ly)
+{
+  printf("init = %d, lx = %d, ly = %d\n", _init, _lx, _ly);
+}
+
+ 
 %%}
 
 //number of X and Y coordinates
@@ -219,7 +226,8 @@ extern int GRID_MOVE(unsigned char xp,unsigned char yp, double z);
 extern int my_sleep(int seconds);
 extern void INIT_HAZARDS(int XX, int YY, int tx, int ty);
 extern double GET_HAZARD(int x, int y);
-extern void print_state(int XX,int YY,int my_id, int x, int y, int xf, int yf);
+extern void print_state(int XX,int YY,int my_id, int x, int y, int xf, int yf, int _st, int wpv);
+extern void print_waypoint(int _init, int _lx, int _ly);
 extern void print_int(int i);
 extern void print_labeled_int(int i);
 extern void print_cover(double d);
@@ -1187,7 +1195,7 @@ node uav
           yt = ly@0 - 2;
         } else if(id == 4) {
           xt = lx@0 + 2;
-          yt = ly@0 - 2;
+      print_waypoint(init@0, lx@0, ly@0);
         }
         return;
       }
