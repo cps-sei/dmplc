@@ -1201,6 +1201,9 @@ dmpl::gams::GAMS_Builder::build_constructor_for_variable (Var &v, Node &node)
     for (const Stmt & statement : v->initFunc->body)
       visitor.visit (statement);
   }
+  //-- if no constructor was defined and this is an input variable, return 1
+  else if(v->isInput) buffer_ << "  return 1;\n";
+  
   buffer_ << "}\n";
 }
 
