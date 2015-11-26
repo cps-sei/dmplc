@@ -2032,6 +2032,7 @@ dmpl::gams::GAMS_Builder::build_algo_functions ()
 
   buffer_ << "int SyncAlgo::execute (void)\n";
   buffer_ << "{\n";
+  buffer_ << "  std::cout << \"Executing thread: \" << _exec_func << \" at period \" << _period << \" us\" << std::endl;\n";
   buffer_ << "  knowledge_->evaluate (round_logic, wait_settings);\n";
   buffer_ << "  return 0;\n";
   buffer_ << "}\n";
