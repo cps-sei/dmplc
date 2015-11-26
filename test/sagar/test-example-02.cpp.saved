@@ -1682,6 +1682,7 @@ int SyncAlgo::plan (void)
 
 int SyncAlgo::execute (void)
 {
+  std::cout << "Executing thread: " << _exec_func << " at period " << _period << " us" << std::endl;
   knowledge_->evaluate (round_logic, wait_settings);
   return 0;
 }
