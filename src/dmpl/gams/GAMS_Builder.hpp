@@ -162,7 +162,8 @@ namespace dmpl
        * Builds variable value parsing
        * @return help printout for variable
        **/
-      std::string build_parse_args (const Node &node, const Var& var);
+      std::string build_parse_args (const std::string &var,
+                                    const std::list<std::pair<Node,Role>> &roles);
 
       /**
        * Builds all function declarations to prevent undefined references

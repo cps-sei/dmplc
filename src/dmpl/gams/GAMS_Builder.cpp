@@ -812,20 +812,35 @@ dmpl::gams::GAMS_Builder::build_parse_args ()
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
 
-  //-- generate code for initializing DMPL variable from the command line
-  Nodes & nodes = builder_.program.nodes;
-  for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
-  {
-    //-- collect all input variables
-    VarSet inputVars;
-    for (auto & var : n->second->allVars()) if(var->isInput) inputVars.insert(var);
-    for (auto & r : n->second->roles) {
-      for (auto & var : r.second->allVars()) if(var->isInput) inputVars.insert(var);
-    }
+  /*******************************************************************/
+  //-- generate code for initializing DMPL variables from the command
+  //-- line.
+  /*******************************************************************/
 
-    buffer_ << "\n    //-- Providing init for input variables of node " << n->second->name << "\n";
-    for (auto & var : inputVars)
-      variable_help << build_parse_args (n->second, var);
+  //-- create a map from variables to nodes and roles for which they are inputs
+  std::map<std::string,std::list<std::pair<Node,Role>>> inputVars;
+  for(const auto &n : builder_.program.nodes) {
+    //-- process each role
+    for (auto & r : n.second->roles) {
+      //-- a variable is an input if 
+      for (auto & var : r.second->allVarsInScope())
+        if(var->isInput) {
+          //-- sanity check : array input variables disallowed
+          if (var->type->dims.size () != 0)
+            throw std::runtime_error("ERROR: illegal array input variable " + var->name +
+                                     " in role " + r.second->name +
+                                     " in node " + n.second->name + "!!");
+
+          //-- insert into list
+          inputVars[var->name].push_back(std::make_pair(n.second, r.second));
+        }
+    }
+  }
+
+  //-- now create parser for each variable
+  for(const auto &i : inputVars) {
+    buffer_ << "\n    //-- Providing init for input variable " << i.first << "\n";
+    variable_help << build_parse_args (i.first, i.second);
   }
 
   if (false)
@@ -898,7 +913,7 @@ dmpl::gams::GAMS_Builder::build_parse_args ()
   build_comment("//-- helper function to check validity of supplied arguments", "\n", "", 0);
   buffer_ << "void check_argument_sanity()\n";
   buffer_ << "{\n";
-  for (auto & n : nodes) {
+  for (auto & n : builder_.program.nodes) {
     for(auto & r : n.second->roles)
       buffer_ << "  if(node_name == \"" << n.second->name << "\" && role_name == \""
               << r.second->name << "\") return;\n";
@@ -913,29 +928,39 @@ dmpl::gams::GAMS_Builder::build_parse_args ()
 //-- DMPL variable.
 /*********************************************************************/
 std::string
-dmpl::gams::GAMS_Builder::build_parse_args (const Node &node, const Var& var)
+dmpl::gams::GAMS_Builder::build_parse_args (const std::string &var,
+                                            const std::list<std::pair<Node,Role>> &roles)
 {
   std::stringstream return_value;
   
   // we do not allow setting multi-dimensional vars from command line
-  if (var->type->dims.size () <= 1)
-  {
-    buffer_ << "    else if (arg1 == \"--var_" << var->name << "\")\n";
-    buffer_ << "    {\n";
-    buffer_ << "      if (i + 1 < argc)\n";
-    buffer_ << "      {\n";
-    buffer_ << "        std::stringstream buffer (argv[i + 1]);\n";
-    buffer_ << "        buffer >> " << nodeName(node) << "::var_init_" << var->name << ";\n";
-    buffer_ << "      }\n";
-    buffer_ << "      \n";
-    buffer_ << "      ++i;\n";
-    buffer_ << "    }\n";
-
-    // build the help string
-    return_value << "        \" [--var_";
-    return_value << var->name;
-    return_value << "] sets the initial value of variable " << var->name << "\\n\"\\\n";
+  buffer_ << "    else if (arg1 == \"--var_" << var << "\")\n";
+  buffer_ << "    {\n";
+  buffer_ << "      if (i + 1 < argc)\n";
+  buffer_ << "      {\n";
+  buffer_ << "        std::stringstream buffer (argv[i + 1]);\n";
+  size_t count = 0;
+  for(const auto &nr : roles) {
+    //-- create appropriate namespace based on variable scope
+    std::string ns = nodeName(nr.first);
+    if(nr.first->findVar(var) == NULL) ns += "::" + roleName(nr.first,nr.second);
+    
+    buffer_ << "        " << (count ? "else if" : "if")
+            << "(node_name == \"" << nr.first->name << "\" && role_name == \""
+            << nr.second->name << "\")\n";
+    buffer_ << "          buffer >> " << ns << "::var_init_" << var << ";\n";
+    count++;
   }
+  buffer_ << "        else assert(0 && \"ERROR: no input variable " << var << " for specified node and role!!\");\n";
+  buffer_ << "      }\n";
+  buffer_ << "      \n";
+  buffer_ << "      ++i;\n";
+  buffer_ << "    }\n";
+  
+  // build the help string
+  return_value << "        \" [--var_";
+  return_value << var;
+  return_value << "] sets the initial value of variable " << var << "\\n\"\\\n";
 
   return return_value.str ();
 }
