@@ -1,0 +1,5 @@
+#!/bin/bash
+VERIF_NAME="example-04-6x6"
+CMDS=('dmplc --DX 6 --DY 6 --roles uav:Leader:1:uav:Protector:8 -r 10 -s -rp NoCollision -o example-04.c example-04.dmpl')
+CMDS+=('cbmc example-04.c')
+OUT="FAILED"

@@ -1,0 +1,5 @@
+#!/bin/bash
+VERIF_NAME="example-01.bug2"
+CMDS=('dmplc --roles uav:Uav:2 -r 5 -s -rp NoCollision -o example-01.bug2.c example-01.bug2.dmpl')
+CMDS+=('cbmc example-01.bug2.c')
+OUT="FAILED"

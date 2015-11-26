@@ -1,0 +1,5 @@
+#!/bin/bash
+VERIF_NAME="example-03"
+CMDS=('dmplc --roles uav:Leader:1:uav:Protector:8 -r 5 -s -rp NoCollision -o example-03.c example-03.dmpl')
+CMDS+=('cbmc example-03.c')
+OUT="SUCCESSFUL"
