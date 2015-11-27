@@ -69,54 +69,58 @@
 //options
 /*********************************************************************/
 
-//-- names of files to parse
-std::list<std::string> file_names;
+//-- wrap in anonymous namespace to avoid name clashes
+namespace
+{
+  //-- names of files to parse
+  std::list<std::string> file_names;
+  
+  //-- output file name. empty means stdout.
+  std::string out_file;
+  
+  //-- name of target thunk to dump from the DMPL file.
+  std::string madara_target ("GNU_CPP");
 
-//-- output file name. empty means stdout.
-std::string out_file;
-
-//-- name of target thunk to dump from the DMPL file.
-std::string madara_target ("GNU_CPP");
-
-//-- parse and print the DMPL file
-bool do_print = false;
-
-//-- sequentialize for verification via bounded model checking
-bool do_seq = false;
-
-//-- sequential for checking inductive invariants for bounded model
-//-- checking
-bool do_seq_ind = false;
-
-//-- number of rounds to sequentialize for (-1 means infinity)
-int round_num = -1;
-
-//-- the list of descriptors for roles to verify against. a role
-//-- desciptor is X:Y:n where X is the name of the node, Y is the name
-//-- of a role inside it, and n is the number of such roles. node id's
-//-- will be assigned in the order in which the roles are specified.
-std::list<std::string> roleDescs;
-
-//-- generate code against the GAMS platform
-bool do_gams = false;
-
-//-- generate code to check and log "expect" statements
-bool do_expect = false;
-
-//-- generate "expect" log analyzer
-bool do_analyzer = false;
-
-//-- print debug messages
-bool debug = false;
-
-//-- name of the require property to verify
-std::string reqProp; 
-
-//-- the type of thread scheduler to use
-dmpl::SchedType schedType = dmpl::NON_RT;
-
-//-- constant definitions supplied via command line
-std::map<std::string, std::string> const_def;
+  //-- parse and print the DMPL file
+  bool do_print = false;
+  
+  //-- sequentialize for verification via bounded model checking
+  bool do_seq = false;
+  
+  //-- sequential for checking inductive invariants for bounded model
+  //-- checking
+  bool do_seq_ind = false;
+  
+  //-- number of rounds to sequentialize for (-1 means infinity)
+  int round_num = -1;
+  
+  //-- the list of descriptors for roles to verify against. a role
+  //-- desciptor is X:Y:n where X is the name of the node, Y is the name
+  //-- of a role inside it, and n is the number of such roles. node id's
+  //-- will be assigned in the order in which the roles are specified.
+  std::list<std::string> roleDescs;
+  
+  //-- generate code against the GAMS platform
+  bool do_gams = false;
+  
+  //-- generate code to check and log "expect" statements
+  bool do_expect = false;
+  
+  //-- generate "expect" log analyzer
+  bool do_analyzer = false;
+  
+  //-- print debug messages
+  bool debug = false;
+  
+  //-- name of the require property to verify
+  std::string reqProp; 
+  
+  //-- the type of thread scheduler to use
+  dmpl::SchedType schedType = dmpl::NON_RT;
+  
+  //-- constant definitions supplied via command line
+  std::map<std::string, std::string> const_def;
+}
 
 /*********************************************************************/
 //function declarations
