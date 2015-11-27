@@ -1043,6 +1043,11 @@ void dmpl::SyncSeqDblInd::run()
   std::cout << "Sequentializing for inductive check with double-buffering and " 
             << builder.program.processes.size() << " processes ...\n";
 
+  //-- add command line as header
+  std::string header = "//-- DMPLC Command Line:";
+  for(const std::string &c : builder.cmdLine) header += std::string(" ") + c;
+  cprog.addHeader(header + "\n");
+
   //copy over constants
   cprog.constDef = builder.program.constDef;
   cprog.constDef["true"] = "1";
@@ -1061,7 +1066,10 @@ void dmpl::SyncSeqDblInd::run()
   createHavoc();
   createNodeFuncs();
 
-  //instantiate functions
+  //-- add end of file footer
+  cprog.addFooter("//---------------------------------------------------------\n");
+  cprog.addFooter("//-- end of file\n");
+  cprog.addFooter("//---------------------------------------------------------\n");
 }
 
 /*********************************************************************/
