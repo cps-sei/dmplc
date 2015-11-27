@@ -951,7 +951,10 @@ dmpl::gams::GAMS_Builder::build_parse_args (const std::string &var,
     buffer_ << "          buffer >> " << ns << "::var_init_" << var << ";\n";
     count++;
   }
-  buffer_ << "        else assert(0 && \"ERROR: no input variable " << var << " for specified node and role!!\");\n";
+  buffer_ << "        else throw std::runtime_error\n"
+          << "             (\"ERROR : no input variable "
+          << var << " for node and role combination : (\"\n"
+          << "              + node_name + \" , \" + role_name + \")\");\n";
   buffer_ << "      }\n";
   buffer_ << "      \n";
   buffer_ << "      ++i;\n";
