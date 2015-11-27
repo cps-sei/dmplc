@@ -14,6 +14,15 @@ function test_code_gen {
     if [ "$?" == "0" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
 }
 
+##generate code and compile
+function test_build {
+    MISSION="$1"
+    printf "build        %30s : " $(basename $MISSION)
+    (cd $(dirname $MISSION); \
+    dmpl-sim.sh -b -B $(basename $MISSION) &> /dev/null; \
+    if [ "$?" == "0" ]; then echo "SUCCESS"; else echo "FAILURE"; fi)
+}
+
 ##sequentialize and check against correct output
 function test_seq {
     DMPL="$1"
@@ -92,6 +101,11 @@ test_double_parse ../../docs/tutorial/example-07/dmpl/example-07-2.dmpl uav:Tile
 test_code_gen test-example-01a.dmpl uav:Uav:3
 test_code_gen test-example-02.dmpl uav:Leader:1:uav:Protector:4
 
+#test building
+for i in ../../docs/tutorial/*.mission ../../docs/tutorial/example-05/dmpl/*.mission ; do
+    test_build $i
+done
+
 #sequentialization tests
 test_seq test-example-01c.dmpl uav:Uav1:2:uav:Uav2:1
 
@@ -110,3 +124,4 @@ test_verif_ind ../../docs/tutorial/example-01.bug2.dmpl uav:Uav:2 FAILED
 test_verif_ind ../../docs/tutorial/example-02.dmpl uav:Leader:1:uav:Protector:1 SUCCESSFUL
 test_verif_ind ../../docs/tutorial/example-02.bug1.dmpl uav:Leader:1:uav:Protector:1 FAILED
 test_verif_ind ../../docs/tutorial/example-03.dmpl uav:Leader:1:uav:Protector:1 SUCCESSFUL
+
