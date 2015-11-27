@@ -23,7 +23,7 @@ DROP_RATE=`awk -v "seed=$[(RANDOM & 32767) + 32768 * (RANDOM & 32767)]" 'BEGIN {
 
 #echo $DROP_RATE
 
-ARGS_0="--node uav --role Leader --var_x $IX --var_y $IY --var_xt $FX --var_yt $FY"
+ARGS_0="--node uav --role Leader --var_scenario 2 --var_x $IX --var_y $IY --var_xt $FX --var_yt $FY"
 ARGS_1="--node uav --role Protector --var_x $((IX+2)) --var_y $((IY+2))"
 ARGS_2="--node uav --role Protector --var_x $((IX-2)) --var_y $((IY+2))"
 ARGS_3="--node uav --role Protector --var_x $((IX-2)) --var_y $((IY-2))"

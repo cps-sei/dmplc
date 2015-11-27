@@ -1001,7 +1001,7 @@ node uav
     }
 
     //-- selected scenario. this should be made an input.
-    local unsigned char scenario = 2;
+    local unsigned char input scenario ~ (1 <= scenario && scenario <= 3);
 
     //-- scenario selector
     record scenarios {
