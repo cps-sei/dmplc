@@ -139,15 +139,17 @@ int main (int argc, char **argv)
 {
   //-- print version and command line options
   std::cout << "DMPLC Version " << dmplcVerion << '\n';
+  std::list<std::string> cmdLine;
+  for(int i = 0;i < argc;++i) cmdLine.push_back(argv[i]);
   std::cout << "Command line:";
-  for(int i = 0;i < argc;++i) std::cout << ' ' << argv[i];
+  for(const std::string &c : cmdLine) std::cout << ' ' << c;
   std::cout << '\n';
 
   //-- parse arguments
   parse_options (argc, argv);
 
   //create the program and fill in the processes
-  dmpl::DmplBuilder builder (file_names, const_def, debug);
+  dmpl::DmplBuilder builder (cmdLine, file_names, const_def, debug);
   builder.run ();
   addProcesses(builder.program);
 
