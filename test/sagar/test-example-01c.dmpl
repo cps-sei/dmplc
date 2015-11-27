@@ -212,6 +212,8 @@ node uav
   //------------------------------------------------//
   role Uav1 {
     override local int input d1;
+    local int input d3l;
+    override local unsigned char x = 11;
     override local unsigned char xp = 10;
     global int d2g = 15;
     local unsigned char d2l;
