@@ -64,7 +64,6 @@
 #include "dmpl/gams/Analyzer_Builder.hpp"
 #include "SyncSeqDbl.hpp"
 #include "SyncSeqDblInd.hpp"
-//#include "ArrayElim.hpp"
 
 /*********************************************************************/
 //options
