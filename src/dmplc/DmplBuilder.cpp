@@ -76,10 +76,11 @@ extern FILE *yyin;
 /*********************************************************************/
 //constructor
 /*********************************************************************/
-dmpl::DmplBuilder::DmplBuilder(const std::list<std::string> &fns,
+dmpl::DmplBuilder::DmplBuilder(const std::list<std::string> &cmdl,
+                               const std::list<std::string> &fns,
                                const std::map<std::string,std::string> &constDef,
                                const bool d)
-  : fileNames(fns),debug(d) 
+  : cmdLine(cmdl),fileNames(fns),debug(d) 
 {
   program.constDef = constDef;
 }
