@@ -88,6 +88,12 @@ namespace dmpl
      **/
     void print (std::ostream &os,unsigned int indent);
 
+    //-- headers. will be dumped verbatim at the beginning of the file
+    std::list<std::string> headers;
+
+    //-- footers. will be dumped verbatim at the end of the file
+    std::list<std::string> footers;
+    
     /**
      * external function declarations -- these are Function objects
      * with empty bodies
@@ -103,6 +109,12 @@ namespace dmpl
      * A map of function names to function definitions
      **/
     Funcs funcs;
+
+    ///add a header
+    void addHeader(const std::string &h) { headers.push_back(h); }
+
+    ///add a footer
+    void addFooter(const std::string &f) { footers.push_back(f); }
 
     ///add a global variable
     void addGlobVar(const Var &v) { globVars[v->name] = v; }

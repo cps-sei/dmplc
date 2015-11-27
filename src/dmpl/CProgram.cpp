@@ -67,6 +67,10 @@ dmpl::CProgram::print (std::ostream &os,unsigned int indent)
 {
   std::string spacer (indent, ' ');
 
+  //print headers
+  for(const std::string &h : headers) os << h;
+  os << '\n';
+  
   //print external function declarations
   os << spacer << "/************* external functions ***********/\n";
   BOOST_FOREACH(dmpl::Funcs::value_type &v, externalFuncs) {
@@ -100,6 +104,10 @@ dmpl::CProgram::print (std::ostream &os,unsigned int indent)
   os << spacer << "/************* function definitions ***********/\n";
   for (dmpl::Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
     i->second->print (os,indent);
+
+  //print footers
+  os << '\n';
+  for(const std::string &f : footers) os << f;
 }
 
 /*********************************************************************/
