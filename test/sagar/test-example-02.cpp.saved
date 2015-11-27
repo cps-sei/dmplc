@@ -596,43 +596,73 @@ void handle_arguments (int argc, char ** argv)
       ++i;
     }
 
-    //-- Providing init for input variables of node uav
+    //-- Providing init for input variable x
     else if (arg1 == "--var_x")
     {
       if (i + 1 < argc)
       {
         std::stringstream buffer (argv[i + 1]);
-        buffer >> node_uav::var_init_x;
+        if(node_name == "uav" && role_name == "Leader")
+          buffer >> node_uav::var_init_x;
+        else if(node_name == "uav" && role_name == "Protector")
+          buffer >> node_uav::var_init_x;
+        else throw std::runtime_error
+             ("ERROR : no input variable x for node and role combination : ("
+              + node_name + " , " + role_name + ")");
       }
       
       ++i;
     }
-    else if (arg1 == "--var_y")
-    {
-      if (i + 1 < argc)
-      {
-        std::stringstream buffer (argv[i + 1]);
-        buffer >> node_uav::var_init_y;
-      }
-      
-      ++i;
-    }
+
+    //-- Providing init for input variable xt
     else if (arg1 == "--var_xt")
     {
       if (i + 1 < argc)
       {
         std::stringstream buffer (argv[i + 1]);
-        buffer >> node_uav::var_init_xt;
+        if(node_name == "uav" && role_name == "Leader")
+          buffer >> node_uav::var_init_xt;
+        else if(node_name == "uav" && role_name == "Protector")
+          buffer >> node_uav::var_init_xt;
+        else throw std::runtime_error
+             ("ERROR : no input variable xt for node and role combination : ("
+              + node_name + " , " + role_name + ")");
       }
       
       ++i;
     }
+
+    //-- Providing init for input variable y
+    else if (arg1 == "--var_y")
+    {
+      if (i + 1 < argc)
+      {
+        std::stringstream buffer (argv[i + 1]);
+        if(node_name == "uav" && role_name == "Leader")
+          buffer >> node_uav::var_init_y;
+        else if(node_name == "uav" && role_name == "Protector")
+          buffer >> node_uav::var_init_y;
+        else throw std::runtime_error
+             ("ERROR : no input variable y for node and role combination : ("
+              + node_name + " , " + role_name + ")");
+      }
+      
+      ++i;
+    }
+
+    //-- Providing init for input variable yt
     else if (arg1 == "--var_yt")
     {
       if (i + 1 < argc)
       {
         std::stringstream buffer (argv[i + 1]);
-        buffer >> node_uav::var_init_yt;
+        if(node_name == "uav" && role_name == "Leader")
+          buffer >> node_uav::var_init_yt;
+        else if(node_name == "uav" && role_name == "Protector")
+          buffer >> node_uav::var_init_yt;
+        else throw std::runtime_error
+             ("ERROR : no input variable yt for node and role combination : ("
+              + node_name + " , " + role_name + ")");
       }
       
       ++i;
@@ -656,8 +686,8 @@ void handle_arguments (int argc, char ** argv)
         " [--node name]            select the node name\n"\
         " [--role name]            select the role name\n"\
         " [--var_x] sets the initial value of variable x\n"\
-        " [--var_y] sets the initial value of variable y\n"\
         " [--var_xt] sets the initial value of variable xt\n"\
+        " [--var_y] sets the initial value of variable y\n"\
         " [--var_yt] sets the initial value of variable yt\n"\
         , argv[0]));
       exit (0);
