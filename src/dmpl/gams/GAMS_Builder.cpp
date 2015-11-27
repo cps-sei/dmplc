@@ -165,6 +165,10 @@ dmpl::gams::GAMS_Builder::GAMS_Builder (dmpl::DmplBuilder & builder,
 void
 dmpl::gams::GAMS_Builder::build ()
 {
+  buffer_ << "//-- DMPLC Command Line: ";
+  for(const std::string &c : builder_.cmdLine) buffer_ << ' ' << c;
+  buffer_ << "\n\n";
+  
   build_target_thunk ();
   build_header_includes ();
 
