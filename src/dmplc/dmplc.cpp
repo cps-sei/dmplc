@@ -73,7 +73,7 @@
 namespace
 {
   //-- dmplc version
-  const std::string dmplcVerion("0.2");
+  const std::string version("0.2");
   
   //-- names of files to parse
   std::list<std::string> file_names;
@@ -138,7 +138,7 @@ void addProcesses(dmpl::Program &program);
 int main (int argc, char **argv)
 {
   //-- print version and command line options
-  std::cout << "DMPLC Version " << dmplcVerion << '\n';
+  std::cout << "DMPLC Version " << version << '\n';
   std::list<std::string> cmdLine;
   for(int i = 0;i < argc;++i) cmdLine.push_back(argv[i]);
   std::cout << "Command line:";
@@ -149,7 +149,7 @@ int main (int argc, char **argv)
   parse_options (argc, argv);
 
   //create the program and fill in the processes
-  dmpl::DmplBuilder builder (cmdLine, file_names, const_def, debug);
+  dmpl::DmplBuilder builder (version, cmdLine, file_names, const_def, debug);
   builder.run ();
   addProcesses(builder.program);
 

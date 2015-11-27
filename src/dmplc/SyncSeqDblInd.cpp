@@ -1044,7 +1044,8 @@ void dmpl::SyncSeqDblInd::run()
             << builder.program.processes.size() << " processes ...\n";
 
   //-- add command line as header
-  std::string header = "//-- DMPLC Command Line:";
+  std::string header = "//-- DMPLC Version: " + builder.version + "\n";
+  header += "//-- DMPLC Command Line:";
   for(const std::string &c : builder.cmdLine) header += std::string(" ") + c;
   cprog.addHeader(header + "\n");
 

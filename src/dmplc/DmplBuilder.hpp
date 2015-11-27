@@ -70,14 +70,15 @@ namespace dmpl {
   {
   public:
     dmpl::Program program;
-    std::list<std::string> cmdLine;
+    const std::string &version;            //-- DMPLC version
+    const std::list<std::string> &cmdLine; //-- DMPLC command line
     std::list<std::string> fileNames;
     bool debug;
   
   public:
-    DmplBuilder() : debug(0) {}
-    DmplBuilder(const std::list<std::string> &cmdl,const std::list<std::string> &fns,
-                const std::map<std::string,std::string> &constDef,const bool d);
+    DmplBuilder(const std::string &ver, const std::list<std::string> &cmdl,
+                const std::list<std::string> &fns,
+                const std::map<std::string,std::string> &constDef, const bool d);
 
     void run();
     void printProgram(std::ostream &os);
