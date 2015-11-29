@@ -93,6 +93,15 @@ std::string thunk;
 #define MAKE_BIN(_res,_o,_l,_r) _res = new dmpl::Expr(new dmpl::CompExpr(_o,*_l,*_r)); delete _l; delete _r; printExpr(*_res)
 #define MAKE_TRI(_res,_o,_a,_b,_c) _res = new dmpl::Expr(new dmpl::CompExpr(_o,*_a,*_b,*_c)); delete _a; delete _b; delete _c; printExpr(*_res)
 #define printStmt(_x) if(builder->debug) printf("STMT: %s\n",(_x)->toString().c_str())
+
+/** check if a defined constant is legal */
+void check_const_valid(const std::string &name)
+{
+  if(name == "X" || name == "Y" || name == "TopY" || name == "LeftX" ||
+     name == "BottomY" || name == "RightX" || name == "TopZ" || name == "BottomZ")
+    throw std::runtime_error("ERROR: cannot define " + name + " as a constant. It is a platform parameter!!");
+}
+
 }
 
 %code {
@@ -248,11 +257,13 @@ target_id_list : TIDENTIFIER {
 ;
 
 constant : TCONST TIDENTIFIER TEQUAL int_const TSEMICOLON {
+  check_const_valid(*$2);
   if(builder->program.constDef.find(*$2) == builder->program.constDef.end())
     builder->program.constDef[*$2] = *$4;
   delete $2; delete $4;
 }
 | TCONST TIDENTIFIER TEQUAL double_const TSEMICOLON {
+  check_const_valid(*$2);
   if(builder->program.constDef.find(*$2) == builder->program.constDef.end())
     builder->program.constDef[*$2] = *$4;
   delete $2; delete $4;
