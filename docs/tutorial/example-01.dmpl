@@ -122,7 +122,7 @@ const MOVE = 4;
 extern int my_sleep(int seconds);
 extern void print_state(int XX,int YY,int my_id, int x, int y, int xf, int yf);
 extern void print_int(int i);
-extern int GRID_MOVE(unsigned char x,unsigned char y,double z);
+extern int GRID_MOVE(unsigned char x,unsigned char y,unsigned char z);
 
 node uav
 {
@@ -175,7 +175,7 @@ node uav
       state = MOVE;
     } else if (state == MOVE) {
       //now we have the lock on (x’,y’)
-      if(GRID_MOVE(xp,yp,0.5)) return;
+      if(GRID_MOVE(xp,yp,1)) return;
       lock[x][y] = 0; 
       x = xp; y = yp;
       state = NEXT;
@@ -189,8 +189,8 @@ node uav
   @InitSim;
   void StartingPosition ()
   {
-    GRID_INIT(X, Y, LeftX, RightX, TopY, BottomY);
-    GRID_PLACE(x, y, 0.5);
+    GRID_INIT();
+    GRID_PLACE(x, y, 1);
   }
 
   //the safety property checked at the beginning of each round
