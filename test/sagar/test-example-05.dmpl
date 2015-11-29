@@ -198,21 +198,12 @@ double update_cover(double old_cover, double node_rad, double dist)
 
 %%}
 
-//number of X and Y coordinates
-const X = 20;
-const Y = 20;
-
 //states of each node
 const INITS = 0;
 const NEXT = 1;
 const REQUEST = 2;
 const WAITING = 3;
 const MOVE = 4;
-
-const TopY = 13;
-const LeftX = -12.5;
-const BottomY = -6;
-const RightX = 6.5;
 
 //-- radius of a node
 const NODE_RAD = 0.25;

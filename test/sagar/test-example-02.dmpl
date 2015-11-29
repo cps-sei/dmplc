@@ -120,20 +120,11 @@ void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
 }
 %%}
 
-//number of X and Y coordinates
-const X = 20;
-const Y = 20;
-
 //states of each node
 const NEXT = 1;
 const REQUEST = 2;
 const WAITING = 3;
 const MOVE = 4;
-
-const TopY = 13;
-const LeftX = -12.5;
-const BottomY = -6;
-const RightX = 6.5;
 
 extern void INIT_CONTROLLER(unsigned char x,unsigned char y);
 extern void GRID_INIT(int XX,int YY,double leftX,double rightX,double topY,double bottomY);

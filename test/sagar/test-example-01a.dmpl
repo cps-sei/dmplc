@@ -112,10 +112,6 @@ void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
 }
 %%}
 
-//number of X and Y coordinates
-const X = 10;
-const Y = 10;
-
 //states of each node
 const INITS = 0;
 const NEXT = 1;
@@ -123,10 +119,6 @@ const REQUEST = 2;
 const WAITING = 3;
 const MOVE = 4;
 
-const TopY = 2.25;
-const LeftX = -2.25;
-const BottomY = -2.25;
-const RightX = 2.25;
 
 extern int GRID_MOVE(unsigned char x,unsigned char y,double z);
 extern int my_sleep(int seconds);

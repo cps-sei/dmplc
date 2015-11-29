@@ -54,17 +54,11 @@ void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
 }
 %%}
 
-const BottomY = -2.25;
 const INITS = 0;
-const LeftX = -2.25;
 const MOVE = 4;
 const NEXT = 1;
 const REQUEST = 2;
-const RightX = 2.25;
-const TopY = 2.25;
 const WAITING = 3;
-const X = 10;
-const Y = 10;
 
 extern int GRID_MOVE(unsigned char x,unsigned char y,double z);
 extern int my_sleep(int seconds);
