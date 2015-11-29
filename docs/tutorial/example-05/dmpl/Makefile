@@ -13,10 +13,7 @@ endif
 
 #default grid size and map coordinates 
 GRIDSIZE=10
-TopY=2.25
-LeftX=-2.25
-BottomY=-2.25
-RightX=2.25
+MAPSIZE=small
 
 #adaptation manager object files
 AM_OBJS=dartam/Debug/adaptation_manager.o dartam/Debug/AdaptationPlanner.o
@@ -33,10 +30,10 @@ $(AM_OBJS) :
 	make -C dartam/Debug
 
 example-05.cpp: example-05.dmpl example-05-AADL.dmpl $(DMPL_ROOT)/src/dmplc/dmplc
-	dmplc --roles uav:Leader:1:uav:Protector:4 --DX $(GRIDSIZE) --DY $(GRIDSIZE) --DTopY $(TopY) --DBottomY $(BottomY) --DLeftX $(LeftX) --DRightX $(RightX) -g -o $@ $< example-05-AADL.dmpl
+	dmplc --roles uav:Leader:1:uav:Protector:4 --cube-grid $(GRIDSIZE) --map $(MAPSIZE) -g -o $@ $< example-05-AADL.dmpl
 
 example-05-analyzer.cpp: example-05.dmpl $(DMPL_ROOT)/src/dmplc/dmplc $(DMPL_ROOT)/include/dmpl/LogAnalyzer.hpp
-	dmplc -a --roles uav:Leader:1:uav:Protector:4 --DX $(GRIDSIZE) --DY $(GRIDSIZE) -o $@ $<
+	dmplc -a --roles uav:Leader:1:uav:Protector:4 --cube-grid $(GRIDSIZE) -o $@ $<
 
 clean:
 	make -C dartam/Debug clean
