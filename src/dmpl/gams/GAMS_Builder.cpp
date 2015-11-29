@@ -990,9 +990,8 @@ dmpl::gams::GAMS_Builder::build_function_declarations ()
   {
     open_namespace(nodeName(n.second));
 
-    //-- declare all functions for the node with NULL thread. needed
-    //-- for functions that must be executed before thread creation.
-    build_function_declarations_for_thread(Func(), n.second->funcs);
+    //-- declare serial functions for the node with NULL thread.
+    build_function_declarations_for_thread(Func(), n.second->serialFunctions());
 
     //-- declare all functions for the node and for each thread
     for (Func thread : n.second->threads)
@@ -1003,9 +1002,8 @@ dmpl::gams::GAMS_Builder::build_function_declarations ()
       build_comment("//-- Declaring functions for role " + r.second->name, "\n", "\n", 0);
       open_namespace(roleName(n.second, r.second));
 
-      //-- declare all functions for the role with NULL thread. needed
-      //-- for functions that must be executed before thread creation.
-      build_function_declarations_for_thread(Func(), r.second->funcs);
+      //-- declare serial functions for the role with NULL thread.
+      build_function_declarations_for_thread(Func(), r.second->serialFunctions());
 
       for (Func thread : r.second->threads) {
         //-- collect functions. for this role, and if the thread is
@@ -1032,12 +1030,9 @@ void
 dmpl::gams::GAMS_Builder::build_function_declarations_for_thread (const Func & thread,
                                                                   const Funcs & funcs)
 {
-  //-- NULL thread. needed for functions that must be executed before
-  //-- thread creation, e.g., initializing simulation.
+  //-- NULL thread. needed for serial functions.
   if(thread == NULL) {
-    for (auto i : funcs)
-      if(i.second->getAttribute("InitSim",0) || i.second->getAttribute("Helper",0))
-        build_function_declaration (thread, i.second);
+    for (auto i : funcs) build_function_declaration (thread, i.second);
     return;
   }
   
@@ -1104,9 +1099,8 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
     build_comment("//-- Begin node " + n->second->name, "\n", "\n", 0);
     open_namespace(nodeName(n->second));
     
-    //-- build all functions for the node with NULL thread. needed for
-    //-- functions that must be executed before thread creation.
-    build_functions_for_thread(Func(), n->second, n->second->funcs);
+    //-- build serial functions for the node with NULL thread.
+    build_functions_for_thread(Func(), n->second, n->second->serialFunctions());
 
     //-- build all functions for the node and for each thread
     for (Func thread : n->second->threads)
@@ -1123,9 +1117,8 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
         build_refresh_modify_globals(n->second, r.second, thread);
       }
       
-      //-- build all functions for the role with NULL thread. needed
-      //-- for functions that must be executed before thread creation.
-      build_functions_for_thread(Func(), n->second, r.second->funcs);
+      //-- build serial functions for the role with NULL thread.
+      build_functions_for_thread(Func(), n->second, r.second->serialFunctions());
       
       for (Func thread : r.second->threads) {
         //-- collect functions. for this role, and if the thread is
@@ -1373,14 +1366,11 @@ dmpl::gams::GAMS_Builder::build_push_pull(const Func &thread, bool push)
 /*********************************************************************/
 void
 dmpl::gams::GAMS_Builder::build_functions_for_thread (
-  const Func& thread, const dmpl::Node & node, dmpl::Funcs & funcs)
+  const Func& thread, const dmpl::Node & node, const dmpl::Funcs & funcs)
 {
-  //-- NULL thread. needed for functions that must be executed before
-  //-- thread creation, e.g., initializing simulation.
+  //-- NULL thread. needed for serial functions.
   if(thread == NULL) {
-    for(const auto &f : funcs)
-      if(f.second->getAttribute("InitSim",0) || f.second->getAttribute("Helper",0))
-        build_function (thread, node, f.second);
+    for(const auto &f : funcs) build_function (thread, node, f.second);
     return;
   }
   

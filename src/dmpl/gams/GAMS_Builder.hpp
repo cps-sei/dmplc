@@ -214,7 +214,8 @@ namespace dmpl
        * @node  thread  the target node
        * @param  function  a defined function in the parsed program
        **/
-      void build_functions_for_thread (const Func& thread, const dmpl::Node & node, dmpl::Funcs & funcs);
+      void build_functions_for_thread (const Func& thread, const dmpl::Node & node,
+                                       const dmpl::Funcs & funcs);
 
       /**
        * Builds a function
