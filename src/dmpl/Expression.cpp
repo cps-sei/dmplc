@@ -188,9 +188,7 @@ dmpl::CallExpr::Context dmpl::CallExpr::useSymbols(Context con)
   }
   else
   {
-    if(lval.var != "ASSERT" && lval.var != "GRID_INIT" && lval.var != "GRID_PLACE"
-       && lval.var != "GRID_MOVE" && lval.var != "GET_LAT" && lval.var != "GET_LNG"
-       && lval.var != "GET_X" && lval.var != "GET_Y" && lval.var != "GET_Z")
+    if(lval.var != "ASSERT" && platformSymbols.find(lval.var) == platformSymbols.end())
       std::cerr << "Symbol not found: " << lval.var << std::endl;
   }
   return con;

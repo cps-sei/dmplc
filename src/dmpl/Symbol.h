@@ -110,11 +110,24 @@ namespace dmpl
   typedef std::shared_ptr<BaseRole> Role;
   typedef std::map<std::string,Role> Roles;
   
+  /*******************************************************************/
+  //-- hard code platform API symbols. we need to make this more
+  //-- flexible later on.
+  /*******************************************************************/
+  const std::set<std::string> platformSymbols =
+    { "platform", "grid_x", "grid_y", "grid_leftX", "grid_rightX",
+      "grid_topY", "grid_bottomY", "grid_cellX", "grid_cellY",
+      "GRID_INIT", "GRID_PLACE", "GRID_MOVE", "GET_X", "GET_Y",
+      "GET_LAT", "GET_LNG", "ROTATE", "MAG_ON" };
+
+  /*******************************************************************/
+  //-- helpful templates
+  /*******************************************************************/
   struct virtual_enable_shared_from_this_base:
    std::enable_shared_from_this<virtual_enable_shared_from_this_base> {
    virtual ~virtual_enable_shared_from_this_base() {}
   };
-
+  
   template<typename T>
   struct virtual_enable_shared_from_this:
   virtual virtual_enable_shared_from_this_base {

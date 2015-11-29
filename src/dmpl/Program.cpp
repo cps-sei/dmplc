@@ -101,7 +101,7 @@ void dmpl::program::SanityChecker::exitLval(dmpl::LvalExpr &expr)
   if(prog.constDef.find(expr.var) != prog.constDef.end()) return;
 
   //-- check platform symbols
-  if(prog.platformSymbols.find(expr.var) != prog.platformSymbols.end()) return;
+  if(platformSymbols.find(expr.var) != platformSymbols.end()) return;
   
   //-- check external functions
   if(prog.isFunction(expr.var)) return;
