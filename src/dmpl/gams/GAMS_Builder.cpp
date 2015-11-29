@@ -1064,7 +1064,7 @@ dmpl::gams::GAMS_Builder::build_function_declaration (const Func & thread, const
   //-- if function is NULL, declare the thread entry function
   if(function == NULL) {
     buffer_ << "Madara::Knowledge_Record\n"
-            << "thread" << thread->threadID << "_entry"
+            << "thread" << thread->threadID
             << " (engine::Function_Arguments & args, engine::Variables & vars);\n";
     return;
   }
@@ -1073,6 +1073,7 @@ dmpl::gams::GAMS_Builder::build_function_declaration (const Func & thread, const
 
   buffer_ << "Madara::Knowledge_Record\n";
   if(thread) buffer_ << "thread" << thread->threadID << "_";
+  else buffer_ << "base_";
   buffer_ << function->name;
   buffer_ << " (engine::Function_Arguments & args, engine::Variables & vars);\n";
 }
@@ -1422,8 +1423,13 @@ dmpl::gams::GAMS_Builder::build_function (
 
   //-- function header
   buffer_ << "Madara::Knowledge_Record\n";
-  if(thread) buffer_ << "thread" << thread->threadID << "_";
-  buffer_ << (function == NULL ? "entry" : function->name);
+  if(function == NULL) {
+    buffer_ << "thread" << thread->threadID;
+  } else {
+    if(thread) buffer_ << "thread" << thread->threadID << "_";
+    else buffer_ << "base_";
+    buffer_ << function->name;
+  }
   buffer_ << " (engine::Function_Arguments & args, engine::Variables & vars)\n";
   buffer_ << "{\n";
 
@@ -1451,6 +1457,7 @@ dmpl::gams::GAMS_Builder::build_function (
   if(function->isPrototype) {
     buffer_ << "  return " << nodeName(node) << "::";
     if(thread) buffer_ << "thread" << thread->threadID << "_";
+    else buffer_ << "base_";
     buffer_ << function->name << "(args, vars);\n";
     buffer_ << "}\n\n";
     return;
@@ -2311,7 +2318,7 @@ dmpl::gams::GAMS_Builder::build_main_function ()
         platInit = n.second->findPlatformInitializer();
         if(platInit != NULL)
           buffer_ << "    knowledge.define_function (\"initialize_platform\", "
-                  << nodeName(n.second) << "::" << platInit->name << ");\n";
+                  << nodeName(n.second) << "::base_" << platInit->name << ");\n";
         else
           throw std::runtime_error("ERROR: role " + r.second->name + " in node " +
                                    n.second->name + " has no platform initializer function!!");
@@ -2483,7 +2490,7 @@ dmpl::gams::GAMS_Builder::build_main_define_function (const Node & node, const R
 
   buffer_ << "  knowledge.define_function (\"" << funcName(node, role, thread) << "\",\n";
   buffer_ << "                              " << nodeName(node) << "::"
-          << roleName(node, role) << "::thread" << thread->threadID << "_entry";
+          << roleName(node, role) << "::thread" << thread->threadID;
   buffer_ << ");\n";
 }
 
