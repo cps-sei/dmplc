@@ -1,5 +1,10 @@
 #!/bin/bash
+
 VERIF_NAME="example-04"
-CMDS=('dmplc --roles uav:Leader:1:uav:Protector:8 -r 10 -s -rp NoCollision -o example-04.c example-04.dmpl')
-CMDS+=('cbmc example-04.c')
 OUT="FAILED"
+DMPL="example-04.dmpl"
+GRIDSIZE=10
+ROLEDESC=uav:Leader:1:uav:Protector:8
+PROPERTY="NoCollision"
+VERIF=bounded
+ROUNDS=5
