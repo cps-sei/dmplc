@@ -825,7 +825,6 @@ node uav
   }
   
   //-- only return the next waypoint X value given the current waypoint
-  @Helper;
   unsigned char NEXT_X (unsigned char curr_x, unsigned char curr_y)
   {
     if(curr_x < xt) return curr_x + 1;
@@ -834,7 +833,6 @@ node uav
   }
 
   //-- only return the next waypoint Y value given the current waypoint
-  @Helper;
   unsigned char NEXT_Y (unsigned char curr_x, unsigned char curr_y)
   {
     if(curr_y < yt) return curr_y + 1;
@@ -843,7 +841,6 @@ node uav
   }
 
   //-- manhattan distance between (x,y) and (xt,yt)
-  @Helper;
   unsigned char REMAINING_SEGMENTS()
   {
     unsigned char res;
@@ -950,7 +947,6 @@ node uav
     
     //-- set the next 5 hazards based on the next 5 waypoints. XXX: this
     //-- should be fixed once compiler support is added.
-    @Helper;
     void SET_HAZARDS()
     {
       hazard1 = GET_HAZARD(next_wp_x[0], next_wp_y[0]);
@@ -970,7 +966,6 @@ node uav
 
     //-- set the next 5 variances based on the next 5 waypoints. XXX:
     //-- this should be fixed once compiler support is added.
-    @Helper;
     void SET_VARIANCES()
     {
       variance1 = 0.1; variance2 = 0.1; variance3 = 0.1; variance4 = 0.1; variance5 = 0.1;
