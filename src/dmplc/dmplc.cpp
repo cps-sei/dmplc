@@ -339,6 +339,36 @@ void parse_options (int argc, char **argv)
       }
       ++i;
     }
+    else if (arg1 == "--map")
+    {
+      if (i + 1 < argc)
+      {
+        if(std::string(argv[i+1]) == "small") {
+          const_def["TopY"] = "2.25";
+          const_def["LeftX"] = "-2.25";
+          const_def["BottomY"] = "-2.25";
+          const_def["RightX"] = "2.25";
+          const_def["TopZ"] = "1.0";
+          const_def["BottomZ"] = "0.0";
+        } else if(std::string(argv[i+1]) == "large") {
+          const_def["TopY"] = "13";
+          const_def["LeftX"] = "-12.5";
+          const_def["BottomY"] = "-6";
+          const_def["RightX"] = "6.5";
+          const_def["TopZ"] = "2.0";
+          const_def["BottomZ"] = "0.0";
+        } else {
+          std::cerr << "ERROR: Map Size (--map) must be small or large!!\n";
+          usage (argv[0]);
+        }
+      }
+      else
+      {
+        std::cerr << "ERROR: Cube Grid Size (-cg|--cube-grid) must have a value!!\n";
+        usage (argv[0]);
+      }
+      ++i;
+    }
     else if (arg1 == "-t" || arg1 == "--target" || arg1 == "--platform")
     {
       if (i + 1 < argc)
@@ -443,6 +473,7 @@ void usage (char *cmd)
   std::cerr << "  -g|--gams                  generate C++/GAMS code to run\n";
   std::cerr << "  -e|--expect                check and log 'expect' statements\n";
   std::cerr << "  -cg|--cube-grid s          specify number of cells on each side of a cubic grid\n";
+  std::cerr << "  --map s                    specify map size (small|large)\n";
   std::cerr << "  -t|--target|--platform p   specify a target platform\n";
   std::cerr << "                             Available platforms: WIN_CPP, GNU_CPP (default)\n";
 #if MZSRM==1
