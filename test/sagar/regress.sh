@@ -9,7 +9,7 @@ function test_code_gen {
     OUT1="$BN.cpp"
     OUT2="$BN.cpp.saved"
     rm -f $OUT1
-    dmplc --roles $ROLES --DX 10 --DY 10 --DTopY 2.25 --DBottomY -2.25 --DLeftX -2.25 --DRightX 2.25 -g -o $OUT1 $DMPL &> /dev/null
+    dmplc --roles $ROLES --cube-grid 10 --map small -g -o $OUT1 $DMPL &> /dev/null
     diff $OUT1 $OUT2 &> /dev/null
     if [ "$?" == "0" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
 }
@@ -32,7 +32,7 @@ function test_seq {
     OUT1="$BN.c"
     OUT2="$BN.c.saved"
     rm -f $OUT1
-    dmplc --roles $ROLES -r 5 -s -rp NoCollision -o $OUT1 $DMPL &> /dev/null
+    dmplc --cube-grid 10 --roles $ROLES -r 5 -s -rp NoCollision -o $OUT1 $DMPL &> /dev/null
     diff $OUT1 $OUT2 &> /dev/null
     if [ "$?" == "0" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
 }
@@ -47,8 +47,8 @@ function test_double_parse {
     OUT1="$BN.1.dmpl"
     OUT2="$BN.2.dmpl"
     rm -f $OUT1 $OUT2
-    dmplc --roles $ROLES --DX 10 --DY 10 --DTopY 2.25 --DBottomY -2.25 --DLeftX -2.25 --DRightX 2.25 -p -o $OUT1 $DMPL &> /dev/null
-    dmplc --roles $ROLES --DX 10 --DY 10 --DTopY 2.25 --DBottomY -2.25 --DLeftX -2.25 --DRightX 2.25 -p -o $OUT2 $OUT1 &> /dev/null
+    dmplc -p -o $OUT1 $DMPL &> /dev/null
+    dmplc -p -o $OUT2 $OUT1 &> /dev/null
     diff $OUT1 $OUT2 &> /dev/null
     if [ "$?" == "0" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
 }
@@ -62,7 +62,7 @@ function test_verif {
     BN=$(basename $DMPL .dmpl)
     OUT1="$BN.c"
     rm -f $OUT1
-    dmplc --roles $ROLES --DX 5 --DY 5 -r 5 -s -rp NoCollision -o $OUT1 $DMPL &> /dev/null
+    dmplc --roles $ROLES --cube-grid 5 -r 5 -s -rp NoCollision -o $OUT1 $DMPL &> /dev/null
     OUT2=$(cbmc $OUT1 2>&1 | grep VERIFICATION | awk '{print $2}')
     if [ "$OUT2" == "$OUTPUT" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
 }
@@ -76,7 +76,7 @@ function test_verif_ind {
     BN=$(basename $DMPL .dmpl)
     OUT1="$BN.c"
     rm -f $OUT1
-    dmplc --roles $ROLES --DX 5 --DY 5 -r 0 -si -rp NoCollision -o $OUT1 $DMPL &> /dev/null
+    dmplc --roles $ROLES --cube-grid 5 -r 0 -si -rp NoCollision -o $OUT1 $DMPL &> /dev/null
     OUT2=$(cbmc $OUT1 2>&1 | grep VERIFICATION | awk '{print $2}')
     if [ "$OUT2" == "$OUTPUT" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
 }
