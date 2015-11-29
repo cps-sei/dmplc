@@ -67,6 +67,7 @@
 
 target GNU_CPP,WIN_CPP %%{
 #define GNU_WIN
+#include <iostream>
 #include <stdlib.h>
 #include <math.h>
 #include <sys/resource.h>
@@ -112,11 +113,6 @@ double accumulate_risk(double risk)
   return accumulated_risk += risk;
 }
 
-int MOVE_TO(unsigned char x,unsigned char y)
-{
-  return rand() < (RAND_MAX / 10 * 6);
-}
-
 int my_sleep (int seconds)
 {
   Madara::Utility::sleep (seconds);
@@ -131,7 +127,7 @@ double wall_time()
   return tv.tv_sec + 0.000001 * tv.tv_usec;
 }
  
-int round = 0;
+int roundNum = 0;
 int xi,yi;
 
 void print_int(int i)
@@ -166,15 +162,17 @@ void LOG(double x)
   std::cerr << "LOG: " << x << std::endl;
 }
 
-void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
+void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf,int _st, int wpv)
 {
-  if(round == 0) {
+  if(roundNum == 0) {
     xi = x; yi = y;
   }
 
   for(int i = 0;i < 150;++i) printf("\n");
   
-  printf("round = %d : id = %d\n", ++round, id);
+  printf("state = %d : wpv = %d\n", _st, wpv);
+  printf("round = %d : id = %d\n", ++roundNum, id);
+  printf("xt = %d yt = %d\n",xf,yf);
   printf("_X = %d _Y = %d\n",_X,_Y);
   print_line(_X);
   for(int i = 0;i < _Y;++i) {
@@ -189,11 +187,14 @@ void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
     print_line(_X);
   }
 }
-%%}
 
-//number of X and Y coordinates
-CONST X = 20;
-CONST Y = 20;
+void print_waypoint(int _init, int _lx, int _ly)
+{
+  printf("init = %d, lx = %d, ly = %d\n", _init, _lx, _ly);
+}
+
+ 
+%%}
 
 //states of each node
 const NEXT = 1;
@@ -201,29 +202,22 @@ const REQUEST = 2;
 const WAITING = 3;
 const MOVE = 4;
 
-const TopY = 13;
-const LeftX = -12.5;
-const BottomY = -6;
-const RightX = 6.5;
-
 //-- radius of a node
 CONST NODE_RAD = 0.25;
 
 //-- assume that formation change takes 20 seconds
 const FORM_CHANGE_TIME = 20.0;
 
-extern int GRID_MOVE(unsigned char xp,unsigned char yp, double z);
 extern int my_sleep(int seconds);
 extern void INIT_HAZARDS(int XX, int YY, int tx, int ty);
 extern double GET_HAZARD(int x, int y);
-extern void print_state(int XX,int YY,int my_id, int x, int y, int xf, int yf);
+extern void print_state(int XX,int YY,int my_id, int x, int y, int xf, int yf, int _st, int wpv);
+extern void print_waypoint(int _init, int _lx, int _ly);
 extern void print_int(int i);
 extern void print_labeled_int(int i);
 extern void print_cover(double d);
 extern void print_hazard(double d);
 extern double wall_time();
-extern double GET_X();
-extern double GET_Y();
 extern double sqrt(double x);
 extern double asin(double x);
 extern void LOG(double x);
@@ -804,9 +798,9 @@ node uav
   //-- return the next waypoint value
   bool NEXT_XY ()
   {
-    if(!waypointValid)
-      return 1;
+    if(!waypointValid) return 1;
     if(xt < 0 || xt >= X || yt < 0 || yt >= Y) return 1;
+
     //-- set next coordinates
     xp = x; yp = y;
     if(xp < xt) xp = xp + 1;
@@ -831,6 +825,7 @@ node uav
   }
   
   //-- only return the next waypoint X value given the current waypoint
+  @Helper;
   unsigned char NEXT_X (unsigned char curr_x, unsigned char curr_y)
   {
     if(curr_x < xt) return curr_x + 1;
@@ -839,6 +834,7 @@ node uav
   }
 
   //-- only return the next waypoint Y value given the current waypoint
+  @Helper;
   unsigned char NEXT_Y (unsigned char curr_x, unsigned char curr_y)
   {
     if(curr_y < yt) return curr_y + 1;
@@ -847,6 +843,7 @@ node uav
   }
 
   //-- manhattan distance between (x,y) and (xt,yt)
+  @Helper;
   unsigned char REMAINING_SEGMENTS()
   {
     unsigned char res;
@@ -876,21 +873,17 @@ node uav
   
   //-- the task that moves the node to its next waypoint while
   //-- avoiding collisions.
-  @Period(100000);
-  @Criticality(4);
-  @WCExecTimeNominal(15000);
-  @WCExecTimeOverload(30000);
   @BarrierSync;
   @PlatformController;
   thread COLLISION_AVOIDANCE
   {
-    print_state(X,Y,id,x,y,xt,yt);
     //my_sleep(1);
     if(wall_time() < delay_until)
     {
       return;
     }
 
+    print_state(X,Y,id,x,y,xt,yt,state,waypointValid);
     if(state == NEXT) {
       //-- if reached destination, nothing to do
       if(x == xt && y == yt) return;
@@ -915,7 +908,7 @@ node uav
       {
         started_move = wall_time();
       }
-      if(GRID_MOVE(xp,yp,0.5)) return;
+      if(GRID_MOVE(xp,yp,1)) return;
       lock[x][y] = 0; 
       x = xp; y = yp;
       REACHED_NEXT_XY();
@@ -957,6 +950,7 @@ node uav
     
     //-- set the next 5 hazards based on the next 5 waypoints. XXX: this
     //-- should be fixed once compiler support is added.
+    @Helper;
     void SET_HAZARDS()
     {
       hazard1 = GET_HAZARD(next_wp_x[0], next_wp_y[0]);
@@ -970,12 +964,13 @@ node uav
     record hazards {
       local double hazard1, hazard2, hazard3, hazard4, hazard5;
     } = {
-      INIT_HAZARDS();
+      INIT_HAZARDS(X, Y, xt, yt);
       SET_HAZARDS();
     }
 
     //-- set the next 5 variances based on the next 5 waypoints. XXX:
     //-- this should be fixed once compiler support is added.
+    @Helper;
     void SET_VARIANCES()
     {
       variance1 = 0.1; variance2 = 0.1; variance3 = 0.1; variance4 = 0.1; variance5 = 0.1;
@@ -987,9 +982,9 @@ node uav
     } = {
       SET_VARIANCES();
     }
-    
 
-    local unsigned char input scenario;
+    //-- selected scenario. this should be made an input.
+    local unsigned char input scenario ~ (1 <= scenario && scenario <= 3);
 
     //-- scenario selector
     record scenarios {
@@ -1074,13 +1069,10 @@ node uav
     @Criticality(2);
     @WCExecTimeNominal(10000);
     @WCExecTimeOverload(20000);
-    thread ADAPTATION_MANAGER
+    override thread ADAPTATION_MANAGER
     {
       bool last_formation;    
       unsigned char num_protectors_changing;
-      
-      //-- not leader or uninitialized
-      if(id != 0 || init@0 == 0) return;
       
       //-- check if formation change is still happening
       if(exists_lower(idp,num_changes@idp != num_changes@id) ||
@@ -1134,7 +1126,7 @@ node uav
     @Criticality(3);
     @WCExecTimeNominal(10000);
     @WCExecTimeOverload(20000);
-    thread WAYPOINT
+    override thread WAYPOINT
     {
       waypointValid = 1;
       ly = yp;
@@ -1150,8 +1142,6 @@ node uav
     //-- stuff to do once the next waypoint is reached
     override void REACHED_NEXT_XY()
     {
-      lock[x][y] = 0; 
-      x = xp; y = yp;
       //-- if i am not the leader and a formation change was
       //-- happening, and i have reached the end-point, then formation
       //-- change is complete.
@@ -1165,42 +1155,44 @@ node uav
     @Criticality(3);
     @WCExecTimeNominal(10000);
     @WCExecTimeOverload(20000);
-    thread WAYPOINT
+    override thread WAYPOINT
     {
-      if(init@0 == 0) return;
-      waypointValid = 1;
-      
-      //-- loose formation
-      if(formation@0 == 0) {
-        if(id == 1) {
-          xt = lx@0 + 2;
-          yt = ly@0 + 2;
-        } else if(id == 2) {
-          xt = lx@0 - 2;
-          yt = ly@0 + 2;
-        } else if(id == 3) {
-          xt = lx@0 - 2;
-          yt = ly@0 - 2;
-        } else if(id == 4) {
-          xt = lx@0 + 2;
-          yt = ly@0 - 2;
+      print_waypoint(init@0, lx@0, ly@0);
+      if(init@0 != 0) {
+        waypointValid = 1;
+        
+        //-- loose formation
+        if(formation@0 == 0) {
+          if(id == 1) {
+            xt = lx@0 + 2;
+            yt = ly@0 + 2;
+          } else if(id == 2) {
+            xt = lx@0 - 2;
+            yt = ly@0 + 2;
+          } else if(id == 3) {
+            xt = lx@0 - 2;
+            yt = ly@0 - 2;
+          } else if(id == 4) {
+            xt = lx@0 + 2;
+            yt = ly@0 - 2;
+          }
         }
-        return;
-      }
-      
-      //-- tight formation
-      if(id == 1) {
-        xt = lx@0 + 1;
-        yt = ly@0 + 1;
-      } else if(id == 2) {
-        xt = lx@0 - 1;
-        yt = ly@0 + 1;
-      } else if(id == 3) {
-        xt = lx@0 - 1;
-        yt = ly@0 - 1;
-      } else if(id == 4) {
-        xt = lx@0 + 1;
-        yt = ly@0 - 1;
+        else {
+          //-- tight formation
+          if(id == 1) {
+            xt = lx@0 + 1;
+            yt = ly@0 + 1;
+          } else if(id == 2) {
+            xt = lx@0 - 1;
+            yt = ly@0 + 1;
+          } else if(id == 3) {
+            xt = lx@0 - 1;
+            yt = ly@0 - 1;
+          } else if(id == 4) {
+            xt = lx@0 + 1;
+            yt = ly@0 - 1;
+          }
+        }
       }
     }
   }
@@ -1208,8 +1200,8 @@ node uav
   @InitSim;
   void StartingPosition ()
   {
-    GRID_INIT(X, Y, LeftX, RightX, TopY, BottomY);
-    GRID_PLACE(x, y, 0.5);
+    GRID_INIT();
+    GRID_PLACE(x, y, 1);
   }
 
   //the safety property checked at the beginning of each round
