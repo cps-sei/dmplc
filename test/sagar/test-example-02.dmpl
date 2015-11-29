@@ -206,7 +206,7 @@ node uav
       state = MOVE;
     } else if(state == MOVE) {
       //now we have the lock on (x’,y’)
-      if(GRID_MOVE(xp,yp,0.5)) return;
+      if(GRID_MOVE(xp,yp,1)) return;
       lock[x][y] = 0; 
       x = xp; y = yp;
       state = NEXT;
@@ -275,8 +275,8 @@ node uav
   @InitSim;
   void StartingPosition ()
   {
-    GRID_INIT(X, Y, LeftX, RightX, TopY, BottomY);
-    GRID_PLACE(x, y, 0.5);
+    GRID_INIT();
+    GRID_PLACE(x, y, 1);
   }
 
   //the safety property checked at the beginning of each round

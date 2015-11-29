@@ -458,7 +458,7 @@ node uav {
     } else if(state == MOVE) {
       //now we have the lock on (x’,y’)
       if(started_move == 0) started_move = wall_time();
-      if(GRID_MOVE(xp,yp,0.5)) return;
+      if(GRID_MOVE(xp,yp,1)) return;
       REACHED_NEXT_XY();
       started_move = 0;
       state = NEXT;
@@ -829,8 +829,8 @@ node uav {
   @InitSim;
   void StartingPosition ()
   {
-    GRID_INIT(X, Y, LeftX, RightX, TopY, BottomY);
-    GRID_PLACE(x, y, 0.5);
+    GRID_INIT();
+    GRID_PLACE(x, y, 1);
   }
 
   pure void InRange () 
