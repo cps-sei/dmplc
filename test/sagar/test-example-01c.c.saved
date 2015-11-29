@@ -1,17 +1,17 @@
+//-- DMPLC Version: 0.2
+//-- DMPLC Command Line: dmplc --cube-grid 10 --roles uav:Uav1:2:uav:Uav2:1 -r 5 -s -rp NoCollision -o test-example-01c.c test-example-01c.dmpl
+
 /************* external functions ***********/
 
 /************* constants ***********/
-#define BottomY -2.25
 #define INITS 0
-#define LeftX -2.25
 #define MOVE 4
 #define NEXT 1
 #define REQUEST 2
-#define RightX 2.25
-#define TopY 2.25
 #define WAITING 3
 #define X 10
 #define Y 10
+#define Z 10
 #define false 0
 #define true 1
 
@@ -45,7 +45,6 @@ unsigned char yp_1;
 unsigned char yp_2;
 
 /************* function declarations ***********/
-extern int GRID_MOVE(unsigned char x,unsigned char y,double z);
 void __INIT();
 void __INIT_lock_0();
 void __INIT_lock_1();
@@ -107,7 +106,6 @@ void uav__NEXT_XY_2_bwd();
 void uav__NEXT_XY_2_fwd();
 
 /************* function definitions ***********/
-int GRID_MOVE(unsigned char x,unsigned char y,double z);
 void __INIT()
 {
   __CPROVER_assume(__INIT_x_0());
@@ -1007,7 +1005,7 @@ void uav__COLLISION_AVOIDANCE_0_bwd()
       else
         if ((state_0)==(MOVE))
         {
-          if (GRID_MOVE(xp_0,yp_0,0.5))
+          if (GRID_MOVE(xp_0,yp_0,1))
             return;
           lock_i_0[x_0][y_0] = 0;
           x_0 = xp_0;
@@ -1049,7 +1047,7 @@ void uav__COLLISION_AVOIDANCE_0_fwd()
       else
         if ((state_0)==(MOVE))
         {
-          if (GRID_MOVE(xp_0,yp_0,0.5))
+          if (GRID_MOVE(xp_0,yp_0,1))
             return;
           lock_f_0[x_0][y_0] = 0;
           x_0 = xp_0;
@@ -1091,7 +1089,7 @@ void uav__COLLISION_AVOIDANCE_1_bwd()
       else
         if ((state_1)==(MOVE))
         {
-          if (GRID_MOVE(xp_1,yp_1,0.5))
+          if (GRID_MOVE(xp_1,yp_1,1))
             return;
           lock_i_1[x_1][y_1] = 0;
           x_1 = xp_1;
@@ -1133,7 +1131,7 @@ void uav__COLLISION_AVOIDANCE_1_fwd()
       else
         if ((state_1)==(MOVE))
         {
-          if (GRID_MOVE(xp_1,yp_1,0.5))
+          if (GRID_MOVE(xp_1,yp_1,1))
             return;
           lock_f_1[x_1][y_1] = 0;
           x_1 = xp_1;
@@ -1175,7 +1173,7 @@ void uav__COLLISION_AVOIDANCE_2_bwd()
       else
         if ((state_2)==(MOVE))
         {
-          if (GRID_MOVE(xp_2,yp_2,0.5))
+          if (GRID_MOVE(xp_2,yp_2,1))
             return;
           lock_i_2[x_2][y_2] = 0;
           x_2 = xp_2;
@@ -1217,7 +1215,7 @@ void uav__COLLISION_AVOIDANCE_2_fwd()
       else
         if ((state_2)==(MOVE))
         {
-          if (GRID_MOVE(xp_2,yp_2,0.5))
+          if (GRID_MOVE(xp_2,yp_2,1))
             return;
           lock_f_2[x_2][y_2] = 0;
           x_2 = xp_2;
@@ -1322,3 +1320,7 @@ void uav__NEXT_XY_2_fwd()
         yp_2 = (y_2)-(1);
 }
 
+
+//---------------------------------------------------------
+//-- end of file
+//---------------------------------------------------------
