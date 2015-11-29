@@ -234,6 +234,45 @@ dmpl::BaseRole::mergeWith(const Role &other)
 }
 
 /*********************************************************************/
+//-- returns true if the argument is a serial function for this role
+/*********************************************************************/
+bool dmpl::BaseRole::isSerialFunction(const Func &func) const
+{
+  //-- add simulation initializers
+  if(func->getAttribute("InitSim",0)) return true;
+  
+  //-- look for functions called by variable constructors
+  for(const Var &v : allVars())
+    if(v->initFunc != NULL && v->initFunc->canCall(func)) return true;
+  
+  //-- look for functions called by variable constructors
+  for(const auto &r : records) {
+    if(r.second->initFunc != NULL && r.second->initFunc->canCall(func))
+      return true;
+    if(r.second->assumeFunc != NULL && r.second->assumeFunc->canCall(func))
+      return true;
+  }
+
+  //-- not a serial function
+  return false;
+}
+
+/*********************************************************************/
+//-- return the set of functions that are called before threads are
+//-- spawned, e.g., the platform initializer, and functions called
+//-- from constructors.
+/*********************************************************************/
+dmpl::Funcs dmpl::BaseRole::serialFunctions() const
+{
+  Funcs res;
+
+  for(const auto &f : funcs)
+    if(isSerialFunction(f.second)) res.insert(f);
+
+  return res;
+}
+
+/*********************************************************************/
 //-- print with indentation
 /*********************************************************************/
 void

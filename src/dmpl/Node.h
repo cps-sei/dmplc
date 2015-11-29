@@ -308,6 +308,14 @@ namespace dmpl
     //-- assign ids to threads and do symbol usage analysis
     void analyzeThreads();
 
+    //-- returns true if the argument is a serial function for this role
+    bool isSerialFunction(const Func &func) const;
+
+    //-- return the set of functions that are called before threads
+    //-- are spawned, e.g., the platform initializer, and functions
+    //-- called from constructors.
+    Funcs serialFunctions() const;
+
     /**
      * Prints function information
      * @param  indent  spaces to indent printout
