@@ -200,21 +200,8 @@ fi
 
 MAPSIZE=$(echo $MAPNAME | cut -f1 -d'-')
 
-if [ "$MAPSIZE" == "small" ]; then
-    TopY=2.25
-    LeftX=-2.25
-    BottomY=-2.25
-    RightX=2.25
-elif [ "$MAPSIZE" == "large" ]; then
-    TopY=13
-    LeftX=-12.5
-    BottomY=-6
-    RightX=6.5
-fi
-
 CPP_FILE=${MISSION}_${BIN}.cpp
-DMPLC_FLAGS="-g --roles $ROLEDESC --cube-grid $GRIDSIZE --DTopY $TopY --DBottomY $BottomY"
-DMPLC_FLAGS+=" --DLeftX $LeftX --DRightX $RightX"
+DMPLC_FLAGS="-g --roles $ROLEDESC --cube-grid $GRIDSIZE --map $MAPSIZE"
 [ "$DEBUG" -eq 1 ] && DMPLC_FLAGS="$DMPLC_FLAGS --debug"
 [ -n "$OUTLOG" ] && DMPLC_FLAGS="$DMPLC_FLAGS -e"
 
