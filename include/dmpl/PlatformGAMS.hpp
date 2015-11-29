@@ -69,16 +69,20 @@ double grid_cellX = NAN, grid_cellY = NAN, grid_cellZ = NAN;
 /********************************************************************/
 //-- GAMS functions
 /********************************************************************/
-void GRID_INIT(int x, int y, double leftX, double rightX, double topY, double bottomY)
+void GRID_INIT()
 {
-  grid_x = x;
-  grid_y = y;
-  grid_leftX = leftX;
-  grid_rightX = rightX;
-  grid_topY = topY;
-  grid_bottomY = bottomY;
+  grid_x = X;
+  grid_y = Y;
+  grid_z = Z;
+  grid_leftX = LeftX;
+  grid_rightX = RightX;
+  grid_topY = TopY;
+  grid_bottomY = BottomY;
+  grid_topZ = TopZ;
+  grid_bottomZ = BottomZ;
   grid_cellX = (grid_rightX - grid_leftX) / (grid_x-1);
   grid_cellY = (grid_bottomY - grid_topY) / (grid_y-1);
+  grid_cellZ = (grid_bottomZ - grid_topZ) / (grid_z-1);
 }
 
 void GRID_PLACE(int x, int y, int z)
