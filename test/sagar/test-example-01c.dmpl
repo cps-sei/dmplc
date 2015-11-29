@@ -123,7 +123,6 @@ const MOVE = 4;
 extern int my_sleep(int seconds);
 extern void print_state(int XX,int YY,int my_id, int x, int y, int xf, int yf);
 extern void print_int(int i);
-extern int GRID_MOVE(unsigned char x,unsigned char y,double z);
 
 node uav
 {
