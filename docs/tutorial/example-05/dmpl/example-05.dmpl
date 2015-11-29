@@ -113,11 +113,6 @@ double accumulate_risk(double risk)
   return accumulated_risk += risk;
 }
 
-int MOVE_TO(unsigned char x,unsigned char y)
-{
-  return rand() < (RAND_MAX / 10 * 6);
-}
-
 int my_sleep (int seconds)
 {
   Madara::Utility::sleep (seconds);
@@ -201,20 +196,11 @@ void print_waypoint(int _init, int _lx, int _ly)
  
 %%}
 
-//number of X and Y coordinates
-CONST X = 20;
-CONST Y = 20;
-
 //states of each node
 const NEXT = 1;
 const REQUEST = 2;
 const WAITING = 3;
 const MOVE = 4;
-
-const TopY = 13;
-const LeftX = -12.5;
-const BottomY = -6;
-const RightX = 6.5;
 
 //-- radius of a node
 CONST NODE_RAD = 0.25;
@@ -222,7 +208,6 @@ CONST NODE_RAD = 0.25;
 //-- assume that formation change takes 20 seconds
 const FORM_CHANGE_TIME = 20.0;
 
-extern int GRID_MOVE(unsigned char xp,unsigned char yp, double z);
 extern int my_sleep(int seconds);
 extern void INIT_HAZARDS(int XX, int YY, int tx, int ty);
 extern double GET_HAZARD(int x, int y);
@@ -233,8 +218,6 @@ extern void print_labeled_int(int i);
 extern void print_cover(double d);
 extern void print_hazard(double d);
 extern double wall_time();
-extern double GET_X();
-extern double GET_Y();
 extern double sqrt(double x);
 extern double asin(double x);
 extern void LOG(double x);
@@ -925,7 +908,7 @@ node uav
       {
         started_move = wall_time();
       }
-      if(GRID_MOVE(xp,yp,0.5)) return;
+      if(GRID_MOVE(xp,yp,1)) return;
       lock[x][y] = 0; 
       x = xp; y = yp;
       REACHED_NEXT_XY();
@@ -1217,8 +1200,8 @@ node uav
   @InitSim;
   void StartingPosition ()
   {
-    GRID_INIT(X, Y, LeftX, RightX, TopY, BottomY);
-    GRID_PLACE(x, y, 0.5);
+    GRID_INIT();
+    GRID_PLACE(x, y, 1);
   }
 
   //the safety property checked at the beginning of each round

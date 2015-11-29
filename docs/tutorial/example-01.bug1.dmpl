@@ -61,11 +61,6 @@ target GNU_CPP,WIN_CPP %%{
 #include <stdlib.h>
 #include "madara/utility/Utility.h"
 
-int MOVE_TO(unsigned char x,unsigned char y)
-{
-  return rand() < (RAND_MAX / 10 * 6);
-}
-
 int my_sleep (int seconds)
 {
   Madara::Utility::sleep (seconds);
@@ -112,26 +107,15 @@ void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
 }
 %%}
 
-//number of X and Y coordinates
-const X = 10;
-const Y = 10;
-
 //states of each node
 const NEXT = 1;
 const REQUEST = 2;
 const WAITING = 3;
 const MOVE = 4;
 
-const TopY = 2.25;
-const LeftX = -2.25;
-const BottomY = -2.25;
-const RightX = 2.25;
-
-//extern int MOVE_TO(unsigned char x,unsigned char y);
 extern int my_sleep(int seconds);
 extern void print_state(int XX,int YY,int my_id, int x, int y, int xf, int yf);
 extern void print_int(int i);
-extern int GRID_MOVE(unsigned char x,unsigned char y,double z);
 
 node uav
 {
@@ -184,7 +168,7 @@ node uav
       state = MOVE;
     } else if (state == MOVE) {
       //now we have the lock on (x’,y’)
-      if(GRID_MOVE(xp,yp,0.5)) return;
+      if(GRID_MOVE(xp,yp,1)) return;
       lock[x][y] = 0; 
       x = xp; y = yp;
       state = NEXT;
@@ -198,8 +182,8 @@ node uav
   @InitSim;
   void StartingPosition ()
   {
-    GRID_INIT(X, Y, LeftX, RightX, TopY, BottomY);
-    GRID_PLACE(x, y, 0.5);
+    GRID_INIT();
+    GRID_PLACE(x, y, 1);
   }
 
   //the safety property checked at the beginning of each round

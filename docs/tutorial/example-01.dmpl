@@ -61,11 +61,6 @@ target GNU_CPP,WIN_CPP %%{
 #include <stdlib.h>
 #include "madara/utility/Utility.h"
 
-int MOVE_TO(unsigned char x,unsigned char y)
-{
-  return rand() < (RAND_MAX / 10 * 6);
-}
-
 int my_sleep (int seconds)
 {
   Madara::Utility::sleep (seconds);
@@ -118,11 +113,9 @@ const REQUEST = 2;
 const WAITING = 3;
 const MOVE = 4;
 
-//extern int MOVE_TO(unsigned char x,unsigned char y);
 extern int my_sleep(int seconds);
 extern void print_state(int XX,int YY,int my_id, int x, int y, int xf, int yf);
 extern void print_int(int i);
-extern int GRID_MOVE(unsigned char x,unsigned char y,unsigned char z);
 
 node uav
 {
