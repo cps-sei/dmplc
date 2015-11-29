@@ -1,5 +1,5 @@
 //-- DMPLC Version: 0.2
-//-- DMPLC Command Line:  dmplc --roles uav:Leader:1:uav:Protector:4 --DX 10 --DY 10 --DTopY 2.25 --DBottomY -2.25 --DLeftX -2.25 --DRightX 2.25 -g -o test-example-02.cpp test-example-02.dmpl
+//-- DMPLC Command Line:  dmplc --roles uav:Leader:1:uav:Protector:4 --cube-grid 10 --map small -g -o test-example-02.cpp test-example-02.dmpl
 
 /********************************************************************/
 //-- begin target (GNU_CPP) specific thunk
@@ -191,15 +191,18 @@ unsigned int processes (5);
 //-- Defining program-specific constants
 /********************************************************************/
 #define BottomY -2.25
+#define BottomZ 0.0
 #define LeftX -2.25
 #define MOVE 4
 #define NEXT 1
 #define REQUEST 2
 #define RightX 2.25
 #define TopY 2.25
+#define TopZ 1.0
 #define WAITING 3
 #define X 10
 #define Y 10
+#define Z 10
 
 /********************************************************************/
 //-- Begin defining variables for node uav
@@ -790,10 +793,10 @@ StartingPosition (engine::Function_Arguments & args, engine::Variables & vars)
 
   //-- Begin function body
   {
-    (void) (GRID_INIT (X, Y, LeftX, RightX, TopY, BottomY));
+    (void) (GRID_INIT ());
   }
   {
-    (void) (GRID_PLACE (x, y, 0.5));
+    (void) (GRID_PLACE (x, y, Integer (1)));
   }
 
   //-- Insert return statement, in case user program did not
@@ -871,7 +874,7 @@ thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variable
       {
         if ((thread0_state == MOVE))
         {
-          if ((GRID_MOVE (thread0_xp, thread0_yp, 0.5)))
+          if ((GRID_MOVE (thread0_xp, thread0_yp, Integer (1))))
           {
             return Integer(0);
           }

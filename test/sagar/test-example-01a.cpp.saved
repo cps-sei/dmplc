@@ -1,5 +1,5 @@
 //-- DMPLC Version: 0.2
-//-- DMPLC Command Line:  dmplc --roles uav:Uav:3 --DX 10 --DY 10 --DTopY 2.25 --DBottomY -2.25 --DLeftX -2.25 --DRightX 2.25 -g -o test-example-01a.cpp test-example-01a.dmpl
+//-- DMPLC Command Line:  dmplc --roles uav:Uav:3 --cube-grid 10 --map small -g -o test-example-01a.cpp test-example-01a.dmpl
 
 /********************************************************************/
 //-- begin target (GNU_CPP) specific thunk
@@ -8,11 +8,6 @@
 #define GNU_WIN
 #include <stdlib.h>
 #include "madara/utility/Utility.h"
-
-int GRID_MOVE(unsigned char x,unsigned char y,double z)
-{
-  return rand() < (RAND_MAX / 10 * 6);
-}
 
 int my_sleep (int seconds)
 {
@@ -188,6 +183,7 @@ unsigned int processes (3);
 //-- Defining program-specific constants
 /********************************************************************/
 #define BottomY -2.25
+#define BottomZ 0.0
 #define INITS 0
 #define LeftX -2.25
 #define MOVE 4
@@ -195,9 +191,11 @@ unsigned int processes (3);
 #define REQUEST 2
 #define RightX 2.25
 #define TopY 2.25
+#define TopZ 1.0
 #define WAITING 3
 #define X 10
 #define Y 10
+#define Z 10
 
 /********************************************************************/
 //-- Begin defining variables for node uav
@@ -621,10 +619,10 @@ StartingPosition (engine::Function_Arguments & args, engine::Variables & vars)
 
   //-- Begin function body
   {
-    (void) (GRID_INIT (X, Y, LeftX, RightX, TopY, BottomY));
+    (void) (GRID_INIT ());
   }
   {
-    (void) (GRID_PLACE (x, y, 0.5));
+    (void) (GRID_PLACE (x, y, Integer (1)));
   }
 
   //-- Insert return statement, in case user program did not
@@ -702,7 +700,7 @@ thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variable
       {
         if ((thread0_state == MOVE))
         {
-          if ((GRID_MOVE (thread0_xp, thread0_yp, 0.5)))
+          if ((GRID_MOVE (thread0_xp, thread0_yp, Integer (1))))
           {
             return Integer(0);
           }
