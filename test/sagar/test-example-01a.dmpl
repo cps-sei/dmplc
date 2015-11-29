@@ -61,11 +61,6 @@ target GNU_CPP,WIN_CPP %%{
 #include <stdlib.h>
 #include "madara/utility/Utility.h"
 
-int GRID_MOVE(unsigned char x,unsigned char y,double z)
-{
-  return rand() < (RAND_MAX / 10 * 6);
-}
-
 int my_sleep (int seconds)
 {
   Madara::Utility::sleep (seconds);
