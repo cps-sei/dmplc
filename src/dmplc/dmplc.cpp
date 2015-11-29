@@ -415,6 +415,14 @@ void parse_options (int argc, char **argv)
     std::cerr << "ERROR: no DMPL file names specified!!\n";
     usage (argv[0]);
   }
+
+  //-- X, Y and Z must be defined
+  for(const std::string &d : { "X", "Y", "Z" }) {
+    if(const_def.find(d) == const_def.end()) {
+      std::cerr << "ERROR: no " << d << " dimension specified!!\n";
+      usage (argv[0]);
+    }
+  }
 }
 
 /*********************************************************************/
