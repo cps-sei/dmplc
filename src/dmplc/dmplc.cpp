@@ -324,6 +324,21 @@ void parse_options (int argc, char **argv)
     {
       do_expect = true;
     }
+    else if (arg1 == "-cg" || arg1 == "--cube-grid")
+    {
+      if (i + 1 < argc)
+      {
+        const_def["X"] = argv[i + 1];
+        const_def["Y"] = argv[i + 1];
+        const_def["Z"] = argv[i + 1];
+      }
+      else
+      {
+        std::cerr << "ERROR: Cube Grid Size (-cg|--cube-grid) must have a value!!\n";
+        usage (argv[0]);
+      }
+      ++i;
+    }
     else if (arg1 == "-t" || arg1 == "--target" || arg1 == "--platform")
     {
       if (i + 1 < argc)
@@ -419,6 +434,7 @@ void usage (char *cmd)
   std::cerr << "  -a|--analyzer              generate C++ for expect log analyzer\n";
   std::cerr << "  -g|--gams                  generate C++/GAMS code to run\n";
   std::cerr << "  -e|--expect                check and log 'expect' statements\n";
+  std::cerr << "  -cg|--cube-grid s          specify number of cells on each side of a cubic grid\n";
   std::cerr << "  -t|--target|--platform p   specify a target platform\n";
   std::cerr << "                             Available platforms: WIN_CPP, GNU_CPP (default)\n";
 #if MZSRM==1
