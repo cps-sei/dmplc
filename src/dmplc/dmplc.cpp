@@ -452,7 +452,7 @@ void usage (char *cmd)
   std::cerr << "  -si|--seq-ind              generate sequentialized code to verify inductiveness\n";
   std::cerr << "  -r|--rounds rounds         number of verification rounds\n";
   std::cerr << "  --D<const_name> value      set a const to a value\n";
-  exit (0);
+  exit (1);
 }
 
 /*********************************************************************/
