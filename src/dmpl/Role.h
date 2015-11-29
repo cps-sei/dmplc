@@ -283,6 +283,13 @@ namespace dmpl
       return funcs.find(fn) != funcs.end();
     }
 
+    ///returns true if this role overrides function with given name
+    bool overridesFunction(const std::string &fn)
+    {
+      const auto &f = funcs.find(fn);
+      return (f != funcs.end()) && f->second->isOverride;
+    }
+    
     ///merge with another role
     void mergeWith(const Role &on);
 
