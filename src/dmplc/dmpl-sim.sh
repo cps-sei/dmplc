@@ -139,6 +139,9 @@ fi
 
 . $MISSION
 
+#compute NODE_NUM
+NODENUM=$(echo $ROLEDESC | awk -F':' '{out=$3; for(i=6;i<=NF;i=i+3){out=out"+"$i}; print out}' | bc -l)
+
 VREP_GRACEFUL_EXIT=0
 
 status_file=""

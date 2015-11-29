@@ -6,7 +6,6 @@ BIN=example-07-2
 OUTDIR=outdir
 MAPNAME=small-0G
 GRIDSIZE=20
-NODENUM=9
 ROLEDESC=uav:Tile:9
 
 PLATFORM=vrep-spacetile::::0.5

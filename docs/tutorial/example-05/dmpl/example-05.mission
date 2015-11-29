@@ -7,7 +7,6 @@ BIN=example-05
 OUTDIR=outdir
 MAPNAME=small-hazard
 GRIDSIZE=10
-NODENUM=5
 ROLEDESC=uav:Leader:1:uav:Protector:4
 
 EXPECT_LOG_PERIOD=0.2

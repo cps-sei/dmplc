@@ -6,7 +6,6 @@ BIN=example-02
 OUTDIR=outdir
 MAPNAME=large
 GRIDSIZE=10
-NODENUM=5
 ROLEDESC=uav:Leader:1:uav:Protector:4
 
 EXPECT_LOG_PERIOD=0.2
