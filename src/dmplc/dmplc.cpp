@@ -453,6 +453,16 @@ void parse_options (int argc, char **argv)
       usage (argv[0]);
     }
   }
+
+  //-- if generating code X, Y and Z must be defined
+  if(do_gams) {
+    for(const std::string &d : { "TopY", "BottomY", "LeftX", "RightX", "TopZ", "BottomZ" }) {
+      if(const_def.find(d) == const_def.end()) {
+        std::cerr << "ERROR: map coordinate " << d << " unspecified!!\n";
+        usage (argv[0]);
+      }
+    }
+  }
 }
 
 /*********************************************************************/
