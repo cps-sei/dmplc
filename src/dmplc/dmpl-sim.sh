@@ -215,7 +215,7 @@ for file in $(which dmplc) $DMPL $MISSION; do
         $GDB dmplc $DMPLC_FLAGS -o $CPP_FILE $DMPL
         if [ "$?" != "0" ]; then
             echo "ERROR: dmplc failed on $DMPL!!"
-            exit 0
+            exit 1
         fi
         break
     fi
@@ -231,7 +231,7 @@ if [ $CPP_FILE -nt ${BIN} ]; then
 
     if [ "$?" != "0" ]; then
         echo "ERROR: g++ failed on $CPP_FILE!!"
-        exit 0
+        exit 1
     fi
 fi
 
