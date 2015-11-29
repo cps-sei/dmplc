@@ -1035,8 +1035,14 @@ dmpl::gams::GAMS_Builder::build_function_declarations_for_thread (const Func & t
     for (auto i : funcs) build_function_declaration (thread, i.second);
     return;
   }
+
+  //-- declare thread entry function
+  build_function_declaration (thread, Func());
   
+  //-- declare the thread function
   build_function_declaration (thread, thread);
+
+  //-- declare other functions called by the thread
   for (auto i : funcs) {
     if(thread->findSymbol(i.second) == NULL) continue;
     
@@ -1055,6 +1061,14 @@ dmpl::gams::GAMS_Builder::build_function_declarations_for_thread (const Func & t
 void
 dmpl::gams::GAMS_Builder::build_function_declaration (const Func & thread, const Func & function)
 {
+  //-- if function is NULL, declare the thread entry function
+  if(function == NULL) {
+    buffer_ << "Madara::Knowledge_Record\n"
+            << "thread" << thread->threadID << "_entry"
+            << " (engine::Function_Arguments & args, engine::Variables & vars);\n";
+    return;
+  }
+  
   if (skip_func(function)) return;
 
   buffer_ << "Madara::Knowledge_Record\n";
@@ -1374,7 +1388,13 @@ dmpl::gams::GAMS_Builder::build_functions_for_thread (
     return;
   }
   
+  //-- generate the thread entry function
+  build_function (thread, node, Func());
+
+  //-- generate the thread function
   build_function (thread, node, thread);
+
+  //-- generate other functions called by the thread
   for(const auto &f : funcs)
     if(thread->findSymbol(f.second) != NULL)
       build_function (thread, node, f.second);
@@ -1387,23 +1407,45 @@ void
 dmpl::gams::GAMS_Builder::build_function (
   const Func& thread, const dmpl::Node & node, const dmpl::Func & function)
 {
-  if (skip_func(function)) return;
+  if (function != NULL && skip_func(function)) return;
 
-  BOOST_FOREACH (Attributes::value_type & attr, function->attrs)
-  {
-    buffer_ << "//-- @" << attr.second.name;
-    BOOST_FOREACH (Expr p, attr.second.paramList)
-    {
-      buffer_ << " " << p->toString();
-    }
-    buffer_ << "\n";
+  //-- print attributes
+  if(function != NULL) {
+    BOOST_FOREACH (Attributes::value_type & attr, function->attrs)
+      {
+        buffer_ << "//-- @" << attr.second.name;
+        BOOST_FOREACH (Expr p, attr.second.paramList)
+          buffer_ << " " << p->toString();
+        buffer_ << "\n";
+      }
   }
 
+  //-- function header
   buffer_ << "Madara::Knowledge_Record\n";
   if(thread) buffer_ << "thread" << thread->threadID << "_";
-  buffer_ << function->name;
+  buffer_ << (function == NULL ? "entry" : function->name);
   buffer_ << " (engine::Function_Arguments & args, engine::Variables & vars)\n";
   buffer_ << "{\n";
+
+  //-- if function is NULL, generate the thread entry function
+  if(function == NULL) {
+    //-- pull initial variables
+    build_push_pull(thread, false);
+
+    //-- call main thread function
+    buffer_ << "\n  //-- call thread function\n";
+    buffer_ << "  thread" << thread->threadID << "_";
+    buffer_ << thread->name << "(args, vars);\n";
+    
+    //-- push final variables
+    buffer_ << "\n";
+    build_push_pull(thread, true);
+
+    //-- dummy return statement
+    buffer_ << "\n  return Integer(0);\n";
+    buffer_ << "}\n\n";
+    return;
+  }
 
   //-- inherited prototype functions call the base version
   if(function->isPrototype) {
@@ -1414,9 +1456,6 @@ dmpl::gams::GAMS_Builder::build_function (
     return;
   }
   
-  if(function == thread)
-    build_push_pull(thread, false);
-
   buffer_ << "\n  //-- Declare local (parameter and temporary) variables\n";
   print_vars(buffer_, function->paramSet, true);
   print_vars(buffer_, function->temps, false);
@@ -1431,11 +1470,6 @@ dmpl::gams::GAMS_Builder::build_function (
     visitor.visit (statement);
   }
 
-  if(function == thread) {
-    buffer_ << "\n";
-    build_push_pull(thread, true);
-  }
-  
   buffer_ << "\n  //-- Insert return statement, in case user program did not\n";
   buffer_ << "  return Integer(0);\n";
   buffer_ << "}\n\n";
@@ -2449,7 +2483,7 @@ dmpl::gams::GAMS_Builder::build_main_define_function (const Node & node, const R
 
   buffer_ << "  knowledge.define_function (\"" << funcName(node, role, thread) << "\",\n";
   buffer_ << "                              " << nodeName(node) << "::"
-          << roleName(node, role) << "::thread" << thread->threadID << "_" << thread->name;
+          << roleName(node, role) << "::thread" << thread->threadID << "_entry";
   buffer_ << ");\n";
 }
 
