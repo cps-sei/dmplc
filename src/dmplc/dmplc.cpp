@@ -151,7 +151,6 @@ int main (int argc, char **argv)
   //create the program and fill in the processes
   dmpl::DmplBuilder builder (version, cmdLine, file_names, const_def, debug);
   builder.run ();
-  addProcesses(builder.program);
 
   //print the program
   if (do_print)
@@ -166,8 +165,12 @@ int main (int argc, char **argv)
       builder.printProgram (os);
       os.close ();
     }
+    return 0;
   }
-  
+
+  //-- add processes based on roles
+  addProcesses(builder.program);
+
   //right now, we're just using a realize flag to indicate madara
   //generation
   if (do_gams)
@@ -447,10 +450,12 @@ void parse_options (int argc, char **argv)
   }
 
   //-- X, Y and Z must be defined
-  for(const std::string &d : { "X", "Y", "Z" }) {
-    if(const_def.find(d) == const_def.end()) {
-      std::cerr << "ERROR: no " << d << " dimension specified!!\n";
-      usage (argv[0]);
+  if(do_gams || do_seq || do_seq_ind) {
+    for(const std::string &d : { "X", "Y", "Z" }) {
+      if(const_def.find(d) == const_def.end()) {
+        std::cerr << "ERROR: no " << d << " dimension specified!!\n";
+        usage (argv[0]);
+      }
     }
   }
 
