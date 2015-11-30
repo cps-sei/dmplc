@@ -191,7 +191,16 @@ dmpl::Function::printDecl (std::ostream &os,unsigned int indent)
 /*********************************************************************/
 void dmpl::Function::computeAccessed()
 {
+  //-- clear previous results
+  writesLoc.clear(); writesGlob.clear();
+  readsLoc.clear(); readsGlob.clear();
+  calledFuncs.clear();
+  
+  std::set<std::string> processed;
   for(const auto &use : allUsedSymbols) {
+    //-- skip duplicate symbols
+    if(!processed.insert(use.sym->getName()).second) continue;
+
     //-- variables
     Var var = use.sym->asVar();
     if(var != NULL) {
