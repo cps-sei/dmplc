@@ -723,11 +723,15 @@ void check_argument_sanity()
 namespace node_uav
 {
 Madara::Knowledge_Record
-StartingPosition (engine::Function_Arguments & args, engine::Variables & vars);
+base_StartingPosition (engine::Function_Arguments & args, engine::Variables & vars);
+Madara::Knowledge_Record
+thread0 (engine::Function_Arguments & args, engine::Variables & vars);
 Madara::Knowledge_Record
 thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variables & vars);
 Madara::Knowledge_Record
 thread0_NEXT_XY (engine::Function_Arguments & args, engine::Variables & vars);
+Madara::Knowledge_Record
+thread1 (engine::Function_Arguments & args, engine::Variables & vars);
 Madara::Knowledge_Record
 thread1_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args, engine::Variables & vars);
 
@@ -739,9 +743,15 @@ thread1_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args, engine::Variabl
 namespace node_uav_role_Leader
 {
 Madara::Knowledge_Record
+thread0 (engine::Function_Arguments & args, engine::Variables & vars);
+Madara::Knowledge_Record
 thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variables & vars);
 Madara::Knowledge_Record
+thread1 (engine::Function_Arguments & args, engine::Variables & vars);
+Madara::Knowledge_Record
 thread1_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args, engine::Variables & vars);
+Madara::Knowledge_Record
+thread2 (engine::Function_Arguments & args, engine::Variables & vars);
 Madara::Knowledge_Record
 thread2_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars);
 } // end node_uav_role_Leader namespace
@@ -755,9 +765,15 @@ thread2_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars);
 namespace node_uav_role_Protector
 {
 Madara::Knowledge_Record
+thread0 (engine::Function_Arguments & args, engine::Variables & vars);
+Madara::Knowledge_Record
 thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variables & vars);
 Madara::Knowledge_Record
+thread1 (engine::Function_Arguments & args, engine::Variables & vars);
+Madara::Knowledge_Record
 thread1_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args, engine::Variables & vars);
+Madara::Knowledge_Record
+thread3 (engine::Function_Arguments & args, engine::Variables & vars);
 Madara::Knowledge_Record
 thread3_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars);
 } // end node_uav_role_Protector namespace
@@ -785,7 +801,7 @@ namespace node_uav
 {
 //-- @InitSim
 Madara::Knowledge_Record
-StartingPosition (engine::Function_Arguments & args, engine::Variables & vars)
+base_StartingPosition (engine::Function_Arguments & args, engine::Variables & vars)
 {
 
   //-- Declare local (parameter and temporary) variables
@@ -803,10 +819,8 @@ StartingPosition (engine::Function_Arguments & args, engine::Variables & vars)
   return Integer(0);
 }
 
-//-- @BarrierSync
-//-- @PlatformController
 Madara::Knowledge_Record
-thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variables & vars)
+thread0 (engine::Function_Arguments & args, engine::Variables & vars)
 {
   //-- Pull all referenced locals/globals
   {
@@ -821,6 +835,32 @@ thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variable
     thread0_yp.pull();
     thread0_lock.pull();
   }
+
+  //-- call thread function
+  thread0_COLLISION_AVOIDANCE(args, vars);
+
+  //-- Push all referenced locals/globals
+  {
+    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread0_x.push();
+    thread0_y.push();
+    thread0_xt.push();
+    thread0_yt.push();
+    thread0_state.push();
+    thread0_waypointValid.push();
+    thread0_xp.push();
+    thread0_yp.push();
+    thread0_lock[id].push();
+  }
+
+  return Integer(0);
+}
+
+//-- @BarrierSync
+//-- @PlatformController
+Madara::Knowledge_Record
+thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variables & vars)
+{
 
   //-- Declare local (parameter and temporary) variables
 
@@ -887,20 +927,6 @@ thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variable
     }
   }
 
-  //-- Push all referenced locals/globals
-  {
-    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
-    thread0_x.push();
-    thread0_y.push();
-    thread0_xt.push();
-    thread0_yt.push();
-    thread0_state.push();
-    thread0_waypointValid.push();
-    thread0_xp.push();
-    thread0_yp.push();
-    thread0_lock[id].push();
-  }
-
   //-- Insert return statement, in case user program did not
   return Integer(0);
 }
@@ -951,24 +977,34 @@ thread0_NEXT_XY (engine::Function_Arguments & args, engine::Variables & vars)
   return Integer(0);
 }
 
-//-- @BarrierSync
 Madara::Knowledge_Record
-thread1_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args, engine::Variables & vars)
+thread1 (engine::Function_Arguments & args, engine::Variables & vars)
 {
   //-- Pull all referenced locals/globals
   {
     Madara::Knowledge_Engine::Context_Guard guard(knowledge);
   }
 
-  //-- Declare local (parameter and temporary) variables
-
-
-  //-- Begin function body
+  //-- call thread function
+  thread1_COLLISION_AVOIDANCE2(args, vars);
 
   //-- Push all referenced locals/globals
   {
     Madara::Knowledge_Engine::Context_Guard guard(knowledge);
   }
+
+  return Integer(0);
+}
+
+//-- @BarrierSync
+Madara::Knowledge_Record
+thread1_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args, engine::Variables & vars)
+{
+
+  //-- Declare local (parameter and temporary) variables
+
+
+  //-- Begin function body
 
   //-- Insert return statement, in case user program did not
   return Integer(0);
@@ -1032,6 +1068,43 @@ REMODIFY_GLOBALS_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args,
   foo[id].mark_modified();
   return Integer (0);
 }
+Madara::Knowledge_Record
+thread0 (engine::Function_Arguments & args, engine::Variables & vars)
+{
+  //-- Pull all referenced locals/globals
+  {
+    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread0_x.pull();
+    thread0_y.pull();
+    thread0_xt.pull();
+    thread0_yt.pull();
+    thread0_state.pull();
+    thread0_waypointValid.pull();
+    thread0_xp.pull();
+    thread0_yp.pull();
+    thread0_lock.pull();
+  }
+
+  //-- call thread function
+  thread0_COLLISION_AVOIDANCE(args, vars);
+
+  //-- Push all referenced locals/globals
+  {
+    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread0_x.push();
+    thread0_y.push();
+    thread0_xt.push();
+    thread0_yt.push();
+    thread0_state.push();
+    thread0_waypointValid.push();
+    thread0_xp.push();
+    thread0_yp.push();
+    thread0_lock[id].push();
+  }
+
+  return Integer(0);
+}
+
 //-- @Period 100000
 Madara::Knowledge_Record
 thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variables & vars)
@@ -1039,10 +1112,8 @@ thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variable
   return node_uav::thread0_COLLISION_AVOIDANCE(args, vars);
 }
 
-//-- @BarrierSync
-//-- @Period 100000
 Madara::Knowledge_Record
-thread1_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args, engine::Variables & vars)
+thread1 (engine::Function_Arguments & args, engine::Variables & vars)
 {
   //-- Pull all referenced locals/globals
   {
@@ -1050,11 +1121,8 @@ thread1_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args, engine::Variabl
     thread1_foo.pull();
   }
 
-  //-- Declare local (parameter and temporary) variables
-
-
-  //-- Begin function body
-  thread1_foo[id] = Integer (10);
+  //-- call thread function
+  thread1_COLLISION_AVOIDANCE2(args, vars);
 
   //-- Push all referenced locals/globals
   {
@@ -1062,13 +1130,27 @@ thread1_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args, engine::Variabl
     thread1_foo[id].push();
   }
 
+  return Integer(0);
+}
+
+//-- @BarrierSync
+//-- @Period 100000
+Madara::Knowledge_Record
+thread1_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args, engine::Variables & vars)
+{
+
+  //-- Declare local (parameter and temporary) variables
+
+
+  //-- Begin function body
+  thread1_foo[id] = Integer (10);
+
   //-- Insert return statement, in case user program did not
   return Integer(0);
 }
 
-//-- @Period 100000
 Madara::Knowledge_Record
-thread2_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars)
+thread2 (engine::Function_Arguments & args, engine::Variables & vars)
 {
   //-- Pull all referenced locals/globals
   {
@@ -1081,14 +1163,8 @@ thread2_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars)
     thread2_init.pull();
   }
 
-  //-- Declare local (parameter and temporary) variables
-
-
-  //-- Begin function body
-  thread2_waypointValid = Integer (1);
-  thread2_ly[id] = thread2_yp;
-  thread2_lx[id] = thread2_xp;
-  thread2_init[id] = Integer (1);
+  //-- call thread function
+  thread2_WAYPOINT(args, vars);
 
   //-- Push all referenced locals/globals
   {
@@ -1100,6 +1176,23 @@ thread2_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars)
     thread2_xp.push();
     thread2_init[id].push();
   }
+
+  return Integer(0);
+}
+
+//-- @Period 100000
+Madara::Knowledge_Record
+thread2_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars)
+{
+
+  //-- Declare local (parameter and temporary) variables
+
+
+  //-- Begin function body
+  thread2_waypointValid = Integer (1);
+  thread2_ly[id] = thread2_yp;
+  thread2_lx[id] = thread2_xp;
+  thread2_init[id] = Integer (1);
 
   //-- Insert return statement, in case user program did not
   return Integer(0);
@@ -1252,11 +1345,67 @@ REMODIFY_GLOBALS_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args,
   // Remodifying thread-specific global variables
   return Integer (0);
 }
+Madara::Knowledge_Record
+thread0 (engine::Function_Arguments & args, engine::Variables & vars)
+{
+  //-- Pull all referenced locals/globals
+  {
+    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread0_x.pull();
+    thread0_y.pull();
+    thread0_xt.pull();
+    thread0_yt.pull();
+    thread0_state.pull();
+    thread0_waypointValid.pull();
+    thread0_xp.pull();
+    thread0_yp.pull();
+    thread0_lock.pull();
+  }
+
+  //-- call thread function
+  thread0_COLLISION_AVOIDANCE(args, vars);
+
+  //-- Push all referenced locals/globals
+  {
+    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread0_x.push();
+    thread0_y.push();
+    thread0_xt.push();
+    thread0_yt.push();
+    thread0_state.push();
+    thread0_waypointValid.push();
+    thread0_xp.push();
+    thread0_yp.push();
+    thread0_lock[id].push();
+  }
+
+  return Integer(0);
+}
+
 //-- @Period 100000
 Madara::Knowledge_Record
 thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variables & vars)
 {
   return node_uav::thread0_COLLISION_AVOIDANCE(args, vars);
+}
+
+Madara::Knowledge_Record
+thread1 (engine::Function_Arguments & args, engine::Variables & vars)
+{
+  //-- Pull all referenced locals/globals
+  {
+    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+  }
+
+  //-- call thread function
+  thread1_COLLISION_AVOIDANCE2(args, vars);
+
+  //-- Push all referenced locals/globals
+  {
+    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+  }
+
+  return Integer(0);
 }
 
 //-- @Period 100000
@@ -1266,9 +1415,8 @@ thread1_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args, engine::Variabl
   return node_uav::thread1_COLLISION_AVOIDANCE2(args, vars);
 }
 
-//-- @Period 100000
 Madara::Knowledge_Record
-thread3_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars)
+thread3 (engine::Function_Arguments & args, engine::Variables & vars)
 {
   //-- Pull all referenced locals/globals
   {
@@ -1280,6 +1428,28 @@ thread3_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars)
     thread3_yt.pull();
     thread3_ly.pull();
   }
+
+  //-- call thread function
+  thread3_WAYPOINT(args, vars);
+
+  //-- Push all referenced locals/globals
+  {
+    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread3_init[id].push();
+    thread3_waypointValid.push();
+    thread3_xt.push();
+    thread3_lx[id].push();
+    thread3_yt.push();
+    thread3_ly[id].push();
+  }
+
+  return Integer(0);
+}
+
+//-- @Period 100000
+Madara::Knowledge_Record
+thread3_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars)
+{
 
   //-- Declare local (parameter and temporary) variables
 
@@ -1318,17 +1488,6 @@ thread3_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars)
         }
       }
     }
-  }
-
-  //-- Push all referenced locals/globals
-  {
-    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
-    thread3_init[id].push();
-    thread3_waypointValid.push();
-    thread3_xt.push();
-    thread3_lx[id].push();
-    thread3_yt.push();
-    thread3_ly[id].push();
   }
 
   //-- Insert return statement, in case user program did not
@@ -1820,29 +1979,29 @@ int main (int argc, char ** argv)
   knowledge.define_function ("node_uav_role_Leader_COLLISION_AVOIDANCE_REMODIFY_GLOBALS",
                               node_uav::node_uav_role_Leader::REMODIFY_GLOBALS_COLLISION_AVOIDANCE);
   knowledge.define_function ("node_uav_role_Leader_COLLISION_AVOIDANCE",
-                              node_uav::node_uav_role_Leader::thread0_COLLISION_AVOIDANCE);
+                              node_uav::node_uav_role_Leader::thread0);
   knowledge.define_function ("node_uav_role_Leader_COLLISION_AVOIDANCE2_REMODIFY_BARRIERS",
                               node_uav::node_uav_role_Leader::REMODIFY_BARRIERS_COLLISION_AVOIDANCE2);
   knowledge.define_function ("node_uav_role_Leader_COLLISION_AVOIDANCE2_REMODIFY_GLOBALS",
                               node_uav::node_uav_role_Leader::REMODIFY_GLOBALS_COLLISION_AVOIDANCE2);
   knowledge.define_function ("node_uav_role_Leader_COLLISION_AVOIDANCE2",
-                              node_uav::node_uav_role_Leader::thread1_COLLISION_AVOIDANCE2);
+                              node_uav::node_uav_role_Leader::thread1);
   knowledge.define_function ("node_uav_role_Leader_WAYPOINT",
-                              node_uav::node_uav_role_Leader::thread2_WAYPOINT);
+                              node_uav::node_uav_role_Leader::thread2);
   knowledge.define_function ("node_uav_role_Protector_COLLISION_AVOIDANCE_REMODIFY_BARRIERS",
                               node_uav::node_uav_role_Protector::REMODIFY_BARRIERS_COLLISION_AVOIDANCE);
   knowledge.define_function ("node_uav_role_Protector_COLLISION_AVOIDANCE_REMODIFY_GLOBALS",
                               node_uav::node_uav_role_Protector::REMODIFY_GLOBALS_COLLISION_AVOIDANCE);
   knowledge.define_function ("node_uav_role_Protector_COLLISION_AVOIDANCE",
-                              node_uav::node_uav_role_Protector::thread0_COLLISION_AVOIDANCE);
+                              node_uav::node_uav_role_Protector::thread0);
   knowledge.define_function ("node_uav_role_Protector_COLLISION_AVOIDANCE2_REMODIFY_BARRIERS",
                               node_uav::node_uav_role_Protector::REMODIFY_BARRIERS_COLLISION_AVOIDANCE2);
   knowledge.define_function ("node_uav_role_Protector_COLLISION_AVOIDANCE2_REMODIFY_GLOBALS",
                               node_uav::node_uav_role_Protector::REMODIFY_GLOBALS_COLLISION_AVOIDANCE2);
   knowledge.define_function ("node_uav_role_Protector_COLLISION_AVOIDANCE2",
-                              node_uav::node_uav_role_Protector::thread1_COLLISION_AVOIDANCE2);
+                              node_uav::node_uav_role_Protector::thread1);
   knowledge.define_function ("node_uav_role_Protector_WAYPOINT",
-                              node_uav::node_uav_role_Protector::thread3_WAYPOINT);
+                              node_uav::node_uav_role_Protector::thread3);
 
 
   //-- Initializing platform
@@ -1852,10 +2011,10 @@ int main (int argc, char ** argv)
 
   //-- Initializing simulation
   if(node_name == "uav" && role_name == "Leader") {
-    knowledge.define_function ("initialize_platform", node_uav::StartingPosition);
+    knowledge.define_function ("initialize_platform", node_uav::base_StartingPosition);
   }
   if(node_name == "uav" && role_name == "Protector") {
-    knowledge.define_function ("initialize_platform", node_uav::StartingPosition);
+    knowledge.define_function ("initialize_platform", node_uav::base_StartingPosition);
   }
   knowledge.evaluate("initialize_platform ()");
 
