@@ -180,6 +180,17 @@ namespace dmpl
                                              f.second, f.second, false));
         f.second->computeAccessed();
       }
+      
+      //-- reanalyze prototype threads
+      for(Func &f : r.second->threads) {
+        //-- if prototype, inherit from node-level thread
+        if(f->isPrototype) {            
+          Func nodeFunc = node.findFunc(f->name);
+          for(const auto &rf : r.second->funcs)
+            if(nodeFunc->canCall(rf.second)) f->inherit(rf.second);
+          f->computeAccessed();
+        }
+      }
 
       //-- analyse constructors of local and global variables
       for(const auto &v : r.second->allVars()) {

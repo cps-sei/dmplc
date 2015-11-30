@@ -421,9 +421,10 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
       build_role_variables(r.second, false);
 
       //-- generate thread-read-execute-write variables. if the thread
-      //-- is new or overridden, then include node variables as well.
+      //-- is new, or inherited, or overridden, then include node
+      //-- variables as well.
       for (const Func &thread : r.second->threads) {
-        bool newOrOverride = thread->isOverride || !n->second->hasFunction(thread->name);
+        bool newOrOverride = thread->isOverride || thread->isPrototype || !n->second->hasFunction(thread->name);
 
         build_thread_variables(thread, r.second->globVars, true);
         if(newOrOverride) build_thread_variables(thread, n->second->globVars, true);
@@ -1007,9 +1008,11 @@ dmpl::gams::GAMS_Builder::build_function_declarations ()
 
       for (Func thread : r.second->threads) {
         //-- collect functions. for this role, and if the thread is
-        //-- new for this role then function for parent node as well.
+        //-- new for this role, or overridden, or a prototype, then
+        //-- function for parent node as well.
         Funcs funcs = r.second->funcs;
-        if(!r.second->node->hasFunction(thread->name))
+        bool newOrOverride = thread->isOverride || thread->isPrototype || !r.second->node->hasFunction(thread->name);
+        if(newOrOverride)
           funcs.insert(n.second->funcs.begin(), n.second->funcs.end());
                        
         //-- declare all functions
@@ -1044,19 +1047,14 @@ dmpl::gams::GAMS_Builder::build_function_declarations_for_thread (const Func & t
 
   //-- declare other functions called by the thread
   for (auto i : funcs) {
-    //-- inherited threads expand out to the base version
-    Func actualThread = thread;
-    if(thread->role && thread->isPrototype)
-      actualThread = thread->node->findFunc(thread->name);
-    
-    if(!actualThread->canCall(i.second)) continue;
+    if(!thread->canCall(i.second)) continue;
     
     //-- sanity check: threads cannot be called as functions
     if(i.second->isThread())
-      throw std::runtime_error("ERROR: thread " + actualThread->name + " calls thread " +
+      throw std::runtime_error("ERROR: thread " + thread->name + " calls thread " +
                                i.second->name + " as a function!!");
     
-    build_function_declaration (actualThread, i.second);
+    build_function_declaration (thread, i.second);
   }
 }
   
@@ -1142,9 +1140,11 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
       
       for (Func thread : r.second->threads) {
         //-- collect functions. for this role, and if the thread is
-        //-- new for this role then function for parent node as well.
+        //-- new for this role, or overridden, or a prototype, then
+        //-- function for parent node as well.
         Funcs funcs = r.second->funcs;
-        if(!r.second->node->hasFunction(thread->name))
+        bool newOrOverride = thread->isOverride || thread->isPrototype || !r.second->node->hasFunction(thread->name);
+        if(newOrOverride)
           funcs.insert(n->second->funcs.begin(), n->second->funcs.end());
                        
         //-- generate code for all functions
@@ -1402,13 +1402,8 @@ dmpl::gams::GAMS_Builder::build_functions_for_thread (
 
   //-- generate other functions called by the thread
   for(const auto &f : funcs) {
-    //-- inherited threads expand out to the base version
-    Func actualThread = thread;
-    if(thread->role && thread->isPrototype)
-      actualThread = thread->node->findFunc(thread->name);
-    
-    if(actualThread->canCall(f.second))
-      build_function (actualThread, node, f.second);
+    if(thread->canCall(f.second))
+      build_function (thread, node, f.second);
   }
 }
  
