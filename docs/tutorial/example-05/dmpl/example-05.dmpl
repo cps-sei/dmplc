@@ -305,9 +305,6 @@ node uav
   //-- manager
   global bool formation = 0; //0 = loose, 1 = tight
 
-  //-- factor between speeds
-  local double speed_factor;
-    
   //-- the function that computes the coverage of the
   //-- leader. currently we assume that protectors do not provide
   //-- overlapping coverage.
@@ -910,10 +907,6 @@ node uav
       x = xp; y = yp;
       REACHED_NEXT_XY();
       state = NEXT;
-      if(id == 0 && started_move > 0 && formation@0 == 1 && speed_factor > 1)
-      {
-        delay_until = speed_factor * wall_time() - (speed_factor - 1) * started_move;
-      }
       started_move = 0;
     }
   }
@@ -997,6 +990,9 @@ node uav
 
       //-- remaining flight time
       local double remaining_flt_time;
+
+      //-- factor between speeds
+      local double speed_factor;
     } = {
       //-- SCENARIO 1: the ratio of loose and tight speeds is > 4. in
       //-- this case, there is no benefit to switch to tight formation.
@@ -1036,7 +1032,7 @@ node uav
     override void REACHED_NEXT_XY()
     {
       unsigned char i;
-      
+
       current_hazard = GET_HAZARD(x,y);
 
       i = 1;
@@ -1055,6 +1051,11 @@ node uav
         (formation@id == 0 ? seg_len/loose_speed : seg_len/tight_speed);
       //-- one less segment to go
       remaining_segs = remaining_segs - 1;
+      //-- update delay_unit
+      if(started_move > 0 && formation == 1 && speed_factor > 1)
+      {
+        delay_until = speed_factor * wall_time() - (speed_factor - 1) * started_move;
+      }
     }
     
     //-- the task that invokes the adaptation manager. this task only
@@ -1110,7 +1111,7 @@ node uav
       //-- triggered, and increment number of formation changes.
       if(!changing && last_formation != formation@0) {
         changing = 1;
-        num_changes = 1 - num_changes@id;
+        num_changes = 1 - num_changes;
       }
     }
 
@@ -1140,8 +1141,8 @@ node uav
       //-- if i am not the leader and a formation change was
       //-- happening, and i have reached the end-point, then formation
       //-- change is complete.
-      if(num_changes@id != num_changes@0 && x == xt && y == yt) {
-        num_changes = 1 - num_changes@id;
+      if(num_changes != num_changes@0 && x == xt && y == yt) {
+        num_changes = 1 - num_changes;
       }
     }
 
