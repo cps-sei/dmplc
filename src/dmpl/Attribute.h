@@ -95,6 +95,12 @@ namespace dmpl
 
     //-- return a string representation
     std::string toString() const;
+
+    //-- equality operator
+    bool operator == (const Attribute &rhs) const
+    {
+      return toString() == rhs.toString();
+    }
     
     //-- if attribute has a single parameter, return it. otherwise,
     //-- throw an exception.
