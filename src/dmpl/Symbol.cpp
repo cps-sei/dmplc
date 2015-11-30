@@ -148,7 +148,8 @@ namespace dmpl
 
     //-- analyse roles
     for(const Roles::value_type &r : node.roles) {
-      //-- analyse threads
+      //-- analyse threads, collect role-local thread-called functions
+      Funcs roleFuncs;
       for(Func &f : r.second->threads) {
         //-- if prototype, inherit from node-level thread
         if(f->isPrototype) {            
@@ -158,10 +159,26 @@ namespace dmpl
                                      node.name + " of role " + r.second->name +
                                      " to inherit from!!");
           f->inherit(nodeFunc);
+
+          //-- collect thread called funcs
+          for(const auto &rf : r.second->funcs)
+            if(nodeFunc->canCall(rf.second)) roleFuncs.insert(rf);
         }
         //-- else analyze
-        else
+        else {
           analyzeSymbolUsage(f, Context(&node, r.second.get(), Spec(), f, f, false));
+          f->computeAccessed();
+          //-- collect thread called funcs
+          for(const auto &rf : r.second->funcs)
+            if(f->canCall(rf.second)) roleFuncs.insert(rf);
+        }
+      }
+
+      //-- analyze thread-called functions
+      for(const auto &f : roleFuncs) {
+        analyzeSymbolUsage(f.second, Context(&node, r.second.get(), Spec(),
+                                             f.second, f.second, false));
+        f.second->computeAccessed();
       }
 
       //-- analyse constructors of local and global variables
