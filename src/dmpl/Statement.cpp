@@ -74,6 +74,7 @@ dmpl::Statement::Context dmpl::AsgnStmt::useSymbols(dmpl::Statement::Context con
   {
     Context conW = con;
     conW.isLHS = true;
+    conW.parent = &con;
     lhs->useSymbols(conW);
     inherit(lhs);
   }

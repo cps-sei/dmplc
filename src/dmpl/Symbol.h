@@ -531,11 +531,13 @@ namespace dmpl
       Func curFunc;
       bool isLHS;
       std::deque<const SymbolBinder*> binders;
+      Context *parent;
 
       //constructors
-      Context() : node(0), role(0), isLHS(false) {}
-      Context(BaseNode *n, BaseRole *r, const Spec &s, const Func &t, const Func &cf, const bool il)
-        : node(n), role(r), spec(s), thread(t), curFunc(cf), isLHS(il) {}
+      Context() : node(0), role(0), isLHS(false), parent(NULL) {}
+      Context(BaseNode *n, BaseRole *r, const Spec &s, const Func &t,
+              const Func &cf, const bool il)
+        : node(n), role(r), spec(s), thread(t), curFunc(cf), isLHS(il), parent(NULL) {}
       
       Sym findSym(const std::string &name);
 

@@ -72,6 +72,7 @@ dmpl::LvalExpr::useSymbols(Context con)
   {
     Context con2 = con;
     con2.isLHS = false;
+    con2.parent = &con;
     if(node)
     {
       node->useSymbols(con2);
@@ -91,11 +92,25 @@ dmpl::LvalExpr::useSymbols(Context con)
     Func func = std::dynamic_pointer_cast<Function>(sym);
     if(func)
     {
-      Context con2 = con;
-      con2.curFunc = func;
-      con2.isLHS = false;
-      func->useSymbols(con2);
-      inherit(func);
+      //-- check for recursion
+      bool recur = false;
+      Context *currCon = &con;
+      while(currCon) {
+        if(currCon->curFunc == func) {
+          recur = true;
+          break;
+        }
+        currCon = currCon->parent;
+      }
+
+      if(!recur) {
+        Context con2 = con;
+        con2.curFunc = func;
+        con2.isLHS = false;
+        con2.parent = &con;
+        func->useSymbols(con2);
+        inherit(func);
+      }
     }
   }
   //else
@@ -184,8 +199,25 @@ dmpl::CallExpr::Context dmpl::CallExpr::useSymbols(Context con)
   Func f = std::dynamic_pointer_cast<Function>(lval.sym);
   if(f != NULL)
   {
-    f->useSymbols(con);
-    inherit(f);
+    //-- check for recursion
+    bool recur = false;
+    Context *currCon = &con;
+    while(currCon) {
+      if(currCon->curFunc == f) {
+        recur = true;
+        break;
+      }
+      currCon = currCon->parent;
+    }
+
+    if(!recur) {
+      Context con2 = con;
+      con2.curFunc = f;
+      con2.isLHS = false;
+      con2.parent = &con;
+      f->useSymbols(con2);
+      inherit(f);
+    }
   }
   else
   {
