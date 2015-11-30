@@ -566,7 +566,7 @@ dmpl::gams::GAMS_Builder::build_thread_variables (const Func &thread, const Vars
                 "\n//-- Used to implement Read-Execute-Write semantics", "\n", "", 0);
   for (auto i : vars) {
     Var & var = i.second;
-    if(thread->findSymbol(var) != NULL)
+    if(thread->canRead(var) || thread->canWrite(var))
       build_thread_variable (thread, var);
   }
 }
