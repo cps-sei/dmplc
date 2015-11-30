@@ -218,13 +218,8 @@ dmpl::BaseRole::mergeWith(const Role &other)
   }
 
   //-- merge attributes
-  BOOST_FOREACH(const Attributes::value_type &a, oth.attrs)
-  {
-    if(attrs.count(a.second.name) == 0)
-      attrs[a.second.name] = a.second;
-    else if (attrs[a.second.name].paramList != a.second.paramList)
-      throw std::runtime_error("Cannot merge role with attributes of differing parameters: @" + a.second.name + " in " + name);
-  }
+  if(!mergeAttributes(*other))
+    throw std::runtime_error("Cannot merge attributes of role " + name + "!!");
 
   //-- merge specifications
   BOOST_FOREACH(const Specs::value_type &s, oth.specs) {

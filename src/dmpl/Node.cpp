@@ -125,13 +125,8 @@ dmpl::BaseNode::mergeWith(const Node &on)
   }
 
   //-- merge attributes
-  BOOST_FOREACH(const Attributes::value_type &a, on->attrs)
-  {
-    if(n.attrs.count(a.second.name) == 0)
-      n.attrs[a.second.name] = a.second;
-    else if (n.attrs[a.second.name].paramList != a.second.paramList)
-      throw std::runtime_error("Cannot merge nodes with attributes of differing parameters: @" + a.second.name + " in " + n.name);
-  }
+  if(!mergeAttributes(*on))
+    throw std::runtime_error("Cannot merge attributes of node " + name + "!!");
 
   //-- merge roles
   BOOST_FOREACH(const Roles::value_type &r, on->roles) addRole(r.second);

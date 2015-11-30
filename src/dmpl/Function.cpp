@@ -110,14 +110,9 @@ dmpl::Function::mergeWith (const Func &of, bool checkDecors)
       throw std::runtime_error("Declarations have differeing pure-ity: for " + f.name);
   }
 
-  BOOST_FOREACH(const Attributes::value_type &a, of->attrs)
-  {
-    if(f.attrs.count(a.second.name) == 0)
-      f.attrs[a.second.name] = a.second;
-    else if (f.attrs[a.second.name].paramList != a.second.paramList)
-      throw std::runtime_error("Cannot merge functions with attributes of->differing parameters: @" +
-                               a.second.name + " in " + f.name);
-  }
+  //-- merge attributes
+  if(!mergeAttributes(*of))
+    throw std::runtime_error("Cannot merge attributes of function " + name + "!!");
 }
 
 /*********************************************************************/

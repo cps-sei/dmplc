@@ -165,6 +165,23 @@ namespace dmpl
         return it->second;
     }
 
+    //-- merge attributes from another. check for mismatched parameter
+    //-- list. return true on success, and false on failure.
+    bool mergeAttributes(const HasAttributes &other)
+    {
+      for(const auto &a : other.attrs) {
+        auto r = attrs.insert(a);
+        if(r.second) continue;
+        //-- error check
+        if(!(*r.first == a)) {
+          std::cerr << "ERROR: could not merge attributes " << r.first->second.toString()
+                    << " and " << a.second.toString() << '\n';
+          return false;
+        }
+      }
+      //-- success
+      return true;
+    }
   };
 }
 
