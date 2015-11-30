@@ -111,14 +111,18 @@ dmpl::madara::GAMS_Visitor::exitLval (LvalExpr & expression)
 {
   Sym symbol = expression.sym;
   Var var = std::dynamic_pointer_cast<Variable>(symbol);
+
+  //-- no symbol, probably something external
   if (symbol == NULL)
   {
     buffer_ << expression.var;
   }
+  //-- id variable
   else if (var != NULL && id_map_.find (var) != id_map_.end ())
   {
     buffer_ << id_map_[var];
   }
+  //-- regular variable
   else
   {
     int indices = expression.indices.size();
@@ -131,6 +135,8 @@ dmpl::madara::GAMS_Visitor::exitLval (LvalExpr & expression)
     if(thread_ && (isGlobal || isLocal))
       buffer_ << "thread" << thread_->threadID << "_";
     buffer_ << symbol->getName();
+
+    //-- array variable
     if (indices > 0)
     {
       // iterate over each index
@@ -551,8 +557,9 @@ dmpl::madara::GAMS_Visitor::exitAsgn (AsgnStmt & statement)
     bool isLocal = lhs->sym != NULL && (lhs->sym->getScope() == Variable::LOCAL);
     bool isAnalyzerLocal = do_analyzer_ && isLocal;
     bool isGlobal = lhs->sym != NULL && (lhs->sym->getScope() == Variable::GLOBAL || isAnalyzerLocal);
-    if(isGlobal)
-      indices++;
+
+    if(isGlobal) indices++;
+    
     if(lhs->node != NULL)
     {
       if(!isGlobal)
@@ -567,6 +574,7 @@ dmpl::madara::GAMS_Visitor::exitAsgn (AsgnStmt & statement)
       }
     }
 
+    //-- scalar variable
     if (indices == 0)
     {
       buffer_ << spacer;
@@ -577,6 +585,7 @@ dmpl::madara::GAMS_Visitor::exitAsgn (AsgnStmt & statement)
       visit (statement.rhs);
       buffer_ << ";\n";
     }
+    //-- array variable
     else
     {
       if (indices >= 1)
@@ -585,7 +594,6 @@ dmpl::madara::GAMS_Visitor::exitAsgn (AsgnStmt & statement)
         if(thread_ && (isGlobal || isLocal))
           buffer_ << "thread" << thread_->threadID << "_";
         buffer_ << lhs->var;
-
 
         // iterate over each index
         if(isGlobal)
