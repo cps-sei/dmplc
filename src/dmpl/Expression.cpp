@@ -94,7 +94,7 @@ dmpl::LvalExpr::useSymbols(Context con)
       Context con2 = con;
       con2.curFunc = func;
       con2.isLHS = false;
-      func->useSymbols(con);
+      func->useSymbols(con2);
     }
   }
   //else
