@@ -1109,7 +1109,74 @@ thread0 (engine::Function_Arguments & args, engine::Variables & vars)
 Madara::Knowledge_Record
 thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variables & vars)
 {
-  return node_uav::thread0_COLLISION_AVOIDANCE(args, vars);
+
+  //-- Declare local (parameter and temporary) variables
+
+
+  //-- Begin function body
+  {
+    (void) (print_state (X, Y, id, thread0_x, thread0_y, thread0_xt, thread0_yt));
+  }
+  if ((thread0_state == NEXT))
+  {
+    if (((thread0_x == thread0_xt) && (thread0_y == thread0_yt)))
+    {
+      return Integer(0);
+    }
+    if ((thread0_NEXT_XY (
+           __strip_const(engine::Function_Arguments(0))
+          , vars).to_integer() == 0 ? false : true))
+    {
+      return Integer(0);
+    }
+    thread0_state = REQUEST;
+  }
+  else
+  {
+    if ((thread0_state == REQUEST))
+    {
+      if ((id == 1 && ((thread0_lock[0][thread0_xp][thread0_yp] != Integer (0)))) || 
+        (id == 2 && ((thread0_lock[0][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[1][thread0_xp][thread0_yp] != Integer (0)))) || 
+        (id == 3 && ((thread0_lock[0][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[1][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[2][thread0_xp][thread0_yp] != Integer (0)))) || 
+        (id == 4 && ((thread0_lock[0][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[1][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[2][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[3][thread0_xp][thread0_yp] != Integer (0)))))
+      {
+        return Integer(0);
+      }
+      thread0_lock[id][thread0_xp][thread0_yp] = Integer (1);
+      thread0_state = WAITING;
+    }
+    else
+    {
+      if ((thread0_state == WAITING))
+      {
+        if ((id == 0 && ((thread0_lock[1][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[2][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[3][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[4][thread0_xp][thread0_yp] != Integer (0)))) || 
+          (id == 1 && ((thread0_lock[2][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[3][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[4][thread0_xp][thread0_yp] != Integer (0)))) || 
+          (id == 2 && ((thread0_lock[3][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[4][thread0_xp][thread0_yp] != Integer (0)))) || 
+          (id == 3 && ((thread0_lock[4][thread0_xp][thread0_yp] != Integer (0)))))
+        {
+          return Integer(0);
+        }
+        thread0_state = MOVE;
+      }
+      else
+      {
+        if ((thread0_state == MOVE))
+        {
+          if ((GRID_MOVE (thread0_xp, thread0_yp, Integer (1))))
+          {
+            return Integer(0);
+          }
+          thread0_lock[id][thread0_x][thread0_y] = Integer (0);
+          thread0_x = thread0_xp;
+          thread0_y = thread0_yp;
+          thread0_state = NEXT;
+        }
+      }
+    }
+  }
+
+  //-- Insert return statement, in case user program did not
+  return Integer(0);
 }
 
 Madara::Knowledge_Record
@@ -1386,7 +1453,74 @@ thread0 (engine::Function_Arguments & args, engine::Variables & vars)
 Madara::Knowledge_Record
 thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variables & vars)
 {
-  return node_uav::thread0_COLLISION_AVOIDANCE(args, vars);
+
+  //-- Declare local (parameter and temporary) variables
+
+
+  //-- Begin function body
+  {
+    (void) (print_state (X, Y, id, thread0_x, thread0_y, thread0_xt, thread0_yt));
+  }
+  if ((thread0_state == NEXT))
+  {
+    if (((thread0_x == thread0_xt) && (thread0_y == thread0_yt)))
+    {
+      return Integer(0);
+    }
+    if ((thread0_NEXT_XY (
+           __strip_const(engine::Function_Arguments(0))
+          , vars).to_integer() == 0 ? false : true))
+    {
+      return Integer(0);
+    }
+    thread0_state = REQUEST;
+  }
+  else
+  {
+    if ((thread0_state == REQUEST))
+    {
+      if ((id == 1 && ((thread0_lock[0][thread0_xp][thread0_yp] != Integer (0)))) || 
+        (id == 2 && ((thread0_lock[0][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[1][thread0_xp][thread0_yp] != Integer (0)))) || 
+        (id == 3 && ((thread0_lock[0][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[1][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[2][thread0_xp][thread0_yp] != Integer (0)))) || 
+        (id == 4 && ((thread0_lock[0][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[1][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[2][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[3][thread0_xp][thread0_yp] != Integer (0)))))
+      {
+        return Integer(0);
+      }
+      thread0_lock[id][thread0_xp][thread0_yp] = Integer (1);
+      thread0_state = WAITING;
+    }
+    else
+    {
+      if ((thread0_state == WAITING))
+      {
+        if ((id == 0 && ((thread0_lock[1][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[2][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[3][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[4][thread0_xp][thread0_yp] != Integer (0)))) || 
+          (id == 1 && ((thread0_lock[2][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[3][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[4][thread0_xp][thread0_yp] != Integer (0)))) || 
+          (id == 2 && ((thread0_lock[3][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[4][thread0_xp][thread0_yp] != Integer (0)))) || 
+          (id == 3 && ((thread0_lock[4][thread0_xp][thread0_yp] != Integer (0)))))
+        {
+          return Integer(0);
+        }
+        thread0_state = MOVE;
+      }
+      else
+      {
+        if ((thread0_state == MOVE))
+        {
+          if ((GRID_MOVE (thread0_xp, thread0_yp, Integer (1))))
+          {
+            return Integer(0);
+          }
+          thread0_lock[id][thread0_x][thread0_y] = Integer (0);
+          thread0_x = thread0_xp;
+          thread0_y = thread0_yp;
+          thread0_state = NEXT;
+        }
+      }
+    }
+  }
+
+  //-- Insert return statement, in case user program did not
+  return Integer(0);
 }
 
 Madara::Knowledge_Record
@@ -1412,7 +1546,14 @@ thread1 (engine::Function_Arguments & args, engine::Variables & vars)
 Madara::Knowledge_Record
 thread1_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args, engine::Variables & vars)
 {
-  return node_uav::thread1_COLLISION_AVOIDANCE2(args, vars);
+
+  //-- Declare local (parameter and temporary) variables
+
+
+  //-- Begin function body
+
+  //-- Insert return statement, in case user program did not
+  return Integer(0);
 }
 
 Madara::Knowledge_Record
