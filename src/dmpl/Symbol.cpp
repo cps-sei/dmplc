@@ -120,8 +120,10 @@ namespace dmpl
   void SymbolUser::analyzeSymbolUsage(BaseNode &node)
   {
     //-- analyse threads
-    for(Func &f : node.threads)
+    for(Func &f : node.threads) {
       analyzeSymbolUsage(f, Context(&node, NULL, Spec(), f, f, false));
+      f->computeAccessed();
+    }
     
     //-- analyse constructors of local and global variables
     for(const auto &v : node.allVars()) {
