@@ -181,7 +181,7 @@ namespace dmpl
 
     //-- return true iff the node has a variable with the same name,
     //-- type and scope
-    bool hasVar(const Var &var)
+    bool hasVar(const Var &var) const
     {
       Var v = findVar(var->name);
       return v && (*v == *var);
