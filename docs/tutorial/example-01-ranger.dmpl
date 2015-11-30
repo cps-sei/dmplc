@@ -60,18 +60,13 @@ target GNU_CPP,WIN_CPP %%{
 #include <stdlib.h>
 #include "madara/utility/Utility.h"
 
-int MOVE_TO(unsigned char x,unsigned char y)
-{
-  return rand() < (RAND_MAX / 10 * 6);
-}
-
 int my_sleep (int seconds)
 {
   Madara::Utility::sleep (seconds);
   return 0;
 }
 
-int round = 0;
+int roundNum = 0;
 int xi,yi;
 
 void print_int(int i)
@@ -93,13 +88,13 @@ void print_line(int _X)
 
 void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
 {
-  if(round == 0) {
+  if(roundNum == 0) {
     xi = x; yi = y;
   }
 
   for(int i = 0;i < 150;++i) printf("\n");
   
-  printf("round = %d : id = %d\n", ++round, id);
+  printf("round = %d : id = %d\n", ++roundNum, id);
   printf("_X = %d _Y = %d\n",_X,_Y);
   print_line(_X);
   for(int i = 0;i < _Y;++i) {
@@ -114,11 +109,10 @@ void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
     print_line(_X);
   }
 }
-%%}
 
-//number of X and Y coordinates
-const X = 10;
-const Y = 10;
+void ROTATE(int angle) {}
+double GET_RANGE() { return 0.0; }
+%%}
 
 //states of each node
 const INITS = 0;
@@ -127,29 +121,29 @@ const REQUEST = 2;
 const WAITING = 3;
 const MOVE = 4;
 
-const TopY = 2.25;
-const LeftX = -2.25;
-const BottomY = -2.25;
-const RightX = 2.25;
-
-//extern int MOVE_TO(unsigned char x,unsigned char y);
 extern int my_sleep(int seconds);
-extern void print_state(int XX,int YY,int id, int x, int y, int xf, int yf);
+extern void print_state(int XX,int YY,int _id, int _x, int _y, int _xf, int _yf);
 extern void print_int(int i);
+extern void print_range(double r);
+extern void ROTATE(int angle);
+extern double GET_RANGE();
 
-
-node uav (id)
+node uav
 {
   //shared variables -- visible across nodes. 
-  global _Bool lock [X][Y];
+  global _Bool lock [X][Y] = {
+    lock[x][y] = 1;
+  }; 
 
   //private variables -- local to the node.
   //preserved across rounds
-  local unsigned char state; //the state
-  local unsigned char x,y; //current coordinates
-  local unsigned char xp,yp; //next coordinates
-  local unsigned char xf,yf; //final coordinates
-
+  local unsigned char state = NEXT; //the state
+  //current coordinates
+  local unsigned char input x ~ (0 <= x && x < X), input y ~ (0 <= y && y < Y);
+  local unsigned char xp = x, yp = y; //next coordinates
+  //final coordinates
+  local unsigned char input xf ~ (0 <= xf && xf < X), input yf ~ (0 <= yf && yf < Y);
+  
   //-- saves the next waypoint in (xp,yp)
   void NEXT_XY () {
     xp = x; yp = y;
@@ -160,12 +154,12 @@ node uav (id)
   }
 }
 
-node uav (id)
+node uav
 {
-  @Period(100000)
-  @BarrierSync
-  @PlatformController
-  thread COLLISION_AVOIDANCE () {
+  @Period(100000);
+  @BarrierSync;
+  @PlatformController;
+  thread COLLISION_AVOIDANCE {
     double range;
     print_state(X,Y,id,x,y,xf,yf);
     //my_sleep(1);
@@ -176,63 +170,110 @@ node uav (id)
     {
       return;
     }
-    if IF_INIT (state == INITS) {
+    if (state == INITS) {
       lock[x][y] = 1;
       state = NEXT;
-    } if IF_NEXT (state == NEXT) {
+    } if (state == NEXT) {
       //compute next point on route
       if(x == xf && y == yf) return;
       NEXT_XY();
       state = REQUEST;
-    } else if IF_REQUEST (state == REQUEST) {
+    } else if (state == REQUEST) {
       //request the lock but only if it is free
       if(EXISTS_LOWER(idp,lock[xp][yp]@idp != 0)) return;
       lock[xp][yp] = 1;
       state = WAITING;
-    } else if IF_WAITING (state == WAITING) {
+    } else if (state == WAITING) {
       //grab the lock if we are the highest 
       //id node to request or hold the lock
       if(EXISTS_HIGHER(idp, lock[xp][yp]@idp != 0)) return;
       state = MOVE;
-    } else if IF_MOVE (state == MOVE) {
+    } else if (state == MOVE) {
       //now we have the lock on (x’,y’)
-      if(GRID_MOVE(xp,yp,0.5)) return;
+      if(GRID_MOVE(xp,yp,1)) return;
       lock[x][y] = 0; 
       x = xp; y = yp;
       state = NEXT;
     }
   }
 
-  @InitSim
+  role Uav {
+    thread COLLISION_AVOIDANCE;
+  }
+
+  @InitSim;
   void StartingPosition ()
   {
-    GRID_INIT(X, Y, LeftX, RightX, TopY, BottomY);
-    GRID_PLACE(x, y, 0.5);
-  }
-}
-
-//initial state
-@INIT
-void NodeInit () 
-{
-  FORALL_NODE(id) {
-    state@id = INITS;
-    ND(x@id); ND(y@id);
-    ASSUME(0 <= x@id && x@id < X && 0 <= y@id && y@id < Y);
-    ND(xf@id); ND(yf@id);
-    ASSUME(0 <= xf@id && xf@id < X && 0 <= yf@id && yf@id < Y);
+    GRID_INIT();
+    GRID_PLACE(x, y, 1);
   }
 
-  FORALL_DISTINCT_NODE_PAIR (id1,id2) {
-    ASSUME(x@id1 != x@id2 || y@id1 != y@id2);
+  //the safety property checked at the beginning of each round
+  pure bool NoCollisions ()
+  {
+    //-- the main property
+    FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+      if(x@id1 == x@id2 && y@id1 == y@id2) return false;
+    }
+    
+    //-- supporting invariants for inductiveness
+
+    FORALL_NODE(idp) {
+      /** state has to be between 0 and 4, (x,y), (xf,yf), and (xp,yp)
+          have to be between 0 and X-1,Y-1 */
+      if(!(state@idp >= NEXT && state@idp <= MOVE)) return false;
+      if(!(x@idp >= 0 && x@idp < X)) return false;
+      if(!(y@idp >= 0 && y@idp < Y)) return false;
+      if(!(xf@idp >= 0 && xf@idp < X)) return false;
+      if(!(yf@idp >= 0 && yf@idp < Y)) return false;
+      if(!(xp@idp >= 0 && xp@idp < X)) return false;
+      if(!(yp@idp >= 0 && yp@idp < Y)) return false;
+      /** if we are in not in NEXT, then xp,yp != x,y */
+      if(!(state@idp == NEXT || x@idp != xp@idp || y@idp != yp@idp)) return false;
+      /** if we are in NEXT, REQUEST, WAITING or MOVE, we have lock on
+          x,y */
+      if(!((state@idp != NEXT && state@idp != REQUEST && state@idp != WAITING && state@idp != MOVE) ||
+           lock[x@idp][y@idp]@idp)) return false;
+      /** if we are in NEXT, WAITING or MOVE, then we have lock on x,y
+          and xp,yp */
+      if(!((state@idp != NEXT && state@idp != WAITING && state@idp != MOVE) ||
+           (lock[x@idp][y@idp]@idp && lock[xp@idp][yp@idp]@idp))) return false;
+      /** if we are not in NEXT, then x,y and xp,yp are
+          adjacent */
+      if(!(state@idp == NEXT || (((x@idp == xp@idp - 1) || (x@idp == xp@idp + 1)) ^ ((y@idp == yp@idp - 1) || (y@idp == yp@idp + 1))))) return false;
+    }
+  
+    //-- the rest are supporting invariants. you only need them for
+    //-- plain induction. you can skip them (by uncommenting the
+    //-- following return statement) out if you are doing K-induction
+    //-- with K>=3.
+    //return true;
+      
+    FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+      /** if node1 is in MOVE/NEXT and has lower id than node2 which is
+          WAITING then they have different xp,yp */
+      if(!((state@id1 != NEXT && state@id1 != MOVE) || state@id2 != WAITING || id1 >= id2 || xp@id1 != xp@id2 || yp@id1 != yp@id2)) return false;
+      /** if two distinct nodes are in MOVE, they have different
+          (xp,yp) */
+      if(!(state@id1 != MOVE || state@id2 != MOVE ||                        
+           ((xp@id1 != xp@id2 || yp@id1 != yp@id2) &&             
+            (xp@id1 != x@id2 || yp@id1 != y@id2) &&               
+            (x@id1 != xp@id2 || y@id1 != yp@id2) &&               
+            (x@id1 != x@id2 || y@id1 != y@id2)))) return false;
+      /** if node2 in WAITING, and node1 has lower id than node 2, then
+          node1.(x,y) != node2.(xp,yp) */
+      if(!(state@id2 != WAITING || id1 >= id2 || x@id1 != xp@id2 || y@id1 != yp@id2)) return false;
+      /** if node2 in MOVE, then node1.(x,y) != node2.(xp,yp) */
+      if(!((state@id2 != MOVE || x@id1 != xp@id2 || y@id1 != yp@id2) && (state@id1 != 4 || xp@id1 != x@id2 || yp@id1 != y@id2))) return false;
+      /** two distinct nodes have different (x,y) */
+      if(!(x@id1 != x@id2 || y@id1 != y@id2)) return false;
+    }
+    
+    return true;
   }
+
+  //-- guaranteed properties
+  require NoCollision => NoCollisions;
 }
 
-//the safety property checked at the beginning of each round
-@SAFETY
-void NoCollisions ()
-{
-  FORALL_DISTINCT_NODE_PAIR (id1,id2) {
-    ASSERT(x@id1 != x@id2 || y@id1 != y@id2);
-  }
-}
+
