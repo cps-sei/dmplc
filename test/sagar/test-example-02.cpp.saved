@@ -1093,7 +1093,6 @@ REMODIFY_GLOBALS_COLLISION_AVOIDANCE (engine::Function_Arguments & args,
   REMODIFY_BARRIERS_COLLISION_AVOIDANCE (args, vars);
   // Remodifying thread-specific global variables
   lock[id].mark_modified();
-  lock[id].mark_modified();
   return Integer (0);
 }
 
@@ -1118,7 +1117,6 @@ REMODIFY_GLOBALS_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args,
   // Remodifying common global variables
   REMODIFY_BARRIERS_COLLISION_AVOIDANCE2 (args, vars);
   // Remodifying thread-specific global variables
-  foo[id].mark_modified();
   foo[id].mark_modified();
   return Integer (0);
 }
@@ -1485,7 +1483,6 @@ REMODIFY_GLOBALS_COLLISION_AVOIDANCE (engine::Function_Arguments & args,
   // Remodifying common global variables
   REMODIFY_BARRIERS_COLLISION_AVOIDANCE (args, vars);
   // Remodifying thread-specific global variables
-  lock[id].mark_modified();
   lock[id].mark_modified();
   return Integer (0);
 }
