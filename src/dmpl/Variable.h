@@ -182,6 +182,9 @@ namespace dmpl
     ///(assuming it is an input), i.e., the return value of the single
     ///return statement in the body of the initializer function.
     Expr assumeExpr() const;
+
+    ///check sanity of constructor
+    void checkConstructorSanity(const Node &node, const Role &role) const;
   };
 
   inline Var Symbol::asVar()

@@ -60,6 +60,8 @@
 #include "Record.hpp"
 #include "Variable.h"
 #include "Function.h"
+#include "Node.h"
+#include "Role.h"
 
 /*********************************************************************/
 //-- equality operator
@@ -107,6 +109,50 @@ dmpl::RecordBase::print (std::ostream &os,unsigned int indent) const
   }
   
   os << "\n\n";
+}
+
+/*********************************************************************/
+//-- return true iff the node has a variable with the same name,
+//-- type and scope
+/*********************************************************************/
+bool dmpl::RecordBase::hasVar(const Var &var) const
+{
+  for(const Var &v : vars)
+    if(*v == *var) return true;
+  return false;
+}
+
+/*********************************************************************/
+///check sanity of constructor
+/*********************************************************************/
+void dmpl::RecordBase::checkConstructorSanity(const Node &node, const Role &role) const
+{
+  if(initFunc != NULL) {
+    for(const Var &v : initFunc->writesLoc) {
+      if(!hasVar(v))
+        throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
+                                 " of node " + node->name + " constructor of record " +
+                                 name + " writes to local variable " + v->name);
+    }
+    for(const Var &v : initFunc->writesGlob) {
+      if(!hasVar(v))
+        throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
+                                 " of node " + node->name + " constructor of record " +
+                                 name + " writes to global variable " + v->name);
+    }
+  }
+  if(assumeFunc != NULL) {
+    if(!assumeFunc->writesLoc.empty())
+      throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
+                               " of node " + node->name + " assume function of record " +
+                               name + " writes to local variable " +
+                               assumeFunc->writesLoc.front()->name);
+    if(!assumeFunc->writesGlob.empty())
+      throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
+                               " of node " + node->name + " assume function of record " +
+                               name + " writes to global variable " +
+                               assumeFunc->writesLoc.front()->name);
+  }
 }
 
 /*********************************************************************/

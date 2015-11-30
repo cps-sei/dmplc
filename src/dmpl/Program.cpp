@@ -335,10 +335,11 @@ void dmpl::Program::sanityCheckFuncs(const Funcs &arg)
 }
 
 /*********************************************************************/
-//check various sanity conditions
+//-- check various sanity conditions on the program. this is prior to
+//-- thread and symbol usage analysis.
 /*********************************************************************/
 void
-dmpl::Program::sanityCheck()
+dmpl::Program::preAnalysisSanityCheck()
 {
   //only one type of node
   assert(nodes.size() == 1 && "ERROR: only a single node type supported!");
@@ -536,6 +537,30 @@ dmpl::Program::analyzeSymbolUsage()
 {
   BOOST_FOREACH(Nodes::value_type &node, nodes)
     SymbolUser::analyzeSymbolUsage(*(node.second));
+}
+
+/*********************************************************************/
+//-- check various sanity conditions on the program. this is after
+//-- thread and symbol usage analysis.
+/*********************************************************************/
+void
+dmpl::Program::postAnalysisSanityCheck()
+{
+  //-- constructors should only assign variables which they are
+  //-- constructing
+  for(const auto &n : nodes) {
+    for(const auto &v : n.second->allVars())
+      v->checkConstructorSanity(n.second, Role());
+    for(const auto &r : n.second->records)
+      r.second->checkConstructorSanity(n.second, Role());
+      
+    for(const auto &role : n.second->roles) {
+      for(const auto &v : role.second->allVars())
+        v->checkConstructorSanity(n.second, role.second);
+      for(const auto &r : role.second->records)
+        r.second->checkConstructorSanity(n.second, role.second);
+    }
+  }
 }
 
 /*********************************************************************/

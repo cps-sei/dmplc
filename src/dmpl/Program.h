@@ -236,14 +236,19 @@ namespace dmpl
     //-- sanity check a set of functions
     void sanityCheckFuncs(const Funcs &arg);
     
-    ///check various sanity conditions on the program
-    void sanityCheck();
+    ///check various sanity conditions on the program. this is prior
+    ///to thread and symbol usage analysis.
+    void preAnalysisSanityCheck();
 
     ///look for threads
     void analyzeThreads();
 
     ///analyze symbol usage
     void analyzeSymbolUsage();
+
+    ///check various sanity conditions on the program. this is after
+    ///thread and symbol usage analysis.
+    void postAnalysisSanityCheck();
   };
 
   //new namespace to avoid name collisions

@@ -114,6 +114,13 @@ namespace dmpl
 
     //-- return a string representation. just the name.
     std::string toString() const { return "record : " + name; }
+
+    //-- return true iff the node has a variable with the same name,
+    //-- type and scope
+    bool hasVar(const Var &var) const;
+
+    ///check sanity of constructor
+    void checkConstructorSanity(const Node &node, const Role &role) const;
   };
 }
 

@@ -59,6 +59,8 @@
 #include <boost/lexical_cast.hpp>
 #include "Variable.h"
 #include "Function.h"
+#include "Node.h"
+#include "Role.h"
 
 /*********************************************************************/
 //constructors
@@ -204,6 +206,42 @@ dmpl::Expr dmpl::Variable::assumeExpr() const
 }
 
 /*********************************************************************/
+///check sanity of constructor
+/*********************************************************************/
+void dmpl::Variable::checkConstructorSanity(const Node &node, const Role &role) const
+{
+  if(initFunc == NULL) return;
+
+  //-- for non-input variables
+  if(!isInput) {
+    for(const Var &v : initFunc->writesLoc) {
+      if(!(*v == *this))
+        throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
+                                 " of node " + node->name + " constructor of variable " +
+                                 name + " writes to local variable " + v->name);
+    }
+    for(const Var &v : initFunc->writesGlob) {
+      if(!(*v == *this))
+        throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
+                                 " of node " + node->name + " constructor of variable " +
+                                 name + " writes to global variable " + v->name);
+    }
+  }
+  //-- for input variables
+  else {
+    if(!initFunc->writesLoc.empty())
+      throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
+                               " of node " + node->name + " assume function of variable " +
+                               name + " writes to local variable " +
+                               initFunc->writesLoc.front()->name);
+    if(!initFunc->writesGlob.empty())
+      throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
+                               " of node " + node->name + " assume function of variable " +
+                               name + " writes to global variable " +
+                               initFunc->writesGlob.front()->name);
+  }
+}
+
+/*********************************************************************/
 //end of file
 /*********************************************************************/
-

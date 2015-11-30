@@ -108,14 +108,18 @@ void dmpl::DmplBuilder::run()
   //-- fill in various details of the program
   program.complete();
   
-  //-- do some sanity checks on the parsed program
-  program.sanityCheck();
+  //-- do some sanity checks on the parsed program prior to thread and
+  //-- symbol usage analysis
+  program.preAnalysisSanityCheck();
 
   //-- assign ids to program threads
   program.analyzeThreads();
 
   //-- gather info about every symbol usage in the program
   program.analyzeSymbolUsage();
+
+  //-- post analysis sanity check
+  program.postAnalysisSanityCheck();
 }
 
 /*********************************************************************/

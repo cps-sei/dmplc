@@ -85,6 +85,7 @@ function test_verif_ind {
 test_double_parse test-example-01a.dmpl uav:Uav:3
 test_double_parse test-example-01b.dmpl uav:Uav1:2:uav:Uav2:1
 test_double_parse test-example-01c.dmpl uav:Uav1:2:uav:Uav2:1
+test_double_parse test-example-01d.dmpl uav:Uav:2:uav:Uav:1
 test_double_parse test-01.dmpl uav:Leader:1:uav:Protector:4
 test_double_parse test-example-02.dmpl uav:Leader:1:uav:Protector:4
 test_double_parse test-example-05.dmpl uav:Leader:1:uav:Protector:4
