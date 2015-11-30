@@ -182,6 +182,27 @@ namespace dmpl
       //-- success
       return true;
     }
+    
+    //-- copy attributes from another. do not overwrite, but check for
+    //-- mismatched parameter list sizes. return true on success, and
+    //-- false on failure.
+    bool addAttributes(const HasAttributes &other)
+    {
+      for(const auto &a : other.attrs) {
+        auto r = attrs.insert(a);
+        if(r.second) continue;
+        //-- error check
+        if(r.first->second.paramList.size() != a.second.paramList.size()) {
+          std::cerr << "ERROR: attributes with mismatched parameter number "
+                    << r.first->second.toString()
+                    << " and " << a.second.toString() << '\n';
+          return false;
+        }
+      }
+      //-- success
+      return true;
+    }
+
   };
 }
 
