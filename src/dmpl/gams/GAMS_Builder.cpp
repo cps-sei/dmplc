@@ -1044,14 +1044,19 @@ dmpl::gams::GAMS_Builder::build_function_declarations_for_thread (const Func & t
 
   //-- declare other functions called by the thread
   for (auto i : funcs) {
-    if(thread->findSymbol(i.second) == NULL) continue;
+    //-- inherited threads expand out to the base version
+    Func actualThread = thread;
+    if(thread->role && thread->isPrototype)
+      actualThread = thread->node->findFunc(thread->name);
+    
+    if(!actualThread->canCall(i.second)) continue;
     
     //-- sanity check: threads cannot be called as functions
     if(i.second->isThread())
-      throw std::runtime_error("ERROR: thread " + thread->name + " calls thread " +
+      throw std::runtime_error("ERROR: thread " + actualThread->name + " calls thread " +
                                i.second->name + " as a function!!");
     
-    build_function_declaration (thread, i.second);
+    build_function_declaration (actualThread, i.second);
   }
 }
   
@@ -1396,9 +1401,15 @@ dmpl::gams::GAMS_Builder::build_functions_for_thread (
   build_function (thread, node, thread);
 
   //-- generate other functions called by the thread
-  for(const auto &f : funcs)
-    if(thread->findSymbol(f.second) != NULL)
-      build_function (thread, node, f.second);
+  for(const auto &f : funcs) {
+    //-- inherited threads expand out to the base version
+    Func actualThread = thread;
+    if(thread->role && thread->isPrototype)
+      actualThread = thread->node->findFunc(thread->name);
+    
+    if(actualThread->canCall(f.second))
+      build_function (actualThread, node, f.second);
+  }
 }
  
 /*********************************************************************/
@@ -1453,26 +1464,19 @@ dmpl::gams::GAMS_Builder::build_function (
     return;
   }
 
-  //-- inherited prototype functions call the base version
-  if(function->isPrototype) {
-    buffer_ << "  return " << nodeName(node) << "::";
-    if(thread) buffer_ << "thread" << thread->threadID << "_";
-    else buffer_ << "base_";
-    buffer_ << function->name << "(args, vars);\n";
-    buffer_ << "}\n\n";
-    return;
-  }
+  //-- inherited prototype functions expand out to the the base version
+  Func actualFunc = function->isPrototype ? node->findFunc(function->name) : function;
   
   buffer_ << "\n  //-- Declare local (parameter and temporary) variables\n";
-  print_vars(buffer_, function->paramSet, true);
-  print_vars(buffer_, function->temps, false);
+  print_vars(buffer_, actualFunc->paramSet, true);
+  print_vars(buffer_, actualFunc->temps, false);
   buffer_ << "\n";
 
   buffer_ << "\n  //-- Begin function body\n";
-  dmpl::madara::GAMS_Visitor visitor (function, node, thread, builder_, buffer_, false);
+  dmpl::madara::GAMS_Visitor visitor (actualFunc, node, thread, builder_, buffer_, false);
 
   //transform the body of safety
-  BOOST_FOREACH (const Stmt & statement, function->body)
+  BOOST_FOREACH (const Stmt & statement, actualFunc->body)
   {
     visitor.visit (statement);
   }
