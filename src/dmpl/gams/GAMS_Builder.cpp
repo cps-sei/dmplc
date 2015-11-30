@@ -143,7 +143,7 @@ namespace
     BOOST_FOREACH (const dmpl::Vars::value_type & variable, vars) {
       buffer_ << "  " << get_type_name(variable.second);
       buffer_ << " " << variable.second->name;
-      if(isParam) buffer_ << " = args[" << i << "].to_double();\n";
+      if(isParam) buffer_ << " = args[" << i << "].to_double()";
       buffer_ << ";\n";
       ++i;
     }
