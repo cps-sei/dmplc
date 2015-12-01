@@ -218,10 +218,10 @@ namespace dmpl
     void computeAccessed(FuncSet &visited);
 
     //-- return the set of all accessed local variables
-    Vars accessedLocs() const;
+    Vars accessedLoc() const;
 
     //-- return the set of all accessed global variables
-    Vars accessedGlobs() const;
+    Vars accessedGlob() const;
     
     //-- return a string representation. just the name.
     std::string toString() const { return "function : " + name; }

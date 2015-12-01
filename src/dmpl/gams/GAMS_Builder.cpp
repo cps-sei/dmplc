@@ -416,8 +416,8 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
 
       //-- generate thread-read-execute-write variables
       for (const Func &thread : r.second->threads) {
-        build_thread_variables(thread, thread->accessedLocs(), false);
-        build_thread_variables(thread, thread->accessedGlobs(), true);
+        build_thread_variables(thread, thread->accessedLoc(), false);
+        build_thread_variables(thread, thread->accessedGlob(), true);
       }
       
       buffer_ << '\n';
@@ -1314,13 +1314,13 @@ dmpl::gams::GAMS_Builder::build_push_pull(const Func &thread, bool push)
   buffer_ << "    Madara::Knowledge_Engine::Context_Guard guard(knowledge);\n";
 
   //push-pull locals
-  for(const auto &var : thread->accessedLocs()) {
+  for(const auto &var : thread->accessedLoc()) {
     buffer_ << "    thread" << thread->threadID << "_"
             << var.first << (push?".push();":".pull();") << std::endl;
   }
 
   //push-pull globals
-  for(const auto &var : thread->accessedGlobs()) {
+  for(const auto &var : thread->accessedGlob()) {
     buffer_ << "    thread" << thread->threadID << "_"
             << var.first << (push?"[id].push();":".pull();") << std::endl;
   }
