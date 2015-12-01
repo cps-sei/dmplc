@@ -108,7 +108,13 @@ namespace dmpl
   /*******************************************************************/
   void SymbolUser::analyzeSymbolUsage(const Func &func, Context con)
   {
-    //-- analyze symbol usage
+    //if inherited from parent node
+    if(func->role && func->isThread() && func->isPrototype) {
+      Func nodeFunc = func->node->findFunc(func->name);
+      func->inherit(nodeFunc);
+      return;
+    }
+
     Sym fsym = Sym(func);
     fsym->use();
     func->useSymbols(con);
@@ -119,121 +125,37 @@ namespace dmpl
   /*******************************************************************/
   void SymbolUser::analyzeSymbolUsage(BaseNode &node)
   {
-    //-- analyse threads
-    for(Func &f : node.threads) {
-      analyzeSymbolUsage(f, Context(&node, NULL, Spec(), f, f, false));
-      f->computeAccessed();
+    //-- analyse functions
+    FuncSet allFuncs;
+    for(const auto &f : node.allFuncs()) {
+      analyzeSymbolUsage(f, Context(&node, NULL, Spec(), f, false));
+      f->computeCalled();
+      allFuncs.insert(f);
     }
     
-    //-- analyse constructors of local and global variables
-    for(const auto &v : node.allVars()) {
-      if(v->initFunc != NULL) {
-        analyzeSymbolUsage(v->initFunc, Context(&node, NULL, Spec(), Func(), v->initFunc, false));
-        v->initFunc->computeAccessed();
-      }
-    }
-    //-- analyse constructors and assumption functions of all records
-    for(const auto &rec : node.records) {
-      if(rec.second->initFunc != NULL) {
-        analyzeSymbolUsage(rec.second->initFunc,
-                           Context(&node, NULL, Spec(), Func(), rec.second->initFunc, false));
-        rec.second->initFunc->computeAccessed();
-      }
-      if(rec.second->assumeFunc != NULL) {
-        analyzeSymbolUsage(rec.second->assumeFunc,
-                           Context(&node, NULL, Spec(), Func(), rec.second->assumeFunc, false));
-        rec.second->assumeFunc->computeAccessed();
-      }
-    }
-
     //-- analyse roles
     for(const Roles::value_type &r : node.roles) {
-      //-- analyse threads, collect role-local thread-called functions
-      Funcs roleFuncs;
-      for(Func &f : r.second->threads) {
-        //-- if prototype, inherit from node-level thread
-        if(f->isPrototype) {            
-          Func nodeFunc = node.findFunc(f->name);
-          if(nodeFunc == NULL || !nodeFunc->isThread())
-            throw std::runtime_error("ERROR: no thread " + f->name + " in parent node " +
-                                     node.name + " of role " + r.second->name +
-                                     " to inherit from!!");
-          f->inherit(nodeFunc);
-
-          //-- collect thread called funcs
-          for(const auto &rf : r.second->funcs)
-            if(nodeFunc->canCall(rf.second)) roleFuncs.insert(rf);
-        }
-        //-- else analyze
-        else {
-          analyzeSymbolUsage(f, Context(&node, r.second.get(), Spec(), f, f, false));
-          f->computeAccessed();
-          //-- collect thread called funcs
-          for(const auto &rf : r.second->funcs)
-            if(f->canCall(rf.second)) roleFuncs.insert(rf);
-        }
+      for(const auto &f : r.second->allFuncs()) {
+        analyzeSymbolUsage(f, Context(&node, r.second.get(), Spec(), f, false));
+        f->computeCalled();
+        allFuncs.insert(f);
       }
-
-      //-- analyze thread-called functions
-      for(const auto &f : roleFuncs) {
-        analyzeSymbolUsage(f.second, Context(&node, r.second.get(), Spec(),
-                                             f.second, f.second, false));
-        f.second->computeAccessed();
-      }
-      
-      //-- reanalyze prototype threads
-      for(Func &f : r.second->threads) {
-        //-- if prototype, inherit from node-level thread
-        if(f->isPrototype) {            
-          Func nodeFunc = node.findFunc(f->name);
-          for(const auto &rf : r.second->funcs)
-            if(nodeFunc->canCall(rf.second)) f->inherit(rf.second);
-          f->computeAccessed();
-        }
-      }
-
-      //-- analyse constructors of local and global variables
-      for(const auto &v : r.second->allVars()) {
-        if(v->initFunc != NULL) {
-          analyzeSymbolUsage(v->initFunc,
-                             Context(&node, r.second.get(), Spec(), Func(), v->initFunc, false));
-          v->initFunc->computeAccessed();
-        }
-      }
-      
-      //-- analyse constructors and assumption functions of all records
-      for(const auto &rec : r.second->records) {
-        if(rec.second->initFunc != NULL) {
-          analyzeSymbolUsage(rec.second->initFunc,
-                             Context(&node, r.second.get(), Spec(), Func(), rec.second->initFunc, false));
-          rec.second->initFunc->computeAccessed();
-        }
-        if(rec.second->assumeFunc != NULL) {
-          analyzeSymbolUsage(rec.second->assumeFunc,
-                             Context(&node, r.second.get(), Spec(), Func(), rec.second->assumeFunc, false));
-          rec.second->assumeFunc->computeAccessed();
-        }
-      }
-      
-      //-- analyse specifications
-      BOOST_FOREACH(const Specs::value_type &s, r.second->specs) {
-        Context con(&node, r.second.get(), s.second, Func(), Func(), false);
-        s.second->useSymbols(con);
-      }
-
-      //-- set accessed of funcs
-      for(const Funcs::value_type &f : r.second->funcs) f.second->computeAccessed();
     }
 
-    //-- analyse specifications
-    BOOST_FOREACH(const Specs::value_type &s, node.specs)
-    {
-      Context con(&node, NULL, s.second, Func(), Func(), false);
-      s.second->useSymbols(con);
-    }
+    //-- compute for each function, the set of symbols used by
+    //-- inheriting from called functions
+    FuncSet visited;
+    for(const auto &f : allFuncs)
+      if(visited.insert(f).second) f->computeAccessed(visited);    
+    
+    //-- analyse node specifications
+    for(const Specs::value_type &s : node.specs)
+      s.second->useSymbols(Context(&node, NULL, s.second, Func(), false));
 
-    //-- set accessed of funcs
-    for(auto &f : node.funcs) f.second->computeAccessed();
+    //-- analyse role specifications
+    for(const Roles::value_type &r : node.roles)
+      for(const Specs::value_type &s : r.second->specs)
+        s.second->useSymbols(Context(&node, r.second.get(), s.second, Func(), false));
   }
 
   /*******************************************************************/
