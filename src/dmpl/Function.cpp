@@ -293,5 +293,25 @@ void dmpl::Function::computeAccessed(FuncSet &visited)
 }
 
 /*********************************************************************/
+//-- return the set of all accessed local variables
+/*********************************************************************/
+dmpl::Vars dmpl::Function::accessedLocs() const
+{
+  Vars res = readsLoc;
+  res.insert(writesLoc.begin(), writesLoc.end());
+  return res;
+}
+
+/*********************************************************************/
+//-- return the set of all accessed global variables
+/*********************************************************************/
+dmpl::Vars dmpl::Function::accessedGlobs() const
+{
+  Vars res = readsGlob;
+  res.insert(writesGlob.begin(), writesGlob.end());
+  return res;
+}
+
+/*********************************************************************/
 //end of file
 /*********************************************************************/
