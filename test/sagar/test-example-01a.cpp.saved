@@ -661,11 +661,11 @@ thread0 (engine::Function_Arguments & args, engine::Variables & vars)
     Madara::Knowledge_Engine::Context_Guard guard(knowledge);
     thread0_state.pull();
     thread0_x.pull();
-    thread0_y.pull();
-    thread0_xp.pull();
-    thread0_yp.pull();
     thread0_xf.pull();
+    thread0_xp.pull();
+    thread0_y.pull();
     thread0_yf.pull();
+    thread0_yp.pull();
     thread0_lock.pull();
   }
 
@@ -677,11 +677,11 @@ thread0 (engine::Function_Arguments & args, engine::Variables & vars)
     Madara::Knowledge_Engine::Context_Guard guard(knowledge);
     thread0_state.push();
     thread0_x.push();
-    thread0_y.push();
-    thread0_xp.push();
-    thread0_yp.push();
     thread0_xf.push();
+    thread0_xp.push();
+    thread0_y.push();
     thread0_yf.push();
+    thread0_yp.push();
     thread0_lock[id].push();
   }
 
@@ -842,11 +842,11 @@ thread0 (engine::Function_Arguments & args, engine::Variables & vars)
     Madara::Knowledge_Engine::Context_Guard guard(knowledge);
     thread0_state.pull();
     thread0_x.pull();
-    thread0_y.pull();
-    thread0_xp.pull();
-    thread0_yp.pull();
     thread0_xf.pull();
+    thread0_xp.pull();
+    thread0_y.pull();
     thread0_yf.pull();
+    thread0_yp.pull();
     thread0_lock.pull();
   }
 
@@ -858,11 +858,11 @@ thread0 (engine::Function_Arguments & args, engine::Variables & vars)
     Madara::Knowledge_Engine::Context_Guard guard(knowledge);
     thread0_state.push();
     thread0_x.push();
-    thread0_y.push();
-    thread0_xp.push();
-    thread0_yp.push();
     thread0_xf.push();
+    thread0_xp.push();
+    thread0_y.push();
     thread0_yf.push();
+    thread0_yp.push();
     thread0_lock[id].push();
   }
 
