@@ -1373,19 +1373,13 @@ dmpl::gams::GAMS_Builder::build_push_pull(const Func &thread, bool push)
   buffer_ << "    Madara::Knowledge_Engine::Context_Guard guard(knowledge);\n";
 
   //push-pull locals
-  Vars accsLoc;
-  accsLoc.insert(thread->readsLoc.begin(), thread->readsLoc.end());
-  accsLoc.insert(thread->writesLoc.begin(), thread->writesLoc.end());  
-  for(const auto &var : accsLoc) {
+  for(const auto &var : thread->accessedLocs()) {
     buffer_ << "    thread" << thread->threadID << "_"
             << var.first << (push?".push();":".pull();") << std::endl;
   }
 
   //push-pull globals
-  Vars accsGlob;
-  accsGlob.insert(thread->readsGlob.begin(), thread->readsGlob.end());
-  accsGlob.insert(thread->writesGlob.begin(), thread->writesGlob.end());  
-  for(const auto &var : accsGlob) {
+  for(const auto &var : thread->accessedGlobs()) {
     buffer_ << "    thread" << thread->threadID << "_"
             << var.first << (push?"[id].push();":".pull();") << std::endl;
   }
