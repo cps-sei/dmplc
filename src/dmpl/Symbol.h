@@ -531,7 +531,6 @@ namespace dmpl
       BaseNode *node;
       BaseRole *role;
       Spec spec;
-      Func thread;
       Func curFunc;
       bool isLHS;
       std::deque<const SymbolBinder*> binders;
