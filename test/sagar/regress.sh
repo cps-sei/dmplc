@@ -118,6 +118,7 @@ test_verif ../../docs/tutorial/example-01.bug2.dmpl uav:Uav:2 FAILED
 test_verif ../../docs/tutorial/example-02.dmpl uav:Leader:1:uav:Protector:1 SUCCESSFUL
 test_verif ../../docs/tutorial/example-02.bug1.dmpl uav:Leader:1:uav:Protector:1 FAILED
 test_verif ../../docs/tutorial/example-03.dmpl uav:Leader:1:uav:Protector:1 SUCCESSFUL
+test_verif ../../docs/tutorial/example-04.dmpl uav:Leader:1:uav:Protector:1 FAILED
 
 #inductive verification tests
 test_verif_ind ../../docs/tutorial/example-01.dmpl uav:Uav:2 SUCCESSFUL
@@ -126,4 +127,5 @@ test_verif_ind ../../docs/tutorial/example-01.bug2.dmpl uav:Uav:2 FAILED
 test_verif_ind ../../docs/tutorial/example-02.dmpl uav:Leader:1:uav:Protector:1 SUCCESSFUL
 test_verif_ind ../../docs/tutorial/example-02.bug1.dmpl uav:Leader:1:uav:Protector:1 FAILED
 test_verif_ind ../../docs/tutorial/example-03.dmpl uav:Leader:1:uav:Protector:1 SUCCESSFUL
+test_verif_ind ../../docs/tutorial/example-04.dmpl uav:Leader:1:uav:Protector:1 FAILED
 
