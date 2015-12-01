@@ -202,7 +202,10 @@ namespace dmpl
       Record r = findRecord(rec->name);
       return r && (*r == *rec);
     }
-
+    
+    //-- return the list of all functions, including constructors
+    FuncList allFuncs() const;
+    
     //-- find function with given name. either in this node or at the
     //-- program level.
     Func findFunc(const std::string& name) const;

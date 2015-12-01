@@ -193,6 +193,9 @@ namespace dmpl
       return it == records.end() ? Record() : it->second;
     }
 
+    //-- return the list of all functions, including constructors
+    FuncList allFuncs() const;
+
     //-- return list of all functions in scope, either in this role or
     //-- in parent node
     FuncList allFuncsInScope() const;
