@@ -69,6 +69,10 @@
 dmpl::LvalExpr::Context
 dmpl::LvalExpr::useSymbols(Context con)
 {
+  //-- skip if analyzed already
+  if(analyzed) return con;
+  analyzed = true;
+
   {
     Context con2 = con;
     con2.isLHS = false;
@@ -165,6 +169,10 @@ std::string dmpl::CompExpr::toString() const
 /*********************************************************************/
 dmpl::CallExpr::Context dmpl::CallExpr::useSymbols(Context con)
 {
+  //-- skip if analyzed already
+  if(analyzed) return con;
+  analyzed = true;
+
   func->useSymbols(con);
   inherit(func);
   BOOST_FOREACH(const Expr &su, args)

@@ -520,6 +520,9 @@ namespace dmpl
     SymbolUseSummary summary;
     UsedSymbols allUsedSymbols;
 
+    //-- a flag to indicate if symbol usage analysis was performed
+    bool analyzed;
+    
     //-- the context for a symbol user
     class Context
     {
