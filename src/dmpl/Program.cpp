@@ -281,12 +281,12 @@ void dmpl::Program::complete()
 {
   //-- add nodes and roles to functions
   for(auto &n : nodes) {
-    for(auto &f : n.second->funcs) f.second->node = n.second;
+    for(auto &f : n.second->allFuncs()) f->node = n.second;
 
     for(auto &r : n.second->roles)
-      for(auto &f : r.second->funcs) {
-        f.second->node = n.second;
-        f.second->role = r.second;
+      for(auto &f : r.second->allFuncs()) {
+        f->node = n.second;
+        f->role = r.second;
       }
   }
   
