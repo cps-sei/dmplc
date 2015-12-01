@@ -1,5 +1,5 @@
 //-- DMPLC Version: 0.2
-//-- DMPLC Command Line:  dmplc --roles uav:Uav:3 --cube-grid 10 --map small -g -o test-example-01a.cpp test-example-01a.dmpl
+//-- DMPLC Command Line:  dmplc --roles uav:Leader:1:uav:Protector:4 --cube-grid 10 --map small -g -o test-example-02b.cpp test-example-02b.dmpl
 
 /********************************************************************/
 //-- begin target (GNU_CPP) specific thunk
@@ -172,19 +172,18 @@ engine::Knowledge_Update_Settings private_update (true);
 /********************************************************************/
 //-- barrier variables
 /********************************************************************/
-ArrayReference<unsigned int, 3> mbarrier_COLLISION_AVOIDANCE(knowledge, "mbarrier_COLLISION_AVOIDANCE");
+ArrayReference<unsigned int, 5> mbarrier_COLLISION_AVOIDANCE(knowledge, "mbarrier_COLLISION_AVOIDANCE");
 
 /********************************************************************/
 //-- number of participating processes
 /********************************************************************/
-unsigned int processes (3);
+unsigned int processes (5);
 
 /********************************************************************/
 //-- Defining program-specific constants
 /********************************************************************/
 #define BottomY -2.25
 #define BottomZ 0.0
-#define INITS 0
 #define LeftX -2.25
 #define MOVE 4
 #define NEXT 1
@@ -208,32 +207,42 @@ namespace node_uav
 /********************************************************************/
 //-- Defining global variables at node scope
 /********************************************************************/
-ArrayReference<_Bool, 3, 10, 10> lock(knowledge, "lock");
+ArrayReference<_Bool, 5> init(knowledge, "init");
+_Bool var_init_init (0);
+ArrayReference<_Bool, 5, 10, 10> lock(knowledge, "lock");
+ArrayReference<short, 5> lx(knowledge, "lx");
+short var_init_lx (0);
+ArrayReference<short, 5> ly(knowledge, "ly");
+short var_init_ly (0);
 
 /********************************************************************/
 //-- Defining local variables at node scope
 /********************************************************************/
+Reference<int> l1(knowledge, ".l1");
+int var_init_l1 (0);
 Reference<short> state(knowledge, ".state");
 short var_init_state (0);
+Reference<_Bool> waypointValid(knowledge, ".waypointValid");
+_Bool var_init_waypointValid (0);
 Reference<short> x(knowledge, ".x");
 short var_init_x (0);
-Reference<short> xf(knowledge, ".xf");
-short var_init_xf (0);
 Reference<short> xp(knowledge, ".xp");
 short var_init_xp (0);
+Reference<short> xt(knowledge, ".xt");
+short var_init_xt (0);
 Reference<short> y(knowledge, ".y");
 short var_init_y (0);
-Reference<short> yf(knowledge, ".yf");
-short var_init_yf (0);
 Reference<short> yp(knowledge, ".yp");
 short var_init_yp (0);
+Reference<short> yt(knowledge, ".yt");
+short var_init_yt (0);
 
 /********************************************************************/
-//-- Begin defining variables for role Uav
+//-- Begin defining variables for role Leader
 /********************************************************************/
 
-// begin node_uav_role_Uav namespace
-namespace node_uav_role_Uav
+// begin node_uav_role_Leader namespace
+namespace node_uav_role_Leader
 {
 
 /********************************************************************/
@@ -248,24 +257,100 @@ namespace node_uav_role_Uav
 //-- Defining local variables at scope of thread COLLISION_AVOIDANCE
 //-- Used to implement Read-Execute-Write semantics
 /********************************************************************/
+CachedReference<int> thread0_l1(knowledge, ".l1");
 CachedReference<short> thread0_state(knowledge, ".state");
+CachedReference<_Bool> thread0_waypointValid(knowledge, ".waypointValid");
 CachedReference<short> thread0_x(knowledge, ".x");
-CachedReference<short> thread0_xf(knowledge, ".xf");
 CachedReference<short> thread0_xp(knowledge, ".xp");
+CachedReference<short> thread0_xt(knowledge, ".xt");
 CachedReference<short> thread0_y(knowledge, ".y");
-CachedReference<short> thread0_yf(knowledge, ".yf");
 CachedReference<short> thread0_yp(knowledge, ".yp");
+CachedReference<short> thread0_yt(knowledge, ".yt");
 
 /********************************************************************/
 //-- Defining global variables at scope of thread COLLISION_AVOIDANCE
 //-- Used to implement Read-Execute-Write semantics
 /********************************************************************/
-ArrayReference<Proactive<_Bool, CachedReference<_Bool> >, 3, 10, 10> thread0_lock(knowledge, "lock");
-
-} // end node_uav_role_Uav namespace
+ArrayReference<Proactive<_Bool, CachedReference<_Bool> >, 5, 10, 10> thread0_lock(knowledge, "lock");
 
 /********************************************************************/
-//-- End defining variables for role Uav
+//-- Defining local variables at scope of thread WAYPOINT
+//-- Used to implement Read-Execute-Write semantics
+/********************************************************************/
+CachedReference<_Bool> thread1_waypointValid(knowledge, ".waypointValid");
+CachedReference<short> thread1_xp(knowledge, ".xp");
+CachedReference<short> thread1_yp(knowledge, ".yp");
+
+/********************************************************************/
+//-- Defining global variables at scope of thread WAYPOINT
+//-- Used to implement Read-Execute-Write semantics
+/********************************************************************/
+ArrayReference<Proactive<_Bool, CachedReference<_Bool> >, 5> thread1_init(knowledge, "init");
+ArrayReference<Proactive<short, CachedReference<short> >, 5> thread1_lx(knowledge, "lx");
+ArrayReference<Proactive<short, CachedReference<short> >, 5> thread1_ly(knowledge, "ly");
+
+} // end node_uav_role_Leader namespace
+
+/********************************************************************/
+//-- End defining variables for role Leader
+/********************************************************************/
+
+/********************************************************************/
+//-- Begin defining variables for role Protector
+/********************************************************************/
+
+// begin node_uav_role_Protector namespace
+namespace node_uav_role_Protector
+{
+
+/********************************************************************/
+//-- Defining global variables at role scope
+/********************************************************************/
+
+/********************************************************************/
+//-- Defining local variables at role scope
+/********************************************************************/
+
+/********************************************************************/
+//-- Defining local variables at scope of thread COLLISION_AVOIDANCE
+//-- Used to implement Read-Execute-Write semantics
+/********************************************************************/
+CachedReference<int> thread0_l1(knowledge, ".l1");
+CachedReference<short> thread0_state(knowledge, ".state");
+CachedReference<_Bool> thread0_waypointValid(knowledge, ".waypointValid");
+CachedReference<short> thread0_x(knowledge, ".x");
+CachedReference<short> thread0_xp(knowledge, ".xp");
+CachedReference<short> thread0_xt(knowledge, ".xt");
+CachedReference<short> thread0_y(knowledge, ".y");
+CachedReference<short> thread0_yp(knowledge, ".yp");
+CachedReference<short> thread0_yt(knowledge, ".yt");
+
+/********************************************************************/
+//-- Defining global variables at scope of thread COLLISION_AVOIDANCE
+//-- Used to implement Read-Execute-Write semantics
+/********************************************************************/
+ArrayReference<Proactive<_Bool, CachedReference<_Bool> >, 5, 10, 10> thread0_lock(knowledge, "lock");
+
+/********************************************************************/
+//-- Defining local variables at scope of thread WAYPOINT
+//-- Used to implement Read-Execute-Write semantics
+/********************************************************************/
+CachedReference<_Bool> thread2_waypointValid(knowledge, ".waypointValid");
+CachedReference<short> thread2_xt(knowledge, ".xt");
+CachedReference<short> thread2_yt(knowledge, ".yt");
+
+/********************************************************************/
+//-- Defining global variables at scope of thread WAYPOINT
+//-- Used to implement Read-Execute-Write semantics
+/********************************************************************/
+ArrayReference<Proactive<_Bool, CachedReference<_Bool> >, 5> thread2_init(knowledge, "init");
+ArrayReference<Proactive<short, CachedReference<short> >, 5> thread2_lx(knowledge, "lx");
+ArrayReference<Proactive<short, CachedReference<short> >, 5> thread2_ly(knowledge, "ly");
+
+} // end node_uav_role_Protector namespace
+
+/********************************************************************/
+//-- End defining variables for role Protector
 /********************************************************************/
 
 } // end node_uav namespace
@@ -455,7 +540,9 @@ void handle_arguments (int argc, char ** argv)
       if (i + 1 < argc)
       {
         std::stringstream buffer (argv[i + 1]);
-        if(node_name == "uav" && role_name == "Uav")
+        if(node_name == "uav" && role_name == "Leader")
+          buffer >> node_uav::var_init_x;
+        else if(node_name == "uav" && role_name == "Protector")
           buffer >> node_uav::var_init_x;
         else throw std::runtime_error
              ("ERROR : no input variable x for node and role combination : ("
@@ -465,16 +552,18 @@ void handle_arguments (int argc, char ** argv)
       ++i;
     }
 
-    //-- Providing init for input variable xf
-    else if (arg1 == "--var_xf")
+    //-- Providing init for input variable xt
+    else if (arg1 == "--var_xt")
     {
       if (i + 1 < argc)
       {
         std::stringstream buffer (argv[i + 1]);
-        if(node_name == "uav" && role_name == "Uav")
-          buffer >> node_uav::var_init_xf;
+        if(node_name == "uav" && role_name == "Leader")
+          buffer >> node_uav::var_init_xt;
+        else if(node_name == "uav" && role_name == "Protector")
+          buffer >> node_uav::var_init_xt;
         else throw std::runtime_error
-             ("ERROR : no input variable xf for node and role combination : ("
+             ("ERROR : no input variable xt for node and role combination : ("
               + node_name + " , " + role_name + ")");
       }
       
@@ -487,7 +576,9 @@ void handle_arguments (int argc, char ** argv)
       if (i + 1 < argc)
       {
         std::stringstream buffer (argv[i + 1]);
-        if(node_name == "uav" && role_name == "Uav")
+        if(node_name == "uav" && role_name == "Leader")
+          buffer >> node_uav::var_init_y;
+        else if(node_name == "uav" && role_name == "Protector")
           buffer >> node_uav::var_init_y;
         else throw std::runtime_error
              ("ERROR : no input variable y for node and role combination : ("
@@ -497,16 +588,18 @@ void handle_arguments (int argc, char ** argv)
       ++i;
     }
 
-    //-- Providing init for input variable yf
-    else if (arg1 == "--var_yf")
+    //-- Providing init for input variable yt
+    else if (arg1 == "--var_yt")
     {
       if (i + 1 < argc)
       {
         std::stringstream buffer (argv[i + 1]);
-        if(node_name == "uav" && role_name == "Uav")
-          buffer >> node_uav::var_init_yf;
+        if(node_name == "uav" && role_name == "Leader")
+          buffer >> node_uav::var_init_yt;
+        else if(node_name == "uav" && role_name == "Protector")
+          buffer >> node_uav::var_init_yt;
         else throw std::runtime_error
-             ("ERROR : no input variable yf for node and role combination : ("
+             ("ERROR : no input variable yt for node and role combination : ("
               + node_name + " , " + role_name + ")");
       }
       
@@ -531,9 +624,9 @@ void handle_arguments (int argc, char ** argv)
         " [--node name]            select the node name\n"\
         " [--role name]            select the role name\n"\
         " [--var_x] sets the initial value of variable x\n"\
-        " [--var_xf] sets the initial value of variable xf\n"\
+        " [--var_xt] sets the initial value of variable xt\n"\
         " [--var_y] sets the initial value of variable y\n"\
-        " [--var_yf] sets the initial value of variable yf\n"\
+        " [--var_yt] sets the initial value of variable yt\n"\
         , argv[0]));
       exit (0);
     }
@@ -545,7 +638,8 @@ void handle_arguments (int argc, char ** argv)
 /********************************************************************/
 void check_argument_sanity()
 {
-  if(node_name == "uav" && role_name == "Uav") return;
+  if(node_name == "uav" && role_name == "Leader") return;
+  if(node_name == "uav" && role_name == "Protector") return;
   throw std::runtime_error("ERROR : illegal node and role combination : ("
                            + node_name + " , " + role_name + ")");
 }
@@ -562,21 +656,59 @@ namespace node_uav
 {
 
 /********************************************************************/
-//-- Declaring functions for role Uav
+//-- Declaring functions for role Leader
 /********************************************************************/
 
-// begin node_uav_role_Uav namespace
-namespace node_uav_role_Uav
+// begin node_uav_role_Leader namespace
+namespace node_uav_role_Leader
 {
 Madara::Knowledge_Record
 base_StartingPosition (engine::Function_Arguments & args, engine::Variables & vars);
+Madara::Knowledge_Record
+base_foo (engine::Function_Arguments & args, engine::Variables & vars);
 Madara::Knowledge_Record
 thread0 (engine::Function_Arguments & args, engine::Variables & vars);
 Madara::Knowledge_Record
 thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variables & vars);
 Madara::Knowledge_Record
 thread0_NEXT_XY (engine::Function_Arguments & args, engine::Variables & vars);
-} // end node_uav_role_Uav namespace
+Madara::Knowledge_Record
+thread0_bar (engine::Function_Arguments & args, engine::Variables & vars);
+Madara::Knowledge_Record
+thread0_foo (engine::Function_Arguments & args, engine::Variables & vars);
+Madara::Knowledge_Record
+thread1 (engine::Function_Arguments & args, engine::Variables & vars);
+Madara::Knowledge_Record
+thread1_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars);
+} // end node_uav_role_Leader namespace
+
+
+/********************************************************************/
+//-- Declaring functions for role Protector
+/********************************************************************/
+
+// begin node_uav_role_Protector namespace
+namespace node_uav_role_Protector
+{
+Madara::Knowledge_Record
+base_StartingPosition (engine::Function_Arguments & args, engine::Variables & vars);
+Madara::Knowledge_Record
+base_foo (engine::Function_Arguments & args, engine::Variables & vars);
+Madara::Knowledge_Record
+thread0 (engine::Function_Arguments & args, engine::Variables & vars);
+Madara::Knowledge_Record
+thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variables & vars);
+Madara::Knowledge_Record
+thread0_NEXT_XY (engine::Function_Arguments & args, engine::Variables & vars);
+Madara::Knowledge_Record
+thread0_bar (engine::Function_Arguments & args, engine::Variables & vars);
+Madara::Knowledge_Record
+thread0_foo (engine::Function_Arguments & args, engine::Variables & vars);
+Madara::Knowledge_Record
+thread2 (engine::Function_Arguments & args, engine::Variables & vars);
+Madara::Knowledge_Record
+thread2_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars);
+} // end node_uav_role_Protector namespace
 
 } // end node_uav namespace
 
@@ -601,11 +733,11 @@ namespace node_uav
 {
 
 /********************************************************************/
-//-- Defining functions for role Uav
+//-- Defining functions for role Leader
 /********************************************************************/
 
-// begin node_uav_role_Uav namespace
-namespace node_uav_role_Uav
+// begin node_uav_role_Leader namespace
+namespace node_uav_role_Leader
 {
 
 /********************************************************************/
@@ -653,18 +785,34 @@ base_StartingPosition (engine::Function_Arguments & args, engine::Variables & va
 }
 
 Madara::Knowledge_Record
+base_foo (engine::Function_Arguments & args, engine::Variables & vars)
+{
+
+  //-- Declare local (parameter and temporary) variables
+
+
+  //-- Begin function body
+  l1 = Integer (55);
+
+  //-- Insert return statement, in case user program did not
+  return Integer(0);
+}
+
+Madara::Knowledge_Record
 thread0 (engine::Function_Arguments & args, engine::Variables & vars)
 {
   //-- Pull all referenced locals/globals
   {
     Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread0_l1.pull();
     thread0_state.pull();
+    thread0_waypointValid.pull();
     thread0_x.pull();
-    thread0_xf.pull();
     thread0_xp.pull();
+    thread0_xt.pull();
     thread0_y.pull();
-    thread0_yf.pull();
     thread0_yp.pull();
+    thread0_yt.pull();
     thread0_lock.pull();
   }
 
@@ -674,13 +822,15 @@ thread0 (engine::Function_Arguments & args, engine::Variables & vars)
   //-- Push all referenced locals/globals
   {
     Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread0_l1.push();
     thread0_state.push();
+    thread0_waypointValid.push();
     thread0_x.push();
-    thread0_xf.push();
     thread0_xp.push();
+    thread0_xt.push();
     thread0_y.push();
-    thread0_yf.push();
     thread0_yp.push();
+    thread0_yt.push();
     thread0_lock[id].push();
   }
 
@@ -696,23 +846,29 @@ thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variable
 
   //-- Begin function body
   {
-    (void) (print_state (X, Y, id, thread0_x, thread0_y, thread0_xf, thread0_yf));
+    (void) (print_state (X, Y, id, thread0_x, thread0_y, thread0_xt, thread0_yt));
   }
-  if ((thread0_state == INITS))
   {
-    thread0_lock[id][thread0_x][thread0_y] = Integer (1);
-    thread0_state = NEXT;
+    (void) (thread0_foo (
+         __strip_const(engine::Function_Arguments(0))
+        , vars));
+  }
+  {
+    (void) (thread0_bar (
+         __strip_const(engine::Function_Arguments(0))
+        , vars));
   }
   if ((thread0_state == NEXT))
   {
-    if (((thread0_x == thread0_xf) && (thread0_y == thread0_yf)))
+    if (((thread0_x == thread0_xt) && (thread0_y == thread0_yt)))
     {
       return Integer(0);
     }
-    {
-      (void) (thread0_NEXT_XY (
+    if ((thread0_NEXT_XY (
            __strip_const(engine::Function_Arguments(0))
-          , vars));
+          , vars).to_integer() == 0 ? false : true))
+    {
+      return Integer(0);
     }
     thread0_state = REQUEST;
   }
@@ -721,7 +877,9 @@ thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variable
     if ((thread0_state == REQUEST))
     {
       if ((id == 1 && ((thread0_lock[0][thread0_xp][thread0_yp] != Integer (0)))) || 
-        (id == 2 && ((thread0_lock[0][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[1][thread0_xp][thread0_yp] != Integer (0)))))
+        (id == 2 && ((thread0_lock[0][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[1][thread0_xp][thread0_yp] != Integer (0)))) || 
+        (id == 3 && ((thread0_lock[0][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[1][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[2][thread0_xp][thread0_yp] != Integer (0)))) || 
+        (id == 4 && ((thread0_lock[0][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[1][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[2][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[3][thread0_xp][thread0_yp] != Integer (0)))))
       {
         return Integer(0);
       }
@@ -732,8 +890,10 @@ thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variable
     {
       if ((thread0_state == WAITING))
       {
-        if ((id == 0 && ((thread0_lock[1][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[2][thread0_xp][thread0_yp] != Integer (0)))) || 
-          (id == 1 && ((thread0_lock[2][thread0_xp][thread0_yp] != Integer (0)))))
+        if ((id == 0 && ((thread0_lock[1][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[2][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[3][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[4][thread0_xp][thread0_yp] != Integer (0)))) || 
+          (id == 1 && ((thread0_lock[2][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[3][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[4][thread0_xp][thread0_yp] != Integer (0)))) || 
+          (id == 2 && ((thread0_lock[3][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[4][thread0_xp][thread0_yp] != Integer (0)))) || 
+          (id == 3 && ((thread0_lock[4][thread0_xp][thread0_yp] != Integer (0)))))
         {
           return Integer(0);
         }
@@ -768,21 +928,29 @@ thread0_NEXT_XY (engine::Function_Arguments & args, engine::Variables & vars)
 
 
   //-- Begin function body
+  if ((!thread0_waypointValid))
+  {
+    return (Integer(Integer (1)));
+  }
+  if (((((thread0_xt < Integer (0)) || (thread0_xt >= X)) || (thread0_yt < Integer (0))) || (thread0_yt >= Y)))
+  {
+    return (Integer(Integer (1)));
+  }
   thread0_xp = thread0_x;
   thread0_yp = thread0_y;
-  if ((thread0_x < thread0_xf))
+  if ((thread0_x < thread0_xt))
   {
     thread0_xp = (thread0_x + Integer (1));
   }
   else
   {
-    if ((thread0_x > thread0_xf))
+    if ((thread0_x > thread0_xt))
     {
       thread0_xp = (thread0_x - Integer (1));
     }
     else
     {
-      if ((thread0_y < thread0_yf))
+      if ((thread0_y < thread0_yt))
       {
         thread0_yp = (thread0_y + Integer (1));
       }
@@ -792,23 +960,130 @@ thread0_NEXT_XY (engine::Function_Arguments & args, engine::Variables & vars)
       }
     }
   }
+  return (Integer(Integer (0)));
+
+  //-- Insert return statement, in case user program did not
+  return Integer(0);
+}
+
+Madara::Knowledge_Record
+thread0_bar (engine::Function_Arguments & args, engine::Variables & vars)
+{
+
+  //-- Declare local (parameter and temporary) variables
+
+
+  //-- Begin function body
+  thread0_l1 = Integer (6);
+
+  //-- Insert return statement, in case user program did not
+  return Integer(0);
+}
+
+Madara::Knowledge_Record
+thread0_foo (engine::Function_Arguments & args, engine::Variables & vars)
+{
+
+  //-- Declare local (parameter and temporary) variables
+
+
+  //-- Begin function body
+  thread0_l1 = Integer (55);
+
+  //-- Insert return statement, in case user program did not
+  return Integer(0);
+}
+
+Madara::Knowledge_Record
+thread1 (engine::Function_Arguments & args, engine::Variables & vars)
+{
+  //-- Pull all referenced locals/globals
+  {
+    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread1_waypointValid.pull();
+    thread1_xp.pull();
+    thread1_yp.pull();
+    thread1_init.pull();
+    thread1_lx.pull();
+    thread1_ly.pull();
+  }
+
+  //-- call thread function
+  thread1_WAYPOINT(args, vars);
+
+  //-- Push all referenced locals/globals
+  {
+    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread1_waypointValid.push();
+    thread1_xp.push();
+    thread1_yp.push();
+    thread1_init[id].push();
+    thread1_lx[id].push();
+    thread1_ly[id].push();
+  }
+
+  return Integer(0);
+}
+
+//-- @Period 100000
+Madara::Knowledge_Record
+thread1_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars)
+{
+
+  //-- Declare local (parameter and temporary) variables
+
+
+  //-- Begin function body
+  thread1_waypointValid = Integer (1);
+  thread1_ly[id] = thread1_yp;
+  thread1_lx[id] = thread1_xp;
+  thread1_init[id] = Integer (1);
 
   //-- Insert return statement, in case user program did not
   return Integer(0);
 }
 
 /********************************************************************/
-//-- Begin constructors for role Uav
+//-- Begin constructors for role Leader
 /********************************************************************/
+void initialize_init ()
+{
+  engine::Variables vars;
+  init[id] = Integer (0);
+}
+void initialize_l1 ()
+{
+  engine::Variables vars;
+  {
+    (void) (base_foo (
+         __strip_const(engine::Function_Arguments(0))
+        , vars));
+  }
+}
 void initialize_lock ()
 {
   engine::Variables vars;
   lock[id][x][y] = Integer (1);
 }
+void initialize_lx ()
+{
+  engine::Variables vars;
+  lx[id] = Integer (0);
+}
+void initialize_ly ()
+{
+  engine::Variables vars;
+  ly[id] = Integer (0);
+}
 void initialize_state ()
 {
   engine::Variables vars;
-  state = INITS;
+  state = NEXT;
+}
+void initialize_waypointValid ()
+{
+  engine::Variables vars;
+  waypointValid = Integer (0);
 }
 int check_init_x ()
 {
@@ -816,16 +1091,16 @@ int check_init_x ()
   x = var_init_x;
   return (Integer(((Integer (0) <= x) && (x < X))));
 }
-int check_init_xf ()
-{
-  engine::Variables vars;
-  xf = var_init_xf;
-  return (Integer(((Integer (0) <= xf) && (xf < X))));
-}
 void initialize_xp ()
 {
   engine::Variables vars;
   xp = x;
+}
+int check_init_xt ()
+{
+  engine::Variables vars;
+  xt = var_init_xt;
+  return (Integer(((Integer (0) <= xt) && (xt < X))));
 }
 int check_init_y ()
 {
@@ -833,30 +1108,472 @@ int check_init_y ()
   y = var_init_y;
   return (Integer(((Integer (0) <= y) && (y < Y))));
 }
-int check_init_yf ()
+void initialize_yp ()
 {
   engine::Variables vars;
-  yf = var_init_yf;
-  return (Integer(((Integer (0) <= yf) && (yf < Y))));
+  yp = y;
+}
+int check_init_yt ()
+{
+  engine::Variables vars;
+  yt = var_init_yt;
+  return (Integer(((Integer (0) <= yt) && (yt < Y))));
+}
+void constructor ()
+{
+  if(!check_init_x ()) throw std::runtime_error("ERROR: illegal initial value of variable x");
+  if(!check_init_xt ()) throw std::runtime_error("ERROR: illegal initial value of variable xt");
+  if(!check_init_y ()) throw std::runtime_error("ERROR: illegal initial value of variable y");
+  if(!check_init_yt ()) throw std::runtime_error("ERROR: illegal initial value of variable yt");
+  initialize_init ();
+  initialize_l1 ();
+  initialize_lock ();
+  initialize_lx ();
+  initialize_ly ();
+  initialize_state ();
+  initialize_waypointValid ();
+  initialize_xp ();
+  initialize_yp ();
+}
+
+} // end node_uav_role_Leader namespace
+
+
+/********************************************************************/
+//-- Defining functions for role Protector
+/********************************************************************/
+
+// begin node_uav_role_Protector namespace
+namespace node_uav_role_Protector
+{
+
+/********************************************************************/
+//-- Remodify barries variables to force MADARA retransmit
+/********************************************************************/
+Madara::Knowledge_Record
+REMODIFY_BARRIERS_COLLISION_AVOIDANCE (engine::Function_Arguments &,
+  engine::Variables & vars)
+{
+  mbarrier_COLLISION_AVOIDANCE[id].mark_modified();
+  return Integer (0);
+}
+
+/********************************************************************/
+//-- Remodify global shared variables to force MADARA retransmit
+/********************************************************************/
+Madara::Knowledge_Record
+REMODIFY_GLOBALS_COLLISION_AVOIDANCE (engine::Function_Arguments & args,
+  engine::Variables & vars)
+{
+  // Remodifying common global variables
+  REMODIFY_BARRIERS_COLLISION_AVOIDANCE (args, vars);
+  // Remodifying thread-specific global variables
+  lock[id].mark_modified();
+  return Integer (0);
+}
+//-- @InitSim
+Madara::Knowledge_Record
+base_StartingPosition (engine::Function_Arguments & args, engine::Variables & vars)
+{
+
+  //-- Declare local (parameter and temporary) variables
+
+
+  //-- Begin function body
+  {
+    (void) (GRID_INIT ());
+  }
+  {
+    (void) (GRID_PLACE (x, y, Integer (1)));
+  }
+
+  //-- Insert return statement, in case user program did not
+  return Integer(0);
+}
+
+Madara::Knowledge_Record
+base_foo (engine::Function_Arguments & args, engine::Variables & vars)
+{
+
+  //-- Declare local (parameter and temporary) variables
+
+
+  //-- Begin function body
+  l1 = Integer (5);
+
+  //-- Insert return statement, in case user program did not
+  return Integer(0);
+}
+
+Madara::Knowledge_Record
+thread0 (engine::Function_Arguments & args, engine::Variables & vars)
+{
+  //-- Pull all referenced locals/globals
+  {
+    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread0_l1.pull();
+    thread0_state.pull();
+    thread0_waypointValid.pull();
+    thread0_x.pull();
+    thread0_xp.pull();
+    thread0_xt.pull();
+    thread0_y.pull();
+    thread0_yp.pull();
+    thread0_yt.pull();
+    thread0_lock.pull();
+  }
+
+  //-- call thread function
+  thread0_COLLISION_AVOIDANCE(args, vars);
+
+  //-- Push all referenced locals/globals
+  {
+    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread0_l1.push();
+    thread0_state.push();
+    thread0_waypointValid.push();
+    thread0_x.push();
+    thread0_xp.push();
+    thread0_xt.push();
+    thread0_y.push();
+    thread0_yp.push();
+    thread0_yt.push();
+    thread0_lock[id].push();
+  }
+
+  return Integer(0);
+}
+
+Madara::Knowledge_Record
+thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variables & vars)
+{
+
+  //-- Declare local (parameter and temporary) variables
+
+
+  //-- Begin function body
+  {
+    (void) (print_state (X, Y, id, thread0_x, thread0_y, thread0_xt, thread0_yt));
+  }
+  {
+    (void) (thread0_foo (
+         __strip_const(engine::Function_Arguments(0))
+        , vars));
+  }
+  {
+    (void) (thread0_bar (
+         __strip_const(engine::Function_Arguments(0))
+        , vars));
+  }
+  if ((thread0_state == NEXT))
+  {
+    if (((thread0_x == thread0_xt) && (thread0_y == thread0_yt)))
+    {
+      return Integer(0);
+    }
+    if ((thread0_NEXT_XY (
+           __strip_const(engine::Function_Arguments(0))
+          , vars).to_integer() == 0 ? false : true))
+    {
+      return Integer(0);
+    }
+    thread0_state = REQUEST;
+  }
+  else
+  {
+    if ((thread0_state == REQUEST))
+    {
+      if ((id == 1 && ((thread0_lock[0][thread0_xp][thread0_yp] != Integer (0)))) || 
+        (id == 2 && ((thread0_lock[0][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[1][thread0_xp][thread0_yp] != Integer (0)))) || 
+        (id == 3 && ((thread0_lock[0][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[1][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[2][thread0_xp][thread0_yp] != Integer (0)))) || 
+        (id == 4 && ((thread0_lock[0][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[1][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[2][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[3][thread0_xp][thread0_yp] != Integer (0)))))
+      {
+        return Integer(0);
+      }
+      thread0_lock[id][thread0_xp][thread0_yp] = Integer (1);
+      thread0_state = WAITING;
+    }
+    else
+    {
+      if ((thread0_state == WAITING))
+      {
+        if ((id == 0 && ((thread0_lock[1][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[2][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[3][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[4][thread0_xp][thread0_yp] != Integer (0)))) || 
+          (id == 1 && ((thread0_lock[2][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[3][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[4][thread0_xp][thread0_yp] != Integer (0)))) || 
+          (id == 2 && ((thread0_lock[3][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[4][thread0_xp][thread0_yp] != Integer (0)))) || 
+          (id == 3 && ((thread0_lock[4][thread0_xp][thread0_yp] != Integer (0)))))
+        {
+          return Integer(0);
+        }
+        thread0_state = MOVE;
+      }
+      else
+      {
+        if ((thread0_state == MOVE))
+        {
+          if ((GRID_MOVE (thread0_xp, thread0_yp, Integer (1))))
+          {
+            return Integer(0);
+          }
+          thread0_lock[id][thread0_x][thread0_y] = Integer (0);
+          thread0_x = thread0_xp;
+          thread0_y = thread0_yp;
+          thread0_state = NEXT;
+        }
+      }
+    }
+  }
+
+  //-- Insert return statement, in case user program did not
+  return Integer(0);
+}
+
+Madara::Knowledge_Record
+thread0_NEXT_XY (engine::Function_Arguments & args, engine::Variables & vars)
+{
+
+  //-- Declare local (parameter and temporary) variables
+
+
+  //-- Begin function body
+  if ((!thread0_waypointValid))
+  {
+    return (Integer(Integer (1)));
+  }
+  if (((((thread0_xt < Integer (0)) || (thread0_xt >= X)) || (thread0_yt < Integer (0))) || (thread0_yt >= Y)))
+  {
+    return (Integer(Integer (1)));
+  }
+  thread0_xp = thread0_x;
+  thread0_yp = thread0_y;
+  if ((thread0_x < thread0_xt))
+  {
+    thread0_xp = (thread0_x + Integer (1));
+  }
+  else
+  {
+    if ((thread0_x > thread0_xt))
+    {
+      thread0_xp = (thread0_x - Integer (1));
+    }
+    else
+    {
+      if ((thread0_y < thread0_yt))
+      {
+        thread0_yp = (thread0_y + Integer (1));
+      }
+      else
+      {
+        thread0_yp = (thread0_y - Integer (1));
+      }
+    }
+  }
+  return (Integer(Integer (0)));
+
+  //-- Insert return statement, in case user program did not
+  return Integer(0);
+}
+
+Madara::Knowledge_Record
+thread0_bar (engine::Function_Arguments & args, engine::Variables & vars)
+{
+
+  //-- Declare local (parameter and temporary) variables
+
+
+  //-- Begin function body
+  thread0_l1 = Integer (66);
+
+  //-- Insert return statement, in case user program did not
+  return Integer(0);
+}
+
+Madara::Knowledge_Record
+thread0_foo (engine::Function_Arguments & args, engine::Variables & vars)
+{
+
+  //-- Declare local (parameter and temporary) variables
+
+
+  //-- Begin function body
+  thread0_l1 = Integer (5);
+
+  //-- Insert return statement, in case user program did not
+  return Integer(0);
+}
+
+Madara::Knowledge_Record
+thread2 (engine::Function_Arguments & args, engine::Variables & vars)
+{
+  //-- Pull all referenced locals/globals
+  {
+    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread2_waypointValid.pull();
+    thread2_xt.pull();
+    thread2_yt.pull();
+    thread2_init.pull();
+    thread2_lx.pull();
+    thread2_ly.pull();
+  }
+
+  //-- call thread function
+  thread2_WAYPOINT(args, vars);
+
+  //-- Push all referenced locals/globals
+  {
+    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread2_waypointValid.push();
+    thread2_xt.push();
+    thread2_yt.push();
+    thread2_init[id].push();
+    thread2_lx[id].push();
+    thread2_ly[id].push();
+  }
+
+  return Integer(0);
+}
+
+//-- @Period 100000
+Madara::Knowledge_Record
+thread2_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars)
+{
+
+  //-- Declare local (parameter and temporary) variables
+
+
+  //-- Begin function body
+  if ((thread2_init[Integer (0)] == Integer (0)))
+  {
+    return Integer(0);
+  }
+  thread2_waypointValid = Integer (1);
+  if ((id == Integer (1)))
+  {
+    thread2_xt = (thread2_lx[Integer (0)] + Integer (1));
+    thread2_yt = (thread2_ly[Integer (0)] + Integer (1));
+  }
+  else
+  {
+    if ((id == Integer (2)))
+    {
+      thread2_xt = (thread2_lx[Integer (0)] - Integer (1));
+      thread2_yt = (thread2_ly[Integer (0)] + Integer (1));
+    }
+    else
+    {
+      if ((id == Integer (3)))
+      {
+        thread2_xt = (thread2_lx[Integer (0)] - Integer (1));
+        thread2_yt = (thread2_ly[Integer (0)] - Integer (1));
+      }
+      else
+      {
+        if ((id == Integer (4)))
+        {
+          thread2_xt = (thread2_lx[Integer (0)] + Integer (1));
+          thread2_yt = (thread2_ly[Integer (0)] - Integer (1));
+        }
+      }
+    }
+  }
+
+  //-- Insert return statement, in case user program did not
+  return Integer(0);
+}
+
+/********************************************************************/
+//-- Begin constructors for role Protector
+/********************************************************************/
+void initialize_init ()
+{
+  engine::Variables vars;
+  init[id] = Integer (0);
+}
+void initialize_l1 ()
+{
+  engine::Variables vars;
+  {
+    (void) (base_foo (
+         __strip_const(engine::Function_Arguments(0))
+        , vars));
+  }
+}
+void initialize_lock ()
+{
+  engine::Variables vars;
+  lock[id][x][y] = Integer (1);
+}
+void initialize_lx ()
+{
+  engine::Variables vars;
+  lx[id] = Integer (0);
+}
+void initialize_ly ()
+{
+  engine::Variables vars;
+  ly[id] = Integer (0);
+}
+void initialize_state ()
+{
+  engine::Variables vars;
+  state = NEXT;
+}
+void initialize_waypointValid ()
+{
+  engine::Variables vars;
+  waypointValid = Integer (0);
+}
+int check_init_x ()
+{
+  engine::Variables vars;
+  x = var_init_x;
+  return (Integer(((Integer (0) <= x) && (x < X))));
+}
+void initialize_xp ()
+{
+  engine::Variables vars;
+  xp = x;
+}
+int check_init_xt ()
+{
+  engine::Variables vars;
+  xt = var_init_xt;
+  return (Integer(((Integer (0) <= xt) && (xt < X))));
+}
+int check_init_y ()
+{
+  engine::Variables vars;
+  y = var_init_y;
+  return (Integer(((Integer (0) <= y) && (y < Y))));
 }
 void initialize_yp ()
 {
   engine::Variables vars;
   yp = y;
 }
+int check_init_yt ()
+{
+  engine::Variables vars;
+  yt = var_init_yt;
+  return (Integer(((Integer (0) <= yt) && (yt < Y))));
+}
 void constructor ()
 {
   if(!check_init_x ()) throw std::runtime_error("ERROR: illegal initial value of variable x");
-  if(!check_init_xf ()) throw std::runtime_error("ERROR: illegal initial value of variable xf");
+  if(!check_init_xt ()) throw std::runtime_error("ERROR: illegal initial value of variable xt");
   if(!check_init_y ()) throw std::runtime_error("ERROR: illegal initial value of variable y");
-  if(!check_init_yf ()) throw std::runtime_error("ERROR: illegal initial value of variable yf");
+  if(!check_init_yt ()) throw std::runtime_error("ERROR: illegal initial value of variable yt");
+  initialize_init ();
+  initialize_l1 ();
   initialize_lock ();
+  initialize_lx ();
+  initialize_ly ();
   initialize_state ();
+  initialize_waypointValid ();
   initialize_xp ();
   initialize_yp ();
 }
 
-} // end node_uav_role_Uav namespace
+} // end node_uav_role_Protector namespace
 
 } // end node_uav namespace
 
@@ -1249,15 +1966,26 @@ int main (int argc, char ** argv)
   /******************************************************************/
   //-- Invoking constructors
   /******************************************************************/
-  if(node_name == "uav" && role_name == "Uav") node_uav::node_uav_role_Uav::constructor ();
+  if(node_name == "uav" && role_name == "Leader") node_uav::node_uav_role_Leader::constructor ();
+  if(node_name == "uav" && role_name == "Protector") node_uav::node_uav_role_Protector::constructor ();
 
   //-- Defining thread functions for MADARA
-  knowledge.define_function ("node_uav_role_Uav_COLLISION_AVOIDANCE_REMODIFY_BARRIERS",
-                              node_uav::node_uav_role_Uav::REMODIFY_BARRIERS_COLLISION_AVOIDANCE);
-  knowledge.define_function ("node_uav_role_Uav_COLLISION_AVOIDANCE_REMODIFY_GLOBALS",
-                              node_uav::node_uav_role_Uav::REMODIFY_GLOBALS_COLLISION_AVOIDANCE);
-  knowledge.define_function ("node_uav_role_Uav_COLLISION_AVOIDANCE",
-                              node_uav::node_uav_role_Uav::thread0);
+  knowledge.define_function ("node_uav_role_Leader_COLLISION_AVOIDANCE_REMODIFY_BARRIERS",
+                              node_uav::node_uav_role_Leader::REMODIFY_BARRIERS_COLLISION_AVOIDANCE);
+  knowledge.define_function ("node_uav_role_Leader_COLLISION_AVOIDANCE_REMODIFY_GLOBALS",
+                              node_uav::node_uav_role_Leader::REMODIFY_GLOBALS_COLLISION_AVOIDANCE);
+  knowledge.define_function ("node_uav_role_Leader_COLLISION_AVOIDANCE",
+                              node_uav::node_uav_role_Leader::thread0);
+  knowledge.define_function ("node_uav_role_Leader_WAYPOINT",
+                              node_uav::node_uav_role_Leader::thread1);
+  knowledge.define_function ("node_uav_role_Protector_COLLISION_AVOIDANCE_REMODIFY_BARRIERS",
+                              node_uav::node_uav_role_Protector::REMODIFY_BARRIERS_COLLISION_AVOIDANCE);
+  knowledge.define_function ("node_uav_role_Protector_COLLISION_AVOIDANCE_REMODIFY_GLOBALS",
+                              node_uav::node_uav_role_Protector::REMODIFY_GLOBALS_COLLISION_AVOIDANCE);
+  knowledge.define_function ("node_uav_role_Protector_COLLISION_AVOIDANCE",
+                              node_uav::node_uav_role_Protector::thread0);
+  knowledge.define_function ("node_uav_role_Protector_WAYPOINT",
+                              node_uav::node_uav_role_Protector::thread2);
 
 
   //-- Initializing platform
@@ -1266,16 +1994,27 @@ int main (int argc, char ** argv)
     init_fn->second(platform_params, knowledge);
 
   //-- Initializing simulation
-  if(node_name == "uav" && role_name == "Uav") {
-    knowledge.define_function ("initialize_platform", node_uav::node_uav_role_Uav::base_StartingPosition);
+  if(node_name == "uav" && role_name == "Leader") {
+    knowledge.define_function ("initialize_platform", node_uav::node_uav_role_Leader::base_StartingPosition);
+  }
+  if(node_name == "uav" && role_name == "Protector") {
+    knowledge.define_function ("initialize_platform", node_uav::node_uav_role_Protector::base_StartingPosition);
   }
   knowledge.evaluate("initialize_platform ()");
 
   //-- Creating algorithms
   std::vector<Algo *> algos;
   Algo *algo;
-  if(node_name == "uav" && role_name == "Uav") {
-    algo = new SyncAlgo(100000, "node_uav_role_Uav_COLLISION_AVOIDANCE", "COLLISION_AVOIDANCE", &knowledge, platform_name);
+  if(node_name == "uav" && role_name == "Leader") {
+    algo = new SyncAlgo(100000, "node_uav_role_Leader_COLLISION_AVOIDANCE", "COLLISION_AVOIDANCE", &knowledge, platform_name);
+    algos.push_back(algo);
+    algo = new Algo(100000, "node_uav_role_Leader_WAYPOINT", &knowledge);
+    algos.push_back(algo);
+  }
+  if(node_name == "uav" && role_name == "Protector") {
+    algo = new SyncAlgo(100000, "node_uav_role_Protector_COLLISION_AVOIDANCE", "COLLISION_AVOIDANCE", &knowledge, platform_name);
+    algos.push_back(algo);
+    algo = new Algo(100000, "node_uav_role_Protector_WAYPOINT", &knowledge);
     algos.push_back(algo);
   }
 

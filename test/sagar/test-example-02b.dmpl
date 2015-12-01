@@ -160,13 +160,9 @@ node uav
   }
 
   expect expProp3 : at_least 0.5 => coverage;
-
-  local int foo1, foo3;
   
   bool NEXT_XY () {
-    bar2();
     if(!waypointValid) return 1;
-    foo1 = 10;
     if(xt < 0 || xt >= X || yt < 0 || yt >= Y) return 1;
 
     xp = x; yp = y;
@@ -177,10 +173,17 @@ node uav
     return 0;
   }
 
+  void foo() { l1 = 5; }
+  void bar() { l1 = 6; }
+
+  local int l1 = { foo(); };
+
+  @Period(100000);
   @BarrierSync;
   @PlatformController;
   thread COLLISION_AVOIDANCE {
     print_state(X,Y,id,x,y,xt,yt);
+    foo(); bar();
     //my_sleep(1);
     if(state == NEXT) {
       //compute next point on route
@@ -206,8 +209,6 @@ node uav
     }
   }
 
-  void bar2() { foo3 = 5; }
-  
   role Leader {
     //-- leader-specific waypoint thread
     @Period(100000);
@@ -217,22 +218,16 @@ node uav
       lx = xp;
       init = 1;
     }
+
+    override void foo() { l1 = 55; }
   
-    override local int foo1;
-    global unsigned char foo2;
-  
-    override void bar2() { foo2 = 5; }
-    
-    override bool NEXT_XY () {
-      bar2();
-      return 1;
-    }
-    
     //-- inherit the collision avoidance thread
     thread COLLISION_AVOIDANCE;
   }
 
   role Protector {
+    override void bar() { l1 = 66; }
+
     //-- follower-specific waypoint thread
     @Period(100000);
     override thread WAYPOINT {
