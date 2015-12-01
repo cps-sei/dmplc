@@ -1,5 +1,5 @@
 //-- DMPLC Version: 0.2
-//-- DMPLC Command Line:  dmplc --roles uav:Leader:1:uav:Protector:4 --cube-grid 10 --map small -g -o test-example-02.cpp test-example-02.dmpl
+//-- DMPLC Command Line:  dmplc --roles uav:Leader:1:uav:Protector:4 --cube-grid 10 --map small -g -o test-example-02a.cpp test-example-02a.dmpl
 
 /********************************************************************/
 //-- begin target (GNU_CPP) specific thunk
@@ -877,14 +877,14 @@ thread0 (engine::Function_Arguments & args, engine::Variables & vars)
   //-- Pull all referenced locals/globals
   {
     Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread0_state.pull();
     thread0_x.pull();
     thread0_y.pull();
-    thread0_xt.pull();
-    thread0_yt.pull();
-    thread0_state.pull();
-    thread0_waypointValid.pull();
     thread0_xp.pull();
     thread0_yp.pull();
+    thread0_xt.pull();
+    thread0_yt.pull();
+    thread0_waypointValid.pull();
     thread0_lock.pull();
   }
 
@@ -894,14 +894,14 @@ thread0 (engine::Function_Arguments & args, engine::Variables & vars)
   //-- Push all referenced locals/globals
   {
     Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread0_state.push();
     thread0_x.push();
     thread0_y.push();
-    thread0_xt.push();
-    thread0_yt.push();
-    thread0_state.push();
-    thread0_waypointValid.push();
     thread0_xp.push();
     thread0_yp.push();
+    thread0_xt.push();
+    thread0_yt.push();
+    thread0_waypointValid.push();
     thread0_lock[id].push();
   }
 
@@ -1126,14 +1126,14 @@ thread0 (engine::Function_Arguments & args, engine::Variables & vars)
   //-- Pull all referenced locals/globals
   {
     Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread0_state.pull();
     thread0_x.pull();
     thread0_y.pull();
-    thread0_xt.pull();
-    thread0_yt.pull();
-    thread0_state.pull();
-    thread0_waypointValid.pull();
     thread0_xp.pull();
     thread0_yp.pull();
+    thread0_xt.pull();
+    thread0_yt.pull();
+    thread0_waypointValid.pull();
     thread0_lock.pull();
   }
 
@@ -1143,14 +1143,14 @@ thread0 (engine::Function_Arguments & args, engine::Variables & vars)
   //-- Push all referenced locals/globals
   {
     Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread0_state.push();
     thread0_x.push();
     thread0_y.push();
-    thread0_xt.push();
-    thread0_yt.push();
-    thread0_state.push();
-    thread0_waypointValid.push();
     thread0_xp.push();
     thread0_yp.push();
+    thread0_xt.push();
+    thread0_yt.push();
+    thread0_waypointValid.push();
     thread0_lock[id].push();
   }
 
@@ -1320,11 +1320,11 @@ thread2 (engine::Function_Arguments & args, engine::Variables & vars)
   //-- Pull all referenced locals/globals
   {
     Madara::Knowledge_Engine::Context_Guard guard(knowledge);
-    thread2_waypointValid.pull();
-    thread2_ly.pull();
-    thread2_yp.pull();
-    thread2_lx.pull();
     thread2_xp.pull();
+    thread2_yp.pull();
+    thread2_waypointValid.pull();
+    thread2_lx.pull();
+    thread2_ly.pull();
     thread2_init.pull();
   }
 
@@ -1334,11 +1334,11 @@ thread2 (engine::Function_Arguments & args, engine::Variables & vars)
   //-- Push all referenced locals/globals
   {
     Madara::Knowledge_Engine::Context_Guard guard(knowledge);
-    thread2_waypointValid.push();
-    thread2_ly[id].push();
-    thread2_yp.push();
-    thread2_lx[id].push();
     thread2_xp.push();
+    thread2_yp.push();
+    thread2_waypointValid.push();
+    thread2_lx[id].push();
+    thread2_ly[id].push();
     thread2_init[id].push();
   }
 
@@ -1516,14 +1516,14 @@ thread0 (engine::Function_Arguments & args, engine::Variables & vars)
   //-- Pull all referenced locals/globals
   {
     Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread0_state.pull();
     thread0_x.pull();
     thread0_y.pull();
-    thread0_xt.pull();
-    thread0_yt.pull();
-    thread0_state.pull();
-    thread0_waypointValid.pull();
     thread0_xp.pull();
     thread0_yp.pull();
+    thread0_xt.pull();
+    thread0_yt.pull();
+    thread0_waypointValid.pull();
     thread0_lock.pull();
   }
 
@@ -1533,14 +1533,14 @@ thread0 (engine::Function_Arguments & args, engine::Variables & vars)
   //-- Push all referenced locals/globals
   {
     Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    thread0_state.push();
     thread0_x.push();
     thread0_y.push();
-    thread0_xt.push();
-    thread0_yt.push();
-    thread0_state.push();
-    thread0_waypointValid.push();
     thread0_xp.push();
     thread0_yp.push();
+    thread0_xt.push();
+    thread0_yt.push();
+    thread0_waypointValid.push();
     thread0_lock[id].push();
   }
 
@@ -1706,12 +1706,12 @@ thread3 (engine::Function_Arguments & args, engine::Variables & vars)
   //-- Pull all referenced locals/globals
   {
     Madara::Knowledge_Engine::Context_Guard guard(knowledge);
-    thread3_init.pull();
-    thread3_waypointValid.pull();
     thread3_xt.pull();
-    thread3_lx.pull();
     thread3_yt.pull();
+    thread3_waypointValid.pull();
+    thread3_lx.pull();
     thread3_ly.pull();
+    thread3_init.pull();
   }
 
   //-- call thread function
@@ -1720,12 +1720,12 @@ thread3 (engine::Function_Arguments & args, engine::Variables & vars)
   //-- Push all referenced locals/globals
   {
     Madara::Knowledge_Engine::Context_Guard guard(knowledge);
-    thread3_init[id].push();
-    thread3_waypointValid.push();
     thread3_xt.push();
-    thread3_lx[id].push();
     thread3_yt.push();
+    thread3_waypointValid.push();
+    thread3_lx[id].push();
     thread3_ly[id].push();
+    thread3_init[id].push();
   }
 
   return Integer(0);

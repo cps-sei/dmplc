@@ -102,7 +102,6 @@ test_double_parse ../../docs/tutorial/example-07/dmpl/example-07-2.dmpl uav:Tile
 #code generation tests
 test_code_gen test-example-01a.dmpl uav:Uav:3
 test_code_gen test-example-02a.dmpl uav:Leader:1:uav:Protector:4
-test_code_gen test-example-02b.dmpl uav:Leader:1:uav:Protector:4
 
 #test building
 for i in ../../docs/tutorial/*.mission ../../docs/tutorial/example-05/dmpl/*.mission ; do
