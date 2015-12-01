@@ -211,8 +211,11 @@ namespace dmpl
     ///print just the function declaration
     void printDecl (std::ostream &os,unsigned int indent);    
 
-    ///set accessed variables and functions
-    void computeAccessed();
+    ///set called functions
+    void computeCalled();
+
+    ///set accessed variables
+    void computeAccessed(FuncSet &visited);
     
     //-- return a string representation. just the name.
     std::string toString() const { return "function : " + name; }
