@@ -551,6 +551,9 @@ namespace dmpl
       bool inExpect();
     };
 
+    //-- constructors
+    SymbolUser() : analyzed(0) {}
+    
     virtual bool recordUse() { return false; }
 
     virtual SymUserList getParents(Context &con) { return SymUserList(); }
