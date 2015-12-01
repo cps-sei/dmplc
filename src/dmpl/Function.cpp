@@ -187,23 +187,75 @@ dmpl::Function::printDecl (std::ostream &os,unsigned int indent)
 }
 
 /*********************************************************************/
-//-- set the accessed variables and functions
+//-- set called functions
 /*********************************************************************/
-void dmpl::Function::computeAccessed()
+void dmpl::Function::computeCalled()
 {
   //-- clear previous results
-  writesLoc.clear(); writesGlob.clear();
-  readsLoc.clear(); readsGlob.clear();
   calledFuncs.clear();
+
+  FuncList allFuncs;
+  if(role) allFuncs = role->allFuncsInScope();
+  else {
+    for(const auto &f : node->funcs) allFuncs.push_back(f.second);
+  }
   
   std::set<std::string> processed;
   for(const auto &use : allUsedSymbols) {
     //-- skip duplicate symbols
     if(!processed.insert(use.sym->getName()).second) continue;
 
+    //-- functions
+    Func func = use.sym->asFunc();
+    if(func == NULL)  continue;
+    
+    for(const auto &f : allFuncs) {
+      if(!f->equalType(*func)) continue;
+      
+      //std::cout << "** Function : " << name << " calls function "
+      //<< func->name << '\n';
+      calledFuncs.push_back(f);
+      break;
+    }
+  }
+}
+
+/*********************************************************************/
+//-- set accessed variables
+/*********************************************************************/
+void dmpl::Function::computeAccessed(FuncSet &visited)
+{
+  //-- recursive process called functions and inherit, and collect
+  //-- called functions
+  FuncSet newCalled;
+  newCalled.insert(calledFuncs.begin(), calledFuncs.end());
+  for(const Func &f : calledFuncs) {
+    if(visited.insert(f).second) f->computeAccessed(visited);
+    inherit(f);
+    newCalled.insert(f->calledFuncs.begin(), f->calledFuncs.end());
+  }
+
+  //-- update called functions
+  calledFuncs.clear();
+  calledFuncs.insert(calledFuncs.end(), newCalled.begin(), newCalled.end());
+  
+  //-- clear previous results
+  writesLoc.clear(); writesGlob.clear();
+  readsLoc.clear(); readsGlob.clear();
+  
+  VarList allVars = role ? role->allVarsInScope() : node->allVars();
+  std::set<std::string> processed;
+  for(const auto &use : allUsedSymbols) {
+    //-- skip duplicate symbols
+    if(!processed.insert(use.sym->getName()).second) continue;
+    
     //-- variables
     Var var = use.sym->asVar();
-    if(var != NULL) {
+    if(var == NULL) continue;
+
+    for(const Var &v : allVars) {
+      if(!(*v == *var)) continue;
+
       if(var->scope == Symbol::LOCAL) {
         if(use.info.anyWrite()) {
           writesLoc.push_back(var);
@@ -223,14 +275,7 @@ void dmpl::Function::computeAccessed()
           //std::cout << "** Function : " << name << " reads global " << var->name << '\n';
         }
       }
-        continue;
-    }
-    
-    //-- functions
-    Func func = use.sym->asFunc();
-    if(func != NULL) {
-      calledFuncs.push_back(func);
-      //std::cout << "** Function : " << name << " calls function " << func->name << '\n';
+      break;
     }
   }
 }
