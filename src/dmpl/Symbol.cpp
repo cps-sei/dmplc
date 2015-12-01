@@ -241,6 +241,10 @@ namespace dmpl
   /*******************************************************************/
   SymbolUser::Context SymbolUser::useSymbols(Context con)
   {
+    //-- skip if analyzed already
+    if(analyzed) return con;
+    analyzed = true;
+    
     BOOST_FOREACH(const SymUser &su, getParents(con))
     {
       su->useSymbols(con);
