@@ -230,6 +230,14 @@ void dmpl::Function::computeAccessed(FuncSet &visited)
   FuncSet newCalled;
   newCalled.insert(calledFuncs.begin(), calledFuncs.end());
   for(const Func &f : calledFuncs) {
+    /*
+    std::cout << "**** node " << node->name
+              << " role " << (role ? role->name : "null")
+              << " func " << name << " +++++ calls ++++>"
+              << " node " << f->node->name
+              << " role " << (f->role ? f->role->name : "null")
+              << " func " << f->name << '\n';
+    */
     if(visited.insert(f).second) f->computeAccessed(visited);
     inherit(f);
     newCalled.insert(f->calledFuncs.begin(), f->calledFuncs.end());
@@ -253,6 +261,12 @@ void dmpl::Function::computeAccessed(FuncSet &visited)
     Var var = use.sym->asVar();
     if(var == NULL) continue;
 
+    /*
+    std::cout << "== node " << node->name
+              << " role " << (role ? role->name : "null")
+              << " func " << name << " accesses " << var->name << '\n';
+    */
+    
     for(const Var &v : allVars) {
       if(!(*v == *var)) continue;
 
