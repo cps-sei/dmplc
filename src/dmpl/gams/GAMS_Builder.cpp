@@ -421,8 +421,7 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
       build_role_variables(r.second, false);
 
       //-- generate thread-read-execute-write variables. if the thread
-      //-- is new, or inherited, or overridden, then include node
-      //-- variables as well.
+      //-- is new, or overridden, then include node variables as well.
       for (const Func &thread : r.second->threads) {
         bool newOrOverride = thread->isOverride || thread->isPrototype || !n->second->hasFunction(thread->name);
 
@@ -1008,8 +1007,8 @@ dmpl::gams::GAMS_Builder::build_function_declarations ()
 
       for (Func thread : r.second->threads) {
         //-- collect functions. for this role, and if the thread is
-        //-- new for this role, or overridden, or a prototype, then
-        //-- function for parent node as well.
+        //-- new for this role, or overridden, then function for
+        //-- parent node as well.
         Funcs funcs = r.second->funcs;
         bool newOrOverride = thread->isOverride || thread->isPrototype || !r.second->node->hasFunction(thread->name);
         if(newOrOverride)
@@ -1140,8 +1139,8 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
       
       for (Func thread : r.second->threads) {
         //-- collect functions. for this role, and if the thread is
-        //-- new for this role, or overridden, or a prototype, then
-        //-- function for parent node as well.
+        //-- new for this role, or overridden, then function for
+        //-- parent node as well.
         Funcs funcs = r.second->funcs;
         bool newOrOverride = thread->isOverride || thread->isPrototype || !r.second->node->hasFunction(thread->name);
         if(newOrOverride)
@@ -1360,24 +1359,25 @@ dmpl::gams::GAMS_Builder::build_push_pull(const Func &thread, bool push)
   buffer_ << "  //-- " << (push?"Push":"Pull") << " all referenced locals/globals\n";
   buffer_ << "  {\n";
   buffer_ << "    Madara::Knowledge_Engine::Context_Guard guard(knowledge);\n";
-  for(const SymbolUse &use : thread->allUsedSymbols)
-  {
-    Var var = use.sym->asVar();
-    if(var)
-    {
-      switch (var->scope)
-      {
-      case Variable::LOCAL:
-        buffer_ << "    thread" << thread->threadID << "_"
-                << var->getName() << (push?".push();":".pull();") << std::endl;
-        break;
-      case Variable::GLOBAL:
-        buffer_ << "    thread" << thread->threadID << "_"
-                << var->getName() << (push?"[id].push();":".pull();") << std::endl;
-        break;
-      }
-    }
+
+  //push-pull locals
+  VarSet accsLoc;
+  accsLoc.insert(thread->readsLoc.begin(), thread->readsLoc.end());
+  accsLoc.insert(thread->writesLoc.begin(), thread->writesLoc.end());  
+  for(const Var &var : accsLoc) {
+    buffer_ << "    thread" << thread->threadID << "_"
+            << var->getName() << (push?".push();":".pull();") << std::endl;
   }
+
+  //push-pull globals
+  VarSet accsGlob;
+  accsGlob.insert(thread->readsGlob.begin(), thread->readsGlob.end());
+  accsGlob.insert(thread->writesGlob.begin(), thread->writesGlob.end());  
+  for(const Var &var : accsGlob) {
+    buffer_ << "    thread" << thread->threadID << "_"
+            << var->getName() << (push?"[id].push();":".pull();") << std::endl;
+  }
+
   buffer_ << "  }\n";
 }
 
