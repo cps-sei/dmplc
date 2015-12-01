@@ -406,10 +406,19 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
     build_node_variables(n->second, true);
     build_node_variables(n->second, false);
 
+    //-- keep a map from thread ids to declared variables to avoid
+    //-- duplicate declarations in node and role namespaces
+    std::map<int,Vars> declVars;
+    
     //-- generate thread-read-execute-write variables
     for (const Func &thread : n->second->threads) {
-      build_thread_variables(thread, n->second->globVars, true);
-      build_thread_variables(thread, n->second->locVars, false);
+      Vars accLocs = thread->accessedLocs();
+      declVars[thread->threadID].insert(accLocs.begin(), accLocs.end());
+      build_thread_variables(thread, accLocs, false);
+
+      Vars accGlobs = thread->accessedGlobs();
+      declVars[thread->threadID].insert(accGlobs.begin(), accGlobs.end());
+      build_thread_variables(thread, accGlobs, true);
     }
 
     //-- generate variables for roles
@@ -423,13 +432,19 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
       //-- generate thread-read-execute-write variables. if the thread
       //-- is new, or overridden, then include node variables as well.
       for (const Func &thread : r.second->threads) {
-        bool newOrOverride = thread->isOverride || thread->isPrototype || !n->second->hasFunction(thread->name);
-
-        build_thread_variables(thread, r.second->globVars, true);
-        if(newOrOverride) build_thread_variables(thread, n->second->globVars, true);
-
-        build_thread_variables(thread, r.second->locVars, false);
-        if(newOrOverride) build_thread_variables(thread, n->second->locVars, false);
+        Vars newLocs;
+        for(const auto &v : thread->accessedLocs()) {
+          if(declVars[thread->threadID].find(v.first) == declVars[thread->threadID].end())
+            newLocs.insert(v);
+        }
+        build_thread_variables(thread, newLocs, false);
+        
+        Vars newGlobs;
+        for(const auto &v : thread->accessedGlobs()) {
+          if(declVars[thread->threadID].find(v.first) == declVars[thread->threadID].end())
+            newGlobs.insert(v);
+        }
+        build_thread_variables(thread, newGlobs, true);
       }
       
       buffer_ << '\n';
@@ -563,11 +578,8 @@ dmpl::gams::GAMS_Builder::build_thread_variables (const Func &thread, const Vars
   build_comment("//-- Defining " + std::string(isGlob? "global" : "local") +
                 " variables at scope of thread " + thread->name +
                 "\n//-- Used to implement Read-Execute-Write semantics", "\n", "", 0);
-  for (auto i : vars) {
-    Var & var = i.second;
-    if(thread->canRead(var) || thread->canWrite(var))
-      build_thread_variable (thread, var);
-  }
+  for (auto i : vars)
+    build_thread_variable (thread, i.second);
 }
 
 /*********************************************************************/
