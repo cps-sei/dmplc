@@ -123,10 +123,8 @@ dmpl::FuncList dmpl::BaseRole::allFuncs() const
 /*********************************************************************/
 dmpl::FuncList dmpl::BaseRole::allFuncsInScope() const
 {
-  //-- collect all non-overridden funcs from this role
-  Funcs allFuncs;
-  for(const auto &f : funcs)
-    if(!f.second->isOverride) allFuncs.insert(f);
+  //-- collect all functions from this role
+  Funcs allFuncs = funcs;
   
   //-- add all functions from the parent
   allFuncs.insert(node->funcs.begin(), node->funcs.end());
