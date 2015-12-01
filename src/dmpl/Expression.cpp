@@ -89,29 +89,6 @@ dmpl::LvalExpr::useSymbols(Context con)
   if(sym)
   {
     sym->use(shared_from_this(), con.isLHS, node != NULL, con.inExpect());
-    Func func = std::dynamic_pointer_cast<Function>(sym);
-    if(func)
-    {
-      //-- check for recursion
-      bool recur = false;
-      Context *currCon = &con;
-      while(currCon) {
-        if(currCon->curFunc == func) {
-          recur = true;
-          break;
-        }
-        currCon = currCon->parent;
-      }
-
-      if(!recur) {
-        Context con2 = con;
-        con2.curFunc = func;
-        con2.isLHS = false;
-        con2.parent = &con;
-        func->useSymbols(con2);
-        inherit(func);
-      }
-    }
   }
   //else
   //std::cerr << "Couldn't find symbol: " << var << std::endl;
@@ -197,30 +174,7 @@ dmpl::CallExpr::Context dmpl::CallExpr::useSymbols(Context con)
   }
   LvalExpr &lval = func->requireLval();
   Func f = std::dynamic_pointer_cast<Function>(lval.sym);
-  if(f != NULL)
-  {
-    //-- check for recursion
-    bool recur = false;
-    Context *currCon = &con;
-    while(currCon) {
-      if(currCon->curFunc == f) {
-        recur = true;
-        break;
-      }
-      currCon = currCon->parent;
-    }
-
-    if(!recur) {
-      Context con2 = con;
-      con2.curFunc = f;
-      con2.isLHS = false;
-      con2.parent = &con;
-      f->useSymbols(con2);
-      inherit(f);
-    }
-  }
-  else
-  {
+  if(f == NULL) {
     if(lval.var != "ASSERT" && platformSymbols.find(lval.var) == platformSymbols.end())
       std::cerr << "Symbol not found: " << lval.var << std::endl;
   }
