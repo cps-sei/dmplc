@@ -128,17 +128,17 @@ bool dmpl::RecordBase::hasVar(const Var &var) const
 void dmpl::RecordBase::checkConstructorSanity(const Node &node, const Role &role) const
 {
   if(initFunc != NULL) {
-    for(const Var &v : initFunc->writesLoc) {
-      if(!hasVar(v))
+    for(const auto &v : initFunc->writesLoc) {
+      if(!hasVar(v.second))
         throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
                                  " of node " + node->name + " constructor of record " +
-                                 name + " writes to local variable " + v->name);
+                                 name + " writes to local variable " + v.first);
     }
-    for(const Var &v : initFunc->writesGlob) {
-      if(!hasVar(v))
+    for(const auto &v : initFunc->writesGlob) {
+      if(!hasVar(v.second))
         throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
                                  " of node " + node->name + " constructor of record " +
-                                 name + " writes to global variable " + v->name);
+                                 name + " writes to global variable " + v.first);
     }
   }
   if(assumeFunc != NULL) {
@@ -146,12 +146,12 @@ void dmpl::RecordBase::checkConstructorSanity(const Node &node, const Role &role
       throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
                                " of node " + node->name + " assume function of record " +
                                name + " writes to local variable " +
-                               assumeFunc->writesLoc.front()->name);
+                               assumeFunc->writesLoc.begin()->first);
     if(!assumeFunc->writesGlob.empty())
       throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
                                " of node " + node->name + " assume function of record " +
                                name + " writes to global variable " +
-                               assumeFunc->writesLoc.front()->name);
+                               assumeFunc->writesLoc.begin()->first);
   }
 }
 

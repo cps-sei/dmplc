@@ -1282,8 +1282,8 @@ dmpl::gams::GAMS_Builder::build_refresh_modify_globals (const Node &node, const 
   //buffer_ << "  barrier.set (*id, barrier[*id]);\n\n";
 
   buffer_ << "  // Remodifying thread-specific global variables\n";
-  for(const Var &gv : thread->writesGlob)
-    build_refresh_modify_global (node, gv);
+  for(const auto &gv : thread->writesGlob)
+    build_refresh_modify_global (node, gv.second);
     
   buffer_ << "  return Integer (0);\n";
   buffer_ << "}\n";
@@ -1361,21 +1361,21 @@ dmpl::gams::GAMS_Builder::build_push_pull(const Func &thread, bool push)
   buffer_ << "    Madara::Knowledge_Engine::Context_Guard guard(knowledge);\n";
 
   //push-pull locals
-  VarSet accsLoc;
+  Vars accsLoc;
   accsLoc.insert(thread->readsLoc.begin(), thread->readsLoc.end());
   accsLoc.insert(thread->writesLoc.begin(), thread->writesLoc.end());  
-  for(const Var &var : accsLoc) {
+  for(const auto &var : accsLoc) {
     buffer_ << "    thread" << thread->threadID << "_"
-            << var->getName() << (push?".push();":".pull();") << std::endl;
+            << var.first << (push?".push();":".pull();") << std::endl;
   }
 
   //push-pull globals
-  VarSet accsGlob;
+  Vars accsGlob;
   accsGlob.insert(thread->readsGlob.begin(), thread->readsGlob.end());
   accsGlob.insert(thread->writesGlob.begin(), thread->writesGlob.end());  
-  for(const Var &var : accsGlob) {
+  for(const auto &var : accsGlob) {
     buffer_ << "    thread" << thread->threadID << "_"
-            << var->getName() << (push?"[id].push();":".pull();") << std::endl;
+            << var.first << (push?"[id].push();":".pull();") << std::endl;
   }
 
   buffer_ << "  }\n";

@@ -214,17 +214,17 @@ void dmpl::Variable::checkConstructorSanity(const Node &node, const Role &role) 
 
   //-- for non-input variables
   if(!isInput) {
-    for(const Var &v : initFunc->writesLoc) {
-      if(!(*v == *this))
+    for(const auto &v : initFunc->writesLoc) {
+      if(!(*v.second == *this))
         throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
                                  " of node " + node->name + " constructor of variable " +
-                                 name + " writes to local variable " + v->name);
+                                 name + " writes to local variable " + v.first);
     }
-    for(const Var &v : initFunc->writesGlob) {
-      if(!(*v == *this))
+    for(const auto &v : initFunc->writesGlob) {
+      if(!(*v.second == *this))
         throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
                                  " of node " + node->name + " constructor of variable " +
-                                 name + " writes to global variable " + v->name);
+                                 name + " writes to global variable " + v.first);
     }
   }
   //-- for input variables
@@ -233,12 +233,12 @@ void dmpl::Variable::checkConstructorSanity(const Node &node, const Role &role) 
       throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
                                " of node " + node->name + " assume function of variable " +
                                name + " writes to local variable " +
-                               initFunc->writesLoc.front()->name);
+                               initFunc->writesLoc.begin()->first);
     if(!initFunc->writesGlob.empty())
       throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
                                " of node " + node->name + " assume function of variable " +
                                name + " writes to global variable " +
-                               initFunc->writesGlob.front()->name);
+                               initFunc->writesGlob.begin()->first);
   }
 }
 

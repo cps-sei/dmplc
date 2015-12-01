@@ -89,6 +89,7 @@ namespace dmpl
 
   class Function;
   typedef std::shared_ptr<Function> Func;
+  typedef std::map <std::string, Func> Funcs;
   typedef std::list <Func> FuncList;
   typedef std::set <Func> FuncSet;
 

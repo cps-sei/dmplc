@@ -440,14 +440,14 @@ void dmpl::SyncSeqDblInd::computeRelevant()
 
     //-- compute the set of local and global variables read by the
     //-- spec function
-    VarSet specVars;
+    Vars specVars;
     specVars.insert(propFunc->readsLoc.begin(), propFunc->readsLoc.end());
     specVars.insert(propFunc->readsGlob.begin(), propFunc->readsGlob.end());
 
     //-- compute threads that write to variables read by the spec
     for(Func f : proc.role->threads) {
-      for(const Var &v : specVars) {
-        if(!f->canWrite(v)) continue;
+      for(const auto &v : specVars) {
+        if(!f->canWrite(v.second)) continue;
         //std::cout << "relevant thread : " << f->name << '\n';
 
         if(proc.role->getAttribute(f, "BarrierSync", 0) == NULL)
@@ -490,8 +490,8 @@ void dmpl::SyncSeqDblInd::computeRelevant()
       //-- skip threads and the property function itself
       if(f->isThread() || f == propFunc) continue;
 
-      for(const Var &v : specVars) {
-        if(!f->canWrite(v)) continue;
+      for(const auto &v : specVars) {
+        if(!f->canWrite(v.second)) continue;
         //std::cout << "relevant function : " << f->name << '\n';
         relevantFuncs[proc].insert(f);
         break;
@@ -505,9 +505,9 @@ void dmpl::SyncSeqDblInd::computeRelevant()
     }
 
     //-- assign relevant local and global variables
-    for(const Var &v : specVars) {
-      if(v->scope == Symbol::LOCAL) relevantLocs[proc].insert(v);
-      else if(v->scope == Symbol::GLOBAL) relevantGlobs[proc].insert(v);
+    for(const auto &v : specVars) {
+      if(v.second->scope == Symbol::LOCAL) relevantLocs[proc].insert(v.second);
+      else if(v.second->scope == Symbol::GLOBAL) relevantGlobs[proc].insert(v.second);
     }
 
     //-- assign havoc locals

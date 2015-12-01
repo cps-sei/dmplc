@@ -214,7 +214,7 @@ void dmpl::Function::computeCalled()
       
       //std::cout << "** Function : " << name << " calls function "
       //<< func->name << '\n';
-      calledFuncs.push_back(f);
+      calledFuncs.insert(std::make_pair(f->name,f));
       break;
     }
   }
@@ -227,9 +227,8 @@ void dmpl::Function::computeAccessed(FuncSet &visited)
 {
   //-- recursive process called functions and inherit, and collect
   //-- called functions
-  FuncSet newCalled;
-  newCalled.insert(calledFuncs.begin(), calledFuncs.end());
-  for(const Func &f : calledFuncs) {
+  Funcs newCalled = calledFuncs;
+  for(const auto &f : calledFuncs) {
     /*
     std::cout << "**** node " << node->name
               << " role " << (role ? role->name : "null")
@@ -238,14 +237,13 @@ void dmpl::Function::computeAccessed(FuncSet &visited)
               << " role " << (f->role ? f->role->name : "null")
               << " func " << f->name << '\n';
     */
-    if(visited.insert(f).second) f->computeAccessed(visited);
-    inherit(f);
-    newCalled.insert(f->calledFuncs.begin(), f->calledFuncs.end());
+    if(visited.insert(f.second).second) f.second->computeAccessed(visited);
+    inherit(f.second);
+    newCalled.insert(f.second->calledFuncs.begin(), f.second->calledFuncs.end());
   }
 
   //-- update called functions
-  calledFuncs.clear();
-  calledFuncs.insert(calledFuncs.end(), newCalled.begin(), newCalled.end());
+  calledFuncs = newCalled;
   
   //-- clear previous results
   writesLoc.clear(); writesGlob.clear();
@@ -272,20 +270,20 @@ void dmpl::Function::computeAccessed(FuncSet &visited)
 
       if(var->scope == Symbol::LOCAL) {
         if(use.info.anyWrite()) {
-          writesLoc.push_back(var);
+          writesLoc.insert(std::make_pair(var->name,var));
           //std::cout << "** Function : " << name << " writes local " << var->name << '\n';
         }
         if(use.info.anyRead()) {
-          readsLoc.push_back(var);
+          readsLoc.insert(std::make_pair(var->name,var));
           //std::cout << "** Function : " << name << " reads local " << var->name << '\n';
         }
       } else if(var->scope == Symbol::GLOBAL) {
         if(use.info.anyWrite()) {
-          writesGlob.push_back(var);
+          writesGlob.insert(std::make_pair(var->name,var));
           //std::cout << "** Function : " << name << " writes global " << var->name << '\n';
         }
         if(use.info.anyRead()) {
-          readsGlob.push_back(var);
+          readsGlob.insert(std::make_pair(var->name,var));
           //std::cout << "** Function : " << name << " reads global " << var->name << '\n';
         }
       }

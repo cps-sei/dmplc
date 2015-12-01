@@ -130,11 +130,11 @@ namespace dmpl
 
     //-- local and global variables that this function reads and
     //-- writes
-    VarList writesLoc, writesGlob;
-    VarList readsLoc, readsGlob;
+    Vars writesLoc, writesGlob;
+    Vars readsLoc, readsGlob;
 
     //-- functions that this function calls
-    FuncList calledFuncs;
+    Funcs calledFuncs;
 
     /**
      * The function body
@@ -241,11 +241,11 @@ namespace dmpl
     bool canRead(const Var &var) const
     {
       if(var->scope == LOCAL) {
-        for(const Var &v : readsLoc) if(*v == *var) return true;
+        for(const auto &v : readsLoc) if(*v.second == *var) return true;
         return false;
       }
       if(var->scope == GLOBAL) {
-        for(const Var &v : readsGlob) if(*v == *var) return true;
+        for(const auto &v : readsGlob) if(*v.second == *var) return true;
         return false;
       }
     }
@@ -254,11 +254,11 @@ namespace dmpl
     bool canWrite(const Var &var) const
     {
       if(var->scope == LOCAL) {
-        for(const Var &v : writesLoc) if(*v == *var) return true;
+        for(const auto &v : writesLoc) if(*v.second == *var) return true;
         return false;
       }
       if(var->scope == GLOBAL) {
-        for(const Var &v : writesGlob) if(*v == *var) return true;
+        for(const auto &v : writesGlob) if(*v.second == *var) return true;
         return false;
       }
     }
@@ -266,8 +266,8 @@ namespace dmpl
     //-- return true if this function calls the argument function
     bool canCall(const Func &func) const
     {
-      for(const Func &f : calledFuncs)
-        if(f->equalType(*func)) return true;
+      for(const auto &f : calledFuncs)
+        if(f.second->equalType(*func)) return true;
       return false;
     }
     
