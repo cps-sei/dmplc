@@ -406,21 +406,6 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
     build_node_variables(n->second, true);
     build_node_variables(n->second, false);
 
-    //-- keep a map from thread ids to declared variables to avoid
-    //-- duplicate declarations in node and role namespaces
-    std::map<int,Vars> declVars;
-    
-    //-- generate thread-read-execute-write variables
-    for (const Func &thread : n->second->threads) {
-      Vars accLocs = thread->accessedLocs();
-      declVars[thread->threadID].insert(accLocs.begin(), accLocs.end());
-      build_thread_variables(thread, accLocs, false);
-
-      Vars accGlobs = thread->accessedGlobs();
-      declVars[thread->threadID].insert(accGlobs.begin(), accGlobs.end());
-      build_thread_variables(thread, accGlobs, true);
-    }
-
     //-- generate variables for roles
     for (const auto r : n->second->roles) {
       //-- generate role-level variables
@@ -429,22 +414,10 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
       build_role_variables(r.second, true);
       build_role_variables(r.second, false);
 
-      //-- generate thread-read-execute-write variables. if the thread
-      //-- is new, or overridden, then include node variables as well.
+      //-- generate thread-read-execute-write variables
       for (const Func &thread : r.second->threads) {
-        Vars newLocs;
-        for(const auto &v : thread->accessedLocs()) {
-          if(declVars[thread->threadID].find(v.first) == declVars[thread->threadID].end())
-            newLocs.insert(v);
-        }
-        build_thread_variables(thread, newLocs, false);
-        
-        Vars newGlobs;
-        for(const auto &v : thread->accessedGlobs()) {
-          if(declVars[thread->threadID].find(v.first) == declVars[thread->threadID].end())
-            newGlobs.insert(v);
-        }
-        build_thread_variables(thread, newGlobs, true);
+        build_thread_variables(thread, thread->accessedLocs(), false);
+        build_thread_variables(thread, thread->accessedGlobs(), true);
       }
       
       buffer_ << '\n';
@@ -1002,13 +975,6 @@ dmpl::gams::GAMS_Builder::build_function_declarations ()
   {
     open_namespace(nodeName(n.second));
 
-    //-- declare serial functions for the node with NULL thread.
-    build_function_declarations_for_thread(Func(), n.second->serialFunctions());
-
-    //-- declare all functions for the node and for each thread
-    for (Func thread : n.second->threads)
-      build_function_declarations_for_thread(thread, n.second->funcs);
-
     //-- process roles
     for(const auto &r : n.second->roles) {
       build_comment("//-- Declaring functions for role " + r.second->name, "\n", "\n", 0);
@@ -1017,18 +983,9 @@ dmpl::gams::GAMS_Builder::build_function_declarations ()
       //-- declare serial functions for the role with NULL thread.
       build_function_declarations_for_thread(Func(), r.second->serialFunctions());
 
-      for (Func thread : r.second->threads) {
-        //-- collect functions. for this role, and if the thread is
-        //-- new for this role, or overridden, then function for
-        //-- parent node as well.
-        Funcs funcs = r.second->funcs;
-        bool newOrOverride = thread->isOverride || thread->isPrototype || !r.second->node->hasFunction(thread->name);
-        if(newOrOverride)
-          funcs.insert(n.second->funcs.begin(), n.second->funcs.end());
-                       
-        //-- declare all functions
-        build_function_declarations_for_thread(thread, funcs);
-      }
+      //-- declare functions for all threads
+      for (Func thread : r.second->threads)
+        build_function_declarations_for_thread(thread, thread->calledFuncs);
       
       close_namespace(roleName(n.second, r.second));
     }
@@ -1128,13 +1085,6 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
     build_comment("//-- Begin node " + n->second->name, "\n", "\n", 0);
     open_namespace(nodeName(n->second));
     
-    //-- build serial functions for the node with NULL thread.
-    build_functions_for_thread(Func(), n->second, n->second->serialFunctions());
-
-    //-- build all functions for the node and for each thread
-    for (Func thread : n->second->threads)
-      build_functions_for_thread(thread, n->second, n->second->funcs);
-
     //-- process roles
     for(const auto &r : n->second->roles) {
       build_comment("//-- Defining functions for role " + r.second->name, "\n", "\n", 0);
@@ -1149,18 +1099,9 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
       //-- build serial functions for the role with NULL thread.
       build_functions_for_thread(Func(), n->second, r.second->serialFunctions());
       
-      for (Func thread : r.second->threads) {
-        //-- collect functions. for this role, and if the thread is
-        //-- new for this role, or overridden, then function for
-        //-- parent node as well.
-        Funcs funcs = r.second->funcs;
-        bool newOrOverride = thread->isOverride || thread->isPrototype || !r.second->node->hasFunction(thread->name);
-        if(newOrOverride)
-          funcs.insert(n->second->funcs.begin(), n->second->funcs.end());
-                       
-        //-- generate code for all functions
-        build_functions_for_thread(thread, n->second, funcs);
-      }
+      //-- build functions for all threads
+      for (Func thread : r.second->threads)
+        build_functions_for_thread(thread, n->second, thread->calledFuncs);
 
       //-- build constructors for the role
       build_comment("//-- Begin constructors for role " + r.second->name, "", "", 0);
@@ -2315,19 +2256,15 @@ dmpl::gams::GAMS_Builder::build_main_function ()
       buffer_ << "  if(node_name == \"" << n.second->name << "\" && role_name == \""
               << r.second->name << "\") {\n";
       Func platInit = r.second->findPlatformInitializer();
-      if(platInit != NULL) {
-        buffer_ << "    knowledge.define_function (\"initialize_platform\", "
-                << nodeName(n.second) << "::" << roleName(n.second, r.second)
-                << "::" << platInit->name << ");\n";
-      } else {
-        platInit = n.second->findPlatformInitializer();
-        if(platInit != NULL)
-          buffer_ << "    knowledge.define_function (\"initialize_platform\", "
-                  << nodeName(n.second) << "::base_" << platInit->name << ");\n";
-        else
-          throw std::runtime_error("ERROR: role " + r.second->name + " in node " +
-                                   n.second->name + " has no platform initializer function!!");
-      }
+
+      if(platInit == NULL)
+        throw std::runtime_error("ERROR: role " + r.second->name + " in node " +
+                                 n.second->name + " has no platform initializer function!!");
+
+      buffer_ << "    knowledge.define_function (\"initialize_platform\", "
+              << nodeName(n.second) << "::" << roleName(n.second, r.second)
+              << "::base_" << platInit->name << ");\n";
+
       buffer_ << "  }\n";
     }
   }
