@@ -229,12 +229,6 @@ Reference<short> yp(knowledge, ".yp");
 short var_init_yp (0);
 
 /********************************************************************/
-//-- Defining global variables at scope of thread COLLISION_AVOIDANCE
-//-- Used to implement Read-Execute-Write semantics
-/********************************************************************/
-ArrayReference<Proactive<_Bool, CachedReference<_Bool> >, 3, 10, 10> thread0_lock(knowledge, "lock");
-
-/********************************************************************/
 //-- Defining local variables at scope of thread COLLISION_AVOIDANCE
 //-- Used to implement Read-Execute-Write semantics
 /********************************************************************/
@@ -245,6 +239,12 @@ CachedReference<short> thread0_xp(knowledge, ".xp");
 CachedReference<short> thread0_y(knowledge, ".y");
 CachedReference<short> thread0_yf(knowledge, ".yf");
 CachedReference<short> thread0_yp(knowledge, ".yp");
+
+/********************************************************************/
+//-- Defining global variables at scope of thread COLLISION_AVOIDANCE
+//-- Used to implement Read-Execute-Write semantics
+/********************************************************************/
+ArrayReference<Proactive<_Bool, CachedReference<_Bool> >, 3, 10, 10> thread0_lock(knowledge, "lock");
 
 /********************************************************************/
 //-- Begin defining variables for role Uav
@@ -263,32 +263,14 @@ namespace node_uav_role_Uav
 /********************************************************************/
 
 /********************************************************************/
-//-- Defining global variables at scope of thread COLLISION_AVOIDANCE
-//-- Used to implement Read-Execute-Write semantics
-/********************************************************************/
-
-/********************************************************************/
-//-- Defining global variables at scope of thread COLLISION_AVOIDANCE
-//-- Used to implement Read-Execute-Write semantics
-/********************************************************************/
-ArrayReference<Proactive<_Bool, CachedReference<_Bool> >, 3, 10, 10> thread0_lock(knowledge, "lock");
-
-/********************************************************************/
 //-- Defining local variables at scope of thread COLLISION_AVOIDANCE
 //-- Used to implement Read-Execute-Write semantics
 /********************************************************************/
 
 /********************************************************************/
-//-- Defining local variables at scope of thread COLLISION_AVOIDANCE
+//-- Defining global variables at scope of thread COLLISION_AVOIDANCE
 //-- Used to implement Read-Execute-Write semantics
 /********************************************************************/
-CachedReference<short> thread0_state(knowledge, ".state");
-CachedReference<short> thread0_x(knowledge, ".x");
-CachedReference<short> thread0_xf(knowledge, ".xf");
-CachedReference<short> thread0_xp(knowledge, ".xp");
-CachedReference<short> thread0_y(knowledge, ".y");
-CachedReference<short> thread0_yf(knowledge, ".yf");
-CachedReference<short> thread0_yp(knowledge, ".yp");
 
 } // end node_uav_role_Uav namespace
 
