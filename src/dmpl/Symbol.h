@@ -555,10 +555,14 @@ namespace dmpl
     
     virtual bool recordUse() { return false; }
 
+    //-- method to compute set of parent nodes to process recursively
+    //-- during symbol usage analysis
     virtual SymUserList getParents(Context &con) { return SymUserList(); }
+
+    //-- method to compute used symbols
     virtual Context useSymbols(Context con);
+
     virtual std::string toString() const = 0;
-    
 
     //-- analyze symbol usage by a function under a context
     static void analyzeSymbolUsage(const Func &func, Context con);
