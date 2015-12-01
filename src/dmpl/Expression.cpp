@@ -76,7 +76,6 @@ dmpl::LvalExpr::useSymbols(Context con)
   {
     Context con2 = con;
     con2.isLHS = false;
-    con2.parent = &con;
     if(node)
     {
       node->useSymbols(con2);

@@ -534,7 +534,6 @@ namespace dmpl
       Func curFunc;
       bool isLHS;
       std::deque<const SymbolBinder*> binders;
-      Context *parent;
 
       //constructors
       Context() : node(0), role(0), isLHS(false), parent(NULL) {}
