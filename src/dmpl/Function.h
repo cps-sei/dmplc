@@ -222,6 +222,12 @@ namespace dmpl
 
     //-- return the set of all accessed global variables
     Vars accessedGlob() const;
+
+    //-- return the set of all read variables
+    Vars reads() const;
+
+    //-- return the set of all written variables
+    Vars writes() const;
     
     //-- return a string representation. just the name.
     std::string toString() const { return "function : " + name; }

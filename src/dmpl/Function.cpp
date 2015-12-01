@@ -313,5 +313,25 @@ dmpl::Vars dmpl::Function::accessedGlob() const
 }
 
 /*********************************************************************/
+//-- return the set of all read variables
+/*********************************************************************/
+dmpl::Vars dmpl::Function::reads() const
+{
+  Vars res = readsGlob;
+  res.insert(readsLoc.begin(), readsLoc.end());
+  return res;
+}
+
+/*********************************************************************/
+//-- return the set of all written variables
+/*********************************************************************/
+dmpl::Vars dmpl::Function::writes() const
+{
+  Vars res = writesGlob;
+  res.insert(writesLoc.begin(), writesLoc.end());
+  return res;
+}
+
+/*********************************************************************/
 //end of file
 /*********************************************************************/
