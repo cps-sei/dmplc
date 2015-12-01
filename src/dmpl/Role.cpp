@@ -174,18 +174,18 @@ dmpl::Func dmpl::BaseRole::findPlatformInitializer()
 {
   Func res;
 
-  //-- first check the role
-  for(auto &f : funcs) {
-    if(getAttribute(f.second, "InitSim", 0) != NULL) {
+  //-- check all functions
+  for(auto &f : allFuncsInScope()) {
+    if(getAttribute(f, "InitSim", 0) != NULL) {
       if(res == NULL) {
-        if(f.second->isThread())
+        if(f->isThread())
           throw std::runtime_error("ERROR: role " + name + " in node " + node->name +
-                                   " has thread " + f.second->name +
+                                   " has thread " + f->name +
                                    " as platform initialization function!!");
-        res = f.second;
+        res = f;
       } else throw std::runtime_error("ERROR: role " + name + " in node " + node->name +
                                     " has multiple platform initialization functions: " +
-                                    res->name + " and " + f.second->name + "!!");
+                                    res->name + " and " + f->name + "!!");
     }
   }
 
@@ -258,14 +258,14 @@ bool dmpl::BaseRole::isSerialFunction(const Func &func) const
   if(func->getAttribute("InitSim",0)) return true;
   
   //-- look for functions called by variable constructors
-  for(const Var &v : allVars())
+  for(const Var &v : allVarsInScope())
     if(v->initFunc != NULL && v->initFunc->canCall(func)) return true;
   
-  //-- look for functions called by variable constructors
-  for(const auto &r : records) {
-    if(r.second->initFunc != NULL && r.second->initFunc->canCall(func))
+  //-- look for functions called by record constructors
+  for(const auto &r : allRecordsInScope()) {
+    if(r->initFunc != NULL && r->initFunc->canCall(func))
       return true;
-    if(r.second->assumeFunc != NULL && r.second->assumeFunc->canCall(func))
+    if(r->assumeFunc != NULL && r->assumeFunc->canCall(func))
       return true;
   }
 
@@ -282,8 +282,9 @@ dmpl::Funcs dmpl::BaseRole::serialFunctions() const
 {
   Funcs res;
 
-  for(const auto &f : funcs)
-    if(isSerialFunction(f.second)) res.insert(f);
+  for(const auto &f : allFuncsInScope())
+    if(isSerialFunction(f))
+      res.insert(std::make_pair(f->name,f));
 
   return res;
 }
