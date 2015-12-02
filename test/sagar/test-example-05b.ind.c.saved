@@ -161,8 +161,10 @@ int __INIT_yt_1();
 int __INIT_yt_2();
 int __INIT_yt_3();
 int __INIT_yt_4();
-void __SAFETY();
-_Bool __SAFETY_NoCollision();
+_Bool __SAFETY_NoCollision_bwd();
+_Bool __SAFETY_NoCollision_fwd();
+void __SAFETY_bwd();
+void __SAFETY_fwd();
 extern int adaptation_manager(int current_formation,int changing,double change_progress,double hazard1,double hazard2,double hazard3,double hazard4,double hazard5,double variance1,double variance2,double variance3,double variance4,double variance5,double loose_speed,double tight_speed,double segment_length,int remaining_segments,double remaining_flight_time);
 extern int adaptation_manager_random(int current_formation,int changing,double change_progress,double hazard1,double hazard2,double hazard3,double hazard4,double hazard5,double variance1,double variance2,double variance3,double variance4,double variance5,double loose_speed,double tight_speed,double segment_length,int remaining_segments,double remaining_flight_time);
 extern double asin(double x);
@@ -270,7 +272,7 @@ void INIT_HAZARDS(int XX,int YY,int tx,int ty);
 void LOG(double x);
 void __ASSUME()
 {
-  __CPROVER_assume(__SAFETY_NoCollision());
+  __CPROVER_assume(__SAFETY_NoCollision_fwd());
 }
 
 void __HAVOC()
@@ -912,7 +914,7 @@ void __INIT()
   __INIT_started_move_4();
   __INIT_delay_until_4();
   __INIT_changing_4();
-  __CPROVER_assume(__SAFETY_NoCollision());
+  __CPROVER_assume(__SAFETY_NoCollision_fwd());
 }
 
 void __INIT_changing_0()
@@ -1246,12 +1248,278 @@ int __INIT_yt_4()
   return ((0)<=(yt_4))&&((yt_4)<(Y));
 }
 
-void __SAFETY()
+_Bool __SAFETY_NoCollision_bwd()
 {
-  assert(__SAFETY_NoCollision());
+  {
+    {
+      if (((x_0)==(x_1))&&((y_0)==(y_1)))
+        return false;
+    }
+    {
+      if (((x_0)==(x_2))&&((y_0)==(y_2)))
+        return false;
+    }
+    {
+      if (((x_0)==(x_3))&&((y_0)==(y_3)))
+        return false;
+    }
+    {
+      if (((x_0)==(x_4))&&((y_0)==(y_4)))
+        return false;
+    }
+    {
+      if (((x_1)==(x_2))&&((y_1)==(y_2)))
+        return false;
+    }
+    {
+      if (((x_1)==(x_3))&&((y_1)==(y_3)))
+        return false;
+    }
+    {
+      if (((x_1)==(x_4))&&((y_1)==(y_4)))
+        return false;
+    }
+    {
+      if (((x_2)==(x_3))&&((y_2)==(y_3)))
+        return false;
+    }
+    {
+      if (((x_2)==(x_4))&&((y_2)==(y_4)))
+        return false;
+    }
+    {
+      if (((x_3)==(x_4))&&((y_3)==(y_4)))
+        return false;
+    }
+  }
+  {
+    {
+      if (!(((state_0)>=(NEXT))&&((state_0)<=(MOVE))))
+        return false;
+      if (!(((x_0)>=(0))&&((x_0)<(X))))
+        return false;
+      if (!(((y_0)>=(0))&&((y_0)<(Y))))
+        return false;
+      if (!(((xp_0)>=(0))&&((xp_0)<(X))))
+        return false;
+      if (!(((yp_0)>=(0))&&((yp_0)<(Y))))
+        return false;
+      if (!((((state_0)==(NEXT))||((x_0)!=(xp_0)))||((y_0)!=(yp_0))))
+        return false;
+      if (!((((((state_0)!=(NEXT))&&((state_0)!=(REQUEST)))&&((state_0)!=(WAITING)))&&((state_0)!=(MOVE)))||(lock_f_0[x_0][y_0])))
+        return false;
+      if (!(((((state_0)!=(NEXT))&&((state_0)!=(WAITING)))&&((state_0)!=(MOVE)))||((lock_f_0[x_0][y_0])&&(lock_f_0[xp_0][yp_0]))))
+        return false;
+      if (!(((state_0)==(NEXT))||((((x_0)==((xp_0)-(1)))||((x_0)==((xp_0)+(1))))^(((y_0)==((yp_0)-(1)))||((y_0)==((yp_0)+(1)))))))
+        return false;
+    }
+    {
+      if (!(((state_1)>=(NEXT))&&((state_1)<=(MOVE))))
+        return false;
+      if (!(((x_1)>=(0))&&((x_1)<(X))))
+        return false;
+      if (!(((y_1)>=(0))&&((y_1)<(Y))))
+        return false;
+      if (!(((xp_1)>=(0))&&((xp_1)<(X))))
+        return false;
+      if (!(((yp_1)>=(0))&&((yp_1)<(Y))))
+        return false;
+      if (!((((state_1)==(NEXT))||((x_1)!=(xp_1)))||((y_1)!=(yp_1))))
+        return false;
+      if (!((((((state_1)!=(NEXT))&&((state_1)!=(REQUEST)))&&((state_1)!=(WAITING)))&&((state_1)!=(MOVE)))||(lock_f_1[x_1][y_1])))
+        return false;
+      if (!(((((state_1)!=(NEXT))&&((state_1)!=(WAITING)))&&((state_1)!=(MOVE)))||((lock_f_1[x_1][y_1])&&(lock_f_1[xp_1][yp_1]))))
+        return false;
+      if (!(((state_1)==(NEXT))||((((x_1)==((xp_1)-(1)))||((x_1)==((xp_1)+(1))))^(((y_1)==((yp_1)-(1)))||((y_1)==((yp_1)+(1)))))))
+        return false;
+    }
+    {
+      if (!(((state_2)>=(NEXT))&&((state_2)<=(MOVE))))
+        return false;
+      if (!(((x_2)>=(0))&&((x_2)<(X))))
+        return false;
+      if (!(((y_2)>=(0))&&((y_2)<(Y))))
+        return false;
+      if (!(((xp_2)>=(0))&&((xp_2)<(X))))
+        return false;
+      if (!(((yp_2)>=(0))&&((yp_2)<(Y))))
+        return false;
+      if (!((((state_2)==(NEXT))||((x_2)!=(xp_2)))||((y_2)!=(yp_2))))
+        return false;
+      if (!((((((state_2)!=(NEXT))&&((state_2)!=(REQUEST)))&&((state_2)!=(WAITING)))&&((state_2)!=(MOVE)))||(lock_f_2[x_2][y_2])))
+        return false;
+      if (!(((((state_2)!=(NEXT))&&((state_2)!=(WAITING)))&&((state_2)!=(MOVE)))||((lock_f_2[x_2][y_2])&&(lock_f_2[xp_2][yp_2]))))
+        return false;
+      if (!(((state_2)==(NEXT))||((((x_2)==((xp_2)-(1)))||((x_2)==((xp_2)+(1))))^(((y_2)==((yp_2)-(1)))||((y_2)==((yp_2)+(1)))))))
+        return false;
+    }
+    {
+      if (!(((state_3)>=(NEXT))&&((state_3)<=(MOVE))))
+        return false;
+      if (!(((x_3)>=(0))&&((x_3)<(X))))
+        return false;
+      if (!(((y_3)>=(0))&&((y_3)<(Y))))
+        return false;
+      if (!(((xp_3)>=(0))&&((xp_3)<(X))))
+        return false;
+      if (!(((yp_3)>=(0))&&((yp_3)<(Y))))
+        return false;
+      if (!((((state_3)==(NEXT))||((x_3)!=(xp_3)))||((y_3)!=(yp_3))))
+        return false;
+      if (!((((((state_3)!=(NEXT))&&((state_3)!=(REQUEST)))&&((state_3)!=(WAITING)))&&((state_3)!=(MOVE)))||(lock_f_3[x_3][y_3])))
+        return false;
+      if (!(((((state_3)!=(NEXT))&&((state_3)!=(WAITING)))&&((state_3)!=(MOVE)))||((lock_f_3[x_3][y_3])&&(lock_f_3[xp_3][yp_3]))))
+        return false;
+      if (!(((state_3)==(NEXT))||((((x_3)==((xp_3)-(1)))||((x_3)==((xp_3)+(1))))^(((y_3)==((yp_3)-(1)))||((y_3)==((yp_3)+(1)))))))
+        return false;
+    }
+    {
+      if (!(((state_4)>=(NEXT))&&((state_4)<=(MOVE))))
+        return false;
+      if (!(((x_4)>=(0))&&((x_4)<(X))))
+        return false;
+      if (!(((y_4)>=(0))&&((y_4)<(Y))))
+        return false;
+      if (!(((xp_4)>=(0))&&((xp_4)<(X))))
+        return false;
+      if (!(((yp_4)>=(0))&&((yp_4)<(Y))))
+        return false;
+      if (!((((state_4)==(NEXT))||((x_4)!=(xp_4)))||((y_4)!=(yp_4))))
+        return false;
+      if (!((((((state_4)!=(NEXT))&&((state_4)!=(REQUEST)))&&((state_4)!=(WAITING)))&&((state_4)!=(MOVE)))||(lock_f_4[x_4][y_4])))
+        return false;
+      if (!(((((state_4)!=(NEXT))&&((state_4)!=(WAITING)))&&((state_4)!=(MOVE)))||((lock_f_4[x_4][y_4])&&(lock_f_4[xp_4][yp_4]))))
+        return false;
+      if (!(((state_4)==(NEXT))||((((x_4)==((xp_4)-(1)))||((x_4)==((xp_4)+(1))))^(((y_4)==((yp_4)-(1)))||((y_4)==((yp_4)+(1)))))))
+        return false;
+    }
+  }
+  {
+    {
+      if (!(((((((state_0)!=(NEXT))&&((state_0)!=(MOVE)))||((state_1)!=(WAITING)))||((0)>=(1)))||((xp_0)!=(xp_1)))||((yp_0)!=(yp_1))))
+        return false;
+      if (!((((state_0)!=(MOVE))||((state_1)!=(MOVE)))||((((((xp_0)!=(xp_1))||((yp_0)!=(yp_1)))&&(((xp_0)!=(x_1))||((yp_0)!=(y_1))))&&(((x_0)!=(xp_1))||((y_0)!=(yp_1))))&&(((x_0)!=(x_1))||((y_0)!=(y_1))))))
+        return false;
+      if (!(((((state_1)!=(WAITING))||((0)>=(1)))||((x_0)!=(xp_1)))||((y_0)!=(yp_1))))
+        return false;
+      if (!(((((state_1)!=(MOVE))||((x_0)!=(xp_1)))||((y_0)!=(yp_1)))&&((((state_0)!=(4))||((xp_0)!=(x_1)))||((yp_0)!=(y_1)))))
+        return false;
+      if (!(((x_0)!=(x_1))||((y_0)!=(y_1))))
+        return false;
+    }
+    {
+      if (!(((((((state_0)!=(NEXT))&&((state_0)!=(MOVE)))||((state_2)!=(WAITING)))||((0)>=(2)))||((xp_0)!=(xp_2)))||((yp_0)!=(yp_2))))
+        return false;
+      if (!((((state_0)!=(MOVE))||((state_2)!=(MOVE)))||((((((xp_0)!=(xp_2))||((yp_0)!=(yp_2)))&&(((xp_0)!=(x_2))||((yp_0)!=(y_2))))&&(((x_0)!=(xp_2))||((y_0)!=(yp_2))))&&(((x_0)!=(x_2))||((y_0)!=(y_2))))))
+        return false;
+      if (!(((((state_2)!=(WAITING))||((0)>=(2)))||((x_0)!=(xp_2)))||((y_0)!=(yp_2))))
+        return false;
+      if (!(((((state_2)!=(MOVE))||((x_0)!=(xp_2)))||((y_0)!=(yp_2)))&&((((state_0)!=(4))||((xp_0)!=(x_2)))||((yp_0)!=(y_2)))))
+        return false;
+      if (!(((x_0)!=(x_2))||((y_0)!=(y_2))))
+        return false;
+    }
+    {
+      if (!(((((((state_0)!=(NEXT))&&((state_0)!=(MOVE)))||((state_3)!=(WAITING)))||((0)>=(3)))||((xp_0)!=(xp_3)))||((yp_0)!=(yp_3))))
+        return false;
+      if (!((((state_0)!=(MOVE))||((state_3)!=(MOVE)))||((((((xp_0)!=(xp_3))||((yp_0)!=(yp_3)))&&(((xp_0)!=(x_3))||((yp_0)!=(y_3))))&&(((x_0)!=(xp_3))||((y_0)!=(yp_3))))&&(((x_0)!=(x_3))||((y_0)!=(y_3))))))
+        return false;
+      if (!(((((state_3)!=(WAITING))||((0)>=(3)))||((x_0)!=(xp_3)))||((y_0)!=(yp_3))))
+        return false;
+      if (!(((((state_3)!=(MOVE))||((x_0)!=(xp_3)))||((y_0)!=(yp_3)))&&((((state_0)!=(4))||((xp_0)!=(x_3)))||((yp_0)!=(y_3)))))
+        return false;
+      if (!(((x_0)!=(x_3))||((y_0)!=(y_3))))
+        return false;
+    }
+    {
+      if (!(((((((state_0)!=(NEXT))&&((state_0)!=(MOVE)))||((state_4)!=(WAITING)))||((0)>=(4)))||((xp_0)!=(xp_4)))||((yp_0)!=(yp_4))))
+        return false;
+      if (!((((state_0)!=(MOVE))||((state_4)!=(MOVE)))||((((((xp_0)!=(xp_4))||((yp_0)!=(yp_4)))&&(((xp_0)!=(x_4))||((yp_0)!=(y_4))))&&(((x_0)!=(xp_4))||((y_0)!=(yp_4))))&&(((x_0)!=(x_4))||((y_0)!=(y_4))))))
+        return false;
+      if (!(((((state_4)!=(WAITING))||((0)>=(4)))||((x_0)!=(xp_4)))||((y_0)!=(yp_4))))
+        return false;
+      if (!(((((state_4)!=(MOVE))||((x_0)!=(xp_4)))||((y_0)!=(yp_4)))&&((((state_0)!=(4))||((xp_0)!=(x_4)))||((yp_0)!=(y_4)))))
+        return false;
+      if (!(((x_0)!=(x_4))||((y_0)!=(y_4))))
+        return false;
+    }
+    {
+      if (!(((((((state_1)!=(NEXT))&&((state_1)!=(MOVE)))||((state_2)!=(WAITING)))||((1)>=(2)))||((xp_1)!=(xp_2)))||((yp_1)!=(yp_2))))
+        return false;
+      if (!((((state_1)!=(MOVE))||((state_2)!=(MOVE)))||((((((xp_1)!=(xp_2))||((yp_1)!=(yp_2)))&&(((xp_1)!=(x_2))||((yp_1)!=(y_2))))&&(((x_1)!=(xp_2))||((y_1)!=(yp_2))))&&(((x_1)!=(x_2))||((y_1)!=(y_2))))))
+        return false;
+      if (!(((((state_2)!=(WAITING))||((1)>=(2)))||((x_1)!=(xp_2)))||((y_1)!=(yp_2))))
+        return false;
+      if (!(((((state_2)!=(MOVE))||((x_1)!=(xp_2)))||((y_1)!=(yp_2)))&&((((state_1)!=(4))||((xp_1)!=(x_2)))||((yp_1)!=(y_2)))))
+        return false;
+      if (!(((x_1)!=(x_2))||((y_1)!=(y_2))))
+        return false;
+    }
+    {
+      if (!(((((((state_1)!=(NEXT))&&((state_1)!=(MOVE)))||((state_3)!=(WAITING)))||((1)>=(3)))||((xp_1)!=(xp_3)))||((yp_1)!=(yp_3))))
+        return false;
+      if (!((((state_1)!=(MOVE))||((state_3)!=(MOVE)))||((((((xp_1)!=(xp_3))||((yp_1)!=(yp_3)))&&(((xp_1)!=(x_3))||((yp_1)!=(y_3))))&&(((x_1)!=(xp_3))||((y_1)!=(yp_3))))&&(((x_1)!=(x_3))||((y_1)!=(y_3))))))
+        return false;
+      if (!(((((state_3)!=(WAITING))||((1)>=(3)))||((x_1)!=(xp_3)))||((y_1)!=(yp_3))))
+        return false;
+      if (!(((((state_3)!=(MOVE))||((x_1)!=(xp_3)))||((y_1)!=(yp_3)))&&((((state_1)!=(4))||((xp_1)!=(x_3)))||((yp_1)!=(y_3)))))
+        return false;
+      if (!(((x_1)!=(x_3))||((y_1)!=(y_3))))
+        return false;
+    }
+    {
+      if (!(((((((state_1)!=(NEXT))&&((state_1)!=(MOVE)))||((state_4)!=(WAITING)))||((1)>=(4)))||((xp_1)!=(xp_4)))||((yp_1)!=(yp_4))))
+        return false;
+      if (!((((state_1)!=(MOVE))||((state_4)!=(MOVE)))||((((((xp_1)!=(xp_4))||((yp_1)!=(yp_4)))&&(((xp_1)!=(x_4))||((yp_1)!=(y_4))))&&(((x_1)!=(xp_4))||((y_1)!=(yp_4))))&&(((x_1)!=(x_4))||((y_1)!=(y_4))))))
+        return false;
+      if (!(((((state_4)!=(WAITING))||((1)>=(4)))||((x_1)!=(xp_4)))||((y_1)!=(yp_4))))
+        return false;
+      if (!(((((state_4)!=(MOVE))||((x_1)!=(xp_4)))||((y_1)!=(yp_4)))&&((((state_1)!=(4))||((xp_1)!=(x_4)))||((yp_1)!=(y_4)))))
+        return false;
+      if (!(((x_1)!=(x_4))||((y_1)!=(y_4))))
+        return false;
+    }
+    {
+      if (!(((((((state_2)!=(NEXT))&&((state_2)!=(MOVE)))||((state_3)!=(WAITING)))||((2)>=(3)))||((xp_2)!=(xp_3)))||((yp_2)!=(yp_3))))
+        return false;
+      if (!((((state_2)!=(MOVE))||((state_3)!=(MOVE)))||((((((xp_2)!=(xp_3))||((yp_2)!=(yp_3)))&&(((xp_2)!=(x_3))||((yp_2)!=(y_3))))&&(((x_2)!=(xp_3))||((y_2)!=(yp_3))))&&(((x_2)!=(x_3))||((y_2)!=(y_3))))))
+        return false;
+      if (!(((((state_3)!=(WAITING))||((2)>=(3)))||((x_2)!=(xp_3)))||((y_2)!=(yp_3))))
+        return false;
+      if (!(((((state_3)!=(MOVE))||((x_2)!=(xp_3)))||((y_2)!=(yp_3)))&&((((state_2)!=(4))||((xp_2)!=(x_3)))||((yp_2)!=(y_3)))))
+        return false;
+      if (!(((x_2)!=(x_3))||((y_2)!=(y_3))))
+        return false;
+    }
+    {
+      if (!(((((((state_2)!=(NEXT))&&((state_2)!=(MOVE)))||((state_4)!=(WAITING)))||((2)>=(4)))||((xp_2)!=(xp_4)))||((yp_2)!=(yp_4))))
+        return false;
+      if (!((((state_2)!=(MOVE))||((state_4)!=(MOVE)))||((((((xp_2)!=(xp_4))||((yp_2)!=(yp_4)))&&(((xp_2)!=(x_4))||((yp_2)!=(y_4))))&&(((x_2)!=(xp_4))||((y_2)!=(yp_4))))&&(((x_2)!=(x_4))||((y_2)!=(y_4))))))
+        return false;
+      if (!(((((state_4)!=(WAITING))||((2)>=(4)))||((x_2)!=(xp_4)))||((y_2)!=(yp_4))))
+        return false;
+      if (!(((((state_4)!=(MOVE))||((x_2)!=(xp_4)))||((y_2)!=(yp_4)))&&((((state_2)!=(4))||((xp_2)!=(x_4)))||((yp_2)!=(y_4)))))
+        return false;
+      if (!(((x_2)!=(x_4))||((y_2)!=(y_4))))
+        return false;
+    }
+    {
+      if (!(((((((state_3)!=(NEXT))&&((state_3)!=(MOVE)))||((state_4)!=(WAITING)))||((3)>=(4)))||((xp_3)!=(xp_4)))||((yp_3)!=(yp_4))))
+        return false;
+      if (!((((state_3)!=(MOVE))||((state_4)!=(MOVE)))||((((((xp_3)!=(xp_4))||((yp_3)!=(yp_4)))&&(((xp_3)!=(x_4))||((yp_3)!=(y_4))))&&(((x_3)!=(xp_4))||((y_3)!=(yp_4))))&&(((x_3)!=(x_4))||((y_3)!=(y_4))))))
+        return false;
+      if (!(((((state_4)!=(WAITING))||((3)>=(4)))||((x_3)!=(xp_4)))||((y_3)!=(yp_4))))
+        return false;
+      if (!(((((state_4)!=(MOVE))||((x_3)!=(xp_4)))||((y_3)!=(yp_4)))&&((((state_3)!=(4))||((xp_3)!=(x_4)))||((yp_3)!=(y_4)))))
+        return false;
+      if (!(((x_3)!=(x_4))||((y_3)!=(y_4))))
+        return false;
+    }
+  }
+  return true;
 }
 
-_Bool __SAFETY_NoCollision()
+_Bool __SAFETY_NoCollision_fwd()
 {
   {
     {
@@ -1522,13 +1790,23 @@ _Bool __SAFETY_NoCollision()
   return true;
 }
 
+void __SAFETY_bwd()
+{
+  assert(__SAFETY_NoCollision_bwd());
+}
+
+void __SAFETY_fwd()
+{
+  assert(__SAFETY_NoCollision_fwd());
+}
+
 int adaptation_manager(int current_formation,int changing,double change_progress,double hazard1,double hazard2,double hazard3,double hazard4,double hazard5,double variance1,double variance2,double variance3,double variance4,double variance5,double loose_speed,double tight_speed,double segment_length,int remaining_segments,double remaining_flight_time);
 int adaptation_manager_random(int current_formation,int changing,double change_progress,double hazard1,double hazard2,double hazard3,double hazard4,double hazard5,double variance1,double variance2,double variance3,double variance4,double variance5,double loose_speed,double tight_speed,double segment_length,int remaining_segments,double remaining_flight_time);
 double asin(double x);
 int main()
 {
   __INIT();
-  __SAFETY();
+  __SAFETY_fwd();
   __HAVOC();
   __ASSUME();
   round_fwd_copier();
@@ -1538,7 +1816,7 @@ int main()
   uav__COLLISION_AVOIDANCE_3_fwd();
   uav__COLLISION_AVOIDANCE_4_fwd();
   round_bwd_copier();
-  __SAFETY();
+  __SAFETY_fwd();
 }
 
 int my_sleep(int seconds);
