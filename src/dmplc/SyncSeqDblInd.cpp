@@ -173,10 +173,10 @@ void dmpl::SyncSeqDblInd::createHavoc()
   //-- create havoc for local and global variables
   for(const auto &rl: relevantLocs) {
     for(const Var &v: rl.second) {
-      createHavocStmts(false, v, havocFnBody, ExprList(), rl.first.id);
+      createHavocStmts(false, true, v, havocFnBody, ExprList(), rl.first.id);
     }
     for(const Var &v: relevantGlobs[rl.first]) {
-      createHavocStmts(true, v, havocFnBody, ExprList(), rl.first.id);
+      createHavocStmts(true, true, v, havocFnBody, ExprList(), rl.first.id);
     }
   }
 

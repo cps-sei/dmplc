@@ -902,12 +902,15 @@ void dmpl::SyncSeqDbl::createSafety()
 //create list of statements that havoc a variable. append list of
 //statements to res.
 /*********************************************************************/
-void dmpl::SyncSeqDbl::createHavocStmts(bool fwd,const Var &var,StmtList &res,ExprList indx,int pid)
+void dmpl::SyncSeqDbl::createHavocStmts(bool isGlob,bool fwd,const Var &var,
+                                        StmtList &res,ExprList indx,int pid)
 {
   //non-array type
   if(var->type->dims.empty()) {
     std::string pidStr = boost::lexical_cast<std::string>(pid);
-    Expr varExpr(new LvalExpr(var->name + std::string(fwd ? "_i_" : "_f_")  + pidStr,indx));
+    Expr varExpr(new LvalExpr(var->name +
+                              std::string(isGlob ? (fwd ? "_i_" : "_f_") : "_")  +
+                              pidStr,indx));
     Expr ndfn = createNondetFunc(varExpr, var->type);
     Expr ndcall(new CallExpr(ndfn,ExprList()));
     res.push_back(Stmt(new AsgnStmt(varExpr,ndcall)));
@@ -921,7 +924,7 @@ void dmpl::SyncSeqDbl::createHavocStmts(bool fwd,const Var &var,StmtList &res,Ex
       ExprList newIndx = indx;
       newIndx.push_back(Expr(new IntExpr(boost::lexical_cast<std::string>(i))));
       Var newVar = var->decrDim();
-      createHavocStmts(fwd,newVar,res,newIndx,pid);
+      createHavocStmts(isGlob,fwd,newVar,res,newIndx,pid);
     }
   }
 }
@@ -964,7 +967,7 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
           }
           //-- havoc globals
           for(const Var &v : havocGlobs[pr.first])
-            createHavocStmts(true,v,fnBody,ExprList(),pr.first.id);
+            createHavocStmts(true,true,v,fnBody,ExprList(),pr.first.id);
         }
         
         BOOST_FOREACH(const Stmt &st,f->body) {
@@ -998,7 +1001,7 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
           }
           //-- havoc globals
           for(const Var &v : havocGlobs[pr.first])
-            createHavocStmts(false,v,fnBody,ExprList(),pr.first.id);
+            createHavocStmts(true,false,v,fnBody,ExprList(),pr.first.id);
         }
 
         BOOST_FOREACH(const Stmt &st,f->body) {
