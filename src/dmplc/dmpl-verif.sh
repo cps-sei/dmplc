@@ -79,12 +79,10 @@ CFILE="$(basename $VERIF)_$VERIF_NAME.c"
 CMD="dmplc --roles $ROLEDESC --cube-grid $GRIDSIZE -r $ROUNDS"
 CMD+=" -rp $PROPERTY -o $CFILE $DMPL"
 
-if [ $INDUCTIVE == "1" ]; then
+if [ $INDUCTIVE == "1" ] || [ "$VERIF" == "inductive" ]; then
     CMD+=" -si"
 elif [ "$VERIF" == "bounded" ]; then
     CMD+=" -s"
-elif [ "$VERIF" == "inductive" ]; then
-    CMD+=" -si"
 else
     echo "ERROR: illegal verification type $VERIF!!" && \
     echo "ERROR: legal values are bounded and inductive!!" && exit 1
@@ -104,7 +102,11 @@ fi
 #if we don't have to verify we are done
 [ "$BUILDONLY" -eq 1 ] && exit 0
 
-printf "verification %30s : " $VERIF_NAME
+if [ $INDUCTIVE == "1" ] || [ "$VERIF" == "inductive" ]; then
+    printf "verification %30s : " $VERIF_NAME
+else
+    printf "induct verif %30s : " $VERIF_NAME
+fi
 
 CMD="cbmc $CFILE"
 echo "========== running cbmc =========" >> $OUTLOG
