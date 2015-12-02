@@ -1,0 +1,3257 @@
+//-- DMPLC Version: 0.2
+//-- DMPLC Command Line: dmplc --cube-grid 10 --roles uav:Leader:1:uav:Protector:4 -r 5 -s -rp NoCollision -o test-example-05b.c test-example-05b.dmpl
+
+/************* external functions ***********/
+
+/************* constants ***********/
+#define FORM_CHANGE_TIME 20.0
+#define MOVE 4
+#define NEXT 1
+#define NODE_RAD 0.25
+#define REQUEST 2
+#define WAITING 3
+#define X 10
+#define Y 10
+#define Z 10
+#define false 0
+#define true 1
+
+/************* global variables ***********/
+_Bool changing_0;
+_Bool changing_1;
+_Bool changing_2;
+_Bool changing_3;
+_Bool changing_4;
+double delay_until_0;
+double delay_until_1;
+double delay_until_2;
+double delay_until_3;
+double delay_until_4;
+_Bool formation_f_0;
+_Bool formation_i_0;
+_Bool lock_f_0[10][10];
+_Bool lock_f_1[10][10];
+_Bool lock_f_2[10][10];
+_Bool lock_f_3[10][10];
+_Bool lock_f_4[10][10];
+_Bool lock_i_0[10][10];
+_Bool lock_i_1[10][10];
+_Bool lock_i_2[10][10];
+_Bool lock_i_3[10][10];
+_Bool lock_i_4[10][10];
+double loose_speed_0;
+unsigned char next_wp_x_0[5];
+unsigned char next_wp_y_0[5];
+double remaining_flt_time_0;
+unsigned char remaining_segs_0;
+double seg_len_0;
+double speed_factor_0;
+double started_move_0;
+double started_move_1;
+double started_move_2;
+double started_move_3;
+double started_move_4;
+unsigned char state_0;
+unsigned char state_1;
+unsigned char state_2;
+unsigned char state_3;
+unsigned char state_4;
+double tight_speed_0;
+_Bool waypointValid_0;
+_Bool waypointValid_1;
+_Bool waypointValid_2;
+_Bool waypointValid_3;
+_Bool waypointValid_4;
+unsigned char x_0;
+unsigned char x_1;
+unsigned char x_2;
+unsigned char x_3;
+unsigned char x_4;
+unsigned char xp_0;
+unsigned char xp_1;
+unsigned char xp_2;
+unsigned char xp_3;
+unsigned char xp_4;
+unsigned char xt_0;
+unsigned char xt_1;
+unsigned char xt_2;
+unsigned char xt_3;
+unsigned char xt_4;
+unsigned char y_0;
+unsigned char y_1;
+unsigned char y_2;
+unsigned char y_3;
+unsigned char y_4;
+unsigned char yp_0;
+unsigned char yp_1;
+unsigned char yp_2;
+unsigned char yp_3;
+unsigned char yp_4;
+unsigned char yt_0;
+unsigned char yt_1;
+unsigned char yt_2;
+unsigned char yt_3;
+unsigned char yt_4;
+
+/************* function declarations ***********/
+extern double GET_HAZARD(int x,int y);
+extern void INIT_HAZARDS(int XX,int YY,int tx,int ty);
+extern void LOG(double x);
+void __INIT();
+void __INIT_changing_0();
+void __INIT_changing_1();
+void __INIT_changing_2();
+void __INIT_changing_3();
+void __INIT_changing_4();
+void __INIT_delay_until_0();
+void __INIT_delay_until_1();
+void __INIT_delay_until_2();
+void __INIT_delay_until_3();
+void __INIT_delay_until_4();
+void __INIT_formation_0();
+void __INIT_lock_0();
+void __INIT_lock_1();
+void __INIT_lock_2();
+void __INIT_lock_3();
+void __INIT_lock_4();
+void __INIT_started_move_0();
+void __INIT_started_move_1();
+void __INIT_started_move_2();
+void __INIT_started_move_3();
+void __INIT_started_move_4();
+void __INIT_state_0();
+void __INIT_state_1();
+void __INIT_state_2();
+void __INIT_state_3();
+void __INIT_state_4();
+void __INIT_waypointValid_0();
+void __INIT_waypointValid_1();
+void __INIT_waypointValid_2();
+void __INIT_waypointValid_3();
+void __INIT_waypointValid_4();
+int __INIT_x_0();
+int __INIT_x_1();
+int __INIT_x_2();
+int __INIT_x_3();
+int __INIT_x_4();
+void __INIT_xp_0();
+void __INIT_xp_1();
+void __INIT_xp_2();
+void __INIT_xp_3();
+void __INIT_xp_4();
+int __INIT_xt_0();
+int __INIT_xt_1();
+int __INIT_xt_2();
+int __INIT_xt_3();
+int __INIT_xt_4();
+int __INIT_y_0();
+int __INIT_y_1();
+int __INIT_y_2();
+int __INIT_y_3();
+int __INIT_y_4();
+void __INIT_yp_0();
+void __INIT_yp_1();
+void __INIT_yp_2();
+void __INIT_yp_3();
+void __INIT_yp_4();
+int __INIT_yt_0();
+int __INIT_yt_1();
+int __INIT_yt_2();
+int __INIT_yt_3();
+int __INIT_yt_4();
+_Bool __SAFETY_NoCollision_bwd();
+_Bool __SAFETY_NoCollision_fwd();
+void __SAFETY_bwd();
+void __SAFETY_fwd();
+extern int adaptation_manager(int current_formation,int changing,double change_progress,double hazard1,double hazard2,double hazard3,double hazard4,double hazard5,double variance1,double variance2,double variance3,double variance4,double variance5,double loose_speed,double tight_speed,double segment_length,int remaining_segments,double remaining_flight_time);
+extern int adaptation_manager_random(int current_formation,int changing,double change_progress,double hazard1,double hazard2,double hazard3,double hazard4,double hazard5,double variance1,double variance2,double variance3,double variance4,double variance5,double loose_speed,double tight_speed,double segment_length,int remaining_segments,double remaining_flight_time);
+extern double asin(double x);
+int main();
+extern int my_sleep(int seconds);
+_Bool nondet_changing_0();
+_Bool nondet_formation_f_0();
+_Bool nondet_formation_i_0();
+_Bool nondet_waypointValid_0();
+_Bool nondet_waypointValid_1();
+_Bool nondet_waypointValid_2();
+_Bool nondet_waypointValid_3();
+_Bool nondet_waypointValid_4();
+unsigned char nondet_x_0();
+unsigned char nondet_x_1();
+unsigned char nondet_x_2();
+unsigned char nondet_x_3();
+unsigned char nondet_x_4();
+unsigned char nondet_xt_0();
+unsigned char nondet_xt_1();
+unsigned char nondet_xt_2();
+unsigned char nondet_xt_3();
+unsigned char nondet_xt_4();
+unsigned char nondet_y_0();
+unsigned char nondet_y_1();
+unsigned char nondet_y_2();
+unsigned char nondet_y_3();
+unsigned char nondet_y_4();
+unsigned char nondet_yt_0();
+unsigned char nondet_yt_1();
+unsigned char nondet_yt_2();
+unsigned char nondet_yt_3();
+unsigned char nondet_yt_4();
+extern void print_cover(double d);
+extern void print_hazard(double d);
+extern void print_int(int i);
+extern void print_labeled_int(int i);
+extern void print_state(int XX,int YY,int my_id,int x,int y,int xf,int yf,int _st,int wpv);
+extern void print_waypoint(int _init,int _lx,int _ly);
+void round_bwd_copier();
+void round_fwd_copier();
+extern double sqrt(double x);
+void uav__COLLISION_AVOIDANCE_0_bwd();
+void uav__COLLISION_AVOIDANCE_0_fwd();
+void uav__COLLISION_AVOIDANCE_1_bwd();
+void uav__COLLISION_AVOIDANCE_1_fwd();
+void uav__COLLISION_AVOIDANCE_2_bwd();
+void uav__COLLISION_AVOIDANCE_2_fwd();
+void uav__COLLISION_AVOIDANCE_3_bwd();
+void uav__COLLISION_AVOIDANCE_3_fwd();
+void uav__COLLISION_AVOIDANCE_4_bwd();
+void uav__COLLISION_AVOIDANCE_4_fwd();
+_Bool uav__NEXT_XY_0_bwd();
+_Bool uav__NEXT_XY_0_fwd();
+_Bool uav__NEXT_XY_1_bwd();
+_Bool uav__NEXT_XY_1_fwd();
+_Bool uav__NEXT_XY_2_bwd();
+_Bool uav__NEXT_XY_2_fwd();
+_Bool uav__NEXT_XY_3_bwd();
+_Bool uav__NEXT_XY_3_fwd();
+_Bool uav__NEXT_XY_4_bwd();
+_Bool uav__NEXT_XY_4_fwd();
+_Bool uav__NEXT_XY_DIAGONAL_0_bwd();
+_Bool uav__NEXT_XY_DIAGONAL_0_fwd();
+_Bool uav__NEXT_XY_DIAGONAL_1_bwd();
+_Bool uav__NEXT_XY_DIAGONAL_1_fwd();
+_Bool uav__NEXT_XY_DIAGONAL_2_bwd();
+_Bool uav__NEXT_XY_DIAGONAL_2_fwd();
+_Bool uav__NEXT_XY_DIAGONAL_3_bwd();
+_Bool uav__NEXT_XY_DIAGONAL_3_fwd();
+_Bool uav__NEXT_XY_DIAGONAL_4_bwd();
+_Bool uav__NEXT_XY_DIAGONAL_4_fwd();
+void uav__REACHED_NEXT_XY_0_bwd();
+void uav__REACHED_NEXT_XY_0_fwd();
+extern double wall_time();
+
+/************* function definitions ***********/
+double GET_HAZARD(int x,int y);
+void INIT_HAZARDS(int XX,int YY,int tx,int ty);
+void LOG(double x);
+void __INIT()
+{
+  __CPROVER_assume(__INIT_x_0());
+  __CPROVER_assume(__INIT_y_0());
+  __CPROVER_assume(__INIT_xt_0());
+  __CPROVER_assume(__INIT_yt_0());
+  __INIT_lock_0();
+  __INIT_state_0();
+  __INIT_xp_0();
+  __INIT_yp_0();
+  __INIT_waypointValid_0();
+  __INIT_started_move_0();
+  __INIT_delay_until_0();
+  __INIT_changing_0();
+  __INIT_formation_0();
+  __CPROVER_assume(__INIT_x_1());
+  __CPROVER_assume(__INIT_y_1());
+  __CPROVER_assume(__INIT_xt_1());
+  __CPROVER_assume(__INIT_yt_1());
+  __INIT_lock_1();
+  __INIT_state_1();
+  __INIT_xp_1();
+  __INIT_yp_1();
+  __INIT_waypointValid_1();
+  __INIT_started_move_1();
+  __INIT_delay_until_1();
+  __INIT_changing_1();
+  __CPROVER_assume(__INIT_x_2());
+  __CPROVER_assume(__INIT_y_2());
+  __CPROVER_assume(__INIT_xt_2());
+  __CPROVER_assume(__INIT_yt_2());
+  __INIT_lock_2();
+  __INIT_state_2();
+  __INIT_xp_2();
+  __INIT_yp_2();
+  __INIT_waypointValid_2();
+  __INIT_started_move_2();
+  __INIT_delay_until_2();
+  __INIT_changing_2();
+  __CPROVER_assume(__INIT_x_3());
+  __CPROVER_assume(__INIT_y_3());
+  __CPROVER_assume(__INIT_xt_3());
+  __CPROVER_assume(__INIT_yt_3());
+  __INIT_lock_3();
+  __INIT_state_3();
+  __INIT_xp_3();
+  __INIT_yp_3();
+  __INIT_waypointValid_3();
+  __INIT_started_move_3();
+  __INIT_delay_until_3();
+  __INIT_changing_3();
+  __CPROVER_assume(__INIT_x_4());
+  __CPROVER_assume(__INIT_y_4());
+  __CPROVER_assume(__INIT_xt_4());
+  __CPROVER_assume(__INIT_yt_4());
+  __INIT_lock_4();
+  __INIT_state_4();
+  __INIT_xp_4();
+  __INIT_yp_4();
+  __INIT_waypointValid_4();
+  __INIT_started_move_4();
+  __INIT_delay_until_4();
+  __INIT_changing_4();
+  __CPROVER_assume(__SAFETY_NoCollision_fwd());
+}
+
+void __INIT_changing_0()
+{
+  changing_0 = 0;
+}
+
+void __INIT_changing_1()
+{
+  changing_1 = 0;
+}
+
+void __INIT_changing_2()
+{
+  changing_2 = 0;
+}
+
+void __INIT_changing_3()
+{
+  changing_3 = 0;
+}
+
+void __INIT_changing_4()
+{
+  changing_4 = 0;
+}
+
+void __INIT_delay_until_0()
+{
+  delay_until_0 = 0.0;
+}
+
+void __INIT_delay_until_1()
+{
+  delay_until_1 = 0.0;
+}
+
+void __INIT_delay_until_2()
+{
+  delay_until_2 = 0.0;
+}
+
+void __INIT_delay_until_3()
+{
+  delay_until_3 = 0.0;
+}
+
+void __INIT_delay_until_4()
+{
+  delay_until_4 = 0.0;
+}
+
+void __INIT_formation_0()
+{
+  formation_i_0 = 0;
+  formation_f_0 = 0;
+}
+
+void __INIT_lock_0()
+{
+  lock_i_0[x_0][y_0] = 1;
+  lock_f_0[x_0][y_0] = 1;
+}
+
+void __INIT_lock_1()
+{
+  lock_i_1[x_1][y_1] = 1;
+  lock_f_1[x_1][y_1] = 1;
+}
+
+void __INIT_lock_2()
+{
+  lock_i_2[x_2][y_2] = 1;
+  lock_f_2[x_2][y_2] = 1;
+}
+
+void __INIT_lock_3()
+{
+  lock_i_3[x_3][y_3] = 1;
+  lock_f_3[x_3][y_3] = 1;
+}
+
+void __INIT_lock_4()
+{
+  lock_i_4[x_4][y_4] = 1;
+  lock_f_4[x_4][y_4] = 1;
+}
+
+void __INIT_started_move_0()
+{
+  started_move_0 = 0;
+}
+
+void __INIT_started_move_1()
+{
+  started_move_1 = 0;
+}
+
+void __INIT_started_move_2()
+{
+  started_move_2 = 0;
+}
+
+void __INIT_started_move_3()
+{
+  started_move_3 = 0;
+}
+
+void __INIT_started_move_4()
+{
+  started_move_4 = 0;
+}
+
+void __INIT_state_0()
+{
+  state_0 = NEXT;
+}
+
+void __INIT_state_1()
+{
+  state_1 = NEXT;
+}
+
+void __INIT_state_2()
+{
+  state_2 = NEXT;
+}
+
+void __INIT_state_3()
+{
+  state_3 = NEXT;
+}
+
+void __INIT_state_4()
+{
+  state_4 = NEXT;
+}
+
+void __INIT_waypointValid_0()
+{
+  waypointValid_0 = 0;
+}
+
+void __INIT_waypointValid_1()
+{
+  waypointValid_1 = 0;
+}
+
+void __INIT_waypointValid_2()
+{
+  waypointValid_2 = 0;
+}
+
+void __INIT_waypointValid_3()
+{
+  waypointValid_3 = 0;
+}
+
+void __INIT_waypointValid_4()
+{
+  waypointValid_4 = 0;
+}
+
+int __INIT_x_0()
+{
+  x_0 = nondet_x_0();
+  return ((0)<=(x_0))&&((x_0)<(X));
+}
+
+int __INIT_x_1()
+{
+  x_1 = nondet_x_1();
+  return ((0)<=(x_1))&&((x_1)<(X));
+}
+
+int __INIT_x_2()
+{
+  x_2 = nondet_x_2();
+  return ((0)<=(x_2))&&((x_2)<(X));
+}
+
+int __INIT_x_3()
+{
+  x_3 = nondet_x_3();
+  return ((0)<=(x_3))&&((x_3)<(X));
+}
+
+int __INIT_x_4()
+{
+  x_4 = nondet_x_4();
+  return ((0)<=(x_4))&&((x_4)<(X));
+}
+
+void __INIT_xp_0()
+{
+  xp_0 = x_0;
+}
+
+void __INIT_xp_1()
+{
+  xp_1 = x_1;
+}
+
+void __INIT_xp_2()
+{
+  xp_2 = x_2;
+}
+
+void __INIT_xp_3()
+{
+  xp_3 = x_3;
+}
+
+void __INIT_xp_4()
+{
+  xp_4 = x_4;
+}
+
+int __INIT_xt_0()
+{
+  xt_0 = nondet_xt_0();
+  return ((0)<=(xt_0))&&((xt_0)<(X));
+}
+
+int __INIT_xt_1()
+{
+  xt_1 = nondet_xt_1();
+  return ((0)<=(xt_1))&&((xt_1)<(X));
+}
+
+int __INIT_xt_2()
+{
+  xt_2 = nondet_xt_2();
+  return ((0)<=(xt_2))&&((xt_2)<(X));
+}
+
+int __INIT_xt_3()
+{
+  xt_3 = nondet_xt_3();
+  return ((0)<=(xt_3))&&((xt_3)<(X));
+}
+
+int __INIT_xt_4()
+{
+  xt_4 = nondet_xt_4();
+  return ((0)<=(xt_4))&&((xt_4)<(X));
+}
+
+int __INIT_y_0()
+{
+  y_0 = nondet_y_0();
+  return ((0)<=(y_0))&&((y_0)<(Y));
+}
+
+int __INIT_y_1()
+{
+  y_1 = nondet_y_1();
+  return ((0)<=(y_1))&&((y_1)<(Y));
+}
+
+int __INIT_y_2()
+{
+  y_2 = nondet_y_2();
+  return ((0)<=(y_2))&&((y_2)<(Y));
+}
+
+int __INIT_y_3()
+{
+  y_3 = nondet_y_3();
+  return ((0)<=(y_3))&&((y_3)<(Y));
+}
+
+int __INIT_y_4()
+{
+  y_4 = nondet_y_4();
+  return ((0)<=(y_4))&&((y_4)<(Y));
+}
+
+void __INIT_yp_0()
+{
+  yp_0 = y_0;
+}
+
+void __INIT_yp_1()
+{
+  yp_1 = y_1;
+}
+
+void __INIT_yp_2()
+{
+  yp_2 = y_2;
+}
+
+void __INIT_yp_3()
+{
+  yp_3 = y_3;
+}
+
+void __INIT_yp_4()
+{
+  yp_4 = y_4;
+}
+
+int __INIT_yt_0()
+{
+  yt_0 = nondet_yt_0();
+  return ((0)<=(yt_0))&&((yt_0)<(Y));
+}
+
+int __INIT_yt_1()
+{
+  yt_1 = nondet_yt_1();
+  return ((0)<=(yt_1))&&((yt_1)<(Y));
+}
+
+int __INIT_yt_2()
+{
+  yt_2 = nondet_yt_2();
+  return ((0)<=(yt_2))&&((yt_2)<(Y));
+}
+
+int __INIT_yt_3()
+{
+  yt_3 = nondet_yt_3();
+  return ((0)<=(yt_3))&&((yt_3)<(Y));
+}
+
+int __INIT_yt_4()
+{
+  yt_4 = nondet_yt_4();
+  return ((0)<=(yt_4))&&((yt_4)<(Y));
+}
+
+_Bool __SAFETY_NoCollision_bwd()
+{
+  {
+    {
+      if (((x_0)==(x_1))&&((y_0)==(y_1)))
+        return false;
+    }
+    {
+      if (((x_0)==(x_2))&&((y_0)==(y_2)))
+        return false;
+    }
+    {
+      if (((x_0)==(x_3))&&((y_0)==(y_3)))
+        return false;
+    }
+    {
+      if (((x_0)==(x_4))&&((y_0)==(y_4)))
+        return false;
+    }
+    {
+      if (((x_1)==(x_2))&&((y_1)==(y_2)))
+        return false;
+    }
+    {
+      if (((x_1)==(x_3))&&((y_1)==(y_3)))
+        return false;
+    }
+    {
+      if (((x_1)==(x_4))&&((y_1)==(y_4)))
+        return false;
+    }
+    {
+      if (((x_2)==(x_3))&&((y_2)==(y_3)))
+        return false;
+    }
+    {
+      if (((x_2)==(x_4))&&((y_2)==(y_4)))
+        return false;
+    }
+    {
+      if (((x_3)==(x_4))&&((y_3)==(y_4)))
+        return false;
+    }
+  }
+  {
+    {
+      if (!(((state_0)>=(NEXT))&&((state_0)<=(MOVE))))
+        return false;
+      if (!(((x_0)>=(0))&&((x_0)<(X))))
+        return false;
+      if (!(((y_0)>=(0))&&((y_0)<(Y))))
+        return false;
+      if (!(((xp_0)>=(0))&&((xp_0)<(X))))
+        return false;
+      if (!(((yp_0)>=(0))&&((yp_0)<(Y))))
+        return false;
+      if (!((((state_0)==(NEXT))||((x_0)!=(xp_0)))||((y_0)!=(yp_0))))
+        return false;
+      if (!((((((state_0)!=(NEXT))&&((state_0)!=(REQUEST)))&&((state_0)!=(WAITING)))&&((state_0)!=(MOVE)))||(lock_f_0[x_0][y_0])))
+        return false;
+      if (!(((((state_0)!=(NEXT))&&((state_0)!=(WAITING)))&&((state_0)!=(MOVE)))||((lock_f_0[x_0][y_0])&&(lock_f_0[xp_0][yp_0]))))
+        return false;
+      if (!(((state_0)==(NEXT))||((((x_0)==((xp_0)-(1)))||((x_0)==((xp_0)+(1))))^(((y_0)==((yp_0)-(1)))||((y_0)==((yp_0)+(1)))))))
+        return false;
+    }
+    {
+      if (!(((state_1)>=(NEXT))&&((state_1)<=(MOVE))))
+        return false;
+      if (!(((x_1)>=(0))&&((x_1)<(X))))
+        return false;
+      if (!(((y_1)>=(0))&&((y_1)<(Y))))
+        return false;
+      if (!(((xp_1)>=(0))&&((xp_1)<(X))))
+        return false;
+      if (!(((yp_1)>=(0))&&((yp_1)<(Y))))
+        return false;
+      if (!((((state_1)==(NEXT))||((x_1)!=(xp_1)))||((y_1)!=(yp_1))))
+        return false;
+      if (!((((((state_1)!=(NEXT))&&((state_1)!=(REQUEST)))&&((state_1)!=(WAITING)))&&((state_1)!=(MOVE)))||(lock_f_1[x_1][y_1])))
+        return false;
+      if (!(((((state_1)!=(NEXT))&&((state_1)!=(WAITING)))&&((state_1)!=(MOVE)))||((lock_f_1[x_1][y_1])&&(lock_f_1[xp_1][yp_1]))))
+        return false;
+      if (!(((state_1)==(NEXT))||((((x_1)==((xp_1)-(1)))||((x_1)==((xp_1)+(1))))^(((y_1)==((yp_1)-(1)))||((y_1)==((yp_1)+(1)))))))
+        return false;
+    }
+    {
+      if (!(((state_2)>=(NEXT))&&((state_2)<=(MOVE))))
+        return false;
+      if (!(((x_2)>=(0))&&((x_2)<(X))))
+        return false;
+      if (!(((y_2)>=(0))&&((y_2)<(Y))))
+        return false;
+      if (!(((xp_2)>=(0))&&((xp_2)<(X))))
+        return false;
+      if (!(((yp_2)>=(0))&&((yp_2)<(Y))))
+        return false;
+      if (!((((state_2)==(NEXT))||((x_2)!=(xp_2)))||((y_2)!=(yp_2))))
+        return false;
+      if (!((((((state_2)!=(NEXT))&&((state_2)!=(REQUEST)))&&((state_2)!=(WAITING)))&&((state_2)!=(MOVE)))||(lock_f_2[x_2][y_2])))
+        return false;
+      if (!(((((state_2)!=(NEXT))&&((state_2)!=(WAITING)))&&((state_2)!=(MOVE)))||((lock_f_2[x_2][y_2])&&(lock_f_2[xp_2][yp_2]))))
+        return false;
+      if (!(((state_2)==(NEXT))||((((x_2)==((xp_2)-(1)))||((x_2)==((xp_2)+(1))))^(((y_2)==((yp_2)-(1)))||((y_2)==((yp_2)+(1)))))))
+        return false;
+    }
+    {
+      if (!(((state_3)>=(NEXT))&&((state_3)<=(MOVE))))
+        return false;
+      if (!(((x_3)>=(0))&&((x_3)<(X))))
+        return false;
+      if (!(((y_3)>=(0))&&((y_3)<(Y))))
+        return false;
+      if (!(((xp_3)>=(0))&&((xp_3)<(X))))
+        return false;
+      if (!(((yp_3)>=(0))&&((yp_3)<(Y))))
+        return false;
+      if (!((((state_3)==(NEXT))||((x_3)!=(xp_3)))||((y_3)!=(yp_3))))
+        return false;
+      if (!((((((state_3)!=(NEXT))&&((state_3)!=(REQUEST)))&&((state_3)!=(WAITING)))&&((state_3)!=(MOVE)))||(lock_f_3[x_3][y_3])))
+        return false;
+      if (!(((((state_3)!=(NEXT))&&((state_3)!=(WAITING)))&&((state_3)!=(MOVE)))||((lock_f_3[x_3][y_3])&&(lock_f_3[xp_3][yp_3]))))
+        return false;
+      if (!(((state_3)==(NEXT))||((((x_3)==((xp_3)-(1)))||((x_3)==((xp_3)+(1))))^(((y_3)==((yp_3)-(1)))||((y_3)==((yp_3)+(1)))))))
+        return false;
+    }
+    {
+      if (!(((state_4)>=(NEXT))&&((state_4)<=(MOVE))))
+        return false;
+      if (!(((x_4)>=(0))&&((x_4)<(X))))
+        return false;
+      if (!(((y_4)>=(0))&&((y_4)<(Y))))
+        return false;
+      if (!(((xp_4)>=(0))&&((xp_4)<(X))))
+        return false;
+      if (!(((yp_4)>=(0))&&((yp_4)<(Y))))
+        return false;
+      if (!((((state_4)==(NEXT))||((x_4)!=(xp_4)))||((y_4)!=(yp_4))))
+        return false;
+      if (!((((((state_4)!=(NEXT))&&((state_4)!=(REQUEST)))&&((state_4)!=(WAITING)))&&((state_4)!=(MOVE)))||(lock_f_4[x_4][y_4])))
+        return false;
+      if (!(((((state_4)!=(NEXT))&&((state_4)!=(WAITING)))&&((state_4)!=(MOVE)))||((lock_f_4[x_4][y_4])&&(lock_f_4[xp_4][yp_4]))))
+        return false;
+      if (!(((state_4)==(NEXT))||((((x_4)==((xp_4)-(1)))||((x_4)==((xp_4)+(1))))^(((y_4)==((yp_4)-(1)))||((y_4)==((yp_4)+(1)))))))
+        return false;
+    }
+  }
+  {
+    {
+      if (!(((((((state_0)!=(NEXT))&&((state_0)!=(MOVE)))||((state_1)!=(WAITING)))||((0)>=(1)))||((xp_0)!=(xp_1)))||((yp_0)!=(yp_1))))
+        return false;
+      if (!((((state_0)!=(MOVE))||((state_1)!=(MOVE)))||((((((xp_0)!=(xp_1))||((yp_0)!=(yp_1)))&&(((xp_0)!=(x_1))||((yp_0)!=(y_1))))&&(((x_0)!=(xp_1))||((y_0)!=(yp_1))))&&(((x_0)!=(x_1))||((y_0)!=(y_1))))))
+        return false;
+      if (!(((((state_1)!=(WAITING))||((0)>=(1)))||((x_0)!=(xp_1)))||((y_0)!=(yp_1))))
+        return false;
+      if (!(((((state_1)!=(MOVE))||((x_0)!=(xp_1)))||((y_0)!=(yp_1)))&&((((state_0)!=(4))||((xp_0)!=(x_1)))||((yp_0)!=(y_1)))))
+        return false;
+      if (!(((x_0)!=(x_1))||((y_0)!=(y_1))))
+        return false;
+    }
+    {
+      if (!(((((((state_0)!=(NEXT))&&((state_0)!=(MOVE)))||((state_2)!=(WAITING)))||((0)>=(2)))||((xp_0)!=(xp_2)))||((yp_0)!=(yp_2))))
+        return false;
+      if (!((((state_0)!=(MOVE))||((state_2)!=(MOVE)))||((((((xp_0)!=(xp_2))||((yp_0)!=(yp_2)))&&(((xp_0)!=(x_2))||((yp_0)!=(y_2))))&&(((x_0)!=(xp_2))||((y_0)!=(yp_2))))&&(((x_0)!=(x_2))||((y_0)!=(y_2))))))
+        return false;
+      if (!(((((state_2)!=(WAITING))||((0)>=(2)))||((x_0)!=(xp_2)))||((y_0)!=(yp_2))))
+        return false;
+      if (!(((((state_2)!=(MOVE))||((x_0)!=(xp_2)))||((y_0)!=(yp_2)))&&((((state_0)!=(4))||((xp_0)!=(x_2)))||((yp_0)!=(y_2)))))
+        return false;
+      if (!(((x_0)!=(x_2))||((y_0)!=(y_2))))
+        return false;
+    }
+    {
+      if (!(((((((state_0)!=(NEXT))&&((state_0)!=(MOVE)))||((state_3)!=(WAITING)))||((0)>=(3)))||((xp_0)!=(xp_3)))||((yp_0)!=(yp_3))))
+        return false;
+      if (!((((state_0)!=(MOVE))||((state_3)!=(MOVE)))||((((((xp_0)!=(xp_3))||((yp_0)!=(yp_3)))&&(((xp_0)!=(x_3))||((yp_0)!=(y_3))))&&(((x_0)!=(xp_3))||((y_0)!=(yp_3))))&&(((x_0)!=(x_3))||((y_0)!=(y_3))))))
+        return false;
+      if (!(((((state_3)!=(WAITING))||((0)>=(3)))||((x_0)!=(xp_3)))||((y_0)!=(yp_3))))
+        return false;
+      if (!(((((state_3)!=(MOVE))||((x_0)!=(xp_3)))||((y_0)!=(yp_3)))&&((((state_0)!=(4))||((xp_0)!=(x_3)))||((yp_0)!=(y_3)))))
+        return false;
+      if (!(((x_0)!=(x_3))||((y_0)!=(y_3))))
+        return false;
+    }
+    {
+      if (!(((((((state_0)!=(NEXT))&&((state_0)!=(MOVE)))||((state_4)!=(WAITING)))||((0)>=(4)))||((xp_0)!=(xp_4)))||((yp_0)!=(yp_4))))
+        return false;
+      if (!((((state_0)!=(MOVE))||((state_4)!=(MOVE)))||((((((xp_0)!=(xp_4))||((yp_0)!=(yp_4)))&&(((xp_0)!=(x_4))||((yp_0)!=(y_4))))&&(((x_0)!=(xp_4))||((y_0)!=(yp_4))))&&(((x_0)!=(x_4))||((y_0)!=(y_4))))))
+        return false;
+      if (!(((((state_4)!=(WAITING))||((0)>=(4)))||((x_0)!=(xp_4)))||((y_0)!=(yp_4))))
+        return false;
+      if (!(((((state_4)!=(MOVE))||((x_0)!=(xp_4)))||((y_0)!=(yp_4)))&&((((state_0)!=(4))||((xp_0)!=(x_4)))||((yp_0)!=(y_4)))))
+        return false;
+      if (!(((x_0)!=(x_4))||((y_0)!=(y_4))))
+        return false;
+    }
+    {
+      if (!(((((((state_1)!=(NEXT))&&((state_1)!=(MOVE)))||((state_2)!=(WAITING)))||((1)>=(2)))||((xp_1)!=(xp_2)))||((yp_1)!=(yp_2))))
+        return false;
+      if (!((((state_1)!=(MOVE))||((state_2)!=(MOVE)))||((((((xp_1)!=(xp_2))||((yp_1)!=(yp_2)))&&(((xp_1)!=(x_2))||((yp_1)!=(y_2))))&&(((x_1)!=(xp_2))||((y_1)!=(yp_2))))&&(((x_1)!=(x_2))||((y_1)!=(y_2))))))
+        return false;
+      if (!(((((state_2)!=(WAITING))||((1)>=(2)))||((x_1)!=(xp_2)))||((y_1)!=(yp_2))))
+        return false;
+      if (!(((((state_2)!=(MOVE))||((x_1)!=(xp_2)))||((y_1)!=(yp_2)))&&((((state_1)!=(4))||((xp_1)!=(x_2)))||((yp_1)!=(y_2)))))
+        return false;
+      if (!(((x_1)!=(x_2))||((y_1)!=(y_2))))
+        return false;
+    }
+    {
+      if (!(((((((state_1)!=(NEXT))&&((state_1)!=(MOVE)))||((state_3)!=(WAITING)))||((1)>=(3)))||((xp_1)!=(xp_3)))||((yp_1)!=(yp_3))))
+        return false;
+      if (!((((state_1)!=(MOVE))||((state_3)!=(MOVE)))||((((((xp_1)!=(xp_3))||((yp_1)!=(yp_3)))&&(((xp_1)!=(x_3))||((yp_1)!=(y_3))))&&(((x_1)!=(xp_3))||((y_1)!=(yp_3))))&&(((x_1)!=(x_3))||((y_1)!=(y_3))))))
+        return false;
+      if (!(((((state_3)!=(WAITING))||((1)>=(3)))||((x_1)!=(xp_3)))||((y_1)!=(yp_3))))
+        return false;
+      if (!(((((state_3)!=(MOVE))||((x_1)!=(xp_3)))||((y_1)!=(yp_3)))&&((((state_1)!=(4))||((xp_1)!=(x_3)))||((yp_1)!=(y_3)))))
+        return false;
+      if (!(((x_1)!=(x_3))||((y_1)!=(y_3))))
+        return false;
+    }
+    {
+      if (!(((((((state_1)!=(NEXT))&&((state_1)!=(MOVE)))||((state_4)!=(WAITING)))||((1)>=(4)))||((xp_1)!=(xp_4)))||((yp_1)!=(yp_4))))
+        return false;
+      if (!((((state_1)!=(MOVE))||((state_4)!=(MOVE)))||((((((xp_1)!=(xp_4))||((yp_1)!=(yp_4)))&&(((xp_1)!=(x_4))||((yp_1)!=(y_4))))&&(((x_1)!=(xp_4))||((y_1)!=(yp_4))))&&(((x_1)!=(x_4))||((y_1)!=(y_4))))))
+        return false;
+      if (!(((((state_4)!=(WAITING))||((1)>=(4)))||((x_1)!=(xp_4)))||((y_1)!=(yp_4))))
+        return false;
+      if (!(((((state_4)!=(MOVE))||((x_1)!=(xp_4)))||((y_1)!=(yp_4)))&&((((state_1)!=(4))||((xp_1)!=(x_4)))||((yp_1)!=(y_4)))))
+        return false;
+      if (!(((x_1)!=(x_4))||((y_1)!=(y_4))))
+        return false;
+    }
+    {
+      if (!(((((((state_2)!=(NEXT))&&((state_2)!=(MOVE)))||((state_3)!=(WAITING)))||((2)>=(3)))||((xp_2)!=(xp_3)))||((yp_2)!=(yp_3))))
+        return false;
+      if (!((((state_2)!=(MOVE))||((state_3)!=(MOVE)))||((((((xp_2)!=(xp_3))||((yp_2)!=(yp_3)))&&(((xp_2)!=(x_3))||((yp_2)!=(y_3))))&&(((x_2)!=(xp_3))||((y_2)!=(yp_3))))&&(((x_2)!=(x_3))||((y_2)!=(y_3))))))
+        return false;
+      if (!(((((state_3)!=(WAITING))||((2)>=(3)))||((x_2)!=(xp_3)))||((y_2)!=(yp_3))))
+        return false;
+      if (!(((((state_3)!=(MOVE))||((x_2)!=(xp_3)))||((y_2)!=(yp_3)))&&((((state_2)!=(4))||((xp_2)!=(x_3)))||((yp_2)!=(y_3)))))
+        return false;
+      if (!(((x_2)!=(x_3))||((y_2)!=(y_3))))
+        return false;
+    }
+    {
+      if (!(((((((state_2)!=(NEXT))&&((state_2)!=(MOVE)))||((state_4)!=(WAITING)))||((2)>=(4)))||((xp_2)!=(xp_4)))||((yp_2)!=(yp_4))))
+        return false;
+      if (!((((state_2)!=(MOVE))||((state_4)!=(MOVE)))||((((((xp_2)!=(xp_4))||((yp_2)!=(yp_4)))&&(((xp_2)!=(x_4))||((yp_2)!=(y_4))))&&(((x_2)!=(xp_4))||((y_2)!=(yp_4))))&&(((x_2)!=(x_4))||((y_2)!=(y_4))))))
+        return false;
+      if (!(((((state_4)!=(WAITING))||((2)>=(4)))||((x_2)!=(xp_4)))||((y_2)!=(yp_4))))
+        return false;
+      if (!(((((state_4)!=(MOVE))||((x_2)!=(xp_4)))||((y_2)!=(yp_4)))&&((((state_2)!=(4))||((xp_2)!=(x_4)))||((yp_2)!=(y_4)))))
+        return false;
+      if (!(((x_2)!=(x_4))||((y_2)!=(y_4))))
+        return false;
+    }
+    {
+      if (!(((((((state_3)!=(NEXT))&&((state_3)!=(MOVE)))||((state_4)!=(WAITING)))||((3)>=(4)))||((xp_3)!=(xp_4)))||((yp_3)!=(yp_4))))
+        return false;
+      if (!((((state_3)!=(MOVE))||((state_4)!=(MOVE)))||((((((xp_3)!=(xp_4))||((yp_3)!=(yp_4)))&&(((xp_3)!=(x_4))||((yp_3)!=(y_4))))&&(((x_3)!=(xp_4))||((y_3)!=(yp_4))))&&(((x_3)!=(x_4))||((y_3)!=(y_4))))))
+        return false;
+      if (!(((((state_4)!=(WAITING))||((3)>=(4)))||((x_3)!=(xp_4)))||((y_3)!=(yp_4))))
+        return false;
+      if (!(((((state_4)!=(MOVE))||((x_3)!=(xp_4)))||((y_3)!=(yp_4)))&&((((state_3)!=(4))||((xp_3)!=(x_4)))||((yp_3)!=(y_4)))))
+        return false;
+      if (!(((x_3)!=(x_4))||((y_3)!=(y_4))))
+        return false;
+    }
+  }
+  return true;
+}
+
+_Bool __SAFETY_NoCollision_fwd()
+{
+  {
+    {
+      if (((x_0)==(x_1))&&((y_0)==(y_1)))
+        return false;
+    }
+    {
+      if (((x_0)==(x_2))&&((y_0)==(y_2)))
+        return false;
+    }
+    {
+      if (((x_0)==(x_3))&&((y_0)==(y_3)))
+        return false;
+    }
+    {
+      if (((x_0)==(x_4))&&((y_0)==(y_4)))
+        return false;
+    }
+    {
+      if (((x_1)==(x_2))&&((y_1)==(y_2)))
+        return false;
+    }
+    {
+      if (((x_1)==(x_3))&&((y_1)==(y_3)))
+        return false;
+    }
+    {
+      if (((x_1)==(x_4))&&((y_1)==(y_4)))
+        return false;
+    }
+    {
+      if (((x_2)==(x_3))&&((y_2)==(y_3)))
+        return false;
+    }
+    {
+      if (((x_2)==(x_4))&&((y_2)==(y_4)))
+        return false;
+    }
+    {
+      if (((x_3)==(x_4))&&((y_3)==(y_4)))
+        return false;
+    }
+  }
+  {
+    {
+      if (!(((state_0)>=(NEXT))&&((state_0)<=(MOVE))))
+        return false;
+      if (!(((x_0)>=(0))&&((x_0)<(X))))
+        return false;
+      if (!(((y_0)>=(0))&&((y_0)<(Y))))
+        return false;
+      if (!(((xp_0)>=(0))&&((xp_0)<(X))))
+        return false;
+      if (!(((yp_0)>=(0))&&((yp_0)<(Y))))
+        return false;
+      if (!((((state_0)==(NEXT))||((x_0)!=(xp_0)))||((y_0)!=(yp_0))))
+        return false;
+      if (!((((((state_0)!=(NEXT))&&((state_0)!=(REQUEST)))&&((state_0)!=(WAITING)))&&((state_0)!=(MOVE)))||(lock_i_0[x_0][y_0])))
+        return false;
+      if (!(((((state_0)!=(NEXT))&&((state_0)!=(WAITING)))&&((state_0)!=(MOVE)))||((lock_i_0[x_0][y_0])&&(lock_i_0[xp_0][yp_0]))))
+        return false;
+      if (!(((state_0)==(NEXT))||((((x_0)==((xp_0)-(1)))||((x_0)==((xp_0)+(1))))^(((y_0)==((yp_0)-(1)))||((y_0)==((yp_0)+(1)))))))
+        return false;
+    }
+    {
+      if (!(((state_1)>=(NEXT))&&((state_1)<=(MOVE))))
+        return false;
+      if (!(((x_1)>=(0))&&((x_1)<(X))))
+        return false;
+      if (!(((y_1)>=(0))&&((y_1)<(Y))))
+        return false;
+      if (!(((xp_1)>=(0))&&((xp_1)<(X))))
+        return false;
+      if (!(((yp_1)>=(0))&&((yp_1)<(Y))))
+        return false;
+      if (!((((state_1)==(NEXT))||((x_1)!=(xp_1)))||((y_1)!=(yp_1))))
+        return false;
+      if (!((((((state_1)!=(NEXT))&&((state_1)!=(REQUEST)))&&((state_1)!=(WAITING)))&&((state_1)!=(MOVE)))||(lock_i_1[x_1][y_1])))
+        return false;
+      if (!(((((state_1)!=(NEXT))&&((state_1)!=(WAITING)))&&((state_1)!=(MOVE)))||((lock_i_1[x_1][y_1])&&(lock_i_1[xp_1][yp_1]))))
+        return false;
+      if (!(((state_1)==(NEXT))||((((x_1)==((xp_1)-(1)))||((x_1)==((xp_1)+(1))))^(((y_1)==((yp_1)-(1)))||((y_1)==((yp_1)+(1)))))))
+        return false;
+    }
+    {
+      if (!(((state_2)>=(NEXT))&&((state_2)<=(MOVE))))
+        return false;
+      if (!(((x_2)>=(0))&&((x_2)<(X))))
+        return false;
+      if (!(((y_2)>=(0))&&((y_2)<(Y))))
+        return false;
+      if (!(((xp_2)>=(0))&&((xp_2)<(X))))
+        return false;
+      if (!(((yp_2)>=(0))&&((yp_2)<(Y))))
+        return false;
+      if (!((((state_2)==(NEXT))||((x_2)!=(xp_2)))||((y_2)!=(yp_2))))
+        return false;
+      if (!((((((state_2)!=(NEXT))&&((state_2)!=(REQUEST)))&&((state_2)!=(WAITING)))&&((state_2)!=(MOVE)))||(lock_i_2[x_2][y_2])))
+        return false;
+      if (!(((((state_2)!=(NEXT))&&((state_2)!=(WAITING)))&&((state_2)!=(MOVE)))||((lock_i_2[x_2][y_2])&&(lock_i_2[xp_2][yp_2]))))
+        return false;
+      if (!(((state_2)==(NEXT))||((((x_2)==((xp_2)-(1)))||((x_2)==((xp_2)+(1))))^(((y_2)==((yp_2)-(1)))||((y_2)==((yp_2)+(1)))))))
+        return false;
+    }
+    {
+      if (!(((state_3)>=(NEXT))&&((state_3)<=(MOVE))))
+        return false;
+      if (!(((x_3)>=(0))&&((x_3)<(X))))
+        return false;
+      if (!(((y_3)>=(0))&&((y_3)<(Y))))
+        return false;
+      if (!(((xp_3)>=(0))&&((xp_3)<(X))))
+        return false;
+      if (!(((yp_3)>=(0))&&((yp_3)<(Y))))
+        return false;
+      if (!((((state_3)==(NEXT))||((x_3)!=(xp_3)))||((y_3)!=(yp_3))))
+        return false;
+      if (!((((((state_3)!=(NEXT))&&((state_3)!=(REQUEST)))&&((state_3)!=(WAITING)))&&((state_3)!=(MOVE)))||(lock_i_3[x_3][y_3])))
+        return false;
+      if (!(((((state_3)!=(NEXT))&&((state_3)!=(WAITING)))&&((state_3)!=(MOVE)))||((lock_i_3[x_3][y_3])&&(lock_i_3[xp_3][yp_3]))))
+        return false;
+      if (!(((state_3)==(NEXT))||((((x_3)==((xp_3)-(1)))||((x_3)==((xp_3)+(1))))^(((y_3)==((yp_3)-(1)))||((y_3)==((yp_3)+(1)))))))
+        return false;
+    }
+    {
+      if (!(((state_4)>=(NEXT))&&((state_4)<=(MOVE))))
+        return false;
+      if (!(((x_4)>=(0))&&((x_4)<(X))))
+        return false;
+      if (!(((y_4)>=(0))&&((y_4)<(Y))))
+        return false;
+      if (!(((xp_4)>=(0))&&((xp_4)<(X))))
+        return false;
+      if (!(((yp_4)>=(0))&&((yp_4)<(Y))))
+        return false;
+      if (!((((state_4)==(NEXT))||((x_4)!=(xp_4)))||((y_4)!=(yp_4))))
+        return false;
+      if (!((((((state_4)!=(NEXT))&&((state_4)!=(REQUEST)))&&((state_4)!=(WAITING)))&&((state_4)!=(MOVE)))||(lock_i_4[x_4][y_4])))
+        return false;
+      if (!(((((state_4)!=(NEXT))&&((state_4)!=(WAITING)))&&((state_4)!=(MOVE)))||((lock_i_4[x_4][y_4])&&(lock_i_4[xp_4][yp_4]))))
+        return false;
+      if (!(((state_4)==(NEXT))||((((x_4)==((xp_4)-(1)))||((x_4)==((xp_4)+(1))))^(((y_4)==((yp_4)-(1)))||((y_4)==((yp_4)+(1)))))))
+        return false;
+    }
+  }
+  {
+    {
+      if (!(((((((state_0)!=(NEXT))&&((state_0)!=(MOVE)))||((state_1)!=(WAITING)))||((0)>=(1)))||((xp_0)!=(xp_1)))||((yp_0)!=(yp_1))))
+        return false;
+      if (!((((state_0)!=(MOVE))||((state_1)!=(MOVE)))||((((((xp_0)!=(xp_1))||((yp_0)!=(yp_1)))&&(((xp_0)!=(x_1))||((yp_0)!=(y_1))))&&(((x_0)!=(xp_1))||((y_0)!=(yp_1))))&&(((x_0)!=(x_1))||((y_0)!=(y_1))))))
+        return false;
+      if (!(((((state_1)!=(WAITING))||((0)>=(1)))||((x_0)!=(xp_1)))||((y_0)!=(yp_1))))
+        return false;
+      if (!(((((state_1)!=(MOVE))||((x_0)!=(xp_1)))||((y_0)!=(yp_1)))&&((((state_0)!=(4))||((xp_0)!=(x_1)))||((yp_0)!=(y_1)))))
+        return false;
+      if (!(((x_0)!=(x_1))||((y_0)!=(y_1))))
+        return false;
+    }
+    {
+      if (!(((((((state_0)!=(NEXT))&&((state_0)!=(MOVE)))||((state_2)!=(WAITING)))||((0)>=(2)))||((xp_0)!=(xp_2)))||((yp_0)!=(yp_2))))
+        return false;
+      if (!((((state_0)!=(MOVE))||((state_2)!=(MOVE)))||((((((xp_0)!=(xp_2))||((yp_0)!=(yp_2)))&&(((xp_0)!=(x_2))||((yp_0)!=(y_2))))&&(((x_0)!=(xp_2))||((y_0)!=(yp_2))))&&(((x_0)!=(x_2))||((y_0)!=(y_2))))))
+        return false;
+      if (!(((((state_2)!=(WAITING))||((0)>=(2)))||((x_0)!=(xp_2)))||((y_0)!=(yp_2))))
+        return false;
+      if (!(((((state_2)!=(MOVE))||((x_0)!=(xp_2)))||((y_0)!=(yp_2)))&&((((state_0)!=(4))||((xp_0)!=(x_2)))||((yp_0)!=(y_2)))))
+        return false;
+      if (!(((x_0)!=(x_2))||((y_0)!=(y_2))))
+        return false;
+    }
+    {
+      if (!(((((((state_0)!=(NEXT))&&((state_0)!=(MOVE)))||((state_3)!=(WAITING)))||((0)>=(3)))||((xp_0)!=(xp_3)))||((yp_0)!=(yp_3))))
+        return false;
+      if (!((((state_0)!=(MOVE))||((state_3)!=(MOVE)))||((((((xp_0)!=(xp_3))||((yp_0)!=(yp_3)))&&(((xp_0)!=(x_3))||((yp_0)!=(y_3))))&&(((x_0)!=(xp_3))||((y_0)!=(yp_3))))&&(((x_0)!=(x_3))||((y_0)!=(y_3))))))
+        return false;
+      if (!(((((state_3)!=(WAITING))||((0)>=(3)))||((x_0)!=(xp_3)))||((y_0)!=(yp_3))))
+        return false;
+      if (!(((((state_3)!=(MOVE))||((x_0)!=(xp_3)))||((y_0)!=(yp_3)))&&((((state_0)!=(4))||((xp_0)!=(x_3)))||((yp_0)!=(y_3)))))
+        return false;
+      if (!(((x_0)!=(x_3))||((y_0)!=(y_3))))
+        return false;
+    }
+    {
+      if (!(((((((state_0)!=(NEXT))&&((state_0)!=(MOVE)))||((state_4)!=(WAITING)))||((0)>=(4)))||((xp_0)!=(xp_4)))||((yp_0)!=(yp_4))))
+        return false;
+      if (!((((state_0)!=(MOVE))||((state_4)!=(MOVE)))||((((((xp_0)!=(xp_4))||((yp_0)!=(yp_4)))&&(((xp_0)!=(x_4))||((yp_0)!=(y_4))))&&(((x_0)!=(xp_4))||((y_0)!=(yp_4))))&&(((x_0)!=(x_4))||((y_0)!=(y_4))))))
+        return false;
+      if (!(((((state_4)!=(WAITING))||((0)>=(4)))||((x_0)!=(xp_4)))||((y_0)!=(yp_4))))
+        return false;
+      if (!(((((state_4)!=(MOVE))||((x_0)!=(xp_4)))||((y_0)!=(yp_4)))&&((((state_0)!=(4))||((xp_0)!=(x_4)))||((yp_0)!=(y_4)))))
+        return false;
+      if (!(((x_0)!=(x_4))||((y_0)!=(y_4))))
+        return false;
+    }
+    {
+      if (!(((((((state_1)!=(NEXT))&&((state_1)!=(MOVE)))||((state_2)!=(WAITING)))||((1)>=(2)))||((xp_1)!=(xp_2)))||((yp_1)!=(yp_2))))
+        return false;
+      if (!((((state_1)!=(MOVE))||((state_2)!=(MOVE)))||((((((xp_1)!=(xp_2))||((yp_1)!=(yp_2)))&&(((xp_1)!=(x_2))||((yp_1)!=(y_2))))&&(((x_1)!=(xp_2))||((y_1)!=(yp_2))))&&(((x_1)!=(x_2))||((y_1)!=(y_2))))))
+        return false;
+      if (!(((((state_2)!=(WAITING))||((1)>=(2)))||((x_1)!=(xp_2)))||((y_1)!=(yp_2))))
+        return false;
+      if (!(((((state_2)!=(MOVE))||((x_1)!=(xp_2)))||((y_1)!=(yp_2)))&&((((state_1)!=(4))||((xp_1)!=(x_2)))||((yp_1)!=(y_2)))))
+        return false;
+      if (!(((x_1)!=(x_2))||((y_1)!=(y_2))))
+        return false;
+    }
+    {
+      if (!(((((((state_1)!=(NEXT))&&((state_1)!=(MOVE)))||((state_3)!=(WAITING)))||((1)>=(3)))||((xp_1)!=(xp_3)))||((yp_1)!=(yp_3))))
+        return false;
+      if (!((((state_1)!=(MOVE))||((state_3)!=(MOVE)))||((((((xp_1)!=(xp_3))||((yp_1)!=(yp_3)))&&(((xp_1)!=(x_3))||((yp_1)!=(y_3))))&&(((x_1)!=(xp_3))||((y_1)!=(yp_3))))&&(((x_1)!=(x_3))||((y_1)!=(y_3))))))
+        return false;
+      if (!(((((state_3)!=(WAITING))||((1)>=(3)))||((x_1)!=(xp_3)))||((y_1)!=(yp_3))))
+        return false;
+      if (!(((((state_3)!=(MOVE))||((x_1)!=(xp_3)))||((y_1)!=(yp_3)))&&((((state_1)!=(4))||((xp_1)!=(x_3)))||((yp_1)!=(y_3)))))
+        return false;
+      if (!(((x_1)!=(x_3))||((y_1)!=(y_3))))
+        return false;
+    }
+    {
+      if (!(((((((state_1)!=(NEXT))&&((state_1)!=(MOVE)))||((state_4)!=(WAITING)))||((1)>=(4)))||((xp_1)!=(xp_4)))||((yp_1)!=(yp_4))))
+        return false;
+      if (!((((state_1)!=(MOVE))||((state_4)!=(MOVE)))||((((((xp_1)!=(xp_4))||((yp_1)!=(yp_4)))&&(((xp_1)!=(x_4))||((yp_1)!=(y_4))))&&(((x_1)!=(xp_4))||((y_1)!=(yp_4))))&&(((x_1)!=(x_4))||((y_1)!=(y_4))))))
+        return false;
+      if (!(((((state_4)!=(WAITING))||((1)>=(4)))||((x_1)!=(xp_4)))||((y_1)!=(yp_4))))
+        return false;
+      if (!(((((state_4)!=(MOVE))||((x_1)!=(xp_4)))||((y_1)!=(yp_4)))&&((((state_1)!=(4))||((xp_1)!=(x_4)))||((yp_1)!=(y_4)))))
+        return false;
+      if (!(((x_1)!=(x_4))||((y_1)!=(y_4))))
+        return false;
+    }
+    {
+      if (!(((((((state_2)!=(NEXT))&&((state_2)!=(MOVE)))||((state_3)!=(WAITING)))||((2)>=(3)))||((xp_2)!=(xp_3)))||((yp_2)!=(yp_3))))
+        return false;
+      if (!((((state_2)!=(MOVE))||((state_3)!=(MOVE)))||((((((xp_2)!=(xp_3))||((yp_2)!=(yp_3)))&&(((xp_2)!=(x_3))||((yp_2)!=(y_3))))&&(((x_2)!=(xp_3))||((y_2)!=(yp_3))))&&(((x_2)!=(x_3))||((y_2)!=(y_3))))))
+        return false;
+      if (!(((((state_3)!=(WAITING))||((2)>=(3)))||((x_2)!=(xp_3)))||((y_2)!=(yp_3))))
+        return false;
+      if (!(((((state_3)!=(MOVE))||((x_2)!=(xp_3)))||((y_2)!=(yp_3)))&&((((state_2)!=(4))||((xp_2)!=(x_3)))||((yp_2)!=(y_3)))))
+        return false;
+      if (!(((x_2)!=(x_3))||((y_2)!=(y_3))))
+        return false;
+    }
+    {
+      if (!(((((((state_2)!=(NEXT))&&((state_2)!=(MOVE)))||((state_4)!=(WAITING)))||((2)>=(4)))||((xp_2)!=(xp_4)))||((yp_2)!=(yp_4))))
+        return false;
+      if (!((((state_2)!=(MOVE))||((state_4)!=(MOVE)))||((((((xp_2)!=(xp_4))||((yp_2)!=(yp_4)))&&(((xp_2)!=(x_4))||((yp_2)!=(y_4))))&&(((x_2)!=(xp_4))||((y_2)!=(yp_4))))&&(((x_2)!=(x_4))||((y_2)!=(y_4))))))
+        return false;
+      if (!(((((state_4)!=(WAITING))||((2)>=(4)))||((x_2)!=(xp_4)))||((y_2)!=(yp_4))))
+        return false;
+      if (!(((((state_4)!=(MOVE))||((x_2)!=(xp_4)))||((y_2)!=(yp_4)))&&((((state_2)!=(4))||((xp_2)!=(x_4)))||((yp_2)!=(y_4)))))
+        return false;
+      if (!(((x_2)!=(x_4))||((y_2)!=(y_4))))
+        return false;
+    }
+    {
+      if (!(((((((state_3)!=(NEXT))&&((state_3)!=(MOVE)))||((state_4)!=(WAITING)))||((3)>=(4)))||((xp_3)!=(xp_4)))||((yp_3)!=(yp_4))))
+        return false;
+      if (!((((state_3)!=(MOVE))||((state_4)!=(MOVE)))||((((((xp_3)!=(xp_4))||((yp_3)!=(yp_4)))&&(((xp_3)!=(x_4))||((yp_3)!=(y_4))))&&(((x_3)!=(xp_4))||((y_3)!=(yp_4))))&&(((x_3)!=(x_4))||((y_3)!=(y_4))))))
+        return false;
+      if (!(((((state_4)!=(WAITING))||((3)>=(4)))||((x_3)!=(xp_4)))||((y_3)!=(yp_4))))
+        return false;
+      if (!(((((state_4)!=(MOVE))||((x_3)!=(xp_4)))||((y_3)!=(yp_4)))&&((((state_3)!=(4))||((xp_3)!=(x_4)))||((yp_3)!=(y_4)))))
+        return false;
+      if (!(((x_3)!=(x_4))||((y_3)!=(y_4))))
+        return false;
+    }
+  }
+  return true;
+}
+
+void __SAFETY_bwd()
+{
+  assert(__SAFETY_NoCollision_bwd());
+}
+
+void __SAFETY_fwd()
+{
+  assert(__SAFETY_NoCollision_fwd());
+}
+
+int adaptation_manager(int current_formation,int changing,double change_progress,double hazard1,double hazard2,double hazard3,double hazard4,double hazard5,double variance1,double variance2,double variance3,double variance4,double variance5,double loose_speed,double tight_speed,double segment_length,int remaining_segments,double remaining_flight_time);
+int adaptation_manager_random(int current_formation,int changing,double change_progress,double hazard1,double hazard2,double hazard3,double hazard4,double hazard5,double variance1,double variance2,double variance3,double variance4,double variance5,double loose_speed,double tight_speed,double segment_length,int remaining_segments,double remaining_flight_time);
+double asin(double x);
+int main()
+{
+  __INIT();
+  __SAFETY_fwd();
+  round_fwd_copier();
+  uav__COLLISION_AVOIDANCE_0_fwd();
+  uav__COLLISION_AVOIDANCE_1_fwd();
+  uav__COLLISION_AVOIDANCE_2_fwd();
+  uav__COLLISION_AVOIDANCE_3_fwd();
+  uav__COLLISION_AVOIDANCE_4_fwd();
+  __SAFETY_bwd();
+  round_bwd_copier();
+  uav__COLLISION_AVOIDANCE_0_bwd();
+  uav__COLLISION_AVOIDANCE_1_bwd();
+  uav__COLLISION_AVOIDANCE_2_bwd();
+  uav__COLLISION_AVOIDANCE_3_bwd();
+  uav__COLLISION_AVOIDANCE_4_bwd();
+  __SAFETY_fwd();
+  round_fwd_copier();
+  uav__COLLISION_AVOIDANCE_0_fwd();
+  uav__COLLISION_AVOIDANCE_1_fwd();
+  uav__COLLISION_AVOIDANCE_2_fwd();
+  uav__COLLISION_AVOIDANCE_3_fwd();
+  uav__COLLISION_AVOIDANCE_4_fwd();
+  __SAFETY_bwd();
+  round_bwd_copier();
+  uav__COLLISION_AVOIDANCE_0_bwd();
+  uav__COLLISION_AVOIDANCE_1_bwd();
+  uav__COLLISION_AVOIDANCE_2_bwd();
+  uav__COLLISION_AVOIDANCE_3_bwd();
+  uav__COLLISION_AVOIDANCE_4_bwd();
+  __SAFETY_fwd();
+  round_fwd_copier();
+  uav__COLLISION_AVOIDANCE_0_fwd();
+  uav__COLLISION_AVOIDANCE_1_fwd();
+  uav__COLLISION_AVOIDANCE_2_fwd();
+  uav__COLLISION_AVOIDANCE_3_fwd();
+  uav__COLLISION_AVOIDANCE_4_fwd();
+  __SAFETY_bwd();
+}
+
+int my_sleep(int seconds);
+_Bool nondet_changing_0();
+_Bool nondet_formation_f_0();
+_Bool nondet_formation_i_0();
+_Bool nondet_waypointValid_0();
+_Bool nondet_waypointValid_1();
+_Bool nondet_waypointValid_2();
+_Bool nondet_waypointValid_3();
+_Bool nondet_waypointValid_4();
+unsigned char nondet_x_0();
+unsigned char nondet_x_1();
+unsigned char nondet_x_2();
+unsigned char nondet_x_3();
+unsigned char nondet_x_4();
+unsigned char nondet_xt_0();
+unsigned char nondet_xt_1();
+unsigned char nondet_xt_2();
+unsigned char nondet_xt_3();
+unsigned char nondet_xt_4();
+unsigned char nondet_y_0();
+unsigned char nondet_y_1();
+unsigned char nondet_y_2();
+unsigned char nondet_y_3();
+unsigned char nondet_y_4();
+unsigned char nondet_yt_0();
+unsigned char nondet_yt_1();
+unsigned char nondet_yt_2();
+unsigned char nondet_yt_3();
+unsigned char nondet_yt_4();
+void print_cover(double d);
+void print_hazard(double d);
+void print_int(int i);
+void print_labeled_int(int i);
+void print_state(int XX,int YY,int my_id,int x,int y,int xf,int yf,int _st,int wpv);
+void print_waypoint(int _init,int _lx,int _ly);
+void round_bwd_copier()
+{
+  lock_i_0[0][0] = lock_f_0[0][0];
+  lock_i_0[0][1] = lock_f_0[0][1];
+  lock_i_0[0][2] = lock_f_0[0][2];
+  lock_i_0[0][3] = lock_f_0[0][3];
+  lock_i_0[0][4] = lock_f_0[0][4];
+  lock_i_0[0][5] = lock_f_0[0][5];
+  lock_i_0[0][6] = lock_f_0[0][6];
+  lock_i_0[0][7] = lock_f_0[0][7];
+  lock_i_0[0][8] = lock_f_0[0][8];
+  lock_i_0[0][9] = lock_f_0[0][9];
+  lock_i_0[1][0] = lock_f_0[1][0];
+  lock_i_0[1][1] = lock_f_0[1][1];
+  lock_i_0[1][2] = lock_f_0[1][2];
+  lock_i_0[1][3] = lock_f_0[1][3];
+  lock_i_0[1][4] = lock_f_0[1][4];
+  lock_i_0[1][5] = lock_f_0[1][5];
+  lock_i_0[1][6] = lock_f_0[1][6];
+  lock_i_0[1][7] = lock_f_0[1][7];
+  lock_i_0[1][8] = lock_f_0[1][8];
+  lock_i_0[1][9] = lock_f_0[1][9];
+  lock_i_0[2][0] = lock_f_0[2][0];
+  lock_i_0[2][1] = lock_f_0[2][1];
+  lock_i_0[2][2] = lock_f_0[2][2];
+  lock_i_0[2][3] = lock_f_0[2][3];
+  lock_i_0[2][4] = lock_f_0[2][4];
+  lock_i_0[2][5] = lock_f_0[2][5];
+  lock_i_0[2][6] = lock_f_0[2][6];
+  lock_i_0[2][7] = lock_f_0[2][7];
+  lock_i_0[2][8] = lock_f_0[2][8];
+  lock_i_0[2][9] = lock_f_0[2][9];
+  lock_i_0[3][0] = lock_f_0[3][0];
+  lock_i_0[3][1] = lock_f_0[3][1];
+  lock_i_0[3][2] = lock_f_0[3][2];
+  lock_i_0[3][3] = lock_f_0[3][3];
+  lock_i_0[3][4] = lock_f_0[3][4];
+  lock_i_0[3][5] = lock_f_0[3][5];
+  lock_i_0[3][6] = lock_f_0[3][6];
+  lock_i_0[3][7] = lock_f_0[3][7];
+  lock_i_0[3][8] = lock_f_0[3][8];
+  lock_i_0[3][9] = lock_f_0[3][9];
+  lock_i_0[4][0] = lock_f_0[4][0];
+  lock_i_0[4][1] = lock_f_0[4][1];
+  lock_i_0[4][2] = lock_f_0[4][2];
+  lock_i_0[4][3] = lock_f_0[4][3];
+  lock_i_0[4][4] = lock_f_0[4][4];
+  lock_i_0[4][5] = lock_f_0[4][5];
+  lock_i_0[4][6] = lock_f_0[4][6];
+  lock_i_0[4][7] = lock_f_0[4][7];
+  lock_i_0[4][8] = lock_f_0[4][8];
+  lock_i_0[4][9] = lock_f_0[4][9];
+  lock_i_0[5][0] = lock_f_0[5][0];
+  lock_i_0[5][1] = lock_f_0[5][1];
+  lock_i_0[5][2] = lock_f_0[5][2];
+  lock_i_0[5][3] = lock_f_0[5][3];
+  lock_i_0[5][4] = lock_f_0[5][4];
+  lock_i_0[5][5] = lock_f_0[5][5];
+  lock_i_0[5][6] = lock_f_0[5][6];
+  lock_i_0[5][7] = lock_f_0[5][7];
+  lock_i_0[5][8] = lock_f_0[5][8];
+  lock_i_0[5][9] = lock_f_0[5][9];
+  lock_i_0[6][0] = lock_f_0[6][0];
+  lock_i_0[6][1] = lock_f_0[6][1];
+  lock_i_0[6][2] = lock_f_0[6][2];
+  lock_i_0[6][3] = lock_f_0[6][3];
+  lock_i_0[6][4] = lock_f_0[6][4];
+  lock_i_0[6][5] = lock_f_0[6][5];
+  lock_i_0[6][6] = lock_f_0[6][6];
+  lock_i_0[6][7] = lock_f_0[6][7];
+  lock_i_0[6][8] = lock_f_0[6][8];
+  lock_i_0[6][9] = lock_f_0[6][9];
+  lock_i_0[7][0] = lock_f_0[7][0];
+  lock_i_0[7][1] = lock_f_0[7][1];
+  lock_i_0[7][2] = lock_f_0[7][2];
+  lock_i_0[7][3] = lock_f_0[7][3];
+  lock_i_0[7][4] = lock_f_0[7][4];
+  lock_i_0[7][5] = lock_f_0[7][5];
+  lock_i_0[7][6] = lock_f_0[7][6];
+  lock_i_0[7][7] = lock_f_0[7][7];
+  lock_i_0[7][8] = lock_f_0[7][8];
+  lock_i_0[7][9] = lock_f_0[7][9];
+  lock_i_0[8][0] = lock_f_0[8][0];
+  lock_i_0[8][1] = lock_f_0[8][1];
+  lock_i_0[8][2] = lock_f_0[8][2];
+  lock_i_0[8][3] = lock_f_0[8][3];
+  lock_i_0[8][4] = lock_f_0[8][4];
+  lock_i_0[8][5] = lock_f_0[8][5];
+  lock_i_0[8][6] = lock_f_0[8][6];
+  lock_i_0[8][7] = lock_f_0[8][7];
+  lock_i_0[8][8] = lock_f_0[8][8];
+  lock_i_0[8][9] = lock_f_0[8][9];
+  lock_i_0[9][0] = lock_f_0[9][0];
+  lock_i_0[9][1] = lock_f_0[9][1];
+  lock_i_0[9][2] = lock_f_0[9][2];
+  lock_i_0[9][3] = lock_f_0[9][3];
+  lock_i_0[9][4] = lock_f_0[9][4];
+  lock_i_0[9][5] = lock_f_0[9][5];
+  lock_i_0[9][6] = lock_f_0[9][6];
+  lock_i_0[9][7] = lock_f_0[9][7];
+  lock_i_0[9][8] = lock_f_0[9][8];
+  lock_i_0[9][9] = lock_f_0[9][9];
+  formation_i_0 = formation_f_0;
+  lock_i_1[0][0] = lock_f_1[0][0];
+  lock_i_1[0][1] = lock_f_1[0][1];
+  lock_i_1[0][2] = lock_f_1[0][2];
+  lock_i_1[0][3] = lock_f_1[0][3];
+  lock_i_1[0][4] = lock_f_1[0][4];
+  lock_i_1[0][5] = lock_f_1[0][5];
+  lock_i_1[0][6] = lock_f_1[0][6];
+  lock_i_1[0][7] = lock_f_1[0][7];
+  lock_i_1[0][8] = lock_f_1[0][8];
+  lock_i_1[0][9] = lock_f_1[0][9];
+  lock_i_1[1][0] = lock_f_1[1][0];
+  lock_i_1[1][1] = lock_f_1[1][1];
+  lock_i_1[1][2] = lock_f_1[1][2];
+  lock_i_1[1][3] = lock_f_1[1][3];
+  lock_i_1[1][4] = lock_f_1[1][4];
+  lock_i_1[1][5] = lock_f_1[1][5];
+  lock_i_1[1][6] = lock_f_1[1][6];
+  lock_i_1[1][7] = lock_f_1[1][7];
+  lock_i_1[1][8] = lock_f_1[1][8];
+  lock_i_1[1][9] = lock_f_1[1][9];
+  lock_i_1[2][0] = lock_f_1[2][0];
+  lock_i_1[2][1] = lock_f_1[2][1];
+  lock_i_1[2][2] = lock_f_1[2][2];
+  lock_i_1[2][3] = lock_f_1[2][3];
+  lock_i_1[2][4] = lock_f_1[2][4];
+  lock_i_1[2][5] = lock_f_1[2][5];
+  lock_i_1[2][6] = lock_f_1[2][6];
+  lock_i_1[2][7] = lock_f_1[2][7];
+  lock_i_1[2][8] = lock_f_1[2][8];
+  lock_i_1[2][9] = lock_f_1[2][9];
+  lock_i_1[3][0] = lock_f_1[3][0];
+  lock_i_1[3][1] = lock_f_1[3][1];
+  lock_i_1[3][2] = lock_f_1[3][2];
+  lock_i_1[3][3] = lock_f_1[3][3];
+  lock_i_1[3][4] = lock_f_1[3][4];
+  lock_i_1[3][5] = lock_f_1[3][5];
+  lock_i_1[3][6] = lock_f_1[3][6];
+  lock_i_1[3][7] = lock_f_1[3][7];
+  lock_i_1[3][8] = lock_f_1[3][8];
+  lock_i_1[3][9] = lock_f_1[3][9];
+  lock_i_1[4][0] = lock_f_1[4][0];
+  lock_i_1[4][1] = lock_f_1[4][1];
+  lock_i_1[4][2] = lock_f_1[4][2];
+  lock_i_1[4][3] = lock_f_1[4][3];
+  lock_i_1[4][4] = lock_f_1[4][4];
+  lock_i_1[4][5] = lock_f_1[4][5];
+  lock_i_1[4][6] = lock_f_1[4][6];
+  lock_i_1[4][7] = lock_f_1[4][7];
+  lock_i_1[4][8] = lock_f_1[4][8];
+  lock_i_1[4][9] = lock_f_1[4][9];
+  lock_i_1[5][0] = lock_f_1[5][0];
+  lock_i_1[5][1] = lock_f_1[5][1];
+  lock_i_1[5][2] = lock_f_1[5][2];
+  lock_i_1[5][3] = lock_f_1[5][3];
+  lock_i_1[5][4] = lock_f_1[5][4];
+  lock_i_1[5][5] = lock_f_1[5][5];
+  lock_i_1[5][6] = lock_f_1[5][6];
+  lock_i_1[5][7] = lock_f_1[5][7];
+  lock_i_1[5][8] = lock_f_1[5][8];
+  lock_i_1[5][9] = lock_f_1[5][9];
+  lock_i_1[6][0] = lock_f_1[6][0];
+  lock_i_1[6][1] = lock_f_1[6][1];
+  lock_i_1[6][2] = lock_f_1[6][2];
+  lock_i_1[6][3] = lock_f_1[6][3];
+  lock_i_1[6][4] = lock_f_1[6][4];
+  lock_i_1[6][5] = lock_f_1[6][5];
+  lock_i_1[6][6] = lock_f_1[6][6];
+  lock_i_1[6][7] = lock_f_1[6][7];
+  lock_i_1[6][8] = lock_f_1[6][8];
+  lock_i_1[6][9] = lock_f_1[6][9];
+  lock_i_1[7][0] = lock_f_1[7][0];
+  lock_i_1[7][1] = lock_f_1[7][1];
+  lock_i_1[7][2] = lock_f_1[7][2];
+  lock_i_1[7][3] = lock_f_1[7][3];
+  lock_i_1[7][4] = lock_f_1[7][4];
+  lock_i_1[7][5] = lock_f_1[7][5];
+  lock_i_1[7][6] = lock_f_1[7][6];
+  lock_i_1[7][7] = lock_f_1[7][7];
+  lock_i_1[7][8] = lock_f_1[7][8];
+  lock_i_1[7][9] = lock_f_1[7][9];
+  lock_i_1[8][0] = lock_f_1[8][0];
+  lock_i_1[8][1] = lock_f_1[8][1];
+  lock_i_1[8][2] = lock_f_1[8][2];
+  lock_i_1[8][3] = lock_f_1[8][3];
+  lock_i_1[8][4] = lock_f_1[8][4];
+  lock_i_1[8][5] = lock_f_1[8][5];
+  lock_i_1[8][6] = lock_f_1[8][6];
+  lock_i_1[8][7] = lock_f_1[8][7];
+  lock_i_1[8][8] = lock_f_1[8][8];
+  lock_i_1[8][9] = lock_f_1[8][9];
+  lock_i_1[9][0] = lock_f_1[9][0];
+  lock_i_1[9][1] = lock_f_1[9][1];
+  lock_i_1[9][2] = lock_f_1[9][2];
+  lock_i_1[9][3] = lock_f_1[9][3];
+  lock_i_1[9][4] = lock_f_1[9][4];
+  lock_i_1[9][5] = lock_f_1[9][5];
+  lock_i_1[9][6] = lock_f_1[9][6];
+  lock_i_1[9][7] = lock_f_1[9][7];
+  lock_i_1[9][8] = lock_f_1[9][8];
+  lock_i_1[9][9] = lock_f_1[9][9];
+  lock_i_2[0][0] = lock_f_2[0][0];
+  lock_i_2[0][1] = lock_f_2[0][1];
+  lock_i_2[0][2] = lock_f_2[0][2];
+  lock_i_2[0][3] = lock_f_2[0][3];
+  lock_i_2[0][4] = lock_f_2[0][4];
+  lock_i_2[0][5] = lock_f_2[0][5];
+  lock_i_2[0][6] = lock_f_2[0][6];
+  lock_i_2[0][7] = lock_f_2[0][7];
+  lock_i_2[0][8] = lock_f_2[0][8];
+  lock_i_2[0][9] = lock_f_2[0][9];
+  lock_i_2[1][0] = lock_f_2[1][0];
+  lock_i_2[1][1] = lock_f_2[1][1];
+  lock_i_2[1][2] = lock_f_2[1][2];
+  lock_i_2[1][3] = lock_f_2[1][3];
+  lock_i_2[1][4] = lock_f_2[1][4];
+  lock_i_2[1][5] = lock_f_2[1][5];
+  lock_i_2[1][6] = lock_f_2[1][6];
+  lock_i_2[1][7] = lock_f_2[1][7];
+  lock_i_2[1][8] = lock_f_2[1][8];
+  lock_i_2[1][9] = lock_f_2[1][9];
+  lock_i_2[2][0] = lock_f_2[2][0];
+  lock_i_2[2][1] = lock_f_2[2][1];
+  lock_i_2[2][2] = lock_f_2[2][2];
+  lock_i_2[2][3] = lock_f_2[2][3];
+  lock_i_2[2][4] = lock_f_2[2][4];
+  lock_i_2[2][5] = lock_f_2[2][5];
+  lock_i_2[2][6] = lock_f_2[2][6];
+  lock_i_2[2][7] = lock_f_2[2][7];
+  lock_i_2[2][8] = lock_f_2[2][8];
+  lock_i_2[2][9] = lock_f_2[2][9];
+  lock_i_2[3][0] = lock_f_2[3][0];
+  lock_i_2[3][1] = lock_f_2[3][1];
+  lock_i_2[3][2] = lock_f_2[3][2];
+  lock_i_2[3][3] = lock_f_2[3][3];
+  lock_i_2[3][4] = lock_f_2[3][4];
+  lock_i_2[3][5] = lock_f_2[3][5];
+  lock_i_2[3][6] = lock_f_2[3][6];
+  lock_i_2[3][7] = lock_f_2[3][7];
+  lock_i_2[3][8] = lock_f_2[3][8];
+  lock_i_2[3][9] = lock_f_2[3][9];
+  lock_i_2[4][0] = lock_f_2[4][0];
+  lock_i_2[4][1] = lock_f_2[4][1];
+  lock_i_2[4][2] = lock_f_2[4][2];
+  lock_i_2[4][3] = lock_f_2[4][3];
+  lock_i_2[4][4] = lock_f_2[4][4];
+  lock_i_2[4][5] = lock_f_2[4][5];
+  lock_i_2[4][6] = lock_f_2[4][6];
+  lock_i_2[4][7] = lock_f_2[4][7];
+  lock_i_2[4][8] = lock_f_2[4][8];
+  lock_i_2[4][9] = lock_f_2[4][9];
+  lock_i_2[5][0] = lock_f_2[5][0];
+  lock_i_2[5][1] = lock_f_2[5][1];
+  lock_i_2[5][2] = lock_f_2[5][2];
+  lock_i_2[5][3] = lock_f_2[5][3];
+  lock_i_2[5][4] = lock_f_2[5][4];
+  lock_i_2[5][5] = lock_f_2[5][5];
+  lock_i_2[5][6] = lock_f_2[5][6];
+  lock_i_2[5][7] = lock_f_2[5][7];
+  lock_i_2[5][8] = lock_f_2[5][8];
+  lock_i_2[5][9] = lock_f_2[5][9];
+  lock_i_2[6][0] = lock_f_2[6][0];
+  lock_i_2[6][1] = lock_f_2[6][1];
+  lock_i_2[6][2] = lock_f_2[6][2];
+  lock_i_2[6][3] = lock_f_2[6][3];
+  lock_i_2[6][4] = lock_f_2[6][4];
+  lock_i_2[6][5] = lock_f_2[6][5];
+  lock_i_2[6][6] = lock_f_2[6][6];
+  lock_i_2[6][7] = lock_f_2[6][7];
+  lock_i_2[6][8] = lock_f_2[6][8];
+  lock_i_2[6][9] = lock_f_2[6][9];
+  lock_i_2[7][0] = lock_f_2[7][0];
+  lock_i_2[7][1] = lock_f_2[7][1];
+  lock_i_2[7][2] = lock_f_2[7][2];
+  lock_i_2[7][3] = lock_f_2[7][3];
+  lock_i_2[7][4] = lock_f_2[7][4];
+  lock_i_2[7][5] = lock_f_2[7][5];
+  lock_i_2[7][6] = lock_f_2[7][6];
+  lock_i_2[7][7] = lock_f_2[7][7];
+  lock_i_2[7][8] = lock_f_2[7][8];
+  lock_i_2[7][9] = lock_f_2[7][9];
+  lock_i_2[8][0] = lock_f_2[8][0];
+  lock_i_2[8][1] = lock_f_2[8][1];
+  lock_i_2[8][2] = lock_f_2[8][2];
+  lock_i_2[8][3] = lock_f_2[8][3];
+  lock_i_2[8][4] = lock_f_2[8][4];
+  lock_i_2[8][5] = lock_f_2[8][5];
+  lock_i_2[8][6] = lock_f_2[8][6];
+  lock_i_2[8][7] = lock_f_2[8][7];
+  lock_i_2[8][8] = lock_f_2[8][8];
+  lock_i_2[8][9] = lock_f_2[8][9];
+  lock_i_2[9][0] = lock_f_2[9][0];
+  lock_i_2[9][1] = lock_f_2[9][1];
+  lock_i_2[9][2] = lock_f_2[9][2];
+  lock_i_2[9][3] = lock_f_2[9][3];
+  lock_i_2[9][4] = lock_f_2[9][4];
+  lock_i_2[9][5] = lock_f_2[9][5];
+  lock_i_2[9][6] = lock_f_2[9][6];
+  lock_i_2[9][7] = lock_f_2[9][7];
+  lock_i_2[9][8] = lock_f_2[9][8];
+  lock_i_2[9][9] = lock_f_2[9][9];
+  lock_i_3[0][0] = lock_f_3[0][0];
+  lock_i_3[0][1] = lock_f_3[0][1];
+  lock_i_3[0][2] = lock_f_3[0][2];
+  lock_i_3[0][3] = lock_f_3[0][3];
+  lock_i_3[0][4] = lock_f_3[0][4];
+  lock_i_3[0][5] = lock_f_3[0][5];
+  lock_i_3[0][6] = lock_f_3[0][6];
+  lock_i_3[0][7] = lock_f_3[0][7];
+  lock_i_3[0][8] = lock_f_3[0][8];
+  lock_i_3[0][9] = lock_f_3[0][9];
+  lock_i_3[1][0] = lock_f_3[1][0];
+  lock_i_3[1][1] = lock_f_3[1][1];
+  lock_i_3[1][2] = lock_f_3[1][2];
+  lock_i_3[1][3] = lock_f_3[1][3];
+  lock_i_3[1][4] = lock_f_3[1][4];
+  lock_i_3[1][5] = lock_f_3[1][5];
+  lock_i_3[1][6] = lock_f_3[1][6];
+  lock_i_3[1][7] = lock_f_3[1][7];
+  lock_i_3[1][8] = lock_f_3[1][8];
+  lock_i_3[1][9] = lock_f_3[1][9];
+  lock_i_3[2][0] = lock_f_3[2][0];
+  lock_i_3[2][1] = lock_f_3[2][1];
+  lock_i_3[2][2] = lock_f_3[2][2];
+  lock_i_3[2][3] = lock_f_3[2][3];
+  lock_i_3[2][4] = lock_f_3[2][4];
+  lock_i_3[2][5] = lock_f_3[2][5];
+  lock_i_3[2][6] = lock_f_3[2][6];
+  lock_i_3[2][7] = lock_f_3[2][7];
+  lock_i_3[2][8] = lock_f_3[2][8];
+  lock_i_3[2][9] = lock_f_3[2][9];
+  lock_i_3[3][0] = lock_f_3[3][0];
+  lock_i_3[3][1] = lock_f_3[3][1];
+  lock_i_3[3][2] = lock_f_3[3][2];
+  lock_i_3[3][3] = lock_f_3[3][3];
+  lock_i_3[3][4] = lock_f_3[3][4];
+  lock_i_3[3][5] = lock_f_3[3][5];
+  lock_i_3[3][6] = lock_f_3[3][6];
+  lock_i_3[3][7] = lock_f_3[3][7];
+  lock_i_3[3][8] = lock_f_3[3][8];
+  lock_i_3[3][9] = lock_f_3[3][9];
+  lock_i_3[4][0] = lock_f_3[4][0];
+  lock_i_3[4][1] = lock_f_3[4][1];
+  lock_i_3[4][2] = lock_f_3[4][2];
+  lock_i_3[4][3] = lock_f_3[4][3];
+  lock_i_3[4][4] = lock_f_3[4][4];
+  lock_i_3[4][5] = lock_f_3[4][5];
+  lock_i_3[4][6] = lock_f_3[4][6];
+  lock_i_3[4][7] = lock_f_3[4][7];
+  lock_i_3[4][8] = lock_f_3[4][8];
+  lock_i_3[4][9] = lock_f_3[4][9];
+  lock_i_3[5][0] = lock_f_3[5][0];
+  lock_i_3[5][1] = lock_f_3[5][1];
+  lock_i_3[5][2] = lock_f_3[5][2];
+  lock_i_3[5][3] = lock_f_3[5][3];
+  lock_i_3[5][4] = lock_f_3[5][4];
+  lock_i_3[5][5] = lock_f_3[5][5];
+  lock_i_3[5][6] = lock_f_3[5][6];
+  lock_i_3[5][7] = lock_f_3[5][7];
+  lock_i_3[5][8] = lock_f_3[5][8];
+  lock_i_3[5][9] = lock_f_3[5][9];
+  lock_i_3[6][0] = lock_f_3[6][0];
+  lock_i_3[6][1] = lock_f_3[6][1];
+  lock_i_3[6][2] = lock_f_3[6][2];
+  lock_i_3[6][3] = lock_f_3[6][3];
+  lock_i_3[6][4] = lock_f_3[6][4];
+  lock_i_3[6][5] = lock_f_3[6][5];
+  lock_i_3[6][6] = lock_f_3[6][6];
+  lock_i_3[6][7] = lock_f_3[6][7];
+  lock_i_3[6][8] = lock_f_3[6][8];
+  lock_i_3[6][9] = lock_f_3[6][9];
+  lock_i_3[7][0] = lock_f_3[7][0];
+  lock_i_3[7][1] = lock_f_3[7][1];
+  lock_i_3[7][2] = lock_f_3[7][2];
+  lock_i_3[7][3] = lock_f_3[7][3];
+  lock_i_3[7][4] = lock_f_3[7][4];
+  lock_i_3[7][5] = lock_f_3[7][5];
+  lock_i_3[7][6] = lock_f_3[7][6];
+  lock_i_3[7][7] = lock_f_3[7][7];
+  lock_i_3[7][8] = lock_f_3[7][8];
+  lock_i_3[7][9] = lock_f_3[7][9];
+  lock_i_3[8][0] = lock_f_3[8][0];
+  lock_i_3[8][1] = lock_f_3[8][1];
+  lock_i_3[8][2] = lock_f_3[8][2];
+  lock_i_3[8][3] = lock_f_3[8][3];
+  lock_i_3[8][4] = lock_f_3[8][4];
+  lock_i_3[8][5] = lock_f_3[8][5];
+  lock_i_3[8][6] = lock_f_3[8][6];
+  lock_i_3[8][7] = lock_f_3[8][7];
+  lock_i_3[8][8] = lock_f_3[8][8];
+  lock_i_3[8][9] = lock_f_3[8][9];
+  lock_i_3[9][0] = lock_f_3[9][0];
+  lock_i_3[9][1] = lock_f_3[9][1];
+  lock_i_3[9][2] = lock_f_3[9][2];
+  lock_i_3[9][3] = lock_f_3[9][3];
+  lock_i_3[9][4] = lock_f_3[9][4];
+  lock_i_3[9][5] = lock_f_3[9][5];
+  lock_i_3[9][6] = lock_f_3[9][6];
+  lock_i_3[9][7] = lock_f_3[9][7];
+  lock_i_3[9][8] = lock_f_3[9][8];
+  lock_i_3[9][9] = lock_f_3[9][9];
+  lock_i_4[0][0] = lock_f_4[0][0];
+  lock_i_4[0][1] = lock_f_4[0][1];
+  lock_i_4[0][2] = lock_f_4[0][2];
+  lock_i_4[0][3] = lock_f_4[0][3];
+  lock_i_4[0][4] = lock_f_4[0][4];
+  lock_i_4[0][5] = lock_f_4[0][5];
+  lock_i_4[0][6] = lock_f_4[0][6];
+  lock_i_4[0][7] = lock_f_4[0][7];
+  lock_i_4[0][8] = lock_f_4[0][8];
+  lock_i_4[0][9] = lock_f_4[0][9];
+  lock_i_4[1][0] = lock_f_4[1][0];
+  lock_i_4[1][1] = lock_f_4[1][1];
+  lock_i_4[1][2] = lock_f_4[1][2];
+  lock_i_4[1][3] = lock_f_4[1][3];
+  lock_i_4[1][4] = lock_f_4[1][4];
+  lock_i_4[1][5] = lock_f_4[1][5];
+  lock_i_4[1][6] = lock_f_4[1][6];
+  lock_i_4[1][7] = lock_f_4[1][7];
+  lock_i_4[1][8] = lock_f_4[1][8];
+  lock_i_4[1][9] = lock_f_4[1][9];
+  lock_i_4[2][0] = lock_f_4[2][0];
+  lock_i_4[2][1] = lock_f_4[2][1];
+  lock_i_4[2][2] = lock_f_4[2][2];
+  lock_i_4[2][3] = lock_f_4[2][3];
+  lock_i_4[2][4] = lock_f_4[2][4];
+  lock_i_4[2][5] = lock_f_4[2][5];
+  lock_i_4[2][6] = lock_f_4[2][6];
+  lock_i_4[2][7] = lock_f_4[2][7];
+  lock_i_4[2][8] = lock_f_4[2][8];
+  lock_i_4[2][9] = lock_f_4[2][9];
+  lock_i_4[3][0] = lock_f_4[3][0];
+  lock_i_4[3][1] = lock_f_4[3][1];
+  lock_i_4[3][2] = lock_f_4[3][2];
+  lock_i_4[3][3] = lock_f_4[3][3];
+  lock_i_4[3][4] = lock_f_4[3][4];
+  lock_i_4[3][5] = lock_f_4[3][5];
+  lock_i_4[3][6] = lock_f_4[3][6];
+  lock_i_4[3][7] = lock_f_4[3][7];
+  lock_i_4[3][8] = lock_f_4[3][8];
+  lock_i_4[3][9] = lock_f_4[3][9];
+  lock_i_4[4][0] = lock_f_4[4][0];
+  lock_i_4[4][1] = lock_f_4[4][1];
+  lock_i_4[4][2] = lock_f_4[4][2];
+  lock_i_4[4][3] = lock_f_4[4][3];
+  lock_i_4[4][4] = lock_f_4[4][4];
+  lock_i_4[4][5] = lock_f_4[4][5];
+  lock_i_4[4][6] = lock_f_4[4][6];
+  lock_i_4[4][7] = lock_f_4[4][7];
+  lock_i_4[4][8] = lock_f_4[4][8];
+  lock_i_4[4][9] = lock_f_4[4][9];
+  lock_i_4[5][0] = lock_f_4[5][0];
+  lock_i_4[5][1] = lock_f_4[5][1];
+  lock_i_4[5][2] = lock_f_4[5][2];
+  lock_i_4[5][3] = lock_f_4[5][3];
+  lock_i_4[5][4] = lock_f_4[5][4];
+  lock_i_4[5][5] = lock_f_4[5][5];
+  lock_i_4[5][6] = lock_f_4[5][6];
+  lock_i_4[5][7] = lock_f_4[5][7];
+  lock_i_4[5][8] = lock_f_4[5][8];
+  lock_i_4[5][9] = lock_f_4[5][9];
+  lock_i_4[6][0] = lock_f_4[6][0];
+  lock_i_4[6][1] = lock_f_4[6][1];
+  lock_i_4[6][2] = lock_f_4[6][2];
+  lock_i_4[6][3] = lock_f_4[6][3];
+  lock_i_4[6][4] = lock_f_4[6][4];
+  lock_i_4[6][5] = lock_f_4[6][5];
+  lock_i_4[6][6] = lock_f_4[6][6];
+  lock_i_4[6][7] = lock_f_4[6][7];
+  lock_i_4[6][8] = lock_f_4[6][8];
+  lock_i_4[6][9] = lock_f_4[6][9];
+  lock_i_4[7][0] = lock_f_4[7][0];
+  lock_i_4[7][1] = lock_f_4[7][1];
+  lock_i_4[7][2] = lock_f_4[7][2];
+  lock_i_4[7][3] = lock_f_4[7][3];
+  lock_i_4[7][4] = lock_f_4[7][4];
+  lock_i_4[7][5] = lock_f_4[7][5];
+  lock_i_4[7][6] = lock_f_4[7][6];
+  lock_i_4[7][7] = lock_f_4[7][7];
+  lock_i_4[7][8] = lock_f_4[7][8];
+  lock_i_4[7][9] = lock_f_4[7][9];
+  lock_i_4[8][0] = lock_f_4[8][0];
+  lock_i_4[8][1] = lock_f_4[8][1];
+  lock_i_4[8][2] = lock_f_4[8][2];
+  lock_i_4[8][3] = lock_f_4[8][3];
+  lock_i_4[8][4] = lock_f_4[8][4];
+  lock_i_4[8][5] = lock_f_4[8][5];
+  lock_i_4[8][6] = lock_f_4[8][6];
+  lock_i_4[8][7] = lock_f_4[8][7];
+  lock_i_4[8][8] = lock_f_4[8][8];
+  lock_i_4[8][9] = lock_f_4[8][9];
+  lock_i_4[9][0] = lock_f_4[9][0];
+  lock_i_4[9][1] = lock_f_4[9][1];
+  lock_i_4[9][2] = lock_f_4[9][2];
+  lock_i_4[9][3] = lock_f_4[9][3];
+  lock_i_4[9][4] = lock_f_4[9][4];
+  lock_i_4[9][5] = lock_f_4[9][5];
+  lock_i_4[9][6] = lock_f_4[9][6];
+  lock_i_4[9][7] = lock_f_4[9][7];
+  lock_i_4[9][8] = lock_f_4[9][8];
+  lock_i_4[9][9] = lock_f_4[9][9];
+}
+
+void round_fwd_copier()
+{
+  lock_f_0[0][0] = lock_i_0[0][0];
+  lock_f_0[0][1] = lock_i_0[0][1];
+  lock_f_0[0][2] = lock_i_0[0][2];
+  lock_f_0[0][3] = lock_i_0[0][3];
+  lock_f_0[0][4] = lock_i_0[0][4];
+  lock_f_0[0][5] = lock_i_0[0][5];
+  lock_f_0[0][6] = lock_i_0[0][6];
+  lock_f_0[0][7] = lock_i_0[0][7];
+  lock_f_0[0][8] = lock_i_0[0][8];
+  lock_f_0[0][9] = lock_i_0[0][9];
+  lock_f_0[1][0] = lock_i_0[1][0];
+  lock_f_0[1][1] = lock_i_0[1][1];
+  lock_f_0[1][2] = lock_i_0[1][2];
+  lock_f_0[1][3] = lock_i_0[1][3];
+  lock_f_0[1][4] = lock_i_0[1][4];
+  lock_f_0[1][5] = lock_i_0[1][5];
+  lock_f_0[1][6] = lock_i_0[1][6];
+  lock_f_0[1][7] = lock_i_0[1][7];
+  lock_f_0[1][8] = lock_i_0[1][8];
+  lock_f_0[1][9] = lock_i_0[1][9];
+  lock_f_0[2][0] = lock_i_0[2][0];
+  lock_f_0[2][1] = lock_i_0[2][1];
+  lock_f_0[2][2] = lock_i_0[2][2];
+  lock_f_0[2][3] = lock_i_0[2][3];
+  lock_f_0[2][4] = lock_i_0[2][4];
+  lock_f_0[2][5] = lock_i_0[2][5];
+  lock_f_0[2][6] = lock_i_0[2][6];
+  lock_f_0[2][7] = lock_i_0[2][7];
+  lock_f_0[2][8] = lock_i_0[2][8];
+  lock_f_0[2][9] = lock_i_0[2][9];
+  lock_f_0[3][0] = lock_i_0[3][0];
+  lock_f_0[3][1] = lock_i_0[3][1];
+  lock_f_0[3][2] = lock_i_0[3][2];
+  lock_f_0[3][3] = lock_i_0[3][3];
+  lock_f_0[3][4] = lock_i_0[3][4];
+  lock_f_0[3][5] = lock_i_0[3][5];
+  lock_f_0[3][6] = lock_i_0[3][6];
+  lock_f_0[3][7] = lock_i_0[3][7];
+  lock_f_0[3][8] = lock_i_0[3][8];
+  lock_f_0[3][9] = lock_i_0[3][9];
+  lock_f_0[4][0] = lock_i_0[4][0];
+  lock_f_0[4][1] = lock_i_0[4][1];
+  lock_f_0[4][2] = lock_i_0[4][2];
+  lock_f_0[4][3] = lock_i_0[4][3];
+  lock_f_0[4][4] = lock_i_0[4][4];
+  lock_f_0[4][5] = lock_i_0[4][5];
+  lock_f_0[4][6] = lock_i_0[4][6];
+  lock_f_0[4][7] = lock_i_0[4][7];
+  lock_f_0[4][8] = lock_i_0[4][8];
+  lock_f_0[4][9] = lock_i_0[4][9];
+  lock_f_0[5][0] = lock_i_0[5][0];
+  lock_f_0[5][1] = lock_i_0[5][1];
+  lock_f_0[5][2] = lock_i_0[5][2];
+  lock_f_0[5][3] = lock_i_0[5][3];
+  lock_f_0[5][4] = lock_i_0[5][4];
+  lock_f_0[5][5] = lock_i_0[5][5];
+  lock_f_0[5][6] = lock_i_0[5][6];
+  lock_f_0[5][7] = lock_i_0[5][7];
+  lock_f_0[5][8] = lock_i_0[5][8];
+  lock_f_0[5][9] = lock_i_0[5][9];
+  lock_f_0[6][0] = lock_i_0[6][0];
+  lock_f_0[6][1] = lock_i_0[6][1];
+  lock_f_0[6][2] = lock_i_0[6][2];
+  lock_f_0[6][3] = lock_i_0[6][3];
+  lock_f_0[6][4] = lock_i_0[6][4];
+  lock_f_0[6][5] = lock_i_0[6][5];
+  lock_f_0[6][6] = lock_i_0[6][6];
+  lock_f_0[6][7] = lock_i_0[6][7];
+  lock_f_0[6][8] = lock_i_0[6][8];
+  lock_f_0[6][9] = lock_i_0[6][9];
+  lock_f_0[7][0] = lock_i_0[7][0];
+  lock_f_0[7][1] = lock_i_0[7][1];
+  lock_f_0[7][2] = lock_i_0[7][2];
+  lock_f_0[7][3] = lock_i_0[7][3];
+  lock_f_0[7][4] = lock_i_0[7][4];
+  lock_f_0[7][5] = lock_i_0[7][5];
+  lock_f_0[7][6] = lock_i_0[7][6];
+  lock_f_0[7][7] = lock_i_0[7][7];
+  lock_f_0[7][8] = lock_i_0[7][8];
+  lock_f_0[7][9] = lock_i_0[7][9];
+  lock_f_0[8][0] = lock_i_0[8][0];
+  lock_f_0[8][1] = lock_i_0[8][1];
+  lock_f_0[8][2] = lock_i_0[8][2];
+  lock_f_0[8][3] = lock_i_0[8][3];
+  lock_f_0[8][4] = lock_i_0[8][4];
+  lock_f_0[8][5] = lock_i_0[8][5];
+  lock_f_0[8][6] = lock_i_0[8][6];
+  lock_f_0[8][7] = lock_i_0[8][7];
+  lock_f_0[8][8] = lock_i_0[8][8];
+  lock_f_0[8][9] = lock_i_0[8][9];
+  lock_f_0[9][0] = lock_i_0[9][0];
+  lock_f_0[9][1] = lock_i_0[9][1];
+  lock_f_0[9][2] = lock_i_0[9][2];
+  lock_f_0[9][3] = lock_i_0[9][3];
+  lock_f_0[9][4] = lock_i_0[9][4];
+  lock_f_0[9][5] = lock_i_0[9][5];
+  lock_f_0[9][6] = lock_i_0[9][6];
+  lock_f_0[9][7] = lock_i_0[9][7];
+  lock_f_0[9][8] = lock_i_0[9][8];
+  lock_f_0[9][9] = lock_i_0[9][9];
+  formation_f_0 = formation_i_0;
+  lock_f_1[0][0] = lock_i_1[0][0];
+  lock_f_1[0][1] = lock_i_1[0][1];
+  lock_f_1[0][2] = lock_i_1[0][2];
+  lock_f_1[0][3] = lock_i_1[0][3];
+  lock_f_1[0][4] = lock_i_1[0][4];
+  lock_f_1[0][5] = lock_i_1[0][5];
+  lock_f_1[0][6] = lock_i_1[0][6];
+  lock_f_1[0][7] = lock_i_1[0][7];
+  lock_f_1[0][8] = lock_i_1[0][8];
+  lock_f_1[0][9] = lock_i_1[0][9];
+  lock_f_1[1][0] = lock_i_1[1][0];
+  lock_f_1[1][1] = lock_i_1[1][1];
+  lock_f_1[1][2] = lock_i_1[1][2];
+  lock_f_1[1][3] = lock_i_1[1][3];
+  lock_f_1[1][4] = lock_i_1[1][4];
+  lock_f_1[1][5] = lock_i_1[1][5];
+  lock_f_1[1][6] = lock_i_1[1][6];
+  lock_f_1[1][7] = lock_i_1[1][7];
+  lock_f_1[1][8] = lock_i_1[1][8];
+  lock_f_1[1][9] = lock_i_1[1][9];
+  lock_f_1[2][0] = lock_i_1[2][0];
+  lock_f_1[2][1] = lock_i_1[2][1];
+  lock_f_1[2][2] = lock_i_1[2][2];
+  lock_f_1[2][3] = lock_i_1[2][3];
+  lock_f_1[2][4] = lock_i_1[2][4];
+  lock_f_1[2][5] = lock_i_1[2][5];
+  lock_f_1[2][6] = lock_i_1[2][6];
+  lock_f_1[2][7] = lock_i_1[2][7];
+  lock_f_1[2][8] = lock_i_1[2][8];
+  lock_f_1[2][9] = lock_i_1[2][9];
+  lock_f_1[3][0] = lock_i_1[3][0];
+  lock_f_1[3][1] = lock_i_1[3][1];
+  lock_f_1[3][2] = lock_i_1[3][2];
+  lock_f_1[3][3] = lock_i_1[3][3];
+  lock_f_1[3][4] = lock_i_1[3][4];
+  lock_f_1[3][5] = lock_i_1[3][5];
+  lock_f_1[3][6] = lock_i_1[3][6];
+  lock_f_1[3][7] = lock_i_1[3][7];
+  lock_f_1[3][8] = lock_i_1[3][8];
+  lock_f_1[3][9] = lock_i_1[3][9];
+  lock_f_1[4][0] = lock_i_1[4][0];
+  lock_f_1[4][1] = lock_i_1[4][1];
+  lock_f_1[4][2] = lock_i_1[4][2];
+  lock_f_1[4][3] = lock_i_1[4][3];
+  lock_f_1[4][4] = lock_i_1[4][4];
+  lock_f_1[4][5] = lock_i_1[4][5];
+  lock_f_1[4][6] = lock_i_1[4][6];
+  lock_f_1[4][7] = lock_i_1[4][7];
+  lock_f_1[4][8] = lock_i_1[4][8];
+  lock_f_1[4][9] = lock_i_1[4][9];
+  lock_f_1[5][0] = lock_i_1[5][0];
+  lock_f_1[5][1] = lock_i_1[5][1];
+  lock_f_1[5][2] = lock_i_1[5][2];
+  lock_f_1[5][3] = lock_i_1[5][3];
+  lock_f_1[5][4] = lock_i_1[5][4];
+  lock_f_1[5][5] = lock_i_1[5][5];
+  lock_f_1[5][6] = lock_i_1[5][6];
+  lock_f_1[5][7] = lock_i_1[5][7];
+  lock_f_1[5][8] = lock_i_1[5][8];
+  lock_f_1[5][9] = lock_i_1[5][9];
+  lock_f_1[6][0] = lock_i_1[6][0];
+  lock_f_1[6][1] = lock_i_1[6][1];
+  lock_f_1[6][2] = lock_i_1[6][2];
+  lock_f_1[6][3] = lock_i_1[6][3];
+  lock_f_1[6][4] = lock_i_1[6][4];
+  lock_f_1[6][5] = lock_i_1[6][5];
+  lock_f_1[6][6] = lock_i_1[6][6];
+  lock_f_1[6][7] = lock_i_1[6][7];
+  lock_f_1[6][8] = lock_i_1[6][8];
+  lock_f_1[6][9] = lock_i_1[6][9];
+  lock_f_1[7][0] = lock_i_1[7][0];
+  lock_f_1[7][1] = lock_i_1[7][1];
+  lock_f_1[7][2] = lock_i_1[7][2];
+  lock_f_1[7][3] = lock_i_1[7][3];
+  lock_f_1[7][4] = lock_i_1[7][4];
+  lock_f_1[7][5] = lock_i_1[7][5];
+  lock_f_1[7][6] = lock_i_1[7][6];
+  lock_f_1[7][7] = lock_i_1[7][7];
+  lock_f_1[7][8] = lock_i_1[7][8];
+  lock_f_1[7][9] = lock_i_1[7][9];
+  lock_f_1[8][0] = lock_i_1[8][0];
+  lock_f_1[8][1] = lock_i_1[8][1];
+  lock_f_1[8][2] = lock_i_1[8][2];
+  lock_f_1[8][3] = lock_i_1[8][3];
+  lock_f_1[8][4] = lock_i_1[8][4];
+  lock_f_1[8][5] = lock_i_1[8][5];
+  lock_f_1[8][6] = lock_i_1[8][6];
+  lock_f_1[8][7] = lock_i_1[8][7];
+  lock_f_1[8][8] = lock_i_1[8][8];
+  lock_f_1[8][9] = lock_i_1[8][9];
+  lock_f_1[9][0] = lock_i_1[9][0];
+  lock_f_1[9][1] = lock_i_1[9][1];
+  lock_f_1[9][2] = lock_i_1[9][2];
+  lock_f_1[9][3] = lock_i_1[9][3];
+  lock_f_1[9][4] = lock_i_1[9][4];
+  lock_f_1[9][5] = lock_i_1[9][5];
+  lock_f_1[9][6] = lock_i_1[9][6];
+  lock_f_1[9][7] = lock_i_1[9][7];
+  lock_f_1[9][8] = lock_i_1[9][8];
+  lock_f_1[9][9] = lock_i_1[9][9];
+  lock_f_2[0][0] = lock_i_2[0][0];
+  lock_f_2[0][1] = lock_i_2[0][1];
+  lock_f_2[0][2] = lock_i_2[0][2];
+  lock_f_2[0][3] = lock_i_2[0][3];
+  lock_f_2[0][4] = lock_i_2[0][4];
+  lock_f_2[0][5] = lock_i_2[0][5];
+  lock_f_2[0][6] = lock_i_2[0][6];
+  lock_f_2[0][7] = lock_i_2[0][7];
+  lock_f_2[0][8] = lock_i_2[0][8];
+  lock_f_2[0][9] = lock_i_2[0][9];
+  lock_f_2[1][0] = lock_i_2[1][0];
+  lock_f_2[1][1] = lock_i_2[1][1];
+  lock_f_2[1][2] = lock_i_2[1][2];
+  lock_f_2[1][3] = lock_i_2[1][3];
+  lock_f_2[1][4] = lock_i_2[1][4];
+  lock_f_2[1][5] = lock_i_2[1][5];
+  lock_f_2[1][6] = lock_i_2[1][6];
+  lock_f_2[1][7] = lock_i_2[1][7];
+  lock_f_2[1][8] = lock_i_2[1][8];
+  lock_f_2[1][9] = lock_i_2[1][9];
+  lock_f_2[2][0] = lock_i_2[2][0];
+  lock_f_2[2][1] = lock_i_2[2][1];
+  lock_f_2[2][2] = lock_i_2[2][2];
+  lock_f_2[2][3] = lock_i_2[2][3];
+  lock_f_2[2][4] = lock_i_2[2][4];
+  lock_f_2[2][5] = lock_i_2[2][5];
+  lock_f_2[2][6] = lock_i_2[2][6];
+  lock_f_2[2][7] = lock_i_2[2][7];
+  lock_f_2[2][8] = lock_i_2[2][8];
+  lock_f_2[2][9] = lock_i_2[2][9];
+  lock_f_2[3][0] = lock_i_2[3][0];
+  lock_f_2[3][1] = lock_i_2[3][1];
+  lock_f_2[3][2] = lock_i_2[3][2];
+  lock_f_2[3][3] = lock_i_2[3][3];
+  lock_f_2[3][4] = lock_i_2[3][4];
+  lock_f_2[3][5] = lock_i_2[3][5];
+  lock_f_2[3][6] = lock_i_2[3][6];
+  lock_f_2[3][7] = lock_i_2[3][7];
+  lock_f_2[3][8] = lock_i_2[3][8];
+  lock_f_2[3][9] = lock_i_2[3][9];
+  lock_f_2[4][0] = lock_i_2[4][0];
+  lock_f_2[4][1] = lock_i_2[4][1];
+  lock_f_2[4][2] = lock_i_2[4][2];
+  lock_f_2[4][3] = lock_i_2[4][3];
+  lock_f_2[4][4] = lock_i_2[4][4];
+  lock_f_2[4][5] = lock_i_2[4][5];
+  lock_f_2[4][6] = lock_i_2[4][6];
+  lock_f_2[4][7] = lock_i_2[4][7];
+  lock_f_2[4][8] = lock_i_2[4][8];
+  lock_f_2[4][9] = lock_i_2[4][9];
+  lock_f_2[5][0] = lock_i_2[5][0];
+  lock_f_2[5][1] = lock_i_2[5][1];
+  lock_f_2[5][2] = lock_i_2[5][2];
+  lock_f_2[5][3] = lock_i_2[5][3];
+  lock_f_2[5][4] = lock_i_2[5][4];
+  lock_f_2[5][5] = lock_i_2[5][5];
+  lock_f_2[5][6] = lock_i_2[5][6];
+  lock_f_2[5][7] = lock_i_2[5][7];
+  lock_f_2[5][8] = lock_i_2[5][8];
+  lock_f_2[5][9] = lock_i_2[5][9];
+  lock_f_2[6][0] = lock_i_2[6][0];
+  lock_f_2[6][1] = lock_i_2[6][1];
+  lock_f_2[6][2] = lock_i_2[6][2];
+  lock_f_2[6][3] = lock_i_2[6][3];
+  lock_f_2[6][4] = lock_i_2[6][4];
+  lock_f_2[6][5] = lock_i_2[6][5];
+  lock_f_2[6][6] = lock_i_2[6][6];
+  lock_f_2[6][7] = lock_i_2[6][7];
+  lock_f_2[6][8] = lock_i_2[6][8];
+  lock_f_2[6][9] = lock_i_2[6][9];
+  lock_f_2[7][0] = lock_i_2[7][0];
+  lock_f_2[7][1] = lock_i_2[7][1];
+  lock_f_2[7][2] = lock_i_2[7][2];
+  lock_f_2[7][3] = lock_i_2[7][3];
+  lock_f_2[7][4] = lock_i_2[7][4];
+  lock_f_2[7][5] = lock_i_2[7][5];
+  lock_f_2[7][6] = lock_i_2[7][6];
+  lock_f_2[7][7] = lock_i_2[7][7];
+  lock_f_2[7][8] = lock_i_2[7][8];
+  lock_f_2[7][9] = lock_i_2[7][9];
+  lock_f_2[8][0] = lock_i_2[8][0];
+  lock_f_2[8][1] = lock_i_2[8][1];
+  lock_f_2[8][2] = lock_i_2[8][2];
+  lock_f_2[8][3] = lock_i_2[8][3];
+  lock_f_2[8][4] = lock_i_2[8][4];
+  lock_f_2[8][5] = lock_i_2[8][5];
+  lock_f_2[8][6] = lock_i_2[8][6];
+  lock_f_2[8][7] = lock_i_2[8][7];
+  lock_f_2[8][8] = lock_i_2[8][8];
+  lock_f_2[8][9] = lock_i_2[8][9];
+  lock_f_2[9][0] = lock_i_2[9][0];
+  lock_f_2[9][1] = lock_i_2[9][1];
+  lock_f_2[9][2] = lock_i_2[9][2];
+  lock_f_2[9][3] = lock_i_2[9][3];
+  lock_f_2[9][4] = lock_i_2[9][4];
+  lock_f_2[9][5] = lock_i_2[9][5];
+  lock_f_2[9][6] = lock_i_2[9][6];
+  lock_f_2[9][7] = lock_i_2[9][7];
+  lock_f_2[9][8] = lock_i_2[9][8];
+  lock_f_2[9][9] = lock_i_2[9][9];
+  lock_f_3[0][0] = lock_i_3[0][0];
+  lock_f_3[0][1] = lock_i_3[0][1];
+  lock_f_3[0][2] = lock_i_3[0][2];
+  lock_f_3[0][3] = lock_i_3[0][3];
+  lock_f_3[0][4] = lock_i_3[0][4];
+  lock_f_3[0][5] = lock_i_3[0][5];
+  lock_f_3[0][6] = lock_i_3[0][6];
+  lock_f_3[0][7] = lock_i_3[0][7];
+  lock_f_3[0][8] = lock_i_3[0][8];
+  lock_f_3[0][9] = lock_i_3[0][9];
+  lock_f_3[1][0] = lock_i_3[1][0];
+  lock_f_3[1][1] = lock_i_3[1][1];
+  lock_f_3[1][2] = lock_i_3[1][2];
+  lock_f_3[1][3] = lock_i_3[1][3];
+  lock_f_3[1][4] = lock_i_3[1][4];
+  lock_f_3[1][5] = lock_i_3[1][5];
+  lock_f_3[1][6] = lock_i_3[1][6];
+  lock_f_3[1][7] = lock_i_3[1][7];
+  lock_f_3[1][8] = lock_i_3[1][8];
+  lock_f_3[1][9] = lock_i_3[1][9];
+  lock_f_3[2][0] = lock_i_3[2][0];
+  lock_f_3[2][1] = lock_i_3[2][1];
+  lock_f_3[2][2] = lock_i_3[2][2];
+  lock_f_3[2][3] = lock_i_3[2][3];
+  lock_f_3[2][4] = lock_i_3[2][4];
+  lock_f_3[2][5] = lock_i_3[2][5];
+  lock_f_3[2][6] = lock_i_3[2][6];
+  lock_f_3[2][7] = lock_i_3[2][7];
+  lock_f_3[2][8] = lock_i_3[2][8];
+  lock_f_3[2][9] = lock_i_3[2][9];
+  lock_f_3[3][0] = lock_i_3[3][0];
+  lock_f_3[3][1] = lock_i_3[3][1];
+  lock_f_3[3][2] = lock_i_3[3][2];
+  lock_f_3[3][3] = lock_i_3[3][3];
+  lock_f_3[3][4] = lock_i_3[3][4];
+  lock_f_3[3][5] = lock_i_3[3][5];
+  lock_f_3[3][6] = lock_i_3[3][6];
+  lock_f_3[3][7] = lock_i_3[3][7];
+  lock_f_3[3][8] = lock_i_3[3][8];
+  lock_f_3[3][9] = lock_i_3[3][9];
+  lock_f_3[4][0] = lock_i_3[4][0];
+  lock_f_3[4][1] = lock_i_3[4][1];
+  lock_f_3[4][2] = lock_i_3[4][2];
+  lock_f_3[4][3] = lock_i_3[4][3];
+  lock_f_3[4][4] = lock_i_3[4][4];
+  lock_f_3[4][5] = lock_i_3[4][5];
+  lock_f_3[4][6] = lock_i_3[4][6];
+  lock_f_3[4][7] = lock_i_3[4][7];
+  lock_f_3[4][8] = lock_i_3[4][8];
+  lock_f_3[4][9] = lock_i_3[4][9];
+  lock_f_3[5][0] = lock_i_3[5][0];
+  lock_f_3[5][1] = lock_i_3[5][1];
+  lock_f_3[5][2] = lock_i_3[5][2];
+  lock_f_3[5][3] = lock_i_3[5][3];
+  lock_f_3[5][4] = lock_i_3[5][4];
+  lock_f_3[5][5] = lock_i_3[5][5];
+  lock_f_3[5][6] = lock_i_3[5][6];
+  lock_f_3[5][7] = lock_i_3[5][7];
+  lock_f_3[5][8] = lock_i_3[5][8];
+  lock_f_3[5][9] = lock_i_3[5][9];
+  lock_f_3[6][0] = lock_i_3[6][0];
+  lock_f_3[6][1] = lock_i_3[6][1];
+  lock_f_3[6][2] = lock_i_3[6][2];
+  lock_f_3[6][3] = lock_i_3[6][3];
+  lock_f_3[6][4] = lock_i_3[6][4];
+  lock_f_3[6][5] = lock_i_3[6][5];
+  lock_f_3[6][6] = lock_i_3[6][6];
+  lock_f_3[6][7] = lock_i_3[6][7];
+  lock_f_3[6][8] = lock_i_3[6][8];
+  lock_f_3[6][9] = lock_i_3[6][9];
+  lock_f_3[7][0] = lock_i_3[7][0];
+  lock_f_3[7][1] = lock_i_3[7][1];
+  lock_f_3[7][2] = lock_i_3[7][2];
+  lock_f_3[7][3] = lock_i_3[7][3];
+  lock_f_3[7][4] = lock_i_3[7][4];
+  lock_f_3[7][5] = lock_i_3[7][5];
+  lock_f_3[7][6] = lock_i_3[7][6];
+  lock_f_3[7][7] = lock_i_3[7][7];
+  lock_f_3[7][8] = lock_i_3[7][8];
+  lock_f_3[7][9] = lock_i_3[7][9];
+  lock_f_3[8][0] = lock_i_3[8][0];
+  lock_f_3[8][1] = lock_i_3[8][1];
+  lock_f_3[8][2] = lock_i_3[8][2];
+  lock_f_3[8][3] = lock_i_3[8][3];
+  lock_f_3[8][4] = lock_i_3[8][4];
+  lock_f_3[8][5] = lock_i_3[8][5];
+  lock_f_3[8][6] = lock_i_3[8][6];
+  lock_f_3[8][7] = lock_i_3[8][7];
+  lock_f_3[8][8] = lock_i_3[8][8];
+  lock_f_3[8][9] = lock_i_3[8][9];
+  lock_f_3[9][0] = lock_i_3[9][0];
+  lock_f_3[9][1] = lock_i_3[9][1];
+  lock_f_3[9][2] = lock_i_3[9][2];
+  lock_f_3[9][3] = lock_i_3[9][3];
+  lock_f_3[9][4] = lock_i_3[9][4];
+  lock_f_3[9][5] = lock_i_3[9][5];
+  lock_f_3[9][6] = lock_i_3[9][6];
+  lock_f_3[9][7] = lock_i_3[9][7];
+  lock_f_3[9][8] = lock_i_3[9][8];
+  lock_f_3[9][9] = lock_i_3[9][9];
+  lock_f_4[0][0] = lock_i_4[0][0];
+  lock_f_4[0][1] = lock_i_4[0][1];
+  lock_f_4[0][2] = lock_i_4[0][2];
+  lock_f_4[0][3] = lock_i_4[0][3];
+  lock_f_4[0][4] = lock_i_4[0][4];
+  lock_f_4[0][5] = lock_i_4[0][5];
+  lock_f_4[0][6] = lock_i_4[0][6];
+  lock_f_4[0][7] = lock_i_4[0][7];
+  lock_f_4[0][8] = lock_i_4[0][8];
+  lock_f_4[0][9] = lock_i_4[0][9];
+  lock_f_4[1][0] = lock_i_4[1][0];
+  lock_f_4[1][1] = lock_i_4[1][1];
+  lock_f_4[1][2] = lock_i_4[1][2];
+  lock_f_4[1][3] = lock_i_4[1][3];
+  lock_f_4[1][4] = lock_i_4[1][4];
+  lock_f_4[1][5] = lock_i_4[1][5];
+  lock_f_4[1][6] = lock_i_4[1][6];
+  lock_f_4[1][7] = lock_i_4[1][7];
+  lock_f_4[1][8] = lock_i_4[1][8];
+  lock_f_4[1][9] = lock_i_4[1][9];
+  lock_f_4[2][0] = lock_i_4[2][0];
+  lock_f_4[2][1] = lock_i_4[2][1];
+  lock_f_4[2][2] = lock_i_4[2][2];
+  lock_f_4[2][3] = lock_i_4[2][3];
+  lock_f_4[2][4] = lock_i_4[2][4];
+  lock_f_4[2][5] = lock_i_4[2][5];
+  lock_f_4[2][6] = lock_i_4[2][6];
+  lock_f_4[2][7] = lock_i_4[2][7];
+  lock_f_4[2][8] = lock_i_4[2][8];
+  lock_f_4[2][9] = lock_i_4[2][9];
+  lock_f_4[3][0] = lock_i_4[3][0];
+  lock_f_4[3][1] = lock_i_4[3][1];
+  lock_f_4[3][2] = lock_i_4[3][2];
+  lock_f_4[3][3] = lock_i_4[3][3];
+  lock_f_4[3][4] = lock_i_4[3][4];
+  lock_f_4[3][5] = lock_i_4[3][5];
+  lock_f_4[3][6] = lock_i_4[3][6];
+  lock_f_4[3][7] = lock_i_4[3][7];
+  lock_f_4[3][8] = lock_i_4[3][8];
+  lock_f_4[3][9] = lock_i_4[3][9];
+  lock_f_4[4][0] = lock_i_4[4][0];
+  lock_f_4[4][1] = lock_i_4[4][1];
+  lock_f_4[4][2] = lock_i_4[4][2];
+  lock_f_4[4][3] = lock_i_4[4][3];
+  lock_f_4[4][4] = lock_i_4[4][4];
+  lock_f_4[4][5] = lock_i_4[4][5];
+  lock_f_4[4][6] = lock_i_4[4][6];
+  lock_f_4[4][7] = lock_i_4[4][7];
+  lock_f_4[4][8] = lock_i_4[4][8];
+  lock_f_4[4][9] = lock_i_4[4][9];
+  lock_f_4[5][0] = lock_i_4[5][0];
+  lock_f_4[5][1] = lock_i_4[5][1];
+  lock_f_4[5][2] = lock_i_4[5][2];
+  lock_f_4[5][3] = lock_i_4[5][3];
+  lock_f_4[5][4] = lock_i_4[5][4];
+  lock_f_4[5][5] = lock_i_4[5][5];
+  lock_f_4[5][6] = lock_i_4[5][6];
+  lock_f_4[5][7] = lock_i_4[5][7];
+  lock_f_4[5][8] = lock_i_4[5][8];
+  lock_f_4[5][9] = lock_i_4[5][9];
+  lock_f_4[6][0] = lock_i_4[6][0];
+  lock_f_4[6][1] = lock_i_4[6][1];
+  lock_f_4[6][2] = lock_i_4[6][2];
+  lock_f_4[6][3] = lock_i_4[6][3];
+  lock_f_4[6][4] = lock_i_4[6][4];
+  lock_f_4[6][5] = lock_i_4[6][5];
+  lock_f_4[6][6] = lock_i_4[6][6];
+  lock_f_4[6][7] = lock_i_4[6][7];
+  lock_f_4[6][8] = lock_i_4[6][8];
+  lock_f_4[6][9] = lock_i_4[6][9];
+  lock_f_4[7][0] = lock_i_4[7][0];
+  lock_f_4[7][1] = lock_i_4[7][1];
+  lock_f_4[7][2] = lock_i_4[7][2];
+  lock_f_4[7][3] = lock_i_4[7][3];
+  lock_f_4[7][4] = lock_i_4[7][4];
+  lock_f_4[7][5] = lock_i_4[7][5];
+  lock_f_4[7][6] = lock_i_4[7][6];
+  lock_f_4[7][7] = lock_i_4[7][7];
+  lock_f_4[7][8] = lock_i_4[7][8];
+  lock_f_4[7][9] = lock_i_4[7][9];
+  lock_f_4[8][0] = lock_i_4[8][0];
+  lock_f_4[8][1] = lock_i_4[8][1];
+  lock_f_4[8][2] = lock_i_4[8][2];
+  lock_f_4[8][3] = lock_i_4[8][3];
+  lock_f_4[8][4] = lock_i_4[8][4];
+  lock_f_4[8][5] = lock_i_4[8][5];
+  lock_f_4[8][6] = lock_i_4[8][6];
+  lock_f_4[8][7] = lock_i_4[8][7];
+  lock_f_4[8][8] = lock_i_4[8][8];
+  lock_f_4[8][9] = lock_i_4[8][9];
+  lock_f_4[9][0] = lock_i_4[9][0];
+  lock_f_4[9][1] = lock_i_4[9][1];
+  lock_f_4[9][2] = lock_i_4[9][2];
+  lock_f_4[9][3] = lock_i_4[9][3];
+  lock_f_4[9][4] = lock_i_4[9][4];
+  lock_f_4[9][5] = lock_i_4[9][5];
+  lock_f_4[9][6] = lock_i_4[9][6];
+  lock_f_4[9][7] = lock_i_4[9][7];
+  lock_f_4[9][8] = lock_i_4[9][8];
+  lock_f_4[9][9] = lock_i_4[9][9];
+}
+
+double sqrt(double x);
+void uav__COLLISION_AVOIDANCE_0_bwd()
+{
+  waypointValid_0 = nondet_waypointValid_0();
+  changing_0 = nondet_changing_0();
+  formation_f_0 = nondet_formation_f_0();
+  if ((wall_time())<(delay_until_0))
+  {
+    return;
+  }
+  print_state(X,Y,0,x_0,y_0,xt_0,yt_0,state_0,waypointValid_0);
+  if ((state_0)==(NEXT))
+  {
+    if (((x_0)==(xt_0))&&((y_0)==(yt_0)))
+      return;
+    if (((0)==(0))&&(changing_0))
+      return;
+    if (uav__NEXT_XY_0_bwd())
+      return;
+    state_0 = REQUEST;
+  }
+  else
+    if ((state_0)==(REQUEST))
+    {
+      if (0)
+        return;
+      lock_i_0[xp_0][yp_0] = 1;
+      state_0 = WAITING;
+    }
+    else
+      if ((state_0)==(WAITING))
+      {
+        if (((((lock_f_1[xp_0][yp_0])!=(0))||((lock_f_2[xp_0][yp_0])!=(0)))||((lock_f_3[xp_0][yp_0])!=(0)))||((lock_f_4[xp_0][yp_0])!=(0)))
+          return;
+        state_0 = MOVE;
+      }
+      else
+        if ((state_0)==(MOVE))
+        {
+          if ((started_move_0)==(0))
+          {
+            started_move_0 = wall_time();
+          }
+          if (GRID_MOVE(xp_0,yp_0,1))
+            return;
+          lock_i_0[x_0][y_0] = 0;
+          x_0 = xp_0;
+          y_0 = yp_0;
+          uav__REACHED_NEXT_XY_0_bwd();
+          state_0 = NEXT;
+          started_move_0 = 0;
+        }
+}
+
+void uav__COLLISION_AVOIDANCE_0_fwd()
+{
+  waypointValid_0 = nondet_waypointValid_0();
+  changing_0 = nondet_changing_0();
+  formation_i_0 = nondet_formation_i_0();
+  if ((wall_time())<(delay_until_0))
+  {
+    return;
+  }
+  print_state(X,Y,0,x_0,y_0,xt_0,yt_0,state_0,waypointValid_0);
+  if ((state_0)==(NEXT))
+  {
+    if (((x_0)==(xt_0))&&((y_0)==(yt_0)))
+      return;
+    if (((0)==(0))&&(changing_0))
+      return;
+    if (uav__NEXT_XY_0_fwd())
+      return;
+    state_0 = REQUEST;
+  }
+  else
+    if ((state_0)==(REQUEST))
+    {
+      if (0)
+        return;
+      lock_f_0[xp_0][yp_0] = 1;
+      state_0 = WAITING;
+    }
+    else
+      if ((state_0)==(WAITING))
+      {
+        if (((((lock_i_1[xp_0][yp_0])!=(0))||((lock_i_2[xp_0][yp_0])!=(0)))||((lock_i_3[xp_0][yp_0])!=(0)))||((lock_i_4[xp_0][yp_0])!=(0)))
+          return;
+        state_0 = MOVE;
+      }
+      else
+        if ((state_0)==(MOVE))
+        {
+          if ((started_move_0)==(0))
+          {
+            started_move_0 = wall_time();
+          }
+          if (GRID_MOVE(xp_0,yp_0,1))
+            return;
+          lock_f_0[x_0][y_0] = 0;
+          x_0 = xp_0;
+          y_0 = yp_0;
+          uav__REACHED_NEXT_XY_0_fwd();
+          state_0 = NEXT;
+          started_move_0 = 0;
+        }
+}
+
+void uav__COLLISION_AVOIDANCE_1_bwd()
+{
+  xt_1 = nondet_xt_1();
+  yt_1 = nondet_yt_1();
+  waypointValid_1 = nondet_waypointValid_1();
+  if ((wall_time())<(delay_until_1))
+  {
+    return;
+  }
+  print_state(X,Y,1,x_1,y_1,xt_1,yt_1,state_1,waypointValid_1);
+  if ((state_1)==(NEXT))
+  {
+    if (((x_1)==(xt_1))&&((y_1)==(yt_1)))
+      return;
+    if (((1)==(0))&&(changing_1))
+      return;
+    if (uav__NEXT_XY_1_bwd())
+      return;
+    state_1 = REQUEST;
+  }
+  else
+    if ((state_1)==(REQUEST))
+    {
+      if ((lock_f_0[xp_1][yp_1])!=(0))
+        return;
+      lock_i_1[xp_1][yp_1] = 1;
+      state_1 = WAITING;
+    }
+    else
+      if ((state_1)==(WAITING))
+      {
+        if ((((lock_f_2[xp_1][yp_1])!=(0))||((lock_f_3[xp_1][yp_1])!=(0)))||((lock_f_4[xp_1][yp_1])!=(0)))
+          return;
+        state_1 = MOVE;
+      }
+      else
+        if ((state_1)==(MOVE))
+        {
+          if ((started_move_1)==(0))
+          {
+            started_move_1 = wall_time();
+          }
+          if (GRID_MOVE(xp_1,yp_1,1))
+            return;
+          lock_i_1[x_1][y_1] = 0;
+          x_1 = xp_1;
+          y_1 = yp_1;
+          uav__REACHED_NEXT_XY_1_bwd();
+          state_1 = NEXT;
+          started_move_1 = 0;
+        }
+}
+
+void uav__COLLISION_AVOIDANCE_1_fwd()
+{
+  xt_1 = nondet_xt_1();
+  yt_1 = nondet_yt_1();
+  waypointValid_1 = nondet_waypointValid_1();
+  if ((wall_time())<(delay_until_1))
+  {
+    return;
+  }
+  print_state(X,Y,1,x_1,y_1,xt_1,yt_1,state_1,waypointValid_1);
+  if ((state_1)==(NEXT))
+  {
+    if (((x_1)==(xt_1))&&((y_1)==(yt_1)))
+      return;
+    if (((1)==(0))&&(changing_1))
+      return;
+    if (uav__NEXT_XY_1_fwd())
+      return;
+    state_1 = REQUEST;
+  }
+  else
+    if ((state_1)==(REQUEST))
+    {
+      if ((lock_i_0[xp_1][yp_1])!=(0))
+        return;
+      lock_f_1[xp_1][yp_1] = 1;
+      state_1 = WAITING;
+    }
+    else
+      if ((state_1)==(WAITING))
+      {
+        if ((((lock_i_2[xp_1][yp_1])!=(0))||((lock_i_3[xp_1][yp_1])!=(0)))||((lock_i_4[xp_1][yp_1])!=(0)))
+          return;
+        state_1 = MOVE;
+      }
+      else
+        if ((state_1)==(MOVE))
+        {
+          if ((started_move_1)==(0))
+          {
+            started_move_1 = wall_time();
+          }
+          if (GRID_MOVE(xp_1,yp_1,1))
+            return;
+          lock_f_1[x_1][y_1] = 0;
+          x_1 = xp_1;
+          y_1 = yp_1;
+          uav__REACHED_NEXT_XY_1_fwd();
+          state_1 = NEXT;
+          started_move_1 = 0;
+        }
+}
+
+void uav__COLLISION_AVOIDANCE_2_bwd()
+{
+  xt_2 = nondet_xt_2();
+  yt_2 = nondet_yt_2();
+  waypointValid_2 = nondet_waypointValid_2();
+  if ((wall_time())<(delay_until_2))
+  {
+    return;
+  }
+  print_state(X,Y,2,x_2,y_2,xt_2,yt_2,state_2,waypointValid_2);
+  if ((state_2)==(NEXT))
+  {
+    if (((x_2)==(xt_2))&&((y_2)==(yt_2)))
+      return;
+    if (((2)==(0))&&(changing_2))
+      return;
+    if (uav__NEXT_XY_2_bwd())
+      return;
+    state_2 = REQUEST;
+  }
+  else
+    if ((state_2)==(REQUEST))
+    {
+      if (((lock_f_0[xp_2][yp_2])!=(0))||((lock_f_1[xp_2][yp_2])!=(0)))
+        return;
+      lock_i_2[xp_2][yp_2] = 1;
+      state_2 = WAITING;
+    }
+    else
+      if ((state_2)==(WAITING))
+      {
+        if (((lock_f_3[xp_2][yp_2])!=(0))||((lock_f_4[xp_2][yp_2])!=(0)))
+          return;
+        state_2 = MOVE;
+      }
+      else
+        if ((state_2)==(MOVE))
+        {
+          if ((started_move_2)==(0))
+          {
+            started_move_2 = wall_time();
+          }
+          if (GRID_MOVE(xp_2,yp_2,1))
+            return;
+          lock_i_2[x_2][y_2] = 0;
+          x_2 = xp_2;
+          y_2 = yp_2;
+          uav__REACHED_NEXT_XY_2_bwd();
+          state_2 = NEXT;
+          started_move_2 = 0;
+        }
+}
+
+void uav__COLLISION_AVOIDANCE_2_fwd()
+{
+  xt_2 = nondet_xt_2();
+  yt_2 = nondet_yt_2();
+  waypointValid_2 = nondet_waypointValid_2();
+  if ((wall_time())<(delay_until_2))
+  {
+    return;
+  }
+  print_state(X,Y,2,x_2,y_2,xt_2,yt_2,state_2,waypointValid_2);
+  if ((state_2)==(NEXT))
+  {
+    if (((x_2)==(xt_2))&&((y_2)==(yt_2)))
+      return;
+    if (((2)==(0))&&(changing_2))
+      return;
+    if (uav__NEXT_XY_2_fwd())
+      return;
+    state_2 = REQUEST;
+  }
+  else
+    if ((state_2)==(REQUEST))
+    {
+      if (((lock_i_0[xp_2][yp_2])!=(0))||((lock_i_1[xp_2][yp_2])!=(0)))
+        return;
+      lock_f_2[xp_2][yp_2] = 1;
+      state_2 = WAITING;
+    }
+    else
+      if ((state_2)==(WAITING))
+      {
+        if (((lock_i_3[xp_2][yp_2])!=(0))||((lock_i_4[xp_2][yp_2])!=(0)))
+          return;
+        state_2 = MOVE;
+      }
+      else
+        if ((state_2)==(MOVE))
+        {
+          if ((started_move_2)==(0))
+          {
+            started_move_2 = wall_time();
+          }
+          if (GRID_MOVE(xp_2,yp_2,1))
+            return;
+          lock_f_2[x_2][y_2] = 0;
+          x_2 = xp_2;
+          y_2 = yp_2;
+          uav__REACHED_NEXT_XY_2_fwd();
+          state_2 = NEXT;
+          started_move_2 = 0;
+        }
+}
+
+void uav__COLLISION_AVOIDANCE_3_bwd()
+{
+  xt_3 = nondet_xt_3();
+  yt_3 = nondet_yt_3();
+  waypointValid_3 = nondet_waypointValid_3();
+  if ((wall_time())<(delay_until_3))
+  {
+    return;
+  }
+  print_state(X,Y,3,x_3,y_3,xt_3,yt_3,state_3,waypointValid_3);
+  if ((state_3)==(NEXT))
+  {
+    if (((x_3)==(xt_3))&&((y_3)==(yt_3)))
+      return;
+    if (((3)==(0))&&(changing_3))
+      return;
+    if (uav__NEXT_XY_3_bwd())
+      return;
+    state_3 = REQUEST;
+  }
+  else
+    if ((state_3)==(REQUEST))
+    {
+      if ((((lock_f_0[xp_3][yp_3])!=(0))||((lock_f_1[xp_3][yp_3])!=(0)))||((lock_f_2[xp_3][yp_3])!=(0)))
+        return;
+      lock_i_3[xp_3][yp_3] = 1;
+      state_3 = WAITING;
+    }
+    else
+      if ((state_3)==(WAITING))
+      {
+        if ((lock_f_4[xp_3][yp_3])!=(0))
+          return;
+        state_3 = MOVE;
+      }
+      else
+        if ((state_3)==(MOVE))
+        {
+          if ((started_move_3)==(0))
+          {
+            started_move_3 = wall_time();
+          }
+          if (GRID_MOVE(xp_3,yp_3,1))
+            return;
+          lock_i_3[x_3][y_3] = 0;
+          x_3 = xp_3;
+          y_3 = yp_3;
+          uav__REACHED_NEXT_XY_3_bwd();
+          state_3 = NEXT;
+          started_move_3 = 0;
+        }
+}
+
+void uav__COLLISION_AVOIDANCE_3_fwd()
+{
+  xt_3 = nondet_xt_3();
+  yt_3 = nondet_yt_3();
+  waypointValid_3 = nondet_waypointValid_3();
+  if ((wall_time())<(delay_until_3))
+  {
+    return;
+  }
+  print_state(X,Y,3,x_3,y_3,xt_3,yt_3,state_3,waypointValid_3);
+  if ((state_3)==(NEXT))
+  {
+    if (((x_3)==(xt_3))&&((y_3)==(yt_3)))
+      return;
+    if (((3)==(0))&&(changing_3))
+      return;
+    if (uav__NEXT_XY_3_fwd())
+      return;
+    state_3 = REQUEST;
+  }
+  else
+    if ((state_3)==(REQUEST))
+    {
+      if ((((lock_i_0[xp_3][yp_3])!=(0))||((lock_i_1[xp_3][yp_3])!=(0)))||((lock_i_2[xp_3][yp_3])!=(0)))
+        return;
+      lock_f_3[xp_3][yp_3] = 1;
+      state_3 = WAITING;
+    }
+    else
+      if ((state_3)==(WAITING))
+      {
+        if ((lock_i_4[xp_3][yp_3])!=(0))
+          return;
+        state_3 = MOVE;
+      }
+      else
+        if ((state_3)==(MOVE))
+        {
+          if ((started_move_3)==(0))
+          {
+            started_move_3 = wall_time();
+          }
+          if (GRID_MOVE(xp_3,yp_3,1))
+            return;
+          lock_f_3[x_3][y_3] = 0;
+          x_3 = xp_3;
+          y_3 = yp_3;
+          uav__REACHED_NEXT_XY_3_fwd();
+          state_3 = NEXT;
+          started_move_3 = 0;
+        }
+}
+
+void uav__COLLISION_AVOIDANCE_4_bwd()
+{
+  xt_4 = nondet_xt_4();
+  yt_4 = nondet_yt_4();
+  waypointValid_4 = nondet_waypointValid_4();
+  if ((wall_time())<(delay_until_4))
+  {
+    return;
+  }
+  print_state(X,Y,4,x_4,y_4,xt_4,yt_4,state_4,waypointValid_4);
+  if ((state_4)==(NEXT))
+  {
+    if (((x_4)==(xt_4))&&((y_4)==(yt_4)))
+      return;
+    if (((4)==(0))&&(changing_4))
+      return;
+    if (uav__NEXT_XY_4_bwd())
+      return;
+    state_4 = REQUEST;
+  }
+  else
+    if ((state_4)==(REQUEST))
+    {
+      if (((((lock_f_0[xp_4][yp_4])!=(0))||((lock_f_1[xp_4][yp_4])!=(0)))||((lock_f_2[xp_4][yp_4])!=(0)))||((lock_f_3[xp_4][yp_4])!=(0)))
+        return;
+      lock_i_4[xp_4][yp_4] = 1;
+      state_4 = WAITING;
+    }
+    else
+      if ((state_4)==(WAITING))
+      {
+        if (0)
+          return;
+        state_4 = MOVE;
+      }
+      else
+        if ((state_4)==(MOVE))
+        {
+          if ((started_move_4)==(0))
+          {
+            started_move_4 = wall_time();
+          }
+          if (GRID_MOVE(xp_4,yp_4,1))
+            return;
+          lock_i_4[x_4][y_4] = 0;
+          x_4 = xp_4;
+          y_4 = yp_4;
+          uav__REACHED_NEXT_XY_4_bwd();
+          state_4 = NEXT;
+          started_move_4 = 0;
+        }
+}
+
+void uav__COLLISION_AVOIDANCE_4_fwd()
+{
+  xt_4 = nondet_xt_4();
+  yt_4 = nondet_yt_4();
+  waypointValid_4 = nondet_waypointValid_4();
+  if ((wall_time())<(delay_until_4))
+  {
+    return;
+  }
+  print_state(X,Y,4,x_4,y_4,xt_4,yt_4,state_4,waypointValid_4);
+  if ((state_4)==(NEXT))
+  {
+    if (((x_4)==(xt_4))&&((y_4)==(yt_4)))
+      return;
+    if (((4)==(0))&&(changing_4))
+      return;
+    if (uav__NEXT_XY_4_fwd())
+      return;
+    state_4 = REQUEST;
+  }
+  else
+    if ((state_4)==(REQUEST))
+    {
+      if (((((lock_i_0[xp_4][yp_4])!=(0))||((lock_i_1[xp_4][yp_4])!=(0)))||((lock_i_2[xp_4][yp_4])!=(0)))||((lock_i_3[xp_4][yp_4])!=(0)))
+        return;
+      lock_f_4[xp_4][yp_4] = 1;
+      state_4 = WAITING;
+    }
+    else
+      if ((state_4)==(WAITING))
+      {
+        if (0)
+          return;
+        state_4 = MOVE;
+      }
+      else
+        if ((state_4)==(MOVE))
+        {
+          if ((started_move_4)==(0))
+          {
+            started_move_4 = wall_time();
+          }
+          if (GRID_MOVE(xp_4,yp_4,1))
+            return;
+          lock_f_4[x_4][y_4] = 0;
+          x_4 = xp_4;
+          y_4 = yp_4;
+          uav__REACHED_NEXT_XY_4_fwd();
+          state_4 = NEXT;
+          started_move_4 = 0;
+        }
+}
+
+_Bool uav__NEXT_XY_0_bwd()
+{
+  if (!(waypointValid_0))
+    return 1;
+  if (((((xt_0)<(0))||((xt_0)>=(X)))||((yt_0)<(0)))||((yt_0)>=(Y)))
+    return 1;
+  xp_0 = x_0;
+  yp_0 = y_0;
+  if ((xp_0)<(xt_0))
+    xp_0 = (xp_0)+(1);
+  else
+    if ((xp_0)>(xt_0))
+      xp_0 = (xp_0)-(1);
+    else
+      if ((yp_0)<(yt_0))
+        yp_0 = (yp_0)+(1);
+      else
+        if ((yp_0)>(yt_0))
+          yp_0 = (yp_0)-(1);
+  return 0;
+}
+
+_Bool uav__NEXT_XY_0_fwd()
+{
+  if (!(waypointValid_0))
+    return 1;
+  if (((((xt_0)<(0))||((xt_0)>=(X)))||((yt_0)<(0)))||((yt_0)>=(Y)))
+    return 1;
+  xp_0 = x_0;
+  yp_0 = y_0;
+  if ((xp_0)<(xt_0))
+    xp_0 = (xp_0)+(1);
+  else
+    if ((xp_0)>(xt_0))
+      xp_0 = (xp_0)-(1);
+    else
+      if ((yp_0)<(yt_0))
+        yp_0 = (yp_0)+(1);
+      else
+        if ((yp_0)>(yt_0))
+          yp_0 = (yp_0)-(1);
+  return 0;
+}
+
+_Bool uav__NEXT_XY_1_bwd()
+{
+  if (!(waypointValid_1))
+    return 1;
+  if (((((xt_1)<(0))||((xt_1)>=(X)))||((yt_1)<(0)))||((yt_1)>=(Y)))
+    return 1;
+  xp_1 = x_1;
+  yp_1 = y_1;
+  if ((xp_1)<(xt_1))
+    xp_1 = (xp_1)+(1);
+  else
+    if ((xp_1)>(xt_1))
+      xp_1 = (xp_1)-(1);
+    else
+      if ((yp_1)<(yt_1))
+        yp_1 = (yp_1)+(1);
+      else
+        if ((yp_1)>(yt_1))
+          yp_1 = (yp_1)-(1);
+  return 0;
+}
+
+_Bool uav__NEXT_XY_1_fwd()
+{
+  if (!(waypointValid_1))
+    return 1;
+  if (((((xt_1)<(0))||((xt_1)>=(X)))||((yt_1)<(0)))||((yt_1)>=(Y)))
+    return 1;
+  xp_1 = x_1;
+  yp_1 = y_1;
+  if ((xp_1)<(xt_1))
+    xp_1 = (xp_1)+(1);
+  else
+    if ((xp_1)>(xt_1))
+      xp_1 = (xp_1)-(1);
+    else
+      if ((yp_1)<(yt_1))
+        yp_1 = (yp_1)+(1);
+      else
+        if ((yp_1)>(yt_1))
+          yp_1 = (yp_1)-(1);
+  return 0;
+}
+
+_Bool uav__NEXT_XY_2_bwd()
+{
+  if (!(waypointValid_2))
+    return 1;
+  if (((((xt_2)<(0))||((xt_2)>=(X)))||((yt_2)<(0)))||((yt_2)>=(Y)))
+    return 1;
+  xp_2 = x_2;
+  yp_2 = y_2;
+  if ((xp_2)<(xt_2))
+    xp_2 = (xp_2)+(1);
+  else
+    if ((xp_2)>(xt_2))
+      xp_2 = (xp_2)-(1);
+    else
+      if ((yp_2)<(yt_2))
+        yp_2 = (yp_2)+(1);
+      else
+        if ((yp_2)>(yt_2))
+          yp_2 = (yp_2)-(1);
+  return 0;
+}
+
+_Bool uav__NEXT_XY_2_fwd()
+{
+  if (!(waypointValid_2))
+    return 1;
+  if (((((xt_2)<(0))||((xt_2)>=(X)))||((yt_2)<(0)))||((yt_2)>=(Y)))
+    return 1;
+  xp_2 = x_2;
+  yp_2 = y_2;
+  if ((xp_2)<(xt_2))
+    xp_2 = (xp_2)+(1);
+  else
+    if ((xp_2)>(xt_2))
+      xp_2 = (xp_2)-(1);
+    else
+      if ((yp_2)<(yt_2))
+        yp_2 = (yp_2)+(1);
+      else
+        if ((yp_2)>(yt_2))
+          yp_2 = (yp_2)-(1);
+  return 0;
+}
+
+_Bool uav__NEXT_XY_3_bwd()
+{
+  if (!(waypointValid_3))
+    return 1;
+  if (((((xt_3)<(0))||((xt_3)>=(X)))||((yt_3)<(0)))||((yt_3)>=(Y)))
+    return 1;
+  xp_3 = x_3;
+  yp_3 = y_3;
+  if ((xp_3)<(xt_3))
+    xp_3 = (xp_3)+(1);
+  else
+    if ((xp_3)>(xt_3))
+      xp_3 = (xp_3)-(1);
+    else
+      if ((yp_3)<(yt_3))
+        yp_3 = (yp_3)+(1);
+      else
+        if ((yp_3)>(yt_3))
+          yp_3 = (yp_3)-(1);
+  return 0;
+}
+
+_Bool uav__NEXT_XY_3_fwd()
+{
+  if (!(waypointValid_3))
+    return 1;
+  if (((((xt_3)<(0))||((xt_3)>=(X)))||((yt_3)<(0)))||((yt_3)>=(Y)))
+    return 1;
+  xp_3 = x_3;
+  yp_3 = y_3;
+  if ((xp_3)<(xt_3))
+    xp_3 = (xp_3)+(1);
+  else
+    if ((xp_3)>(xt_3))
+      xp_3 = (xp_3)-(1);
+    else
+      if ((yp_3)<(yt_3))
+        yp_3 = (yp_3)+(1);
+      else
+        if ((yp_3)>(yt_3))
+          yp_3 = (yp_3)-(1);
+  return 0;
+}
+
+_Bool uav__NEXT_XY_4_bwd()
+{
+  if (!(waypointValid_4))
+    return 1;
+  if (((((xt_4)<(0))||((xt_4)>=(X)))||((yt_4)<(0)))||((yt_4)>=(Y)))
+    return 1;
+  xp_4 = x_4;
+  yp_4 = y_4;
+  if ((xp_4)<(xt_4))
+    xp_4 = (xp_4)+(1);
+  else
+    if ((xp_4)>(xt_4))
+      xp_4 = (xp_4)-(1);
+    else
+      if ((yp_4)<(yt_4))
+        yp_4 = (yp_4)+(1);
+      else
+        if ((yp_4)>(yt_4))
+          yp_4 = (yp_4)-(1);
+  return 0;
+}
+
+_Bool uav__NEXT_XY_4_fwd()
+{
+  if (!(waypointValid_4))
+    return 1;
+  if (((((xt_4)<(0))||((xt_4)>=(X)))||((yt_4)<(0)))||((yt_4)>=(Y)))
+    return 1;
+  xp_4 = x_4;
+  yp_4 = y_4;
+  if ((xp_4)<(xt_4))
+    xp_4 = (xp_4)+(1);
+  else
+    if ((xp_4)>(xt_4))
+      xp_4 = (xp_4)-(1);
+    else
+      if ((yp_4)<(yt_4))
+        yp_4 = (yp_4)+(1);
+      else
+        if ((yp_4)>(yt_4))
+          yp_4 = (yp_4)-(1);
+  return 0;
+}
+
+_Bool uav__NEXT_XY_DIAGONAL_0_bwd()
+{
+  if (!(waypointValid_0))
+    return 1;
+  xp_0 = x_0;
+  yp_0 = y_0;
+  if ((x_0)<(xt_0))
+    xp_0 = (x_0)+(1);
+  if ((x_0)>(xt_0))
+    xp_0 = (x_0)-(1);
+  if ((y_0)<(yt_0))
+    yp_0 = (y_0)+(1);
+  if ((y_0)>(yt_0))
+    yp_0 = (y_0)-(1);
+  return 0;
+}
+
+_Bool uav__NEXT_XY_DIAGONAL_0_fwd()
+{
+  if (!(waypointValid_0))
+    return 1;
+  xp_0 = x_0;
+  yp_0 = y_0;
+  if ((x_0)<(xt_0))
+    xp_0 = (x_0)+(1);
+  if ((x_0)>(xt_0))
+    xp_0 = (x_0)-(1);
+  if ((y_0)<(yt_0))
+    yp_0 = (y_0)+(1);
+  if ((y_0)>(yt_0))
+    yp_0 = (y_0)-(1);
+  return 0;
+}
+
+_Bool uav__NEXT_XY_DIAGONAL_1_bwd()
+{
+  if (!(waypointValid_1))
+    return 1;
+  xp_1 = x_1;
+  yp_1 = y_1;
+  if ((x_1)<(xt_1))
+    xp_1 = (x_1)+(1);
+  if ((x_1)>(xt_1))
+    xp_1 = (x_1)-(1);
+  if ((y_1)<(yt_1))
+    yp_1 = (y_1)+(1);
+  if ((y_1)>(yt_1))
+    yp_1 = (y_1)-(1);
+  return 0;
+}
+
+_Bool uav__NEXT_XY_DIAGONAL_1_fwd()
+{
+  if (!(waypointValid_1))
+    return 1;
+  xp_1 = x_1;
+  yp_1 = y_1;
+  if ((x_1)<(xt_1))
+    xp_1 = (x_1)+(1);
+  if ((x_1)>(xt_1))
+    xp_1 = (x_1)-(1);
+  if ((y_1)<(yt_1))
+    yp_1 = (y_1)+(1);
+  if ((y_1)>(yt_1))
+    yp_1 = (y_1)-(1);
+  return 0;
+}
+
+_Bool uav__NEXT_XY_DIAGONAL_2_bwd()
+{
+  if (!(waypointValid_2))
+    return 1;
+  xp_2 = x_2;
+  yp_2 = y_2;
+  if ((x_2)<(xt_2))
+    xp_2 = (x_2)+(1);
+  if ((x_2)>(xt_2))
+    xp_2 = (x_2)-(1);
+  if ((y_2)<(yt_2))
+    yp_2 = (y_2)+(1);
+  if ((y_2)>(yt_2))
+    yp_2 = (y_2)-(1);
+  return 0;
+}
+
+_Bool uav__NEXT_XY_DIAGONAL_2_fwd()
+{
+  if (!(waypointValid_2))
+    return 1;
+  xp_2 = x_2;
+  yp_2 = y_2;
+  if ((x_2)<(xt_2))
+    xp_2 = (x_2)+(1);
+  if ((x_2)>(xt_2))
+    xp_2 = (x_2)-(1);
+  if ((y_2)<(yt_2))
+    yp_2 = (y_2)+(1);
+  if ((y_2)>(yt_2))
+    yp_2 = (y_2)-(1);
+  return 0;
+}
+
+_Bool uav__NEXT_XY_DIAGONAL_3_bwd()
+{
+  if (!(waypointValid_3))
+    return 1;
+  xp_3 = x_3;
+  yp_3 = y_3;
+  if ((x_3)<(xt_3))
+    xp_3 = (x_3)+(1);
+  if ((x_3)>(xt_3))
+    xp_3 = (x_3)-(1);
+  if ((y_3)<(yt_3))
+    yp_3 = (y_3)+(1);
+  if ((y_3)>(yt_3))
+    yp_3 = (y_3)-(1);
+  return 0;
+}
+
+_Bool uav__NEXT_XY_DIAGONAL_3_fwd()
+{
+  if (!(waypointValid_3))
+    return 1;
+  xp_3 = x_3;
+  yp_3 = y_3;
+  if ((x_3)<(xt_3))
+    xp_3 = (x_3)+(1);
+  if ((x_3)>(xt_3))
+    xp_3 = (x_3)-(1);
+  if ((y_3)<(yt_3))
+    yp_3 = (y_3)+(1);
+  if ((y_3)>(yt_3))
+    yp_3 = (y_3)-(1);
+  return 0;
+}
+
+_Bool uav__NEXT_XY_DIAGONAL_4_bwd()
+{
+  if (!(waypointValid_4))
+    return 1;
+  xp_4 = x_4;
+  yp_4 = y_4;
+  if ((x_4)<(xt_4))
+    xp_4 = (x_4)+(1);
+  if ((x_4)>(xt_4))
+    xp_4 = (x_4)-(1);
+  if ((y_4)<(yt_4))
+    yp_4 = (y_4)+(1);
+  if ((y_4)>(yt_4))
+    yp_4 = (y_4)-(1);
+  return 0;
+}
+
+_Bool uav__NEXT_XY_DIAGONAL_4_fwd()
+{
+  if (!(waypointValid_4))
+    return 1;
+  xp_4 = x_4;
+  yp_4 = y_4;
+  if ((x_4)<(xt_4))
+    xp_4 = (x_4)+(1);
+  if ((x_4)>(xt_4))
+    xp_4 = (x_4)-(1);
+  if ((y_4)<(yt_4))
+    yp_4 = (y_4)+(1);
+  if ((y_4)>(yt_4))
+    yp_4 = (y_4)-(1);
+  return 0;
+}
+
+void uav__REACHED_NEXT_XY_0_bwd()
+{
+  unsigned char i;
+  {
+  }
+  i = 1;
+  while ((i)<(5))
+  {
+    next_wp_x_0[(i)-(1)] = next_wp_x_0[i];
+    next_wp_y_0[(i)-(1)] = next_wp_y_0[i];
+    i = (i)+(1);
+  }
+  next_wp_x_0[4] = uav__NEXT_X_0_bwd(next_wp_x_0[3],next_wp_y_0[3]);
+  next_wp_y_0[4] = uav__NEXT_Y_0_bwd(next_wp_x_0[3],next_wp_y_0[3]);
+  SET_HAZARDS();
+  SET_VARIANCES();
+  remaining_flt_time_0 = (remaining_flt_time_0)-(((formation_f_0)==(0))?((seg_len_0)/(loose_speed_0)):((seg_len_0)/(tight_speed_0)));
+  remaining_segs_0 = (remaining_segs_0)-(1);
+  if ((((started_move_0)>(0))&&((formation_f_0)==(1)))&&((speed_factor_0)>(1)))
+  {
+    delay_until_0 = ((speed_factor_0)*(wall_time()))-(((speed_factor_0)-(1))*(started_move_0));
+  }
+}
+
+void uav__REACHED_NEXT_XY_0_fwd()
+{
+  unsigned char i;
+  {
+  }
+  i = 1;
+  while ((i)<(5))
+  {
+    next_wp_x_0[(i)-(1)] = next_wp_x_0[i];
+    next_wp_y_0[(i)-(1)] = next_wp_y_0[i];
+    i = (i)+(1);
+  }
+  next_wp_x_0[4] = uav__NEXT_X_0_fwd(next_wp_x_0[3],next_wp_y_0[3]);
+  next_wp_y_0[4] = uav__NEXT_Y_0_fwd(next_wp_x_0[3],next_wp_y_0[3]);
+  SET_HAZARDS();
+  SET_VARIANCES();
+  remaining_flt_time_0 = (remaining_flt_time_0)-(((formation_i_0)==(0))?((seg_len_0)/(loose_speed_0)):((seg_len_0)/(tight_speed_0)));
+  remaining_segs_0 = (remaining_segs_0)-(1);
+  if ((((started_move_0)>(0))&&((formation_i_0)==(1)))&&((speed_factor_0)>(1)))
+  {
+    delay_until_0 = ((speed_factor_0)*(wall_time()))-(((speed_factor_0)-(1))*(started_move_0));
+  }
+}
+
+double wall_time();
+
+//---------------------------------------------------------
+//-- end of file
+//---------------------------------------------------------

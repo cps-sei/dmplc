@@ -37,6 +37,20 @@ function test_seq {
     if [ "$?" == "0" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
 }
 
+##sequentialize inductively and check against correct output
+function test_seq_ind {
+    DMPL="$1"
+    ROLES="$2"
+    printf "seq ind      %30s : " $(basename $DMPL)
+    BN=$(basename $DMPL .dmpl)
+    OUT1="$BN.ind.c"
+    OUT2="$BN.ind.c.saved"
+    rm -f $OUT1
+    dmplc --cube-grid 10 --roles $ROLES -r 0 -si -rp NoCollision -o $OUT1 $DMPL &> /dev/null
+    diff $OUT1 $OUT2 &> /dev/null
+    if [ "$?" == "0" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
+}
+
 ##parse a file and output. then parse this output and output
 ##again. the two outputs should be identical.
 function test_double_parse {
@@ -111,6 +125,11 @@ done
 
 #sequentialization tests
 test_seq test-example-01c.dmpl uav:Uav1:2:uav:Uav2:1
+test_seq test-example-05b.dmpl uav:Leader:1:uav:Protector:4
+
+#inductive sequentialization tests
+test_seq_ind test-example-01c.dmpl uav:Uav1:2:uav:Uav2:1
+test_seq_ind test-example-05b.dmpl uav:Leader:1:uav:Protector:4
 
 #verification tests
 test_verif ../../docs/tutorial/example-01.dmpl uav:Uav:2 SUCCESSFUL
