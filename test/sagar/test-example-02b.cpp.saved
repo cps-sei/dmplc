@@ -1121,19 +1121,19 @@ int check_init_yt ()
 }
 void constructor ()
 {
-  if(!check_init_x ()) throw std::runtime_error("ERROR: illegal initial value of variable x");
-  if(!check_init_xt ()) throw std::runtime_error("ERROR: illegal initial value of variable xt");
-  if(!check_init_y ()) throw std::runtime_error("ERROR: illegal initial value of variable y");
-  if(!check_init_yt ()) throw std::runtime_error("ERROR: illegal initial value of variable yt");
   initialize_init ();
   initialize_l1 ();
+  if(!check_init_x ()) throw std::runtime_error("ERROR: illegal initial value of variable x");
+  if(!check_init_y ()) throw std::runtime_error("ERROR: illegal initial value of variable y");
   initialize_lock ();
   initialize_lx ();
   initialize_ly ();
   initialize_state ();
   initialize_waypointValid ();
   initialize_xp ();
+  if(!check_init_xt ()) throw std::runtime_error("ERROR: illegal initial value of variable xt");
   initialize_yp ();
+  if(!check_init_yt ()) throw std::runtime_error("ERROR: illegal initial value of variable yt");
 }
 
 } // end node_uav_role_Leader namespace
@@ -1558,19 +1558,19 @@ int check_init_yt ()
 }
 void constructor ()
 {
-  if(!check_init_x ()) throw std::runtime_error("ERROR: illegal initial value of variable x");
-  if(!check_init_xt ()) throw std::runtime_error("ERROR: illegal initial value of variable xt");
-  if(!check_init_y ()) throw std::runtime_error("ERROR: illegal initial value of variable y");
-  if(!check_init_yt ()) throw std::runtime_error("ERROR: illegal initial value of variable yt");
   initialize_init ();
   initialize_l1 ();
+  if(!check_init_x ()) throw std::runtime_error("ERROR: illegal initial value of variable x");
+  if(!check_init_y ()) throw std::runtime_error("ERROR: illegal initial value of variable y");
   initialize_lock ();
   initialize_lx ();
   initialize_ly ();
   initialize_state ();
   initialize_waypointValid ();
   initialize_xp ();
+  if(!check_init_xt ()) throw std::runtime_error("ERROR: illegal initial value of variable xt");
   initialize_yp ();
+  if(!check_init_yt ()) throw std::runtime_error("ERROR: illegal initial value of variable yt");
 }
 
 } // end node_uav_role_Protector namespace

@@ -175,8 +175,40 @@ node uav
     }
   }
 
-  role Uav {
+  record rec1 {
+    local int l1 = { l1 = l2; };
+    local int input l2 ~ ( l2 == xp && l2 < yf );
+    local char input l3 ~ (l3 >= l1);
+  }
+  
+  role Uav1 {
     thread COLLISION_AVOIDANCE;
+  }
+
+  role Uav2 {
+    thread COLLISION_AVOIDANCE;
+
+    override record rec1 {
+      local int l1 = { l1 = l2; };
+      local int input l2 ~ ( l2 == yp && l2 < yf );
+      local char l3 = l1;
+    } = {
+      l1 = lock[l2][l2];
+    } ~ {
+      return (l1 < state);
+    }
+  }
+
+  role Uav3 {
+    thread COLLISION_AVOIDANCE;
+
+    override record rec1 {
+      local int l1 = l3;
+      local int input l2 ~ ( l2 == yp && l2 < yf );
+      local char l3 = l1;
+    } ~ {
+      return (l1 < state);
+    }
   }
 
   @InitSim;

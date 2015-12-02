@@ -76,6 +76,128 @@ dmpl::VarList dmpl::BaseRole::allVarsInScope() const
   return res;
 }
 
+namespace
+{
+  using namespace dmpl;
+
+  //-- forward declaration
+  void visitRec(const Record &rec, Vars &restVars, Records &restRecs,
+                Vars &visitedVars, Records &visitedRecs,
+                std::map<size_t,Var> &sortedVars, std::map<size_t,Record> &sortedRecs);
+
+  //-- visit a variable for dependency analysis
+  void visitVar(const Var &var, Vars &restVars, Records &restRecs,
+                Vars &visitedVars, Records &visitedRecs,
+                std::map<size_t,Var> &sortedVars, std::map<size_t,Record> &sortedRecs)
+  {
+    //-- update visited and rest
+    restVars.erase(var->name);
+    visitedVars.insert(std::make_pair(var->name,var));
+
+    //-- compute all variables and records this one depends on
+    Vars depVars;
+    Records depRecs;
+    
+    if(var->initFunc != NULL)
+      for(const auto &v : var->initFunc->reads())
+        if(restVars.find(v.first) != restVars.end()) depVars.insert(v);
+
+    for(const auto &v : depVars) {
+      const auto &i = restRecs.find(v.second->record);
+      if(i != restRecs.end()) depRecs.insert(*i);
+    }
+
+    //-- visit all records this one depends on
+    for(const auto &r : depRecs)
+      if(restRecs.find(r.first) != restRecs.end())
+        visitRec(r.second, restVars, restRecs, visitedVars, visitedRecs, sortedVars, sortedRecs);
+
+    //-- visit all variables this one depends on
+    for(const auto &v : depVars)
+      if(restVars.find(v.first) != restVars.end())
+        visitVar(v.second, restVars, restRecs, visitedVars, visitedRecs, sortedVars, sortedRecs);
+
+    //-- update result
+    std::cout << "== sorted variable : \t" << (sortedVars.size() + sortedRecs.size())
+              << "\t: " << var->name << '\n';
+    sortedVars[sortedVars.size() + sortedRecs.size()] = var;
+  }
+
+  //-- visit a variable for dependency analysis
+  void visitRec(const Record &rec, Vars &restVars, Records &restRecs,
+                Vars &visitedVars, Records &visitedRecs,
+                std::map<size_t,Var> &sortedVars, std::map<size_t,Record> &sortedRecs)
+  {
+    //-- update visited and rest
+    restRecs.erase(rec->name);
+    visitedRecs.insert(std::make_pair(rec->name,rec));
+
+    //-- compute all variables and records this one depends on
+    Vars depVars;
+    Records depRecs;
+    
+    if(rec->initFunc != NULL)
+      for(const auto &v : rec->initFunc->reads())
+        if(restVars.find(v.first) != restVars.end()) depVars.insert(v);
+
+    if(rec->assumeFunc != NULL)
+      for(const auto &v : rec->assumeFunc->reads())
+        if(restVars.find(v.first) != restVars.end()) depVars.insert(v);
+
+    for(const auto &v : depVars) {
+      const auto &i = restRecs.find(v.second->record);
+      if(i != restRecs.end()) depRecs.insert(*i);
+    }
+
+    //-- visit all records this one depends on
+    for(const auto &r : depRecs)
+      if(restRecs.find(r.first) != restRecs.end())
+        visitRec(r.second, restVars, restRecs, visitedVars, visitedRecs, sortedVars, sortedRecs);
+
+    //-- visit all variables this one depends on
+    for(const auto &v : depVars)
+      if(restVars.find(v.first) != restVars.end())
+        visitVar(v.second, restVars, restRecs, visitedVars, visitedRecs, sortedVars, sortedRecs);
+    
+    //-- visit all variables in the record
+    for(const Var &var : rec->vars)
+      if(restVars.find(var->name) != restVars.end())
+        visitVar(var, restVars, restRecs, visitedVars, visitedRecs, sortedVars, sortedRecs);
+
+    //-- update result
+    std::cout << "== sorted record : \t" << (sortedVars.size() + sortedRecs.size())
+              << "\t: " << rec->name << '\n';
+    sortedRecs[sortedVars.size() + sortedRecs.size()] = rec;
+  }
+}
+
+/*********************************************************************/
+//-- return all variables and records in order of dependency. V1
+//-- appears after V2 if the constructor of V1 reads V2.
+/*********************************************************************/
+void dmpl::BaseRole::orderVarsRecords(std::map<size_t,Var> &sortedVars,
+                                      std::map<size_t,Record> &sortedRecs) const
+{
+  std::cout << "============== ORDERING VARIABLES AND RECORD =============\n";
+
+  Vars restVars;
+  for(const auto &v : allVarsInScope()) restVars.insert(std::make_pair(v->name,v));
+  Records restRecs;
+  for(const auto &r : allRecordsInScope()) restRecs.insert(std::make_pair(r->name,r));
+  
+  Vars visitedVars;
+  Records visitedRecs;
+
+  while(!restRecs.empty()) {
+    Record rec = restRecs.begin()->second;
+    visitRec(rec, restVars, restRecs, visitedVars, visitedRecs, sortedVars, sortedRecs);
+  }
+
+  while(!restVars.empty()) {
+    Var var = restVars.begin()->second;
+    visitVar(var, restVars, restRecs, visitedVars, visitedRecs, sortedVars, sortedRecs);
+  }
+}
 
 /*********************************************************************/
 //-- return all records in scope, i.e., including the parent node as

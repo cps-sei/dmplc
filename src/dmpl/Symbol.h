@@ -103,6 +103,7 @@ namespace dmpl
   class RecordBase;
   typedef std::shared_ptr<RecordBase> Record;
   typedef std::list<Record> RecordList;
+  typedef std::set<Record> RecordSet;
   typedef std::map<std::string,Record> Records;
 
   class BaseNode;

@@ -847,12 +847,12 @@ void initialize_yp ()
 void constructor ()
 {
   if(!check_init_x ()) throw std::runtime_error("ERROR: illegal initial value of variable x");
-  if(!check_init_xf ()) throw std::runtime_error("ERROR: illegal initial value of variable xf");
   if(!check_init_y ()) throw std::runtime_error("ERROR: illegal initial value of variable y");
-  if(!check_init_yf ()) throw std::runtime_error("ERROR: illegal initial value of variable yf");
   initialize_lock ();
   initialize_state ();
+  if(!check_init_xf ()) throw std::runtime_error("ERROR: illegal initial value of variable xf");
   initialize_xp ();
+  if(!check_init_yf ()) throw std::runtime_error("ERROR: illegal initial value of variable yf");
   initialize_yp ();
 }
 

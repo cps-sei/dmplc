@@ -168,6 +168,11 @@ namespace dmpl
     //-- including the parent node as well.
     VarList allVarsInScope() const;
 
+    //-- return all variables and records in order of dependency. V1
+    //-- appears after V2 if the constructor of V1 reads V2.
+    void orderVarsRecords(std::map<size_t,Var> &sortedVars,
+                          std::map<size_t,Record> &sortedRecs) const;
+    
     //-- find variable with given name. return empty variable if no
     //-- such variable found.
     Var findVar(const std::string& name) const

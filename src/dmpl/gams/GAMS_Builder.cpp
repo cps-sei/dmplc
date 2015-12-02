@@ -1105,7 +1105,7 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
 
       //-- build constructors for the role
       build_comment("//-- Begin constructors for role " + r.second->name, "", "", 0);
-
+      
       //-- generator constructors and initial value checkers for
       //-- variables
       for(auto &v : r.second->allVarsInScope()) build_constructor_for_variable(v, n->second);
@@ -1141,30 +1141,42 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
       
       //-- generate the role level constructor
       buffer_ << "void constructor ()\n{\n";
-      //-- invoke variable constructors. for now we invoke input
-      //-- variables first, and then the non-input variables. later
-      //-- one, we should do a more systematic ordering based on
-      //-- dataflow analysis.
-      for(auto &v : r.second->allVarsInScope()) {
-        if(!v->isInput) continue;
-        buffer_ << "  if(!check_init_" << v->name
-                << " ()) throw std::runtime_error(\"ERROR: illegal initial value of variable "
-                << v->name << "\");\n";
-      }
-      for(auto &v : r.second->allVarsInScope()) {
-        if(v->isInput) continue;
-        buffer_ << "  initialize_" << v->name << " ();\n";
-      }
-      //-- invoke record constructors
-      for(auto &rec : r.second->allRecordsInScope()) {
-        if(rec->initFunc != NULL && !rec->initFunc->body.empty())
-          buffer_ << "  initialize_" << rec->name << " ();\n";
+
+      //-- sort variables and records by read-write dependency analysis
+      std::map<size_t,Var> sortedVars;
+      std::map<size_t,Record> sortedRecs;
+      r.second->orderVarsRecords(sortedVars, sortedRecs);
+
+      //-- invoke constructors in the computed dependency order
+      for(size_t i = 0; i < sortedVars.size() + sortedRecs.size(); ++i) {
+        //-- if the next one is a variable
+        if(sortedVars.find(i) != sortedVars.end()) {
+          const Var &var = sortedVars[i];
+
+          if(var->initFunc != NULL && !var->initFunc->body.empty()) {
+            if(var->isInput)
+              buffer_ << "  if(!check_init_" << var->name
+                      << " ()) throw std::runtime_error(\"ERROR: illegal initial value of variable "
+                      << var->name << "\");\n";
+            else
+              buffer_ << "  initialize_" << var->name << " ();\n";
+          }
+        }
+
+        //-- if the next one is a record
+        if(sortedRecs.find(i) != sortedRecs.end()) {
+          const Record &rec = sortedRecs[i];
+
+          if(rec->initFunc != NULL && !rec->initFunc->body.empty())
+            buffer_ << "  initialize_" << rec->name << " ();\n";
         
-        if(rec->assumeFunc != NULL && !rec->assumeFunc->body.empty())
-          buffer_ << "  if(!check_init_" << rec->name
-                  << " ()) throw std::runtime_error(\"ERROR: illegal initial value of record "
-                  << rec->name << "\");\n";
+          if(rec->assumeFunc != NULL && !rec->assumeFunc->body.empty())
+            buffer_ << "  if(!check_init_" << rec->name
+                    << " ()) throw std::runtime_error(\"ERROR: illegal initial value of record "
+                    << rec->name << "\");\n";
+        }
       }
+      
       buffer_ << "}\n\n";
       
       close_namespace(roleName(n->second, r.second));
