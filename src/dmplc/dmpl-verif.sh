@@ -103,9 +103,9 @@ fi
 [ "$BUILDONLY" -eq 1 ] && exit 0
 
 if [ $INDUCTIVE == "1" ] || [ "$VERIF" == "inductive" ]; then
-    printf "verification %30s : " $VERIF_NAME
-else
     printf "induct verif %30s : " $VERIF_NAME
+else
+    printf "verification %30s : " $VERIF_NAME
 fi
 
 CMD="cbmc $CFILE"
