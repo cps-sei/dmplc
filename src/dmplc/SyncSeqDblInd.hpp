@@ -105,14 +105,9 @@ namespace dmpl {
     void callFunction(const std::string &funcName,StmtList &body);
     void callRoundFuncs(StmtList &body);
     void createMainFunc();
-    void createInit();
-    void createSafety();
     void createAssume();
-    void createHavocStmts(bool isGlob,const Var &var,StmtList &res,ExprList indx,int pid);
     void createHavoc();
     void createNodeFuncs();
-    Expr createNondetFunc(const Expr &expr, const Type &type);
-    void processExternFuncs();
     void run();
   };
 } //namespace dmpl

@@ -103,7 +103,7 @@ void dmpl::SyncSeqDblInd::createMainFunc()
 
   //add call to INIT() and SAFETY()
   callFunction("__INIT",mainBody);
-  callFunction("__SAFETY",mainBody);
+  callFunction("__SAFETY_fwd",mainBody);
 
   //-- for K-induction, generate additional rounds and SAFETY checks
   if(roundNum > 0) {
@@ -111,7 +111,7 @@ void dmpl::SyncSeqDblInd::createMainFunc()
       callFunction("round_fwd_copier",mainBody);
       callRoundFuncs(mainBody);
       callFunction("round_bwd_copier",mainBody);
-      callFunction("__SAFETY",mainBody);
+      callFunction("__SAFETY_fwd",mainBody);
     }
   }
   
@@ -132,94 +132,10 @@ void dmpl::SyncSeqDblInd::createMainFunc()
   callFunction("round_fwd_copier",mainBody);
   callRoundFuncs(mainBody);
   callFunction("round_bwd_copier",mainBody);
-  callFunction("__SAFETY",mainBody);
+  callFunction("__SAFETY_fwd",mainBody);
   
   Func mainFunc(new Function(dmpl::intType(),"main",mainParams,mainTemps,mainBody));
   cprog.addFunction(mainFunc);
-}
-
-/*********************************************************************/
-//create the INIT() function
-/*********************************************************************/
-void dmpl::SyncSeqDblInd::createInit()
-{
-  StmtList fnBody;
-  //-- create initializers for local variables
-  for(const auto &rl: relevantLocs) {
-    //-- collect the local and global variables, and sort them into
-    //-- input and non-input
-    VarSet inputVars, nonInputVars;
-    for(const Var &v: rl.second) {
-      if(v->isInput) inputVars.insert(v);
-      else nonInputVars.insert(v);
-    }
-    for(const Var &v: relevantGlobs[rl.first]) {
-      if(v->isInput) inputVars.insert(v);
-      else nonInputVars.insert(v);
-    }
-
-    //-- generate INIT for input vars 
-    for(const Var &v: inputVars) {
-      if(v->initFunc == NULL) continue;
-      fnBody.push_back(createInitVar(v, rl.first));
-    }
-    //-- generate INIT for non-input vars 
-    for(const Var &v: nonInputVars) {
-      if(v->initFunc == NULL) continue;
-      fnBody.push_back(createInitVar(v, rl.first));
-    }
-  }
-
-  //-- also assume that the property holds after initialization
-  std::string fname = "__SAFETY_" + property;
-  Expr callExpr(new LvalExpr(fname));
-  callExpr = Expr(new CallExpr(callExpr, dmpl::ExprList()));
-  dmpl::ExprList args = {callExpr};
-  callExpr = Expr(new CallExpr(Expr(new LvalExpr("__CPROVER_assume")), args));
-  Stmt callStmt(new CallStmt(callExpr));
-  fnBody.push_back(callStmt);
-
-  dmpl::VarList fnParams, fnTemps;
-  Func func(new Function(dmpl::voidType(),"__INIT",fnParams,fnTemps,fnBody));
-  cprog.addFunction(func);
-}
-
-/*********************************************************************/
-//create the SAFETY() function
-/*********************************************************************/
-void dmpl::SyncSeqDblInd::createSafety()
-{
-  const Node &node = builder.program.nodes.begin()->second;
-  Func propFunc = node->getRequireFunc(property);
-
-  //-- create the require property function
-  dmpl::VarList fnParams = propFunc->params,fnTemps;
-  for(const auto &v : propFunc->temps) fnTemps.push_back(v.second);
-  
-  //transform the body of safety
-  StmtList fnBody;
-  BOOST_FOREACH(const Stmt &st,propFunc->body) {
-    syncseqdblind::GlobalTransformer gt(*this,builder.program,propFunc);
-    gt.visit(st);
-    fnBody.push_back(gt.stmtMap[st]);
-  }
-  
-  std::string fname = "__SAFETY_" + property;
-  Func func(new Function(propFunc->retType, fname, fnParams, fnTemps, fnBody));
-  cprog.addFunction(func);
-
-  //-- create the SAFETY function and call the property function  
-  StmtList safetyFnBody;
-  Expr callExpr(new LvalExpr(fname));
-  callExpr = Expr(new CallExpr(callExpr, dmpl::ExprList()));
-  dmpl::ExprList args = {callExpr};
-  callExpr = Expr(new CallExpr(Expr(new LvalExpr("assert")), args));
-  Stmt callStmt(new CallStmt(callExpr));
-  safetyFnBody.push_back(callStmt);
-
-  fnParams.clear(); fnTemps.clear();
-  Func safetyFunc(new Function(dmpl::voidType(),"__SAFETY",fnParams,fnTemps,safetyFnBody));
-  cprog.addFunction(safetyFunc);
 }
 
 /*********************************************************************/
@@ -229,7 +145,7 @@ void dmpl::SyncSeqDblInd::createSafety()
 void dmpl::SyncSeqDblInd::createAssume()
 {
   //-- call SAFETY function and assume it returns true  
-  std::string fname = "__SAFETY_" + property;
+  std::string fname = "__SAFETY_" + property + "_fwd";
   StmtList assumeFnBody;
   Expr callExpr(new LvalExpr(fname));
   callExpr = Expr(new CallExpr(callExpr, dmpl::ExprList()));
@@ -241,36 +157,6 @@ void dmpl::SyncSeqDblInd::createAssume()
   dmpl::VarList fnParams,fnTemps;
   Func assumeFunc(new Function(dmpl::voidType(),"__ASSUME",fnParams,fnTemps,assumeFnBody));
   cprog.addFunction(assumeFunc);
-}
-
-/*********************************************************************/
-//create list of statements that assign a non-deterministic value to
-//old value of var. append list of statements to res.
-/*********************************************************************/
-void dmpl::SyncSeqDblInd::createHavocStmts(bool isGlob,const Var &var,StmtList &res,
-                                           ExprList indx,int pid)
-{
-  //non-array type
-  if(var->type->dims.empty()) {
-    std::string pidStr = boost::lexical_cast<std::string>(pid);
-    Expr lhs(new LvalExpr(var->name + std::string(isGlob ? "_i_" : "_") + pidStr,indx));
-    Expr ndfn = createNondetFunc(lhs, var->type);
-    Expr ndcall(new CallExpr(ndfn,ExprList()));
-    Stmt stmt(new AsgnStmt(lhs,ndcall));
-    res.push_back(stmt);
-  }
-  else
-  {
-    //array type -- peel off the first dimension and iterate over it
-    //recursively
-    int dim = *(var->type->dims.begin());
-    for(int i = 0;i < dim;++i) {
-      ExprList newIndx = indx;
-      newIndx.push_back(Expr(new IntExpr(boost::lexical_cast<std::string>(i))));
-      Var newVar = var->decrDim();
-      createHavocStmts(isGlob,newVar,res,newIndx,pid);
-    }
-  }
 }
 
 /*********************************************************************/
@@ -341,98 +227,6 @@ void dmpl::SyncSeqDblInd::createNodeFuncs()
         cprog.addFunction(func);
       }
     }
-  }
-}
-
-/*********************************************************************/
-//create a nondet function for the type of the argument
-//expression. add its declaration to the C program if a new function
-//was created
-/*********************************************************************/
-dmpl::Expr dmpl::SyncSeqDblInd::createNondetFunc(const Expr &expr, const Type &type)
-{
-  const LvalExpr *lve = dynamic_cast<LvalExpr*>(expr.get());
-  assert(lve && "ERROR: can only create nondet function for LvalExpr");
-
-  std::string fnName = "nondet_" + lve->var;
-  
-  if(nondetFuncs.insert(lve->var).second) {
-    dmpl::VarList fnParams,fnTemps;
-    StmtList fnBody;
-    Func func(new Function(type,fnName,fnParams,fnTemps,fnBody));
-    func->isPrototype = true;
-    cprog.addFunction(func);
-  }
-  
-  return Expr(new LvalExpr(fnName));
-}
-
-/*********************************************************************/
-//-- process external function declarations
-/*********************************************************************/
-void dmpl::SyncSeqDblInd::processExternFuncs()
-{
-  BOOST_FOREACH(dmpl::Funcs::value_type &ef, builder.program.funcs)
-  {
-    if(ef.second->isExtern == false)
-      continue;
-    int rets = ef.second->attrs.count("ASSUME_RETURN");
-    if(rets < 1) {
-      cprog.funcs[ef.second->name] = Func(new Function(*ef.second));
-      continue;
-    }
-    else if(rets > 1)
-      std::cerr << "Warning: function " << ef.second->name <<
-        " has more than one @ASSUME_RETURN attribute" << std::endl;
-    dmpl::Attribute attr = ef.second->attrs["ASSUME_RETURN"];
-
-    int params = attr.paramList.size();
-
-    dmpl::StmtList fnBody;
-    dmpl::Vars fnTemps;
-
-    if(params == 1) {
-      Expr expr = attr.paramList.front();
-
-      Stmt ret(new RetStmt(expr));
-
-      fnBody.push_back(ret);
-    } else if(params == 2) {
-      Expr varExpr = attr.paramList.front();
-      LvalExpr var = varExpr->requireLval();
-      Expr condExpr = *(++attr.paramList.begin());
-
-      if(var.node != NULL || var.indices.size() > 0) {
-        std::cerr << "Error: function " << ef.second->name <<
-          " has an @ASSUME_RETURN attribute with an invalid variable specified (" <<
-          var.toString() << ")" << std::endl;;
-        exit(1);
-      }
-
-      fnTemps[var.var] = Var(new Variable(var.var, ef.second->retType));
-
-      Expr call(new CallExpr(Expr(new LvalExpr(std::string("nondet_") + ef.second->name)), ExprList()));
-      Stmt assign(new AsgnStmt(varExpr, call));
-      fnBody.push_back(assign);
-
-      ExprList assumeArgs;
-      assumeArgs.push_back(condExpr);
-      Stmt assume(new CallStmt(Expr(new LvalExpr("__CPROVER_assume")), assumeArgs));
-      fnBody.push_back(assume);
-
-      Stmt ret(new RetStmt(varExpr));
-      fnBody.push_back(ret);
-    } else {
-      std::cerr << "Error: function " << ef.second->name <<
-        " has an @ASSUME_RETURN attribute with " << attr.paramList.size() <<
-        " parameters (expected 1: expression; or 2: variable, conditional)." << std::endl;
-      exit(1);
-    }
-
-
-    Func func(new Function(ef.second->retType,ef.second->name,ef.second->paramSet,fnTemps,fnBody));
-    func->isExtern = true;
-    cprog.addFunction(func);
   }
 }
 
