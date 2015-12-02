@@ -88,12 +88,15 @@ namespace dmpl {
       //direction -- true if forward, false if backward
       bool fwd;
 
+      //the function being processed, if any
+      Func func;
+      
       //map from variables to constants for substitution
       std::map<std::string,size_t> idMap;
 
       //constructors
-      GlobalTransformer(SyncSeqDbl &ss,dmpl::Program &p, bool f) 
-        : syncSeq(ss),prog(p),fwd(f) {}
+      GlobalTransformer(SyncSeqDbl &ss,dmpl::Program &p,bool f,const Func &fn) 
+        : syncSeq(ss),prog(p),fwd(f), func(fn) {}
 
       //update substitution mapping
       void addIdMap(const std::string &s,size_t i);
@@ -124,8 +127,8 @@ namespace dmpl {
       //lhs of an assignment
       bool inCall, inLhs;
 
-      NodeTransformer(SyncSeqDbl &ss,Program &p,const Process &pr,bool f)
-        : GlobalTransformer(ss,p,f),proc(pr),inCall(0),inLhs(0) {}
+      NodeTransformer(SyncSeqDbl &ss,Program &p,const Process &pr,bool f,const Func &fn)
+        : GlobalTransformer(ss,p,f,fn),proc(pr),inCall(0),inLhs(0) {}
 
       void exitLval(LvalExpr &expr);
       bool enterCall(CallExpr &expr) { return false; }
@@ -186,6 +189,7 @@ namespace dmpl {
     //-- compute relevant variables and functions for each process
     void computeRelevant();
 
+    bool isRelevantVar(const Process &proc,const Expr &expr);
     void createGlobVars();
     size_t globVarDim(const Var &var);
     void createCopyStmts(bool fwd,const Var &var,StmtList &res,ExprList indx,int pid);

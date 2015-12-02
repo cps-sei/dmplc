@@ -87,12 +87,15 @@ namespace dmpl {
       //the DASL program being transformed
       dmpl::Program &prog;
 
+      //the function being processed, if any
+      Func func;
+
       //map from variables to constants for substitution
       std::map<std::string,size_t> idMap;
 
       //constructors
-      GlobalTransformer(SyncSeqDblInd &ss,dmpl::Program &p) 
-        : syncSeq(ss),prog(p) {}
+      GlobalTransformer(SyncSeqDblInd &ss,dmpl::Program &p,const Func &fn) 
+        : syncSeq(ss),prog(p),func(fn) {}
 
       //update substitution mapping
       void addIdMap(const std::string &s,size_t i);
@@ -126,8 +129,8 @@ namespace dmpl {
       //direction -- true if forward, false if backward
       bool fwd;
 
-      NodeTransformer(SyncSeqDblInd &ss,Program &p,const Process &pr,bool f)
-        : GlobalTransformer(ss,p),proc(pr),inCall(0),inLhs(0),fwd(f) {}
+      NodeTransformer(SyncSeqDblInd &ss,Program &p,const Process &pr,bool f,const Func &fn)
+        : GlobalTransformer(ss,p,fn),proc(pr),inCall(0),inLhs(0),fwd(f) {}
 
       void exitLval(LvalExpr &expr);
       bool enterCall(CallExpr &expr) { return false; }
@@ -188,6 +191,7 @@ namespace dmpl {
     //-- compute relevant variables and functions for each process
     void computeRelevant();
     
+    bool isRelevantVar(const Process &proc,const Expr &expr);
     void createGlobVars();
     void createCopyStmts(bool fwd,const Var &var,StmtList &res,ExprList indx,int node);
     void createRoundCopier();

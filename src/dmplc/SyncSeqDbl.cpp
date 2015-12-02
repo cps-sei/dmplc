@@ -187,7 +187,7 @@ void dmpl::syncseqdbl::GlobalTransformer::exitFAN(dmpl::FANStmt &stmt)
   StmtList sl;
 
   for(const auto &pr : syncSeq.relevantThreads) {
-    syncseqdbl::NodeTransformer nt(syncSeq,prog,pr.first,fwd);
+    syncseqdbl::NodeTransformer nt(syncSeq,prog,pr.first,fwd,func);
     nt.idMap = idMap;
     nt.addIdMap(stmt.id,pr.first.id);
     nt.visit(stmt.data);
@@ -207,7 +207,7 @@ void dmpl::syncseqdbl::GlobalTransformer::exitFADNP(dmpl::FADNPStmt &stmt)
   for(;it1 != syncSeq.relevantThreads.end();++it1) {
     auto it2 = it1; ++it2;
     for(;it2 != syncSeq.relevantThreads.end();++it2) {
-      syncseqdbl::NodeTransformer nt(syncSeq,prog,it1->first,fwd);
+      syncseqdbl::NodeTransformer nt(syncSeq,prog,it1->first,fwd,func);
       nt.idMap = idMap;
       nt.addIdMap(stmt.id1,it1->first.id);
       nt.addIdMap(stmt.id2,it2->first.id);
@@ -251,8 +251,10 @@ void dmpl::syncseqdbl::NodeTransformer::exitLval(dmpl::LvalExpr &expr)
     newName = (node->name + "__" + newName + "_" + nodeIdStr + "_" + (fwd ? "fwd" : "bwd"));
   else
   {
-    bool isGlob = node->globVars.count(expr.var) > 0;
-    bool isLoc = node->locVars.count(expr.var) > 0;
+    bool isGlob = node->globVars.find(expr.var) != node->globVars.end() ||
+      proc.role->globVars.find(expr.var) != proc.role->globVars.end();
+    bool isLoc = node->locVars.find(expr.var) != node->locVars.end() ||
+      proc.role->locVars.find(expr.var) != proc.role->locVars.end();
 
     //handle global variables -- distinguishing between lhs of
     //assignments and other cases, and between forward and backward
@@ -364,6 +366,20 @@ void dmpl::syncseqdbl::NodeTransformer::exitEXL(dmpl::EXLExpr &expr)
 void dmpl::syncseqdbl::NodeTransformer::exitAsgn(dmpl::AsgnStmt &stmt)
 {
   Stmt shost = hostStmt;
+
+  bool tempParam = false;
+  const LvalExpr &lval = stmt.lhs->requireLval();
+  if(func) {
+    if(func->temps.find(lval.var) != func->temps.end()) tempParam = true;
+    else if(func->paramSet.find(lval.var) != func->paramSet.end()) tempParam = true;
+  }
+  
+  //-- if the lhs is not spec relevant, then turn this into a NOP
+  if(!tempParam && !syncSeq.isRelevantVar(proc,stmt.lhs)) {
+    stmtMap[shost] = dmpl::Stmt(new dmpl::BlockStmt(StmtList()));
+    return;
+  }
+
   inLhs = true; visit(stmt.lhs); inLhs = false;
   visit(stmt.rhs);
   stmtMap[shost] = dmpl::Stmt(new dmpl::AsgnStmt(exprMap[stmt.lhs],exprMap[stmt.rhs]));
@@ -441,9 +457,7 @@ void dmpl::SyncSeqDbl::computeRelevant()
 
     //-- compute the set of local and global variables read by the
     //-- spec function
-    Vars specVars;
-    specVars.insert(propFunc->readsLoc.begin(), propFunc->readsLoc.end());
-    specVars.insert(propFunc->readsGlob.begin(), propFunc->readsGlob.end());
+    Vars specVars = propFunc->reads();
 
     //-- compute threads that write to variables read by the spec
     for(Func f : proc.role->threads) {
@@ -481,28 +495,39 @@ void dmpl::SyncSeqDbl::computeRelevant()
     //-- make variables read by relevant threads also spec relevant
     Func thread = relevantThreads[proc];
     if(thread != NULL) {
-      specVars.insert(thread->readsLoc.begin(), thread->readsLoc.end());
-      specVars.insert(thread->readsGlob.begin(), thread->readsGlob.end());
+      Vars tr = thread->reads();
+      specVars.insert(tr.begin(), tr.end());
     }
     
     //-- go over each function in the role and collect the ones that
-    //-- write to a
-    for(const Func &f : proc.role->allFuncsInScope()) {
-      //-- skip threads and the property function itself
-      if(f->isThread() || f == propFunc) continue;
+    //-- write to a spec variable. do this till you get no more
+    //-- functions.
+    for(;;) {
+      bool newFunc = false;
+      
+      for(const Func &f : proc.role->allFuncsInScope()) {
+        //-- skip functions already added
+        if(relevantFuncs[proc].find(f) != relevantFuncs[proc].end()) continue;
+        //-- skip threads and the property function itself
+        if(f->isThread() || f == propFunc) continue;
 
-      for(const auto &v : specVars) {
-        if(!f->canWrite(v.second)) continue;
-        //std::cout << "relevant function : " << f->name << '\n';
-        relevantFuncs[proc].insert(f);
-        break;
+        for(const auto &v : specVars) {
+          if(!f->canWrite(v.second)) continue;
+          //std::cout << "relevant function : " << f->name << " : due to : "
+          //<< v.second->name << '\n';
+          newFunc |= relevantFuncs[proc].insert(f).second;
+          break;
+        }
       }
-    }
 
-    //-- make variables read by relevant threads also spec relevant
-    for(const Func &f : relevantFuncs[proc]) {
-      specVars.insert(f->readsLoc.begin(), f->readsLoc.end());
-      specVars.insert(f->readsGlob.begin(), f->readsGlob.end());
+      //-- if no new functions added, we are done
+      if(!newFunc) break;
+      
+      //-- make variables read by relevant threads also spec relevant
+      for(const Func &f : relevantFuncs[proc]) {
+        Vars fr = f->reads();
+        specVars.insert(fr.begin(), fr.end());
+      }
     }
 
     //-- assign relevant local and global variables
@@ -521,7 +546,7 @@ void dmpl::SyncSeqDbl::computeRelevant()
       }
     }
 
-    //-- assign havoc locals
+    //-- assign havoc globals
     for(const Var &gv : relevantGlobs[proc]) {
       for(Func f : proc.role->threads) {
         if(f->equalType(*relevantThreads[proc])) continue;
@@ -536,6 +561,21 @@ void dmpl::SyncSeqDbl::computeRelevant()
   if(relevantFuncs.empty())
     throw std::runtime_error("ERROR: no relevant functions found for property " +
                              property + "!!");
+}
+
+/*********************************************************************/
+//-- return true if the expression is relevant to the process
+/*********************************************************************/
+bool dmpl::SyncSeqDbl::isRelevantVar(const Process &proc,const Expr &expr)
+{
+  const LvalExpr &lval = expr->requireLval();
+  
+  for(const Var &v : relevantGlobs[proc])
+    if(v->name == lval.var) return true;
+  for(const Var &v : relevantLocs[proc])
+    if(v->name == lval.var) return true;
+  
+  return false;
 }
 
 /*********************************************************************/
@@ -730,7 +770,7 @@ dmpl::Stmt dmpl::SyncSeqDbl::createInitVar(const Var &var, const Process &proc)
 
   //-- initialize _i version
   BOOST_FOREACH(const Stmt &st,var->initFunc->body) {
-    syncseqdbl::NodeTransformer nt(*this,builder.program,proc,false);
+    syncseqdbl::NodeTransformer nt(*this,builder.program,proc,false,var->initFunc);
     std::string nodeId = *node->args.begin();
     nt.addIdMap(nodeId,proc.id);
     nt.visit(st);
@@ -741,7 +781,7 @@ dmpl::Stmt dmpl::SyncSeqDbl::createInitVar(const Var &var, const Process &proc)
   //-- for global variables, also initialize _f version
   if(var->scope == Symbol::GLOBAL) {
     BOOST_FOREACH(const Stmt &st,var->initFunc->body) {
-      syncseqdbl::NodeTransformer nt(*this,builder.program,proc,true);
+      syncseqdbl::NodeTransformer nt(*this,builder.program,proc,true,var->initFunc);
       std::string nodeId = *node->args.begin();
       nt.addIdMap(nodeId,proc.id);
       nt.visit(st);
@@ -824,7 +864,7 @@ void dmpl::SyncSeqDbl::createSafetyFwdBwd(bool fwd)
   //transform the body of safety
   StmtList fnBody;
   BOOST_FOREACH(const Stmt &st,propFunc->body) {
-    syncseqdbl::GlobalTransformer gt(*this,builder.program,fwd);
+    syncseqdbl::GlobalTransformer gt(*this,builder.program,fwd,propFunc);
     gt.visit(st);
     fnBody.push_back(gt.stmtMap[st]);
   }
@@ -928,7 +968,7 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
         }
         
         BOOST_FOREACH(const Stmt &st,f->body) {
-          syncseqdbl::NodeTransformer nt(*this,builder.program,pr.first,true);
+          syncseqdbl::NodeTransformer nt(*this,builder.program,pr.first,true,f);
           std::string nodeId = *node->args.begin();
           nt.addIdMap(nodeId,pr.first.id);
           nt.visit(st);
@@ -962,7 +1002,7 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
         }
 
         BOOST_FOREACH(const Stmt &st,f->body) {
-          syncseqdbl::NodeTransformer nt(*this,builder.program,pr.first,false);
+          syncseqdbl::NodeTransformer nt(*this,builder.program,pr.first,false,f);
           std::string nodeId = *node->args.begin();
           nt.addIdMap(nodeId,pr.first.id);
           nt.visit(st);
