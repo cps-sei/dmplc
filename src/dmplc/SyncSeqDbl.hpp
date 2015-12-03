@@ -195,7 +195,8 @@ namespace dmpl {
     void createCopyStmts(bool fwd,const Var &var,StmtList &res,ExprList indx,int pid);
     void createRoundCopier();
     void createMainFunc();
-    Stmt createInitVar(const Var &var, const Process &proc);
+    Stmt createConstructor(const std::string &name, const Type &type, bool isInput,
+                           const Func &initFunc,const Process &proc);
     void createInit();
     void createSafetyFwdBwd(bool fwd);
     void createSafety();

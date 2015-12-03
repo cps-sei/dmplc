@@ -751,26 +751,28 @@ void dmpl::SyncSeqDbl::createMainFunc()
 //-- id. return a statement that calls the function, or assumes it if
 //-- the variable is an input.
 /*********************************************************************/
-dmpl::Stmt dmpl::SyncSeqDbl::createInitVar(const Var &var, const Process &proc)
+dmpl::Stmt dmpl::SyncSeqDbl::createConstructor(const std::string &name,
+                                               const Type &type, bool isInput,
+                                               const Func &initFunc, const Process &proc)
 {
   Node &node = proc.role->node;
-  dmpl::VarList fnParams = var->initFunc->params,fnTemps;
-  for(const auto &v : var->initFunc->temps) fnTemps.push_back(v.second);
+  dmpl::VarList fnParams = initFunc->params,fnTemps;
+  for(const auto &v : initFunc->temps) fnTemps.push_back(v.second);
   
   StmtList initFnBody;
-  std::string initFnName = "__INIT_" + var->name + "_" + boost::lexical_cast<std::string>(proc.id);
+  std::string initFnName = "__INIT_" + name + "_" + boost::lexical_cast<std::string>(proc.id);
 
   //-- if the variable is an input, assign it non-deterministically
-  if(var->isInput) {
-    Expr varExpr(new LvalExpr(var->name + "_" + boost::lexical_cast<std::string>(proc.id)));
-    Expr ndfn = createNondetFunc(varExpr, var->type);
+  if(isInput) {
+    Expr varExpr(new LvalExpr(name + "_" + boost::lexical_cast<std::string>(proc.id)));
+    Expr ndfn = createNondetFunc(varExpr, type);
     Expr ndcall(new CallExpr(ndfn,ExprList()));
     initFnBody.push_back(Stmt(new AsgnStmt(varExpr,ndcall)));
   }
 
   //-- initialize _i version
-  BOOST_FOREACH(const Stmt &st,var->initFunc->body) {
-    syncseqdbl::NodeTransformer nt(*this,builder.program,proc,false,var->initFunc);
+  BOOST_FOREACH(const Stmt &st,initFunc->body) {
+    syncseqdbl::NodeTransformer nt(*this,builder.program,proc,false,initFunc);
     std::string nodeId = *node->args.begin();
     nt.addIdMap(nodeId,proc.id);
     nt.visit(st);
@@ -778,13 +780,13 @@ dmpl::Stmt dmpl::SyncSeqDbl::createInitVar(const Var &var, const Process &proc)
     initFnBody.push_back(nt.stmtMap[st]);
   }
   
-  Func func(new Function(var->initFunc->retType,initFnName,fnParams,fnTemps,initFnBody));
+  Func func(new Function(initFunc->retType,initFnName,fnParams,fnTemps,initFnBody));
   cprog.addFunction(func);
 
   //-- create a call to the function and return it
   Expr callExpr(new LvalExpr(initFnName));
   callExpr = Expr(new CallExpr(callExpr, dmpl::ExprList()));
-  if(var->isInput) {
+  if(isInput) {
     dmpl::ExprList args = {callExpr};
     callExpr = Expr(new CallExpr(Expr(new LvalExpr("__CPROVER_assume")), args));
   }
@@ -814,13 +816,16 @@ void dmpl::SyncSeqDbl::createInit()
     //-- generate INIT for input vars 
     for(const Var &v: inputVars) {
       if(v->initFunc == NULL) continue;
-      fnBody.push_back(createInitVar(v, rl.first));
+      fnBody.push_back(createConstructor(v->name, v->type, v->isInput, v->initFunc,
+                                         rl.first));
     }
     //-- generate INIT for non-input vars 
     for(const Var &v: nonInputVars) {
       if(v->initFunc == NULL) continue;
-      fnBody.push_back(createInitVar(v, rl.first));
+      fnBody.push_back(createConstructor(v->name, v->type,
+                                         v->isInput, v->initFunc, rl.first));
     }
+    
   }
 
   //-- also assume that the property holds after initialization
