@@ -151,6 +151,12 @@ int dmpl::BaseType::getFirstDim() const
   return *(dims.begin());
 }
 
+///check if this is a void type
+bool dmpl::BaseType::isVoid() const
+{
+  return type == TVOID;
+}
+
 ///check if this is a thread type
 bool dmpl::BaseType::isThread() const
 {

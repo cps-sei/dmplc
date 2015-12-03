@@ -142,6 +142,9 @@ namespace dmpl
       return this == &rhs || (qual == rhs.qual && type == rhs.type && dims == rhs.dims);
     }
     
+    ///check if this is a void type
+    bool isVoid() const;
+
     ///check if this is a thread type
     bool isThread() const;
   };
