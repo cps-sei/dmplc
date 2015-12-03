@@ -1148,6 +1148,7 @@ int check_init_yt ()
 }
 void constructor ()
 {
+  initialize_foo ();
   initialize_init ();
   if(!check_init_x ()) throw std::runtime_error("ERROR: illegal initial value of variable x");
   if(!check_init_y ()) throw std::runtime_error("ERROR: illegal initial value of variable y");

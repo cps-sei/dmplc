@@ -110,27 +110,27 @@ void __INIT()
 {
   __CPROVER_assume(__INIT_x_0());
   __CPROVER_assume(__INIT_y_0());
-  __CPROVER_assume(__INIT_xf_0());
-  __CPROVER_assume(__INIT_yf_0());
   __INIT_lock_0();
   __INIT_state_0();
+  __CPROVER_assume(__INIT_xf_0());
   __INIT_xp_0();
+  __CPROVER_assume(__INIT_yf_0());
   __INIT_yp_0();
   __CPROVER_assume(__INIT_x_1());
   __CPROVER_assume(__INIT_y_1());
-  __CPROVER_assume(__INIT_xf_1());
-  __CPROVER_assume(__INIT_yf_1());
   __INIT_lock_1();
   __INIT_state_1();
+  __CPROVER_assume(__INIT_xf_1());
   __INIT_xp_1();
+  __CPROVER_assume(__INIT_yf_1());
   __INIT_yp_1();
   __CPROVER_assume(__INIT_x_2());
   __CPROVER_assume(__INIT_y_2());
-  __CPROVER_assume(__INIT_xf_2());
-  __CPROVER_assume(__INIT_yf_2());
   __INIT_lock_2();
   __INIT_state_2();
+  __CPROVER_assume(__INIT_xf_2());
   __INIT_xp_2();
+  __CPROVER_assume(__INIT_yf_2());
   __INIT_yp_2();
   __CPROVER_assume(__SAFETY_NoCollision_fwd());
 }
@@ -138,19 +138,16 @@ void __INIT()
 void __INIT_lock_0()
 {
   lock_i_0[x_0][y_0] = 1;
-  lock_f_0[x_0][y_0] = 1;
 }
 
 void __INIT_lock_1()
 {
   lock_i_1[x_1][y_1] = 1;
-  lock_f_1[x_1][y_1] = 1;
 }
 
 void __INIT_lock_2()
 {
   lock_i_2[x_2][y_2] = 1;
-  lock_f_2[x_2][y_2] = 1;
 }
 
 void __INIT_state_0()
@@ -206,12 +203,12 @@ int __INIT_xf_2()
 
 void __INIT_xp_0()
 {
-  xp_0 = x_0;
+  xp_0 = 10;
 }
 
 void __INIT_xp_1()
 {
-  xp_1 = x_1;
+  xp_1 = 10;
 }
 
 void __INIT_xp_2()

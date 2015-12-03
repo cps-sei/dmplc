@@ -114,6 +114,13 @@ void __INIT_lock_1();
 void __INIT_lock_2();
 void __INIT_lock_3();
 void __INIT_lock_4();
+void __INIT_loose_speed_0();
+void __INIT_next_wp_x_0();
+void __INIT_next_wp_y_0();
+void __INIT_remaining_flt_time_0();
+void __INIT_remaining_segs_0();
+void __INIT_seg_len_0();
+void __INIT_speed_factor_0();
 void __INIT_started_move_0();
 void __INIT_started_move_1();
 void __INIT_started_move_2();
@@ -124,6 +131,7 @@ void __INIT_state_1();
 void __INIT_state_2();
 void __INIT_state_3();
 void __INIT_state_4();
+void __INIT_tight_speed_0();
 void __INIT_waypointValid_0();
 void __INIT_waypointValid_1();
 void __INIT_waypointValid_2();
@@ -245,67 +253,75 @@ void INIT_HAZARDS(int XX,int YY,int tx,int ty);
 void LOG(double x);
 void __INIT()
 {
+  __INIT_next_wp_x_0();
+  __INIT_next_wp_y_0();
   __CPROVER_assume(__INIT_x_0());
-  __CPROVER_assume(__INIT_y_0());
   __CPROVER_assume(__INIT_xt_0());
+  __CPROVER_assume(__INIT_y_0());
   __CPROVER_assume(__INIT_yt_0());
+  __INIT_loose_speed_0();
+  __INIT_tight_speed_0();
+  __INIT_seg_len_0();
+  __INIT_remaining_segs_0();
+  __INIT_remaining_flt_time_0();
+  __INIT_speed_factor_0();
+  __INIT_changing_0();
+  __INIT_delay_until_0();
+  __INIT_formation_0();
   __INIT_lock_0();
+  __INIT_started_move_0();
   __INIT_state_0();
+  __INIT_waypointValid_0();
   __INIT_xp_0();
   __INIT_yp_0();
-  __INIT_waypointValid_0();
-  __INIT_started_move_0();
-  __INIT_delay_until_0();
-  __INIT_changing_0();
-  __INIT_formation_0();
+  __INIT_changing_1();
+  __INIT_delay_until_1();
   __CPROVER_assume(__INIT_x_1());
   __CPROVER_assume(__INIT_y_1());
-  __CPROVER_assume(__INIT_xt_1());
-  __CPROVER_assume(__INIT_yt_1());
   __INIT_lock_1();
-  __INIT_state_1();
-  __INIT_xp_1();
-  __INIT_yp_1();
-  __INIT_waypointValid_1();
   __INIT_started_move_1();
-  __INIT_delay_until_1();
-  __INIT_changing_1();
+  __INIT_state_1();
+  __INIT_waypointValid_1();
+  __INIT_xp_1();
+  __CPROVER_assume(__INIT_xt_1());
+  __INIT_yp_1();
+  __CPROVER_assume(__INIT_yt_1());
+  __INIT_changing_2();
+  __INIT_delay_until_2();
   __CPROVER_assume(__INIT_x_2());
   __CPROVER_assume(__INIT_y_2());
-  __CPROVER_assume(__INIT_xt_2());
-  __CPROVER_assume(__INIT_yt_2());
   __INIT_lock_2();
-  __INIT_state_2();
-  __INIT_xp_2();
-  __INIT_yp_2();
-  __INIT_waypointValid_2();
   __INIT_started_move_2();
-  __INIT_delay_until_2();
-  __INIT_changing_2();
+  __INIT_state_2();
+  __INIT_waypointValid_2();
+  __INIT_xp_2();
+  __CPROVER_assume(__INIT_xt_2());
+  __INIT_yp_2();
+  __CPROVER_assume(__INIT_yt_2());
+  __INIT_changing_3();
+  __INIT_delay_until_3();
   __CPROVER_assume(__INIT_x_3());
   __CPROVER_assume(__INIT_y_3());
-  __CPROVER_assume(__INIT_xt_3());
-  __CPROVER_assume(__INIT_yt_3());
   __INIT_lock_3();
-  __INIT_state_3();
-  __INIT_xp_3();
-  __INIT_yp_3();
-  __INIT_waypointValid_3();
   __INIT_started_move_3();
-  __INIT_delay_until_3();
-  __INIT_changing_3();
+  __INIT_state_3();
+  __INIT_waypointValid_3();
+  __INIT_xp_3();
+  __CPROVER_assume(__INIT_xt_3());
+  __INIT_yp_3();
+  __CPROVER_assume(__INIT_yt_3());
+  __INIT_changing_4();
+  __INIT_delay_until_4();
   __CPROVER_assume(__INIT_x_4());
   __CPROVER_assume(__INIT_y_4());
-  __CPROVER_assume(__INIT_xt_4());
-  __CPROVER_assume(__INIT_yt_4());
   __INIT_lock_4();
-  __INIT_state_4();
-  __INIT_xp_4();
-  __INIT_yp_4();
-  __INIT_waypointValid_4();
   __INIT_started_move_4();
-  __INIT_delay_until_4();
-  __INIT_changing_4();
+  __INIT_state_4();
+  __INIT_waypointValid_4();
+  __INIT_xp_4();
+  __CPROVER_assume(__INIT_xt_4());
+  __INIT_yp_4();
+  __CPROVER_assume(__INIT_yt_4());
   __CPROVER_assume(__SAFETY_NoCollision_fwd());
 }
 
@@ -362,37 +378,59 @@ void __INIT_delay_until_4()
 void __INIT_formation_0()
 {
   formation_i_0 = 0;
-  formation_f_0 = 0;
 }
 
 void __INIT_lock_0()
 {
   lock_i_0[x_0][y_0] = 1;
-  lock_f_0[x_0][y_0] = 1;
 }
 
 void __INIT_lock_1()
 {
   lock_i_1[x_1][y_1] = 1;
-  lock_f_1[x_1][y_1] = 1;
 }
 
 void __INIT_lock_2()
 {
   lock_i_2[x_2][y_2] = 1;
-  lock_f_2[x_2][y_2] = 1;
 }
 
 void __INIT_lock_3()
 {
   lock_i_3[x_3][y_3] = 1;
-  lock_f_3[x_3][y_3] = 1;
 }
 
 void __INIT_lock_4()
 {
   lock_i_4[x_4][y_4] = 1;
-  lock_f_4[x_4][y_4] = 1;
+}
+
+void __INIT_loose_speed_0()
+{
+}
+
+void __INIT_next_wp_x_0()
+{
+}
+
+void __INIT_next_wp_y_0()
+{
+}
+
+void __INIT_remaining_flt_time_0()
+{
+}
+
+void __INIT_remaining_segs_0()
+{
+}
+
+void __INIT_seg_len_0()
+{
+}
+
+void __INIT_speed_factor_0()
+{
 }
 
 void __INIT_started_move_0()
@@ -443,6 +481,10 @@ void __INIT_state_3()
 void __INIT_state_4()
 {
   state_4 = NEXT;
+}
+
+void __INIT_tight_speed_0()
+{
 }
 
 void __INIT_waypointValid_0()
