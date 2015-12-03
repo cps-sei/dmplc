@@ -44,6 +44,7 @@ unsigned char next_wp_x_0[5];
 unsigned char next_wp_y_0[5];
 double remaining_flt_time_0;
 unsigned char remaining_segs_0;
+unsigned char scenario_0;
 double seg_len_0;
 double speed_factor_0;
 double started_move_0;
@@ -57,6 +58,7 @@ unsigned char state_2;
 unsigned char state_3;
 unsigned char state_4;
 double tight_speed_0;
+double total_time_0;
 _Bool waypointValid_0;
 _Bool waypointValid_1;
 _Bool waypointValid_2;
@@ -115,10 +117,13 @@ void __INIT_lock_2();
 void __INIT_lock_3();
 void __INIT_lock_4();
 void __INIT_loose_speed_0();
+void __INIT_next_wp_init_0();
 void __INIT_next_wp_x_0();
 void __INIT_next_wp_y_0();
 void __INIT_remaining_flt_time_0();
 void __INIT_remaining_segs_0();
+int __INIT_scenario_0();
+void __INIT_scenarios_init_0();
 void __INIT_seg_len_0();
 void __INIT_speed_factor_0();
 void __INIT_started_move_0();
@@ -132,6 +137,7 @@ void __INIT_state_2();
 void __INIT_state_3();
 void __INIT_state_4();
 void __INIT_tight_speed_0();
+void __INIT_total_time_0();
 void __INIT_waypointValid_0();
 void __INIT_waypointValid_1();
 void __INIT_waypointValid_2();
@@ -179,6 +185,7 @@ extern int my_sleep(int seconds);
 _Bool nondet_changing_0();
 _Bool nondet_formation_f_0();
 _Bool nondet_formation_i_0();
+unsigned char nondet_scenario_0();
 _Bool nondet_waypointValid_0();
 _Bool nondet_waypointValid_1();
 _Bool nondet_waypointValid_2();
@@ -259,12 +266,16 @@ void __INIT()
   __CPROVER_assume(__INIT_xt_0());
   __CPROVER_assume(__INIT_y_0());
   __CPROVER_assume(__INIT_yt_0());
+  __INIT_next_wp_init_0();
   __INIT_loose_speed_0();
+  __CPROVER_assume(__INIT_scenario_0());
   __INIT_tight_speed_0();
+  __INIT_total_time_0();
   __INIT_seg_len_0();
   __INIT_remaining_segs_0();
   __INIT_remaining_flt_time_0();
   __INIT_speed_factor_0();
+  __INIT_scenarios_init_0();
   __INIT_changing_0();
   __INIT_delay_until_0();
   __INIT_formation_0();
@@ -409,6 +420,20 @@ void __INIT_loose_speed_0()
 {
 }
 
+void __INIT_next_wp_init_0()
+{
+  unsigned char i;
+  next_wp_x_0[0] = x_0;
+  next_wp_y_0[0] = y_0;
+  i = 1;
+  while ((i)<(5))
+  {
+    next_wp_x_0[i] = uav__NEXT_X_0_bwd(next_wp_x_0[(i)-(1)],next_wp_y_0[(i)-(1)]);
+    next_wp_y_0[i] = uav__NEXT_Y_0_bwd(next_wp_y_0[(i)-(1)],next_wp_y_0[(i)-(1)]);
+    i = (i)+(1);
+  }
+}
+
 void __INIT_next_wp_x_0()
 {
 }
@@ -423,6 +448,42 @@ void __INIT_remaining_flt_time_0()
 
 void __INIT_remaining_segs_0()
 {
+}
+
+int __INIT_scenario_0()
+{
+  scenario_0 = nondet_scenario_0();
+  return ((1)<=(scenario_0))&&((scenario_0)<=(3));
+}
+
+void __INIT_scenarios_init_0()
+{
+  if ((scenario_0)==(1))
+  {
+    loose_speed_0 = 50.0;
+    tight_speed_0 = 12.0;
+    seg_len_0 = 50.0;
+    total_time_0 = 15.0;
+  }
+  if ((scenario_0)==(2))
+  {
+    loose_speed_0 = 50.0;
+    tight_speed_0 = 25.0;
+    seg_len_0 = 50.0;
+    total_time_0 = 15.0;
+  }
+  if ((scenario_0)==(3))
+  {
+    loose_speed_0 = 50.0;
+    tight_speed_0 = 25.0;
+    seg_len_0 = 50.0;
+    total_time_0 = 18.0;
+  }
+  speed_factor_0 = (loose_speed_0)/(tight_speed_0);
+  remaining_segs_0 = uav__REMAINING_SEGMENTS_0_bwd();
+  remaining_flt_time_0 = total_time_0;
+  {
+  }
 }
 
 void __INIT_seg_len_0()
@@ -484,6 +545,10 @@ void __INIT_state_4()
 }
 
 void __INIT_tight_speed_0()
+{
+}
+
+void __INIT_total_time_0()
 {
 }
 
@@ -1282,6 +1347,7 @@ int my_sleep(int seconds);
 _Bool nondet_changing_0();
 _Bool nondet_formation_f_0();
 _Bool nondet_formation_i_0();
+unsigned char nondet_scenario_0();
 _Bool nondet_waypointValid_0();
 _Bool nondet_waypointValid_1();
 _Bool nondet_waypointValid_2();
