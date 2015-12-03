@@ -1153,14 +1153,12 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
         if(sortedVars.find(i) != sortedVars.end()) {
           const Var &var = sortedVars[i];
 
-          if(var->initFunc != NULL && !var->initFunc->body.empty()) {
-            if(var->isInput)
-              buffer_ << "  if(!check_init_" << var->name
-                      << " ()) throw std::runtime_error(\"ERROR: illegal initial value of variable "
-                      << var->name << "\");\n";
-            else
-              buffer_ << "  initialize_" << var->name << " ();\n";
-          }
+          if(var->isInput)
+            buffer_ << "  if(!check_init_" << var->name
+                    << " ()) throw std::runtime_error(\"ERROR: illegal initial value of variable "
+                    << var->name << "\");\n";
+          else
+            buffer_ << "  initialize_" << var->name << " ();\n";
         }
 
         //-- if the next one is a record
