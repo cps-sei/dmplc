@@ -777,19 +777,7 @@ dmpl::Stmt dmpl::SyncSeqDbl::createInitVar(const Var &var, const Process &proc)
     nt.delIdMap(nodeId);
     initFnBody.push_back(nt.stmtMap[st]);
   }
-
-  //-- for global variables, also initialize _f version
-  if(var->scope == Symbol::GLOBAL) {
-    BOOST_FOREACH(const Stmt &st,var->initFunc->body) {
-      syncseqdbl::NodeTransformer nt(*this,builder.program,proc,true,var->initFunc);
-      std::string nodeId = *node->args.begin();
-      nt.addIdMap(nodeId,proc.id);
-      nt.visit(st);
-      nt.delIdMap(nodeId);
-      initFnBody.push_back(nt.stmtMap[st]);
-    }
-  }
-      
+  
   Func func(new Function(var->initFunc->retType,initFnName,fnParams,fnTemps,initFnBody));
   cprog.addFunction(func);
 
