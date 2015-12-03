@@ -564,18 +564,33 @@ void dmpl::SyncSeqDbl::computeRelevant()
 }
 
 /*********************************************************************/
-//-- return true if the expression is relevant to the process
+//-- return true if a variable with given name is relevant to the
+//-- process
 /*********************************************************************/
-bool dmpl::SyncSeqDbl::isRelevantVar(const Process &proc,const Expr &expr)
+bool dmpl::SyncSeqDbl::isRelevantVar(const Process &proc,const std::string &name) const
 {
-  const LvalExpr &lval = expr->requireLval();
+  const auto i1 = relevantGlobs.find(proc);
+  if(i1 != relevantGlobs.end()) {
+    for(const Var &v : i1->second)
+      if(v->name == name) return true;
+  }
   
-  for(const Var &v : relevantGlobs[proc])
-    if(v->name == lval.var) return true;
-  for(const Var &v : relevantLocs[proc])
-    if(v->name == lval.var) return true;
+  const auto i2 = relevantLocs.find(proc);
+  if(i2 != relevantLocs.end()) {
+    for(const Var &v : i2->second)
+      if(v->name == name) return true;
+  }
   
   return false;
+}
+
+/*********************************************************************/
+//-- return true if the expression is relevant to the process
+/*********************************************************************/
+bool dmpl::SyncSeqDbl::isRelevantVar(const Process &proc,const Expr &expr) const
+{
+  const LvalExpr &lval = expr->requireLval();
+  return isRelevantVar(proc, lval.var);
 }
 
 /*********************************************************************/

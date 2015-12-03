@@ -189,7 +189,8 @@ namespace dmpl {
     //-- compute relevant variables and functions for each process
     void computeRelevant();
 
-    bool isRelevantVar(const Process &proc,const Expr &expr);
+    bool isRelevantVar(const Process &proc,const std::string &name) const;
+    bool isRelevantVar(const Process &proc,const Expr &expr) const;
     void createGlobVars();
     size_t globVarDim(const Var &var);
     void createCopyStmts(bool fwd,const Var &var,StmtList &res,ExprList indx,int pid);
