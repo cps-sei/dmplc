@@ -118,8 +118,8 @@ namespace
         visitVar(v.second, restVars, restRecs, visitedVars, visitedRecs, sortedVars, sortedRecs);
 
     //-- update result
-    std::cout << "== sorted variable : \t" << (sortedVars.size() + sortedRecs.size())
-              << "\t: " << var->name << '\n';
+    //std::cout << "== sorted variable : \t" << (sortedVars.size() + sortedRecs.size())
+    //<< "\t: " << var->name << '\n';
     sortedVars[sortedVars.size() + sortedRecs.size()] = var;
   }
 
@@ -165,8 +165,8 @@ namespace
         visitVar(var, restVars, restRecs, visitedVars, visitedRecs, sortedVars, sortedRecs);
 
     //-- update result
-    std::cout << "== sorted record : \t" << (sortedVars.size() + sortedRecs.size())
-              << "\t: " << rec->name << '\n';
+    //std::cout << "== sorted record : \t" << (sortedVars.size() + sortedRecs.size())
+    //<< "\t: " << rec->name << '\n';
     sortedRecs[sortedVars.size() + sortedRecs.size()] = rec;
   }
 }
@@ -178,7 +178,7 @@ namespace
 void dmpl::BaseRole::orderVarsRecords(std::map<size_t,Var> &sortedVars,
                                       std::map<size_t,Record> &sortedRecs) const
 {
-  std::cout << "============== ORDERING VARIABLES AND RECORD =============\n";
+  //std::cout << "============== ORDERING VARIABLES AND RECORD =============\n";
 
   Vars restVars;
   for(const auto &v : allVarsInScope()) restVars.insert(std::make_pair(v->name,v));
