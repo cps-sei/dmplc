@@ -822,32 +822,38 @@ void dmpl::SyncSeqDbl::createInit()
 {
   StmtList fnBody;
   //-- create initializers for local and global variables
-  for(const auto &rl: relevantLocs) {
-    //-- collect the local and global variables, and sort them into
-    //-- input and non-input
-    VarSet inputVars, nonInputVars;
-    for(const Var &v: rl.second) {
-      if(v->isInput) inputVars.insert(v);
-      else nonInputVars.insert(v);
-    }
-    for(const Var &v: relevantGlobs[rl.first]) {
-      if(v->isInput) inputVars.insert(v);
-      else nonInputVars.insert(v);
-    }
+  for(const Process &proc : builder.program.processes) {
+    //-- sort variables and records by read-write dependency analysis
+    std::map<size_t,Var> sortedVars;
+    std::map<size_t,Record> sortedRecs;
+    proc.role->orderVarsRecords(sortedVars, sortedRecs);
 
-    //-- generate INIT for input vars 
-    for(const Var &v: inputVars) {
-      if(v->initFunc == NULL) continue;
-      fnBody.push_back(createConstructor(v->name, v->type, v->isInput, v->initFunc,
-                                         rl.first));
+    //-- invoke constructors in the computed dependency order
+    for(size_t i = 0; i < sortedVars.size() + sortedRecs.size(); ++i) {
+      //-- if the next one is a variable
+      if(sortedVars.find(i) != sortedVars.end()) {
+        const Var &var = sortedVars[i];
+        if(!isRelevantVar(proc, var->name)) continue;
+        fnBody.push_back(createConstructor(var->name, var->type, var->isInput,
+                                           var->initFunc, proc));
+      }
+      
+      //-- if the next one is a record
+      //SC: we are ignoring records for now. must fix this.
+      else if(sortedRecs.find(i) != sortedRecs.end()) {
+        /*
+        const Record &rec = sortedRecs[i];
+        
+        if(rec->initFunc != NULL && !rec->initFunc->body.empty())
+          buffer_ << "  initialize_" << rec->name << " ();\n";
+        
+        if(rec->assumeFunc != NULL && !rec->assumeFunc->body.empty())
+          buffer_ << "  if(!check_init_" << rec->name
+                  << " ()) throw std::runtime_error(\"ERROR: illegal initial value of record "
+                  << rec->name << "\");\n";
+        */
+      }
     }
-    //-- generate INIT for non-input vars 
-    for(const Var &v: nonInputVars) {
-      if(v->initFunc == NULL) continue;
-      fnBody.push_back(createConstructor(v->name, v->type,
-                                         v->isInput, v->initFunc, rl.first));
-    }
-    
   }
 
   //-- also assume that the property holds after initialization
