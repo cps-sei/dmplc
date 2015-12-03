@@ -101,6 +101,7 @@ test_double_parse test-example-01b.dmpl uav:Uav1:2:uav:Uav2:1
 test_double_parse test-example-01c.dmpl uav:Uav1:2:uav:Uav2:1
 test_double_parse test-example-01d.dmpl uav:Uav:2:uav:Uav:1
 test_double_parse test-example-01e.dmpl uav:Uav1:2:uav:Uav2:1:uav:Uav3:1
+test_double_parse test-example-01f.dmpl uav:Uav1:1:uav:Uav2:1
 test_double_parse test-01.dmpl uav:Leader:1:uav:Protector:4
 test_double_parse test-example-02a.dmpl uav:Leader:1:uav:Protector:4
 test_double_parse test-example-02b.dmpl uav:Leader:1:uav:Protector:4
@@ -128,10 +129,12 @@ done
 #sequentialization tests
 test_seq test-example-01c.dmpl uav:Uav1:2:uav:Uav2:1
 test_seq test-example-05b.dmpl uav:Leader:1:uav:Protector:4
+test_seq test-example-01f.dmpl uav:Uav1:1:uav:Uav2:1
 
 #inductive sequentialization tests
 test_seq_ind test-example-01c.dmpl uav:Uav1:2:uav:Uav2:1
 test_seq_ind test-example-05b.dmpl uav:Leader:1:uav:Protector:4
+test_seq_ind test-example-01f.dmpl uav:Uav1:1:uav:Uav2:1
 
 #verification tests
 test_verif ../../docs/tutorial/example-01.dmpl uav:Uav:2 SUCCESSFUL
