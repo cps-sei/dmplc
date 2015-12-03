@@ -204,6 +204,14 @@ namespace dmpl
     //-- return list of all functions in scope, either in this role or
     //-- in parent node
     FuncList allFuncsInScope() const;
+
+    //-- return list of all initializer constructors in scope, either
+    //-- in this role or in parent node
+    FuncList allInitConsInScope() const;
+
+    //-- return list of all assume constructors in scope, either in
+    //-- this role or in parent node
+    FuncList allAssumeConsInScope() const;
     
     //-- find function with given name. either in this role or at the
     //-- node level.

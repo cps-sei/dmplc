@@ -258,6 +258,40 @@ dmpl::FuncList dmpl::BaseRole::allFuncsInScope() const
 }
 
 /*********************************************************************/
+//-- return list of all initializer constructors in scope, either in
+//-- this role or in parent node
+/*********************************************************************/
+dmpl::FuncList dmpl::BaseRole::allInitConsInScope() const
+{
+  FuncList res;
+
+  for(const Var &v : allVarsInScope())
+    if(!v->isInput && v->initFunc) res.push_back(v->initFunc);
+
+  for(const Record &r : allRecordsInScope())
+    if(r->initFunc) res.push_back(r->initFunc);
+  
+  return res;
+}
+
+/*********************************************************************/
+//-- return list of all assume constructors in scope, either in this
+//-- role or in parent node
+/*********************************************************************/
+dmpl::FuncList dmpl::BaseRole::allAssumeConsInScope() const
+{
+  FuncList res;
+
+  for(const Var &v : allVarsInScope())
+    if(v->isInput && v->initFunc) res.push_back(v->initFunc);
+
+  for(const Record &r : allRecordsInScope())
+    if(r->assumeFunc) res.push_back(r->assumeFunc);
+  
+  return res;
+}
+
+/*********************************************************************/
 //-- find function with given name. either in this role or at the node
 //-- level.
 /*********************************************************************/
