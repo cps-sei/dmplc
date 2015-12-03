@@ -1164,7 +1164,7 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
         }
 
         //-- if the next one is a record
-        if(sortedRecs.find(i) != sortedRecs.end()) {
+        else if(sortedRecs.find(i) != sortedRecs.end()) {
           const Record &rec = sortedRecs[i];
 
           if(rec->initFunc != NULL && !rec->initFunc->body.empty())
