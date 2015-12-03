@@ -233,9 +233,9 @@ void dmpl::Function::computeAccessed(FuncSet &visited)
     std::cout << "**** node " << node->name
               << " role " << (role ? role->name : "null")
               << " func " << name << " +++++ calls ++++>"
-              << " node " << f->node->name
-              << " role " << (f->role ? f->role->name : "null")
-              << " func " << f->name << '\n';
+              << " node " << f.second->node->name
+              << " role " << (f.second->role ? f.second->role->name : "null")
+              << " func " << f.second->name << '\n';
     */
     if(visited.insert(f.second).second) f.second->computeAccessed(visited);
     inherit(f.second);
