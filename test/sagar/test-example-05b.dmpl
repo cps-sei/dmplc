@@ -1,0 +1,1273 @@
+/**
+ * Copyright (c) 2015 Carnegie Mellon University. All Rights Reserved.
+
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+
+ * 1. Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following acknowledgments
+ * and disclaimers.
+
+ * 2. Redistributions in binary form must reproduce the above
+ * copyright notice, this list of conditions and the following
+ * disclaimer in the documentation and/or other materials provided
+ * with the distribution.
+
+ * 3. The names "Carnegie Mellon University," "SEI" and/or "Software
+ * Engineering Institute" shall not be used to endorse or promote
+ * products derived from this software without prior written
+ * permission. For written permission, please contact
+ * permission@sei.cmu.edu.
+
+ * 4. Products derived from this software may not be called "SEI" nor
+ * may "SEI" appear in their names without prior written permission of
+ * permission@sei.cmu.edu.
+
+ * 5. Redistributions of any form whatsoever must retain the following
+ * acknowledgment:
+
+ * This material is based upon work funded and supported by the
+ * Department of Defense under Contract No. FA8721-05-C-0003 with
+ * Carnegie Mellon University for the operation of the Software
+ * Engineering Institute, a federally funded research and development
+ * center.
+
+ * Any opinions, findings and conclusions or recommendations expressed
+ * in this material are those of the author(s) and do not necessarily
+ * reflect the views of the United States Department of Defense.
+
+ * NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE
+ * ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS"
+ * BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND,
+ * EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT
+ * LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY,
+ * EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE
+ * MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH
+ * RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT
+ * INFRINGEMENT.
+
+ * This material has been approved for public release and unlimited
+ * distribution.
+
+ * DM-0002494
+**/
+
+//-- an example with 5 nodes -- a leader in the middle and four
+//-- protectors surrounding it. the leader moves from an initial to a
+//-- target coordinate, going from one waypoint to the next following
+//-- a path planning strategy. the protectors try to follow the
+//-- leader's movement and keep it surrounded. each node has three
+//-- threads -- a synchronous thread responsible for moving to the
+//-- next waypoint avoiding collisions, an asynchronous thread that
+//-- determines the next waypoint for the node, and an asynchronous
+//-- adaptation manager thread that switched formation between tight
+//-- and loose. the timing characteristics for various thread
+//-- (periods, WCETs etc.) are specified in a separate DMPL file.
+
+target GNU_CPP,WIN_CPP %%{
+#define GNU_WIN
+#include <iostream>
+#include <stdlib.h>
+#include <math.h>
+#include <sys/resource.h>
+#include <map>
+#include "madara/utility/Utility.h"
+#include "./adaptation_manager.h"
+#include "./dartam/adaptation_manager.h"
+  
+double accumulated_risk = 0.0;
+
+std::map<int,std::map<int,double> > hazard_map;
+
+void INIT_HAZARDS(int _X, int _Y, int tx, int ty)
+{
+  for(int x = 0; x < _X; x++)
+  {
+    for(int y = 0; y < _Y; y++)
+    {
+      if(x == tx && y == ty)
+      {
+        hazard_map[x][y] = 0;
+      }
+      else if(x > 4 && y <= 4)
+      {
+        hazard_map[x][y] = (rand() * 1.0 / RAND_MAX) * 0.4 + 0.5;
+      }
+      else
+      {
+        hazard_map[x][y] = (rand() * 1.0 / RAND_MAX) * 0.4;
+      }
+    }
+  }
+}
+
+double GET_HAZARD(int x, int y)
+{
+  return hazard_map[x][y];
+}
+
+double accumulate_risk(double risk)
+{
+  printf("Risk: %f (+%f)\n", accumulated_risk, risk);
+  return accumulated_risk += risk;
+}
+
+int my_sleep (int seconds)
+{
+  Madara::Utility::sleep (seconds);
+  return 0;
+}
+
+//-- return the current wall time since epoch
+double wall_time()
+{
+  struct timeval tv;
+  gettimeofday(&tv, NULL);
+  return tv.tv_sec + 0.000001 * tv.tv_usec;
+}
+ 
+int roundNum = 0;
+int xi,yi;
+
+void print_int(int i)
+{
+  printf("%i\n", i);
+}
+
+void print_labeled_int(int i)
+{
+  printf("ADAPTATION_MANAGER_OUTPUT : %d\n", i);
+}
+ 
+void print_line(int _X)
+{
+  printf("-");
+  for(int i = 0;i < _X;++i) printf("--");
+  printf("\n");
+}
+
+void print_cover(double d)
+{
+  printf("cover: %f\n", d);
+}
+
+void print_hazard(double d)
+{
+  printf("hazard: %f\n", d);
+}
+
+void LOG(double x)
+{
+  std::cerr << "LOG: " << x << std::endl;
+}
+
+void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf,int _st, int wpv)
+{
+  if(roundNum == 0) {
+    xi = x; yi = y;
+  }
+
+  for(int i = 0;i < 150;++i) printf("\n");
+  
+  printf("state = %d : wpv = %d\n", _st, wpv);
+  printf("round = %d : id = %d\n", ++roundNum, id);
+  printf("xt = %d yt = %d\n",xf,yf);
+  printf("_X = %d _Y = %d\n",_X,_Y);
+  print_line(_X);
+  for(int i = 0;i < _Y;++i) {
+    printf("|");
+    for(int j = 0;j < _X;++j) {
+      //printf("i = %d j = %d\n", i, j);
+      if(j == xf && i == yf) printf("o|");        
+      else if(j == x && i == y) printf("%d|",id);
+      else printf(" |");
+    }
+    printf("\n");
+    print_line(_X);
+  }
+}
+
+void print_waypoint(int _init, int _lx, int _ly)
+{
+  printf("init = %d, lx = %d, ly = %d\n", _init, _lx, _ly);
+}
+
+ 
+%%}
+
+//states of each node
+const NEXT = 1;
+const REQUEST = 2;
+const WAITING = 3;
+const MOVE = 4;
+
+//-- radius of a node
+CONST NODE_RAD = 0.25;
+
+//-- assume that formation change takes 20 seconds
+const FORM_CHANGE_TIME = 20.0;
+
+extern int my_sleep(int seconds);
+extern void INIT_HAZARDS(int XX, int YY, int tx, int ty);
+extern double GET_HAZARD(int x, int y);
+extern void print_state(int XX,int YY,int my_id, int x, int y, int xf, int yf, int _st, int wpv);
+extern void print_waypoint(int _init, int _lx, int _ly);
+extern void print_int(int i);
+extern void print_labeled_int(int i);
+extern void print_cover(double d);
+extern void print_hazard(double d);
+extern double wall_time();
+extern double sqrt(double x);
+extern double asin(double x);
+extern void LOG(double x);
+
+//-- the external function implementing the adaptation
+//-- manager. returns 0 for loose formation and 1 for tight formation.
+extern int adaptation_manager
+(
+ int current_formation, //-- 0 loose, 1 tight
+ int changing, //-- whether in process of changing to other formation
+ double change_progress, //-- progress in changing to other formation (remaining time)
+ //-- next n hazards (for the next n segments in the path)
+ double hazard1,
+ double hazard2,
+ double hazard3,
+ double hazard4,
+ double hazard5,
+ //-- variance of the next n hazards predictions
+ double variance1,
+ double variance2,
+ double variance3,
+ double variance4,
+ double variance5,
+ double loose_speed, //-- speed of loose formation
+ double tight_speed, //-- speed of tight formation
+ double segment_length, //-- length of a segment in the path
+ int remaining_segments, //-- number of segments remaining in the path
+ double remaining_flight_time //-- how much flight time the formation has left
+ );
+
+//-- a random implementation of the adaptation manager. returns 0 for
+//-- loose formation and 1 for tight formation. useful for testing.
+extern int adaptation_manager_random
+(
+ int current_formation, //-- 0 loose, 1 tight
+ int changing, //-- whether in process of changing to other formation
+ double change_progress, //-- progress in changing to other formation (remaining time)
+ //-- next n hazards (for the next n segments in the path)
+ double hazard1,
+ double hazard2,
+ double hazard3,
+ double hazard4,
+ double hazard5,
+ //-- variance of the next n hazards predictions
+ double variance1,
+ double variance2,
+ double variance3,
+ double variance4,
+ double variance5,
+ double loose_speed, //-- speed of loose formation
+ double tight_speed, //-- speed of tight formation
+ double segment_length, //-- length of a segment in the path
+ int remaining_segments, //-- number of segments remaining in the path
+ double remaining_flight_time //-- how much flight time the formation has left
+ );
+
+node uav
+{
+  //shared variables -- visible across nodes. 
+  //must be accessed via R() and W()
+  global bool lock [X][Y] = {
+    lock[x][y] = 1;
+  };
+  
+
+  //private variables -- local to the node.
+  //preserved across rounds
+  local unsigned char state = NEXT; //the state
+
+  //current coordinates
+  local unsigned char input x ~ (0 <= x && x < X), input y ~ (0 <= y && y < Y);
+  local unsigned char xp = x, yp = y; //next coordinates
+  //final coordinates
+  local unsigned char input xt ~ (0 <= xt && xt < X), input yt ~ (0 <= yt && yt < Y);
+  local bool waypointValid = 0; //xt, yt are valid
+
+  global unsigned char lx = x,ly = y; //leader's destination coordinates
+  global bool init = 0; //leader's destination has been initialized
+
+  local double started_move = 0;
+  local double delay_until = 0.0;
+  local bool changing = 0; //are we changing formation now?
+
+  //-- these variables are used to interact with the adaptation
+  //-- manager
+  global bool formation = 0; //0 = loose, 1 = tight
+
+  //-- the function that computes the coverage of the
+  //-- leader. currently we assume that protectors do not provide
+  //-- overlapping coverage.
+  /*
+  pure double coverage()
+  {
+    double cover, dist;
+    double lat0,lng0,lat,lng;
+    cover = 0.0;
+
+    lat0 = GET_X()@id;
+    lng0 = GET_Y()@id;
+
+    FORALL_NODE(nid) {
+      if(nid != id) {
+        lat = GET_X()@nid;
+        lng = GET_Y()@nid;
+        
+        dist = sqrt((lat - lat0) * (lat - lat0) +
+                    (lng - lng0) * (lng - lng0));
+
+        //-- to avoid the call to asin() from crashing. should never
+        //-- happen.
+        if(dist != 0.0) {
+          cover = cover + asin(NODE_RAD/dist) / 3.1415926;
+        }
+      }
+    }
+
+    //print_cover(cover);
+    //print_hazard(current_hazard);
+    return cover;
+    
+    // Made up; depends on formation
+    //return formation@0 ? 0.7 : 0.3;
+  }
+  */
+
+  /*
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_02(current_hazard * (1-coverage()) < 0.02);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_05(current_hazard * (1-coverage()) < 0.05);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_08(current_hazard * (1-coverage()) < 0.08);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_10(current_hazard * (1-coverage()) < 0.1);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_15(current_hazard * (1-coverage()) < 0.15);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_20(current_hazard * (1-coverage()) < 0.2);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_25(current_hazard * (1-coverage()) < 0.25);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_30(current_hazard * (1-coverage()) < 0.3);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_40(current_hazard * (1-coverage()) < 0.4);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_50(current_hazard * (1-coverage()) < 0.5);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_60(current_hazard * (1-coverage()) < 0.6);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_70(current_hazard * (1-coverage()) < 0.7);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_80(current_hazard * (1-coverage()) < 0.8);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_90(current_hazard * (1-coverage()) < 0.9);
+
+  @AtLeast(0.25)
+  @AtNode(0)
+  expect COVERAGE_25_95(current_hazard * (1-coverage()) < 0.95);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_02(current_hazard * (1-coverage()) < 0.02);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_05(current_hazard * (1-coverage()) < 0.05);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_08(current_hazard * (1-coverage()) < 0.08);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_10(current_hazard * (1-coverage()) < 0.1);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_15(current_hazard * (1-coverage()) < 0.15);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_20(current_hazard * (1-coverage()) < 0.2);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_25(current_hazard * (1-coverage()) < 0.25);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_30(current_hazard * (1-coverage()) < 0.3);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_40(current_hazard * (1-coverage()) < 0.4);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_50(current_hazard * (1-coverage()) < 0.5);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_60(current_hazard * (1-coverage()) < 0.6);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_70(current_hazard * (1-coverage()) < 0.7);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_80(current_hazard * (1-coverage()) < 0.8);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_90(current_hazard * (1-coverage()) < 0.9);
+
+  @AtLeast(0.5)
+  @AtNode(0)
+  expect COVERAGE_50_95(current_hazard * (1-coverage()) < 0.95);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_02(current_hazard * (1-coverage()) < 0.02);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_05(current_hazard * (1-coverage()) < 0.05);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_08(current_hazard * (1-coverage()) < 0.08);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_10(current_hazard * (1-coverage()) < 0.1);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_15(current_hazard * (1-coverage()) < 0.15);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_20(current_hazard * (1-coverage()) < 0.2);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_25(current_hazard * (1-coverage()) < 0.25);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_30(current_hazard * (1-coverage()) < 0.3);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_40(current_hazard * (1-coverage()) < 0.4);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_50(current_hazard * (1-coverage()) < 0.5);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_60(current_hazard * (1-coverage()) < 0.6);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_70(current_hazard * (1-coverage()) < 0.7);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_80(current_hazard * (1-coverage()) < 0.8);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_90(current_hazard * (1-coverage()) < 0.9);
+
+  @AtLeast(0.62)
+  @AtNode(0)
+  expect COVERAGE_62_95(current_hazard * (1-coverage()) < 0.95);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_02(current_hazard * (1-coverage()) < 0.02);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_05(current_hazard * (1-coverage()) < 0.05);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_08(current_hazard * (1-coverage()) < 0.08);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_10(current_hazard * (1-coverage()) < 0.1);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_15(current_hazard * (1-coverage()) < 0.15);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_20(current_hazard * (1-coverage()) < 0.2);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_25(current_hazard * (1-coverage()) < 0.25);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_30(current_hazard * (1-coverage()) < 0.3);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_40(current_hazard * (1-coverage()) < 0.4);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_50(current_hazard * (1-coverage()) < 0.5);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_60(current_hazard * (1-coverage()) < 0.6);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_70(current_hazard * (1-coverage()) < 0.7);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_80(current_hazard * (1-coverage()) < 0.8);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_90(current_hazard * (1-coverage()) < 0.9);
+
+  @AtLeast(0.75)
+  @AtNode(0)
+  expect COVERAGE_75_95(current_hazard * (1-coverage()) < 0.95);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_02(current_hazard * (1-coverage()) < 0.02);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_05(current_hazard * (1-coverage()) < 0.05);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_08(current_hazard * (1-coverage()) < 0.08);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_10(current_hazard * (1-coverage()) < 0.1);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_15(current_hazard * (1-coverage()) < 0.15);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_20(current_hazard * (1-coverage()) < 0.2);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_25(current_hazard * (1-coverage()) < 0.25);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_30(current_hazard * (1-coverage()) < 0.3);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_40(current_hazard * (1-coverage()) < 0.4);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_50(current_hazard * (1-coverage()) < 0.5);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_60(current_hazard * (1-coverage()) < 0.6);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_70(current_hazard * (1-coverage()) < 0.7);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_80(current_hazard * (1-coverage()) < 0.8);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_90(current_hazard * (1-coverage()) < 0.9);
+
+  @AtLeast(0.82)
+  @AtNode(0)
+  expect COVERAGE_82_95(current_hazard * (1-coverage()) < 0.95);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_02(current_hazard * (1-coverage()) < 0.02);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_05(current_hazard * (1-coverage()) < 0.05);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_08(current_hazard * (1-coverage()) < 0.08);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_10(current_hazard * (1-coverage()) < 0.1);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_15(current_hazard * (1-coverage()) < 0.15);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_20(current_hazard * (1-coverage()) < 0.2);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_25(current_hazard * (1-coverage()) < 0.25);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_30(current_hazard * (1-coverage()) < 0.3);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_40(current_hazard * (1-coverage()) < 0.4);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_50(current_hazard * (1-coverage()) < 0.5);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_60(current_hazard * (1-coverage()) < 0.6);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_70(current_hazard * (1-coverage()) < 0.7);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_80(current_hazard * (1-coverage()) < 0.8);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_90(current_hazard * (1-coverage()) < 0.9);
+
+  @AtLeast(0.90)
+  @AtNode(0)
+  expect COVERAGE_90_95(current_hazard * (1-coverage()) < 0.95);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_02(current_hazard * (1-coverage()) < 0.02);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_05(current_hazard * (1-coverage()) < 0.05);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_08(current_hazard * (1-coverage()) < 0.08);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_10(current_hazard * (1-coverage()) < 0.1);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_15(current_hazard * (1-coverage()) < 0.15);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_20(current_hazard * (1-coverage()) < 0.2);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_25(current_hazard * (1-coverage()) < 0.25);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_30(current_hazard * (1-coverage()) < 0.3);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_40(current_hazard * (1-coverage()) < 0.4);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_50(current_hazard * (1-coverage()) < 0.5);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_60(current_hazard * (1-coverage()) < 0.6);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_70(current_hazard * (1-coverage()) < 0.7);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_80(current_hazard * (1-coverage()) < 0.8);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_90(current_hazard * (1-coverage()) < 0.9);
+
+  @AtLeast(0.95)
+  @AtNode(0)
+  expect COVERAGE_95_95(current_hazard * (1-coverage()) < 0.95);
+
+  @AtEnd
+  @AtNode(0)
+  expect REACHED_END(x@0 == xt@0 && y@0 == yt@0);
+  */
+
+  /*
+  pure double risk_integral()
+  {
+    if(id == 0)
+      //return accumulate_risk(current_hazard * (1-coverage()) * 0.2);
+      return INTEGRATE(current_hazard * (1-coverage()));
+    else
+      return 0.0;
+  }
+  */
+  
+  //@AT_END
+  //expect RISK_INTEGRAL(risk_integral() < 0.105);
+
+  // True if you reach destination by end of mission time
+  //@AT_END
+  //expect REACHED_END(x@0 == xt@0 && y@0 == yt@0);
+  
+  // Completed and good coverage
+  // 0.105 is -ln(0.9), 0.9 is desired success probability
+  //@AtEnd
+  //expect REACHED_END_AND_RISK_INTEGRAL(risk_integral() < 0.105 && x@0 == xt@0 && y@0 == yt@0);
+  
+  //-- return the next waypoint value
+  bool NEXT_XY ()
+  {
+    if(!waypointValid) return 1;
+    if(xt < 0 || xt >= X || yt < 0 || yt >= Y) return 1;
+
+    //-- set next coordinates
+    xp = x; yp = y;
+    if(xp < xt) xp = xp + 1;
+    else if(xp > xt) xp = xp - 1;
+    else if(yp < yt) yp = yp + 1;
+    else if(yp > yt) yp = yp - 1;
+    return 0;
+  }
+
+  //-- use this instead of NEXT_XY to enable diagonal movement. note
+  //-- collision avoidance is not guaranteed under such movement.
+  bool NEXT_XY_DIAGONAL ()
+  {
+    if(!waypointValid)
+      return 1;
+    xp = x; yp = y;
+    if(x < xt) xp = x + 1;
+    if(x > xt) xp = x - 1;
+    if(y < yt) yp = y + 1;
+    if(y > yt) yp = y - 1;
+    return 0;
+  }
+  
+  //-- only return the next waypoint X value given the current waypoint
+  unsigned char NEXT_X (unsigned char curr_x, unsigned char curr_y)
+  {
+    if(curr_x < xt) return curr_x + 1;
+    if(curr_x > xt) return curr_x - 1;
+    return curr_x;
+  }
+
+  //-- only return the next waypoint Y value given the current waypoint
+  unsigned char NEXT_Y (unsigned char curr_x, unsigned char curr_y)
+  {
+    if(curr_y < yt) return curr_y + 1;
+    if(curr_y > yt) return curr_y - 1;
+    return curr_y;
+  }
+
+  //-- manhattan distance between (x,y) and (xt,yt)
+  unsigned char REMAINING_SEGMENTS()
+  {
+    unsigned char res;
+    res = 0;
+    if(x < xt) res = res + (xt - x);
+    else if(x > xt) res = res + (x - xt);
+    if(y < yt) res = res + (yt - y);
+    else if(y > yt) res = res + (y - yt);
+    return res;
+  }
+
+  //double GET_HAZARD(int curx, int cury)
+  //{
+    //if(id == 0 && curx == xt && cury == yt)
+      //return 0.0;
+    //else
+      //return (curx > 4 && cury <= 4) ? 0.09 : 0.01;
+  //}
+  
+  //-- we use counters for the number of formation changes by each
+  //-- node. when the leader initiates a formation change, it
+  //-- increments its counter. it waits for the other counters to
+  //-- catch up detect that the formation change has completed.
+  global bool num_changes = 0;
+  
+  void REACHED_NEXT_XY() {}
+  
+  //-- the task that moves the node to its next waypoint while
+  //-- avoiding collisions.
+  @BarrierSync;
+  @PlatformController;
+  thread COLLISION_AVOIDANCE
+  {
+    //my_sleep(1);
+    if(wall_time() < delay_until)
+    {
+      return;
+    }
+
+    print_state(X,Y,id,x,y,xt,yt,state,waypointValid);
+    if(state == NEXT) {
+      //-- if reached destination, nothing to do
+      if(x == xt && y == yt) return;
+      //-- the leader does not move if formation change is going on
+      if(id == 0 && changing) return;
+      //-- get the next waypoint
+      if(NEXT_XY()) return;
+      state = REQUEST;
+    } else if(state == REQUEST) {
+      //request the lock but only if it is free
+      if(exists_lower(idp,lock[xp][yp]@idp != 0)) return;
+      lock[xp][yp] = 1;
+      state = WAITING;
+    } else if(state == WAITING) {
+      //grab the lock if we are the highest 
+      //id node to request or hold the lock
+      if(exists_higher(idp, lock[xp][yp]@idp != 0)) return;
+      state = MOVE;
+    } else if(state == MOVE) {
+      //now we have the lock on (x’,y’)
+      if(started_move == 0)
+      {
+        started_move = wall_time();
+      }
+      if(GRID_MOVE(xp,yp,1)) return;
+      lock[x][y] = 0; 
+      x = xp; y = yp;
+      REACHED_NEXT_XY();
+      state = NEXT;
+      started_move = 0;
+    }
+  }
+
+  role Leader
+  {
+
+    local double remaining_time = 0.0; //how much time left to complete formation change
+    
+    //local double hazards[X][Y]; //map from cells to hazards
+    
+    //hazard of current x and y
+    local double current_hazard = { current_hazard = GET_HAZARD(x,y); };
+
+    //local double variances[X][Y]; //map from cells to variances in hazard predictions
+    //-- next 5 waypoints
+    record next_wp {
+      local unsigned char next_wp_x[5]; 
+      local unsigned char next_wp_y[5];
+    } = {
+      unsigned char i;
+      next_wp_x[0] = x;
+      next_wp_y[0] = y;
+      i = 1;
+      while(i < 5) {
+        next_wp_x[i] = NEXT_X(next_wp_x[i - 1],next_wp_y[i - 1]);
+        next_wp_y[i] = NEXT_Y(next_wp_y[i - 1],next_wp_y[i - 1]);
+        i = i+1;
+      }
+    }
+    
+    //-- set the next 5 hazards based on the next 5 waypoints. XXX: this
+    //-- should be fixed once compiler support is added.
+    void SET_HAZARDS()
+    {
+      hazard1 = GET_HAZARD(next_wp_x[0], next_wp_y[0]);
+      hazard2 = GET_HAZARD(next_wp_x[1], next_wp_y[1]);
+      hazard3 = GET_HAZARD(next_wp_x[2], next_wp_y[2]);
+      hazard4 = GET_HAZARD(next_wp_x[3], next_wp_y[3]);
+      hazard5 = GET_HAZARD(next_wp_x[4], next_wp_y[4]);
+    }
+  
+    //-- next 5 hazards
+    record hazards {
+      local double hazard1, hazard2, hazard3, hazard4, hazard5;
+    } = {
+      INIT_HAZARDS(X, Y, xt, yt);
+      SET_HAZARDS();
+    }
+
+    //-- set the next 5 variances based on the next 5 waypoints. XXX:
+    //-- this should be fixed once compiler support is added.
+    void SET_VARIANCES()
+    {
+      variance1 = 0.1; variance2 = 0.1; variance3 = 0.1; variance4 = 0.1; variance5 = 0.1;
+    }
+    
+    //-- next 5 hazard variances
+    record variances {
+      local double variance1, variance2, variance3, variance4, variance5;
+    } = {
+      SET_VARIANCES();
+    }
+
+    //-- selected scenario. this should be made an input.
+    local unsigned char input scenario ~ (1 <= scenario && scenario <= 3);
+
+    //-- scenario selector
+    record scenarios {
+      //-- speeds in loose and tight formations
+      local double loose_speed;
+      local double tight_speed;
+      
+      //-- segment length and remaining segments
+      local double seg_len;
+      local unsigned char remaining_segs;
+
+      //-- total mission time, and mission start time
+      local double total_time;
+      local double start_time;
+
+      //-- remaining flight time
+      local double remaining_flt_time;
+
+      //-- factor between speeds
+      local double speed_factor;
+    } = {
+      //-- SCENARIO 1: the ratio of loose and tight speeds is > 4. in
+      //-- this case, there is no benefit to switch to tight formation.
+      if(scenario == 1) {
+        loose_speed = 50.0;
+        tight_speed = 12.0;
+        seg_len = 50.0;
+        total_time = 15.0;
+      }
+      
+      //-- SCENARIO 2: the ratio of loose and tight speeds is < 4. in
+      //-- this case, there is benefit to switch to a tight formation.
+      if(scenario == 2) {
+        loose_speed = 50.0;
+        tight_speed = 25.0;
+        seg_len = 50.0;
+        total_time = 15.0;
+      }
+      
+      //-- SCENARIO 3: similar to scenario 2 but slightly longer mission
+      //-- time so that the switch back to loose formation happens
+      //-- later.
+      if(scenario == 3) {
+        loose_speed = 50.0;
+        tight_speed = 25.0;
+        seg_len = 50.0;
+        total_time = 18.0;
+      }
+
+      speed_factor = loose_speed / tight_speed;
+      remaining_segs = REMAINING_SEGMENTS();
+      remaining_flt_time = total_time;
+      start_time = wall_time();
+    }
+  
+    //-- stuff to do once the next waypoint is reached
+    override void REACHED_NEXT_XY()
+    {
+      unsigned char i;
+
+      current_hazard = GET_HAZARD(x,y);
+
+      i = 1;
+      while(i < 5) {
+        next_wp_x[i - 1] = next_wp_x[i];
+        next_wp_y[i - 1] = next_wp_y[i];
+        i = i+1;
+      }
+      next_wp_x[4] = NEXT_X(next_wp_x[3],next_wp_y[3]);
+      next_wp_y[4] = NEXT_Y(next_wp_x[3],next_wp_y[3]);
+      //-- update next 5 hazards and variances based on waypoints
+      SET_HAZARDS();
+      SET_VARIANCES();
+      //-- reduced flight time
+      remaining_flt_time = remaining_flt_time -
+        (formation@id == 0 ? seg_len/loose_speed : seg_len/tight_speed);
+      //-- one less segment to go
+      remaining_segs = remaining_segs - 1;
+      //-- update delay_unit
+      if(started_move > 0 && formation == 1 && speed_factor > 1)
+      {
+        delay_until = speed_factor * wall_time() - (speed_factor - 1) * started_move;
+      }
+    }
+    
+    //-- the task that invokes the adaptation manager. this task only
+    //-- does something meaningful for the leader node (i.e., id =
+    //-- 0). otherwise it is a NOP.
+    @Period(4000000);
+    @Criticality(2);
+    @WCExecTimeNominal(10000);
+    @WCExecTimeOverload(20000);
+    override thread ADAPTATION_MANAGER
+    {
+      bool last_formation;    
+      unsigned char num_protectors_changing;
+      
+      //-- check if formation change is still happening
+      if(exists_lower(idp,num_changes@idp != num_changes@id) ||
+         exists_higher(idp,num_changes@idp != num_changes@id)) {
+        changing = 1;
+      } else {
+        changing = 0;
+      }
+      
+      //-- estimate the remaining time for formation change as the
+      //-- fraction of protectors that are yet to complete formation
+      //-- change
+      if(changing) {
+        num_protectors_changing = 0;
+        forall_other(idp) {
+          if(num_changes@idp != num_changes@id) {
+            num_protectors_changing = num_protectors_changing + 1;
+          }
+        }
+        remaining_time = num_protectors_changing * FORM_CHANGE_TIME / 4;
+      }
+    
+      //-- call the external adapatation manager
+      last_formation = formation@0;
+      
+      //-- if the leader has reached the destination, no more formation
+      //-- changes are needed
+      if(x != xt || y != yt) {
+        formation = adaptation_manager(formation@id,changing,remaining_time,
+                                       hazard1, hazard2, hazard3, hazard4, hazard5,
+                                       variance1, variance2, variance3, variance4, variance5,
+                                       loose_speed, tight_speed,
+                                       seg_len, remaining_segs,
+                                       //total_time - (wall_time() - start_time),
+                                       remaining_flt_time);
+        print_labeled_int(formation@id);
+      }
+      
+      //-- update the flag to indicate if a change formation is
+      //-- triggered, and increment number of formation changes.
+      if(!changing && last_formation != formation@0) {
+        changing = 1;
+        num_changes = 1 - num_changes;
+      }
+    }
+
+    thread COLLISION_AVOIDANCE;
+
+    //-- the task that computes the next waypoint.
+    @Period(100000);
+    @Criticality(3);
+    @WCExecTimeNominal(10000);
+    @WCExecTimeOverload(20000);
+    override thread WAYPOINT
+    {
+      waypointValid = 1;
+      ly = yp;
+      lx = xp;
+      init = 1;
+    }
+  }
+
+  role Protector
+  {
+    thread COLLISION_AVOIDANCE;
+  
+    //-- stuff to do once the next waypoint is reached
+    override void REACHED_NEXT_XY()
+    {
+      //-- if i am not the leader and a formation change was
+      //-- happening, and i have reached the end-point, then formation
+      //-- change is complete.
+      if(num_changes != num_changes@0 && x == xt && y == yt) {
+        num_changes = 1 - num_changes;
+      }
+    }
+
+    //-- the task that computes the next waypoint.
+    @Period(100000);
+    @Criticality(3);
+    @WCExecTimeNominal(10000);
+    @WCExecTimeOverload(20000);
+    override thread WAYPOINT
+    {
+      print_waypoint(init@0, lx@0, ly@0);
+      if(init@0 == 0) return;
+
+      waypointValid = 1;
+        
+      //-- loose formation
+      if(formation@0 == 0) {
+        if(id == 1) {
+          xt = lx@0 + 2;
+          yt = ly@0 + 2;
+        } else if(id == 2) {
+          xt = lx@0 - 2;
+          yt = ly@0 + 2;
+        } else if(id == 3) {
+          xt = lx@0 - 2;
+          yt = ly@0 - 2;
+        } else if(id == 4) {
+          xt = lx@0 + 2;
+          yt = ly@0 - 2;
+        }
+        return;
+      }
+
+      //-- tight formation
+      if(id == 1) {
+        xt = lx@0 + 1;
+        yt = ly@0 + 1;
+        } else if(id == 2) {
+        xt = lx@0 - 1;
+        yt = ly@0 + 1;
+      } else if(id == 3) {
+        xt = lx@0 - 1;
+        yt = ly@0 - 1;
+      } else if(id == 4) {
+        xt = lx@0 + 1;
+        yt = ly@0 - 1;
+      }
+    }
+  }
+
+  @InitSim;
+  void StartingPosition ()
+  {
+    GRID_INIT();
+    GRID_PLACE(x, y, 1);
+  }
+
+  //the safety property checked at the beginning of each round
+  pure bool NoCollisions ()
+  {
+    //-- the main property
+    FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+      if(x@id1 == x@id2 && y@id1 == y@id2) return false;
+    }
+    
+    //-- supporting invariants for inductiveness
+
+    FORALL_NODE(idp) {
+      /** state has to be between 0 and 4, (x,y), (xf,yf), and (xp,yp)
+          have to be between 0 and X-1,Y-1 */
+      if(!(state@idp >= NEXT && state@idp <= MOVE)) return false;
+      if(!(x@idp >= 0 && x@idp < X)) return false;
+      if(!(y@idp >= 0 && y@idp < Y)) return false;
+      //if(!(xt@idp >= 0 && xt@idp < X)) return false;
+      //if(!(yt@idp >= 0 && yt@idp < Y)) return false;
+      if(!(xp@idp >= 0 && xp@idp < X)) return false;
+      if(!(yp@idp >= 0 && yp@idp < Y)) return false;
+      /** if we are in not in NEXT, then xp,yp != x,y */
+      if(!(state@idp == NEXT || x@idp != xp@idp || y@idp != yp@idp)) return false;
+      /** if we are in NEXT, REQUEST, WAITING or MOVE, we have lock on
+          x,y */
+      if(!((state@idp != NEXT && state@idp != REQUEST && state@idp != WAITING && state@idp != MOVE) ||
+           lock[x@idp][y@idp]@idp)) return false;
+      /** if we are in NEXT, WAITING or MOVE, then we have lock on x,y
+          and xp,yp */
+      if(!((state@idp != NEXT && state@idp != WAITING && state@idp != MOVE) ||
+           (lock[x@idp][y@idp]@idp && lock[xp@idp][yp@idp]@idp))) return false;
+      /** if we are not in NEXT, then x,y and xp,yp are
+          adjacent */
+      if(!(state@idp == NEXT || (((x@idp == xp@idp - 1) || (x@idp == xp@idp + 1)) ^ ((y@idp == yp@idp - 1) || (y@idp == yp@idp + 1))))) return false;
+    }
+  
+    //-- the rest are supporting invariants. you only need them for
+    //-- plain induction. you can skip them (by uncommenting the
+    //-- following return statement) out if you are doing K-induction
+    //-- with K>=3.
+    //return true;
+      
+    FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+      /** if node1 is in MOVE/NEXT and has lower id than node2 which is
+          WAITING then they have different xp,yp */
+      if(!((state@id1 != NEXT && state@id1 != MOVE) || state@id2 != WAITING || id1 >= id2 || xp@id1 != xp@id2 || yp@id1 != yp@id2)) return false;
+      /** if two distinct nodes are in MOVE, they have different
+          (xp,yp) */
+      if(!(state@id1 != MOVE || state@id2 != MOVE ||                        
+           ((xp@id1 != xp@id2 || yp@id1 != yp@id2) &&             
+            (xp@id1 != x@id2 || yp@id1 != y@id2) &&               
+            (x@id1 != xp@id2 || y@id1 != yp@id2) &&               
+            (x@id1 != x@id2 || y@id1 != y@id2)))) return false;
+      /** if node2 in WAITING, and node1 has lower id than node 2, then
+          node1.(x,y) != node2.(xp,yp) */
+      if(!(state@id2 != WAITING || id1 >= id2 || x@id1 != xp@id2 || y@id1 != yp@id2)) return false;
+      /** if node2 in MOVE, then node1.(x,y) != node2.(xp,yp) */
+      if(!((state@id2 != MOVE || x@id1 != xp@id2 || y@id1 != yp@id2) && (state@id1 != 4 || xp@id1 != x@id2 || yp@id1 != y@id2))) return false;
+      /** two distinct nodes have different (x,y) */
+      if(!(x@id1 != x@id2 || y@id1 != y@id2)) return false;
+    }
+    
+    return true;
+  }
+
+  //-- guaranteed properties
+  require NoCollision => NoCollisions;
+}
+
+/*********************************************************************/
+//-- end of file
+/*********************************************************************/
