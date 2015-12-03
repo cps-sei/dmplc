@@ -498,14 +498,21 @@ void dmpl::SyncSeqDbl::computeRelevant()
       Vars tr = thread->reads();
       specVars.insert(tr.begin(), tr.end());
     }
+
+    //-- collect all functions and constructors in scope
+    FuncList allFuncs = proc.role->allFuncsInScope();
+    FuncList allInitCons = proc.role->allInitConsInScope();
+    FuncList allAssumeCons = proc.role->allAssumeConsInScope();
     
     //-- go over each function in the role and collect the ones that
     //-- write to a spec variable. do this till you get no more
     //-- functions.
     for(;;) {
       bool newFunc = false;
-      
-      for(const Func &f : proc.role->allFuncsInScope()) {
+
+      //-- look at functions -- anything that writes to a spec
+      //-- variable is relevant
+      for(const Func &f : allFuncs) {
         //-- skip functions already added
         if(relevantFuncs[proc].find(f) != relevantFuncs[proc].end()) continue;
         //-- skip threads and the property function itself
@@ -513,6 +520,36 @@ void dmpl::SyncSeqDbl::computeRelevant()
 
         for(const auto &v : specVars) {
           if(!f->canWrite(v.second)) continue;
+          //std::cout << "relevant function : " << f->name << " : due to : "
+          //<< v.second->name << '\n';
+          newFunc |= relevantFuncs[proc].insert(f).second;
+          break;
+        }
+      }
+
+      //-- look at initializer constructors -- anything that writes to
+      //-- a spec variable is relevant
+      for(const Func &f : allInitCons) {
+        //-- skip functions already added
+        if(relevantFuncs[proc].find(f) != relevantFuncs[proc].end()) continue;
+
+        for(const auto &v : specVars) {
+          if(!f->canWrite(v.second)) continue;
+          //std::cout << "relevant function : " << f->name << " : due to : "
+          //<< v.second->name << '\n';
+          newFunc |= relevantFuncs[proc].insert(f).second;
+          break;
+        }
+      }
+
+      //-- look at assume constructors -- anything that reads a spec
+      //-- variable is relevant
+      for(const Func &f : allAssumeCons) {
+        //-- skip functions already added
+        if(relevantFuncs[proc].find(f) != relevantFuncs[proc].end()) continue;
+
+        for(const auto &v : specVars) {
+          if(!f->canRead(v.second)) continue;
           //std::cout << "relevant function : " << f->name << " : due to : "
           //<< v.second->name << '\n';
           newFunc |= relevantFuncs[proc].insert(f).second;
@@ -532,6 +569,7 @@ void dmpl::SyncSeqDbl::computeRelevant()
 
     //-- assign relevant local and global variables
     for(const auto &v : specVars) {
+      //std::cout << "relevant variable : " << v.second->name << '\n';
       if(v.second->scope == Symbol::LOCAL) relevantLocs[proc].insert(v.second);
       else if(v.second->scope == Symbol::GLOBAL) relevantGlobs[proc].insert(v.second);
     }
@@ -782,7 +820,7 @@ dmpl::Stmt dmpl::SyncSeqDbl::createConstructor(const std::string &name,
   std::string initFnName = "__INIT_" + name + "_" + boost::lexical_cast<std::string>(proc.id);
 
   //-- if the variable is an input, assign it non-deterministically
-  if(isInput) {
+  if(!type->isVoid() && isInput) {
     Expr varExpr(new LvalExpr(name + "_" + boost::lexical_cast<std::string>(proc.id)));
     Expr ndfn = createNondetFunc(varExpr, type);
     Expr ndcall(new CallExpr(ndfn,ExprList()));
@@ -841,17 +879,17 @@ void dmpl::SyncSeqDbl::createInit()
       //-- if the next one is a record
       //SC: we are ignoring records for now. must fix this.
       else if(sortedRecs.find(i) != sortedRecs.end()) {
-        /*
         const Record &rec = sortedRecs[i];
+
+        if(rec->initFunc != NULL && !rec->initFunc->body.empty() &&
+           relevantFuncs[proc].find(rec->initFunc) != relevantFuncs[proc].end())
+          fnBody.push_back(createConstructor(rec->name + "_init", voidType(), false,
+                                             rec->initFunc, proc));
         
-        if(rec->initFunc != NULL && !rec->initFunc->body.empty())
-          buffer_ << "  initialize_" << rec->name << " ();\n";
-        
-        if(rec->assumeFunc != NULL && !rec->assumeFunc->body.empty())
-          buffer_ << "  if(!check_init_" << rec->name
-                  << " ()) throw std::runtime_error(\"ERROR: illegal initial value of record "
-                  << rec->name << "\");\n";
-        */
+        if(rec->assumeFunc != NULL && !rec->assumeFunc->body.empty() &&
+           relevantFuncs[proc].find(rec->assumeFunc) != relevantFuncs[proc].end())
+          fnBody.push_back(createConstructor(rec->name + "_assume", voidType(), true,
+                                             rec->assumeFunc, proc));
       }
     }
   }
@@ -957,9 +995,10 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
 {
   //-- go over each process
   for(const auto &pr : relevantThreads) {
-    //-- collect functions
+    //-- collect functions, but skip constructors
     FuncList funcs = { pr.second };
-    funcs.insert(funcs.end(), relevantFuncs[pr.first].begin(), relevantFuncs[pr.first].end());
+    for(const Func & f : relevantFuncs[pr.first])
+      if(!f->name.empty()) funcs.push_back(f);
 
     //-- process each function
     Node &node = pr.first.role->node;

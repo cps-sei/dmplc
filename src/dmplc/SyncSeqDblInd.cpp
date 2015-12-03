@@ -191,9 +191,10 @@ void dmpl::SyncSeqDblInd::createNodeFuncs()
 {
   //-- go over each process
   for(const auto &pr : relevantThreads) {
-    //-- collect functions
+    //-- collect functions, but skip constructors
     FuncList funcs = { pr.second };
-    funcs.insert(funcs.end(), relevantFuncs[pr.first].begin(), relevantFuncs[pr.first].end());
+    for(const Func & f : relevantFuncs[pr.first])
+      if(!f->name.empty()) funcs.push_back(f);
 
     //-- process each function
     Node &node = pr.first.role->node;
