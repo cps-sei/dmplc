@@ -771,8 +771,12 @@ dmpl::Stmt dmpl::SyncSeqDbl::createConstructor(const std::string &name,
                                                const Func &initFunc, const Process &proc)
 {
   Node &node = proc.role->node;
-  dmpl::VarList fnParams = initFunc->params,fnTemps;
-  for(const auto &v : initFunc->temps) fnTemps.push_back(v.second);
+  dmpl::VarList fnParams, fnTemps;
+
+  if(initFunc != NULL) {
+    fnParams = initFunc->params;
+    for(const auto &v : initFunc->temps) fnTemps.push_back(v.second);
+  }
   
   StmtList initFnBody;
   std::string initFnName = "__INIT_" + name + "_" + boost::lexical_cast<std::string>(proc.id);
@@ -786,16 +790,19 @@ dmpl::Stmt dmpl::SyncSeqDbl::createConstructor(const std::string &name,
   }
 
   //-- initialize _i version
-  BOOST_FOREACH(const Stmt &st,initFunc->body) {
-    syncseqdbl::NodeTransformer nt(*this,builder.program,proc,false,initFunc);
-    std::string nodeId = *node->args.begin();
-    nt.addIdMap(nodeId,proc.id);
-    nt.visit(st);
-    nt.delIdMap(nodeId);
-    initFnBody.push_back(nt.stmtMap[st]);
+  if(initFunc != NULL) {
+    BOOST_FOREACH(const Stmt &st,initFunc->body) {
+      syncseqdbl::NodeTransformer nt(*this,builder.program,proc,false,initFunc);
+      std::string nodeId = *node->args.begin();
+      nt.addIdMap(nodeId,proc.id);
+      nt.visit(st);
+      nt.delIdMap(nodeId);
+      initFnBody.push_back(nt.stmtMap[st]);
+    }
   }
   
-  Func func(new Function(initFunc->retType,initFnName,fnParams,fnTemps,initFnBody));
+  Func func(new Function(isInput ? intType() : voidType(), initFnName,
+                         fnParams, fnTemps, initFnBody));
   cprog.addFunction(func);
 
   //-- create a call to the function and return it
