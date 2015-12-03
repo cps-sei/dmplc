@@ -573,15 +573,14 @@ noexcept
 
   const T &set(const T& in, const Knowledge_Update_Settings &settings)
   {
+    data->dirty = true;
     if(!data->exist)
     {
       data->exist = true;
       data->create = true;
-      data->dirty = true;
       data->data = in;
     } else if(in != data->data)
     {
-      data->dirty = true;
       data->data = in;
     }
     return data->data;
