@@ -168,6 +168,8 @@ std::string role_name ("none");
 Reference<unsigned int> id(knowledge, ".id");
 Reference<unsigned int>  num_processes(knowledge, ".num_processes");
 engine::Knowledge_Update_Settings private_update (true);
+//-- used to synchronize and make sure that all nodes are up
+ArrayReference<unsigned int, 4> startSync(knowledge, "startSync");
 
 /********************************************************************/
 //-- barrier variables
@@ -1991,7 +1993,6 @@ int main (int argc, char ** argv)
   }
 
   settings.queue_length = 1000000;
-
   settings.set_deadline(1);
 
   //-- configure the knowledge base with the transport settings
@@ -2004,6 +2005,20 @@ int main (int argc, char ** argv)
     std::cerr << "ERROR: Invalid node id: " << settings.id 
               << "  valid range: [0, " << processes - 1 << "]" << std::endl;
     exit(1);
+  }
+
+  //-- Synchronize to make sure all nodes are up
+  {
+    Madara::Knowledge_Engine::Wait_Settings wait_settings;
+    knowledge.evaluate ("++startSync.{.id}", wait_settings);
+    for(;;) {
+      size_t flag = 1;
+      for(size_t i = 0;i < 4; ++i)
+        if(startSync[i] == 0) { flag = 0; break; }
+      if(flag) break;
+      sleep(0.2);
+    }
+    knowledge.evaluate ("++startSync.{.id}", wait_settings);
   }
 
   /******************************************************************/
