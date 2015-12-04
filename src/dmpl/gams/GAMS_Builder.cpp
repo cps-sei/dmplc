@@ -349,6 +349,11 @@ dmpl::gams::GAMS_Builder::build_common_global_variables ()
   buffer_ << "Reference<unsigned int>  num_processes(knowledge, \".num_processes\");\n";
   buffer_ << "engine::Knowledge_Update_Settings private_update (true);\n";
 
+  buffer_ << "//-- used to synchronize and make sure that all nodes are up\n";
+  buffer_ << "ArrayReference<unsigned int, ";
+  buffer_ << builder_.program.processes.size ();
+  buffer_ << "> startSync(knowledge, \"startSync\");\n";
+
   //-- define barrier variables for all synchronous threads
   build_comment("//-- barrier variables", "\n", "", 0);
 
@@ -2235,7 +2240,7 @@ dmpl::gams::GAMS_Builder::build_main_function ()
   buffer_ << "    settings.add_send_filter (Madara::Filters::log_aggregate);\n";
   buffer_ << "  }\n\n";
   
-  buffer_ << "  settings.queue_length = 1000000;\n\n";
+  buffer_ << "  settings.queue_length = 1000000;\n";
   buffer_ << "  settings.set_deadline(1);\n\n";
 
   buffer_ << "  //-- configure the knowledge base with the transport settings\n";
@@ -2249,6 +2254,20 @@ dmpl::gams::GAMS_Builder::build_main_function ()
   buffer_ << "    std::cerr << \"ERROR: Invalid node id: \" << settings.id \n"
              "              << \"  valid range: [0, \" << processes - 1 << \"]\" << std::endl;\n";
   buffer_ << "    exit(1);\n";
+  buffer_ << "  }\n\n";
+
+  buffer_ << "  //-- Synchronize to make sure all nodes are up\n";
+  buffer_ << "  {\n";
+  buffer_ << "    Madara::Knowledge_Engine::Wait_Settings wait_settings;\n";
+  buffer_ << "    knowledge.evaluate (\"++startSync.{.id}\", wait_settings);\n";
+  buffer_ << "    for(;;) {\n";
+  buffer_ << "      size_t flag = 1;\n";
+  buffer_ << "      for(size_t i = 0;i < " << builder_.program.processes.size () << "; ++i)\n";
+  buffer_ << "        if(startSync[i] == 0) { flag = 0; break; }\n";
+  buffer_ << "      if(flag) break;\n";
+  buffer_ << "      sleep(0.2);\n";
+  buffer_ << "    }\n";
+  buffer_ << "    knowledge.evaluate (\"++startSync.{.id}\", wait_settings);\n";
   buffer_ << "  }\n";
   
   build_constructors ();
