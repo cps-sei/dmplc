@@ -53,8 +53,8 @@
  * DM-0002494
 **/
 
-#ifndef _MADARA_STATELESS_HPP
-#define _MADARA_STATELESS_HPP
+#ifndef DMPL_STATELESS_HPP
+#define DMPL_STATELESS_HPP
 
 #include <utility>
 #include <memory>
@@ -65,11 +65,11 @@
 #include <sstream>
 #include <typeinfo>
 #include <exception>
-#include <madara/knowledge_engine/Thread_Safe_Context.h>
-#include <madara/knowledge_engine/Thread_Safe_Context.h>
-#include <madara/knowledge_engine/Knowledge_Update_Settings.h>
+#include <madara/knowledge_engine/ThreadSafeContext.h>
+#include <madara/knowledge_engine/ThreadSafeContext.h>
+#include <madara/knowledge_engine/KnowledgeUpdateSettings.h>
 #include "knowledge_cast.hpp"
-#include "Reference.hpp"
+#include "ReferenceBase.hpp"
 #include "StorageManager.hpp"
 
 #if __cplusplus >= 201103L
@@ -87,7 +87,7 @@
 namespace Madara
 {
 
-namespace Knowledge_Engine
+namespace KnowledgeEngine
 {
 
 namespace Containers
@@ -96,89 +96,169 @@ namespace Containers
 namespace StorageManager
 {
 
-using namespace ::Madara::Knowledge_Engine::Containers::__INTERNAL__;
 
-namespace __INTERNAL__
+namespace detail
 {
 
-template <unsigned int Size, unsigned int Dim>
+/**
+ * For internal use.
+ *
+ * For efficient storage of dimension sizes, staticly sized dimensions
+ * do not store any data at run-time
+ **/
+template <size_t Size, size_t Rank>
 class SizeManager
 {
 protected:
-  static const unsigned int dim = Dim;
-  static const unsigned int size = Size;
+  static const size_t rank_ = Rank;
+  static const size_t size_ = Size;
   SizeManager() {}
-  SizeManager(unsigned int s) { resize(s); }
-  void throw_error(unsigned int newSize)
+  SizeManager(size_t s) { resize(s); }
+  void throw_error(size_t newSize)
   {
     std::ostringstream err;
-    err << "Tried to resize dimension with static size " << size << " to size " << newSize << std::endl;
+    err << "Tried to resize dimension with static size " << size() <<
+           " to size " << newSize << std::endl;
     throw std::range_error(err.str());
   }
+
 public:
-  unsigned int get_size() const { return size; }
-  const unsigned int &get_size_ref() const { static unsigned int ref_size = Size; return ref_size; }
-  unsigned int get_num_dims() const { return dim; }
-  bool can_resize() const { return false; }
-  void resize(unsigned int newSize) {
-    if(newSize != 0 && newSize != size)
+  constexpr size_t size() const { return size_; }
+
+  constexpr size_t rank() const { return rank_; }
+
+  constexpr bool resizable() const { return false; }
+
+  void resize(size_t newSize) {
+    if(newSize != 0 && newSize != size())
       throw_error(newSize);
   }
-  bool check_bounds(unsigned int i) const
+
+  constexpr bool check_bounds(size_t i) const
   {
-    return i >= 0 && i < size;
+    return i >= 0 && i < size();
   }
 };
 
-template <unsigned int Dim>
-struct SizeManager<VAR_LEN, Dim>
+/**
+ * For internal use.
+ *
+ * Specialization for VAR_LEN dimensions, that stores the actual run-time size
+ * of the array.
+ **/
+template <size_t Rank>
+struct SizeManager<VAR_LEN, Rank>
 {
 protected:
-  static const unsigned int dim = Dim;
-  unsigned int size;
-  SizeManager() : size(VAR_LEN) {}
-  SizeManager(unsigned int s) : size(s > 0 ? s : VAR_LEN) {}
+  static const size_t rank_ = Rank;
+#ifdef USE_ATOMIC
+  std::atomic<size_t> size_;
+#else
+  size_t size_;
+#endif
+  SizeManager() : size_(VAR_LEN) {}
+  SizeManager(size_t s) : size_(s > 0 ? s : VAR_LEN) {}
+#ifdef USE_ATOMIC
+  /* No copy constructor for std::atomic<T>; must define these manually */
+  SizeManager(const SizeManager &o) : size_(o.size()) {}
+  SizeManager *operator=(const SizeManager &o)
+  {
+    resize(o.size());
+  }
+#endif
+
 public:
-  unsigned int get_size() const { return size; }
-  const unsigned int &get_size_ref() const { return size; }
-  unsigned int get_num_dims() const { return dim; }
-  bool can_resize() const { return true; }
-  void resize(unsigned int new_size) {
+  constexpr size_t rank() const { return rank_; }
+
+  constexpr bool resizable() const { return true; }
+
+  constexpr bool check_bounds(size_t i) const
+  {
+    return i >= 0 && i < size();
+  }
+
+#ifdef USE_ATOMIC
+  constexpr size_t size() const
+  {
+    return size_.load(std::memory_order_acquire);
+  }
+
+  void resize(size_t new_size) {
     if(new_size > 0)
-      size = new_size;
+      size_.store(new_size, std::memory_order_release);
   }
-  bool check_bounds(unsigned int i) const
-  {
-    return i >= 0 && i < size;
+#else
+  constexpr size_t size() const { return size_; }
+
+  void resize(size_t new_size) {
+    if(new_size > 0)
+      size_ = new_size;
   }
+#endif
 };
 
-template <unsigned int Size, unsigned int Dim>
-struct SizeManagerReference : protected SizeManager<Size, Dim>
+/**
+ * For internal use.
+ *
+ * For staticly sized arrays, we don't actually need to store any information
+ * in the IndexedArrayReference.
+ **/
+template <size_t Size, size_t Rank>
+struct IndexSizeManager : protected SizeManager<Size, Rank>
 {
 public:
-  SizeManager<Size, Dim> &get_size_manager()
+  SizeManager<Size, Rank> &size_manager()
   {
-    return static_cast<SizeManager<Size, Dim>&>(*this);
+    return static_cast<SizeManager<Size, Rank>&>(*this);
   }
-  const SizeManager<Size, Dim> &get_size_manager() const
+  constexpr const SizeManager<Size, Rank> &size_manager() const
   {
-    return static_cast<const SizeManager<Size, Dim>&>(*this);
+    return static_cast<const SizeManager<Size, Rank>&>(*this);
   }
-  SizeManagerReference(SizeManager<Size, Dim> &sm) {}
-};
 
-template<unsigned int Dim>
-struct SizeManagerReference<VAR_LEN, Dim>
-{
 protected:
-  SizeManager<VAR_LEN, Dim> &size_manager;
-public:
-  SizeManager<VAR_LEN, Dim> &get_size_manager() { return size_manager; }
-  const SizeManager<VAR_LEN, Dim> &get_size_manager() const { return size_manager; }
-  SizeManagerReference(SizeManager<VAR_LEN, Dim> &sm) : size_manager(sm) {}
+  IndexSizeManager(SizeManager<Size, Rank> &sm) {}
 };
 
+/**
+ * For internal use.
+ *
+ * Specialization for VAR_LEN dimensions, which stores a reference to the
+ * corresponding SizeManager stored for this dimension in the ArrayReference
+ **/
+template<size_t Rank>
+struct IndexSizeManager<VAR_LEN, Rank>
+{
+public:
+  SizeManager<VAR_LEN, Rank> &size_manager() { return size_manager_; }
+
+  constexpr const SizeManager<VAR_LEN, Rank> &size_manager() const
+  {
+    return size_manager_;
+  }
+
+protected:
+  IndexSizeManager(SizeManager<VAR_LEN, Rank> &sm) : size_manager_(sm) {}
+
+  SizeManager<VAR_LEN, Rank> &size_manager_;
+};
+
+/**
+ * Default storage manager for ArrayReference, used when Lazy or Proactive
+ * aren't specified.
+ *
+ * For internal use, do not use directly. E.g., this type:
+ *
+ * ArrayReference<detail::Stateless<int>, 3, 4, 5>
+ *
+ * is distinct from:
+ *
+ * ArrayReference<int, 3, 4, 5>
+ *
+ * in certain confusing and unnecessary ways. Do not use the former.
+ *
+ * For semantics of this storage manager, see ArrayReference documentation
+ **/
 template <typename T>
 struct Stateless
 {
@@ -191,27 +271,27 @@ struct Stateless
   template <typename X>
   class RefBaseMixin;
 
-  template<typename A, unsigned int Size, unsigned int Dims>
-  class DimensionMixin : protected SizeManager<Size, Dims>
+  template<typename A, size_t Size, size_t Rank>
+  class DimensionMixin : protected SizeManager<Size, Rank>
   {
   protected:
-    typedef SizeManager<Size, Dims> size_mgr;
+    typedef SizeManager<Size, Rank> size_mgr_;
 
-    size_mgr &get_size_mgr()
+    size_mgr_ &size_mgr()
     {
-      return static_cast<size_mgr &>(*this);
+      return static_cast<size_mgr_ &>(*this);
     }
 
-    const size_mgr &get_size_mgr() const
+    constexpr const size_mgr_ &size_mgr() const
     {
-      return static_cast<const size_mgr &>(*this);
+      return static_cast<const size_mgr_ &>(*this);
     }
   public:
     typedef A array_type;
     typedef T data_type;
 
     template <typename X>
-    friend class ArrayReferenceReference;
+    friend class IndexedArrayReference;
 
     friend class identity<A>::type;
 
@@ -224,32 +304,32 @@ struct Stateless
     template <typename X>
     friend class RefBaseMixin;
 
-    DimensionMixin(A &a, unsigned int i0 = 0)
-      : size_mgr(i0) { }
+    DimensionMixin(A &a, size_t i0 = 0)
+      : size_mgr_(i0) { }
 
-    bool check_bounds(unsigned int i) const
+    constexpr bool check_bounds(size_t i) const
     {
-      return this->get_size_mgr().check_bounds(i);
+      return this->size_mgr().check_bounds(i);
     }
 
-    unsigned int get_size() const
+    constexpr size_t size() const
     {
-      return this->get_size_mgr().get_size();
+      return this->size_mgr().size();
     }
 
-    unsigned int get_num_dims() const
+    constexpr size_t rank() const
     {
-      return this->get_size_mgr().get_num_dims();
+      return this->size_mgr().rank();
     }
 
-    bool can_resize() const
+    constexpr bool resizable() const
     {
-      return this->get_size_mgr().can_resize();
+      return this->size_mgr().resizable();
     }
 
-    void resize(unsigned int i)
+    void resize(size_t i)
     {
-      return this->get_size_mgr().resize(i);
+      return this->size_mgr().resize(i);
     }
   };
 
@@ -258,21 +338,21 @@ struct Stateless
       protected SizeManager<1, 0>
   {
   protected:
-    typedef SizeManager<1, 0> size_mgr;
+    typedef SizeManager<1, 0> size_mgr_;
 
-    size_mgr &get_size_mgr()
+    size_mgr_ &size_mgr()
     {
-      return static_cast<size_mgr &>(*this);
+      return static_cast<size_mgr_ &>(*this);
     }
 
-    const size_mgr &get_size_mgr() const
+    constexpr const size_mgr_ &size_mgr() const
     {
-      return static_cast<const size_mgr &>(*this);
+      return static_cast<const size_mgr_ &>(*this);
     }
 
   public:
     template <typename X>
-    friend class ArrayReferenceReference;
+    friend class IndexedArrayReference;
 
     friend class identity<A>::type;
 
@@ -289,17 +369,17 @@ struct Stateless
     {
     }
 
-    unsigned int get_size() const
+    constexpr size_t size() const
     {
       return 1;
     }
 
-    unsigned int get_num_dims() const
+    constexpr size_t rank() const
     {
       return 0;
     }
 
-    bool can_resize() const
+    constexpr bool resizable() const
     {
       return false;
     }
@@ -307,20 +387,20 @@ struct Stateless
 
   template<typename A>
   class RefDimensionMixin
-    : public SizeManagerReference<A::static_size, A::dims>
+    : public IndexSizeManager<A::static_size, A::static_rank>
   {
   protected:
-    typedef SizeManagerReference<A::static_size, A::dims> size_mgr_ref;
-    typedef SizeManager<A::static_size, A::dims> size_mgr;
+    typedef IndexSizeManager<A::static_size, A::static_rank> size_mgr_ref;
+    typedef SizeManager<A::static_size, A::static_rank> size_mgr_;
 
-    size_mgr &get_size_mgr()
+    size_mgr_ &size_mgr()
     {
-      return static_cast<size_mgr_ref &>(*this).get_size_manager();
+      return static_cast<size_mgr_ref &>(*this).size_manager();
     }
 
-    const size_mgr &get_size_mgr() const
+    const size_mgr_ &size_mgr() const
     {
-      return static_cast<const size_mgr_ref &>(*this).get_size_manager();
+      return static_cast<const size_mgr_ref &>(*this).size_manager();
     }
   public:
     typedef A array_type;
@@ -328,73 +408,77 @@ struct Stateless
     typedef typename array_type::value_type value_type;
 
     template <typename X>
-    friend class ArrayReferenceReference;
+    friend class IndexedArrayReference;
 
     friend class identity<A>::type;
-
-    //template <typename X>
-    //friend class ArrayReference_0;
 
     reference_type &get_reference()
     {
       return static_cast<reference_type&>(*this);
     }
 
-    const reference_type &get_reference() const
+    constexpr const reference_type &get_reference() const
     {
       return static_cast<reference_type&>(*this);
     }
 
-    void append_index(unsigned int i)
+    void append_index(size_t i)
     {
-      //std::cerr << "dim append_index " << i << std::endl;
       this->get_reference().get_sub_type().append_index(i);
     }
 
-    bool check_bounds(unsigned int i) const
+    constexpr bool check_bounds(size_t i) const
     {
-      return this->get_size_mgr().check_bounds(i);
+      return this->size_mgr().check_bounds(i);
     }
 
-    unsigned int get_size() const
+    constexpr size_t size() const
     {
-      return this->get_size_mgr().get_size();
+      return this->size_mgr().size();
     }
 
-    unsigned int get_num_dims() const
+    constexpr size_t rank() const
     {
-      return this->get_size_mgr().get_num_dims();
+      return this->size_mgr().rank();
     }
 
-    bool can_resize() const
+    constexpr bool resizable() const
     {
-      return this->get_size_mgr().can_resize();
+      return this->size_mgr().resizable();
     }
 
-    RefDimensionMixin(A& a) : size_mgr_ref(a.template get_storage_mixin<0>().template get_size_mgr()) {}
+    void resize(size_t new_size)
+    {
+      this->size_mgr().resize(new_size);
+    }
+
+    RefDimensionMixin(A& a)
+      : size_mgr_ref(a.template get_storage_mixin<0>().template size_mgr())
+      {}
   };
 
   template<typename A>
   class RefBaseMixin
-    : public BaseReference<T, RefBaseMixin<A> >,
+    : public ReferenceBase<T, RefBaseMixin<A> >,
       public SizeManager<1, 0>
   {
   protected:
-    typedef BaseReference<T, RefBaseMixin<A> > container_type;
-    typedef SizeManager<1, 0> size_mgr;
+    typedef ReferenceBase<T, RefBaseMixin<A> > container_type;
+    typedef SizeManager<1, 0> size_mgr_;
 
-    size_mgr &get_size_mgr()
+    size_mgr_ &size_mgr()
     {
-      return static_cast<size_mgr &>(*this);
+      return static_cast<size_mgr_ &>(*this);
     }
 
-    const size_mgr &get_size_mgr() const
+    constexpr const size_mgr_ &size_mgr() const
     {
-      return static_cast<const size_mgr &>(*this);
+      return static_cast<const size_mgr_ &>(*this);
     }
   public:
-    typedef typename ArrayReference_0<typename A::storage_specifier>::type base_array_type;
-    typedef ArrayReferenceReference<base_array_type> element_reference_type;
+    typedef typename A::storage_specifier storage_specifier;
+    typedef typename ArrayReference_0<storage_specifier>::type base_array_type;
+    typedef IndexedArrayReference<base_array_type> element_reference_type;
 #ifdef USE_RVAL_REF
     typedef element_reference_type &&element_rvalue_type;
 #endif
@@ -404,32 +488,27 @@ struct Stateless
       return static_cast<element_reference_type &>(*this);
     }
 
-    const element_reference_type &get_parent() const
+    constexpr const element_reference_type &get_parent() const
     {
       return static_cast<const element_reference_type &>(*this);
     }
 
-    base_array_type &get_array() const
+    constexpr base_array_type &get_array() const
     {
       return get_parent().array;
     }
   public:
-    
-
     using container_type::operator=;
 
     template <typename X>
-    friend class ArrayReferenceReference;
+    friend class IndexedArrayReference;
 
     friend class identity<A>::type;
 
     friend class identity<typename ArrayReference_0<this_type>::type >::type;
 
   protected:
-    element_reference_type dereference()
-#ifdef USE_RVAL_REF
-    &
-#endif
+    element_reference_type dereference() LVAL_REF
     {
       return static_cast<element_reference_type &>(*this);
     }
@@ -442,122 +521,100 @@ struct Stateless
 #endif
 
   public:
-    const T &operator=(const RefBaseMixin &o)
+    RefBaseMixin &operator=(const RefBaseMixin &o)
     {
-      return set(o);
+      this->set(o.get());
+      return *this;
     }
-
-    void mark_modified()
-    {
-      //std::cerr << "Ref mark_modified " << this->get_name() << std::endl;
-
-      const Knowledge_Update_Settings &settings = this->get_settings_cref();
-      //Knowledge_Record *rec = this->get_context().get_record(this->get_name(), settings);
-      //std::cerr << "Value: " << rec->to_integer() << std::endl;
-      //std::cerr << "Size: " << rec->size() << std::endl;
-      Variable_Reference ref = this->get_context().get_ref(this->get_name(), settings);
-      //std::cerr << "Value: " << this->get_context().get(ref, settings) << std::endl;
-      //this->get_context().mark_modified(ref);
-      this->get_context().set(ref, this->get_context().get(ref,settings));
-    }
-
-    Thread_Safe_Context &get_context() const
-    {
-      return get_array().get_context();
-    }
-
-    /// Returns previous settings
-    /*
-    Knowledge_Update_Settings *set_settings(Knowledge_Update_Settings *new_settings)
-    {
-      return get_array().set_settings(new_settings);
-      Knowledge_Update_Settings *old_settings = settings;
-      settings = new_settings;
-      return old_settings;
-    }*/
-
-    Knowledge_Update_Settings *get_settings() const
-    {
-      return get_array().get_settings();
-    }
-
-    const Knowledge_Update_Settings &get_settings_cref() const
-    {
-      return get_array().get_settings_cref();
-    }
-
-    Knowledge_Record get_knowledge_record() const {
-      return this->get_context().get(this->get_name(), this->get_settings_cref());
-    }
-
-    T get() const
-    {
-      return knowledge_cast<T>(get_knowledge_record());
-    }
-
-    const Knowledge_Record &set_knowledge_record(const Knowledge_Record &in, const Knowledge_Update_Settings &settings)
-    {
-      this->get_context().set(this->get_name(), in, settings);
-      return in;
-    }
-
-    const T &set(const T& in, const Knowledge_Update_Settings &settings)
-    {
-      set_knowledge_record(knowledge_cast(in), settings);
-      return in;
-    }
-
-    using container_type::set;
-    using container_type::set_knowledge_record;
 
 #ifdef USE_RVAL_REF
     std::unique_ptr<std::ostringstream> name_str;
-#else
-    std::auto_ptr<std::ostringstream> name_str;
-#endif
 
     RefBaseMixin(const A &a)
-      : size_mgr(a.template get_storage_mixin<0>().get_size_mgr()),
+      : size_mgr_(a.template get_storage_mixin().size_mgr()),
         name_str(new std::ostringstream())
     {
       *name_str << a.get_name();
     }
 
     RefBaseMixin(const RefBaseMixin<A> &o)
-      : size_mgr(o.get_size_mgr()),
+      : size_mgr_(o.size_mgr()),
         name_str(new std::ostringstream())
     {
       *name_str << o.name_str->str();
     }
 
-#ifdef USE_RVAL_REF
     RefBaseMixin(RefBaseMixin<A> &&o)
-      : size_mgr(o.get_size_mgr()),
+      : size_mgr_(o.size_mgr()),
         name_str(std::move(o.name_str)) { }
-#endif
 
-    std::string get_name() const
+  protected:
+    std::string do_get_name() const
     {
       return name_str->str();
     }
 
-    void append_index(unsigned int i)
+    void append_index(size_t i)
     {
-      //std::cerr << "base append_index " << i << std::endl;
       *name_str << "." << i;
     }
+#else
+    std::ostringstream name_str;
+
+    RefBaseMixin(const A &a)
+      : size_mgr_(a.template get_storage_mixin<0>().size_mgr()),
+        name_str()
+    {
+      name_str << a.get_name();
+    }
+
+    RefBaseMixin(const RefBaseMixin<A> &o)
+      : size_mgr_(o.size_mgr()),
+        name_str()
+    {
+      name_str << o.name_str.str();
+    }
+
+  protected:
+    std::string do_get_name() const
+    {
+      return name_str.str();
+    }
+
+    void append_index(size_t i)
+    {
+      name_str << "." << i;
+    }
+#endif
+
+    ThreadSafeContext &do_get_context() const
+    {
+      return get_array().get_context();
+    }
+
+    KnowledgeUpdateSettings *do_get_settings() const
+    {
+      return get_array().get_settings();
+    }
+
+    const KnowledgeUpdateSettings &do_get_settings_cref() const
+    {
+      return get_array().get_settings_cref();
+    }
+
+    friend class detail::identity<container_type>::type;
   };
 };
 
-} // End __INTERNAL__
-
 template <typename T>
-struct get_sm_info<__INTERNAL__::Stateless<T> >
+struct get_sm_info<detail::Stateless<T> >
 {
-  typedef __INTERNAL__::Stateless<T> sm_type;
+  typedef detail::Stateless<T> sm_type;
   typedef T data_type;
   typedef T storage_type;
 };
+
+} // End detail namespace
 
 }
 

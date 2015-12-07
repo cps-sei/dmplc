@@ -53,8 +53,8 @@
  * DM-0002494
 **/
 
-#ifndef _MADARA_PROACTIVE_HPP
-#define _MADARA_PROACTIVE_HPP
+#ifndef DMPL_PROACTIVE_HPP
+#define DMPL_PROACTIVE_HPP
 
 #include <utility>
 #include <memory>
@@ -65,9 +65,9 @@
 #include <sstream>
 #include <typeinfo>
 #include <exception>
-#include <madara/knowledge_engine/Thread_Safe_Context.h>
-#include <madara/knowledge_engine/Thread_Safe_Context.h>
-#include <madara/knowledge_engine/Knowledge_Update_Settings.h>
+#include <madara/knowledge_engine/ThreadSafeContext.h>
+#include <madara/knowledge_engine/ThreadSafeContext.h>
+#include <madara/knowledge_engine/KnowledgeUpdateSettings.h>
 #include "knowledge_cast.hpp"
 #include "Reference.hpp"
 #include "StorageManager.hpp"
@@ -87,7 +87,7 @@
 namespace Madara
 {
 
-namespace Knowledge_Engine
+namespace KnowledgeEngine
 {
 
 namespace Containers
@@ -96,46 +96,47 @@ namespace Containers
 namespace StorageManager
 {
 
-using namespace ::Madara::Knowledge_Engine::Containers::__INTERNAL__;
+namespace detail
+{
+using namespace ::Madara::KnowledgeEngine::Containers::detail;
+}
 
-template <typename T, typename S>
+template <typename T, template<typename X> class S = Reference>
 struct Proactive
 {
   typedef Proactive<T, S> this_type;
   typedef T data_type;
-  typedef S storage_type;
+  typedef S<T> storage_type;
 
   template<typename A>
   class BaseMixin
   {
   public:
 #ifdef USE_UNIQUE_PTR
-    typedef std::unique_ptr<S> ptr_type;
+    typedef std::unique_ptr<storage_type> ptr_type;
 #else
-    typedef S *ptr_type;
+    typedef storage_type *ptr_type;
 #endif
-    typedef std::vector<S> vector_type;
-    typedef std::vector<unsigned int> dim_sizes_t;
+    typedef std::vector<storage_type> vector_type;
+    typedef std::vector<size_t> dim_sizes_t;
     dim_sizes_t dim_sizes;
     vector_type stored_data;
 
     template <typename X>
-    friend class ArrayReferenceReference;
-
-    //template <typename X>
-    //friend class identity<typename ArrayReference_0<X>::type >::type;
+    friend class detail::IndexedArrayReference;
 
     BaseMixin(A &a) { }
 
     BaseMixin(const BaseMixin &o) : dim_sizes(o.dim_sizes)
     {
-      for(typename vector_type::iterator it = stored_data.begin(); it != stored_data.end(); ++it)
+      for(typename vector_type::iterator it = stored_data.begin();
+          it != stored_data.end(); ++it)
       {
         stored_data.push_back(*it);
       }
     }
 
-    bool inc_index(std::vector<unsigned int> &index)
+    bool inc_index(std::vector<size_t> &index)
     {
       for(int i = 0; i < index.size(); ++i)
       {
@@ -157,19 +158,20 @@ struct Proactive
       return static_cast<const A&>(*this).A::get_name();
     }
 
-    /** Clears any existing storage, and recreates references to all array elements.
+    /**
+     * Clears any existing storage, and recreates references to all array
+     * elements.
      */
     void init_storage()
     {
       stored_data.clear();
-      unsigned int total_size = 1;
+      size_t total_size = 1;
       for(int i = dim_sizes.size() - 1; i >= 0; --i)
       {
-        //std::cerr << "dimension " << i << " == " << dim_sizes[i] << std::endl;
         total_size *= dim_sizes[i];
       }
       stored_data.reserve(total_size);
-      std::vector<unsigned int> cur_index(dim_sizes.size());
+      std::vector<size_t> cur_index(dim_sizes.size());
       A &base = static_cast<A&>(*this);
       do
       {
@@ -181,9 +183,13 @@ struct Proactive
         }
         //std::cerr << "Making reference to " << str.str() << std::endl;
 #ifdef USE_EMPLACE
-        stored_data.emplace_back(base.get_context(), base.get_settings(), str.str());
+        stored_data.emplace_back(base.get_context(),
+                                 base.get_settings(),
+                                 str.str());
 #else
-        stored_data.push_back(storage_type(base.get_context(), base.get_settings(), str.str()));
+        stored_data.push_back(storage_type(base.get_context(),
+                                           base.get_settings(),
+                                           str.str()));
 #endif
       }
       while(inc_index(cur_index));
@@ -191,106 +197,106 @@ struct Proactive
 
 #ifdef USE_RVAL_REF
     BaseMixin(BaseMixin &&o)
-      : dim_sizes(std::move(o.dim_sizes)), stored_data(std::move(o.stored_data)) {}
+      : dim_sizes(std::move(o.dim_sizes)),
+        stored_data(std::move(o.stored_data)) {}
 #endif
 
-    unsigned int get_size() const
+    constexpr size_t size() const
     {
       return 1;
     }
 
-    unsigned int get_num_dims() const
+    constexpr size_t rank() const
     {
       return 0;
     }
 
-    bool can_resize() const
+    constexpr bool resizable() const
     {
       return false;
     }
   };
 
-  template<typename A, unsigned int Size, unsigned int Dims>
+  template<typename A, size_t Size, size_t Rank>
   class DimensionMixin
   {
   public:
     typedef A array_type;
 
-    static const unsigned int static_size = Size;
-    static const unsigned int num_dims = Dims;
+    static const size_t static_size = Size;
+    static const size_t static_rank = Rank;
 
-    typedef typename ArrayReference_0<this_type>::type base_type;
+    typedef typename detail::ArrayReference_0<this_type>::type base_type;
     typedef BaseMixin<base_type> base_mixin;
 
     template <typename X>
-    friend class ArrayReferenceReference;
-
-    //friend class identity<A>::type;
-
-    //template <typename X>
-    //friend class identity<typename ArrayReference_0<X>::type >::type;
+    friend class detail::IndexedArrayReference;
 
     base_mixin &get_base_mixin()
     {
-      return static_cast<base_mixin &>(static_cast<base_type &>(static_cast<A &>(*this)));
+      return static_cast<base_mixin &>(
+        static_cast<base_type &>(static_cast<A &>(*this)));
     }
 
-    const base_mixin &get_base_mixin() const
+    constexpr const base_mixin &get_base_mixin() const
     {
-      return static_cast<const base_mixin &>(static_cast<const base_type &>(static_cast<const A &>(*this)));
+      return static_cast<const base_mixin &>(
+        static_cast<const base_type &>(static_cast<const A &>(*this)));
     }
 
   private:
-    void size_sanity(unsigned int newSize)
+    void size_sanity(size_t newSize)
     {
       if(static_size != VAR_LEN && (newSize != 0 && newSize != static_size))
       {
         std::ostringstream err;
-        err << "Tried to resize dimension with static size " << static_size << " to size " << newSize << std::endl;
+        err << "Tried to resize dimension with static size " << static_size <<
+               " to size " << newSize << std::endl;
         throw std::range_error(err.str());
       }
     }
 
   public:
-    void resize(unsigned int i)
+    void resize(size_t i)
     {
-      if(i != get_size())
+      if(i != size())
       {
         size_sanity(i);
-        get_base_mixin().dims_size[num_dims - 1] = i;
+        get_base_mixin().dim_sizes[static_rank - 1] = i;
 
-        // TODO: instead of throwing out all existing storage and re-initializing everything,
-        //       keep existing storage, only initialize new ones.
+        // TODO: instead of throwing out all existing storage and
+        //       re-initializing everything, keep existing storage,
+        //       only initialize new ones.
         get_base_mixin().init_storage();
       }
     }
 
-    unsigned int get_size() const
+    size_t size() const
     {
-      return static_size == VAR_LEN ? get_base_mixin().dim_sizes[num_dims - 1] : static_size;
+      return static_size == VAR_LEN ?
+        get_base_mixin().dim_sizes[static_rank - 1] : static_size;
     }
 
-    bool check_bounds(unsigned int i) const
+    constexpr bool check_bounds(size_t i) const
     {
-      return i >= 0 && i < get_size();
+      return i >= 0 && i < size();
     }
 
-    unsigned int get_num_dims() const
+    constexpr size_t rank() const
     {
-      return num_dims;
+      return static_rank;
     }
 
-    bool can_resize() const
+    constexpr bool resizable() const
     {
       return static_size == VAR_LEN;
     }
 
   public:
-    DimensionMixin(A &a, unsigned int i0 = 0)
+    DimensionMixin(A &a, size_t i0 = 0)
     {
       size_sanity(i0);
-      unsigned int s = (i0 == 0 ? static_size : i0);
-      //std::cerr << "Adding dimension size " << s << std::endl;
+      size_t s = (i0 == 0 ? static_size : i0);
       a.dim_sizes.push_back(s);
     }
   };
@@ -300,8 +306,8 @@ struct Proactive
   {
   public:
     typedef A array_type;
-    static const unsigned int static_size = A::static_size;
-    static const unsigned int num_dims = A::dims;
+    static const size_t static_size = A::static_size;
+    static const size_t static_rank = A::static_rank;
     typedef typename array_type::base_type array_base_type;
     typedef typename array_type::reference_type reference_type;
     typedef typename array_type::base_reference_type base_reference_type;
@@ -309,19 +315,14 @@ struct Proactive
     typedef BaseMixin<array_base_type> base_mixin;
 
     template <typename X>
-    friend class ArrayReferenceReference;
-
-    //friend class identity<A>::type;
-
-    //template <typename X>
-    //friend class identity<typename ArrayReference_0<X>::type >::type;
+    friend class detail::IndexedArrayReference;
 
     reference_type &get_reference()
     {
       return static_cast<reference_type&>(*this);
     }
 
-    const reference_type &get_reference() const
+    constexpr const reference_type &get_reference() const
     {
       return static_cast<const reference_type&>(*this);
     }
@@ -331,7 +332,7 @@ struct Proactive
       return static_cast<base_reference_type&>(get_reference());
     }
 
-    const base_reference_type &get_base_reference() const
+    constexpr const base_reference_type &get_base_reference() const
     {
       return static_cast<const base_reference_type&>(get_reference());
     }
@@ -341,41 +342,44 @@ struct Proactive
       return get_base_reference().base_mixin;
     }
 
-    const base_mixin &get_base_mixin() const
+    constexpr const base_mixin &get_base_mixin() const
     {
       return get_base_reference().base_mixin;
     }
 
-    unsigned int get_size() const
+    size_t size() const
     {
-      return static_size == VAR_LEN ? get_base_mixin().dim_sizes[num_dims - 1] : static_size;
+      return static_size == VAR_LEN ?
+        get_base_mixin().dim_sizes[static_rank - 1] : static_size;
     }
 
-    void append_index(unsigned int i)
+    void append_index(size_t i)
     {
-      //std::cerr << "append_index: " << this->get_reference().offset << " += " <<
-      //  i << " * " << this->get_reference().get_multiplier() << 
-      //  "  num_dims: " << this->get_reference().get_size_mgr().get_num_dims() << std::endl;
-      
-      unsigned int mult = this->get_reference().get_multiplier();
+      size_t mult = this->get_reference().get_multiplier();
       if(mult == VAR_LEN)
-        throw std::range_error("Proactive storage manager does not support unbounded VAR_LEN dimensions.");
+        throw std::range_error("Proactive storage manager does not support" \
+                               "unbounded VAR_LEN dimensions.");
       this->get_reference().offset += i * mult;
     }
 
-    unsigned int get_num_dims() const
+    constexpr size_t rank() const
     {
-      return num_dims;
+      return static_rank;
     }
 
-    bool can_resize() const
+    constexpr bool resizable() const
     {
       return static_size == VAR_LEN;
     }
 
-    bool check_bounds(unsigned int i) const
+    bool check_bounds(size_t i) const
     {
-      return i >= 0 && i < get_size();
+      return i >= 0 && i < size();
+    }
+
+    void resize(size_t new_size)
+    {
+      get_reference().get_array().resize>(new_size);
     }
 
     RefDimensionMixin(A& a) {}
@@ -387,24 +391,21 @@ struct Proactive
   public:
     typedef storage_type  &element_reference_type;
 #ifdef USE_RVAL_REF
-    typedef storage_type  &&element_rvalue_type;
+    typedef storage_type  &element_rvalue_type;
 #endif
 
-    typedef typename ArrayReference_0<typename A::storage_specifier>::type base_array_type;
-    typedef ArrayReferenceReference<base_array_type> base_ref_type;
+    typedef typename A::storage_specifier storage_specifier;
+    typedef typename
+      detail::ArrayReference_0<storage_specifier>::type base_array_type;
+    typedef detail::IndexedArrayReference<base_array_type> base_ref_type;
 
     typedef typename BaseMixin<A>::ptr_type ptr_type;
 
     BaseMixin<A> &base_mixin;
-    unsigned int offset;
+    size_t offset;
 
     template <typename X>
-    friend class ArrayReferenceReference;
-
-    //friend class identity<A>::type;
-
-    //template <typename X>
-    //friend class identity<typename ArrayReference_0<X>::type >::type;
+    friend class detail::IndexedArrayReference;
 
     RefBaseMixin(A &a)
       : base_mixin(static_cast<BaseMixin<A> &>(a)), offset(0)
@@ -442,88 +443,48 @@ struct Proactive
     {
       std::ostringstream ret;
       ret << base_mixin.get_array_name();
-      unsigned int o = offset;
-      for(typename BaseMixin<A>::dim_sizes_t::const_reverse_iterator it = base_mixin.dim_sizes.rbegin(); it != base_mixin.dim_sizes.rend(); ++it)
+      size_t o = offset;
+      for(typename BaseMixin<A>::dim_sizes_t::const_reverse_iterator
+            it = base_mixin.dim_sizes.rbegin();
+          it != base_mixin.dim_sizes.rend(); ++it)
       {
-        unsigned int mult = 1;
+        size_t mult = 1;
         typename BaseMixin<A>::dim_sizes_t::const_reverse_iterator it2 = it;
         ++it2;
         for(; it2 != base_mixin.dim_sizes.rend(); ++it2)
         {
           if(*it == VAR_LEN)
-            throw std::runtime_error("Proactive storage manager does not support unbound VAR_LEN dimensions, other than the first dimension.");
+            throw std::runtime_error("Proactive storage manager does not " \
+                                     "support unbound VAR_LEN dimensions, " \
+                                     "other than the first dimension.");
           mult *= *it2;
         }
         ret << "." << o / mult;
         o %= mult;
       }
-      //std::cerr << "getting name: " << ret.str() << " from offset " << offset << std::endl;
       return ret.str();
     }
 
-    void append_index(unsigned int i)
+    void append_index(size_t i)
     {
     }
   };
 };
 
-#if 0
-template <typename T, typename S>
-struct Proactive
+namespace detail
 {
-  typedef T data_type;
-  typedef S storage_type;
 
-  template<typename A>
-  class DimensionMixin
+  template <typename T, template<typename X> class S>
+  struct get_sm_info<Proactive<T,S> >
   {
-  };
-
-  template<typename A>
-  class BaseMixin
-  {
-  public:
+    typedef Proactive<T,S> sm_type;
     typedef T data_type;
-    typedef S storage_type;
-    typedef storage_type getter_type;
-    typedef std::vector<T> vector_type;
-    vector_type stored_data;
+    typedef S<T> storage_type;
   };
-
-  template<typename A>
-  class RefDimensionMixin
-  {
-  public:
-  };
-
-  template<typename A>
-  class RefBaseMixin
-  {
-  public:
-  };
-};
-#endif
-
-template <typename T, typename S>
-struct get_sm_info<Proactive<T,S> >
-{
-  typedef Proactive<T,S> sm_type;
-  typedef T data_type;
-  typedef S storage_type;
-};
-
-#if 0
-template <typename T, typename S>
-struct get_sm_info<Proactive<T,S> >
-{
-  typedef Proactive<T,S> sm_type;
-  typedef T data_type;
-  typedef S storage_type;
-};
-#endif
 
 }
 
+}
 }
 }
 }

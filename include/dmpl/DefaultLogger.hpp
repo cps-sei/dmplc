@@ -2,7 +2,7 @@
 #define _MADARA_LOGGER_DEFAULT_LOGGER_H_
 
 #include <madara/logger/Logger.h>
-#include <madara/logger/Global_Logger.h>
+#include <madara/logger/GlobalLogger.h>
 
 /**
  * Fast version of the Madara::Logger::log method, on default_logger. This
