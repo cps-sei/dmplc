@@ -169,9 +169,11 @@ public:
     return get_impl()->do_get();
   }
 
+#ifndef USE_CPP11
   operator T() const {
     return get();
   }
+#endif
 
   bool exists() const
   {
@@ -306,12 +308,6 @@ protected:
   }
 
 public:
-#ifdef USE_CPP11
-  explicit operator bool() const
-  {
-    return is_true();
-  }
-#endif
   bool is_false() const
   {
     return this->get_impl()->do_is_false();
@@ -469,25 +465,44 @@ DMPL_CREATE_FREE_UNARY_OP(-);
 DMPL_CREATE_FREE_UNARY_OP(~);
 
 #ifdef USE_DECLTYPE
+namespace detail
+{
+  template<typename T>
+  struct has_get
+  {
+    typedef char Yes;
+    typedef struct{ Yes x[2]; } No;
+
+    template<typename R>
+    static auto test(void *) -> decltype(std::declval<R>().get(), Yes{});
+
+    template<typename R>
+    static auto test(...) -> No;
+
+    static const bool value = (sizeof(test<T>(nullptr)) == sizeof(Yes));
+  };
+}
+
 #define DMPL_CREATE_FREE_BINARY_OP(op) \
-  template<typename T, typename Impl, typename T2, typename Impl2> \
-  inline auto operator op(const detail::ReferenceBase<T, Impl> &lhs, \
-                          const detail::ReferenceBase<T2, Impl2> &rhs) \
-    -> decltype(lhs.get() op rhs.get()) \
+  template<typename L, typename R> \
+  inline auto operator op(L &&lhs, R &&rhs) \
+    -> decltype(std::forward<L>(lhs).get() op std::forward<R>(rhs).get()) \
   { \
-    return lhs.get() op rhs.get(); \
+    return std::forward<L>(lhs).get() op std::forward<R>(rhs).get(); \
   } \
-  template<typename T, typename Impl, typename R> \
-  inline auto operator op(const detail::ReferenceBase<T, Impl> &lhs, R&& rhs) \
-    -> decltype(lhs.get() op std::forward<R>(rhs)) \
+  template<typename L, typename R> \
+  inline auto operator op(L &&lhs, R &&rhs) \
+    -> typename std::enable_if<!detail::has_get<L>::value, \
+         decltype(std::forward<L>(lhs) op std::forward<R>(rhs).get())>::type \
   { \
-    return lhs.get() op std::forward<R>(rhs); \
+    return std::forward<L>(lhs) op std::forward<R>(rhs).get(); \
   } \
-  template<typename T, typename Impl, typename R> \
-  inline auto operator op(R&& lhs, const detail::ReferenceBase<T, Impl> &rhs) \
-    -> decltype(std::forward<R>(rhs) op rhs.get()) \
+  template<typename L, typename R> \
+  inline auto operator op(L &&lhs, R &&rhs) \
+    -> typename std::enable_if<!detail::has_get<R>::value, \
+         decltype(std::forward<L>(lhs).get() op std::forward<R>(rhs))>::type \
   { \
-    return std::forward<R>(lhs) op rhs.get(); \
+    return std::forward<L>(lhs).get() op std::forward<R>(rhs); \
   } \
   enum {}
 #else
