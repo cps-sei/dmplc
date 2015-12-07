@@ -33,6 +33,12 @@
   typename std::remove_pointer< \
     typename std::remove_reference<decltype(e)>::type>::type
 
+template<typename C>
+using EnableIf = typename std::enable_if<C::value, void*>::type;
+
+template<typename C>
+using DisableIf = typename std::enable_if<!C::value, void*>::type;
+
 #if __cplusplus >= 201402L
 
 #define USE_CPP14

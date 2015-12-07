@@ -490,17 +490,17 @@ namespace detail
   { \
     return std::forward<L>(lhs).get() op std::forward<R>(rhs).get(); \
   } \
-  template<typename L, typename R> \
+  template<typename L, typename R, \
+           DisableIf<detail::has_get<L>> = nullptr> \
   inline auto operator op(L &&lhs, R &&rhs) \
-    -> typename std::enable_if<!detail::has_get<L>::value, \
-         decltype(std::forward<L>(lhs) op std::forward<R>(rhs).get())>::type \
+    -> decltype(std::forward<L>(lhs) op std::forward<R>(rhs).get()) \
   { \
     return std::forward<L>(lhs) op std::forward<R>(rhs).get(); \
   } \
-  template<typename L, typename R> \
+  template<typename L, typename R, \
+           DisableIf<detail::has_get<R>> = nullptr> \
   inline auto operator op(L &&lhs, R &&rhs) \
-    -> typename std::enable_if<!detail::has_get<R>::value, \
-         decltype(std::forward<L>(lhs).get() op std::forward<R>(rhs))>::type \
+    -> decltype(std::forward<L>(lhs).get() op std::forward<R>(rhs)) \
   { \
     return std::forward<L>(lhs).get() op std::forward<R>(rhs); \
   } \
@@ -579,13 +579,13 @@ namespace detail
 }
 
 #define DMPL_CHECK_HAS_FOR_EACH(R,...) \
-    detail::has_for_each<typename std::remove_reference<R>::type, void(*)(...), __VA_ARGS__>::value
+    detail::has_for_each<typename std::remove_reference<R>::type, void(*)(...), __VA_ARGS__>
 
-#define DMPL_DISABLE_IF_HAS_FOR_EACH(R,Type,...) \
-  typename std::enable_if<!DMPL_CHECK_HAS_FOR_EACH(R,__VA_ARGS__), Type>::type
+#define DMPL_DISABLE_IF_HAS_FOR_EACH(R,...) \
+  DisableIf<DMPL_CHECK_HAS_FOR_EACH(R,__VA_ARGS__)>
 
-#define DMPL_ENABLE_IF_HAS_FOR_EACH(R,Type,...) \
-  typename std::enable_if<DMPL_CHECK_HAS_FOR_EACH(R,__VA_ARGS__), Type>::type
+#define DMPL_ENABLE_IF_HAS_FOR_EACH(R,...) \
+  EnableIf<DMPL_CHECK_HAS_FOR_EACH(R,__VA_ARGS__)>
 
 #define COMMA ,
 
@@ -599,7 +599,7 @@ namespace detail
   } \
 \
   template<typename R, typename ...Args, \
-    DMPL_DISABLE_IF_HAS_FOR_EACH(R, void*, Args...) = nullptr> \
+    DMPL_DISABLE_IF_HAS_FOR_EACH(R, Args...) = nullptr> \
   inline auto free_name(R &&r, Args&&... args) \
     -> detail::result_of_##mfn_name<R, Args...> \
   { \
@@ -619,7 +619,7 @@ namespace detail
     }; \
   } \
   template<typename A, typename ...Args, \
-    DMPL_ENABLE_IF_HAS_FOR_EACH(A, void*, Args...) = nullptr> \
+    DMPL_ENABLE_IF_HAS_FOR_EACH(A, Args...) = nullptr> \
   inline void name(A &&a, Args&&... args) \
   { \
     std::forward<A>(a).for_each(detail::lambda_##name(), \
@@ -634,11 +634,10 @@ enum {}
 
 #define DMPL_CREATE_AGGREGATE_MFN(name) DMPL_CREATE_AGGREGATE_MFN2(name, name)
 
-template<typename R>
-inline auto print_lines(R &&r, std::ostream &s = std::cerr) ->
-  DMPL_DISABLE_IF_HAS_FOR_EACH(R,void,std::ostream&)
+template<typename R, DMPL_DISABLE_IF_HAS_FOR_EACH(R, std::ostream&) = nullptr>
+inline std::ostream& print_lines(R &&r, std::ostream &s = std::cerr)
 {
-  s << std::forward<R>(r).get() << std::endl;
+  return s << std::forward<R>(r).get() << std::endl;
 }
 
 DMPL_CREATE_FREE_FROM_MEMBER(get,get);
