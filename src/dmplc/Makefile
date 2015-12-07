@@ -1,4 +1,4 @@
-MZSRM=1
+MZSRM=0
 
 SRC=dmpl-scanner.cpp dmpl-parser.cpp DmplBuilder.cpp CopyVisitor.cpp \
 SyncSeqDbl.cpp SyncSeqDblInd.cpp ../dmpl/Attribute.cpp \

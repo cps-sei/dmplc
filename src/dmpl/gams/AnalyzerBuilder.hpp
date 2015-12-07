@@ -59,7 +59,7 @@
 
 #include <iostream>
 #include <sstream>
-#include <dmpl/gams/GAMS_Builder.hpp>
+#include <dmpl/gams/GAMSBuilder.hpp>
 
 namespace dmpl
 {
@@ -68,14 +68,14 @@ namespace dmpl
     /*******************************************************************/
     // Log analyzer program builder for GAMS
     /*******************************************************************/
-    class Analyzer_Builder
+    class AnalyzerBuilder
     {
     public:
       /**
        * Constructor
        * @param  builder   the source for building a program
        **/
-      Analyzer_Builder (DmplBuilder & builder, const std::string &target);
+      AnalyzerBuilder (DmplBuilder & builder, const std::string &target);
 
       /**
        * Builds the underlying character stream that can then be printed

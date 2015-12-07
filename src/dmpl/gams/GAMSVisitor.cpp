@@ -53,12 +53,12 @@
  * DM-0002494
 **/
 
-#include "GAMS_Visitor.hpp"
+#include "GAMSVisitor.hpp"
 #include <dmplc/dmpl-parser.hpp>
 #include "boost/foreach.hpp"
 
 /*********************************************************************/
-dmpl::madara::GAMS_Visitor::GAMS_Visitor (
+dmpl::madara::GAMSVisitor::GAMSVisitor (
   const Func & function, const Node & node, const Func & thread,
   DmplBuilder & builder, std::stringstream & buffer, bool do_vrep, bool do_analyzer)
   : function_ (function), node_ (node), thread_ (thread),
@@ -70,14 +70,14 @@ dmpl::madara::GAMS_Visitor::GAMS_Visitor (
 
 /*********************************************************************/
 bool
-dmpl::madara::GAMS_Visitor::enterInt (IntExpr & expression)
+dmpl::madara::GAMSVisitor::enterInt (IntExpr & expression)
 {
   return false;
 }
 
 /*********************************************************************/
 void
-dmpl::madara::GAMS_Visitor::exitInt (IntExpr & expression)
+dmpl::madara::GAMSVisitor::exitInt (IntExpr & expression)
 {
   buffer_ << "Integer (";
   buffer_ << expression.data;
@@ -86,28 +86,28 @@ dmpl::madara::GAMS_Visitor::exitInt (IntExpr & expression)
 
 /*********************************************************************/
 bool
-dmpl::madara::GAMS_Visitor::enterDouble (DoubleExpr & expression)
+dmpl::madara::GAMSVisitor::enterDouble (DoubleExpr & expression)
 {
   return false;
 }
 
 /*********************************************************************/
 void
-dmpl::madara::GAMS_Visitor::exitDouble (DoubleExpr & expression)
+dmpl::madara::GAMSVisitor::exitDouble (DoubleExpr & expression)
 {
   buffer_ << expression.data;
 }
 
 /*********************************************************************/
 bool
-dmpl::madara::GAMS_Visitor::enterLval (LvalExpr & expression)
+dmpl::madara::GAMSVisitor::enterLval (LvalExpr & expression)
 {
   return false;
 }
 
 /*********************************************************************/
 void
-dmpl::madara::GAMS_Visitor::exitLval (LvalExpr & expression)
+dmpl::madara::GAMSVisitor::exitLval (LvalExpr & expression)
 {
   Sym symbol = expression.sym;
   Var var = std::dynamic_pointer_cast<Variable>(symbol);
@@ -164,14 +164,14 @@ dmpl::madara::GAMS_Visitor::exitLval (LvalExpr & expression)
 
 /*********************************************************************/
 bool
-dmpl::madara::GAMS_Visitor::enterComp (CompExpr & expression)
+dmpl::madara::GAMSVisitor::enterComp (CompExpr & expression)
 {
   return false;
 }
 
 /*********************************************************************/
 void
-dmpl::madara::GAMS_Visitor::exitComp (CompExpr & expression)
+dmpl::madara::GAMSVisitor::exitComp (CompExpr & expression)
 {
   //-- this is the only NULLARY expression
   if(expression.op == TNODENUM) {
@@ -211,14 +211,14 @@ dmpl::madara::GAMS_Visitor::exitComp (CompExpr & expression)
 
 /*********************************************************************/
 bool
-dmpl::madara::GAMS_Visitor::enterCall (CallExpr & expression)
+dmpl::madara::GAMSVisitor::enterCall (CallExpr & expression)
 {
   return false;
 }
 
 /*********************************************************************/
 void
-dmpl::madara::GAMS_Visitor::exitCall (CallExpr & expression)
+dmpl::madara::GAMSVisitor::exitCall (CallExpr & expression)
 {
   std::string spacer (indentation_, ' '), sub_spacer (indentation_ + 2, ' ');
 
@@ -267,7 +267,7 @@ dmpl::madara::GAMS_Visitor::exitCall (CallExpr & expression)
       buffer_ << "__chain_set(";
     }
 
-    buffer_ << "__strip_const(engine::Function_Arguments(" << expression.args.size() << "))";
+    buffer_ << "__strip_const(engine::FunctionArguments(" << expression.args.size() << "))";
     buffer_ << "\n";
 
     unsigned int i = 0;
@@ -350,14 +350,14 @@ dmpl::madara::GAMS_Visitor::exitCall (CallExpr & expression)
 
 /*********************************************************************/
 bool
-dmpl::madara::GAMS_Visitor::enterEXO (EXOExpr & expression)
+dmpl::madara::GAMSVisitor::enterEXO (EXOExpr & expression)
 {
   return false;
 }
 
 /*********************************************************************/
 void
-dmpl::madara::GAMS_Visitor::exitEXO (EXOExpr & expression)
+dmpl::madara::GAMSVisitor::exitEXO (EXOExpr & expression)
 {
   std::string spacer (indentation_, ' '), sub_spacer (indentation_ + 2, ' ');
 
@@ -403,14 +403,14 @@ dmpl::madara::GAMS_Visitor::exitEXO (EXOExpr & expression)
 
 /*********************************************************************/
 bool
-dmpl::madara::GAMS_Visitor::enterEXH (EXHExpr & expression)
+dmpl::madara::GAMSVisitor::enterEXH (EXHExpr & expression)
 {
   return false;
 }
 
 /*********************************************************************/
 void
-dmpl::madara::GAMS_Visitor::exitEXH (EXHExpr & expression)
+dmpl::madara::GAMSVisitor::exitEXH (EXHExpr & expression)
 {
   std::string spacer (indentation_, ' '), sub_spacer (indentation_ + 2, ' ');
 
@@ -452,14 +452,14 @@ dmpl::madara::GAMS_Visitor::exitEXH (EXHExpr & expression)
 
 /*********************************************************************/
 bool
-dmpl::madara::GAMS_Visitor::enterEXL (EXLExpr & expression)
+dmpl::madara::GAMSVisitor::enterEXL (EXLExpr & expression)
 {
   return false;
 }
 
 /*********************************************************************/
 void
-dmpl::madara::GAMS_Visitor::exitEXL (EXLExpr & expression)
+dmpl::madara::GAMSVisitor::exitEXL (EXLExpr & expression)
 {
   std::string spacer (indentation_, ' '), sub_spacer (indentation_ + 2, ' ');
 
@@ -501,28 +501,28 @@ dmpl::madara::GAMS_Visitor::exitEXL (EXLExpr & expression)
 
 /*********************************************************************/
 bool
-dmpl::madara::GAMS_Visitor::enterPrivate (PrivateStmt & statement)
+dmpl::madara::GAMSVisitor::enterPrivate (PrivateStmt & statement)
 {
   return false;
 }
 
 /*********************************************************************/
 void
-dmpl::madara::GAMS_Visitor::exitPrivate (PrivateStmt & statement)
+dmpl::madara::GAMSVisitor::exitPrivate (PrivateStmt & statement)
 {
   throw std::runtime_error("PRIVATE not supported");
 }
 
 /*********************************************************************/
 bool
-dmpl::madara::GAMS_Visitor::enterBlock (BlockStmt & statement)
+dmpl::madara::GAMSVisitor::enterBlock (BlockStmt & statement)
 {
   return false;
 }
 
 /*********************************************************************/
 void
-dmpl::madara::GAMS_Visitor::exitBlock (BlockStmt & statement)
+dmpl::madara::GAMSVisitor::exitBlock (BlockStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
@@ -535,14 +535,14 @@ dmpl::madara::GAMS_Visitor::exitBlock (BlockStmt & statement)
 
 /*********************************************************************/
 bool
-dmpl::madara::GAMS_Visitor::enterAsgn (AsgnStmt & statement)
+dmpl::madara::GAMSVisitor::enterAsgn (AsgnStmt & statement)
 {
   return false;
 }
 
 /*********************************************************************/
 void
-dmpl::madara::GAMS_Visitor::exitAsgn (AsgnStmt & statement)
+dmpl::madara::GAMSVisitor::exitAsgn (AsgnStmt & statement)
 {
   std::string spacer (indentation_, ' '), sub_spacer (indentation_ + 2, ' ');
 
@@ -623,14 +623,14 @@ dmpl::madara::GAMS_Visitor::exitAsgn (AsgnStmt & statement)
 
 /*********************************************************************/
 bool
-dmpl::madara::GAMS_Visitor::enterCond (CondStmt & statement)
+dmpl::madara::GAMSVisitor::enterCond (CondStmt & statement)
 {
   return false;
 }
 
 /*********************************************************************/
 void
-dmpl::madara::GAMS_Visitor::exitCond (CondStmt & statement)
+dmpl::madara::GAMSVisitor::exitCond (CondStmt & statement)
 {
   dmpl::Expr & expression = statement.cond;
 
@@ -658,14 +658,14 @@ dmpl::madara::GAMS_Visitor::exitCond (CondStmt & statement)
 
 /*********************************************************************/
 bool
-dmpl::madara::GAMS_Visitor::enterFor (ForStmt & statement)
+dmpl::madara::GAMSVisitor::enterFor (ForStmt & statement)
 {
   return false;
 }
 
 /*********************************************************************/
 void
-dmpl::madara::GAMS_Visitor::exitFor (ForStmt & statement)
+dmpl::madara::GAMSVisitor::exitFor (ForStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
@@ -702,14 +702,14 @@ dmpl::madara::GAMS_Visitor::exitFor (ForStmt & statement)
 
 /*********************************************************************/
 bool
-dmpl::madara::GAMS_Visitor::enterWhile (WhileStmt & statement)
+dmpl::madara::GAMSVisitor::enterWhile (WhileStmt & statement)
 {
   return false;
 }
 
 /*********************************************************************/
 void
-dmpl::madara::GAMS_Visitor::exitWhile (WhileStmt & statement)
+dmpl::madara::GAMSVisitor::exitWhile (WhileStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
@@ -729,14 +729,14 @@ dmpl::madara::GAMS_Visitor::exitWhile (WhileStmt & statement)
 
 /*********************************************************************/
 bool
-dmpl::madara::GAMS_Visitor::enterBreak (BreakStmt & statement)
+dmpl::madara::GAMSVisitor::enterBreak (BreakStmt & statement)
 {
   return false;
 }
 
 /*********************************************************************/
 void
-dmpl::madara::GAMS_Visitor::exitBreak (BreakStmt & statement)
+dmpl::madara::GAMSVisitor::exitBreak (BreakStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
@@ -745,14 +745,14 @@ dmpl::madara::GAMS_Visitor::exitBreak (BreakStmt & statement)
 
 /*********************************************************************/
 bool
-dmpl::madara::GAMS_Visitor::enterCont (ContStmt & statement)
+dmpl::madara::GAMSVisitor::enterCont (ContStmt & statement)
 {
   return false;
 }
 
 /*********************************************************************/
 void
-dmpl::madara::GAMS_Visitor::exitCont (ContStmt & statement)
+dmpl::madara::GAMSVisitor::exitCont (ContStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
@@ -761,14 +761,14 @@ dmpl::madara::GAMS_Visitor::exitCont (ContStmt & statement)
 
 /*********************************************************************/
 bool
-dmpl::madara::GAMS_Visitor::enterRet (RetStmt & statement)
+dmpl::madara::GAMSVisitor::enterRet (RetStmt & statement)
 {
   return false;
 }
 
 /*********************************************************************/
 void
-dmpl::madara::GAMS_Visitor::exitRet (RetStmt & statement)
+dmpl::madara::GAMSVisitor::exitRet (RetStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
@@ -790,14 +790,14 @@ dmpl::madara::GAMS_Visitor::exitRet (RetStmt & statement)
 
 /*********************************************************************/
 bool
-dmpl::madara::GAMS_Visitor::enterRetVoid (RetVoidStmt & statement)
+dmpl::madara::GAMSVisitor::enterRetVoid (RetVoidStmt & statement)
 {
   return false;
 }
 
 /*********************************************************************/
 void
-dmpl::madara::GAMS_Visitor::exitRetVoid (RetVoidStmt & statement)
+dmpl::madara::GAMSVisitor::exitRetVoid (RetVoidStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
@@ -806,14 +806,14 @@ dmpl::madara::GAMS_Visitor::exitRetVoid (RetVoidStmt & statement)
 
 /*********************************************************************/
 bool
-dmpl::madara::GAMS_Visitor::enterCall (CallStmt & statement)
+dmpl::madara::GAMSVisitor::enterCall (CallStmt & statement)
 {
   return false;
 }
 
 /*********************************************************************/
 void
-dmpl::madara::GAMS_Visitor::exitCall (CallStmt & statement)
+dmpl::madara::GAMSVisitor::exitCall (CallStmt & statement)
 {
   std::string spacer (indentation_, ' '), sub_spacer (indentation_ + 2, ' ');
 
@@ -835,14 +835,14 @@ dmpl::madara::GAMS_Visitor::exitCall (CallStmt & statement)
 
 /*********************************************************************/
 bool
-dmpl::madara::GAMS_Visitor::enterFAN (FANStmt & statement)
+dmpl::madara::GAMSVisitor::enterFAN (FANStmt & statement)
 {
   return false;
 }
 
 /*********************************************************************/
 void
-dmpl::madara::GAMS_Visitor::exitFAN (FANStmt & statement)
+dmpl::madara::GAMSVisitor::exitFAN (FANStmt & statement)
 {
   std::string spacer (indentation_, ' '), spacer_2 (indentation_ + 2, ' '),
     spacer_3 (indentation_ + 4, ' ');
@@ -883,14 +883,14 @@ dmpl::madara::GAMS_Visitor::exitFAN (FANStmt & statement)
 
 /*********************************************************************/
 bool
-dmpl::madara::GAMS_Visitor::enterFADNP (FADNPStmt & statement)
+dmpl::madara::GAMSVisitor::enterFADNP (FADNPStmt & statement)
 {
   return false;
 }
 
 /*********************************************************************/
 void
-dmpl::madara::GAMS_Visitor::exitFADNP (FADNPStmt & statement)
+dmpl::madara::GAMSVisitor::exitFADNP (FADNPStmt & statement)
 {
   std::string spacer (indentation_, ' '), spacer_2 (indentation_ + 2, ' '),
     spacer_3 (indentation_ + 4, ' '), spacer_4 (indentation_ + 6, ' ');
@@ -961,14 +961,14 @@ dmpl::madara::GAMS_Visitor::exitFADNP (FADNPStmt & statement)
 
 /*********************************************************************/
 bool
-dmpl::madara::GAMS_Visitor::enterFAO (FAOStmt & statement)
+dmpl::madara::GAMSVisitor::enterFAO (FAOStmt & statement)
 {
   return false;
 }
 
 /*********************************************************************/
 void
-dmpl::madara::GAMS_Visitor::exitFAO (FAOStmt & statement)
+dmpl::madara::GAMSVisitor::exitFAO (FAOStmt & statement)
 {
   std::string spacer (indentation_, ' '), spacer_2 (indentation_ + 2, ' '),
     spacer_3 (indentation_ + 4, ' ');
@@ -1011,14 +1011,14 @@ dmpl::madara::GAMS_Visitor::exitFAO (FAOStmt & statement)
 
 /*********************************************************************/
 bool
-dmpl::madara::GAMS_Visitor::enterFAOL (FAOLStmt & statement)
+dmpl::madara::GAMSVisitor::enterFAOL (FAOLStmt & statement)
 {
   return false;
 }
 
 /*********************************************************************/
 void
-dmpl::madara::GAMS_Visitor::exitFAOL (FAOLStmt & statement)
+dmpl::madara::GAMSVisitor::exitFAOL (FAOLStmt & statement)
 {
   std::string spacer (indentation_, ' '), spacer_2 (indentation_ + 2, ' '),
     spacer_3 (indentation_ + 4, ' ');
@@ -1058,14 +1058,14 @@ dmpl::madara::GAMS_Visitor::exitFAOL (FAOLStmt & statement)
 
 /*********************************************************************/
 bool
-dmpl::madara::GAMS_Visitor::enterFAOH (FAOHStmt & statement)
+dmpl::madara::GAMSVisitor::enterFAOH (FAOHStmt & statement)
 {
   return false;
 }
 
 /*********************************************************************/
 void
-dmpl::madara::GAMS_Visitor::exitFAOH (FAOHStmt & statement)
+dmpl::madara::GAMSVisitor::exitFAOH (FAOHStmt & statement)
 {
   std::string spacer (indentation_, ' '), spacer_2 (indentation_ + 2, ' '),
     spacer_3 (indentation_ + 4, ' ');

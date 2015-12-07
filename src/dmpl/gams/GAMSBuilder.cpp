@@ -60,8 +60,8 @@ extern "C" {
 }
 #endif
 
-#include "GAMS_Builder.hpp"
-#include <dmpl/gams/GAMS_Visitor.hpp>
+#include "GAMSBuilder.hpp"
+#include <dmpl/gams/GAMSVisitor.hpp>
 #include <boost/algorithm/string.hpp>
 #include <vector>
 #include <map>
@@ -153,7 +153,7 @@ namespace
 /*********************************************************************/
 //-- constructor
 /*********************************************************************/
-dmpl::gams::GAMS_Builder::GAMS_Builder (dmpl::DmplBuilder & builder,
+dmpl::gams::GAMSBuilder::GAMSBuilder (dmpl::DmplBuilder & builder,
                                         const std::string &target, 
                                         SchedType & schedType,
                                         bool do_expect)
@@ -163,7 +163,7 @@ dmpl::gams::GAMS_Builder::GAMS_Builder (dmpl::DmplBuilder & builder,
 //-- top level code generator
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build ()
+dmpl::gams::GAMSBuilder::build ()
 {
   buffer_ << "//-- DMPLC Version: " << builder_.version << '\n';
   buffer_ << "//-- DMPLC Command Line: ";
@@ -208,7 +208,7 @@ dmpl::gams::GAMS_Builder::build ()
 //-- generate target thunks verbatim
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_target_thunk (void)
+dmpl::gams::GAMSBuilder::build_target_thunk (void)
 {
   build_comment("//-- begin target (" + target_ + ") specific thunk", "", "", 0);
 
@@ -229,7 +229,7 @@ dmpl::gams::GAMS_Builder::build_target_thunk (void)
 //-- generate header files
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_header_includes ()
+dmpl::gams::GAMSBuilder::build_header_includes ()
 {
   build_comment("//-- begin header files", "", "\n", 0);
 
@@ -252,27 +252,27 @@ dmpl::gams::GAMS_Builder::build_header_includes ()
     buffer_ << "\n";
   }
 #endif
-  buffer_ << "#include \"madara/knowledge_engine/Knowledge_Base.h\"\n";
-  buffer_ << "#include \"madara/knowledge_engine/Knowledge_Record.h\"\n";
+  buffer_ << "#include \"madara/knowledge_engine/KnowledgeBase.h\"\n";
+  buffer_ << "#include \"madara/knowledge_engine/KnowledgeRecord.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/Functions.h\"\n";
-  buffer_ << "#include \"madara/transport/Packet_Scheduler.h\"\n";
+  buffer_ << "#include \"madara/transport/PacketScheduler.h\"\n";
   buffer_ << "#include \"madara/threads/Threader.h\"\n";
-  buffer_ << "#include \"madara/filters/Generic_Filters.h\"\n";
+  buffer_ << "#include \"madara/filters/GenericFilters.h\"\n";
   buffer_ << "\n";
   buffer_ << "#define _GAMS_VREP_ 1\n";
-  buffer_ << "#include \"gams/controllers/Base_Controller.h\"\n";
-  buffer_ << "#include \"gams/algorithms/Base_Algorithm.h\"\n";
+  buffer_ << "#include \"gams/controllers/BaseController.h\"\n";
+  buffer_ << "#include \"gams/algorithms/BaseAlgorithm.h\"\n";
   buffer_ << "#include \"gams/variables/Sensor.h\"\n";
-  buffer_ << "#include \"gams/platforms/Base_Platform.h\"\n";
-  buffer_ << "#include \"gams/platforms/vrep/VREP_Base.h\"\n";
-  //buffer_ << "#include \"gams/platforms/vrep/VREP_UAV_Ranger.h\"\n";
+  buffer_ << "#include \"gams/platforms/BasePlatform.h\"\n";
+  buffer_ << "#include \"gams/platforms/vrep/VREPBase.h\"\n";
+  //buffer_ << "#include \"gams/platforms/vrep/VREPUAVRanger.h\"\n";
   buffer_ << "#include \"gams/variables/Self.h\"\n";
-  buffer_ << "#include \"gams/utility/GPS_Position.h\"\n";
+  buffer_ << "#include \"gams/utility/GPSPosition.h\"\n";
   buffer_ << "#include \"gams/utility/Axes.h\"\n";
   buffer_ << "\n";
   buffer_ << "#include \"dmpl/Reference.hpp\"\n";
   buffer_ << "#include \"dmpl/ArrayReference.hpp\"\n";
-  buffer_ << "#include \"dmpl/Default_Logger.hpp\"\n";
+  buffer_ << "#include \"dmpl/DefaultLogger.hpp\"\n";
   if(do_expect_) {
     buffer_ << "extern \"C\" {\n";
     buffer_ << "#include <sys/time.h>\n";
@@ -287,13 +287,13 @@ dmpl::gams::GAMS_Builder::build_header_includes ()
 //-- generate global variables needed for all DMPL programs
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_common_global_variables ()
+dmpl::gams::GAMSBuilder::build_common_global_variables ()
 {
   build_comment("//-- typedefs", "\n", "", 0);
-  buffer_ << "typedef   Madara::Knowledge_Record::Integer   Integer;\n\n";
+  buffer_ << "typedef   Madara::KnowledgeRecord::Integer   Integer;\n\n";
 
   build_comment("//-- namespace shortcuts", "", "", 0);
-  buffer_ << "namespace engine = Madara::Knowledge_Engine;\n";
+  buffer_ << "namespace engine = Madara::KnowledgeEngine;\n";
   buffer_ << "namespace threads = Madara::Threads;\n";
   buffer_ << "namespace containers = engine::Containers;\n";
   buffer_ << "namespace controllers = gams::controllers;\n";
@@ -310,18 +310,18 @@ dmpl::gams::GAMS_Builder::build_common_global_variables ()
   buffer_ << "\n";
 
   build_comment("//-- declare knowledge base", "", "", 0);
-  buffer_ << "engine::Knowledge_Base knowledge;\n";
+  buffer_ << "engine::KnowledgeBase knowledge;\n";
   buffer_ << "\n";
 
   build_comment("//-- Needed as a workaround for non-const-correctness in Madara;\n"
                 "//-- Use carefully", "", "", 0);
-  buffer_ << "inline engine::Function_Arguments &__strip_const(const engine::Function_Arguments &c)\n";
+  buffer_ << "inline engine::FunctionArguments &__strip_const(const engine::FunctionArguments &c)\n";
   buffer_ << "{\n";
-  buffer_ << "  return const_cast<engine::Function_Arguments &>(c);\n";
+  buffer_ << "  return const_cast<engine::FunctionArguments &>(c);\n";
   buffer_ << "}\n";
 
   build_comment("//-- Needed to construct function arguments", "\n", "", 0);
-  buffer_ << "inline engine::Function_Arguments &__chain_set(engine::Function_Arguments &c, int i, Madara::Knowledge_Record v)\n";
+  buffer_ << "inline engine::FunctionArguments &__chain_set(engine::FunctionArguments &c, int i, Madara::KnowledgeRecord v)\n";
   buffer_ << "{\n";
   buffer_ << "  c[i] = v;\n";
   buffer_ << "  return c;\n";
@@ -332,11 +332,11 @@ dmpl::gams::GAMS_Builder::build_common_global_variables ()
   buffer_ << "std::string host (\"\");\n";
   buffer_ << "std::vector<std::string> platform_params;\n";
   buffer_ << "std::string platform_name (\"debug\");\n";
-  buffer_ << "typedef void (*PlatformInitFn)(const std::vector<std::string> &, engine::Knowledge_Base &);\n";
+  buffer_ << "typedef void (*PlatformInitFn)(const std::vector<std::string> &, engine::KnowledgeBase &);\n";
   buffer_ << "typedef std::map<std::string, PlatformInitFn> PlatformInitFns;\n";
   buffer_ << "PlatformInitFns platform_init_fns;\n";
   buffer_ << "const std::string default_multicast (\"239.255.0.1:4150\");\n";
-  buffer_ << "Madara::Transport::QoS_Transport_Settings settings;\n";
+  buffer_ << "Madara::Transport::QoSTransportSettings settings;\n";
   buffer_ << "int write_fd (-1);\n";
   buffer_ << "ofstream expect_file;\n";
   buffer_ << "std::string node_name (\"none\");\n";
@@ -344,10 +344,10 @@ dmpl::gams::GAMS_Builder::build_common_global_variables ()
   buffer_ << "\n";
 
   build_comment("//-- Containers for commonly used global variables", "", "", 0);
-  //buffer_ << "containers::Integer_Array barrier;\n";
+  //buffer_ << "containers::IntegerArray barrier;\n";
   buffer_ << "Reference<unsigned int> id(knowledge, \".id\");\n";
   buffer_ << "Reference<unsigned int>  num_processes(knowledge, \".num_processes\");\n";
-  buffer_ << "engine::Knowledge_Update_Settings private_update (true);\n";
+  buffer_ << "engine::KnowledgeUpdateSettings private_update (true);\n";
 
   //-- define barrier variables for all synchronous threads
   build_comment("//-- barrier variables", "\n", "", 0);
@@ -387,7 +387,7 @@ dmpl::gams::GAMS_Builder::build_common_global_variables ()
 //-- generate program-specific global variables
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_program_variables ()
+dmpl::gams::GAMSBuilder::build_program_variables ()
 {
   //-- generate constants as #define statements
   build_comment("//-- Defining program-specific constants", "", "", 0);
@@ -435,7 +435,7 @@ dmpl::gams::GAMS_Builder::build_program_variables ()
 //-- declare and initialize node variables
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_node_variables (const Node &node, bool isGlob)
+dmpl::gams::GAMSBuilder::build_node_variables (const Node &node, bool isGlob)
 {
   build_comment("//-- Defining " + std::string(isGlob? "global" : "local") +
                 " variables at node scope", "\n", "", 0);
@@ -452,7 +452,7 @@ dmpl::gams::GAMS_Builder::build_node_variables (const Node &node, bool isGlob)
 //-- declare and initialize role variables
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_role_variables (const Role &role, bool isGlob)
+dmpl::gams::GAMSBuilder::build_role_variables (const Role &role, bool isGlob)
 {
   build_comment("//-- Defining " + std::string(isGlob? "global" : "local") +
                 " variables at role scope", "\n", "", 0);
@@ -470,7 +470,7 @@ dmpl::gams::GAMS_Builder::build_role_variables (const Role &role, bool isGlob)
 //-- declare a DMPL program specific global variable
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_program_variable_decl (const Var & var)
+dmpl::gams::GAMSBuilder::build_program_variable_decl (const Var & var)
 {
   // is this an array type?
   if (var->type->dims.size () >= 1)
@@ -502,7 +502,7 @@ dmpl::gams::GAMS_Builder::build_program_variable_decl (const Var & var)
 //-- initialize a DMPL program specific global variable
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_program_variable_init (const Var & var)
+dmpl::gams::GAMSBuilder::build_program_variable_init (const Var & var)
 {
   if (var->type->dims.size () <= 1)
   {
@@ -519,7 +519,7 @@ dmpl::gams::GAMS_Builder::build_program_variable_init (const Var & var)
 //-- generate network filters for MADARA
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_common_filters (void)
+dmpl::gams::GAMSBuilder::build_common_filters (void)
 {
 }
 
@@ -527,16 +527,16 @@ dmpl::gams::GAMS_Builder::build_common_filters (void)
 //-- generate helper function for MADARA network filters
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_common_filters_helper (
+dmpl::gams::GAMSBuilder::build_common_filters_helper (
     const std::string filter_name,
     std::stringstream & filter_content)
 {
-  buffer_ << "Madara::Knowledge_Record\n";
-  buffer_ << filter_name << " (Madara::Knowledge_Map & records,\n";
-  buffer_ << "  const Madara::Transport::Transport_Context & context,\n";
-  buffer_ << "  Madara::Knowledge_Engine::Variables & vars)\n";
+  buffer_ << "Madara::KnowledgeRecord\n";
+  buffer_ << filter_name << " (Madara::KnowledgeMap & records,\n";
+  buffer_ << "  const Madara::Transport::TransportContext & context,\n";
+  buffer_ << "  Madara::KnowledgeEngine::Variables & vars)\n";
   buffer_ << "{\n";
-  buffer_ << "  Madara::Knowledge_Record result;\n";
+  buffer_ << "  Madara::KnowledgeRecord result;\n";
   buffer_ << filter_content.str ();
   buffer_ << "  return result;\n";
   buffer_ << "}\n\n";
@@ -546,7 +546,7 @@ dmpl::gams::GAMS_Builder::build_common_filters_helper (
 //-- generate shared variables for a thread
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_thread_variables (const Func &thread, const Vars & vars, bool isGlob)
+dmpl::gams::GAMSBuilder::build_thread_variables (const Func &thread, const Vars & vars, bool isGlob)
 {
   build_comment("//-- Defining " + std::string(isGlob? "global" : "local") +
                 " variables at scope of thread " + thread->name +
@@ -559,7 +559,7 @@ dmpl::gams::GAMS_Builder::build_thread_variables (const Func &thread, const Vars
 //-- generate a shared variable for a thread
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_thread_variable (const Func &thread, const Var & var)
+dmpl::gams::GAMSBuilder::build_thread_variable (const Func &thread, const Var & var)
 {
   // is this an array type?
   if (var->type->dims.size () >= 1)
@@ -592,7 +592,7 @@ dmpl::gams::GAMS_Builder::build_thread_variable (const Func &thread, const Var &
 //-- generate constructor invocation for all program variables
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_constructors ()
+dmpl::gams::GAMSBuilder::build_constructors ()
 { 
   build_comment("//-- Invoking constructors", "\n", "", 2);
   for (auto & n : builder_.program.nodes) {
@@ -608,7 +608,7 @@ dmpl::gams::GAMS_Builder::build_constructors ()
 //-- generate code to assign initial value to a variable.
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_program_variable_assignment (const Var & var)
+dmpl::gams::GAMSBuilder::build_program_variable_assignment (const Var & var)
 {
   // is this a GLOBAL scalar (i.e., 1-dimensional array)?
   if (var->scope == Variable::GLOBAL && var->type->dims.size () == 1)
@@ -622,7 +622,7 @@ dmpl::gams::GAMS_Builder::build_program_variable_assignment (const Var & var)
 //-- generate method to parse command line arguments
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_parse_args ()
+dmpl::gams::GAMSBuilder::build_parse_args ()
 {
   //-- we use this to build up the help message
   std::stringstream variable_help;
@@ -749,7 +749,7 @@ dmpl::gams::GAMS_Builder::build_parse_args ()
   buffer_ << "        buffer >> drop_rate;\n";
   buffer_ << "        std::cerr << \"drop_rate: \" << drop_rate << std::endl;\n";
   //TODO: fix handling of packet drops in MADARA
-  //buffer_ << "        Madara::Transport::Packet_Scheduler::drop_rate_override = drop_rate;\n";
+  //buffer_ << "        Madara::Transport::PacketScheduler::drop_rate_override = drop_rate;\n";
   buffer_ << "        settings.update_drop_rate (drop_rate,\n";
   buffer_ << "          Madara::Transport::PACKET_DROP_PROBABLISTIC);\n";
   buffer_ << "      }\n";
@@ -918,7 +918,7 @@ dmpl::gams::GAMS_Builder::build_parse_args ()
 //-- DMPL variable.
 /*********************************************************************/
 std::string
-dmpl::gams::GAMS_Builder::build_parse_args (const std::string &var,
+dmpl::gams::GAMSBuilder::build_parse_args (const std::string &var,
                                             const std::list<std::pair<Node,Role>> &roles)
 {
   std::stringstream return_value;
@@ -962,7 +962,7 @@ dmpl::gams::GAMS_Builder::build_parse_args (const std::string &var,
 //-- generate function declarations.
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_function_declarations ()
+dmpl::gams::GAMSBuilder::build_function_declarations ()
 {
   build_comment("//-- Forward declaring global functions", "", "", 0);
   Funcs & funcs = builder_.program.funcs;
@@ -998,7 +998,7 @@ dmpl::gams::GAMS_Builder::build_function_declarations ()
 //-- build function declarations for a thread
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_function_declarations_for_thread (const Func & thread,
+dmpl::gams::GAMSBuilder::build_function_declarations_for_thread (const Func & thread,
                                                                   const Funcs & funcs)
 {
   //-- NULL thread. needed for serial functions.
@@ -1030,30 +1030,30 @@ dmpl::gams::GAMS_Builder::build_function_declarations_for_thread (const Func & t
 //-- generate function declaration
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_function_declaration (const Func & thread, const Func & function)
+dmpl::gams::GAMSBuilder::build_function_declaration (const Func & thread, const Func & function)
 {
   //-- if function is NULL, declare the thread entry function
   if(function == NULL) {
-    buffer_ << "Madara::Knowledge_Record\n"
+    buffer_ << "Madara::KnowledgeRecord\n"
             << "thread" << thread->threadID
-            << " (engine::Function_Arguments & args, engine::Variables & vars);\n";
+            << " (engine::FunctionArguments & args, engine::Variables & vars);\n";
     return;
   }
   
   if (skip_func(function)) return;
 
-  buffer_ << "Madara::Knowledge_Record\n";
+  buffer_ << "Madara::KnowledgeRecord\n";
   if(thread) buffer_ << "thread" << thread->threadID << "_";
   else buffer_ << "base_";
   buffer_ << function->name;
-  buffer_ << " (engine::Function_Arguments & args, engine::Variables & vars);\n";
+  buffer_ << " (engine::FunctionArguments & args, engine::Variables & vars);\n";
 }
 
 /*********************************************************************/
 //-- generate functions and variables used to interact with GAMS
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_gams_functions ()
+dmpl::gams::GAMSBuilder::build_gams_functions ()
 {
   build_comment("//-- GAMS variables and functions", "\n", "\n", 0);
   buffer_ << "#include \"dmpl/PlatformGAMS.hpp\"\n";
@@ -1063,7 +1063,7 @@ dmpl::gams::GAMS_Builder::build_gams_functions ()
 //-- generate functions at the global scope
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_global_functions (void)
+dmpl::gams::GAMSBuilder::build_global_functions (void)
 {
   build_comment("//-- Defining global functions", "\n", "\n", 0);
   Funcs & funcs = builder_.program.funcs;
@@ -1077,7 +1077,7 @@ dmpl::gams::GAMS_Builder::build_global_functions (void)
 //-- generate code for nodes
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_nodes (void)
+dmpl::gams::GAMSBuilder::build_nodes (void)
 {
   Nodes & nodes = builder_.program.nodes;
   for (Nodes::iterator n = nodes.begin (); n != nodes.end (); ++n)
@@ -1119,7 +1119,7 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
           print_vars(buffer_, rec->initFunc->temps, false);
         
           //-- transform statements
-          dmpl::madara::GAMS_Visitor visitor (rec->initFunc, n->second, Func(),
+          dmpl::madara::GAMSVisitor visitor (rec->initFunc, n->second, Func(),
                                                   builder_, buffer_, false);
           for (const Stmt & statement : rec->initFunc->body)
             visitor.visit (statement);
@@ -1131,7 +1131,7 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
           print_vars(buffer_, rec->assumeFunc->temps, false);
         
           //-- transform statements
-          dmpl::madara::GAMS_Visitor visitor (rec->assumeFunc, n->second, Func(),
+          dmpl::madara::GAMSVisitor visitor (rec->assumeFunc, n->second, Func(),
                                                   builder_, buffer_, false);
           for (const Stmt & statement : rec->assumeFunc->body)
             visitor.visit (statement);
@@ -1191,7 +1191,7 @@ dmpl::gams::GAMS_Builder::build_nodes (void)
 //-- generate constructor for a variable
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_constructor_for_variable (Var &v, Node &node)
+dmpl::gams::GAMSBuilder::build_constructor_for_variable (Var &v, Node &node)
 {
   buffer_ << (v->isInput ? "int check_init_" : "void initialize_") << v->name << " ()\n{\n";
   buffer_ << "  engine::Variables vars;\n";
@@ -1204,7 +1204,7 @@ dmpl::gams::GAMS_Builder::build_constructor_for_variable (Var &v, Node &node)
     print_vars(buffer_, v->initFunc->temps, false);
     
     //-- transform statements
-    dmpl::madara::GAMS_Visitor visitor (v->initFunc, node, Func(),
+    dmpl::madara::GAMSVisitor visitor (v->initFunc, node, Func(),
                                             builder_, buffer_, false);
     for (const Stmt & statement : v->initFunc->body)
       visitor.visit (statement);
@@ -1220,23 +1220,23 @@ dmpl::gams::GAMS_Builder::build_constructor_for_variable (Var &v, Node &node)
 //-- variables to force retransmit by MADARA.
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_refresh_modify_globals (const Node &node, const Role &role,
+dmpl::gams::GAMSBuilder::build_refresh_modify_globals (const Node &node, const Role &role,
                                                         const Func &thread)
 {
   build_comment("//-- Remodify barries variables to force MADARA retransmit", "\n", "", 0);
-  buffer_ << "Madara::Knowledge_Record\n";
+  buffer_ << "Madara::KnowledgeRecord\n";
   buffer_ << "REMODIFY_BARRIERS_" << thread->name;
-  buffer_ << " (engine::Function_Arguments &,\n";
+  buffer_ << " (engine::FunctionArguments &,\n";
   buffer_ << "  engine::Variables & vars)\n";
   buffer_ << "{\n";
-  buffer_ << "  mbarrier_" << thread->name << "[id].mark_modified();\n";
+  buffer_ << "  mark_modified(mbarrier_" << thread->name << "[id]);\n";
   buffer_ << "  return Integer (0);\n";
   buffer_ << "}\n";
 
   build_comment("//-- Remodify global shared variables to force MADARA retransmit", "\n", "", 0);
-  buffer_ << "Madara::Knowledge_Record\n";
+  buffer_ << "Madara::KnowledgeRecord\n";
   buffer_ << "REMODIFY_GLOBALS_" << thread->name;
-  buffer_ << " (engine::Function_Arguments & args,\n";
+  buffer_ << " (engine::FunctionArguments & args,\n";
   buffer_ << "  engine::Variables & vars)\n";
   buffer_ << "{\n";
   
@@ -1257,58 +1257,16 @@ dmpl::gams::GAMS_Builder::build_refresh_modify_globals (const Node &node, const 
 //-- force retransmit by MADARA.
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_refresh_modify_global (const Node &node, const Var & var)
+dmpl::gams::GAMSBuilder::build_refresh_modify_global (const Node &node, const Var & var)
 {
-#if 0
-  // is this an array type?
-  if (var->type->dims.size () == 1)
-  {
-    buffer_ << "  " << var->name;
-    buffer_ << "[id].mark_modified();\n";
-  }
-  // is this an n-dimensional array type?
-  else if (var->type->dims.size () > 1)
-  {
-    //by convention, a node owns all array elements where the last
-    //index equals its id. we will create a set of nested for loops to
-    //remodify all such elements
-    std::vector<int> dims;
-    BOOST_FOREACH(int i,var->type->dims) dims.push_back(i);
-
-    //open for loops
-    std::string index_str = "";
-    for(int i = 0;i < dims.size () - 1;++i) {
-      std::string spacer(2*i+2,' ');
-      buffer_ << spacer << "for(Integer i" << i << " = 0;i" << i <<" < " 
-              << dims[i] << "; ++i" << i << ") {\n";
-      index_str += "i" + boost::lexical_cast<std::string>(i) + ", ";
-    }
-
-    std::string spacer(2*dims.size(),' ');
-    buffer_ << spacer << "containers::Array_N::Index index (" << dims.size() << ");\n";
-    for(int i = 0;i < dims.size () - 1;++i)
-      buffer_ << spacer << "index[" << i << "] = i" << i << ";\n";
-    buffer_ << spacer << "index[" << dims.size() - 1 << "] = id;\n";
-    buffer_ << spacer << var->name << ".set (index, " << var->name << "(" << index_str << "id).to_integer ());\n";
-
-    //close for loops
-    for(int i = dims.size () - 2;i >= 0;--i) {
-      std::string spacer(2*i+2,' ');
-      buffer_ << spacer << "}\n";
-    }
-
-    // we currently have no way of specifying owned locations in an array
-    buffer_ << "\n";
-#endif
-    
   if (var->scope == Variable::GLOBAL)
   {
-    buffer_ << "  " << var->name << "[id].mark_modified();\n";
+    buffer_ << "  mark_modified(" << var->name << "[id]);\n";
   }
   else
   {
     throw std::runtime_error("ERROR: cannot modify non-global variable " + var->name + "!!");
-    buffer_ << "  " << var->name << ".mark_modified()";
+    buffer_ << "  mark_modified(" << var->name << ")";
   }
 }
 
@@ -1317,22 +1275,22 @@ dmpl::gams::GAMS_Builder::build_refresh_modify_global (const Node &node, const V
 //-- start/end of each thread function (i.e., job)
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_push_pull(const Func &thread, bool push)
+dmpl::gams::GAMSBuilder::build_push_pull(const Func &thread, bool push)
 {
   buffer_ << "  //-- " << (push?"Push":"Pull") << " all referenced locals/globals\n";
   buffer_ << "  {\n";
-  buffer_ << "    Madara::Knowledge_Engine::Context_Guard guard(knowledge);\n";
+  buffer_ << "    Madara::KnowledgeEngine::ContextGuard guard(knowledge);\n";
 
   //push-pull locals
   for(const auto &var : thread->accessedLoc()) {
-    buffer_ << "    thread" << thread->threadID << "_"
-            << var.first << (push?".push();":".pull();") << std::endl;
+    buffer_ << "    " << (push?"push":"pull") << "(thread" << thread->threadID << "_"
+            << var.first << ");" << std::endl;
   }
 
   //push-pull globals
   for(const auto &var : thread->accessedGlob()) {
-    buffer_ << "    thread" << thread->threadID << "_"
-            << var.first << (push?"[id].push();":".pull();") << std::endl;
+    buffer_ << "    " << (push?"push":"pull") << "(thread" << thread->threadID << "_"
+            << var.first << "[id]);" << std::endl;
   }
 
   buffer_ << "  }\n";
@@ -1342,7 +1300,7 @@ dmpl::gams::GAMS_Builder::build_push_pull(const Func &thread, bool push)
 //-- generate code for all functions specific to a thread
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_functions_for_thread (
+dmpl::gams::GAMSBuilder::build_functions_for_thread (
   const Func& thread, const dmpl::Node & node, const dmpl::Funcs & funcs)
 {
   //-- NULL thread. needed for serial functions.
@@ -1368,7 +1326,7 @@ dmpl::gams::GAMS_Builder::build_functions_for_thread (
 //-- generate code for a function
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_function (
+dmpl::gams::GAMSBuilder::build_function (
   const Func& thread, const dmpl::Node & node, const dmpl::Func & function)
 {
   if (function != NULL && skip_func(function)) return;
@@ -1385,7 +1343,7 @@ dmpl::gams::GAMS_Builder::build_function (
   }
 
   //-- function header
-  buffer_ << "Madara::Knowledge_Record\n";
+  buffer_ << "Madara::KnowledgeRecord\n";
   if(function == NULL) {
     buffer_ << "thread" << thread->threadID;
   } else {
@@ -1393,7 +1351,7 @@ dmpl::gams::GAMS_Builder::build_function (
     else buffer_ << "base_";
     buffer_ << function->name;
   }
-  buffer_ << " (engine::Function_Arguments & args, engine::Variables & vars)\n";
+  buffer_ << " (engine::FunctionArguments & args, engine::Variables & vars)\n";
   buffer_ << "{\n";
 
   //-- if function is NULL, generate the thread entry function
@@ -1425,7 +1383,7 @@ dmpl::gams::GAMS_Builder::build_function (
   buffer_ << "\n";
 
   buffer_ << "\n  //-- Begin function body\n";
-  dmpl::madara::GAMS_Visitor visitor (actualFunc, node, thread, builder_, buffer_, false);
+  dmpl::madara::GAMSVisitor visitor (actualFunc, node, thread, builder_, buffer_, false);
 
   //transform the body of safety
   BOOST_FOREACH (const Stmt & statement, actualFunc->body)
@@ -1442,17 +1400,17 @@ dmpl::gams::GAMS_Builder::build_function (
 //-- generate class for the expect thread
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_expect_thread_declaration (void)
+dmpl::gams::GAMSBuilder::build_expect_thread_declaration (void)
 {
   build_comment("//-- Thread class to monitor for expect statements", "\n", "\n", 0);
-  buffer_ << "class ExpectThread : public threads::Base_Thread\n";
+  buffer_ << "class ExpectThread : public threads::BaseThread\n";
   buffer_ << "{\n";
   buffer_ << "public:\n";
-  buffer_ << "  Madara::Knowledge_Engine::Knowledge_Base *_knowledge;\n";
+  buffer_ << "  Madara::KnowledgeEngine::KnowledgeBase *_knowledge;\n";
   buffer_ << "  ExpectThread (\n";
   buffer_ << "    ostream &o = std::cout\n";
   buffer_ << "  ) : out(o) {}\n";
-  buffer_ << "  virtual void init (engine::Knowledge_Base & context);\n";
+  buffer_ << "  virtual void init (engine::KnowledgeBase & context);\n";
   buffer_ << "  virtual void run (void);\n";
   buffer_ << "  virtual void cleanup (void) {}\n";
   buffer_ << "protected:\n";
@@ -1464,10 +1422,10 @@ dmpl::gams::GAMS_Builder::build_expect_thread_declaration (void)
 //-- generate methods of expect thread
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_expect_thread_definition (void)
+dmpl::gams::GAMSBuilder::build_expect_thread_definition (void)
 {
   build_comment("//-- Methods for thread class to monitor for expect statements", "\n", "\n", 0);
-  buffer_ << "void ExpectThread::init (engine::Knowledge_Base & context)\n";
+  buffer_ << "void ExpectThread::init (engine::KnowledgeBase & context)\n";
   buffer_ << "{\n";
   buffer_ << "  _knowledge = &context;\n";
   buffer_ << "  out << \"Seconds,Micros,Node,At,Variable,Value\" << std::endl;\n";
@@ -1535,10 +1493,10 @@ dmpl::gams::GAMS_Builder::build_expect_thread_definition (void)
 //-- generate algorithm and synchronous algorithm classes.
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_algo_declaration ()
+dmpl::gams::GAMSBuilder::build_algo_declaration ()
 {
   build_comment("//-- Class that encapsulates a periodic thread", "", "\n", 0);
-  buffer_ << "class Algo : public gams::algorithms::Base_Algorithm, protected threads::Base_Thread\n";
+  buffer_ << "class Algo : public gams::algorithms::BaseAlgorithm, protected threads::BaseThread\n";
   buffer_ << "{\n";
   buffer_ << "public:\n";
   buffer_ << "  Algo (\n";
@@ -1553,7 +1511,7 @@ dmpl::gams::GAMS_Builder::build_algo_declaration ()
 #endif
 
   buffer_ << "    const std::string &exec_func,\n";
-  buffer_ << "    Madara::Knowledge_Engine::Knowledge_Base * knowledge = 0,\n";
+  buffer_ << "    Madara::KnowledgeEngine::KnowledgeBase * knowledge = 0,\n";
   buffer_ << "    const std::string &platform_name = \"\",\n";
   buffer_ << "    variables::Sensors * sensors = 0,\n";
   buffer_ << "    variables::Self * self = 0);\n";
@@ -1563,7 +1521,7 @@ dmpl::gams::GAMS_Builder::build_algo_declaration ()
   buffer_ << "  virtual int plan (void);\n";
   buffer_ << "  virtual int execute (void);\n";
 
-  buffer_ << "  virtual void init (engine::Knowledge_Base & context);\n";
+  buffer_ << "  virtual void init (engine::KnowledgeBase & context);\n";
   buffer_ << "  virtual void init_platform ();\n";
   buffer_ << "  virtual void run (void);\n";
   buffer_ << "  virtual void cleanup (void);\n";
@@ -1581,8 +1539,8 @@ dmpl::gams::GAMS_Builder::build_algo_declaration ()
   }
 #endif
 
-  buffer_ << "  controllers::Base_Controller loop;\n";
-  buffer_ << "  engine::Knowledge_Base *knowledge_;\n";
+  buffer_ << "  controllers::BaseController loop;\n";
+  buffer_ << "  engine::KnowledgeBase *knowledge_;\n";
   buffer_ << "  std::string _exec_func, _platform_name;\n";
 
 #if USE_MZSRM==1
@@ -1611,7 +1569,7 @@ dmpl::gams::GAMS_Builder::build_algo_declaration ()
 
   buffer_ << "    const std::string &exec_func,\n";
   buffer_ << "    const std::string &thread_name,\n";
-  buffer_ << "    Madara::Knowledge_Engine::Knowledge_Base * knowledge = 0,\n";
+  buffer_ << "    Madara::KnowledgeEngine::KnowledgeBase * knowledge = 0,\n";
   buffer_ << "    const std::string &platform_name = \"\",\n";
   buffer_ << "    variables::Sensors * sensors = 0,\n";
   buffer_ << "    variables::Self * self = 0);\n";
@@ -1620,19 +1578,19 @@ dmpl::gams::GAMS_Builder::build_algo_declaration ()
   buffer_ << "  virtual int plan (void);\n";
   buffer_ << "  virtual int execute (void);\n";
 
-  buffer_ << "  virtual void init (engine::Knowledge_Base & context);\n";
+  buffer_ << "  virtual void init (engine::KnowledgeBase & context);\n";
   buffer_ << "  virtual void run (void);\n";
   buffer_ << "  virtual void cleanup (void);\n";
   buffer_ << "protected:\n";
   buffer_ << "  int phase;\n";
   buffer_ << "  std::string mbarrier;\n";
-  buffer_ << "  Madara::Knowledge_Engine::Wait_Settings wait_settings;\n";
-  buffer_ << "  engine::Compiled_Expression round_logic;\n";
+  buffer_ << "  Madara::KnowledgeEngine::WaitSettings wait_settings;\n";
+  buffer_ << "  engine::CompiledExpression round_logic;\n";
   buffer_ << "  std::map <std::string, bool>  barrier_send_list;\n";
   buffer_ << "  std::stringstream barrier_string, barrier_data_string, barrier_sync;\n";
-  buffer_ << "  engine::Compiled_Expression barrier_logic;\n";
-  buffer_ << "  engine::Compiled_Expression barrier_data_logic;\n";
-  buffer_ << "  engine::Compiled_Expression barrier_sync_logic;\n";
+  buffer_ << "  engine::CompiledExpression barrier_logic;\n";
+  buffer_ << "  engine::CompiledExpression barrier_data_logic;\n";
+  buffer_ << "  engine::CompiledExpression barrier_sync_logic;\n";
   buffer_ << "};\n";
   buffer_ << "\n";
 }
@@ -1641,7 +1599,7 @@ dmpl::gams::GAMS_Builder::build_algo_declaration ()
 //-- generate algorithm and synchronous algorithm class methods.
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_algo_functions ()
+dmpl::gams::GAMSBuilder::build_algo_functions ()
 {
   build_comment("//-- Begin Algo class methods", "\n", "\n", 0);
 
@@ -1657,7 +1615,7 @@ dmpl::gams::GAMS_Builder::build_algo_functions ()
 #endif
 
   buffer_ << "    const std::string &exec_func,\n";
-  buffer_ << "    Madara::Knowledge_Engine::Knowledge_Base * knowledge,\n";
+  buffer_ << "    Madara::KnowledgeEngine::KnowledgeBase * knowledge,\n";
   buffer_ << "    const std::string &platform_name,\n";
   buffer_ << "    variables::Sensors * sensors,\n";
 
@@ -1672,7 +1630,7 @@ dmpl::gams::GAMS_Builder::build_algo_functions ()
     buffer_ << "    variables::Self * self) : loop(*knowledge), _platform_name(platform_name),\n";
   }
 
-  buffer_ << "      Base_Algorithm (knowledge, 0, sensors, self), knowledge_(knowledge),\n";
+  buffer_ << "      BaseAlgorithm (knowledge, 0, sensors, self), knowledge_(knowledge),\n";
 
 #if USE_MZSRM==1
   if(schedType_ == MZSRM) {
@@ -1707,7 +1665,7 @@ dmpl::gams::GAMS_Builder::build_algo_functions ()
   buffer_ << "}\n";
   buffer_ << "\n";
 
-  buffer_ << "void Algo::init (engine::Knowledge_Base & context)\n";
+  buffer_ << "void Algo::init (engine::KnowledgeBase & context)\n";
   buffer_ << "{\n";
 
 #if USE_MZSRM==1
@@ -1843,7 +1801,7 @@ dmpl::gams::GAMS_Builder::build_algo_functions ()
 
   buffer_ << "    const std::string &exec_func,\n";
   buffer_ << "    const std::string &thread_name,\n";
-  buffer_ << "    Madara::Knowledge_Engine::Knowledge_Base * knowledge,\n";
+  buffer_ << "    Madara::KnowledgeEngine::KnowledgeBase * knowledge,\n";
   buffer_ << "    const std::string &platform_name,\n";
   buffer_ << "    variables::Sensors * sensors,\n";
   buffer_ << "    variables::Self * self) : phase(0), mbarrier(\"mbarrier_\" + thread_name),\n";
@@ -1876,7 +1834,7 @@ dmpl::gams::GAMS_Builder::build_algo_functions ()
   buffer_ << "}\n";
   buffer_ << "\n";
 
-  buffer_ << "void SyncAlgo::init (engine::Knowledge_Base & context)\n";
+  buffer_ << "void SyncAlgo::init (engine::KnowledgeBase & context)\n";
   buffer_ << "{\n";
   //
   // build the barrier string  
@@ -2067,7 +2025,7 @@ dmpl::gams::GAMS_Builder::build_algo_functions ()
 //-- compute priorities and criticalities of threads
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::compute_priorities ()
+dmpl::gams::GAMSBuilder::compute_priorities ()
 {
   Node &node = builder_.program.nodes.begin()->second;
 
@@ -2141,7 +2099,7 @@ dmpl::gams::GAMS_Builder::compute_priorities ()
   vm_args.ignoreUnrecognized = false;
   /* load and initialize a Java VM, return a JNI interface
    * pointer in env */
-  JNI_CreateJavaVM(&jvm, (void**)&env, &vm_args);
+  JNICreateJavaVM(&jvm, (void**)&env, &vm_args);
   delete options;
   /* invoke the Main.test method using the JNI */
   jclass cls = env->FindClass("edu/cmu/sei/ZeroSlackRM/ZSRMScheduler");
@@ -2177,7 +2135,7 @@ dmpl::gams::GAMS_Builder::compute_priorities ()
 //-- generate the main function
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_main_function ()
+dmpl::gams::GAMSBuilder::build_main_function ()
 {
   build_comment("//-- Helper function to convert objects to strings", "\n", "\n", 0);
   buffer_ << "template<class T> std::string to_string(const T &in)\n";
@@ -2188,7 +2146,7 @@ dmpl::gams::GAMS_Builder::build_main_function ()
   buffer_ << "}\n";
 
   build_comment("//-- Initialize VREP", "\n", "\n", 0);
-  buffer_ << "void init_vrep(const std::vector<std::string> &params, engine::Knowledge_Base &knowledge)\n";
+  buffer_ << "void init_vrep(const std::vector<std::string> &params, engine::KnowledgeBase &knowledge)\n";
   buffer_ << "{\n";
   buffer_ << "  if(params.size() >= 2 && params[1].size() > 0)\n";
   buffer_ << "    knowledge.set(\".vrep_host\", params[1]);\n";
@@ -2309,7 +2267,7 @@ dmpl::gams::GAMS_Builder::build_main_function ()
 /*********************************************************************/
 //-- generate code to create functions for a role
 /*********************************************************************/
-void dmpl::gams::GAMS_Builder::build_algo_creation (const Node &node, const Role &role)
+void dmpl::gams::GAMSBuilder::build_algo_creation (const Node &node, const Role &role)
 {
   buffer_ << "  if(node_name == \"" << node->name << "\" && role_name == \""
           << role->name << "\") {\n";
@@ -2408,7 +2366,7 @@ void dmpl::gams::GAMS_Builder::build_algo_creation (const Node &node, const Role
 //-- generate code to define functions within MADARA
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_main_define_functions ()
+dmpl::gams::GAMSBuilder::build_main_define_functions ()
 {
   buffer_ << "  //-- Defining thread functions for MADARA\n";
   for (const auto &n : builder_.program.nodes)
@@ -2423,7 +2381,7 @@ dmpl::gams::GAMS_Builder::build_main_define_functions ()
 //-- generate code to define a thread function within MADARA
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_main_define_function (const Node & node, const Role &role,
+dmpl::gams::GAMSBuilder::build_main_define_function (const Node & node, const Role &role,
                                                       const Func & thread)
 {
   if(role->getAttribute(thread,"BarrierSync", 0) != NULL) {
@@ -2450,7 +2408,7 @@ dmpl::gams::GAMS_Builder::build_main_define_function (const Node & node, const R
 //-- clear the buffer
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::clear_buffer ()
+dmpl::gams::GAMSBuilder::clear_buffer ()
 {
   buffer_.str ("");
 }
@@ -2459,7 +2417,7 @@ dmpl::gams::GAMS_Builder::clear_buffer ()
 //-- print the buffer
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::print (std::ostream & os)
+dmpl::gams::GAMSBuilder::print (std::ostream & os)
 {
   os << buffer_.str ();
 }
@@ -2468,7 +2426,7 @@ dmpl::gams::GAMS_Builder::print (std::ostream & os)
 //-- generate code to open dmpl namespace
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::open_namespace (const std::string &ns)
+dmpl::gams::GAMSBuilder::open_namespace (const std::string &ns)
 {
   buffer_ << "// begin " << ns << " namespace\n";
   buffer_ << "namespace " << ns << "\n";
@@ -2479,7 +2437,7 @@ dmpl::gams::GAMS_Builder::open_namespace (const std::string &ns)
 //-- generate code to close dmpl namespace
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::close_namespace (const std::string &ns)
+dmpl::gams::GAMSBuilder::close_namespace (const std::string &ns)
 {
   buffer_ << "} // end " << ns << " namespace\n";
   buffer_ << "\n";
@@ -2489,7 +2447,7 @@ dmpl::gams::GAMS_Builder::close_namespace (const std::string &ns)
 //-- Build a comment with prefix and suffix
 /*********************************************************************/
 void
-dmpl::gams::GAMS_Builder::build_comment (const std::string &comment, const std::string &prefix,
+dmpl::gams::GAMSBuilder::build_comment (const std::string &comment, const std::string &prefix,
                                          const std::string &suffix, size_t indent)
 {
   std::string spacer(indent, ' ');

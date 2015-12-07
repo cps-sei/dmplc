@@ -58,7 +58,7 @@
 
 #include <map>
 #include <vector>
-#include "dmpl/MCDA_Export.h"
+#include "dmpl/MCDAExport.h"
 
 extern "C" {
 #include "extApi.h"
@@ -68,7 +68,7 @@ extern "C" {
 //the main class to interact with the VREP simulator. this is an
 //abstract base class. it must be extended for each type of model.
 /*********************************************************************/
-class MCDA_Export DmplVrep
+class MCDAExport DmplVrep
 {
 protected:
   //the client id
@@ -129,7 +129,7 @@ public:
 /*********************************************************************/
 //the subclass of DmplVrep corresponding to a quadrirotor model.
 /*********************************************************************/
-class MCDA_Export QuadriRotor : public DmplVrep
+class MCDAExport QuadriRotor : public DmplVrep
 {
 public:
   QuadriRotor() {}
@@ -143,7 +143,7 @@ public:
 /*********************************************************************/
 //the subclass of DmplVrep corresponding to an ant model.
 /*********************************************************************/
-class MCDA_Export TrackerAnt : public DmplVrep
+class MCDAExport TrackerAnt : public DmplVrep
 {
 private:
   const static double antZ;

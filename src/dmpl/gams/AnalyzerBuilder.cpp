@@ -54,18 +54,18 @@
 **/
 
 
-#include "Analyzer_Builder.hpp"
-#include <dmpl/gams/GAMS_Visitor.hpp>
+#include "AnalyzerBuilder.hpp"
+#include <dmpl/gams/GAMSVisitor.hpp>
 #include <boost/algorithm/string.hpp>
 #include <vector>
 #include <map>
 #include <dmplc/dmpl-parser.hpp>
 
-dmpl::gams::Analyzer_Builder::Analyzer_Builder (dmpl::DmplBuilder & builder, const std::string &target)
+dmpl::gams::AnalyzerBuilder::AnalyzerBuilder (dmpl::DmplBuilder & builder, const std::string &target)
     : builder_(builder), target_(target) {}
 
 void
-dmpl::gams::Analyzer_Builder::build ()
+dmpl::gams::AnalyzerBuilder::build ()
 {
   build_header_includes ();
   build_target_thunk_includes ();
@@ -85,7 +85,7 @@ dmpl::gams::Analyzer_Builder::build ()
 }
 
 void
-dmpl::gams::Analyzer_Builder::build_header_includes ()
+dmpl::gams::AnalyzerBuilder::build_header_includes ()
 {
   buffer_ << "#include <string>\n";
   buffer_ << "#include <vector>\n";
@@ -94,22 +94,22 @@ dmpl::gams::Analyzer_Builder::build_header_includes ()
   buffer_ << "#include <assert.h>\n";
   buffer_ << "#include <math.h>\n";
   buffer_ << "\n";
-  buffer_ << "#include \"madara/knowledge_engine/Knowledge_Base.h\"\n";
-  buffer_ << "#include \"madara/knowledge_engine/Knowledge_Record.h\"\n";
+  buffer_ << "#include \"madara/knowledge_engine/KnowledgeBase.h\"\n";
+  buffer_ << "#include \"madara/knowledge_engine/KnowledgeRecord.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/Functions.h\"\n";
-  buffer_ << "#include \"madara/knowledge_engine/containers/Integer_Vector.h\"\n";
-  buffer_ << "#include \"madara/knowledge_engine/containers/Double_Vector.h\"\n";
+  buffer_ << "#include \"madara/knowledge_engine/containers/IntegerVector.h\"\n";
+  buffer_ << "#include \"madara/knowledge_engine/containers/DoubleVector.h\"\n";
   buffer_ << "#include \"madara/knowledge_engine/containers/Vector_N.h\"\n";
   buffer_ << "#include \"madara/threads/Threader.h\"\n";
-  buffer_ << "#include \"madara/filters/Generic_Filters.h\"\n";
+  buffer_ << "#include \"madara/filters/GenericFilters.h\"\n";
   buffer_ << "\n";
-  buffer_ << "#include \"gams/controllers/Base_Controller.h\"\n";
-  buffer_ << "#include \"gams/algorithms/Base_Algorithm.h\"\n";
+  buffer_ << "#include \"gams/controllers/BaseController.h\"\n";
+  buffer_ << "#include \"gams/algorithms/BaseAlgorithm.h\"\n";
   buffer_ << "#include \"gams/variables/Sensor.h\"\n";
-  buffer_ << "#include \"gams/platforms/Base_Platform.h\"\n";
+  buffer_ << "#include \"gams/platforms/BasePlatform.h\"\n";
   buffer_ << "#include \"gams/variables/Algorithm.h\"\n";
   buffer_ << "#include \"gams/variables/Self.h\"\n";
-  buffer_ << "#include \"gams/utility/GPS_Position.h\"\n";
+  buffer_ << "#include \"gams/utility/GPSPosition.h\"\n";
   buffer_ << "\n";
   buffer_ << "#include \"dmpl/Reference.hpp\"\n";
   buffer_ << "#include \"dmpl/ArrayReference.hpp\"\n";
@@ -117,19 +117,19 @@ dmpl::gams::Analyzer_Builder::build_header_includes ()
 }
 
 void
-dmpl::gams::Analyzer_Builder::build_target_thunk_includes ()
+dmpl::gams::AnalyzerBuilder::build_target_thunk_includes ()
 {
   const std::string include_lines = remove_include_lines_from_target_thunk ();
   buffer_ << include_lines << '\n';
 }
 
 void
-dmpl::gams::Analyzer_Builder::build_common_global_variables ()
+dmpl::gams::AnalyzerBuilder::build_common_global_variables ()
 {
   buffer_ << "// typedefs\n";
-  buffer_ << "typedef   Madara::Knowledge_Record::Integer   Integer;\n\n";
+  buffer_ << "typedef   Madara::KnowledgeRecord::Integer   Integer;\n\n";
   buffer_ << "// namespace shortcuts\n";
-  //buffer_ << "namespace engine = Madara::Knowledge_Engine;\n";
+  //buffer_ << "namespace engine = Madara::KnowledgeEngine;\n";
   buffer_ << "namespace threads = Madara::Threads;\n\n";
   buffer_ << "namespace containers = engine::Containers;\n\n";
   buffer_ << "namespace controllers = gams::controllers;\n\n";
@@ -138,7 +138,7 @@ dmpl::gams::Analyzer_Builder::build_common_global_variables ()
   buffer_ << "using containers::Reference;\n\n";
   buffer_ << "using containers::ArrayReference;\n\n";
   buffer_ << "\n";
-  buffer_ << "engine::Knowledge_Base knowledge;\n";
+  buffer_ << "engine::KnowledgeBase knowledge;\n";
   buffer_ << "int verbosity = 0;\n";
   buffer_ << "\n";
 
@@ -151,8 +151,8 @@ dmpl::gams::Analyzer_Builder::build_common_global_variables ()
   buffer_ << "\n";
   buffer_ << "double integrate_knowledge(const std::string &name, double value)\n";
   buffer_ << "{\n";
-  buffer_ << "  engine::Variable_Reference ref = knowledge.get_ref(name);\n";
-  buffer_ << "  Madara::Knowledge_Record rec = knowledge.get(ref);\n";
+  buffer_ << "  engine::VariableReference ref = knowledge.get_ref(name);\n";
+  buffer_ << "  Madara::KnowledgeRecord rec = knowledge.get(ref);\n";
   buffer_ << "  double orig = rec.to_double();\n";
   buffer_ << "  double ret = orig + value * 0.2;\n";
   buffer_ << "  knowledge.set(ref, ret);\n";
@@ -162,12 +162,12 @@ dmpl::gams::Analyzer_Builder::build_common_global_variables ()
   buffer_ << "}\n";
   buffer_ << "\n";
   buffer_ << "// Needed as a workaround for non-const-correctness in Madara; use carefully\n";
-  buffer_ << "inline engine::Function_Arguments &__strip_const(const engine::Function_Arguments &c)\n";
+  buffer_ << "inline engine::FunctionArguments &__strip_const(const engine::FunctionArguments &c)\n";
   buffer_ << "{\n";
-  buffer_ << "  return const_cast<engine::Function_Arguments &>(c);\n";
+  buffer_ << "  return const_cast<engine::FunctionArguments &>(c);\n";
   buffer_ << "}\n";
   buffer_ << "\n";
-  buffer_ << "inline engine::Function_Arguments &__chain_set(engine::Function_Arguments &c, int i, const Madara::Knowledge_Record &v)\n";
+  buffer_ << "inline engine::FunctionArguments &__chain_set(engine::FunctionArguments &c, int i, const Madara::KnowledgeRecord &v)\n";
   buffer_ << "{\n";
   buffer_ << "  c[i] = v;\n";
   buffer_ << "  return c;\n";
@@ -178,23 +178,23 @@ dmpl::gams::Analyzer_Builder::build_common_global_variables ()
   buffer_ << "std::string host (\"\");\n";
   buffer_ << "std::vector<std::string> platform_params;\n";
   buffer_ << "std::string platform_name (\"debug\");\n";
-  buffer_ << "typedef void (*PlatformInitFn)(const std::vector<std::string> &, engine::Knowledge_Base &);\n";
+  buffer_ << "typedef void (*PlatformInitFn)(const std::vector<std::string> &, engine::KnowledgeBase &);\n";
   buffer_ << "typedef std::map<std::string, PlatformInitFn> PlatformInitFns;\n";
   buffer_ << "PlatformInitFns platform_init_fns;\n";
   buffer_ << "const std::string default_multicast (\"239.255.0.1:4150\");\n";
-  buffer_ << "Madara::Transport::QoS_Transport_Settings settings;\n";
+  buffer_ << "Madara::Transport::QoSTransportSettings settings;\n";
   buffer_ << "int write_fd (-1);\n";
   buffer_ << "ofstream expect_file;\n";
   buffer_ << "\n";
 
   buffer_ << "// Containers for commonly used variables\n";
   buffer_ << "// Global variables\n";
-  //buffer_ << "containers::Integer_Array barrier;\n";
+  //buffer_ << "containers::IntegerArray barrier;\n";
 
   buffer_ << "Reference<unsigned int> id(knowledge, \".id\");\n";
   buffer_ << "Reference<unsigned int>  num_processes(knowledge, \".num_processes\");\n";
   buffer_ << "double max_barrier_time (-1);\n";
-  buffer_ << "engine::Knowledge_Update_Settings private_update (true);\n";
+  buffer_ << "engine::KnowledgeUpdateSettings private_update (true);\n";
   buffer_ << "\n";
   buffer_ << "// number of participating processes\n";
   buffer_ << "unsigned int processes (";
@@ -203,7 +203,7 @@ dmpl::gams::Analyzer_Builder::build_common_global_variables ()
 }
 
 void
-dmpl::gams::Analyzer_Builder::build_target_thunk (void)
+dmpl::gams::AnalyzerBuilder::build_target_thunk (void)
 {
   buffer_ << "// target (" << target_ << ") specific thunk\n";
 
@@ -219,7 +219,7 @@ dmpl::gams::Analyzer_Builder::build_target_thunk (void)
 }
 
 std::string
-dmpl::gams::Analyzer_Builder::remove_include_lines_from_target_thunk (void)
+dmpl::gams::AnalyzerBuilder::remove_include_lines_from_target_thunk (void)
 {
   Program::TargetType::const_iterator it =
     builder_.program.targets.find (target_);
@@ -236,7 +236,7 @@ dmpl::gams::Analyzer_Builder::remove_include_lines_from_target_thunk (void)
 }
 
 std::pair<std::string, std::string>
-dmpl::gams::Analyzer_Builder::split_include_and_non_include_blocks (const std::string target_str)
+dmpl::gams::AnalyzerBuilder::split_include_and_non_include_blocks (const std::string target_str)
 {
   std::vector<std::string> all_lines;
   std::vector<std::string> include_lines;
@@ -275,21 +275,21 @@ dmpl::gams::Analyzer_Builder::split_include_and_non_include_blocks (const std::s
 }
 
 void
-dmpl::gams::Analyzer_Builder::build_common_filters (void)
+dmpl::gams::AnalyzerBuilder::build_common_filters (void)
 {
 }
 
 void
-dmpl::gams::Analyzer_Builder::build_common_filters_helper (
+dmpl::gams::AnalyzerBuilder::build_common_filters_helper (
     const std::string filter_name,
     std::stringstream & filter_content)
 {
-  buffer_ << "Madara::Knowledge_Record\n";
-  buffer_ << filter_name << " (Madara::Knowledge_Map & records,\n";
-  buffer_ << "  const Madara::Transport::Transport_Context & context,\n";
-  buffer_ << "  Madara::Knowledge_Engine::Variables & vars)\n";
+  buffer_ << "Madara::KnowledgeRecord\n";
+  buffer_ << filter_name << " (Madara::KnowledgeMap & records,\n";
+  buffer_ << "  const Madara::Transport::TransportContext & context,\n";
+  buffer_ << "  Madara::KnowledgeEngine::Variables & vars)\n";
   buffer_ << "{\n";
-  buffer_ << "  Madara::Knowledge_Record result;\n";
+  buffer_ << "  Madara::KnowledgeRecord result;\n";
   buffer_ << filter_content.str ();
   buffer_ << "  return result;\n";
   buffer_ << "}\n\n";
@@ -307,7 +307,7 @@ namespace
 }
 
 void
-dmpl::gams::Analyzer_Builder::build_program_variables ()
+dmpl::gams::AnalyzerBuilder::build_program_variables ()
 {
   buffer_ << "// Defining program-specific constants\n";
   
@@ -362,7 +362,7 @@ dmpl::gams::Analyzer_Builder::build_program_variables ()
 }
 
 void
-dmpl::gams::Analyzer_Builder::build_program_variable_init (
+dmpl::gams::AnalyzerBuilder::build_program_variable_init (
   const Var & var)
 {
   if (var->type->dims.size () <= 1)
@@ -377,7 +377,7 @@ dmpl::gams::Analyzer_Builder::build_program_variable_init (
 }
 
 void
-dmpl::gams::Analyzer_Builder::build_program_variable (const Var & var)
+dmpl::gams::AnalyzerBuilder::build_program_variable (const Var & var)
 {
 #if 0
   // is this an array type?
@@ -385,16 +385,16 @@ dmpl::gams::Analyzer_Builder::build_program_variable (const Var & var)
   {
     if (var->type->type == TINT)
     {
-      buffer_ << "containers::Integer_Array ";
+      buffer_ << "containers::IntegerArray ";
     }
     else if (var->type->type == TDOUBLE_TYPE)
     {
-      buffer_ << "containers::Double_Array ";
+      buffer_ << "containers::DoubleArray ";
     }
     else
     {
       // Default to integer array
-      buffer_ << "containers::Integer_Array ";
+      buffer_ << "containers::IntegerArray ";
     }
   }
   // multi-dimensional array type?
@@ -435,7 +435,7 @@ dmpl::gams::Analyzer_Builder::build_program_variable (const Var & var)
 }
 
 void
-dmpl::gams::Analyzer_Builder::build_program_variables_bindings ()
+dmpl::gams::AnalyzerBuilder::build_program_variables_bindings ()
 { 
   buffer_ << "  // Binding common variables\n";
   //buffer_ << "  barrier.set_name (\"mbarrier\", *knowledge, ";
@@ -470,7 +470,7 @@ dmpl::gams::Analyzer_Builder::build_program_variables_bindings ()
 }
 
 void
-dmpl::gams::Analyzer_Builder::build_program_variable_binding (
+dmpl::gams::AnalyzerBuilder::build_program_variable_binding (
   const Var & var)
 {
 #if 0
@@ -505,7 +505,7 @@ dmpl::gams::Analyzer_Builder::build_program_variable_binding (
 }
 
 void
-dmpl::gams::Analyzer_Builder::build_program_variable_assignment (
+dmpl::gams::AnalyzerBuilder::build_program_variable_assignment (
   const Var & var)
 {
   // is this a GLOBAL scalar (i.e., 1-dimensional array)?
@@ -527,7 +527,7 @@ dmpl::gams::Analyzer_Builder::build_program_variable_assignment (
 }
 
 void
-dmpl::gams::Analyzer_Builder::build_parse_args ()
+dmpl::gams::AnalyzerBuilder::build_parse_args ()
 {
   std::stringstream variable_help;
 
@@ -682,7 +682,7 @@ dmpl::gams::Analyzer_Builder::build_parse_args ()
   buffer_ << "    {\n";
   buffer_ << "      if (i + 1 < argc)\n";
   buffer_ << "      {\n";
-  buffer_ << "        Madara::Knowledge_Engine::Knowledge_Base::log_to_file (argv[i + 1]);\n";
+  buffer_ << "        Madara::KnowledgeEngine::KnowledgeBase::log_to_file (argv[i + 1]);\n";
   buffer_ << "      }\n";
   buffer_ << "      \n";
   buffer_ << "      ++i;\n";
@@ -790,7 +790,7 @@ dmpl::gams::Analyzer_Builder::build_parse_args ()
 }
 
 std::string
-dmpl::gams::Analyzer_Builder::build_parse_args (const Var& var)
+dmpl::gams::AnalyzerBuilder::build_parse_args (const Var& var)
 {
   std::stringstream return_value;
   
@@ -822,7 +822,7 @@ dmpl::gams::Analyzer_Builder::build_parse_args (const Var& var)
 }
 
 void
-dmpl::gams::Analyzer_Builder::build_functions_declarations ()
+dmpl::gams::AnalyzerBuilder::build_functions_declarations ()
 {
   buffer_ << "// Forward declaring global functions\n\n";
   Funcs & funcs = builder_.program.funcs;
@@ -848,7 +848,7 @@ dmpl::gams::Analyzer_Builder::build_functions_declarations ()
 }
 
 void
-dmpl::gams::Analyzer_Builder::build_functions (void)
+dmpl::gams::AnalyzerBuilder::build_functions (void)
 {
   buffer_ << "// Defining global functions\n\n";
   Funcs & funcs = builder_.program.funcs;
@@ -872,20 +872,20 @@ dmpl::gams::Analyzer_Builder::build_functions (void)
 }
 
 void
-dmpl::gams::Analyzer_Builder::build_function_declaration (
+dmpl::gams::AnalyzerBuilder::build_function_declaration (
   const dmpl::Node & node, dmpl::Func & function)
 {
   if (function->isExtern || function->attrs.count("INIT") > 0 || function->attrs.count("SAFETY") > 0 ||
       !function->usage_summary.anyExpect().any())
     return;
 
-  buffer_ << "Madara::Knowledge_Record\n";
+  buffer_ << "Madara::KnowledgeRecord\n";
   buffer_ << node->name << "_" << function->name;
-  buffer_ << " (engine::Function_Arguments & args, engine::Variables & vars);\n";
+  buffer_ << " (engine::FunctionArguments & args, engine::Variables & vars);\n";
 }
 
 void
-dmpl::gams::Analyzer_Builder::build_function (
+dmpl::gams::AnalyzerBuilder::build_function (
   const dmpl::Node & node, dmpl::Func & function)
 {
   if (function->isExtern || function->attrs.count("INIT") > 0 || function->attrs.count("SAFETY") > 0 ||
@@ -902,9 +902,9 @@ dmpl::gams::Analyzer_Builder::build_function (
     buffer_ << "\n";
   }
 
-  buffer_ << "Madara::Knowledge_Record\n";
+  buffer_ << "Madara::KnowledgeRecord\n";
   buffer_ << node->name << "_" << function->name;
-  buffer_ << " (engine::Function_Arguments & args, engine::Variables & vars)\n";
+  buffer_ << " (engine::FunctionArguments & args, engine::Variables & vars)\n";
   buffer_ << "{\n";
   buffer_ << "  // Declare local variables\n";
   
@@ -927,7 +927,7 @@ dmpl::gams::Analyzer_Builder::build_function (
   
   buffer_ << "\n";
 
-  dmpl::madara::GAMS_Visitor visitor (function, node, NULL, builder_, buffer_, false, true);
+  dmpl::madara::GAMSVisitor visitor (function, node, NULL, builder_, buffer_, false, true);
 
   //transform the body of safety
   BOOST_FOREACH (const Stmt & statement, function->body)
@@ -941,7 +941,7 @@ dmpl::gams::Analyzer_Builder::build_function (
 }
 
 void
-dmpl::gams::Analyzer_Builder::build_main_function ()
+dmpl::gams::AnalyzerBuilder::build_main_function ()
 {
   buffer_ << "int main (int argc, char ** argv)\n";
   buffer_ << "{\n";
@@ -1068,7 +1068,7 @@ dmpl::gams::Analyzer_Builder::build_main_function ()
 }
 
 void
-dmpl::gams::Analyzer_Builder::build_main_define_functions ()
+dmpl::gams::AnalyzerBuilder::build_main_define_functions ()
 {
   buffer_ << "  // Defining common functions\n\n";
 
@@ -1096,7 +1096,7 @@ dmpl::gams::Analyzer_Builder::build_main_define_functions ()
 
 
 void
-dmpl::gams::Analyzer_Builder::build_main_define_function (const Node & node,
+dmpl::gams::AnalyzerBuilder::build_main_define_function (const Node & node,
                                                       Func & function)
 {
   if (!(function->isExtern || function->attrs.count("INIT") > 0 || function->attrs.count("SAFETY") > 0 ||
@@ -1111,19 +1111,19 @@ dmpl::gams::Analyzer_Builder::build_main_define_function (const Node & node,
 }
 
 void
-dmpl::gams::Analyzer_Builder::clear_buffer ()
+dmpl::gams::AnalyzerBuilder::clear_buffer ()
 {
   buffer_.str ("");
 }
 
 void
-dmpl::gams::Analyzer_Builder::print (std::ostream & os)
+dmpl::gams::AnalyzerBuilder::print (std::ostream & os)
 {
   os << buffer_.str ();
 }
 
 void
-dmpl::gams::Analyzer_Builder::open_dmpl_namespace ()
+dmpl::gams::AnalyzerBuilder::open_dmpl_namespace ()
 {
   buffer_ << "// begin dmpl namespace\n";
   buffer_ << "namespace dmpl\n";
@@ -1131,7 +1131,7 @@ dmpl::gams::Analyzer_Builder::open_dmpl_namespace ()
 }
 
 void
-dmpl::gams::Analyzer_Builder::close_dmpl_namespace ()
+dmpl::gams::AnalyzerBuilder::close_dmpl_namespace ()
 {
   buffer_ << "} // end dmpl namespace\n";
   buffer_ << "\n";
