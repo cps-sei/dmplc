@@ -143,7 +143,7 @@ using index_sequence_for = make_index_sequence<sizeof...(T)>;
 namespace knowledge
 {
 
-namespace Containers
+namespace containers
 {
 
 namespace detail

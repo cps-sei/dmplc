@@ -61,8 +61,8 @@
 #include <fstream>
 #include <sstream>
 
-#include "madara/knowledge_engine/KnowledgeBase.h"
-#include "madara/knowledge_engine/KnowledgeRecord.h"
+#include "madara/knowledge/KnowledgeBase.h"
+#include "madara/knowledge/KnowledgeRecord.h"
 
 namespace engine = madara::knowledge;
 using madara::KnowledgeRecord;

@@ -56,8 +56,8 @@
 #include <string>
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
-#include <madara/knowledge_engine/containers/Integer.h>
-#include <madara/knowledge_engine/containers/IntegerVector.h>
+#include <madara/knowledge/containers/Integer.h>
+#include <madara/knowledge/containers/IntegerVector.h>
 
 #include "ArrayReference.hpp"
 #include "Reference.hpp"
@@ -66,8 +66,8 @@
 #include "ProactiveStorage.hpp"
 #include <ctime>
 
-using madara::KnowledgeRecord;
-using madara::knowledge_cast;
+using madara::knowledge::KnowledgeRecord;
+using madara::knowledge::knowledge_cast;
 using madara::knowledge::containers::ArrayReference;
 #ifdef USE_CPP11
 using madara::knowledge::containers::array_reference_cast;
@@ -209,7 +209,7 @@ int main()
   std::cerr << vec[4][2][3] << std::endl;
   //std::cerr << &vec[1][2][3].get_context() << std::endl;
   std::cerr << vec[1][2][3].get_name() << std::endl;
-  std::cerr << sizeof(vec) << "  " << sizeof(vec[1][3][2]) << "  " << sizeof(madara::KnowledgeRecord) << std::endl;
+  std::cerr << sizeof(vec) << "  " << sizeof(vec[1][3][2]) << "  " << sizeof(KnowledgeRecord) << std::endl;
   vec[1][2][3] = 42;
   vec[1][2][3] <<= 1;
   vec[1][2][4] = 32.7;
@@ -245,7 +245,7 @@ int main()
   vec[4][2][1] += 1;
   std::cerr << "test chained assign: " << vec[4][2][0] << " != " << vec[4][2][1] << " == 1235" << std::endl;
 
-  madara::knowledge::containers::ArrayReference<madara::KnowledgeRecord, 8, 4, 3> kvec(kbase.get_context(), "kvec");
+  madara::knowledge::containers::ArrayReference<KnowledgeRecord, 8, 4, 3> kvec(kbase.get_context(), "kvec");
   kvec[1][1][1] = (long int)5;
   std::cerr << kvec[1][1][1].get().to_integer() << std::endl;
 
@@ -509,6 +509,10 @@ int main()
 #endif
 
   mul[0][1][1] = vmul_copy[0][1][1];
+  Reference<int> a(mul[0][1][1]);
+  Reference<int> b(vmul_copy[0][1][1]);
+  LOG(a == b);
+  LOG(a + b);
   //vmul.size<5>();
   //vmul.size<-1>();
 

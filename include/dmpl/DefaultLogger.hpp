@@ -12,7 +12,7 @@
  * @param  level   the logging level
  **/
 #define madara_log(level, ...) \
-          if (level <= ::madara::Logger::global_logger->get_level ()) \
-            ::madara::Logger::global_logger->log (level, __VA_ARGS__);
+          if (level <= ::madara::logger::global_logger->get_level ()) \
+            ::madara::logger::global_logger->log (level, __VA_ARGS__);
 
 #endif

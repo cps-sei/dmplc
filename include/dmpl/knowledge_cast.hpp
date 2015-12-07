@@ -58,8 +58,12 @@
 
 #include <string>
 #include <stdbool.h>
+#include <madara/knowledge/KnowledgeRecord.h>
 
 namespace madara
+{
+
+namespace knowledge
 {
 
 /// By default, call constructor of target class;
@@ -252,6 +256,8 @@ KnowledgeRecord &knowledge_cast(KnowledgeRecord &in)
 const KnowledgeRecord &knowledge_cast(const KnowledgeRecord &in)
 {
   return in;
+}
+
 }
 
 }

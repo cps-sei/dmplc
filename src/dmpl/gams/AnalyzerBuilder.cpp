@@ -94,12 +94,12 @@ dmpl::gams::AnalyzerBuilder::build_header_includes ()
   buffer_ << "#include <assert.h>\n";
   buffer_ << "#include <math.h>\n";
   buffer_ << "\n";
-  buffer_ << "#include \"madara/knowledge_engine/KnowledgeBase.h\"\n";
-  buffer_ << "#include \"madara/knowledge_engine/KnowledgeRecord.h\"\n";
-  buffer_ << "#include \"madara/knowledge_engine/Functions.h\"\n";
-  buffer_ << "#include \"madara/knowledge_engine/containers/IntegerVector.h\"\n";
-  buffer_ << "#include \"madara/knowledge_engine/containers/DoubleVector.h\"\n";
-  buffer_ << "#include \"madara/knowledge_engine/containers/Vector_N.h\"\n";
+  buffer_ << "#include \"madara/knowledge/KnowledgeBase.h\"\n";
+  buffer_ << "#include \"madara/knowledge/KnowledgeRecord.h\"\n";
+  buffer_ << "#include \"madara/knowledge/Functions.h\"\n";
+  buffer_ << "#include \"madara/knowledge/containers/IntegerVector.h\"\n";
+  buffer_ << "#include \"madara/knowledge/containers/DoubleVector.h\"\n";
+  buffer_ << "#include \"madara/knowledge/containers/Vector_N.h\"\n";
   buffer_ << "#include \"madara/threads/Threader.h\"\n";
   buffer_ << "#include \"madara/filters/GenericFilters.h\"\n";
   buffer_ << "\n";

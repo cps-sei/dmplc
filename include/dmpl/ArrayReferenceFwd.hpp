@@ -65,7 +65,7 @@ namespace madara
 namespace knowledge
 {
 
-namespace Containers
+namespace containers
 {
 
 enum { VAR_LEN = UINT_MAX };

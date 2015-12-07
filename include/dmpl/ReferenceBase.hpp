@@ -64,9 +64,9 @@
 #include <sstream>
 #include <typeinfo>
 #include <exception>
-#include <madara/knowledge_engine/ThreadSafeContext.h>
-#include <madara/knowledge_engine/ThreadSafeContext.h>
-#include <madara/knowledge_engine/KnowledgeUpdateSettings.h>
+#include <madara/knowledge/ThreadSafeContext.h>
+#include <madara/knowledge/ThreadSafeContext.h>
+#include <madara/knowledge/KnowledgeUpdateSettings.h>
 #include "utility.hpp"
 #include "knowledge_cast.hpp"
 
@@ -76,14 +76,44 @@ namespace madara
 namespace knowledge
 {
 
-namespace Containers
+namespace containers
 {
 
 namespace detail
 {
 
+#ifdef USE_CPP11
+template<typename T, typename Impl>
+struct get_cast_operator
+{
+  explicit operator bool() const
+  {
+    return static_cast<const Impl*>(this)->is_true();
+  }
+
+  operator T() const {
+    return static_cast<const Impl*>(this)->get();
+  }
+};
+
+template<typename Impl>
+struct get_cast_operator<bool, Impl>
+{
+  operator bool() const
+  {
+    return static_cast<const Impl*>(this)->is_true();
+  }
+};
+
+struct is_a_reference_tag {};
+
+#endif
+
 template<typename T, typename Impl>
 class ReferenceBase
+#ifdef USE_CPP11
+  : public get_cast_operator<T, Impl>, public is_a_reference_tag
+#endif
 {
 protected:
   ReferenceBase() {}

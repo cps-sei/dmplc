@@ -7,7 +7,7 @@ namespace madara
 namespace knowledge
 {
 
-namespace Containers
+namespace containers
 {
 
 namespace StorageManager
