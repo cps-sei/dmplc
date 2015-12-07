@@ -82,7 +82,7 @@ int main(int argc,char **argv)
 
   std::cout << "ping time is " << dv.getPingTime() << " ms\n";
 
-  Madara::Utility::sleep(2);
+  madara::utility::sleep(2);
 
   if(port == 19900) {
     simxInt node1 = dv.createNode();

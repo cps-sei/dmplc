@@ -72,10 +72,10 @@
 #include "ReferenceBase.hpp"
 #include "ContextHost.hpp"
 
-namespace Madara
+namespace madara
 {
 
-namespace KnowledgeEngine
+namespace knowledge
 {
 
 namespace Containers

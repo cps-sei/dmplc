@@ -76,10 +76,10 @@
 #include "ArrayReferenceFwd.hpp"
 #include "IndexedArrayReference.hpp"
 
-namespace Madara
+namespace madara
 {
 
-namespace KnowledgeEngine
+namespace knowledge
 {
 
 namespace Containers

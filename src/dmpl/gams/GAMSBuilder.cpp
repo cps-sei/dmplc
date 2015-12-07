@@ -290,12 +290,12 @@ void
 dmpl::gams::GAMSBuilder::build_common_global_variables ()
 {
   build_comment("//-- typedefs", "\n", "", 0);
-  buffer_ << "typedef   Madara::KnowledgeRecord::Integer   Integer;\n\n";
+  buffer_ << "typedef   madara::KnowledgeRecord::Integer   Integer;\n\n";
 
   build_comment("//-- namespace shortcuts", "", "", 0);
-  buffer_ << "namespace engine = Madara::KnowledgeEngine;\n";
-  buffer_ << "namespace threads = Madara::Threads;\n";
-  buffer_ << "namespace containers = engine::Containers;\n";
+  buffer_ << "namespace engine = madara::knowledge;\n";
+  buffer_ << "namespace threads = madara::Threads;\n";
+  buffer_ << "namespace containers = engine::containers;\n";
   buffer_ << "namespace controllers = gams::controllers;\n";
   buffer_ << "namespace platforms = gams::platforms;\n";
   buffer_ << "namespace variables = gams::variables;\n";
@@ -306,7 +306,7 @@ dmpl::gams::GAMSBuilder::build_common_global_variables ()
   buffer_ << "using containers::ArrayReference;\n";
   buffer_ << "using containers::CachedReference;\n";
   buffer_ << "using containers::StorageManager::Proactive;\n";
-  buffer_ << "using Madara::knowledge_cast;\n";
+  buffer_ << "using madara::knowledge_cast;\n";
   buffer_ << "\n";
 
   build_comment("//-- declare knowledge base", "", "", 0);
@@ -321,7 +321,7 @@ dmpl::gams::GAMSBuilder::build_common_global_variables ()
   buffer_ << "}\n";
 
   build_comment("//-- Needed to construct function arguments", "\n", "", 0);
-  buffer_ << "inline engine::FunctionArguments &__chain_set(engine::FunctionArguments &c, int i, Madara::KnowledgeRecord v)\n";
+  buffer_ << "inline engine::FunctionArguments &__chain_set(engine::FunctionArguments &c, int i, madara::KnowledgeRecord v)\n";
   buffer_ << "{\n";
   buffer_ << "  c[i] = v;\n";
   buffer_ << "  return c;\n";
@@ -336,7 +336,7 @@ dmpl::gams::GAMSBuilder::build_common_global_variables ()
   buffer_ << "typedef std::map<std::string, PlatformInitFn> PlatformInitFns;\n";
   buffer_ << "PlatformInitFns platform_init_fns;\n";
   buffer_ << "const std::string default_multicast (\"239.255.0.1:4150\");\n";
-  buffer_ << "Madara::Transport::QoSTransportSettings settings;\n";
+  buffer_ << "madara::transport::QoSTransportSettings settings;\n";
   buffer_ << "int write_fd (-1);\n";
   buffer_ << "ofstream expect_file;\n";
   buffer_ << "std::string node_name (\"none\");\n";
@@ -531,12 +531,12 @@ dmpl::gams::GAMSBuilder::build_common_filters_helper (
     const std::string filter_name,
     std::stringstream & filter_content)
 {
-  buffer_ << "Madara::KnowledgeRecord\n";
-  buffer_ << filter_name << " (Madara::KnowledgeMap & records,\n";
-  buffer_ << "  const Madara::Transport::TransportContext & context,\n";
-  buffer_ << "  Madara::KnowledgeEngine::Variables & vars)\n";
+  buffer_ << "madara::KnowledgeRecord\n";
+  buffer_ << filter_name << " (madara::KnowledgeMap & records,\n";
+  buffer_ << "  const madara::transport::TransportContext & context,\n";
+  buffer_ << "  madara::knowledge::Variables & vars)\n";
   buffer_ << "{\n";
-  buffer_ << "  Madara::KnowledgeRecord result;\n";
+  buffer_ << "  madara::KnowledgeRecord result;\n";
   buffer_ << filter_content.str ();
   buffer_ << "  return result;\n";
   buffer_ << "}\n\n";
@@ -675,7 +675,7 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   buffer_ << "      if (i + 1 < argc)\n";
   buffer_ << "      {\n";
   buffer_ << "        settings.hosts.push_back (argv[i + 1]);\n";
-  buffer_ << "        settings.type = Madara::Transport::MULTICAST;\n";
+  buffer_ << "        settings.type = madara::transport::MULTICAST;\n";
   buffer_ << "      }\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
@@ -693,7 +693,7 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   buffer_ << "      if (i + 1 < argc)\n";
   buffer_ << "      {\n";
   buffer_ << "        settings.hosts.push_back (argv[i + 1]);\n";
-  buffer_ << "        settings.type = Madara::Transport::BROADCAST;\n";
+  buffer_ << "        settings.type = madara::transport::BROADCAST;\n";
   buffer_ << "      }\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
@@ -702,7 +702,7 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   buffer_ << "      if (i + 1 < argc)\n";
   buffer_ << "      {\n";
   buffer_ << "        settings.hosts.push_back (argv[i + 1]);\n";
-  buffer_ << "        settings.type = Madara::Transport::UDP;\n";
+  buffer_ << "        settings.type = madara::transport::UDP;\n";
   buffer_ << "      }\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
@@ -736,7 +736,7 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   buffer_ << "        int log_level = 0;\n";
   buffer_ << "        std::stringstream buffer (argv[i + 1]);\n";
   buffer_ << "        buffer >> log_level;\n";
-  buffer_ << "        Madara::Logger::global_logger->set_level(log_level);\n";
+  buffer_ << "        madara::Logger::global_logger->set_level(log_level);\n";
   buffer_ << "      }\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
@@ -749,9 +749,9 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   buffer_ << "        buffer >> drop_rate;\n";
   buffer_ << "        std::cerr << \"drop_rate: \" << drop_rate << std::endl;\n";
   //TODO: fix handling of packet drops in MADARA
-  //buffer_ << "        Madara::Transport::PacketScheduler::drop_rate_override = drop_rate;\n";
+  //buffer_ << "        madara::transport::PacketScheduler::drop_rate_override = drop_rate;\n";
   buffer_ << "        settings.update_drop_rate (drop_rate,\n";
-  buffer_ << "          Madara::Transport::PACKET_DROP_PROBABLISTIC);\n";
+  buffer_ << "          madara::transport::PACKET_DROP_PROBABLISTIC);\n";
   buffer_ << "      }\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
@@ -767,8 +767,8 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   buffer_ << "    {\n";
   buffer_ << "      if (i + 1 < argc)\n";
   buffer_ << "      {\n";
-  buffer_ << "        ::Madara::Logger::global_logger->clear();\n";
-  buffer_ << "        ::Madara::Logger::global_logger->add_file(argv[i + 1]);\n";
+  buffer_ << "        ::madara::Logger::global_logger->clear();\n";
+  buffer_ << "        ::madara::Logger::global_logger->add_file(argv[i + 1]);\n";
   buffer_ << "      }\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
@@ -867,7 +867,7 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
 
   buffer_ << "    else\n";
   buffer_ << "    {\n";
-  buffer_ << "      madara_log (Madara::Logger::LOG_EMERGENCY, (LM_DEBUG, \n";
+  buffer_ << "      madara_log (madara::Logger::LOG_EMERGENCY, (LM_DEBUG, \n";
   buffer_ << "        \"\\nProgram summary for %s:\\n\\n\"\\\n";
   buffer_ << "        \" [-p|--platform type]     platform for loop (vrep, dronerk)\\n\"\\\n";
   buffer_ << "        \" [-b|--broadcast ip:port] the broadcast ip to send and listen to\\n\"\\\n";
@@ -1034,7 +1034,7 @@ dmpl::gams::GAMSBuilder::build_function_declaration (const Func & thread, const 
 {
   //-- if function is NULL, declare the thread entry function
   if(function == NULL) {
-    buffer_ << "Madara::KnowledgeRecord\n"
+    buffer_ << "madara::KnowledgeRecord\n"
             << "thread" << thread->threadID
             << " (engine::FunctionArguments & args, engine::Variables & vars);\n";
     return;
@@ -1042,7 +1042,7 @@ dmpl::gams::GAMSBuilder::build_function_declaration (const Func & thread, const 
   
   if (skip_func(function)) return;
 
-  buffer_ << "Madara::KnowledgeRecord\n";
+  buffer_ << "madara::KnowledgeRecord\n";
   if(thread) buffer_ << "thread" << thread->threadID << "_";
   else buffer_ << "base_";
   buffer_ << function->name;
@@ -1224,7 +1224,7 @@ dmpl::gams::GAMSBuilder::build_refresh_modify_globals (const Node &node, const R
                                                         const Func &thread)
 {
   build_comment("//-- Remodify barries variables to force MADARA retransmit", "\n", "", 0);
-  buffer_ << "Madara::KnowledgeRecord\n";
+  buffer_ << "madara::KnowledgeRecord\n";
   buffer_ << "REMODIFY_BARRIERS_" << thread->name;
   buffer_ << " (engine::FunctionArguments &,\n";
   buffer_ << "  engine::Variables & vars)\n";
@@ -1234,7 +1234,7 @@ dmpl::gams::GAMSBuilder::build_refresh_modify_globals (const Node &node, const R
   buffer_ << "}\n";
 
   build_comment("//-- Remodify global shared variables to force MADARA retransmit", "\n", "", 0);
-  buffer_ << "Madara::KnowledgeRecord\n";
+  buffer_ << "madara::KnowledgeRecord\n";
   buffer_ << "REMODIFY_GLOBALS_" << thread->name;
   buffer_ << " (engine::FunctionArguments & args,\n";
   buffer_ << "  engine::Variables & vars)\n";
@@ -1279,7 +1279,7 @@ dmpl::gams::GAMSBuilder::build_push_pull(const Func &thread, bool push)
 {
   buffer_ << "  //-- " << (push?"Push":"Pull") << " all referenced locals/globals\n";
   buffer_ << "  {\n";
-  buffer_ << "    Madara::KnowledgeEngine::ContextGuard guard(knowledge);\n";
+  buffer_ << "    madara::knowledge::ContextGuard guard(knowledge);\n";
 
   //push-pull locals
   for(const auto &var : thread->accessedLoc()) {
@@ -1343,7 +1343,7 @@ dmpl::gams::GAMSBuilder::build_function (
   }
 
   //-- function header
-  buffer_ << "Madara::KnowledgeRecord\n";
+  buffer_ << "madara::KnowledgeRecord\n";
   if(function == NULL) {
     buffer_ << "thread" << thread->threadID;
   } else {
@@ -1406,7 +1406,7 @@ dmpl::gams::GAMSBuilder::build_expect_thread_declaration (void)
   buffer_ << "class ExpectThread : public threads::BaseThread\n";
   buffer_ << "{\n";
   buffer_ << "public:\n";
-  buffer_ << "  Madara::KnowledgeEngine::KnowledgeBase *_knowledge;\n";
+  buffer_ << "  madara::knowledge::KnowledgeBase *_knowledge;\n";
   buffer_ << "  ExpectThread (\n";
   buffer_ << "    ostream &o = std::cout\n";
   buffer_ << "  ) : out(o) {}\n";
@@ -1511,7 +1511,7 @@ dmpl::gams::GAMSBuilder::build_algo_declaration ()
 #endif
 
   buffer_ << "    const std::string &exec_func,\n";
-  buffer_ << "    Madara::KnowledgeEngine::KnowledgeBase * knowledge = 0,\n";
+  buffer_ << "    madara::knowledge::KnowledgeBase * knowledge = 0,\n";
   buffer_ << "    const std::string &platform_name = \"\",\n";
   buffer_ << "    variables::Sensors * sensors = 0,\n";
   buffer_ << "    variables::Self * self = 0);\n";
@@ -1569,7 +1569,7 @@ dmpl::gams::GAMSBuilder::build_algo_declaration ()
 
   buffer_ << "    const std::string &exec_func,\n";
   buffer_ << "    const std::string &thread_name,\n";
-  buffer_ << "    Madara::KnowledgeEngine::KnowledgeBase * knowledge = 0,\n";
+  buffer_ << "    madara::knowledge::KnowledgeBase * knowledge = 0,\n";
   buffer_ << "    const std::string &platform_name = \"\",\n";
   buffer_ << "    variables::Sensors * sensors = 0,\n";
   buffer_ << "    variables::Self * self = 0);\n";
@@ -1584,7 +1584,7 @@ dmpl::gams::GAMSBuilder::build_algo_declaration ()
   buffer_ << "protected:\n";
   buffer_ << "  int phase;\n";
   buffer_ << "  std::string mbarrier;\n";
-  buffer_ << "  Madara::KnowledgeEngine::WaitSettings wait_settings;\n";
+  buffer_ << "  madara::knowledge::WaitSettings wait_settings;\n";
   buffer_ << "  engine::CompiledExpression round_logic;\n";
   buffer_ << "  std::map <std::string, bool>  barrier_send_list;\n";
   buffer_ << "  std::stringstream barrier_string, barrier_data_string, barrier_sync;\n";
@@ -1615,7 +1615,7 @@ dmpl::gams::GAMSBuilder::build_algo_functions ()
 #endif
 
   buffer_ << "    const std::string &exec_func,\n";
-  buffer_ << "    Madara::KnowledgeEngine::KnowledgeBase * knowledge,\n";
+  buffer_ << "    madara::knowledge::KnowledgeBase * knowledge,\n";
   buffer_ << "    const std::string &platform_name,\n";
   buffer_ << "    variables::Sensors * sensors,\n";
 
@@ -1801,7 +1801,7 @@ dmpl::gams::GAMSBuilder::build_algo_functions ()
 
   buffer_ << "    const std::string &exec_func,\n";
   buffer_ << "    const std::string &thread_name,\n";
-  buffer_ << "    Madara::KnowledgeEngine::KnowledgeBase * knowledge,\n";
+  buffer_ << "    madara::knowledge::KnowledgeBase * knowledge,\n";
   buffer_ << "    const std::string &platform_name,\n";
   buffer_ << "    variables::Sensors * sensors,\n";
   buffer_ << "    variables::Self * self) : phase(0), mbarrier(\"mbarrier_\" + thread_name),\n";
@@ -2170,10 +2170,10 @@ dmpl::gams::GAMSBuilder::build_main_function ()
   build_comment("//-- The main function. This is where everything starts.", "\n", "\n", 0);
   buffer_ << "int main (int argc, char ** argv)\n";
   buffer_ << "{\n";
-  //buffer_ << "  Madara::Utility::set_log_level(Madara::Utility::LOG_DETAILED_TRACE);\n";
-  //buffer_ << "  Madara::Utility::set_log_level(Madara::Utility::LOG_MAJOR_DEBUG_INFO);\n";
-  buffer_ << "  settings.type = Madara::Transport::MULTICAST;\n";
-  //buffer_ << "  settings.type = Madara::Transport::BROADCAST;\n";
+  //buffer_ << "  madara::utility::set_log_level(madara::utility::LOG_DETAILED_TRACE);\n";
+  //buffer_ << "  madara::utility::set_log_level(madara::utility::LOG_MAJOR_DEBUG_INFO);\n";
+  buffer_ << "  settings.type = madara::transport::MULTICAST;\n";
+  //buffer_ << "  settings.type = madara::transport::BROADCAST;\n";
   buffer_ << "  platform_init_fns[\"vrep\"] = init_vrep;\n";
   buffer_ << "  platform_init_fns[\"vrep-uav\"] = init_vrep;\n";
   buffer_ << "  platform_init_fns[\"vrep-heli\"] = init_vrep;\n";
@@ -2189,8 +2189,8 @@ dmpl::gams::GAMSBuilder::build_main_function ()
   buffer_ << "    //-- setup default transport as multicast\n";
   buffer_ << "    settings.hosts.push_back (default_multicast);\n";
   //buffer_ << "    settings.hosts.push_back (\"127.0.0.1:4150\");\n";
-  buffer_ << "    settings.add_receive_filter (Madara::Filters::log_aggregate);\n";
-  buffer_ << "    settings.add_send_filter (Madara::Filters::log_aggregate);\n";
+  buffer_ << "    settings.add_receive_filter (madara::Filters::log_aggregate);\n";
+  buffer_ << "    settings.add_send_filter (madara::Filters::log_aggregate);\n";
   buffer_ << "  }\n\n";
   
   buffer_ << "  settings.queue_length = 1000000;\n\n";

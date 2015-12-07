@@ -59,10 +59,10 @@
 #include <climits>
 #include "utility.hpp"
 
-namespace Madara
+namespace madara
 {
 
-namespace KnowledgeEngine
+namespace knowledge
 {
 
 namespace Containers

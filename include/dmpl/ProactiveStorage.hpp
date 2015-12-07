@@ -84,10 +84,10 @@
 #define USE_STATIC_ASSERT
 #endif
 
-namespace Madara
+namespace madara
 {
 
-namespace KnowledgeEngine
+namespace knowledge
 {
 
 namespace Containers
@@ -98,7 +98,7 @@ namespace StorageManager
 
 namespace detail
 {
-using namespace ::Madara::KnowledgeEngine::Containers::detail;
+using namespace ::madara::knowledge::containers::detail;
 }
 
 template <typename T, template<typename X> class S = Reference>

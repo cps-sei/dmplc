@@ -66,18 +66,18 @@
 #include "ProactiveStorage.hpp"
 #include <ctime>
 
-using Madara::KnowledgeRecord;
-using Madara::knowledge_cast;
-using Madara::KnowledgeEngine::Containers::ArrayReference;
+using madara::KnowledgeRecord;
+using madara::knowledge_cast;
+using madara::knowledge::containers::ArrayReference;
 #ifdef USE_CPP11
-using Madara::KnowledgeEngine::Containers::array_reference_cast;
+using madara::knowledge::containers::array_reference_cast;
 #endif
-using Madara::KnowledgeEngine::Containers::Reference;
-using Madara::KnowledgeEngine::Containers::CachedReference;
-using Madara::KnowledgeEngine::Containers::IntegerVector;
-using Madara::KnowledgeEngine::Containers::VAR_LEN;
-using Madara::KnowledgeEngine::Containers::StorageManager::Lazy;
-using Madara::KnowledgeEngine::Containers::StorageManager::Proactive;
+using madara::knowledge::containers::Reference;
+using madara::knowledge::containers::CachedReference;
+using madara::knowledge::containers::IntegerVector;
+using madara::knowledge::containers::VAR_LEN;
+using madara::knowledge::containers::StorageManager::Lazy;
+using madara::knowledge::containers::StorageManager::Proactive;
 
 static unsigned int OK_count = 0;
 static unsigned int FAIL_count = 0;
@@ -98,7 +98,7 @@ void perf_test()
 {
   clock_t vector_N_start = clock();
   {
-    Madara::KnowledgeEngine::KnowledgeBase kbase;
+    madara::knowledge::KnowledgeBase kbase;
     Vector_N v("array", kbase);
     for(int i = 0; i < 100; ++i)
     {
@@ -120,7 +120,7 @@ void perf_test()
 
   clock_t staticArray_start = clock();
   {
-    Madara::KnowledgeEngine::KnowledgeBase kbase;
+    madara::knowledge::KnowledgeBase kbase;
     ArrayReference<int, 100, 100, 100> a(kbase, "array");
     for(int i = 0; i < 100; ++i)
     {
@@ -138,7 +138,7 @@ void perf_test()
 
   clock_t intVec_start = clock(), intVec_init;
   {
-    Madara::KnowledgeEngine::KnowledgeBase kbase;
+    madara::knowledge::KnowledgeBase kbase;
     IntegerVector v("array", kbase, 1000000);
     intVec_init = clock();
     for(int i = 0; i < 1000000; ++i)
@@ -152,7 +152,7 @@ void perf_test()
 
   clock_t lazyArray_start = clock();
   {
-    Madara::KnowledgeEngine::KnowledgeBase kbase;
+    madara::knowledge::KnowledgeBase kbase;
     ArrayReference<Lazy<int, Reference<int> >, 1000000> a(kbase, "array");
     for(int i = 0; i < 1000000; ++i)
     {
@@ -164,7 +164,7 @@ void perf_test()
 
   clock_t proactiveArray_start = clock(), proactiveArray_init;
   {
-    Madara::KnowledgeEngine::KnowledgeBase kbase;
+    madara::knowledge::KnowledgeBase kbase;
     ArrayReference<Proactive<int, Reference<int> >, 1000000> a(kbase, "array");
     a[0];
     proactiveArray_init = clock();
@@ -193,23 +193,23 @@ void print_asdf(R &&r)
 
 int main()
 {
-  Madara::KnowledgeEngine::KnowledgeBase kbase;
-  Madara::KnowledgeEngine::Containers::ArrayReference<int, 5, 6, 7, 8, 9> v(kbase.get_context(), "vec");
+  madara::knowledge::KnowledgeBase kbase;
+  madara::knowledge::containers::ArrayReference<int, 5, 6, 7, 8, 9> v(kbase.get_context(), "vec");
   std::cerr << v[1][2][3][4][5] << std::endl;
-  Madara::KnowledgeEngine::Containers::ArrayReference<int, 5, 6, 7> vec(kbase.get_context(), "vec");
+  madara::knowledge::containers::ArrayReference<int, 5, 6, 7> vec(kbase.get_context(), "vec");
   //auto r1 = vec[1];
   //auto r2 = vec[1][2];
   int r2 = vec[3][1][1];
   vec[1][1][1] = vec[1][1][1];
   std::cerr << r2 << "  " << sizeof(r2) << std::endl;
-  Madara::KnowledgeEngine::Containers::Reference<int> r3 = vec[4][2][3];
+  madara::knowledge::containers::Reference<int> r3 = vec[4][2][3];
   std::cerr << r3 << "  " << sizeof(r3) << std::endl;
   r3 = 18;
   std::cerr << r3 << "  " << sizeof(r3) << std::endl;
   std::cerr << vec[4][2][3] << std::endl;
   //std::cerr << &vec[1][2][3].get_context() << std::endl;
   std::cerr << vec[1][2][3].get_name() << std::endl;
-  std::cerr << sizeof(vec) << "  " << sizeof(vec[1][3][2]) << "  " << sizeof(Madara::KnowledgeRecord) << std::endl;
+  std::cerr << sizeof(vec) << "  " << sizeof(vec[1][3][2]) << "  " << sizeof(madara::KnowledgeRecord) << std::endl;
   vec[1][2][3] = 42;
   vec[1][2][3] <<= 1;
   vec[1][2][4] = 32.7;
@@ -245,13 +245,13 @@ int main()
   vec[4][2][1] += 1;
   std::cerr << "test chained assign: " << vec[4][2][0] << " != " << vec[4][2][1] << " == 1235" << std::endl;
 
-  Madara::KnowledgeEngine::Containers::ArrayReference<Madara::KnowledgeRecord, 8, 4, 3> kvec(kbase.get_context(), "kvec");
+  madara::knowledge::containers::ArrayReference<madara::KnowledgeRecord, 8, 4, 3> kvec(kbase.get_context(), "kvec");
   kvec[1][1][1] = (long int)5;
   std::cerr << kvec[1][1][1].get().to_integer() << std::endl;
 
-  Madara::KnowledgeEngine::Containers::ArrayReference<int, 6, 7> sub_vec(vec[1]);
+  madara::knowledge::containers::ArrayReference<int, 6, 7> sub_vec(vec[1]);
   std::cerr << sub_vec[2][3] << std::endl;
-  Madara::KnowledgeEngine::Containers::ArrayReference<int, 7> sub_sub_vec(sub_vec[2]);
+  madara::knowledge::containers::ArrayReference<int, 7> sub_sub_vec(sub_vec[2]);
   std::cerr << sub_sub_vec[4] << std::endl;
 
 #ifdef USE_VAR_TMPL
@@ -278,7 +278,7 @@ int main()
   std::cerr << "resized_arr[1][25] == " << resized_arr[1][25] << std::endl;
 #endif
 
-  ArrayReference< ::Madara::KnowledgeEngine::Containers::StorageManager::detail::Stateless<int>, 6, VAR_LEN, VAR_LEN> var_arr2(kbase, "variable_array");
+  ArrayReference< ::madara::knowledge::containers::StorageManager::detail::Stateless<int>, 6, VAR_LEN, VAR_LEN> var_arr2(kbase, "variable_array");
   ArrayReference<int, 6, VAR_LEN, VAR_LEN, VAR_LEN> var_arr3(kbase, "variable_array");
 #ifdef USE_VAR_TMPL
   LOG(sizeof(big_array));

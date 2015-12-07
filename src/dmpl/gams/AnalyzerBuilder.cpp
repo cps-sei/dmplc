@@ -127,11 +127,11 @@ void
 dmpl::gams::AnalyzerBuilder::build_common_global_variables ()
 {
   buffer_ << "// typedefs\n";
-  buffer_ << "typedef   Madara::KnowledgeRecord::Integer   Integer;\n\n";
+  buffer_ << "typedef   madara::KnowledgeRecord::Integer   Integer;\n\n";
   buffer_ << "// namespace shortcuts\n";
-  //buffer_ << "namespace engine = Madara::KnowledgeEngine;\n";
-  buffer_ << "namespace threads = Madara::Threads;\n\n";
-  buffer_ << "namespace containers = engine::Containers;\n\n";
+  //buffer_ << "namespace engine = madara::knowledge;\n";
+  buffer_ << "namespace threads = madara::Threads;\n\n";
+  buffer_ << "namespace containers = engine::containers;\n\n";
   buffer_ << "namespace controllers = gams::controllers;\n\n";
   buffer_ << "namespace platforms = gams::platforms;\n\n";
   buffer_ << "namespace variables = gams::variables;\n\n";
@@ -152,7 +152,7 @@ dmpl::gams::AnalyzerBuilder::build_common_global_variables ()
   buffer_ << "double integrate_knowledge(const std::string &name, double value)\n";
   buffer_ << "{\n";
   buffer_ << "  engine::VariableReference ref = knowledge.get_ref(name);\n";
-  buffer_ << "  Madara::KnowledgeRecord rec = knowledge.get(ref);\n";
+  buffer_ << "  madara::KnowledgeRecord rec = knowledge.get(ref);\n";
   buffer_ << "  double orig = rec.to_double();\n";
   buffer_ << "  double ret = orig + value * 0.2;\n";
   buffer_ << "  knowledge.set(ref, ret);\n";
@@ -167,7 +167,7 @@ dmpl::gams::AnalyzerBuilder::build_common_global_variables ()
   buffer_ << "  return const_cast<engine::FunctionArguments &>(c);\n";
   buffer_ << "}\n";
   buffer_ << "\n";
-  buffer_ << "inline engine::FunctionArguments &__chain_set(engine::FunctionArguments &c, int i, const Madara::KnowledgeRecord &v)\n";
+  buffer_ << "inline engine::FunctionArguments &__chain_set(engine::FunctionArguments &c, int i, const madara::KnowledgeRecord &v)\n";
   buffer_ << "{\n";
   buffer_ << "  c[i] = v;\n";
   buffer_ << "  return c;\n";
@@ -182,7 +182,7 @@ dmpl::gams::AnalyzerBuilder::build_common_global_variables ()
   buffer_ << "typedef std::map<std::string, PlatformInitFn> PlatformInitFns;\n";
   buffer_ << "PlatformInitFns platform_init_fns;\n";
   buffer_ << "const std::string default_multicast (\"239.255.0.1:4150\");\n";
-  buffer_ << "Madara::Transport::QoSTransportSettings settings;\n";
+  buffer_ << "madara::transport::QoSTransportSettings settings;\n";
   buffer_ << "int write_fd (-1);\n";
   buffer_ << "ofstream expect_file;\n";
   buffer_ << "\n";
@@ -284,12 +284,12 @@ dmpl::gams::AnalyzerBuilder::build_common_filters_helper (
     const std::string filter_name,
     std::stringstream & filter_content)
 {
-  buffer_ << "Madara::KnowledgeRecord\n";
-  buffer_ << filter_name << " (Madara::KnowledgeMap & records,\n";
-  buffer_ << "  const Madara::Transport::TransportContext & context,\n";
-  buffer_ << "  Madara::KnowledgeEngine::Variables & vars)\n";
+  buffer_ << "madara::KnowledgeRecord\n";
+  buffer_ << filter_name << " (madara::KnowledgeMap & records,\n";
+  buffer_ << "  const madara::transport::TransportContext & context,\n";
+  buffer_ << "  madara::knowledge::Variables & vars)\n";
   buffer_ << "{\n";
-  buffer_ << "  Madara::KnowledgeRecord result;\n";
+  buffer_ << "  madara::KnowledgeRecord result;\n";
   buffer_ << filter_content.str ();
   buffer_ << "  return result;\n";
   buffer_ << "}\n\n";
@@ -576,7 +576,7 @@ dmpl::gams::AnalyzerBuilder::build_parse_args ()
   buffer_ << "      if (i + 1 < argc)\n";
   buffer_ << "      {\n";
   buffer_ << "        settings.hosts.push_back (argv[i + 1]);\n";
-  buffer_ << "        settings.type = Madara::Transport::MULTICAST;\n";
+  buffer_ << "        settings.type = madara::transport::MULTICAST;\n";
   buffer_ << "      }\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
@@ -594,7 +594,7 @@ dmpl::gams::AnalyzerBuilder::build_parse_args ()
   buffer_ << "      if (i + 1 < argc)\n";
   buffer_ << "      {\n";
   buffer_ << "        settings.hosts.push_back (argv[i + 1]);\n";
-  buffer_ << "        settings.type = Madara::Transport::BROADCAST;\n";
+  buffer_ << "        settings.type = madara::transport::BROADCAST;\n";
   buffer_ << "      }\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
@@ -603,7 +603,7 @@ dmpl::gams::AnalyzerBuilder::build_parse_args ()
   buffer_ << "      if (i + 1 < argc)\n";
   buffer_ << "      {\n";
   buffer_ << "        settings.hosts.push_back (argv[i + 1]);\n";
-  buffer_ << "        settings.type = Madara::Transport::UDP;\n";
+  buffer_ << "        settings.type = madara::transport::UDP;\n";
   buffer_ << "      }\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
@@ -664,7 +664,7 @@ dmpl::gams::AnalyzerBuilder::build_parse_args ()
   buffer_ << "        buffer >> drop_rate;\n";
   buffer_ << "        \n";
   buffer_ << "        settings.update_drop_rate (drop_rate,\n";
-  buffer_ << "          Madara::Transport::PACKET_DROP_DETERMINISTIC);\n";
+  buffer_ << "          madara::transport::PACKET_DROP_DETERMINISTIC);\n";
   buffer_ << "      }\n";
   buffer_ << "      \n";
   buffer_ << "      ++i;\n";
@@ -682,7 +682,7 @@ dmpl::gams::AnalyzerBuilder::build_parse_args ()
   buffer_ << "    {\n";
   buffer_ << "      if (i + 1 < argc)\n";
   buffer_ << "      {\n";
-  buffer_ << "        Madara::KnowledgeEngine::KnowledgeBase::log_to_file (argv[i + 1]);\n";
+  buffer_ << "        madara::knowledge::KnowledgeBase::log_to_file (argv[i + 1]);\n";
   buffer_ << "      }\n";
   buffer_ << "      \n";
   buffer_ << "      ++i;\n";
@@ -879,7 +879,7 @@ dmpl::gams::AnalyzerBuilder::build_function_declaration (
       !function->usage_summary.anyExpect().any())
     return;
 
-  buffer_ << "Madara::KnowledgeRecord\n";
+  buffer_ << "madara::KnowledgeRecord\n";
   buffer_ << node->name << "_" << function->name;
   buffer_ << " (engine::FunctionArguments & args, engine::Variables & vars);\n";
 }
@@ -902,7 +902,7 @@ dmpl::gams::AnalyzerBuilder::build_function (
     buffer_ << "\n";
   }
 
-  buffer_ << "Madara::KnowledgeRecord\n";
+  buffer_ << "madara::KnowledgeRecord\n";
   buffer_ << node->name << "_" << function->name;
   buffer_ << " (engine::FunctionArguments & args, engine::Variables & vars)\n";
   buffer_ << "{\n";

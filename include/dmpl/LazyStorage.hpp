@@ -84,10 +84,10 @@
 #define USE_STATIC_ASSERT
 #endif
 
-namespace Madara
+namespace madara
 {
 
-namespace KnowledgeEngine
+namespace knowledge
 {
 
 namespace Containers

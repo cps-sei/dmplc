@@ -1,10 +1,10 @@
 #ifndef DMPL_STORAGE_MANAGER_FWD_HPP
 #define DMPL_STORAGE_MANAGER_FWD_HPP
 
-namespace Madara
+namespace madara
 {
 
-namespace KnowledgeEngine
+namespace knowledge
 {
 
 namespace Containers
@@ -15,7 +15,7 @@ namespace StorageManager
 
 namespace detail
 {
-using namespace ::Madara::KnowledgeEngine::Containers::detail;
+using namespace ::madara::knowledge::containers::detail;
 
 template<typename T>
 class Stateless;

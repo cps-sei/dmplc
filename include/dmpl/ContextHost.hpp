@@ -69,10 +69,10 @@
 #include <madara/knowledge_engine/KnowledgeUpdateSettings.h>
 #include "utility.hpp"
 
-namespace Madara
+namespace madara
 {
 
-namespace KnowledgeEngine
+namespace knowledge
 {
 
 namespace Containers

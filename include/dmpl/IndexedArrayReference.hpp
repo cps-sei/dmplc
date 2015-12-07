@@ -73,10 +73,10 @@
 #include "StorageManager.hpp"
 #include "ArrayReferenceFwd.hpp"
 
-namespace Madara
+namespace madara
 {
 
-namespace KnowledgeEngine
+namespace knowledge
 {
 
 namespace Containers

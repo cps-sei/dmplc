@@ -70,10 +70,10 @@
 #include "utility.hpp"
 #include "knowledge_cast.hpp"
 
-namespace Madara
+namespace madara
 {
 
-namespace KnowledgeEngine
+namespace knowledge
 {
 
 namespace Containers

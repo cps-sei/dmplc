@@ -95,7 +95,7 @@ DMPL_STATIC_ASSERT(p) /* ** error: static_assert failure, see reason below ** */
 #define static_assert_false(var, message) \
   static_assert(sizeof(var) == -1, message);
 
-namespace Madara
+namespace madara
 {
 
 #ifdef USE_UNIQUE_PTR
@@ -140,7 +140,7 @@ using index_sequence_for = make_index_sequence<sizeof...(T)>;
 #endif
 #endif
 
-namespace KnowledgeEngine
+namespace knowledge
 {
 
 namespace Containers

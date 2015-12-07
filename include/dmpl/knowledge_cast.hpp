@@ -59,7 +59,7 @@
 #include <string>
 #include <stdbool.h>
 
-namespace Madara
+namespace madara
 {
 
 /// By default, call constructor of target class;
