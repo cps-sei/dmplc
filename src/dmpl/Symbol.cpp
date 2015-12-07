@@ -111,6 +111,13 @@ namespace dmpl
     //if inherited from parent node
     if(func->role && func->isThread() && func->isPrototype) {
       Func nodeFunc = func->node->findFunc(func->name);
+
+      //-- sanity check
+      if(nodeFunc == NULL)
+        throw std::runtime_error("ERROR: role " + func->role->name + " in node " + func->node->name +
+                                 " inherits thread " + func->name + " but no such thread exists in node " +
+                                 func->node->name + "!!");
+
       func->inherit(nodeFunc);
       return;
     }
