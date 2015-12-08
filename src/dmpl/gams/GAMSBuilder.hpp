@@ -67,14 +67,14 @@ namespace dmpl
     /*******************************************************************/
     // Synchronous program builder for GAMS
     /*******************************************************************/
-    class GAMS_Builder : public CodeGenerator
+    class GAMSBuilder : public CodeGenerator
     {
     public:
       /**
        * Constructor
        * @param  builder   the source for building a program
        **/
-      GAMS_Builder (DmplBuilder & builder,const std::string &target, 
+      GAMSBuilder (DmplBuilder & builder,const std::string &target, 
                     SchedType & schedType, bool do_expect);
 
       /**

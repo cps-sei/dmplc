@@ -59,7 +59,7 @@
 /********************************************************************/
 //-- GAMS variables
 /********************************************************************/
-gams::platforms::Base_Platform *platform = NULL;
+gams::platforms::BasePlatform *platform = NULL;
 int grid_x = 0, grid_y = 0, grid_z = 0;
 double grid_leftX = NAN, grid_rightX = NAN;
 double grid_topY = NAN, grid_bottomY = NAN;

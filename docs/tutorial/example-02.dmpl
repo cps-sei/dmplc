@@ -69,7 +69,7 @@ TARGET GNU_CPP,WIN_CPP %%{
 
 int my_sleep (int seconds)
 {
-  Madara::Utility::sleep (seconds);
+  madara::utility::sleep (seconds);
   return 0;
 }
 

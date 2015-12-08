@@ -53,63 +53,47 @@
  * DM-0002494
 **/
 
-#include <stdlib.h>
-#include <unistd.h>
-#include <iostream>
-#include "madara/utility/Utility.h"
+#ifndef DMPL_ARRAY_REFERENCE_FWD_HPP
+#define DMPL_ARRAY_REFERENCE_FWD_HPP
 
-#include "DmplVrep.hpp"
+#include <climits>
+#include "utility.hpp"
 
-int main(int argc,char **argv)
+namespace madara
 {
-  if(argc == 1) {
-    std::cout << "ERROR: Usage: " << argv[0] << " port-number\n";
-    return 1;
-  }
-  
-  simxInt port = atoi(argv[1]);
 
-  std::cout << "opening connection to VREP\n";
-  QuadriRotor the_dv(10,10);
-  DmplVrep &dv = the_dv;
+namespace knowledge
+{
 
-  if(dv.connect((simxChar*)"127.0.0.1",port) == -1) {
-    std::cerr << "ERROR: could not connect to VREP ...\n";
-    return 1;
-  }
-  std::cout << "connected to VREP successfully ...\n";
-  std::cout << "scene has " << dv.getNumObjects() << " objects\n";
+namespace containers
+{
 
-  std::cout << "ping time is " << dv.getPingTime() << " ms\n";
+enum { VAR_LEN = UINT_MAX };
 
-  madara::utility::sleep(2);
+#ifdef USE_VAR_TMPL
+template <typename T, size_t d0 = 0, size_t ...dN>
+class ArrayReference;
+#else
+template <typename T, DMPL_DECL_DIMS_DEFAULT>
+class ArrayReference;
+#endif
 
-  if(port == 19900) {
-    simxInt node1 = dv.createNode();
-    std::cout << "created robot 1\n";
-    std::cout << "scene now has " << dv.getNumObjects() << " objects\n";
-    dv.placeNodeAt(node1,0,0,1);
+namespace detail
+{
 
-    //dv.startSim(); sleep(5); dv.pauseSim(); sleep(5);
-    //dv.startSim(); sleep(5); dv.stopSim();
+template<typename T>
+struct ArrayReference_0
+{
+#ifdef USE_VAR_TMPL
+  typedef class ArrayReference<T> type;
+#else
+  typedef ArrayReference<T, DMPL_ZERO_DIMS> type;
+#endif
+};
 
-    dv.startSim();
-    while(dv.moveNodeTo(node1,0,10,1));
-    while(dv.moveNodeTo(node1,10,10,1));
-    while(dv.moveNodeTo(node1,10,0,1));
-    while(dv.moveNodeTo(node1,0,0,1));
-
-    dv.stopSim();
-    dv.destroyNode(node1);
-  } else {
-    simxInt node1 = dv.createNode();
-    std::cout << "created robot 1\n";
-    std::cout << "scene now has " << dv.getNumObjects() << " objects\n";
-    dv.placeNodeAt(node1,10,10,1);
-
-    //dv.destroyNode(node1);
-  }
-
-  dv.disconnect();
-  return 0;
 }
+}
+}
+}
+
+#endif

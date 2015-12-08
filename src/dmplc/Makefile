@@ -1,4 +1,4 @@
-MZSRM=1
+MZSRM=0
 
 SRC=dmpl-scanner.cpp dmpl-parser.cpp DmplBuilder.cpp CopyVisitor.cpp \
 SyncSeqDbl.cpp SyncSeqDblInd.cpp ../dmpl/Attribute.cpp \
@@ -6,9 +6,9 @@ SyncSeqDbl.cpp SyncSeqDblInd.cpp ../dmpl/Attribute.cpp \
 ../dmpl/Node.cpp ../dmpl/Program.cpp ../dmpl/Symbol.cpp \
 ../dmpl/Variable.cpp ../dmpl/Statement.cpp ../dmpl/Type.cpp \
 ../dmpl/CProgram.cpp ../dmpl/Visitor.cpp ../dmpl/Role.cpp \
-../dmpl/Specification.cpp ../dmpl/gams/GAMS_Builder.cpp \
-../dmpl/gams/Analyzer_Builder.cpp \
-../dmpl/gams/GAMS_Visitor.cpp
+../dmpl/Specification.cpp ../dmpl/gams/GAMSBuilder.cpp \
+../dmpl/gams/AnalyzerBuilder.cpp \
+../dmpl/gams/GAMSVisitor.cpp
 # ArrayElim.cpp
 
 OBJ=$(SRC:.cpp=.o)

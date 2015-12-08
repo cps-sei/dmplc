@@ -60,8 +60,8 @@
 #include <fstream>
 #include <string>
 #include "DmplBuilder.hpp"
-#include "dmpl/gams/GAMS_Builder.hpp"
-#include "dmpl/gams/Analyzer_Builder.hpp"
+#include "dmpl/gams/GAMSBuilder.hpp"
+#include "dmpl/gams/AnalyzerBuilder.hpp"
 #include "SyncSeqDbl.hpp"
 #include "SyncSeqDblInd.hpp"
 
@@ -177,7 +177,7 @@ int main (int argc, char **argv)
   {
     //create a madara builder instance of the dmpl builder parse
     dmpl::CodeGenerator *gams_builder
-      = new dmpl::gams::GAMS_Builder (builder, madara_target, schedType, do_expect);
+      = new dmpl::gams::GAMSBuilder (builder, madara_target, schedType, do_expect);
 
     //build the generated code
     gams_builder->build ();
@@ -198,7 +198,7 @@ int main (int argc, char **argv)
   else if(do_analyzer)
   {
     //create a madara builder instance of the dmpl builder parse
-    dmpl::gams::Analyzer_Builder *ana_builder = new dmpl::gams::Analyzer_Builder (builder, madara_target);
+    dmpl::gams::AnalyzerBuilder *ana_builder = new dmpl::gams::AnalyzerBuilder (builder, madara_target);
 
     //build the generated code
     ana_builder->build ();

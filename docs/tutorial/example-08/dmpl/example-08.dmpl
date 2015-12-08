@@ -68,7 +68,7 @@ int MOVE_TO(unsigned char x,unsigned char y)
 
 int my_sleep (int seconds)
 {
-  Madara::Utility::sleep (seconds);
+  madara::utility::sleep (seconds);
   return 0;
 }
 

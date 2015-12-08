@@ -56,20 +56,28 @@
 #include <string>
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
-#include <madara/knowledge_engine/containers/Integer.h>
-#include <madara/knowledge_engine/containers/Integer_Vector.h>
+#include <madara/knowledge/containers/Integer.h>
+#include <madara/knowledge/containers/IntegerVector.h>
+
 #include "ArrayReference.hpp"
+#include "Reference.hpp"
+#include "CachedReference.hpp"
+#include "LazyStorage.hpp"
+#include "ProactiveStorage.hpp"
 #include <ctime>
 
-using Madara::Knowledge_Record;
-using Madara::knowledge_cast;
-using Madara::Knowledge_Engine::Containers::ArrayReference;
-using Madara::Knowledge_Engine::Containers::Reference;
-using Madara::Knowledge_Engine::Containers::CachedReference;
-using Madara::Knowledge_Engine::Containers::Integer_Vector;
-using Madara::Knowledge_Engine::Containers::VAR_LEN;
-using Madara::Knowledge_Engine::Containers::StorageManager::Lazy;
-using Madara::Knowledge_Engine::Containers::StorageManager::Proactive;
+using madara::knowledge::KnowledgeRecord;
+using madara::knowledge::knowledge_cast;
+using madara::knowledge::containers::ArrayReference;
+#ifdef USE_CPP11
+using madara::knowledge::containers::array_reference_cast;
+#endif
+using madara::knowledge::containers::Reference;
+using madara::knowledge::containers::CachedReference;
+using madara::knowledge::containers::IntegerVector;
+using madara::knowledge::containers::VAR_LEN;
+using madara::knowledge::containers::StorageManager::Lazy;
+using madara::knowledge::containers::StorageManager::Proactive;
 
 static unsigned int OK_count = 0;
 static unsigned int FAIL_count = 0;
@@ -90,7 +98,7 @@ void perf_test()
 {
   clock_t vector_N_start = clock();
   {
-    Madara::Knowledge_Engine::Knowledge_Base kbase;
+    madara::knowledge::KnowledgeBase kbase;
     Vector_N v("array", kbase);
     for(int i = 0; i < 100; ++i)
     {
@@ -112,7 +120,7 @@ void perf_test()
 
   clock_t staticArray_start = clock();
   {
-    Madara::Knowledge_Engine::Knowledge_Base kbase;
+    madara::knowledge::KnowledgeBase kbase;
     ArrayReference<int, 100, 100, 100> a(kbase, "array");
     for(int i = 0; i < 100; ++i)
     {
@@ -130,8 +138,8 @@ void perf_test()
 
   clock_t intVec_start = clock(), intVec_init;
   {
-    Madara::Knowledge_Engine::Knowledge_Base kbase;
-    Integer_Vector v("array", kbase, 1000000);
+    madara::knowledge::KnowledgeBase kbase;
+    IntegerVector v("array", kbase, 1000000);
     intVec_init = clock();
     for(int i = 0; i < 1000000; ++i)
     {
@@ -144,7 +152,7 @@ void perf_test()
 
   clock_t lazyArray_start = clock();
   {
-    Madara::Knowledge_Engine::Knowledge_Base kbase;
+    madara::knowledge::KnowledgeBase kbase;
     ArrayReference<Lazy<int, Reference<int> >, 1000000> a(kbase, "array");
     for(int i = 0; i < 1000000; ++i)
     {
@@ -156,7 +164,7 @@ void perf_test()
 
   clock_t proactiveArray_start = clock(), proactiveArray_init;
   {
-    Madara::Knowledge_Engine::Knowledge_Base kbase;
+    madara::knowledge::KnowledgeBase kbase;
     ArrayReference<Proactive<int, Reference<int> >, 1000000> a(kbase, "array");
     a[0];
     proactiveArray_init = clock();
@@ -171,92 +179,54 @@ void perf_test()
 }
 */
 
-void takes_krec(Knowledge_Record foo)
+void takes_krec(KnowledgeRecord foo)
 {
 }
 
+#ifdef USE_CPP11
+template<class R>
+void print_asdf(R &&r)
+{
+  std::cout<<"Asdf: " <<std::forward<R>(r).get()<<std::endl;
+}
+#endif
 
 int main()
 {
-  Madara::Knowledge_Engine::Knowledge_Base kbase;
-  Madara::Knowledge_Engine::Containers::ArrayReference<int, 5, 6, 7, 8, 9> v(kbase.get_context(), "vec");
+  madara::knowledge::KnowledgeBase kbase;
+  madara::knowledge::containers::ArrayReference<int, 5, 6, 7, 8, 9> v(kbase.get_context(), "vec");
   std::cerr << v[1][2][3][4][5] << std::endl;
-  Madara::Knowledge_Engine::Containers::ArrayReference<int, 5, 6, 7> vec(kbase.get_context(), "vec");
+  madara::knowledge::containers::ArrayReference<int, 5, 6, 7> vec(kbase.get_context(), "vec");
   //auto r1 = vec[1];
   //auto r2 = vec[1][2];
   int r2 = vec[3][1][1];
   vec[1][1][1] = vec[1][1][1];
   std::cerr << r2 << "  " << sizeof(r2) << std::endl;
-  Madara::Knowledge_Engine::Containers::Reference<int> r3 = vec[4][2][3];
+  madara::knowledge::containers::Reference<int> r3 = vec[4][2][3];
   std::cerr << r3 << "  " << sizeof(r3) << std::endl;
   r3 = 18;
   std::cerr << r3 << "  " << sizeof(r3) << std::endl;
   std::cerr << vec[4][2][3] << std::endl;
   //std::cerr << &vec[1][2][3].get_context() << std::endl;
   std::cerr << vec[1][2][3].get_name() << std::endl;
-  std::cerr << sizeof(vec) << "  " << sizeof(vec[1][3][2]) << "  " << sizeof(Madara::Knowledge_Record) << std::endl;
+  std::cerr << sizeof(vec) << "  " << sizeof(vec[1][3][2]) << "  " << sizeof(KnowledgeRecord) << std::endl;
   vec[1][2][3] = 42;
   vec[1][2][3] <<= 1;
   vec[1][2][4] = 32.7;
   vec[1][2][4] *= 2;
   std::cerr << vec[1][2][3] << std::endl;
   std::cerr << vec[1][2][4] + 10 << std::endl;
-  BOOST_FOREACH(int i, vec.get_dims())
+  BOOST_FOREACH(int i, vec.get_static_sizes())
+  {
+    std::cerr << i << " ";
+  }
+  BOOST_FOREACH(int i, vec.get_sizes())
   {
     std::cerr << i << " ";
   }
   std::cerr << std::endl;
-  //std::cerr << vec.dims << " " << vec.dim << " " << vec.subarray_type::dim << " " << vec.subarray_type::subarray_type::dim << std::endl;
+  //std::cerr << vec.rank << " " << vec.dim << " " << vec.subarray_type::dim << " " << vec.subarray_type::subarray_type::dim << std::endl;
   //std::cerr << "Lookup: " << vec.dim0 << " " << vec.dim1 << " " << vec.dim2 << " " << vec.dim9 << std::endl;
-
-#ifdef USE_USING_TYPE
-  decltype(vec)::array_type array;
-#else
-  ArrayReference<int, 5, 6, 7>::array_type array;
-#endif
-  vec.get_into(array);
-  std::cerr << "Local ArrayReference: " << array[1][2][3] << std::endl;
-  array[1][2][3] += 1;
-  std::cerr << "Base ArrayReference: " << vec[1][2][3] << std::endl;
-  //vec.set_from(array);
-  vec.update_from(array);
-  std::cerr << "Base ArrayReference: " << vec[1][2][3] << std::endl;
-
-#ifdef USE_USING_TYPE
-  decltype(vec)::get_vector_type<Reference<int> > ref_vector;
-#else
-  ArrayReference<int, 5, 6, 7>::get_vector_type_compat<Reference<int> >::type ref_vector;
-#endif
-  vec.get_into(ref_vector);
-  std::cerr << "Reference ArrayReference: " << ref_vector[1][2][3] << std::endl;
-  std::cerr << "Reference ArrayReference: " << ref_vector[1][2][3].get_name() << std::endl;
-  ref_vector[1][2][3] += 1;
-  std::cerr << "Reference ArrayReference: " << ref_vector[1][2][3] << std::endl;
-  std::cerr << "Base ArrayReference: " << vec[1][2][3] << std::endl;
-
-#ifdef USE_USING_TYPE
-  decltype(vec)::get_vector_type<CachedReference<int> > carray;
-#else
-  ArrayReference<int, 5, 6, 7>::get_vector_type_compat<CachedReference<int> >::type carray;
-#endif
-  vec.get_into(carray);
-  std::cerr << "Cached ArrayReference: " << carray[1][2][3] << std::endl;
-  carray[1][2][3] += 1;
-  std::cerr << "Cached ArrayReference: " << carray[1][2][3] << std::endl;
-  std::cerr << "Base ArrayReference before push: " << vec[1][2][3] << std::endl;
-  vec.push_all(carray);
-  std::cerr << "Base ArrayReference after push: " << vec[1][2][3] << std::endl;
-  vec[1][2][3] += 1;
-  carray[1][2][3] = 42;
-  std::cerr << "Base ArrayReference before pull: " << vec[1][2][3] << std::endl;
-  std::cerr << "Cached ArrayReference before pull: " << carray[1][2][3] << std::endl;
-  vec.pull_all(carray);
-  std::cerr << "Cached ArrayReference after pull: " << carray[1][2][3] << std::endl;
-  carray[1][2][3] = 13;
-  vec[1][2][3] += 1;
-  std::cerr << "Cached ArrayReference before pull_keep_local: " << carray[1][2][3] << std::endl;
-  vec.pull_all_keep_local(carray);
-  std::cerr << "Cached ArrayReference after pull_keep_local: " << carray[1][2][3] << std::endl;
 
   vec[1][2][0] = 123;
   vec[1][2][2] = vec[1][2][0];
@@ -275,13 +245,13 @@ int main()
   vec[4][2][1] += 1;
   std::cerr << "test chained assign: " << vec[4][2][0] << " != " << vec[4][2][1] << " == 1235" << std::endl;
 
-  Madara::Knowledge_Engine::Containers::ArrayReference<Madara::Knowledge_Record, 8, 4, 3> kvec(kbase.get_context(), "kvec");
+  madara::knowledge::containers::ArrayReference<KnowledgeRecord, 8, 4, 3> kvec(kbase.get_context(), "kvec");
   kvec[1][1][1] = (long int)5;
   std::cerr << kvec[1][1][1].get().to_integer() << std::endl;
 
-  Madara::Knowledge_Engine::Containers::ArrayReference<int, 6, 7> sub_vec(vec[1]);
+  madara::knowledge::containers::ArrayReference<int, 6, 7> sub_vec(vec[1]);
   std::cerr << sub_vec[2][3] << std::endl;
-  Madara::Knowledge_Engine::Containers::ArrayReference<int, 7> sub_sub_vec(sub_vec[2]);
+  madara::knowledge::containers::ArrayReference<int, 7> sub_sub_vec(sub_vec[2]);
   std::cerr << sub_sub_vec[4] << std::endl;
 
 #ifdef USE_VAR_TMPL
@@ -292,27 +262,23 @@ int main()
 #endif
 
   ArrayReference<int, 6, VAR_LEN> var_arr(kbase, "variable_array", 0, 20);
-  ArrayReference<int, 6, VAR_LEN>::vector_type var_arr_vec;
-  try
-  {
-    var_arr.get_into(var_arr_vec);
-    LOG(var_arr_vec.size());
-    LOG(var_arr_vec[0].size());
-  }
-  catch(std::range_error err)
-  {
-    std::cerr << err.what() << std::endl;
-  }
   var_arr.resize<1>(30);
   var_arr[1][25] = 55;
   LOG(var_arr[1][25]);
+  var_arr[0].resize(35);
+
+  ArrayReference<Lazy<int>, 6, VAR_LEN> lvar_arr(kbase, "variable_array", 0, 20);
+  lvar_arr[0].resize(30);
+
+  ArrayReference<Proactive<int>, 6, VAR_LEN> pvar_arr(kbase, "variable_array", 0, 20);
+  pvar_arr[0].resize(30);
 
 #ifdef USE_VAR_TMPL
   ArrayReference<int, 6, 30> resized_arr(var_arr);
   std::cerr << "resized_arr[1][25] == " << resized_arr[1][25] << std::endl;
 #endif
 
-  ArrayReference< ::Madara::Knowledge_Engine::Containers::StorageManager::__INTERNAL__::Stateless<int>, 6, VAR_LEN, VAR_LEN> var_arr2(kbase, "variable_array");
+  ArrayReference< ::madara::knowledge::containers::StorageManager::detail::Stateless<int>, 6, VAR_LEN, VAR_LEN> var_arr2(kbase, "variable_array");
   ArrayReference<int, 6, VAR_LEN, VAR_LEN, VAR_LEN> var_arr3(kbase, "variable_array");
 #ifdef USE_VAR_TMPL
   LOG(sizeof(big_array));
@@ -324,16 +290,12 @@ int main()
   LOG(sizeof(var_arr3));
   LOG(sizeof(unsigned int));
 
-#ifdef USE_VAR_TMPL
-  TEST(vec.get_size(), 5);
-#else
-  TEST(vec.get_size<0>(), 5);
-#endif
-  TEST(vec.get_size<1>(), 6);
-  TEST(vec.get_size<2>(), 7);
-  LOG(vec.can_resize<0>());
-  LOG(var_arr.get_size<1>());
-  LOG(var_arr.can_resize<1>());
+  TEST(vec.size(), 5);
+  TEST(vec.size<1>(), 6);
+  TEST(vec.size<2>(), 7);
+  LOG(vec.resizable());
+  LOG(var_arr.size<1>());
+  LOG(var_arr.resizable<1>());
   var_arr2[1][1][1] = 456;
 
   try
@@ -355,31 +317,23 @@ int main()
   var_arr.resize<1>(40);
   LOG(var_arr[1][35] = 12343);
 
-  var_arr.get_into(var_arr_vec);
-  LOG(var_arr_vec[1][35]);
-  LOG(var_arr_vec.size());
-  LOG(var_arr_vec[1].size());
-
-  ArrayReference<Lazy<int, Reference<int> >, 3, 4, 5> lazy_array(kbase, "lazy_array");
-  LOG(lazy_array.get_dimension<0>().dims);
-  LOG(lazy_array.get_dimension<1>().dims);
-  LOG(lazy_array.get_dimension<2>().dims);
-  LOG(lazy_array.get_multiplier<0>());
-  LOG(lazy_array.get_multiplier<1>());
-  LOG(lazy_array.get_multiplier<2>());
+  ArrayReference<Lazy<int>, 3, 4, 5> lazy_array(kbase, "lazy_array");
+  LOG(lazy_array.rank());
+  LOG(lazy_array.rank<1>());
+  LOG(lazy_array.rank<2>());
   LOG(lazy_array[1][2][3].get_name());
   LOG(lazy_array[0][0][0].get_name());
   LOG(lazy_array[1][2][3] = 32);
   LOG(lazy_array[1][2][3]);
 
-  ArrayReference<Lazy<int, Reference<int> >, 3> lazy_array_1D(kbase, "lazy_array");
+  ArrayReference<Lazy<int, Reference>, 3> lazy_array_1D(kbase, "lazy_array");
   lazy_array_1D[2] = 678;
   LOG(lazy_array_1D[0].get_name());
 
   ArrayReference<int, 10> uncached_array(kbase, "cached_array");
   uncached_array[0] = 5;
   LOG(uncached_array[0]);
-  ArrayReference<Proactive<int, CachedReference<int> >, 10> cached_array(kbase, "cached_array");
+  ArrayReference<Proactive<int, CachedReference>, 10> cached_array(kbase, "cached_array");
   LOG(cached_array[0]);
   LOG(cached_array[0].get_name());
   LOG(cached_array[1].get_name());
@@ -396,13 +350,11 @@ int main()
   LOG(uncached_array[0]);
   LOG(cached_array[1]);
 #ifdef USE_TYPE_TRAITS
-  cached_array.for_all<&CachedReference<int>::pull>();
+  //cached_array.for_each<&CachedReference<int>::pull>();
 #else
   cached_array[1].pull();
 #endif
   LOG(cached_array[1]);
-
-  uncached_array.mark_modified();
 
   takes_krec(knowledge_cast(uncached_array[0]));
 
@@ -421,6 +373,151 @@ int main()
   LOG(foo);
   cache_foo.push();
   LOG(foo);
+
+  ArrayReference<int, 2, 2, 2> mul(kbase, "mul");
+  ArrayReference<Proactive<int, CachedReference>, 2, 2, 2> cmul(kbase, "mul");
+  ArrayReference<int, 2, 2, VAR_LEN> vmul(kbase, "mul", 0, 0, 2);
+  ArrayReference<int, 2, VAR_LEN, VAR_LEN> vmul2(kbase, "mul", 0, 2, 2);
+  ArrayReference<int, VAR_LEN, VAR_LEN, VAR_LEN> vmul3(kbase, "mul", 2, 2, 2);
+
+  LOG(sizeof(mul));
+  LOG(sizeof(cmul));
+  LOG(sizeof(vmul));
+  LOG(sizeof(vmul2));
+  LOG(sizeof(vmul3));
+#ifdef USE_TYPE_TRAITS
+  set(mul[0][0], 40);
+  set(cmul[0][0], 24);
+  LOG(mul[0][0][1]);
+  set(mul[0][0][1], 41);
+  ++mul[0][0][1];
+  LOG(mul[0][0][1]);
+  LOG(cmul[0][0][1]);
+  push(cmul[0]);
+  LOG(mul[0][0][1]);
+  set(mul, 55);
+  LOG(mul[0][0][1]);
+  LOG(cmul[0][0][1]);
+  pull(cmul);
+  LOG(cmul[0][0][1]);
+  auto cmul_001 = cmul[0][0][1];
+  set(mul, 88);
+  LOG(cmul_001);
+  cmul_001.pull();
+  LOG(cmul_001);
+  LOG(cmul[0][0][1]);
+  LOG(get(cmul[0][0][1]));
+  LOG(sizeof(cmul_001));
+
+  //pull(mul); // uncomment to test compile error
+#endif
+
+  mul[0][0][1] = 12;
+  ++mul[0][0][1];
+  mul[0][0][1]++;
+  LOG(cmul[0][0][1]);
+  ++cmul[0][0][1];
+  cmul[0][0][1]++;
+  LOG(cmul[0][0][1]);
+  ArrayReference<int, 2> submul(mul[0][0]);
+  LOG(mul[0][0][1]);
+  LOG(submul[1]);
+
+  std::cerr << "mul static_sizes: ";
+  BOOST_FOREACH(unsigned int i, mul.get_static_sizes())
+  {
+    std::cerr << i << " ";
+  }
+  std::cerr << std::endl << "mul sizes: ";
+  BOOST_FOREACH(unsigned int i, mul.get_sizes())
+  {
+    std::cerr << i << " ";
+  }
+  std::cerr << std::endl;
+
+  std::cerr << "vmul static_sizes: ";
+  BOOST_FOREACH(unsigned int i, vmul.get_static_sizes())
+  {
+    std::cerr << i << " ";
+  }
+  std::cerr << std::endl << "vmul sizes: ";
+  BOOST_FOREACH(unsigned int i, vmul.get_sizes())
+  {
+    std::cerr << i << " ";
+  }
+  std::cerr << std::endl;
+
+#ifdef USE_CPP11
+  std::cerr << "vmul static_sizes dims 1 & 2: ";
+  auto sarr = vmul.get_static_sizes<1, 2>();
+  for(auto i : sarr)
+    std::cerr << i << " ";
+  std::cerr << std::endl;
+  std::cerr << "vmul sizes dims 1 & 2: ";
+  auto sarr2 = vmul.get_sizes<1, 2>();
+  for(auto i : sarr2)
+    std::cerr << i << " ";
+  std::cerr << std::endl;
+#endif
+  // uncomment to test dimension-out-of-bounds errors
+#ifdef USE_CPP11
+  //auto sarr3 = vmul.get_sizes<1, 2, 4, 5>();
+  print_lines(mul);
+
+  int sum = 0;
+  mul.for_each([&sum](decltype(mul)::for_each_type r)
+    {sum+=r.get();});
+  mul[0][0].for_each(print_asdf<decltype(mul)::for_each_type>);
+  LOG(sum);
+
+  //Following 3 should be equivalent:
+  //ArrayReference<std::string, 2, 2, 2> smul(mul);
+  //decltype(mul)::as_type<std::string> smul(mul);
+  auto smul(array_reference_cast<std::string>(mul));
+
+  smul.for_each([](decltype(smul)::for_each_type r)
+    { std::cout << (std::string("!!!") + r) << std::endl; });
+
+  auto small_mul(array_reference_cast<1, 1, 2>(mul));
+  print_lines(small_mul);
+
+  auto small_smul(array_reference_cast<std::string, 1, 1, 2>(smul));
+
+  small_smul.for_each([](decltype(small_smul)::for_each_type r)
+    { std::cout << (r + std::string("!!!")) << std::endl; });
+
+  auto sub_mul_ident(array_reference_cast<2, 2>(mul[0]));
+  print_lines(sub_mul_ident);
+
+  auto sub_mul(array_reference_cast<1, 2>(mul[0]));
+  print_lines(sub_mul);
+
+  auto vmul_copy(vmul3);
+  vmul_copy.resize(1, 2, 2);
+  print_lines(vmul_copy);
+  LOG(vmul_copy[0][0][1] + vmul_copy[0][0][0]);
+#else
+  ArrayReference<int, VAR_LEN, VAR_LEN, VAR_LEN> vmul_copy(vmul3);
+  vmul_copy.resize(3, 3);
+  std::cerr << "vmul_copy sizes: ";
+  BOOST_FOREACH(int i, vmul_copy.get_sizes())
+  {
+    std::cerr << i << " ";
+  }
+  std::cerr << std::endl;
+  LOG(vmul_copy[0][0][1] + vmul_copy[0][0][0]);
+#endif
+
+  mul[0][1][1] = vmul_copy[0][1][1];
+  Reference<int> a(mul[0][1][1]);
+  Reference<int> b(vmul_copy[0][1][1]);
+  LOG(a == b);
+  LOG(a + b);
+  //vmul.size<5>();
+  //vmul.size<-1>();
+
+  ArrayReference<Proactive<KnowledgeRecord, Reference>, 5> crarr(kbase, "crarr");
+
 
   LOG(OK_count);
   LOG(FAIL_count);

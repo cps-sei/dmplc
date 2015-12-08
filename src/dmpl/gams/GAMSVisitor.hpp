@@ -72,7 +72,7 @@ namespace dmpl
     /*******************************************************************/
     // Visitor for function elements
     /*******************************************************************/
-    class GAMS_Visitor : public Visitor
+    class GAMSVisitor : public Visitor
     {
     public:
       /**
@@ -80,12 +80,12 @@ namespace dmpl
        * @param  builder   the source for building a program
        * @param  buffer    the buffer being used to create the program text
        **/
-      GAMS_Visitor (const Func & function, const Node & node,
+      GAMSVisitor (const Func & function, const Node & node,
                     const Func & thread,
                     DmplBuilder & builder, std::stringstream & buffer,
                     bool do_vrep, bool do_analyzer = false);
 
-      GAMS_Visitor (const Stmt & statement, const Node & node,
+      GAMSVisitor (const Stmt & statement, const Node & node,
                     const Func & thread,
                     DmplBuilder & builder, std::stringstream & buffer,
                     bool do_vrep, bool do_analyzer = false);
