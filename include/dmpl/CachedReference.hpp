@@ -332,7 +332,9 @@ public:
       }
       else
       {
-        this->get_context().mark_modified(data->get_ref(this->get_context()));
+        this->get_context().mark_modified(
+          data->get_ref(this->get_context()),
+          this->get_settings_cref());
       }
 
       data->assigned = data->dirty = false;
