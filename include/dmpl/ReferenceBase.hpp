@@ -216,7 +216,7 @@ protected:
                                    this->get_settings_cref());
   }
 
-  bool do_exists()
+  bool do_exists() const
   {
     return get_context().exists(get_name(), get_settings_cref());
   }
