@@ -21,7 +21,7 @@ AM_OBJS=dartam/Debug/adaptation_manager.o dartam/Debug/AdaptationPlanner.o
 all: $(EXE) Makefile
 
 example-05: example-05.cpp adaptation_manager.h $(AM_OBJS)
-	g++ $(CFLAGS) -o $@ $^ $(LIBS)
+#	g++ $(CFLAGS) -o $@ $^ $(LIBS)
 
 %: %.cpp
 	g++ $(CFLAGS) -o $@ $< $(LIBS)
@@ -38,3 +38,5 @@ example-05-analyzer.cpp: example-05.dmpl $(DMPL_ROOT)/src/dmplc/dmplc $(DMPL_ROO
 clean:
 	make -C dartam/Debug clean
 	rm -f $(EXE) $(SRC)
+
+.PHONY : example-05
