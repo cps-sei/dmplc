@@ -197,7 +197,7 @@ unsigned int processes (3);
 #define REQUEST 2
 #define RightX 2.25
 #define TopY 2.25
-#define TopZ 1.0
+#define TopZ 2.5
 #define WAITING 3
 #define X 10
 #define Y 10
