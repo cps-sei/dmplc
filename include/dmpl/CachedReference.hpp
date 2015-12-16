@@ -223,12 +223,12 @@ public:
     return *this;
   }
 public:
-  bool is_dirty()
+  bool is_dirty() const
   {
     return data->dirty;
   }
 
-  bool is_assigned()
+  bool is_assigned() const
   {
     return data->assigned;
   }
@@ -302,7 +302,7 @@ protected:
     data->dirty = true;
   }
 
-  bool do_exists()
+  bool do_exists() const
   {
     return data->exist;
   }
@@ -369,7 +369,7 @@ private:
 #endif
 
 public:
-  CachedReference clone()
+  CachedReference clone() const
   {
     return CachedReference(data->clone());
   }

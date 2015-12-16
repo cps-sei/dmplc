@@ -1299,7 +1299,7 @@ dmpl::gams::GAMSBuilder::build_push_pull(const Func &thread, bool push)
   //push-pull globals
   for(const auto &var : thread->accessedGlob()) {
     buffer_ << "    " << (push?"push":"pull") << "(thread" << thread->threadID << "_"
-            << var.first << "[id]);" << std::endl;
+            << var.first << (push?"[id]":"") << ");" << std::endl;
   }
 
   buffer_ << "  }\n";
@@ -2170,9 +2170,10 @@ dmpl::gams::GAMSBuilder::build_main_function ()
   buffer_ << "  else\n";
   buffer_ << "    knowledge.set(\".vrep_sw_position\", \"40.4464255,-79.9499426\");\n";
   buffer_ << "  if(params.size() >= 5 && params[4].size() > 0)\n";
-  buffer_ << "    knowledge.set(\".vrep_uav_move_speed\", params[4]);\n";
+  buffer_ << "    knowledge.set(\".vrep_max_delta\", params[4]);\n";
   buffer_ << "  else\n";
-  buffer_ << "    knowledge.set(\".vrep_uav_move_speed\", \"0.4\");\n";
+  buffer_ << "    knowledge.set(\".vrep_max_delta\", \"0.4\");\n";
+  buffer_ << "  knowledge.set(\".vrep_move_thread_rate\", \"0\");\n";
   buffer_ << "  knowledge.set(\"vrep_ready\", \"1\");\n";
   buffer_ << "}\n";
 
