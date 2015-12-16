@@ -77,26 +77,28 @@ void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
 #include <cassert>
 #include <cmath>
 
-#include "madara/knowledge_engine/Knowledge_Base.h"
-#include "madara/knowledge_engine/Knowledge_Record.h"
-#include "madara/knowledge_engine/Functions.h"
-#include "madara/transport/Packet_Scheduler.h"
+#include "madara/knowledge/KnowledgeBase.h"
+#include "madara/knowledge/KnowledgeRecord.h"
+#include "madara/knowledge/Functions.h"
+#include "madara/transport/PacketScheduler.h"
 #include "madara/threads/Threader.h"
-#include "madara/filters/Generic_Filters.h"
+#include "madara/filters/GenericFilters.h"
 
 #define _GAMS_VREP_ 1
-#include "gams/controllers/Base_Controller.h"
-#include "gams/algorithms/Base_Algorithm.h"
+#include "gams/controllers/BaseController.h"
+#include "gams/algorithms/BaseAlgorithm.h"
 #include "gams/variables/Sensor.h"
-#include "gams/platforms/Base_Platform.h"
-#include "gams/platforms/vrep/VREP_Base.h"
+#include "gams/platforms/BasePlatform.h"
+#include "gams/platforms/vrep/VREPBase.h"
 #include "gams/variables/Self.h"
-#include "gams/utility/GPS_Position.h"
+#include "gams/utility/GPSPosition.h"
 #include "gams/utility/Axes.h"
 
 #include "dmpl/Reference.hpp"
+#include "dmpl/CachedReference.hpp"
 #include "dmpl/ArrayReference.hpp"
-#include "dmpl/Default_Logger.hpp"
+#include "dmpl/ProactiveStorage.hpp"
+#include "dmpl/DefaultLogger.hpp"
 
 /********************************************************************/
 //-- end header files
@@ -109,14 +111,14 @@ namespace dmpl
 /********************************************************************/
 //-- typedefs
 /********************************************************************/
-typedef   Madara::Knowledge_Record::Integer   Integer;
+typedef   madara::knowledge::KnowledgeRecord::Integer   Integer;
 
 /********************************************************************/
 //-- namespace shortcuts
 /********************************************************************/
-namespace engine = Madara::Knowledge_Engine;
-namespace threads = Madara::Threads;
-namespace containers = engine::Containers;
+namespace engine = madara::knowledge;
+namespace threads = madara::threads;
+namespace containers = engine::containers;
 namespace controllers = gams::controllers;
 namespace platforms = gams::platforms;
 namespace variables = gams::variables;
@@ -128,26 +130,28 @@ using containers::Reference;
 using containers::ArrayReference;
 using containers::CachedReference;
 using containers::StorageManager::Proactive;
-using Madara::knowledge_cast;
+using madara::knowledge::knowledge_cast;
+using madara::knowledge::KnowledgeRecord;
+using madara::knowledge::KnowledgeMap;
 
 /********************************************************************/
 //-- declare knowledge base
 /********************************************************************/
-engine::Knowledge_Base knowledge;
+engine::KnowledgeBase knowledge;
 
 /********************************************************************/
 //-- Needed as a workaround for non-const-correctness in Madara;
 //-- Use carefully
 /********************************************************************/
-inline engine::Function_Arguments &__strip_const(const engine::Function_Arguments &c)
+inline engine::FunctionArguments &__strip_const(const engine::FunctionArguments &c)
 {
-  return const_cast<engine::Function_Arguments &>(c);
+  return const_cast<engine::FunctionArguments &>(c);
 }
 
 /********************************************************************/
 //-- Needed to construct function arguments
 /********************************************************************/
-inline engine::Function_Arguments &__chain_set(engine::Function_Arguments &c, int i, Madara::Knowledge_Record v)
+inline engine::FunctionArguments &__chain_set(engine::FunctionArguments &c, int i, KnowledgeRecord v)
 {
   c[i] = v;
   return c;
@@ -159,11 +163,11 @@ inline engine::Function_Arguments &__chain_set(engine::Function_Arguments &c, in
 std::string host ("");
 std::vector<std::string> platform_params;
 std::string platform_name ("debug");
-typedef void (*PlatformInitFn)(const std::vector<std::string> &, engine::Knowledge_Base &);
+typedef void (*PlatformInitFn)(const std::vector<std::string> &, engine::KnowledgeBase &);
 typedef std::map<std::string, PlatformInitFn> PlatformInitFns;
 PlatformInitFns platform_init_fns;
 const std::string default_multicast ("239.255.0.1:4150");
-Madara::Transport::QoS_Transport_Settings settings;
+madara::transport::QoSTransportSettings settings;
 int write_fd (-1);
 ofstream expect_file;
 std::string node_name ("none");
@@ -174,7 +178,7 @@ std::string role_name ("none");
 /********************************************************************/
 Reference<unsigned int> id(knowledge, ".id");
 Reference<unsigned int>  num_processes(knowledge, ".num_processes");
-engine::Knowledge_Update_Settings private_update (true);
+engine::KnowledgeUpdateSettings private_update (true);
 //-- used to synchronize and make sure that all nodes are up
 ArrayReference<unsigned int, 5> startSync(knowledge, "startSync");
 
@@ -280,7 +284,7 @@ CachedReference<short> thread0_yt(knowledge, ".yt");
 //-- Defining global variables at scope of thread COLLISION_AVOIDANCE
 //-- Used to implement Read-Execute-Write semantics
 /********************************************************************/
-ArrayReference<Proactive<_Bool, CachedReference<_Bool> >, 5, 10, 10> thread0_lock(knowledge, "lock");
+ArrayReference<Proactive<_Bool, CachedReference>, 5, 10, 10> thread0_lock(knowledge, "lock");
 
 /********************************************************************/
 //-- Defining local variables at scope of thread COLLISION_AVOIDANCE2
@@ -291,7 +295,7 @@ ArrayReference<Proactive<_Bool, CachedReference<_Bool> >, 5, 10, 10> thread0_loc
 //-- Defining global variables at scope of thread COLLISION_AVOIDANCE2
 //-- Used to implement Read-Execute-Write semantics
 /********************************************************************/
-ArrayReference<Proactive<short, CachedReference<short> >, 5> thread1_foo(knowledge, "foo");
+ArrayReference<Proactive<short, CachedReference>, 5> thread1_foo(knowledge, "foo");
 
 /********************************************************************/
 //-- Defining local variables at scope of thread WAYPOINT
@@ -305,9 +309,9 @@ CachedReference<short> thread2_yp(knowledge, ".yp");
 //-- Defining global variables at scope of thread WAYPOINT
 //-- Used to implement Read-Execute-Write semantics
 /********************************************************************/
-ArrayReference<Proactive<_Bool, CachedReference<_Bool> >, 5> thread2_init(knowledge, "init");
-ArrayReference<Proactive<short, CachedReference<short> >, 5> thread2_lx(knowledge, "lx");
-ArrayReference<Proactive<short, CachedReference<short> >, 5> thread2_ly(knowledge, "ly");
+ArrayReference<Proactive<_Bool, CachedReference>, 5> thread2_init(knowledge, "init");
+ArrayReference<Proactive<short, CachedReference>, 5> thread2_lx(knowledge, "lx");
+ArrayReference<Proactive<short, CachedReference>, 5> thread2_ly(knowledge, "ly");
 
 } // end node_uav_role_Leader namespace
 
@@ -348,7 +352,7 @@ CachedReference<short> thread0_yt(knowledge, ".yt");
 //-- Defining global variables at scope of thread COLLISION_AVOIDANCE
 //-- Used to implement Read-Execute-Write semantics
 /********************************************************************/
-ArrayReference<Proactive<_Bool, CachedReference<_Bool> >, 5, 10, 10> thread0_lock(knowledge, "lock");
+ArrayReference<Proactive<_Bool, CachedReference>, 5, 10, 10> thread0_lock(knowledge, "lock");
 
 /********************************************************************/
 //-- Defining local variables at scope of thread COLLISION_AVOIDANCE2
@@ -372,9 +376,9 @@ CachedReference<short> thread3_yt(knowledge, ".yt");
 //-- Defining global variables at scope of thread WAYPOINT
 //-- Used to implement Read-Execute-Write semantics
 /********************************************************************/
-ArrayReference<Proactive<_Bool, CachedReference<_Bool> >, 5> thread3_init(knowledge, "init");
-ArrayReference<Proactive<short, CachedReference<short> >, 5> thread3_lx(knowledge, "lx");
-ArrayReference<Proactive<short, CachedReference<short> >, 5> thread3_ly(knowledge, "ly");
+ArrayReference<Proactive<_Bool, CachedReference>, 5> thread3_init(knowledge, "init");
+ArrayReference<Proactive<short, CachedReference>, 5> thread3_lx(knowledge, "lx");
+ArrayReference<Proactive<short, CachedReference>, 5> thread3_ly(knowledge, "ly");
 
 } // end node_uav_role_Protector namespace
 
@@ -438,7 +442,7 @@ void handle_arguments (int argc, char ** argv)
       if (i + 1 < argc)
       {
         settings.hosts.push_back (argv[i + 1]);
-        settings.type = Madara::Transport::MULTICAST;
+        settings.type = madara::transport::MULTICAST;
       }
       ++i;
     }
@@ -456,7 +460,7 @@ void handle_arguments (int argc, char ** argv)
       if (i + 1 < argc)
       {
         settings.hosts.push_back (argv[i + 1]);
-        settings.type = Madara::Transport::BROADCAST;
+        settings.type = madara::transport::BROADCAST;
       }
       ++i;
     }
@@ -465,7 +469,7 @@ void handle_arguments (int argc, char ** argv)
       if (i + 1 < argc)
       {
         settings.hosts.push_back (argv[i + 1]);
-        settings.type = Madara::Transport::UDP;
+        settings.type = madara::transport::UDP;
       }
       ++i;
     }
@@ -499,7 +503,7 @@ void handle_arguments (int argc, char ** argv)
         int log_level = 0;
         std::stringstream buffer (argv[i + 1]);
         buffer >> log_level;
-        Madara::Logger::global_logger->set_level(log_level);
+        madara::logger::global_logger->set_level(log_level);
       }
       ++i;
     }
@@ -512,7 +516,7 @@ void handle_arguments (int argc, char ** argv)
         buffer >> drop_rate;
         std::cerr << "drop_rate: " << drop_rate << std::endl;
         settings.update_drop_rate (drop_rate,
-          Madara::Transport::PACKET_DROP_PROBABLISTIC);
+          madara::transport::PACKET_DROP_PROBABLISTIC);
       }
       ++i;
     }
@@ -528,8 +532,8 @@ void handle_arguments (int argc, char ** argv)
     {
       if (i + 1 < argc)
       {
-        ::Madara::Logger::global_logger->clear();
-        ::Madara::Logger::global_logger->add_file(argv[i + 1]);
+        ::madara::logger::global_logger->clear();
+        ::madara::logger::global_logger->add_file(argv[i + 1]);
       }
       ++i;
     }
@@ -636,7 +640,7 @@ void handle_arguments (int argc, char ** argv)
     }
     else
     {
-      madara_log (Madara::Logger::LOG_EMERGENCY, (LM_DEBUG, 
+      madara_log (madara::logger::LOG_EMERGENCY, (LM_DEBUG, 
         "\nProgram summary for %s:\n\n"\
         " [-p|--platform type]     platform for loop (vrep, dronerk)\n"\
         " [-b|--broadcast ip:port] the broadcast ip to send and listen to\n"\
@@ -691,22 +695,22 @@ namespace node_uav
 // begin node_uav_role_Leader namespace
 namespace node_uav_role_Leader
 {
-Madara::Knowledge_Record
-base_StartingPosition (engine::Function_Arguments & args, engine::Variables & vars);
-Madara::Knowledge_Record
-thread0 (engine::Function_Arguments & args, engine::Variables & vars);
-Madara::Knowledge_Record
-thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variables & vars);
-Madara::Knowledge_Record
-thread0_NEXT_XY (engine::Function_Arguments & args, engine::Variables & vars);
-Madara::Knowledge_Record
-thread1 (engine::Function_Arguments & args, engine::Variables & vars);
-Madara::Knowledge_Record
-thread1_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args, engine::Variables & vars);
-Madara::Knowledge_Record
-thread2 (engine::Function_Arguments & args, engine::Variables & vars);
-Madara::Knowledge_Record
-thread2_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars);
+KnowledgeRecord
+base_StartingPosition (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread0 (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread0_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread0_NEXT_XY (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread1 (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread1_COLLISION_AVOIDANCE2 (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread2 (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread2_WAYPOINT (engine::FunctionArguments & args, engine::Variables & vars);
 } // end node_uav_role_Leader namespace
 
 
@@ -717,22 +721,22 @@ thread2_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars);
 // begin node_uav_role_Protector namespace
 namespace node_uav_role_Protector
 {
-Madara::Knowledge_Record
-base_StartingPosition (engine::Function_Arguments & args, engine::Variables & vars);
-Madara::Knowledge_Record
-thread0 (engine::Function_Arguments & args, engine::Variables & vars);
-Madara::Knowledge_Record
-thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variables & vars);
-Madara::Knowledge_Record
-thread0_NEXT_XY (engine::Function_Arguments & args, engine::Variables & vars);
-Madara::Knowledge_Record
-thread1 (engine::Function_Arguments & args, engine::Variables & vars);
-Madara::Knowledge_Record
-thread1_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args, engine::Variables & vars);
-Madara::Knowledge_Record
-thread3 (engine::Function_Arguments & args, engine::Variables & vars);
-Madara::Knowledge_Record
-thread3_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars);
+KnowledgeRecord
+base_StartingPosition (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread0 (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread0_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread0_NEXT_XY (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread1 (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread1_COLLISION_AVOIDANCE2 (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread3 (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread3_WAYPOINT (engine::FunctionArguments & args, engine::Variables & vars);
 } // end node_uav_role_Protector namespace
 
 } // end node_uav namespace
@@ -768,55 +772,55 @@ namespace node_uav_role_Leader
 /********************************************************************/
 //-- Remodify barries variables to force MADARA retransmit
 /********************************************************************/
-Madara::Knowledge_Record
-REMODIFY_BARRIERS_COLLISION_AVOIDANCE (engine::Function_Arguments &,
+KnowledgeRecord
+REMODIFY_BARRIERS_COLLISION_AVOIDANCE (engine::FunctionArguments &,
   engine::Variables & vars)
 {
-  mbarrier_COLLISION_AVOIDANCE[id].mark_modified();
+  mark_modified(mbarrier_COLLISION_AVOIDANCE[id]);
   return Integer (0);
 }
 
 /********************************************************************/
 //-- Remodify global shared variables to force MADARA retransmit
 /********************************************************************/
-Madara::Knowledge_Record
-REMODIFY_GLOBALS_COLLISION_AVOIDANCE (engine::Function_Arguments & args,
+KnowledgeRecord
+REMODIFY_GLOBALS_COLLISION_AVOIDANCE (engine::FunctionArguments & args,
   engine::Variables & vars)
 {
   // Remodifying common global variables
   REMODIFY_BARRIERS_COLLISION_AVOIDANCE (args, vars);
   // Remodifying thread-specific global variables
-  lock[id].mark_modified();
+  mark_modified(lock[id]);
   return Integer (0);
 }
 
 /********************************************************************/
 //-- Remodify barries variables to force MADARA retransmit
 /********************************************************************/
-Madara::Knowledge_Record
-REMODIFY_BARRIERS_COLLISION_AVOIDANCE2 (engine::Function_Arguments &,
+KnowledgeRecord
+REMODIFY_BARRIERS_COLLISION_AVOIDANCE2 (engine::FunctionArguments &,
   engine::Variables & vars)
 {
-  mbarrier_COLLISION_AVOIDANCE2[id].mark_modified();
+  mark_modified(mbarrier_COLLISION_AVOIDANCE2[id]);
   return Integer (0);
 }
 
 /********************************************************************/
 //-- Remodify global shared variables to force MADARA retransmit
 /********************************************************************/
-Madara::Knowledge_Record
-REMODIFY_GLOBALS_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args,
+KnowledgeRecord
+REMODIFY_GLOBALS_COLLISION_AVOIDANCE2 (engine::FunctionArguments & args,
   engine::Variables & vars)
 {
   // Remodifying common global variables
   REMODIFY_BARRIERS_COLLISION_AVOIDANCE2 (args, vars);
   // Remodifying thread-specific global variables
-  foo[id].mark_modified();
+  mark_modified(foo[id]);
   return Integer (0);
 }
 //-- @InitSim
-Madara::Knowledge_Record
-base_StartingPosition (engine::Function_Arguments & args, engine::Variables & vars)
+KnowledgeRecord
+base_StartingPosition (engine::FunctionArguments & args, engine::Variables & vars)
 {
 
   //-- Declare local (parameter and temporary) variables
@@ -834,21 +838,21 @@ base_StartingPosition (engine::Function_Arguments & args, engine::Variables & va
   return Integer(0);
 }
 
-Madara::Knowledge_Record
-thread0 (engine::Function_Arguments & args, engine::Variables & vars)
+KnowledgeRecord
+thread0 (engine::FunctionArguments & args, engine::Variables & vars)
 {
   //-- Pull all referenced locals/globals
   {
-    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
-    thread0_state.pull();
-    thread0_waypointValid.pull();
-    thread0_x.pull();
-    thread0_xp.pull();
-    thread0_xt.pull();
-    thread0_y.pull();
-    thread0_yp.pull();
-    thread0_yt.pull();
-    thread0_lock.pull();
+    madara::knowledge::ContextGuard guard(knowledge);
+    pull(thread0_state);
+    pull(thread0_waypointValid);
+    pull(thread0_x);
+    pull(thread0_xp);
+    pull(thread0_xt);
+    pull(thread0_y);
+    pull(thread0_yp);
+    pull(thread0_yt);
+    pull(thread0_lock);
   }
 
   //-- call thread function
@@ -856,24 +860,24 @@ thread0 (engine::Function_Arguments & args, engine::Variables & vars)
 
   //-- Push all referenced locals/globals
   {
-    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
-    thread0_state.push();
-    thread0_waypointValid.push();
-    thread0_x.push();
-    thread0_xp.push();
-    thread0_xt.push();
-    thread0_y.push();
-    thread0_yp.push();
-    thread0_yt.push();
-    thread0_lock[id].push();
+    madara::knowledge::ContextGuard guard(knowledge);
+    push(thread0_state);
+    push(thread0_waypointValid);
+    push(thread0_x);
+    push(thread0_xp);
+    push(thread0_xt);
+    push(thread0_y);
+    push(thread0_yp);
+    push(thread0_yt);
+    push(thread0_lock[id]);
   }
 
   return Integer(0);
 }
 
 //-- @Period 100000
-Madara::Knowledge_Record
-thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variables & vars)
+KnowledgeRecord
+thread0_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Variables & vars)
 {
 
   //-- Declare local (parameter and temporary) variables
@@ -890,7 +894,7 @@ thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variable
       return Integer(0);
     }
     if ((thread0_NEXT_XY (
-           __strip_const(engine::Function_Arguments(0))
+           __strip_const(engine::FunctionArguments(0))
           , vars).to_integer() == 0 ? false : true))
     {
       return Integer(0);
@@ -945,8 +949,8 @@ thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variable
   return Integer(0);
 }
 
-Madara::Knowledge_Record
-thread0_NEXT_XY (engine::Function_Arguments & args, engine::Variables & vars)
+KnowledgeRecord
+thread0_NEXT_XY (engine::FunctionArguments & args, engine::Variables & vars)
 {
 
   //-- Declare local (parameter and temporary) variables
@@ -991,13 +995,13 @@ thread0_NEXT_XY (engine::Function_Arguments & args, engine::Variables & vars)
   return Integer(0);
 }
 
-Madara::Knowledge_Record
-thread1 (engine::Function_Arguments & args, engine::Variables & vars)
+KnowledgeRecord
+thread1 (engine::FunctionArguments & args, engine::Variables & vars)
 {
   //-- Pull all referenced locals/globals
   {
-    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
-    thread1_foo.pull();
+    madara::knowledge::ContextGuard guard(knowledge);
+    pull(thread1_foo);
   }
 
   //-- call thread function
@@ -1005,8 +1009,8 @@ thread1 (engine::Function_Arguments & args, engine::Variables & vars)
 
   //-- Push all referenced locals/globals
   {
-    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
-    thread1_foo[id].push();
+    madara::knowledge::ContextGuard guard(knowledge);
+    push(thread1_foo[id]);
   }
 
   return Integer(0);
@@ -1014,8 +1018,8 @@ thread1 (engine::Function_Arguments & args, engine::Variables & vars)
 
 //-- @BarrierSync
 //-- @Period 100000
-Madara::Knowledge_Record
-thread1_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args, engine::Variables & vars)
+KnowledgeRecord
+thread1_COLLISION_AVOIDANCE2 (engine::FunctionArguments & args, engine::Variables & vars)
 {
 
   //-- Declare local (parameter and temporary) variables
@@ -1028,18 +1032,18 @@ thread1_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args, engine::Variabl
   return Integer(0);
 }
 
-Madara::Knowledge_Record
-thread2 (engine::Function_Arguments & args, engine::Variables & vars)
+KnowledgeRecord
+thread2 (engine::FunctionArguments & args, engine::Variables & vars)
 {
   //-- Pull all referenced locals/globals
   {
-    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
-    thread2_waypointValid.pull();
-    thread2_xp.pull();
-    thread2_yp.pull();
-    thread2_init.pull();
-    thread2_lx.pull();
-    thread2_ly.pull();
+    madara::knowledge::ContextGuard guard(knowledge);
+    pull(thread2_waypointValid);
+    pull(thread2_xp);
+    pull(thread2_yp);
+    pull(thread2_init);
+    pull(thread2_lx);
+    pull(thread2_ly);
   }
 
   //-- call thread function
@@ -1047,21 +1051,21 @@ thread2 (engine::Function_Arguments & args, engine::Variables & vars)
 
   //-- Push all referenced locals/globals
   {
-    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
-    thread2_waypointValid.push();
-    thread2_xp.push();
-    thread2_yp.push();
-    thread2_init[id].push();
-    thread2_lx[id].push();
-    thread2_ly[id].push();
+    madara::knowledge::ContextGuard guard(knowledge);
+    push(thread2_waypointValid);
+    push(thread2_xp);
+    push(thread2_yp);
+    push(thread2_init[id]);
+    push(thread2_lx[id]);
+    push(thread2_ly[id]);
   }
 
   return Integer(0);
 }
 
 //-- @Period 100000
-Madara::Knowledge_Record
-thread2_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars)
+KnowledgeRecord
+thread2_WAYPOINT (engine::FunctionArguments & args, engine::Variables & vars)
 {
 
   //-- Declare local (parameter and temporary) variables
@@ -1179,44 +1183,44 @@ namespace node_uav_role_Protector
 /********************************************************************/
 //-- Remodify barries variables to force MADARA retransmit
 /********************************************************************/
-Madara::Knowledge_Record
-REMODIFY_BARRIERS_COLLISION_AVOIDANCE (engine::Function_Arguments &,
+KnowledgeRecord
+REMODIFY_BARRIERS_COLLISION_AVOIDANCE (engine::FunctionArguments &,
   engine::Variables & vars)
 {
-  mbarrier_COLLISION_AVOIDANCE[id].mark_modified();
+  mark_modified(mbarrier_COLLISION_AVOIDANCE[id]);
   return Integer (0);
 }
 
 /********************************************************************/
 //-- Remodify global shared variables to force MADARA retransmit
 /********************************************************************/
-Madara::Knowledge_Record
-REMODIFY_GLOBALS_COLLISION_AVOIDANCE (engine::Function_Arguments & args,
+KnowledgeRecord
+REMODIFY_GLOBALS_COLLISION_AVOIDANCE (engine::FunctionArguments & args,
   engine::Variables & vars)
 {
   // Remodifying common global variables
   REMODIFY_BARRIERS_COLLISION_AVOIDANCE (args, vars);
   // Remodifying thread-specific global variables
-  lock[id].mark_modified();
+  mark_modified(lock[id]);
   return Integer (0);
 }
 
 /********************************************************************/
 //-- Remodify barries variables to force MADARA retransmit
 /********************************************************************/
-Madara::Knowledge_Record
-REMODIFY_BARRIERS_COLLISION_AVOIDANCE2 (engine::Function_Arguments &,
+KnowledgeRecord
+REMODIFY_BARRIERS_COLLISION_AVOIDANCE2 (engine::FunctionArguments &,
   engine::Variables & vars)
 {
-  mbarrier_COLLISION_AVOIDANCE2[id].mark_modified();
+  mark_modified(mbarrier_COLLISION_AVOIDANCE2[id]);
   return Integer (0);
 }
 
 /********************************************************************/
 //-- Remodify global shared variables to force MADARA retransmit
 /********************************************************************/
-Madara::Knowledge_Record
-REMODIFY_GLOBALS_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args,
+KnowledgeRecord
+REMODIFY_GLOBALS_COLLISION_AVOIDANCE2 (engine::FunctionArguments & args,
   engine::Variables & vars)
 {
   // Remodifying common global variables
@@ -1225,8 +1229,8 @@ REMODIFY_GLOBALS_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args,
   return Integer (0);
 }
 //-- @InitSim
-Madara::Knowledge_Record
-base_StartingPosition (engine::Function_Arguments & args, engine::Variables & vars)
+KnowledgeRecord
+base_StartingPosition (engine::FunctionArguments & args, engine::Variables & vars)
 {
 
   //-- Declare local (parameter and temporary) variables
@@ -1244,21 +1248,21 @@ base_StartingPosition (engine::Function_Arguments & args, engine::Variables & va
   return Integer(0);
 }
 
-Madara::Knowledge_Record
-thread0 (engine::Function_Arguments & args, engine::Variables & vars)
+KnowledgeRecord
+thread0 (engine::FunctionArguments & args, engine::Variables & vars)
 {
   //-- Pull all referenced locals/globals
   {
-    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
-    thread0_state.pull();
-    thread0_waypointValid.pull();
-    thread0_x.pull();
-    thread0_xp.pull();
-    thread0_xt.pull();
-    thread0_y.pull();
-    thread0_yp.pull();
-    thread0_yt.pull();
-    thread0_lock.pull();
+    madara::knowledge::ContextGuard guard(knowledge);
+    pull(thread0_state);
+    pull(thread0_waypointValid);
+    pull(thread0_x);
+    pull(thread0_xp);
+    pull(thread0_xt);
+    pull(thread0_y);
+    pull(thread0_yp);
+    pull(thread0_yt);
+    pull(thread0_lock);
   }
 
   //-- call thread function
@@ -1266,24 +1270,24 @@ thread0 (engine::Function_Arguments & args, engine::Variables & vars)
 
   //-- Push all referenced locals/globals
   {
-    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
-    thread0_state.push();
-    thread0_waypointValid.push();
-    thread0_x.push();
-    thread0_xp.push();
-    thread0_xt.push();
-    thread0_y.push();
-    thread0_yp.push();
-    thread0_yt.push();
-    thread0_lock[id].push();
+    madara::knowledge::ContextGuard guard(knowledge);
+    push(thread0_state);
+    push(thread0_waypointValid);
+    push(thread0_x);
+    push(thread0_xp);
+    push(thread0_xt);
+    push(thread0_y);
+    push(thread0_yp);
+    push(thread0_yt);
+    push(thread0_lock[id]);
   }
 
   return Integer(0);
 }
 
 //-- @Period 100000
-Madara::Knowledge_Record
-thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variables & vars)
+KnowledgeRecord
+thread0_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Variables & vars)
 {
 
   //-- Declare local (parameter and temporary) variables
@@ -1300,7 +1304,7 @@ thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variable
       return Integer(0);
     }
     if ((thread0_NEXT_XY (
-           __strip_const(engine::Function_Arguments(0))
+           __strip_const(engine::FunctionArguments(0))
           , vars).to_integer() == 0 ? false : true))
     {
       return Integer(0);
@@ -1355,8 +1359,8 @@ thread0_COLLISION_AVOIDANCE (engine::Function_Arguments & args, engine::Variable
   return Integer(0);
 }
 
-Madara::Knowledge_Record
-thread0_NEXT_XY (engine::Function_Arguments & args, engine::Variables & vars)
+KnowledgeRecord
+thread0_NEXT_XY (engine::FunctionArguments & args, engine::Variables & vars)
 {
 
   //-- Declare local (parameter and temporary) variables
@@ -1401,12 +1405,12 @@ thread0_NEXT_XY (engine::Function_Arguments & args, engine::Variables & vars)
   return Integer(0);
 }
 
-Madara::Knowledge_Record
-thread1 (engine::Function_Arguments & args, engine::Variables & vars)
+KnowledgeRecord
+thread1 (engine::FunctionArguments & args, engine::Variables & vars)
 {
   //-- Pull all referenced locals/globals
   {
-    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    madara::knowledge::ContextGuard guard(knowledge);
   }
 
   //-- call thread function
@@ -1414,15 +1418,15 @@ thread1 (engine::Function_Arguments & args, engine::Variables & vars)
 
   //-- Push all referenced locals/globals
   {
-    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
+    madara::knowledge::ContextGuard guard(knowledge);
   }
 
   return Integer(0);
 }
 
 //-- @Period 100000
-Madara::Knowledge_Record
-thread1_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args, engine::Variables & vars)
+KnowledgeRecord
+thread1_COLLISION_AVOIDANCE2 (engine::FunctionArguments & args, engine::Variables & vars)
 {
 
   //-- Declare local (parameter and temporary) variables
@@ -1434,18 +1438,18 @@ thread1_COLLISION_AVOIDANCE2 (engine::Function_Arguments & args, engine::Variabl
   return Integer(0);
 }
 
-Madara::Knowledge_Record
-thread3 (engine::Function_Arguments & args, engine::Variables & vars)
+KnowledgeRecord
+thread3 (engine::FunctionArguments & args, engine::Variables & vars)
 {
   //-- Pull all referenced locals/globals
   {
-    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
-    thread3_waypointValid.pull();
-    thread3_xt.pull();
-    thread3_yt.pull();
-    thread3_init.pull();
-    thread3_lx.pull();
-    thread3_ly.pull();
+    madara::knowledge::ContextGuard guard(knowledge);
+    pull(thread3_waypointValid);
+    pull(thread3_xt);
+    pull(thread3_yt);
+    pull(thread3_init);
+    pull(thread3_lx);
+    pull(thread3_ly);
   }
 
   //-- call thread function
@@ -1453,21 +1457,21 @@ thread3 (engine::Function_Arguments & args, engine::Variables & vars)
 
   //-- Push all referenced locals/globals
   {
-    Madara::Knowledge_Engine::Context_Guard guard(knowledge);
-    thread3_waypointValid.push();
-    thread3_xt.push();
-    thread3_yt.push();
-    thread3_init[id].push();
-    thread3_lx[id].push();
-    thread3_ly[id].push();
+    madara::knowledge::ContextGuard guard(knowledge);
+    push(thread3_waypointValid);
+    push(thread3_xt);
+    push(thread3_yt);
+    push(thread3_init[id]);
+    push(thread3_lx[id]);
+    push(thread3_ly[id]);
   }
 
   return Integer(0);
 }
 
 //-- @Period 100000
-Madara::Knowledge_Record
-thread3_WAYPOINT (engine::Function_Arguments & args, engine::Variables & vars)
+KnowledgeRecord
+thread3_WAYPOINT (engine::FunctionArguments & args, engine::Variables & vars)
 {
 
   //-- Declare local (parameter and temporary) variables
@@ -1610,13 +1614,13 @@ void constructor ()
 //-- Class that encapsulates a periodic thread
 /********************************************************************/
 
-class Algo : public gams::algorithms::Base_Algorithm, protected threads::Base_Thread
+class Algo : public gams::algorithms::BaseAlgorithm, protected threads::BaseThread
 {
 public:
   Algo (
     unsigned period,
     const std::string &exec_func,
-    Madara::Knowledge_Engine::Knowledge_Base * knowledge = 0,
+    madara::knowledge::KnowledgeBase * knowledge = 0,
     const std::string &platform_name = "",
     variables::Sensors * sensors = 0,
     variables::Self * self = 0);
@@ -1624,15 +1628,15 @@ public:
   virtual int analyze (void);
   virtual int plan (void);
   virtual int execute (void);
-  virtual void init (engine::Knowledge_Base & context);
+  virtual void init (engine::KnowledgeBase & context);
   virtual void init_platform ();
   virtual void run (void);
   virtual void cleanup (void);
   virtual void start (threads::Threader &threader);
 protected:
   unsigned _period; //-- period in us
-  controllers::Base_Controller loop;
-  engine::Knowledge_Base *knowledge_;
+  controllers::BaseController loop;
+  engine::KnowledgeBase *knowledge_;
   std::string _exec_func, _platform_name;
 };
 
@@ -1647,7 +1651,7 @@ public:
     unsigned period,
     const std::string &exec_func,
     const std::string &thread_name,
-    Madara::Knowledge_Engine::Knowledge_Base * knowledge = 0,
+    madara::knowledge::KnowledgeBase * knowledge = 0,
     const std::string &platform_name = "",
     variables::Sensors * sensors = 0,
     variables::Self * self = 0);
@@ -1655,19 +1659,19 @@ public:
   virtual int analyze (void);
   virtual int plan (void);
   virtual int execute (void);
-  virtual void init (engine::Knowledge_Base & context);
+  virtual void init (engine::KnowledgeBase & context);
   virtual void run (void);
   virtual void cleanup (void);
 protected:
   int phase;
   std::string mbarrier;
-  Madara::Knowledge_Engine::Wait_Settings wait_settings;
-  engine::Compiled_Expression round_logic;
+  madara::knowledge::WaitSettings wait_settings;
+  engine::CompiledExpression round_logic;
   std::map <std::string, bool>  barrier_send_list;
   std::stringstream barrier_string, barrier_data_string, barrier_sync;
-  engine::Compiled_Expression barrier_logic;
-  engine::Compiled_Expression barrier_data_logic;
-  engine::Compiled_Expression barrier_sync_logic;
+  engine::CompiledExpression barrier_logic;
+  engine::CompiledExpression barrier_data_logic;
+  engine::CompiledExpression barrier_sync_logic;
 };
 
 
@@ -1678,11 +1682,11 @@ protected:
 Algo::Algo (
     unsigned period,
     const std::string &exec_func,
-    Madara::Knowledge_Engine::Knowledge_Base * knowledge,
+    madara::knowledge::KnowledgeBase * knowledge,
     const std::string &platform_name,
     variables::Sensors * sensors,
     variables::Self * self) : loop(*knowledge), _platform_name(platform_name),
-      Base_Algorithm (knowledge, 0, sensors, self), knowledge_(knowledge),
+      BaseAlgorithm (knowledge, 0, sensors, self), knowledge_(knowledge),
             _period(period), _exec_func(exec_func)
 {
 }
@@ -1701,7 +1705,7 @@ int Algo::plan (void)
   return 0;
 }
 
-void Algo::init (engine::Knowledge_Base & context)
+void Algo::init (engine::KnowledgeBase & context)
 {
   loop.init_vars (settings.id, processes);
   if(_platform_name != "") init_platform ();
@@ -1749,7 +1753,7 @@ SyncAlgo::SyncAlgo (
     unsigned period,
     const std::string &exec_func,
     const std::string &thread_name,
-    Madara::Knowledge_Engine::Knowledge_Base * knowledge,
+    madara::knowledge::KnowledgeBase * knowledge,
     const std::string &platform_name,
     variables::Sensors * sensors,
     variables::Self * self) : phase(0), mbarrier("mbarrier_" + thread_name),
@@ -1766,7 +1770,7 @@ SyncAlgo::~SyncAlgo (void)
 {
 }
 
-void SyncAlgo::init (engine::Knowledge_Base & context)
+void SyncAlgo::init (engine::KnowledgeBase & context)
 {
   bool started = false;
 
@@ -1924,7 +1928,7 @@ template<class T> std::string to_string(const T &in)
 //-- Initialize VREP
 /********************************************************************/
 
-void init_vrep(const std::vector<std::string> &params, engine::Knowledge_Base &knowledge)
+void init_vrep(const std::vector<std::string> &params, engine::KnowledgeBase &knowledge)
 {
   if(params.size() >= 2 && params[1].size() > 0)
     knowledge.set(".vrep_host", params[1]);
@@ -1939,9 +1943,10 @@ void init_vrep(const std::vector<std::string> &params, engine::Knowledge_Base &k
   else
     knowledge.set(".vrep_sw_position", "40.4464255,-79.9499426");
   if(params.size() >= 5 && params[4].size() > 0)
-    knowledge.set(".vrep_uav_move_speed", params[4]);
+    knowledge.set(".vrep_max_delta", params[4]);
   else
-    knowledge.set(".vrep_uav_move_speed", "0.4");
+    knowledge.set(".vrep_max_delta", "0.4");
+  knowledge.set(".vrep_move_thread_rate", "0");
   knowledge.set("vrep_ready", "1");
 }
 
@@ -1951,7 +1956,7 @@ void init_vrep(const std::vector<std::string> &params, engine::Knowledge_Base &k
 
 int main (int argc, char ** argv)
 {
-  settings.type = Madara::Transport::MULTICAST;
+  settings.type = madara::transport::MULTICAST;
   platform_init_fns["vrep"] = init_vrep;
   platform_init_fns["vrep-uav"] = init_vrep;
   platform_init_fns["vrep-heli"] = init_vrep;
@@ -1966,8 +1971,8 @@ int main (int argc, char ** argv)
   {
     //-- setup default transport as multicast
     settings.hosts.push_back (default_multicast);
-    settings.add_receive_filter (Madara::Filters::log_aggregate);
-    settings.add_send_filter (Madara::Filters::log_aggregate);
+    settings.add_receive_filter (madara::filters::log_aggregate);
+    settings.add_send_filter (madara::filters::log_aggregate);
   }
 
   settings.queue_length = 1000000;
@@ -1987,7 +1992,7 @@ int main (int argc, char ** argv)
 
   //-- Synchronize to make sure all nodes are up
   {
-    Madara::Knowledge_Engine::Wait_Settings wait_settings;
+    madara::knowledge::WaitSettings wait_settings;
     knowledge.evaluate ("++startSync.{.id}", wait_settings);
     for(;;) {
       size_t flag = 1;
