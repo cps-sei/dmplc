@@ -351,14 +351,14 @@ void parse_options (int argc, char **argv)
           const_def["LeftX"] = "-2.25";
           const_def["BottomY"] = "-2.25";
           const_def["RightX"] = "2.25";
-          const_def["TopZ"] = "1.0";
+          const_def["TopZ"] = "2.5";
           const_def["BottomZ"] = "0.0";
         } else if(std::string(argv[i+1]) == "large") {
           const_def["TopY"] = "13";
           const_def["LeftX"] = "-12.5";
           const_def["BottomY"] = "-6";
           const_def["RightX"] = "6.5";
-          const_def["TopZ"] = "2.0";
+          const_def["TopZ"] = "2.5";
           const_def["BottomZ"] = "0.0";
         } else {
           std::cerr << "ERROR: Map Size (--map) must be small or large!!\n";
