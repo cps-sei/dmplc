@@ -2220,7 +2220,7 @@ dmpl::gams::GAMSBuilder::build_main_function ()
 
   buffer_ << "  //-- Synchronize to make sure all nodes are up\n";
   buffer_ << "  {\n";
-  buffer_ << "    Madara::Knowledge_Engine::Wait_Settings wait_settings;\n";
+  buffer_ << "    madara::knowledge::WaitSettings wait_settings;\n";
   buffer_ << "    knowledge.evaluate (\"++startSync.{.id}\", wait_settings);\n";
   buffer_ << "    for(;;) {\n";
   buffer_ << "      size_t flag = 1;\n";
