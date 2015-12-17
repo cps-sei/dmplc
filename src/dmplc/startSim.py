@@ -85,6 +85,20 @@ ret=0
 print 'Program started'
 vrep.simxFinish(-1) # just in case, close all opened connections
 clientID=vrep.simxStart('127.0.0.1',19001,True,True,5000,5)
+
+# stuff to do in recording mode
+if ((len(sys.argv) > 1) and (sys.argv[1] == "--record")):
+    # disable model browser and scene hierarchy
+    vrep.simxSetBooleanParameter(clientID,vrep.sim_boolparam_hierarchy_visible,0,vrep.simx_opmode_oneshot)
+    vrep.simxSetBooleanParameter(clientID,vrep.sim_boolparam_browser_visible,0,vrep.simx_opmode_oneshot)
+
+    # zoom out camera
+    (code, cameraID)=vrep.simxGetObjectHandle(clientID,"DefaultCamera#",vrep.simx_opmode_oneshot_wait)
+    vrep.simxSetObjectPosition(clientID,cameraID,-1,(0.0421,-0.2489,11.2217),vrep.simx_opmode_oneshot)
+
+    # start recording
+    vrep.simxSetBooleanParameter(clientID,vrep.sim_boolparam_video_recording_triggered,1,vrep.simx_opmode_oneshot)
+
 if clientID!=-1:
     print 'Connected to remote API server'
     res=vrep.simxStartSimulation(clientID,vrep.simx_opmode_oneshot_wait)

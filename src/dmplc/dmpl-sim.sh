@@ -65,6 +65,7 @@ function usage {
     echo "    -M | --manual-start Don't start the simulation automatically"
     echo '    -p | --platform $P  Pass $P as the --platform option to the executable'
     echo "    -r | --realtime     Run V-REP in realtime mode"
+    echo "    -R | --record       Run V-REP in recording mode"
 }
 
 #flags
@@ -73,6 +74,7 @@ REALTIME=0
 FORCEBUILD=0
 BUILDONLY=0
 MANUALSTART=0
+RECORD=""
 
 PLATFORM=vrep-uav::::0.1
 
@@ -98,6 +100,9 @@ while true; do
             ;;
         -r|--realtime)
             REALTIME=1
+            ;;
+        -R|--record)
+            RECORD="--record"
             ;;
         -p|--platform)
             shift
@@ -343,7 +348,7 @@ else
     sleep 2
 fi
 
-[ "$MANUALSTART" -ne 1 ] && ( cd $SCDIR; ./startSim.py )
+[ "$MANUALSTART" -ne 1 ] && ( cd $SCDIR; ./startSim.py $RECORD )
 
 SAFETY_TIME=240
 START_TIME=$(date +%s)
