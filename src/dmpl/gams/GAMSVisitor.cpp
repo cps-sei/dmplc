@@ -125,6 +125,12 @@ dmpl::madara::GAMSVisitor::exitLval (LvalExpr & expression)
   //-- regular variable
   else
   {
+    //-- sanity check. we must have a legal variable.
+    if(var == NULL)
+      throw std::runtime_error("ERROR: function " + function_->name + " in node " +
+                               node_->name + " uses out-of-scope variable " +
+                               symbol->getName() + "!!");
+    
     int indices = expression.indices.size();
     bool atNode = expression.node != NULL;
     bool isLocal = var->getScope() == Variable::LOCAL;
