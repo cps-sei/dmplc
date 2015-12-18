@@ -87,6 +87,7 @@ void GRID_INIT()
 
 void GRID_PLACE(int x, int y, int z)
 {
+  std::cerr << "GRID_PLACE" << x << " " << y << " "  << y << std::endl;
   knowledge.set(".initial_x", grid_leftX + x * grid_cellX);
   knowledge.set(".initial_y", grid_topY + y * grid_cellY);
   knowledge.set(".initial_alt", grid_topZ + z * grid_cellZ);
@@ -94,6 +95,7 @@ void GRID_PLACE(int x, int y, int z)
 
 int GRID_MOVE(int x, int y, int z, double epsilon = 0.1)
 {
+  std::cerr << "GRID_MOVE" << x << " " << y << " " << z << std::endl;
   int ret = platform->move(gams::utility::Position(grid_leftX + x * grid_cellX, grid_topY + y * grid_cellY, grid_topZ + z * grid_cellZ), epsilon);
   return ret != 2;
 }
@@ -134,9 +136,33 @@ double GET_LNG()
 int ROTATE(double angle)
 {
   std::cout << "Rotate: " << angle << std::endl;
-  int ret = platform->rotate(gams::utility::Axes(0, 0, angle));
+  int ret = platform->rotate(
+    gams::utility::Rotation(platform->get_frame(),
+      gams::utility::Rotation::Z_axis, angle));
   std::cout << "Rotate ret: " << ret << std::endl;
   return ret != 2;
+}
+
+using gams::platforms::HasRangeSensor;
+
+int HAS_RANGE()
+{
+  HasRangeSensor *s = dynamic_cast<HasRangeSensor *>(platform);
+  return !!s;
+}
+
+double GET_RANGE()
+{
+  HasRangeSensor *s = dynamic_cast<HasRangeSensor *>(platform);
+  std::cout << "HasRangeSensor: " << reinterpret_cast<long>(s) << std::endl;
+  if(s)
+  {
+    double ret = s->get_range();
+    std::cout << "RangeSensor: " << ret << std::endl;
+    return ret;
+  }
+  else
+    return NAN;
 }
 
 #endif //__DMPL_PLATFORM_GAMS_HPP__

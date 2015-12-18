@@ -109,9 +109,6 @@ void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
     print_line(_X);
   }
 }
-
-void ROTATE(int angle) {}
-double GET_RANGE() { return 0.0; }
 %%}
 
 //states of each node
@@ -126,6 +123,7 @@ extern void print_state(int XX,int YY,int _id, int _x, int _y, int _xf, int _yf)
 extern void print_int(int i);
 extern void print_range(double r);
 extern void ROTATE(int angle);
+extern int HAS_RANGE();
 extern double GET_RANGE();
 
 node uav

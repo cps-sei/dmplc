@@ -8,7 +8,7 @@ MAPNAME=small
 GRIDSIZE=10
 ROLEDESC=uav:Uav:3
 
-PLATFORM=vrep-uav-ranger::::0.1
+PLATFORM=vrep-uav-laser::::0.1
 
 EXPECT_LOG_PERIOD=0.2
 
@@ -16,7 +16,7 @@ MISSION_TIME=120
 
 function make_args
 {
-  echo --var_x $1 --var_y $2 --var_xf $3 --var_yf $4
+  echo --node uav --role Uav --var_x $1 --var_y $2 --var_xf $3 --var_yf $4
 }
 
 ARGS_0="$(make_args 0 5 9 5)"

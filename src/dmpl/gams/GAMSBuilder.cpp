@@ -265,10 +265,10 @@ dmpl::gams::GAMSBuilder::build_header_includes ()
   buffer_ << "#include \"gams/variables/Sensor.h\"\n";
   buffer_ << "#include \"gams/platforms/BasePlatform.h\"\n";
   buffer_ << "#include \"gams/platforms/vrep/VREPBase.h\"\n";
-  //buffer_ << "#include \"gams/platforms/vrep/VREPUAVRanger.h\"\n";
+  buffer_ << "#include \"gams/platforms/vrep/VREPQuadLaser.h\"\n";
   buffer_ << "#include \"gams/variables/Self.h\"\n";
   buffer_ << "#include \"gams/utility/GPSPosition.h\"\n";
-  buffer_ << "#include \"gams/utility/Axes.h\"\n";
+  buffer_ << "#include \"gams/utility/Rotation.h\"\n";
   buffer_ << "\n";
   buffer_ << "#include \"dmpl/Reference.hpp\"\n";
   buffer_ << "#include \"dmpl/CachedReference.hpp\"\n";
@@ -2172,7 +2172,8 @@ dmpl::gams::GAMSBuilder::build_main_function ()
   buffer_ << "  if(params.size() >= 5 && params[4].size() > 0)\n";
   buffer_ << "    knowledge.set(\".vrep_max_delta\", params[4]);\n";
   buffer_ << "  else\n";
-  buffer_ << "    knowledge.set(\".vrep_max_delta\", \"0.4\");\n";
+  buffer_ << "    knowledge.set(\".vrep_max_delta\", 0.4);\n";
+  buffer_ << "  knowledge.set(\".vrep_max_rotate_delta\", M_PI/16);\n";
   buffer_ << "  knowledge.set(\".vrep_move_thread_rate\", \"0\");\n";
   buffer_ << "  knowledge.set(\"vrep_ready\", \"1\");\n";
   buffer_ << "}\n";
@@ -2186,9 +2187,11 @@ dmpl::gams::GAMSBuilder::build_main_function ()
   //buffer_ << "  settings.type = madara::transport::BROADCAST;\n";
   buffer_ << "  platform_init_fns[\"vrep\"] = init_vrep;\n";
   buffer_ << "  platform_init_fns[\"vrep-uav\"] = init_vrep;\n";
+  buffer_ << "  platform_init_fns[\"vrep-quad\"] = init_vrep;\n";
   buffer_ << "  platform_init_fns[\"vrep-heli\"] = init_vrep;\n";
   buffer_ << "  platform_init_fns[\"vrep-ant\"] = init_vrep;\n";
-  buffer_ << "  platform_init_fns[\"vrep-uav-ranger\"] = init_vrep;\n";
+  buffer_ << "  platform_init_fns[\"vrep-uav-laser\"] = init_vrep;\n";
+  buffer_ << "  platform_init_fns[\"vrep-quad-laser\"] = init_vrep;\n";
   buffer_ << "\n";
   buffer_ << "  //-- handle any command line arguments and check their sanity\n";
   buffer_ << "  handle_arguments (argc, argv);\n";
