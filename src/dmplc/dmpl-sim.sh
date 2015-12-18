@@ -169,7 +169,7 @@ function cleanup {
     killall -9 gdb $BIN vrep vrep.sh
     
     #restore the VREP system/settings.dat
-    cp $SDF.saved.mcda-vrep $SDF
+    if [ -f $SDF.saved.mcda-vrep ]; then cp $SDF.saved.mcda-vrep $SDF; fi
     
     echo $bin_count  $NODENUM $VREP_GRACEFUL_EXIT
     if [ "$bin_count" -eq $NODENUM ] && [ "$VREP_GRACEFUL_EXIT" -ge 1 ]; then
@@ -270,7 +270,7 @@ done
 
 #save the VREP system/settings.dat
 SDF=$VREP_ROOT/system/settings.dat
-cp $SDF $SDF.saved.mcda-vrep
+if [ -f $SDF ]; then cp $SDF $SDF.saved.mcda-vrep; fi
 #start vrep
 echo "starting VREP .. output is in $OUTDIR/vrep.out ..."
 
