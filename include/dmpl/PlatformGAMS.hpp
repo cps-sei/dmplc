@@ -139,6 +139,24 @@ double GET_Z()
 }
 #endif
 
+/// Returns the size of a grid cell in the X-dimension
+double GET_CELL_SIZE_X()
+{
+  return grid_cellX;
+}
+
+/// Returns the size of a grid cell in the Y-dimension
+double GET_CELL_SIZE_Y()
+{
+  return grid_cellY;
+}
+
+/// Returns the size of a grid cell in the Z-dimension
+double GET_CELL_SIZE_Z()
+{
+  return grid_cellZ;
+}
+
 /// Returns latitude
 double GET_LAT()
 {
