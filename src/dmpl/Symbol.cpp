@@ -63,6 +63,31 @@
 
 namespace dmpl
 {
+  //-- right now we have hard code platform API symbols. we need to
+  //-- make this more flexible later on.
+  const std::string platSymArray [] = {
+    "platform", "grid_x", "grid_y", "grid_z",
+    "grid_leftX", "grid_rightX",
+    "grid_topY", "grid_bottomY",
+    "grid_topZ", "grid_bottomZ",
+    "grid_cellX", "grid_cellY", "grid_cellZ",
+    "GRID_INIT", "GRID_PLACE", "GRID_MOVE",
+    "GET_CELL_SIZE_X", "GET_CELL_SIZE_Y", "GET_CELL_SIZE_Z",
+    "GET_LAT", "GET_LNG", "GET_ALT",
+    "ROTATE", "HAS_RANGE", "GET_RANGE", "GET_RANGE_ANGLE",
+    "MAG_ON"
+  };
+  std::set<std::string> platformSymbols(platSymArray,
+                                        platSymArray + sizeof(platSymArray)/sizeof(platSymArray[0]));
+
+  /*******************************************************************/
+  //-- check if a string is a platform API symbol
+  /*******************************************************************/
+  bool isPlatformSymbol(const std::string &s)
+  {
+    return platformSymbols.find(s) != platformSymbols.end();
+  }
+
   /*******************************************************************/
   //-- record the use of a symbol
   /*******************************************************************/

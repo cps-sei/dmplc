@@ -114,14 +114,11 @@ namespace dmpl
   typedef std::map<std::string,Role> Roles;
   
   /*******************************************************************/
+  //-- check is a string is a platform API symbol. right now we have
   //-- hard code platform API symbols. we need to make this more
   //-- flexible later on.
   /*******************************************************************/
-  const std::set<std::string> platformSymbols =
-    { "platform", "grid_x", "grid_y", "grid_leftX", "grid_rightX",
-      "grid_topY", "grid_bottomY", "grid_cellX", "grid_cellY",
-      "GRID_INIT", "GRID_PLACE", "GRID_MOVE", "GET_X", "GET_Y",
-      "GET_LAT", "GET_LNG", "ROTATE", "MAG_ON" };
+  bool isPlatformSymbol(const std::string &s);
 
   /*******************************************************************/
   //-- helpful templates
