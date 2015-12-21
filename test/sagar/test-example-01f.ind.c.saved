@@ -78,14 +78,18 @@ _Bool nondet_lock_i_0();
 _Bool nondet_lock_i_1();
 unsigned char nondet_state_0();
 unsigned char nondet_state_1();
+unsigned char nondet_x();
 unsigned char nondet_x_0();
 unsigned char nondet_x_1();
+unsigned char nondet_xf();
 unsigned char nondet_xf_0();
 unsigned char nondet_xf_1();
 unsigned char nondet_xp_0();
 unsigned char nondet_xp_1();
+unsigned char nondet_y();
 unsigned char nondet_y_0();
 unsigned char nondet_y_1();
+unsigned char nondet_yf();
 unsigned char nondet_yf_0();
 unsigned char nondet_yf_1();
 unsigned char nondet_yp_0();
@@ -403,25 +407,25 @@ void __INIT_state_1()
 
 int __INIT_x_0()
 {
-  x_0 = nondet_x_0();
+  x_0 = nondet_x();
   return ((0)<=(x_0))&&((x_0)<(X));
 }
 
 int __INIT_x_1()
 {
-  x_1 = nondet_x_1();
+  x_1 = nondet_x();
   return ((0)<=(x_1))&&((x_1)<(X));
 }
 
 int __INIT_xf_0()
 {
-  xf_0 = nondet_xf_0();
+  xf_0 = nondet_xf();
   return ((0)<=(xf_0))&&((xf_0)<(X));
 }
 
 int __INIT_xf_1()
 {
-  xf_1 = nondet_xf_1();
+  xf_1 = nondet_xf();
   return ((0)<=(xf_1))&&((xf_1)<(X));
 }
 
@@ -437,25 +441,25 @@ void __INIT_xp_1()
 
 int __INIT_y_0()
 {
-  y_0 = nondet_y_0();
+  y_0 = nondet_y();
   return ((0)<=(y_0))&&((y_0)<(Y));
 }
 
 int __INIT_y_1()
 {
-  y_1 = nondet_y_1();
+  y_1 = nondet_y();
   return ((0)<=(y_1))&&((y_1)<(Y));
 }
 
 int __INIT_yf_0()
 {
-  yf_0 = nondet_yf_0();
+  yf_0 = nondet_yf();
   return ((0)<=(yf_0))&&((yf_0)<(Y));
 }
 
 int __INIT_yf_1()
 {
-  yf_1 = nondet_yf_1();
+  yf_1 = nondet_yf();
   return ((0)<=(yf_1))&&((yf_1)<(Y));
 }
 
@@ -651,14 +655,18 @@ _Bool nondet_lock_i_0();
 _Bool nondet_lock_i_1();
 unsigned char nondet_state_0();
 unsigned char nondet_state_1();
+unsigned char nondet_x();
 unsigned char nondet_x_0();
 unsigned char nondet_x_1();
+unsigned char nondet_xf();
 unsigned char nondet_xf_0();
 unsigned char nondet_xf_1();
 unsigned char nondet_xp_0();
 unsigned char nondet_xp_1();
+unsigned char nondet_y();
 unsigned char nondet_y_0();
 unsigned char nondet_y_1();
+unsigned char nondet_yf();
 unsigned char nondet_yf_0();
 unsigned char nondet_yf_1();
 unsigned char nondet_yp_0();

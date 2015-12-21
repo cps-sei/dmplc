@@ -136,9 +136,11 @@ void dmpl::syncseqdbl::GlobalTransformer::exitLval(dmpl::LvalExpr &expr)
   if(newName == "ASSUME") newName = "__CPROVER_assume";
   else if(newName == "ASSERT") newName = "assert";
 
-  //handle global variables
+  //handle global variables. make sure you get the right version (_i
+  //or _f) depending on whether we are going forward or backward and
+  //whether we are processing a constructor.
   Node &node = prog.nodes.begin()->second;  
-  if(node->globVars.count(expr.var)) newName += (fwd ? "_i" : "_f");
+  if(node->globVars.count(expr.var)) newName += (fwd || (func && func->name.empty()) ? "_i" : "_f");
 
   //substitute .id with its mapping in idMap
   std::map<std::string,size_t>::const_iterator iit = idMap.find(expr.var);
@@ -258,9 +260,10 @@ void dmpl::syncseqdbl::NodeTransformer::exitLval(dmpl::LvalExpr &expr)
 
     //handle global variables -- distinguishing between lhs of
     //assignments and other cases, and between forward and backward
-    //versions
+    //versions, as well as whether we are processing a constructor.
     if(isGlob) {
-      if(fwd) {
+      if(func && func->name.empty()) newName += "_i";
+      else if(fwd) {
         if(inLhs) newName += "_f";
         else newName += "_i";
       } else {
@@ -821,10 +824,16 @@ dmpl::Stmt dmpl::SyncSeqDbl::createConstructor(const std::string &name,
 
   //-- if the variable is an input, assign it non-deterministically
   if(!type->isVoid() && isInput) {
-    Expr varExpr(new LvalExpr(name + "_" + boost::lexical_cast<std::string>(proc.id)));
+    Expr varExpr(new LvalExpr(name));
     Expr ndfn = createNondetFunc(varExpr, type);
     Expr ndcall(new CallExpr(ndfn,ExprList()));
-    initFnBody.push_back(Stmt(new AsgnStmt(varExpr,ndcall)));
+    Stmt ndAsgn(new AsgnStmt(varExpr,ndcall));    
+    syncseqdbl::NodeTransformer nt(*this,builder.program,proc,false,initFunc);
+    std::string nodeId = *node->args.begin();
+    nt.addIdMap(nodeId,proc.id);
+    nt.visit(ndAsgn);
+    nt.delIdMap(nodeId);
+    initFnBody.push_back(nt.stmtMap[ndAsgn]);
   }
 
   //-- initialize _i version
