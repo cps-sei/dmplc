@@ -621,7 +621,7 @@ dmpl::gams::GAMSBuilder::build_program_variable_assignment (const Var & var)
 {
   // is this a GLOBAL scalar (i.e., 1-dimensional array)?
   if (var->scope == Variable::GLOBAL && var->type->dims.size () == 1)
-    buffer_ << "  " << var->name << "[settings.id] = var_init_" << var->name << ";\n";
+    buffer_ << "  " << var->name << "[id] = var_init_" << var->name << ";\n";
   // otherwise for local variables
   else if (var->type->dims.size () == 0)
     buffer_ << "  " << var->name << " = var_init_" << var->name << ";\n";
@@ -825,7 +825,8 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
       for (auto & var : r.second->allVarsInScope())
         if(var->isInput) {
           //-- sanity check : array input variables disallowed
-          if (var->type->dims.size () != 0)
+          if ((var->scope == Symbol::LOCAL && var->type->dims.size () > 0) ||
+              (var->scope == Symbol::GLOBAL && var->type->dims.size () > 1))
             throw std::runtime_error("ERROR: illegal array input variable " + var->name +
                                      " in role " + r.second->name +
                                      " in node " + n.second->name + "!!");
