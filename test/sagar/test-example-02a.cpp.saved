@@ -778,11 +778,6 @@ REMODIFY_INPUT_GLOBALS (engine::FunctionArguments & args,
   engine::Variables & vars)
 {
   // Remodifying role-specific global variables
-  mark_modified(foo[id]);
-  mark_modified(init[id]);
-  mark_modified(lock[id]);
-  mark_modified(lx[id]);
-  mark_modified(ly[id]);
   return Integer (0);
 }
 
@@ -1205,10 +1200,6 @@ REMODIFY_INPUT_GLOBALS (engine::FunctionArguments & args,
   engine::Variables & vars)
 {
   // Remodifying role-specific global variables
-  mark_modified(init[id]);
-  mark_modified(lock[id]);
-  mark_modified(lx[id]);
-  mark_modified(ly[id]);
   return Integer (0);
 }
 

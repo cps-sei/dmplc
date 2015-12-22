@@ -1244,7 +1244,7 @@ dmpl::gams::GAMSBuilder::build_refresh_modify_input_globals (const Node &node, c
   
   buffer_ << "  // Remodifying role-specific global variables\n";
   for(const auto &gv : role->allVarsInScope())
-    if(gv->scope == Symbol::GLOBAL) build_refresh_modify_global (node, gv);
+    if(gv->isInput && gv->scope == Symbol::GLOBAL) build_refresh_modify_global (node, gv);
     
   buffer_ << "  return Integer (0);\n";
   buffer_ << "}\n";

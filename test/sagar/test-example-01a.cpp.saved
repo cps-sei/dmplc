@@ -623,7 +623,6 @@ REMODIFY_INPUT_GLOBALS (engine::FunctionArguments & args,
   engine::Variables & vars)
 {
   // Remodifying role-specific global variables
-  mark_modified(lock[id]);
   return Integer (0);
 }
 
