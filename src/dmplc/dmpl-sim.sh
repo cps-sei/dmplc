@@ -66,6 +66,7 @@ function usage {
     echo '    -p | --platform $P  Pass $P as the --platform option to the executable'
     echo "    -r | --realtime     Run V-REP in realtime mode"
     echo "    -R | --record       Run V-REP in recording mode"
+    echo "    -G | --debug        Build node binaries with debug flag"
 }
 
 #flags
@@ -75,6 +76,7 @@ FORCEBUILD=0
 BUILDONLY=0
 MANUALSTART=0
 RECORD=""
+DBGFLAGS="-O3"
 
 PLATFORM=vrep-uav::::0.1
 
@@ -103,6 +105,9 @@ while true; do
             ;;
         -R|--record)
             RECORD="--record"
+            ;;
+        -G|--debug)
+            DBGFLAGS="-g -Og"
             ;;
         -p|--platform)
             shift
@@ -228,7 +233,7 @@ done
 
 #compile with g++
 if [ $CPP_FILE -nt ${BIN} ]; then
-    CFLAGS="-g -Og -std=c++11 -I$DMPL_ROOT/src -I$VREP_ROOT/programming/remoteApi -I$ACE_ROOT "
+    CFLAGS="$DBGFLAGS -std=c++11 -I$DMPL_ROOT/src -I$VREP_ROOT/programming/remoteApi -I$ACE_ROOT "
     CFLAGS+="-I$MADARA_ROOT/include -I$GAMS_ROOT/src -I$DMPL_ROOT/include -Wno-deprecated-declarations"
     LIBS="$LIBS $MADARA_ROOT/libMADARA.so $ACE_ROOT/lib/libACE.so $GAMS_ROOT/lib/libGAMS.so -lpthread"
     echo "g++ $CFLAGS -o $BIN $CPP_FILE $LIBS"
