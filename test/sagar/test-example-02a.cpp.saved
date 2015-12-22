@@ -771,6 +771,22 @@ namespace node_uav_role_Leader
 {
 
 /********************************************************************/
+//-- Remodify input global shared variables to force MADARA retransmit
+/********************************************************************/
+KnowledgeRecord
+REMODIFY_INPUT_GLOBALS (engine::FunctionArguments & args,
+  engine::Variables & vars)
+{
+  // Remodifying role-specific global variables
+  mark_modified(foo[id]);
+  mark_modified(init[id]);
+  mark_modified(lock[id]);
+  mark_modified(lx[id]);
+  mark_modified(ly[id]);
+  return Integer (0);
+}
+
+/********************************************************************/
 //-- Remodify barries variables to force MADARA retransmit
 /********************************************************************/
 KnowledgeRecord
@@ -1180,6 +1196,21 @@ void constructor ()
 // begin node_uav_role_Protector namespace
 namespace node_uav_role_Protector
 {
+
+/********************************************************************/
+//-- Remodify input global shared variables to force MADARA retransmit
+/********************************************************************/
+KnowledgeRecord
+REMODIFY_INPUT_GLOBALS (engine::FunctionArguments & args,
+  engine::Variables & vars)
+{
+  // Remodifying role-specific global variables
+  mark_modified(init[id]);
+  mark_modified(lock[id]);
+  mark_modified(lx[id]);
+  mark_modified(ly[id]);
+  return Integer (0);
+}
 
 /********************************************************************/
 //-- Remodify barries variables to force MADARA retransmit
@@ -1994,19 +2025,6 @@ int main (int argc, char ** argv)
     exit(1);
   }
 
-  //-- Synchronize to make sure all nodes are up
-  {
-    madara::knowledge::WaitSettings wait_settings;
-    knowledge.evaluate ("++startSync.{.id}", wait_settings);
-    for(;;) {
-      size_t flag = 1;
-      for(size_t i = 0;i < 5; ++i)
-        if(startSync[i] == 0) { flag = 0; break; }
-      if(flag) break;
-      sleep(0.2);
-    }
-    knowledge.evaluate ("++startSync.{.id}", wait_settings);
-  }
 
   /******************************************************************/
   //-- Invoking constructors
@@ -2015,6 +2033,9 @@ int main (int argc, char ** argv)
   if(node_name == "uav" && role_name == "Protector") node_uav::node_uav_role_Protector::constructor ();
 
   //-- Defining thread functions for MADARA
+  if(node_name == "uav" && role_name == "Leader")
+    knowledge.define_function ("REMODIFY_INPUT_GLOBALS",
+                                node_uav::node_uav_role_Leader::REMODIFY_INPUT_GLOBALS);
   knowledge.define_function ("node_uav_role_Leader_COLLISION_AVOIDANCE_REMODIFY_BARRIERS",
                               node_uav::node_uav_role_Leader::REMODIFY_BARRIERS_COLLISION_AVOIDANCE);
   knowledge.define_function ("node_uav_role_Leader_COLLISION_AVOIDANCE_REMODIFY_GLOBALS",
@@ -2029,6 +2050,9 @@ int main (int argc, char ** argv)
                               node_uav::node_uav_role_Leader::thread1);
   knowledge.define_function ("node_uav_role_Leader_WAYPOINT",
                               node_uav::node_uav_role_Leader::thread2);
+  if(node_name == "uav" && role_name == "Protector")
+    knowledge.define_function ("REMODIFY_INPUT_GLOBALS",
+                                node_uav::node_uav_role_Protector::REMODIFY_INPUT_GLOBALS);
   knowledge.define_function ("node_uav_role_Protector_COLLISION_AVOIDANCE_REMODIFY_BARRIERS",
                               node_uav::node_uav_role_Protector::REMODIFY_BARRIERS_COLLISION_AVOIDANCE);
   knowledge.define_function ("node_uav_role_Protector_COLLISION_AVOIDANCE_REMODIFY_GLOBALS",
@@ -2044,6 +2068,20 @@ int main (int argc, char ** argv)
   knowledge.define_function ("node_uav_role_Protector_WAYPOINT",
                               node_uav::node_uav_role_Protector::thread3);
 
+  //-- Synchronize to make sure all nodes are up
+  {
+    madara::knowledge::WaitSettings wait_settings;
+    std::string syncStr("REMODIFY_INPUT_GLOBALS () ;> ++startSync.{.id}");
+    knowledge.evaluate (syncStr, wait_settings);
+    for(;;) {
+      size_t flag = 1;
+      for(size_t i = 0;i < 5; ++i)
+        if(startSync[i] == 0) { flag = 0; break; }
+      if(flag) break;
+      sleep(0.2);
+    }
+    knowledge.evaluate (syncStr, wait_settings);
+  }
 
   //-- Initializing platform
   PlatformInitFns::iterator init_fn = platform_init_fns.find(platform_name);

@@ -1100,6 +1100,9 @@ dmpl::gams::GAMSBuilder::build_nodes (void)
       build_comment("//-- Defining functions for role " + r.second->name, "\n", "\n", 0);
       open_namespace(roleName(n->second, r.second));
 
+      //-- build input global modifiers
+      build_refresh_modify_input_globals(n->second, r.second);
+      
       //-- build global and barrier modifiers for synchronous threads
       for (Func thread : r.second->threads) {
         if(r.second->getAttribute(thread,"BarrierSync", 0) == NULL) continue;
@@ -1222,6 +1225,28 @@ dmpl::gams::GAMSBuilder::build_constructor_for_variable (Var &v, Node &node)
   //-- if no constructor was defined and this is an input variable, return 1
   else if(v->isInput) buffer_ << "  return 1;\n";
   
+  buffer_ << "}\n";
+}
+
+/*********************************************************************/
+//-- generate functions that remodify input global shared variables to
+//-- force retransmit by MADARA.
+/*********************************************************************/
+void
+dmpl::gams::GAMSBuilder::build_refresh_modify_input_globals (const Node &node, const Role &role)
+{
+  build_comment("//-- Remodify input global shared variables to force MADARA retransmit", "\n", "", 0);
+  buffer_ << "KnowledgeRecord\n";
+  buffer_ << "REMODIFY_INPUT_GLOBALS";
+  buffer_ << " (engine::FunctionArguments & args,\n";
+  buffer_ << "  engine::Variables & vars)\n";
+  buffer_ << "{\n";
+  
+  buffer_ << "  // Remodifying role-specific global variables\n";
+  for(const auto &gv : role->allVarsInScope())
+    if(gv->scope == Symbol::GLOBAL) build_refresh_modify_global (node, gv);
+    
+  buffer_ << "  return Integer (0);\n";
   buffer_ << "}\n";
 }
 
@@ -2222,11 +2247,15 @@ dmpl::gams::GAMSBuilder::build_main_function ()
              "              << \"  valid range: [0, \" << processes - 1 << \"]\" << std::endl;\n";
   buffer_ << "    exit(1);\n";
   buffer_ << "  }\n\n";
+  
+  build_constructors ();
+  build_main_define_functions ();
 
   buffer_ << "  //-- Synchronize to make sure all nodes are up\n";
   buffer_ << "  {\n";
   buffer_ << "    madara::knowledge::WaitSettings wait_settings;\n";
-  buffer_ << "    knowledge.evaluate (\"++startSync.{.id}\", wait_settings);\n";
+  buffer_ << "    std::string syncStr(\"REMODIFY_INPUT_GLOBALS () ;> ++startSync.{.id}\");\n";
+  buffer_ << "    knowledge.evaluate (syncStr, wait_settings);\n";
   buffer_ << "    for(;;) {\n";
   buffer_ << "      size_t flag = 1;\n";
   buffer_ << "      for(size_t i = 0;i < " << builder_.program.processes.size () << "; ++i)\n";
@@ -2234,11 +2263,8 @@ dmpl::gams::GAMSBuilder::build_main_function ()
   buffer_ << "      if(flag) break;\n";
   buffer_ << "      sleep(0.2);\n";
   buffer_ << "    }\n";
-  buffer_ << "    knowledge.evaluate (\"++startSync.{.id}\", wait_settings);\n";
+  buffer_ << "    knowledge.evaluate (syncStr, wait_settings);\n";
   buffer_ << "  }\n";
-  
-  build_constructors ();
-  build_main_define_functions ();
 
   buffer_ << "\n  //-- Initializing platform\n";
   buffer_ << "  PlatformInitFns::iterator init_fn = platform_init_fns.find(platform_name);\n";
@@ -2398,10 +2424,19 @@ dmpl::gams::GAMSBuilder::build_main_define_functions ()
 {
   buffer_ << "  //-- Defining thread functions for MADARA\n";
   for (const auto &n : builder_.program.nodes)
-    for (const auto &r : n.second->roles)
+    for (const auto &r : n.second->roles) {
+      //-- remodify role-specific input globals
+      buffer_ << "  if(node_name == \"" << n.second->name << "\" && role_name == \""
+              << r.second->name << "\")\n";
+      buffer_ << "    knowledge.define_function (\"REMODIFY_INPUT_GLOBALS\",\n";
+      buffer_ << "                                " << nodeName(n.second) << "::"
+              << roleName(n.second, r.second) << "::REMODIFY_INPUT_GLOBALS";
+      buffer_ << ");\n";
+
+      //-- remodify thread-specific barriers and globals
       for (const auto &thread : r.second->threads)
         build_main_define_function (n.second, r.second, thread);
-
+    }
   buffer_ << "\n";
 }
 

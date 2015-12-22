@@ -197,6 +197,11 @@ namespace dmpl
       void build_constructor_for_variable (Var &v, Node &node);
 
       /**
+       * Builds a function for refreshing modification flag on input globals
+       **/
+      void build_refresh_modify_input_globals (const Node &node, const Role &role);
+
+      /**
        * Builds a function for refreshing modification flag on globals
        **/
       void build_refresh_modify_globals (const Node &node, const Role &role, const Func &thread);
