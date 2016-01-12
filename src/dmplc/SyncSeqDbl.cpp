@@ -373,7 +373,7 @@ void dmpl::syncseqdbl::NodeTransformer::exitAsgn(dmpl::AsgnStmt &stmt)
   bool tempParam = false;
   const LvalExpr &lval = stmt.lhs->requireLval();
   if(func) {
-    if(func->temps.find(lval.var) != func->temps.end()) tempParam = true;
+    if(func->tempSet.find(lval.var) != func->tempSet.end()) tempParam = true;
     else if(func->paramSet.find(lval.var) != func->paramSet.end()) tempParam = true;
   }
   
@@ -816,7 +816,7 @@ dmpl::Stmt dmpl::SyncSeqDbl::createConstructor(const std::string &name,
 
   if(initFunc != NULL) {
     fnParams = initFunc->params;
-    for(const auto &v : initFunc->temps) fnTemps.push_back(v.second);
+    fnTemps = initFunc->temps;
   }
   
   StmtList initFnBody;
@@ -926,8 +926,7 @@ void dmpl::SyncSeqDbl::createSafetyFwdBwd(bool fwd)
   Func propFunc = node->getRequireFunc(property);
 
   //-- create the require property function
-  dmpl::VarList fnParams = propFunc->params,fnTemps;
-  for(const auto &v : propFunc->temps) fnTemps.push_back(v.second);
+  dmpl::VarList fnParams = propFunc->params,fnTemps = propFunc->temps;
   
   //transform the body of safety
   StmtList fnBody;
@@ -1014,12 +1013,9 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
     for(const Func &f : funcs) {
       dmpl::VarList fnParams,fnTemps;
 
-      //create parameters
+      //create parameters and temporary variables
       fnParams = f->params;
-
-      //create temporary variables
-      BOOST_FOREACH(Vars::value_type &v,f->temps)
-        fnTemps.push_back(v.second);
+      fnTemps = f->temps;
 
       //create the forward version
       {

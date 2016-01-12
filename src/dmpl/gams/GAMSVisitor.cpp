@@ -872,17 +872,20 @@ dmpl::madara::GAMSVisitor::exitFAN (FANStmt & statement)
   
   bool i_added = false;
 
-  if (function_ && function_->temps.find (statement.id) == function_->temps.end ())
+  if (function_ && function_->tempSet.find (statement.id) == function_->tempSet.end ())
   {
     i_added = true;
-    function_->temps [statement.id] = Var (new Variable(statement.id));
+    function_->tempSet [statement.id] = Var (new Variable(statement.id));
+    function_->temps.push_back(function_->tempSet [statement.id]);
   }
   
   visit (statement.data);
 
-  if (function_ && i_added)
-    function_->temps.erase (statement.id);
-
+  if (function_ && i_added) {
+    function_->tempSet.erase (statement.id);
+    function_->temps.pop_back();
+  }
+  
   buffer_ << spacer << "}\n\n";
   indentation_ -= 2;
 }
@@ -938,25 +941,31 @@ dmpl::madara::GAMSVisitor::exitFADNP (FADNPStmt & statement)
   
   bool id1_added = false, id2_added = false;
 
-  if (function_ && function_->temps.find (statement.id1) == function_->temps.end ())
+  if (function_ && function_->tempSet.find (statement.id1) == function_->tempSet.end ())
   {
     id1_added = true;
-    function_->temps [statement.id1] = Var(new Variable (statement.id1));
+    function_->tempSet [statement.id1] = Var(new Variable (statement.id1));
+    function_->temps.push_back(function_->tempSet [statement.id1]);
   }
   
-  if (function_ && function_->temps.find (statement.id2) == function_->temps.end ())
+  if (function_ && function_->tempSet.find (statement.id2) == function_->tempSet.end ())
   {
     id2_added = true;
-    function_->temps [statement.id2] = Var(new Variable (statement.id2));
+    function_->tempSet [statement.id2] = Var(new Variable (statement.id2));
+    function_->temps.push_back(function_->tempSet [statement.id2]);
   }
   
   visit (statement.data);
 
-  if (function_ && id1_added)
-    function_->temps.erase (statement.id1);
+  if (function_ && id2_added) {
+    function_->tempSet.erase (statement.id2);
+    function_->temps.pop_back();
+  }
   
-  if (function_ && id2_added)
-    function_->temps.erase (statement.id2);
+  if (function_ && id1_added) {
+    function_->tempSet.erase (statement.id1);
+    function_->temps.pop_back();
+  }
   
   buffer_ << spacer_2 << "}\n";
   
@@ -997,10 +1006,11 @@ dmpl::madara::GAMSVisitor::exitFAO (FAOStmt & statement)
   
   bool i_added = false;
 
-  if (function_ && function_->temps.find (statement.id) == function_->temps.end ())
+  if (function_ && function_->tempSet.find (statement.id) == function_->tempSet.end ())
   {
     i_added = true;
-    function_->temps [statement.id] = Var(new Variable (statement.id));
+    function_->tempSet [statement.id] = Var(new Variable (statement.id));
+    function_->temps.push_back(function_->tempSet [statement.id]);
   }
   
   buffer_ << spacer_2 << "if (" << statement.id << " == id)\n";
@@ -1008,8 +1018,10 @@ dmpl::madara::GAMSVisitor::exitFAO (FAOStmt & statement)
   
   visit (statement.data);
 
-  if (function_ && i_added)
-    function_->temps.erase (statement.id);
+  if (function_ && i_added) {
+    function_->tempSet.erase (statement.id);
+    function_->temps.pop_back();
+  }
 
   buffer_ << spacer << "}\n\n";
   indentation_ -= 2;
@@ -1047,16 +1059,19 @@ dmpl::madara::GAMSVisitor::exitFAOL (FAOLStmt & statement)
   
   bool i_added = false;
 
-  if (function_ && function_->temps.find (statement.id) == function_->temps.end ())
+  if (function_ && function_->tempSet.find (statement.id) == function_->tempSet.end ())
   {
     i_added = true;
-    function_->temps [statement.id] = Var(new Variable (statement.id));
+    function_->tempSet [statement.id] = Var(new Variable (statement.id));
+    function_->temps.push_back(function_->tempSet [statement.id]);
   }
-  
+
   visit (statement.data);
 
-  if (function_ && i_added)
-    function_->temps.erase (statement.id);
+  if (function_ && i_added) {
+    function_->tempSet.erase (statement.id);
+    function_->temps.pop_back();
+  }
 
   buffer_ << spacer << "}\n\n";
   indentation_ -= 2;
@@ -1094,16 +1109,19 @@ dmpl::madara::GAMSVisitor::exitFAOH (FAOHStmt & statement)
   
   bool i_added = false;
 
-  if (function_ && function_->temps.find (statement.id) == function_->temps.end ())
+  if (function_ && function_->tempSet.find (statement.id) == function_->tempSet.end ())
   {
     i_added = true;
-    function_->temps [statement.id] = Var(new Variable (statement.id));
+    function_->tempSet [statement.id] = Var(new Variable (statement.id));
+    function_->temps.push_back(function_->tempSet [statement.id]);
   }
   
   visit (statement.data);
 
-  if (function_ && i_added)
-    function_->temps.erase (statement.id);
+  if (function_ && i_added) {
+    function_->tempSet.erase (statement.id);
+    function_->temps.pop_back();
+  }
 
   buffer_ << spacer << "}\n\n";
   indentation_ -= 2;

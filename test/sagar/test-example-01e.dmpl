@@ -149,6 +149,9 @@ node uav
   @BarrierSync;
   @PlatformController;
   thread COLLISION_AVOIDANCE {
+    int t2 = GRID_MOVE(xp,yp,1);
+    int t1 = my_sleep(t2);
+    
     print_state(X,Y,id,x,y,xf,yf);
     //my_sleep(1);
     if (state == NEXT) {
@@ -193,10 +196,15 @@ node uav
       local int input l2 ~ ( l2 == yp && l2 < yf );
       local char l3 = l1;
     } = {
-      l1 = lock[l2][l2];
+      int t = 10;
+      l1 = lock[l2][l2] * t - 30;
     } ~ {
-      return (l1 < state);
+      int t2 = 13;
+      return (l1 + t2 < state);
     }
+
+    local int l4 = { int t1 = my_sleep(2); l4 = t1 * 2; };
+    local int input l5 ~ { int t1 = my_sleep(22); return l4 == t1 / 2; };
   }
 
   role Uav3 {

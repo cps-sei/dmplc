@@ -137,15 +137,31 @@ namespace
   //-- print a set of variable declarations, and initialize them
   //-- appropriately if they are also parameters.
   /*******************************************************************/
-  void print_vars(std::stringstream &buffer_, const dmpl::Vars& vars, bool isParam)
+  void print_vars(std::stringstream &buffer_, const dmpl::VarList & vars, bool isParam)
   {
     int i = 0;
-    BOOST_FOREACH (const dmpl::Vars::value_type & variable, vars) {
-      buffer_ << "  " << get_type_name(variable.second);
-      buffer_ << " " << variable.second->name;
+    BOOST_FOREACH (const dmpl::Var & variable, vars) {
+      buffer_ << "  " << get_type_name(variable);
+      buffer_ << " " << variable->name;
       if(isParam) buffer_ << " = args[" << i << "].to_double()";
       buffer_ << ";\n";
       ++i;
+    }
+  }
+
+  /*******************************************************************/
+  //-- print statements initializing temporary variables of a function
+  /*******************************************************************/
+  void print_temp_inits(const dmpl::Func &func, const dmpl::Node &node,
+                        dmpl::DmplBuilder & builder_, std::stringstream & buffer_)
+  {
+    for(const dmpl::Var & variable : func->temps) {
+      if(variable->initFunc == NULL) continue;
+      
+      dmpl::madara::GAMSVisitor visitor (variable->initFunc, node, dmpl::Func(),
+                                         builder_, buffer_, false);
+      for (const dmpl::Stmt & statement : variable->initFunc->body)
+        visitor.visit (statement);
     }
   }
 }
@@ -1130,7 +1146,8 @@ dmpl::gams::GAMSBuilder::build_nodes (void)
           buffer_ << "void initialize_" << rec->name << " ()\n{\n";
           buffer_ << "  engine::Variables vars;\n";
           print_vars(buffer_, rec->initFunc->temps, false);
-        
+          print_temp_inits(rec->initFunc, n->second, builder_, buffer_); 
+          
           //-- transform statements
           dmpl::madara::GAMSVisitor visitor (rec->initFunc, n->second, Func(),
                                                   builder_, buffer_, false);
@@ -1142,6 +1159,7 @@ dmpl::gams::GAMSBuilder::build_nodes (void)
         if(rec->assumeFunc != NULL && !rec->assumeFunc->body.empty()) {
           buffer_ << "int check_init_" << rec->name << " ()\n{\n";
           print_vars(buffer_, rec->assumeFunc->temps, false);
+          print_temp_inits(rec->assumeFunc, n->second, builder_, buffer_); 
         
           //-- transform statements
           dmpl::madara::GAMSVisitor visitor (rec->assumeFunc, n->second, Func(),
@@ -1215,6 +1233,7 @@ dmpl::gams::GAMSBuilder::build_constructor_for_variable (Var &v, Node &node)
   //-- generate constructor if one was defined
   if(v->initFunc != NULL) {
     print_vars(buffer_, v->initFunc->temps, false);
+    print_temp_inits(v->initFunc, node, builder_, buffer_); 
     
     //-- transform statements
     dmpl::madara::GAMSVisitor visitor (v->initFunc, node, Func(),
@@ -1413,8 +1432,9 @@ dmpl::gams::GAMSBuilder::build_function (
   Func actualFunc = function->isPrototype ? node->findFunc(function->name) : function;
   
   buffer_ << "\n  //-- Declare local (parameter and temporary) variables\n";
-  print_vars(buffer_, actualFunc->paramSet, true);
+  print_vars(buffer_, actualFunc->params, true);
   print_vars(buffer_, actualFunc->temps, false);
+  print_temp_inits(actualFunc, node, builder_, buffer_); 
   buffer_ << "\n";
 
   buffer_ << "\n  //-- Begin function body\n";

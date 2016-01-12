@@ -295,6 +295,10 @@ namespace node_uav_role_Uav2
 /********************************************************************/
 //-- Defining local variables at role scope
 /********************************************************************/
+Reference<int> l4(knowledge, ".l4");
+int var_init_l4 (0);
+Reference<int> l5(knowledge, ".l5");
+int var_init_l5 (0);
 
 /********************************************************************/
 //-- Defining local variables at scope of thread COLLISION_AVOIDANCE
@@ -577,6 +581,22 @@ void handle_arguments (int argc, char ** argv)
       ++i;
     }
 
+    //-- Providing init for input variable l5
+    else if (arg1 == "--var_l5")
+    {
+      if (i + 1 < argc)
+      {
+        std::stringstream buffer (argv[i + 1]);
+        if(node_name == "uav" && role_name == "Uav2")
+          buffer >> node_uav::node_uav_role_Uav2::var_init_l5;
+        else throw std::runtime_error
+             ("ERROR : no input variable l5 for node and role combination : ("
+              + node_name + " , " + role_name + ")");
+      }
+      
+      ++i;
+    }
+
     //-- Providing init for input variable x
     else if (arg1 == "--var_x")
     {
@@ -676,6 +696,7 @@ void handle_arguments (int argc, char ** argv)
         " [--role name]            select the role name\n"\
         " [--var_l2] sets the initial value of variable l2\n"\
         " [--var_l3] sets the initial value of variable l3\n"\
+        " [--var_l5] sets the initial value of variable l5\n"\
         " [--var_x] sets the initial value of variable x\n"\
         " [--var_xf] sets the initial value of variable xf\n"\
         " [--var_y] sets the initial value of variable y\n"\
@@ -887,6 +908,10 @@ thread0_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Variables
 {
 
   //-- Declare local (parameter and temporary) variables
+  int t2;
+  int t1;
+  t2 = (GRID_MOVE (xp, yp, Integer (1)));
+  t1 = (my_sleep (t2));
 
 
   //-- Begin function body
@@ -1174,6 +1199,10 @@ thread0_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Variables
 {
 
   //-- Declare local (parameter and temporary) variables
+  int t2;
+  int t1;
+  t2 = (GRID_MOVE (xp, yp, Integer (1)));
+  t1 = (my_sleep (t2));
 
 
   //-- Begin function body
@@ -1295,6 +1324,21 @@ void initialize_l3 ()
   engine::Variables vars;
   l3 = l1;
 }
+void initialize_l4 ()
+{
+  engine::Variables vars;
+  int t1;
+  t1 = (my_sleep (Integer (2)));
+  l4 = (t1 * Integer (2));
+}
+int check_init_l5 ()
+{
+  engine::Variables vars;
+  l5 = var_init_l5;
+  int t1;
+  t1 = (my_sleep (Integer (22)));
+  return (Integer((l4 == (t1 / Integer (2)))));
+}
 void initialize_lock ()
 {
   engine::Variables vars;
@@ -1342,11 +1386,15 @@ void initialize_yp ()
 void initialize_rec1 ()
 {
   engine::Variables vars;
-  l1 = lock[id][l2][l2];
+  int t;
+  t = Integer (10);
+  l1 = ((lock[id][l2][l2] * t) - Integer (30));
 }
 int check_init_rec1 ()
 {
-  return (Integer((l1 < state)));
+  int t2;
+  t2 = Integer (13);
+  return (Integer(((l1 + t2) < state)));
 }
 void constructor ()
 {
@@ -1361,6 +1409,8 @@ void constructor ()
   initialize_l3 ();
   initialize_rec1 ();
   if(!check_init_rec1 ()) throw std::runtime_error("ERROR: illegal initial value of record rec1");
+  initialize_l4 ();
+  if(!check_init_l5 ()) throw std::runtime_error("ERROR: illegal initial value of variable l5");
   if(!check_init_xf ()) throw std::runtime_error("ERROR: illegal initial value of variable xf");
   initialize_xp ();
 }
@@ -1471,6 +1521,10 @@ thread0_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Variables
 {
 
   //-- Declare local (parameter and temporary) variables
+  int t2;
+  int t1;
+  t2 = (GRID_MOVE (xp, yp, Integer (1)));
+  t1 = (my_sleep (t2));
 
 
   //-- Begin function body
