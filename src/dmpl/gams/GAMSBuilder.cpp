@@ -746,6 +746,7 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   buffer_ << "        std::stringstream buffer (argv[i + 1]);\n";
   buffer_ << "        buffer >> log_level;\n";
   buffer_ << "        madara::logger::global_logger->set_level(log_level);\n";
+  buffer_ << "        gams::loggers::global_logger->set_level(log_level);\n";
   buffer_ << "      }\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
@@ -2173,7 +2174,7 @@ dmpl::gams::GAMSBuilder::build_main_function ()
   buffer_ << "    knowledge.set(\".vrep_max_delta\", params[4]);\n";
   buffer_ << "  else\n";
   buffer_ << "    knowledge.set(\".vrep_max_delta\", 0.4);\n";
-  buffer_ << "  knowledge.set(\".vrep_max_rotate_delta\", M_PI/16);\n";
+  buffer_ << "  knowledge.set(\".vrep_max_rotate_delta\", M_PI/32.0);\n";
   buffer_ << "  knowledge.set(\".vrep_move_thread_rate\", \"0\");\n";
   buffer_ << "  knowledge.set(\"vrep_ready\", \"1\");\n";
   buffer_ << "}\n";

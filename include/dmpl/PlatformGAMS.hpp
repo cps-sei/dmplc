@@ -171,9 +171,8 @@ double GET_ALT()
 int ROTATE(double angle, double epsilon = 5)
 {
   //std::cout << "Rotate: " << angle << std::endl;
-  int ret = platform->rotate(
-    gams::utility::Rotation(platform->get_frame(),
-      gams::utility::Rotation::Z_axis, angle), DEG_TO_RAD(epsilon));
+  int ret = platform->rotate(gams::utility::Rotation(platform->get_frame(),
+      0, 0, angle, gams::utility::degrees));
   //std::cout << "Rotate ret: " << ret << std::endl;
   return ret != 2;
 }

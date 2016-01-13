@@ -325,7 +325,7 @@ for x in $(seq 1 $((NODENUM - 1))); do
     args="$(eval echo \$$args_var)"
     ELOG=""
     [ -n "$OUTLOG" ] && ELOG="-e $OUTDIR/expect${0}.log"
-    cmd="$GDB ./$BIN $ELOG --platform $PLATFORM --id $x $args"
+    cmd="$GDB ./$BIN $ELOG --platform $PLATFORM --id $x -l 5 $args"
     taskset -c ${cpu_id} $cmd &> $OUTDIR/node${x}.out &
     pid=$!
     echo "started pid=$pid : cmd=$cmd"
@@ -334,7 +334,7 @@ done
 ELOG=""
 [ -n "$OUTLOG" ] && ELOG="-e $OUTDIR/expect0.log"
 #gdb --args $GDB ./$BIN $ELOG --platform $PLATFORM --id 0 $ARGS_0 # &> $OUTDIR/node0.out &
-cmd="$GDB ./$BIN $ELOG --platform $PLATFORM --id 0 $ARGS_0"
+cmd="$GDB ./$BIN $ELOG --platform $PLATFORM --id 0 -l 5 $ARGS_0"
 taskset -c 0 $cmd &> $OUTDIR/node0.out &
 pid=$!
 echo "started pid=$pid : cmd=$cmd" 
