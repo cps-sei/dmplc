@@ -201,12 +201,9 @@ void dmpl::SyncSeqDblInd::createNodeFuncs()
     for(const Func &f : funcs) {
       dmpl::VarList fnParams,fnTemps;
 
-      //create parameters
+      //create parameters and temporary variables
       fnParams = f->params;
-
-      //create temporary variables
-      BOOST_FOREACH(Vars::value_type &v,f->temps)
-        fnTemps.push_back(v.second);
+      fnTemps = f->temps;
 
       //create the forward version
       {

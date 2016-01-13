@@ -918,7 +918,7 @@ dmpl::gams::AnalyzerBuilder::build_function (
     buffer_ << ";\n";
     ++i;
   }
-  BOOST_FOREACH (Vars::value_type & variable, function->temps)
+  BOOST_FOREACH (Vars::value_type & variable, function->tempSet)
   {
     buffer_ << "  " << get_type_name(variable.second);
     buffer_ << " " << variable.second->name;

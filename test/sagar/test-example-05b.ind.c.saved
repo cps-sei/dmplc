@@ -205,6 +205,7 @@ unsigned char nondet_next_wp_x_0();
 unsigned char nondet_next_wp_y_0();
 double nondet_remaining_flt_time_0();
 unsigned char nondet_remaining_segs_0();
+unsigned char nondet_scenario();
 unsigned char nondet_scenario_0();
 double nondet_seg_len_0();
 double nondet_speed_factor_0();
@@ -225,6 +226,7 @@ _Bool nondet_waypointValid_1();
 _Bool nondet_waypointValid_2();
 _Bool nondet_waypointValid_3();
 _Bool nondet_waypointValid_4();
+unsigned char nondet_x();
 unsigned char nondet_x_0();
 unsigned char nondet_x_1();
 unsigned char nondet_x_2();
@@ -235,11 +237,13 @@ unsigned char nondet_xp_1();
 unsigned char nondet_xp_2();
 unsigned char nondet_xp_3();
 unsigned char nondet_xp_4();
+unsigned char nondet_xt();
 unsigned char nondet_xt_0();
 unsigned char nondet_xt_1();
 unsigned char nondet_xt_2();
 unsigned char nondet_xt_3();
 unsigned char nondet_xt_4();
+unsigned char nondet_y();
 unsigned char nondet_y_0();
 unsigned char nondet_y_1();
 unsigned char nondet_y_2();
@@ -250,6 +254,7 @@ unsigned char nondet_yp_1();
 unsigned char nondet_yp_2();
 unsigned char nondet_yp_3();
 unsigned char nondet_yp_4();
+unsigned char nondet_yt();
 unsigned char nondet_yt_0();
 unsigned char nondet_yt_1();
 unsigned char nondet_yt_2();
@@ -1063,7 +1068,7 @@ void __INIT_remaining_segs_0()
 
 int __INIT_scenario_0()
 {
-  scenario_0 = nondet_scenario_0();
+  scenario_0 = nondet_scenario();
   return ((1)<=(scenario_0))&&((scenario_0)<=(3));
 }
 
@@ -1190,31 +1195,31 @@ void __INIT_waypointValid_4()
 
 int __INIT_x_0()
 {
-  x_0 = nondet_x_0();
+  x_0 = nondet_x();
   return ((0)<=(x_0))&&((x_0)<(X));
 }
 
 int __INIT_x_1()
 {
-  x_1 = nondet_x_1();
+  x_1 = nondet_x();
   return ((0)<=(x_1))&&((x_1)<(X));
 }
 
 int __INIT_x_2()
 {
-  x_2 = nondet_x_2();
+  x_2 = nondet_x();
   return ((0)<=(x_2))&&((x_2)<(X));
 }
 
 int __INIT_x_3()
 {
-  x_3 = nondet_x_3();
+  x_3 = nondet_x();
   return ((0)<=(x_3))&&((x_3)<(X));
 }
 
 int __INIT_x_4()
 {
-  x_4 = nondet_x_4();
+  x_4 = nondet_x();
   return ((0)<=(x_4))&&((x_4)<(X));
 }
 
@@ -1245,61 +1250,61 @@ void __INIT_xp_4()
 
 int __INIT_xt_0()
 {
-  xt_0 = nondet_xt_0();
+  xt_0 = nondet_xt();
   return ((0)<=(xt_0))&&((xt_0)<(X));
 }
 
 int __INIT_xt_1()
 {
-  xt_1 = nondet_xt_1();
+  xt_1 = nondet_xt();
   return ((0)<=(xt_1))&&((xt_1)<(X));
 }
 
 int __INIT_xt_2()
 {
-  xt_2 = nondet_xt_2();
+  xt_2 = nondet_xt();
   return ((0)<=(xt_2))&&((xt_2)<(X));
 }
 
 int __INIT_xt_3()
 {
-  xt_3 = nondet_xt_3();
+  xt_3 = nondet_xt();
   return ((0)<=(xt_3))&&((xt_3)<(X));
 }
 
 int __INIT_xt_4()
 {
-  xt_4 = nondet_xt_4();
+  xt_4 = nondet_xt();
   return ((0)<=(xt_4))&&((xt_4)<(X));
 }
 
 int __INIT_y_0()
 {
-  y_0 = nondet_y_0();
+  y_0 = nondet_y();
   return ((0)<=(y_0))&&((y_0)<(Y));
 }
 
 int __INIT_y_1()
 {
-  y_1 = nondet_y_1();
+  y_1 = nondet_y();
   return ((0)<=(y_1))&&((y_1)<(Y));
 }
 
 int __INIT_y_2()
 {
-  y_2 = nondet_y_2();
+  y_2 = nondet_y();
   return ((0)<=(y_2))&&((y_2)<(Y));
 }
 
 int __INIT_y_3()
 {
-  y_3 = nondet_y_3();
+  y_3 = nondet_y();
   return ((0)<=(y_3))&&((y_3)<(Y));
 }
 
 int __INIT_y_4()
 {
-  y_4 = nondet_y_4();
+  y_4 = nondet_y();
   return ((0)<=(y_4))&&((y_4)<(Y));
 }
 
@@ -1330,31 +1335,31 @@ void __INIT_yp_4()
 
 int __INIT_yt_0()
 {
-  yt_0 = nondet_yt_0();
+  yt_0 = nondet_yt();
   return ((0)<=(yt_0))&&((yt_0)<(Y));
 }
 
 int __INIT_yt_1()
 {
-  yt_1 = nondet_yt_1();
+  yt_1 = nondet_yt();
   return ((0)<=(yt_1))&&((yt_1)<(Y));
 }
 
 int __INIT_yt_2()
 {
-  yt_2 = nondet_yt_2();
+  yt_2 = nondet_yt();
   return ((0)<=(yt_2))&&((yt_2)<(Y));
 }
 
 int __INIT_yt_3()
 {
-  yt_3 = nondet_yt_3();
+  yt_3 = nondet_yt();
   return ((0)<=(yt_3))&&((yt_3)<(Y));
 }
 
 int __INIT_yt_4()
 {
-  yt_4 = nondet_yt_4();
+  yt_4 = nondet_yt();
   return ((0)<=(yt_4))&&((yt_4)<(Y));
 }
 
@@ -1951,6 +1956,7 @@ unsigned char nondet_next_wp_x_0();
 unsigned char nondet_next_wp_y_0();
 double nondet_remaining_flt_time_0();
 unsigned char nondet_remaining_segs_0();
+unsigned char nondet_scenario();
 unsigned char nondet_scenario_0();
 double nondet_seg_len_0();
 double nondet_speed_factor_0();
@@ -1971,6 +1977,7 @@ _Bool nondet_waypointValid_1();
 _Bool nondet_waypointValid_2();
 _Bool nondet_waypointValid_3();
 _Bool nondet_waypointValid_4();
+unsigned char nondet_x();
 unsigned char nondet_x_0();
 unsigned char nondet_x_1();
 unsigned char nondet_x_2();
@@ -1981,11 +1988,13 @@ unsigned char nondet_xp_1();
 unsigned char nondet_xp_2();
 unsigned char nondet_xp_3();
 unsigned char nondet_xp_4();
+unsigned char nondet_xt();
 unsigned char nondet_xt_0();
 unsigned char nondet_xt_1();
 unsigned char nondet_xt_2();
 unsigned char nondet_xt_3();
 unsigned char nondet_xt_4();
+unsigned char nondet_y();
 unsigned char nondet_y_0();
 unsigned char nondet_y_1();
 unsigned char nondet_y_2();
@@ -1996,6 +2005,7 @@ unsigned char nondet_yp_1();
 unsigned char nondet_yp_2();
 unsigned char nondet_yp_3();
 unsigned char nondet_yp_4();
+unsigned char nondet_yt();
 unsigned char nondet_yt_0();
 unsigned char nondet_yt_1();
 unsigned char nondet_yt_2();

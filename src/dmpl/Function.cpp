@@ -88,19 +88,17 @@ dmpl::Function::mergeWith (const Func &of, bool checkDecors)
     throw std::runtime_error("Cannot merge functions of differing return types (" +
                              f.retType->toString() + "," + of->retType->toString() + ") for " + f.name);
 
-  if (f.params.size() == 0)
-    f.params = of->params;
+  if (f.params.empty()) setParams(of->params);
   else if (of->params.size() != 0)
     throw std::runtime_error("Cannot merge functions which both have parameters: for " + f.name);
 
-  if (f.temps.size() == 0)
-    f.temps = of->temps;
+  if (f.temps.empty()) setTemps(of->temps);
   else if (of->temps.size() != 0)
     throw std::runtime_error("Cannot merge functions which both have temporaries: for " + f.name);
 
-  if (f.body.size() == 0)
+  if (f.body.empty())
     f.body = of->body;
-  else if (of->body.size() != 0)
+  else if (!of->body.empty())
     throw std::runtime_error("Cannot merge functions which both have bodies: for " + f.name);
 
   if(checkDecors) {
@@ -151,8 +149,7 @@ dmpl::Function::print (std::ostream &os,unsigned int indent)
   os << spacer << "{\n";
 
   //-- print temporary variables
-  for (dmpl::Vars::iterator i = temps.begin (); i != temps.end (); ++i)
-    i->second->printInit (os,indent + 2);
+  for(const dmpl::Var v : temps) v->printInit (os,indent + 2);
 
   //-- print statements
   BOOST_FOREACH(const Stmt &st,body) st->print (os,indent + 2);

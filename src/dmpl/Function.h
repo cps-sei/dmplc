@@ -125,8 +125,10 @@ namespace dmpl
     Vars paramSet;
     
     ///function local variables -- we call them temporary variables
-    ///since their scope is only the function body
-    Vars temps;
+    ///since their scope is only the function body. we maintain both a
+    ///list because order matters and a set for quick lookup.
+    VarList temps;
+    Vars tempSet;
 
     //-- local and global variables that this function reads and
     //-- writes
@@ -155,8 +157,8 @@ namespace dmpl
     //-- NULL variable if no such variable exists.
     Var findVar(const std::string& name) const
     {
-      Vars::const_iterator ret = temps.find(name);
-      if(ret != temps.end()) return ret->second;
+      Vars::const_iterator ret = tempSet.find(name);
+      if(ret != tempSet.end()) return ret->second;
 
       ret = paramSet.find(name);
       if(ret != paramSet.end()) return ret->second;
@@ -183,7 +185,7 @@ namespace dmpl
     Function(const Type &rt,const std::string &n,const Vars &p,
              const Vars &t,const StmtList &b,
              const Attributes &a = Attributes())
-      : retType(rt), name(n), body(b), Symbol(a), paramSet(p), temps(t),
+      : retType(rt), name(n), body(b), Symbol(a), paramSet(p), tempSet(t),
       isExtern(false), isPure(false), isPrototype(false), isOverride(false), threadID(-1)
     {
       BOOST_FOREACH(const Vars::value_type &v,p) { params.push_back(v.second); }
@@ -199,7 +201,8 @@ namespace dmpl
 
     void setTemps (const VarList &t)
     {
-      doSetVars(t, temps);
+      temps = t;
+      doSetVars(t, tempSet);
     }
 
     /**

@@ -83,9 +83,10 @@ void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
 #include "gams/variables/Sensor.h"
 #include "gams/platforms/BasePlatform.h"
 #include "gams/platforms/vrep/VREPBase.h"
+#include "gams/platforms/vrep/VREPQuadLaser.h"
 #include "gams/variables/Self.h"
 #include "gams/utility/GPSPosition.h"
-#include "gams/utility/Axes.h"
+#include "gams/utility/Rotation.h"
 
 #include "dmpl/Reference.hpp"
 #include "dmpl/CachedReference.hpp"
@@ -294,6 +295,10 @@ namespace node_uav_role_Uav2
 /********************************************************************/
 //-- Defining local variables at role scope
 /********************************************************************/
+Reference<int> l4(knowledge, ".l4");
+int var_init_l4 (0);
+Reference<int> l5(knowledge, ".l5");
+int var_init_l5 (0);
 
 /********************************************************************/
 //-- Defining local variables at scope of thread COLLISION_AVOIDANCE
@@ -576,6 +581,22 @@ void handle_arguments (int argc, char ** argv)
       ++i;
     }
 
+    //-- Providing init for input variable l5
+    else if (arg1 == "--var_l5")
+    {
+      if (i + 1 < argc)
+      {
+        std::stringstream buffer (argv[i + 1]);
+        if(node_name == "uav" && role_name == "Uav2")
+          buffer >> node_uav::node_uav_role_Uav2::var_init_l5;
+        else throw std::runtime_error
+             ("ERROR : no input variable l5 for node and role combination : ("
+              + node_name + " , " + role_name + ")");
+      }
+      
+      ++i;
+    }
+
     //-- Providing init for input variable x
     else if (arg1 == "--var_x")
     {
@@ -675,6 +696,7 @@ void handle_arguments (int argc, char ** argv)
         " [--role name]            select the role name\n"\
         " [--var_l2] sets the initial value of variable l2\n"\
         " [--var_l3] sets the initial value of variable l3\n"\
+        " [--var_l5] sets the initial value of variable l5\n"\
         " [--var_x] sets the initial value of variable x\n"\
         " [--var_xf] sets the initial value of variable xf\n"\
         " [--var_y] sets the initial value of variable y\n"\
@@ -792,6 +814,17 @@ namespace node_uav_role_Uav1
 {
 
 /********************************************************************/
+//-- Remodify input global shared variables to force MADARA retransmit
+/********************************************************************/
+KnowledgeRecord
+REMODIFY_INPUT_GLOBALS (engine::FunctionArguments & args,
+  engine::Variables & vars)
+{
+  // Remodifying role-specific global variables
+  return Integer (0);
+}
+
+/********************************************************************/
 //-- Remodify barries variables to force MADARA retransmit
 /********************************************************************/
 KnowledgeRecord
@@ -875,6 +908,10 @@ thread0_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Variables
 {
 
   //-- Declare local (parameter and temporary) variables
+  int t2;
+  int t1;
+  t2 = (GRID_MOVE (xp, yp, Integer (1)));
+  t1 = (my_sleep (t2));
 
 
   //-- Begin function body
@@ -1068,6 +1105,17 @@ namespace node_uav_role_Uav2
 {
 
 /********************************************************************/
+//-- Remodify input global shared variables to force MADARA retransmit
+/********************************************************************/
+KnowledgeRecord
+REMODIFY_INPUT_GLOBALS (engine::FunctionArguments & args,
+  engine::Variables & vars)
+{
+  // Remodifying role-specific global variables
+  return Integer (0);
+}
+
+/********************************************************************/
 //-- Remodify barries variables to force MADARA retransmit
 /********************************************************************/
 KnowledgeRecord
@@ -1151,6 +1199,10 @@ thread0_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Variables
 {
 
   //-- Declare local (parameter and temporary) variables
+  int t2;
+  int t1;
+  t2 = (GRID_MOVE (xp, yp, Integer (1)));
+  t1 = (my_sleep (t2));
 
 
   //-- Begin function body
@@ -1272,6 +1324,21 @@ void initialize_l3 ()
   engine::Variables vars;
   l3 = l1;
 }
+void initialize_l4 ()
+{
+  engine::Variables vars;
+  int t1;
+  t1 = (my_sleep (Integer (2)));
+  l4 = (t1 * Integer (2));
+}
+int check_init_l5 ()
+{
+  engine::Variables vars;
+  l5 = var_init_l5;
+  int t1;
+  t1 = (my_sleep (Integer (22)));
+  return (Integer((l4 == (t1 / Integer (2)))));
+}
 void initialize_lock ()
 {
   engine::Variables vars;
@@ -1319,11 +1386,15 @@ void initialize_yp ()
 void initialize_rec1 ()
 {
   engine::Variables vars;
-  l1 = lock[id][l2][l2];
+  int t;
+  t = Integer (10);
+  l1 = ((lock[id][l2][l2] * t) - Integer (30));
 }
 int check_init_rec1 ()
 {
-  return (Integer((l1 < state)));
+  int t2;
+  t2 = Integer (13);
+  return (Integer(((l1 + t2) < state)));
 }
 void constructor ()
 {
@@ -1338,6 +1409,8 @@ void constructor ()
   initialize_l3 ();
   initialize_rec1 ();
   if(!check_init_rec1 ()) throw std::runtime_error("ERROR: illegal initial value of record rec1");
+  initialize_l4 ();
+  if(!check_init_l5 ()) throw std::runtime_error("ERROR: illegal initial value of variable l5");
   if(!check_init_xf ()) throw std::runtime_error("ERROR: illegal initial value of variable xf");
   initialize_xp ();
 }
@@ -1352,6 +1425,17 @@ void constructor ()
 // begin node_uav_role_Uav3 namespace
 namespace node_uav_role_Uav3
 {
+
+/********************************************************************/
+//-- Remodify input global shared variables to force MADARA retransmit
+/********************************************************************/
+KnowledgeRecord
+REMODIFY_INPUT_GLOBALS (engine::FunctionArguments & args,
+  engine::Variables & vars)
+{
+  // Remodifying role-specific global variables
+  return Integer (0);
+}
 
 /********************************************************************/
 //-- Remodify barries variables to force MADARA retransmit
@@ -1437,6 +1521,10 @@ thread0_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Variables
 {
 
   //-- Declare local (parameter and temporary) variables
+  int t2;
+  int t1;
+  t2 = (GRID_MOVE (xp, yp, Integer (1)));
+  t1 = (my_sleep (t2));
 
 
   //-- Begin function body
@@ -1967,7 +2055,8 @@ void init_vrep(const std::vector<std::string> &params, engine::KnowledgeBase &kn
   if(params.size() >= 5 && params[4].size() > 0)
     knowledge.set(".vrep_max_delta", params[4]);
   else
-    knowledge.set(".vrep_max_delta", "0.4");
+    knowledge.set(".vrep_max_delta", 0.4);
+  knowledge.set(".vrep_max_rotate_delta", M_PI/16);
   knowledge.set(".vrep_move_thread_rate", "0");
   knowledge.set("vrep_ready", "1");
 }
@@ -1981,9 +2070,11 @@ int main (int argc, char ** argv)
   settings.type = madara::transport::MULTICAST;
   platform_init_fns["vrep"] = init_vrep;
   platform_init_fns["vrep-uav"] = init_vrep;
+  platform_init_fns["vrep-quad"] = init_vrep;
   platform_init_fns["vrep-heli"] = init_vrep;
   platform_init_fns["vrep-ant"] = init_vrep;
-  platform_init_fns["vrep-uav-ranger"] = init_vrep;
+  platform_init_fns["vrep-uav-laser"] = init_vrep;
+  platform_init_fns["vrep-quad-laser"] = init_vrep;
 
   //-- handle any command line arguments and check their sanity
   handle_arguments (argc, argv);
@@ -2012,19 +2103,6 @@ int main (int argc, char ** argv)
     exit(1);
   }
 
-  //-- Synchronize to make sure all nodes are up
-  {
-    madara::knowledge::WaitSettings wait_settings;
-    knowledge.evaluate ("++startSync.{.id}", wait_settings);
-    for(;;) {
-      size_t flag = 1;
-      for(size_t i = 0;i < 4; ++i)
-        if(startSync[i] == 0) { flag = 0; break; }
-      if(flag) break;
-      sleep(0.2);
-    }
-    knowledge.evaluate ("++startSync.{.id}", wait_settings);
-  }
 
   /******************************************************************/
   //-- Invoking constructors
@@ -2034,18 +2112,27 @@ int main (int argc, char ** argv)
   if(node_name == "uav" && role_name == "Uav3") node_uav::node_uav_role_Uav3::constructor ();
 
   //-- Defining thread functions for MADARA
+  if(node_name == "uav" && role_name == "Uav1")
+    knowledge.define_function ("REMODIFY_INPUT_GLOBALS",
+                                node_uav::node_uav_role_Uav1::REMODIFY_INPUT_GLOBALS);
   knowledge.define_function ("node_uav_role_Uav1_COLLISION_AVOIDANCE_REMODIFY_BARRIERS",
                               node_uav::node_uav_role_Uav1::REMODIFY_BARRIERS_COLLISION_AVOIDANCE);
   knowledge.define_function ("node_uav_role_Uav1_COLLISION_AVOIDANCE_REMODIFY_GLOBALS",
                               node_uav::node_uav_role_Uav1::REMODIFY_GLOBALS_COLLISION_AVOIDANCE);
   knowledge.define_function ("node_uav_role_Uav1_COLLISION_AVOIDANCE",
                               node_uav::node_uav_role_Uav1::thread0);
+  if(node_name == "uav" && role_name == "Uav2")
+    knowledge.define_function ("REMODIFY_INPUT_GLOBALS",
+                                node_uav::node_uav_role_Uav2::REMODIFY_INPUT_GLOBALS);
   knowledge.define_function ("node_uav_role_Uav2_COLLISION_AVOIDANCE_REMODIFY_BARRIERS",
                               node_uav::node_uav_role_Uav2::REMODIFY_BARRIERS_COLLISION_AVOIDANCE);
   knowledge.define_function ("node_uav_role_Uav2_COLLISION_AVOIDANCE_REMODIFY_GLOBALS",
                               node_uav::node_uav_role_Uav2::REMODIFY_GLOBALS_COLLISION_AVOIDANCE);
   knowledge.define_function ("node_uav_role_Uav2_COLLISION_AVOIDANCE",
                               node_uav::node_uav_role_Uav2::thread0);
+  if(node_name == "uav" && role_name == "Uav3")
+    knowledge.define_function ("REMODIFY_INPUT_GLOBALS",
+                                node_uav::node_uav_role_Uav3::REMODIFY_INPUT_GLOBALS);
   knowledge.define_function ("node_uav_role_Uav3_COLLISION_AVOIDANCE_REMODIFY_BARRIERS",
                               node_uav::node_uav_role_Uav3::REMODIFY_BARRIERS_COLLISION_AVOIDANCE);
   knowledge.define_function ("node_uav_role_Uav3_COLLISION_AVOIDANCE_REMODIFY_GLOBALS",
@@ -2053,6 +2140,20 @@ int main (int argc, char ** argv)
   knowledge.define_function ("node_uav_role_Uav3_COLLISION_AVOIDANCE",
                               node_uav::node_uav_role_Uav3::thread0);
 
+  //-- Synchronize to make sure all nodes are up
+  {
+    madara::knowledge::WaitSettings wait_settings;
+    std::string syncStr("REMODIFY_INPUT_GLOBALS () ;> ++startSync.{.id}");
+    knowledge.evaluate (syncStr, wait_settings);
+    for(;;) {
+      size_t flag = 1;
+      for(size_t i = 0;i < 4; ++i)
+        if(startSync[i] == 0) { flag = 0; break; }
+      if(flag) break;
+      sleep(0.2);
+    }
+    knowledge.evaluate (syncStr, wait_settings);
+  }
 
   //-- Initializing platform
   PlatformInitFns::iterator init_fn = platform_init_fns.find(platform_name);

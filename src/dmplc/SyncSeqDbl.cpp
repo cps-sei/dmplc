@@ -136,9 +136,11 @@ void dmpl::syncseqdbl::GlobalTransformer::exitLval(dmpl::LvalExpr &expr)
   if(newName == "ASSUME") newName = "__CPROVER_assume";
   else if(newName == "ASSERT") newName = "assert";
 
-  //handle global variables
+  //handle global variables. make sure you get the right version (_i
+  //or _f) depending on whether we are going forward or backward and
+  //whether we are processing a constructor.
   Node &node = prog.nodes.begin()->second;  
-  if(node->globVars.count(expr.var)) newName += (fwd ? "_i" : "_f");
+  if(node->globVars.count(expr.var)) newName += (fwd || (func && func->name.empty()) ? "_i" : "_f");
 
   //substitute .id with its mapping in idMap
   std::map<std::string,size_t>::const_iterator iit = idMap.find(expr.var);
@@ -258,9 +260,10 @@ void dmpl::syncseqdbl::NodeTransformer::exitLval(dmpl::LvalExpr &expr)
 
     //handle global variables -- distinguishing between lhs of
     //assignments and other cases, and between forward and backward
-    //versions
+    //versions, as well as whether we are processing a constructor.
     if(isGlob) {
-      if(fwd) {
+      if(func && func->name.empty()) newName += "_i";
+      else if(fwd) {
         if(inLhs) newName += "_f";
         else newName += "_i";
       } else {
@@ -370,7 +373,7 @@ void dmpl::syncseqdbl::NodeTransformer::exitAsgn(dmpl::AsgnStmt &stmt)
   bool tempParam = false;
   const LvalExpr &lval = stmt.lhs->requireLval();
   if(func) {
-    if(func->temps.find(lval.var) != func->temps.end()) tempParam = true;
+    if(func->tempSet.find(lval.var) != func->tempSet.end()) tempParam = true;
     else if(func->paramSet.find(lval.var) != func->paramSet.end()) tempParam = true;
   }
   
@@ -813,7 +816,7 @@ dmpl::Stmt dmpl::SyncSeqDbl::createConstructor(const std::string &name,
 
   if(initFunc != NULL) {
     fnParams = initFunc->params;
-    for(const auto &v : initFunc->temps) fnTemps.push_back(v.second);
+    fnTemps = initFunc->temps;
   }
   
   StmtList initFnBody;
@@ -821,10 +824,16 @@ dmpl::Stmt dmpl::SyncSeqDbl::createConstructor(const std::string &name,
 
   //-- if the variable is an input, assign it non-deterministically
   if(!type->isVoid() && isInput) {
-    Expr varExpr(new LvalExpr(name + "_" + boost::lexical_cast<std::string>(proc.id)));
+    Expr varExpr(new LvalExpr(name));
     Expr ndfn = createNondetFunc(varExpr, type);
     Expr ndcall(new CallExpr(ndfn,ExprList()));
-    initFnBody.push_back(Stmt(new AsgnStmt(varExpr,ndcall)));
+    Stmt ndAsgn(new AsgnStmt(varExpr,ndcall));    
+    syncseqdbl::NodeTransformer nt(*this,builder.program,proc,false,initFunc);
+    std::string nodeId = *node->args.begin();
+    nt.addIdMap(nodeId,proc.id);
+    nt.visit(ndAsgn);
+    nt.delIdMap(nodeId);
+    initFnBody.push_back(nt.stmtMap[ndAsgn]);
   }
 
   //-- initialize _i version
@@ -917,8 +926,7 @@ void dmpl::SyncSeqDbl::createSafetyFwdBwd(bool fwd)
   Func propFunc = node->getRequireFunc(property);
 
   //-- create the require property function
-  dmpl::VarList fnParams = propFunc->params,fnTemps;
-  for(const auto &v : propFunc->temps) fnTemps.push_back(v.second);
+  dmpl::VarList fnParams = propFunc->params,fnTemps = propFunc->temps;
   
   //transform the body of safety
   StmtList fnBody;
@@ -1005,12 +1013,9 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
     for(const Func &f : funcs) {
       dmpl::VarList fnParams,fnTemps;
 
-      //create parameters
+      //create parameters and temporary variables
       fnParams = f->params;
-
-      //create temporary variables
-      BOOST_FOREACH(Vars::value_type &v,f->temps)
-        fnTemps.push_back(v.second);
+      fnTemps = f->temps;
 
       //create the forward version
       {

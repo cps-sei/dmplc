@@ -83,9 +83,10 @@ void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
 #include "gams/variables/Sensor.h"
 #include "gams/platforms/BasePlatform.h"
 #include "gams/platforms/vrep/VREPBase.h"
+#include "gams/platforms/vrep/VREPQuadLaser.h"
 #include "gams/variables/Self.h"
 #include "gams/utility/GPSPosition.h"
-#include "gams/utility/Axes.h"
+#include "gams/utility/Rotation.h"
 
 #include "dmpl/Reference.hpp"
 #include "dmpl/CachedReference.hpp"
@@ -747,6 +748,17 @@ namespace node_uav_role_Leader
 {
 
 /********************************************************************/
+//-- Remodify input global shared variables to force MADARA retransmit
+/********************************************************************/
+KnowledgeRecord
+REMODIFY_INPUT_GLOBALS (engine::FunctionArguments & args,
+  engine::Variables & vars)
+{
+  // Remodifying role-specific global variables
+  return Integer (0);
+}
+
+/********************************************************************/
 //-- Remodify barries variables to force MADARA retransmit
 /********************************************************************/
 KnowledgeRecord
@@ -1152,6 +1164,17 @@ void constructor ()
 // begin node_uav_role_Protector namespace
 namespace node_uav_role_Protector
 {
+
+/********************************************************************/
+//-- Remodify input global shared variables to force MADARA retransmit
+/********************************************************************/
+KnowledgeRecord
+REMODIFY_INPUT_GLOBALS (engine::FunctionArguments & args,
+  engine::Variables & vars)
+{
+  // Remodifying role-specific global variables
+  return Integer (0);
+}
 
 /********************************************************************/
 //-- Remodify barries variables to force MADARA retransmit
@@ -1924,7 +1947,8 @@ void init_vrep(const std::vector<std::string> &params, engine::KnowledgeBase &kn
   if(params.size() >= 5 && params[4].size() > 0)
     knowledge.set(".vrep_max_delta", params[4]);
   else
-    knowledge.set(".vrep_max_delta", "0.4");
+    knowledge.set(".vrep_max_delta", 0.4);
+  knowledge.set(".vrep_max_rotate_delta", M_PI/16);
   knowledge.set(".vrep_move_thread_rate", "0");
   knowledge.set("vrep_ready", "1");
 }
@@ -1938,9 +1962,11 @@ int main (int argc, char ** argv)
   settings.type = madara::transport::MULTICAST;
   platform_init_fns["vrep"] = init_vrep;
   platform_init_fns["vrep-uav"] = init_vrep;
+  platform_init_fns["vrep-quad"] = init_vrep;
   platform_init_fns["vrep-heli"] = init_vrep;
   platform_init_fns["vrep-ant"] = init_vrep;
-  platform_init_fns["vrep-uav-ranger"] = init_vrep;
+  platform_init_fns["vrep-uav-laser"] = init_vrep;
+  platform_init_fns["vrep-quad-laser"] = init_vrep;
 
   //-- handle any command line arguments and check their sanity
   handle_arguments (argc, argv);
@@ -1969,19 +1995,6 @@ int main (int argc, char ** argv)
     exit(1);
   }
 
-  //-- Synchronize to make sure all nodes are up
-  {
-    madara::knowledge::WaitSettings wait_settings;
-    knowledge.evaluate ("++startSync.{.id}", wait_settings);
-    for(;;) {
-      size_t flag = 1;
-      for(size_t i = 0;i < 5; ++i)
-        if(startSync[i] == 0) { flag = 0; break; }
-      if(flag) break;
-      sleep(0.2);
-    }
-    knowledge.evaluate ("++startSync.{.id}", wait_settings);
-  }
 
   /******************************************************************/
   //-- Invoking constructors
@@ -1990,6 +2003,9 @@ int main (int argc, char ** argv)
   if(node_name == "uav" && role_name == "Protector") node_uav::node_uav_role_Protector::constructor ();
 
   //-- Defining thread functions for MADARA
+  if(node_name == "uav" && role_name == "Leader")
+    knowledge.define_function ("REMODIFY_INPUT_GLOBALS",
+                                node_uav::node_uav_role_Leader::REMODIFY_INPUT_GLOBALS);
   knowledge.define_function ("node_uav_role_Leader_COLLISION_AVOIDANCE_REMODIFY_BARRIERS",
                               node_uav::node_uav_role_Leader::REMODIFY_BARRIERS_COLLISION_AVOIDANCE);
   knowledge.define_function ("node_uav_role_Leader_COLLISION_AVOIDANCE_REMODIFY_GLOBALS",
@@ -1998,6 +2014,9 @@ int main (int argc, char ** argv)
                               node_uav::node_uav_role_Leader::thread0);
   knowledge.define_function ("node_uav_role_Leader_WAYPOINT",
                               node_uav::node_uav_role_Leader::thread1);
+  if(node_name == "uav" && role_name == "Protector")
+    knowledge.define_function ("REMODIFY_INPUT_GLOBALS",
+                                node_uav::node_uav_role_Protector::REMODIFY_INPUT_GLOBALS);
   knowledge.define_function ("node_uav_role_Protector_COLLISION_AVOIDANCE_REMODIFY_BARRIERS",
                               node_uav::node_uav_role_Protector::REMODIFY_BARRIERS_COLLISION_AVOIDANCE);
   knowledge.define_function ("node_uav_role_Protector_COLLISION_AVOIDANCE_REMODIFY_GLOBALS",
@@ -2007,6 +2026,20 @@ int main (int argc, char ** argv)
   knowledge.define_function ("node_uav_role_Protector_WAYPOINT",
                               node_uav::node_uav_role_Protector::thread2);
 
+  //-- Synchronize to make sure all nodes are up
+  {
+    madara::knowledge::WaitSettings wait_settings;
+    std::string syncStr("REMODIFY_INPUT_GLOBALS () ;> ++startSync.{.id}");
+    knowledge.evaluate (syncStr, wait_settings);
+    for(;;) {
+      size_t flag = 1;
+      for(size_t i = 0;i < 5; ++i)
+        if(startSync[i] == 0) { flag = 0; break; }
+      if(flag) break;
+      sleep(0.2);
+    }
+    knowledge.evaluate (syncStr, wait_settings);
+  }
 
   //-- Initializing platform
   PlatformInitFns::iterator init_fn = platform_init_fns.find(platform_name);

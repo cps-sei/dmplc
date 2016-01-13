@@ -137,15 +137,31 @@ namespace
   //-- print a set of variable declarations, and initialize them
   //-- appropriately if they are also parameters.
   /*******************************************************************/
-  void print_vars(std::stringstream &buffer_, const dmpl::Vars& vars, bool isParam)
+  void print_vars(std::stringstream &buffer_, const dmpl::VarList & vars, bool isParam)
   {
     int i = 0;
-    BOOST_FOREACH (const dmpl::Vars::value_type & variable, vars) {
-      buffer_ << "  " << get_type_name(variable.second);
-      buffer_ << " " << variable.second->name;
+    BOOST_FOREACH (const dmpl::Var & variable, vars) {
+      buffer_ << "  " << get_type_name(variable);
+      buffer_ << " " << variable->name;
       if(isParam) buffer_ << " = args[" << i << "].to_double()";
       buffer_ << ";\n";
       ++i;
+    }
+  }
+
+  /*******************************************************************/
+  //-- print statements initializing temporary variables of a function
+  /*******************************************************************/
+  void print_temp_inits(const dmpl::Func &func, const dmpl::Node &node,
+                        dmpl::DmplBuilder & builder_, std::stringstream & buffer_)
+  {
+    for(const dmpl::Var & variable : func->temps) {
+      if(variable->initFunc == NULL) continue;
+      
+      dmpl::madara::GAMSVisitor visitor (variable->initFunc, node, dmpl::Func(),
+                                         builder_, buffer_, false);
+      for (const dmpl::Stmt & statement : variable->initFunc->body)
+        visitor.visit (statement);
     }
   }
 }
@@ -621,7 +637,7 @@ dmpl::gams::GAMSBuilder::build_program_variable_assignment (const Var & var)
 {
   // is this a GLOBAL scalar (i.e., 1-dimensional array)?
   if (var->scope == Variable::GLOBAL && var->type->dims.size () == 1)
-    buffer_ << "  " << var->name << "[settings.id] = var_init_" << var->name << ";\n";
+    buffer_ << "  " << var->name << "[id] = var_init_" << var->name << ";\n";
   // otherwise for local variables
   else if (var->type->dims.size () == 0)
     buffer_ << "  " << var->name << " = var_init_" << var->name << ";\n";
@@ -826,7 +842,8 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
       for (auto & var : r.second->allVarsInScope())
         if(var->isInput) {
           //-- sanity check : array input variables disallowed
-          if (var->type->dims.size () != 0)
+          if ((var->scope == Symbol::LOCAL && var->type->dims.size () > 0) ||
+              (var->scope == Symbol::GLOBAL && var->type->dims.size () > 1))
             throw std::runtime_error("ERROR: illegal array input variable " + var->name +
                                      " in role " + r.second->name +
                                      " in node " + n.second->name + "!!");
@@ -1100,6 +1117,9 @@ dmpl::gams::GAMSBuilder::build_nodes (void)
       build_comment("//-- Defining functions for role " + r.second->name, "\n", "\n", 0);
       open_namespace(roleName(n->second, r.second));
 
+      //-- build input global modifiers
+      build_refresh_modify_input_globals(n->second, r.second);
+      
       //-- build global and barrier modifiers for synchronous threads
       for (Func thread : r.second->threads) {
         if(r.second->getAttribute(thread,"BarrierSync", 0) == NULL) continue;
@@ -1127,7 +1147,8 @@ dmpl::gams::GAMSBuilder::build_nodes (void)
           buffer_ << "void initialize_" << rec->name << " ()\n{\n";
           buffer_ << "  engine::Variables vars;\n";
           print_vars(buffer_, rec->initFunc->temps, false);
-        
+          print_temp_inits(rec->initFunc, n->second, builder_, buffer_); 
+          
           //-- transform statements
           dmpl::madara::GAMSVisitor visitor (rec->initFunc, n->second, Func(),
                                                   builder_, buffer_, false);
@@ -1139,6 +1160,7 @@ dmpl::gams::GAMSBuilder::build_nodes (void)
         if(rec->assumeFunc != NULL && !rec->assumeFunc->body.empty()) {
           buffer_ << "int check_init_" << rec->name << " ()\n{\n";
           print_vars(buffer_, rec->assumeFunc->temps, false);
+          print_temp_inits(rec->assumeFunc, n->second, builder_, buffer_); 
         
           //-- transform statements
           dmpl::madara::GAMSVisitor visitor (rec->assumeFunc, n->second, Func(),
@@ -1212,6 +1234,7 @@ dmpl::gams::GAMSBuilder::build_constructor_for_variable (Var &v, Node &node)
   //-- generate constructor if one was defined
   if(v->initFunc != NULL) {
     print_vars(buffer_, v->initFunc->temps, false);
+    print_temp_inits(v->initFunc, node, builder_, buffer_); 
     
     //-- transform statements
     dmpl::madara::GAMSVisitor visitor (v->initFunc, node, Func(),
@@ -1222,6 +1245,28 @@ dmpl::gams::GAMSBuilder::build_constructor_for_variable (Var &v, Node &node)
   //-- if no constructor was defined and this is an input variable, return 1
   else if(v->isInput) buffer_ << "  return 1;\n";
   
+  buffer_ << "}\n";
+}
+
+/*********************************************************************/
+//-- generate functions that remodify input global shared variables to
+//-- force retransmit by MADARA.
+/*********************************************************************/
+void
+dmpl::gams::GAMSBuilder::build_refresh_modify_input_globals (const Node &node, const Role &role)
+{
+  build_comment("//-- Remodify input global shared variables to force MADARA retransmit", "\n", "", 0);
+  buffer_ << "KnowledgeRecord\n";
+  buffer_ << "REMODIFY_INPUT_GLOBALS";
+  buffer_ << " (engine::FunctionArguments & args,\n";
+  buffer_ << "  engine::Variables & vars)\n";
+  buffer_ << "{\n";
+  
+  buffer_ << "  // Remodifying role-specific global variables\n";
+  for(const auto &gv : role->allVarsInScope())
+    if(gv->isInput && gv->scope == Symbol::GLOBAL) build_refresh_modify_global (node, gv);
+    
+  buffer_ << "  return Integer (0);\n";
   buffer_ << "}\n";
 }
 
@@ -1388,8 +1433,9 @@ dmpl::gams::GAMSBuilder::build_function (
   Func actualFunc = function->isPrototype ? node->findFunc(function->name) : function;
   
   buffer_ << "\n  //-- Declare local (parameter and temporary) variables\n";
-  print_vars(buffer_, actualFunc->paramSet, true);
+  print_vars(buffer_, actualFunc->params, true);
   print_vars(buffer_, actualFunc->temps, false);
+  print_temp_inits(actualFunc, node, builder_, buffer_); 
   buffer_ << "\n";
 
   buffer_ << "\n  //-- Begin function body\n";
@@ -2222,11 +2268,15 @@ dmpl::gams::GAMSBuilder::build_main_function ()
              "              << \"  valid range: [0, \" << processes - 1 << \"]\" << std::endl;\n";
   buffer_ << "    exit(1);\n";
   buffer_ << "  }\n\n";
+  
+  build_constructors ();
+  build_main_define_functions ();
 
   buffer_ << "  //-- Synchronize to make sure all nodes are up\n";
   buffer_ << "  {\n";
   buffer_ << "    madara::knowledge::WaitSettings wait_settings;\n";
-  buffer_ << "    knowledge.evaluate (\"++startSync.{.id}\", wait_settings);\n";
+  buffer_ << "    std::string syncStr(\"REMODIFY_INPUT_GLOBALS () ;> ++startSync.{.id}\");\n";
+  buffer_ << "    knowledge.evaluate (syncStr, wait_settings);\n";
   buffer_ << "    for(;;) {\n";
   buffer_ << "      size_t flag = 1;\n";
   buffer_ << "      for(size_t i = 0;i < " << builder_.program.processes.size () << "; ++i)\n";
@@ -2234,11 +2284,8 @@ dmpl::gams::GAMSBuilder::build_main_function ()
   buffer_ << "      if(flag) break;\n";
   buffer_ << "      sleep(0.2);\n";
   buffer_ << "    }\n";
-  buffer_ << "    knowledge.evaluate (\"++startSync.{.id}\", wait_settings);\n";
+  buffer_ << "    knowledge.evaluate (syncStr, wait_settings);\n";
   buffer_ << "  }\n";
-  
-  build_constructors ();
-  build_main_define_functions ();
 
   buffer_ << "\n  //-- Initializing platform\n";
   buffer_ << "  PlatformInitFns::iterator init_fn = platform_init_fns.find(platform_name);\n";
@@ -2398,10 +2445,19 @@ dmpl::gams::GAMSBuilder::build_main_define_functions ()
 {
   buffer_ << "  //-- Defining thread functions for MADARA\n";
   for (const auto &n : builder_.program.nodes)
-    for (const auto &r : n.second->roles)
+    for (const auto &r : n.second->roles) {
+      //-- remodify role-specific input globals
+      buffer_ << "  if(node_name == \"" << n.second->name << "\" && role_name == \""
+              << r.second->name << "\")\n";
+      buffer_ << "    knowledge.define_function (\"REMODIFY_INPUT_GLOBALS\",\n";
+      buffer_ << "                                " << nodeName(n.second) << "::"
+              << roleName(n.second, r.second) << "::REMODIFY_INPUT_GLOBALS";
+      buffer_ << ");\n";
+
+      //-- remodify thread-specific barriers and globals
       for (const auto &thread : r.second->threads)
         build_main_define_function (n.second, r.second, thread);
-
+    }
   buffer_ << "\n";
 }
 

@@ -124,12 +124,11 @@ dmpl::Variable::printInit (std::ostream &os,unsigned int indent)
       os << ' ' << (isInput ? '~' : '=') << " {\n";
 
       //-- print temporary variables in constructor
-      for(const auto &tv : initFunc->temps)
-        tv.second->printInit(os, indent+2);
+      for(const Var &tv : initFunc->temps) tv->printInit(os, indent+2);
 
       //-- print statements in constructor
-      for(const Stmt &st : initFunc->body)
-        st->print(os, indent+2);
+      for(const Stmt &st : initFunc->body) st->print(os, indent+2);
+
       os << spacer << "};\n";
     }
   } else os << ";\n";
