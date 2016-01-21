@@ -93,8 +93,11 @@ if ((len(sys.argv) > 1) and (sys.argv[1] == "--record")):
     vrep.simxSetBooleanParameter(clientID,vrep.sim_boolparam_browser_visible,0,vrep.simx_opmode_oneshot)
 
     # zoom out camera
+    cam_x = float(sys.argv[2])
+    cam_y = float(sys.argv[3])
+    cam_z = float(sys.argv[4])
     (code, cameraID)=vrep.simxGetObjectHandle(clientID,"DefaultCamera#",vrep.simx_opmode_oneshot_wait)
-    vrep.simxSetObjectPosition(clientID,cameraID,-1,(0.0421,-0.2489,11.2217),vrep.simx_opmode_oneshot)
+    vrep.simxSetObjectPosition(clientID,cameraID,-1,(cam_x,cam_y,cam_z),vrep.simx_opmode_oneshot)
 
     # start recording
     vrep.simxSetBooleanParameter(clientID,vrep.sim_boolparam_video_recording_triggered,1,vrep.simx_opmode_oneshot)

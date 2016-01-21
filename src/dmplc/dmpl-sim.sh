@@ -209,6 +209,15 @@ if [ ! -e "$MAPFILE" ]; then
     exit 1
 fi
 
+#set camera position for record depending on map-type
+if [ ! -z "$RECORD" ]; then
+    if [ "$MAPNAME" == "small-obstacle" ]; then
+        RECORD="$RECORD -0.0499 -6.4213 6.3789"
+    else
+        RECORD="$RECORD 0.0421 -0.2489 11.2217"
+    fi
+fi
+
 #compile tutorial 2
 
 MAPSIZE=$(echo $MAPNAME | cut -f1 -d'-')
