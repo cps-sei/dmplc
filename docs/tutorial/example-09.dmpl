@@ -129,13 +129,20 @@ node uav
 {
   //shared variables -- visible across nodes. 
   //must be accessed via R() and W()
-  global bool lock [X][Y] = {
+  group bool lock [X][Y] = {
     lock[x][y] = 1;
   };
-  
-  global unsigned char lx = 0,ly = 0; //leader's destination coordinates
-  global bool init = 0; //leader's destination has been initialized
 
+  record region {
+    group unsigned char x1,y1,x2,y2;
+  }
+  
+  group unsigned char lx = 0,ly = 0; //leader's destination coordinates
+  group bool init = 0; //leader's destination has been initialized
+
+  //-- we created this global for testing
+  global bool missionOver = 0;
+  
   //private variables -- local to the node.
   //preserved across rounds
   local unsigned char state = NEXT; //the state
@@ -230,7 +237,7 @@ node uav
     @WCExecTimeNominal(10000);
     @WCExecTimeOverload(20000);
     override thread WAYPOINT {
-      //-- for group 1
+      //-- if i am in group 1
       if(id < 5) {
         if(init@0 == 0) return;
         waypointValid = 1;
@@ -249,7 +256,7 @@ node uav
           yt = ly@0 - 1;
         }
       }
-      //-- for group 2
+      //-- if i am in group 2
       else {
         if(init@5 == 0) return;
         waypointValid = 1;

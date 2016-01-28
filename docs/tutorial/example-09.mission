@@ -6,7 +6,16 @@ BIN=example-09
 OUTDIR=outdir
 MAPNAME=large
 GRIDSIZE=20
+
+#node to role assignment
 ROLEDESC=uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4
+
+#node to group assignment
+GROUPDESC="(coordinator,eastern):(eastern):(eastern):(eastern):(eastern)"
+GROUPDESC+=":(coordinator,western):(western):(western):(western):(western)"
+
+#variable to group assignment
+VARGROUPS={region->coordinator}:{(lock,lx,ly,init)->(eastern,western)}
 
 EXPECT_LOG_PERIOD=0.2
 
