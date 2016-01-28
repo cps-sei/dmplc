@@ -1,0 +1,45 @@
+#!/bin/bash
+
+DMPL="example-10.dmpl"
+BIN=example-10
+
+OUTDIR=outdir
+MAPNAME=large
+GRIDSIZE=20
+
+#node to role assignment
+ROLEDESC=uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4:Leader:1:uav:Protector:4
+
+#node to group assignment
+GROUPDESC="(coordinator,USfleet,NATO):(USfleet,NATO):(USfleet,NATO):(USfleet,NATO):(USfleet,NATO)"
+GROUPDESC+=":(coordinator,FRfleet,NATO):(FRfleet,NATO):(FRfleet,NATO):(FRfleet,NATO):(FRfleet,NATO)"
+GROUPDESC+=":(coordinator,SEfleet):(SEfleet):(SEfleet):(SEfleet):(SEfleet)"
+
+#variable to group assignment
+VARGROUPS={region->coordinator}:{(lock,lx,ly,init,formation)->(USfleet,FRfleet,SEfleet)}:{(z)->(NATO,SEfleet)}
+
+EXPECT_LOG_PERIOD=0.2
+
+MISSION_TIME=240
+
+IX1=1
+IY1=9
+FX1=18
+FY1=9
+
+ARGS_0="--node uav --role Leader --var_x $IX1 --var_y $IY1 --var_xt $FX1 --var_yt $FY1"
+ARGS_1="--node uav --role Protector --var_x $((IX1+1)) --var_y $((IY1+1))"
+ARGS_2="--node uav --role Protector --var_x $((IX1-1)) --var_y $((IY1+1))"
+ARGS_3="--node uav --role Protector --var_x $((IX1-1)) --var_y $((IY1-1))"
+ARGS_4="--node uav --role Protector --var_x $((IX1+1)) --var_y $((IY1-1))"
+
+IX2=9
+IY2=1
+FX2=9
+FY2=18
+
+ARGS_5="--node uav --role Leader --var_x $IX2 --var_y $IY2 --var_xt $FX2 --var_yt $FY2"
+ARGS_6="--node uav --role Protector --var_x $((IX2+1)) --var_y $((IY2+1))"
+ARGS_7="--node uav --role Protector --var_x $((IX2-1)) --var_y $((IY2+1))"
+ARGS_8="--node uav --role Protector --var_x $((IX2-1)) --var_y $((IY2-1))"
+ARGS_9="--node uav --role Protector --var_x $((IX2+1)) --var_y $((IY2-1))"
