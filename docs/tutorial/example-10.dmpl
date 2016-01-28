@@ -140,8 +140,11 @@ node uav
   group unsigned char lx = 0,ly = 0; //leader's destination coordinates
   group bool init = 0; //leader's destination has been initialized
 
-  //-- we created this global for testing
-  global bool missionOver = 0;
+  //-- we created this group for testing
+  group bool formation = 0;
+
+  //-- we created this group for testing "secrets"
+  group int z = 0;
   
   //private variables -- local to the node.
   //preserved across rounds
