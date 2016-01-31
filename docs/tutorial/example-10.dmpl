@@ -53,14 +53,15 @@
  * DM-0002494
 **/
 
-//-- an example with 5 nodes -- a leader in the middle and four
-//-- protectors surrounding it. the leader moves from an initial to a
-//-- target coordinate, going from one waypoint to the next following
-//-- a path planning strategy. the protectors try to follow the
-//-- leader's movement and keep it surrounded. each node has two
-//-- threads -- a synchronous thread responsible for moving to the
-//-- next waypoint avoiding collisions, and an asynchronous thread
-//-- that determines the next waypoint for the node.
+//-- This is like example-02 but we have three groups of nodes, each
+//-- with one leader and four protectors. The leaders also act as
+//-- coordinators. The idea is that each group performs collision
+//-- avoidance within itself, while the coordinators ensures that the
+//-- groups do no encroach on each other's spaces. This means that no
+//-- group knows the exact location of the members of the other group,
+//-- only the general area they are in. Through this example, we are
+//-- trying to further explore "group-based access control (GBAC) of
+//-- shared variables", e.g., how groups can overlap.
 
 TARGET GNU_CPP,WIN_CPP %%{
 #define GNU_WIN
