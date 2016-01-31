@@ -157,7 +157,7 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
 %token <string> TIDENTIFIER TINTEGER TDOUBLE TATTRIBUTE
 %token <string> TIF TREQUIRE TEXPECT TATEND TATLEAST
 %token <token> TSEMICOLON TCONST TNODE TROLE TINPUT
-%token <token> TGLOBAL TLOCAL TALIAS TTARGET TTHUNK TID
+%token <token> TGLOBAL TLOCAL TGROUP TALIAS TTARGET TTHUNK TID
 %token <token> TBOOL TINT TDOUBLE_TYPE TVOID TCHAR TSIGNED TUNSIGNED
 %token <token> TNODENUM TEXTERN TTHREAD TPURE TOVERRIDE TRECORD
 %token <token> TELSE TFOR TWHILE
@@ -422,6 +422,10 @@ node_var_init : TGLOBAL var_init {
 }
 | TLOCAL var_init {
   BOOST_FOREACH(dmpl::Var &v, *$2) v->scope = dmpl::Variable::LOCAL;
+  $$ = $2;
+}
+| TGROUP var_init {
+  BOOST_FOREACH(dmpl::Var &v, *$2) v->scope = dmpl::Variable::GLOBAL;
   $$ = $2;
 }
 ;

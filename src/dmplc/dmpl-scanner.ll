@@ -97,6 +97,7 @@ extern "C" int yywrap() { return 1; }
 "global"                    PRINT_TOKEN; return TOKEN(TGLOBAL);
 "LOCAL"                     PRINT_TOKEN; return TOKEN(TLOCAL);
 "local"                     PRINT_TOKEN; return TOKEN(TLOCAL);
+"group"                     PRINT_TOKEN; return TOKEN(TGROUP);
 "TARGET"                    PRINT_TOKEN; return TOKEN(TTARGET);
 "target"                    PRINT_TOKEN; return TOKEN(TTARGET);
 "_Bool"                     PRINT_TOKEN; return TOKEN(TBOOL);
