@@ -16,7 +16,8 @@ GROUPDESC+=":(coordinator,FRfleet,NATO):(FRfleet,NATO):(FRfleet,NATO):(FRfleet,N
 GROUPDESC+=":(coordinator,SEfleet):(SEfleet):(SEfleet):(SEfleet):(SEfleet)"
 
 #variable to group assignment
-VARGROUPS={region->coordinator}:{(lock,lx,ly,init,formation)->(USfleet,FRfleet,SEfleet)}:{(z)->(NATO,SEfleet)}
+VARGROUPS="{region->coordinator}:{(lock,lx,ly,init,formation)->(USfleet,FRfleet,SEfleet)}"
+VARGROUPS+=":{(z)->(NATO,SEfleet)}"
 
 EXPECT_LOG_PERIOD=0.2
 

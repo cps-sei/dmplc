@@ -15,7 +15,7 @@ GROUPDESC="(coordinator,eastern):(eastern):(eastern):(eastern):(eastern)"
 GROUPDESC+=":(coordinator,western):(western):(western):(western):(western)"
 
 #variable to group assignment
-VARGROUPS={region->coordinator}:{(lock,lx,ly,init)->(eastern,western)}
+VARGROUPS="{region->coordinator}:{(lock,lx,ly,init)->(eastern,western)}"
 
 EXPECT_LOG_PERIOD=0.2
 
