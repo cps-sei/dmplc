@@ -8,7 +8,7 @@ MAPNAME=large
 GRIDSIZE=20
 
 #node to role assignment
-ROLEDESC=uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4:Leader:1:uav:Protector:4
+ROLEDESC=uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4
 
 #node to group assignment
 GROUPDESC="(coordinator,USfleet,NATO):(USfleet,NATO):(USfleet,NATO):(USfleet,NATO):(USfleet,NATO)"
