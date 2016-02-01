@@ -338,6 +338,7 @@ declare -A pid2cmd
 
 #start the nodes
 NUMCPU=$(grep -c ^processor /proc/cpuinfo)
+[ "$DEBUG" -eq 1 ] && NODE_DEBUG="--debug"
 for x in $(seq 1 $((NODENUM - 1))); do
     echo $x
     args_var=ARGS_$x
@@ -345,7 +346,7 @@ for x in $(seq 1 $((NODENUM - 1))); do
     args="$(eval echo \$$args_var)"
     ELOG=""
     [ -n "$OUTLOG" ] && ELOG="-e $OUTDIR/expect${0}.log"
-    cmd="$GDB ./$BIN $ELOG --platform $PLATFORM --id $x -l $LOG_LEVEL $args"
+    cmd="$GDB ./$BIN $ELOG --platform $PLATFORM --id $x -l $LOG_LEVEL $NODE_DEBUG $args"
     taskset -c ${cpu_id} $cmd &> $OUTDIR/node${x}.out &
     pid=$!
     echo "started pid=$pid : cmd=$cmd"
@@ -354,7 +355,7 @@ done
 ELOG=""
 [ -n "$OUTLOG" ] && ELOG="-e $OUTDIR/expect0.log"
 #gdb --args $GDB ./$BIN $ELOG --platform $PLATFORM --id 0 $ARGS_0 # &> $OUTDIR/node0.out &
-cmd="$GDB ./$BIN $ELOG --platform $PLATFORM --id 0 -l $LOG_LEVEL $ARGS_0"
+cmd="$GDB ./$BIN $ELOG --platform $PLATFORM --id 0 -l $LOG_LEVEL $NODE_DEBUG $ARGS_0"
 taskset -c 0 $cmd &> $OUTDIR/node0.out &
 pid=$!
 echo "started pid=$pid : cmd=$cmd" 
