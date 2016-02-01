@@ -329,6 +329,10 @@ dmpl::gams::GAMSBuilder::build_common_global_variables ()
   buffer_ << "using madara::knowledge::KnowledgeMap;\n";
   buffer_ << "\n";
 
+  build_comment("//-- debug flag", "", "", 0);
+  buffer_ << "bool debug = 0;\n";
+  buffer_ << "\n";
+
   build_comment("//-- declare knowledge base", "", "", 0);
   buffer_ << "engine::KnowledgeBase knowledge;\n";
   buffer_ << "\n";
@@ -802,6 +806,10 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   buffer_ << "    {\n";
   buffer_ << "      settings.send_reduced_message_header = true;\n";
   buffer_ << "    }\n";
+  buffer_ << "    else if (arg1 == \"-dbg\" || arg1 == \"--debug\")\n";
+  buffer_ << "    {\n";
+  buffer_ << "      dmpl::debug = true;\n";
+  buffer_ << "    }\n";
   buffer_ << "    else if (arg1 == \"--write-fd\")\n";
   buffer_ << "    {\n";
   buffer_ << "      if (i + 1 < argc)\n";
@@ -907,6 +915,7 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   buffer_ << "        \" [-mb|--max-barrier-time time] time in seconds to barrier for other processes\\n\"\\\n";
   buffer_ << "        \" [-o|--host hostname]     the hostname of this process (def:localhost)\\n\"\\\n";
   buffer_ << "        \" [-r|--reduced]           use the reduced message header\\n\"\\\n";
+  buffer_ << "        \" [-dbg|--debug]           print debug messages\\n\"\\\n";
   buffer_ << "        \" [-u|--udp ip:port]       the udp ips to send to (first is self to bind to)\\n\"\\\n";
   buffer_ << "        \" [--node name]            select the node name\\n\"\\\n";
   buffer_ << "        \" [--role name]            select the role name\\n\"\\\n";
@@ -1836,7 +1845,8 @@ dmpl::gams::GAMSBuilder::build_algo_functions ()
 
   buffer_ << "int Algo::execute (void)\n";
   buffer_ << "{\n";
-  buffer_ << "  std::cout << \"Executing thread: \" << _exec_func << \" at period \" << _period << \" us\" << std::endl;\n";
+  buffer_ << "  if (dmpl::debug)\n";
+  buffer_ << "    std::cout << \"Executing thread: \" << _exec_func << \" at period \" << _period << \" us\" << std::endl;\n";
   buffer_ << "  knowledge_->evaluate (_exec_func + \"()\");\n";
   buffer_ << "  return 0;\n";
   buffer_ << "}\n";
@@ -2069,7 +2079,8 @@ dmpl::gams::GAMSBuilder::build_algo_functions ()
 
   buffer_ << "int SyncAlgo::execute (void)\n";
   buffer_ << "{\n";
-  buffer_ << "  std::cout << \"Executing thread: \" << _exec_func << \" at period \" << _period << \" us\" << std::endl;\n";
+  buffer_ << "  if (dmpl::debug)\n";
+  buffer_ << "    std::cout << \"Executing thread: \" << _exec_func << \" at period \" << _period << \" us\" << std::endl;\n";
   buffer_ << "  knowledge_->evaluate (round_logic, wait_settings);\n";
   buffer_ << "  return 0;\n";
   buffer_ << "}\n";
@@ -2249,8 +2260,10 @@ dmpl::gams::GAMSBuilder::build_main_function ()
   buffer_ << "    //-- setup default transport as multicast\n";
   buffer_ << "    settings.hosts.push_back (default_multicast);\n";
   //buffer_ << "    settings.hosts.push_back (\"127.0.0.1:4150\");\n";
-  buffer_ << "    settings.add_receive_filter (madara::filters::log_aggregate);\n";
-  buffer_ << "    settings.add_send_filter (madara::filters::log_aggregate);\n";
+  buffer_ << "    if (dmpl::debug) {\n";
+  buffer_ << "      settings.add_receive_filter (madara::filters::log_aggregate);\n";
+  buffer_ << "      settings.add_send_filter (madara::filters::log_aggregate);\n";
+  buffer_ << "    }\n";
   buffer_ << "  }\n\n";
   
   buffer_ << "  settings.queue_length = 1000000;\n";
