@@ -64,6 +64,7 @@ function usage {
     echo "    -h | --headless     Run V-REP in headless mode"
     echo "    -M | --manual-start Don't start the simulation automatically"
     echo '    -p | --platform $P  Pass $P as the --platform option to the executable'
+    echo '    -l | --log-level $L Pass $L as the -l option to the executable'
     echo "    -r | --realtime     Run V-REP in realtime mode"
     echo "    -R | --record       Run V-REP in recording mode"
     echo "    -G | --debug        Build node binaries with debug flag"
@@ -77,6 +78,7 @@ BUILDONLY=0
 MANUALSTART=0
 RECORD=""
 DBGFLAGS="-O3"
+LOG_LEVEL="0"
 
 PLATFORM=vrep-uav::::0.1
 
@@ -112,6 +114,10 @@ while true; do
         -p|--platform)
             shift
             PLATFORM="$1"
+            ;;
+        -l|--log-level)
+            shift
+            LOG_LEVEL="$1"
             ;;
         "")
             break
@@ -339,7 +345,7 @@ for x in $(seq 1 $((NODENUM - 1))); do
     args="$(eval echo \$$args_var)"
     ELOG=""
     [ -n "$OUTLOG" ] && ELOG="-e $OUTDIR/expect${0}.log"
-    cmd="$GDB ./$BIN $ELOG --platform $PLATFORM --id $x -l 5 $args"
+    cmd="$GDB ./$BIN $ELOG --platform $PLATFORM --id $x -l $LOG_LEVEL $args"
     taskset -c ${cpu_id} $cmd &> $OUTDIR/node${x}.out &
     pid=$!
     echo "started pid=$pid : cmd=$cmd"
@@ -348,7 +354,7 @@ done
 ELOG=""
 [ -n "$OUTLOG" ] && ELOG="-e $OUTDIR/expect0.log"
 #gdb --args $GDB ./$BIN $ELOG --platform $PLATFORM --id 0 $ARGS_0 # &> $OUTDIR/node0.out &
-cmd="$GDB ./$BIN $ELOG --platform $PLATFORM --id 0 -l 5 $ARGS_0"
+cmd="$GDB ./$BIN $ELOG --platform $PLATFORM --id 0 -l $LOG_LEVEL $ARGS_0"
 taskset -c 0 $cmd &> $OUTDIR/node0.out &
 pid=$!
 echo "started pid=$pid : cmd=$cmd" 
