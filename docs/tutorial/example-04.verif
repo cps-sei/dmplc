@@ -2,7 +2,7 @@
 
 VERIF_NAME="example-04"
 OUT="FAILED"
-DMPL="example-04.dmpl"
+DMPL="example-04.dmpl example-04-AADL.dmpl"
 GRIDSIZE=10
 ROLEDESC=uav:Leader:1:uav:Protector:8
 PROPERTY="NoCollision"

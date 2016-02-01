@@ -212,7 +212,7 @@ node uav
   role Leader {
     //-- leader-specific waypoint thread
     @Period(100000);
-    override thread WAYPOINT {
+    thread WAYPOINT {
       waypointValid = 1;
       ly = yp;
       lx = xp;
@@ -230,7 +230,7 @@ node uav
 
     //-- follower-specific waypoint thread
     @Period(100000);
-    override thread WAYPOINT {
+    thread WAYPOINT {
       if(init@0 == 0) return;
       waypointValid = 1;
       

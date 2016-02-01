@@ -515,6 +515,21 @@ dmpl::Program::preAnalysisSanityCheck()
         throw std::runtime_error("Role " + r.second->name + " in node " + node->name +
                                  " must override record " + rec.second->name + "!!");
     }
+    //-- check functions
+    for(const auto &f : r.second->funcs) {
+      if(f.second->isOverride && !node->hasFunction(f.second->name))
+        throw std::runtime_error("Role " + r.second->name + " in node " + node->name +
+                                 " cannot override (missing in parent node) function/thread " +
+                                 f.second->name + "!!");
+      if(f.second->isOverride && f.second->isPrototype)
+        throw std::runtime_error("Role " + r.second->name + " in node " + node->name +
+                                 " cannot both override and inherit function/thread " +
+                                 f.second->name + "!!");
+      if(!f.second->isOverride && !f.second->isPrototype && node->hasFunction(f.second->name))
+        throw std::runtime_error("Role " + r.second->name + " in node " + node->name +
+                                 " must override (present in parent node) function/thread " +
+                                 f.second->name + "!!");
+    }
   }
 }
 

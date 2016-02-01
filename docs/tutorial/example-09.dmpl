@@ -220,7 +220,7 @@ node uav
     @Criticality(3);
     @WCExecTimeNominal(10000);
     @WCExecTimeOverload(20000);
-    override thread WAYPOINT {
+    thread WAYPOINT {
       waypointValid = 1;
       ly = yp;
       lx = xp;
@@ -237,7 +237,7 @@ node uav
     @Criticality(3);
     @WCExecTimeNominal(10000);
     @WCExecTimeOverload(20000);
-    override thread WAYPOINT {
+    thread WAYPOINT {
       //-- if i am in group 1
       if(id < 5) {
         if(init@0 == 0) return;

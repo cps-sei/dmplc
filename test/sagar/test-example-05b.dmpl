@@ -1065,7 +1065,7 @@ node uav
     @Criticality(2);
     @WCExecTimeNominal(10000);
     @WCExecTimeOverload(20000);
-    override thread ADAPTATION_MANAGER
+    thread ADAPTATION_MANAGER
     {
       bool last_formation;    
       unsigned char num_protectors_changing;
@@ -1122,7 +1122,7 @@ node uav
     @Criticality(3);
     @WCExecTimeNominal(10000);
     @WCExecTimeOverload(20000);
-    override thread WAYPOINT
+    thread WAYPOINT
     {
       waypointValid = 1;
       ly = yp;
@@ -1151,7 +1151,7 @@ node uav
     @Criticality(3);
     @WCExecTimeNominal(10000);
     @WCExecTimeOverload(20000);
-    override thread WAYPOINT
+    thread WAYPOINT
     {
       print_waypoint(init@0, lx@0, ly@0);
       if(init@0 == 0) return;
