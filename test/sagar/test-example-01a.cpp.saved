@@ -129,6 +129,11 @@ using madara::knowledge::KnowledgeRecord;
 using madara::knowledge::KnowledgeMap;
 
 /********************************************************************/
+//-- debug flag
+/********************************************************************/
+bool debug = 0;
+
+/********************************************************************/
 //-- declare knowledge base
 /********************************************************************/
 engine::KnowledgeBase knowledge;
@@ -431,6 +436,10 @@ void handle_arguments (int argc, char ** argv)
     {
       settings.send_reduced_message_header = true;
     }
+    else if (arg1 == "-dbg" || arg1 == "--debug")
+    {
+      dmpl::debug = true;
+    }
     else if (arg1 == "--write-fd")
     {
       if (i + 1 < argc)
@@ -535,6 +544,7 @@ void handle_arguments (int argc, char ** argv)
         " [-mb|--max-barrier-time time] time in seconds to barrier for other processes\n"\
         " [-o|--host hostname]     the hostname of this process (def:localhost)\n"\
         " [-r|--reduced]           use the reduced message header\n"\
+        " [-dbg|--debug]           print debug messages\n"\
         " [-u|--udp ip:port]       the udp ips to send to (first is self to bind to)\n"\
         " [--node name]            select the node name\n"\
         " [--role name]            select the role name\n"\
@@ -1011,7 +1021,8 @@ void Algo::start (threads::Threader &threader)
 
 int Algo::execute (void)
 {
-  std::cout << "Executing thread: " << _exec_func << " at period " << _period << " us" << std::endl;
+  if (dmpl::debug)
+    std::cout << "Executing thread: " << _exec_func << " at period " << _period << " us" << std::endl;
   knowledge_->evaluate (_exec_func + "()");
   return 0;
 }
@@ -1175,7 +1186,8 @@ int SyncAlgo::plan (void)
 
 int SyncAlgo::execute (void)
 {
-  std::cout << "Executing thread: " << _exec_func << " at period " << _period << " us" << std::endl;
+  if (dmpl::debug)
+    std::cout << "Executing thread: " << _exec_func << " at period " << _period << " us" << std::endl;
   knowledge_->evaluate (round_logic, wait_settings);
   return 0;
 }
@@ -1249,8 +1261,10 @@ int main (int argc, char ** argv)
   {
     //-- setup default transport as multicast
     settings.hosts.push_back (default_multicast);
-    settings.add_receive_filter (madara::filters::log_aggregate);
-    settings.add_send_filter (madara::filters::log_aggregate);
+    if (dmpl::debug) {
+      settings.add_receive_filter (madara::filters::log_aggregate);
+      settings.add_send_filter (madara::filters::log_aggregate);
+    }
   }
 
   settings.queue_length = 1000000;
