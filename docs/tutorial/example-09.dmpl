@@ -188,7 +188,7 @@ node uav
   @WCExecTimeNominal(15000);
   @WCExecTimeOverload(30000);
   thread COLLISION_AVOIDANCE {
-    print_state(X,Y,id,x,y,xt,yt);
+    //print_state(X,Y,id,x,y,xt,yt);
     //my_sleep(1);
     if(state == NEXT) {
       //compute next point on route
