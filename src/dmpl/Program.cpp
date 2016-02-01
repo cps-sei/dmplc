@@ -498,21 +498,21 @@ dmpl::Program::preAnalysisSanityCheck()
     //-- check local variables
     for(const auto &v : r.second->locVars) {
       if(v.second->isOverride && !node->hasVar(v.second))
-        throw std::runtime_error("Role " + r.second->name +
+        throw std::runtime_error("Role " + r.second->name + " in node " + node->name +
                                  " cannot override (missing or wrong type in parent node " +
                                  node->name + ") local variable " + v.second->name + "!!");
       if(!v.second->isOverride && node->findVar(v.second->name))
-        throw std::runtime_error("Role " + r.second->name +
+        throw std::runtime_error("Role " + r.second->name + " in node " + node->name +
                                  " cannot declare without override local variable " +
                                  v.second->name + "!!");
     }
     //-- check records
     for(const auto &rec : r.second->records) {
       if(rec.second->isOverride && !node->hasRecord(rec.second))
-        throw std::runtime_error("Role " + r.second->name +
+        throw std::runtime_error("Role " + r.second->name + " in node " + node->name +
                                  " cannot override (field mismatch) record " + rec.second->name + "!!");
       if(!rec.second->isOverride && node->hasRecord(rec.second))
-        throw std::runtime_error("Role " + r.second->name +
+        throw std::runtime_error("Role " + r.second->name + " in node " + node->name +
                                  " must override record " + rec.second->name + "!!");
     }
   }
