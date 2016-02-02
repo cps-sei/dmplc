@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<sspaceex xmlns="http://www-verimag.imag.fr/xml-namespaces/sspaceex" version="0.2" math="SpaceEx">
+  <component id="main">
+    <param name="real_x" type="real" local="false" d1="1" d2="1" dynamics="any" />
+    <param name="goal_x" type="real" local="false" d1="1" d2="1" dynamics="any" />
+    <param name="DONE" type="real" local="false" d1="1" d2="1" dynamics="any" />
+    <location id="1" name="wait" x="93.0" y="353.0" />
+    <location id="2" name="choice" x="350.0" y="351.0" width="110.0" height="80.0" />
+    <location id="3" name="error" x="705.0" y="356.0" />
+    <location id="4" name="hover" x="292.0" y="97.0" />
+    <location id="5" name="move_called" x="125.0" y="201.0" />
+    <transition source="1" target="2">
+      <label>arrived_right_called</label>
+      <labelposition x="-64.0" y="-17.0" width="140.0" height="50.0" />
+      <middlepoint x="219.5" y="323.0" />
+    </transition>
+    <transition source="2" target="4">
+      <label>arrived_right_returned</label>
+      <guard>DONE == 1 &amp;&amp; 
+pos_x &gt;= goal_x - 0.5 &amp;&amp;
+pos_x &lt;= goal_x + 0.5</guard>
+      <labelposition x="-1.0" y="-35.0" width="170.0" height="110.0" />
+    </transition>
+    <transition source="2" target="1">
+      <label>arrived_right_returned</label>
+      <guard>DONE == 0 &amp;&amp; 
+pos_x &gt;= goal_x - 1.5 &amp;&amp;
+pos_x &lt;= goal_x - 0.5</guard>
+      <labelposition x="-82.0" y="0.0" width="176.0" height="140.0" />
+      <middlepoint x="223.5" y="423.0" />
+    </transition>
+    <transition source="2" target="3">
+      <guard>!(DONE == 1 &amp;&amp; 
+pos_x &gt;= goal_x - 0.5 &amp;&amp;
+pos_x &lt;= goal_x + 0.5) 
+&amp;&amp;
+!(DONE == 0 &amp;&amp; 
+pos_x &gt;= goal_x - 1.5 &amp;&amp;
+pos_x &lt;= goal_x - 0.5)</guard>
+      <labelposition x="-77.0" y="-16.0" width="162.0" height="164.0" />
+    </transition>
+    <transition source="4" target="5">
+      <label>move_right_called</label>
+      <assignment>goal_x := goal_x + 1</assignment>
+      <labelposition x="-95.0" y="-34.0" width="134.0" height="50.0" />
+    </transition>
+    <transition source="5" target="1">
+      <label>move_right_returned</label>
+      <labelposition x="-28.0" y="-30.0" width="138.0" height="50.0" />
+    </transition>
+    <transition source="4" target="3">
+      <guard>pos_x &lt;= goal_x - 0.5 ||
+pos_x &gt;= goal_x + 0.5</guard>
+      <labelposition x="-55.0" y="-69.0" width="174.0" height="78.0" />
+      <middlepoint x="647.5" y="109.5" />
+    </transition>
+  </component>
+</sspaceex>
+
