@@ -133,10 +133,6 @@ node uav
   group bool lock [X][Y] = {
     lock[x][y] = 1;
   };
-
-  record region {
-    group unsigned char x1,y1,x2,y2;
-  }
   
   group unsigned char lx = 0,ly = 0; //leader's destination coordinates
   group bool init = 0; //leader's destination has been initialized
@@ -226,6 +222,24 @@ node uav
       lx = xp;
       init = 1;
     }
+
+    //-- a region is a rectangle identified by the coordinates of its
+    //-- top-right and bottom-left corners. note that only the leader
+    //-- needs to know about this.
+    record region {
+      group unsigned char x1,y1,x2,y2;
+    }
+
+    //-- since the leader's are also coordinators, they use this
+    //-- thread to ensure that the two groups never occupy overlapping
+    //-- regions.
+    @Period(100000);
+    @Criticality(5);
+    @WCExecTimeNominal(10000);
+    @WCExecTimeOverload(20000);
+    thread REGION_COLLISION_AVOIDANCE {
+    }
+
   
     //-- inherit the collision avoidance thread
     thread COLLISION_AVOIDANCE;
