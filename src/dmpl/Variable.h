@@ -185,6 +185,16 @@ namespace dmpl
 
     ///check sanity of constructor
     void checkConstructorSanity(const Node &node, const Role &role) const;
+
+    ///return the scope as a string
+    std::string scopeStr() const
+    {
+      if(scope == Variable::LOCAL) return "local";
+      if(scope == Variable::GLOBAL) return "global";
+      if(scope == Variable::GROUP) return "group";
+      throw std::runtime_error("ERROR: variable " + name + " has illegal scope " +
+                               std::to_string(scope) + "!!");
+    }
   };
 
   inline Var Symbol::asVar()
