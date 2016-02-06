@@ -116,6 +116,9 @@ namespace dmpl
     ///list of local variables
     Vars locVars;
 
+    ///list of group variables
+    Vars groupVars;
+
     /**
      * records
      **/
@@ -237,11 +240,13 @@ namespace dmpl
     ///add a variable with scope already set
     void addVar(const Var &v)
     {
-      Vars &vars = v->scope == Variable::LOCAL ? locVars : globVars;
+      std::string vscope =v->scopeStr();
+
+      Vars &vars = (vscope == "local") ? locVars : ((vscope == "global") ? globVars : groupVars);
+
       if(!vars.insert(std::make_pair(v->name,v)).second) {
-        throw std::runtime_error("ERROR: " +
-                                 std::string(v->scope == Variable::LOCAL ? "local" : "global") +
-                                 " variable " + v->name + " redeclared by node " + name + "!!");
+        throw std::runtime_error("ERROR: " + vscope + " variable " + v->name +
+                                 " redeclared by node " + name + "!!");
       }
     }
     

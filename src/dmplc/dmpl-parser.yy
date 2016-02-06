@@ -425,7 +425,7 @@ node_var_init : TGLOBAL var_init {
   $$ = $2;
 }
 | TGROUP var_init {
-  BOOST_FOREACH(dmpl::Var &v, *$2) v->scope = dmpl::Variable::GLOBAL;
+  BOOST_FOREACH(dmpl::Var &v, *$2) v->scope = dmpl::Variable::GROUP;
   $$ = $2;
 }
 ;

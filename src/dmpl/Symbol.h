@@ -324,10 +324,11 @@ namespace dmpl
     //-- different symbol scopes
     static const int LOCAL = 501;
     static const int GLOBAL = 502;
-    static const int PARAM = 503;
-    static const int TEMP = 504;
-    static const int SELF_ID = 505;
-    static const int INDEP_ID = 506;
+    static const int GROUP = 503;
+    static const int PARAM = 504;
+    static const int TEMP = 505;
+    static const int SELF_ID = 506;
+    static const int INDEP_ID = 507;
 
     SymbolUseInfo usage_summary;
     SymUserSet users;
