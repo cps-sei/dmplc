@@ -60,7 +60,7 @@
  * @file Role.h
  * @author James Edmondson <jedmondson@gmail.com>
  *
- * This file contains the definition of a node/process.
+ * This file contains the definition of a role.
  **/
 
 #include <vector>
@@ -72,6 +72,7 @@
 #include "Attribute.h"
 #include "Specification.hpp"
 #include "Record.hpp"
+#include "NodeRole.hpp"
 
 namespace dmpl
 {
@@ -106,66 +107,16 @@ namespace dmpl
     * @class BaseRole
     * @brief Represents a node's particular role; use the Role typedef
     */
-  class BaseRole : public HasAttributes, public std::enable_shared_from_this<BaseRole>
+  class BaseRole : public NodeRole, public std::enable_shared_from_this<BaseRole>
   {
   public:    
     /// Owning Node object
     Node node;
 
-    /**
-     * The role name
-     **/
-    std::string name;
-
-    virtual std::string getName() const { return name; }
-
-    ///true if this is an abstract role definition (no function bodies)
-    bool abstract;
-
-    /**
-     * list of global variables
-     **/
-    Vars globVars;
-
-    ///list of local variables
-    Vars locVars;
-
-    ///list of group variables
-    Vars groupVars;
-
-    /**
-     * records
-     **/
-    Records records;
-    
-    /**
-     * A map of function names to function definitions
-     **/
-    Funcs funcs;
-
-    /**
-     * A list of functions that are threads. Each thread gets a unique index
-     **/
-    std::vector<Func> threads;
-
-    ///map from names to specifications (expect or require) declared
-    ///at node level
-    Specs specs;
-
     ///constructors
-    BaseRole(bool abst = false) : abstract(abst) {}
-    BaseRole(const std::string &n, bool abst = false) : name(n), abstract(abst) {}
-    BaseRole(const std::string &n, const Attributes& a, bool abst = false)
-      : name(n), HasAttributes(a), abstract(abst) {}
-
-    //-- return all local and global variables declared in this role
-    VarList allVars() const
-    {
-      VarList res;
-      for(const auto &v : globVars) res.push_back(v.second);
-      for(const auto &v : locVars) res.push_back(v.second);
-      return res;
-    }
+    BaseRole(bool abst = false) : NodeRole(abst) {}
+    BaseRole(const std::string &n, bool abst = false) : NodeRole(n,abst) {}
+    BaseRole(const std::string &n, const Attributes& a, bool abst = false) : NodeRole(n,a,abst) {}
 
     //-- return all local and global variables in scope, i.e.,
     //-- including the parent node as well.
@@ -175,34 +126,10 @@ namespace dmpl
     //-- appears after V2 if the constructor of V1 reads V2.
     void orderVarsRecords(std::map<size_t,Var> &sortedVars,
                           std::map<size_t,Record> &sortedRecs) const;
-    
-    //-- find variable with given name. return empty variable if no
-    //-- such variable found.
-    Var findVar(const std::string& name) const
-    {
-      Vars::const_iterator ret = locVars.find(name);
-      if(ret != locVars.end()) return ret->second;
-
-      ret = globVars.find(name);
-      if(ret != globVars.end()) return ret->second;
-
-      return Var();
-    }
 
     //-- return all records in scope, i.e., including the parent node
     //-- as well.
     RecordList allRecordsInScope() const;
-    
-    //-- find record with given name. return empty record if no such
-    //-- record found.
-    Record findRecord(const std::string& name) const
-    {
-      auto it = records.find(name);
-      return it == records.end() ? Record() : it->second;
-    }
-
-    //-- return the list of all functions, including constructors
-    FuncList allFuncs() const;
 
     //-- return list of all functions in scope, either in this role or
     //-- in parent node
@@ -219,28 +146,6 @@ namespace dmpl
     //-- find function with given name. either in this role or at the
     //-- node level.
     Func findFunc(const std::string& name) const;
-
-    Sym findSym(const std::string& name) const
-    {
-      Var v = findVar(name);
-      if(v) return Sym(std::static_pointer_cast<Sym::element_type>(v));
-
-      Record r = findRecord(name);
-      if(r) return Sym(std::static_pointer_cast<Sym::element_type>(r));
-
-      Func f = findFunc(name);
-      if(f) return Sym(std::static_pointer_cast<Sym::element_type>(f));
-
-      return Sym();
-    }
-
-    ///clear the role -- reset it to an empty role
-    void clear()
-    {
-      name.clear();
-      globVars.clear(); locVars.clear();
-      funcs.clear(); attrs.clear();
-    }
 
     ///add a variable with scope already set
     void addVar(const Var &v)

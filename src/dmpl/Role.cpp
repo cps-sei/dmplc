@@ -217,29 +217,6 @@ dmpl::RecordList dmpl::BaseRole::allRecordsInScope() const
 }
 
 /*********************************************************************/
-//-- return the list of all functions, including constructors
-/*********************************************************************/
-dmpl::FuncList dmpl::BaseRole::allFuncs() const
-{
-  FuncList res;
-
-  //-- collect functions
-  for(const auto &f : funcs) res.push_back(f.second);
-
-  //-- collect constructors of local and global variables
-  for(const auto &v : allVars())
-    if(v->initFunc != NULL) res.push_back(v->initFunc);
-    
-  //-- collect constructors and assumption functions of all records
-  for(const auto &rec : records) {
-    if(rec.second->initFunc != NULL) res.push_back(rec.second->initFunc);
-    if(rec.second->assumeFunc != NULL) res.push_back(rec.second->assumeFunc);
-  }
-
-  return res;
-}
-
-/*********************************************************************/
 //-- return list of all functions in scope, either in this role or in
 //-- parent node
 /*********************************************************************/

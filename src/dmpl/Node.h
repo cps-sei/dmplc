@@ -83,18 +83,11 @@ namespace dmpl
     * @class Node
     * @brief Represents a process in a distributed program
     */
-  class BaseNode : public HasAttributes
+  class BaseNode : public NodeRole
   {
   public:    
     /// Owning Program object
     Program *program;
-
-    /**
-     * The node name
-     **/
-    std::string name;
-
-    virtual std::string getName() const { return name; }
 
     ///the node arguments
     std::vector<std::string> args;
@@ -105,45 +98,11 @@ namespace dmpl
     ///id variable (named by the single entry in args).
     Var idVar;
 
-    ///true if this is an abstract node definition (no function bodies)
-    bool abstract;
-
-    /**
-     * list of global variables
-     **/
-    Vars globVars;
-
-    ///list of local variables
-    Vars locVars;
-
-    ///list of group variables
-    Vars groupVars;
-
-    /**
-     * records
-     **/
-    Records records;
-    
-    /**
-     * A map of function names to function definitions
-     **/
-    Funcs funcs;
-
-    /**
-     * A list of functions that are threads. Each thread gets a unique index
-     **/
-    std::vector<Func> threads;
-
-    ///map from names to specifications (expect or require) declared
-    ///at node level
-    Specs specs;
-
     ///constructors
-    BaseNode(bool abst = false) : program(NULL), abstract(abst) {}
-    BaseNode(const std::string &n, bool abst = false)
-      : program(NULL), name(n), abstract(abst) {}
+    BaseNode(bool abst = false) : program(NULL), NodeRole(abst) {}
+    BaseNode(const std::string &n, bool abst = false) : program(NULL), NodeRole(n,abst) {}
     BaseNode(const std::string &n, const Attributes& a, bool abst = false)
-      : program(NULL), name(n), HasAttributes(a), abstract(abst) {}
+      : program(NULL), NodeRole(n,a,abst) {}
 
     void initArgs()
     {
@@ -157,15 +116,6 @@ namespace dmpl
         throw std::runtime_error("Node must have exactly one parameter (its id)");
       }
     }
-
-    //-- return all local and global variables declared in this node
-    VarList allVars() const
-    {
-      VarList res;
-      for(const auto &v : globVars) res.push_back(v.second);
-      for(const auto &v : locVars) res.push_back(v.second);
-      return res;
-    }
     
     //-- find variable with given name. return empty variable if no
     //-- such variable found.
@@ -173,68 +123,18 @@ namespace dmpl
     {
       if(idVar && idVar->name == name) return idVar;
 
-      Vars::const_iterator ret = locVars.find(name);
-      if(ret != locVars.end()) return ret->second;
-
-      ret = globVars.find(name);
-      if(ret != globVars.end()) return ret->second;
-
-      return Var();
+      return NodeRole::findVar(name);
     }
-
-    //-- return true iff the node has a variable with the same name,
-    //-- type and scope
-    bool hasVar(const Var &var) const
-    {
-      Var v = findVar(var->name);
-      return v && (*v == *var);
-    }
-    
-    //-- find record with given name. return empty record if no such
-    //-- record found.
-    Record findRecord(const std::string& name) const
-    {
-      auto it = records.find(name);
-      return it == records.end() ? Record() : it->second;
-    }
-
-    //-- return true iff the node has a record with the same name, and
-    //-- same set of variables.
-    bool hasRecord(const Record &rec)
-    {
-      Record r = findRecord(rec->name);
-      return r && (*r == *rec);
-    }
-    
-    //-- return the list of all functions, including constructors
-    FuncList allFuncs() const;
     
     //-- find function with given name. either in this node or at the
     //-- program level.
     Func findFunc(const std::string& name) const;
 
-    //-- find symbol with given name. return empty symbol if no such
-    //-- symbol found.
-    Sym findSym(const std::string& name) const
-    {
-      Var v = findVar(name);
-      if(v) return Sym(std::static_pointer_cast<Sym::element_type>(v));
-
-      Record r = findRecord(name);
-      if(r) return Sym(std::static_pointer_cast<Sym::element_type>(r));
-
-      Func f = findFunc(name);
-      if(f) return Sym(std::static_pointer_cast<Sym::element_type>(f));
-
-      return Sym();
-    }
-
     ///clear the node -- reset it to an empty node
     void clear()
     {
-      name.clear(); args.clear(); 
-      globVars.clear(); locVars.clear();
-      funcs.clear(); attrs.clear();
+      NodeRole::clear();
+      args.clear(); 
     }
 
     ///add a variable with scope already set
