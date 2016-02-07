@@ -104,6 +104,9 @@ namespace dmpl
     BaseNode(const std::string &n, const Attributes& a, bool abst = false)
       : program(NULL), NodeRole(n,a,abst) {}
 
+    //-- return a description of the node
+    std::string getDesc() const { return "node " + name; }
+
     void initArgs()
     {
       if(idVar == NULL && args.size() == 1)
@@ -137,46 +140,6 @@ namespace dmpl
       args.clear(); 
     }
 
-    ///add a variable with scope already set
-    void addVar(const Var &v)
-    {
-      std::string vscope =v->scopeStr();
-
-      Vars &vars = (vscope == "local") ? locVars : ((vscope == "global") ? globVars : groupVars);
-
-      if(!vars.insert(std::make_pair(v->name,v)).second) {
-        throw std::runtime_error("ERROR: " + vscope + " variable " + v->name +
-                                 " redeclared by node " + name + "!!");
-      }
-    }
-    
-    ///add a block of variables, with scope already set
-    void addVarBlock(const VarList &vb)
-    {
-      BOOST_FOREACH(const Var &v,vb) addVar(v);
-    }
-
-    ///add variables from a map, with scope already set
-    void addVars(const Vars &vars)
-    {
-      for(const auto v : vars) addVar(v.second);
-    }
-
-    ///add a record
-    void addRecord(const Record &r)
-    {
-      if(!records.insert(std::make_pair(r->name,r)).second)
-        throw std::runtime_error("ERROR: record " + r->name + " redeclared by node " + name + "!!");
-    }
-
-    ///add a function
-    void addFunction(const Func &f)
-    {
-      auto it = funcs.find(f->name);
-      if(it == funcs.end()) funcs.insert(std::make_pair(f->name, f));
-      else it->second->mergeWith(f);
-    }
-
     ///find function with given name. return NULL function if none
     ///exists.
     Func findFunc(const std::string &funcName)
@@ -191,20 +154,6 @@ namespace dmpl
       auto it = roles.find(r->name);
       if(it == roles.end()) roles.insert(std::make_pair(r->name, r));
       else it->second->mergeWith(r);
-    }
-
-    ///add a specification
-    void addSpecification(const Spec &s)
-    {
-      if(!specs.insert(std::make_pair(s->name,s)).second)
-        throw std::runtime_error("ERROR: duplicate specificaion " + s->name);
-    }
-
-    ///return true if the argument is the name of a defined DMPL
-    ///function of this node
-    bool hasFunction(const std::string &fn)
-    {
-      return funcs.find(fn) != funcs.end();
     }
 
     ///merge with another node

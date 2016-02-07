@@ -118,6 +118,9 @@ namespace dmpl
     BaseRole(const std::string &n, bool abst = false) : NodeRole(n,abst) {}
     BaseRole(const std::string &n, const Attributes& a, bool abst = false) : NodeRole(n,a,abst) {}
 
+    //-- return a description of the role
+    std::string getDesc() const { return "role " + name; }
+    
     //-- return all local and global variables in scope, i.e.,
     //-- including the parent node as well.
     VarList allVarsInScope() const;
@@ -147,45 +150,6 @@ namespace dmpl
     //-- node level.
     Func findFunc(const std::string& name) const;
 
-    ///add a variable with scope already set
-    void addVar(const Var &v)
-    {
-      std::string vscope =v->scopeStr();
-
-      Vars &vars = (vscope == "local") ? locVars : ((vscope == "global") ? globVars : groupVars);
-
-      if(!vars.insert(std::make_pair(v->name,v)).second) {
-        throw std::runtime_error("ERROR: " + vscope + " variable " + v->name +
-                                 " redeclared by node " + name + "!!");
-      }
-    }
-    
-    ///add a block of variables, with scope already set
-    void addVarBlock(const VarList &vb)
-    {
-      BOOST_FOREACH(const Var &v,vb) addVar(v);
-    }
-
-    ///add a record
-    void addRecord(const Record &r)
-    {
-      if(!records.insert(std::make_pair(r->name,r)).second)
-        throw std::runtime_error("ERROR: record " + r->name + " redeclared by role " + name + "!!");
-    }
-
-    ///add a function
-    void addFunction(const Func &f)
-    {
-      if(funcs.count(f->name) > 0) {
-        Func &of = funcs[f->name];
-        of->mergeWith(f);
-      }
-      else
-      {
-        funcs[f->name] = f;
-      }
-    }
-
     ///return a pointer to the attribute with given name and number of
     ///arguments in the given function. if the function itself does
     ///not have the attributed, then look in the function it inherits
@@ -197,21 +161,6 @@ namespace dmpl
     ///find the platform initialzer function in this role or in the
     ///parent node
     Func findPlatformInitializer();
-    
-    ///add a specification
-    void addSpecification(const Spec &s)
-    {
-      auto it = specs.find(s->name);
-      assert(it == specs.end() && "ERROR: duplicate specification with same name!!");
-      specs.emplace(s->name,s);
-    }
-
-    ///return true if the argument is the name of a defined DMPL
-    ///function of this role
-    bool hasFunction(const std::string &fn) const
-    {
-      return funcs.find(fn) != funcs.end();
-    }
 
     ///returns true if this role overrides function with given name
     bool overridesFunction(const std::string &fn)

@@ -99,8 +99,12 @@ namespace dmpl
      **/
     std::string name;
 
+    //-- return the name
     virtual std::string getName() const { return name; }
 
+    //-- return a description of the node/role
+    virtual std::string getDesc() const = 0;
+    
     ///true if this is an abstract node definition (no function bodies)
     bool abstract;
 
@@ -213,6 +217,60 @@ namespace dmpl
       name.clear();
       globVars.clear(); locVars.clear(); groupVars.clear();
       funcs.clear(); attrs.clear();
+    }
+
+    ///add a variable with scope already set
+    virtual void addVar(const Var &v)
+    {
+      std::string vscope =v->scopeStr();
+
+      Vars &vars = (vscope == "local") ? locVars : ((vscope == "global") ? globVars : groupVars);
+
+      if(!vars.insert(std::make_pair(v->name,v)).second) {
+        throw std::runtime_error("ERROR: " + vscope + " variable " + v->name +
+                                 " redeclared by " + getDesc() + "!!");
+      }
+    }
+    
+    ///add a block of variables, with scope already set
+    virtual void addVarBlock(const VarList &vb)
+    {
+      BOOST_FOREACH(const Var &v,vb) addVar(v);
+    }
+
+    ///add variables from a map, with scope already set
+    virtual void addVars(const Vars &vars)
+    {
+      for(const auto v : vars) addVar(v.second);
+    }
+
+    ///add a record
+    virtual void addRecord(const Record &r)
+    {
+      if(!records.insert(std::make_pair(r->name,r)).second)
+        throw std::runtime_error("ERROR: record " + r->name + " redeclared by " + getDesc() + "!!");
+    }
+
+    ///add a function
+    virtual void addFunction(const Func &f)
+    {
+      auto it = funcs.find(f->name);
+      if(it == funcs.end()) funcs.insert(std::make_pair(f->name, f));
+      else it->second->mergeWith(f);
+    }
+
+    ///add a specification
+    virtual void addSpecification(const Spec &s)
+    {
+      if(!specs.insert(std::make_pair(s->name,s)).second)
+        throw std::runtime_error("ERROR: duplicate specificaion " + s->name);
+    }
+
+    ///return true if the argument is the name of a defined DMPL
+    ///function of this node
+    virtual bool hasFunction(const std::string &fn) const
+    {
+      return funcs.find(fn) != funcs.end();
     }
   };
 
