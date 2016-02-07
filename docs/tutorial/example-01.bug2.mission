@@ -14,7 +14,7 @@ MISSION_TIME=120
 
 function make_args
 {
-  echo --node uav --role Uav --var_x $1 --var_y $2 --var_xf $3 --var_yf $4
+  echo --var_x $1 --var_y $2 --var_xf $3 --var_yf $4
 }
 
 ARGS_0="$(make_args 0 5 9 5)"

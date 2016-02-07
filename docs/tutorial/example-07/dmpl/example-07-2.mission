@@ -20,7 +20,7 @@ function make_args
     diffy=$(expr $4 - $2 + 1)
     rndx=$(expr $1 + $RANDOM % $diffx)
     rndy=$(expr $2 + $RANDOM % $diffy)
-    echo --node uav --role Tile --var_x $rndx --var_y $rndy --var_xf $5 --var_yf $6
+    echo --var_x $rndx --var_y $rndy --var_xf $5 --var_yf $6
 }
 
 ARGS_0="$(make_args 0 0 19 19 7 7)"

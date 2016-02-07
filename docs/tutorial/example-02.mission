@@ -17,8 +17,8 @@ IY=1
 FX=8
 FY=8
 
-ARGS_0="--node uav --role Leader --var_x $IX --var_y $IY --var_xt $FX --var_yt $FY"
-ARGS_1="--node uav --role ProtectorSE --var_x $((IX+1)) --var_y $((IY+1))"
-ARGS_2="--node uav --role ProtectorSW --var_x $((IX-1)) --var_y $((IY+1))"
-ARGS_3="--node uav --role ProtectorNW --var_x $((IX-1)) --var_y $((IY-1))"
-ARGS_4="--node uav --role ProtectorNE --var_x $((IX+1)) --var_y $((IY-1))"
+ARGS_0="--var_x $IX --var_y $IY --var_xt $FX --var_yt $FY"
+ARGS_1="--var_x $((IX+1)) --var_y $((IY+1))"
+ARGS_2="--var_x $((IX-1)) --var_y $((IY+1))"
+ARGS_3="--var_x $((IX-1)) --var_y $((IY-1))"
+ARGS_4="--var_x $((IX+1)) --var_y $((IY-1))"

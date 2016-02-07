@@ -747,6 +747,12 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
           << "]\" << std::endl;\n";
   buffer_ << "          exit(1);\n";
   buffer_ << "        }\n";
+  size_t procId = 0;
+  for(const Process &proc : builder_.program.processes) {
+    buffer_ << "        if(settings.id == " << procId << ") { node_name = \""
+            << proc.getNode() << "\"; role_name = \"" << proc.getRole() << "\"; }\n";
+    ++procId;
+  }
   buffer_ << "      }\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
@@ -808,22 +814,6 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   buffer_ << "      {\n";
   buffer_ << "        std::stringstream buffer (argv[i + 1]);\n";
   buffer_ << "        buffer >> write_fd;\n";
-  buffer_ << "      }\n";
-  buffer_ << "      ++i;\n";
-  buffer_ << "    }\n";
-  buffer_ << "    else if (arg1 == \"--node\")\n";
-  buffer_ << "    {\n";
-  buffer_ << "      if (i + 1 < argc)\n";
-  buffer_ << "      {\n";
-  buffer_ << "        node_name = argv[i + 1];\n";
-  buffer_ << "      }\n";
-  buffer_ << "      ++i;\n";
-  buffer_ << "    }\n";
-  buffer_ << "    else if (arg1 == \"--role\")\n";
-  buffer_ << "    {\n";
-  buffer_ << "      if (i + 1 < argc)\n";
-  buffer_ << "      {\n";
-  buffer_ << "        role_name = argv[i + 1];\n";
   buffer_ << "      }\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
@@ -909,8 +899,6 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   buffer_ << "        \" [-r|--reduced]           use the reduced message header\\n\"\\\n";
   buffer_ << "        \" [-dbg|--debug]           print debug messages\\n\"\\\n";
   buffer_ << "        \" [-u|--udp ip:port]       the udp ips to send to (first is self to bind to)\\n\"\\\n";
-  buffer_ << "        \" [--node name]            select the node name\\n\"\\\n";
-  buffer_ << "        \" [--role name]            select the role name\\n\"\\\n";
 
   buffer_ << variable_help.str ();
 

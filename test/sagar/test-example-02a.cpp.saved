@@ -504,6 +504,11 @@ void handle_arguments (int argc, char ** argv)
                     << "  valid range: [0, 4]" << std::endl;
           exit(1);
         }
+        if(settings.id == 0) { node_name = "uav"; role_name = "Leader"; }
+        if(settings.id == 1) { node_name = "uav"; role_name = "Protector"; }
+        if(settings.id == 2) { node_name = "uav"; role_name = "Protector"; }
+        if(settings.id == 3) { node_name = "uav"; role_name = "Protector"; }
+        if(settings.id == 4) { node_name = "uav"; role_name = "Protector"; }
       }
       ++i;
     }
@@ -563,22 +568,6 @@ void handle_arguments (int argc, char ** argv)
       {
         std::stringstream buffer (argv[i + 1]);
         buffer >> write_fd;
-      }
-      ++i;
-    }
-    else if (arg1 == "--node")
-    {
-      if (i + 1 < argc)
-      {
-        node_name = argv[i + 1];
-      }
-      ++i;
-    }
-    else if (arg1 == "--role")
-    {
-      if (i + 1 < argc)
-      {
-        role_name = argv[i + 1];
       }
       ++i;
     }
@@ -671,8 +660,6 @@ void handle_arguments (int argc, char ** argv)
         " [-r|--reduced]           use the reduced message header\n"\
         " [-dbg|--debug]           print debug messages\n"\
         " [-u|--udp ip:port]       the udp ips to send to (first is self to bind to)\n"\
-        " [--node name]            select the node name\n"\
-        " [--role name]            select the role name\n"\
         " [--var_x] sets the initial value of variable x\n"\
         " [--var_xt] sets the initial value of variable xt\n"\
         " [--var_y] sets the initial value of variable y\n"\

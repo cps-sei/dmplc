@@ -28,30 +28,30 @@ IY1=9
 FX1=18
 FY1=9
 
-ARGS_0="--node uav --role Leader --var_x $IX1 --var_y $IY1 --var_xt $FX1 --var_yt $FY1"
-ARGS_1="--node uav --role Protector --var_x $((IX1+1)) --var_y $((IY1+1))"
-ARGS_2="--node uav --role Protector --var_x $((IX1-1)) --var_y $((IY1+1))"
-ARGS_3="--node uav --role Protector --var_x $((IX1-1)) --var_y $((IY1-1))"
-ARGS_4="--node uav --role Protector --var_x $((IX1+1)) --var_y $((IY1-1))"
+ARGS_0="--var_x $IX1 --var_y $IY1 --var_xt $FX1 --var_yt $FY1"
+ARGS_1="--var_x $((IX1+1)) --var_y $((IY1+1))"
+ARGS_2="--var_x $((IX1-1)) --var_y $((IY1+1))"
+ARGS_3="--var_x $((IX1-1)) --var_y $((IY1-1))"
+ARGS_4="--var_x $((IX1+1)) --var_y $((IY1-1))"
 
 IX2=9
 IY2=1
 FX2=9
 FY2=18
 
-ARGS_5="--node uav --role Leader --var_x $IX2 --var_y $IY2 --var_xt $FX2 --var_yt $FY2"
-ARGS_6="--node uav --role Protector --var_x $((IX2+1)) --var_y $((IY2+1))"
-ARGS_7="--node uav --role Protector --var_x $((IX2-1)) --var_y $((IY2+1))"
-ARGS_8="--node uav --role Protector --var_x $((IX2-1)) --var_y $((IY2-1))"
-ARGS_9="--node uav --role Protector --var_x $((IX2+1)) --var_y $((IY2-1))"
+ARGS_5="--var_x $IX2 --var_y $IY2 --var_xt $FX2 --var_yt $FY2"
+ARGS_6="--var_x $((IX2+1)) --var_y $((IY2+1))"
+ARGS_7="--var_x $((IX2-1)) --var_y $((IY2+1))"
+ARGS_8="--var_x $((IX2-1)) --var_y $((IY2-1))"
+ARGS_9="--var_x $((IX2+1)) --var_y $((IY2-1))"
 
 IX3=1
 IY3=1
 FX3=18
 FY3=18
 
-ARGS_10="--node uav --role Leader --var_x $IX3 --var_y $IY3 --var_xt $FX3 --var_yt $FY3"
-ARGS_11="--node uav --role Protector --var_x $((IX3+1)) --var_y $((IY3+1))"
-ARGS_12="--node uav --role Protector --var_x $((IX3-1)) --var_y $((IY3+1))"
-ARGS_13="--node uav --role Protector --var_x $((IX3-1)) --var_y $((IY3-1))"
-ARGS_14="--node uav --role Protector --var_x $((IX3+1)) --var_y $((IY3-1))"
+ARGS_10="--var_x $IX3 --var_y $IY3 --var_xt $FX3 --var_yt $FY3"
+ARGS_11="--var_x $((IX3+1)) --var_y $((IY3+1))"
+ARGS_12="--var_x $((IX3-1)) --var_y $((IY3+1))"
+ARGS_13="--var_x $((IX3-1)) --var_y $((IY3-1))"
+ARGS_14="--var_x $((IX3+1)) --var_y $((IY3-1))"
