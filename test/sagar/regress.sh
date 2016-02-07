@@ -97,6 +97,15 @@ function test_verif_ind {
     if [ "$OUT2" == "$OUTPUT" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
 }
 
+#role descriptors for various examples
+EX02ROLES="uav:Leader:1:uav:ProtectorSE:1"
+
+#if arguments were passed, they refer to a specific test. just run that.
+if [ "$#" -gt "0" ]; then
+    $*
+    exit $?
+fi
+
 #double parse tests
 test_double_parse test-example-01a.dmpl ""
 test_double_parse test-example-01b.dmpl ""
