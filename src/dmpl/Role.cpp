@@ -66,10 +66,12 @@ dmpl::VarList dmpl::BaseRole::allVarsInScope() const
   //-- collect all variables from this role
   Vars allVars = locVars;
   allVars.insert(globVars.begin(), globVars.end());
+  allVars.insert(groupVars.begin(), groupVars.end());
 
   //-- add variables declared in parent node
   allVars.insert(node->locVars.begin(), node->locVars.end());
   allVars.insert(node->globVars.begin(), node->globVars.end());
+  allVars.insert(node->groupVars.begin(), node->groupVars.end());
   
   VarList res;
   for(const auto &v : allVars) res.push_back(v.second);
@@ -345,31 +347,16 @@ dmpl::BaseRole::mergeWith(const Role &other)
     throw std::runtime_error("Cannot merge roles of differing names: " + name + " and " + oth.name);
 
   //-- merge global vars
-  BOOST_FOREACH(const Vars::value_type &v, oth.globVars)
-  {
-    if(globVars.count(v.second->name) == 0)
-      globVars[v.second->name] = v.second;
-    else if(globVars[v.second->name]->type != v.second->type)
-      throw std::runtime_error("Collision while merging role globals: " + v.second->name + " in " + name);
-  }
+  addVars(other->globVars);
 
   //-- merge local vars
-  BOOST_FOREACH(const Vars::value_type &v, oth.locVars)
-  {
-    if(locVars.count(v.second->name) == 0)
-      locVars[v.second->name] = v.second;
-    else if(locVars[v.second->name]->type != v.second->type)
-      throw std::runtime_error("Collision while merging role locals: " + v.second->name + " in " + name);
-  }
+  addVars(other->locVars);
+
+  //-- merge group vars
+  addVars(other->groupVars);
 
   //-- merge functions
-  BOOST_FOREACH(const Funcs::value_type &f, oth.funcs)
-  {
-    if(funcs.count(f.second->name) == 0)
-      funcs[f.second->name] = f.second;
-    else
-      funcs[f.second->name]->mergeWith(f.second);
-  }
+  BOOST_FOREACH(const Funcs::value_type &f, oth.funcs) addFunction(f.second);
 
   //-- merge attributes
   if(!mergeAttributes(*other))
@@ -437,6 +424,9 @@ dmpl::BaseRole::print (std::ostream &os,unsigned int indent)
     if(i.second->record.empty()) i.second->printInit(os, indent+2);
   }
   for (const auto &i : locVars) {
+    if(i.second->record.empty()) i.second->printInit(os, indent+2);
+  }
+  for (const auto &i : groupVars) {
     if(i.second->record.empty()) i.second->printInit(os, indent+2);
   }
 

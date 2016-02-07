@@ -86,18 +86,15 @@ dmpl::BaseNode::mergeWith(const Node &on)
 
   //-- merge local vars
   addVars(on->locVars);
+
+  //-- merge group vars
+  addVars(on->groupVars);
   
   //-- merge records
   BOOST_FOREACH(const Records::value_type &r, on->records) addRecord(r.second);
 
   //-- merge functions
-  BOOST_FOREACH(const Funcs::value_type &f, on->funcs)
-  {
-    if(n.funcs.count(f.second->name) == 0)
-      n.funcs[f.second->name] = f.second;
-    else
-      n.funcs[f.second->name]->mergeWith(f.second);
-  }
+  BOOST_FOREACH(const Funcs::value_type &f, on->funcs) addFunction(f.second);
 
   //-- merge attributes
   if(!mergeAttributes(*on))
@@ -128,6 +125,9 @@ dmpl::BaseNode::print (std::ostream &os,unsigned int indent)
     if(i.second->record.empty()) i.second->printInit(os, indent+2);
   }
   for (const auto &i : locVars) {
+    if(i.second->record.empty()) i.second->printInit(os, indent+2);
+  }
+  for (const auto &i : groupVars) {
     if(i.second->record.empty()) i.second->printInit(os, indent+2);
   }
 

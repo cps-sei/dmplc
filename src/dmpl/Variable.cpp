@@ -113,6 +113,8 @@ dmpl::Variable::printInit (std::ostream &os,unsigned int indent)
     os << spacer << (isOverride && record.empty() ? "override " : "") << "global " << toString();
   else if(scope == LOCAL)
     os << spacer << (isOverride && record.empty() ? "override " : "") << "local " << toString();
+  else if(scope == GROUP)
+    os << spacer << (isOverride && record.empty() ? "override " : "") << "group " << toString();
   else
     os << spacer << toString();
 
