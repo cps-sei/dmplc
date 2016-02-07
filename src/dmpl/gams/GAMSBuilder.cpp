@@ -374,9 +374,7 @@ dmpl::gams::GAMSBuilder::build_common_global_variables ()
   buffer_ << "engine::KnowledgeUpdateSettings private_update (true);\n";
 
   buffer_ << "//-- used to synchronize and make sure that all nodes are up\n";
-  buffer_ << "ArrayReference<unsigned int, ";
-  buffer_ << builder_.program.processes.size ();
-  buffer_ << "> startSync(knowledge, \"startSync\");\n";
+  buffer_ << "ArrayReference<unsigned int, " << numNodes () << "> startSync(knowledge, \"startSync\");\n";
 
   //-- define barrier variables for all synchronous threads
   build_comment("//-- barrier variables", "\n", "", 0);
@@ -399,17 +397,13 @@ dmpl::gams::GAMSBuilder::build_common_global_variables ()
 
   //-- generate barrier variables
   for(const std::string &st : syncThreads) {
-    buffer_ << "ArrayReference<unsigned int, ";
-    buffer_ << builder_.program.processes.size ();
-    buffer_ << "> mbarrier_" << st;
+    buffer_ << "ArrayReference<unsigned int, " << numNodes () << "> mbarrier_" << st;
     buffer_ << "(knowledge, \"mbarrier_" << st << "\");\n";
   }
   buffer_ << "\n";
 
   build_comment("//-- number of participating processes", "", "", 0);
-  buffer_ << "unsigned int processes (";
-  buffer_ << builder_.program.processes.size ();
-  buffer_ << ");\n\n";
+  buffer_ << "unsigned int processes (" << numNodes () << ");\n\n";
 }
 
 /*********************************************************************/
@@ -507,11 +501,7 @@ dmpl::gams::GAMSBuilder::build_program_variable_decl (const Var & var)
     buffer_ << "ArrayReference<" << get_type_name(var);
     BOOST_FOREACH(int dim, var->type->dims)
     {
-      buffer_ << ", ";
-      if(dim > 0)
-        buffer_ << dim;
-      else
-        buffer_ << builder_.program.processes.size ();
+      buffer_ << ", " << (dim > 0 ? dim : numNodes ());
     }
     buffer_ << "> ";
   }
@@ -597,11 +587,7 @@ dmpl::gams::GAMSBuilder::build_thread_variable (const Func &thread, const Var & 
     buffer_ << ", CachedReference>";
     BOOST_FOREACH(int dim, var->type->dims)
     {
-      buffer_ << ", ";
-      if(dim > 0)
-        buffer_ << dim;
-      else
-        buffer_ << builder_.program.processes.size ();
+      buffer_ << ", " << (dim > 0 ? dim : numNodes ());
     }
     buffer_ << "> ";
   }
@@ -755,9 +741,9 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   buffer_ << "      {\n";
   buffer_ << "        std::stringstream buffer (argv[i + 1]);\n";
   buffer_ << "        buffer >> settings.id;\n";
-  buffer_ << "        if(settings.id < 0 || settings.id >= " << builder_.program.processes.size () << ") {\n";
+  buffer_ << "        if(settings.id < 0 || settings.id >= " << numNodes () << ") {\n";
   buffer_ << "          std::cerr << \"ERROR: Invalid node id: \" << settings.id \n"
-          << "                    << \"  valid range: [0, " << (builder_.program.processes.size () - 1)
+          << "                    << \"  valid range: [0, " << (numNodes () - 1)
           << "]\" << std::endl;\n";
   buffer_ << "          exit(1);\n";
   buffer_ << "        }\n";
@@ -1532,7 +1518,7 @@ dmpl::gams::GAMSBuilder::build_expect_thread_definition (void)
       continue;
     if(var->usage_summary.anyExpect().any())
     {
-      for(int i = 0; i < builder_.program.processes.size(); i++)
+      for(int i = 0; i < numNodes(); i++)
       {
         buffer_ << "  out << tv.tv_sec << \",\" << tv.tv_usec << \",\" << id << \",\" << " << i << " << \",\";\n";
         buffer_ << "  out << \"" << var->getName() << ",\" << ::dmpl::" << var->getName() << "[" << i << "];\n";
@@ -2294,7 +2280,7 @@ dmpl::gams::GAMSBuilder::build_main_function ()
   buffer_ << "    knowledge.evaluate (syncStr, wait_settings);\n";
   buffer_ << "    for(;;) {\n";
   buffer_ << "      size_t flag = 1;\n";
-  buffer_ << "      for(size_t i = 0;i < " << builder_.program.processes.size () << "; ++i)\n";
+  buffer_ << "      for(size_t i = 0;i < " << numNodes () << "; ++i)\n";
   buffer_ << "        if(startSync[i] == 0) { flag = 0; break; }\n";
   buffer_ << "      if(flag) break;\n";
   buffer_ << "      sleep(0.2);\n";

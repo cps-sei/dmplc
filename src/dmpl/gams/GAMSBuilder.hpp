@@ -301,6 +301,9 @@ namespace dmpl
       std::map<std::string,unsigned> funcPrios;
       std::map<std::string,unsigned> funcCrits;
       std::map<std::string,unsigned> funcZsinsts;
+
+      //-- helper function to return number of nodes
+      inline size_t numNodes() const { return builder_.program.processes.size (); }
     };
   } // namespace gams
 } //namespace dmpl
