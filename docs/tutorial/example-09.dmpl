@@ -133,10 +133,6 @@ node uav
   group bool lock [X][Y] = {
     lock[x][y] = 1;
   };
-
-  record region {
-    group unsigned char x1,y1,x2,y2;
-  }
   
   group unsigned char lx = 0,ly = 0; //leader's destination coordinates
   group bool init = 0; //leader's destination has been initialized
@@ -183,7 +179,7 @@ node uav
 
   @BarrierSync;
   @PlatformController;
-  @Period(500000);
+  @Period(100000);
   @Criticality(4);
   @WCExecTimeNominal(15000);
   @WCExecTimeOverload(30000);
@@ -216,7 +212,7 @@ node uav
 
   role Leader {
     //-- leader-specific waypoint thread
-    @Period(500000);
+    @Period(100000);
     @Criticality(3);
     @WCExecTimeNominal(10000);
     @WCExecTimeOverload(20000);
@@ -226,6 +222,24 @@ node uav
       lx = xp;
       init = 1;
     }
+
+    //-- a region is a rectangle identified by the coordinates of its
+    //-- top-right and bottom-left corners. note that only the leader
+    //-- needs to know about this.
+    record region {
+      group unsigned char x1,y1,x2,y2;
+    }
+
+    //-- since the leader's are also coordinators, they use this
+    //-- thread to ensure that the two groups never occupy overlapping
+    //-- regions.
+    @Period(100000);
+    @Criticality(5);
+    @WCExecTimeNominal(10000);
+    @WCExecTimeOverload(20000);
+    thread REGION_COLLISION_AVOIDANCE {
+    }
+
   
     //-- inherit the collision avoidance thread
     thread COLLISION_AVOIDANCE;
@@ -233,7 +247,7 @@ node uav
 
   role Protector {
     //-- follower-specific waypoint thread
-    @Period(500000);
+    @Period(100000);
     @Criticality(3);
     @WCExecTimeNominal(10000);
     @WCExecTimeOverload(20000);
