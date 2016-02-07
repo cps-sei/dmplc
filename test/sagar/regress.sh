@@ -151,8 +151,8 @@ test_seq_ind test-example-01f.dmpl uav:Uav1:1:uav:Uav2:1
 test_verif ../../docs/tutorial/example-01.dmpl "" uav:Uav:2 SUCCESSFUL
 test_verif ../../docs/tutorial/example-01.bug1.dmpl "" uav:Uav:2 FAILED
 test_verif ../../docs/tutorial/example-01.bug2.dmpl "" uav:Uav:2 FAILED
-test_verif ../../docs/tutorial/example-02.dmpl ../../docs/tutorial/example-02-AADL.dmpl uav:Leader:1:uav:Protector:1 SUCCESSFUL
-test_verif ../../docs/tutorial/example-02.bug1.dmpl ../../docs/tutorial/example-02-AADL.dmpl uav:Leader:1:uav:Protector:1 FAILED
+test_verif ../../docs/tutorial/example-02.dmpl ../../docs/tutorial/example-02-AADL.dmpl $EX02ROLES SUCCESSFUL
+test_verif ../../docs/tutorial/example-02.bug1.dmpl ../../docs/tutorial/example-02-AADL.dmpl $EX02ROLES FAILED
 test_verif ../../docs/tutorial/example-03.dmpl ../../docs/tutorial/example-03-AADL.dmpl uav:Leader:1:uav:Protector:1 SUCCESSFUL
 test_verif ../../docs/tutorial/example-04.dmpl ../../docs/tutorial/example-04-AADL.dmpl uav:Leader:1:uav:Protector:1 FAILED
 
@@ -160,7 +160,7 @@ test_verif ../../docs/tutorial/example-04.dmpl ../../docs/tutorial/example-04-AA
 test_verif_ind ../../docs/tutorial/example-01.dmpl uav:Uav:2 SUCCESSFUL
 test_verif_ind ../../docs/tutorial/example-01.bug1.dmpl uav:Uav:2 FAILED
 test_verif_ind ../../docs/tutorial/example-01.bug2.dmpl uav:Uav:2 FAILED
-test_verif_ind ../../docs/tutorial/example-02.dmpl ../../docs/tutorial/example-02-AADL.dmpl uav:Leader:1:uav:Protector:1 SUCCESSFUL
-test_verif_ind ../../docs/tutorial/example-02.bug1.dmpl ../../docs/tutorial/example-02-AADL.dmpl uav:Leader:1:uav:Protector:1 FAILED
+test_verif_ind ../../docs/tutorial/example-02.dmpl ../../docs/tutorial/example-02-AADL.dmpl $EX02ROLES SUCCESSFUL
+test_verif_ind ../../docs/tutorial/example-02.bug1.dmpl ../../docs/tutorial/example-02-AADL.dmpl $EX02ROLES FAILED
 test_verif_ind ../../docs/tutorial/example-03.dmpl ../../docs/tutorial/example-03-AADL.dmpl uav:Leader:1:uav:Protector:1 SUCCESSFUL
 test_verif_ind ../../docs/tutorial/example-04.dmpl ../../docs/tutorial/example-04-AADL.dmpl uav:Leader:1:uav:Protector:1 FAILED
