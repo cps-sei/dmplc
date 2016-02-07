@@ -472,6 +472,11 @@ void handle_arguments (int argc, char ** argv)
       {
         std::stringstream buffer (argv[i + 1]);
         buffer >> settings.id;
+        if(settings.id < 0 || settings.id >= 5) {
+          std::cerr << "ERROR: Invalid node id: " << settings.id 
+                    << "  valid range: [0, 4]" << std::endl;
+          exit(1);
+        }
       }
       ++i;
     }
@@ -2004,11 +2009,6 @@ int main (int argc, char ** argv)
   //-- Initialize commonly used local variables
   id = settings.id;
   num_processes = processes;
-  if(id < 0 || id >= processes) {
-    std::cerr << "ERROR: Invalid node id: " << settings.id 
-              << "  valid range: [0, " << processes - 1 << "]" << std::endl;
-    exit(1);
-  }
 
 
   /******************************************************************/

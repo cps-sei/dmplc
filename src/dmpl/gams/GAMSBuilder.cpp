@@ -755,6 +755,12 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   buffer_ << "      {\n";
   buffer_ << "        std::stringstream buffer (argv[i + 1]);\n";
   buffer_ << "        buffer >> settings.id;\n";
+  buffer_ << "        if(settings.id < 0 || settings.id >= " << builder_.program.processes.size () << ") {\n";
+  buffer_ << "          std::cerr << \"ERROR: Invalid node id: \" << settings.id \n"
+          << "                    << \"  valid range: [0, " << (builder_.program.processes.size () - 1)
+          << "]\" << std::endl;\n";
+  buffer_ << "          exit(1);\n";
+  buffer_ << "        }\n";
   buffer_ << "      }\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
@@ -2276,11 +2282,7 @@ dmpl::gams::GAMSBuilder::build_main_function ()
   buffer_ << "  //-- Initialize commonly used local variables\n";  
   buffer_ << "  id = settings.id;\n";
   buffer_ << "  num_processes = processes;\n";
-  buffer_ << "  if(id < 0 || id >= processes) {\n";
-  buffer_ << "    std::cerr << \"ERROR: Invalid node id: \" << settings.id \n"
-             "              << \"  valid range: [0, \" << processes - 1 << \"]\" << std::endl;\n";
-  buffer_ << "    exit(1);\n";
-  buffer_ << "  }\n\n";
+  buffer_ << "\n";
   
   build_constructors ();
   build_main_define_functions ();
