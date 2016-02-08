@@ -249,6 +249,25 @@ namespace dmpl
     ///check various sanity conditions on the program. this is after
     ///thread and symbol usage analysis.
     void postAnalysisSanityCheck();
+
+    //-- return the set of processes with given role name
+    std::set<Process> procsWithRole(const std::string &roleName) const
+    {
+      std::set<Process> res;
+      for(const Process &p : processes)
+        if(p.getRole() == roleName) res.insert(p);
+      return res;
+    }
+
+    //-- given a process p and a role name r, return the set of
+    //-- processes that p could potentially refer to as r
+    std::set<Process> getRefProcs(const Process &proc,const std::string &roleName) const
+    {
+      std::set<Process> res;
+      //-- right now, we just collect all processes with name = roleName
+      res = procsWithRole(roleName);
+      return res;
+    }
   };
 
   //new namespace to avoid name collisions

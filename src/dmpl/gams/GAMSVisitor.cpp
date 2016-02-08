@@ -112,8 +112,14 @@ dmpl::madara::GAMSVisitor::exitLval (LvalExpr & expression)
   Sym symbol = expression.sym;
   Var var = std::dynamic_pointer_cast<Variable>(symbol);
 
+  //-- role
+  if (node_->roles.find(expression.var) != node_->roles.end())
+  {
+    refRoles.insert(expression.var);
+    buffer_ << "role2Id[settings.id][\"" << expression.var << "\"]";
+  }
   //-- no symbol, probably something external
-  if (symbol == NULL)
+  else if (symbol == NULL)
   {
     buffer_ << expression.var;
   }

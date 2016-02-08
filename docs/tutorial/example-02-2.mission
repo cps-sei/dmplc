@@ -6,7 +6,7 @@ BIN=example-02
 OUTDIR=outdir
 MAPNAME=small
 GRIDSIZE=10
-ROLEDESC=uav:Leader:1:uav:ProtectorSE:1:uav:ProtectorSW:1:uav:ProtectorNW:1:uav:ProtectorNE:1
+ROLEDESC=uav:ProtectorNW:1:uav:Leader:1:uav:ProtectorSE:1:uav:ProtectorSW:1:uav:ProtectorNE:1
 
 EXPECT_LOG_PERIOD=0.2
 
@@ -17,8 +17,8 @@ IY=1
 FX=8
 FY=8
 
-ARGS_0="--var_x $IX --var_y $IY --var_xt $FX --var_yt $FY"
-ARGS_1="--var_x $((IX+1)) --var_y $((IY+1))"
-ARGS_2="--var_x $((IX-1)) --var_y $((IY+1))"
-ARGS_3="--var_x $((IX-1)) --var_y $((IY-1))"
+ARGS_0="--var_x $((IX-1)) --var_y $((IY-1))"
+ARGS_1="--var_x $IX --var_y $IY --var_xt $FX --var_yt $FY"
+ARGS_2="--var_x $((IX+1)) --var_y $((IY+1))"
+ARGS_3="--var_x $((IX-1)) --var_y $((IY+1))"
 ARGS_4="--var_x $((IX+1)) --var_y $((IY-1))"

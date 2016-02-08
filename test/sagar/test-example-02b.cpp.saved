@@ -187,6 +187,11 @@ ArrayReference<unsigned int, 5> startSync(knowledge, "startSync");
 ArrayReference<unsigned int, 5> mbarrier_COLLISION_AVOIDANCE(knowledge, "mbarrier_COLLISION_AVOIDANCE");
 
 /********************************************************************/
+//-- map from role ids to role names to role ids
+/********************************************************************/
+std::map< unsigned int,std::map<std::string,unsigned int> > role2Id;
+
+/********************************************************************/
 //-- number of participating processes
 /********************************************************************/
 unsigned int processes (5);
@@ -1997,6 +2002,9 @@ int main (int argc, char ** argv)
   id = settings.id;
   num_processes = processes;
 
+  /******************************************************************/
+  //-- Initializing the role2Id map
+  /******************************************************************/
 
   /******************************************************************/
   //-- Invoking constructors

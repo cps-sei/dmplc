@@ -402,6 +402,10 @@ dmpl::gams::GAMSBuilder::build_common_global_variables ()
   }
   buffer_ << "\n";
 
+  //-- the map from role ids to role names and their ids
+  build_comment("//-- map from role ids to role names to role ids", "", "", 0);
+  buffer_ << "std::map< unsigned int,std::map<std::string,unsigned int> > role2Id;\n\n";
+
   build_comment("//-- number of participating processes", "", "", 0);
   buffer_ << "unsigned int processes (" << numNodes () << ");\n\n";
 }
@@ -601,6 +605,31 @@ dmpl::gams::GAMSBuilder::build_thread_variable (const Func &thread, const Var & 
     buffer_ << ".";
   buffer_ << var->name << "\")";
   buffer_ << ";\n";
+}
+
+/*********************************************************************/
+//-- initialize the RoleIds map
+/*********************************************************************/
+void
+dmpl::gams::GAMSBuilder::init_role_id ()
+{
+  const Program &prog = builder_.program;
+  build_comment("//-- Initializing the role2Id map", "", "", 2);
+  for(const auto &rr : rolesRefRoles) {
+    std::set<Process> procs = prog.procsWithRole(rr.first);
+    for(const Process &proc : procs) {
+      for(const std::string &rp : rr.second) {
+        std::set<Process> refProcs = prog.getRefProcs(proc,rp);
+        if(refProcs.empty())
+          throw std::runtime_error("ERROR: role " + rp + " referred by role " + rr.first +
+                                   " is empty, i.e., not instantiated by any node!!");
+        if(refProcs.size() > 1)
+          throw std::runtime_error("ERROR: role " + rp + " referred by role " + rr.first +
+                                   " is ambiguous, i.e., instantiated by multiple nodes!!");
+        buffer_ << "  role2Id[" << proc.id << "][\"" << rp << "\"] = " << refProcs.begin()->id << ";\n";
+      }
+    }
+  }
 }
 
 /*********************************************************************/
@@ -1436,6 +1465,14 @@ dmpl::gams::GAMSBuilder::build_function (
     visitor.visit (statement);
   }
 
+  //-- record the set of referred roles
+  if(!visitor.refRoles.empty()) {
+    if(thread->role == NULL)
+      throw std::runtime_error("ERROR: non-role thread " + thread->name + " in node " +
+                               node->name + " refers to role " + (*visitor.refRoles.begin()));
+    rolesRefRoles[thread->role->name].insert(visitor.refRoles.begin(), visitor.refRoles.end());
+  }
+
   buffer_ << "\n  //-- Insert return statement, in case user program did not\n";
   buffer_ << "  return Integer(0);\n";
   buffer_ << "}\n\n";
@@ -2257,6 +2294,9 @@ dmpl::gams::GAMSBuilder::build_main_function ()
   buffer_ << "  id = settings.id;\n";
   buffer_ << "  num_processes = processes;\n";
   buffer_ << "\n";
+
+  //-- initialize RoleIds
+  init_role_id ();
   
   build_constructors ();
   build_main_define_functions ();

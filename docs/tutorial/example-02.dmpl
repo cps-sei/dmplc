@@ -221,10 +221,10 @@ node uav
     //-- follower-specific waypoint thread
     @Period(100000);
     override thread WAYPOINT {
-      if(init@0 == 0) return;
+      if(init@Leader == 0) return;
       waypointValid = 1;
-      xt = lx@0 + 1;
-      yt = ly@0 - 1;
+      xt = lx@Leader + 1;
+      yt = ly@Leader - 1;
     }
 
     //-- inherit the collision avoidance thread
@@ -236,10 +236,10 @@ node uav
     //-- follower-specific waypoint thread
     @Period(100000);
     override thread WAYPOINT {
-      if(init@0 == 0) return;
+      if(init@Leader == 0) return;
       waypointValid = 1;
-      xt = lx@0 - 1;
-      yt = ly@0 - 1;
+      xt = lx@Leader - 1;
+      yt = ly@Leader - 1;
     }
 
     //-- inherit the collision avoidance thread
@@ -251,10 +251,10 @@ node uav
     //-- follower-specific waypoint thread
     @Period(100000);
     override thread WAYPOINT {
-      if(init@0 == 0) return;
+      if(init@Leader == 0) return;
       waypointValid = 1;
-      xt = lx@0 + 1;
-      yt = ly@0 + 1;
+      xt = lx@Leader + 1;
+      yt = ly@Leader + 1;
     }
 
     //-- inherit the collision avoidance thread
@@ -266,10 +266,10 @@ node uav
     //-- follower-specific waypoint thread
     @Period(100000);
     override thread WAYPOINT {
-      if(init@0 == 0) return;
+      if(init@Leader == 0) return;
       waypointValid = 1;
-      xt = lx@0 - 1;
-      yt = ly@0 + 1;
+      xt = lx@Leader - 1;
+      yt = ly@Leader + 1;
     }
 
     //-- inherit the collision avoidance thread

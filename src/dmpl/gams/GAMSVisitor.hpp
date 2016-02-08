@@ -384,6 +384,10 @@ namespace dmpl
        * @param  stmt   the for all other higher nodes statement
        **/
       virtual void exitFAOH(FAOHStmt &stmt);
+
+      /// set of referred role names
+      std::set<std::string> refRoles;
+
     private:
       
       /// current function

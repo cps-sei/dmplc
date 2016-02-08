@@ -144,6 +144,11 @@ namespace dmpl
       void build_thread_variable (const Func &thread, const Var & var);
       
       /**
+       * Initialize the RoleId map
+       **/
+      void init_role_id (void);
+      
+      /**
        * Generate constructor invocation for all program variables
        **/
       void build_constructors (void);
@@ -302,6 +307,9 @@ namespace dmpl
       std::map<std::string,unsigned> funcCrits;
       std::map<std::string,unsigned> funcZsinsts;
 
+      //-- map from roles to roles that their functions refer to
+      std::map<std::string,std::set<std::string>> rolesRefRoles;
+      
       //-- helper function to return number of nodes
       inline size_t numNodes() const { return builder_.program.processes.size (); }
     };
