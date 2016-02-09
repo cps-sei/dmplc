@@ -131,6 +131,7 @@ test_code_gen test-example-01a.dmpl uav:Uav:3
 test_code_gen test-example-01e.dmpl uav:Uav1:2:uav:Uav2:1:uav:Uav3:1
 test_code_gen test-example-02a.dmpl uav:Leader:1:uav:Protector:4
 test_code_gen test-example-02b.dmpl uav:Leader:1:uav:Protector:4
+test_code_gen test-example-02c.dmpl uav:ProtectorNW:1:uav:Leader:1:uav:ProtectorSE:1:uav:ProtectorSW:1:uav:ProtectorNE:1
 
 #test building
 for i in ../../docs/tutorial/*.mission ../../docs/tutorial/example-05/dmpl/*.mission ; do
