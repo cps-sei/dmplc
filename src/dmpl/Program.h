@@ -104,11 +104,11 @@ namespace dmpl
     bool operator < (const Process &rhs) const
     {
       if(this == &rhs) return false;
+      if(id < rhs.id) return true;
+      if(id > rhs.id) return false;
       if(getNode() < rhs.getNode()) return true;
       if(getNode() > rhs.getNode()) return false;
-      if(getRole() < rhs.getRole()) return true;
-      if(getRole() > rhs.getRole()) return false;
-      return id < rhs.id;
+      return (getRole() < rhs.getRole());
     }
   };
 
