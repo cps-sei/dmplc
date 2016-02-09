@@ -216,6 +216,24 @@ node uav
     thread COLLISION_AVOIDANCE;
   }
 
+  //-- generic protector
+  role Protector {
+    local char input ox;
+    local char input oy;
+    
+    //-- follower-specific waypoint thread
+    @Period(100000);
+    override thread WAYPOINT {
+      if(init@Leader == 0) return;
+      waypointValid = 1;
+      xt = lx@Leader + ox;
+      yt = ly@Leader + oy;
+    }
+
+    //-- inherit the collision avoidance thread
+    thread COLLISION_AVOIDANCE;
+  }
+
   //-- north-east protector
   role ProtectorNE {
     //-- follower-specific waypoint thread
