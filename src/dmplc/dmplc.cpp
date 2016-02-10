@@ -138,6 +138,8 @@ namespace
 void parse_options (int argc, char **argv);
 void usage (char *cmd);
 void addProcesses(dmpl::Program &program);
+void createNodeGroupMap(dmpl::Program &program);
+void createVarGroupMap(dmpl::Program &program);
 
 /*********************************************************************/
 //the main function
@@ -178,6 +180,10 @@ int main (int argc, char **argv)
   //-- add processes based on roles
   addProcesses(builder.program);
 
+  //-- create maps from nodes and variables to groups
+  createNodeGroupMap(builder.program);
+  createVarGroupMap(builder.program);
+  
   //right now, we're just using a realize flag to indicate madara
   //generation
   if (do_gams)
@@ -584,6 +590,84 @@ void addProcesses(dmpl::Program &program)
 
   if(program.processes.empty())
     throw std::runtime_error("ERROR: no roles specified!!");
+}
+
+/*********************************************************************/
+//-- create mapping from nodes to groups by parsing descriptors
+//-- supplied via command line
+/*********************************************************************/
+void createNodeGroupMap(dmpl::Program &program)
+{
+  size_t nodeId = 0;
+  program.node2Groups.resize(program.processes.size());
+  
+  for(const std::string &gds : groupDescs) {
+    std::vector<std::string> gdsComps;
+    boost::split(gdsComps, gds, [](char c) { return c==':';});
+
+    for(const std::string &gd : gdsComps) {
+      std::vector<std::string> gdComps;
+      boost::split(gdComps, gd, [](char c) { return c=='=';});
+      if(gdComps.size() != 2)
+        throw std::runtime_error("ERROR: illegal group descriptor " + gd + " : must be X=n!!");
+
+      std::vector<std::string> groups;
+      boost::split(groups, gdComps[0], [](char c) { return c=='+';});
+
+      int roleNum = atoi(gdComps[1].c_str());
+      if(roleNum <= 0)
+        throw std::runtime_error("ERROR: illegal group descriptor " + gd + " : must be X=n!!");
+
+      for(size_t i = 0;i < roleNum;++i,++nodeId) {
+        if(nodeId >= program.node2Groups.size())
+          throw std::runtime_error("ERROR: groups assigned to too many nodes, there are " +
+                                   std::to_string(program.node2Groups.size()) + " nodes!!");
+
+        for(const std::string &group : groups) {
+          if(!group.empty()) {
+            //std::cout << "node : " << nodeId << " ==> group " << group << '\n';
+            program.node2Groups[nodeId].insert(group);
+          }
+        }
+      }
+    }
+  }
+}
+
+/*********************************************************************/
+//-- create mapping from variables to groups by parsing descriptors
+//-- supplied via command line
+/*********************************************************************/
+void createVarGroupMap(dmpl::Program &program)
+{
+  size_t nodeId = 0;
+  
+  for(const std::string &vgs : varGroups) {
+    std::vector<std::string> vgsComps;
+    boost::split(vgsComps, vgs, [](char c) { return c==':';});
+
+    for(const std::string &vg : vgsComps) {
+      std::vector<std::string> vgComps;
+      boost::split(vgComps, vg, [](char c) { return c=='=';});
+      if(vgComps.size() != 2)
+        throw std::runtime_error("ERROR: illegal var-group descriptor " + vg + " : must be X=Y!!");
+
+      std::vector<std::string> vars;
+      boost::split(vars, vgComps[0], [](char c) { return c=='+';});
+
+      std::vector<std::string> groups;
+      boost::split(groups, vgComps[1], [](char c) { return c=='+';});
+
+      for(const std::string &var : vars) {
+        if(var.empty()) continue;
+        for(const std::string &group : groups) {
+          if(group.empty()) continue;
+          //std::cout << "variable : " << var << " ==> group " << group << '\n';
+          program.var2Groups[var].insert(group);
+        }
+      }
+    }
+  }
 }
 
 /*********************************************************************/

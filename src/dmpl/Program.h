@@ -163,6 +163,13 @@ namespace dmpl
     //the list of processes
     std::list<Process> processes;
 
+    //-- a vector of sets of group names. the i-th element is the list
+    //-- of all groups that node N_i belongs to
+    std::vector<std::set<std::string>> node2Groups;
+
+    //-- map from variable names to groups they are mapped to
+    std::map<std::string,std::set<std::string>> var2Groups;
+
     ///add a target thunk, or append to an existing one
     void addTarget(const std::string &tgt,const std::string &thk)
     { targets[tgt] += thk; }
