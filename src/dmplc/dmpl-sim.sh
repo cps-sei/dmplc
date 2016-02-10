@@ -230,7 +230,8 @@ MAPSIZE=$(echo $MAPNAME | cut -f1 -d'-')
 
 CPP_FILE=${MISSION}_${BIN}.cpp
 DMPLC_FLAGS="-g --roles $ROLEDESC --cube-grid $GRIDSIZE --map $MAPSIZE"
-DMPLC_FLAGS+=" --groups $GROUPDESC --var-groups $VARGROUPS"
+[ ! -z "$GROUPDESC" ] && DMPLC_FLAGS+=" --groups $GROUPDESC"
+[ ! -z "$VARGROUPS" ] && DMPLC_FLAGS+=" --var-groups $VARGROUPS"
 [ "$DEBUG" -eq 1 ] && DMPLC_FLAGS="$DMPLC_FLAGS --debug"
 [ -n "$OUTLOG" ] && DMPLC_FLAGS="$DMPLC_FLAGS -e"
 
