@@ -102,6 +102,12 @@ namespace
   //-- of a role inside it, and n is the number of such roles. node id's
   //-- will be assigned in the order in which the roles are specified.
   std::list<std::string> roleDescs;
+
+  //-- list of descriptors that map nodes to groups, in increasing id order
+  std::list<std::string> groupDescs;
+
+  //-- list of descriptors that map group-variables to groups
+  std::list<std::string> varGroups;
   
   //-- generate code against the GAMS platform
   bool do_gams = false;
@@ -305,6 +311,32 @@ void parse_options (int argc, char **argv)
       }
       ++i;
     }
+    else if (arg1 == "--groups")
+    {
+      if (i + 1 < argc)
+      {
+        groupDescs.push_back(argv[i + 1]);
+      }
+      else
+      {
+        std::cerr << "ERROR: node->group assignment (--groups) must have value (e.g. --groups Team1+Coord=3)\n";
+        usage (argv[0]);
+      }
+      ++i;
+    }
+    else if (arg1 == "--var-groups")
+    {
+      if (i + 1 < argc)
+      {
+        varGroups.push_back(argv[i + 1]);
+      }
+      else
+      {
+        std::cerr << "ERROR: variable->group assignment (--var-groups) must have value (e.g. --var-groups x+y=Team1+Coord)\n";
+        usage (argv[0]);
+      }
+      ++i;
+    }
     else if (arg1 == "-rp" || arg1 == "--reqProp")
     {
       if (i + 1 < argc) reqProp = argv[i+1]; 
@@ -436,7 +468,14 @@ void parse_options (int argc, char **argv)
       ++i;
 
     }
-    else if (arg1.c_str()[0] == '-') usage(argv[0]);
+    else if (arg1.c_str()[0] == '-') {
+      std::cerr << "ERROR: illegal argument " << arg1 << '\n';
+      usage(argv[0]);
+    }
+    else if (arg1.size() < 6 || strcmp(arg1.c_str() + (arg1.size() - 5), ".dmpl")) {
+      std::cerr << "ERROR: illegal DMPL file name " << arg1 << " must be of the form X.dmpl!!\n";
+      usage(argv[0]);
+    }
     else
     {
       file_names.push_back(std::string (argv[i]));
@@ -481,8 +520,18 @@ void usage (char *cmd)
   std::cerr << "  -h|--help                  print help and usage\n";
   std::cerr << "  -o|--out file              output file, default is stdout\n";
   std::cerr << "  -p|--print                 parse and print DASL file\n";
-  std::cerr << "  --roles X:Y:n[:X:Y:n...]   list of roles descriptors specified as X:Y:n\n";
-  std::cerr << "                             where X=node name, Y=role name, n=number of roles\n";
+  std::cerr << "  --roles X:Y:n[:X:Y:n]+     list of roles descriptors specified as X:Y:n, where\n";
+  std::cerr << "                             X=node name, Y=role name\n";
+  std::cerr << "                             n=number of nodes with role Y\n";
+  std::cerr << "                             NOTE: nodes are listed in order of increasing id\n";
+  std::cerr << "  --groups X=n[:X=n]+        list of group assignments X=n, where\n";
+  std::cerr << "                             X=plus separated non-empty group list\n";
+  std::cerr << "                             n=number of nodes assigned to groups in X\n";
+  std::cerr << "                             NOTE: nodes are listed in order of increasing id\n";
+  std::cerr << "  --var-groups X=Y[:X=Y]+    list of variable-group assignments X=Y, where\n";
+  std::cerr << "                             X=plus separated non-empty group-variable list\n";
+  std::cerr << "                             Y=plus separated non-empty group list\n";
+  std::cerr << "                             NOTE: this means all vars in X are assigned to groups in Y\n";
   std::cerr << "  -rp|--reqProp name         name of require property to verify\n";
   std::cerr << "  -a|--analyzer              generate C++ for expect log analyzer\n";
   std::cerr << "  -g|--gams                  generate C++/GAMS code to run\n";
