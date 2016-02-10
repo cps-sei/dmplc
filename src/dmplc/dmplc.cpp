@@ -520,15 +520,15 @@ void usage (char *cmd)
   std::cerr << "  -h|--help                  print help and usage\n";
   std::cerr << "  -o|--out file              output file, default is stdout\n";
   std::cerr << "  -p|--print                 parse and print DASL file\n";
-  std::cerr << "  --roles X:Y:n[:X:Y:n]+     list of roles descriptors specified as X:Y:n, where\n";
+  std::cerr << "  --roles X:Y:n[:X:Y:n]*     list of roles descriptors specified as X:Y:n, where\n";
   std::cerr << "                             X=node name, Y=role name\n";
   std::cerr << "                             n=number of nodes with role Y\n";
   std::cerr << "                             NOTE: nodes are listed in order of increasing id\n";
-  std::cerr << "  --groups X=n[:X=n]+        list of group assignments X=n, where\n";
+  std::cerr << "  --groups X=n[:X=n]*        list of group assignments X=n, where\n";
   std::cerr << "                             X=plus separated non-empty group list\n";
   std::cerr << "                             n=number of nodes assigned to groups in X\n";
   std::cerr << "                             NOTE: nodes are listed in order of increasing id\n";
-  std::cerr << "  --var-groups X=Y[:X=Y]+    list of variable-group assignments X=Y, where\n";
+  std::cerr << "  --var-groups X=Y[:X=Y]*    list of variable-group assignments X=Y, where\n";
   std::cerr << "                             X=plus separated non-empty group-variable list\n";
   std::cerr << "                             Y=plus separated non-empty group list\n";
   std::cerr << "                             NOTE: this means all vars in X are assigned to groups in Y\n";
