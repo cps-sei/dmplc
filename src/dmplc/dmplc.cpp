@@ -59,6 +59,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <boost/algorithm/string.hpp>
 #include "DmplBuilder.hpp"
 #include "dmpl/gams/GAMSBuilder.hpp"
 #include "dmpl/gams/AnalyzerBuilder.hpp"
@@ -560,30 +561,24 @@ void addProcesses(dmpl::Program &program)
 {
   program.processes.clear ();
   int nodeId = 0;
+
   for(const std::string &rd : roleDescs) {
-    size_t pos1 = 0, pos2 = 0, pos3 = 0;
+    std::vector<std::string> comps;
+    boost::split(comps, rd, [](char c) { return c==':';});
 
-    for(;;) {
-      pos1 = rd.find(':', pos3);
-      if(pos1 == std::string::npos)
-        throw std::runtime_error("ERROR: illegal role descriptor " + rd + " : must be X:Y:n!!");
-      std::string nodeName = rd.substr(pos3, pos1-pos3);
+    if(comps.size() % 3)
+        throw std::runtime_error("ERROR: illegal role descriptor " + rd + " : must be X:Y:n[:X:Y:n]*!!");
+    
+    for(size_t i = 0;i < comps.size();) {
+      const std::string &nodeName = comps[i++];
+      const std::string &roleName = comps[i++];
 
-      pos2 = rd.find(':', ++pos1);
-      if(pos2 == std::string::npos)
-        throw std::runtime_error("ERROR: illegal role descriptor " + rd + " : must be X:Y:n!!");
-      std::string roleName = rd.substr(pos1, pos2-pos1);
-
-      pos3 = rd.find(':', ++pos2);
-      int roleNum = atoi(rd.substr(pos2, pos3 == std::string::npos ? pos3 : pos3-pos2).c_str());
+      int roleNum = atoi(comps[i++].c_str());
       if(roleNum <= 0)
-        throw std::runtime_error("ERROR: illegal role descriptor " + rd + " : must be X:Y:n!!");
+        throw std::runtime_error("ERROR: illegal role descriptor " + rd + " : must be X:Y:n[:X:Y:n]*!!");
 
-      for(int i = 0;i < roleNum;++i)
+      for(int j = 0;j < roleNum;++j)
         program.addProcess(nodeName, roleName, nodeId++);
-
-      if(pos3 == std::string::npos) break;
-      else ++pos3;
     }
   }
 
