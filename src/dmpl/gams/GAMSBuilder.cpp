@@ -664,6 +664,27 @@ dmpl::gams::GAMSBuilder::init_nodes_in_group ()
 {
   const Program &prog = builder_.program;
   build_comment("//-- Initializing the nodesInGroup map", "", "", 2);
+  for(const Process &proc : prog.processes) {
+    for(const Var &v : proc.role->allVarsInScope()) {
+      if(v->scope != Variable::GROUP) continue;
+
+      std::string gr = prog.overlapGroup(proc, v);
+      if(gr.empty()) continue;
+
+      std::string init;
+      
+      for(const Process &proc2 : prog.processes) {
+        if(proc.id == proc2.id) continue;
+        if(prog.overlapGroup(proc2, v) == gr) {
+          //std::cout << "Node " << proc.id << " overlaps with node " << proc2.id << " via variable "
+          //<< v->name << '\n';
+          init += std::to_string(proc2.id) + ",";
+        }
+      }
+
+      buffer_ << "  nodesInGroup[" << proc.id << "][\"" << v->name << "\"] = {" << init << "};\n";
+    }
+  }
 }
 
 /*********************************************************************/

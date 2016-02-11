@@ -275,6 +275,30 @@ namespace dmpl
       res = procsWithRole(roleName);
       return res;
     }
+
+    //-- return the name of the group by which proc overlaps with
+    //-- var. there should be exactly one such group. otherwise throw
+    //-- an exception.
+    std::string overlapGroup(const Process &proc, const Var &v) const
+    {
+      std::string res;
+
+      const auto &it = var2Groups.find(v->name);
+      if(it == var2Groups.end())
+        throw std::runtime_error("ERROR: group variable " + v->name + " not mapped to any groups!!");
+      
+      for(const std::string &gr : node2Groups[proc.id]) {
+        if(it->second.find(gr) != it->second.end()) {
+          if(!res.empty())
+            throw std::runtime_error("ERROR: node " + std::to_string(proc.id) + " with role " +
+                                     proc.role->name + " overlaps with variable " + v->name +
+                                     " via multple groups {" + res + "," + gr + "}!!");
+          res = gr;
+        }
+      }
+      
+      return res;
+    }
   };
 
   //new namespace to avoid name collisions

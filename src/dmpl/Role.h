@@ -121,7 +121,7 @@ namespace dmpl
     //-- return a description of the role
     std::string getDesc() const { return "role " + name; }
     
-    //-- return all local and global variables in scope, i.e.,
+    //-- return all local, global and group variables in scope, i.e.,
     //-- including the parent node as well.
     VarList allVarsInScope() const;
 
