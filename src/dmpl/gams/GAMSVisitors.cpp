@@ -479,19 +479,51 @@ dmpl::madara::GAMSCompiler::exitEXL (EXLExpr & expression)
 {
   std::string spacer (indentation_, ' '), sub_spacer (indentation_ + 2, ' ');
 
+  Program &prog = builder_.program;
+  
   //-- collect set of global/group variables accessed as v@id
   GAMSInfoCollector infoCollector (function_, node_, thread_, builder_, do_vrep_);
   infoCollector.idVar = expression.id;
   infoCollector.visit(expression.arg);
+  const std::set<std::string> &idVarVars = infoCollector.idVarVars;
 
+  //-- check if any global variable was accessed via @id, and seperate
+  //-- out the group variables accessed via @id
+  std::string idVarGlob;
+  std::set<std::string> idVarsGroup;
+  for(const Var &v : thread_->role->allVarsInScope()) {
+    if(v->scope == Variable::GLOBAL && idVarVars.find(v->name) != idVarVars.end()) {
+      idVarGlob = v->name;
+    } else if(v->scope == Variable::GROUP && idVarVars.find(v->name) != idVarVars.end()) {
+      idVarsGroup.insert(v->name);
+    }
+  }
+
+  //-- we should not access both global and group variables
+  if(!idVarGlob.empty() && !idVarsGroup.empty())
+    throw std::runtime_error("ERROR: role " + thread_->role->name + " in node " +
+                             thread_->role->node->name + " accesses both global variable " +
+                             idVarGlob + " and group variable " + *(idVarsGroup.begin()) +
+                             " in " + expression.toString() + "!!");
+  
   //-- check that all variables enable us to communicate with the same
   //-- set of other nodes
-  
-  for(const std::string &v : infoCollector.idVarVars) {
-    std::cout << expression.toString() << " ==> " << v << '\n';
+  std::set<Process> procs = prog.procsWithRole(thread_->role->name);
+  for(const Process &proc : procs) {
+    std::set<unsigned int> nig;
+    for(const std::string &v : idVarsGroup) {
+      //std::cout << expression.toString() << " ==> " << v << '\n';
+      std::set<unsigned int> igv = prog.nodesInGroup[proc.id][v];
+      if(igv.empty())
+        throw std::runtime_error("ERROR: role " + thread_->role->name + " in node " +
+                                 thread_->role->node->name + " with id " + std::to_string(proc.id) +
+                                 " overlaps with no other node via group variable " + v +
+                                 " in " + expression.toString() + "!!");
+    }
   }
   
-  unsigned int processes = builder_.program.processes.size ();
+  
+  unsigned int processes = prog.processes.size ();
   
   bool started_i = false;
   for (unsigned int i = 1; i < processes; ++i)
