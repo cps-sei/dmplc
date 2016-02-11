@@ -11,13 +11,13 @@ GRIDSIZE=20
 ROLEDESC=uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4
 
 #node to group assignment
-GROUPDESC="(coordinator,USfleet,NATO):(USfleet,NATO):(USfleet,NATO):(USfleet,NATO):(USfleet,NATO)"
-GROUPDESC+=":(coordinator,FRfleet,NATO):(FRfleet,NATO):(FRfleet,NATO):(FRfleet,NATO):(FRfleet,NATO)"
-GROUPDESC+=":(coordinator,SEfleet):(SEfleet):(SEfleet):(SEfleet):(SEfleet)"
+GROUPDESC="coordinator+USfleet+NATO=1:USfleet+NATO=4"
+GROUPDESC+=":coordinator+FRfleet+NATO=1:FRfleet+NATO=4"
+GROUPDESC+=":coordinator+SEfleet=1:SEfleet=4"
 
 #variable to group assignment
-VARGROUPS="{region->coordinator}:{(lock,lx,ly,init,formation)->(USfleet,FRfleet,SEfleet)}"
-VARGROUPS+=":{(z)->(NATO,SEfleet)}"
+VARGROUPS="region=coordinator:lock+lx+ly+init+formation=USfleet+FRfleet+SEfleet"
+VARGROUPS+=":z=NATO+SEfleet"
 
 EXPECT_LOG_PERIOD=0.2
 
