@@ -58,6 +58,10 @@
 #include "boost/foreach.hpp"
 
 /*********************************************************************/
+//-- methods of GAMSCompiler class
+/*********************************************************************/
+
+/*********************************************************************/
 dmpl::madara::GAMSCompiler::GAMSCompiler (
   const Func & function, const Node & node, const Func & thread,
   DmplBuilder & builder, std::stringstream & buffer, bool do_vrep, bool do_analyzer)
@@ -1132,6 +1136,257 @@ dmpl::madara::GAMSCompiler::exitFAOH (FAOHStmt & statement)
 
   buffer_ << spacer << "}\n\n";
   indentation_ -= 2;
+}
+
+/*********************************************************************/
+//-- methods of GAMSInfoCollector class
+/*********************************************************************/
+
+/*********************************************************************/
+dmpl::madara::GAMSInfoCollector::GAMSInfoCollector (
+  const Func & function, const Node & node, const Func & thread,
+  DmplBuilder & builder, bool do_vrep, bool do_analyzer)
+  : function_ (function), node_ (node), thread_ (thread),
+    builder_ (builder), do_vrep_(do_vrep), do_analyzer_(do_analyzer),
+    indentation_ (2), assignment_ (0) {}
+
+/*********************************************************************/
+bool
+dmpl::madara::GAMSInfoCollector::enterInt (IntExpr & expression)
+{
+  return false;
+}
+
+/*********************************************************************/
+bool
+dmpl::madara::GAMSInfoCollector::enterDouble (DoubleExpr & expression)
+{
+  return false;
+}
+
+/*********************************************************************/
+bool
+dmpl::madara::GAMSInfoCollector::enterLval (LvalExpr & expression)
+{
+  return false;
+}
+
+/*********************************************************************/
+void
+dmpl::madara::GAMSInfoCollector::exitLval (LvalExpr & expression)
+{
+  /*
+  Sym symbol = expression.sym;
+  Var var = std::dynamic_pointer_cast<Variable>(symbol);
+
+  //-- role
+  if (node_->roles.find(expression.var) != node_->roles.end())
+  {
+    refRoles.insert(expression.var);
+    buffer_ << "role2Id[settings.id][\"" << expression.var << "\"]";
+  }
+  //-- no symbol, probably something external
+  else if (symbol == NULL)
+  {
+    buffer_ << expression.var;
+  }
+  //-- id variable
+  else if (var != NULL && id_map_.find (var) != id_map_.end ())
+  {
+    buffer_ << id_map_[var];
+  }
+  //-- regular variable
+  else
+  {
+    //-- sanity check. we must have a legal variable.
+    if(var == NULL)
+      throw std::runtime_error("ERROR: function " + function_->name + " in node " +
+                               node_->name + " uses out-of-scope variable " +
+                               symbol->getName() + "!!");
+    
+    int indices = expression.indices.size();
+    bool atNode = expression.node != NULL;
+    bool isLocal = var->getScope() == Variable::LOCAL;
+    bool isAnalyzerLocal = do_analyzer_ && isLocal;
+    bool isGlobal = (var->getScope() == Variable::GLOBAL) || (var->getScope() == Variable::GROUP);
+    if(atNode || isGlobal || isAnalyzerLocal)
+      indices++;
+    if(thread_ && (isGlobal || isLocal))
+      buffer_ << "thread" << thread_->threadID << "_";
+    buffer_ << symbol->getName();
+
+    //-- array variable
+    if (indices > 0)
+    {
+      // iterate over each index
+      if(atNode)
+      {
+        buffer_ << "[";
+        visit (expression.node);
+        buffer_ << "]";
+      }
+      else if(isGlobal || isAnalyzerLocal)
+      {
+        buffer_ << "[";
+        buffer_ << node_->idVar->getName();
+        buffer_ << "]";
+      }
+      BOOST_FOREACH (Expr & expr, expression.indices)
+      {
+        buffer_ << "[";
+        visit (expr);
+        buffer_ << "]";
+      }
+    }
+  }
+  */
+}
+
+/*********************************************************************/
+bool
+dmpl::madara::GAMSInfoCollector::enterComp (CompExpr & expression)
+{
+  return false;
+}
+
+/*********************************************************************/
+bool
+dmpl::madara::GAMSInfoCollector::enterCall (CallExpr & expression)
+{
+  return false;
+}
+
+/*********************************************************************/
+bool
+dmpl::madara::GAMSInfoCollector::enterEXO (EXOExpr & expression)
+{
+  return false;
+}
+
+/*********************************************************************/
+bool
+dmpl::madara::GAMSInfoCollector::enterEXH (EXHExpr & expression)
+{
+  return false;
+}
+
+/*********************************************************************/
+bool
+dmpl::madara::GAMSInfoCollector::enterEXL (EXLExpr & expression)
+{
+  return false;
+}
+
+/*********************************************************************/
+bool
+dmpl::madara::GAMSInfoCollector::enterPrivate (PrivateStmt & statement)
+{
+  return false;
+}
+
+/*********************************************************************/
+bool
+dmpl::madara::GAMSInfoCollector::enterBlock (BlockStmt & statement)
+{
+  return false;
+}
+
+/*********************************************************************/
+bool
+dmpl::madara::GAMSInfoCollector::enterAsgn (AsgnStmt & statement)
+{
+  return false;
+}
+
+/*********************************************************************/
+bool
+dmpl::madara::GAMSInfoCollector::enterCond (CondStmt & statement)
+{
+  return false;
+}
+
+/*********************************************************************/
+bool
+dmpl::madara::GAMSInfoCollector::enterFor (ForStmt & statement)
+{
+  return false;
+}
+
+/*********************************************************************/
+bool
+dmpl::madara::GAMSInfoCollector::enterWhile (WhileStmt & statement)
+{
+  return false;
+}
+
+/*********************************************************************/
+bool
+dmpl::madara::GAMSInfoCollector::enterBreak (BreakStmt & statement)
+{
+  return false;
+}
+
+/*********************************************************************/
+bool
+dmpl::madara::GAMSInfoCollector::enterCont (ContStmt & statement)
+{
+  return false;
+}
+
+/*********************************************************************/
+bool
+dmpl::madara::GAMSInfoCollector::enterRet (RetStmt & statement)
+{
+  return false;
+}
+
+/*********************************************************************/
+bool
+dmpl::madara::GAMSInfoCollector::enterRetVoid (RetVoidStmt & statement)
+{
+  return false;
+}
+
+/*********************************************************************/
+bool
+dmpl::madara::GAMSInfoCollector::enterCall (CallStmt & statement)
+{
+  return false;
+}
+
+/*********************************************************************/
+bool
+dmpl::madara::GAMSInfoCollector::enterFAN (FANStmt & statement)
+{
+  return false;
+}
+
+/*********************************************************************/
+bool
+dmpl::madara::GAMSInfoCollector::enterFADNP (FADNPStmt & statement)
+{
+  return false;
+}
+
+/*********************************************************************/
+bool
+dmpl::madara::GAMSInfoCollector::enterFAO (FAOStmt & statement)
+{
+  return false;
+}
+
+/*********************************************************************/
+bool
+dmpl::madara::GAMSInfoCollector::enterFAOL (FAOLStmt & statement)
+{
+  return false;
+}
+
+/*********************************************************************/
+bool
+dmpl::madara::GAMSInfoCollector::enterFAOH (FAOHStmt & statement)
+{
+  return false;
 }
 
 /*********************************************************************/
