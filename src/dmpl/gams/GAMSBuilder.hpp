@@ -144,7 +144,7 @@ namespace dmpl
       void build_thread_variable (const Func &thread, const Var & var);
       
       /**
-       * Initialize the RoleId map
+       * Initialize the role2Id map
        **/
       void init_role_id (void);
       

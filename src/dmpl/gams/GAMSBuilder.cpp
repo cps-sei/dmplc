@@ -608,7 +608,7 @@ dmpl::gams::GAMSBuilder::build_thread_variable (const Func &thread, const Var & 
 }
 
 /*********************************************************************/
-//-- initialize the RoleIds map
+//-- initialize the role2Ids map
 /*********************************************************************/
 void
 dmpl::gams::GAMSBuilder::init_role_id ()
