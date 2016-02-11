@@ -233,6 +233,10 @@ namespace node_uav
 ArrayReference<_Bool, 3, 10, 10> lock(knowledge, "lock");
 
 /********************************************************************/
+//-- Defining group variables at node scope
+/********************************************************************/
+
+/********************************************************************/
 //-- Defining local variables at node scope
 /********************************************************************/
 Reference<short> state(knowledge, ".state");
@@ -263,6 +267,10 @@ namespace node_uav_role_Uav
 /********************************************************************/
 
 /********************************************************************/
+//-- Defining group variables at role scope
+/********************************************************************/
+
+/********************************************************************/
 //-- Defining local variables at role scope
 /********************************************************************/
 
@@ -283,6 +291,11 @@ CachedReference<short> thread0_yp(knowledge, ".yp");
 //-- Used to implement Read-Execute-Write semantics
 /********************************************************************/
 ArrayReference<Proactive<_Bool, CachedReference>, 3, 10, 10> thread0_lock(knowledge, "lock");
+
+/********************************************************************/
+//-- Defining group variables at scope of thread COLLISION_AVOIDANCE
+//-- Used to implement Read-Execute-Write semantics
+/********************************************************************/
 
 } // end node_uav_role_Uav namespace
 

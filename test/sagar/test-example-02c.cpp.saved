@@ -238,6 +238,10 @@ ArrayReference<short, 5> ly(knowledge, "ly");
 short var_init_ly (0);
 
 /********************************************************************/
+//-- Defining group variables at node scope
+/********************************************************************/
+
+/********************************************************************/
 //-- Defining local variables at node scope
 /********************************************************************/
 Reference<short> state(knowledge, ".state");
@@ -270,6 +274,10 @@ namespace node_uav_role_Leader
 /********************************************************************/
 
 /********************************************************************/
+//-- Defining group variables at role scope
+/********************************************************************/
+
+/********************************************************************/
 //-- Defining local variables at role scope
 /********************************************************************/
 
@@ -293,6 +301,11 @@ CachedReference<short> thread0_yt(knowledge, ".yt");
 ArrayReference<Proactive<_Bool, CachedReference>, 5, 10, 10> thread0_lock(knowledge, "lock");
 
 /********************************************************************/
+//-- Defining group variables at scope of thread COLLISION_AVOIDANCE
+//-- Used to implement Read-Execute-Write semantics
+/********************************************************************/
+
+/********************************************************************/
 //-- Defining local variables at scope of thread WAYPOINT
 //-- Used to implement Read-Execute-Write semantics
 /********************************************************************/
@@ -307,6 +320,11 @@ CachedReference<short> thread1_yp(knowledge, ".yp");
 ArrayReference<Proactive<_Bool, CachedReference>, 5> thread1_init(knowledge, "init");
 ArrayReference<Proactive<short, CachedReference>, 5> thread1_lx(knowledge, "lx");
 ArrayReference<Proactive<short, CachedReference>, 5> thread1_ly(knowledge, "ly");
+
+/********************************************************************/
+//-- Defining group variables at scope of thread WAYPOINT
+//-- Used to implement Read-Execute-Write semantics
+/********************************************************************/
 
 } // end node_uav_role_Leader namespace
 
@@ -327,6 +345,10 @@ namespace node_uav_role_ProtectorNE
 /********************************************************************/
 
 /********************************************************************/
+//-- Defining group variables at role scope
+/********************************************************************/
+
+/********************************************************************/
 //-- Defining local variables at role scope
 /********************************************************************/
 
@@ -350,6 +372,11 @@ CachedReference<short> thread0_yt(knowledge, ".yt");
 ArrayReference<Proactive<_Bool, CachedReference>, 5, 10, 10> thread0_lock(knowledge, "lock");
 
 /********************************************************************/
+//-- Defining group variables at scope of thread COLLISION_AVOIDANCE
+//-- Used to implement Read-Execute-Write semantics
+/********************************************************************/
+
+/********************************************************************/
 //-- Defining local variables at scope of thread WAYPOINT
 //-- Used to implement Read-Execute-Write semantics
 /********************************************************************/
@@ -364,6 +391,11 @@ CachedReference<short> thread2_yt(knowledge, ".yt");
 ArrayReference<Proactive<_Bool, CachedReference>, 5> thread2_init(knowledge, "init");
 ArrayReference<Proactive<short, CachedReference>, 5> thread2_lx(knowledge, "lx");
 ArrayReference<Proactive<short, CachedReference>, 5> thread2_ly(knowledge, "ly");
+
+/********************************************************************/
+//-- Defining group variables at scope of thread WAYPOINT
+//-- Used to implement Read-Execute-Write semantics
+/********************************************************************/
 
 } // end node_uav_role_ProtectorNE namespace
 
@@ -384,6 +416,10 @@ namespace node_uav_role_ProtectorNW
 /********************************************************************/
 
 /********************************************************************/
+//-- Defining group variables at role scope
+/********************************************************************/
+
+/********************************************************************/
 //-- Defining local variables at role scope
 /********************************************************************/
 
@@ -407,6 +443,11 @@ CachedReference<short> thread0_yt(knowledge, ".yt");
 ArrayReference<Proactive<_Bool, CachedReference>, 5, 10, 10> thread0_lock(knowledge, "lock");
 
 /********************************************************************/
+//-- Defining group variables at scope of thread COLLISION_AVOIDANCE
+//-- Used to implement Read-Execute-Write semantics
+/********************************************************************/
+
+/********************************************************************/
 //-- Defining local variables at scope of thread WAYPOINT
 //-- Used to implement Read-Execute-Write semantics
 /********************************************************************/
@@ -421,6 +462,11 @@ CachedReference<short> thread3_yt(knowledge, ".yt");
 ArrayReference<Proactive<_Bool, CachedReference>, 5> thread3_init(knowledge, "init");
 ArrayReference<Proactive<short, CachedReference>, 5> thread3_lx(knowledge, "lx");
 ArrayReference<Proactive<short, CachedReference>, 5> thread3_ly(knowledge, "ly");
+
+/********************************************************************/
+//-- Defining group variables at scope of thread WAYPOINT
+//-- Used to implement Read-Execute-Write semantics
+/********************************************************************/
 
 } // end node_uav_role_ProtectorNW namespace
 
@@ -441,6 +487,10 @@ namespace node_uav_role_ProtectorSE
 /********************************************************************/
 
 /********************************************************************/
+//-- Defining group variables at role scope
+/********************************************************************/
+
+/********************************************************************/
 //-- Defining local variables at role scope
 /********************************************************************/
 
@@ -464,6 +514,11 @@ CachedReference<short> thread0_yt(knowledge, ".yt");
 ArrayReference<Proactive<_Bool, CachedReference>, 5, 10, 10> thread0_lock(knowledge, "lock");
 
 /********************************************************************/
+//-- Defining group variables at scope of thread COLLISION_AVOIDANCE
+//-- Used to implement Read-Execute-Write semantics
+/********************************************************************/
+
+/********************************************************************/
 //-- Defining local variables at scope of thread WAYPOINT
 //-- Used to implement Read-Execute-Write semantics
 /********************************************************************/
@@ -478,6 +533,11 @@ CachedReference<short> thread4_yt(knowledge, ".yt");
 ArrayReference<Proactive<_Bool, CachedReference>, 5> thread4_init(knowledge, "init");
 ArrayReference<Proactive<short, CachedReference>, 5> thread4_lx(knowledge, "lx");
 ArrayReference<Proactive<short, CachedReference>, 5> thread4_ly(knowledge, "ly");
+
+/********************************************************************/
+//-- Defining group variables at scope of thread WAYPOINT
+//-- Used to implement Read-Execute-Write semantics
+/********************************************************************/
 
 } // end node_uav_role_ProtectorSE namespace
 
@@ -498,6 +558,10 @@ namespace node_uav_role_ProtectorSW
 /********************************************************************/
 
 /********************************************************************/
+//-- Defining group variables at role scope
+/********************************************************************/
+
+/********************************************************************/
 //-- Defining local variables at role scope
 /********************************************************************/
 
@@ -521,6 +585,11 @@ CachedReference<short> thread0_yt(knowledge, ".yt");
 ArrayReference<Proactive<_Bool, CachedReference>, 5, 10, 10> thread0_lock(knowledge, "lock");
 
 /********************************************************************/
+//-- Defining group variables at scope of thread COLLISION_AVOIDANCE
+//-- Used to implement Read-Execute-Write semantics
+/********************************************************************/
+
+/********************************************************************/
 //-- Defining local variables at scope of thread WAYPOINT
 //-- Used to implement Read-Execute-Write semantics
 /********************************************************************/
@@ -535,6 +604,11 @@ CachedReference<short> thread5_yt(knowledge, ".yt");
 ArrayReference<Proactive<_Bool, CachedReference>, 5> thread5_init(knowledge, "init");
 ArrayReference<Proactive<short, CachedReference>, 5> thread5_lx(knowledge, "lx");
 ArrayReference<Proactive<short, CachedReference>, 5> thread5_ly(knowledge, "ly");
+
+/********************************************************************/
+//-- Defining group variables at scope of thread WAYPOINT
+//-- Used to implement Read-Execute-Write semantics
+/********************************************************************/
 
 } // end node_uav_role_ProtectorSW namespace
 
