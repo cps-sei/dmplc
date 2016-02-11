@@ -61,7 +61,7 @@ extern "C" {
 #endif
 
 #include "GAMSBuilder.hpp"
-#include <dmpl/gams/GAMSVisitor.hpp>
+#include <dmpl/gams/GAMSVisitors.hpp>
 #include <boost/algorithm/string.hpp>
 #include <vector>
 #include <map>
@@ -158,8 +158,8 @@ namespace
     for(const dmpl::Var & variable : func->temps) {
       if(variable->initFunc == NULL) continue;
       
-      dmpl::madara::GAMSVisitor visitor (variable->initFunc, node, dmpl::Func(),
-                                         builder_, buffer_, false);
+      dmpl::madara::GAMSCompiler visitor (variable->initFunc, node, dmpl::Func(),
+                                          builder_, buffer_, false);
       for (const dmpl::Stmt & statement : variable->initFunc->body)
         visitor.visit (statement);
     }
@@ -1223,8 +1223,8 @@ dmpl::gams::GAMSBuilder::build_nodes (void)
           print_temp_inits(rec->initFunc, n->second, builder_, buffer_); 
           
           //-- transform statements
-          dmpl::madara::GAMSVisitor visitor (rec->initFunc, n->second, Func(),
-                                                  builder_, buffer_, false);
+          dmpl::madara::GAMSCompiler visitor (rec->initFunc, n->second, Func(),
+                                              builder_, buffer_, false);
           for (const Stmt & statement : rec->initFunc->body)
             visitor.visit (statement);
           buffer_ << "}\n";
@@ -1236,8 +1236,8 @@ dmpl::gams::GAMSBuilder::build_nodes (void)
           print_temp_inits(rec->assumeFunc, n->second, builder_, buffer_); 
         
           //-- transform statements
-          dmpl::madara::GAMSVisitor visitor (rec->assumeFunc, n->second, Func(),
-                                                  builder_, buffer_, false);
+          dmpl::madara::GAMSCompiler visitor (rec->assumeFunc, n->second, Func(),
+                                              builder_, buffer_, false);
           for (const Stmt & statement : rec->assumeFunc->body)
             visitor.visit (statement);
           buffer_ << "}\n";
@@ -1310,8 +1310,8 @@ dmpl::gams::GAMSBuilder::build_constructor_for_variable (Var &v, Node &node)
     print_temp_inits(v->initFunc, node, builder_, buffer_); 
     
     //-- transform statements
-    dmpl::madara::GAMSVisitor visitor (v->initFunc, node, Func(),
-                                            builder_, buffer_, false);
+    dmpl::madara::GAMSCompiler visitor (v->initFunc, node, Func(),
+                                        builder_, buffer_, false);
     for (const Stmt & statement : v->initFunc->body)
       visitor.visit (statement);
   }
@@ -1512,7 +1512,7 @@ dmpl::gams::GAMSBuilder::build_function (
   buffer_ << "\n";
 
   buffer_ << "\n  //-- Begin function body\n";
-  dmpl::madara::GAMSVisitor visitor (actualFunc, node, thread, builder_, buffer_, false);
+  dmpl::madara::GAMSCompiler visitor (actualFunc, node, thread, builder_, buffer_, false);
 
   //transform the body of safety
   BOOST_FOREACH (const Stmt & statement, actualFunc->body)
