@@ -243,8 +243,8 @@ void dmpl::Function::computeAccessed(FuncSet &visited)
   calledFuncs = newCalled;
   
   //-- clear previous results
-  writesLoc.clear(); writesGlob.clear();
-  readsLoc.clear(); readsGlob.clear();
+  writesLoc.clear(); writesGlob.clear(); writesGroup.clear();
+  readsLoc.clear(); readsGlob.clear(); readsGroup.clear();
   
   VarList allVars = role ? role->allVarsInScope() : node->allVars();
   std::set<std::string> processed;
@@ -283,6 +283,15 @@ void dmpl::Function::computeAccessed(FuncSet &visited)
           readsGlob.insert(std::make_pair(var->name,var));
           //std::cout << "** Function : " << name << " reads global " << var->name << '\n';
         }
+      } else if(var->scope == Symbol::GROUP) {
+        if(use.info.anyWrite()) {
+          writesGroup.insert(std::make_pair(var->name,var));
+          //std::cout << "** Function : " << name << " writes group " << var->name << '\n';
+        }
+        if(use.info.anyRead()) {
+          readsGroup.insert(std::make_pair(var->name,var));
+          //std::cout << "** Function : " << name << " reads group " << var->name << '\n';
+        }
       }
       break;
     }
@@ -310,12 +319,23 @@ dmpl::Vars dmpl::Function::accessedGlob() const
 }
 
 /*********************************************************************/
+//-- return the set of all accessed group variables
+/*********************************************************************/
+dmpl::Vars dmpl::Function::accessedGroup() const
+{
+  Vars res = readsGroup;
+  res.insert(writesGroup.begin(), writesGroup.end());
+  return res;
+}
+
+/*********************************************************************/
 //-- return the set of all read variables
 /*********************************************************************/
 dmpl::Vars dmpl::Function::reads() const
 {
   Vars res = readsGlob;
   res.insert(readsLoc.begin(), readsLoc.end());
+  res.insert(readsGroup.begin(), readsGroup.end());
   return res;
 }
 
@@ -326,6 +346,7 @@ dmpl::Vars dmpl::Function::writes() const
 {
   Vars res = writesGlob;
   res.insert(writesLoc.begin(), writesLoc.end());
+  res.insert(writesGroup.begin(), writesGroup.end());
   return res;
 }
 

@@ -130,10 +130,10 @@ namespace dmpl
     VarList temps;
     Vars tempSet;
 
-    //-- local and global variables that this function reads and
-    //-- writes
-    Vars writesLoc, writesGlob;
-    Vars readsLoc, readsGlob;
+    //-- local, global and group variables that this function reads
+    //-- and writes
+    Vars writesLoc, writesGlob, writesGroup;
+    Vars readsLoc, readsGlob, readsGroup;
 
     //-- functions that this function calls
     Funcs calledFuncs;
@@ -226,6 +226,9 @@ namespace dmpl
     //-- return the set of all accessed global variables
     Vars accessedGlob() const;
 
+    //-- return the set of all accessed group variables
+    Vars accessedGroup() const;
+
     //-- return the set of all read variables
     Vars reads() const;
 
@@ -263,6 +266,10 @@ namespace dmpl
         for(const auto &v : readsGlob) if(*v.second == *var) return true;
         return false;
       }
+      if(var->scope == GROUP) {
+        for(const auto &v : readsGroup) if(*v.second == *var) return true;
+        return false;
+      }
     }
 
     //-- return true if this function writes the argument variable
@@ -274,6 +281,10 @@ namespace dmpl
       }
       if(var->scope == GLOBAL) {
         for(const auto &v : writesGlob) if(*v.second == *var) return true;
+        return false;
+      }
+      if(var->scope == GROUP) {
+        for(const auto &v : writesGroup) if(*v.second == *var) return true;
         return false;
       }
     }

@@ -141,7 +141,7 @@ dmpl::madara::GAMSVisitor::exitLval (LvalExpr & expression)
     bool atNode = expression.node != NULL;
     bool isLocal = var->getScope() == Variable::LOCAL;
     bool isAnalyzerLocal = do_analyzer_ && isLocal;
-    bool isGlobal = var->getScope() == Variable::GLOBAL;
+    bool isGlobal = (var->getScope() == Variable::GLOBAL) || (var->getScope() == Variable::GROUP);
     if(atNode || isGlobal || isAnalyzerLocal)
       indices++;
     if(thread_ && (isGlobal || isLocal))
@@ -568,7 +568,8 @@ dmpl::madara::GAMSVisitor::exitAsgn (AsgnStmt & statement)
     int indices = lhs->indices.size();
     bool isLocal = lhs->sym != NULL && (lhs->sym->getScope() == Variable::LOCAL);
     bool isAnalyzerLocal = do_analyzer_ && isLocal;
-    bool isGlobal = lhs->sym != NULL && (lhs->sym->getScope() == Variable::GLOBAL || isAnalyzerLocal);
+    bool isGlobal = lhs->sym != NULL && (lhs->sym->getScope() == Variable::GLOBAL ||
+                                         lhs->sym->getScope() == Variable::GROUP || isAnalyzerLocal);
 
     if(isGlobal) indices++;
     

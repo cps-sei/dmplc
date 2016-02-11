@@ -435,21 +435,24 @@ dmpl::gams::GAMSBuilder::build_program_variables ()
     //-- generate node-level variables
     build_comment("//-- Begin defining variables for node " + n->second->name, "\n", "\n", 0);
     open_namespace(nodeName(n->second));
-    build_node_variables(n->second, true);
-    build_node_variables(n->second, false);
+    build_node_variables(n->second, "global");
+    build_node_variables(n->second, "group");
+    build_node_variables(n->second, "local");
 
     //-- generate variables for roles
     for (const auto r : n->second->roles) {
       //-- generate role-level variables
       build_comment("//-- Begin defining variables for role " + r.second->name, "\n", "\n", 0);
       open_namespace(roleName(n->second, r.second));
-      build_role_variables(r.second, true);
-      build_role_variables(r.second, false);
+      build_role_variables(r.second, "global");
+      build_role_variables(r.second, "group");
+      build_role_variables(r.second, "local");
 
       //-- generate thread-read-execute-write variables
       for (const Func &thread : r.second->threads) {
-        build_thread_variables(thread, thread->accessedLoc(), false);
-        build_thread_variables(thread, thread->accessedGlob(), true);
+        build_thread_variables(thread, thread->accessedLoc(), "local");
+        build_thread_variables(thread, thread->accessedGlob(), "global");
+        build_thread_variables(thread, thread->accessedGroup(), "group");
       }
       
       buffer_ << '\n';
@@ -464,35 +467,47 @@ dmpl::gams::GAMSBuilder::build_program_variables ()
 }
 
 /*********************************************************************/
-//-- declare and initialize node variables
+//-- declare and initialize node variables. scope = local/global/group
 /*********************************************************************/
 void
-dmpl::gams::GAMSBuilder::build_node_variables (const Node &node, bool isGlob)
+dmpl::gams::GAMSBuilder::build_node_variables (const Node &node, const std::string &scope)
 {
-  build_comment("//-- Defining " + std::string(isGlob? "global" : "local") +
-                " variables at node scope", "\n", "", 0);
-  Vars & vars = isGlob? node->globVars : node->locVars;
+  if(scope != "local" && scope != "global" && scope != "group")
+    throw std::runtime_error("ERROR: illegal scope " + scope + " when declaring variables for node " +
+                             node->name + "!!");
+  
+  build_comment("//-- Defining " + scope + " variables at node scope", "\n", "", 0);
+
+  Vars & vars = (scope == "global") ? node->globVars :
+    (scope == "local" ? node->locVars : node->groupVars);
+
   for (Vars::const_iterator i = vars.begin (); i != vars.end (); ++i) {
     const Var & var = i->second;
-    if(isGlob) var->type = var->type->incrDim(-1);
+    if(scope != "local") var->type = var->type->incrDim(-1);
     build_program_variable_decl (var);
     build_program_variable_init (var);
   }
 }
 
 /*********************************************************************/
-//-- declare and initialize role variables
+//-- declare and initialize role variables. scope = local/global/group
 /*********************************************************************/
 void
-dmpl::gams::GAMSBuilder::build_role_variables (const Role &role, bool isGlob)
+dmpl::gams::GAMSBuilder::build_role_variables (const Role &role, const std::string &scope)
 {
-  build_comment("//-- Defining " + std::string(isGlob? "global" : "local") +
-                " variables at role scope", "\n", "", 0);
-  Vars & vars = isGlob? role->globVars : role->locVars;
+  if(scope != "local" && scope != "global" && scope != "group")
+    throw std::runtime_error("ERROR: illegal scope " + scope + " when declaring variables for role " +
+                             role->name + "!!");
+  
+  build_comment("//-- Defining " + scope + " variables at role scope", "\n", "", 0);
+
+  Vars & vars = (scope == "global") ? role->globVars :
+    (scope == "local" ? role->locVars : role->groupVars);
+
   for (Vars::const_iterator i = vars.begin (); i != vars.end (); ++i) {
     const Var & var = i->second;
     if(var->isOverride) continue;
-    if(isGlob) var->type = var->type->incrDim(-1);
+    if(scope != "local") var->type = var->type->incrDim(-1);
     build_program_variable_decl (var);
     build_program_variable_init (var);
   }
@@ -571,13 +586,17 @@ dmpl::gams::GAMSBuilder::build_common_filters_helper (
 }
 
 /*********************************************************************/
-//-- generate shared variables for a thread
+//-- generate shared variables for a thread. scope = local/global/group
 /*********************************************************************/
 void
-dmpl::gams::GAMSBuilder::build_thread_variables (const Func &thread, const Vars & vars, bool isGlob)
+dmpl::gams::GAMSBuilder::build_thread_variables (const Func &thread, const Vars & vars,
+                                                 const std::string &scope)
 {
-  build_comment("//-- Defining " + std::string(isGlob? "global" : "local") +
-                " variables at scope of thread " + thread->name +
+  if(scope != "local" && scope != "global" && scope != "group")
+    throw std::runtime_error("ERROR: illegal scope " + scope + " when declaring variables for thread " +
+                             thread->name + "!!");
+
+  build_comment("//-- Defining " + scope + " variables at scope of thread " + thread->name +
                 "\n//-- Used to implement Read-Execute-Write semantics", "\n", "", 0);
   for (auto i : vars)
     build_thread_variable (thread, i.second);

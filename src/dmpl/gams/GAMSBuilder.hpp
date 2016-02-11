@@ -103,14 +103,14 @@ namespace dmpl
       void build_program_variables (void);
       
       /**
-       * Declare and initialize node-level variables
+       * Declare and initialize node-level variables. scope = local/global/group
        **/
-      void build_node_variables (const Node &node, bool isGlob);
+      void build_node_variables (const Node &node, const std::string &scope);
       
       /**
-       * Declare and initialize role-level variables
+       * Declare and initialize role-level variables. scope = local/global/group
        **/
-      void build_role_variables (const Role &role, bool isGlob);
+      void build_role_variables (const Role &role, const std::string &scope);
 
       /**
        * Builds the program's MADARA generated variables
@@ -136,7 +136,7 @@ namespace dmpl
       /**
        * Builds a threads's variables for Read-Execute-Write semantics
        **/
-      void build_thread_variables (const Func &thread, const Vars & vars, bool isGlob);
+      void build_thread_variables (const Func &thread, const Vars & vars, const std::string &scope);
 
       /**
        * Builds a threads's variable for Read-Execute-Write semantics
