@@ -192,6 +192,11 @@ ArrayReference<unsigned int, 3> mbarrier_COLLISION_AVOIDANCE(knowledge, "mbarrie
 std::map< unsigned int,std::map<std::string,unsigned int> > role2Id;
 
 /********************************************************************/
+//-- map from role ids to variables to roles that share same group
+/********************************************************************/
+std::map< unsigned int,std::map< std::string,std::set<unsigned int> > > nodesInGroup;
+
+/********************************************************************/
 //-- number of participating processes
 /********************************************************************/
 unsigned int processes (3);
@@ -1274,6 +1279,9 @@ int main (int argc, char ** argv)
 
   /******************************************************************/
   //-- Initializing the role2Id map
+  /******************************************************************/
+  /******************************************************************/
+  //-- Initializing the nodesInGroup map
   /******************************************************************/
 
   /******************************************************************/
