@@ -170,6 +170,9 @@ namespace dmpl
     //-- map from variable names to groups they are mapped to
     std::map<std::string,std::set<std::string>> var2Groups;
 
+    //-- map from role ids to variables to roles that share same group
+    std::map< unsigned int,std::map< std::string,std::set<unsigned int> > > nodesInGroup;
+    
     ///add a target thunk, or append to an existing one
     void addTarget(const std::string &tgt,const std::string &thk)
     { targets[tgt] += thk; }
@@ -256,6 +259,9 @@ namespace dmpl
     ///check various sanity conditions on the program. this is after
     ///thread and symbol usage analysis.
     void postAnalysisSanityCheck();
+
+    //-- initialize the nodesInGroup map
+    void initNodesInGroup ();
 
     //-- return the set of processes with given role name
     std::set<Process> procsWithRole(const std::string &roleName) const

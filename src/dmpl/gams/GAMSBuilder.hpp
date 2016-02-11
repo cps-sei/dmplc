@@ -83,11 +83,6 @@ namespace dmpl
       void build (void);
       
       /**
-       * Initialize the nodesInGroup map
-       **/
-      void init_nodes_in_group (void);
-
-      /**
        * Builds the target-specific thunk from the DASL program
        */
       void build_target_thunk (void);
@@ -320,9 +315,6 @@ namespace dmpl
       //-- map from roles to roles that their functions refer to
       std::map<std::string,std::set<std::string>> rolesRefRoles;
 
-      //-- map from role ids to variables to roles that share same group
-      std::map< unsigned int,std::map< std::string,std::set<unsigned int> > > nodesInGroup;
-      
       //-- helper function to return number of nodes
       inline size_t numNodes() const { return builder_.program.processes.size (); }
     };

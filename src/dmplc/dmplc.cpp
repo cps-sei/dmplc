@@ -183,6 +183,9 @@ int main (int argc, char **argv)
   //-- create maps from nodes and variables to groups
   createNodeGroupMap(builder.program);
   createVarGroupMap(builder.program);
+
+  //-- initialize nodesInGroup map
+  builder.program.initNodesInGroup();
   
   //right now, we're just using a realize flag to indicate madara
   //generation

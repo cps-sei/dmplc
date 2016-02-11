@@ -579,6 +579,33 @@ dmpl::Program::postAnalysisSanityCheck()
 }
 
 /*********************************************************************/
+//-- initialize the nodesInGroup map
+/*********************************************************************/
+void
+dmpl::Program::initNodesInGroup ()
+{
+  for(const Process &proc : processes) {
+    for(const Var &v : proc.role->allVarsInScope()) {
+      if(v->scope != Variable::GROUP) continue;
+
+      std::string gr = overlapGroup(proc, v);
+      if(gr.empty()) continue;
+
+      std::string init;
+      
+      for(const Process &proc2 : processes) {
+        if(proc.id == proc2.id) continue;
+        if(overlapGroup(proc2, v) == gr) {
+          std::cout << "Node " << proc.id << " overlaps with node " << proc2.id << " via variable "
+                    << v->name << '\n';
+          nodesInGroup[proc.id][v->name].insert(proc2.id);
+        }
+      }
+    }
+  }
+}
+
+/*********************************************************************/
 //end of file
 /*********************************************************************/
 
