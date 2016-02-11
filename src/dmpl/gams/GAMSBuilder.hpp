@@ -149,6 +149,11 @@ namespace dmpl
       void init_role_id (void);
       
       /**
+       * Initialize the nodesInGroup map
+       **/
+      void init_nodes_in_group (void);
+      
+      /**
        * Generate constructor invocation for all program variables
        **/
       void build_constructors (void);

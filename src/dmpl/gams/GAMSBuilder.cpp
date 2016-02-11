@@ -406,6 +406,11 @@ dmpl::gams::GAMSBuilder::build_common_global_variables ()
   build_comment("//-- map from role ids to role names to role ids", "", "", 0);
   buffer_ << "std::map< unsigned int,std::map<std::string,unsigned int> > role2Id;\n\n";
 
+  //-- the map from role ids to variable names to ids of roles that
+  //-- are in the same group
+  build_comment("//-- map from role ids to variables to roles that share same group", "", "", 0);
+  buffer_ << "std::map< unsigned int,std::map< std::string,std::set<unsigned int> > > nodesInGroup;\n\n";
+
   build_comment("//-- number of participating processes", "", "", 0);
   buffer_ << "unsigned int processes (" << numNodes () << ");\n\n";
 }
@@ -630,6 +635,16 @@ dmpl::gams::GAMSBuilder::init_role_id ()
       }
     }
   }
+}
+
+/*********************************************************************/
+//-- initialize the nodesInGroup map
+/*********************************************************************/
+void
+dmpl::gams::GAMSBuilder::init_nodes_in_group ()
+{
+  const Program &prog = builder_.program;
+  build_comment("//-- Initializing the nodesInGroup map", "", "", 2);
 }
 
 /*********************************************************************/
@@ -2295,8 +2310,9 @@ dmpl::gams::GAMSBuilder::build_main_function ()
   buffer_ << "  num_processes = processes;\n";
   buffer_ << "\n";
 
-  //-- initialize RoleIds
+  //-- initialize role2Ids and nodesInGroup
   init_role_id ();
+  init_nodes_in_group ();
   
   build_constructors ();
   build_main_define_functions ();
