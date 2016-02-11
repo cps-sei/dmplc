@@ -444,164 +444,22 @@ namespace dmpl
                          bool do_vrep, bool do_analyzer = false);
       
       /**
-       * Returns whether or not to visit the Integer's subfields first.
-       * @param  expr   the integer expression
-       **/
-      virtual bool enterInt(IntExpr &expr);
-
-      /**
-       * Returns whether or not to visit the double's subfields first.
-       * @param  expr   the double expression
-       **/
-      virtual bool enterDouble(DoubleExpr &expr);
-
-      /**
-       * Returns whether or not to visit a variable's subfields first
-       * @param  expr   the variable expression
-       **/
-      virtual bool enterLval(LvalExpr &expr);
-
-      /**
        * Visits a variable
        * @param  expr   the variable to visit
        **/
       virtual void exitLval(LvalExpr &expr);
 
-      /**
-       * Returns whether or not to visit a comparison's subfields first
-       * @param  expr   the comparison expression
-       **/
-      virtual bool enterComp(CompExpr &expr);
-
-      /**
-       * Returns whether or not to visit a function call's subfields first
-       * @param  expr   the function call expression
-       **/
-      virtual bool enterCall(CallExpr &expr);
-
-      /**
-       * Returns whether or not to visit a there exists other's subfields first
-       * @param  expr   the there exists other's expression
-       **/
-      virtual bool enterEXO(EXOExpr &expr);
-
-      /**
-       * Returns whether or not to visit a there exists higher id's subfields
-       * first
-       * @param  expr   the there exists higher id expression
-       **/
-      virtual bool enterEXH(EXHExpr &expr);
-
-      /**
-       * Returns whether or not to visit a there exists lower id's subfields
-       * first
-       * @param  expr   the there exists lower id expression
-       **/
-      virtual bool enterEXL(EXLExpr &expr);
-
-      /**
-       * Returns whether or not to visit a private block's subfields first
-       * @param  expr   the private block's statement
-       **/
-      virtual bool enterPrivate(PrivateStmt &stmt);
-
-      /**
-       * Returns whether or not to visit a block's subfields first. Blocks
-       * are usually the bodies of control structures.
-       * @param  stmt   the block's statement
-       **/
-      virtual bool enterBlock(BlockStmt &stmt);
-
-      /**
-       * Returns whether or not to visit an assignment's subfields first.
-       * @param  stmt   the assignment statement
-       **/
-      virtual bool enterAsgn(AsgnStmt &stmt);
-
-      /**
-       * Returns whether or not to visit an if/then's subfields first.
-       * @param  stmt   the if/then statement
-       **/
-      virtual bool enterCond(CondStmt &stmt);
-
-      /**
-       * Returns whether or not to visit a for loop's subfields first.
-       * @param  stmt   the for loop statement
-       **/
-      virtual bool enterFor(ForStmt &stmt);
-
-      /**
-       * Returns whether or not to visit a while loop's subfields first.
-       * @param  stmt   the while loop statement
-       **/
-      virtual bool enterWhile(WhileStmt &stmt);
-
-      /**
-       * Returns whether or not to visit a break statement's subfields first.
-       * @param  stmt   the break statement
-       **/
-      virtual bool enterBreak(BreakStmt &stmt);
-
-      /**
-       * Returns whether or not to visit a continue statement's subfields first.
-       * @param  stmt   the continue statement
-       **/
-      virtual bool enterCont(ContStmt &stmt);
-
-      /**
-       * Returns whether or not to visit a return statement's subfields first.
-       * @param  stmt   the return statement
-       **/
-      virtual bool enterRet(RetStmt &stmt);
-
-      /**
-       * Returns whether or not to visit a return void statement's subfields first.
-       * @param  stmt   the return void statement
-       **/
-      virtual bool enterRetVoid(RetVoidStmt &stmt);
-
-      /**
-       * Returns whether or not to visit a function call's subfields first.
-       * @param  stmt   the function call
-       **/
-      virtual bool enterCall(CallStmt &stmt);
-
-      /**
-       * Returns whether or not to visit a for all node statement's subfields.
-       * @param  stmt   the for all node statement
-       **/
-      virtual bool enterFAN(FANStmt &stmt);
-
-      /**
-       * Returns whether or not to visit a for all distinct node pair statement's
-       * subfields.
-       * @param  stmt   the for all distinct node pair statement
-       **/
-      virtual bool enterFADNP(FADNPStmt &stmt);
-
-      /**
-       * Returns whether or not to visit a for all other nodes statement's
-       * subfields.
-       * @param  stmt   the for all other nodes statement
-       **/
-      virtual bool enterFAO(FAOStmt &stmt);
-
-      /**
-       * Returns whether or not to visit a for all other lower nodes statement's
-       * subfields.
-       * @param  stmt   the for all other lower nodes statement
-       **/
-      virtual bool enterFAOL(FAOLStmt &stmt);
-
-      /**
-       * Returns whether or not to visit a for all other higher nodes statement's
-       * subfields.
-       * @param  stmt   the for all other higher nodes statement
-       **/
-      virtual bool enterFAOH(FAOHStmt &stmt);
-
       /// set of referred role names
       std::set<std::string> refRoles;
+
+      //-- id variable. useful when we are looking for expressions of
+      //-- the form X@id
+      std::string idVar;
+
+      //-- set of encountered lvals of the form X[..]@idVar. here we
+      //-- only collect the X's, i.e., the base variables, ignoring
+      //-- potential indices
+      std::set<std::string> idVarVars;
 
     private:
       

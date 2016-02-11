@@ -81,6 +81,11 @@ namespace dmpl
        * Builds the underlying character stream that can then be printed
        **/
       void build (void);
+      
+      /**
+       * Initialize the nodesInGroup map
+       **/
+      void init_nodes_in_group (void);
 
       /**
        * Builds the target-specific thunk from the DASL program
@@ -144,14 +149,14 @@ namespace dmpl
       void build_thread_variable (const Func &thread, const Var & var);
       
       /**
-       * Initialize the role2Id map
+       * Generate code to initialize the role2Id map
        **/
-      void init_role_id (void);
+      void build_init_role_id (void);
       
       /**
-       * Initialize the nodesInGroup map
+       * Generate code to initialize the nodesInGroup map
        **/
-      void init_nodes_in_group (void);
+      void build_init_nodes_in_group (void);
       
       /**
        * Generate constructor invocation for all program variables
@@ -314,6 +319,9 @@ namespace dmpl
 
       //-- map from roles to roles that their functions refer to
       std::map<std::string,std::set<std::string>> rolesRefRoles;
+
+      //-- map from role ids to variables to roles that share same group
+      std::map< unsigned int,std::map< std::string,std::set<unsigned int> > > nodesInGroup;
       
       //-- helper function to return number of nodes
       inline size_t numNodes() const { return builder_.program.processes.size (); }

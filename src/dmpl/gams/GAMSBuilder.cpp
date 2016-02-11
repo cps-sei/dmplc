@@ -185,7 +185,8 @@ dmpl::gams::GAMSBuilder::build ()
   buffer_ << "//-- DMPLC Command Line: ";
   for(const std::string &c : builder_.cmdLine) buffer_ << ' ' << c;
   buffer_ << "\n\n";
-  
+
+  init_nodes_in_group ();  
   build_target_thunk ();
   build_header_includes ();
 
@@ -218,6 +219,34 @@ dmpl::gams::GAMSBuilder::build ()
   build_main_function ();
 
   build_comment("//-- End of generated code", "\n", "", 0);
+}
+
+/*********************************************************************/
+//-- initialize the nodesInGroup map
+/*********************************************************************/
+void
+dmpl::gams::GAMSBuilder::init_nodes_in_group ()
+{
+  const Program &prog = builder_.program;
+  for(const Process &proc : prog.processes) {
+    for(const Var &v : proc.role->allVarsInScope()) {
+      if(v->scope != Variable::GROUP) continue;
+
+      std::string gr = prog.overlapGroup(proc, v);
+      if(gr.empty()) continue;
+
+      std::string init;
+      
+      for(const Process &proc2 : prog.processes) {
+        if(proc.id == proc2.id) continue;
+        if(prog.overlapGroup(proc2, v) == gr) {
+          //std::cout << "Node " << proc.id << " overlaps with node " << proc2.id << " via variable "
+          //<< v->name << '\n';
+          nodesInGroup[proc.id][v->name].insert(proc2.id);
+        }
+      }
+    }
+  }
 }
 
 /*********************************************************************/
@@ -632,10 +661,10 @@ dmpl::gams::GAMSBuilder::build_thread_variable (const Func &thread, const Var & 
 }
 
 /*********************************************************************/
-//-- initialize the role2Ids map
+//-- generate code to initialize the role2Ids map
 /*********************************************************************/
 void
-dmpl::gams::GAMSBuilder::init_role_id ()
+dmpl::gams::GAMSBuilder::build_init_role_id ()
 {
   const Program &prog = builder_.program;
   build_comment("//-- Initializing the role2Id map", "", "", 2);
@@ -657,32 +686,20 @@ dmpl::gams::GAMSBuilder::init_role_id ()
 }
 
 /*********************************************************************/
-//-- initialize the nodesInGroup map
+//-- generate code to initialize the nodesInGroup map
 /*********************************************************************/
 void
-dmpl::gams::GAMSBuilder::init_nodes_in_group ()
+dmpl::gams::GAMSBuilder::build_init_nodes_in_group ()
 {
   const Program &prog = builder_.program;
   build_comment("//-- Initializing the nodesInGroup map", "", "", 2);
-  for(const Process &proc : prog.processes) {
-    for(const Var &v : proc.role->allVarsInScope()) {
-      if(v->scope != Variable::GROUP) continue;
-
-      std::string gr = prog.overlapGroup(proc, v);
-      if(gr.empty()) continue;
-
+  for(const auto &v1 : nodesInGroup) {
+    for(const auto &v2 : v1.second) {
       std::string init;
-      
-      for(const Process &proc2 : prog.processes) {
-        if(proc.id == proc2.id) continue;
-        if(prog.overlapGroup(proc2, v) == gr) {
-          //std::cout << "Node " << proc.id << " overlaps with node " << proc2.id << " via variable "
-          //<< v->name << '\n';
-          init += std::to_string(proc2.id) + ",";
-        }
+      for(const auto &v3 : v2.second) {
+        init += std::to_string(v3) + ",";
       }
-
-      buffer_ << "  nodesInGroup[" << proc.id << "][\"" << v->name << "\"] = {" << init << "};\n";
+      buffer_ << "  nodesInGroup[" << v1.first << "][\"" << v2.first << "\"] = {" << init << "};\n";      
     }
   }
 }
@@ -2351,8 +2368,8 @@ dmpl::gams::GAMSBuilder::build_main_function ()
   buffer_ << "\n";
 
   //-- initialize role2Ids and nodesInGroup
-  init_role_id ();
-  init_nodes_in_group ();
+  build_init_role_id ();
+  build_init_nodes_in_group ();
   
   build_constructors ();
   build_main_define_functions ();
