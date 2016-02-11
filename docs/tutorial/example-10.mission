@@ -16,7 +16,7 @@ GROUPDESC+=":coordinator+FRfleet+NATO=1:FRfleet+NATO=4"
 GROUPDESC+=":coordinator+SEfleet=1:SEfleet=4"
 
 #variable to group assignment
-VARGROUPS="region=coordinator:lock+lx+ly+init+formation=USfleet+FRfleet+SEfleet"
+VARGROUPS="x1+y1+x2+y2=coordinator:lock+lx+ly+init+formation=USfleet+FRfleet+SEfleet"
 VARGROUPS+=":z=NATO+SEfleet"
 
 EXPECT_LOG_PERIOD=0.2
