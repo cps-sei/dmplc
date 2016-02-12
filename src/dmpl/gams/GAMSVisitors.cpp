@@ -87,6 +87,50 @@ namespace
 }
 
 /*********************************************************************/
+//-- return the set of ids of nodes that overlap with proc via var
+/*********************************************************************/
+std::set<dmpl::NodeId> dmpl::madara::GAMSCompiler::overlappingNodes(const Process &proc,
+                                                                    const std::string &varName)
+{
+  //-- find the variable in scope with given name
+  Var var;
+  for(const Var &v : proc.role->allVarsInScope()) {
+    if(v->name == varName) { var = v; break; }
+  }
+
+  //-- sanity check
+  if(var == NULL)
+    throw std::runtime_error("ERROR: role " + proc.role->name + " in node with id " +
+                             std::to_string(proc.id) + " uses out of scope variable " + varName + "!!");
+
+  //-- local variable disallowed
+  if(var->scope == Variable::LOCAL)
+    throw std::runtime_error("ERROR: role " + proc.role->name + " in node with id " +
+                             std::to_string(proc.id) + " uses local variable " + varName +
+                             "with @id operator !!");
+
+  //-- global variable. if the variable was declared in this role,
+  //-- then it overlaps with all other nodes instantiating this
+  //-- role. otherwise, it overlaps with all nodes.
+  std::set<dmpl::NodeId> res;
+  if(var->scope == Variable::GLOBAL) {
+    //if the variable was declared in the parent node -- it overlaps
+    //with all nodes.
+    if(proc.role->node->hasVar(var)) {
+      for(const Process &p : builder_.program.processes) res.insert(p.id);
+      return res;
+    }
+
+    //otherwise, the variable was declared in this role -- it overlaps
+    //with all other nodes instantiating this role.
+    for(const Process &p : builder_.program.procsWithRole(proc.role->name)) res.insert(p.id);
+    return res;
+  }
+  
+  return res;
+}
+
+/*********************************************************************/
 //-- construct a map from node ids to node ids that they should
 //-- iterate over given a specific type of iteration construct
 //-- (EXISTS_LOWER, EXISTS_HIGHER, etc.)
@@ -111,75 +155,48 @@ std::map<dmpl::NodeId,std::set<dmpl::NodeId>> dmpl::madara::GAMSCompiler::iterId
     throw std::runtime_error("ERROR: Wrong expression type, must be EXLExpr, EXHExpr or EXOExpr!!");
   
   const std::set<std::string> &idVarVars = infoCollector.idVarVars;
-
-  //-- check if any global variable was accessed via @id, and seperate
-  //-- out the group variables accessed via @id
-  std::string idVarGlob;
-  std::set<std::string> idVarsGroup;
-  for(const Var &v : thread_->role->allVarsInScope()) {
-    if(v->scope == Variable::GLOBAL && idVarVars.find(v->name) != idVarVars.end()) {
-      idVarGlob = v->name;
-    } else if(v->scope == Variable::GROUP && idVarVars.find(v->name) != idVarVars.end()) {
-      idVarsGroup.insert(v->name);
-    }
-  }
-
-  //-- we should not access both global and group variables
-  if(!idVarGlob.empty() && !idVarsGroup.empty())
-    throw std::runtime_error("ERROR: role " + thread_->role->name + " in node " +
-                             thread_->role->node->name + " accesses both global variable " +
-                             idVarGlob + " and group variable " + *(idVarsGroup.begin()) +
-                             " in " + expression.toString() + "!!");
-
   std::map<NodeId,std::set<NodeId>> res;
 
-  //-- if global variables were accessed
-  if(!idVarGlob.empty()) {
-    NodeId processes = builder_.program.processes.size ();
-    if(dynamic_cast<EXLExpr*>(&expression)) {
-      for (NodeId i = 1; i < processes; ++i)
-        for (NodeId j = 0; j < i; ++j) res[i].insert(j);
-    } else if(dynamic_cast<EXHExpr*>(&expression)) {
-      for (NodeId i = 0; i+1 < processes; ++i)
-        for (NodeId j = i+1; j < processes; ++j) res[i].insert(j);
-    } else if(dynamic_cast<EXOExpr*>(&expression)) {
-      for (NodeId i = 0; i < processes; ++i)
-        for (NodeId j = 0; j < processes; ++j)
-          if(i != j) res[i].insert(j);
-    }
-    return res;
-  }
-  
-  //-- check that all variables enable us to communicate with the same
-  //-- set of other nodes
-  std::set<Process> procs = prog.procsWithRole(thread_->role->name);
-  for(const Process &proc : procs) {
-    std::set<NodeId> nig;
-    std::string nigVar;
-    for(const std::string &v : idVarsGroup) {
-      //std::cout << expression.toString() << " ==> " << v << '\n';
-      std::set<NodeId> igv = prog.nodesInGroup[proc.id][v];
-      //std::cout << "nodesInGroup[" << proc.id << "][" << v << "] = " << NodeIdSetToString(igv) << '\n';
-      if(igv.empty())
-        throw std::runtime_error("ERROR: role " + thread_->role->name + " in node " +
-                                 thread_->role->node->name + " with id " + std::to_string(proc.id) +
-                                 " overlaps with no other node via group variable " + v +
-                                 " in " + expression.toString() + "!!");
-      if(!nig.empty() && nig != igv) {
-        std::ostringstream ostr;
-        ostr << "ERROR: role " << thread_->role->name << " in node "
-             << thread_->role->node->name << " with id " << proc.id
-             << " overlaps with nodes " << NodeIdSetToString(nig) << " via variable " << nigVar
-             << " but overlaps with nodes " << NodeIdSetToString(igv) << " via variable " << v
-             << " in " << expression.toString() << "!!\n";
-        throw std::runtime_error(ostr.str());
+  //-- consider all processes that can instantiate the current role
+  for(const Process &proc : prog.procsWithRole(thread_->role->name)) {
+    //-- ensure that all accessed variables lead to overlap with the
+    //-- same set of other nodes
+    std::string overlapVar;
+    std::set<NodeId> overlapNodes;
+
+    //-- consider each variable accessed
+    for(const std::string &var : infoCollector.idVarVars) {
+      std::set<NodeId> on = overlappingNodes(proc,var);
+
+      if(overlapVar.empty()) {
+        overlapNodes = on;
+        overlapVar = var;
       } else {
-        nig = igv;
-        nigVar = v;
+        if(overlapNodes != on) {
+          std::ostringstream ostr;
+          ostr << "ERROR: role " << thread_->role->name << " in node "
+               << thread_->role->node->name << " with id " << proc.id
+               << " overlaps with nodes " << NodeIdSetToString(overlapNodes)
+               << " via variable " << overlapVar
+               << " but overlaps with nodes " << NodeIdSetToString(on) << " via variable " << var
+               << " in " << expression.toString() << "!!\n";
+          throw std::runtime_error(ostr.str());
+        }
       }
     }
+
+    //-- now set overlapping nodes to be the ones to iterate over,
+    //-- taking into account whether the expression is exists_lower,
+    //-- exists_higher, or exists_other
+    for(NodeId ni : overlapNodes) {
+      if(dynamic_cast<EXLExpr*>(&expression) && ni >= proc.id) continue;
+      if(dynamic_cast<EXHExpr*>(&expression) && ni <= proc.id) continue;
+      if(dynamic_cast<EXOExpr*>(&expression) && ni == proc.id) continue;
+      res[proc.id].insert(ni);
+    }
   }
-  
+
+  //-- all done
   return res;
 }
 

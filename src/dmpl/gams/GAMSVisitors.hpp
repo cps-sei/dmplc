@@ -88,7 +88,10 @@ namespace dmpl
                     const Func & thread,
                     DmplBuilder & builder, std::stringstream & buffer,
                     bool do_vrep, bool do_analyzer = false);
-
+      
+      //-- return the set of ids of nodes that overlap with proc via var
+      std::set<dmpl::NodeId> overlappingNodes(const Process &proc,const std::string &varName);
+      
       //-- construct a map from node ids to node ids that they should
       //-- iterate over given a specific type of iteration construct
       //-- (EXISTS_LOWER, EXISTS_HIGHER, etc.)
