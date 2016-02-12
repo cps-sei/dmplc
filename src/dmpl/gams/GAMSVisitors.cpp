@@ -112,8 +112,9 @@ std::set<dmpl::NodeId> dmpl::madara::GAMSCompiler::overlappingNodes(const Proces
   //-- global variable. if the variable was declared in this role,
   //-- then it overlaps with all other nodes instantiating this
   //-- role. otherwise, it overlaps with all nodes.
-  std::set<dmpl::NodeId> res;
   if(var->scope == Variable::GLOBAL) {
+    std::set<dmpl::NodeId> res;
+
     //if the variable was declared in the parent node -- it overlaps
     //with all nodes.
     if(proc.role->node->hasVar(var)) {
@@ -126,8 +127,14 @@ std::set<dmpl::NodeId> dmpl::madara::GAMSCompiler::overlappingNodes(const Proces
     for(const Process &p : builder_.program.procsWithRole(proc.role->name)) res.insert(p.id);
     return res;
   }
-  
-  return res;
+
+  //-- must be a group variable
+  if(var->scope != Variable::GROUP)
+    throw std::runtime_error("ERROR: role " + proc.role->name + " in node with id " +
+                             std::to_string(proc.id) + " uses variable" + varName +
+                             "with @id operator and illegal scope " + std::to_string(var->scope) + "!!");
+
+  return builder_.program.nodesInGroup[proc.id][varName];
 }
 
 /*********************************************************************/
