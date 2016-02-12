@@ -92,8 +92,11 @@ namespace dmpl
       //-- construct a map from node ids to node ids that they should
       //-- iterate over given a specific type of iteration construct
       //-- (EXISTS_LOWER, EXISTS_HIGHER, etc.)
-      std::map< NodeId,std::set<NodeId> > iterIdMap(EXLExpr &expr);
-      
+      std::map< NodeId,std::set<NodeId> > iterIdMap(Expression &expr);
+
+      //-- a common handler for exists_lower and exists_higher
+      void exitEXHL (Expression & expression);
+
       /**
        * Returns whether or not to visit the Integer's subfields first.
        * @param  expr   the integer expression

@@ -91,14 +91,22 @@ namespace
 //-- iterate over given a specific type of iteration construct
 //-- (EXISTS_LOWER, EXISTS_HIGHER, etc.)
 /*********************************************************************/
-std::map<dmpl::NodeId,std::set<dmpl::NodeId>> dmpl::madara::GAMSCompiler::iterIdMap(EXLExpr & expression)
+std::map<dmpl::NodeId,std::set<dmpl::NodeId>> dmpl::madara::GAMSCompiler::iterIdMap(Expression &expression)
 {
   Program &prog = builder_.program;
   
   //-- collect set of global/group variables accessed as v@id
   GAMSInfoCollector infoCollector (function_, node_, thread_, builder_, do_vrep_);
-  infoCollector.idVar = expression.id;
-  infoCollector.visit(expression.arg);
+
+  if(EXLExpr *exl = dynamic_cast<EXLExpr*>(&expression)) {
+    infoCollector.idVar = exl->id;
+    infoCollector.visit(exl->arg);
+  } else if(EXHExpr *exh = dynamic_cast<EXHExpr*>(&expression)) {
+    infoCollector.idVar = exh->id;
+    infoCollector.visit(exh->arg);
+  } else
+    throw std::runtime_error("ERROR: Wrong expression type, must be EXLExpr or EXHExpr!!");
+  
   const std::set<std::string> &idVarVars = infoCollector.idVarVars;
 
   //-- check if any global variable was accessed via @id, and seperate
@@ -125,8 +133,13 @@ std::map<dmpl::NodeId,std::set<dmpl::NodeId>> dmpl::madara::GAMSCompiler::iterId
   //-- if global variables were accessed
   if(!idVarGlob.empty()) {
     NodeId processes = builder_.program.processes.size ();
-    for (NodeId i = 1; i < processes; ++i)
-      for (NodeId j = 0; j < i; ++j) res[i].insert(j);
+    if(dynamic_cast<EXLExpr*>(&expression)) {
+      for (NodeId i = 1; i < processes; ++i)
+        for (NodeId j = 0; j < i; ++j) res[i].insert(j);
+    } else if(dynamic_cast<EXHExpr*>(&expression)) {
+      for (NodeId i = 0; i+1 < processes; ++i)
+        for (NodeId j = i+1; j < processes; ++j) res[i].insert(j);
+    }
     return res;
   }
   
@@ -161,6 +174,51 @@ std::map<dmpl::NodeId,std::set<dmpl::NodeId>> dmpl::madara::GAMSCompiler::iterId
   }
   
   return res;
+}
+
+/*********************************************************************/
+//-- a common handler for exists_lower and exists_higher
+/*********************************************************************/
+void dmpl::madara::GAMSCompiler::exitEXHL (Expression & expression)
+{
+  std::string spacer (indentation_, ' '), sub_spacer (indentation_ + 2, ' ');
+
+  std::map<dmpl::NodeId,std::set<dmpl::NodeId>> iim = iterIdMap(expression);
+
+  //-- get the id variable and the argument expression
+  Var idVar;
+  Expr arg;
+  if(EXLExpr *exl = dynamic_cast<EXLExpr*>(&expression)) {
+    idVar = exl->idVar;
+    arg = exl->arg;
+  } else if(EXHExpr *exh = dynamic_cast<EXHExpr*>(&expression)) {
+    idVar = exh->idVar;
+    arg = exh->arg;
+  } else
+    throw std::runtime_error("ERROR: Wrong expression type, must be EXLExpr or EXHExpr!!");
+
+  bool started_i = false;
+  for(const auto &ii : iim) {
+    if (started_i) buffer_ << " || \n" << sub_spacer;
+    else started_i = true;
+
+    buffer_ << "(";
+    buffer_ << "id == " << ii.first << " && (";
+
+    bool started_j = false;
+    for (NodeId j : ii.second) {
+      if (started_j) buffer_ << " || ";
+      else started_j = true;
+      
+      id_map_ [idVar] = j;      
+      visit (arg);
+      id_map_.erase (idVar);
+    }
+
+    buffer_ << "))";
+  }
+
+  if(!started_i) buffer_ << "0";
 }
 
 /*********************************************************************/
@@ -519,42 +577,7 @@ dmpl::madara::GAMSCompiler::enterEXH (EXHExpr & expression)
 void
 dmpl::madara::GAMSCompiler::exitEXH (EXHExpr & expression)
 {
-  std::string spacer (indentation_, ' '), sub_spacer (indentation_ + 2, ' ');
-
-  unsigned int processes = builder_.program.processes.size ();
-  
-  bool started_i = false;
-  for (unsigned int i = 0; i + 1 < processes; ++i)
-  {
-    if (started_i)
-    {
-      buffer_ << " || \n" << sub_spacer;
-    }
-
-    buffer_ << "(";
-    buffer_ << "id == " << i << " && (";
-
-    bool started_j = false;
-    for (unsigned int j = i + 1; j < processes; ++j)
-    {
-      if (started_j)
-        buffer_ << " || ";
-
-      id_map_ [expression.idVar] = j;
-      
-      visit (expression.arg);
-
-      id_map_.erase (expression.idVar);
-
-      if (!started_j)
-        started_j = true;
-    }
-
-    buffer_ << "))";
-
-    if (!started_i)
-      started_i = true;
-  }
+  exitEXHL(expression);
 }
 
 /*********************************************************************/
@@ -570,32 +593,7 @@ dmpl::madara::GAMSCompiler::enterEXL (EXLExpr & expression)
 void
 dmpl::madara::GAMSCompiler::exitEXL (EXLExpr & expression)
 {
-  std::string spacer (indentation_, ' '), sub_spacer (indentation_ + 2, ' ');
-
-  std::map<dmpl::NodeId,std::set<dmpl::NodeId>> iim = iterIdMap(expression);
-
-  bool started_i = false;
-  for(const auto &ii : iim) {
-    if (started_i) buffer_ << " || \n" << sub_spacer;
-    else started_i = true;
-
-    buffer_ << "(";
-    buffer_ << "id == " << ii.first << " && (";
-
-    bool started_j = false;
-    for (NodeId j : ii.second) {
-      if (started_j) buffer_ << " || ";
-      else started_j = true;
-      
-      id_map_ [expression.idVar] = j;      
-      visit (expression.arg);
-      id_map_.erase (expression.idVar);
-    }
-
-    buffer_ << "))";
-  }
-
-  if(!started_i) buffer_ << "0";
+  exitEXHL(expression);
 }
 
 /*********************************************************************/
