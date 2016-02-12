@@ -1051,13 +1051,21 @@ thread1_REGION_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Va
   }
   else
   {
-    if ((id == 0 && ((thread1_x2[5] == Integer (1)))))
+    if ((id == 0 && ((thread1_x2[5] == Integer (2)))))
     {
       thread1_x2[id] = thread1_y1[id];
     }
     else
     {
-      thread1_x2[id] = Integer (10);
+      if ((id == 0 && ((thread1_x2[5] == Integer (3)))) || 
+        (id == 5 && ((thread1_x2[0] == Integer (3)))))
+      {
+        thread1_x2[id] = (thread1_y1[id] * Integer (3));
+      }
+      else
+      {
+        thread1_x2[id] = Integer (10);
+      }
     }
   }
 
