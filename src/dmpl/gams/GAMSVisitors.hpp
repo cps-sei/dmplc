@@ -64,7 +64,6 @@
 #include "dmpl/Function.h"
 #include "dmpl/Node.h"
 
-
 namespace dmpl
 {
   namespace madara
@@ -89,6 +88,11 @@ namespace dmpl
                     const Func & thread,
                     DmplBuilder & builder, std::stringstream & buffer,
                     bool do_vrep, bool do_analyzer = false);
+
+      //-- construct a map from node ids to node ids that they should
+      //-- iterate over given a specific type of iteration construct
+      //-- (EXISTS_LOWER, EXISTS_HIGHER, etc.)
+      std::map< NodeId,std::set<NodeId> > iterIdMap(EXLExpr &expr);
       
       /**
        * Returns whether or not to visit the Integer's subfields first.

@@ -67,9 +67,100 @@ dmpl::madara::GAMSCompiler::GAMSCompiler (
   DmplBuilder & builder, std::stringstream & buffer, bool do_vrep, bool do_analyzer)
   : function_ (function), node_ (node), thread_ (thread),
     builder_ (builder), buffer_ (buffer), do_vrep_(do_vrep), do_analyzer_(do_analyzer),
-    indentation_ (2), assignment_ (0)
-{
+    indentation_ (2), assignment_ (0) {}
 
+/*********************************************************************/
+//-- helper method to convert a set of ints to string
+/*********************************************************************/
+namespace
+{
+  /*******************************************************************/
+  //-- convert a set of unsigned ints to string
+  /*******************************************************************/
+  std::string NodeIdSetToString(const std::set<dmpl::NodeId> &arg)
+  {
+    std::string res = "{";
+    int flag = 0;
+    for(dmpl::NodeId i : arg) res += (flag++ ? "," : "") + std::to_string(i); 
+    return res + "}";
+  }
+}
+
+/*********************************************************************/
+//-- construct a map from node ids to node ids that they should
+//-- iterate over given a specific type of iteration construct
+//-- (EXISTS_LOWER, EXISTS_HIGHER, etc.)
+/*********************************************************************/
+std::map<dmpl::NodeId,std::set<dmpl::NodeId>> dmpl::madara::GAMSCompiler::iterIdMap(EXLExpr & expression)
+{
+  Program &prog = builder_.program;
+  
+  //-- collect set of global/group variables accessed as v@id
+  GAMSInfoCollector infoCollector (function_, node_, thread_, builder_, do_vrep_);
+  infoCollector.idVar = expression.id;
+  infoCollector.visit(expression.arg);
+  const std::set<std::string> &idVarVars = infoCollector.idVarVars;
+
+  //-- check if any global variable was accessed via @id, and seperate
+  //-- out the group variables accessed via @id
+  std::string idVarGlob;
+  std::set<std::string> idVarsGroup;
+  for(const Var &v : thread_->role->allVarsInScope()) {
+    if(v->scope == Variable::GLOBAL && idVarVars.find(v->name) != idVarVars.end()) {
+      idVarGlob = v->name;
+    } else if(v->scope == Variable::GROUP && idVarVars.find(v->name) != idVarVars.end()) {
+      idVarsGroup.insert(v->name);
+    }
+  }
+
+  //-- we should not access both global and group variables
+  if(!idVarGlob.empty() && !idVarsGroup.empty())
+    throw std::runtime_error("ERROR: role " + thread_->role->name + " in node " +
+                             thread_->role->node->name + " accesses both global variable " +
+                             idVarGlob + " and group variable " + *(idVarsGroup.begin()) +
+                             " in " + expression.toString() + "!!");
+
+  std::map<NodeId,std::set<NodeId>> res;
+
+  //-- if global variables were accessed
+  if(!idVarGlob.empty()) {
+    NodeId processes = builder_.program.processes.size ();
+    for (NodeId i = 1; i < processes; ++i)
+      for (NodeId j = 0; j < i; ++j) res[i].insert(j);
+    return res;
+  }
+  
+  //-- check that all variables enable us to communicate with the same
+  //-- set of other nodes
+  std::set<Process> procs = prog.procsWithRole(thread_->role->name);
+  for(const Process &proc : procs) {
+    std::set<NodeId> nig;
+    std::string nigVar;
+    for(const std::string &v : idVarsGroup) {
+      //std::cout << expression.toString() << " ==> " << v << '\n';
+      std::set<NodeId> igv = prog.nodesInGroup[proc.id][v];
+      //std::cout << "nodesInGroup[" << proc.id << "][" << v << "] = " << NodeIdSetToString(igv) << '\n';
+      if(igv.empty())
+        throw std::runtime_error("ERROR: role " + thread_->role->name + " in node " +
+                                 thread_->role->node->name + " with id " + std::to_string(proc.id) +
+                                 " overlaps with no other node via group variable " + v +
+                                 " in " + expression.toString() + "!!");
+      if(!nig.empty() && nig != igv) {
+        std::ostringstream ostr;
+        ostr << "ERROR: role " << thread_->role->name << " in node "
+             << thread_->role->node->name << " with id " << proc.id
+             << " overlaps with nodes " << NodeIdSetToString(nig) << " via variable " << nigVar
+             << " but overlaps with nodes " << NodeIdSetToString(igv) << " via variable " << v
+             << " in " << expression.toString() << "!!\n";
+        throw std::runtime_error(ostr.str());
+      } else {
+        nig = igv;
+        nigVar = v;
+      }
+    }
+  }
+  
+  return res;
 }
 
 /*********************************************************************/
@@ -474,89 +565,37 @@ dmpl::madara::GAMSCompiler::enterEXL (EXLExpr & expression)
 }
 
 /*********************************************************************/
+
+/*********************************************************************/
 void
 dmpl::madara::GAMSCompiler::exitEXL (EXLExpr & expression)
 {
   std::string spacer (indentation_, ' '), sub_spacer (indentation_ + 2, ' ');
 
-  Program &prog = builder_.program;
-  
-  //-- collect set of global/group variables accessed as v@id
-  GAMSInfoCollector infoCollector (function_, node_, thread_, builder_, do_vrep_);
-  infoCollector.idVar = expression.id;
-  infoCollector.visit(expression.arg);
-  const std::set<std::string> &idVarVars = infoCollector.idVarVars;
+  std::map<dmpl::NodeId,std::set<dmpl::NodeId>> iim = iterIdMap(expression);
 
-  //-- check if any global variable was accessed via @id, and seperate
-  //-- out the group variables accessed via @id
-  std::string idVarGlob;
-  std::set<std::string> idVarsGroup;
-  for(const Var &v : thread_->role->allVarsInScope()) {
-    if(v->scope == Variable::GLOBAL && idVarVars.find(v->name) != idVarVars.end()) {
-      idVarGlob = v->name;
-    } else if(v->scope == Variable::GROUP && idVarVars.find(v->name) != idVarVars.end()) {
-      idVarsGroup.insert(v->name);
-    }
-  }
-
-  //-- we should not access both global and group variables
-  if(!idVarGlob.empty() && !idVarsGroup.empty())
-    throw std::runtime_error("ERROR: role " + thread_->role->name + " in node " +
-                             thread_->role->node->name + " accesses both global variable " +
-                             idVarGlob + " and group variable " + *(idVarsGroup.begin()) +
-                             " in " + expression.toString() + "!!");
-  
-  //-- check that all variables enable us to communicate with the same
-  //-- set of other nodes
-  std::set<Process> procs = prog.procsWithRole(thread_->role->name);
-  for(const Process &proc : procs) {
-    std::set<unsigned int> nig;
-    for(const std::string &v : idVarsGroup) {
-      //std::cout << expression.toString() << " ==> " << v << '\n';
-      std::set<unsigned int> igv = prog.nodesInGroup[proc.id][v];
-      if(igv.empty())
-        throw std::runtime_error("ERROR: role " + thread_->role->name + " in node " +
-                                 thread_->role->node->name + " with id " + std::to_string(proc.id) +
-                                 " overlaps with no other node via group variable " + v +
-                                 " in " + expression.toString() + "!!");
-    }
-  }
-  
-  
-  unsigned int processes = prog.processes.size ();
-  
   bool started_i = false;
-  for (unsigned int i = 1; i < processes; ++i)
-  {
-    if (started_i)
-    {
-      buffer_ << " || \n" << sub_spacer;
-    }
+  for(const auto &ii : iim) {
+    if (started_i) buffer_ << " || \n" << sub_spacer;
+    else started_i = true;
 
     buffer_ << "(";
-    buffer_ << "id == " << i << " && (";
+    buffer_ << "id == " << ii.first << " && (";
 
     bool started_j = false;
-    for (unsigned int j = 0; j < i; ++j)
-    {
-      if (started_j)
-        buffer_ << " || ";
-
-      id_map_ [expression.idVar] = j;
+    for (NodeId j : ii.second) {
+      if (started_j) buffer_ << " || ";
+      else started_j = true;
       
+      id_map_ [expression.idVar] = j;      
       visit (expression.arg);
-
       id_map_.erase (expression.idVar);
-
-      if (!started_j)
-        started_j = true;
     }
 
     buffer_ << "))";
-
-    if (!started_i)
-      started_i = true;
   }
+
+  if(!started_i) buffer_ << "0";
 }
 
 /*********************************************************************/

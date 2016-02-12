@@ -239,7 +239,6 @@ node uav
     @WCExecTimeOverload(20000);
     thread REGION_COLLISION_AVOIDANCE {
     }
-
   
     //-- inherit the collision avoidance thread
     thread COLLISION_AVOIDANCE;

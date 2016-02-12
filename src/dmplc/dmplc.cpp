@@ -569,7 +569,7 @@ void usage (char *cmd)
 void addProcesses(dmpl::Program &program)
 {
   program.processes.clear ();
-  int nodeId = 0;
+  dmpl::NodeId nodeId = 0;
 
   for(const std::string &rd : roleDescs) {
     std::vector<std::string> comps;

@@ -81,17 +81,17 @@ namespace dmpl
   {
   public:
     Role role;
-    int id;
+    NodeId id;
 
     //-- constructors
-    Process(const Role &r, const int i) : role(r), id(i) {}
+    Process(const Role &r, const NodeId i) : role(r), id(i) {}
 
     //-- get the name of the node
     const std::string &getNode() const { return role->node->name; }
     //-- get the name of the role
     const std::string &getRole() const { return role->name; }
     //-- get the node id
-    int getId() const { return id; }
+    NodeId getId() const { return id; }
 
     //-- equality operator
     bool operator == (const Process &rhs) const
@@ -171,7 +171,7 @@ namespace dmpl
     std::map<std::string,std::set<std::string>> var2Groups;
 
     //-- map from role ids to variables to roles that share same group
-    std::map< unsigned int,std::map< std::string,std::set<unsigned int> > > nodesInGroup;
+    std::map< NodeId,std::map< std::string,std::set<NodeId> > > nodesInGroup;
     
     ///add a target thunk, or append to an existing one
     void addTarget(const std::string &tgt,const std::string &thk)

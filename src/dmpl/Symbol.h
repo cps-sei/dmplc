@@ -79,6 +79,8 @@ namespace dmpl
   //-- forward declarations and typedefs
   /*******************************************************************/
 
+  typedef size_t NodeId;
+  
   class Variable;
   typedef std::shared_ptr<Variable> Var;
   typedef std::list <Var> VarList;
