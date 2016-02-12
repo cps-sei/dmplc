@@ -3,13 +3,13 @@
 ##generate code and check against correct output
 function test_code_gen {
     DMPL="$1"
-    ROLES="$2"
+    OPTS="$2"
     printf "code gen     %30s : " $(basename $DMPL)
     BN=$(basename $DMPL .dmpl)
     OUT1="$BN.cpp"
     OUT2="$BN.cpp.saved"
     rm -f $OUT1
-    dmplc --roles $ROLES --cube-grid 10 --map small -g -o $OUT1 $DMPL &> /dev/null
+    dmplc $OPTS --cube-grid 10 --map small -g -o $OUT1 $DMPL &> /dev/null
     diff $OUT1 $OUT2 &> /dev/null
     if [ "$?" == "0" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
 }
@@ -127,11 +127,12 @@ test_double_parse ../../docs/tutorial/example-05/dmpl/example-05.dmpl ../../docs
 test_double_parse ../../docs/tutorial/example-07/dmpl/example-07-2.dmpl
 
 #code generation tests
-test_code_gen test-example-01a.dmpl uav:Uav:3
-test_code_gen test-example-01e.dmpl uav:Uav1:2:uav:Uav2:1:uav:Uav3:1
-test_code_gen test-example-02a.dmpl uav:Leader:1:uav:Protector:4
-test_code_gen test-example-02b.dmpl uav:Leader:1:uav:Protector:4
-test_code_gen test-example-02c.dmpl uav:ProtectorNW:1:uav:Leader:1:uav:ProtectorSE:1:uav:ProtectorSW:1:uav:ProtectorNE:1
+test_code_gen test-example-01a.dmpl "--roles uav:Uav:3"
+test_code_gen test-example-01e.dmpl "--roles uav:Uav1:2:uav:Uav2:1:uav:Uav3:1"
+test_code_gen test-example-02a.dmpl "--roles uav:Leader:1:uav:Protector:4"
+test_code_gen test-example-02b.dmpl "--roles uav:Leader:1:uav:Protector:4"
+test_code_gen test-example-02c.dmpl "--roles uav:ProtectorNW:1:uav:Leader:1:uav:ProtectorSE:1:uav:ProtectorSW:1:uav:ProtectorNE:1"
+test_code_gen test-example-09a.dmpl "--roles uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4 --groups coordinator+eastern=1:eastern=4:coordinator+western=1:western=4 --var-groups x1+y1+x2+y2=coordinator:lock+lx+ly+init=eastern+western"
 
 #test building
 for i in ../../docs/tutorial/*.mission ../../docs/tutorial/example-05/dmpl/*.mission ; do
