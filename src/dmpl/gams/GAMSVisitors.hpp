@@ -94,8 +94,8 @@ namespace dmpl
       //-- (EXISTS_LOWER, EXISTS_HIGHER, etc.)
       std::map< NodeId,std::set<NodeId> > iterIdMap(Expression &expr);
 
-      //-- a common handler for exists_lower and exists_higher
-      void exitEXHL (Expression & expression);
+      //-- a common handler for exists_lower, exists_higher, and exists_other
+      void exitEXHLO (Expression & expression);
 
       /**
        * Returns whether or not to visit the Integer's subfields first.
