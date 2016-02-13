@@ -260,20 +260,10 @@ node uav
     @WCExecTimeNominal(10000);
     @WCExecTimeOverload(20000);
     thread WAYPOINT {
-      //-- if i am in group 1
-      if(id < 5) {
-        if(init@0 == 0) return;
-        waypointValid = 1;
-        xt = lx@0 + ox;
-        yt = ly@0 + oy;
-      }
-      //-- if i am in group 2
-      else {
-        if(init@5 == 0) return;
-        waypointValid = 1;
-        xt = lx@5 + ox;
-        yt = ly@5 + oy;
-      }
+      if(init@Leader == 0) return;
+      waypointValid = 1;
+      xt = lx@Leader + ox;
+      yt = ly@Leader + oy;
     }
 
     //-- inherit the collision avoidance thread
