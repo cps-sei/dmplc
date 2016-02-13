@@ -697,8 +697,8 @@ dmpl::gams::GAMSBuilder::build_constructors ()
 void
 dmpl::gams::GAMSBuilder::build_program_variable_assignment (const Var & var)
 {
-  // is this a GLOBAL scalar (i.e., 1-dimensional array)?
-  if (var->scope == Variable::GLOBAL && var->type->dims.size () == 1)
+  // is this a global/group scalar (i.e., 1-dimensional array)?
+  if ((var->scope == Variable::GLOBAL || var->scope == Variable::GROUP) && var->type->dims.size () == 1)
     buffer_ << "  " << var->name << "[id] = var_init_" << var->name << ";\n";
   // otherwise for local variables
   else if (var->type->dims.size () == 0)
@@ -905,7 +905,8 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
         if(var->isInput) {
           //-- sanity check : array input variables disallowed
           if ((var->scope == Symbol::LOCAL && var->type->dims.size () > 0) ||
-              (var->scope == Symbol::GLOBAL && var->type->dims.size () > 1))
+              (var->scope == Symbol::GLOBAL && var->type->dims.size () > 1) ||
+              (var->scope == Symbol::GROUP && var->type->dims.size () > 1))
             throw std::runtime_error("ERROR: illegal array input variable " + var->name +
                                      " in role " + r.second->name +
                                      " in node " + n.second->name + "!!");
@@ -1323,9 +1324,10 @@ dmpl::gams::GAMSBuilder::build_refresh_modify_input_globals (const Node &node, c
   buffer_ << "  engine::Variables & vars)\n";
   buffer_ << "{\n";
   
-  buffer_ << "  // Remodifying role-specific global variables\n";
+  buffer_ << "  // Remodifying role-specific global and group variables\n";
   for(const auto &gv : role->allVarsInScope())
-    if(gv->isInput && gv->scope == Symbol::GLOBAL) build_refresh_modify_global (node, gv);
+    if(gv->isInput && (gv->scope == Symbol::GLOBAL || gv->scope == Symbol::GROUP))
+      build_refresh_modify_global (node, gv);
     
   buffer_ << "  return Integer (0);\n";
   buffer_ << "}\n";
@@ -1363,6 +1365,10 @@ dmpl::gams::GAMSBuilder::build_refresh_modify_globals (const Node &node, const R
   buffer_ << "  // Remodifying thread-specific global variables\n";
   for(const auto &gv : thread->writesGlob)
     build_refresh_modify_global (node, gv.second);
+
+  buffer_ << "  // Remodifying thread-specific group variables\n";
+  for(const auto &gv : thread->writesGroup)
+    build_refresh_modify_global (node, gv.second);
     
   buffer_ << "  return Integer (0);\n";
   buffer_ << "}\n";
@@ -1375,13 +1381,13 @@ dmpl::gams::GAMSBuilder::build_refresh_modify_globals (const Node &node, const R
 void
 dmpl::gams::GAMSBuilder::build_refresh_modify_global (const Node &node, const Var & var)
 {
-  if (var->scope == Variable::GLOBAL)
+  if (var->scope == Variable::GLOBAL || var->scope == Variable::GROUP)
   {
     buffer_ << "  mark_modified(" << var->name << "[id]);\n";
   }
   else
   {
-    throw std::runtime_error("ERROR: cannot modify non-global variable " + var->name + "!!");
+    throw std::runtime_error("ERROR: cannot modify non-global/group variable " + var->name + "!!");
     buffer_ << "  mark_modified(" << var->name << ")";
   }
 }
@@ -1405,6 +1411,12 @@ dmpl::gams::GAMSBuilder::build_push_pull(const Func &thread, bool push)
 
   //push-pull globals
   for(const auto &var : thread->accessedGlob()) {
+    buffer_ << "    " << (push?"push":"pull") << "(thread" << thread->threadID << "_"
+            << var.first << (push?"[id]":"") << ");" << std::endl;
+  }
+
+  //push-pull group variables
+  for(const auto &var : thread->accessedGroup()) {
     buffer_ << "    " << (push?"push":"pull") << "(thread" << thread->threadID << "_"
             << var.first << (push?"[id]":"") << ");" << std::endl;
   }
