@@ -147,7 +147,7 @@ std::map<dmpl::NodeId,std::set<dmpl::NodeId>> dmpl::madara::GAMSCompiler::iterId
   Program &prog = builder_.program;
   
   //-- collect set of global/group variables accessed as v@id
-  GAMSInfoCollector infoCollector (function_, node_, thread_, builder_, do_vrep_);
+  GAMSInfoCollector infoCollector;
 
   if(EXLExpr *exl = dynamic_cast<EXLExpr*>(&expression)) {
     infoCollector.idVar = exl->id;
@@ -1217,14 +1217,6 @@ dmpl::madara::GAMSCompiler::exitFAOH (FAOHStmt & statement)
 /*********************************************************************/
 //-- methods of GAMSInfoCollector class
 /*********************************************************************/
-
-/*********************************************************************/
-dmpl::madara::GAMSInfoCollector::GAMSInfoCollector (
-  const Func & function, const Node & node, const Func & thread,
-  DmplBuilder & builder, bool do_vrep, bool do_analyzer)
-  : function_ (function), node_ (node), thread_ (thread),
-    builder_ (builder), do_vrep_(do_vrep), do_analyzer_(do_analyzer),
-    indentation_ (2), assignment_ (0) {}
 
 /*********************************************************************/
 void

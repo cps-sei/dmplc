@@ -436,31 +436,19 @@ namespace dmpl
     //-- of global and group variables accessed) about statements and
     //-- expressions.
     /*******************************************************************/
-    class GAMSInfoCollector : public Visitor
+    struct GAMSInfoCollector : public Visitor
     {
     public:
       /**
        * Constructor
-       * @param  builder   the source for building a program
        **/
-      GAMSInfoCollector (const Func & function, const Node & node,
-                         const Func & thread,
-                         DmplBuilder & builder,
-                         bool do_vrep, bool do_analyzer = false);
-      
-      GAMSInfoCollector (const Stmt & statement, const Node & node,
-                         const Func & thread,
-                         DmplBuilder & builder,
-                         bool do_vrep, bool do_analyzer = false);
+      GAMSInfoCollector () {}
       
       /**
        * Visits a variable
        * @param  expr   the variable to visit
        **/
       virtual void exitLval(LvalExpr &expr);
-
-      /// set of referred role names
-      std::set<std::string> refRoles;
 
       //-- id variable. useful when we are looking for expressions of
       //-- the form X@id
@@ -470,35 +458,6 @@ namespace dmpl
       //-- only collect the X's, i.e., the base variables, ignoring
       //-- potential indices
       std::set<std::string> idVarVars;
-
-    private:
-      
-      /// current function
-      Func function_;
-
-      /// current thread
-      Func thread_;
-
-      /// current node
-      const Node & node_;
-
-      /// the result of the DASL parsing function
-      DmplBuilder & builder_;
-
-      ///whether we are generating code for VREP
-      bool do_vrep_;
-
-      ///whether we are generating code for expect log analyzer
-      bool do_analyzer_;
-
-      /// space indentation
-      size_t indentation_;
-
-      /// special identifier map, generally used by dmpl specific functions
-      std::map <Var, int> id_map_;
-
-      /// keep track of if we are in an ongoing assignment operation
-      AsgnStmt * assignment_;
     };
   } // namespace madara
 } //namespace dmpl
