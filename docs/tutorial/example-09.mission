@@ -14,7 +14,7 @@ ROLEDESC=uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4
 GROUPDESC="coordinator+eastern=1:eastern=4:coordinator+western=1:western=4"
 
 #variable to group assignment
-VARGROUPS="x1+y1+x2+y2=coordinator:lock+lx+ly+init=eastern+western"
+VARGROUPS="reg_x+reg_y+reg_rad=coordinator:lock+lx+ly+init=eastern+western"
 
 EXPECT_LOG_PERIOD=0.2
 

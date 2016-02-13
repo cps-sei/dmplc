@@ -223,23 +223,29 @@ node uav
       init = 1;
     }
 
-    //-- a region is a rectangle identified by the coordinates of its
-    //-- top-right and bottom-left corners. note that only the leader
-    //-- needs to know about this.
+    //-- a region is a circle identified by the coordinates of its
+    //-- center and radius.
     record region {
-      group unsigned char x1,y1,x2,y2;
-    }
-
-    //-- since the leader's are also coordinators, they use this
-    //-- thread to ensure that the two groups never occupy overlapping
-    //-- regions.
-    @Period(100000);
-    @Criticality(5);
-    @WCExecTimeNominal(10000);
-    @WCExecTimeOverload(20000);
-    thread REGION_COLLISION_AVOIDANCE {
+      group char reg_x, reg_y, reg_rad;
     }
   
+    override bool NEXT_XY () {
+      reg_x = x; reg_y = y; reg_rad = 3;
+
+      //-- check for region based collision
+      if(exists_higher(idp,
+                       (x-reg_x@idp)*(x-reg_x@idp) + (y-reg_y@idp)*(y-reg_y@idp) <
+                       (reg_rad + reg_rad@idp)*(reg_rad + reg_rad@idp)))
+        return 1;
+      
+      xp = x; yp = y;
+      if(x < xt) xp = x + 1;
+      else if(x > xt) xp = x - 1;
+      else if(y < yt) yp = y + 1;
+      else yp = y - 1;
+      return 0;
+    }
+
     //-- inherit the collision avoidance thread
     thread COLLISION_AVOIDANCE;
   }
