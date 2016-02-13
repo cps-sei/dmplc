@@ -375,7 +375,7 @@ fi
 
 [ "$MANUALSTART" -ne 1 ] && ( cd $SCDIR; ./startSim.py $RECORD )
 
-SAFETY_TIME=240
+if [ -z $MISSION_TIME ]; then SAFETY_TIME=240; else SAFETY_TIME=$MISSION_TIME; fi
 START_TIME=$(date +%s)
 while [ "$(grep COMPLETE $status_file | wc -l)" -lt 1 ]; do
     bin_count=$(ps --no-headers -C "$BIN" | wc -l)
