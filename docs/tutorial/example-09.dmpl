@@ -251,6 +251,9 @@ node uav
   }
 
   role Protector {
+    //-- position offset from leader
+    local char input ox, input oy;
+    
     //-- follower-specific waypoint thread
     @Period(100000);
     @Criticality(3);
@@ -261,39 +264,15 @@ node uav
       if(id < 5) {
         if(init@0 == 0) return;
         waypointValid = 1;
-        
-        if(id == 1) {
-          xt = lx@0 + 1;
-          yt = ly@0 + 1;
-        } else if(id == 2) {
-          xt = lx@0 - 1;
-          yt = ly@0 + 1;
-        } else if(id == 3) {
-          xt = lx@0 - 1;
-          yt = ly@0 - 1;
-        } else if(id == 4) {
-          xt = lx@0 + 1;
-          yt = ly@0 - 1;
-        }
+        xt = lx@0 + ox;
+        yt = ly@0 + oy;
       }
       //-- if i am in group 2
       else {
         if(init@5 == 0) return;
         waypointValid = 1;
-        
-        if(id == 6) {
-          xt = lx@5 + 1;
-          yt = ly@5 + 1;
-        } else if(id == 7) {
-          xt = lx@5 - 1;
-          yt = ly@5 + 1;
-        } else if(id == 8) {
-          xt = lx@5 - 1;
-          yt = ly@5 - 1;
-        } else if(id == 9) {
-          xt = lx@5 + 1;
-          yt = ly@5 - 1;
-        }
+        xt = lx@5 + ox;
+        yt = ly@5 + oy;
       }
     }
 
