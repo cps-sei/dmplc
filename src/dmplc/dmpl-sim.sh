@@ -219,6 +219,8 @@ fi
 if [ ! -z "$RECORD" ]; then
     if [ "$MAPNAME" == "small-obstacle" ]; then
         RECORD="$RECORD -0.0499 -6.4213 6.3789"
+    elif [ "$MAPNAME" == "large" ]; then
+        RECORD="$RECORD -3.2090 1.2665 39.7362"
     else
         RECORD="$RECORD 0.0421 -0.2489 11.2217"
     fi
