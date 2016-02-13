@@ -1089,7 +1089,7 @@ KnowledgeRecord
 REMODIFY_INPUT_GLOBALS (engine::FunctionArguments & args,
   engine::Variables & vars)
 {
-  // Remodifying role-specific global variables
+  // Remodifying role-specific global and group variables
   return Integer (0);
 }
 
@@ -1115,6 +1115,7 @@ REMODIFY_GLOBALS_COLLISION_AVOIDANCE (engine::FunctionArguments & args,
   REMODIFY_BARRIERS_COLLISION_AVOIDANCE (args, vars);
   // Remodifying thread-specific global variables
   mark_modified(lock[id]);
+  // Remodifying thread-specific group variables
   return Integer (0);
 }
 //-- @InitSim
@@ -1437,7 +1438,7 @@ KnowledgeRecord
 REMODIFY_INPUT_GLOBALS (engine::FunctionArguments & args,
   engine::Variables & vars)
 {
-  // Remodifying role-specific global variables
+  // Remodifying role-specific global and group variables
   return Integer (0);
 }
 
@@ -1463,6 +1464,7 @@ REMODIFY_GLOBALS_COLLISION_AVOIDANCE (engine::FunctionArguments & args,
   REMODIFY_BARRIERS_COLLISION_AVOIDANCE (args, vars);
   // Remodifying thread-specific global variables
   mark_modified(lock[id]);
+  // Remodifying thread-specific group variables
   return Integer (0);
 }
 //-- @InitSim
@@ -1788,7 +1790,7 @@ KnowledgeRecord
 REMODIFY_INPUT_GLOBALS (engine::FunctionArguments & args,
   engine::Variables & vars)
 {
-  // Remodifying role-specific global variables
+  // Remodifying role-specific global and group variables
   return Integer (0);
 }
 
@@ -1814,6 +1816,7 @@ REMODIFY_GLOBALS_COLLISION_AVOIDANCE (engine::FunctionArguments & args,
   REMODIFY_BARRIERS_COLLISION_AVOIDANCE (args, vars);
   // Remodifying thread-specific global variables
   mark_modified(lock[id]);
+  // Remodifying thread-specific group variables
   return Integer (0);
 }
 //-- @InitSim
@@ -2139,7 +2142,7 @@ KnowledgeRecord
 REMODIFY_INPUT_GLOBALS (engine::FunctionArguments & args,
   engine::Variables & vars)
 {
-  // Remodifying role-specific global variables
+  // Remodifying role-specific global and group variables
   return Integer (0);
 }
 
@@ -2165,6 +2168,7 @@ REMODIFY_GLOBALS_COLLISION_AVOIDANCE (engine::FunctionArguments & args,
   REMODIFY_BARRIERS_COLLISION_AVOIDANCE (args, vars);
   // Remodifying thread-specific global variables
   mark_modified(lock[id]);
+  // Remodifying thread-specific group variables
   return Integer (0);
 }
 //-- @InitSim
@@ -2490,7 +2494,7 @@ KnowledgeRecord
 REMODIFY_INPUT_GLOBALS (engine::FunctionArguments & args,
   engine::Variables & vars)
 {
-  // Remodifying role-specific global variables
+  // Remodifying role-specific global and group variables
   return Integer (0);
 }
 
@@ -2516,6 +2520,7 @@ REMODIFY_GLOBALS_COLLISION_AVOIDANCE (engine::FunctionArguments & args,
   REMODIFY_BARRIERS_COLLISION_AVOIDANCE (args, vars);
   // Remodifying thread-specific global variables
   mark_modified(lock[id]);
+  // Remodifying thread-specific group variables
   return Integer (0);
 }
 //-- @InitSim

@@ -821,7 +821,7 @@ KnowledgeRecord
 REMODIFY_INPUT_GLOBALS (engine::FunctionArguments & args,
   engine::Variables & vars)
 {
-  // Remodifying role-specific global variables
+  // Remodifying role-specific global and group variables
   return Integer (0);
 }
 
@@ -846,6 +846,8 @@ REMODIFY_GLOBALS_COLLISION_AVOIDANCE (engine::FunctionArguments & args,
   // Remodifying common global variables
   REMODIFY_BARRIERS_COLLISION_AVOIDANCE (args, vars);
   // Remodifying thread-specific global variables
+  // Remodifying thread-specific group variables
+  mark_modified(lock[id]);
   return Integer (0);
 }
 //-- @InitSim
@@ -882,6 +884,7 @@ thread0 (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread0_y);
     pull(thread0_yp);
     pull(thread0_yt);
+    pull(thread0_lock);
   }
 
   //-- call thread function
@@ -898,6 +901,7 @@ thread0 (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread0_y);
     push(thread0_yp);
     push(thread0_yt);
+    push(thread0_lock[id]);
   }
 
   return Integer(0);
@@ -1020,6 +1024,10 @@ thread1 (engine::FunctionArguments & args, engine::Variables & vars)
   //-- Pull all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
+    pull(thread1_x1);
+    pull(thread1_x2);
+    pull(thread1_y1);
+    pull(thread1_y2);
   }
 
   //-- call thread function
@@ -1028,6 +1036,10 @@ thread1 (engine::FunctionArguments & args, engine::Variables & vars)
   //-- Push all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
+    push(thread1_x1[id]);
+    push(thread1_x2[id]);
+    push(thread1_y1[id]);
+    push(thread1_y2[id]);
   }
 
   return Integer(0);
@@ -1082,6 +1094,9 @@ thread2 (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread2_waypointValid);
     pull(thread2_xp);
     pull(thread2_yp);
+    pull(thread2_init);
+    pull(thread2_lx);
+    pull(thread2_ly);
   }
 
   //-- call thread function
@@ -1093,6 +1108,9 @@ thread2 (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread2_waypointValid);
     push(thread2_xp);
     push(thread2_yp);
+    push(thread2_init[id]);
+    push(thread2_lx[id]);
+    push(thread2_ly[id]);
   }
 
   return Integer(0);
@@ -1246,7 +1264,7 @@ KnowledgeRecord
 REMODIFY_INPUT_GLOBALS (engine::FunctionArguments & args,
   engine::Variables & vars)
 {
-  // Remodifying role-specific global variables
+  // Remodifying role-specific global and group variables
   return Integer (0);
 }
 
@@ -1271,6 +1289,8 @@ REMODIFY_GLOBALS_COLLISION_AVOIDANCE (engine::FunctionArguments & args,
   // Remodifying common global variables
   REMODIFY_BARRIERS_COLLISION_AVOIDANCE (args, vars);
   // Remodifying thread-specific global variables
+  // Remodifying thread-specific group variables
+  mark_modified(lock[id]);
   return Integer (0);
 }
 //-- @InitSim
@@ -1307,6 +1327,7 @@ thread0 (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread0_y);
     pull(thread0_yp);
     pull(thread0_yt);
+    pull(thread0_lock);
   }
 
   //-- call thread function
@@ -1323,6 +1344,7 @@ thread0 (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread0_y);
     push(thread0_yp);
     push(thread0_yt);
+    push(thread0_lock[id]);
   }
 
   return Integer(0);
@@ -1459,6 +1481,9 @@ thread3 (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread3_waypointValid);
     pull(thread3_xt);
     pull(thread3_yt);
+    pull(thread3_init);
+    pull(thread3_lx);
+    pull(thread3_ly);
   }
 
   //-- call thread function
@@ -1470,6 +1495,9 @@ thread3 (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread3_waypointValid);
     push(thread3_xt);
     push(thread3_yt);
+    push(thread3_init[id]);
+    push(thread3_lx[id]);
+    push(thread3_ly[id]);
   }
 
   return Integer(0);
