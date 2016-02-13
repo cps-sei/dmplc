@@ -277,6 +277,18 @@ namespace dmpl
     std::set<Process> getRefProcs(const Process &proc,const std::string &roleName) const
     {
       std::set<Process> res;
+
+      //-- if the process belongs to some groups, then collect nodes
+      //-- instanting roleNames from the groups
+      for(const std::string group : node2Groups[proc.id]) {
+        for(const Process &pr : processes) {
+          if(pr.role->name == roleName && node2Groups[pr.id].find(group) != node2Groups[pr.id].end())
+            res.insert(pr);
+        }
+      }
+
+      if(!res.empty()) return res;
+
       //-- right now, we just collect all processes with name = roleName
       res = procsWithRole(roleName);
       return res;
