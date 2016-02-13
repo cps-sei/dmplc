@@ -187,14 +187,9 @@ ArrayReference<unsigned int, 3> startSync(knowledge, "startSync");
 ArrayReference<unsigned int, 3> mbarrier_COLLISION_AVOIDANCE(knowledge, "mbarrier_COLLISION_AVOIDANCE");
 
 /********************************************************************/
-//-- map from role ids to role names to role ids
+//-- function from node ids and role names to node ids
 /********************************************************************/
-std::map< unsigned int,std::map<std::string,unsigned int> > role2Id;
-
-/********************************************************************/
-//-- map from role ids to variables to roles that share same group
-/********************************************************************/
-//-- std::map< unsigned int,std::map< std::string,std::set<unsigned int> > > nodesInGroup;
+size_t role2Id(size_t nodeId, const std::string &roleName);
 
 /********************************************************************/
 //-- number of participating processes
@@ -1209,6 +1204,11 @@ int SyncAlgo::execute (void)
 /********************************************************************/
 //-- End SyncAlgo class methods
 /********************************************************************/
+size_t role2Id(size_t nodeId, const std::string &roleName)
+{
+  throw std::runtime_error("ERROR: role2Id called with illegal arguments " + std::to_string(nodeId) + " and " + roleName + "!!");
+}
+
 } // end dmpl namespace
 
 using namespace dmpl;
@@ -1291,13 +1291,6 @@ int main (int argc, char ** argv)
   id = settings.id;
   num_processes = processes;
 
-  /******************************************************************/
-  //-- Initializing the role2Id map
-  /******************************************************************/
-
-  /******************************************************************/
-  //-- Initializing the nodesInGroup map
-  /******************************************************************/
 
   /******************************************************************/
   //-- Invoking constructors

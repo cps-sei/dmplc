@@ -207,6 +207,7 @@ dmpl::gams::GAMSBuilder::build ()
   }
   build_algo_declaration ();
   build_algo_functions ();
+  build_role2Id ();
 
   // close dmpl namespace
   close_namespace ("dmpl");
@@ -402,14 +403,14 @@ dmpl::gams::GAMSBuilder::build_common_global_variables ()
   }
   buffer_ << "\n";
 
-  //-- the map from role ids to role names and their ids
-  build_comment("//-- map from role ids to role names to role ids", "", "", 0);
-  buffer_ << "std::map< unsigned int,std::map<std::string,unsigned int> > role2Id;\n\n";
+  //-- generate function from node ids and role names to node ids
+  build_comment("//-- function from node ids and role names to node ids", "", "", 0);
+  buffer_ << "size_t role2Id(size_t nodeId, const std::string &roleName);\n\n";
 
   //-- the map from role ids to variable names to ids of roles that
   //-- are in the same group
-  build_comment("//-- map from role ids to variables to roles that share same group", "", "", 0);
-  buffer_ << "//-- std::map< unsigned int,std::map< std::string,std::set<unsigned int> > > nodesInGroup;\n\n";
+  //build_comment("//-- map from role ids to variables to roles that share same group", "", "", 0);
+  //buffer_ << "//-- std::map< unsigned int,std::map< std::string,std::set<unsigned int> > > nodesInGroup;\n\n";
 
   build_comment("//-- number of participating processes", "", "", 0);
   buffer_ << "unsigned int processes (" << numNodes () << ");\n\n";
@@ -2161,6 +2162,36 @@ dmpl::gams::GAMSBuilder::build_algo_functions ()
 }
 
 /*********************************************************************/
+//-- generate the role2Id function
+/*********************************************************************/
+void dmpl::gams::GAMSBuilder::build_role2Id ()
+{
+  buffer_ << "size_t role2Id(size_t nodeId, const std::string &roleName)\n";
+  buffer_ << "{\n";
+  const Program &prog = builder_.program;
+  for(const auto &rr : rolesRefRoles) {
+    std::set<Process> procs = prog.procsWithRole(rr.first);
+    for(const Process &proc : procs) {
+      for(const std::string &rp : rr.second) {
+        std::set<Process> refProcs = prog.getRefProcs(proc,rp);
+        if(refProcs.empty())
+          throw std::runtime_error("ERROR: role " + rp + " referred by role " + rr.first +
+                                   " is empty, i.e., not instantiated by any node!!");
+        if(refProcs.size() > 1)
+          throw std::runtime_error("ERROR: role " + rp + " referred by role " + rr.first +
+                                   " is ambiguous, i.e., instantiated by multiple nodes!!");
+
+        buffer_ << "  if(nodeId == " << proc.id << " && roleName == \"" << rp << "\") return "
+                << refProcs.begin()->id << ";\n";
+      }
+    }
+  }
+  buffer_ << "  throw std::runtime_error(\"ERROR: role2Id called with illegal arguments \""
+          << " + std::to_string(nodeId) + \" and \" + roleName + \"!!\");\n";
+  buffer_ << "}\n\n";
+}
+
+/*********************************************************************/
 //-- compute priorities and criticalities of threads
 /*********************************************************************/
 void
@@ -2350,10 +2381,6 @@ dmpl::gams::GAMSBuilder::build_main_function ()
   buffer_ << "  num_processes = processes;\n";
   buffer_ << "\n";
 
-  //-- initialize role2Ids and nodesInGroup
-  build_init_role_id ();
-  build_init_nodes_in_group ();
-  
   build_constructors ();
   build_main_define_functions ();
 

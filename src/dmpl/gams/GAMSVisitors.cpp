@@ -303,7 +303,7 @@ dmpl::madara::GAMSCompiler::exitLval (LvalExpr & expression)
   if (node_->roles.find(expression.var) != node_->roles.end())
   {
     refRoles.insert(expression.var);
-    buffer_ << "role2Id[settings.id][\"" << expression.var << "\"]";
+    buffer_ << "role2Id(settings.id,\"" << expression.var << "\")";
   }
   //-- no symbol, probably something external
   else if (symbol == NULL)

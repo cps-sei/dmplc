@@ -246,6 +246,9 @@ namespace dmpl
       void build_algo_declaration (void);
       void build_algo_functions (void);
 
+      //-- generate the role2Id function
+      void build_role2Id (void);      
+      
       /**
        * Computes priorities, criticalities, and zero slack instants
        * of functions.

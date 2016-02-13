@@ -187,14 +187,9 @@ ArrayReference<unsigned int, 5> startSync(knowledge, "startSync");
 ArrayReference<unsigned int, 5> mbarrier_COLLISION_AVOIDANCE(knowledge, "mbarrier_COLLISION_AVOIDANCE");
 
 /********************************************************************/
-//-- map from role ids to role names to role ids
+//-- function from node ids and role names to node ids
 /********************************************************************/
-std::map< unsigned int,std::map<std::string,unsigned int> > role2Id;
-
-/********************************************************************/
-//-- map from role ids to variables to roles that share same group
-/********************************************************************/
-//-- std::map< unsigned int,std::map< std::string,std::set<unsigned int> > > nodesInGroup;
+size_t role2Id(size_t nodeId, const std::string &roleName);
 
 /********************************************************************/
 //-- number of participating processes
@@ -1677,13 +1672,13 @@ thread2_WAYPOINT (engine::FunctionArguments & args, engine::Variables & vars)
 
 
   //-- Begin function body
-  if ((thread2_init[role2Id[settings.id]["Leader"]] == Integer (0)))
+  if ((thread2_init[role2Id(settings.id,"Leader")] == Integer (0)))
   {
     return Integer(0);
   }
   thread2_waypointValid = Integer (1);
-  thread2_xt = (thread2_lx[role2Id[settings.id]["Leader"]] + Integer (1));
-  thread2_yt = (thread2_ly[role2Id[settings.id]["Leader"]] - Integer (1));
+  thread2_xt = (thread2_lx[role2Id(settings.id,"Leader")] + Integer (1));
+  thread2_yt = (thread2_ly[role2Id(settings.id,"Leader")] - Integer (1));
 
   //-- Insert return statement, in case user program did not
   return Integer(0);
@@ -2029,13 +2024,13 @@ thread3_WAYPOINT (engine::FunctionArguments & args, engine::Variables & vars)
 
 
   //-- Begin function body
-  if ((thread3_init[role2Id[settings.id]["Leader"]] == Integer (0)))
+  if ((thread3_init[role2Id(settings.id,"Leader")] == Integer (0)))
   {
     return Integer(0);
   }
   thread3_waypointValid = Integer (1);
-  thread3_xt = (thread3_lx[role2Id[settings.id]["Leader"]] - Integer (1));
-  thread3_yt = (thread3_ly[role2Id[settings.id]["Leader"]] - Integer (1));
+  thread3_xt = (thread3_lx[role2Id(settings.id,"Leader")] - Integer (1));
+  thread3_yt = (thread3_ly[role2Id(settings.id,"Leader")] - Integer (1));
 
   //-- Insert return statement, in case user program did not
   return Integer(0);
@@ -2381,13 +2376,13 @@ thread4_WAYPOINT (engine::FunctionArguments & args, engine::Variables & vars)
 
 
   //-- Begin function body
-  if ((thread4_init[role2Id[settings.id]["Leader"]] == Integer (0)))
+  if ((thread4_init[role2Id(settings.id,"Leader")] == Integer (0)))
   {
     return Integer(0);
   }
   thread4_waypointValid = Integer (1);
-  thread4_xt = (thread4_lx[role2Id[settings.id]["Leader"]] + Integer (1));
-  thread4_yt = (thread4_ly[role2Id[settings.id]["Leader"]] + Integer (1));
+  thread4_xt = (thread4_lx[role2Id(settings.id,"Leader")] + Integer (1));
+  thread4_yt = (thread4_ly[role2Id(settings.id,"Leader")] + Integer (1));
 
   //-- Insert return statement, in case user program did not
   return Integer(0);
@@ -2733,13 +2728,13 @@ thread5_WAYPOINT (engine::FunctionArguments & args, engine::Variables & vars)
 
 
   //-- Begin function body
-  if ((thread5_init[role2Id[settings.id]["Leader"]] == Integer (0)))
+  if ((thread5_init[role2Id(settings.id,"Leader")] == Integer (0)))
   {
     return Integer(0);
   }
   thread5_waypointValid = Integer (1);
-  thread5_xt = (thread5_lx[role2Id[settings.id]["Leader"]] - Integer (1));
-  thread5_yt = (thread5_ly[role2Id[settings.id]["Leader"]] + Integer (1));
+  thread5_xt = (thread5_lx[role2Id(settings.id,"Leader")] - Integer (1));
+  thread5_yt = (thread5_ly[role2Id(settings.id,"Leader")] + Integer (1));
 
   //-- Insert return statement, in case user program did not
   return Integer(0);
@@ -3138,6 +3133,15 @@ int SyncAlgo::execute (void)
 /********************************************************************/
 //-- End SyncAlgo class methods
 /********************************************************************/
+size_t role2Id(size_t nodeId, const std::string &roleName)
+{
+  if(nodeId == 4 && roleName == "Leader") return 1;
+  if(nodeId == 0 && roleName == "Leader") return 1;
+  if(nodeId == 2 && roleName == "Leader") return 1;
+  if(nodeId == 3 && roleName == "Leader") return 1;
+  throw std::runtime_error("ERROR: role2Id called with illegal arguments " + std::to_string(nodeId) + " and " + roleName + "!!");
+}
+
 } // end dmpl namespace
 
 using namespace dmpl;
@@ -3220,17 +3224,6 @@ int main (int argc, char ** argv)
   id = settings.id;
   num_processes = processes;
 
-  /******************************************************************/
-  //-- Initializing the role2Id map
-  /******************************************************************/
-  role2Id[4]["Leader"] = 1;
-  role2Id[0]["Leader"] = 1;
-  role2Id[2]["Leader"] = 1;
-  role2Id[3]["Leader"] = 1;
-
-  /******************************************************************/
-  //-- Initializing the nodesInGroup map
-  /******************************************************************/
 
   /******************************************************************/
   //-- Invoking constructors
