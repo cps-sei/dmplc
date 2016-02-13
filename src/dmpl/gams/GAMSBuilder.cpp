@@ -409,7 +409,7 @@ dmpl::gams::GAMSBuilder::build_common_global_variables ()
   //-- the map from role ids to variable names to ids of roles that
   //-- are in the same group
   build_comment("//-- map from role ids to variables to roles that share same group", "", "", 0);
-  buffer_ << "std::map< unsigned int,std::map< std::string,std::set<unsigned int> > > nodesInGroup;\n\n";
+  buffer_ << "//-- std::map< unsigned int,std::map< std::string,std::set<unsigned int> > > nodesInGroup;\n\n";
 
   build_comment("//-- number of participating processes", "", "", 0);
   buffer_ << "unsigned int processes (" << numNodes () << ");\n\n";
@@ -663,14 +663,14 @@ void
 dmpl::gams::GAMSBuilder::build_init_nodes_in_group ()
 {
   const Program &prog = builder_.program;
-  build_comment("//-- Initializing the nodesInGroup map", "", "", 2);
+  build_comment("//-- Initializing the nodesInGroup map", "\n", "", 2);
   for(const auto &v1 : prog.nodesInGroup) {
     for(const auto &v2 : v1.second) {
       std::string init;
       for(const auto &v3 : v2.second) {
         init += std::to_string(v3) + ",";
       }
-      buffer_ << "  nodesInGroup[" << v1.first << "][\"" << v2.first << "\"] = {" << init << "};\n";      
+      buffer_ << "  //-- nodesInGroup[" << v1.first << "][\"" << v2.first << "\"] = {" << init << "};\n";      
     }
   }
 }

@@ -194,7 +194,7 @@ std::map< unsigned int,std::map<std::string,unsigned int> > role2Id;
 /********************************************************************/
 //-- map from role ids to variables to roles that share same group
 /********************************************************************/
-std::map< unsigned int,std::map< std::string,std::set<unsigned int> > > nodesInGroup;
+//-- std::map< unsigned int,std::map< std::string,std::set<unsigned int> > > nodesInGroup;
 
 /********************************************************************/
 //-- number of participating processes
@@ -3227,6 +3227,7 @@ int main (int argc, char ** argv)
   role2Id[0]["Leader"] = 1;
   role2Id[2]["Leader"] = 1;
   role2Id[3]["Leader"] = 1;
+
   /******************************************************************/
   //-- Initializing the nodesInGroup map
   /******************************************************************/
