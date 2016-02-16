@@ -1,0 +1,453 @@
+/**
+ * Copyright (c) 2015 Carnegie Mellon University. All Rights Reserved.
+
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+
+ * 1. Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following acknowledgments
+ * and disclaimers.
+
+ * 2. Redistributions in binary form must reproduce the above
+ * copyright notice, this list of conditions and the following
+ * disclaimer in the documentation and/or other materials provided
+ * with the distribution.
+
+ * 3. The names "Carnegie Mellon University," "SEI" and/or "Software
+ * Engineering Institute" shall not be used to endorse or promote
+ * products derived from this software without prior written
+ * permission. For written permission, please contact
+ * permission@sei.cmu.edu.
+
+ * 4. Products derived from this software may not be called "SEI" nor
+ * may "SEI" appear in their names without prior written permission of
+ * permission@sei.cmu.edu.
+
+ * 5. Redistributions of any form whatsoever must retain the following
+ * acknowledgment:
+
+ * This material is based upon work funded and supported by the
+ * Department of Defense under Contract No. FA8721-05-C-0003 with
+ * Carnegie Mellon University for the operation of the Software
+ * Engineering Institute, a federally funded research and development
+ * center.
+
+ * Any opinions, findings and conclusions or recommendations expressed
+ * in this material are those of the author(s) and do not necessarily
+ * reflect the views of the United States Department of Defense.
+
+ * NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE
+ * ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS"
+ * BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND,
+ * EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT
+ * LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY,
+ * EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE
+ * MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH
+ * RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT
+ * INFRINGEMENT.
+
+ * This material has been approved for public release and unlimited
+ * distribution.
+
+ * DM-0002494
+**/
+
+//-- This is like example-02 but we have two groups of nodes, each
+//-- with one leader and four protectors. The leaders also act as
+//-- coordinators. The idea is that each group performs collision
+//-- avoidance within itself, while the coordinators ensures that the
+//-- groups do no encroach on each other's spaces. This means that no
+//-- group knows the exact location of the members of the other group,
+//-- only the general area they are in. Through this example, we are
+//-- trying to explore "group-based access control (GBAC) of shared
+//-- variables".
+
+TARGET GNU_CPP,WIN_CPP %%{
+#define GNU_WIN
+#include <stdlib.h>
+#include "madara/utility/Utility.h"
+
+int my_sleep (int seconds)
+{
+  madara::utility::sleep (seconds);
+  return 0;
+}
+
+int roundNum = 0;
+int xi,yi;
+
+void print_int(int i)
+{
+  printf("%i\n", i);
+}
+
+void print_line(int _X)
+{
+  printf("-");
+  for(int i = 0;i < _X;++i) printf("--");
+  printf("\n");
+}
+
+void print_region(int m, int _id, int _reg_x,int _reg_y, int _ox, int _oy)
+{
+  printf("%d: id = %d, reg_x = %d, reg_y = %d, ox = %d, oy = %d\n", m, _id, _reg_x, _reg_y, _ox, _oy);
+  fflush(stdout);
+}
+
+void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
+{
+  if(roundNum == 0) {
+    xi = x; yi = y;
+  }
+
+  for(int i = 0;i < 150;++i) printf("\n");
+  
+  printf("round = %d : id = %d\n", ++roundNum, id);
+  printf("_X = %d _Y = %d\n",_X,_Y);
+  print_line(_X);
+  for(int i = 0;i < _Y;++i) {
+    printf("|");
+    for(int j = 0;j < _X;++j) {
+      //printf("i = %d j = %d\n", i, j);
+      if(j == xf && i == yf) printf("o|");        
+      else if(j == x && i == y) printf("%d|",id);
+      else printf(" |");
+    }
+    printf("\n");
+    print_line(_X);
+  }
+}
+%%}
+
+//states of each node
+const NEXT = 1;
+const REQUEST = 2;
+const WAITING = 3;
+const MOVE = 4;
+
+
+extern void INIT_CONTROLLER(unsigned char x,unsigned char y);
+extern int my_sleep(int seconds);
+extern void print_state(int XX,int YY,int my_id, int x, int y, int xf, int yf);
+extern void print_region(int m, int _id, int _reg_x,int _reg_y, int _ox, int _oy);
+extern void print_int(int i);
+
+node uav
+{
+  //shared variables -- visible across nodes. 
+  //must be accessed via R() and W()
+  group bool lock [X][Y] = {
+    lock[x][y] = 1;
+  };
+  
+  group unsigned char lx = 0,ly = 0; //leader's destination coordinates
+  group bool init = 0; //leader's destination has been initialized
+
+  //-- we created this global for testing
+  global bool missionOver = 0;
+  
+  //private variables -- local to the node.
+  //preserved across rounds
+  local unsigned char state = NEXT; //the state
+
+  //current coordinates
+  local unsigned char input x ~ (0 <= x && x < X), input y ~ (0 <= y && y < Y);
+  local unsigned char xp = x, yp = y; //next coordinates
+  //final coordinates
+  local unsigned char input xt ~ (0 <= xt && xt < X), input yt ~ (0 <= yt && yt < Y);
+  
+  local bool waypointValid = 0; //xt, yt are valid
+
+  pure int expProp1Func() { return x < 5; }
+  pure int expProp2Func() { return y < 5; }
+  
+  expect expProp1 : at_end => expProp1Func;
+  expect expProp2 : at_end => expProp2Func;
+
+  pure int coverage()
+  {
+    return (GET_LAT() - GET_LNG()@0) > 0.9;
+  }
+
+  expect expProp3 : at_least 0.5 => coverage;
+  
+  bool NEXT_XY () {
+    if(!waypointValid) return 1;
+    if(xt < 0 || xt >= X || yt < 0 || yt >= Y) return 1;
+
+    xp = x; yp = y;
+    if(x < xt) xp = x + 1;
+    else if(x > xt) xp = x - 1;
+    else if(y < yt) yp = y + 1;
+    else yp = y - 1;
+    return 0;
+  }
+  
+  //-- saves the next waypoint in (xp,yp). also updates the angle of
+  //-- movement. this has zig-zag movement. for reference only. not
+  //-- actually used.
+  bool NEXT_XY_ZIG_ZAG () {
+    unsigned char xdiff,ydiff;
+
+    if(!waypointValid) return 1;
+    if(xt < 0 || xt >= X || yt < 0 || yt >= Y) return 1;
+    
+    xp = x; yp = y;
+
+    xdiff = xt-x;
+    if(xdiff < 0) xdiff = -xdiff;
+    ydiff = yt-y;
+    if(ydiff < 0) ydiff = -ydiff;
+
+    if(xdiff > ydiff) {
+      if(x < xt) {
+        xp = x + 1;
+      } else {
+        xp = x - 1;
+      }
+    } else {
+      if(y < yt) {
+        yp = y + 1;
+      } else {
+        yp = y - 1;
+      }
+    }
+
+    return 0;
+  }
+
+  @BarrierSync;
+  @PlatformController;
+  @Period(100000);
+  @Criticality(4);
+  @WCExecTimeNominal(15000);
+  @WCExecTimeOverload(30000);
+  thread COLLISION_AVOIDANCE {
+    //print_state(X,Y,id,x,y,xt,yt);
+    //my_sleep(1);
+    if(state == NEXT) {
+      //compute next point on route
+      if(x == xt && y == yt) return;
+      if(NEXT_XY()) return;
+      state = REQUEST;
+    } else if(state == REQUEST) {
+      //request the lock but only if it is free
+      if(EXISTS_LOWER(idp,lock[xp][yp]@idp != 0)) return;
+      lock[xp][yp] = 1;
+      state = WAITING;
+    } else if(state == WAITING) {
+      //grab the lock if we are the highest 
+      //id node to request or hold the lock
+      if(EXISTS_HIGHER(idp, lock[xp][yp]@idp != 0)) return;
+      state = MOVE;
+    } else if(state == MOVE) {
+      //now we have the lock on (x’,y’)
+      if(GRID_MOVE(xp,yp,1)) return;
+      lock[x][y] = 0; 
+      x = xp; y = yp;
+      state = NEXT;
+    }
+  }
+
+  role Leader {
+    //waypoint coordinates
+    local unsigned char input wx ~ (0 <= wx && wx < X), input wy ~ (0 <= wy && wy < Y);
+
+    //-- leader-specific waypoint thread
+    @Period(100000);
+    @Criticality(3);
+    @WCExecTimeNominal(10000);
+    @WCExecTimeOverload(20000);
+    thread WAYPOINT {
+      waypointValid = 1;
+      ly = yp;
+      lx = xp;
+      init = 1;
+      if ((x == xt) && (y == yt)) {
+        xt = wx;
+        yt = wy;
+      }
+    }
+
+    //-- a region is a circle identified by the coordinates of its
+    //-- center and radius.
+    record region {
+      group char reg_x, reg_y, reg_rad;
+    }
+  
+    override bool NEXT_XY () {
+      unsigned char xdiff,ydiff;
+
+      if(!waypointValid) return 1;
+
+      reg_x = x; reg_y = y; reg_rad = 3;
+
+      //-- check for region based collision
+      if(exists_higher(idp,
+         (x-reg_x@idp)*(x-reg_x@idp) + (y-reg_y@idp)*(y-reg_y@idp) <=
+         (reg_rad + reg_rad@idp)*(reg_rad + reg_rad@idp)))
+      {
+        print_region(1, id,reg_x,reg_y,reg_x@5, reg_y@5);
+        return 1;
+      }
+
+      if(exists_lower(idp,
+         (x-reg_x@idp)*(x-reg_x@idp) + (y-reg_y@idp)*(y-reg_y@idp) <=
+         (reg_rad + reg_rad@idp)*(reg_rad + reg_rad@idp)))
+      {
+	if (exists_lower(idp, (reg_x@idp <= x)) && (xt >= x)) {
+	   xp = xp + 1;
+	   yp = y;
+           print_region(2, id,reg_x,reg_y,reg_x@0, reg_y@0);
+	   return 0;
+	}
+	if (exists_lower(idp, (reg_x@idp >= x)) && (xt <= x)) {
+	   xp = xp - 1;
+	   yp = y;
+           print_region(3, id,reg_x,reg_y,reg_x@0, reg_y@0);
+	   return 0;
+	}
+	if (exists_lower(idp, (reg_y@idp <= y)) && (yt >= y)) {
+	   xp = x;
+	   yp = y + 1;
+           print_region(4, id,reg_x,reg_y,reg_x@0, reg_y@0);
+	   return 0;
+	}
+	if (exists_lower(idp, (reg_y@idp >= y)) && (yt <= y)) {
+	   xp = x;
+	   yp = y - 1;
+           print_region(5, id,reg_x,reg_y,reg_x@0, reg_y@0);
+	   return 0;
+	}
+	// else hold on
+      }
+
+      print_region(0, id,reg_x,reg_y,reg_x@5, reg_y@5);
+      
+      if(xt < 0 || xt >= X || yt < 0 || yt >= Y) return 1;
+   
+      xp = x; yp = y;
+
+      xdiff = xt-x;
+      if(xdiff < 0) xdiff = -xdiff;
+      ydiff = yt-y;
+      if(ydiff < 0) ydiff = -ydiff;
+
+      if(xdiff > ydiff) {
+        if(x < xt) {
+          xp = x + 1;
+        } else {
+          xp = x - 1;
+        }
+      } else {
+        if(y < yt) {
+          yp = y + 1;
+        } else {
+          yp = y - 1;
+        }
+      }
+
+      return 0;
+    }
+
+    //-- inherit the collision avoidance thread
+    thread COLLISION_AVOIDANCE;
+  }
+
+  role Protector {
+    //-- position offset from leader
+    local char input ox, input oy;
+    
+    //-- follower-specific waypoint thread
+    @Period(100000);
+    @Criticality(3);
+    @WCExecTimeNominal(10000);
+    @WCExecTimeOverload(20000);
+    thread WAYPOINT {
+      if(init@Leader == 0) return;
+      waypointValid = 1;
+      xt = lx@Leader + ox;
+      yt = ly@Leader + oy;
+    }
+
+    //-- inherit the collision avoidance thread
+    thread COLLISION_AVOIDANCE;
+  }
+
+  @InitSim;
+  void StartingPosition ()
+  {
+    GRID_INIT();
+    GRID_PLACE(x, y, 1);
+  }
+
+  //the safety property checked at the beginning of each round
+  pure bool NoCollisions ()
+  {
+    //-- the main property
+    FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+      if(x@id1 == x@id2 && y@id1 == y@id2) return false;
+    }
+    
+    //-- supporting invariants for inductiveness
+
+    FORALL_NODE(idp) {
+      /** state has to be between 0 and 4, (x,y), (xf,yf), and (xp,yp)
+          have to be between 0 and X-1,Y-1 */
+      if(!(state@idp >= NEXT && state@idp <= MOVE)) return false;
+      if(!(x@idp >= 0 && x@idp < X)) return false;
+      if(!(y@idp >= 0 && y@idp < Y)) return false;
+      //if(!(xt@idp >= 0 && xt@idp < X)) return false;
+      //if(!(yt@idp >= 0 && yt@idp < Y)) return false;
+      if(!(xp@idp >= 0 && xp@idp < X)) return false;
+      if(!(yp@idp >= 0 && yp@idp < Y)) return false;
+      /** if we are in not in NEXT, then xp,yp != x,y */
+      if(!(state@idp == NEXT || x@idp != xp@idp || y@idp != yp@idp)) return false;
+      /** if we are in NEXT, REQUEST, WAITING or MOVE, we have lock on
+          x,y */
+      if(!((state@idp != NEXT && state@idp != REQUEST && state@idp != WAITING && state@idp != MOVE) ||
+           lock[x@idp][y@idp]@idp)) return false;
+      /** if we are in NEXT, WAITING or MOVE, then we have lock on x,y
+          and xp,yp */
+      if(!((state@idp != NEXT && state@idp != WAITING && state@idp != MOVE) ||
+           (lock[x@idp][y@idp]@idp && lock[xp@idp][yp@idp]@idp))) return false;
+      /** if we are not in NEXT, then x,y and xp,yp are
+          adjacent */
+      if(!(state@idp == NEXT || (((x@idp == xp@idp - 1) || (x@idp == xp@idp + 1)) ^ ((y@idp == yp@idp - 1) || (y@idp == yp@idp + 1))))) return false;
+    }
+  
+    //-- the rest are supporting invariants. you only need them for
+    //-- plain induction. you can skip them (by uncommenting the
+    //-- following return statement) out if you are doing K-induction
+    //-- with K>=3.
+    //return true;
+      
+    FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+      /** if node1 is in MOVE/NEXT and has lower id than node2 which is
+          WAITING then they have different xp,yp */
+      if(!((state@id1 != NEXT && state@id1 != MOVE) || state@id2 != WAITING || id1 >= id2 || xp@id1 != xp@id2 || yp@id1 != yp@id2)) return false;
+      /** if two distinct nodes are in MOVE, they have different
+          (xp,yp) */
+      if(!(state@id1 != MOVE || state@id2 != MOVE ||                        
+           ((xp@id1 != xp@id2 || yp@id1 != yp@id2) &&             
+            (xp@id1 != x@id2 || yp@id1 != y@id2) &&               
+            (x@id1 != xp@id2 || y@id1 != yp@id2) &&               
+            (x@id1 != x@id2 || y@id1 != y@id2)))) return false;
+      /** if node2 in WAITING, and node1 has lower id than node 2, then
+          node1.(x,y) != node2.(xp,yp) */
+      if(!(state@id2 != WAITING || id1 >= id2 || x@id1 != xp@id2 || y@id1 != yp@id2)) return false;
+      /** if node2 in MOVE, then node1.(x,y) != node2.(xp,yp) */
+      if(!((state@id2 != MOVE || x@id1 != xp@id2 || y@id1 != yp@id2) && (state@id1 != 4 || xp@id1 != x@id2 || yp@id1 != y@id2))) return false;
+      /** two distinct nodes have different (x,y) */
+      if(!(x@id1 != x@id2 || y@id1 != y@id2)) return false;
+    }
+    
+    return true;
+  }
+
+  //-- guaranteed properties
+  require NoCollision => NoCollisions;
+}
+
+
