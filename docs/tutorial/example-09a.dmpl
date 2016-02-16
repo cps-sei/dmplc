@@ -274,16 +274,48 @@ node uav
 
       if(!waypointValid) return 1;
 
-      reg_x = x; reg_y = y; reg_rad = 4;
+      reg_x = x; reg_y = y; reg_rad = 3;
 
       //-- check for region based collision
       if(exists_higher(idp,
-         (x-reg_x@idp)*(x-reg_x@idp) + (y-reg_y@idp)*(y-reg_y@idp) <
+         (x-reg_x@idp)*(x-reg_x@idp) + (y-reg_y@idp)*(y-reg_y@idp) <=
          (reg_rad + reg_rad@idp)*(reg_rad + reg_rad@idp)))
       {
         print_region(1, id,reg_x,reg_y,reg_x@5, reg_y@5);
         return 1;
       }
+
+      if(exists_lower(idp,
+         (x-reg_x@idp)*(x-reg_x@idp) + (y-reg_y@idp)*(y-reg_y@idp) <=
+         (reg_rad + reg_rad@idp)*(reg_rad + reg_rad@idp)))
+      {
+	if (exists_lower(idp, (reg_x@idp <= x)) && (xt >= x)) {
+	   xp = xp + 1;
+	   yp = y;
+           print_region(2, id,reg_x,reg_y,reg_x@0, reg_y@0);
+	   return 0;
+	}
+	if (exists_lower(idp, (reg_x@idp >= x)) && (xt <= x)) {
+	   xp = xp - 1;
+	   yp = y;
+           print_region(3, id,reg_x,reg_y,reg_x@0, reg_y@0);
+	   return 0;
+	}
+	if (exists_lower(idp, (reg_y@idp <= y)) && (yt >= y)) {
+	   xp = x;
+	   yp = y + 1;
+           print_region(4, id,reg_x,reg_y,reg_x@0, reg_y@0);
+	   return 0;
+	}
+	if (exists_lower(idp, (reg_y@idp >= y)) && (yt <= y)) {
+	   xp = x;
+	   yp = y - 1;
+           print_region(5, id,reg_x,reg_y,reg_x@0, reg_y@0);
+	   return 0;
+	}
+	// else hold on
+      }
+
       print_region(0, id,reg_x,reg_y,reg_x@5, reg_y@5);
       
       if(xt < 0 || xt >= X || yt < 0 || yt >= Y) return 1;
