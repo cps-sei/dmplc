@@ -232,6 +232,7 @@ void dmpl::madara::GAMSCompiler::exitEXHLO (Expression & expression)
     throw std::runtime_error("ERROR: Wrong expression type, must be EXLExpr, EXHExpr or EXOExpr!!");
 
   bool started_i = false;
+  buffer_ << "(";
   for(const auto &ii : iim) {
     if (started_i) buffer_ << " || \n" << sub_spacer;
     else started_i = true;
@@ -253,6 +254,7 @@ void dmpl::madara::GAMSCompiler::exitEXHLO (Expression & expression)
   }
 
   if(!started_i) buffer_ << "0";
+  buffer_ << ")";
 }
 
 /*********************************************************************/
