@@ -265,19 +265,16 @@ node uav
       lx = xp;
       init = 1;
 
-      print_region(300, waypointArrival,x,y,xt,yt);
       // we have arrived at our waypoint
       if ((x == xt) && (y == yt) && (waypointArrival == 0)) {
-        print_region(100, waypointArrival,x,y,xt,yt);
 	waypointArrival = 1;
       }
 
       // if we have arrived and everyone else has arrived
-      // move on to the next waypoint
+      // to their waypoint; continue and move on to the next waypoint
       if ((waypointArrival == 1) && 
             (exists_other(idp,waypointArrival==waypointArrival@idp)))
       {
-        print_region(200, waypointArrival,x,y,xt,yt);
         xt = wx;
         yt = wy;
       }
@@ -301,7 +298,7 @@ node uav
          (x-reg_x@idp)*(x-reg_x@idp) + (y-reg_y@idp)*(y-reg_y@idp) <=
          (reg_rad + reg_rad@idp)*(reg_rad + reg_rad@idp)))
       {
-        print_region(1, id,reg_x,reg_y,reg_x@5, reg_y@5);
+        //print_region(1, id,reg_x,reg_y,reg_x@5, reg_y@5);
         return 1;
       }
 
@@ -312,28 +309,31 @@ node uav
 	if (exists_lower(idp, (reg_x@idp <= x)) && (xt >= x)) {
 	   xp = xp + 1;
 	   yp = y;
-           print_region(2, id,reg_x,reg_y,reg_x@0, reg_y@0);
+           //print_region(2, id,reg_x,reg_y,reg_x@0, reg_y@0);
 	   return 0;
 	}
 	if (exists_lower(idp, (reg_x@idp >= x)) && (xt <= x)) {
 	   xp = xp - 1;
 	   yp = y;
-           print_region(3, id,reg_x,reg_y,reg_x@0, reg_y@0);
+           //print_region(3, id,reg_x,reg_y,reg_x@0, reg_y@0);
 	   return 0;
 	}
 	if (exists_lower(idp, (reg_y@idp <= y)) && (yt >= y)) {
 	   xp = x;
 	   yp = y + 1;
-           print_region(4, id,reg_x,reg_y,reg_x@0, reg_y@0);
+           //print_region(4, id,reg_x,reg_y,reg_x@0, reg_y@0);
 	   return 0;
 	}
 	if (exists_lower(idp, (reg_y@idp >= y)) && (yt <= y)) {
 	   xp = x;
 	   yp = y - 1;
-           print_region(5, id,reg_x,reg_y,reg_x@0, reg_y@0);
+           //print_region(5, id,reg_x,reg_y,reg_x@0, reg_y@0);
 	   return 0;
 	}
-	// else hold on
+	//
+	// the steer clear logic here has limits and this is that point
+	//
+        print_region(500, id,reg_x,reg_y,reg_x@0, reg_y@0);
       }
 
       print_region(0, id,reg_x,reg_y,reg_x@5, reg_y@5);
