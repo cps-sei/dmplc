@@ -928,7 +928,7 @@ thread0_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Variables
   {
     if ((thread0_state == REQUEST))
     {
-      if (0)
+      if ((0))
       {
         return Integer(0);
       }
@@ -939,8 +939,8 @@ thread0_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Variables
     {
       if ((thread0_state == WAITING))
       {
-        if ((id == 0 && ((thread0_lock[1][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[2][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[3][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[4][thread0_xp][thread0_yp] != Integer (0)))) || 
-          (id == 5 && ((thread0_lock[6][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[7][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[8][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[9][thread0_xp][thread0_yp] != Integer (0)))))
+        if (((id == 0 && ((thread0_lock[1][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[2][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[3][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[4][thread0_xp][thread0_yp] != Integer (0)))) || 
+          (id == 5 && ((thread0_lock[6][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[7][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[8][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[9][thread0_xp][thread0_yp] != Integer (0))))))
         {
           return Integer(0);
         }
@@ -1052,20 +1052,20 @@ thread1_REGION_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Va
 
 
   //-- Begin function body
-  if ((id == 5 && ((thread1_x1[0] == Integer (1)))))
+  if (((id == 5 && ((thread1_x1[0] == Integer (1))))))
   {
     thread1_x2[id] = thread1_y2[id];
   }
   else
   {
-    if ((id == 0 && ((thread1_x2[5] == Integer (2)))))
+    if (((id == 0 && ((thread1_x2[5] == Integer (2))))))
     {
       thread1_x2[id] = thread1_y1[id];
     }
     else
     {
-      if ((id == 0 && ((thread1_x2[5] == Integer (3)))) || 
-        (id == 5 && ((thread1_x2[0] == Integer (3)))))
+      if (((id == 0 && ((thread1_x2[5] == Integer (3)))) || 
+        (id == 5 && ((thread1_x2[0] == Integer (3))))))
       {
         thread1_x2[id] = (thread1_y1[id] * Integer (3));
       }
@@ -1371,14 +1371,14 @@ thread0_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Variables
   {
     if ((thread0_state == REQUEST))
     {
-      if ((id == 1 && ((thread0_lock[0][thread0_xp][thread0_yp] != Integer (0)))) || 
+      if (((id == 1 && ((thread0_lock[0][thread0_xp][thread0_yp] != Integer (0)))) || 
         (id == 2 && ((thread0_lock[0][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[1][thread0_xp][thread0_yp] != Integer (0)))) || 
         (id == 3 && ((thread0_lock[0][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[1][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[2][thread0_xp][thread0_yp] != Integer (0)))) || 
         (id == 4 && ((thread0_lock[0][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[1][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[2][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[3][thread0_xp][thread0_yp] != Integer (0)))) || 
         (id == 6 && ((thread0_lock[5][thread0_xp][thread0_yp] != Integer (0)))) || 
         (id == 7 && ((thread0_lock[5][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[6][thread0_xp][thread0_yp] != Integer (0)))) || 
         (id == 8 && ((thread0_lock[5][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[6][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[7][thread0_xp][thread0_yp] != Integer (0)))) || 
-        (id == 9 && ((thread0_lock[5][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[6][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[7][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[8][thread0_xp][thread0_yp] != Integer (0)))))
+        (id == 9 && ((thread0_lock[5][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[6][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[7][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[8][thread0_xp][thread0_yp] != Integer (0))))))
       {
         return Integer(0);
       }
@@ -1389,12 +1389,12 @@ thread0_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Variables
     {
       if ((thread0_state == WAITING))
       {
-        if ((id == 1 && ((thread0_lock[2][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[3][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[4][thread0_xp][thread0_yp] != Integer (0)))) || 
+        if (((id == 1 && ((thread0_lock[2][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[3][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[4][thread0_xp][thread0_yp] != Integer (0)))) || 
           (id == 2 && ((thread0_lock[3][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[4][thread0_xp][thread0_yp] != Integer (0)))) || 
           (id == 3 && ((thread0_lock[4][thread0_xp][thread0_yp] != Integer (0)))) || 
           (id == 6 && ((thread0_lock[7][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[8][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[9][thread0_xp][thread0_yp] != Integer (0)))) || 
           (id == 7 && ((thread0_lock[8][thread0_xp][thread0_yp] != Integer (0)) || (thread0_lock[9][thread0_xp][thread0_yp] != Integer (0)))) || 
-          (id == 8 && ((thread0_lock[9][thread0_xp][thread0_yp] != Integer (0)))))
+          (id == 8 && ((thread0_lock[9][thread0_xp][thread0_yp] != Integer (0))))))
         {
           return Integer(0);
         }
