@@ -133,6 +133,7 @@ test_code_gen test-example-02a.dmpl "--roles uav:Leader:1:uav:Protector:4"
 test_code_gen test-example-02b.dmpl "--roles uav:Leader:1:uav:Protector:4"
 test_code_gen test-example-02c.dmpl "--roles uav:ProtectorNW:1:uav:Leader:1:uav:ProtectorSE:1:uav:ProtectorSW:1:uav:ProtectorNE:1"
 test_code_gen test-example-09a.dmpl "--roles uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4 --groups coordinator+eastern=1:eastern=4:coordinator+western=1:western=4 --var-groups x1+y1+x2+y2=coordinator:lock+lx+ly+init=eastern+western"
+test_code_gen test-example-09c.dmpl "--roles uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4 --groups coordinator+eastern=1:eastern=4:coordinator+western=1:western=4 --var-groups reg_x+reg_y+reg_rad+waypointArrival=coordinator:lock+lx+ly+init=eastern+western"
 
 #test building
 for i in ../../docs/tutorial/*.mission ../../docs/tutorial/example-05/dmpl/*.mission ; do
