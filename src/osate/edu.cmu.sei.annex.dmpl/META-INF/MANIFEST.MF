@@ -1,0 +1,32 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: edu.cmu.sei.annex.dmpl
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: edu.cmu.sei.annex.dmpl; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.xtext;visibility:=reexport,
+ org.eclipse.equinox.common;bundle-version="3.5.0",
+ org.eclipse.xtext.util,
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.common,
+ org.eclipse.xtext.xbase.lib,
+ org.antlr.runtime,
+ org.eclipse.xtext.common.types,
+ org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional,
+ org.osate.aadl2;bundle-version="1.0.0",
+ org.eclipse.uml2.codegen.ecore;bundle-version="2.1.0"
+Import-Package: org.apache.log4j
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: edu.cmu.sei.annex.dmpl,
+ edu.cmu.sei.annex.dmpl.services,
+ edu.cmu.sei.annex.dmpl.dmpl,
+ edu.cmu.sei.annex.dmpl.dmpl.impl,
+ edu.cmu.sei.annex.dmpl.dmpl.util,
+ edu.cmu.sei.annex.dmpl.serializer,
+ edu.cmu.sei.annex.dmpl.parser.antlr,
+ edu.cmu.sei.annex.dmpl.parser.antlr.internal,
+ edu.cmu.sei.annex.dmpl.validation,
+ edu.cmu.sei.annex.dmpl.scoping,
+ edu.cmu.sei.annex.dmpl.generator,
+ edu.cmu.sei.annex.dmpl.formatting

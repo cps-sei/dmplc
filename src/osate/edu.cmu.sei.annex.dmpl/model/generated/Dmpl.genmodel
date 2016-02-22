@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/edu.cmu.sei.annex.dmpl/src-gen" editDirectory="/edu.cmu.sei.annex.dmpl.edit/src"
+    editorDirectory="/edu.cmu.sei.annex.dmpl.editor/src" modelPluginID="edu.cmu.sei.annex.dmpl"
+    forceOverwrite="true" modelName="Dmpl" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    complianceLevel="6.0" copyrightFields="false" editPluginID="edu.cmu.sei.annex.dmpl.edit"
+    editorPluginID="edu.cmu.sei.annex.dmpl.editor" runtimeVersion="2.11" usedGenPackages="platform:/resource/org.osate.aadl2/model/aadl2.genmodel#//aadl2">
+  <genPackages prefix="Dmpl" basePackage="edu.cmu.sei.annex.dmpl" disposableProviderFactory="true"
+      fileExtensions="dmpl" ecorePackage="Dmpl.ecore#/">
+    <genClasses ecoreClass="Dmpl.ecore#//DmplSubclause">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//DmplSubclause/functionCalls"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//FunctionCall">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//FunctionCall/functionName"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

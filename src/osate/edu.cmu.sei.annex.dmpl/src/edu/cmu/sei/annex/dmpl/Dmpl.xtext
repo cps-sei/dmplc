@@ -1,0 +1,17 @@
+grammar edu.cmu.sei.annex.dmpl.Dmpl with org.eclipse.xtext.common.Terminals
+
+generate dmpl "http://www.cmu.edu/sei/annex/dmpl/Dmpl"
+
+import "http://aadl.info/AADL/2.0" as aadl2
+
+AnnexSubclause returns aadl2::AnnexSubclause:
+	DmplSubclause
+;
+
+DmplSubclause: {DmplSubclause}
+	functionCalls+=FunctionCall*
+;
+
+FunctionCall:
+	functionName=ID
+;
