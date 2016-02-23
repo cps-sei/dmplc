@@ -92,6 +92,14 @@ destinations. Thus, the group reaching the midpoint first (usually the
 one whose coordinator has the higher id) waits for the other to reach
 its midpoint, before continuing on to its final destination.
 
+examples-09d: Like example-09 but region variables are accessed by the
+asynchronous WAYPOINT thread and a (local) proximity detector flag is
+computed. Only this flag is read by the synchronous
+COLLISION_AVOIDANCE thread. This means that the only group variable
+accessed by the synchronous thread is "lock" which means that each
+team only synchronizes within itself, not with nodes from another
+team.
+
 example-10: This is like example-09 but we have three groups instead
 of 2, to further demonstrate concepts in GBAC, e.g., how groups can
 overlap.
