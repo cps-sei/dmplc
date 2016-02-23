@@ -2,13 +2,20 @@
  */
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
+import edu.cmu.sei.annex.dmpl.dmpl.Constant;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplFactory;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplSubclause;
-import edu.cmu.sei.annex.dmpl.dmpl.FunctionCall;
+import edu.cmu.sei.annex.dmpl.dmpl.DoubleConst;
+import edu.cmu.sei.annex.dmpl.dmpl.IntConst;
+import edu.cmu.sei.annex.dmpl.dmpl.NumberConst;
+import edu.cmu.sei.annex.dmpl.dmpl.Program;
+import edu.cmu.sei.annex.dmpl.dmpl.ProgramElement;
+import edu.cmu.sei.annex.dmpl.dmpl.SignEnum;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -29,6 +36,13 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass programEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass dmplSubclauseEClass = null;
 
   /**
@@ -36,7 +50,42 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass functionCallEClass = null;
+  private EClass programElementEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass constantEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass numberConstEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass intConstEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass doubleConstEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EEnum signEnumEEnum = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -109,6 +158,26 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getProgram()
+  {
+    return programEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getProgram_ProgramElements()
+  {
+    return (EReference)programEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getDmplSubclause()
   {
     return dmplSubclauseEClass;
@@ -119,7 +188,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getDmplSubclause_FunctionCalls()
+  public EReference getDmplSubclause_Program()
   {
     return (EReference)dmplSubclauseEClass.getEStructuralFeatures().get(0);
   }
@@ -129,9 +198,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getFunctionCall()
+  public EClass getProgramElement()
   {
-    return functionCallEClass;
+    return programElementEClass;
   }
 
   /**
@@ -139,9 +208,99 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getFunctionCall_FunctionName()
+  public EClass getConstant()
   {
-    return (EAttribute)functionCallEClass.getEStructuralFeatures().get(0);
+    return constantEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getConstant_Name()
+  {
+    return (EAttribute)constantEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getConstant_Value()
+  {
+    return (EReference)constantEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getNumberConst()
+  {
+    return numberConstEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getNumberConst_Sign()
+  {
+    return (EAttribute)numberConstEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getIntConst()
+  {
+    return intConstEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getIntConst_Value()
+  {
+    return (EAttribute)intConstEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getDoubleConst()
+  {
+    return doubleConstEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getDoubleConst_Value()
+  {
+    return (EAttribute)doubleConstEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EEnum getSignEnum()
+  {
+    return signEnumEEnum;
   }
 
   /**
@@ -174,11 +333,29 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     isCreated = true;
 
     // Create classes and their features
-    dmplSubclauseEClass = createEClass(DMPL_SUBCLAUSE);
-    createEReference(dmplSubclauseEClass, DMPL_SUBCLAUSE__FUNCTION_CALLS);
+    programEClass = createEClass(PROGRAM);
+    createEReference(programEClass, PROGRAM__PROGRAM_ELEMENTS);
 
-    functionCallEClass = createEClass(FUNCTION_CALL);
-    createEAttribute(functionCallEClass, FUNCTION_CALL__FUNCTION_NAME);
+    dmplSubclauseEClass = createEClass(DMPL_SUBCLAUSE);
+    createEReference(dmplSubclauseEClass, DMPL_SUBCLAUSE__PROGRAM);
+
+    programElementEClass = createEClass(PROGRAM_ELEMENT);
+
+    constantEClass = createEClass(CONSTANT);
+    createEAttribute(constantEClass, CONSTANT__NAME);
+    createEReference(constantEClass, CONSTANT__VALUE);
+
+    numberConstEClass = createEClass(NUMBER_CONST);
+    createEAttribute(numberConstEClass, NUMBER_CONST__SIGN);
+
+    intConstEClass = createEClass(INT_CONST);
+    createEAttribute(intConstEClass, INT_CONST__VALUE);
+
+    doubleConstEClass = createEClass(DOUBLE_CONST);
+    createEAttribute(doubleConstEClass, DOUBLE_CONST__VALUE);
+
+    // Create enums
+    signEnumEEnum = createEEnum(SIGN_ENUM);
   }
 
   /**
@@ -214,13 +391,37 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     // Add supertypes to classes
     dmplSubclauseEClass.getESuperTypes().add(theAadl2Package.getAnnexSubclause());
+    constantEClass.getESuperTypes().add(this.getProgramElement());
+    intConstEClass.getESuperTypes().add(this.getNumberConst());
+    doubleConstEClass.getESuperTypes().add(this.getNumberConst());
 
     // Initialize classes and features; add operations and parameters
-    initEClass(dmplSubclauseEClass, DmplSubclause.class, "DmplSubclause", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getDmplSubclause_FunctionCalls(), this.getFunctionCall(), null, "functionCalls", null, 0, -1, DmplSubclause.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(programEClass, Program.class, "Program", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getProgram_ProgramElements(), this.getProgramElement(), null, "programElements", null, 0, -1, Program.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(functionCallEClass, FunctionCall.class, "FunctionCall", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getFunctionCall_FunctionName(), ecorePackage.getEString(), "functionName", null, 0, 1, FunctionCall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(dmplSubclauseEClass, DmplSubclause.class, "DmplSubclause", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getDmplSubclause_Program(), this.getProgram(), null, "program", null, 0, 1, DmplSubclause.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(programElementEClass, ProgramElement.class, "ProgramElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(constantEClass, Constant.class, "Constant", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getConstant_Name(), ecorePackage.getEString(), "name", null, 0, 1, Constant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getConstant_Value(), this.getNumberConst(), null, "value", null, 0, 1, Constant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(numberConstEClass, NumberConst.class, "NumberConst", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getNumberConst_Sign(), this.getSignEnum(), "sign", null, 0, 1, NumberConst.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(intConstEClass, IntConst.class, "IntConst", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getIntConst_Value(), ecorePackage.getEInt(), "value", null, 0, 1, IntConst.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(doubleConstEClass, DoubleConst.class, "DoubleConst", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getDoubleConst_Value(), ecorePackage.getEDouble(), "value", null, 0, 1, DoubleConst.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    // Initialize enums and add enum literals
+    initEEnum(signEnumEEnum, SignEnum.class, "SignEnum");
+    addEEnumLiteral(signEnumEEnum, SignEnum.UNSET);
+    addEEnumLiteral(signEnumEEnum, SignEnum.PLUS);
+    addEEnumLiteral(signEnumEEnum, SignEnum.MINUS);
 
     // Create resource
     createResource(eNS_URI);

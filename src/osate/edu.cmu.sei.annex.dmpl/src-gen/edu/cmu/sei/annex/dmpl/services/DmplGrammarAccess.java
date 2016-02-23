@@ -18,15 +18,34 @@ import org.eclipse.xtext.common.services.TerminalsGrammarAccess;
 public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	
 	
+	public class ProgramElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Program");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cProgramAction_0 = (Action)cGroup.eContents().get(0);
+		private final Assignment cProgramElementsAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cProgramElementsProgramElementParserRuleCall_1_0 = (RuleCall)cProgramElementsAssignment_1.eContents().get(0);
+		
+		//Program:
+		//	{Program} programElements+=ProgramElement*;
+		@Override public ParserRule getRule() { return rule; }
+
+		//{Program} programElements+=ProgramElement*
+		public Group getGroup() { return cGroup; }
+
+		//{Program}
+		public Action getProgramAction_0() { return cProgramAction_0; }
+
+		//programElements+=ProgramElement*
+		public Assignment getProgramElementsAssignment_1() { return cProgramElementsAssignment_1; }
+
+		//ProgramElement
+		public RuleCall getProgramElementsProgramElementParserRuleCall_1_0() { return cProgramElementsProgramElementParserRuleCall_1_0; }
+	}
+
 	public class AnnexSubclauseElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "AnnexSubclause");
 		private final RuleCall cDmplSubclauseParserRuleCall = (RuleCall)rule.eContents().get(1);
 		
-		////Model:
-		////	greetings+=Greeting*;
-		////	
-		////Greeting:
-		////	'Hello' name=ID '!';
 		//AnnexSubclause returns aadl2::AnnexSubclause:
 		//	DmplSubclause;
 		@Override public ParserRule getRule() { return rule; }
@@ -39,46 +58,272 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "DmplSubclause");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Action cDmplSubclauseAction_0 = (Action)cGroup.eContents().get(0);
-		private final Assignment cFunctionCallsAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cFunctionCallsFunctionCallParserRuleCall_1_0 = (RuleCall)cFunctionCallsAssignment_1.eContents().get(0);
+		private final Assignment cProgramAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cProgramProgramParserRuleCall_1_0 = (RuleCall)cProgramAssignment_1.eContents().get(0);
 		
 		//DmplSubclause:
-		//	{DmplSubclause} functionCalls+=FunctionCall*;
+		//	{DmplSubclause} program=Program;
 		@Override public ParserRule getRule() { return rule; }
 
-		//{DmplSubclause} functionCalls+=FunctionCall*
+		//{DmplSubclause} program=Program
 		public Group getGroup() { return cGroup; }
 
 		//{DmplSubclause}
 		public Action getDmplSubclauseAction_0() { return cDmplSubclauseAction_0; }
 
-		//functionCalls+=FunctionCall*
-		public Assignment getFunctionCallsAssignment_1() { return cFunctionCallsAssignment_1; }
+		//program=Program
+		public Assignment getProgramAssignment_1() { return cProgramAssignment_1; }
 
-		//FunctionCall
-		public RuleCall getFunctionCallsFunctionCallParserRuleCall_1_0() { return cFunctionCallsFunctionCallParserRuleCall_1_0; }
+		//Program
+		public RuleCall getProgramProgramParserRuleCall_1_0() { return cProgramProgramParserRuleCall_1_0; }
 	}
 
-	public class FunctionCallElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "FunctionCall");
-		private final Assignment cFunctionNameAssignment = (Assignment)rule.eContents().get(1);
-		private final RuleCall cFunctionNameIDTerminalRuleCall_0 = (RuleCall)cFunctionNameAssignment.eContents().get(0);
+	public class ProgramElementElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "ProgramElement");
+		private final RuleCall cConstantParserRuleCall = (RuleCall)rule.eContents().get(1);
 		
-		//FunctionCall:
-		//	functionName=ID;
+		//ProgramElement: //TODO: target, node, procedure
+		//	Constant;
 		@Override public ParserRule getRule() { return rule; }
 
-		//functionName=ID
-		public Assignment getFunctionNameAssignment() { return cFunctionNameAssignment; }
+		////TODO: target, node, procedure
+		//Constant
+		public RuleCall getConstantParserRuleCall() { return cConstantParserRuleCall; }
+	}
 
-		//ID
-		public RuleCall getFunctionNameIDTerminalRuleCall_0() { return cFunctionNameIDTerminalRuleCall_0; }
+	public class ConstantElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Constant");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Alternatives cAlternatives_0 = (Alternatives)cGroup.eContents().get(0);
+		private final Keyword cConstKeyword_0_0 = (Keyword)cAlternatives_0.eContents().get(0);
+		private final Keyword cCONSTKeyword_0_1 = (Keyword)cAlternatives_0.eContents().get(1);
+		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Keyword cEqualsSignKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cValueAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cValueNumberConstParserRuleCall_3_0 = (RuleCall)cValueAssignment_3.eContents().get(0);
+		private final Keyword cSemicolonKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		
+		//Constant:
+		//	("const" | "CONST") name=TIDENTIFIER "=" value=NumberConst ";";
+		@Override public ParserRule getRule() { return rule; }
+
+		//("const" | "CONST") name=TIDENTIFIER "=" value=NumberConst ";"
+		public Group getGroup() { return cGroup; }
+
+		//"const" | "CONST"
+		public Alternatives getAlternatives_0() { return cAlternatives_0; }
+
+		//"const"
+		public Keyword getConstKeyword_0_0() { return cConstKeyword_0_0; }
+
+		//"CONST"
+		public Keyword getCONSTKeyword_0_1() { return cCONSTKeyword_0_1; }
+
+		//name=TIDENTIFIER
+		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+
+		//TIDENTIFIER
+		public RuleCall getNameTIDENTIFIERTerminalRuleCall_1_0() { return cNameTIDENTIFIERTerminalRuleCall_1_0; }
+
+		//"="
+		public Keyword getEqualsSignKeyword_2() { return cEqualsSignKeyword_2; }
+
+		//value=NumberConst
+		public Assignment getValueAssignment_3() { return cValueAssignment_3; }
+
+		//NumberConst
+		public RuleCall getValueNumberConstParserRuleCall_3_0() { return cValueNumberConstParserRuleCall_3_0; }
+
+		//";"
+		public Keyword getSemicolonKeyword_4() { return cSemicolonKeyword_4; }
+	}
+
+	public class NumberConstElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "NumberConst");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final RuleCall cIntConstParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cDoubleConstParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		
+		//NumberConst:
+		//	IntConst | DoubleConst;
+		@Override public ParserRule getRule() { return rule; }
+
+		//IntConst | DoubleConst
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//IntConst
+		public RuleCall getIntConstParserRuleCall_0() { return cIntConstParserRuleCall_0; }
+
+		//DoubleConst
+		public RuleCall getDoubleConstParserRuleCall_1() { return cDoubleConstParserRuleCall_1; }
+	}
+
+	public class IntConstElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "IntConst");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cSignAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cSignSignEnumRuleCall_0_0 = (RuleCall)cSignAssignment_0.eContents().get(0);
+		private final Assignment cValueAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cValueINTTerminalRuleCall_1_0 = (RuleCall)cValueAssignment_1.eContents().get(0);
+		
+		//IntConst:
+		//	sign=Sign? value=INT;
+		@Override public ParserRule getRule() { return rule; }
+
+		//sign=Sign? value=INT
+		public Group getGroup() { return cGroup; }
+
+		//sign=Sign?
+		public Assignment getSignAssignment_0() { return cSignAssignment_0; }
+
+		//Sign
+		public RuleCall getSignSignEnumRuleCall_0_0() { return cSignSignEnumRuleCall_0_0; }
+
+		//value=INT
+		public Assignment getValueAssignment_1() { return cValueAssignment_1; }
+
+		//INT
+		public RuleCall getValueINTTerminalRuleCall_1_0() { return cValueINTTerminalRuleCall_1_0; }
+	}
+
+	public class DoubleConstElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "DoubleConst");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cSignAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cSignSignEnumRuleCall_0_0 = (RuleCall)cSignAssignment_0.eContents().get(0);
+		private final Assignment cValueAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cValueDoubleParserRuleCall_1_0 = (RuleCall)cValueAssignment_1.eContents().get(0);
+		
+		//DoubleConst:
+		//	sign=Sign? value=Double;
+		@Override public ParserRule getRule() { return rule; }
+
+		//sign=Sign? value=Double
+		public Group getGroup() { return cGroup; }
+
+		//sign=Sign?
+		public Assignment getSignAssignment_0() { return cSignAssignment_0; }
+
+		//Sign
+		public RuleCall getSignSignEnumRuleCall_0_0() { return cSignSignEnumRuleCall_0_0; }
+
+		//value=Double
+		public Assignment getValueAssignment_1() { return cValueAssignment_1; }
+
+		//Double
+		public RuleCall getValueDoubleParserRuleCall_1_0() { return cValueDoubleParserRuleCall_1_0; }
+	}
+
+	public class DoubleElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Double");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final Keyword cNANKeyword_0 = (Keyword)cAlternatives.eContents().get(0);
+		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
+		private final RuleCall cINTTerminalRuleCall_1_0 = (RuleCall)cGroup_1.eContents().get(0);
+		private final Keyword cFullStopKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
+		private final RuleCall cINTTerminalRuleCall_1_2 = (RuleCall)cGroup_1.eContents().get(2);
+		
+		//Double returns ecore::EDouble:
+		//	"NAN" | INT "." INT?;
+		@Override public ParserRule getRule() { return rule; }
+
+		//"NAN" | INT "." INT?
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//"NAN"
+		public Keyword getNANKeyword_0() { return cNANKeyword_0; }
+
+		//INT "." INT?
+		public Group getGroup_1() { return cGroup_1; }
+
+		//INT
+		public RuleCall getINTTerminalRuleCall_1_0() { return cINTTerminalRuleCall_1_0; }
+
+		//"."
+		public Keyword getFullStopKeyword_1_1() { return cFullStopKeyword_1_1; }
+
+		//INT?
+		public RuleCall getINTTerminalRuleCall_1_2() { return cINTTerminalRuleCall_1_2; }
 	}
 	
 	
+	public class SignEnumElements extends AbstractEnumRuleElementFinder {
+		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "SignEnum");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final EnumLiteralDeclaration cUnsetEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
+		private final Keyword cUnsetUnsetKeyword_0_0 = (Keyword)cUnsetEnumLiteralDeclaration_0.eContents().get(0);
+		private final EnumLiteralDeclaration cPLUSEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
+		private final Keyword cPLUSPlusSignKeyword_1_0 = (Keyword)cPLUSEnumLiteralDeclaration_1.eContents().get(0);
+		private final EnumLiteralDeclaration cMINUSEnumLiteralDeclaration_2 = (EnumLiteralDeclaration)cAlternatives.eContents().get(2);
+		private final Keyword cMINUSHyphenMinusKeyword_2_0 = (Keyword)cMINUSEnumLiteralDeclaration_2.eContents().get(0);
+		
+		//enum SignEnum:
+		//	unset | PLUS="+" | MINUS="-";
+		public EnumRule getRule() { return rule; }
+
+		//unset | PLUS="+" | MINUS="-"
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//unset
+		public EnumLiteralDeclaration getUnsetEnumLiteralDeclaration_0() { return cUnsetEnumLiteralDeclaration_0; }
+
+		//"unset"
+		public Keyword getUnsetUnsetKeyword_0_0() { return cUnsetUnsetKeyword_0_0; }
+
+		//PLUS="+"
+		public EnumLiteralDeclaration getPLUSEnumLiteralDeclaration_1() { return cPLUSEnumLiteralDeclaration_1; }
+
+		//"+"
+		public Keyword getPLUSPlusSignKeyword_1_0() { return cPLUSPlusSignKeyword_1_0; }
+
+		//MINUS="-"
+		public EnumLiteralDeclaration getMINUSEnumLiteralDeclaration_2() { return cMINUSEnumLiteralDeclaration_2; }
+
+		//"-"
+		public Keyword getMINUSHyphenMinusKeyword_2_0() { return cMINUSHyphenMinusKeyword_2_0; }
+	}
+
+	public class SignElements extends AbstractEnumRuleElementFinder {
+		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "Sign");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final EnumLiteralDeclaration cPLUSEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
+		private final Keyword cPLUSPlusSignKeyword_0_0 = (Keyword)cPLUSEnumLiteralDeclaration_0.eContents().get(0);
+		private final EnumLiteralDeclaration cMINUSEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
+		private final Keyword cMINUSHyphenMinusKeyword_1_0 = (Keyword)cMINUSEnumLiteralDeclaration_1.eContents().get(0);
+		
+		//enum Sign returns SignEnum:
+		//	PLUS="+" | MINUS="-";
+		public EnumRule getRule() { return rule; }
+
+		//PLUS="+" | MINUS="-"
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//PLUS="+"
+		public EnumLiteralDeclaration getPLUSEnumLiteralDeclaration_0() { return cPLUSEnumLiteralDeclaration_0; }
+
+		//"+"
+		public Keyword getPLUSPlusSignKeyword_0_0() { return cPLUSPlusSignKeyword_0_0; }
+
+		//MINUS="-"
+		public EnumLiteralDeclaration getMINUSEnumLiteralDeclaration_1() { return cMINUSEnumLiteralDeclaration_1; }
+
+		//"-"
+		public Keyword getMINUSHyphenMinusKeyword_1_0() { return cMINUSHyphenMinusKeyword_1_0; }
+	}
+	
+	private final ProgramElements pProgram;
 	private final AnnexSubclauseElements pAnnexSubclause;
 	private final DmplSubclauseElements pDmplSubclause;
-	private final FunctionCallElements pFunctionCall;
+	private final ProgramElementElements pProgramElement;
+	private final ConstantElements pConstant;
+	private final NumberConstElements pNumberConst;
+	private final IntConstElements pIntConst;
+	private final DoubleConstElements pDoubleConst;
+	private final SignEnumElements unknownRuleSignEnum;
+	private final SignElements unknownRuleSign;
+	private final DoubleElements pDouble;
+	private final TerminalRule tTIDENTIFIER;
 	
 	private final Grammar grammar;
 
@@ -89,9 +334,18 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		TerminalsGrammarAccess gaTerminals) {
 		this.grammar = internalFindGrammar(grammarProvider);
 		this.gaTerminals = gaTerminals;
+		this.pProgram = new ProgramElements();
 		this.pAnnexSubclause = new AnnexSubclauseElements();
 		this.pDmplSubclause = new DmplSubclauseElements();
-		this.pFunctionCall = new FunctionCallElements();
+		this.pProgramElement = new ProgramElementElements();
+		this.pConstant = new ConstantElements();
+		this.pNumberConst = new NumberConstElements();
+		this.pIntConst = new IntConstElements();
+		this.pDoubleConst = new DoubleConstElements();
+		this.unknownRuleSignEnum = new SignEnumElements();
+		this.unknownRuleSign = new SignElements();
+		this.pDouble = new DoubleElements();
+		this.tTIDENTIFIER = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "TIDENTIFIER");
 	}
 	
 	protected Grammar internalFindGrammar(GrammarProvider grammarProvider) {
@@ -121,11 +375,16 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	
-	////Model:
-	////	greetings+=Greeting*;
-	////	
-	////Greeting:
-	////	'Hello' name=ID '!';
+	//Program:
+	//	{Program} programElements+=ProgramElement*;
+	public ProgramElements getProgramAccess() {
+		return pProgram;
+	}
+	
+	public ParserRule getProgramRule() {
+		return getProgramAccess().getRule();
+	}
+
 	//AnnexSubclause returns aadl2::AnnexSubclause:
 	//	DmplSubclause;
 	public AnnexSubclauseElements getAnnexSubclauseAccess() {
@@ -137,7 +396,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//DmplSubclause:
-	//	{DmplSubclause} functionCalls+=FunctionCall*;
+	//	{DmplSubclause} program=Program;
 	public DmplSubclauseElements getDmplSubclauseAccess() {
 		return pDmplSubclause;
 	}
@@ -146,15 +405,91 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getDmplSubclauseAccess().getRule();
 	}
 
-	//FunctionCall:
-	//	functionName=ID;
-	public FunctionCallElements getFunctionCallAccess() {
-		return pFunctionCall;
+	//ProgramElement: //TODO: target, node, procedure
+	//	Constant;
+	public ProgramElementElements getProgramElementAccess() {
+		return pProgramElement;
 	}
 	
-	public ParserRule getFunctionCallRule() {
-		return getFunctionCallAccess().getRule();
+	public ParserRule getProgramElementRule() {
+		return getProgramElementAccess().getRule();
 	}
+
+	//Constant:
+	//	("const" | "CONST") name=TIDENTIFIER "=" value=NumberConst ";";
+	public ConstantElements getConstantAccess() {
+		return pConstant;
+	}
+	
+	public ParserRule getConstantRule() {
+		return getConstantAccess().getRule();
+	}
+
+	//NumberConst:
+	//	IntConst | DoubleConst;
+	public NumberConstElements getNumberConstAccess() {
+		return pNumberConst;
+	}
+	
+	public ParserRule getNumberConstRule() {
+		return getNumberConstAccess().getRule();
+	}
+
+	//IntConst:
+	//	sign=Sign? value=INT;
+	public IntConstElements getIntConstAccess() {
+		return pIntConst;
+	}
+	
+	public ParserRule getIntConstRule() {
+		return getIntConstAccess().getRule();
+	}
+
+	//DoubleConst:
+	//	sign=Sign? value=Double;
+	public DoubleConstElements getDoubleConstAccess() {
+		return pDoubleConst;
+	}
+	
+	public ParserRule getDoubleConstRule() {
+		return getDoubleConstAccess().getRule();
+	}
+
+	//enum SignEnum:
+	//	unset | PLUS="+" | MINUS="-";
+	public SignEnumElements getSignEnumAccess() {
+		return unknownRuleSignEnum;
+	}
+	
+	public EnumRule getSignEnumRule() {
+		return getSignEnumAccess().getRule();
+	}
+
+	//enum Sign returns SignEnum:
+	//	PLUS="+" | MINUS="-";
+	public SignElements getSignAccess() {
+		return unknownRuleSign;
+	}
+	
+	public EnumRule getSignRule() {
+		return getSignAccess().getRule();
+	}
+
+	//Double returns ecore::EDouble:
+	//	"NAN" | INT "." INT?;
+	public DoubleElements getDoubleAccess() {
+		return pDouble;
+	}
+	
+	public ParserRule getDoubleRule() {
+		return getDoubleAccess().getRule();
+	}
+
+	//terminal TIDENTIFIER:
+	//	("a".."z" | "A".."Z" | "_") ("a".."z" | "A".."Z" | "_" | "0".."9")*;
+	public TerminalRule getTIDENTIFIERRule() {
+		return tTIDENTIFIER;
+	} 
 
 	//terminal ID:
 	//	"^"? ("a".."z" | "A".."Z" | "_") ("a".."z" | "A".."Z" | "_" | "0".."9")*;
