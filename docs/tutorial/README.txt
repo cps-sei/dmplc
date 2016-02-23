@@ -60,11 +60,37 @@ using software model checking only.
 example-09: This is like example-02 but we have two groups of nodes,
 each with one leader and four protectors. The leaders also act as
 coordinators. The idea is that each group performs collision avoidance
-within itself, while the coordinators ensures that the groups do no
-encroach on each other's spaces. This means that no group knows the
-exact location of the members of the other group, only the general
-area they are in. Through this example, we are trying to explore
-"group-based access control (GBAC) of shared variables".
+within itself, while the coordinators ensures that the groups do not
+encroach on each other's spaces. This is achieved as follows: the
+leader with the lower id stops as soon as its finds itself within a
+certain distance of the other leader. This means that no group knows
+the exact location of the members of the other group, only the general
+area they are in. One group moves left to right. The other moves top
+to bottom. Through this example, we are trying to explore "group-based
+access control (GBAC) of shared variables".
+
+example-09a: Like example-09 but group 1 starts from the bottom left
+and move in a zig-zag manner to the middle right. Group 2 starts from
+the bottom right and move in a zig-zag manner to the middle left. They
+cross each other along the way. The leader with the lower id stops as
+soon as it is close to the other leader, as in example-09. In
+addition, the leader with higher id moves away from the other leader,
+and toward the target, suspending its zig-zag motion temporarily as
+long as it is within a certain distance of the other leader. This is
+needed because in this scenarion, we would get a collision between the
+groups if the leader with the higher id just kept going.
+
+example-09b: Like example-09a but after reaching the midpoint, the
+groups continue on to their final destinations which are on the same
+side (left/right) of the map as their starting point, but on the top
+edge of the map. Thus, the path of the two groups intersect in two
+places, once before the midpoint, and once after.
+
+example-09c: Like example-09b but after reaching the midpoint, the
+groups first synchronize before continuing on to their final
+destinations. Thus, the group reaching the midpoint first (usually the
+one whose coordinator has the higher id) waits for the other to reach
+its midpoint, before continuing on to its final destination.
 
 example-10: This is like example-09 but we have three groups instead
 of 2, to further demonstrate concepts in GBAC, e.g., how groups can
