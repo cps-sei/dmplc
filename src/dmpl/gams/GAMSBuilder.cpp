@@ -2464,7 +2464,10 @@ void dmpl::gams::GAMSBuilder::build_algo_creation (const Node &node, const Role 
       }
       on.erase(proc.id);
 
-      if(on.empty()) continue;
+      if(on.empty())
+        throw std::runtime_error("ERROR: synchronous thread " + thread->name +
+                                 " in role " + role->name + " in node " + node->name +
+                                 " does not synchronize with any other node!!");
       
       buffer_ << "    syncPartnerIds[\"" << funcName(node, role, thread) << "\"][" << proc.id << "] = ";
       size_t start = 0;

@@ -209,6 +209,7 @@ node uav
 
   @BarrierSync;
   thread COLLISION_AVOIDANCE2 {
+    lx = lx + 3;
   }
   
   role Leader {
@@ -232,6 +233,7 @@ node uav
     @BarrierSync;
     override thread COLLISION_AVOIDANCE2 {
       foo = 10;
+      lx = ly + 30;
     }
   }
 
