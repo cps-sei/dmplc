@@ -195,6 +195,11 @@ ArrayReference<unsigned int, 5> mbarrier_COLLISION_AVOIDANCE(knowledge, "mbarrie
 ArrayReference<unsigned int, 5> mbarrier_COLLISION_AVOIDANCE2(knowledge, "mbarrier_COLLISION_AVOIDANCE2");
 
 /********************************************************************/
+//-- map from synchronous threads to synchronous partner node ids
+/********************************************************************/
+std::map< std::string,std::map< size_t,std::set<size_t> > > syncPartnerIds;
+
+/********************************************************************/
 //-- function from node ids and role names to node ids
 /********************************************************************/
 size_t role2Id(size_t nodeId, const std::string &roleName);
@@ -1854,33 +1859,8 @@ void SyncAlgo::init (engine::KnowledgeBase & context)
   barrier_sync << " = (" + mbarrier + ".";
   barrier_sync << settings.id;
 
-  // create barrier check for all lower ids
-  for (unsigned int i = 0; i < settings.id; ++i)
-  {
-    if (started)
-    {
-      barrier_string << " && ";
-      barrier_data_string << " && ";
-    }
-
-    barrier_string << "" + mbarrier + ".";
-    barrier_string << i;
-    barrier_string << " >= " + mbarrier + ".";
-    barrier_string << settings.id;
-    barrier_data_string << "" + mbarrier + ".";
-    barrier_data_string << i;
-    barrier_data_string << " >= " + mbarrier + ".";
-    barrier_data_string << settings.id;
-    barrier_sync << " ; ";
-    barrier_sync << "" + mbarrier + ".";
-    barrier_sync << i;
-
-    if (!started)
-      started = true;
-  }
-
-  // create barrier check for all higher ids
-  for (int64_t i = settings.id + 1; i < processes; ++i)
+  // create barrier check for partner ids
+  for (size_t i : syncPartnerIds[_exec_func][settings.id])
   {
     if (started)
     {
@@ -2143,6 +2123,7 @@ int main (int argc, char ** argv)
   std::vector<Algo *> algos;
   Algo *algo;
   if(node_name == "uav" && role_name == "Leader") {
+    syncPartnerIds["node_uav_role_Leader_COLLISION_AVOIDANCE"][0] = {1,2,3,4};
     algo = new SyncAlgo(100000, "node_uav_role_Leader_COLLISION_AVOIDANCE", "COLLISION_AVOIDANCE", &knowledge, platform_name);
     algos.push_back(algo);
     algo = new SyncAlgo(100000, "node_uav_role_Leader_COLLISION_AVOIDANCE2", "COLLISION_AVOIDANCE2", &knowledge);
@@ -2151,6 +2132,10 @@ int main (int argc, char ** argv)
     algos.push_back(algo);
   }
   if(node_name == "uav" && role_name == "Protector") {
+    syncPartnerIds["node_uav_role_Protector_COLLISION_AVOIDANCE"][1] = {0,2,3,4};
+    syncPartnerIds["node_uav_role_Protector_COLLISION_AVOIDANCE"][2] = {0,1,3,4};
+    syncPartnerIds["node_uav_role_Protector_COLLISION_AVOIDANCE"][3] = {0,1,2,4};
+    syncPartnerIds["node_uav_role_Protector_COLLISION_AVOIDANCE"][4] = {0,1,2,3};
     algo = new SyncAlgo(100000, "node_uav_role_Protector_COLLISION_AVOIDANCE", "COLLISION_AVOIDANCE", &knowledge, platform_name);
     algos.push_back(algo);
     algo = new SyncAlgo(100000, "node_uav_role_Protector_COLLISION_AVOIDANCE2", "COLLISION_AVOIDANCE2", &knowledge);

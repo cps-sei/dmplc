@@ -403,6 +403,11 @@ dmpl::gams::GAMSBuilder::build_common_global_variables ()
   }
   buffer_ << "\n";
 
+  //-- declare map from synchronous thread names and node ids to ids
+  //-- of the other nodes that this thread must synchronize with
+  build_comment("//-- map from synchronous threads to synchronous partner node ids", "", "", 0);
+  buffer_ << "std::map< std::string,std::map< size_t,std::set<size_t> > > syncPartnerIds;\n\n";
+  
   //-- generate function from node ids and role names to node ids
   build_comment("//-- function from node ids and role names to node ids", "", "", 0);
   buffer_ << "size_t role2Id(size_t nodeId, const std::string &roleName);\n\n";
@@ -1988,31 +1993,8 @@ dmpl::gams::GAMSBuilder::build_algo_functions ()
   buffer_ << "  barrier_sync << settings.id;\n";
   buffer_ << "  barrier_sync << \" = (\" + mbarrier + \".\";\n";
   buffer_ << "  barrier_sync << settings.id;\n\n";
-  buffer_ << "  // create barrier check for all lower ids\n";
-  buffer_ << "  for (unsigned int i = 0; i < settings.id; ++i)\n";
-  buffer_ << "  {\n";
-  buffer_ << "    if (started)\n";
-  buffer_ << "    {\n";
-  buffer_ << "      barrier_string << \" && \";\n";
-  buffer_ << "      barrier_data_string << \" && \";\n";
-  buffer_ << "    }\n\n";
-
-  buffer_ << "    barrier_string << \"\" + mbarrier + \".\";\n";
-  buffer_ << "    barrier_string << i;\n";
-  buffer_ << "    barrier_string << \" >= \" + mbarrier + \".\";\n";
-  buffer_ << "    barrier_string << settings.id;\n";
-  buffer_ << "    barrier_data_string << \"\" + mbarrier + \".\";\n";
-  buffer_ << "    barrier_data_string << i;\n";
-  buffer_ << "    barrier_data_string << \" >= \" + mbarrier + \".\";\n";
-  buffer_ << "    barrier_data_string << settings.id;\n";
-  buffer_ << "    barrier_sync << \" ; \";\n";
-  buffer_ << "    barrier_sync << \"\" + mbarrier + \".\";\n";
-  buffer_ << "    barrier_sync << i;\n\n";
-  buffer_ << "    if (!started)\n";
-  buffer_ << "      started = true;\n";
-  buffer_ << "  }\n\n";
-  buffer_ << "  // create barrier check for all higher ids\n";
-  buffer_ << "  for (int64_t i = settings.id + 1; i < processes; ++i)\n";
+  buffer_ << "  // create barrier check for partner ids\n";
+  buffer_ << "  for (size_t i : syncPartnerIds[_exec_func][settings.id])\n";
   buffer_ << "  {\n";
   buffer_ << "    if (started)\n";
   buffer_ << "    {\n";
@@ -2458,6 +2440,38 @@ void dmpl::gams::GAMSBuilder::build_algo_creation (const Node &node, const Role 
 {
   buffer_ << "  if(node_name == \"" << node->name << "\" && role_name == \""
           << role->name << "\") {\n";
+
+  //-- initialize synchronization partners
+  Program &prog = builder_.program;
+  //-- consider all processes that can instantiate this role
+  for(const Process &proc : prog.procsWithRole(role->name)) {
+    //-- consider all threads
+    for(const auto &thread : role->threads) {
+      //-- skip asynchronous threads
+      const Attribute *syncAttr = role->getAttribute(thread, "BarrierSync", 0);      
+      if(!syncAttr) continue;
+
+      //-- compute the set of all nodes that overlap via global and
+      //-- group vars
+      std::set<NodeId> on;
+      for(const auto &v : thread->accessedGlob()) {
+        std::set<NodeId> onv = prog.overlappingNodes(proc, v.first);
+        on.insert(onv.begin(), onv.end());
+      }
+      for(const auto &v : thread->accessedGroup()) {
+        std::set<NodeId> onv = prog.overlappingNodes(proc, v.first);
+        on.insert(onv.begin(), onv.end());
+      }
+      on.erase(proc.id);
+
+      if(on.empty()) continue;
+      
+      buffer_ << "    syncPartnerIds[\"" << funcName(node, role, thread) << "\"][" << proc.id << "] = ";
+      size_t start = 0;
+      for(NodeId i : on) buffer_ << (start++ ? ',' : '{') << i;
+      buffer_ << "};\n";
+    }
+  }
   
   Func platformFunction;
   for(const auto &thread : role->threads) {
