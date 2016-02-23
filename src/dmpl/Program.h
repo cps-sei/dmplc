@@ -317,6 +317,9 @@ namespace dmpl
       
       return res;
     }
+
+    //-- return the set of ids of nodes that overlap with proc via var
+    std::set<dmpl::NodeId> overlappingNodes(const Process &proc,const std::string &varName);
   };
 
   //new namespace to avoid name collisions

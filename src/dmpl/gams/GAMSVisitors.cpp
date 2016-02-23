@@ -87,57 +87,6 @@ namespace
 }
 
 /*********************************************************************/
-//-- return the set of ids of nodes that overlap with proc via var
-/*********************************************************************/
-std::set<dmpl::NodeId> dmpl::madara::GAMSCompiler::overlappingNodes(const Process &proc,
-                                                                    const std::string &varName)
-{
-  //-- find the variable in scope with given name
-  Var var;
-  for(const Var &v : proc.role->allVarsInScope()) {
-    if(v->name == varName) { var = v; break; }
-  }
-
-  //-- sanity check
-  if(var == NULL)
-    throw std::runtime_error("ERROR: role " + proc.role->name + " in node with id " +
-                             std::to_string(proc.id) + " uses out of scope variable " + varName + "!!");
-
-  //-- local variable disallowed
-  if(var->scope == Variable::LOCAL)
-    throw std::runtime_error("ERROR: role " + proc.role->name + " in node with id " +
-                             std::to_string(proc.id) + " uses local variable " + varName +
-                             "with @id operator !!");
-
-  //-- global variable. if the variable was declared in this role,
-  //-- then it overlaps with all other nodes instantiating this
-  //-- role. otherwise, it overlaps with all nodes.
-  if(var->scope == Variable::GLOBAL) {
-    std::set<dmpl::NodeId> res;
-
-    //if the variable was declared in the parent node -- it overlaps
-    //with all nodes.
-    if(proc.role->node->hasVar(var)) {
-      for(const Process &p : builder_.program.processes) res.insert(p.id);
-      return res;
-    }
-
-    //otherwise, the variable was declared in this role -- it overlaps
-    //with all other nodes instantiating this role.
-    for(const Process &p : builder_.program.procsWithRole(proc.role->name)) res.insert(p.id);
-    return res;
-  }
-
-  //-- must be a group variable
-  if(var->scope != Variable::GROUP)
-    throw std::runtime_error("ERROR: role " + proc.role->name + " in node with id " +
-                             std::to_string(proc.id) + " uses variable" + varName +
-                             "with @id operator and illegal scope " + std::to_string(var->scope) + "!!");
-
-  return builder_.program.nodesInGroup[proc.id][varName];
-}
-
-/*********************************************************************/
 //-- construct a map from node ids to node ids that they should
 //-- iterate over given a specific type of iteration construct
 //-- (EXISTS_LOWER, EXISTS_HIGHER, etc.)
@@ -173,7 +122,7 @@ std::map<dmpl::NodeId,std::set<dmpl::NodeId>> dmpl::madara::GAMSCompiler::iterId
 
     //-- consider each variable accessed
     for(const std::string &var : infoCollector.idVarVars) {
-      std::set<NodeId> on = overlappingNodes(proc,var);
+      std::set<NodeId> on = prog.overlappingNodes(proc,var);
 
       if(overlapVar.empty()) {
         overlapNodes = on;
