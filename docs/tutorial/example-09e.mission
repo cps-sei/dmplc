@@ -1,0 +1,53 @@
+#!/bin/bash
+
+DMPL="example-09e.dmpl"
+BIN=example-09e
+
+OUTDIR=outdir
+MAPNAME=large
+GRIDSIZE=20
+
+#node to role assignment
+ROLEDESC=uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4
+
+#node to group assignment
+GROUPDESC="coordinator+eastern=1:eastern=4:coordinator+western=1:western=4"
+
+#variable to group assignment
+VARGROUPS="reg_x+reg_y+reg_rad+waypointArrival=coordinator:lock+lx+ly+init=eastern+western"
+
+EXPECT_LOG_PERIOD=0.2
+
+MISSION_TIME=1800
+
+//start
+IX1=1
+IY1=1
+//end
+WX1=1
+WY1=18
+//intermediate
+FX1=18
+FY1=9
+
+ARGS_0="--var_x $IX1 --var_y $IY1 --var_wx $WX1 --var_wy $WY1 --var_xt $FX1 --var_yt $FY1"
+ARGS_1="--var_x $((IX1+1)) --var_y $((IY1+1)) --var_ox 1 --var_oy 1"
+ARGS_2="--var_x $((IX1-1)) --var_y $((IY1+1)) --var_ox -1 --var_oy 1"
+ARGS_3="--var_x $((IX1-1)) --var_y $((IY1-1)) --var_ox -1 --var_oy -1"
+ARGS_4="--var_x $((IX1+1)) --var_y $((IY1-1)) --var_ox 1 --var_oy -1"
+
+//start
+IX2=15
+IY2=1
+//end
+WX2=15
+WY2=18
+//intermediate
+FX2=1
+FY2=9
+
+ARGS_5="--var_x $IX2 --var_y $IY2 --var_wx $WX2 --var_wy $WY2 --var_xt $FX2 --var_yt $FY2"
+ARGS_6="--var_x $((IX2+1)) --var_y $((IY2+1)) --var_ox 1 --var_oy 1"
+ARGS_7="--var_x $((IX2-1)) --var_y $((IY2+1)) --var_ox -1 --var_oy 1"
+ARGS_8="--var_x $((IX2-1)) --var_y $((IY2-1)) --var_ox -1 --var_oy -1"
+ARGS_9="--var_x $((IX2+1)) --var_y $((IY2-1)) --var_ox 1 --var_oy -1"
