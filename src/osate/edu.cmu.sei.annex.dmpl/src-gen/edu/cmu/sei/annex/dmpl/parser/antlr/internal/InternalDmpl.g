@@ -170,9 +170,9 @@ ruleProgramElement returns [EObject current=null]
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
-
+(
     { 
-        newCompositeNode(grammarAccess.getProgramElementAccess().getConstantParserRuleCall()); 
+        newCompositeNode(grammarAccess.getProgramElementAccess().getConstantParserRuleCall_0()); 
     }
     this_Constant_0=ruleConstant
     { 
@@ -180,6 +180,16 @@ ruleProgramElement returns [EObject current=null]
         afterParserOrEnumRuleCall();
     }
 
+    |
+    { 
+        newCompositeNode(grammarAccess.getProgramElementAccess().getProcedureParserRuleCall_1()); 
+    }
+    this_Procedure_1=ruleProcedure
+    { 
+        $current = $this_Procedure_1.current; 
+        afterParserOrEnumRuleCall();
+    }
+)
 ;
 
 
@@ -404,6 +414,230 @@ ruleDoubleConst returns [EObject current=null]
         		lv_value_1_0, 
         		"Double");
 	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))
+;
+
+
+
+
+
+// Entry rule entryRuleProcedure
+entryRuleProcedure returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getProcedureRule()); }
+	 iv_ruleProcedure=ruleProcedure 
+	 { $current=$iv_ruleProcedure.current; } 
+	 EOF 
+;
+
+// Rule Procedure
+ruleProcedure returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getProcedureAccess().getProcedureProcNoAttrParserRuleCall_0()); 
+	    }
+		lv_procedure_0_0=ruleProcNoAttr		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getProcedureRule());
+	        }
+       		set(
+       			$current, 
+       			"procedure",
+        		lv_procedure_0_0, 
+        		"ProcNoAttr");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)
+;
+
+
+
+
+
+// Entry rule entryRuleProcNoAttr
+entryRuleProcNoAttr returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getProcNoAttrRule()); }
+	 iv_ruleProcNoAttr=ruleProcNoAttr 
+	 { $current=$iv_ruleProcNoAttr.current; } 
+	 EOF 
+;
+
+// Rule ProcNoAttr
+ruleProcNoAttr returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+((
+(
+		{ 
+	        newCompositeNode(grammarAccess.getProcNoAttrAccess().getPrototypeFnPrototypeParserRuleCall_0_0()); 
+	    }
+		lv_prototype_0_0=ruleFnPrototype		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getProcNoAttrRule());
+	        }
+       		set(
+       			$current, 
+       			"prototype",
+        		lv_prototype_0_0, 
+        		"FnPrototype");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)	otherlv_1=';' 
+    {
+    	newLeafNode(otherlv_1, grammarAccess.getProcNoAttrAccess().getSemicolonKeyword_1());
+    }
+)
+;
+
+
+
+
+
+// Entry rule entryRuleFnPrototype
+entryRuleFnPrototype returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getFnPrototypeRule()); }
+	 iv_ruleFnPrototype=ruleFnPrototype 
+	 { $current=$iv_ruleFnPrototype.current; } 
+	 EOF 
+;
+
+// Rule FnPrototype
+ruleFnPrototype returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+((
+(
+(
+		lv_extern_0_1=	'extern' 
+    {
+        newLeafNode(lv_extern_0_1, grammarAccess.getFnPrototypeAccess().getExternExternKeyword_0_0_0());
+    }
+ 
+	    {
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getFnPrototypeRule());
+	        }
+       		setWithLastConsumed($current, "extern", true, null);
+	    }
+
+    |		lv_extern_0_2=	'EXTERN' 
+    {
+        newLeafNode(lv_extern_0_2, grammarAccess.getFnPrototypeAccess().getExternEXTERNKeyword_0_0_1());
+    }
+ 
+	    {
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getFnPrototypeRule());
+	        }
+       		setWithLastConsumed($current, "extern", true, null);
+	    }
+
+)
+
+)
+)?(
+(
+(
+		lv_pure_1_1=	'pure' 
+    {
+        newLeafNode(lv_pure_1_1, grammarAccess.getFnPrototypeAccess().getPurePureKeyword_1_0_0());
+    }
+ 
+	    {
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getFnPrototypeRule());
+	        }
+       		setWithLastConsumed($current, "pure", true, null);
+	    }
+
+    |		lv_pure_1_2=	'PURE' 
+    {
+        newLeafNode(lv_pure_1_2, grammarAccess.getFnPrototypeAccess().getPurePUREKeyword_1_0_1());
+    }
+ 
+	    {
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getFnPrototypeRule());
+	        }
+       		setWithLastConsumed($current, "pure", true, null);
+	    }
+
+)
+
+)
+)?(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getFnPrototypeAccess().getPrototypeFnPrototypeNoDecorsParserRuleCall_2_0()); 
+	    }
+		lv_prototype_2_0=ruleFnPrototypeNoDecors		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getFnPrototypeRule());
+	        }
+       		set(
+       			$current, 
+       			"prototype",
+        		lv_prototype_2_0, 
+        		"FnPrototypeNoDecors");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))
+;
+
+
+
+
+
+// Entry rule entryRuleFnPrototypeNoDecors
+entryRuleFnPrototypeNoDecors returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getFnPrototypeNoDecorsRule()); }
+	 iv_ruleFnPrototypeNoDecors=ruleFnPrototypeNoDecors 
+	 { $current=$iv_ruleFnPrototypeNoDecors.current; } 
+	 EOF 
+;
+
+// Rule FnPrototypeNoDecors
+ruleFnPrototypeNoDecors returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(	otherlv_0='thread' 
+    {
+    	newLeafNode(otherlv_0, grammarAccess.getFnPrototypeNoDecorsAccess().getThreadKeyword_0());
+    }
+(
+(
+		lv_name_1_0=RULE_TIDENTIFIER
+		{
+			newLeafNode(lv_name_1_0, grammarAccess.getFnPrototypeNoDecorsAccess().getNameTIDENTIFIERTerminalRuleCall_1_0()); 
+		}
+		{
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getFnPrototypeNoDecorsRule());
+	        }
+       		setWithLastConsumed(
+       			$current, 
+       			"name",
+        		lv_name_1_0, 
+        		"TIDENTIFIER");
 	    }
 
 )

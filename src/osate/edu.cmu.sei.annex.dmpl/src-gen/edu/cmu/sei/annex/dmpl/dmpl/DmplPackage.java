@@ -328,6 +328,136 @@ public interface DmplPackage extends EPackage
   int DOUBLE_CONST_FEATURE_COUNT = NUMBER_CONST_FEATURE_COUNT + 1;
 
   /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcedureImpl <em>Procedure</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.ProcedureImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getProcedure()
+   * @generated
+   */
+  int PROCEDURE = 7;
+
+  /**
+   * The feature id for the '<em><b>Procedure</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PROCEDURE__PROCEDURE = PROGRAM_ELEMENT_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Procedure</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PROCEDURE_FEATURE_COUNT = PROGRAM_ELEMENT_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcNoAttrImpl <em>Proc No Attr</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.ProcNoAttrImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getProcNoAttr()
+   * @generated
+   */
+  int PROC_NO_ATTR = 8;
+
+  /**
+   * The feature id for the '<em><b>Prototype</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PROC_NO_ATTR__PROTOTYPE = 0;
+
+  /**
+   * The number of structural features of the '<em>Proc No Attr</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PROC_NO_ATTR_FEATURE_COUNT = 1;
+
+  /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnPrototypeImpl <em>Fn Prototype</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.FnPrototypeImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnPrototype()
+   * @generated
+   */
+  int FN_PROTOTYPE = 9;
+
+  /**
+   * The feature id for the '<em><b>Extern</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FN_PROTOTYPE__EXTERN = 0;
+
+  /**
+   * The feature id for the '<em><b>Pure</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FN_PROTOTYPE__PURE = 1;
+
+  /**
+   * The feature id for the '<em><b>Prototype</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FN_PROTOTYPE__PROTOTYPE = 2;
+
+  /**
+   * The number of structural features of the '<em>Fn Prototype</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FN_PROTOTYPE_FEATURE_COUNT = 3;
+
+  /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnPrototypeNoDecorsImpl <em>Fn Prototype No Decors</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.FnPrototypeNoDecorsImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnPrototypeNoDecors()
+   * @generated
+   */
+  int FN_PROTOTYPE_NO_DECORS = 10;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FN_PROTOTYPE_NO_DECORS__NAME = 0;
+
+  /**
+   * The number of structural features of the '<em>Fn Prototype No Decors</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FN_PROTOTYPE_NO_DECORS_FEATURE_COUNT = 1;
+
+  /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SignEnum <em>Sign Enum</em>}' enum.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -335,7 +465,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignEnum()
    * @generated
    */
-  int SIGN_ENUM = 7;
+  int SIGN_ENUM = 11;
 
 
   /**
@@ -484,6 +614,112 @@ public interface DmplPackage extends EPackage
    * @generated
    */
   EAttribute getDoubleConst_Value();
+
+  /**
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.Procedure <em>Procedure</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Procedure</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Procedure
+   * @generated
+   */
+  EClass getProcedure();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.Procedure#getProcedure <em>Procedure</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Procedure</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Procedure#getProcedure()
+   * @see #getProcedure()
+   * @generated
+   */
+  EReference getProcedure_Procedure();
+
+  /**
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr <em>Proc No Attr</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Proc No Attr</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr
+   * @generated
+   */
+  EClass getProcNoAttr();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr#getPrototype <em>Prototype</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Prototype</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr#getPrototype()
+   * @see #getProcNoAttr()
+   * @generated
+   */
+  EReference getProcNoAttr_Prototype();
+
+  /**
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototype <em>Fn Prototype</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Fn Prototype</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.FnPrototype
+   * @generated
+   */
+  EClass getFnPrototype();
+
+  /**
+   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototype#isExtern <em>Extern</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Extern</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.FnPrototype#isExtern()
+   * @see #getFnPrototype()
+   * @generated
+   */
+  EAttribute getFnPrototype_Extern();
+
+  /**
+   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototype#isPure <em>Pure</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Pure</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.FnPrototype#isPure()
+   * @see #getFnPrototype()
+   * @generated
+   */
+  EAttribute getFnPrototype_Pure();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototype#getPrototype <em>Prototype</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Prototype</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.FnPrototype#getPrototype()
+   * @see #getFnPrototype()
+   * @generated
+   */
+  EReference getFnPrototype_Prototype();
+
+  /**
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeNoDecors <em>Fn Prototype No Decors</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Fn Prototype No Decors</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeNoDecors
+   * @generated
+   */
+  EClass getFnPrototypeNoDecors();
+
+  /**
+   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeNoDecors#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeNoDecors#getName()
+   * @see #getFnPrototypeNoDecors()
+   * @generated
+   */
+  EAttribute getFnPrototypeNoDecors_Name();
 
   /**
    * Returns the meta object for enum '{@link edu.cmu.sei.annex.dmpl.dmpl.SignEnum <em>Sign Enum</em>}'.
@@ -643,6 +879,94 @@ public interface DmplPackage extends EPackage
      * @generated
      */
     EAttribute DOUBLE_CONST__VALUE = eINSTANCE.getDoubleConst_Value();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcedureImpl <em>Procedure</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.ProcedureImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getProcedure()
+     * @generated
+     */
+    EClass PROCEDURE = eINSTANCE.getProcedure();
+
+    /**
+     * The meta object literal for the '<em><b>Procedure</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference PROCEDURE__PROCEDURE = eINSTANCE.getProcedure_Procedure();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcNoAttrImpl <em>Proc No Attr</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.ProcNoAttrImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getProcNoAttr()
+     * @generated
+     */
+    EClass PROC_NO_ATTR = eINSTANCE.getProcNoAttr();
+
+    /**
+     * The meta object literal for the '<em><b>Prototype</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference PROC_NO_ATTR__PROTOTYPE = eINSTANCE.getProcNoAttr_Prototype();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnPrototypeImpl <em>Fn Prototype</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.FnPrototypeImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnPrototype()
+     * @generated
+     */
+    EClass FN_PROTOTYPE = eINSTANCE.getFnPrototype();
+
+    /**
+     * The meta object literal for the '<em><b>Extern</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute FN_PROTOTYPE__EXTERN = eINSTANCE.getFnPrototype_Extern();
+
+    /**
+     * The meta object literal for the '<em><b>Pure</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute FN_PROTOTYPE__PURE = eINSTANCE.getFnPrototype_Pure();
+
+    /**
+     * The meta object literal for the '<em><b>Prototype</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference FN_PROTOTYPE__PROTOTYPE = eINSTANCE.getFnPrototype_Prototype();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnPrototypeNoDecorsImpl <em>Fn Prototype No Decors</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.FnPrototypeNoDecorsImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnPrototypeNoDecors()
+     * @generated
+     */
+    EClass FN_PROTOTYPE_NO_DECORS = eINSTANCE.getFnPrototypeNoDecors();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute FN_PROTOTYPE_NO_DECORS__NAME = eINSTANCE.getFnPrototypeNoDecors_Name();
 
     /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SignEnum <em>Sign Enum</em>}' enum.

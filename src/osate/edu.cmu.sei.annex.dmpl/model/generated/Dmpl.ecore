@@ -24,6 +24,23 @@
   <eClassifiers xsi:type="ecore:EClass" name="DoubleConst" eSuperTypes="#//NumberConst">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Procedure" eSuperTypes="#//ProgramElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="procedure" eType="#//ProcNoAttr"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ProcNoAttr">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="prototype" eType="#//FnPrototype"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FnPrototype">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="extern" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="pure" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="prototype" eType="#//FnPrototypeNoDecors"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FnPrototypeNoDecors">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="SignEnum">
     <eLiterals name="unset" literal="unset"/>
     <eLiterals name="PLUS" value="1" literal="+"/>

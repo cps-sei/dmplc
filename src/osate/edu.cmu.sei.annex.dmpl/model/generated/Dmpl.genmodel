@@ -32,5 +32,19 @@
     <genClasses ecoreClass="Dmpl.ecore#//DoubleConst">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//DoubleConst/value"/>
     </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//Procedure">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Procedure/procedure"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//ProcNoAttr">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//ProcNoAttr/prototype"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//FnPrototype">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//FnPrototype/extern"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//FnPrototype/pure"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnPrototype/prototype"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//FnPrototypeNoDecors">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//FnPrototypeNoDecors/name"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>
