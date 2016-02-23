@@ -64,11 +64,27 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     switch (eClass.getClassifierID())
     {
+      case DmplPackage.PROGRAM: return createProgram();
       case DmplPackage.DMPL_SUBCLAUSE: return createDmplSubclause();
-      case DmplPackage.FUNCTION_CALL: return createFunctionCall();
+      case DmplPackage.PROGRAM_ELEMENT: return createProgramElement();
+      case DmplPackage.CONSTANT: return createConstant();
+      case DmplPackage.NUMBER_CONST: return createNumberConst();
+      case DmplPackage.INT_CONST: return createIntConst();
+      case DmplPackage.DOUBLE_CONST: return createDoubleConst();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Program createProgram()
+  {
+    ProgramImpl program = new ProgramImpl();
+    return program;
   }
 
   /**
@@ -87,10 +103,54 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public FunctionCall createFunctionCall()
+  public ProgramElement createProgramElement()
   {
-    FunctionCallImpl functionCall = new FunctionCallImpl();
-    return functionCall;
+    ProgramElementImpl programElement = new ProgramElementImpl();
+    return programElement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Constant createConstant()
+  {
+    ConstantImpl constant = new ConstantImpl();
+    return constant;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NumberConst createNumberConst()
+  {
+    NumberConstImpl numberConst = new NumberConstImpl();
+    return numberConst;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public IntConst createIntConst()
+  {
+    IntConstImpl intConst = new IntConstImpl();
+    return intConst;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public DoubleConst createDoubleConst()
+  {
+    DoubleConstImpl doubleConst = new DoubleConstImpl();
+    return doubleConst;
   }
 
   /**

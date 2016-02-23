@@ -23,6 +23,15 @@ public interface DmplFactory extends EFactory
   DmplFactory eINSTANCE = edu.cmu.sei.annex.dmpl.dmpl.impl.DmplFactoryImpl.init();
 
   /**
+   * Returns a new object of class '<em>Program</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Program</em>'.
+   * @generated
+   */
+  Program createProgram();
+
+  /**
    * Returns a new object of class '<em>Subclause</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -32,13 +41,49 @@ public interface DmplFactory extends EFactory
   DmplSubclause createDmplSubclause();
 
   /**
-   * Returns a new object of class '<em>Function Call</em>'.
+   * Returns a new object of class '<em>Program Element</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Function Call</em>'.
+   * @return a new object of class '<em>Program Element</em>'.
    * @generated
    */
-  FunctionCall createFunctionCall();
+  ProgramElement createProgramElement();
+
+  /**
+   * Returns a new object of class '<em>Constant</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Constant</em>'.
+   * @generated
+   */
+  Constant createConstant();
+
+  /**
+   * Returns a new object of class '<em>Number Const</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Number Const</em>'.
+   * @generated
+   */
+  NumberConst createNumberConst();
+
+  /**
+   * Returns a new object of class '<em>Int Const</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Int Const</em>'.
+   * @generated
+   */
+  IntConst createIntConst();
+
+  /**
+   * Returns a new object of class '<em>Double Const</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Double Const</em>'.
+   * @generated
+   */
+  DoubleConst createDoubleConst();
 
   /**
    * Returns the package supported by this factory.

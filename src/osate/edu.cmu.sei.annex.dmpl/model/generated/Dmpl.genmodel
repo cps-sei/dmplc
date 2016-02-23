@@ -7,11 +7,25 @@
     editorPluginID="edu.cmu.sei.annex.dmpl.editor" runtimeVersion="2.11" usedGenPackages="platform:/resource/org.osate.aadl2/model/aadl2.genmodel#//aadl2">
   <genPackages prefix="Dmpl" basePackage="edu.cmu.sei.annex.dmpl" disposableProviderFactory="true"
       fileExtensions="dmpl" ecorePackage="Dmpl.ecore#/">
-    <genClasses ecoreClass="Dmpl.ecore#//DmplSubclause">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//DmplSubclause/functionCalls"/>
+    <genClasses ecoreClass="Dmpl.ecore#//Program">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Program/programElements"/>
     </genClasses>
-    <genClasses ecoreClass="Dmpl.ecore#//FunctionCall">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//FunctionCall/functionName"/>
+    <genClasses ecoreClass="Dmpl.ecore#//DmplSubclause">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//DmplSubclause/program"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//ProgramElement"/>
+    <genClasses ecoreClass="Dmpl.ecore#//Constant">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Constant/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Constant/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//NumberConst">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//NumberConst/sign"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//IntConst">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//IntConst/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//DoubleConst">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//DoubleConst/value"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

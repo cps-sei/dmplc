@@ -3,7 +3,7 @@
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
-import edu.cmu.sei.annex.dmpl.dmpl.FunctionCall;
+import edu.cmu.sei.annex.dmpl.dmpl.NumberConst;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -14,45 +14,45 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Function Call</b></em>'.
+ * An implementation of the model object '<em><b>Number Const</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FunctionCallImpl#getFunctionName <em>Function Name</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.NumberConstImpl#getSign <em>Sign</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class FunctionCallImpl extends MinimalEObjectImpl.Container implements FunctionCall
+public class NumberConstImpl extends MinimalEObjectImpl.Container implements NumberConst
 {
   /**
-   * The default value of the '{@link #getFunctionName() <em>Function Name</em>}' attribute.
+   * The default value of the '{@link #getSign() <em>Sign</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getFunctionName()
+   * @see #getSign()
    * @generated
    * @ordered
    */
-  protected static final String FUNCTION_NAME_EDEFAULT = null;
+  protected static final String SIGN_EDEFAULT = null;
 
   /**
-   * The cached value of the '{@link #getFunctionName() <em>Function Name</em>}' attribute.
+   * The cached value of the '{@link #getSign() <em>Sign</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getFunctionName()
+   * @see #getSign()
    * @generated
    * @ordered
    */
-  protected String functionName = FUNCTION_NAME_EDEFAULT;
+  protected String sign = SIGN_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected FunctionCallImpl()
+  protected NumberConstImpl()
   {
     super();
   }
@@ -65,7 +65,7 @@ public class FunctionCallImpl extends MinimalEObjectImpl.Container implements Fu
   @Override
   protected EClass eStaticClass()
   {
-    return DmplPackage.Literals.FUNCTION_CALL;
+    return DmplPackage.Literals.NUMBER_CONST;
   }
 
   /**
@@ -73,9 +73,9 @@ public class FunctionCallImpl extends MinimalEObjectImpl.Container implements Fu
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getFunctionName()
+  public String getSign()
   {
-    return functionName;
+    return sign;
   }
 
   /**
@@ -83,12 +83,12 @@ public class FunctionCallImpl extends MinimalEObjectImpl.Container implements Fu
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setFunctionName(String newFunctionName)
+  public void setSign(String newSign)
   {
-    String oldFunctionName = functionName;
-    functionName = newFunctionName;
+    String oldSign = sign;
+    sign = newSign;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.FUNCTION_CALL__FUNCTION_NAME, oldFunctionName, functionName));
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.NUMBER_CONST__SIGN, oldSign, sign));
   }
 
   /**
@@ -101,8 +101,8 @@ public class FunctionCallImpl extends MinimalEObjectImpl.Container implements Fu
   {
     switch (featureID)
     {
-      case DmplPackage.FUNCTION_CALL__FUNCTION_NAME:
-        return getFunctionName();
+      case DmplPackage.NUMBER_CONST__SIGN:
+        return getSign();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -117,8 +117,8 @@ public class FunctionCallImpl extends MinimalEObjectImpl.Container implements Fu
   {
     switch (featureID)
     {
-      case DmplPackage.FUNCTION_CALL__FUNCTION_NAME:
-        setFunctionName((String)newValue);
+      case DmplPackage.NUMBER_CONST__SIGN:
+        setSign((String)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -134,8 +134,8 @@ public class FunctionCallImpl extends MinimalEObjectImpl.Container implements Fu
   {
     switch (featureID)
     {
-      case DmplPackage.FUNCTION_CALL__FUNCTION_NAME:
-        setFunctionName(FUNCTION_NAME_EDEFAULT);
+      case DmplPackage.NUMBER_CONST__SIGN:
+        setSign(SIGN_EDEFAULT);
         return;
     }
     super.eUnset(featureID);
@@ -151,8 +151,8 @@ public class FunctionCallImpl extends MinimalEObjectImpl.Container implements Fu
   {
     switch (featureID)
     {
-      case DmplPackage.FUNCTION_CALL__FUNCTION_NAME:
-        return FUNCTION_NAME_EDEFAULT == null ? functionName != null : !FUNCTION_NAME_EDEFAULT.equals(functionName);
+      case DmplPackage.NUMBER_CONST__SIGN:
+        return SIGN_EDEFAULT == null ? sign != null : !SIGN_EDEFAULT.equals(sign);
     }
     return super.eIsSet(featureID);
   }
@@ -168,10 +168,10 @@ public class FunctionCallImpl extends MinimalEObjectImpl.Container implements Fu
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (functionName: ");
-    result.append(functionName);
+    result.append(" (sign: ");
+    result.append(sign);
     result.append(')');
     return result.toString();
   }
 
-} //FunctionCallImpl
+} //NumberConstImpl

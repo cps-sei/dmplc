@@ -4,19 +4,15 @@ package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplSubclause;
-import edu.cmu.sei.annex.dmpl.dmpl.FunctionCall;
+import edu.cmu.sei.annex.dmpl.dmpl.Program;
 
-import java.util.Collection;
-
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.osate.aadl2.impl.AnnexSubclauseImpl;
 
@@ -28,7 +24,7 @@ import org.osate.aadl2.impl.AnnexSubclauseImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.DmplSubclauseImpl#getFunctionCalls <em>Function Calls</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.DmplSubclauseImpl#getProgram <em>Program</em>}</li>
  * </ul>
  *
  * @generated
@@ -36,14 +32,14 @@ import org.osate.aadl2.impl.AnnexSubclauseImpl;
 public class DmplSubclauseImpl extends AnnexSubclauseImpl implements DmplSubclause
 {
   /**
-   * The cached value of the '{@link #getFunctionCalls() <em>Function Calls</em>}' containment reference list.
+   * The cached value of the '{@link #getProgram() <em>Program</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getFunctionCalls()
+   * @see #getProgram()
    * @generated
    * @ordered
    */
-  protected EList<FunctionCall> functionCalls;
+  protected Program program;
 
   /**
    * <!-- begin-user-doc -->
@@ -71,13 +67,47 @@ public class DmplSubclauseImpl extends AnnexSubclauseImpl implements DmplSubclau
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<FunctionCall> getFunctionCalls()
+  public Program getProgram()
   {
-    if (functionCalls == null)
+    return program;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetProgram(Program newProgram, NotificationChain msgs)
+  {
+    Program oldProgram = program;
+    program = newProgram;
+    if (eNotificationRequired())
     {
-      functionCalls = new EObjectContainmentEList<FunctionCall>(FunctionCall.class, this, DmplPackage.DMPL_SUBCLAUSE__FUNCTION_CALLS);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.DMPL_SUBCLAUSE__PROGRAM, oldProgram, newProgram);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
-    return functionCalls;
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setProgram(Program newProgram)
+  {
+    if (newProgram != program)
+    {
+      NotificationChain msgs = null;
+      if (program != null)
+        msgs = ((InternalEObject)program).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.DMPL_SUBCLAUSE__PROGRAM, null, msgs);
+      if (newProgram != null)
+        msgs = ((InternalEObject)newProgram).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.DMPL_SUBCLAUSE__PROGRAM, null, msgs);
+      msgs = basicSetProgram(newProgram, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.DMPL_SUBCLAUSE__PROGRAM, newProgram, newProgram));
   }
 
   /**
@@ -90,8 +120,8 @@ public class DmplSubclauseImpl extends AnnexSubclauseImpl implements DmplSubclau
   {
     switch (featureID)
     {
-      case DmplPackage.DMPL_SUBCLAUSE__FUNCTION_CALLS:
-        return ((InternalEList<?>)getFunctionCalls()).basicRemove(otherEnd, msgs);
+      case DmplPackage.DMPL_SUBCLAUSE__PROGRAM:
+        return basicSetProgram(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -106,8 +136,8 @@ public class DmplSubclauseImpl extends AnnexSubclauseImpl implements DmplSubclau
   {
     switch (featureID)
     {
-      case DmplPackage.DMPL_SUBCLAUSE__FUNCTION_CALLS:
-        return getFunctionCalls();
+      case DmplPackage.DMPL_SUBCLAUSE__PROGRAM:
+        return getProgram();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -117,15 +147,13 @@ public class DmplSubclauseImpl extends AnnexSubclauseImpl implements DmplSubclau
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case DmplPackage.DMPL_SUBCLAUSE__FUNCTION_CALLS:
-        getFunctionCalls().clear();
-        getFunctionCalls().addAll((Collection<? extends FunctionCall>)newValue);
+      case DmplPackage.DMPL_SUBCLAUSE__PROGRAM:
+        setProgram((Program)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -141,8 +169,8 @@ public class DmplSubclauseImpl extends AnnexSubclauseImpl implements DmplSubclau
   {
     switch (featureID)
     {
-      case DmplPackage.DMPL_SUBCLAUSE__FUNCTION_CALLS:
-        getFunctionCalls().clear();
+      case DmplPackage.DMPL_SUBCLAUSE__PROGRAM:
+        setProgram((Program)null);
         return;
     }
     super.eUnset(featureID);
@@ -158,8 +186,8 @@ public class DmplSubclauseImpl extends AnnexSubclauseImpl implements DmplSubclau
   {
     switch (featureID)
     {
-      case DmplPackage.DMPL_SUBCLAUSE__FUNCTION_CALLS:
-        return functionCalls != null && !functionCalls.isEmpty();
+      case DmplPackage.DMPL_SUBCLAUSE__PROGRAM:
+        return program != null;
     }
     return super.eIsSet(featureID);
   }

@@ -37,9 +37,25 @@ public class DmplParser extends AbstractContentAssistParser {
 			nameMappings = new HashMap<AbstractElement, String>() {
 				private static final long serialVersionUID = 1L;
 				{
+					put(grammarAccess.getConstantAccess().getAlternatives_0(), "rule__Constant__Alternatives_0");
+					put(grammarAccess.getNumberConstAccess().getAlternatives(), "rule__NumberConst__Alternatives");
+					put(grammarAccess.getIntConstAccess().getSignAlternatives_0_0(), "rule__IntConst__SignAlternatives_0_0");
+					put(grammarAccess.getDoubleConstAccess().getSignAlternatives_0_0(), "rule__DoubleConst__SignAlternatives_0_0");
+					put(grammarAccess.getDoubleAccess().getAlternatives(), "rule__Double__Alternatives");
+					put(grammarAccess.getProgramAccess().getGroup(), "rule__Program__Group__0");
 					put(grammarAccess.getDmplSubclauseAccess().getGroup(), "rule__DmplSubclause__Group__0");
-					put(grammarAccess.getDmplSubclauseAccess().getFunctionCallsAssignment_1(), "rule__DmplSubclause__FunctionCallsAssignment_1");
-					put(grammarAccess.getFunctionCallAccess().getFunctionNameAssignment(), "rule__FunctionCall__FunctionNameAssignment");
+					put(grammarAccess.getConstantAccess().getGroup(), "rule__Constant__Group__0");
+					put(grammarAccess.getIntConstAccess().getGroup(), "rule__IntConst__Group__0");
+					put(grammarAccess.getDoubleConstAccess().getGroup(), "rule__DoubleConst__Group__0");
+					put(grammarAccess.getDoubleAccess().getGroup_1(), "rule__Double__Group_1__0");
+					put(grammarAccess.getProgramAccess().getProgramElementsAssignment_1(), "rule__Program__ProgramElementsAssignment_1");
+					put(grammarAccess.getDmplSubclauseAccess().getProgramAssignment_1(), "rule__DmplSubclause__ProgramAssignment_1");
+					put(grammarAccess.getConstantAccess().getNameAssignment_1(), "rule__Constant__NameAssignment_1");
+					put(grammarAccess.getConstantAccess().getValueAssignment_3(), "rule__Constant__ValueAssignment_3");
+					put(grammarAccess.getIntConstAccess().getSignAssignment_0(), "rule__IntConst__SignAssignment_0");
+					put(grammarAccess.getIntConstAccess().getValueAssignment_1(), "rule__IntConst__ValueAssignment_1");
+					put(grammarAccess.getDoubleConstAccess().getSignAssignment_0(), "rule__DoubleConst__SignAssignment_0");
+					put(grammarAccess.getDoubleConstAccess().getValueAssignment_1(), "rule__DoubleConst__ValueAssignment_1");
 				}
 			};
 		}
@@ -50,7 +66,7 @@ public class DmplParser extends AbstractContentAssistParser {
 	protected Collection<FollowElement> getFollowElements(AbstractInternalContentAssistParser parser) {
 		try {
 			edu.cmu.sei.annex.dmpl.ui.contentassist.antlr.internal.InternalDmplParser typedParser = (edu.cmu.sei.annex.dmpl.ui.contentassist.antlr.internal.InternalDmplParser) parser;
-			typedParser.entryRuleAnnexSubclause();
+			typedParser.entryRuleProgram();
 			return typedParser.getFollowElements();
 		} catch(RecognitionException ex) {
 			throw new RuntimeException(ex);

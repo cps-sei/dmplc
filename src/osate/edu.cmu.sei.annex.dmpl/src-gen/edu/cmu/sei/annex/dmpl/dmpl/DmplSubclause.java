@@ -2,8 +2,6 @@
  */
 package edu.cmu.sei.annex.dmpl.dmpl;
 
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 
 import org.osate.aadl2.AnnexSubclause;
@@ -17,7 +15,7 @@ import org.osate.aadl2.AnnexSubclause;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.DmplSubclause#getFunctionCalls <em>Function Calls</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.DmplSubclause#getProgram <em>Program</em>}</li>
  * </ul>
  *
  * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getDmplSubclause()
@@ -27,19 +25,29 @@ import org.osate.aadl2.AnnexSubclause;
 public interface DmplSubclause extends EObject, AnnexSubclause
 {
   /**
-   * Returns the value of the '<em><b>Function Calls</b></em>' containment reference list.
-   * The list contents are of type {@link edu.cmu.sei.annex.dmpl.dmpl.FunctionCall}.
+   * Returns the value of the '<em><b>Program</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Function Calls</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Program</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Function Calls</em>' containment reference list.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getDmplSubclause_FunctionCalls()
+   * @return the value of the '<em>Program</em>' containment reference.
+   * @see #setProgram(Program)
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getDmplSubclause_Program()
    * @model containment="true"
    * @generated
    */
-  EList<FunctionCall> getFunctionCalls();
+  Program getProgram();
+
+  /**
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.DmplSubclause#getProgram <em>Program</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Program</em>' containment reference.
+   * @see #getProgram()
+   * @generated
+   */
+  void setProgram(Program value);
 
 } // DmplSubclause

@@ -5,9 +5,12 @@ package edu.cmu.sei.annex.dmpl.serializer;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import edu.cmu.sei.annex.dmpl.dmpl.Constant;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplSubclause;
-import edu.cmu.sei.annex.dmpl.dmpl.FunctionCall;
+import edu.cmu.sei.annex.dmpl.dmpl.DoubleConst;
+import edu.cmu.sei.annex.dmpl.dmpl.IntConst;
+import edu.cmu.sei.annex.dmpl.dmpl.Program;
 import edu.cmu.sei.annex.dmpl.services.DmplGrammarAccess;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.serializer.acceptor.ISemanticSequenceAcceptor;
@@ -30,11 +33,20 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	@Override
 	public void createSequence(EObject context, EObject semanticObject) {
 		if(semanticObject.eClass().getEPackage() == DmplPackage.eINSTANCE) switch(semanticObject.eClass().getClassifierID()) {
+			case DmplPackage.CONSTANT:
+				sequence_Constant(context, (Constant) semanticObject); 
+				return; 
 			case DmplPackage.DMPL_SUBCLAUSE:
 				sequence_DmplSubclause(context, (DmplSubclause) semanticObject); 
 				return; 
-			case DmplPackage.FUNCTION_CALL:
-				sequence_FunctionCall(context, (FunctionCall) semanticObject); 
+			case DmplPackage.DOUBLE_CONST:
+				sequence_DoubleConst(context, (DoubleConst) semanticObject); 
+				return; 
+			case DmplPackage.INT_CONST:
+				sequence_IntConst(context, (IntConst) semanticObject); 
+				return; 
+			case DmplPackage.PROGRAM:
+				sequence_Program(context, (Program) semanticObject); 
 				return; 
 			}
 		if (errorAcceptor != null) errorAcceptor.accept(diagnosticProvider.createInvalidContextOrTypeDiagnostic(semanticObject, context));
@@ -42,7 +54,26 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (functionCalls+=FunctionCall*)
+	 *     (name=TIDENTIFIER value=NumberConst)
+	 */
+	protected void sequence_Constant(EObject context, Constant semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.CONSTANT__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.CONSTANT__NAME));
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.CONSTANT__VALUE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.CONSTANT__VALUE));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getConstantAccess().getNameTIDENTIFIERTerminalRuleCall_1_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getConstantAccess().getValueNumberConstParserRuleCall_3_0(), semanticObject.getValue());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     program=Program
 	 */
 	protected void sequence_DmplSubclause(EObject context, DmplSubclause semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -51,16 +82,27 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     functionName=ID
+	 *     ((sign='+' | sign='-')? value=Double)
 	 */
-	protected void sequence_FunctionCall(EObject context, FunctionCall semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.FUNCTION_CALL__FUNCTION_NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.FUNCTION_CALL__FUNCTION_NAME));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getFunctionCallAccess().getFunctionNameIDTerminalRuleCall_0(), semanticObject.getFunctionName());
-		feeder.finish();
+	protected void sequence_DoubleConst(EObject context, DoubleConst semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     ((sign='+' | sign='-')? value=INT)
+	 */
+	protected void sequence_IntConst(EObject context, IntConst semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (programElements+=ProgramElement*)
+	 */
+	protected void sequence_Program(EObject context, Program semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
 	}
 }

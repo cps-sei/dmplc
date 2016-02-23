@@ -3,15 +3,46 @@ grammar edu.cmu.sei.annex.dmpl.Dmpl with org.eclipse.xtext.common.Terminals
 generate dmpl "http://www.cmu.edu/sei/annex/dmpl/Dmpl"
 
 import "http://aadl.info/AADL/2.0" as aadl2
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+Program:
+	{Program}
+	programElements+=ProgramElement*
+;
 
 AnnexSubclause returns aadl2::AnnexSubclause:
 	DmplSubclause
 ;
 
 DmplSubclause: {DmplSubclause}
-	functionCalls+=FunctionCall*
+	program=Program
 ;
 
-FunctionCall:
-	functionName=ID
+ProgramElement:
+	//TODO: target, node, procedure
+	Constant
+;
+
+Constant:
+	('const' | 'CONST') name=TIDENTIFIER '=' value=NumberConst ';'
+;
+
+NumberConst:
+	IntConst | DoubleConst
+;
+
+IntConst:
+	sign=('+' | '-')? value=INT
+;
+
+DoubleConst:
+	sign=('+' | '-')? value=Double
+;
+
+Double returns ecore::EDouble:
+	'NAN' | INT '.' INT?
+;
+
+terminal TIDENTIFIER:
+	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*
 ;
