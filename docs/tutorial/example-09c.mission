@@ -20,13 +20,13 @@ EXPECT_LOG_PERIOD=0.2
 
 MISSION_TIME=1800
 
-//start
+#start
 IX1=1
 IY1=1
-//end
+#end
 WX1=1
 WY1=18
-//intermediate
+#intermediate
 FX1=18
 FY1=9
 
@@ -36,13 +36,13 @@ ARGS_2="--var_x $((IX1-1)) --var_y $((IY1+1)) --var_ox -1 --var_oy 1"
 ARGS_3="--var_x $((IX1-1)) --var_y $((IY1-1)) --var_ox -1 --var_oy -1"
 ARGS_4="--var_x $((IX1+1)) --var_y $((IY1-1)) --var_ox 1 --var_oy -1"
 
-//start
+#start
 IX2=15
 IY2=1
-//end
+#end
 WX2=15
 WY2=18
-//intermediate
+#intermediate
 FX2=1
 FY2=9
 
