@@ -4,6 +4,7 @@ package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.NumberConst;
+import edu.cmu.sei.annex.dmpl.dmpl.SignEnum;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -35,7 +36,7 @@ public class NumberConstImpl extends MinimalEObjectImpl.Container implements Num
    * @generated
    * @ordered
    */
-  protected static final String SIGN_EDEFAULT = null;
+  protected static final SignEnum SIGN_EDEFAULT = SignEnum.UNSET;
 
   /**
    * The cached value of the '{@link #getSign() <em>Sign</em>}' attribute.
@@ -45,7 +46,7 @@ public class NumberConstImpl extends MinimalEObjectImpl.Container implements Num
    * @generated
    * @ordered
    */
-  protected String sign = SIGN_EDEFAULT;
+  protected SignEnum sign = SIGN_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -73,7 +74,7 @@ public class NumberConstImpl extends MinimalEObjectImpl.Container implements Num
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getSign()
+  public SignEnum getSign()
   {
     return sign;
   }
@@ -83,10 +84,10 @@ public class NumberConstImpl extends MinimalEObjectImpl.Container implements Num
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setSign(String newSign)
+  public void setSign(SignEnum newSign)
   {
-    String oldSign = sign;
-    sign = newSign;
+    SignEnum oldSign = sign;
+    sign = newSign == null ? SIGN_EDEFAULT : newSign;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.NUMBER_CONST__SIGN, oldSign, sign));
   }
@@ -118,7 +119,7 @@ public class NumberConstImpl extends MinimalEObjectImpl.Container implements Num
     switch (featureID)
     {
       case DmplPackage.NUMBER_CONST__SIGN:
-        setSign((String)newValue);
+        setSign((SignEnum)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -152,7 +153,7 @@ public class NumberConstImpl extends MinimalEObjectImpl.Container implements Num
     switch (featureID)
     {
       case DmplPackage.NUMBER_CONST__SIGN:
-        return SIGN_EDEFAULT == null ? sign != null : !SIGN_EDEFAULT.equals(sign);
+        return sign != SIGN_EDEFAULT;
     }
     return super.eIsSet(featureID);
   }

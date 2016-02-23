@@ -163,30 +163,22 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "IntConst");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cSignAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final Alternatives cSignAlternatives_0_0 = (Alternatives)cSignAssignment_0.eContents().get(0);
-		private final Keyword cSignPlusSignKeyword_0_0_0 = (Keyword)cSignAlternatives_0_0.eContents().get(0);
-		private final Keyword cSignHyphenMinusKeyword_0_0_1 = (Keyword)cSignAlternatives_0_0.eContents().get(1);
+		private final RuleCall cSignSignEnumRuleCall_0_0 = (RuleCall)cSignAssignment_0.eContents().get(0);
 		private final Assignment cValueAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cValueINTTerminalRuleCall_1_0 = (RuleCall)cValueAssignment_1.eContents().get(0);
 		
 		//IntConst:
-		//	sign=("+" | "-")? value=INT;
+		//	sign=Sign? value=INT;
 		@Override public ParserRule getRule() { return rule; }
 
-		//sign=("+" | "-")? value=INT
+		//sign=Sign? value=INT
 		public Group getGroup() { return cGroup; }
 
-		//sign=("+" | "-")?
+		//sign=Sign?
 		public Assignment getSignAssignment_0() { return cSignAssignment_0; }
 
-		//"+" | "-"
-		public Alternatives getSignAlternatives_0_0() { return cSignAlternatives_0_0; }
-
-		//"+"
-		public Keyword getSignPlusSignKeyword_0_0_0() { return cSignPlusSignKeyword_0_0_0; }
-
-		//"-"
-		public Keyword getSignHyphenMinusKeyword_0_0_1() { return cSignHyphenMinusKeyword_0_0_1; }
+		//Sign
+		public RuleCall getSignSignEnumRuleCall_0_0() { return cSignSignEnumRuleCall_0_0; }
 
 		//value=INT
 		public Assignment getValueAssignment_1() { return cValueAssignment_1; }
@@ -199,30 +191,22 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "DoubleConst");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cSignAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final Alternatives cSignAlternatives_0_0 = (Alternatives)cSignAssignment_0.eContents().get(0);
-		private final Keyword cSignPlusSignKeyword_0_0_0 = (Keyword)cSignAlternatives_0_0.eContents().get(0);
-		private final Keyword cSignHyphenMinusKeyword_0_0_1 = (Keyword)cSignAlternatives_0_0.eContents().get(1);
+		private final RuleCall cSignSignEnumRuleCall_0_0 = (RuleCall)cSignAssignment_0.eContents().get(0);
 		private final Assignment cValueAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cValueDoubleParserRuleCall_1_0 = (RuleCall)cValueAssignment_1.eContents().get(0);
 		
 		//DoubleConst:
-		//	sign=("+" | "-")? value=Double;
+		//	sign=Sign? value=Double;
 		@Override public ParserRule getRule() { return rule; }
 
-		//sign=("+" | "-")? value=Double
+		//sign=Sign? value=Double
 		public Group getGroup() { return cGroup; }
 
-		//sign=("+" | "-")?
+		//sign=Sign?
 		public Assignment getSignAssignment_0() { return cSignAssignment_0; }
 
-		//"+" | "-"
-		public Alternatives getSignAlternatives_0_0() { return cSignAlternatives_0_0; }
-
-		//"+"
-		public Keyword getSignPlusSignKeyword_0_0_0() { return cSignPlusSignKeyword_0_0_0; }
-
-		//"-"
-		public Keyword getSignHyphenMinusKeyword_0_0_1() { return cSignHyphenMinusKeyword_0_0_1; }
+		//Sign
+		public RuleCall getSignSignEnumRuleCall_0_0() { return cSignSignEnumRuleCall_0_0; }
 
 		//value=Double
 		public Assignment getValueAssignment_1() { return cValueAssignment_1; }
@@ -264,6 +248,70 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	
+	public class SignEnumElements extends AbstractEnumRuleElementFinder {
+		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "SignEnum");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final EnumLiteralDeclaration cUnsetEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
+		private final Keyword cUnsetUnsetKeyword_0_0 = (Keyword)cUnsetEnumLiteralDeclaration_0.eContents().get(0);
+		private final EnumLiteralDeclaration cPLUSEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
+		private final Keyword cPLUSPlusSignKeyword_1_0 = (Keyword)cPLUSEnumLiteralDeclaration_1.eContents().get(0);
+		private final EnumLiteralDeclaration cMINUSEnumLiteralDeclaration_2 = (EnumLiteralDeclaration)cAlternatives.eContents().get(2);
+		private final Keyword cMINUSHyphenMinusKeyword_2_0 = (Keyword)cMINUSEnumLiteralDeclaration_2.eContents().get(0);
+		
+		//enum SignEnum:
+		//	unset | PLUS="+" | MINUS="-";
+		public EnumRule getRule() { return rule; }
+
+		//unset | PLUS="+" | MINUS="-"
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//unset
+		public EnumLiteralDeclaration getUnsetEnumLiteralDeclaration_0() { return cUnsetEnumLiteralDeclaration_0; }
+
+		//"unset"
+		public Keyword getUnsetUnsetKeyword_0_0() { return cUnsetUnsetKeyword_0_0; }
+
+		//PLUS="+"
+		public EnumLiteralDeclaration getPLUSEnumLiteralDeclaration_1() { return cPLUSEnumLiteralDeclaration_1; }
+
+		//"+"
+		public Keyword getPLUSPlusSignKeyword_1_0() { return cPLUSPlusSignKeyword_1_0; }
+
+		//MINUS="-"
+		public EnumLiteralDeclaration getMINUSEnumLiteralDeclaration_2() { return cMINUSEnumLiteralDeclaration_2; }
+
+		//"-"
+		public Keyword getMINUSHyphenMinusKeyword_2_0() { return cMINUSHyphenMinusKeyword_2_0; }
+	}
+
+	public class SignElements extends AbstractEnumRuleElementFinder {
+		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "Sign");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final EnumLiteralDeclaration cPLUSEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
+		private final Keyword cPLUSPlusSignKeyword_0_0 = (Keyword)cPLUSEnumLiteralDeclaration_0.eContents().get(0);
+		private final EnumLiteralDeclaration cMINUSEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
+		private final Keyword cMINUSHyphenMinusKeyword_1_0 = (Keyword)cMINUSEnumLiteralDeclaration_1.eContents().get(0);
+		
+		//enum Sign returns SignEnum:
+		//	PLUS="+" | MINUS="-";
+		public EnumRule getRule() { return rule; }
+
+		//PLUS="+" | MINUS="-"
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//PLUS="+"
+		public EnumLiteralDeclaration getPLUSEnumLiteralDeclaration_0() { return cPLUSEnumLiteralDeclaration_0; }
+
+		//"+"
+		public Keyword getPLUSPlusSignKeyword_0_0() { return cPLUSPlusSignKeyword_0_0; }
+
+		//MINUS="-"
+		public EnumLiteralDeclaration getMINUSEnumLiteralDeclaration_1() { return cMINUSEnumLiteralDeclaration_1; }
+
+		//"-"
+		public Keyword getMINUSHyphenMinusKeyword_1_0() { return cMINUSHyphenMinusKeyword_1_0; }
+	}
+	
 	private final ProgramElements pProgram;
 	private final AnnexSubclauseElements pAnnexSubclause;
 	private final DmplSubclauseElements pDmplSubclause;
@@ -272,6 +320,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final NumberConstElements pNumberConst;
 	private final IntConstElements pIntConst;
 	private final DoubleConstElements pDoubleConst;
+	private final SignEnumElements unknownRuleSignEnum;
+	private final SignElements unknownRuleSign;
 	private final DoubleElements pDouble;
 	private final TerminalRule tTIDENTIFIER;
 	
@@ -292,6 +342,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pNumberConst = new NumberConstElements();
 		this.pIntConst = new IntConstElements();
 		this.pDoubleConst = new DoubleConstElements();
+		this.unknownRuleSignEnum = new SignEnumElements();
+		this.unknownRuleSign = new SignElements();
 		this.pDouble = new DoubleElements();
 		this.tTIDENTIFIER = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "TIDENTIFIER");
 	}
@@ -384,7 +436,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//IntConst:
-	//	sign=("+" | "-")? value=INT;
+	//	sign=Sign? value=INT;
 	public IntConstElements getIntConstAccess() {
 		return pIntConst;
 	}
@@ -394,13 +446,33 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//DoubleConst:
-	//	sign=("+" | "-")? value=Double;
+	//	sign=Sign? value=Double;
 	public DoubleConstElements getDoubleConstAccess() {
 		return pDoubleConst;
 	}
 	
 	public ParserRule getDoubleConstRule() {
 		return getDoubleConstAccess().getRule();
+	}
+
+	//enum SignEnum:
+	//	unset | PLUS="+" | MINUS="-";
+	public SignEnumElements getSignEnumAccess() {
+		return unknownRuleSignEnum;
+	}
+	
+	public EnumRule getSignEnumRule() {
+		return getSignEnumAccess().getRule();
+	}
+
+	//enum Sign returns SignEnum:
+	//	PLUS="+" | MINUS="-";
+	public SignElements getSignAccess() {
+		return unknownRuleSign;
+	}
+	
+	public EnumRule getSignRule() {
+		return getSignAccess().getRule();
 	}
 
 	//Double returns ecore::EDouble:

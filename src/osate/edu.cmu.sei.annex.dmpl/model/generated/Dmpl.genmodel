@@ -7,6 +7,11 @@
     editorPluginID="edu.cmu.sei.annex.dmpl.editor" runtimeVersion="2.11" usedGenPackages="platform:/resource/org.osate.aadl2/model/aadl2.genmodel#//aadl2">
   <genPackages prefix="Dmpl" basePackage="edu.cmu.sei.annex.dmpl" disposableProviderFactory="true"
       fileExtensions="dmpl" ecorePackage="Dmpl.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Dmpl.ecore#//SignEnum">
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SignEnum/unset"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SignEnum/PLUS"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SignEnum/MINUS"/>
+    </genEnums>
     <genClasses ecoreClass="Dmpl.ecore#//Program">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Program/programElements"/>
     </genClasses>

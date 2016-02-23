@@ -6,6 +6,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.Constant
 import edu.cmu.sei.annex.dmpl.dmpl.DoubleConst
 import edu.cmu.sei.annex.dmpl.dmpl.IntConst
 import edu.cmu.sei.annex.dmpl.dmpl.Program
+import edu.cmu.sei.annex.dmpl.dmpl.SignEnum
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
@@ -50,63 +51,63 @@ class ParserTest {
 			programElements.get(0) as Constant => [
 				"c1".assertEquals(name)
 				value as IntConst => [
-					sign.assertNull
+					SignEnum.UNSET.assertEquals(sign)
 					1.assertEquals(value)
 				]
 			]
 			programElements.get(1) as Constant => [
 				"c2".assertEquals(name)
 				value as IntConst => [
-					"+".assertEquals(sign)
+					SignEnum.PLUS.assertEquals(sign)
 					2.assertEquals(value)
 				]
 			]
 			programElements.get(2) as Constant => [
 				"c3".assertEquals(name)
 				value as IntConst => [
-					"-".assertEquals(sign)
+					SignEnum.MINUS.assertEquals(sign)
 					3.assertEquals(value)
 				]
 			]
 			programElements.get(3) as Constant => [
 				"c4".assertEquals(name)
 				value as DoubleConst => [
-					sign.assertNull
+					SignEnum.UNSET.assertEquals(sign)
 					4.5.assertEquals(value, 0)
 				]
 			]
 			programElements.get(4) as Constant => [
 				"c5".assertEquals(name)
 				value as DoubleConst => [
-					"+".assertEquals(sign)
+					SignEnum.PLUS.assertEquals(sign)
 					6.7.assertEquals(value, 0)
 				]
 			]
 			programElements.get(5) as Constant => [
 				"c6".assertEquals(name)
 				value as DoubleConst => [
-					"-".assertEquals(sign)
+					SignEnum.MINUS.assertEquals(sign)
 					8.9.assertEquals(value, 0)
 				]
 			]
 			programElements.get(6) as Constant => [
 				"c7".assertEquals(name)
 				value as DoubleConst => [
-					sign.assertNull
+					SignEnum.UNSET.assertEquals(sign)
 					Double.NaN.assertEquals(value, 0)
 				]
 			]
 			programElements.get(7) as Constant => [
 				"c8".assertEquals(name)
 				value as DoubleConst => [
-					"+".assertEquals(sign)
+					SignEnum.PLUS.assertEquals(sign)
 					Double.NaN.assertEquals(value, 0)
 				]
 			]
 			programElements.get(8) as Constant => [
 				"c9".assertEquals(name)
 				value as DoubleConst => [
-					"-".assertEquals(sign)
+					SignEnum.MINUS.assertEquals(sign)
 					Double.NaN.assertEquals(value, 0)
 				]
 			]

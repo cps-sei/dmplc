@@ -4,6 +4,7 @@ package edu.cmu.sei.annex.dmpl.dmpl;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -326,6 +327,16 @@ public interface DmplPackage extends EPackage
    */
   int DOUBLE_CONST_FEATURE_COUNT = NUMBER_CONST_FEATURE_COUNT + 1;
 
+  /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SignEnum <em>Sign Enum</em>}' enum.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.SignEnum
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignEnum()
+   * @generated
+   */
+  int SIGN_ENUM = 7;
+
 
   /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.Program <em>Program</em>}'.
@@ -475,6 +486,16 @@ public interface DmplPackage extends EPackage
   EAttribute getDoubleConst_Value();
 
   /**
+   * Returns the meta object for enum '{@link edu.cmu.sei.annex.dmpl.dmpl.SignEnum <em>Sign Enum</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for enum '<em>Sign Enum</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.SignEnum
+   * @generated
+   */
+  EEnum getSignEnum();
+
+  /**
    * Returns the factory that creates the instances of the model.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -622,6 +643,16 @@ public interface DmplPackage extends EPackage
      * @generated
      */
     EAttribute DOUBLE_CONST__VALUE = eINSTANCE.getDoubleConst_Value();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SignEnum <em>Sign Enum</em>}' enum.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.SignEnum
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignEnum()
+     * @generated
+     */
+    EEnum SIGN_ENUM = eINSTANCE.getSignEnum();
 
   }
 

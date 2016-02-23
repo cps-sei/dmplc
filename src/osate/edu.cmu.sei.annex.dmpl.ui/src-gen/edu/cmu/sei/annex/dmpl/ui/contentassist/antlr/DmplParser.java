@@ -39,9 +39,9 @@ public class DmplParser extends AbstractContentAssistParser {
 				{
 					put(grammarAccess.getConstantAccess().getAlternatives_0(), "rule__Constant__Alternatives_0");
 					put(grammarAccess.getNumberConstAccess().getAlternatives(), "rule__NumberConst__Alternatives");
-					put(grammarAccess.getIntConstAccess().getSignAlternatives_0_0(), "rule__IntConst__SignAlternatives_0_0");
-					put(grammarAccess.getDoubleConstAccess().getSignAlternatives_0_0(), "rule__DoubleConst__SignAlternatives_0_0");
 					put(grammarAccess.getDoubleAccess().getAlternatives(), "rule__Double__Alternatives");
+					put(grammarAccess.getSignEnumAccess().getAlternatives(), "rule__SignEnum__Alternatives");
+					put(grammarAccess.getSignAccess().getAlternatives(), "rule__Sign__Alternatives");
 					put(grammarAccess.getProgramAccess().getGroup(), "rule__Program__Group__0");
 					put(grammarAccess.getDmplSubclauseAccess().getGroup(), "rule__DmplSubclause__Group__0");
 					put(grammarAccess.getConstantAccess().getGroup(), "rule__Constant__Group__0");

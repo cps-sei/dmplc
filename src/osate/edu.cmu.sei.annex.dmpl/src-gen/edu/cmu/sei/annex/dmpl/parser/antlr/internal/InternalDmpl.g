@@ -24,6 +24,7 @@ import org.eclipse.xtext.parser.*;
 import org.eclipse.xtext.parser.impl.*;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.xtext.parser.antlr.AbstractInternalAntlrParser;
 import org.eclipse.xtext.parser.antlr.XtextTokenStream;
 import org.eclipse.xtext.parser.antlr.XtextTokenStream.HiddenTokens;
@@ -315,32 +316,20 @@ ruleIntConst returns [EObject current=null]
     @after { leaveRule(); }:
 ((
 (
-(
-		lv_sign_0_1=	'+' 
-    {
-        newLeafNode(lv_sign_0_1, grammarAccess.getIntConstAccess().getSignPlusSignKeyword_0_0_0());
-    }
- 
-	    {
-	        if ($current==null) {
-	            $current = createModelElement(grammarAccess.getIntConstRule());
-	        }
-       		setWithLastConsumed($current, "sign", lv_sign_0_1, null);
+		{ 
+	        newCompositeNode(grammarAccess.getIntConstAccess().getSignSignEnumRuleCall_0_0()); 
 	    }
-
-    |		lv_sign_0_2=	'-' 
-    {
-        newLeafNode(lv_sign_0_2, grammarAccess.getIntConstAccess().getSignHyphenMinusKeyword_0_0_1());
-    }
- 
-	    {
+		lv_sign_0_0=ruleSign		{
 	        if ($current==null) {
-	            $current = createModelElement(grammarAccess.getIntConstRule());
+	            $current = createModelElementForParent(grammarAccess.getIntConstRule());
 	        }
-       		setWithLastConsumed($current, "sign", lv_sign_0_2, null);
+       		set(
+       			$current, 
+       			"sign",
+        		lv_sign_0_0, 
+        		"Sign");
+	        afterParserOrEnumRuleCall();
 	    }
-
-)
 
 )
 )?(
@@ -384,32 +373,20 @@ ruleDoubleConst returns [EObject current=null]
     @after { leaveRule(); }:
 ((
 (
-(
-		lv_sign_0_1=	'+' 
-    {
-        newLeafNode(lv_sign_0_1, grammarAccess.getDoubleConstAccess().getSignPlusSignKeyword_0_0_0());
-    }
- 
-	    {
-	        if ($current==null) {
-	            $current = createModelElement(grammarAccess.getDoubleConstRule());
-	        }
-       		setWithLastConsumed($current, "sign", lv_sign_0_1, null);
+		{ 
+	        newCompositeNode(grammarAccess.getDoubleConstAccess().getSignSignEnumRuleCall_0_0()); 
 	    }
-
-    |		lv_sign_0_2=	'-' 
-    {
-        newLeafNode(lv_sign_0_2, grammarAccess.getDoubleConstAccess().getSignHyphenMinusKeyword_0_0_1());
-    }
- 
-	    {
+		lv_sign_0_0=ruleSign		{
 	        if ($current==null) {
-	            $current = createModelElement(grammarAccess.getDoubleConstRule());
+	            $current = createModelElementForParent(grammarAccess.getDoubleConstRule());
 	        }
-       		setWithLastConsumed($current, "sign", lv_sign_0_2, null);
+       		set(
+       			$current, 
+       			"sign",
+        		lv_sign_0_0, 
+        		"Sign");
+	        afterParserOrEnumRuleCall();
 	    }
-
-)
 
 )
 )?(
@@ -482,6 +459,27 @@ ruleDouble returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()]
     ;
 
 
+
+
+
+
+
+// Rule Sign
+ruleSign returns [Enumerator current=null] 
+    @init { enterRule(); }
+    @after { leaveRule(); }:
+((	enumLiteral_0='+' 
+	{
+        $current = grammarAccess.getSignAccess().getPLUSEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_0, grammarAccess.getSignAccess().getPLUSEnumLiteralDeclaration_0()); 
+    }
+)
+    |(	enumLiteral_1='-' 
+	{
+        $current = grammarAccess.getSignAccess().getMINUSEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_1, grammarAccess.getSignAccess().getMINUSEnumLiteralDeclaration_1()); 
+    }
+));
 
 
 

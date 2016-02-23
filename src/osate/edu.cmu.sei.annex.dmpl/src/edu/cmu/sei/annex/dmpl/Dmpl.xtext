@@ -32,11 +32,22 @@ NumberConst:
 ;
 
 IntConst:
-	sign=('+' | '-')? value=INT
+	sign=Sign? value=INT
 ;
 
 DoubleConst:
-	sign=('+' | '-')? value=Double
+	sign=Sign? value=Double
+;
+
+enum SignEnum:
+	unset |
+	PLUS='+' |
+	MINUS='-'
+;
+
+enum Sign returns SignEnum:
+	PLUS='+' |
+	MINUS='-'
 ;
 
 Double returns ecore::EDouble:

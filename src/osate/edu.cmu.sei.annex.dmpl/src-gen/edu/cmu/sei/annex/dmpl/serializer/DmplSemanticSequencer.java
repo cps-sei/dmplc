@@ -82,7 +82,7 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     ((sign='+' | sign='-')? value=Double)
+	 *     (sign=Sign? value=Double)
 	 */
 	protected void sequence_DoubleConst(EObject context, DoubleConst semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -91,7 +91,7 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     ((sign='+' | sign='-')? value=INT)
+	 *     (sign=Sign? value=INT)
 	 */
 	protected void sequence_IntConst(EObject context, IntConst semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

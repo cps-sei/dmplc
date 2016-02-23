@@ -24,6 +24,7 @@ public interface NumberConst extends EObject
 {
   /**
    * Returns the value of the '<em><b>Sign</b></em>' attribute.
+   * The literals are from the enumeration {@link edu.cmu.sei.annex.dmpl.dmpl.SignEnum}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Sign</em>' attribute isn't clear,
@@ -31,21 +32,23 @@ public interface NumberConst extends EObject
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Sign</em>' attribute.
-   * @see #setSign(String)
+   * @see edu.cmu.sei.annex.dmpl.dmpl.SignEnum
+   * @see #setSign(SignEnum)
    * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getNumberConst_Sign()
    * @model
    * @generated
    */
-  String getSign();
+  SignEnum getSign();
 
   /**
    * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.NumberConst#getSign <em>Sign</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Sign</em>' attribute.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.SignEnum
    * @see #getSign()
    * @generated
    */
-  void setSign(String value);
+  void setSign(SignEnum value);
 
 } // NumberConst
