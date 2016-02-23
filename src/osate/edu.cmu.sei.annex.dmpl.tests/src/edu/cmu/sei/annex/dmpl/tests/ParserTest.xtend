@@ -5,6 +5,7 @@ import edu.cmu.sei.annex.dmpl.DmplInjectorProvider
 import edu.cmu.sei.annex.dmpl.dmpl.Constant
 import edu.cmu.sei.annex.dmpl.dmpl.DoubleConst
 import edu.cmu.sei.annex.dmpl.dmpl.IntConst
+import edu.cmu.sei.annex.dmpl.dmpl.Procedure
 import edu.cmu.sei.annex.dmpl.dmpl.Program
 import edu.cmu.sei.annex.dmpl.dmpl.SignEnum
 import org.eclipse.xtext.junit4.InjectWith
@@ -15,7 +16,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import static extension org.junit.Assert.assertEquals
-import static extension org.junit.Assert.assertNull
+import static extension org.junit.Assert.assertFalse
 import static extension org.junit.Assert.assertTrue
 
 @RunWith(XtextRunner)
@@ -110,6 +111,57 @@ class ParserTest {
 					SignEnum.MINUS.assertEquals(sign)
 					Double.NaN.assertEquals(value, 0)
 				]
+			]
+		]
+	}
+	
+	@Test
+	def void testFnPrototypeThread() {
+		'''
+			thread t1;
+			pure thread t2;
+			PURE thread t3;
+			extern thread t4;
+			EXTERN thread t5;
+			extern pure thread t6;
+			EXTERN PURE thread t7;
+		'''.parse => [
+			assertNoIssues
+			7.assertEquals(programElements.size)
+			(programElements.get(0) as Procedure).procedure.prototype => [
+				"t1".assertEquals(prototype.name)
+				pure.assertFalse
+				extern.assertFalse
+			]
+			(programElements.get(1) as Procedure).procedure.prototype => [
+				"t2".assertEquals(prototype.name)
+				pure.assertTrue
+				extern.assertFalse
+			]
+			(programElements.get(2) as Procedure).procedure.prototype => [
+				"t3".assertEquals(prototype.name)
+				pure.assertTrue
+				extern.assertFalse
+			]
+			(programElements.get(3) as Procedure).procedure.prototype => [
+				"t4".assertEquals(prototype.name)
+				pure.assertFalse
+				extern.assertTrue
+			]
+			(programElements.get(4) as Procedure).procedure.prototype => [
+				"t5".assertEquals(prototype.name)
+				pure.assertFalse
+				extern.assertTrue
+			]
+			(programElements.get(5) as Procedure).procedure.prototype => [
+				"t6".assertEquals(prototype.name)
+				pure.assertTrue
+				extern.assertTrue
+			]
+			(programElements.get(6) as Procedure).procedure.prototype => [
+				"t7".assertEquals(prototype.name)
+				pure.assertTrue
+				extern.assertTrue
 			]
 		]
 	}

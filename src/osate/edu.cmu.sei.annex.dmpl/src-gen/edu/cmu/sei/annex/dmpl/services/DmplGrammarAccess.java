@@ -80,15 +80,24 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 	public class ProgramElementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "ProgramElement");
-		private final RuleCall cConstantParserRuleCall = (RuleCall)rule.eContents().get(1);
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final RuleCall cConstantParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cProcedureParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
-		//ProgramElement: //TODO: target, node, procedure
-		//	Constant;
+		//ProgramElement: //TODO: target, node
+		//	Constant | Procedure;
 		@Override public ParserRule getRule() { return rule; }
 
-		////TODO: target, node, procedure
+		////TODO: target, node
+		//Constant | Procedure
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		////TODO: target, node
 		//Constant
-		public RuleCall getConstantParserRuleCall() { return cConstantParserRuleCall; }
+		public RuleCall getConstantParserRuleCall_0() { return cConstantParserRuleCall_0; }
+
+		//Procedure
+		public RuleCall getProcedureParserRuleCall_1() { return cProcedureParserRuleCall_1; }
 	}
 
 	public class ConstantElements extends AbstractParserRuleElementFinder {
@@ -215,6 +224,127 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		public RuleCall getValueDoubleParserRuleCall_1_0() { return cValueDoubleParserRuleCall_1_0; }
 	}
 
+	public class ProcedureElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Procedure");
+		private final Assignment cProcedureAssignment = (Assignment)rule.eContents().get(1);
+		private final RuleCall cProcedureProcNoAttrParserRuleCall_0 = (RuleCall)cProcedureAssignment.eContents().get(0);
+		
+		//Procedure: //TODO: OVERRIDE and attr_list
+		//	procedure=ProcNoAttr;
+		@Override public ParserRule getRule() { return rule; }
+
+		////TODO: OVERRIDE and attr_list
+		//procedure=ProcNoAttr
+		public Assignment getProcedureAssignment() { return cProcedureAssignment; }
+
+		//ProcNoAttr
+		public RuleCall getProcedureProcNoAttrParserRuleCall_0() { return cProcedureProcNoAttrParserRuleCall_0; }
+	}
+
+	public class ProcNoAttrElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "ProcNoAttr");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cPrototypeAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cPrototypeFnPrototypeParserRuleCall_0_0 = (RuleCall)cPrototypeAssignment_0.eContents().get(0);
+		private final Keyword cSemicolonKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		
+		//ProcNoAttr: //TODO: fn_body
+		//	prototype=FnPrototype ";";
+		@Override public ParserRule getRule() { return rule; }
+
+		////TODO: fn_body
+		//prototype=FnPrototype ";"
+		public Group getGroup() { return cGroup; }
+
+		////TODO: fn_body
+		//prototype=FnPrototype
+		public Assignment getPrototypeAssignment_0() { return cPrototypeAssignment_0; }
+
+		//FnPrototype
+		public RuleCall getPrototypeFnPrototypeParserRuleCall_0_0() { return cPrototypeFnPrototypeParserRuleCall_0_0; }
+
+		//";"
+		public Keyword getSemicolonKeyword_1() { return cSemicolonKeyword_1; }
+	}
+
+	public class FnPrototypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "FnPrototype");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cExternAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final Alternatives cExternAlternatives_0_0 = (Alternatives)cExternAssignment_0.eContents().get(0);
+		private final Keyword cExternExternKeyword_0_0_0 = (Keyword)cExternAlternatives_0_0.eContents().get(0);
+		private final Keyword cExternEXTERNKeyword_0_0_1 = (Keyword)cExternAlternatives_0_0.eContents().get(1);
+		private final Assignment cPureAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final Alternatives cPureAlternatives_1_0 = (Alternatives)cPureAssignment_1.eContents().get(0);
+		private final Keyword cPurePureKeyword_1_0_0 = (Keyword)cPureAlternatives_1_0.eContents().get(0);
+		private final Keyword cPurePUREKeyword_1_0_1 = (Keyword)cPureAlternatives_1_0.eContents().get(1);
+		private final Assignment cPrototypeAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cPrototypeFnPrototypeNoDecorsParserRuleCall_2_0 = (RuleCall)cPrototypeAssignment_2.eContents().get(0);
+		
+		//FnPrototype:
+		//	extern?=("extern" | "EXTERN")? pure?=("pure" | "PURE")? prototype=FnPrototypeNoDecors;
+		@Override public ParserRule getRule() { return rule; }
+
+		//extern?=("extern" | "EXTERN")? pure?=("pure" | "PURE")? prototype=FnPrototypeNoDecors
+		public Group getGroup() { return cGroup; }
+
+		//extern?=("extern" | "EXTERN")?
+		public Assignment getExternAssignment_0() { return cExternAssignment_0; }
+
+		//"extern" | "EXTERN"
+		public Alternatives getExternAlternatives_0_0() { return cExternAlternatives_0_0; }
+
+		//"extern"
+		public Keyword getExternExternKeyword_0_0_0() { return cExternExternKeyword_0_0_0; }
+
+		//"EXTERN"
+		public Keyword getExternEXTERNKeyword_0_0_1() { return cExternEXTERNKeyword_0_0_1; }
+
+		//pure?=("pure" | "PURE")?
+		public Assignment getPureAssignment_1() { return cPureAssignment_1; }
+
+		//"pure" | "PURE"
+		public Alternatives getPureAlternatives_1_0() { return cPureAlternatives_1_0; }
+
+		//"pure"
+		public Keyword getPurePureKeyword_1_0_0() { return cPurePureKeyword_1_0_0; }
+
+		//"PURE"
+		public Keyword getPurePUREKeyword_1_0_1() { return cPurePUREKeyword_1_0_1; }
+
+		//prototype=FnPrototypeNoDecors
+		public Assignment getPrototypeAssignment_2() { return cPrototypeAssignment_2; }
+
+		//FnPrototypeNoDecors
+		public RuleCall getPrototypeFnPrototypeNoDecorsParserRuleCall_2_0() { return cPrototypeFnPrototypeNoDecorsParserRuleCall_2_0; }
+	}
+
+	public class FnPrototypeNoDecorsElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "FnPrototypeNoDecors");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cThreadKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		
+		//FnPrototypeNoDecors: //TODO: fn_type ID ( param_list )
+		//	"thread" name=TIDENTIFIER;
+		@Override public ParserRule getRule() { return rule; }
+
+		////TODO: fn_type ID ( param_list )
+		//"thread" name=TIDENTIFIER
+		public Group getGroup() { return cGroup; }
+
+		////TODO: fn_type ID ( param_list )
+		//"thread"
+		public Keyword getThreadKeyword_0() { return cThreadKeyword_0; }
+
+		//name=TIDENTIFIER
+		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+
+		//TIDENTIFIER
+		public RuleCall getNameTIDENTIFIERTerminalRuleCall_1_0() { return cNameTIDENTIFIERTerminalRuleCall_1_0; }
+	}
+
 	public class DoubleElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Double");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
@@ -320,6 +450,10 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final NumberConstElements pNumberConst;
 	private final IntConstElements pIntConst;
 	private final DoubleConstElements pDoubleConst;
+	private final ProcedureElements pProcedure;
+	private final ProcNoAttrElements pProcNoAttr;
+	private final FnPrototypeElements pFnPrototype;
+	private final FnPrototypeNoDecorsElements pFnPrototypeNoDecors;
 	private final SignEnumElements unknownRuleSignEnum;
 	private final SignElements unknownRuleSign;
 	private final DoubleElements pDouble;
@@ -342,6 +476,10 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pNumberConst = new NumberConstElements();
 		this.pIntConst = new IntConstElements();
 		this.pDoubleConst = new DoubleConstElements();
+		this.pProcedure = new ProcedureElements();
+		this.pProcNoAttr = new ProcNoAttrElements();
+		this.pFnPrototype = new FnPrototypeElements();
+		this.pFnPrototypeNoDecors = new FnPrototypeNoDecorsElements();
 		this.unknownRuleSignEnum = new SignEnumElements();
 		this.unknownRuleSign = new SignElements();
 		this.pDouble = new DoubleElements();
@@ -405,8 +543,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getDmplSubclauseAccess().getRule();
 	}
 
-	//ProgramElement: //TODO: target, node, procedure
-	//	Constant;
+	//ProgramElement: //TODO: target, node
+	//	Constant | Procedure;
 	public ProgramElementElements getProgramElementAccess() {
 		return pProgramElement;
 	}
@@ -453,6 +591,46 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getDoubleConstRule() {
 		return getDoubleConstAccess().getRule();
+	}
+
+	//Procedure: //TODO: OVERRIDE and attr_list
+	//	procedure=ProcNoAttr;
+	public ProcedureElements getProcedureAccess() {
+		return pProcedure;
+	}
+	
+	public ParserRule getProcedureRule() {
+		return getProcedureAccess().getRule();
+	}
+
+	//ProcNoAttr: //TODO: fn_body
+	//	prototype=FnPrototype ";";
+	public ProcNoAttrElements getProcNoAttrAccess() {
+		return pProcNoAttr;
+	}
+	
+	public ParserRule getProcNoAttrRule() {
+		return getProcNoAttrAccess().getRule();
+	}
+
+	//FnPrototype:
+	//	extern?=("extern" | "EXTERN")? pure?=("pure" | "PURE")? prototype=FnPrototypeNoDecors;
+	public FnPrototypeElements getFnPrototypeAccess() {
+		return pFnPrototype;
+	}
+	
+	public ParserRule getFnPrototypeRule() {
+		return getFnPrototypeAccess().getRule();
+	}
+
+	//FnPrototypeNoDecors: //TODO: fn_type ID ( param_list )
+	//	"thread" name=TIDENTIFIER;
+	public FnPrototypeNoDecorsElements getFnPrototypeNoDecorsAccess() {
+		return pFnPrototypeNoDecors;
+	}
+	
+	public ParserRule getFnPrototypeNoDecorsRule() {
+		return getFnPrototypeNoDecorsAccess().getRule();
 	}
 
 	//enum SignEnum:

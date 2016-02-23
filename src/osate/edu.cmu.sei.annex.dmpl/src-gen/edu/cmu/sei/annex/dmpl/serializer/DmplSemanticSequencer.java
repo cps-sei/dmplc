@@ -9,7 +9,11 @@ import edu.cmu.sei.annex.dmpl.dmpl.Constant;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplSubclause;
 import edu.cmu.sei.annex.dmpl.dmpl.DoubleConst;
+import edu.cmu.sei.annex.dmpl.dmpl.FnPrototype;
+import edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeNoDecors;
 import edu.cmu.sei.annex.dmpl.dmpl.IntConst;
+import edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr;
+import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
 import edu.cmu.sei.annex.dmpl.dmpl.Program;
 import edu.cmu.sei.annex.dmpl.services.DmplGrammarAccess;
 import org.eclipse.emf.ecore.EObject;
@@ -42,8 +46,20 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 			case DmplPackage.DOUBLE_CONST:
 				sequence_DoubleConst(context, (DoubleConst) semanticObject); 
 				return; 
+			case DmplPackage.FN_PROTOTYPE:
+				sequence_FnPrototype(context, (FnPrototype) semanticObject); 
+				return; 
+			case DmplPackage.FN_PROTOTYPE_NO_DECORS:
+				sequence_FnPrototypeNoDecors(context, (FnPrototypeNoDecors) semanticObject); 
+				return; 
 			case DmplPackage.INT_CONST:
 				sequence_IntConst(context, (IntConst) semanticObject); 
+				return; 
+			case DmplPackage.PROC_NO_ATTR:
+				sequence_ProcNoAttr(context, (ProcNoAttr) semanticObject); 
+				return; 
+			case DmplPackage.PROCEDURE:
+				sequence_Procedure(context, (Procedure) semanticObject); 
 				return; 
 			case DmplPackage.PROGRAM:
 				sequence_Program(context, (Program) semanticObject); 
@@ -91,10 +107,67 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
+	 *     name=TIDENTIFIER
+	 */
+	protected void sequence_FnPrototypeNoDecors(EObject context, FnPrototypeNoDecors semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.FN_PROTOTYPE_NO_DECORS__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.FN_PROTOTYPE_NO_DECORS__NAME));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getFnPrototypeNoDecorsAccess().getNameTIDENTIFIERTerminalRuleCall_1_0(), semanticObject.getName());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     ((extern?='extern' | extern?='EXTERN')? (pure?='pure' | pure?='PURE')? prototype=FnPrototypeNoDecors)
+	 */
+	protected void sequence_FnPrototype(EObject context, FnPrototype semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
 	 *     (sign=Sign? value=INT)
 	 */
 	protected void sequence_IntConst(EObject context, IntConst semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     prototype=FnPrototype
+	 */
+	protected void sequence_ProcNoAttr(EObject context, ProcNoAttr semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.PROC_NO_ATTR__PROTOTYPE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.PROC_NO_ATTR__PROTOTYPE));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getProcNoAttrAccess().getPrototypeFnPrototypeParserRuleCall_0_0(), semanticObject.getPrototype());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     procedure=ProcNoAttr
+	 */
+	protected void sequence_Procedure(EObject context, Procedure semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.PROCEDURE__PROCEDURE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.PROCEDURE__PROCEDURE));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getProcedureAccess().getProcedureProcNoAttrParserRuleCall_0(), semanticObject.getProcedure());
+		feeder.finish();
 	}
 	
 	

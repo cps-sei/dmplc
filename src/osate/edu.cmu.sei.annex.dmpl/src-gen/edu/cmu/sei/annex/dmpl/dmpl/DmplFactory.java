@@ -86,6 +86,42 @@ public interface DmplFactory extends EFactory
   DoubleConst createDoubleConst();
 
   /**
+   * Returns a new object of class '<em>Procedure</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Procedure</em>'.
+   * @generated
+   */
+  Procedure createProcedure();
+
+  /**
+   * Returns a new object of class '<em>Proc No Attr</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Proc No Attr</em>'.
+   * @generated
+   */
+  ProcNoAttr createProcNoAttr();
+
+  /**
+   * Returns a new object of class '<em>Fn Prototype</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Fn Prototype</em>'.
+   * @generated
+   */
+  FnPrototype createFnPrototype();
+
+  /**
+   * Returns a new object of class '<em>Fn Prototype No Decors</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Fn Prototype No Decors</em>'.
+   * @generated
+   */
+  FnPrototypeNoDecors createFnPrototypeNoDecors();
+
+  /**
    * Returns the package supported by this factory.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

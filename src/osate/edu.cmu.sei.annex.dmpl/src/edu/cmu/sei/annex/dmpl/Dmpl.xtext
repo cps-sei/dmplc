@@ -19,8 +19,8 @@ DmplSubclause: {DmplSubclause}
 ;
 
 ProgramElement:
-	//TODO: target, node, procedure
-	Constant
+	//TODO: target, node
+	Constant | Procedure
 ;
 
 Constant:
@@ -37,6 +37,25 @@ IntConst:
 
 DoubleConst:
 	sign=Sign? value=Double
+;
+
+Procedure:
+	//TODO: OVERRIDE and attr_list
+	procedure=ProcNoAttr
+;
+
+ProcNoAttr:
+	//TODO: fn_body
+	prototype=FnPrototype ';'
+;
+
+FnPrototype:
+	extern?=('extern' | 'EXTERN')? pure?=('pure' | 'PURE')? prototype=FnPrototypeNoDecors
+;
+
+FnPrototypeNoDecors:
+	//TODO: fn_type ID ( param_list )
+	'thread' name=TIDENTIFIER
 ;
 
 enum SignEnum:

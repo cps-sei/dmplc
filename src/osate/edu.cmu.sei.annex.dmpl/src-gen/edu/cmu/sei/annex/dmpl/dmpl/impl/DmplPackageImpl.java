@@ -7,8 +7,12 @@ import edu.cmu.sei.annex.dmpl.dmpl.DmplFactory;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplSubclause;
 import edu.cmu.sei.annex.dmpl.dmpl.DoubleConst;
+import edu.cmu.sei.annex.dmpl.dmpl.FnPrototype;
+import edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeNoDecors;
 import edu.cmu.sei.annex.dmpl.dmpl.IntConst;
 import edu.cmu.sei.annex.dmpl.dmpl.NumberConst;
+import edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr;
+import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
 import edu.cmu.sei.annex.dmpl.dmpl.Program;
 import edu.cmu.sei.annex.dmpl.dmpl.ProgramElement;
 import edu.cmu.sei.annex.dmpl.dmpl.SignEnum;
@@ -79,6 +83,34 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass doubleConstEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass procedureEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass procNoAttrEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass fnPrototypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass fnPrototypeNoDecorsEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -298,6 +330,106 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getProcedure()
+  {
+    return procedureEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getProcedure_Procedure()
+  {
+    return (EReference)procedureEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getProcNoAttr()
+  {
+    return procNoAttrEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getProcNoAttr_Prototype()
+  {
+    return (EReference)procNoAttrEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getFnPrototype()
+  {
+    return fnPrototypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getFnPrototype_Extern()
+  {
+    return (EAttribute)fnPrototypeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getFnPrototype_Pure()
+  {
+    return (EAttribute)fnPrototypeEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getFnPrototype_Prototype()
+  {
+    return (EReference)fnPrototypeEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getFnPrototypeNoDecors()
+  {
+    return fnPrototypeNoDecorsEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getFnPrototypeNoDecors_Name()
+  {
+    return (EAttribute)fnPrototypeNoDecorsEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EEnum getSignEnum()
   {
     return signEnumEEnum;
@@ -354,6 +486,20 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     doubleConstEClass = createEClass(DOUBLE_CONST);
     createEAttribute(doubleConstEClass, DOUBLE_CONST__VALUE);
 
+    procedureEClass = createEClass(PROCEDURE);
+    createEReference(procedureEClass, PROCEDURE__PROCEDURE);
+
+    procNoAttrEClass = createEClass(PROC_NO_ATTR);
+    createEReference(procNoAttrEClass, PROC_NO_ATTR__PROTOTYPE);
+
+    fnPrototypeEClass = createEClass(FN_PROTOTYPE);
+    createEAttribute(fnPrototypeEClass, FN_PROTOTYPE__EXTERN);
+    createEAttribute(fnPrototypeEClass, FN_PROTOTYPE__PURE);
+    createEReference(fnPrototypeEClass, FN_PROTOTYPE__PROTOTYPE);
+
+    fnPrototypeNoDecorsEClass = createEClass(FN_PROTOTYPE_NO_DECORS);
+    createEAttribute(fnPrototypeNoDecorsEClass, FN_PROTOTYPE_NO_DECORS__NAME);
+
     // Create enums
     signEnumEEnum = createEEnum(SIGN_ENUM);
   }
@@ -394,6 +540,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     constantEClass.getESuperTypes().add(this.getProgramElement());
     intConstEClass.getESuperTypes().add(this.getNumberConst());
     doubleConstEClass.getESuperTypes().add(this.getNumberConst());
+    procedureEClass.getESuperTypes().add(this.getProgramElement());
 
     // Initialize classes and features; add operations and parameters
     initEClass(programEClass, Program.class, "Program", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -416,6 +563,20 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     initEClass(doubleConstEClass, DoubleConst.class, "DoubleConst", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getDoubleConst_Value(), ecorePackage.getEDouble(), "value", null, 0, 1, DoubleConst.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(procedureEClass, Procedure.class, "Procedure", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getProcedure_Procedure(), this.getProcNoAttr(), null, "procedure", null, 0, 1, Procedure.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(procNoAttrEClass, ProcNoAttr.class, "ProcNoAttr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getProcNoAttr_Prototype(), this.getFnPrototype(), null, "prototype", null, 0, 1, ProcNoAttr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(fnPrototypeEClass, FnPrototype.class, "FnPrototype", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getFnPrototype_Extern(), ecorePackage.getEBoolean(), "extern", null, 0, 1, FnPrototype.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getFnPrototype_Pure(), ecorePackage.getEBoolean(), "pure", null, 0, 1, FnPrototype.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getFnPrototype_Prototype(), this.getFnPrototypeNoDecors(), null, "prototype", null, 0, 1, FnPrototype.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(fnPrototypeNoDecorsEClass, FnPrototypeNoDecors.class, "FnPrototypeNoDecors", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getFnPrototypeNoDecors_Name(), ecorePackage.getEString(), "name", null, 0, 1, FnPrototypeNoDecors.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Initialize enums and add enum literals
     initEEnum(signEnumEEnum, SignEnum.class, "SignEnum");

@@ -37,8 +37,11 @@ public class DmplParser extends AbstractContentAssistParser {
 			nameMappings = new HashMap<AbstractElement, String>() {
 				private static final long serialVersionUID = 1L;
 				{
+					put(grammarAccess.getProgramElementAccess().getAlternatives(), "rule__ProgramElement__Alternatives");
 					put(grammarAccess.getConstantAccess().getAlternatives_0(), "rule__Constant__Alternatives_0");
 					put(grammarAccess.getNumberConstAccess().getAlternatives(), "rule__NumberConst__Alternatives");
+					put(grammarAccess.getFnPrototypeAccess().getExternAlternatives_0_0(), "rule__FnPrototype__ExternAlternatives_0_0");
+					put(grammarAccess.getFnPrototypeAccess().getPureAlternatives_1_0(), "rule__FnPrototype__PureAlternatives_1_0");
 					put(grammarAccess.getDoubleAccess().getAlternatives(), "rule__Double__Alternatives");
 					put(grammarAccess.getSignEnumAccess().getAlternatives(), "rule__SignEnum__Alternatives");
 					put(grammarAccess.getSignAccess().getAlternatives(), "rule__Sign__Alternatives");
@@ -47,6 +50,9 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getConstantAccess().getGroup(), "rule__Constant__Group__0");
 					put(grammarAccess.getIntConstAccess().getGroup(), "rule__IntConst__Group__0");
 					put(grammarAccess.getDoubleConstAccess().getGroup(), "rule__DoubleConst__Group__0");
+					put(grammarAccess.getProcNoAttrAccess().getGroup(), "rule__ProcNoAttr__Group__0");
+					put(grammarAccess.getFnPrototypeAccess().getGroup(), "rule__FnPrototype__Group__0");
+					put(grammarAccess.getFnPrototypeNoDecorsAccess().getGroup(), "rule__FnPrototypeNoDecors__Group__0");
 					put(grammarAccess.getDoubleAccess().getGroup_1(), "rule__Double__Group_1__0");
 					put(grammarAccess.getProgramAccess().getProgramElementsAssignment_1(), "rule__Program__ProgramElementsAssignment_1");
 					put(grammarAccess.getDmplSubclauseAccess().getProgramAssignment_1(), "rule__DmplSubclause__ProgramAssignment_1");
@@ -56,6 +62,12 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getIntConstAccess().getValueAssignment_1(), "rule__IntConst__ValueAssignment_1");
 					put(grammarAccess.getDoubleConstAccess().getSignAssignment_0(), "rule__DoubleConst__SignAssignment_0");
 					put(grammarAccess.getDoubleConstAccess().getValueAssignment_1(), "rule__DoubleConst__ValueAssignment_1");
+					put(grammarAccess.getProcedureAccess().getProcedureAssignment(), "rule__Procedure__ProcedureAssignment");
+					put(grammarAccess.getProcNoAttrAccess().getPrototypeAssignment_0(), "rule__ProcNoAttr__PrototypeAssignment_0");
+					put(grammarAccess.getFnPrototypeAccess().getExternAssignment_0(), "rule__FnPrototype__ExternAssignment_0");
+					put(grammarAccess.getFnPrototypeAccess().getPureAssignment_1(), "rule__FnPrototype__PureAssignment_1");
+					put(grammarAccess.getFnPrototypeAccess().getPrototypeAssignment_2(), "rule__FnPrototype__PrototypeAssignment_2");
+					put(grammarAccess.getFnPrototypeNoDecorsAccess().getNameAssignment_1(), "rule__FnPrototypeNoDecors__NameAssignment_1");
 				}
 			};
 		}

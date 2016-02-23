@@ -72,6 +72,10 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.NUMBER_CONST: return createNumberConst();
       case DmplPackage.INT_CONST: return createIntConst();
       case DmplPackage.DOUBLE_CONST: return createDoubleConst();
+      case DmplPackage.PROCEDURE: return createProcedure();
+      case DmplPackage.PROC_NO_ATTR: return createProcNoAttr();
+      case DmplPackage.FN_PROTOTYPE: return createFnPrototype();
+      case DmplPackage.FN_PROTOTYPE_NO_DECORS: return createFnPrototypeNoDecors();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -186,6 +190,50 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     DoubleConstImpl doubleConst = new DoubleConstImpl();
     return doubleConst;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Procedure createProcedure()
+  {
+    ProcedureImpl procedure = new ProcedureImpl();
+    return procedure;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ProcNoAttr createProcNoAttr()
+  {
+    ProcNoAttrImpl procNoAttr = new ProcNoAttrImpl();
+    return procNoAttr;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public FnPrototype createFnPrototype()
+  {
+    FnPrototypeImpl fnPrototype = new FnPrototypeImpl();
+    return fnPrototype;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public FnPrototypeNoDecors createFnPrototypeNoDecors()
+  {
+    FnPrototypeNoDecorsImpl fnPrototypeNoDecors = new FnPrototypeNoDecorsImpl();
+    return fnPrototypeNoDecors;
   }
 
   /**
