@@ -58,6 +58,7 @@
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//ProcNoAttr">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//ProcNoAttr/prototype"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//ProcNoAttr/fnBody"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//FnPrototype">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//FnPrototype/extern"/>

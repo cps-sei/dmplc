@@ -520,6 +520,16 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EAttribute getProcNoAttr_FnBody()
+  {
+    return (EAttribute)procNoAttrEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getFnPrototype()
   {
     return fnPrototypeEClass;
@@ -771,6 +781,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     procNoAttrEClass = createEClass(PROC_NO_ATTR);
     createEReference(procNoAttrEClass, PROC_NO_ATTR__PROTOTYPE);
+    createEAttribute(procNoAttrEClass, PROC_NO_ATTR__FN_BODY);
 
     fnPrototypeEClass = createEClass(FN_PROTOTYPE);
     createEAttribute(fnPrototypeEClass, FN_PROTOTYPE__EXTERN);
@@ -881,6 +892,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     initEClass(procNoAttrEClass, ProcNoAttr.class, "ProcNoAttr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getProcNoAttr_Prototype(), this.getFnPrototype(), null, "prototype", null, 0, 1, ProcNoAttr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getProcNoAttr_FnBody(), ecorePackage.getEString(), "fnBody", null, 0, 1, ProcNoAttr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(fnPrototypeEClass, FnPrototype.class, "FnPrototype", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getFnPrototype_Extern(), ecorePackage.getEBoolean(), "extern", null, 0, 1, FnPrototype.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

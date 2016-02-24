@@ -41,6 +41,7 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getConstantAccess().getAlternatives_0(), "rule__Constant__Alternatives_0");
 					put(grammarAccess.getNumberConstAccess().getAlternatives(), "rule__NumberConst__Alternatives");
 					put(grammarAccess.getDimensionAccess().getAlternatives(), "rule__Dimension__Alternatives");
+					put(grammarAccess.getProcNoAttrAccess().getAlternatives_1(), "rule__ProcNoAttr__Alternatives_1");
 					put(grammarAccess.getFnPrototypeAccess().getAlternatives(), "rule__FnPrototype__Alternatives");
 					put(grammarAccess.getFnPrototypeAccess().getExternAlternatives_0_1_0(), "rule__FnPrototype__ExternAlternatives_0_1_0");
 					put(grammarAccess.getFnPrototypeAccess().getPureAlternatives_0_2_0(), "rule__FnPrototype__PureAlternatives_0_2_0");
@@ -65,6 +66,7 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getDimensionAccess().getGroup_2(), "rule__Dimension__Group_2__0");
 					put(grammarAccess.getTypeAccess().getGroup(), "rule__Type__Group__0");
 					put(grammarAccess.getProcNoAttrAccess().getGroup(), "rule__ProcNoAttr__Group__0");
+					put(grammarAccess.getFnBodyAccess().getGroup(), "rule__FnBody__Group__0");
 					put(grammarAccess.getFnPrototypeAccess().getGroup_0(), "rule__FnPrototype__Group_0__0");
 					put(grammarAccess.getFnPrototypeAccess().getGroup_1(), "rule__FnPrototype__Group_1__0");
 					put(grammarAccess.getFnPrototypeAccess().getGroup_1_6(), "rule__FnPrototype__Group_1_6__0");
@@ -87,6 +89,7 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getTypeAccess().getSimpTypeAssignment_1(), "rule__Type__SimpTypeAssignment_1");
 					put(grammarAccess.getProcedureAccess().getProcedureAssignment(), "rule__Procedure__ProcedureAssignment");
 					put(grammarAccess.getProcNoAttrAccess().getPrototypeAssignment_0(), "rule__ProcNoAttr__PrototypeAssignment_0");
+					put(grammarAccess.getProcNoAttrAccess().getFnBodyAssignment_1_1(), "rule__ProcNoAttr__FnBodyAssignment_1_1");
 					put(grammarAccess.getFnPrototypeAccess().getExternAssignment_0_1(), "rule__FnPrototype__ExternAssignment_0_1");
 					put(grammarAccess.getFnPrototypeAccess().getPureAssignment_0_2(), "rule__FnPrototype__PureAssignment_0_2");
 					put(grammarAccess.getFnPrototypeAccess().getNameAssignment_0_4(), "rule__FnPrototype__NameAssignment_0_4");

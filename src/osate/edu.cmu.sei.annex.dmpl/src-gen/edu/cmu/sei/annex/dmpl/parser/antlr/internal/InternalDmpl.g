@@ -698,12 +698,64 @@ ruleProcNoAttr returns [EObject current=null]
 	    }
 
 )
-)	otherlv_1=';' 
+)(	otherlv_1=';' 
     {
-    	newLeafNode(otherlv_1, grammarAccess.getProcNoAttrAccess().getSemicolonKeyword_1());
+    	newLeafNode(otherlv_1, grammarAccess.getProcNoAttrAccess().getSemicolonKeyword_1_0());
+    }
+
+    |(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getProcNoAttrAccess().getFnBodyFnBodyParserRuleCall_1_1_0()); 
+	    }
+		lv_fnBody_2_0=ruleFnBody		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getProcNoAttrRule());
+	        }
+       		set(
+       			$current, 
+       			"fnBody",
+        		lv_fnBody_2_0, 
+        		"FnBody");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)))
+;
+
+
+
+
+
+// Entry rule entryRuleFnBody
+entryRuleFnBody returns [String current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getFnBodyRule()); } 
+	 iv_ruleFnBody=ruleFnBody 
+	 { $current=$iv_ruleFnBody.current.getText(); }  
+	 EOF 
+;
+
+// Rule FnBody
+ruleFnBody returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(
+	kw='{' 
+    {
+        $current.merge(kw);
+        newLeafNode(kw, grammarAccess.getFnBodyAccess().getLeftCurlyBracketKeyword_0()); 
+    }
+
+	kw='}' 
+    {
+        $current.merge(kw);
+        newLeafNode(kw, grammarAccess.getFnBodyAccess().getRightCurlyBracketKeyword_1()); 
     }
 )
-;
+    ;
 
 
 

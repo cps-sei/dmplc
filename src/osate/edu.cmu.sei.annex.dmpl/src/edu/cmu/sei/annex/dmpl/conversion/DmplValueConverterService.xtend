@@ -17,7 +17,7 @@ class DmplValueConverterService extends DefaultTerminalConverters {
 			val eDoubleConverter = new EFactoryValueConverter(EcorePackage.eINSTANCE.EDouble)
 			
 			override toValue(String string, INode node) throws ValueConverterException {
-				if (string.trim == "NAN") {
+				if (string?.trim == "NAN") {
 					Double.NaN
 				} else {
 					eDoubleConverter.toValue(string, node) as Double
@@ -40,7 +40,7 @@ class DmplValueConverterService extends DefaultTerminalConverters {
 			val simpTypeEnumConverter = new EFactoryValueConverter(DmplPackage.eINSTANCE.simpTypeEnum)
 			
 			override toValue(String string, INode node) throws ValueConverterException {
-				if (string.trim == "_Bool") {
+				if (string?.trim == "_Bool") {
 					SimpTypeEnum.BOOL
 				} else {
 					simpTypeEnumConverter.toValue(string, node) as SimpTypeEnum

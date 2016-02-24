@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * </p>
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcNoAttrImpl#getPrototype <em>Prototype</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcNoAttrImpl#getFnBody <em>Fn Body</em>}</li>
  * </ul>
  *
  * @generated
@@ -39,6 +40,26 @@ public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements Proc
    * @ordered
    */
   protected FnPrototype prototype;
+
+  /**
+   * The default value of the '{@link #getFnBody() <em>Fn Body</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getFnBody()
+   * @generated
+   * @ordered
+   */
+  protected static final String FN_BODY_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getFnBody() <em>Fn Body</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getFnBody()
+   * @generated
+   * @ordered
+   */
+  protected String fnBody = FN_BODY_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -114,6 +135,29 @@ public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements Proc
    * <!-- end-user-doc -->
    * @generated
    */
+  public String getFnBody()
+  {
+    return fnBody;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setFnBody(String newFnBody)
+  {
+    String oldFnBody = fnBody;
+    fnBody = newFnBody;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.PROC_NO_ATTR__FN_BODY, oldFnBody, fnBody));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
@@ -137,6 +181,8 @@ public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements Proc
     {
       case DmplPackage.PROC_NO_ATTR__PROTOTYPE:
         return getPrototype();
+      case DmplPackage.PROC_NO_ATTR__FN_BODY:
+        return getFnBody();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -153,6 +199,9 @@ public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements Proc
     {
       case DmplPackage.PROC_NO_ATTR__PROTOTYPE:
         setPrototype((FnPrototype)newValue);
+        return;
+      case DmplPackage.PROC_NO_ATTR__FN_BODY:
+        setFnBody((String)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -171,6 +220,9 @@ public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements Proc
       case DmplPackage.PROC_NO_ATTR__PROTOTYPE:
         setPrototype((FnPrototype)null);
         return;
+      case DmplPackage.PROC_NO_ATTR__FN_BODY:
+        setFnBody(FN_BODY_EDEFAULT);
+        return;
     }
     super.eUnset(featureID);
   }
@@ -187,8 +239,27 @@ public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements Proc
     {
       case DmplPackage.PROC_NO_ATTR__PROTOTYPE:
         return prototype != null;
+      case DmplPackage.PROC_NO_ATTR__FN_BODY:
+        return FN_BODY_EDEFAULT == null ? fnBody != null : !FN_BODY_EDEFAULT.equals(fnBody);
     }
     return super.eIsSet(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String toString()
+  {
+    if (eIsProxy()) return super.toString();
+
+    StringBuffer result = new StringBuffer(super.toString());
+    result.append(" (fnBody: ");
+    result.append(fnBody);
+    result.append(')');
+    return result.toString();
   }
 
 } //ProcNoAttrImpl

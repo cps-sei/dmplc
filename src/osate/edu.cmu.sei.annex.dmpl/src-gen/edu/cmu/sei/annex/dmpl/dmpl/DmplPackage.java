@@ -468,13 +468,22 @@ public interface DmplPackage extends EPackage
   int PROC_NO_ATTR__PROTOTYPE = 0;
 
   /**
+   * The feature id for the '<em><b>Fn Body</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PROC_NO_ATTR__FN_BODY = 1;
+
+  /**
    * The number of structural features of the '<em>Proc No Attr</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int PROC_NO_ATTR_FEATURE_COUNT = 1;
+  int PROC_NO_ATTR_FEATURE_COUNT = 2;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnPrototypeImpl <em>Fn Prototype</em>}' class.
@@ -1039,6 +1048,17 @@ public interface DmplPackage extends EPackage
   EReference getProcNoAttr_Prototype();
 
   /**
+   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr#getFnBody <em>Fn Body</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Fn Body</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr#getFnBody()
+   * @see #getProcNoAttr()
+   * @generated
+   */
+  EAttribute getProcNoAttr_FnBody();
+
+  /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototype <em>Fn Prototype</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1483,6 +1503,14 @@ public interface DmplPackage extends EPackage
      * @generated
      */
     EReference PROC_NO_ATTR__PROTOTYPE = eINSTANCE.getProcNoAttr_Prototype();
+
+    /**
+     * The meta object literal for the '<em><b>Fn Body</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute PROC_NO_ATTR__FN_BODY = eINSTANCE.getProcNoAttr_FnBody();
 
     /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnPrototypeImpl <em>Fn Prototype</em>}' class.

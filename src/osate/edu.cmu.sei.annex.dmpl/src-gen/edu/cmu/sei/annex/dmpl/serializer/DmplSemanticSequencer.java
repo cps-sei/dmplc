@@ -218,17 +218,10 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     prototype=FnPrototype
+	 *     (prototype=FnPrototype fnBody=FnBody?)
 	 */
 	protected void sequence_ProcNoAttr(EObject context, ProcNoAttr semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.PROC_NO_ATTR__PROTOTYPE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.PROC_NO_ATTR__PROTOTYPE));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getProcNoAttrAccess().getPrototypeFnPrototypeParserRuleCall_0_0(), semanticObject.getPrototype());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

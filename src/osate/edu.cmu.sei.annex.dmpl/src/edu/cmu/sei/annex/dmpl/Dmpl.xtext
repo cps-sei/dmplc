@@ -60,7 +60,12 @@ Procedure:
 
 ProcNoAttr:
 	//TODO: fn_body
-	prototype=FnPrototype ';'
+	prototype=FnPrototype (';' | fnBody=FnBody)
+;
+
+FnBody:
+	//TODO var_init_list and stmt_list
+	'{' '}'
 ;
 
 FnPrototype:

@@ -370,14 +370,17 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cPrototypeAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final RuleCall cPrototypeFnPrototypeParserRuleCall_0_0 = (RuleCall)cPrototypeAssignment_0.eContents().get(0);
-		private final Keyword cSemicolonKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Alternatives cAlternatives_1 = (Alternatives)cGroup.eContents().get(1);
+		private final Keyword cSemicolonKeyword_1_0 = (Keyword)cAlternatives_1.eContents().get(0);
+		private final Assignment cFnBodyAssignment_1_1 = (Assignment)cAlternatives_1.eContents().get(1);
+		private final RuleCall cFnBodyFnBodyParserRuleCall_1_1_0 = (RuleCall)cFnBodyAssignment_1_1.eContents().get(0);
 		
 		//ProcNoAttr: //TODO: fn_body
-		//	prototype=FnPrototype ";";
+		//	prototype=FnPrototype (";" | fnBody=FnBody);
 		@Override public ParserRule getRule() { return rule; }
 
 		////TODO: fn_body
-		//prototype=FnPrototype ";"
+		//prototype=FnPrototype (";" | fnBody=FnBody)
 		public Group getGroup() { return cGroup; }
 
 		////TODO: fn_body
@@ -387,8 +390,39 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//FnPrototype
 		public RuleCall getPrototypeFnPrototypeParserRuleCall_0_0() { return cPrototypeFnPrototypeParserRuleCall_0_0; }
 
+		//";" | fnBody=FnBody
+		public Alternatives getAlternatives_1() { return cAlternatives_1; }
+
 		//";"
-		public Keyword getSemicolonKeyword_1() { return cSemicolonKeyword_1; }
+		public Keyword getSemicolonKeyword_1_0() { return cSemicolonKeyword_1_0; }
+
+		//fnBody=FnBody
+		public Assignment getFnBodyAssignment_1_1() { return cFnBodyAssignment_1_1; }
+
+		//FnBody
+		public RuleCall getFnBodyFnBodyParserRuleCall_1_1_0() { return cFnBodyFnBodyParserRuleCall_1_1_0; }
+	}
+
+	public class FnBodyElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "FnBody");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cLeftCurlyBracketKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		
+		//FnBody: //TODO var_init_list and stmt_list
+		//	"{" "}";
+		@Override public ParserRule getRule() { return rule; }
+
+		////TODO var_init_list and stmt_list
+		//"{" "}"
+		public Group getGroup() { return cGroup; }
+
+		////TODO var_init_list and stmt_list
+		//"{"
+		public Keyword getLeftCurlyBracketKeyword_0() { return cLeftCurlyBracketKeyword_0; }
+
+		//"}"
+		public Keyword getRightCurlyBracketKeyword_1() { return cRightCurlyBracketKeyword_1; }
 	}
 
 	public class FnPrototypeElements extends AbstractParserRuleElementFinder {
@@ -826,6 +860,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final TypeElements pType;
 	private final ProcedureElements pProcedure;
 	private final ProcNoAttrElements pProcNoAttr;
+	private final FnBodyElements pFnBody;
 	private final FnPrototypeElements pFnPrototype;
 	private final ParamElements pParam;
 	private final SignEnumElements unknownRuleSignEnum;
@@ -859,6 +894,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pType = new TypeElements();
 		this.pProcedure = new ProcedureElements();
 		this.pProcNoAttr = new ProcNoAttrElements();
+		this.pFnBody = new FnBodyElements();
 		this.pFnPrototype = new FnPrototypeElements();
 		this.pParam = new ParamElements();
 		this.unknownRuleSignEnum = new SignEnumElements();
@@ -1019,13 +1055,23 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//ProcNoAttr: //TODO: fn_body
-	//	prototype=FnPrototype ";";
+	//	prototype=FnPrototype (";" | fnBody=FnBody);
 	public ProcNoAttrElements getProcNoAttrAccess() {
 		return pProcNoAttr;
 	}
 	
 	public ParserRule getProcNoAttrRule() {
 		return getProcNoAttrAccess().getRule();
+	}
+
+	//FnBody: //TODO var_init_list and stmt_list
+	//	"{" "}";
+	public FnBodyElements getFnBodyAccess() {
+		return pFnBody;
+	}
+	
+	public ParserRule getFnBodyRule() {
+		return getFnBodyAccess().getRule();
 	}
 
 	//FnPrototype:
