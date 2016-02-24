@@ -39,6 +39,20 @@ DoubleConst:
 	sign=Sign? value=Double
 ;
 
+VarInit:
+	type=Type varAsgnList=VarAsgnList
+;
+
+VarAsgnList:
+	//TODO 'input', and multiplicity
+	var=Var | varAsgn=VarAsgn
+;
+
+VarAsgn:
+	//TODO 'input', '~', and expr
+	var=Var '=' fnBody=FnBody
+;
+
 Var:
 	name=TIDENTIFIER ('[' dimensions+=Dimension ']')*
 ;
@@ -60,7 +74,12 @@ Procedure:
 
 ProcNoAttr:
 	//TODO: fn_body
-	prototype=FnPrototype ';'
+	prototype=FnPrototype (';' | fnBody=FnBody)
+;
+
+FnBody:
+	//TODO var_init_list and stmt_list
+	'{' varInitList=VarInitList '}'
 ;
 
 FnPrototype:
@@ -72,6 +91,11 @@ FnPrototype:
 
 Param:
 	type=Type var=Var
+;
+
+VarInitList:
+	{VarInitList}
+	(varInits+=VarInit ';')*
 ;
 
 enum SignEnum:

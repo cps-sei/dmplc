@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr#getPrototype <em>Prototype</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr#getFnBody <em>Fn Body</em>}</li>
  * </ul>
  *
  * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getProcNoAttr()
@@ -47,5 +48,31 @@ public interface ProcNoAttr extends EObject
    * @generated
    */
   void setPrototype(FnPrototype value);
+
+  /**
+   * Returns the value of the '<em><b>Fn Body</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Fn Body</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Fn Body</em>' containment reference.
+   * @see #setFnBody(FnBody)
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getProcNoAttr_FnBody()
+   * @model containment="true"
+   * @generated
+   */
+  FnBody getFnBody();
+
+  /**
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr#getFnBody <em>Fn Body</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Fn Body</em>' containment reference.
+   * @see #getFnBody()
+   * @generated
+   */
+  void setFnBody(FnBody value);
 
 } // ProcNoAttr

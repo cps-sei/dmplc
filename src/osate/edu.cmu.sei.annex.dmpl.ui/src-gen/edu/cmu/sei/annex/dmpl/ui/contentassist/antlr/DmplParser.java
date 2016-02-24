@@ -40,7 +40,9 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getProgramElementAccess().getAlternatives(), "rule__ProgramElement__Alternatives");
 					put(grammarAccess.getConstantAccess().getAlternatives_0(), "rule__Constant__Alternatives_0");
 					put(grammarAccess.getNumberConstAccess().getAlternatives(), "rule__NumberConst__Alternatives");
+					put(grammarAccess.getVarAsgnListAccess().getAlternatives(), "rule__VarAsgnList__Alternatives");
 					put(grammarAccess.getDimensionAccess().getAlternatives(), "rule__Dimension__Alternatives");
+					put(grammarAccess.getProcNoAttrAccess().getAlternatives_1(), "rule__ProcNoAttr__Alternatives_1");
 					put(grammarAccess.getFnPrototypeAccess().getAlternatives(), "rule__FnPrototype__Alternatives");
 					put(grammarAccess.getFnPrototypeAccess().getExternAlternatives_0_1_0(), "rule__FnPrototype__ExternAlternatives_0_1_0");
 					put(grammarAccess.getFnPrototypeAccess().getPureAlternatives_0_2_0(), "rule__FnPrototype__PureAlternatives_0_2_0");
@@ -58,6 +60,8 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getConstantAccess().getGroup(), "rule__Constant__Group__0");
 					put(grammarAccess.getIntConstAccess().getGroup(), "rule__IntConst__Group__0");
 					put(grammarAccess.getDoubleConstAccess().getGroup(), "rule__DoubleConst__Group__0");
+					put(grammarAccess.getVarInitAccess().getGroup(), "rule__VarInit__Group__0");
+					put(grammarAccess.getVarAsgnAccess().getGroup(), "rule__VarAsgn__Group__0");
 					put(grammarAccess.getVarAccess().getGroup(), "rule__Var__Group__0");
 					put(grammarAccess.getVarAccess().getGroup_1(), "rule__Var__Group_1__0");
 					put(grammarAccess.getDimensionAccess().getGroup_0(), "rule__Dimension__Group_0__0");
@@ -65,11 +69,14 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getDimensionAccess().getGroup_2(), "rule__Dimension__Group_2__0");
 					put(grammarAccess.getTypeAccess().getGroup(), "rule__Type__Group__0");
 					put(grammarAccess.getProcNoAttrAccess().getGroup(), "rule__ProcNoAttr__Group__0");
+					put(grammarAccess.getFnBodyAccess().getGroup(), "rule__FnBody__Group__0");
 					put(grammarAccess.getFnPrototypeAccess().getGroup_0(), "rule__FnPrototype__Group_0__0");
 					put(grammarAccess.getFnPrototypeAccess().getGroup_1(), "rule__FnPrototype__Group_1__0");
 					put(grammarAccess.getFnPrototypeAccess().getGroup_1_6(), "rule__FnPrototype__Group_1_6__0");
 					put(grammarAccess.getFnPrototypeAccess().getGroup_1_6_1(), "rule__FnPrototype__Group_1_6_1__0");
 					put(grammarAccess.getParamAccess().getGroup(), "rule__Param__Group__0");
+					put(grammarAccess.getVarInitListAccess().getGroup(), "rule__VarInitList__Group__0");
+					put(grammarAccess.getVarInitListAccess().getGroup_1(), "rule__VarInitList__Group_1__0");
 					put(grammarAccess.getDoubleAccess().getGroup_1(), "rule__Double__Group_1__0");
 					put(grammarAccess.getProgramAccess().getProgramElementsAssignment_1(), "rule__Program__ProgramElementsAssignment_1");
 					put(grammarAccess.getDmplSubclauseAccess().getProgramAssignment_1(), "rule__DmplSubclause__ProgramAssignment_1");
@@ -79,6 +86,12 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getIntConstAccess().getValueAssignment_1(), "rule__IntConst__ValueAssignment_1");
 					put(grammarAccess.getDoubleConstAccess().getSignAssignment_0(), "rule__DoubleConst__SignAssignment_0");
 					put(grammarAccess.getDoubleConstAccess().getValueAssignment_1(), "rule__DoubleConst__ValueAssignment_1");
+					put(grammarAccess.getVarInitAccess().getTypeAssignment_0(), "rule__VarInit__TypeAssignment_0");
+					put(grammarAccess.getVarInitAccess().getVarAsgnListAssignment_1(), "rule__VarInit__VarAsgnListAssignment_1");
+					put(grammarAccess.getVarAsgnListAccess().getVarAssignment_0(), "rule__VarAsgnList__VarAssignment_0");
+					put(grammarAccess.getVarAsgnListAccess().getVarAsgnAssignment_1(), "rule__VarAsgnList__VarAsgnAssignment_1");
+					put(grammarAccess.getVarAsgnAccess().getVarAssignment_0(), "rule__VarAsgn__VarAssignment_0");
+					put(grammarAccess.getVarAsgnAccess().getFnBodyAssignment_2(), "rule__VarAsgn__FnBodyAssignment_2");
 					put(grammarAccess.getVarAccess().getNameAssignment_0(), "rule__Var__NameAssignment_0");
 					put(grammarAccess.getVarAccess().getDimensionsAssignment_1_1(), "rule__Var__DimensionsAssignment_1_1");
 					put(grammarAccess.getDimensionAccess().getIndexAssignment_0_1(), "rule__Dimension__IndexAssignment_0_1");
@@ -87,6 +100,8 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getTypeAccess().getSimpTypeAssignment_1(), "rule__Type__SimpTypeAssignment_1");
 					put(grammarAccess.getProcedureAccess().getProcedureAssignment(), "rule__Procedure__ProcedureAssignment");
 					put(grammarAccess.getProcNoAttrAccess().getPrototypeAssignment_0(), "rule__ProcNoAttr__PrototypeAssignment_0");
+					put(grammarAccess.getProcNoAttrAccess().getFnBodyAssignment_1_1(), "rule__ProcNoAttr__FnBodyAssignment_1_1");
+					put(grammarAccess.getFnBodyAccess().getVarInitListAssignment_1(), "rule__FnBody__VarInitListAssignment_1");
 					put(grammarAccess.getFnPrototypeAccess().getExternAssignment_0_1(), "rule__FnPrototype__ExternAssignment_0_1");
 					put(grammarAccess.getFnPrototypeAccess().getPureAssignment_0_2(), "rule__FnPrototype__PureAssignment_0_2");
 					put(grammarAccess.getFnPrototypeAccess().getNameAssignment_0_4(), "rule__FnPrototype__NameAssignment_0_4");
@@ -98,6 +113,7 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getFnPrototypeAccess().getParamsAssignment_1_6_1_1(), "rule__FnPrototype__ParamsAssignment_1_6_1_1");
 					put(grammarAccess.getParamAccess().getTypeAssignment_0(), "rule__Param__TypeAssignment_0");
 					put(grammarAccess.getParamAccess().getVarAssignment_1(), "rule__Param__VarAssignment_1");
+					put(grammarAccess.getVarInitListAccess().getVarInitsAssignment_1_0(), "rule__VarInitList__VarInitsAssignment_1_0");
 				}
 			};
 		}

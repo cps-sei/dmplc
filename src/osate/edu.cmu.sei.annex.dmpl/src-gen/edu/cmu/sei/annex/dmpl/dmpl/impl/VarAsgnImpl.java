@@ -4,8 +4,8 @@ package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.FnBody;
-import edu.cmu.sei.annex.dmpl.dmpl.FnPrototype;
-import edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr;
+import edu.cmu.sei.annex.dmpl.dmpl.Var;
+import edu.cmu.sei.annex.dmpl.dmpl.VarAsgn;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -18,29 +18,29 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Proc No Attr</b></em>'.
+ * An implementation of the model object '<em><b>Var Asgn</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcNoAttrImpl#getPrototype <em>Prototype</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcNoAttrImpl#getFnBody <em>Fn Body</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarAsgnImpl#getVar <em>Var</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarAsgnImpl#getFnBody <em>Fn Body</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements ProcNoAttr
+public class VarAsgnImpl extends MinimalEObjectImpl.Container implements VarAsgn
 {
   /**
-   * The cached value of the '{@link #getPrototype() <em>Prototype</em>}' containment reference.
+   * The cached value of the '{@link #getVar() <em>Var</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getPrototype()
+   * @see #getVar()
    * @generated
    * @ordered
    */
-  protected FnPrototype prototype;
+  protected Var var;
 
   /**
    * The cached value of the '{@link #getFnBody() <em>Fn Body</em>}' containment reference.
@@ -57,7 +57,7 @@ public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements Proc
    * <!-- end-user-doc -->
    * @generated
    */
-  protected ProcNoAttrImpl()
+  protected VarAsgnImpl()
   {
     super();
   }
@@ -70,7 +70,7 @@ public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements Proc
   @Override
   protected EClass eStaticClass()
   {
-    return DmplPackage.Literals.PROC_NO_ATTR;
+    return DmplPackage.Literals.VAR_ASGN;
   }
 
   /**
@@ -78,9 +78,9 @@ public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements Proc
    * <!-- end-user-doc -->
    * @generated
    */
-  public FnPrototype getPrototype()
+  public Var getVar()
   {
-    return prototype;
+    return var;
   }
 
   /**
@@ -88,13 +88,13 @@ public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements Proc
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetPrototype(FnPrototype newPrototype, NotificationChain msgs)
+  public NotificationChain basicSetVar(Var newVar, NotificationChain msgs)
   {
-    FnPrototype oldPrototype = prototype;
-    prototype = newPrototype;
+    Var oldVar = var;
+    var = newVar;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.PROC_NO_ATTR__PROTOTYPE, oldPrototype, newPrototype);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.VAR_ASGN__VAR, oldVar, newVar);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -105,20 +105,20 @@ public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements Proc
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setPrototype(FnPrototype newPrototype)
+  public void setVar(Var newVar)
   {
-    if (newPrototype != prototype)
+    if (newVar != var)
     {
       NotificationChain msgs = null;
-      if (prototype != null)
-        msgs = ((InternalEObject)prototype).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.PROC_NO_ATTR__PROTOTYPE, null, msgs);
-      if (newPrototype != null)
-        msgs = ((InternalEObject)newPrototype).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.PROC_NO_ATTR__PROTOTYPE, null, msgs);
-      msgs = basicSetPrototype(newPrototype, msgs);
+      if (var != null)
+        msgs = ((InternalEObject)var).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.VAR_ASGN__VAR, null, msgs);
+      if (newVar != null)
+        msgs = ((InternalEObject)newVar).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.VAR_ASGN__VAR, null, msgs);
+      msgs = basicSetVar(newVar, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.PROC_NO_ATTR__PROTOTYPE, newPrototype, newPrototype));
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.VAR_ASGN__VAR, newVar, newVar));
   }
 
   /**
@@ -142,7 +142,7 @@ public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements Proc
     fnBody = newFnBody;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.PROC_NO_ATTR__FN_BODY, oldFnBody, newFnBody);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.VAR_ASGN__FN_BODY, oldFnBody, newFnBody);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -159,14 +159,14 @@ public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements Proc
     {
       NotificationChain msgs = null;
       if (fnBody != null)
-        msgs = ((InternalEObject)fnBody).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.PROC_NO_ATTR__FN_BODY, null, msgs);
+        msgs = ((InternalEObject)fnBody).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.VAR_ASGN__FN_BODY, null, msgs);
       if (newFnBody != null)
-        msgs = ((InternalEObject)newFnBody).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.PROC_NO_ATTR__FN_BODY, null, msgs);
+        msgs = ((InternalEObject)newFnBody).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.VAR_ASGN__FN_BODY, null, msgs);
       msgs = basicSetFnBody(newFnBody, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.PROC_NO_ATTR__FN_BODY, newFnBody, newFnBody));
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.VAR_ASGN__FN_BODY, newFnBody, newFnBody));
   }
 
   /**
@@ -179,9 +179,9 @@ public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements Proc
   {
     switch (featureID)
     {
-      case DmplPackage.PROC_NO_ATTR__PROTOTYPE:
-        return basicSetPrototype(null, msgs);
-      case DmplPackage.PROC_NO_ATTR__FN_BODY:
+      case DmplPackage.VAR_ASGN__VAR:
+        return basicSetVar(null, msgs);
+      case DmplPackage.VAR_ASGN__FN_BODY:
         return basicSetFnBody(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -197,9 +197,9 @@ public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements Proc
   {
     switch (featureID)
     {
-      case DmplPackage.PROC_NO_ATTR__PROTOTYPE:
-        return getPrototype();
-      case DmplPackage.PROC_NO_ATTR__FN_BODY:
+      case DmplPackage.VAR_ASGN__VAR:
+        return getVar();
+      case DmplPackage.VAR_ASGN__FN_BODY:
         return getFnBody();
     }
     return super.eGet(featureID, resolve, coreType);
@@ -215,10 +215,10 @@ public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements Proc
   {
     switch (featureID)
     {
-      case DmplPackage.PROC_NO_ATTR__PROTOTYPE:
-        setPrototype((FnPrototype)newValue);
+      case DmplPackage.VAR_ASGN__VAR:
+        setVar((Var)newValue);
         return;
-      case DmplPackage.PROC_NO_ATTR__FN_BODY:
+      case DmplPackage.VAR_ASGN__FN_BODY:
         setFnBody((FnBody)newValue);
         return;
     }
@@ -235,10 +235,10 @@ public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements Proc
   {
     switch (featureID)
     {
-      case DmplPackage.PROC_NO_ATTR__PROTOTYPE:
-        setPrototype((FnPrototype)null);
+      case DmplPackage.VAR_ASGN__VAR:
+        setVar((Var)null);
         return;
-      case DmplPackage.PROC_NO_ATTR__FN_BODY:
+      case DmplPackage.VAR_ASGN__FN_BODY:
         setFnBody((FnBody)null);
         return;
     }
@@ -255,12 +255,12 @@ public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements Proc
   {
     switch (featureID)
     {
-      case DmplPackage.PROC_NO_ATTR__PROTOTYPE:
-        return prototype != null;
-      case DmplPackage.PROC_NO_ATTR__FN_BODY:
+      case DmplPackage.VAR_ASGN__VAR:
+        return var != null;
+      case DmplPackage.VAR_ASGN__FN_BODY:
         return fnBody != null;
     }
     return super.eIsSet(featureID);
   }
 
-} //ProcNoAttrImpl
+} //VarAsgnImpl
