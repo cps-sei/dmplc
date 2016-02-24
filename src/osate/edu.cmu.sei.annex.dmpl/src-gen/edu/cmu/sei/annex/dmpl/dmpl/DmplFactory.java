@@ -95,15 +95,6 @@ public interface DmplFactory extends EFactory
   Var createVar();
 
   /**
-   * Returns a new object of class '<em>Dimensions</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Dimensions</em>'.
-   * @generated
-   */
-  Dimensions createDimensions();
-
-  /**
    * Returns a new object of class '<em>Dimension</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

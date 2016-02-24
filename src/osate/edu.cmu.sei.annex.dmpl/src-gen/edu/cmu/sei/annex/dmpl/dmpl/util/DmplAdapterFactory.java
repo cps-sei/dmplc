@@ -120,11 +120,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createVarAdapter();
       }
       @Override
-      public Adapter caseDimensions(Dimensions object)
-      {
-        return createDimensionsAdapter();
-      }
-      @Override
       public Adapter caseDimension(Dimension object)
       {
         return createDimensionAdapter();
@@ -347,21 +342,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createVarAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Dimensions <em>Dimensions</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.Dimensions
-   * @generated
-   */
-  public Adapter createDimensionsAdapter()
   {
     return null;
   }

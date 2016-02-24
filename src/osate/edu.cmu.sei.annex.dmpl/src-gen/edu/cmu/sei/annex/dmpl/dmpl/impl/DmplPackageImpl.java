@@ -4,7 +4,6 @@ package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.Constant;
 import edu.cmu.sei.annex.dmpl.dmpl.Dimension;
-import edu.cmu.sei.annex.dmpl.dmpl.Dimensions;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplFactory;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplSubclause;
@@ -103,13 +102,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass varEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass dimensionsEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -457,26 +449,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
   public EReference getVar_Dimensions()
   {
     return (EReference)varEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getDimensions()
-  {
-    return dimensionsEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getDimensions_Dimensions()
-  {
-    return (EReference)dimensionsEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -844,9 +816,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     createEAttribute(varEClass, VAR__NAME);
     createEReference(varEClass, VAR__DIMENSIONS);
 
-    dimensionsEClass = createEClass(DIMENSIONS);
-    createEReference(dimensionsEClass, DIMENSIONS__DIMENSIONS);
-
     dimensionEClass = createEClass(DIMENSION);
 
     typeEClass = createEClass(TYPE);
@@ -961,10 +930,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     initEClass(varEClass, Var.class, "Var", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getVar_Name(), ecorePackage.getEString(), "name", null, 0, 1, Var.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getVar_Dimensions(), this.getDimensions(), null, "dimensions", null, 0, 1, Var.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(dimensionsEClass, Dimensions.class, "Dimensions", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getDimensions_Dimensions(), this.getDimension(), null, "dimensions", null, 0, -1, Dimensions.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getVar_Dimensions(), this.getDimension(), null, "dimensions", null, 0, -1, Var.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(dimensionEClass, Dimension.class, "Dimension", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

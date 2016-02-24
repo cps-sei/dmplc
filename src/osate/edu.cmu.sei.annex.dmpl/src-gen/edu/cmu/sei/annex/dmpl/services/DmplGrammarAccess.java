@@ -229,14 +229,17 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cNameAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_0_0 = (RuleCall)cNameAssignment_0.eContents().get(0);
-		private final Assignment cDimensionsAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cDimensionsDimensionsParserRuleCall_1_0 = (RuleCall)cDimensionsAssignment_1.eContents().get(0);
+		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
+		private final Keyword cLeftSquareBracketKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
+		private final Assignment cDimensionsAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
+		private final RuleCall cDimensionsDimensionParserRuleCall_1_1_0 = (RuleCall)cDimensionsAssignment_1_1.eContents().get(0);
+		private final Keyword cRightSquareBracketKeyword_1_2 = (Keyword)cGroup_1.eContents().get(2);
 		
 		//Var:
-		//	name=TIDENTIFIER dimensions=Dimensions?;
+		//	name=TIDENTIFIER ("[" dimensions+=Dimension "]")*;
 		@Override public ParserRule getRule() { return rule; }
 
-		//name=TIDENTIFIER dimensions=Dimensions?
+		//name=TIDENTIFIER ("[" dimensions+=Dimension "]")*
 		public Group getGroup() { return cGroup; }
 
 		//name=TIDENTIFIER
@@ -245,39 +248,20 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//TIDENTIFIER
 		public RuleCall getNameTIDENTIFIERTerminalRuleCall_0_0() { return cNameTIDENTIFIERTerminalRuleCall_0_0; }
 
-		//dimensions=Dimensions?
-		public Assignment getDimensionsAssignment_1() { return cDimensionsAssignment_1; }
-
-		//Dimensions
-		public RuleCall getDimensionsDimensionsParserRuleCall_1_0() { return cDimensionsDimensionsParserRuleCall_1_0; }
-	}
-
-	public class DimensionsElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Dimensions");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cLeftSquareBracketKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cDimensionsAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cDimensionsDimensionParserRuleCall_1_0 = (RuleCall)cDimensionsAssignment_1.eContents().get(0);
-		private final Keyword cRightSquareBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		
-		//Dimensions:
-		//	("[" dimensions+=Dimension "]")+;
-		@Override public ParserRule getRule() { return rule; }
-
-		//("[" dimensions+=Dimension "]")+
-		public Group getGroup() { return cGroup; }
+		//("[" dimensions+=Dimension "]")*
+		public Group getGroup_1() { return cGroup_1; }
 
 		//"["
-		public Keyword getLeftSquareBracketKeyword_0() { return cLeftSquareBracketKeyword_0; }
+		public Keyword getLeftSquareBracketKeyword_1_0() { return cLeftSquareBracketKeyword_1_0; }
 
 		//dimensions+=Dimension
-		public Assignment getDimensionsAssignment_1() { return cDimensionsAssignment_1; }
+		public Assignment getDimensionsAssignment_1_1() { return cDimensionsAssignment_1_1; }
 
 		//Dimension
-		public RuleCall getDimensionsDimensionParserRuleCall_1_0() { return cDimensionsDimensionParserRuleCall_1_0; }
+		public RuleCall getDimensionsDimensionParserRuleCall_1_1_0() { return cDimensionsDimensionParserRuleCall_1_1_0; }
 
 		//"]"
-		public Keyword getRightSquareBracketKeyword_2() { return cRightSquareBracketKeyword_2; }
+		public Keyword getRightSquareBracketKeyword_1_2() { return cRightSquareBracketKeyword_1_2; }
 	}
 
 	public class DimensionElements extends AbstractParserRuleElementFinder {
@@ -849,7 +833,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final IntConstElements pIntConst;
 	private final DoubleConstElements pDoubleConst;
 	private final VarElements pVar;
-	private final DimensionsElements pDimensions;
 	private final DimensionElements pDimension;
 	private final TypeElements pType;
 	private final ProcedureElements pProcedure;
@@ -885,7 +868,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pIntConst = new IntConstElements();
 		this.pDoubleConst = new DoubleConstElements();
 		this.pVar = new VarElements();
-		this.pDimensions = new DimensionsElements();
 		this.pDimension = new DimensionElements();
 		this.pType = new TypeElements();
 		this.pProcedure = new ProcedureElements();
@@ -1012,23 +994,13 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Var:
-	//	name=TIDENTIFIER dimensions=Dimensions?;
+	//	name=TIDENTIFIER ("[" dimensions+=Dimension "]")*;
 	public VarElements getVarAccess() {
 		return pVar;
 	}
 	
 	public ParserRule getVarRule() {
 		return getVarAccess().getRule();
-	}
-
-	//Dimensions:
-	//	("[" dimensions+=Dimension "]")+;
-	public DimensionsElements getDimensionsAccess() {
-		return pDimensions;
-	}
-	
-	public ParserRule getDimensionsRule() {
-		return getDimensionsAccess().getRule();
 	}
 
 	//Dimension:

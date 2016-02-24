@@ -337,31 +337,25 @@ class ParserTest {
 					4.assertEquals(params.size)
 					params.get(0).^var => [
 						"p1".assertEquals(name)
-						dimensions.assertNull
+						dimensions.empty.assertTrue
 					]
 					params.get(1).^var => [
 						"p2".assertEquals(name)
-						dimensions => [
-							1.assertEquals(dimensions.size)
-							0.assertEquals((dimensions.head as IntDimension).index)
-						]
+						1.assertEquals(dimensions.size)
+						0.assertEquals((dimensions.head as IntDimension).index)
 					]
 					params.get(2).^var => [
 						"p3".assertEquals(name)
-						dimensions => [
-							2.assertEquals(dimensions.size)
-							1.assertEquals((dimensions.get(0) as IntDimension).index)
-							2.assertEquals((dimensions.get(1) as IntDimension).index)
-						]
+						2.assertEquals(dimensions.size)
+						1.assertEquals((dimensions.get(0) as IntDimension).index)
+						2.assertEquals((dimensions.get(1) as IntDimension).index)
 					]
 					params.get(3).^var => [
 						"p4".assertEquals(name)
-						dimensions => [
-							3.assertEquals(dimensions.size)
-							3.assertEquals((dimensions.get(0) as IntDimension).index)
-							4.assertEquals((dimensions.get(1) as IntDimension).index)
-							5.assertEquals((dimensions.get(2) as IntDimension).index)
-						]
+						3.assertEquals(dimensions.size)
+						3.assertEquals((dimensions.get(0) as IntDimension).index)
+						4.assertEquals((dimensions.get(1) as IntDimension).index)
+						5.assertEquals((dimensions.get(2) as IntDimension).index)
 					]
 				]
 			]
@@ -371,24 +365,18 @@ class ParserTest {
 					3.assertEquals(params.size)
 					params.get(0).^var => [
 						"p1".assertEquals(name)
-						dimensions => [
-							1.assertEquals(dimensions.size)
-							0.assertEquals((dimensions.head as IntDimension).index)
-						]
+						1.assertEquals(dimensions.size)
+						0.assertEquals((dimensions.head as IntDimension).index)
 					]
 					params.get(1).^var => [
 						"p2".assertEquals(name)
-						dimensions => [
-							1.assertEquals(dimensions.size)
-							Assert.assertTrue(dimensions.head instanceof NodeNumDimension)
-						]
+						1.assertEquals(dimensions.size)
+						Assert.assertTrue(dimensions.head instanceof NodeNumDimension)
 					]
 					params.get(2).^var => [
 						"p3".assertEquals(name)
-						dimensions => [
-							1.assertEquals(dimensions.size)
-							"a".assertEquals((dimensions.head as IdDimension).index)
-						]
+						1.assertEquals(dimensions.size)
+						"a".assertEquals((dimensions.head as IdDimension).index)
 					]
 				]
 			]

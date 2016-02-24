@@ -57,7 +57,7 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getIntConstAccess().getGroup(), "rule__IntConst__Group__0");
 					put(grammarAccess.getDoubleConstAccess().getGroup(), "rule__DoubleConst__Group__0");
 					put(grammarAccess.getVarAccess().getGroup(), "rule__Var__Group__0");
-					put(grammarAccess.getDimensionsAccess().getGroup(), "rule__Dimensions__Group__0");
+					put(grammarAccess.getVarAccess().getGroup_1(), "rule__Var__Group_1__0");
 					put(grammarAccess.getDimensionAccess().getGroup_0(), "rule__Dimension__Group_0__0");
 					put(grammarAccess.getDimensionAccess().getGroup_1(), "rule__Dimension__Group_1__0");
 					put(grammarAccess.getDimensionAccess().getGroup_2(), "rule__Dimension__Group_2__0");
@@ -80,8 +80,7 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getDoubleConstAccess().getSignAssignment_0(), "rule__DoubleConst__SignAssignment_0");
 					put(grammarAccess.getDoubleConstAccess().getValueAssignment_1(), "rule__DoubleConst__ValueAssignment_1");
 					put(grammarAccess.getVarAccess().getNameAssignment_0(), "rule__Var__NameAssignment_0");
-					put(grammarAccess.getVarAccess().getDimensionsAssignment_1(), "rule__Var__DimensionsAssignment_1");
-					put(grammarAccess.getDimensionsAccess().getDimensionsAssignment_1(), "rule__Dimensions__DimensionsAssignment_1");
+					put(grammarAccess.getVarAccess().getDimensionsAssignment_1_1(), "rule__Var__DimensionsAssignment_1_1");
 					put(grammarAccess.getDimensionAccess().getIndexAssignment_0_1(), "rule__Dimension__IndexAssignment_0_1");
 					put(grammarAccess.getDimensionAccess().getIndexAssignment_2_1(), "rule__Dimension__IndexAssignment_2_1");
 					put(grammarAccess.getTypeAccess().getSignedAssignment_0(), "rule__Type__SignedAssignment_0");

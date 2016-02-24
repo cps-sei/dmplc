@@ -456,72 +456,33 @@ ruleVar returns [EObject current=null]
 	    }
 
 )
-)(
+)(	otherlv_1='[' 
+    {
+    	newLeafNode(otherlv_1, grammarAccess.getVarAccess().getLeftSquareBracketKeyword_1_0());
+    }
+(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getVarAccess().getDimensionsDimensionsParserRuleCall_1_0()); 
+	        newCompositeNode(grammarAccess.getVarAccess().getDimensionsDimensionParserRuleCall_1_1_0()); 
 	    }
-		lv_dimensions_1_0=ruleDimensions		{
+		lv_dimensions_2_0=ruleDimension		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getVarRule());
-	        }
-       		set(
-       			$current, 
-       			"dimensions",
-        		lv_dimensions_1_0, 
-        		"Dimensions");
-	        afterParserOrEnumRuleCall();
-	    }
-
-)
-)?)
-;
-
-
-
-
-
-// Entry rule entryRuleDimensions
-entryRuleDimensions returns [EObject current=null] 
-	:
-	{ newCompositeNode(grammarAccess.getDimensionsRule()); }
-	 iv_ruleDimensions=ruleDimensions 
-	 { $current=$iv_ruleDimensions.current; } 
-	 EOF 
-;
-
-// Rule Dimensions
-ruleDimensions returns [EObject current=null] 
-    @init { enterRule(); 
-    }
-    @after { leaveRule(); }:
-(	otherlv_0='[' 
-    {
-    	newLeafNode(otherlv_0, grammarAccess.getDimensionsAccess().getLeftSquareBracketKeyword_0());
-    }
-(
-(
-		{ 
-	        newCompositeNode(grammarAccess.getDimensionsAccess().getDimensionsDimensionParserRuleCall_1_0()); 
-	    }
-		lv_dimensions_1_0=ruleDimension		{
-	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getDimensionsRule());
 	        }
        		add(
        			$current, 
        			"dimensions",
-        		lv_dimensions_1_0, 
+        		lv_dimensions_2_0, 
         		"Dimension");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-)	otherlv_2=']' 
+)	otherlv_3=']' 
     {
-    	newLeafNode(otherlv_2, grammarAccess.getDimensionsAccess().getRightSquareBracketKeyword_2());
+    	newLeafNode(otherlv_3, grammarAccess.getVarAccess().getRightSquareBracketKeyword_1_2());
     }
-)+
+)*)
 ;
 
 

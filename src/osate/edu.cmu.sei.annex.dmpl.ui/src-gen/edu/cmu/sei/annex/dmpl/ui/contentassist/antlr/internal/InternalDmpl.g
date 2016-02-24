@@ -282,41 +282,6 @@ finally {
 
 
 
-// Entry rule entryRuleDimensions
-entryRuleDimensions 
-:
-{ before(grammarAccess.getDimensionsRule()); }
-	 ruleDimensions
-{ after(grammarAccess.getDimensionsRule()); } 
-	 EOF 
-;
-
-// Rule Dimensions
-ruleDimensions
-    @init {
-		int stackSize = keepStackSize();
-    }
-	:
-(
-(
-{ before(grammarAccess.getDimensionsAccess().getGroup()); }
-(rule__Dimensions__Group__0)
-{ after(grammarAccess.getDimensionsAccess().getGroup()); }
-)
-(
-{ before(grammarAccess.getDimensionsAccess().getGroup()); }
-(rule__Dimensions__Group__0)*
-{ after(grammarAccess.getDimensionsAccess().getGroup()); }
-)
-)
-
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-
-
 // Entry rule entryRuleDimension
 entryRuleDimension 
 :
@@ -1423,9 +1388,9 @@ rule__Var__Group__1__Impl
     }
 :
 (
-{ before(grammarAccess.getVarAccess().getDimensionsAssignment_1()); }
-(rule__Var__DimensionsAssignment_1)?
-{ after(grammarAccess.getVarAccess().getDimensionsAssignment_1()); }
+{ before(grammarAccess.getVarAccess().getGroup_1()); }
+(rule__Var__Group_1__0)*
+{ after(grammarAccess.getVarAccess().getGroup_1()); }
 )
 
 ;
@@ -1438,29 +1403,29 @@ finally {
 
 
 
-rule__Dimensions__Group__0
+rule__Var__Group_1__0
     @init {
 		int stackSize = keepStackSize();
     }
 :
-	rule__Dimensions__Group__0__Impl
-	rule__Dimensions__Group__1
+	rule__Var__Group_1__0__Impl
+	rule__Var__Group_1__1
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Dimensions__Group__0__Impl
+rule__Var__Group_1__0__Impl
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getDimensionsAccess().getLeftSquareBracketKeyword_0()); }
+{ before(grammarAccess.getVarAccess().getLeftSquareBracketKeyword_1_0()); }
 
 	'[' 
 
-{ after(grammarAccess.getDimensionsAccess().getLeftSquareBracketKeyword_0()); }
+{ after(grammarAccess.getVarAccess().getLeftSquareBracketKeyword_1_0()); }
 )
 
 ;
@@ -1469,27 +1434,27 @@ finally {
 }
 
 
-rule__Dimensions__Group__1
+rule__Var__Group_1__1
     @init {
 		int stackSize = keepStackSize();
     }
 :
-	rule__Dimensions__Group__1__Impl
-	rule__Dimensions__Group__2
+	rule__Var__Group_1__1__Impl
+	rule__Var__Group_1__2
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Dimensions__Group__1__Impl
+rule__Var__Group_1__1__Impl
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getDimensionsAccess().getDimensionsAssignment_1()); }
-(rule__Dimensions__DimensionsAssignment_1)
-{ after(grammarAccess.getDimensionsAccess().getDimensionsAssignment_1()); }
+{ before(grammarAccess.getVarAccess().getDimensionsAssignment_1_1()); }
+(rule__Var__DimensionsAssignment_1_1)
+{ after(grammarAccess.getVarAccess().getDimensionsAssignment_1_1()); }
 )
 
 ;
@@ -1498,28 +1463,28 @@ finally {
 }
 
 
-rule__Dimensions__Group__2
+rule__Var__Group_1__2
     @init {
 		int stackSize = keepStackSize();
     }
 :
-	rule__Dimensions__Group__2__Impl
+	rule__Var__Group_1__2__Impl
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Dimensions__Group__2__Impl
+rule__Var__Group_1__2__Impl
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getDimensionsAccess().getRightSquareBracketKeyword_2()); }
+{ before(grammarAccess.getVarAccess().getRightSquareBracketKeyword_1_2()); }
 
 	']' 
 
-{ after(grammarAccess.getDimensionsAccess().getRightSquareBracketKeyword_2()); }
+{ after(grammarAccess.getVarAccess().getRightSquareBracketKeyword_1_2()); }
 )
 
 ;
@@ -2706,29 +2671,14 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__Var__DimensionsAssignment_1
+rule__Var__DimensionsAssignment_1_1
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getVarAccess().getDimensionsDimensionsParserRuleCall_1_0()); }
-	ruleDimensions{ after(grammarAccess.getVarAccess().getDimensionsDimensionsParserRuleCall_1_0()); }
-)
-
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__Dimensions__DimensionsAssignment_1
-    @init {
-		int stackSize = keepStackSize();
-    }
-:
-(
-{ before(grammarAccess.getDimensionsAccess().getDimensionsDimensionParserRuleCall_1_0()); }
-	ruleDimension{ after(grammarAccess.getDimensionsAccess().getDimensionsDimensionParserRuleCall_1_0()); }
+{ before(grammarAccess.getVarAccess().getDimensionsDimensionParserRuleCall_1_1_0()); }
+	ruleDimension{ after(grammarAccess.getVarAccess().getDimensionsDimensionParserRuleCall_1_1_0()); }
 )
 
 ;

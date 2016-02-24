@@ -347,7 +347,7 @@ public interface DmplPackage extends EPackage
   int VAR__NAME = 0;
 
   /**
-   * The feature id for the '<em><b>Dimensions</b></em>' containment reference.
+   * The feature id for the '<em><b>Dimensions</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -365,34 +365,6 @@ public interface DmplPackage extends EPackage
   int VAR_FEATURE_COUNT = 2;
 
   /**
-   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.DimensionsImpl <em>Dimensions</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DimensionsImpl
-   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getDimensions()
-   * @generated
-   */
-  int DIMENSIONS = 8;
-
-  /**
-   * The feature id for the '<em><b>Dimensions</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int DIMENSIONS__DIMENSIONS = 0;
-
-  /**
-   * The number of structural features of the '<em>Dimensions</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int DIMENSIONS_FEATURE_COUNT = 1;
-
-  /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.DimensionImpl <em>Dimension</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -400,7 +372,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getDimension()
    * @generated
    */
-  int DIMENSION = 9;
+  int DIMENSION = 8;
 
   /**
    * The number of structural features of the '<em>Dimension</em>' class.
@@ -419,7 +391,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getType()
    * @generated
    */
-  int TYPE = 10;
+  int TYPE = 9;
 
   /**
    * The feature id for the '<em><b>Signed</b></em>' attribute.
@@ -456,7 +428,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getProcedure()
    * @generated
    */
-  int PROCEDURE = 11;
+  int PROCEDURE = 10;
 
   /**
    * The feature id for the '<em><b>Procedure</b></em>' containment reference.
@@ -484,7 +456,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getProcNoAttr()
    * @generated
    */
-  int PROC_NO_ATTR = 12;
+  int PROC_NO_ATTR = 11;
 
   /**
    * The feature id for the '<em><b>Prototype</b></em>' containment reference.
@@ -512,7 +484,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnPrototype()
    * @generated
    */
-  int FN_PROTOTYPE = 13;
+  int FN_PROTOTYPE = 12;
 
   /**
    * The feature id for the '<em><b>Extern</b></em>' attribute.
@@ -558,7 +530,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnPrototypeNoDecors()
    * @generated
    */
-  int FN_PROTOTYPE_NO_DECORS = 14;
+  int FN_PROTOTYPE_NO_DECORS = 13;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -586,7 +558,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getParamList()
    * @generated
    */
-  int PARAM_LIST = 15;
+  int PARAM_LIST = 14;
 
   /**
    * The feature id for the '<em><b>Params</b></em>' containment reference list.
@@ -614,7 +586,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getParam()
    * @generated
    */
-  int PARAM = 16;
+  int PARAM = 15;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -651,7 +623,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIntDimension()
    * @generated
    */
-  int INT_DIMENSION = 17;
+  int INT_DIMENSION = 16;
 
   /**
    * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -679,7 +651,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getNodeNumDimension()
    * @generated
    */
-  int NODE_NUM_DIMENSION = 18;
+  int NODE_NUM_DIMENSION = 17;
 
   /**
    * The number of structural features of the '<em>Node Num Dimension</em>' class.
@@ -698,7 +670,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIdDimension()
    * @generated
    */
-  int ID_DIMENSION = 19;
+  int ID_DIMENSION = 18;
 
   /**
    * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -726,7 +698,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getThreadDeclaration()
    * @generated
    */
-  int THREAD_DECLARATION = 20;
+  int THREAD_DECLARATION = 19;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -754,7 +726,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnPrototypeDeclaration()
    * @generated
    */
-  int FN_PROTOTYPE_DECLARATION = 21;
+  int FN_PROTOTYPE_DECLARATION = 20;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -800,7 +772,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignEnum()
    * @generated
    */
-  int SIGN_ENUM = 22;
+  int SIGN_ENUM = 21;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum <em>Simp Type Enum</em>}' enum.
@@ -810,7 +782,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSimpTypeEnum()
    * @generated
    */
-  int SIMP_TYPE_ENUM = 23;
+  int SIMP_TYPE_ENUM = 22;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SignedEnum <em>Signed Enum</em>}' enum.
@@ -820,7 +792,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignedEnum()
    * @generated
    */
-  int SIGNED_ENUM = 24;
+  int SIGNED_ENUM = 23;
 
 
   /**
@@ -992,36 +964,15 @@ public interface DmplPackage extends EPackage
   EAttribute getVar_Name();
 
   /**
-   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.Var#getDimensions <em>Dimensions</em>}'.
+   * Returns the meta object for the containment reference list '{@link edu.cmu.sei.annex.dmpl.dmpl.Var#getDimensions <em>Dimensions</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Dimensions</em>'.
+   * @return the meta object for the containment reference list '<em>Dimensions</em>'.
    * @see edu.cmu.sei.annex.dmpl.dmpl.Var#getDimensions()
    * @see #getVar()
    * @generated
    */
   EReference getVar_Dimensions();
-
-  /**
-   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.Dimensions <em>Dimensions</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Dimensions</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.Dimensions
-   * @generated
-   */
-  EClass getDimensions();
-
-  /**
-   * Returns the meta object for the containment reference list '{@link edu.cmu.sei.annex.dmpl.dmpl.Dimensions#getDimensions <em>Dimensions</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Dimensions</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.Dimensions#getDimensions()
-   * @see #getDimensions()
-   * @generated
-   */
-  EReference getDimensions_Dimensions();
 
   /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.Dimension <em>Dimension</em>}'.
@@ -1516,30 +1467,12 @@ public interface DmplPackage extends EPackage
     EAttribute VAR__NAME = eINSTANCE.getVar_Name();
 
     /**
-     * The meta object literal for the '<em><b>Dimensions</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference VAR__DIMENSIONS = eINSTANCE.getVar_Dimensions();
-
-    /**
-     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.DimensionsImpl <em>Dimensions</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DimensionsImpl
-     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getDimensions()
-     * @generated
-     */
-    EClass DIMENSIONS = eINSTANCE.getDimensions();
-
-    /**
      * The meta object literal for the '<em><b>Dimensions</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference DIMENSIONS__DIMENSIONS = eINSTANCE.getDimensions_Dimensions();
+    EReference VAR__DIMENSIONS = eINSTANCE.getVar_Dimensions();
 
     /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.DimensionImpl <em>Dimension</em>}' class.

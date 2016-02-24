@@ -2,18 +2,25 @@
  */
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
-import edu.cmu.sei.annex.dmpl.dmpl.Dimensions;
+import edu.cmu.sei.annex.dmpl.dmpl.Dimension;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.Var;
 
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -52,14 +59,14 @@ public class VarImpl extends MinimalEObjectImpl.Container implements Var
   protected String name = NAME_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getDimensions() <em>Dimensions</em>}' containment reference.
+   * The cached value of the '{@link #getDimensions() <em>Dimensions</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getDimensions()
    * @generated
    * @ordered
    */
-  protected Dimensions dimensions;
+  protected EList<Dimension> dimensions;
 
   /**
    * <!-- begin-user-doc -->
@@ -110,47 +117,13 @@ public class VarImpl extends MinimalEObjectImpl.Container implements Var
    * <!-- end-user-doc -->
    * @generated
    */
-  public Dimensions getDimensions()
+  public EList<Dimension> getDimensions()
   {
+    if (dimensions == null)
+    {
+      dimensions = new EObjectContainmentEList<Dimension>(Dimension.class, this, DmplPackage.VAR__DIMENSIONS);
+    }
     return dimensions;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetDimensions(Dimensions newDimensions, NotificationChain msgs)
-  {
-    Dimensions oldDimensions = dimensions;
-    dimensions = newDimensions;
-    if (eNotificationRequired())
-    {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.VAR__DIMENSIONS, oldDimensions, newDimensions);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
-    }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setDimensions(Dimensions newDimensions)
-  {
-    if (newDimensions != dimensions)
-    {
-      NotificationChain msgs = null;
-      if (dimensions != null)
-        msgs = ((InternalEObject)dimensions).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.VAR__DIMENSIONS, null, msgs);
-      if (newDimensions != null)
-        msgs = ((InternalEObject)newDimensions).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.VAR__DIMENSIONS, null, msgs);
-      msgs = basicSetDimensions(newDimensions, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.VAR__DIMENSIONS, newDimensions, newDimensions));
   }
 
   /**
@@ -164,7 +137,7 @@ public class VarImpl extends MinimalEObjectImpl.Container implements Var
     switch (featureID)
     {
       case DmplPackage.VAR__DIMENSIONS:
-        return basicSetDimensions(null, msgs);
+        return ((InternalEList<?>)getDimensions()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -192,6 +165,7 @@ public class VarImpl extends MinimalEObjectImpl.Container implements Var
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
@@ -201,7 +175,8 @@ public class VarImpl extends MinimalEObjectImpl.Container implements Var
         setName((String)newValue);
         return;
       case DmplPackage.VAR__DIMENSIONS:
-        setDimensions((Dimensions)newValue);
+        getDimensions().clear();
+        getDimensions().addAll((Collection<? extends Dimension>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -221,7 +196,7 @@ public class VarImpl extends MinimalEObjectImpl.Container implements Var
         setName(NAME_EDEFAULT);
         return;
       case DmplPackage.VAR__DIMENSIONS:
-        setDimensions((Dimensions)null);
+        getDimensions().clear();
         return;
     }
     super.eUnset(featureID);
@@ -240,7 +215,7 @@ public class VarImpl extends MinimalEObjectImpl.Container implements Var
       case DmplPackage.VAR__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case DmplPackage.VAR__DIMENSIONS:
-        return dimensions != null;
+        return dimensions != null && !dimensions.isEmpty();
     }
     return super.eIsSet(featureID);
   }

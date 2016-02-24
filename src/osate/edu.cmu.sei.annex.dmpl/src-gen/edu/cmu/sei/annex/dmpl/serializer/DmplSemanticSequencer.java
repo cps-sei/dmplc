@@ -6,7 +6,6 @@ package edu.cmu.sei.annex.dmpl.serializer;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import edu.cmu.sei.annex.dmpl.dmpl.Constant;
-import edu.cmu.sei.annex.dmpl.dmpl.Dimensions;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplSubclause;
 import edu.cmu.sei.annex.dmpl.dmpl.DoubleConst;
@@ -48,9 +47,6 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 		if(semanticObject.eClass().getEPackage() == DmplPackage.eINSTANCE) switch(semanticObject.eClass().getClassifierID()) {
 			case DmplPackage.CONSTANT:
 				sequence_Constant(context, (Constant) semanticObject); 
-				return; 
-			case DmplPackage.DIMENSIONS:
-				sequence_Dimensions(context, (Dimensions) semanticObject); 
 				return; 
 			case DmplPackage.DMPL_SUBCLAUSE:
 				sequence_DmplSubclause(context, (DmplSubclause) semanticObject); 
@@ -160,15 +156,6 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     {NodeNumDimension}
 	 */
 	protected void sequence_Dimension(EObject context, NodeNumDimension semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     dimensions+=Dimension+
-	 */
-	protected void sequence_Dimensions(EObject context, Dimensions semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -327,7 +314,7 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=TIDENTIFIER dimensions=Dimensions?)
+	 *     (name=TIDENTIFIER dimensions+=Dimension*)
 	 */
 	protected void sequence_Var(EObject context, Var semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

@@ -40,11 +40,7 @@ DoubleConst:
 ;
 
 Var:
-	name=TIDENTIFIER dimensions=Dimensions?
-;
-
-Dimensions:
-	('[' dimensions+=Dimension ']')+
+	name=TIDENTIFIER ('[' dimensions+=Dimension ']')*
 ;
 
 Dimension:

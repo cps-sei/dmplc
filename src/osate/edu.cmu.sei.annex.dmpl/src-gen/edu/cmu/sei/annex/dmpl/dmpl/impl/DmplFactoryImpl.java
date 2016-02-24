@@ -73,7 +73,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.INT_CONST: return createIntConst();
       case DmplPackage.DOUBLE_CONST: return createDoubleConst();
       case DmplPackage.VAR: return createVar();
-      case DmplPackage.DIMENSIONS: return createDimensions();
       case DmplPackage.DIMENSION: return createDimension();
       case DmplPackage.TYPE: return createType();
       case DmplPackage.PROCEDURE: return createProcedure();
@@ -220,17 +219,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     VarImpl var = new VarImpl();
     return var;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Dimensions createDimensions()
-  {
-    DimensionsImpl dimensions = new DimensionsImpl();
-    return dimensions;
   }
 
   /**

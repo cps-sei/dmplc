@@ -2,6 +2,8 @@
  */
 package edu.cmu.sei.annex.dmpl.dmpl;
 
+import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -50,29 +52,19 @@ public interface Var extends EObject
   void setName(String value);
 
   /**
-   * Returns the value of the '<em><b>Dimensions</b></em>' containment reference.
+   * Returns the value of the '<em><b>Dimensions</b></em>' containment reference list.
+   * The list contents are of type {@link edu.cmu.sei.annex.dmpl.dmpl.Dimension}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Dimensions</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Dimensions</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Dimensions</em>' containment reference.
-   * @see #setDimensions(Dimensions)
+   * @return the value of the '<em>Dimensions</em>' containment reference list.
    * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getVar_Dimensions()
    * @model containment="true"
    * @generated
    */
-  Dimensions getDimensions();
-
-  /**
-   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.Var#getDimensions <em>Dimensions</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Dimensions</em>' containment reference.
-   * @see #getDimensions()
-   * @generated
-   */
-  void setDimensions(Dimensions value);
+  EList<Dimension> getDimensions();
 
 } // Var

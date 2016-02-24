@@ -48,9 +48,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Var/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Var/dimensions"/>
     </genClasses>
-    <genClasses ecoreClass="Dmpl.ecore#//Dimensions">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Dimensions/dimensions"/>
-    </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Dimension"/>
     <genClasses ecoreClass="Dmpl.ecore#//Type">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Type/signed"/>
