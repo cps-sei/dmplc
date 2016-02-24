@@ -125,6 +125,13 @@ test_double_parse ../../docs/tutorial/example-02.bug1.dmpl ../../docs/tutorial/e
 test_double_parse ../../docs/tutorial/example-03.dmpl ../../docs/tutorial/example-03-AADL.dmpl
 test_double_parse ../../docs/tutorial/example-05/dmpl/example-05.dmpl ../../docs/tutorial/example-05/dmpl/example-05-AADL.dmpl
 test_double_parse ../../docs/tutorial/example-07/dmpl/example-07-2.dmpl
+test_double_parse ../../docs/tutorial/example-09.dmpl ""
+test_double_parse ../../docs/tutorial/example-09a.dmpl ""
+test_double_parse ../../docs/tutorial/example-09b.dmpl ""
+test_double_parse ../../docs/tutorial/example-09c.dmpl ""
+test_double_parse ../../docs/tutorial/example-09d.dmpl ""
+test_double_parse ../../docs/tutorial/example-09e.dmpl ""
+test_double_parse ../../docs/tutorial/example-10.dmpl ""
 
 #code generation tests
 test_code_gen test-example-01a.dmpl "--roles uav:Uav:3"
