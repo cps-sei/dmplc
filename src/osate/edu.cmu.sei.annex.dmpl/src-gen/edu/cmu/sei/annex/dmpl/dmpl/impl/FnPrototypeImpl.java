@@ -4,13 +4,10 @@ package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.FnPrototype;
-import edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeNoDecors;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
@@ -25,7 +22,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnPrototypeImpl#isExtern <em>Extern</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnPrototypeImpl#isPure <em>Pure</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnPrototypeImpl#getPrototype <em>Prototype</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnPrototypeImpl#getName <em>Name</em>}</li>
  * </ul>
  *
  * @generated
@@ -73,14 +70,24 @@ public class FnPrototypeImpl extends MinimalEObjectImpl.Container implements FnP
   protected boolean pure = PURE_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getPrototype() <em>Prototype</em>}' containment reference.
+   * The default value of the '{@link #getName() <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getPrototype()
+   * @see #getName()
    * @generated
    * @ordered
    */
-  protected FnPrototypeNoDecors prototype;
+  protected static final String NAME_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getName()
+   * @generated
+   * @ordered
+   */
+  protected String name = NAME_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -154,9 +161,9 @@ public class FnPrototypeImpl extends MinimalEObjectImpl.Container implements FnP
    * <!-- end-user-doc -->
    * @generated
    */
-  public FnPrototypeNoDecors getPrototype()
+  public String getName()
   {
-    return prototype;
+    return name;
   }
 
   /**
@@ -164,53 +171,12 @@ public class FnPrototypeImpl extends MinimalEObjectImpl.Container implements FnP
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetPrototype(FnPrototypeNoDecors newPrototype, NotificationChain msgs)
+  public void setName(String newName)
   {
-    FnPrototypeNoDecors oldPrototype = prototype;
-    prototype = newPrototype;
+    String oldName = name;
+    name = newName;
     if (eNotificationRequired())
-    {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.FN_PROTOTYPE__PROTOTYPE, oldPrototype, newPrototype);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
-    }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setPrototype(FnPrototypeNoDecors newPrototype)
-  {
-    if (newPrototype != prototype)
-    {
-      NotificationChain msgs = null;
-      if (prototype != null)
-        msgs = ((InternalEObject)prototype).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.FN_PROTOTYPE__PROTOTYPE, null, msgs);
-      if (newPrototype != null)
-        msgs = ((InternalEObject)newPrototype).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.FN_PROTOTYPE__PROTOTYPE, null, msgs);
-      msgs = basicSetPrototype(newPrototype, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.FN_PROTOTYPE__PROTOTYPE, newPrototype, newPrototype));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
-  {
-    switch (featureID)
-    {
-      case DmplPackage.FN_PROTOTYPE__PROTOTYPE:
-        return basicSetPrototype(null, msgs);
-    }
-    return super.eInverseRemove(otherEnd, featureID, msgs);
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.FN_PROTOTYPE__NAME, oldName, name));
   }
 
   /**
@@ -227,8 +193,8 @@ public class FnPrototypeImpl extends MinimalEObjectImpl.Container implements FnP
         return isExtern();
       case DmplPackage.FN_PROTOTYPE__PURE:
         return isPure();
-      case DmplPackage.FN_PROTOTYPE__PROTOTYPE:
-        return getPrototype();
+      case DmplPackage.FN_PROTOTYPE__NAME:
+        return getName();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -249,8 +215,8 @@ public class FnPrototypeImpl extends MinimalEObjectImpl.Container implements FnP
       case DmplPackage.FN_PROTOTYPE__PURE:
         setPure((Boolean)newValue);
         return;
-      case DmplPackage.FN_PROTOTYPE__PROTOTYPE:
-        setPrototype((FnPrototypeNoDecors)newValue);
+      case DmplPackage.FN_PROTOTYPE__NAME:
+        setName((String)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -272,8 +238,8 @@ public class FnPrototypeImpl extends MinimalEObjectImpl.Container implements FnP
       case DmplPackage.FN_PROTOTYPE__PURE:
         setPure(PURE_EDEFAULT);
         return;
-      case DmplPackage.FN_PROTOTYPE__PROTOTYPE:
-        setPrototype((FnPrototypeNoDecors)null);
+      case DmplPackage.FN_PROTOTYPE__NAME:
+        setName(NAME_EDEFAULT);
         return;
     }
     super.eUnset(featureID);
@@ -293,8 +259,8 @@ public class FnPrototypeImpl extends MinimalEObjectImpl.Container implements FnP
         return extern != EXTERN_EDEFAULT;
       case DmplPackage.FN_PROTOTYPE__PURE:
         return pure != PURE_EDEFAULT;
-      case DmplPackage.FN_PROTOTYPE__PROTOTYPE:
-        return prototype != null;
+      case DmplPackage.FN_PROTOTYPE__NAME:
+        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
     }
     return super.eIsSet(featureID);
   }
@@ -314,6 +280,8 @@ public class FnPrototypeImpl extends MinimalEObjectImpl.Container implements FnP
     result.append(extern);
     result.append(", pure: ");
     result.append(pure);
+    result.append(", name: ");
+    result.append(name);
     result.append(')');
     return result.toString();
   }

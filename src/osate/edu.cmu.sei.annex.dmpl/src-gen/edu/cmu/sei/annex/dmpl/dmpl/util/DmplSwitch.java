@@ -176,13 +176,6 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case DmplPackage.FN_PROTOTYPE_NO_DECORS:
-      {
-        FnPrototypeNoDecors fnPrototypeNoDecors = (FnPrototypeNoDecors)theEObject;
-        T result = caseFnPrototypeNoDecors(fnPrototypeNoDecors);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
       case DmplPackage.PARAM:
       {
         Param param = (Param)theEObject;
@@ -218,7 +211,7 @@ public class DmplSwitch<T> extends Switch<T>
       {
         ThreadDeclaration threadDeclaration = (ThreadDeclaration)theEObject;
         T result = caseThreadDeclaration(threadDeclaration);
-        if (result == null) result = caseFnPrototypeNoDecors(threadDeclaration);
+        if (result == null) result = caseFnPrototype(threadDeclaration);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -226,7 +219,7 @@ public class DmplSwitch<T> extends Switch<T>
       {
         FnPrototypeDeclaration fnPrototypeDeclaration = (FnPrototypeDeclaration)theEObject;
         T result = caseFnPrototypeDeclaration(fnPrototypeDeclaration);
-        if (result == null) result = caseFnPrototypeNoDecors(fnPrototypeDeclaration);
+        if (result == null) result = caseFnPrototype(fnPrototypeDeclaration);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -438,22 +431,6 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseFnPrototype(FnPrototype object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Fn Prototype No Decors</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Fn Prototype No Decors</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseFnPrototypeNoDecors(FnPrototypeNoDecors object)
   {
     return null;
   }

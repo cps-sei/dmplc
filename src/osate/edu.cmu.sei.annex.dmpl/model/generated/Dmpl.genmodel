@@ -62,10 +62,7 @@
     <genClasses ecoreClass="Dmpl.ecore#//FnPrototype">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//FnPrototype/extern"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//FnPrototype/pure"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnPrototype/prototype"/>
-    </genClasses>
-    <genClasses ecoreClass="Dmpl.ecore#//FnPrototypeNoDecors">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//FnPrototypeNoDecors/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//FnPrototype/name"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Param">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Param/type"/>

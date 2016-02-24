@@ -36,7 +36,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *
  * @generated
  */
-public class FnPrototypeDeclarationImpl extends FnPrototypeNoDecorsImpl implements FnPrototypeDeclaration
+public class FnPrototypeDeclarationImpl extends FnPrototypeImpl implements FnPrototypeDeclaration
 {
   /**
    * The cached value of the '{@link #getType() <em>Type</em>}' containment reference.

@@ -13,6 +13,6 @@ package edu.cmu.sei.annex.dmpl.dmpl;
  * @model
  * @generated
  */
-public interface ThreadDeclaration extends FnPrototypeNoDecors
+public interface ThreadDeclaration extends FnPrototype
 {
 } // ThreadDeclaration

@@ -505,13 +505,13 @@ public interface DmplPackage extends EPackage
   int FN_PROTOTYPE__PURE = 1;
 
   /**
-   * The feature id for the '<em><b>Prototype</b></em>' containment reference.
+   * The feature id for the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int FN_PROTOTYPE__PROTOTYPE = 2;
+  int FN_PROTOTYPE__NAME = 2;
 
   /**
    * The number of structural features of the '<em>Fn Prototype</em>' class.
@@ -523,34 +523,6 @@ public interface DmplPackage extends EPackage
   int FN_PROTOTYPE_FEATURE_COUNT = 3;
 
   /**
-   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnPrototypeNoDecorsImpl <em>Fn Prototype No Decors</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.FnPrototypeNoDecorsImpl
-   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnPrototypeNoDecors()
-   * @generated
-   */
-  int FN_PROTOTYPE_NO_DECORS = 13;
-
-  /**
-   * The feature id for the '<em><b>Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int FN_PROTOTYPE_NO_DECORS__NAME = 0;
-
-  /**
-   * The number of structural features of the '<em>Fn Prototype No Decors</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int FN_PROTOTYPE_NO_DECORS_FEATURE_COUNT = 1;
-
-  /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ParamImpl <em>Param</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -558,7 +530,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getParam()
    * @generated
    */
-  int PARAM = 14;
+  int PARAM = 13;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -595,7 +567,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIntDimension()
    * @generated
    */
-  int INT_DIMENSION = 15;
+  int INT_DIMENSION = 14;
 
   /**
    * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -623,7 +595,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getNodeNumDimension()
    * @generated
    */
-  int NODE_NUM_DIMENSION = 16;
+  int NODE_NUM_DIMENSION = 15;
 
   /**
    * The number of structural features of the '<em>Node Num Dimension</em>' class.
@@ -642,7 +614,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIdDimension()
    * @generated
    */
-  int ID_DIMENSION = 17;
+  int ID_DIMENSION = 16;
 
   /**
    * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -670,7 +642,25 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getThreadDeclaration()
    * @generated
    */
-  int THREAD_DECLARATION = 18;
+  int THREAD_DECLARATION = 17;
+
+  /**
+   * The feature id for the '<em><b>Extern</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int THREAD_DECLARATION__EXTERN = FN_PROTOTYPE__EXTERN;
+
+  /**
+   * The feature id for the '<em><b>Pure</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int THREAD_DECLARATION__PURE = FN_PROTOTYPE__PURE;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -679,7 +669,7 @@ public interface DmplPackage extends EPackage
    * @generated
    * @ordered
    */
-  int THREAD_DECLARATION__NAME = FN_PROTOTYPE_NO_DECORS__NAME;
+  int THREAD_DECLARATION__NAME = FN_PROTOTYPE__NAME;
 
   /**
    * The number of structural features of the '<em>Thread Declaration</em>' class.
@@ -688,7 +678,7 @@ public interface DmplPackage extends EPackage
    * @generated
    * @ordered
    */
-  int THREAD_DECLARATION_FEATURE_COUNT = FN_PROTOTYPE_NO_DECORS_FEATURE_COUNT + 0;
+  int THREAD_DECLARATION_FEATURE_COUNT = FN_PROTOTYPE_FEATURE_COUNT + 0;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnPrototypeDeclarationImpl <em>Fn Prototype Declaration</em>}' class.
@@ -698,7 +688,25 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnPrototypeDeclaration()
    * @generated
    */
-  int FN_PROTOTYPE_DECLARATION = 19;
+  int FN_PROTOTYPE_DECLARATION = 18;
+
+  /**
+   * The feature id for the '<em><b>Extern</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FN_PROTOTYPE_DECLARATION__EXTERN = FN_PROTOTYPE__EXTERN;
+
+  /**
+   * The feature id for the '<em><b>Pure</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FN_PROTOTYPE_DECLARATION__PURE = FN_PROTOTYPE__PURE;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -707,7 +715,7 @@ public interface DmplPackage extends EPackage
    * @generated
    * @ordered
    */
-  int FN_PROTOTYPE_DECLARATION__NAME = FN_PROTOTYPE_NO_DECORS__NAME;
+  int FN_PROTOTYPE_DECLARATION__NAME = FN_PROTOTYPE__NAME;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -716,7 +724,7 @@ public interface DmplPackage extends EPackage
    * @generated
    * @ordered
    */
-  int FN_PROTOTYPE_DECLARATION__TYPE = FN_PROTOTYPE_NO_DECORS_FEATURE_COUNT + 0;
+  int FN_PROTOTYPE_DECLARATION__TYPE = FN_PROTOTYPE_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Params</b></em>' containment reference list.
@@ -725,7 +733,7 @@ public interface DmplPackage extends EPackage
    * @generated
    * @ordered
    */
-  int FN_PROTOTYPE_DECLARATION__PARAMS = FN_PROTOTYPE_NO_DECORS_FEATURE_COUNT + 1;
+  int FN_PROTOTYPE_DECLARATION__PARAMS = FN_PROTOTYPE_FEATURE_COUNT + 1;
 
   /**
    * The number of structural features of the '<em>Fn Prototype Declaration</em>' class.
@@ -734,7 +742,7 @@ public interface DmplPackage extends EPackage
    * @generated
    * @ordered
    */
-  int FN_PROTOTYPE_DECLARATION_FEATURE_COUNT = FN_PROTOTYPE_NO_DECORS_FEATURE_COUNT + 2;
+  int FN_PROTOTYPE_DECLARATION_FEATURE_COUNT = FN_PROTOTYPE_FEATURE_COUNT + 2;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SignEnum <em>Sign Enum</em>}' enum.
@@ -744,7 +752,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignEnum()
    * @generated
    */
-  int SIGN_ENUM = 20;
+  int SIGN_ENUM = 19;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum <em>Simp Type Enum</em>}' enum.
@@ -754,7 +762,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSimpTypeEnum()
    * @generated
    */
-  int SIMP_TYPE_ENUM = 21;
+  int SIMP_TYPE_ENUM = 20;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SignedEnum <em>Signed Enum</em>}' enum.
@@ -764,7 +772,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignedEnum()
    * @generated
    */
-  int SIGNED_ENUM = 22;
+  int SIGNED_ENUM = 21;
 
 
   /**
@@ -1063,36 +1071,15 @@ public interface DmplPackage extends EPackage
   EAttribute getFnPrototype_Pure();
 
   /**
-   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototype#getPrototype <em>Prototype</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Prototype</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.FnPrototype#getPrototype()
-   * @see #getFnPrototype()
-   * @generated
-   */
-  EReference getFnPrototype_Prototype();
-
-  /**
-   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeNoDecors <em>Fn Prototype No Decors</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Fn Prototype No Decors</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeNoDecors
-   * @generated
-   */
-  EClass getFnPrototypeNoDecors();
-
-  /**
-   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeNoDecors#getName <em>Name</em>}'.
+   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototype#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Name</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeNoDecors#getName()
-   * @see #getFnPrototypeNoDecors()
+   * @see edu.cmu.sei.annex.dmpl.dmpl.FnPrototype#getName()
+   * @see #getFnPrototype()
    * @generated
    */
-  EAttribute getFnPrototypeNoDecors_Name();
+  EAttribute getFnPrototype_Name();
 
   /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.Param <em>Param</em>}'.
@@ -1524,30 +1511,12 @@ public interface DmplPackage extends EPackage
     EAttribute FN_PROTOTYPE__PURE = eINSTANCE.getFnPrototype_Pure();
 
     /**
-     * The meta object literal for the '<em><b>Prototype</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference FN_PROTOTYPE__PROTOTYPE = eINSTANCE.getFnPrototype_Prototype();
-
-    /**
-     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnPrototypeNoDecorsImpl <em>Fn Prototype No Decors</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.FnPrototypeNoDecorsImpl
-     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnPrototypeNoDecors()
-     * @generated
-     */
-    EClass FN_PROTOTYPE_NO_DECORS = eINSTANCE.getFnPrototypeNoDecors();
-
-    /**
      * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute FN_PROTOTYPE_NO_DECORS__NAME = eINSTANCE.getFnPrototypeNoDecors_Name();
+    EAttribute FN_PROTOTYPE__NAME = eINSTANCE.getFnPrototype_Name();
 
     /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ParamImpl <em>Param</em>}' class.

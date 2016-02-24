@@ -64,12 +64,10 @@ ProcNoAttr:
 ;
 
 FnPrototype:
-	extern?=('extern' | 'EXTERN')? pure?=('pure' | 'PURE')? prototype=FnPrototypeNoDecors
-;
-
-FnPrototypeNoDecors:
-	{ThreadDeclaration} 'thread' name=TIDENTIFIER |
-	{FnPrototypeDeclaration} type=Type name=TIDENTIFIER '(' (params+=Param (',' params+=Param)*)? ')'
+	{ThreadDeclaration} extern?=('extern' | 'EXTERN')? pure?=('pure' | 'PURE')? 'thread' name=TIDENTIFIER |
+	{FnPrototypeDeclaration} extern?=('extern' | 'EXTERN')? pure?=('pure' | 'PURE')? type=Type name=TIDENTIFIER '('
+		(params+=Param (',' params+=Param)*)?
+	')'
 ;
 
 Param:

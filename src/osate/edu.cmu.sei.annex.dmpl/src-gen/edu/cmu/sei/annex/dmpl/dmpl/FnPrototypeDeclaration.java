@@ -21,7 +21,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface FnPrototypeDeclaration extends FnPrototypeNoDecors
+public interface FnPrototypeDeclaration extends FnPrototype
 {
   /**
    * Returns the value of the '<em><b>Type</b></em>' containment reference.

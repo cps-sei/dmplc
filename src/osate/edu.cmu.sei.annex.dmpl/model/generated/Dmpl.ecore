@@ -45,10 +45,6 @@
   <eClassifiers xsi:type="ecore:EClass" name="FnPrototype">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="extern" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="pure" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="prototype" eType="#//FnPrototypeNoDecors"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="FnPrototypeNoDecors">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Param">
@@ -79,8 +75,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="IdDimension" eSuperTypes="#//Dimension">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="index" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ThreadDeclaration" eSuperTypes="#//FnPrototypeNoDecors"/>
-  <eClassifiers xsi:type="ecore:EClass" name="FnPrototypeDeclaration" eSuperTypes="#//FnPrototypeNoDecors">
+  <eClassifiers xsi:type="ecore:EClass" name="ThreadDeclaration" eSuperTypes="#//FnPrototype"/>
+  <eClassifiers xsi:type="ecore:EClass" name="FnPrototypeDeclaration" eSuperTypes="#//FnPrototype">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Type" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"
         eType="#//Param" containment="true"/>

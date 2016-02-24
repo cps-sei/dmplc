@@ -10,7 +10,6 @@ import edu.cmu.sei.annex.dmpl.dmpl.DmplSubclause;
 import edu.cmu.sei.annex.dmpl.dmpl.DoubleConst;
 import edu.cmu.sei.annex.dmpl.dmpl.FnPrototype;
 import edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration;
-import edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeNoDecors;
 import edu.cmu.sei.annex.dmpl.dmpl.IdDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.IntConst;
 import edu.cmu.sei.annex.dmpl.dmpl.IntDimension;
@@ -136,13 +135,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass fnPrototypeEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass fnPrototypeNoDecorsEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -558,29 +550,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getFnPrototype_Prototype()
+  public EAttribute getFnPrototype_Name()
   {
-    return (EReference)fnPrototypeEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getFnPrototypeNoDecors()
-  {
-    return fnPrototypeNoDecorsEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getFnPrototypeNoDecors_Name()
-  {
-    return (EAttribute)fnPrototypeNoDecorsEClass.getEStructuralFeatures().get(0);
+    return (EAttribute)fnPrototypeEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -803,10 +775,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     fnPrototypeEClass = createEClass(FN_PROTOTYPE);
     createEAttribute(fnPrototypeEClass, FN_PROTOTYPE__EXTERN);
     createEAttribute(fnPrototypeEClass, FN_PROTOTYPE__PURE);
-    createEReference(fnPrototypeEClass, FN_PROTOTYPE__PROTOTYPE);
-
-    fnPrototypeNoDecorsEClass = createEClass(FN_PROTOTYPE_NO_DECORS);
-    createEAttribute(fnPrototypeNoDecorsEClass, FN_PROTOTYPE_NO_DECORS__NAME);
+    createEAttribute(fnPrototypeEClass, FN_PROTOTYPE__NAME);
 
     paramEClass = createEClass(PARAM);
     createEReference(paramEClass, PARAM__TYPE);
@@ -872,8 +841,8 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     intDimensionEClass.getESuperTypes().add(this.getDimension());
     nodeNumDimensionEClass.getESuperTypes().add(this.getDimension());
     idDimensionEClass.getESuperTypes().add(this.getDimension());
-    threadDeclarationEClass.getESuperTypes().add(this.getFnPrototypeNoDecors());
-    fnPrototypeDeclarationEClass.getESuperTypes().add(this.getFnPrototypeNoDecors());
+    threadDeclarationEClass.getESuperTypes().add(this.getFnPrototype());
+    fnPrototypeDeclarationEClass.getESuperTypes().add(this.getFnPrototype());
 
     // Initialize classes and features; add operations and parameters
     initEClass(programEClass, Program.class, "Program", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -916,10 +885,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEClass(fnPrototypeEClass, FnPrototype.class, "FnPrototype", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getFnPrototype_Extern(), ecorePackage.getEBoolean(), "extern", null, 0, 1, FnPrototype.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getFnPrototype_Pure(), ecorePackage.getEBoolean(), "pure", null, 0, 1, FnPrototype.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getFnPrototype_Prototype(), this.getFnPrototypeNoDecors(), null, "prototype", null, 0, 1, FnPrototype.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(fnPrototypeNoDecorsEClass, FnPrototypeNoDecors.class, "FnPrototypeNoDecors", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getFnPrototypeNoDecors_Name(), ecorePackage.getEString(), "name", null, 0, 1, FnPrototypeNoDecors.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getFnPrototype_Name(), ecorePackage.getEString(), "name", null, 0, 1, FnPrototype.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(paramEClass, Param.class, "Param", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getParam_Type(), this.getType(), null, "type", null, 0, 1, Param.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

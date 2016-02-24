@@ -140,15 +140,6 @@ public interface DmplFactory extends EFactory
   FnPrototype createFnPrototype();
 
   /**
-   * Returns a new object of class '<em>Fn Prototype No Decors</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Fn Prototype No Decors</em>'.
-   * @generated
-   */
-  FnPrototypeNoDecors createFnPrototypeNoDecors();
-
-  /**
    * Returns a new object of class '<em>Param</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

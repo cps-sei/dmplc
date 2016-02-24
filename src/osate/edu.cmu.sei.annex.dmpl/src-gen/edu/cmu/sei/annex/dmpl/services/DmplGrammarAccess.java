@@ -393,148 +393,163 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 	public class FnPrototypeElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "FnPrototype");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Assignment cExternAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final Alternatives cExternAlternatives_0_0 = (Alternatives)cExternAssignment_0.eContents().get(0);
-		private final Keyword cExternExternKeyword_0_0_0 = (Keyword)cExternAlternatives_0_0.eContents().get(0);
-		private final Keyword cExternEXTERNKeyword_0_0_1 = (Keyword)cExternAlternatives_0_0.eContents().get(1);
-		private final Assignment cPureAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final Alternatives cPureAlternatives_1_0 = (Alternatives)cPureAssignment_1.eContents().get(0);
-		private final Keyword cPurePureKeyword_1_0_0 = (Keyword)cPureAlternatives_1_0.eContents().get(0);
-		private final Keyword cPurePUREKeyword_1_0_1 = (Keyword)cPureAlternatives_1_0.eContents().get(1);
-		private final Assignment cPrototypeAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cPrototypeFnPrototypeNoDecorsParserRuleCall_2_0 = (RuleCall)cPrototypeAssignment_2.eContents().get(0);
-		
-		//FnPrototype:
-		//	extern?=("extern" | "EXTERN")? pure?=("pure" | "PURE")? prototype=FnPrototypeNoDecors;
-		@Override public ParserRule getRule() { return rule; }
-
-		//extern?=("extern" | "EXTERN")? pure?=("pure" | "PURE")? prototype=FnPrototypeNoDecors
-		public Group getGroup() { return cGroup; }
-
-		//extern?=("extern" | "EXTERN")?
-		public Assignment getExternAssignment_0() { return cExternAssignment_0; }
-
-		//"extern" | "EXTERN"
-		public Alternatives getExternAlternatives_0_0() { return cExternAlternatives_0_0; }
-
-		//"extern"
-		public Keyword getExternExternKeyword_0_0_0() { return cExternExternKeyword_0_0_0; }
-
-		//"EXTERN"
-		public Keyword getExternEXTERNKeyword_0_0_1() { return cExternEXTERNKeyword_0_0_1; }
-
-		//pure?=("pure" | "PURE")?
-		public Assignment getPureAssignment_1() { return cPureAssignment_1; }
-
-		//"pure" | "PURE"
-		public Alternatives getPureAlternatives_1_0() { return cPureAlternatives_1_0; }
-
-		//"pure"
-		public Keyword getPurePureKeyword_1_0_0() { return cPurePureKeyword_1_0_0; }
-
-		//"PURE"
-		public Keyword getPurePUREKeyword_1_0_1() { return cPurePUREKeyword_1_0_1; }
-
-		//prototype=FnPrototypeNoDecors
-		public Assignment getPrototypeAssignment_2() { return cPrototypeAssignment_2; }
-
-		//FnPrototypeNoDecors
-		public RuleCall getPrototypeFnPrototypeNoDecorsParserRuleCall_2_0() { return cPrototypeFnPrototypeNoDecorsParserRuleCall_2_0; }
-	}
-
-	public class FnPrototypeNoDecorsElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "FnPrototypeNoDecors");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
 		private final Action cThreadDeclarationAction_0_0 = (Action)cGroup_0.eContents().get(0);
-		private final Keyword cThreadKeyword_0_1 = (Keyword)cGroup_0.eContents().get(1);
-		private final Assignment cNameAssignment_0_2 = (Assignment)cGroup_0.eContents().get(2);
-		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_0_2_0 = (RuleCall)cNameAssignment_0_2.eContents().get(0);
+		private final Assignment cExternAssignment_0_1 = (Assignment)cGroup_0.eContents().get(1);
+		private final Alternatives cExternAlternatives_0_1_0 = (Alternatives)cExternAssignment_0_1.eContents().get(0);
+		private final Keyword cExternExternKeyword_0_1_0_0 = (Keyword)cExternAlternatives_0_1_0.eContents().get(0);
+		private final Keyword cExternEXTERNKeyword_0_1_0_1 = (Keyword)cExternAlternatives_0_1_0.eContents().get(1);
+		private final Assignment cPureAssignment_0_2 = (Assignment)cGroup_0.eContents().get(2);
+		private final Alternatives cPureAlternatives_0_2_0 = (Alternatives)cPureAssignment_0_2.eContents().get(0);
+		private final Keyword cPurePureKeyword_0_2_0_0 = (Keyword)cPureAlternatives_0_2_0.eContents().get(0);
+		private final Keyword cPurePUREKeyword_0_2_0_1 = (Keyword)cPureAlternatives_0_2_0.eContents().get(1);
+		private final Keyword cThreadKeyword_0_3 = (Keyword)cGroup_0.eContents().get(3);
+		private final Assignment cNameAssignment_0_4 = (Assignment)cGroup_0.eContents().get(4);
+		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_0_4_0 = (RuleCall)cNameAssignment_0_4.eContents().get(0);
 		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
 		private final Action cFnPrototypeDeclarationAction_1_0 = (Action)cGroup_1.eContents().get(0);
-		private final Assignment cTypeAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
-		private final RuleCall cTypeTypeParserRuleCall_1_1_0 = (RuleCall)cTypeAssignment_1_1.eContents().get(0);
-		private final Assignment cNameAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
-		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_1_2_0 = (RuleCall)cNameAssignment_1_2.eContents().get(0);
-		private final Keyword cLeftParenthesisKeyword_1_3 = (Keyword)cGroup_1.eContents().get(3);
-		private final Group cGroup_1_4 = (Group)cGroup_1.eContents().get(4);
-		private final Assignment cParamsAssignment_1_4_0 = (Assignment)cGroup_1_4.eContents().get(0);
-		private final RuleCall cParamsParamParserRuleCall_1_4_0_0 = (RuleCall)cParamsAssignment_1_4_0.eContents().get(0);
-		private final Group cGroup_1_4_1 = (Group)cGroup_1_4.eContents().get(1);
-		private final Keyword cCommaKeyword_1_4_1_0 = (Keyword)cGroup_1_4_1.eContents().get(0);
-		private final Assignment cParamsAssignment_1_4_1_1 = (Assignment)cGroup_1_4_1.eContents().get(1);
-		private final RuleCall cParamsParamParserRuleCall_1_4_1_1_0 = (RuleCall)cParamsAssignment_1_4_1_1.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_1_5 = (Keyword)cGroup_1.eContents().get(5);
+		private final Assignment cExternAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
+		private final Alternatives cExternAlternatives_1_1_0 = (Alternatives)cExternAssignment_1_1.eContents().get(0);
+		private final Keyword cExternExternKeyword_1_1_0_0 = (Keyword)cExternAlternatives_1_1_0.eContents().get(0);
+		private final Keyword cExternEXTERNKeyword_1_1_0_1 = (Keyword)cExternAlternatives_1_1_0.eContents().get(1);
+		private final Assignment cPureAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
+		private final Alternatives cPureAlternatives_1_2_0 = (Alternatives)cPureAssignment_1_2.eContents().get(0);
+		private final Keyword cPurePureKeyword_1_2_0_0 = (Keyword)cPureAlternatives_1_2_0.eContents().get(0);
+		private final Keyword cPurePUREKeyword_1_2_0_1 = (Keyword)cPureAlternatives_1_2_0.eContents().get(1);
+		private final Assignment cTypeAssignment_1_3 = (Assignment)cGroup_1.eContents().get(3);
+		private final RuleCall cTypeTypeParserRuleCall_1_3_0 = (RuleCall)cTypeAssignment_1_3.eContents().get(0);
+		private final Assignment cNameAssignment_1_4 = (Assignment)cGroup_1.eContents().get(4);
+		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_1_4_0 = (RuleCall)cNameAssignment_1_4.eContents().get(0);
+		private final Keyword cLeftParenthesisKeyword_1_5 = (Keyword)cGroup_1.eContents().get(5);
+		private final Group cGroup_1_6 = (Group)cGroup_1.eContents().get(6);
+		private final Assignment cParamsAssignment_1_6_0 = (Assignment)cGroup_1_6.eContents().get(0);
+		private final RuleCall cParamsParamParserRuleCall_1_6_0_0 = (RuleCall)cParamsAssignment_1_6_0.eContents().get(0);
+		private final Group cGroup_1_6_1 = (Group)cGroup_1_6.eContents().get(1);
+		private final Keyword cCommaKeyword_1_6_1_0 = (Keyword)cGroup_1_6_1.eContents().get(0);
+		private final Assignment cParamsAssignment_1_6_1_1 = (Assignment)cGroup_1_6_1.eContents().get(1);
+		private final RuleCall cParamsParamParserRuleCall_1_6_1_1_0 = (RuleCall)cParamsAssignment_1_6_1_1.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_1_7 = (Keyword)cGroup_1.eContents().get(7);
 		
-		//FnPrototypeNoDecors:
-		//	{ThreadDeclaration} "thread" name=TIDENTIFIER | {FnPrototypeDeclaration} type=Type name=TIDENTIFIER "(" (params+=Param
-		//	("," params+=Param)*)? ")";
+		//FnPrototype:
+		//	{ThreadDeclaration} extern?=("extern" | "EXTERN")? pure?=("pure" | "PURE")? "thread" name=TIDENTIFIER |
+		//	{FnPrototypeDeclaration} extern?=("extern" | "EXTERN")? pure?=("pure" | "PURE")? type=Type name=TIDENTIFIER "("
+		//	(params+=Param ("," params+=Param)*)? ")";
 		@Override public ParserRule getRule() { return rule; }
 
-		//{ThreadDeclaration} "thread" name=TIDENTIFIER | {FnPrototypeDeclaration} type=Type name=TIDENTIFIER "(" (params+=Param
-		//("," params+=Param)*)? ")"
+		//{ThreadDeclaration} extern?=("extern" | "EXTERN")? pure?=("pure" | "PURE")? "thread" name=TIDENTIFIER |
+		//{FnPrototypeDeclaration} extern?=("extern" | "EXTERN")? pure?=("pure" | "PURE")? type=Type name=TIDENTIFIER "("
+		//(params+=Param ("," params+=Param)*)? ")"
 		public Alternatives getAlternatives() { return cAlternatives; }
 
-		//{ThreadDeclaration} "thread" name=TIDENTIFIER
+		//{ThreadDeclaration} extern?=("extern" | "EXTERN")? pure?=("pure" | "PURE")? "thread" name=TIDENTIFIER
 		public Group getGroup_0() { return cGroup_0; }
 
 		//{ThreadDeclaration}
 		public Action getThreadDeclarationAction_0_0() { return cThreadDeclarationAction_0_0; }
 
+		//extern?=("extern" | "EXTERN")?
+		public Assignment getExternAssignment_0_1() { return cExternAssignment_0_1; }
+
+		//"extern" | "EXTERN"
+		public Alternatives getExternAlternatives_0_1_0() { return cExternAlternatives_0_1_0; }
+
+		//"extern"
+		public Keyword getExternExternKeyword_0_1_0_0() { return cExternExternKeyword_0_1_0_0; }
+
+		//"EXTERN"
+		public Keyword getExternEXTERNKeyword_0_1_0_1() { return cExternEXTERNKeyword_0_1_0_1; }
+
+		//pure?=("pure" | "PURE")?
+		public Assignment getPureAssignment_0_2() { return cPureAssignment_0_2; }
+
+		//"pure" | "PURE"
+		public Alternatives getPureAlternatives_0_2_0() { return cPureAlternatives_0_2_0; }
+
+		//"pure"
+		public Keyword getPurePureKeyword_0_2_0_0() { return cPurePureKeyword_0_2_0_0; }
+
+		//"PURE"
+		public Keyword getPurePUREKeyword_0_2_0_1() { return cPurePUREKeyword_0_2_0_1; }
+
 		//"thread"
-		public Keyword getThreadKeyword_0_1() { return cThreadKeyword_0_1; }
+		public Keyword getThreadKeyword_0_3() { return cThreadKeyword_0_3; }
 
 		//name=TIDENTIFIER
-		public Assignment getNameAssignment_0_2() { return cNameAssignment_0_2; }
+		public Assignment getNameAssignment_0_4() { return cNameAssignment_0_4; }
 
 		//TIDENTIFIER
-		public RuleCall getNameTIDENTIFIERTerminalRuleCall_0_2_0() { return cNameTIDENTIFIERTerminalRuleCall_0_2_0; }
+		public RuleCall getNameTIDENTIFIERTerminalRuleCall_0_4_0() { return cNameTIDENTIFIERTerminalRuleCall_0_4_0; }
 
-		//{FnPrototypeDeclaration} type=Type name=TIDENTIFIER "(" (params+=Param ("," params+=Param)*)? ")"
+		//{FnPrototypeDeclaration} extern?=("extern" | "EXTERN")? pure?=("pure" | "PURE")? type=Type name=TIDENTIFIER "("
+		//(params+=Param ("," params+=Param)*)? ")"
 		public Group getGroup_1() { return cGroup_1; }
 
 		//{FnPrototypeDeclaration}
 		public Action getFnPrototypeDeclarationAction_1_0() { return cFnPrototypeDeclarationAction_1_0; }
 
+		//extern?=("extern" | "EXTERN")?
+		public Assignment getExternAssignment_1_1() { return cExternAssignment_1_1; }
+
+		//"extern" | "EXTERN"
+		public Alternatives getExternAlternatives_1_1_0() { return cExternAlternatives_1_1_0; }
+
+		//"extern"
+		public Keyword getExternExternKeyword_1_1_0_0() { return cExternExternKeyword_1_1_0_0; }
+
+		//"EXTERN"
+		public Keyword getExternEXTERNKeyword_1_1_0_1() { return cExternEXTERNKeyword_1_1_0_1; }
+
+		//pure?=("pure" | "PURE")?
+		public Assignment getPureAssignment_1_2() { return cPureAssignment_1_2; }
+
+		//"pure" | "PURE"
+		public Alternatives getPureAlternatives_1_2_0() { return cPureAlternatives_1_2_0; }
+
+		//"pure"
+		public Keyword getPurePureKeyword_1_2_0_0() { return cPurePureKeyword_1_2_0_0; }
+
+		//"PURE"
+		public Keyword getPurePUREKeyword_1_2_0_1() { return cPurePUREKeyword_1_2_0_1; }
+
 		//type=Type
-		public Assignment getTypeAssignment_1_1() { return cTypeAssignment_1_1; }
+		public Assignment getTypeAssignment_1_3() { return cTypeAssignment_1_3; }
 
 		//Type
-		public RuleCall getTypeTypeParserRuleCall_1_1_0() { return cTypeTypeParserRuleCall_1_1_0; }
+		public RuleCall getTypeTypeParserRuleCall_1_3_0() { return cTypeTypeParserRuleCall_1_3_0; }
 
 		//name=TIDENTIFIER
-		public Assignment getNameAssignment_1_2() { return cNameAssignment_1_2; }
+		public Assignment getNameAssignment_1_4() { return cNameAssignment_1_4; }
 
 		//TIDENTIFIER
-		public RuleCall getNameTIDENTIFIERTerminalRuleCall_1_2_0() { return cNameTIDENTIFIERTerminalRuleCall_1_2_0; }
+		public RuleCall getNameTIDENTIFIERTerminalRuleCall_1_4_0() { return cNameTIDENTIFIERTerminalRuleCall_1_4_0; }
 
 		//"("
-		public Keyword getLeftParenthesisKeyword_1_3() { return cLeftParenthesisKeyword_1_3; }
+		public Keyword getLeftParenthesisKeyword_1_5() { return cLeftParenthesisKeyword_1_5; }
 
 		//(params+=Param ("," params+=Param)*)?
-		public Group getGroup_1_4() { return cGroup_1_4; }
+		public Group getGroup_1_6() { return cGroup_1_6; }
 
 		//params+=Param
-		public Assignment getParamsAssignment_1_4_0() { return cParamsAssignment_1_4_0; }
+		public Assignment getParamsAssignment_1_6_0() { return cParamsAssignment_1_6_0; }
 
 		//Param
-		public RuleCall getParamsParamParserRuleCall_1_4_0_0() { return cParamsParamParserRuleCall_1_4_0_0; }
+		public RuleCall getParamsParamParserRuleCall_1_6_0_0() { return cParamsParamParserRuleCall_1_6_0_0; }
 
 		//("," params+=Param)*
-		public Group getGroup_1_4_1() { return cGroup_1_4_1; }
+		public Group getGroup_1_6_1() { return cGroup_1_6_1; }
 
 		//","
-		public Keyword getCommaKeyword_1_4_1_0() { return cCommaKeyword_1_4_1_0; }
+		public Keyword getCommaKeyword_1_6_1_0() { return cCommaKeyword_1_6_1_0; }
 
 		//params+=Param
-		public Assignment getParamsAssignment_1_4_1_1() { return cParamsAssignment_1_4_1_1; }
+		public Assignment getParamsAssignment_1_6_1_1() { return cParamsAssignment_1_6_1_1; }
 
 		//Param
-		public RuleCall getParamsParamParserRuleCall_1_4_1_1_0() { return cParamsParamParserRuleCall_1_4_1_1_0; }
+		public RuleCall getParamsParamParserRuleCall_1_6_1_1_0() { return cParamsParamParserRuleCall_1_6_1_1_0; }
 
 		//")"
-		public Keyword getRightParenthesisKeyword_1_5() { return cRightParenthesisKeyword_1_5; }
+		public Keyword getRightParenthesisKeyword_1_7() { return cRightParenthesisKeyword_1_7; }
 	}
 
 	public class ParamElements extends AbstractParserRuleElementFinder {
@@ -812,7 +827,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final ProcedureElements pProcedure;
 	private final ProcNoAttrElements pProcNoAttr;
 	private final FnPrototypeElements pFnPrototype;
-	private final FnPrototypeNoDecorsElements pFnPrototypeNoDecors;
 	private final ParamElements pParam;
 	private final SignEnumElements unknownRuleSignEnum;
 	private final SignElements pSign;
@@ -846,7 +860,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pProcedure = new ProcedureElements();
 		this.pProcNoAttr = new ProcNoAttrElements();
 		this.pFnPrototype = new FnPrototypeElements();
-		this.pFnPrototypeNoDecors = new FnPrototypeNoDecorsElements();
 		this.pParam = new ParamElements();
 		this.unknownRuleSignEnum = new SignEnumElements();
 		this.pSign = new SignElements();
@@ -1016,24 +1029,15 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//FnPrototype:
-	//	extern?=("extern" | "EXTERN")? pure?=("pure" | "PURE")? prototype=FnPrototypeNoDecors;
+	//	{ThreadDeclaration} extern?=("extern" | "EXTERN")? pure?=("pure" | "PURE")? "thread" name=TIDENTIFIER |
+	//	{FnPrototypeDeclaration} extern?=("extern" | "EXTERN")? pure?=("pure" | "PURE")? type=Type name=TIDENTIFIER "("
+	//	(params+=Param ("," params+=Param)*)? ")";
 	public FnPrototypeElements getFnPrototypeAccess() {
 		return pFnPrototype;
 	}
 	
 	public ParserRule getFnPrototypeRule() {
 		return getFnPrototypeAccess().getRule();
-	}
-
-	//FnPrototypeNoDecors:
-	//	{ThreadDeclaration} "thread" name=TIDENTIFIER | {FnPrototypeDeclaration} type=Type name=TIDENTIFIER "(" (params+=Param
-	//	("," params+=Param)*)? ")";
-	public FnPrototypeNoDecorsElements getFnPrototypeNoDecorsAccess() {
-		return pFnPrototypeNoDecors;
-	}
-	
-	public ParserRule getFnPrototypeNoDecorsRule() {
-		return getFnPrototypeNoDecorsAccess().getRule();
 	}
 
 	//Param:

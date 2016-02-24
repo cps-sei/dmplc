@@ -15,7 +15,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototype#isExtern <em>Extern</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototype#isPure <em>Pure</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototype#getPrototype <em>Prototype</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototype#getName <em>Name</em>}</li>
  * </ul>
  *
  * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getFnPrototype()
@@ -77,29 +77,29 @@ public interface FnPrototype extends EObject
   void setPure(boolean value);
 
   /**
-   * Returns the value of the '<em><b>Prototype</b></em>' containment reference.
+   * Returns the value of the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Prototype</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Name</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Prototype</em>' containment reference.
-   * @see #setPrototype(FnPrototypeNoDecors)
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getFnPrototype_Prototype()
-   * @model containment="true"
+   * @return the value of the '<em>Name</em>' attribute.
+   * @see #setName(String)
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getFnPrototype_Name()
+   * @model
    * @generated
    */
-  FnPrototypeNoDecors getPrototype();
+  String getName();
 
   /**
-   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototype#getPrototype <em>Prototype</em>}' containment reference.
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototype#getName <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Prototype</em>' containment reference.
-   * @see #getPrototype()
+   * @param value the new value of the '<em>Name</em>' attribute.
+   * @see #getName()
    * @generated
    */
-  void setPrototype(FnPrototypeNoDecors value);
+  void setName(String value);
 
 } // FnPrototype

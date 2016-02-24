@@ -9,7 +9,6 @@ import edu.cmu.sei.annex.dmpl.dmpl.Constant;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplSubclause;
 import edu.cmu.sei.annex.dmpl.dmpl.DoubleConst;
-import edu.cmu.sei.annex.dmpl.dmpl.FnPrototype;
 import edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration;
 import edu.cmu.sei.annex.dmpl.dmpl.IdDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.IntConst;
@@ -53,11 +52,8 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 			case DmplPackage.DOUBLE_CONST:
 				sequence_DoubleConst(context, (DoubleConst) semanticObject); 
 				return; 
-			case DmplPackage.FN_PROTOTYPE:
-				sequence_FnPrototype(context, (FnPrototype) semanticObject); 
-				return; 
 			case DmplPackage.FN_PROTOTYPE_DECLARATION:
-				sequence_FnPrototypeNoDecors(context, (FnPrototypeDeclaration) semanticObject); 
+				sequence_FnPrototype(context, (FnPrototypeDeclaration) semanticObject); 
 				return; 
 			case DmplPackage.ID_DIMENSION:
 				sequence_Dimension(context, (IdDimension) semanticObject); 
@@ -84,7 +80,7 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				sequence_Program(context, (Program) semanticObject); 
 				return; 
 			case DmplPackage.THREAD_DECLARATION:
-				sequence_FnPrototypeNoDecors(context, (ThreadDeclaration) semanticObject); 
+				sequence_FnPrototype(context, (ThreadDeclaration) semanticObject); 
 				return; 
 			case DmplPackage.TYPE:
 				sequence_Type(context, (Type) semanticObject); 
@@ -176,34 +172,18 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (type=Type name=TIDENTIFIER (params+=Param params+=Param*)?)
+	 *     ((extern?='extern' | extern?='EXTERN')? (pure?='pure' | pure?='PURE')? type=Type name=TIDENTIFIER (params+=Param params+=Param*)?)
 	 */
-	protected void sequence_FnPrototypeNoDecors(EObject context, FnPrototypeDeclaration semanticObject) {
+	protected void sequence_FnPrototype(EObject context, FnPrototypeDeclaration semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
 	/**
 	 * Constraint:
-	 *     name=TIDENTIFIER
+	 *     ((extern?='extern' | extern?='EXTERN')? (pure?='pure' | pure?='PURE')? name=TIDENTIFIER)
 	 */
-	protected void sequence_FnPrototypeNoDecors(EObject context, ThreadDeclaration semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.FN_PROTOTYPE_NO_DECORS__NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.FN_PROTOTYPE_NO_DECORS__NAME));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getFnPrototypeNoDecorsAccess().getNameTIDENTIFIERTerminalRuleCall_0_2_0(), semanticObject.getName());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     ((extern?='extern' | extern?='EXTERN')? (pure?='pure' | pure?='PURE')? prototype=FnPrototypeNoDecors)
-	 */
-	protected void sequence_FnPrototype(EObject context, FnPrototype semanticObject) {
+	protected void sequence_FnPrototype(EObject context, ThreadDeclaration semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
