@@ -54,13 +54,15 @@
 # DM-0002494
 
 DEBUG=0
+NODE_DEBUG=""
 
 function usage {
     echo "Usage : dmpl-sim.sh [-args] file.mission [output.log]"
     echo "  Optional Arguments:"
     echo "    -b | --force-build  Fully rebuild the cpp file, and recompile it"
     echo "    -B | --build-only   Only build the software, don't run the simulation"
-    echo "    -d | --debug        Run with debug options (uses and dmplc --debug, and gdb)"
+    echo "    -d | --debug        Run with debug options (uses dmplc --debug, and gdb)"
+    echo "   -nd | --node-debug   Run nodes with --debug option"
     echo "    -h | --headless     Run V-REP in headless mode"
     echo "    -M | --manual-start Don't start the simulation automatically"
     echo '    -p | --platform $P  Pass $P as the --platform option to the executable'
@@ -89,6 +91,9 @@ while true; do
     case "$1" in
         -d|--debug)
             DEBUG=1
+            ;;
+        -nd|--node-debug)
+            NODE_DEBUG="--debug"
             ;;
         -b|--force-build)
             FORCEBUILD=1
@@ -342,7 +347,6 @@ declare -A pid2cmd
 
 #start the nodes
 NUMCPU=$(grep -c ^processor /proc/cpuinfo)
-[ "$DEBUG" -eq 1 ] && NODE_DEBUG="--debug"
 for x in $(seq 1 $((NODENUM - 1))); do
     echo $x
     args_var=ARGS_$x
