@@ -3,6 +3,7 @@
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
+import edu.cmu.sei.annex.dmpl.dmpl.SignedEnum;
 import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum;
 import edu.cmu.sei.annex.dmpl.dmpl.Type;
 
@@ -21,6 +22,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.TypeImpl#getSigned <em>Signed</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.TypeImpl#getSimpType <em>Simp Type</em>}</li>
  * </ul>
  *
@@ -28,6 +30,26 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  */
 public class TypeImpl extends MinimalEObjectImpl.Container implements Type
 {
+  /**
+   * The default value of the '{@link #getSigned() <em>Signed</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getSigned()
+   * @generated
+   * @ordered
+   */
+  protected static final SignedEnum SIGNED_EDEFAULT = SignedEnum.UNSET;
+
+  /**
+   * The cached value of the '{@link #getSigned() <em>Signed</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getSigned()
+   * @generated
+   * @ordered
+   */
+  protected SignedEnum signed = SIGNED_EDEFAULT;
+
   /**
    * The default value of the '{@link #getSimpType() <em>Simp Type</em>}' attribute.
    * <!-- begin-user-doc -->
@@ -74,6 +96,29 @@ public class TypeImpl extends MinimalEObjectImpl.Container implements Type
    * <!-- end-user-doc -->
    * @generated
    */
+  public SignedEnum getSigned()
+  {
+    return signed;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setSigned(SignedEnum newSigned)
+  {
+    SignedEnum oldSigned = signed;
+    signed = newSigned == null ? SIGNED_EDEFAULT : newSigned;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.TYPE__SIGNED, oldSigned, signed));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public SimpTypeEnum getSimpType()
   {
     return simpType;
@@ -102,6 +147,8 @@ public class TypeImpl extends MinimalEObjectImpl.Container implements Type
   {
     switch (featureID)
     {
+      case DmplPackage.TYPE__SIGNED:
+        return getSigned();
       case DmplPackage.TYPE__SIMP_TYPE:
         return getSimpType();
     }
@@ -118,6 +165,9 @@ public class TypeImpl extends MinimalEObjectImpl.Container implements Type
   {
     switch (featureID)
     {
+      case DmplPackage.TYPE__SIGNED:
+        setSigned((SignedEnum)newValue);
+        return;
       case DmplPackage.TYPE__SIMP_TYPE:
         setSimpType((SimpTypeEnum)newValue);
         return;
@@ -135,6 +185,9 @@ public class TypeImpl extends MinimalEObjectImpl.Container implements Type
   {
     switch (featureID)
     {
+      case DmplPackage.TYPE__SIGNED:
+        setSigned(SIGNED_EDEFAULT);
+        return;
       case DmplPackage.TYPE__SIMP_TYPE:
         setSimpType(SIMP_TYPE_EDEFAULT);
         return;
@@ -152,6 +205,8 @@ public class TypeImpl extends MinimalEObjectImpl.Container implements Type
   {
     switch (featureID)
     {
+      case DmplPackage.TYPE__SIGNED:
+        return signed != SIGNED_EDEFAULT;
       case DmplPackage.TYPE__SIMP_TYPE:
         return simpType != SIMP_TYPE_EDEFAULT;
     }
@@ -169,7 +224,9 @@ public class TypeImpl extends MinimalEObjectImpl.Container implements Type
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (simpType: ");
+    result.append(" (signed: ");
+    result.append(signed);
+    result.append(", simpType: ");
     result.append(simpType);
     result.append(')');
     return result.toString();

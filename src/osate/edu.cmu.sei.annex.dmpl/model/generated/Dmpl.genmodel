@@ -19,6 +19,11 @@
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SimpTypeEnum/void"/>
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SimpTypeEnum/char"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Dmpl.ecore#//SignedEnum">
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SignedEnum/unset"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SignedEnum/signed"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SignedEnum/unsigned"/>
+    </genEnums>
     <genClasses ecoreClass="Dmpl.ecore#//Program">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Program/programElements"/>
     </genClasses>
@@ -40,6 +45,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//DoubleConst/value"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Type">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Type/signed"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Type/simpType"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//FnType">

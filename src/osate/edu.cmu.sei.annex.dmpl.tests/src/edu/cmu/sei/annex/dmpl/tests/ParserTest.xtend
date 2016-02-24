@@ -9,6 +9,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.IntConst
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure
 import edu.cmu.sei.annex.dmpl.dmpl.Program
 import edu.cmu.sei.annex.dmpl.dmpl.SignEnum
+import edu.cmu.sei.annex.dmpl.dmpl.SignedEnum
 import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum
 import edu.cmu.sei.annex.dmpl.dmpl.ThreadDeclaration
 import org.eclipse.xtext.junit4.InjectWith
@@ -184,7 +185,7 @@ class ParserTest {
 	}
 	
 	@Test
-	def void testSimpType() {
+	def void testType() {
 		'''
 			bool f1();
 			_Bool f2();
@@ -192,32 +193,66 @@ class ParserTest {
 			double f4();
 			void f5();
 			char f6();
+			signed int f7();
+			unsigned int f8();
 		'''.parse => [
 			assertNoIssues
-			6.assertEquals(programElements.size)
+			8.assertEquals(programElements.size)
 			(programElements.get(0) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
 				"f1".assertEquals(name)
-				SimpTypeEnum.BOOL.assertEquals(type.type.simpType)
+				type.type => [
+					SignedEnum.UNSET.assertEquals(signed)
+					SimpTypeEnum.BOOL.assertEquals(simpType)
+				]
 			]
 			(programElements.get(1) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
 				"f2".assertEquals(name)
-				SimpTypeEnum.BOOL.assertEquals(type.type.simpType)
+				type.type => [
+					SignedEnum.UNSET.assertEquals(signed)
+					SimpTypeEnum.BOOL.assertEquals(simpType)
+				]
 			]
 			(programElements.get(2) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
 				"f3".assertEquals(name)
-				SimpTypeEnum.INT.assertEquals(type.type.simpType)
+				type.type => [
+					SignedEnum.UNSET.assertEquals(signed)
+					SimpTypeEnum.INT.assertEquals(simpType)
+				]
 			]
 			(programElements.get(3) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
 				"f4".assertEquals(name)
-				SimpTypeEnum.DOUBLE.assertEquals(type.type.simpType)
+				type.type => [
+					SignedEnum.UNSET.assertEquals(signed)
+					SimpTypeEnum.DOUBLE.assertEquals(simpType)
+				]
 			]
 			(programElements.get(4) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
 				"f5".assertEquals(name)
-				SimpTypeEnum.VOID.assertEquals(type.type.simpType)
+				type.type => [
+					SignedEnum.UNSET.assertEquals(signed)
+					SimpTypeEnum.VOID.assertEquals(simpType)
+				]
 			]
 			(programElements.get(5) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
 				"f6".assertEquals(name)
-				SimpTypeEnum.CHAR.assertEquals(type.type.simpType)
+				type.type => [
+					SignedEnum.UNSET.assertEquals(signed)
+					SimpTypeEnum.CHAR.assertEquals(simpType)
+				]
+			]
+			(programElements.get(6) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
+				"f7".assertEquals(name)
+				type.type => [
+					SignedEnum.SIGNED.assertEquals(signed)
+					SimpTypeEnum.INT.assertEquals(simpType)
+				]
+			]
+			(programElements.get(7) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
+				"f8".assertEquals(name)
+				type.type => [
+					SignedEnum.UNSIGNED.assertEquals(signed)
+					SimpTypeEnum.INT.assertEquals(simpType)
+				]
 			]
 		]
 	}

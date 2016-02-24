@@ -19,7 +19,9 @@ public class InternalDmplLexer extends Lexer {
     public static final int T__16=16;
     public static final int T__17=17;
     public static final int T__18=18;
+    public static final int T__33=33;
     public static final int T__12=12;
+    public static final int T__34=34;
     public static final int T__13=13;
     public static final int T__14=14;
     public static final int EOF=-1;
@@ -454,10 +456,10 @@ public class InternalDmplLexer extends Lexer {
         try {
             int _type = T__31;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:30:7: ( 'NAN' )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:30:9: 'NAN'
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:30:7: ( 'signed' )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:30:9: 'signed'
             {
-            match("NAN"); 
+            match("signed"); 
 
 
             }
@@ -475,10 +477,11 @@ public class InternalDmplLexer extends Lexer {
         try {
             int _type = T__32;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:31:7: ( '.' )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:31:9: '.'
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:31:7: ( 'unsigned' )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:31:9: 'unsigned'
             {
-            match('.'); 
+            match("unsigned"); 
+
 
             }
 
@@ -490,13 +493,54 @@ public class InternalDmplLexer extends Lexer {
     }
     // $ANTLR end "T__32"
 
+    // $ANTLR start "T__33"
+    public final void mT__33() throws RecognitionException {
+        try {
+            int _type = T__33;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:32:7: ( 'NAN' )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:32:9: 'NAN'
+            {
+            match("NAN"); 
+
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "T__33"
+
+    // $ANTLR start "T__34"
+    public final void mT__34() throws RecognitionException {
+        try {
+            int _type = T__34;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:33:7: ( '.' )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:33:9: '.'
+            {
+            match('.'); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        }
+    }
+    // $ANTLR end "T__34"
+
     // $ANTLR start "RULE_TIDENTIFIER"
     public final void mRULE_TIDENTIFIER() throws RecognitionException {
         try {
             int _type = RULE_TIDENTIFIER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:934:18: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:934:20: ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:988:18: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:988:20: ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
             {
             if ( (input.LA(1)>='A' && input.LA(1)<='Z')||input.LA(1)=='_'||(input.LA(1)>='a' && input.LA(1)<='z') ) {
                 input.consume();
@@ -507,7 +551,7 @@ public class InternalDmplLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:934:44: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:988:44: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
             loop1:
             do {
                 int alt1=2;
@@ -556,10 +600,10 @@ public class InternalDmplLexer extends Lexer {
         try {
             int _type = RULE_ID;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:936:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:936:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:990:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )* )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:990:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
             {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:936:11: ( '^' )?
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:990:11: ( '^' )?
             int alt2=2;
             int LA2_0 = input.LA(1);
 
@@ -568,7 +612,7 @@ public class InternalDmplLexer extends Lexer {
             }
             switch (alt2) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:936:11: '^'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:990:11: '^'
                     {
                     match('^'); 
 
@@ -586,7 +630,7 @@ public class InternalDmplLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:936:40: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:990:40: ( 'a' .. 'z' | 'A' .. 'Z' | '_' | '0' .. '9' )*
             loop3:
             do {
                 int alt3=2;
@@ -635,10 +679,10 @@ public class InternalDmplLexer extends Lexer {
         try {
             int _type = RULE_INT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:938:10: ( ( '0' .. '9' )+ )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:938:12: ( '0' .. '9' )+
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:992:10: ( ( '0' .. '9' )+ )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:992:12: ( '0' .. '9' )+
             {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:938:12: ( '0' .. '9' )+
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:992:12: ( '0' .. '9' )+
             int cnt4=0;
             loop4:
             do {
@@ -652,7 +696,7 @@ public class InternalDmplLexer extends Lexer {
 
                 switch (alt4) {
             	case 1 :
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:938:13: '0' .. '9'
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:992:13: '0' .. '9'
             	    {
             	    matchRange('0','9'); 
 
@@ -684,10 +728,10 @@ public class InternalDmplLexer extends Lexer {
         try {
             int _type = RULE_STRING;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:940:13: ( ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' ) )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:940:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:994:13: ( ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:994:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
             {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:940:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:994:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"' | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\'' )
             int alt7=2;
             int LA7_0 = input.LA(1);
 
@@ -705,10 +749,10 @@ public class InternalDmplLexer extends Lexer {
             }
             switch (alt7) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:940:16: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:994:16: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* '\"'
                     {
                     match('\"'); 
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:940:20: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:994:20: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
                     loop5:
                     do {
                         int alt5=3;
@@ -724,7 +768,7 @@ public class InternalDmplLexer extends Lexer {
 
                         switch (alt5) {
                     	case 1 :
-                    	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:940:21: '\\\\' .
+                    	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:994:21: '\\\\' .
                     	    {
                     	    match('\\'); 
                     	    matchAny(); 
@@ -732,7 +776,7 @@ public class InternalDmplLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:940:28: ~ ( ( '\\\\' | '\"' ) )
+                    	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:994:28: ~ ( ( '\\\\' | '\"' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -757,10 +801,10 @@ public class InternalDmplLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:940:48: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\''
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:994:48: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* '\\''
                     {
                     match('\''); 
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:940:53: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:994:53: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
                     loop6:
                     do {
                         int alt6=3;
@@ -776,7 +820,7 @@ public class InternalDmplLexer extends Lexer {
 
                         switch (alt6) {
                     	case 1 :
-                    	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:940:54: '\\\\' .
+                    	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:994:54: '\\\\' .
                     	    {
                     	    match('\\'); 
                     	    matchAny(); 
@@ -784,7 +828,7 @@ public class InternalDmplLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:940:61: ~ ( ( '\\\\' | '\\'' ) )
+                    	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:994:61: ~ ( ( '\\\\' | '\\'' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='&')||(input.LA(1)>='(' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -827,12 +871,12 @@ public class InternalDmplLexer extends Lexer {
         try {
             int _type = RULE_ML_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:942:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:942:19: '/*' ( options {greedy=false; } : . )* '*/'
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:996:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:996:19: '/*' ( options {greedy=false; } : . )* '*/'
             {
             match("/*"); 
 
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:942:24: ( options {greedy=false; } : . )*
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:996:24: ( options {greedy=false; } : . )*
             loop8:
             do {
                 int alt8=2;
@@ -857,7 +901,7 @@ public class InternalDmplLexer extends Lexer {
 
                 switch (alt8) {
             	case 1 :
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:942:52: .
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:996:52: .
             	    {
             	    matchAny(); 
 
@@ -887,12 +931,12 @@ public class InternalDmplLexer extends Lexer {
         try {
             int _type = RULE_SL_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:944:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:944:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:998:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:998:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
             {
             match("//"); 
 
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:944:24: (~ ( ( '\\n' | '\\r' ) ) )*
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:998:24: (~ ( ( '\\n' | '\\r' ) ) )*
             loop9:
             do {
                 int alt9=2;
@@ -905,7 +949,7 @@ public class InternalDmplLexer extends Lexer {
 
                 switch (alt9) {
             	case 1 :
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:944:24: ~ ( ( '\\n' | '\\r' ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:998:24: ~ ( ( '\\n' | '\\r' ) )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -925,7 +969,7 @@ public class InternalDmplLexer extends Lexer {
                 }
             } while (true);
 
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:944:40: ( ( '\\r' )? '\\n' )?
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:998:40: ( ( '\\r' )? '\\n' )?
             int alt11=2;
             int LA11_0 = input.LA(1);
 
@@ -934,9 +978,9 @@ public class InternalDmplLexer extends Lexer {
             }
             switch (alt11) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:944:41: ( '\\r' )? '\\n'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:998:41: ( '\\r' )? '\\n'
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:944:41: ( '\\r' )?
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:998:41: ( '\\r' )?
                     int alt10=2;
                     int LA10_0 = input.LA(1);
 
@@ -945,7 +989,7 @@ public class InternalDmplLexer extends Lexer {
                     }
                     switch (alt10) {
                         case 1 :
-                            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:944:41: '\\r'
+                            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:998:41: '\\r'
                             {
                             match('\r'); 
 
@@ -977,10 +1021,10 @@ public class InternalDmplLexer extends Lexer {
         try {
             int _type = RULE_WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:946:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:946:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1000:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1000:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:946:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1000:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             int cnt12=0;
             loop12:
             do {
@@ -1034,8 +1078,8 @@ public class InternalDmplLexer extends Lexer {
         try {
             int _type = RULE_ANY_OTHER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:948:16: ( . )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:948:18: .
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1002:16: ( . )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1002:18: .
             {
             matchAny(); 
 
@@ -1050,8 +1094,8 @@ public class InternalDmplLexer extends Lexer {
     // $ANTLR end "RULE_ANY_OTHER"
 
     public void mTokens() throws RecognitionException {
-        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1:8: ( T__12 | T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | RULE_TIDENTIFIER | RULE_ID | RULE_INT | RULE_STRING | RULE_ML_COMMENT | RULE_SL_COMMENT | RULE_WS | RULE_ANY_OTHER )
-        int alt13=29;
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1:8: ( T__12 | T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | T__34 | RULE_TIDENTIFIER | RULE_ID | RULE_INT | RULE_STRING | RULE_ML_COMMENT | RULE_SL_COMMENT | RULE_WS | RULE_ANY_OTHER )
+        int alt13=31;
         alt13 = dfa13.predict(input);
         switch (alt13) {
             case 1 :
@@ -1202,56 +1246,70 @@ public class InternalDmplLexer extends Lexer {
                 }
                 break;
             case 22 :
-                // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1:136: RULE_TIDENTIFIER
+                // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1:136: T__33
+                {
+                mT__33(); 
+
+                }
+                break;
+            case 23 :
+                // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1:142: T__34
+                {
+                mT__34(); 
+
+                }
+                break;
+            case 24 :
+                // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1:148: RULE_TIDENTIFIER
                 {
                 mRULE_TIDENTIFIER(); 
 
                 }
                 break;
-            case 23 :
-                // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1:153: RULE_ID
+            case 25 :
+                // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1:165: RULE_ID
                 {
                 mRULE_ID(); 
 
                 }
                 break;
-            case 24 :
-                // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1:161: RULE_INT
+            case 26 :
+                // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1:173: RULE_INT
                 {
                 mRULE_INT(); 
 
                 }
                 break;
-            case 25 :
-                // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1:170: RULE_STRING
+            case 27 :
+                // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1:182: RULE_STRING
                 {
                 mRULE_STRING(); 
 
                 }
                 break;
-            case 26 :
-                // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1:182: RULE_ML_COMMENT
+            case 28 :
+                // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1:194: RULE_ML_COMMENT
                 {
                 mRULE_ML_COMMENT(); 
 
                 }
                 break;
-            case 27 :
-                // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1:198: RULE_SL_COMMENT
+            case 29 :
+                // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1:210: RULE_SL_COMMENT
                 {
                 mRULE_SL_COMMENT(); 
 
                 }
                 break;
-            case 28 :
-                // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1:214: RULE_WS
+            case 30 :
+                // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1:226: RULE_WS
                 {
                 mRULE_WS(); 
 
                 }
                 break;
-            case 29 :
-                // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1:222: RULE_ANY_OTHER
+            case 31 :
+                // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1:234: RULE_ANY_OTHER
                 {
                 mRULE_ANY_OTHER(); 
 
@@ -1265,69 +1323,73 @@ public class InternalDmplLexer extends Lexer {
 
     protected DFA13 dfa13 = new DFA13(this);
     static final String DFA13_eotS =
-        "\1\uffff\2\40\2\uffff\5\40\4\uffff\6\40\1\uffff\1\40\1\34\1\uffff\3\34\2\uffff\3\40\1\uffff\1\40\2\uffff\5\40\4\uffff\6\40\7\uffff\12\40\1\122\2\40\1\125\1\40\1\127\3\40\1\133\1\134\1\40\1\136\1\40\1\uffff\1\40\1\141\1\uffff\1\142\1\uffff\1\143\2\40\2\uffff\1\40\1\uffff\1\147\1\40\3\uffff\1\151\1\152\1\153\1\uffff\1\154\4\uffff";
+        "\1\uffff\2\42\2\uffff\5\42\4\uffff\10\42\1\uffff\1\42\1\36\1\uffff\3\36\2\uffff\3\42\1\uffff\1\42\2\uffff\5\42\4\uffff\10\42\7\uffff\12\42\1\130\4\42\1\135\1\42\1\137\3\42\1\143\1\144\1\42\1\146\1\42\1\uffff\1\42\1\151\2\42\1\uffff\1\154\1\uffff\1\155\2\42\2\uffff\1\42\1\uffff\1\161\1\42\1\uffff\2\42\2\uffff\1\165\1\166\1\167\1\uffff\1\170\1\171\1\42\5\uffff\1\42\1\174\1\uffff";
     static final String DFA13_eofS =
-        "\155\uffff";
+        "\175\uffff";
     static final String DFA13_minS =
-        "\1\0\2\60\2\uffff\5\60\4\uffff\6\60\1\uffff\1\60\1\101\1\uffff\2\0\1\52\2\uffff\3\60\1\uffff\1\60\2\uffff\5\60\4\uffff\6\60\7\uffff\30\60\1\uffff\2\60\1\uffff\1\60\1\uffff\3\60\2\uffff\1\60\1\uffff\2\60\3\uffff\3\60\1\uffff\1\60\4\uffff";
+        "\1\0\2\60\2\uffff\5\60\4\uffff\10\60\1\uffff\1\60\1\101\1\uffff\2\0\1\52\2\uffff\3\60\1\uffff\1\60\2\uffff\5\60\4\uffff\10\60\7\uffff\32\60\1\uffff\4\60\1\uffff\1\60\1\uffff\3\60\2\uffff\1\60\1\uffff\2\60\1\uffff\2\60\2\uffff\3\60\1\uffff\3\60\5\uffff\2\60\1\uffff";
     static final String DFA13_maxS =
-        "\1\uffff\2\172\2\uffff\5\172\4\uffff\6\172\1\uffff\2\172\1\uffff\2\uffff\1\57\2\uffff\3\172\1\uffff\1\172\2\uffff\5\172\4\uffff\6\172\7\uffff\30\172\1\uffff\2\172\1\uffff\1\172\1\uffff\3\172\2\uffff\1\172\1\uffff\2\172\3\uffff\3\172\1\uffff\1\172\4\uffff";
+        "\1\uffff\2\172\2\uffff\5\172\4\uffff\10\172\1\uffff\2\172\1\uffff\2\uffff\1\57\2\uffff\3\172\1\uffff\1\172\2\uffff\5\172\4\uffff\10\172\7\uffff\32\172\1\uffff\4\172\1\uffff\1\172\1\uffff\3\172\2\uffff\1\172\1\uffff\2\172\1\uffff\2\172\2\uffff\3\172\1\uffff\3\172\5\uffff\2\172\1\uffff";
     static final String DFA13_acceptS =
-        "\3\uffff\1\3\1\4\5\uffff\1\12\1\13\1\14\1\15\6\uffff\1\25\2\uffff\1\30\3\uffff\1\34\1\35\3\uffff\1\26\1\uffff\1\3\1\4\5\uffff\1\12\1\13\1\14\1\15\6\uffff\1\25\1\27\1\30\1\31\1\32\1\33\1\34\30\uffff\1\20\2\uffff\1\24\1\uffff\1\23\3\uffff\1\7\1\10\1\uffff\1\16\2\uffff\1\22\1\1\1\2\3\uffff\1\17\1\uffff\1\5\1\6\1\11\1\21";
+        "\3\uffff\1\3\1\4\5\uffff\1\12\1\13\1\14\1\15\10\uffff\1\27\2\uffff\1\32\3\uffff\1\36\1\37\3\uffff\1\30\1\uffff\1\3\1\4\5\uffff\1\12\1\13\1\14\1\15\10\uffff\1\27\1\31\1\32\1\33\1\34\1\35\1\36\32\uffff\1\20\4\uffff\1\26\1\uffff\1\23\3\uffff\1\7\1\10\1\uffff\1\16\2\uffff\1\22\2\uffff\1\1\1\2\3\uffff\1\17\3\uffff\1\5\1\6\1\11\1\21\1\24\2\uffff\1\25";
     static final String DFA13_specialS =
-        "\1\0\27\uffff\1\1\1\2\123\uffff}>";
+        "\1\0\31\uffff\1\2\1\1\141\uffff}>";
     static final String[] DFA13_transitionS = {
-            "\11\34\2\33\2\34\1\33\22\34\1\33\1\34\1\30\4\34\1\31\1\12\1\13\1\34\1\14\1\34\1\15\1\24\1\32\12\27\1\34\1\4\1\34\1\3\3\34\2\25\1\2\1\25\1\6\10\25\1\23\1\25\1\10\12\25\3\34\1\26\1\17\1\34\1\25\1\16\1\1\1\21\1\5\3\25\1\20\6\25\1\7\3\25\1\11\1\25\1\22\4\25\uff85\34",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\7\37\1\36\6\37\1\35\13\37",
-            "\12\37\7\uffff\16\37\1\41\13\37\4\uffff\1\37\1\uffff\32\37",
+            "\11\36\2\35\2\36\1\35\22\36\1\35\1\36\1\32\4\36\1\33\1\12\1\13\1\36\1\14\1\36\1\15\1\26\1\34\12\31\1\36\1\4\1\36\1\3\3\36\2\27\1\2\1\27\1\6\10\27\1\25\1\27\1\10\12\27\3\36\1\30\1\17\1\36\1\27\1\16\1\1\1\21\1\5\3\27\1\20\6\27\1\7\2\27\1\23\1\11\1\24\1\22\4\27\uff85\36",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\7\41\1\40\6\41\1\37\13\41",
+            "\12\41\7\uffff\16\41\1\43\13\41\4\uffff\1\41\1\uffff\32\41",
             "",
             "",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\27\37\1\44\2\37",
-            "\12\37\7\uffff\27\37\1\45\2\37\4\uffff\1\37\1\uffff\32\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\24\37\1\46\5\37",
-            "\12\37\7\uffff\24\37\1\47\5\37\4\uffff\1\37\1\uffff\32\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\7\37\1\50\22\37",
-            "",
-            "",
-            "",
-            "",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\16\37\1\55\13\37",
-            "\12\37\7\uffff\1\37\1\56\30\37\4\uffff\1\37\1\uffff\32\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\15\37\1\57\14\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\16\37\1\60\13\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\16\37\1\61\13\37",
-            "\12\37\7\uffff\1\62\31\37\4\uffff\1\37\1\uffff\32\37",
-            "",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\32\37",
-            "\32\64\4\uffff\1\64\1\uffff\32\64",
-            "",
-            "\0\66",
-            "\0\66",
-            "\1\67\4\uffff\1\70",
-            "",
-            "",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\15\37\1\72\14\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\1\73\31\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\32\37",
-            "",
-            "\12\37\7\uffff\15\37\1\74\14\37\4\uffff\1\37\1\uffff\32\37",
-            "",
-            "",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\23\37\1\75\6\37",
-            "\12\37\7\uffff\23\37\1\76\6\37\4\uffff\1\37\1\uffff\32\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\21\37\1\77\10\37",
-            "\12\37\7\uffff\21\37\1\100\10\37\4\uffff\1\37\1\uffff\32\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\21\37\1\101\10\37",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\27\41\1\46\2\41",
+            "\12\41\7\uffff\27\41\1\47\2\41\4\uffff\1\41\1\uffff\32\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\24\41\1\50\5\41",
+            "\12\41\7\uffff\24\41\1\51\5\41\4\uffff\1\41\1\uffff\32\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\7\41\1\52\22\41",
             "",
             "",
             "",
             "",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\16\37\1\102\13\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\16\37\1\103\13\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\23\37\1\104\6\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\24\37\1\105\5\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\10\37\1\106\21\37",
-            "\12\37\7\uffff\15\37\1\107\14\37\4\uffff\1\37\1\uffff\32\37",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\16\41\1\57\13\41",
+            "\12\41\7\uffff\1\41\1\60\30\41\4\uffff\1\41\1\uffff\32\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\15\41\1\61\14\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\16\41\1\62\13\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\16\41\1\63\13\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\10\41\1\64\21\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\15\41\1\65\14\41",
+            "\12\41\7\uffff\1\66\31\41\4\uffff\1\41\1\uffff\32\41",
+            "",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "\32\70\4\uffff\1\70\1\uffff\32\70",
+            "",
+            "\0\72",
+            "\0\72",
+            "\1\73\4\uffff\1\74",
+            "",
+            "",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\15\41\1\76\14\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\1\77\31\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "",
+            "\12\41\7\uffff\15\41\1\100\14\41\4\uffff\1\41\1\uffff\32\41",
+            "",
+            "",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\23\41\1\101\6\41",
+            "\12\41\7\uffff\23\41\1\102\6\41\4\uffff\1\41\1\uffff\32\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\21\41\1\103\10\41",
+            "\12\41\7\uffff\21\41\1\104\10\41\4\uffff\1\41\1\uffff\32\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\21\41\1\105\10\41",
+            "",
+            "",
+            "",
+            "",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\16\41\1\106\13\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\16\41\1\107\13\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\23\41\1\110\6\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\24\41\1\111\5\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\10\41\1\112\21\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\6\41\1\113\23\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\22\41\1\114\7\41",
+            "\12\41\7\uffff\15\41\1\115\14\41\4\uffff\1\41\1\uffff\32\41",
             "",
             "",
             "",
@@ -1335,56 +1397,68 @@ public class InternalDmplLexer extends Lexer {
             "",
             "",
             "",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\22\37\1\110\7\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\21\37\1\111\10\37",
-            "\12\37\7\uffff\22\37\1\112\7\37\4\uffff\1\37\1\uffff\32\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\4\37\1\113\25\37",
-            "\12\37\7\uffff\4\37\1\114\25\37\4\uffff\1\37\1\uffff\32\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\4\37\1\115\25\37",
-            "\12\37\7\uffff\4\37\1\116\25\37\4\uffff\1\37\1\uffff\32\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\4\37\1\117\25\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\13\37\1\120\16\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\16\37\1\121\13\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\32\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\1\37\1\123\30\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\3\37\1\124\26\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\32\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\23\37\1\126\6\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\32\37",
-            "\12\37\7\uffff\23\37\1\130\6\37\4\uffff\1\37\1\uffff\32\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\21\37\1\131\10\37",
-            "\12\37\7\uffff\21\37\1\132\10\37\4\uffff\1\37\1\uffff\32\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\32\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\32\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\1\135\31\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\32\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\13\37\1\137\16\37",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\22\41\1\116\7\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\21\41\1\117\10\41",
+            "\12\41\7\uffff\22\41\1\120\7\41\4\uffff\1\41\1\uffff\32\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\4\41\1\121\25\41",
+            "\12\41\7\uffff\4\41\1\122\25\41\4\uffff\1\41\1\uffff\32\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\4\41\1\123\25\41",
+            "\12\41\7\uffff\4\41\1\124\25\41\4\uffff\1\41\1\uffff\32\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\4\41\1\125\25\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\13\41\1\126\16\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\16\41\1\127\13\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\1\41\1\131\30\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\3\41\1\132\26\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\15\41\1\133\14\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\10\41\1\134\21\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\23\41\1\136\6\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "\12\41\7\uffff\23\41\1\140\6\41\4\uffff\1\41\1\uffff\32\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\21\41\1\141\10\41",
+            "\12\41\7\uffff\21\41\1\142\10\41\4\uffff\1\41\1\uffff\32\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\1\145\31\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\13\41\1\147\16\41",
             "",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\13\37\1\140\16\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\32\37",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\13\41\1\150\16\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\4\41\1\152\25\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\6\41\1\153\23\41",
             "",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\32\37",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
             "",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\32\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\15\37\1\144\14\37",
-            "\12\37\7\uffff\15\37\1\145\14\37\4\uffff\1\37\1\uffff\32\37",
-            "",
-            "",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\3\37\1\146\26\37",
-            "",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\32\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\4\37\1\150\25\37",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\15\41\1\156\14\41",
+            "\12\41\7\uffff\15\41\1\157\14\41\4\uffff\1\41\1\uffff\32\41",
             "",
             "",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\3\41\1\160\26\41",
             "",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\32\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\32\37",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\32\37",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\4\41\1\162\25\41",
             "",
-            "\12\37\7\uffff\32\37\4\uffff\1\37\1\uffff\32\37",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\3\41\1\163\26\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\15\41\1\164\14\41",
+            "",
+            "",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\4\41\1\172\25\41",
             "",
             "",
             "",
+            "",
+            "",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\3\41\1\173\26\41",
+            "\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
             ""
     };
 
@@ -1418,7 +1492,7 @@ public class InternalDmplLexer extends Lexer {
             this.transition = DFA13_transition;
         }
         public String getDescription() {
-            return "1:1: Tokens : ( T__12 | T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | RULE_TIDENTIFIER | RULE_ID | RULE_INT | RULE_STRING | RULE_ML_COMMENT | RULE_SL_COMMENT | RULE_WS | RULE_ANY_OTHER );";
+            return "1:1: Tokens : ( T__12 | T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | T__34 | RULE_TIDENTIFIER | RULE_ID | RULE_INT | RULE_STRING | RULE_ML_COMMENT | RULE_SL_COMMENT | RULE_WS | RULE_ANY_OTHER );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             IntStream input = _input;
@@ -1464,45 +1538,49 @@ public class InternalDmplLexer extends Lexer {
 
                         else if ( (LA13_0=='v') ) {s = 18;}
 
-                        else if ( (LA13_0=='N') ) {s = 19;}
+                        else if ( (LA13_0=='s') ) {s = 19;}
 
-                        else if ( (LA13_0=='.') ) {s = 20;}
+                        else if ( (LA13_0=='u') ) {s = 20;}
 
-                        else if ( ((LA13_0>='A' && LA13_0<='B')||LA13_0=='D'||(LA13_0>='F' && LA13_0<='M')||LA13_0=='O'||(LA13_0>='Q' && LA13_0<='Z')||LA13_0=='a'||(LA13_0>='f' && LA13_0<='h')||(LA13_0>='j' && LA13_0<='o')||(LA13_0>='q' && LA13_0<='s')||LA13_0=='u'||(LA13_0>='w' && LA13_0<='z')) ) {s = 21;}
+                        else if ( (LA13_0=='N') ) {s = 21;}
 
-                        else if ( (LA13_0=='^') ) {s = 22;}
+                        else if ( (LA13_0=='.') ) {s = 22;}
 
-                        else if ( ((LA13_0>='0' && LA13_0<='9')) ) {s = 23;}
+                        else if ( ((LA13_0>='A' && LA13_0<='B')||LA13_0=='D'||(LA13_0>='F' && LA13_0<='M')||LA13_0=='O'||(LA13_0>='Q' && LA13_0<='Z')||LA13_0=='a'||(LA13_0>='f' && LA13_0<='h')||(LA13_0>='j' && LA13_0<='o')||(LA13_0>='q' && LA13_0<='r')||(LA13_0>='w' && LA13_0<='z')) ) {s = 23;}
 
-                        else if ( (LA13_0=='\"') ) {s = 24;}
+                        else if ( (LA13_0=='^') ) {s = 24;}
 
-                        else if ( (LA13_0=='\'') ) {s = 25;}
+                        else if ( ((LA13_0>='0' && LA13_0<='9')) ) {s = 25;}
 
-                        else if ( (LA13_0=='/') ) {s = 26;}
+                        else if ( (LA13_0=='\"') ) {s = 26;}
 
-                        else if ( ((LA13_0>='\t' && LA13_0<='\n')||LA13_0=='\r'||LA13_0==' ') ) {s = 27;}
+                        else if ( (LA13_0=='\'') ) {s = 27;}
 
-                        else if ( ((LA13_0>='\u0000' && LA13_0<='\b')||(LA13_0>='\u000B' && LA13_0<='\f')||(LA13_0>='\u000E' && LA13_0<='\u001F')||LA13_0=='!'||(LA13_0>='#' && LA13_0<='&')||LA13_0=='*'||LA13_0==','||LA13_0==':'||LA13_0=='<'||(LA13_0>='>' && LA13_0<='@')||(LA13_0>='[' && LA13_0<=']')||LA13_0=='`'||(LA13_0>='{' && LA13_0<='\uFFFF')) ) {s = 28;}
+                        else if ( (LA13_0=='/') ) {s = 28;}
+
+                        else if ( ((LA13_0>='\t' && LA13_0<='\n')||LA13_0=='\r'||LA13_0==' ') ) {s = 29;}
+
+                        else if ( ((LA13_0>='\u0000' && LA13_0<='\b')||(LA13_0>='\u000B' && LA13_0<='\f')||(LA13_0>='\u000E' && LA13_0<='\u001F')||LA13_0=='!'||(LA13_0>='#' && LA13_0<='&')||LA13_0=='*'||LA13_0==','||LA13_0==':'||LA13_0=='<'||(LA13_0>='>' && LA13_0<='@')||(LA13_0>='[' && LA13_0<=']')||LA13_0=='`'||(LA13_0>='{' && LA13_0<='\uFFFF')) ) {s = 30;}
 
                         if ( s>=0 ) return s;
                         break;
                     case 1 : 
-                        int LA13_24 = input.LA(1);
+                        int LA13_27 = input.LA(1);
 
                         s = -1;
-                        if ( ((LA13_24>='\u0000' && LA13_24<='\uFFFF')) ) {s = 54;}
+                        if ( ((LA13_27>='\u0000' && LA13_27<='\uFFFF')) ) {s = 58;}
 
-                        else s = 28;
+                        else s = 30;
 
                         if ( s>=0 ) return s;
                         break;
                     case 2 : 
-                        int LA13_25 = input.LA(1);
+                        int LA13_26 = input.LA(1);
 
                         s = -1;
-                        if ( ((LA13_25>='\u0000' && LA13_25<='\uFFFF')) ) {s = 54;}
+                        if ( ((LA13_26>='\u0000' && LA13_26<='\uFFFF')) ) {s = 58;}
 
-                        else s = 28;
+                        else s = 30;
 
                         if ( s>=0 ) return s;
                         break;

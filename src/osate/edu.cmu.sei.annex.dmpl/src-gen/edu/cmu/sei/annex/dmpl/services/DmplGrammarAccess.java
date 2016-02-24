@@ -226,19 +226,30 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 	public class TypeElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Type");
-		private final Assignment cSimpTypeAssignment = (Assignment)rule.eContents().get(1);
-		private final RuleCall cSimpTypeSimpTypeParserRuleCall_0 = (RuleCall)cSimpTypeAssignment.eContents().get(0);
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cSignedAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cSignedSignedParserRuleCall_0_0 = (RuleCall)cSignedAssignment_0.eContents().get(0);
+		private final Assignment cSimpTypeAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cSimpTypeSimpTypeParserRuleCall_1_0 = (RuleCall)cSimpTypeAssignment_1.eContents().get(0);
 		
-		//Type: //TODO: signed and unsigned
-		//	simpType=SimpType;
+		//Type:
+		//	signed=Signed? simpType=SimpType;
 		@Override public ParserRule getRule() { return rule; }
 
-		////TODO: signed and unsigned
+		//signed=Signed? simpType=SimpType
+		public Group getGroup() { return cGroup; }
+
+		//signed=Signed?
+		public Assignment getSignedAssignment_0() { return cSignedAssignment_0; }
+
+		//Signed
+		public RuleCall getSignedSignedParserRuleCall_0_0() { return cSignedSignedParserRuleCall_0_0; }
+
 		//simpType=SimpType
-		public Assignment getSimpTypeAssignment() { return cSimpTypeAssignment; }
+		public Assignment getSimpTypeAssignment_1() { return cSimpTypeAssignment_1; }
 
 		//SimpType
-		public RuleCall getSimpTypeSimpTypeParserRuleCall_0() { return cSimpTypeSimpTypeParserRuleCall_0; }
+		public RuleCall getSimpTypeSimpTypeParserRuleCall_1_0() { return cSimpTypeSimpTypeParserRuleCall_1_0; }
 	}
 
 	public class FnTypeElements extends AbstractParserRuleElementFinder {
@@ -476,6 +487,26 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getCharKeyword_5() { return cCharKeyword_5; }
 	}
 
+	public class SignedElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Signed");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final Keyword cSignedKeyword_0 = (Keyword)cAlternatives.eContents().get(0);
+		private final Keyword cUnsignedKeyword_1 = (Keyword)cAlternatives.eContents().get(1);
+		
+		//Signed returns SignedEnum:
+		//	"signed" | "unsigned";
+		@Override public ParserRule getRule() { return rule; }
+
+		//"signed" | "unsigned"
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//"signed"
+		public Keyword getSignedKeyword_0() { return cSignedKeyword_0; }
+
+		//"unsigned"
+		public Keyword getUnsignedKeyword_1() { return cUnsignedKeyword_1; }
+	}
+
 	public class DoubleElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Double");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
@@ -596,6 +627,42 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//"char"
 		public Keyword getCharCharKeyword_4_0() { return cCharCharKeyword_4_0; }
 	}
+
+	public class SignedEnumElements extends AbstractEnumRuleElementFinder {
+		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "SignedEnum");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final EnumLiteralDeclaration cUnsetEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
+		private final Keyword cUnsetUnsetKeyword_0_0 = (Keyword)cUnsetEnumLiteralDeclaration_0.eContents().get(0);
+		private final EnumLiteralDeclaration cSignedEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
+		private final Keyword cSignedSignedKeyword_1_0 = (Keyword)cSignedEnumLiteralDeclaration_1.eContents().get(0);
+		private final EnumLiteralDeclaration cUnsignedEnumLiteralDeclaration_2 = (EnumLiteralDeclaration)cAlternatives.eContents().get(2);
+		private final Keyword cUnsignedUnsignedKeyword_2_0 = (Keyword)cUnsignedEnumLiteralDeclaration_2.eContents().get(0);
+		
+		//enum SignedEnum:
+		//	unset | signed | unsigned;
+		public EnumRule getRule() { return rule; }
+
+		//unset | signed | unsigned
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//unset
+		public EnumLiteralDeclaration getUnsetEnumLiteralDeclaration_0() { return cUnsetEnumLiteralDeclaration_0; }
+
+		//"unset"
+		public Keyword getUnsetUnsetKeyword_0_0() { return cUnsetUnsetKeyword_0_0; }
+
+		//signed
+		public EnumLiteralDeclaration getSignedEnumLiteralDeclaration_1() { return cSignedEnumLiteralDeclaration_1; }
+
+		//"signed"
+		public Keyword getSignedSignedKeyword_1_0() { return cSignedSignedKeyword_1_0; }
+
+		//unsigned
+		public EnumLiteralDeclaration getUnsignedEnumLiteralDeclaration_2() { return cUnsignedEnumLiteralDeclaration_2; }
+
+		//"unsigned"
+		public Keyword getUnsignedUnsignedKeyword_2_0() { return cUnsignedUnsignedKeyword_2_0; }
+	}
 	
 	private final ProgramElements pProgram;
 	private final AnnexSubclauseElements pAnnexSubclause;
@@ -615,6 +682,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final SignElements pSign;
 	private final SimpTypeEnumElements unknownRuleSimpTypeEnum;
 	private final SimpTypeElements pSimpType;
+	private final SignedEnumElements unknownRuleSignedEnum;
+	private final SignedElements pSigned;
 	private final DoubleElements pDouble;
 	private final TerminalRule tTIDENTIFIER;
 	
@@ -645,6 +714,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pSign = new SignElements();
 		this.unknownRuleSimpTypeEnum = new SimpTypeEnumElements();
 		this.pSimpType = new SimpTypeElements();
+		this.unknownRuleSignedEnum = new SignedEnumElements();
+		this.pSigned = new SignedElements();
 		this.pDouble = new DoubleElements();
 		this.tTIDENTIFIER = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "TIDENTIFIER");
 	}
@@ -756,8 +827,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getDoubleConstAccess().getRule();
 	}
 
-	//Type: //TODO: signed and unsigned
-	//	simpType=SimpType;
+	//Type:
+	//	signed=Signed? simpType=SimpType;
 	public TypeElements getTypeAccess() {
 		return pType;
 	}
@@ -855,6 +926,26 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getSimpTypeRule() {
 		return getSimpTypeAccess().getRule();
+	}
+
+	//enum SignedEnum:
+	//	unset | signed | unsigned;
+	public SignedEnumElements getSignedEnumAccess() {
+		return unknownRuleSignedEnum;
+	}
+	
+	public EnumRule getSignedEnumRule() {
+		return getSignedEnumAccess().getRule();
+	}
+
+	//Signed returns SignedEnum:
+	//	"signed" | "unsigned";
+	public SignedElements getSignedAccess() {
+		return pSigned;
+	}
+	
+	public ParserRule getSignedRule() {
+		return getSignedAccess().getRule();
 	}
 
 	//Double returns ecore::EDouble:

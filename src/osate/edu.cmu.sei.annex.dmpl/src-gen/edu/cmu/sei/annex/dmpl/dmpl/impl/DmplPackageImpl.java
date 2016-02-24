@@ -18,6 +18,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
 import edu.cmu.sei.annex.dmpl.dmpl.Program;
 import edu.cmu.sei.annex.dmpl.dmpl.ProgramElement;
 import edu.cmu.sei.annex.dmpl.dmpl.SignEnum;
+import edu.cmu.sei.annex.dmpl.dmpl.SignedEnum;
 import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum;
 import edu.cmu.sei.annex.dmpl.dmpl.ThreadDeclaration;
 import edu.cmu.sei.annex.dmpl.dmpl.Type;
@@ -158,6 +159,13 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EEnum simpTypeEnumEEnum = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EEnum signedEnumEEnum = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -380,9 +388,19 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getType_SimpType()
+  public EAttribute getType_Signed()
   {
     return (EAttribute)typeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getType_SimpType()
+  {
+    return (EAttribute)typeEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -560,6 +578,16 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EEnum getSignedEnum()
+  {
+    return signedEnumEEnum;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public DmplFactory getDmplFactory()
   {
     return (DmplFactory)getEFactoryInstance();
@@ -607,6 +635,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     createEAttribute(doubleConstEClass, DOUBLE_CONST__VALUE);
 
     typeEClass = createEClass(TYPE);
+    createEAttribute(typeEClass, TYPE__SIGNED);
     createEAttribute(typeEClass, TYPE__SIMP_TYPE);
 
     fnTypeEClass = createEClass(FN_TYPE);
@@ -634,6 +663,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     // Create enums
     signEnumEEnum = createEEnum(SIGN_ENUM);
     simpTypeEnumEEnum = createEEnum(SIMP_TYPE_ENUM);
+    signedEnumEEnum = createEEnum(SIGNED_ENUM);
   }
 
   /**
@@ -699,6 +729,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEAttribute(getDoubleConst_Value(), ecorePackage.getEDouble(), "value", null, 0, 1, DoubleConst.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(typeEClass, Type.class, "Type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getType_Signed(), this.getSignedEnum(), "signed", null, 0, 1, Type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getType_SimpType(), this.getSimpTypeEnum(), "simpType", null, 0, 1, Type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(fnTypeEClass, FnType.class, "FnType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -735,6 +766,11 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     addEEnumLiteral(simpTypeEnumEEnum, SimpTypeEnum.DOUBLE);
     addEEnumLiteral(simpTypeEnumEEnum, SimpTypeEnum.VOID);
     addEEnumLiteral(simpTypeEnumEEnum, SimpTypeEnum.CHAR);
+
+    initEEnum(signedEnumEEnum, SignedEnum.class, "SignedEnum");
+    addEEnumLiteral(signedEnumEEnum, SignedEnum.UNSET);
+    addEEnumLiteral(signedEnumEEnum, SignedEnum.SIGNED);
+    addEEnumLiteral(signedEnumEEnum, SignedEnum.UNSIGNED);
 
     // Create resource
     createResource(eNS_URI);

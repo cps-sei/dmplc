@@ -438,25 +438,43 @@ ruleType returns [EObject current=null]
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
-(
+((
 (
 		{ 
-	        newCompositeNode(grammarAccess.getTypeAccess().getSimpTypeSimpTypeParserRuleCall_0()); 
+	        newCompositeNode(grammarAccess.getTypeAccess().getSignedSignedParserRuleCall_0_0()); 
 	    }
-		lv_simpType_0_0=ruleSimpType		{
+		lv_signed_0_0=ruleSigned		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getTypeRule());
+	        }
+       		set(
+       			$current, 
+       			"signed",
+        		lv_signed_0_0, 
+        		"Signed");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)?(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getTypeAccess().getSimpTypeSimpTypeParserRuleCall_1_0()); 
+	    }
+		lv_simpType_1_0=ruleSimpType		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getTypeRule());
 	        }
        		set(
        			$current, 
        			"simpType",
-        		lv_simpType_0_0, 
+        		lv_simpType_1_0, 
         		"SimpType");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-)
+))
 ;
 
 
@@ -879,6 +897,40 @@ ruleSimpType returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken(
 
 
 
+// Entry rule entryRuleSigned
+entryRuleSigned returns [String current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getSignedRule()); } 
+	 iv_ruleSigned=ruleSigned 
+	 { $current=$iv_ruleSigned.current.getText(); }  
+	 EOF 
+;
+
+// Rule Signed
+ruleSigned returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(
+	kw='signed' 
+    {
+        $current.merge(kw);
+        newLeafNode(kw, grammarAccess.getSignedAccess().getSignedKeyword_0()); 
+    }
+
+    |
+	kw='unsigned' 
+    {
+        $current.merge(kw);
+        newLeafNode(kw, grammarAccess.getSignedAccess().getUnsignedKeyword_1()); 
+    }
+)
+    ;
+
+
+
+
+
 // Entry rule entryRuleDouble
 entryRuleDouble returns [String current=null] 
 	:
@@ -922,6 +974,8 @@ ruleDouble returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()]
     }
 )?))
     ;
+
+
 
 
 

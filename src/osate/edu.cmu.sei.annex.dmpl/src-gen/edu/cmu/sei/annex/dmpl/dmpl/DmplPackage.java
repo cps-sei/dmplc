@@ -338,13 +338,22 @@ public interface DmplPackage extends EPackage
   int TYPE = 7;
 
   /**
+   * The feature id for the '<em><b>Signed</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int TYPE__SIGNED = 0;
+
+  /**
    * The feature id for the '<em><b>Simp Type</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int TYPE__SIMP_TYPE = 0;
+  int TYPE__SIMP_TYPE = 1;
 
   /**
    * The number of structural features of the '<em>Type</em>' class.
@@ -353,7 +362,7 @@ public interface DmplPackage extends EPackage
    * @generated
    * @ordered
    */
-  int TYPE_FEATURE_COUNT = 1;
+  int TYPE_FEATURE_COUNT = 2;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnTypeImpl <em>Fn Type</em>}' class.
@@ -598,6 +607,16 @@ public interface DmplPackage extends EPackage
    */
   int SIMP_TYPE_ENUM = 16;
 
+  /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SignedEnum <em>Signed Enum</em>}' enum.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.SignedEnum
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignedEnum()
+   * @generated
+   */
+  int SIGNED_ENUM = 17;
+
 
   /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.Program <em>Program</em>}'.
@@ -755,6 +774,17 @@ public interface DmplPackage extends EPackage
    * @generated
    */
   EClass getType();
+
+  /**
+   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.Type#getSigned <em>Signed</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Signed</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Type#getSigned()
+   * @see #getType()
+   * @generated
+   */
+  EAttribute getType_Signed();
 
   /**
    * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.Type#getSimpType <em>Simp Type</em>}'.
@@ -946,6 +976,16 @@ public interface DmplPackage extends EPackage
   EEnum getSimpTypeEnum();
 
   /**
+   * Returns the meta object for enum '{@link edu.cmu.sei.annex.dmpl.dmpl.SignedEnum <em>Signed Enum</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for enum '<em>Signed Enum</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.SignedEnum
+   * @generated
+   */
+  EEnum getSignedEnum();
+
+  /**
    * Returns the factory that creates the instances of the model.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1103,6 +1143,14 @@ public interface DmplPackage extends EPackage
      * @generated
      */
     EClass TYPE = eINSTANCE.getType();
+
+    /**
+     * The meta object literal for the '<em><b>Signed</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute TYPE__SIGNED = eINSTANCE.getType_Signed();
 
     /**
      * The meta object literal for the '<em><b>Simp Type</b></em>' attribute feature.
@@ -1265,6 +1313,16 @@ public interface DmplPackage extends EPackage
      * @generated
      */
     EEnum SIMP_TYPE_ENUM = eINSTANCE.getSimpTypeEnum();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SignedEnum <em>Signed Enum</em>}' enum.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.SignedEnum
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignedEnum()
+     * @generated
+     */
+    EEnum SIGNED_ENUM = eINSTANCE.getSignedEnum();
 
   }
 

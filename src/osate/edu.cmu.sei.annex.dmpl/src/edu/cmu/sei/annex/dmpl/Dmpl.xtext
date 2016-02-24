@@ -40,8 +40,7 @@ DoubleConst:
 ;
 
 Type:
-	//TODO: signed and unsigned
-	simpType=SimpType
+	signed=Signed? simpType=SimpType
 ;
 
 FnType:
@@ -84,6 +83,14 @@ enum SimpTypeEnum:
 
 SimpType returns SimpTypeEnum:
 	'bool' | '_Bool' | 'int' | 'double' | 'void' | 'char'
+;
+
+enum SignedEnum:
+	unset | signed | unsigned
+;
+
+Signed returns SignedEnum:
+	'signed' | 'unsigned'
 ;
 
 Double returns ecore::EDouble:

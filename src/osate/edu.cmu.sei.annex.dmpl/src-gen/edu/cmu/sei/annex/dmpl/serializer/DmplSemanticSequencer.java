@@ -229,16 +229,9 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     simpType=SimpType
+	 *     (signed=Signed? simpType=SimpType)
 	 */
 	protected void sequence_Type(EObject context, Type semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.TYPE__SIMP_TYPE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.TYPE__SIMP_TYPE));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getTypeAccess().getSimpTypeSimpTypeParserRuleCall_0(), semanticObject.getSimpType());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 }
