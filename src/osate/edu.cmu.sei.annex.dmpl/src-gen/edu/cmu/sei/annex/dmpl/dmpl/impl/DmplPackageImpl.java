@@ -8,7 +8,9 @@ import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplSubclause;
 import edu.cmu.sei.annex.dmpl.dmpl.DoubleConst;
 import edu.cmu.sei.annex.dmpl.dmpl.FnPrototype;
+import edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration;
 import edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeNoDecors;
+import edu.cmu.sei.annex.dmpl.dmpl.FnType;
 import edu.cmu.sei.annex.dmpl.dmpl.IntConst;
 import edu.cmu.sei.annex.dmpl.dmpl.NumberConst;
 import edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr;
@@ -16,6 +18,9 @@ import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
 import edu.cmu.sei.annex.dmpl.dmpl.Program;
 import edu.cmu.sei.annex.dmpl.dmpl.ProgramElement;
 import edu.cmu.sei.annex.dmpl.dmpl.SignEnum;
+import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum;
+import edu.cmu.sei.annex.dmpl.dmpl.ThreadDeclaration;
+import edu.cmu.sei.annex.dmpl.dmpl.Type;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -89,6 +94,20 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass typeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass fnTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass procedureEClass = null;
 
   /**
@@ -117,7 +136,28 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass threadDeclarationEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass fnPrototypeDeclarationEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EEnum signEnumEEnum = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EEnum simpTypeEnumEEnum = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -330,6 +370,46 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getType()
+  {
+    return typeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getType_SimpType()
+  {
+    return (EAttribute)typeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getFnType()
+  {
+    return fnTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getFnType_Type()
+  {
+    return (EReference)fnTypeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getProcedure()
   {
     return procedureEClass;
@@ -430,9 +510,49 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getThreadDeclaration()
+  {
+    return threadDeclarationEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getFnPrototypeDeclaration()
+  {
+    return fnPrototypeDeclarationEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getFnPrototypeDeclaration_Type()
+  {
+    return (EReference)fnPrototypeDeclarationEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EEnum getSignEnum()
   {
     return signEnumEEnum;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EEnum getSimpTypeEnum()
+  {
+    return simpTypeEnumEEnum;
   }
 
   /**
@@ -486,6 +606,12 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     doubleConstEClass = createEClass(DOUBLE_CONST);
     createEAttribute(doubleConstEClass, DOUBLE_CONST__VALUE);
 
+    typeEClass = createEClass(TYPE);
+    createEAttribute(typeEClass, TYPE__SIMP_TYPE);
+
+    fnTypeEClass = createEClass(FN_TYPE);
+    createEReference(fnTypeEClass, FN_TYPE__TYPE);
+
     procedureEClass = createEClass(PROCEDURE);
     createEReference(procedureEClass, PROCEDURE__PROCEDURE);
 
@@ -500,8 +626,14 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     fnPrototypeNoDecorsEClass = createEClass(FN_PROTOTYPE_NO_DECORS);
     createEAttribute(fnPrototypeNoDecorsEClass, FN_PROTOTYPE_NO_DECORS__NAME);
 
+    threadDeclarationEClass = createEClass(THREAD_DECLARATION);
+
+    fnPrototypeDeclarationEClass = createEClass(FN_PROTOTYPE_DECLARATION);
+    createEReference(fnPrototypeDeclarationEClass, FN_PROTOTYPE_DECLARATION__TYPE);
+
     // Create enums
     signEnumEEnum = createEEnum(SIGN_ENUM);
+    simpTypeEnumEEnum = createEEnum(SIMP_TYPE_ENUM);
   }
 
   /**
@@ -541,6 +673,8 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     intConstEClass.getESuperTypes().add(this.getNumberConst());
     doubleConstEClass.getESuperTypes().add(this.getNumberConst());
     procedureEClass.getESuperTypes().add(this.getProgramElement());
+    threadDeclarationEClass.getESuperTypes().add(this.getFnPrototypeNoDecors());
+    fnPrototypeDeclarationEClass.getESuperTypes().add(this.getFnPrototypeNoDecors());
 
     // Initialize classes and features; add operations and parameters
     initEClass(programEClass, Program.class, "Program", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -564,6 +698,12 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEClass(doubleConstEClass, DoubleConst.class, "DoubleConst", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getDoubleConst_Value(), ecorePackage.getEDouble(), "value", null, 0, 1, DoubleConst.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(typeEClass, Type.class, "Type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getType_SimpType(), this.getSimpTypeEnum(), "simpType", null, 0, 1, Type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(fnTypeEClass, FnType.class, "FnType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getFnType_Type(), this.getType(), null, "type", null, 0, 1, FnType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     initEClass(procedureEClass, Procedure.class, "Procedure", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getProcedure_Procedure(), this.getProcNoAttr(), null, "procedure", null, 0, 1, Procedure.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -578,11 +718,23 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEClass(fnPrototypeNoDecorsEClass, FnPrototypeNoDecors.class, "FnPrototypeNoDecors", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getFnPrototypeNoDecors_Name(), ecorePackage.getEString(), "name", null, 0, 1, FnPrototypeNoDecors.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(threadDeclarationEClass, ThreadDeclaration.class, "ThreadDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(fnPrototypeDeclarationEClass, FnPrototypeDeclaration.class, "FnPrototypeDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getFnPrototypeDeclaration_Type(), this.getFnType(), null, "type", null, 0, 1, FnPrototypeDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     // Initialize enums and add enum literals
     initEEnum(signEnumEEnum, SignEnum.class, "SignEnum");
     addEEnumLiteral(signEnumEEnum, SignEnum.UNSET);
     addEEnumLiteral(signEnumEEnum, SignEnum.PLUS);
     addEEnumLiteral(signEnumEEnum, SignEnum.MINUS);
+
+    initEEnum(simpTypeEnumEEnum, SimpTypeEnum.class, "SimpTypeEnum");
+    addEEnumLiteral(simpTypeEnumEEnum, SimpTypeEnum.BOOL);
+    addEEnumLiteral(simpTypeEnumEEnum, SimpTypeEnum.INT);
+    addEEnumLiteral(simpTypeEnumEEnum, SimpTypeEnum.DOUBLE);
+    addEEnumLiteral(simpTypeEnumEEnum, SimpTypeEnum.VOID);
+    addEEnumLiteral(simpTypeEnumEEnum, SimpTypeEnum.CHAR);
 
     // Create resource
     createResource(eNS_URI);

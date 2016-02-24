@@ -4,10 +4,13 @@ import com.google.inject.Inject
 import edu.cmu.sei.annex.dmpl.DmplInjectorProvider
 import edu.cmu.sei.annex.dmpl.dmpl.Constant
 import edu.cmu.sei.annex.dmpl.dmpl.DoubleConst
+import edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration
 import edu.cmu.sei.annex.dmpl.dmpl.IntConst
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure
 import edu.cmu.sei.annex.dmpl.dmpl.Program
 import edu.cmu.sei.annex.dmpl.dmpl.SignEnum
+import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum
+import edu.cmu.sei.annex.dmpl.dmpl.ThreadDeclaration
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
@@ -129,39 +132,92 @@ class ParserTest {
 			assertNoIssues
 			7.assertEquals(programElements.size)
 			(programElements.get(0) as Procedure).procedure.prototype => [
-				"t1".assertEquals(prototype.name)
 				pure.assertFalse
 				extern.assertFalse
+				prototype as ThreadDeclaration => [
+					"t1".assertEquals(name)
+				]
 			]
 			(programElements.get(1) as Procedure).procedure.prototype => [
-				"t2".assertEquals(prototype.name)
 				pure.assertTrue
 				extern.assertFalse
+				prototype as ThreadDeclaration => [
+					"t2".assertEquals(name)
+				]
 			]
 			(programElements.get(2) as Procedure).procedure.prototype => [
-				"t3".assertEquals(prototype.name)
 				pure.assertTrue
 				extern.assertFalse
+				prototype as ThreadDeclaration => [
+					"t3".assertEquals(name)
+				]
 			]
 			(programElements.get(3) as Procedure).procedure.prototype => [
-				"t4".assertEquals(prototype.name)
 				pure.assertFalse
 				extern.assertTrue
+				prototype as ThreadDeclaration => [
+					"t4".assertEquals(name)
+				]
 			]
 			(programElements.get(4) as Procedure).procedure.prototype => [
-				"t5".assertEquals(prototype.name)
 				pure.assertFalse
 				extern.assertTrue
+				prototype as ThreadDeclaration => [
+					"t5".assertEquals(name)
+				]
 			]
 			(programElements.get(5) as Procedure).procedure.prototype => [
-				"t6".assertEquals(prototype.name)
 				pure.assertTrue
 				extern.assertTrue
+				prototype as ThreadDeclaration => [
+					"t6".assertEquals(name)
+				]
 			]
 			(programElements.get(6) as Procedure).procedure.prototype => [
-				"t7".assertEquals(prototype.name)
 				pure.assertTrue
 				extern.assertTrue
+				prototype as ThreadDeclaration => [
+					"t7".assertEquals(name)
+				]
+			]
+		]
+	}
+	
+	@Test
+	def void testSimpType() {
+		'''
+			bool f1();
+			_Bool f2();
+			int f3();
+			double f4();
+			void f5();
+			char f6();
+		'''.parse => [
+			assertNoIssues
+			6.assertEquals(programElements.size)
+			(programElements.get(0) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
+				"f1".assertEquals(name)
+				SimpTypeEnum.BOOL.assertEquals(type.type.simpType)
+			]
+			(programElements.get(1) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
+				"f2".assertEquals(name)
+				SimpTypeEnum.BOOL.assertEquals(type.type.simpType)
+			]
+			(programElements.get(2) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
+				"f3".assertEquals(name)
+				SimpTypeEnum.INT.assertEquals(type.type.simpType)
+			]
+			(programElements.get(3) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
+				"f4".assertEquals(name)
+				SimpTypeEnum.DOUBLE.assertEquals(type.type.simpType)
+			]
+			(programElements.get(4) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
+				"f5".assertEquals(name)
+				SimpTypeEnum.VOID.assertEquals(type.type.simpType)
+			]
+			(programElements.get(5) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
+				"f6".assertEquals(name)
+				SimpTypeEnum.CHAR.assertEquals(type.type.simpType)
 			]
 		]
 	}

@@ -2,6 +2,7 @@ package edu.cmu.sei.annex.dmpl.tests
 
 import com.google.inject.Inject
 import edu.cmu.sei.annex.dmpl.DmplInjectorProvider
+import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum
 import edu.cmu.sei.annex.dmpl.services.DmplGrammarAccess
 import org.eclipse.xtext.conversion.IValueConverterService
 import org.eclipse.xtext.junit4.InjectWith
@@ -20,14 +21,31 @@ class ValueConverterTest {
 	DmplGrammarAccess grammarAccess
 	
 	@Test
-	def void testToValue() {
+	def void testDoubleRule() {
+		//toValue
 		12.34.assertEquals(valueConverter.toValue("12.34", grammarAccess.doubleRule.name, null))
 		Double.NaN.assertEquals(valueConverter.toValue("NAN", grammarAccess.doubleRule.name, null))
+		
+		//toString
+		"12.34".assertEquals(valueConverter.toString(12.34, grammarAccess.doubleRule.name))
+		"NAN".assertEquals(valueConverter.toString(Double.NaN, grammarAccess.doubleRule.name))
 	}
 	
 	@Test
-	def void testToString() {
-		"12.34".assertEquals(valueConverter.toString(12.34, grammarAccess.doubleRule.name))
-		"NAN".assertEquals(valueConverter.toString(Double.NaN, grammarAccess.doubleRule.name))
+	def void testSimpType() {
+		//toValue
+		SimpTypeEnum.BOOL.assertEquals(valueConverter.toValue("bool", grammarAccess.simpTypeRule.name, null))
+		SimpTypeEnum.BOOL.assertEquals(valueConverter.toValue("_Bool", grammarAccess.simpTypeRule.name, null))
+		SimpTypeEnum.INT.assertEquals(valueConverter.toValue("int", grammarAccess.simpTypeRule.name, null))
+		SimpTypeEnum.DOUBLE.assertEquals(valueConverter.toValue("double", grammarAccess.simpTypeRule.name, null))
+		SimpTypeEnum.VOID.assertEquals(valueConverter.toValue("void", grammarAccess.simpTypeRule.name, null))
+		SimpTypeEnum.CHAR.assertEquals(valueConverter.toValue("char", grammarAccess.simpTypeRule.name, null))
+		
+		//toString
+		"bool".assertEquals(valueConverter.toString(SimpTypeEnum.BOOL, grammarAccess.simpTypeRule.name))
+		"int".assertEquals(valueConverter.toString(SimpTypeEnum.INT, grammarAccess.simpTypeRule.name))
+		"double".assertEquals(valueConverter.toString(SimpTypeEnum.DOUBLE, grammarAccess.simpTypeRule.name))
+		"void".assertEquals(valueConverter.toString(SimpTypeEnum.VOID, grammarAccess.simpTypeRule.name))
+		"char".assertEquals(valueConverter.toString(SimpTypeEnum.CHAR, grammarAccess.simpTypeRule.name))
 	}
 }

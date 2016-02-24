@@ -72,10 +72,14 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.NUMBER_CONST: return createNumberConst();
       case DmplPackage.INT_CONST: return createIntConst();
       case DmplPackage.DOUBLE_CONST: return createDoubleConst();
+      case DmplPackage.TYPE: return createType();
+      case DmplPackage.FN_TYPE: return createFnType();
       case DmplPackage.PROCEDURE: return createProcedure();
       case DmplPackage.PROC_NO_ATTR: return createProcNoAttr();
       case DmplPackage.FN_PROTOTYPE: return createFnPrototype();
       case DmplPackage.FN_PROTOTYPE_NO_DECORS: return createFnPrototypeNoDecors();
+      case DmplPackage.THREAD_DECLARATION: return createThreadDeclaration();
+      case DmplPackage.FN_PROTOTYPE_DECLARATION: return createFnPrototypeDeclaration();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -93,6 +97,8 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
     {
       case DmplPackage.SIGN_ENUM:
         return createSignEnumFromString(eDataType, initialValue);
+      case DmplPackage.SIMP_TYPE_ENUM:
+        return createSimpTypeEnumFromString(eDataType, initialValue);
       default:
         throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
@@ -110,6 +116,8 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
     {
       case DmplPackage.SIGN_ENUM:
         return convertSignEnumToString(eDataType, instanceValue);
+      case DmplPackage.SIMP_TYPE_ENUM:
+        return convertSimpTypeEnumToString(eDataType, instanceValue);
       default:
         throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
@@ -197,6 +205,28 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  public Type createType()
+  {
+    TypeImpl type = new TypeImpl();
+    return type;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public FnType createFnType()
+  {
+    FnTypeImpl fnType = new FnTypeImpl();
+    return fnType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public Procedure createProcedure()
   {
     ProcedureImpl procedure = new ProcedureImpl();
@@ -241,6 +271,28 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  public ThreadDeclaration createThreadDeclaration()
+  {
+    ThreadDeclarationImpl threadDeclaration = new ThreadDeclarationImpl();
+    return threadDeclaration;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public FnPrototypeDeclaration createFnPrototypeDeclaration()
+  {
+    FnPrototypeDeclarationImpl fnPrototypeDeclaration = new FnPrototypeDeclarationImpl();
+    return fnPrototypeDeclaration;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public SignEnum createSignEnumFromString(EDataType eDataType, String initialValue)
   {
     SignEnum result = SignEnum.get(initialValue);
@@ -254,6 +306,28 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * @generated
    */
   public String convertSignEnumToString(EDataType eDataType, Object instanceValue)
+  {
+    return instanceValue == null ? null : instanceValue.toString();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public SimpTypeEnum createSimpTypeEnumFromString(EDataType eDataType, String initialValue)
+  {
+    SimpTypeEnum result = SimpTypeEnum.get(initialValue);
+    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+    return result;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertSimpTypeEnumToString(EDataType eDataType, Object instanceValue)
   {
     return instanceValue == null ? null : instanceValue.toString();
   }

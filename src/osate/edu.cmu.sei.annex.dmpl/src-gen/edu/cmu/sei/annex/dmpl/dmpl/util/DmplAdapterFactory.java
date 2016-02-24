@@ -115,6 +115,16 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createDoubleConstAdapter();
       }
       @Override
+      public Adapter caseType(Type object)
+      {
+        return createTypeAdapter();
+      }
+      @Override
+      public Adapter caseFnType(FnType object)
+      {
+        return createFnTypeAdapter();
+      }
+      @Override
       public Adapter caseProcedure(Procedure object)
       {
         return createProcedureAdapter();
@@ -133,6 +143,16 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
       public Adapter caseFnPrototypeNoDecors(FnPrototypeNoDecors object)
       {
         return createFnPrototypeNoDecorsAdapter();
+      }
+      @Override
+      public Adapter caseThreadDeclaration(ThreadDeclaration object)
+      {
+        return createThreadDeclarationAdapter();
+      }
+      @Override
+      public Adapter caseFnPrototypeDeclaration(FnPrototypeDeclaration object)
+      {
+        return createFnPrototypeDeclarationAdapter();
       }
       @Override
       public Adapter caseElement(Element object)
@@ -282,6 +302,36 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Type <em>Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Type
+   * @generated
+   */
+  public Adapter createTypeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.FnType <em>Fn Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.FnType
+   * @generated
+   */
+  public Adapter createFnTypeAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Procedure <em>Procedure</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -337,6 +387,36 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createFnPrototypeNoDecorsAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.ThreadDeclaration <em>Thread Declaration</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ThreadDeclaration
+   * @generated
+   */
+  public Adapter createThreadDeclarationAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration <em>Fn Prototype Declaration</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration
+   * @generated
+   */
+  public Adapter createFnPrototypeDeclarationAdapter()
   {
     return null;
   }

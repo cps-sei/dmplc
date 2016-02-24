@@ -12,6 +12,13 @@
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SignEnum/PLUS"/>
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SignEnum/MINUS"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Dmpl.ecore#//SimpTypeEnum">
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SimpTypeEnum/bool"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SimpTypeEnum/int"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SimpTypeEnum/double"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SimpTypeEnum/void"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SimpTypeEnum/char"/>
+    </genEnums>
     <genClasses ecoreClass="Dmpl.ecore#//Program">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Program/programElements"/>
     </genClasses>
@@ -32,6 +39,12 @@
     <genClasses ecoreClass="Dmpl.ecore#//DoubleConst">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//DoubleConst/value"/>
     </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//Type">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Type/simpType"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//FnType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnType/type"/>
+    </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Procedure">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Procedure/procedure"/>
     </genClasses>
@@ -45,6 +58,10 @@
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//FnPrototypeNoDecors">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//FnPrototypeNoDecors/name"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//ThreadDeclaration"/>
+    <genClasses ecoreClass="Dmpl.ecore#//FnPrototypeDeclaration">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnPrototypeDeclaration/type"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

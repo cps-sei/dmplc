@@ -133,6 +133,20 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case DmplPackage.TYPE:
+      {
+        Type type = (Type)theEObject;
+        T result = caseType(type);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.FN_TYPE:
+      {
+        FnType fnType = (FnType)theEObject;
+        T result = caseFnType(fnType);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case DmplPackage.PROCEDURE:
       {
         Procedure procedure = (Procedure)theEObject;
@@ -159,6 +173,22 @@ public class DmplSwitch<T> extends Switch<T>
       {
         FnPrototypeNoDecors fnPrototypeNoDecors = (FnPrototypeNoDecors)theEObject;
         T result = caseFnPrototypeNoDecors(fnPrototypeNoDecors);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.THREAD_DECLARATION:
+      {
+        ThreadDeclaration threadDeclaration = (ThreadDeclaration)theEObject;
+        T result = caseThreadDeclaration(threadDeclaration);
+        if (result == null) result = caseFnPrototypeNoDecors(threadDeclaration);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.FN_PROTOTYPE_DECLARATION:
+      {
+        FnPrototypeDeclaration fnPrototypeDeclaration = (FnPrototypeDeclaration)theEObject;
+        T result = caseFnPrototypeDeclaration(fnPrototypeDeclaration);
+        if (result == null) result = caseFnPrototypeNoDecors(fnPrototypeDeclaration);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -279,6 +309,38 @@ public class DmplSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseType(Type object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Fn Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Fn Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseFnType(FnType object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Procedure</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -338,6 +400,38 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseFnPrototypeNoDecors(FnPrototypeNoDecors object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Thread Declaration</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Thread Declaration</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseThreadDeclaration(ThreadDeclaration object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Fn Prototype Declaration</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Fn Prototype Declaration</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseFnPrototypeDeclaration(FnPrototypeDeclaration object)
   {
     return null;
   }

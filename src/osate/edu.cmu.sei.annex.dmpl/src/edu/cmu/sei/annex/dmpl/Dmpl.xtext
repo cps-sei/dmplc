@@ -39,6 +39,15 @@ DoubleConst:
 	sign=Sign? value=Double
 ;
 
+Type:
+	//TODO: signed and unsigned
+	simpType=SimpType
+;
+
+FnType:
+	type=Type
+;
+
 Procedure:
 	//TODO: OVERRIDE and attr_list
 	procedure=ProcNoAttr
@@ -54,8 +63,9 @@ FnPrototype:
 ;
 
 FnPrototypeNoDecors:
-	//TODO: fn_type ID ( param_list )
-	'thread' name=TIDENTIFIER
+	{ThreadDeclaration} 'thread' name=TIDENTIFIER |
+	//TODO: param_list
+	{FnPrototypeDeclaration} type=FnType name=TIDENTIFIER '(' ')'
 ;
 
 enum SignEnum:
@@ -64,9 +74,16 @@ enum SignEnum:
 	MINUS='-'
 ;
 
-enum Sign returns SignEnum:
-	PLUS='+' |
-	MINUS='-'
+Sign returns SignEnum:
+	'+' | '-'
+;
+
+enum SimpTypeEnum:
+	bool | int | double | void | char
+;
+
+SimpType returns SimpTypeEnum:
+	'bool' | '_Bool' | 'int' | 'double' | 'void' | 'char'
 ;
 
 Double returns ecore::EDouble:
