@@ -30,12 +30,12 @@ public interface FnPrototypeDeclaration extends FnPrototypeNoDecors
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Type</em>' containment reference.
-   * @see #setType(FnType)
+   * @see #setType(Type)
    * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getFnPrototypeDeclaration_Type()
    * @model containment="true"
    * @generated
    */
-  FnType getType();
+  Type getType();
 
   /**
    * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration#getType <em>Type</em>}' containment reference.
@@ -45,6 +45,6 @@ public interface FnPrototypeDeclaration extends FnPrototypeNoDecors
    * @see #getType()
    * @generated
    */
-  void setType(FnType value);
+  void setType(Type value);
 
 } // FnPrototypeDeclaration

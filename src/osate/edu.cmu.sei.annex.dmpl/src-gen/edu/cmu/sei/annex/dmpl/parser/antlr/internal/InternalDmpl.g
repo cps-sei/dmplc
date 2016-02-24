@@ -481,45 +481,6 @@ ruleType returns [EObject current=null]
 
 
 
-// Entry rule entryRuleFnType
-entryRuleFnType returns [EObject current=null] 
-	:
-	{ newCompositeNode(grammarAccess.getFnTypeRule()); }
-	 iv_ruleFnType=ruleFnType 
-	 { $current=$iv_ruleFnType.current; } 
-	 EOF 
-;
-
-// Rule FnType
-ruleFnType returns [EObject current=null] 
-    @init { enterRule(); 
-    }
-    @after { leaveRule(); }:
-(
-(
-		{ 
-	        newCompositeNode(grammarAccess.getFnTypeAccess().getTypeTypeParserRuleCall_0()); 
-	    }
-		lv_type_0_0=ruleType		{
-	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getFnTypeRule());
-	        }
-       		set(
-       			$current, 
-       			"type",
-        		lv_type_0_0, 
-        		"Type");
-	        afterParserOrEnumRuleCall();
-	    }
-
-)
-)
-;
-
-
-
-
-
 // Entry rule entryRuleProcedure
 entryRuleProcedure returns [EObject current=null] 
 	:
@@ -753,9 +714,9 @@ ruleFnPrototypeNoDecors returns [EObject current=null]
 )(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getFnPrototypeNoDecorsAccess().getTypeFnTypeParserRuleCall_1_1_0()); 
+	        newCompositeNode(grammarAccess.getFnPrototypeNoDecorsAccess().getTypeTypeParserRuleCall_1_1_0()); 
 	    }
-		lv_type_4_0=ruleFnType		{
+		lv_type_4_0=ruleType		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getFnPrototypeNoDecorsRule());
 	        }
@@ -763,7 +724,7 @@ ruleFnPrototypeNoDecors returns [EObject current=null]
        			$current, 
        			"type",
         		lv_type_4_0, 
-        		"FnType");
+        		"Type");
 	        afterParserOrEnumRuleCall();
 	    }
 

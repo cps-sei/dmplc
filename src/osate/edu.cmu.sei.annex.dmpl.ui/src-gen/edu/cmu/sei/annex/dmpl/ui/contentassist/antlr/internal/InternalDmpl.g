@@ -282,34 +282,6 @@ finally {
 
 
 
-// Entry rule entryRuleFnType
-entryRuleFnType 
-:
-{ before(grammarAccess.getFnTypeRule()); }
-	 ruleFnType
-{ after(grammarAccess.getFnTypeRule()); } 
-	 EOF 
-;
-
-// Rule FnType
-ruleFnType
-    @init {
-		int stackSize = keepStackSize();
-    }
-	:
-(
-{ before(grammarAccess.getFnTypeAccess().getTypeAssignment()); }
-(rule__FnType__TypeAssignment)
-{ after(grammarAccess.getFnTypeAccess().getTypeAssignment()); }
-)
-
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-
-
 // Entry rule entryRuleProcedure
 entryRuleProcedure 
 :
@@ -1947,21 +1919,6 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__FnType__TypeAssignment
-    @init {
-		int stackSize = keepStackSize();
-    }
-:
-(
-{ before(grammarAccess.getFnTypeAccess().getTypeTypeParserRuleCall_0()); }
-	ruleType{ after(grammarAccess.getFnTypeAccess().getTypeTypeParserRuleCall_0()); }
-)
-
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
 rule__Procedure__ProcedureAssignment
     @init {
 		int stackSize = keepStackSize();
@@ -2060,8 +2017,8 @@ rule__FnPrototypeNoDecors__TypeAssignment_1_1
     }
 :
 (
-{ before(grammarAccess.getFnPrototypeNoDecorsAccess().getTypeFnTypeParserRuleCall_1_1_0()); }
-	ruleFnType{ after(grammarAccess.getFnPrototypeNoDecorsAccess().getTypeFnTypeParserRuleCall_1_1_0()); }
+{ before(grammarAccess.getFnPrototypeNoDecorsAccess().getTypeTypeParserRuleCall_1_1_0()); }
+	ruleType{ after(grammarAccess.getFnPrototypeNoDecorsAccess().getTypeTypeParserRuleCall_1_1_0()); }
 )
 
 ;

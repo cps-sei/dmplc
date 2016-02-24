@@ -365,34 +365,6 @@ public interface DmplPackage extends EPackage
   int TYPE_FEATURE_COUNT = 2;
 
   /**
-   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnTypeImpl <em>Fn Type</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.FnTypeImpl
-   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnType()
-   * @generated
-   */
-  int FN_TYPE = 8;
-
-  /**
-   * The feature id for the '<em><b>Type</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int FN_TYPE__TYPE = 0;
-
-  /**
-   * The number of structural features of the '<em>Fn Type</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int FN_TYPE_FEATURE_COUNT = 1;
-
-  /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcedureImpl <em>Procedure</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -400,7 +372,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getProcedure()
    * @generated
    */
-  int PROCEDURE = 9;
+  int PROCEDURE = 8;
 
   /**
    * The feature id for the '<em><b>Procedure</b></em>' containment reference.
@@ -428,7 +400,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getProcNoAttr()
    * @generated
    */
-  int PROC_NO_ATTR = 10;
+  int PROC_NO_ATTR = 9;
 
   /**
    * The feature id for the '<em><b>Prototype</b></em>' containment reference.
@@ -456,7 +428,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnPrototype()
    * @generated
    */
-  int FN_PROTOTYPE = 11;
+  int FN_PROTOTYPE = 10;
 
   /**
    * The feature id for the '<em><b>Extern</b></em>' attribute.
@@ -502,7 +474,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnPrototypeNoDecors()
    * @generated
    */
-  int FN_PROTOTYPE_NO_DECORS = 12;
+  int FN_PROTOTYPE_NO_DECORS = 11;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -530,7 +502,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getThreadDeclaration()
    * @generated
    */
-  int THREAD_DECLARATION = 13;
+  int THREAD_DECLARATION = 12;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -558,7 +530,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnPrototypeDeclaration()
    * @generated
    */
-  int FN_PROTOTYPE_DECLARATION = 14;
+  int FN_PROTOTYPE_DECLARATION = 13;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -595,7 +567,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignEnum()
    * @generated
    */
-  int SIGN_ENUM = 15;
+  int SIGN_ENUM = 14;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum <em>Simp Type Enum</em>}' enum.
@@ -605,7 +577,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSimpTypeEnum()
    * @generated
    */
-  int SIMP_TYPE_ENUM = 16;
+  int SIMP_TYPE_ENUM = 15;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SignedEnum <em>Signed Enum</em>}' enum.
@@ -615,7 +587,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignedEnum()
    * @generated
    */
-  int SIGNED_ENUM = 17;
+  int SIGNED_ENUM = 16;
 
 
   /**
@@ -796,27 +768,6 @@ public interface DmplPackage extends EPackage
    * @generated
    */
   EAttribute getType_SimpType();
-
-  /**
-   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.FnType <em>Fn Type</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Fn Type</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.FnType
-   * @generated
-   */
-  EClass getFnType();
-
-  /**
-   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.FnType#getType <em>Type</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Type</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.FnType#getType()
-   * @see #getFnType()
-   * @generated
-   */
-  EReference getFnType_Type();
 
   /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.Procedure <em>Procedure</em>}'.
@@ -1159,24 +1110,6 @@ public interface DmplPackage extends EPackage
      * @generated
      */
     EAttribute TYPE__SIMP_TYPE = eINSTANCE.getType_SimpType();
-
-    /**
-     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnTypeImpl <em>Fn Type</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.FnTypeImpl
-     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnType()
-     * @generated
-     */
-    EClass FN_TYPE = eINSTANCE.getFnType();
-
-    /**
-     * The meta object literal for the '<em><b>Type</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference FN_TYPE__TYPE = eINSTANCE.getFnType_Type();
 
     /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcedureImpl <em>Procedure</em>}' class.

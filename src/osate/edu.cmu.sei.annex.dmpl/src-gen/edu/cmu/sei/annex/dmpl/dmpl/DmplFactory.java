@@ -95,15 +95,6 @@ public interface DmplFactory extends EFactory
   Type createType();
 
   /**
-   * Returns a new object of class '<em>Fn Type</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Fn Type</em>'.
-   * @generated
-   */
-  FnType createFnType();
-
-  /**
    * Returns a new object of class '<em>Procedure</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

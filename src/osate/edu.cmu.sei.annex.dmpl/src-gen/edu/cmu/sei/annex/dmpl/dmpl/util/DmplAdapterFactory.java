@@ -120,11 +120,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createTypeAdapter();
       }
       @Override
-      public Adapter caseFnType(FnType object)
-      {
-        return createFnTypeAdapter();
-      }
-      @Override
       public Adapter caseProcedure(Procedure object)
       {
         return createProcedureAdapter();
@@ -312,21 +307,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createTypeAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.FnType <em>Fn Type</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.FnType
-   * @generated
-   */
-  public Adapter createFnTypeAdapter()
   {
     return null;
   }

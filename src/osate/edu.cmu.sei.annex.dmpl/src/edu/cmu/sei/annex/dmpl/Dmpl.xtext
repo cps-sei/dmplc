@@ -43,10 +43,6 @@ Type:
 	signed=Signed? simpType=SimpType
 ;
 
-FnType:
-	type=Type
-;
-
 Procedure:
 	//TODO: OVERRIDE and attr_list
 	procedure=ProcNoAttr
@@ -64,7 +60,7 @@ FnPrototype:
 FnPrototypeNoDecors:
 	{ThreadDeclaration} 'thread' name=TIDENTIFIER |
 	//TODO: param_list
-	{FnPrototypeDeclaration} type=FnType name=TIDENTIFIER '(' ')'
+	{FnPrototypeDeclaration} type=Type name=TIDENTIFIER '(' ')'
 ;
 
 enum SignEnum:

@@ -73,7 +73,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.INT_CONST: return createIntConst();
       case DmplPackage.DOUBLE_CONST: return createDoubleConst();
       case DmplPackage.TYPE: return createType();
-      case DmplPackage.FN_TYPE: return createFnType();
       case DmplPackage.PROCEDURE: return createProcedure();
       case DmplPackage.PROC_NO_ATTR: return createProcNoAttr();
       case DmplPackage.FN_PROTOTYPE: return createFnPrototype();
@@ -213,17 +212,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     TypeImpl type = new TypeImpl();
     return type;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public FnType createFnType()
-  {
-    FnTypeImpl fnType = new FnTypeImpl();
-    return fnType;
   }
 
   /**

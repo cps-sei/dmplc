@@ -710,98 +710,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
     // $ANTLR end "ruleType"
 
 
-    // $ANTLR start "entryRuleFnType"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:286:1: entryRuleFnType : ruleFnType EOF ;
-    public final void entryRuleFnType() throws RecognitionException {
-        try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:287:1: ( ruleFnType EOF )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:288:1: ruleFnType EOF
-            {
-             before(grammarAccess.getFnTypeRule()); 
-            pushFollow(FOLLOW_ruleFnType_in_entryRuleFnType543);
-            ruleFnType();
-
-            state._fsp--;
-
-             after(grammarAccess.getFnTypeRule()); 
-            match(input,EOF,FOLLOW_EOF_in_entryRuleFnType550); 
-
-            }
-
-        }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-        }
-        finally {
-        }
-        return ;
-    }
-    // $ANTLR end "entryRuleFnType"
-
-
-    // $ANTLR start "ruleFnType"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:295:1: ruleFnType : ( ( rule__FnType__TypeAssignment ) ) ;
-    public final void ruleFnType() throws RecognitionException {
-
-        		int stackSize = keepStackSize();
-            
-        try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:299:2: ( ( ( rule__FnType__TypeAssignment ) ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:300:1: ( ( rule__FnType__TypeAssignment ) )
-            {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:300:1: ( ( rule__FnType__TypeAssignment ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:301:1: ( rule__FnType__TypeAssignment )
-            {
-             before(grammarAccess.getFnTypeAccess().getTypeAssignment()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:302:1: ( rule__FnType__TypeAssignment )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:302:2: rule__FnType__TypeAssignment
-            {
-            pushFollow(FOLLOW_rule__FnType__TypeAssignment_in_ruleFnType576);
-            rule__FnType__TypeAssignment();
-
-            state._fsp--;
-
-
-            }
-
-             after(grammarAccess.getFnTypeAccess().getTypeAssignment()); 
-
-            }
-
-
-            }
-
-        }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-        }
-        finally {
-
-            	restoreStackSize(stackSize);
-
-        }
-        return ;
-    }
-    // $ANTLR end "ruleFnType"
-
-
     // $ANTLR start "entryRuleProcedure"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:314:1: entryRuleProcedure : ruleProcedure EOF ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:286:1: entryRuleProcedure : ruleProcedure EOF ;
     public final void entryRuleProcedure() throws RecognitionException {
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:315:1: ( ruleProcedure EOF )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:316:1: ruleProcedure EOF
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:287:1: ( ruleProcedure EOF )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:288:1: ruleProcedure EOF
             {
              before(grammarAccess.getProcedureRule()); 
-            pushFollow(FOLLOW_ruleProcedure_in_entryRuleProcedure603);
+            pushFollow(FOLLOW_ruleProcedure_in_entryRuleProcedure543);
             ruleProcedure();
 
             state._fsp--;
 
              after(grammarAccess.getProcedureRule()); 
-            match(input,EOF,FOLLOW_EOF_in_entryRuleProcedure610); 
+            match(input,EOF,FOLLOW_EOF_in_entryRuleProcedure550); 
 
             }
 
@@ -818,23 +741,23 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "ruleProcedure"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:323:1: ruleProcedure : ( ( rule__Procedure__ProcedureAssignment ) ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:295:1: ruleProcedure : ( ( rule__Procedure__ProcedureAssignment ) ) ;
     public final void ruleProcedure() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:327:2: ( ( ( rule__Procedure__ProcedureAssignment ) ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:328:1: ( ( rule__Procedure__ProcedureAssignment ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:299:2: ( ( ( rule__Procedure__ProcedureAssignment ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:300:1: ( ( rule__Procedure__ProcedureAssignment ) )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:328:1: ( ( rule__Procedure__ProcedureAssignment ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:329:1: ( rule__Procedure__ProcedureAssignment )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:300:1: ( ( rule__Procedure__ProcedureAssignment ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:301:1: ( rule__Procedure__ProcedureAssignment )
             {
              before(grammarAccess.getProcedureAccess().getProcedureAssignment()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:330:1: ( rule__Procedure__ProcedureAssignment )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:330:2: rule__Procedure__ProcedureAssignment
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:302:1: ( rule__Procedure__ProcedureAssignment )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:302:2: rule__Procedure__ProcedureAssignment
             {
-            pushFollow(FOLLOW_rule__Procedure__ProcedureAssignment_in_ruleProcedure636);
+            pushFollow(FOLLOW_rule__Procedure__ProcedureAssignment_in_ruleProcedure576);
             rule__Procedure__ProcedureAssignment();
 
             state._fsp--;
@@ -865,20 +788,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "entryRuleProcNoAttr"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:342:1: entryRuleProcNoAttr : ruleProcNoAttr EOF ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:314:1: entryRuleProcNoAttr : ruleProcNoAttr EOF ;
     public final void entryRuleProcNoAttr() throws RecognitionException {
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:343:1: ( ruleProcNoAttr EOF )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:344:1: ruleProcNoAttr EOF
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:315:1: ( ruleProcNoAttr EOF )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:316:1: ruleProcNoAttr EOF
             {
              before(grammarAccess.getProcNoAttrRule()); 
-            pushFollow(FOLLOW_ruleProcNoAttr_in_entryRuleProcNoAttr663);
+            pushFollow(FOLLOW_ruleProcNoAttr_in_entryRuleProcNoAttr603);
             ruleProcNoAttr();
 
             state._fsp--;
 
              after(grammarAccess.getProcNoAttrRule()); 
-            match(input,EOF,FOLLOW_EOF_in_entryRuleProcNoAttr670); 
+            match(input,EOF,FOLLOW_EOF_in_entryRuleProcNoAttr610); 
 
             }
 
@@ -895,23 +818,23 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "ruleProcNoAttr"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:351:1: ruleProcNoAttr : ( ( rule__ProcNoAttr__Group__0 ) ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:323:1: ruleProcNoAttr : ( ( rule__ProcNoAttr__Group__0 ) ) ;
     public final void ruleProcNoAttr() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:355:2: ( ( ( rule__ProcNoAttr__Group__0 ) ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:356:1: ( ( rule__ProcNoAttr__Group__0 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:327:2: ( ( ( rule__ProcNoAttr__Group__0 ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:328:1: ( ( rule__ProcNoAttr__Group__0 ) )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:356:1: ( ( rule__ProcNoAttr__Group__0 ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:357:1: ( rule__ProcNoAttr__Group__0 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:328:1: ( ( rule__ProcNoAttr__Group__0 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:329:1: ( rule__ProcNoAttr__Group__0 )
             {
              before(grammarAccess.getProcNoAttrAccess().getGroup()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:358:1: ( rule__ProcNoAttr__Group__0 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:358:2: rule__ProcNoAttr__Group__0
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:330:1: ( rule__ProcNoAttr__Group__0 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:330:2: rule__ProcNoAttr__Group__0
             {
-            pushFollow(FOLLOW_rule__ProcNoAttr__Group__0_in_ruleProcNoAttr696);
+            pushFollow(FOLLOW_rule__ProcNoAttr__Group__0_in_ruleProcNoAttr636);
             rule__ProcNoAttr__Group__0();
 
             state._fsp--;
@@ -942,20 +865,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "entryRuleFnPrototype"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:370:1: entryRuleFnPrototype : ruleFnPrototype EOF ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:342:1: entryRuleFnPrototype : ruleFnPrototype EOF ;
     public final void entryRuleFnPrototype() throws RecognitionException {
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:371:1: ( ruleFnPrototype EOF )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:372:1: ruleFnPrototype EOF
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:343:1: ( ruleFnPrototype EOF )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:344:1: ruleFnPrototype EOF
             {
              before(grammarAccess.getFnPrototypeRule()); 
-            pushFollow(FOLLOW_ruleFnPrototype_in_entryRuleFnPrototype723);
+            pushFollow(FOLLOW_ruleFnPrototype_in_entryRuleFnPrototype663);
             ruleFnPrototype();
 
             state._fsp--;
 
              after(grammarAccess.getFnPrototypeRule()); 
-            match(input,EOF,FOLLOW_EOF_in_entryRuleFnPrototype730); 
+            match(input,EOF,FOLLOW_EOF_in_entryRuleFnPrototype670); 
 
             }
 
@@ -972,23 +895,23 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "ruleFnPrototype"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:379:1: ruleFnPrototype : ( ( rule__FnPrototype__Group__0 ) ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:351:1: ruleFnPrototype : ( ( rule__FnPrototype__Group__0 ) ) ;
     public final void ruleFnPrototype() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:383:2: ( ( ( rule__FnPrototype__Group__0 ) ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:384:1: ( ( rule__FnPrototype__Group__0 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:355:2: ( ( ( rule__FnPrototype__Group__0 ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:356:1: ( ( rule__FnPrototype__Group__0 ) )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:384:1: ( ( rule__FnPrototype__Group__0 ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:385:1: ( rule__FnPrototype__Group__0 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:356:1: ( ( rule__FnPrototype__Group__0 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:357:1: ( rule__FnPrototype__Group__0 )
             {
              before(grammarAccess.getFnPrototypeAccess().getGroup()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:386:1: ( rule__FnPrototype__Group__0 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:386:2: rule__FnPrototype__Group__0
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:358:1: ( rule__FnPrototype__Group__0 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:358:2: rule__FnPrototype__Group__0
             {
-            pushFollow(FOLLOW_rule__FnPrototype__Group__0_in_ruleFnPrototype756);
+            pushFollow(FOLLOW_rule__FnPrototype__Group__0_in_ruleFnPrototype696);
             rule__FnPrototype__Group__0();
 
             state._fsp--;
@@ -1019,20 +942,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "entryRuleFnPrototypeNoDecors"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:398:1: entryRuleFnPrototypeNoDecors : ruleFnPrototypeNoDecors EOF ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:370:1: entryRuleFnPrototypeNoDecors : ruleFnPrototypeNoDecors EOF ;
     public final void entryRuleFnPrototypeNoDecors() throws RecognitionException {
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:399:1: ( ruleFnPrototypeNoDecors EOF )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:400:1: ruleFnPrototypeNoDecors EOF
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:371:1: ( ruleFnPrototypeNoDecors EOF )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:372:1: ruleFnPrototypeNoDecors EOF
             {
              before(grammarAccess.getFnPrototypeNoDecorsRule()); 
-            pushFollow(FOLLOW_ruleFnPrototypeNoDecors_in_entryRuleFnPrototypeNoDecors783);
+            pushFollow(FOLLOW_ruleFnPrototypeNoDecors_in_entryRuleFnPrototypeNoDecors723);
             ruleFnPrototypeNoDecors();
 
             state._fsp--;
 
              after(grammarAccess.getFnPrototypeNoDecorsRule()); 
-            match(input,EOF,FOLLOW_EOF_in_entryRuleFnPrototypeNoDecors790); 
+            match(input,EOF,FOLLOW_EOF_in_entryRuleFnPrototypeNoDecors730); 
 
             }
 
@@ -1049,23 +972,23 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "ruleFnPrototypeNoDecors"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:407:1: ruleFnPrototypeNoDecors : ( ( rule__FnPrototypeNoDecors__Alternatives ) ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:379:1: ruleFnPrototypeNoDecors : ( ( rule__FnPrototypeNoDecors__Alternatives ) ) ;
     public final void ruleFnPrototypeNoDecors() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:411:2: ( ( ( rule__FnPrototypeNoDecors__Alternatives ) ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:412:1: ( ( rule__FnPrototypeNoDecors__Alternatives ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:383:2: ( ( ( rule__FnPrototypeNoDecors__Alternatives ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:384:1: ( ( rule__FnPrototypeNoDecors__Alternatives ) )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:412:1: ( ( rule__FnPrototypeNoDecors__Alternatives ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:413:1: ( rule__FnPrototypeNoDecors__Alternatives )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:384:1: ( ( rule__FnPrototypeNoDecors__Alternatives ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:385:1: ( rule__FnPrototypeNoDecors__Alternatives )
             {
              before(grammarAccess.getFnPrototypeNoDecorsAccess().getAlternatives()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:414:1: ( rule__FnPrototypeNoDecors__Alternatives )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:414:2: rule__FnPrototypeNoDecors__Alternatives
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:386:1: ( rule__FnPrototypeNoDecors__Alternatives )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:386:2: rule__FnPrototypeNoDecors__Alternatives
             {
-            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Alternatives_in_ruleFnPrototypeNoDecors816);
+            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Alternatives_in_ruleFnPrototypeNoDecors756);
             rule__FnPrototypeNoDecors__Alternatives();
 
             state._fsp--;
@@ -1096,20 +1019,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "entryRuleSign"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:426:1: entryRuleSign : ruleSign EOF ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:398:1: entryRuleSign : ruleSign EOF ;
     public final void entryRuleSign() throws RecognitionException {
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:427:1: ( ruleSign EOF )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:428:1: ruleSign EOF
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:399:1: ( ruleSign EOF )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:400:1: ruleSign EOF
             {
              before(grammarAccess.getSignRule()); 
-            pushFollow(FOLLOW_ruleSign_in_entryRuleSign843);
+            pushFollow(FOLLOW_ruleSign_in_entryRuleSign783);
             ruleSign();
 
             state._fsp--;
 
              after(grammarAccess.getSignRule()); 
-            match(input,EOF,FOLLOW_EOF_in_entryRuleSign850); 
+            match(input,EOF,FOLLOW_EOF_in_entryRuleSign790); 
 
             }
 
@@ -1126,23 +1049,23 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "ruleSign"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:435:1: ruleSign : ( ( rule__Sign__Alternatives ) ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:407:1: ruleSign : ( ( rule__Sign__Alternatives ) ) ;
     public final void ruleSign() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:439:2: ( ( ( rule__Sign__Alternatives ) ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:440:1: ( ( rule__Sign__Alternatives ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:411:2: ( ( ( rule__Sign__Alternatives ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:412:1: ( ( rule__Sign__Alternatives ) )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:440:1: ( ( rule__Sign__Alternatives ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:441:1: ( rule__Sign__Alternatives )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:412:1: ( ( rule__Sign__Alternatives ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:413:1: ( rule__Sign__Alternatives )
             {
              before(grammarAccess.getSignAccess().getAlternatives()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:442:1: ( rule__Sign__Alternatives )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:442:2: rule__Sign__Alternatives
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:414:1: ( rule__Sign__Alternatives )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:414:2: rule__Sign__Alternatives
             {
-            pushFollow(FOLLOW_rule__Sign__Alternatives_in_ruleSign876);
+            pushFollow(FOLLOW_rule__Sign__Alternatives_in_ruleSign816);
             rule__Sign__Alternatives();
 
             state._fsp--;
@@ -1173,20 +1096,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "entryRuleSimpType"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:454:1: entryRuleSimpType : ruleSimpType EOF ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:426:1: entryRuleSimpType : ruleSimpType EOF ;
     public final void entryRuleSimpType() throws RecognitionException {
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:455:1: ( ruleSimpType EOF )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:456:1: ruleSimpType EOF
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:427:1: ( ruleSimpType EOF )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:428:1: ruleSimpType EOF
             {
              before(grammarAccess.getSimpTypeRule()); 
-            pushFollow(FOLLOW_ruleSimpType_in_entryRuleSimpType903);
+            pushFollow(FOLLOW_ruleSimpType_in_entryRuleSimpType843);
             ruleSimpType();
 
             state._fsp--;
 
              after(grammarAccess.getSimpTypeRule()); 
-            match(input,EOF,FOLLOW_EOF_in_entryRuleSimpType910); 
+            match(input,EOF,FOLLOW_EOF_in_entryRuleSimpType850); 
 
             }
 
@@ -1203,23 +1126,23 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "ruleSimpType"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:463:1: ruleSimpType : ( ( rule__SimpType__Alternatives ) ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:435:1: ruleSimpType : ( ( rule__SimpType__Alternatives ) ) ;
     public final void ruleSimpType() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:467:2: ( ( ( rule__SimpType__Alternatives ) ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:468:1: ( ( rule__SimpType__Alternatives ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:439:2: ( ( ( rule__SimpType__Alternatives ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:440:1: ( ( rule__SimpType__Alternatives ) )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:468:1: ( ( rule__SimpType__Alternatives ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:469:1: ( rule__SimpType__Alternatives )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:440:1: ( ( rule__SimpType__Alternatives ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:441:1: ( rule__SimpType__Alternatives )
             {
              before(grammarAccess.getSimpTypeAccess().getAlternatives()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:470:1: ( rule__SimpType__Alternatives )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:470:2: rule__SimpType__Alternatives
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:442:1: ( rule__SimpType__Alternatives )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:442:2: rule__SimpType__Alternatives
             {
-            pushFollow(FOLLOW_rule__SimpType__Alternatives_in_ruleSimpType936);
+            pushFollow(FOLLOW_rule__SimpType__Alternatives_in_ruleSimpType876);
             rule__SimpType__Alternatives();
 
             state._fsp--;
@@ -1250,20 +1173,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "entryRuleSigned"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:482:1: entryRuleSigned : ruleSigned EOF ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:454:1: entryRuleSigned : ruleSigned EOF ;
     public final void entryRuleSigned() throws RecognitionException {
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:483:1: ( ruleSigned EOF )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:484:1: ruleSigned EOF
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:455:1: ( ruleSigned EOF )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:456:1: ruleSigned EOF
             {
              before(grammarAccess.getSignedRule()); 
-            pushFollow(FOLLOW_ruleSigned_in_entryRuleSigned963);
+            pushFollow(FOLLOW_ruleSigned_in_entryRuleSigned903);
             ruleSigned();
 
             state._fsp--;
 
              after(grammarAccess.getSignedRule()); 
-            match(input,EOF,FOLLOW_EOF_in_entryRuleSigned970); 
+            match(input,EOF,FOLLOW_EOF_in_entryRuleSigned910); 
 
             }
 
@@ -1280,23 +1203,23 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "ruleSigned"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:491:1: ruleSigned : ( ( rule__Signed__Alternatives ) ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:463:1: ruleSigned : ( ( rule__Signed__Alternatives ) ) ;
     public final void ruleSigned() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:495:2: ( ( ( rule__Signed__Alternatives ) ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:496:1: ( ( rule__Signed__Alternatives ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:467:2: ( ( ( rule__Signed__Alternatives ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:468:1: ( ( rule__Signed__Alternatives ) )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:496:1: ( ( rule__Signed__Alternatives ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:497:1: ( rule__Signed__Alternatives )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:468:1: ( ( rule__Signed__Alternatives ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:469:1: ( rule__Signed__Alternatives )
             {
              before(grammarAccess.getSignedAccess().getAlternatives()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:498:1: ( rule__Signed__Alternatives )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:498:2: rule__Signed__Alternatives
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:470:1: ( rule__Signed__Alternatives )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:470:2: rule__Signed__Alternatives
             {
-            pushFollow(FOLLOW_rule__Signed__Alternatives_in_ruleSigned996);
+            pushFollow(FOLLOW_rule__Signed__Alternatives_in_ruleSigned936);
             rule__Signed__Alternatives();
 
             state._fsp--;
@@ -1327,20 +1250,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "entryRuleDouble"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:510:1: entryRuleDouble : ruleDouble EOF ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:482:1: entryRuleDouble : ruleDouble EOF ;
     public final void entryRuleDouble() throws RecognitionException {
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:511:1: ( ruleDouble EOF )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:512:1: ruleDouble EOF
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:483:1: ( ruleDouble EOF )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:484:1: ruleDouble EOF
             {
              before(grammarAccess.getDoubleRule()); 
-            pushFollow(FOLLOW_ruleDouble_in_entryRuleDouble1023);
+            pushFollow(FOLLOW_ruleDouble_in_entryRuleDouble963);
             ruleDouble();
 
             state._fsp--;
 
              after(grammarAccess.getDoubleRule()); 
-            match(input,EOF,FOLLOW_EOF_in_entryRuleDouble1030); 
+            match(input,EOF,FOLLOW_EOF_in_entryRuleDouble970); 
 
             }
 
@@ -1357,23 +1280,23 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "ruleDouble"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:519:1: ruleDouble : ( ( rule__Double__Alternatives ) ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:491:1: ruleDouble : ( ( rule__Double__Alternatives ) ) ;
     public final void ruleDouble() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:523:2: ( ( ( rule__Double__Alternatives ) ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:524:1: ( ( rule__Double__Alternatives ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:495:2: ( ( ( rule__Double__Alternatives ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:496:1: ( ( rule__Double__Alternatives ) )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:524:1: ( ( rule__Double__Alternatives ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:525:1: ( rule__Double__Alternatives )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:496:1: ( ( rule__Double__Alternatives ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:497:1: ( rule__Double__Alternatives )
             {
              before(grammarAccess.getDoubleAccess().getAlternatives()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:526:1: ( rule__Double__Alternatives )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:526:2: rule__Double__Alternatives
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:498:1: ( rule__Double__Alternatives )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:498:2: rule__Double__Alternatives
             {
-            pushFollow(FOLLOW_rule__Double__Alternatives_in_ruleDouble1056);
+            pushFollow(FOLLOW_rule__Double__Alternatives_in_ruleDouble996);
             rule__Double__Alternatives();
 
             state._fsp--;
@@ -1404,13 +1327,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__ProgramElement__Alternatives"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:544:1: rule__ProgramElement__Alternatives : ( ( ruleConstant ) | ( ruleProcedure ) );
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:516:1: rule__ProgramElement__Alternatives : ( ( ruleConstant ) | ( ruleProcedure ) );
     public final void rule__ProgramElement__Alternatives() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:548:1: ( ( ruleConstant ) | ( ruleProcedure ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:520:1: ( ( ruleConstant ) | ( ruleProcedure ) )
             int alt1=2;
             int LA1_0 = input.LA(1);
 
@@ -1428,13 +1351,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
             }
             switch (alt1) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:549:1: ( ruleConstant )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:521:1: ( ruleConstant )
                     {
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:549:1: ( ruleConstant )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:550:1: ruleConstant
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:521:1: ( ruleConstant )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:522:1: ruleConstant
                     {
                      before(grammarAccess.getProgramElementAccess().getConstantParserRuleCall_0()); 
-                    pushFollow(FOLLOW_ruleConstant_in_rule__ProgramElement__Alternatives1098);
+                    pushFollow(FOLLOW_ruleConstant_in_rule__ProgramElement__Alternatives1038);
                     ruleConstant();
 
                     state._fsp--;
@@ -1447,13 +1370,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
                     }
                     break;
                 case 2 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:555:6: ( ruleProcedure )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:527:6: ( ruleProcedure )
                     {
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:555:6: ( ruleProcedure )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:556:1: ruleProcedure
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:527:6: ( ruleProcedure )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:528:1: ruleProcedure
                     {
                      before(grammarAccess.getProgramElementAccess().getProcedureParserRuleCall_1()); 
-                    pushFollow(FOLLOW_ruleProcedure_in_rule__ProgramElement__Alternatives1115);
+                    pushFollow(FOLLOW_ruleProcedure_in_rule__ProgramElement__Alternatives1055);
                     ruleProcedure();
 
                     state._fsp--;
@@ -1483,13 +1406,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Constant__Alternatives_0"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:566:1: rule__Constant__Alternatives_0 : ( ( 'const' ) | ( 'CONST' ) );
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:538:1: rule__Constant__Alternatives_0 : ( ( 'const' ) | ( 'CONST' ) );
     public final void rule__Constant__Alternatives_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:570:1: ( ( 'const' ) | ( 'CONST' ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:542:1: ( ( 'const' ) | ( 'CONST' ) )
             int alt2=2;
             int LA2_0 = input.LA(1);
 
@@ -1507,13 +1430,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
             }
             switch (alt2) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:571:1: ( 'const' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:543:1: ( 'const' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:571:1: ( 'const' )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:572:1: 'const'
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:543:1: ( 'const' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:544:1: 'const'
                     {
                      before(grammarAccess.getConstantAccess().getConstKeyword_0_0()); 
-                    match(input,12,FOLLOW_12_in_rule__Constant__Alternatives_01148); 
+                    match(input,12,FOLLOW_12_in_rule__Constant__Alternatives_01088); 
                      after(grammarAccess.getConstantAccess().getConstKeyword_0_0()); 
 
                     }
@@ -1522,13 +1445,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
                     }
                     break;
                 case 2 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:579:6: ( 'CONST' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:551:6: ( 'CONST' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:579:6: ( 'CONST' )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:580:1: 'CONST'
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:551:6: ( 'CONST' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:552:1: 'CONST'
                     {
                      before(grammarAccess.getConstantAccess().getCONSTKeyword_0_1()); 
-                    match(input,13,FOLLOW_13_in_rule__Constant__Alternatives_01168); 
+                    match(input,13,FOLLOW_13_in_rule__Constant__Alternatives_01108); 
                      after(grammarAccess.getConstantAccess().getCONSTKeyword_0_1()); 
 
                     }
@@ -1554,13 +1477,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__NumberConst__Alternatives"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:592:1: rule__NumberConst__Alternatives : ( ( ruleIntConst ) | ( ruleDoubleConst ) );
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:564:1: rule__NumberConst__Alternatives : ( ( ruleIntConst ) | ( ruleDoubleConst ) );
     public final void rule__NumberConst__Alternatives() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:596:1: ( ( ruleIntConst ) | ( ruleDoubleConst ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:568:1: ( ( ruleIntConst ) | ( ruleDoubleConst ) )
             int alt3=2;
             switch ( input.LA(1) ) {
             case 18:
@@ -1657,13 +1580,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
             switch (alt3) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:597:1: ( ruleIntConst )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:569:1: ( ruleIntConst )
                     {
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:597:1: ( ruleIntConst )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:598:1: ruleIntConst
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:569:1: ( ruleIntConst )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:570:1: ruleIntConst
                     {
                      before(grammarAccess.getNumberConstAccess().getIntConstParserRuleCall_0()); 
-                    pushFollow(FOLLOW_ruleIntConst_in_rule__NumberConst__Alternatives1202);
+                    pushFollow(FOLLOW_ruleIntConst_in_rule__NumberConst__Alternatives1142);
                     ruleIntConst();
 
                     state._fsp--;
@@ -1676,13 +1599,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
                     }
                     break;
                 case 2 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:603:6: ( ruleDoubleConst )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:575:6: ( ruleDoubleConst )
                     {
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:603:6: ( ruleDoubleConst )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:604:1: ruleDoubleConst
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:575:6: ( ruleDoubleConst )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:576:1: ruleDoubleConst
                     {
                      before(grammarAccess.getNumberConstAccess().getDoubleConstParserRuleCall_1()); 
-                    pushFollow(FOLLOW_ruleDoubleConst_in_rule__NumberConst__Alternatives1219);
+                    pushFollow(FOLLOW_ruleDoubleConst_in_rule__NumberConst__Alternatives1159);
                     ruleDoubleConst();
 
                     state._fsp--;
@@ -1712,13 +1635,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototype__ExternAlternatives_0_0"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:614:1: rule__FnPrototype__ExternAlternatives_0_0 : ( ( 'extern' ) | ( 'EXTERN' ) );
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:586:1: rule__FnPrototype__ExternAlternatives_0_0 : ( ( 'extern' ) | ( 'EXTERN' ) );
     public final void rule__FnPrototype__ExternAlternatives_0_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:618:1: ( ( 'extern' ) | ( 'EXTERN' ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:590:1: ( ( 'extern' ) | ( 'EXTERN' ) )
             int alt4=2;
             int LA4_0 = input.LA(1);
 
@@ -1736,13 +1659,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
             }
             switch (alt4) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:619:1: ( 'extern' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:591:1: ( 'extern' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:619:1: ( 'extern' )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:620:1: 'extern'
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:591:1: ( 'extern' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:592:1: 'extern'
                     {
                      before(grammarAccess.getFnPrototypeAccess().getExternExternKeyword_0_0_0()); 
-                    match(input,14,FOLLOW_14_in_rule__FnPrototype__ExternAlternatives_0_01252); 
+                    match(input,14,FOLLOW_14_in_rule__FnPrototype__ExternAlternatives_0_01192); 
                      after(grammarAccess.getFnPrototypeAccess().getExternExternKeyword_0_0_0()); 
 
                     }
@@ -1751,13 +1674,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
                     }
                     break;
                 case 2 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:627:6: ( 'EXTERN' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:599:6: ( 'EXTERN' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:627:6: ( 'EXTERN' )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:628:1: 'EXTERN'
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:599:6: ( 'EXTERN' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:600:1: 'EXTERN'
                     {
                      before(grammarAccess.getFnPrototypeAccess().getExternEXTERNKeyword_0_0_1()); 
-                    match(input,15,FOLLOW_15_in_rule__FnPrototype__ExternAlternatives_0_01272); 
+                    match(input,15,FOLLOW_15_in_rule__FnPrototype__ExternAlternatives_0_01212); 
                      after(grammarAccess.getFnPrototypeAccess().getExternEXTERNKeyword_0_0_1()); 
 
                     }
@@ -1783,13 +1706,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototype__PureAlternatives_1_0"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:640:1: rule__FnPrototype__PureAlternatives_1_0 : ( ( 'pure' ) | ( 'PURE' ) );
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:612:1: rule__FnPrototype__PureAlternatives_1_0 : ( ( 'pure' ) | ( 'PURE' ) );
     public final void rule__FnPrototype__PureAlternatives_1_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:644:1: ( ( 'pure' ) | ( 'PURE' ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:616:1: ( ( 'pure' ) | ( 'PURE' ) )
             int alt5=2;
             int LA5_0 = input.LA(1);
 
@@ -1807,13 +1730,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
             }
             switch (alt5) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:645:1: ( 'pure' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:617:1: ( 'pure' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:645:1: ( 'pure' )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:646:1: 'pure'
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:617:1: ( 'pure' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:618:1: 'pure'
                     {
                      before(grammarAccess.getFnPrototypeAccess().getPurePureKeyword_1_0_0()); 
-                    match(input,16,FOLLOW_16_in_rule__FnPrototype__PureAlternatives_1_01307); 
+                    match(input,16,FOLLOW_16_in_rule__FnPrototype__PureAlternatives_1_01247); 
                      after(grammarAccess.getFnPrototypeAccess().getPurePureKeyword_1_0_0()); 
 
                     }
@@ -1822,13 +1745,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
                     }
                     break;
                 case 2 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:653:6: ( 'PURE' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:625:6: ( 'PURE' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:653:6: ( 'PURE' )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:654:1: 'PURE'
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:625:6: ( 'PURE' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:626:1: 'PURE'
                     {
                      before(grammarAccess.getFnPrototypeAccess().getPurePUREKeyword_1_0_1()); 
-                    match(input,17,FOLLOW_17_in_rule__FnPrototype__PureAlternatives_1_01327); 
+                    match(input,17,FOLLOW_17_in_rule__FnPrototype__PureAlternatives_1_01267); 
                      after(grammarAccess.getFnPrototypeAccess().getPurePUREKeyword_1_0_1()); 
 
                     }
@@ -1854,13 +1777,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototypeNoDecors__Alternatives"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:666:1: rule__FnPrototypeNoDecors__Alternatives : ( ( ( rule__FnPrototypeNoDecors__Group_0__0 ) ) | ( ( rule__FnPrototypeNoDecors__Group_1__0 ) ) );
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:638:1: rule__FnPrototypeNoDecors__Alternatives : ( ( ( rule__FnPrototypeNoDecors__Group_0__0 ) ) | ( ( rule__FnPrototypeNoDecors__Group_1__0 ) ) );
     public final void rule__FnPrototypeNoDecors__Alternatives() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:670:1: ( ( ( rule__FnPrototypeNoDecors__Group_0__0 ) ) | ( ( rule__FnPrototypeNoDecors__Group_1__0 ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:642:1: ( ( ( rule__FnPrototypeNoDecors__Group_0__0 ) ) | ( ( rule__FnPrototypeNoDecors__Group_1__0 ) ) )
             int alt6=2;
             int LA6_0 = input.LA(1);
 
@@ -1878,16 +1801,16 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
             }
             switch (alt6) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:671:1: ( ( rule__FnPrototypeNoDecors__Group_0__0 ) )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:643:1: ( ( rule__FnPrototypeNoDecors__Group_0__0 ) )
                     {
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:671:1: ( ( rule__FnPrototypeNoDecors__Group_0__0 ) )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:672:1: ( rule__FnPrototypeNoDecors__Group_0__0 )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:643:1: ( ( rule__FnPrototypeNoDecors__Group_0__0 ) )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:644:1: ( rule__FnPrototypeNoDecors__Group_0__0 )
                     {
                      before(grammarAccess.getFnPrototypeNoDecorsAccess().getGroup_0()); 
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:673:1: ( rule__FnPrototypeNoDecors__Group_0__0 )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:673:2: rule__FnPrototypeNoDecors__Group_0__0
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:645:1: ( rule__FnPrototypeNoDecors__Group_0__0 )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:645:2: rule__FnPrototypeNoDecors__Group_0__0
                     {
-                    pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_0__0_in_rule__FnPrototypeNoDecors__Alternatives1361);
+                    pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_0__0_in_rule__FnPrototypeNoDecors__Alternatives1301);
                     rule__FnPrototypeNoDecors__Group_0__0();
 
                     state._fsp--;
@@ -1903,16 +1826,16 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
                     }
                     break;
                 case 2 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:677:6: ( ( rule__FnPrototypeNoDecors__Group_1__0 ) )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:649:6: ( ( rule__FnPrototypeNoDecors__Group_1__0 ) )
                     {
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:677:6: ( ( rule__FnPrototypeNoDecors__Group_1__0 ) )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:678:1: ( rule__FnPrototypeNoDecors__Group_1__0 )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:649:6: ( ( rule__FnPrototypeNoDecors__Group_1__0 ) )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:650:1: ( rule__FnPrototypeNoDecors__Group_1__0 )
                     {
                      before(grammarAccess.getFnPrototypeNoDecorsAccess().getGroup_1()); 
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:679:1: ( rule__FnPrototypeNoDecors__Group_1__0 )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:679:2: rule__FnPrototypeNoDecors__Group_1__0
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:651:1: ( rule__FnPrototypeNoDecors__Group_1__0 )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:651:2: rule__FnPrototypeNoDecors__Group_1__0
                     {
-                    pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_1__0_in_rule__FnPrototypeNoDecors__Alternatives1379);
+                    pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_1__0_in_rule__FnPrototypeNoDecors__Alternatives1319);
                     rule__FnPrototypeNoDecors__Group_1__0();
 
                     state._fsp--;
@@ -1945,13 +1868,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Sign__Alternatives"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:688:1: rule__Sign__Alternatives : ( ( '+' ) | ( '-' ) );
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:660:1: rule__Sign__Alternatives : ( ( '+' ) | ( '-' ) );
     public final void rule__Sign__Alternatives() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:692:1: ( ( '+' ) | ( '-' ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:664:1: ( ( '+' ) | ( '-' ) )
             int alt7=2;
             int LA7_0 = input.LA(1);
 
@@ -1969,13 +1892,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
             }
             switch (alt7) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:693:1: ( '+' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:665:1: ( '+' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:693:1: ( '+' )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:694:1: '+'
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:665:1: ( '+' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:666:1: '+'
                     {
                      before(grammarAccess.getSignAccess().getPlusSignKeyword_0()); 
-                    match(input,18,FOLLOW_18_in_rule__Sign__Alternatives1413); 
+                    match(input,18,FOLLOW_18_in_rule__Sign__Alternatives1353); 
                      after(grammarAccess.getSignAccess().getPlusSignKeyword_0()); 
 
                     }
@@ -1984,13 +1907,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
                     }
                     break;
                 case 2 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:701:6: ( '-' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:673:6: ( '-' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:701:6: ( '-' )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:702:1: '-'
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:673:6: ( '-' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:674:1: '-'
                     {
                      before(grammarAccess.getSignAccess().getHyphenMinusKeyword_1()); 
-                    match(input,19,FOLLOW_19_in_rule__Sign__Alternatives1433); 
+                    match(input,19,FOLLOW_19_in_rule__Sign__Alternatives1373); 
                      after(grammarAccess.getSignAccess().getHyphenMinusKeyword_1()); 
 
                     }
@@ -2016,13 +1939,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__SimpType__Alternatives"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:714:1: rule__SimpType__Alternatives : ( ( 'bool' ) | ( '_Bool' ) | ( 'int' ) | ( 'double' ) | ( 'void' ) | ( 'char' ) );
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:686:1: rule__SimpType__Alternatives : ( ( 'bool' ) | ( '_Bool' ) | ( 'int' ) | ( 'double' ) | ( 'void' ) | ( 'char' ) );
     public final void rule__SimpType__Alternatives() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:718:1: ( ( 'bool' ) | ( '_Bool' ) | ( 'int' ) | ( 'double' ) | ( 'void' ) | ( 'char' ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:690:1: ( ( 'bool' ) | ( '_Bool' ) | ( 'int' ) | ( 'double' ) | ( 'void' ) | ( 'char' ) )
             int alt8=6;
             switch ( input.LA(1) ) {
             case 20:
@@ -2064,13 +1987,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
             switch (alt8) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:719:1: ( 'bool' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:691:1: ( 'bool' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:719:1: ( 'bool' )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:720:1: 'bool'
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:691:1: ( 'bool' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:692:1: 'bool'
                     {
                      before(grammarAccess.getSimpTypeAccess().getBoolKeyword_0()); 
-                    match(input,20,FOLLOW_20_in_rule__SimpType__Alternatives1468); 
+                    match(input,20,FOLLOW_20_in_rule__SimpType__Alternatives1408); 
                      after(grammarAccess.getSimpTypeAccess().getBoolKeyword_0()); 
 
                     }
@@ -2079,13 +2002,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
                     }
                     break;
                 case 2 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:727:6: ( '_Bool' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:699:6: ( '_Bool' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:727:6: ( '_Bool' )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:728:1: '_Bool'
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:699:6: ( '_Bool' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:700:1: '_Bool'
                     {
                      before(grammarAccess.getSimpTypeAccess().get_BoolKeyword_1()); 
-                    match(input,21,FOLLOW_21_in_rule__SimpType__Alternatives1488); 
+                    match(input,21,FOLLOW_21_in_rule__SimpType__Alternatives1428); 
                      after(grammarAccess.getSimpTypeAccess().get_BoolKeyword_1()); 
 
                     }
@@ -2094,13 +2017,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
                     }
                     break;
                 case 3 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:735:6: ( 'int' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:707:6: ( 'int' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:735:6: ( 'int' )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:736:1: 'int'
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:707:6: ( 'int' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:708:1: 'int'
                     {
                      before(grammarAccess.getSimpTypeAccess().getIntKeyword_2()); 
-                    match(input,22,FOLLOW_22_in_rule__SimpType__Alternatives1508); 
+                    match(input,22,FOLLOW_22_in_rule__SimpType__Alternatives1448); 
                      after(grammarAccess.getSimpTypeAccess().getIntKeyword_2()); 
 
                     }
@@ -2109,13 +2032,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
                     }
                     break;
                 case 4 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:743:6: ( 'double' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:715:6: ( 'double' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:743:6: ( 'double' )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:744:1: 'double'
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:715:6: ( 'double' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:716:1: 'double'
                     {
                      before(grammarAccess.getSimpTypeAccess().getDoubleKeyword_3()); 
-                    match(input,23,FOLLOW_23_in_rule__SimpType__Alternatives1528); 
+                    match(input,23,FOLLOW_23_in_rule__SimpType__Alternatives1468); 
                      after(grammarAccess.getSimpTypeAccess().getDoubleKeyword_3()); 
 
                     }
@@ -2124,13 +2047,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
                     }
                     break;
                 case 5 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:751:6: ( 'void' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:723:6: ( 'void' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:751:6: ( 'void' )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:752:1: 'void'
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:723:6: ( 'void' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:724:1: 'void'
                     {
                      before(grammarAccess.getSimpTypeAccess().getVoidKeyword_4()); 
-                    match(input,24,FOLLOW_24_in_rule__SimpType__Alternatives1548); 
+                    match(input,24,FOLLOW_24_in_rule__SimpType__Alternatives1488); 
                      after(grammarAccess.getSimpTypeAccess().getVoidKeyword_4()); 
 
                     }
@@ -2139,13 +2062,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
                     }
                     break;
                 case 6 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:759:6: ( 'char' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:731:6: ( 'char' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:759:6: ( 'char' )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:760:1: 'char'
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:731:6: ( 'char' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:732:1: 'char'
                     {
                      before(grammarAccess.getSimpTypeAccess().getCharKeyword_5()); 
-                    match(input,25,FOLLOW_25_in_rule__SimpType__Alternatives1568); 
+                    match(input,25,FOLLOW_25_in_rule__SimpType__Alternatives1508); 
                      after(grammarAccess.getSimpTypeAccess().getCharKeyword_5()); 
 
                     }
@@ -2171,13 +2094,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Signed__Alternatives"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:772:1: rule__Signed__Alternatives : ( ( 'signed' ) | ( 'unsigned' ) );
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:744:1: rule__Signed__Alternatives : ( ( 'signed' ) | ( 'unsigned' ) );
     public final void rule__Signed__Alternatives() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:776:1: ( ( 'signed' ) | ( 'unsigned' ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:748:1: ( ( 'signed' ) | ( 'unsigned' ) )
             int alt9=2;
             int LA9_0 = input.LA(1);
 
@@ -2195,13 +2118,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
             }
             switch (alt9) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:777:1: ( 'signed' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:749:1: ( 'signed' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:777:1: ( 'signed' )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:778:1: 'signed'
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:749:1: ( 'signed' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:750:1: 'signed'
                     {
                      before(grammarAccess.getSignedAccess().getSignedKeyword_0()); 
-                    match(input,26,FOLLOW_26_in_rule__Signed__Alternatives1603); 
+                    match(input,26,FOLLOW_26_in_rule__Signed__Alternatives1543); 
                      after(grammarAccess.getSignedAccess().getSignedKeyword_0()); 
 
                     }
@@ -2210,13 +2133,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
                     }
                     break;
                 case 2 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:785:6: ( 'unsigned' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:757:6: ( 'unsigned' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:785:6: ( 'unsigned' )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:786:1: 'unsigned'
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:757:6: ( 'unsigned' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:758:1: 'unsigned'
                     {
                      before(grammarAccess.getSignedAccess().getUnsignedKeyword_1()); 
-                    match(input,27,FOLLOW_27_in_rule__Signed__Alternatives1623); 
+                    match(input,27,FOLLOW_27_in_rule__Signed__Alternatives1563); 
                      after(grammarAccess.getSignedAccess().getUnsignedKeyword_1()); 
 
                     }
@@ -2242,13 +2165,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Double__Alternatives"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:798:1: rule__Double__Alternatives : ( ( 'NAN' ) | ( ( rule__Double__Group_1__0 ) ) );
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:770:1: rule__Double__Alternatives : ( ( 'NAN' ) | ( ( rule__Double__Group_1__0 ) ) );
     public final void rule__Double__Alternatives() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:802:1: ( ( 'NAN' ) | ( ( rule__Double__Group_1__0 ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:774:1: ( ( 'NAN' ) | ( ( rule__Double__Group_1__0 ) ) )
             int alt10=2;
             int LA10_0 = input.LA(1);
 
@@ -2266,13 +2189,13 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
             }
             switch (alt10) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:803:1: ( 'NAN' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:775:1: ( 'NAN' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:803:1: ( 'NAN' )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:804:1: 'NAN'
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:775:1: ( 'NAN' )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:776:1: 'NAN'
                     {
                      before(grammarAccess.getDoubleAccess().getNANKeyword_0()); 
-                    match(input,28,FOLLOW_28_in_rule__Double__Alternatives1658); 
+                    match(input,28,FOLLOW_28_in_rule__Double__Alternatives1598); 
                      after(grammarAccess.getDoubleAccess().getNANKeyword_0()); 
 
                     }
@@ -2281,16 +2204,16 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
                     }
                     break;
                 case 2 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:811:6: ( ( rule__Double__Group_1__0 ) )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:783:6: ( ( rule__Double__Group_1__0 ) )
                     {
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:811:6: ( ( rule__Double__Group_1__0 ) )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:812:1: ( rule__Double__Group_1__0 )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:783:6: ( ( rule__Double__Group_1__0 ) )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:784:1: ( rule__Double__Group_1__0 )
                     {
                      before(grammarAccess.getDoubleAccess().getGroup_1()); 
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:813:1: ( rule__Double__Group_1__0 )
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:813:2: rule__Double__Group_1__0
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:785:1: ( rule__Double__Group_1__0 )
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:785:2: rule__Double__Group_1__0
                     {
-                    pushFollow(FOLLOW_rule__Double__Group_1__0_in_rule__Double__Alternatives1677);
+                    pushFollow(FOLLOW_rule__Double__Group_1__0_in_rule__Double__Alternatives1617);
                     rule__Double__Group_1__0();
 
                     state._fsp--;
@@ -2323,21 +2246,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Program__Group__0"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:827:1: rule__Program__Group__0 : rule__Program__Group__0__Impl rule__Program__Group__1 ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:799:1: rule__Program__Group__0 : rule__Program__Group__0__Impl rule__Program__Group__1 ;
     public final void rule__Program__Group__0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:831:1: ( rule__Program__Group__0__Impl rule__Program__Group__1 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:832:2: rule__Program__Group__0__Impl rule__Program__Group__1
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:803:1: ( rule__Program__Group__0__Impl rule__Program__Group__1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:804:2: rule__Program__Group__0__Impl rule__Program__Group__1
             {
-            pushFollow(FOLLOW_rule__Program__Group__0__Impl_in_rule__Program__Group__01711);
+            pushFollow(FOLLOW_rule__Program__Group__0__Impl_in_rule__Program__Group__01651);
             rule__Program__Group__0__Impl();
 
             state._fsp--;
 
-            pushFollow(FOLLOW_rule__Program__Group__1_in_rule__Program__Group__01714);
+            pushFollow(FOLLOW_rule__Program__Group__1_in_rule__Program__Group__01654);
             rule__Program__Group__1();
 
             state._fsp--;
@@ -2361,21 +2284,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Program__Group__0__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:839:1: rule__Program__Group__0__Impl : ( () ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:811:1: rule__Program__Group__0__Impl : ( () ) ;
     public final void rule__Program__Group__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:843:1: ( ( () ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:844:1: ( () )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:815:1: ( ( () ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:816:1: ( () )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:844:1: ( () )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:845:1: ()
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:816:1: ( () )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:817:1: ()
             {
              before(grammarAccess.getProgramAccess().getProgramAction_0()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:846:1: ()
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:848:1: 
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:818:1: ()
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:820:1: 
             {
             }
 
@@ -2398,16 +2321,16 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Program__Group__1"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:858:1: rule__Program__Group__1 : rule__Program__Group__1__Impl ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:830:1: rule__Program__Group__1 : rule__Program__Group__1__Impl ;
     public final void rule__Program__Group__1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:862:1: ( rule__Program__Group__1__Impl )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:863:2: rule__Program__Group__1__Impl
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:834:1: ( rule__Program__Group__1__Impl )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:835:2: rule__Program__Group__1__Impl
             {
-            pushFollow(FOLLOW_rule__Program__Group__1__Impl_in_rule__Program__Group__11772);
+            pushFollow(FOLLOW_rule__Program__Group__1__Impl_in_rule__Program__Group__11712);
             rule__Program__Group__1__Impl();
 
             state._fsp--;
@@ -2431,20 +2354,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Program__Group__1__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:869:1: rule__Program__Group__1__Impl : ( ( rule__Program__ProgramElementsAssignment_1 )* ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:841:1: rule__Program__Group__1__Impl : ( ( rule__Program__ProgramElementsAssignment_1 )* ) ;
     public final void rule__Program__Group__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:873:1: ( ( ( rule__Program__ProgramElementsAssignment_1 )* ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:874:1: ( ( rule__Program__ProgramElementsAssignment_1 )* )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:845:1: ( ( ( rule__Program__ProgramElementsAssignment_1 )* ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:846:1: ( ( rule__Program__ProgramElementsAssignment_1 )* )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:874:1: ( ( rule__Program__ProgramElementsAssignment_1 )* )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:875:1: ( rule__Program__ProgramElementsAssignment_1 )*
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:846:1: ( ( rule__Program__ProgramElementsAssignment_1 )* )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:847:1: ( rule__Program__ProgramElementsAssignment_1 )*
             {
              before(grammarAccess.getProgramAccess().getProgramElementsAssignment_1()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:876:1: ( rule__Program__ProgramElementsAssignment_1 )*
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:848:1: ( rule__Program__ProgramElementsAssignment_1 )*
             loop11:
             do {
                 int alt11=2;
@@ -2457,9 +2380,9 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
                 switch (alt11) {
             	case 1 :
-            	    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:876:2: rule__Program__ProgramElementsAssignment_1
+            	    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:848:2: rule__Program__ProgramElementsAssignment_1
             	    {
-            	    pushFollow(FOLLOW_rule__Program__ProgramElementsAssignment_1_in_rule__Program__Group__1__Impl1799);
+            	    pushFollow(FOLLOW_rule__Program__ProgramElementsAssignment_1_in_rule__Program__Group__1__Impl1739);
             	    rule__Program__ProgramElementsAssignment_1();
 
             	    state._fsp--;
@@ -2496,21 +2419,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__DmplSubclause__Group__0"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:890:1: rule__DmplSubclause__Group__0 : rule__DmplSubclause__Group__0__Impl rule__DmplSubclause__Group__1 ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:862:1: rule__DmplSubclause__Group__0 : rule__DmplSubclause__Group__0__Impl rule__DmplSubclause__Group__1 ;
     public final void rule__DmplSubclause__Group__0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:894:1: ( rule__DmplSubclause__Group__0__Impl rule__DmplSubclause__Group__1 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:895:2: rule__DmplSubclause__Group__0__Impl rule__DmplSubclause__Group__1
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:866:1: ( rule__DmplSubclause__Group__0__Impl rule__DmplSubclause__Group__1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:867:2: rule__DmplSubclause__Group__0__Impl rule__DmplSubclause__Group__1
             {
-            pushFollow(FOLLOW_rule__DmplSubclause__Group__0__Impl_in_rule__DmplSubclause__Group__01834);
+            pushFollow(FOLLOW_rule__DmplSubclause__Group__0__Impl_in_rule__DmplSubclause__Group__01774);
             rule__DmplSubclause__Group__0__Impl();
 
             state._fsp--;
 
-            pushFollow(FOLLOW_rule__DmplSubclause__Group__1_in_rule__DmplSubclause__Group__01837);
+            pushFollow(FOLLOW_rule__DmplSubclause__Group__1_in_rule__DmplSubclause__Group__01777);
             rule__DmplSubclause__Group__1();
 
             state._fsp--;
@@ -2534,21 +2457,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__DmplSubclause__Group__0__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:902:1: rule__DmplSubclause__Group__0__Impl : ( () ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:874:1: rule__DmplSubclause__Group__0__Impl : ( () ) ;
     public final void rule__DmplSubclause__Group__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:906:1: ( ( () ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:907:1: ( () )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:878:1: ( ( () ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:879:1: ( () )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:907:1: ( () )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:908:1: ()
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:879:1: ( () )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:880:1: ()
             {
              before(grammarAccess.getDmplSubclauseAccess().getDmplSubclauseAction_0()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:909:1: ()
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:911:1: 
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:881:1: ()
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:883:1: 
             {
             }
 
@@ -2571,16 +2494,16 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__DmplSubclause__Group__1"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:921:1: rule__DmplSubclause__Group__1 : rule__DmplSubclause__Group__1__Impl ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:893:1: rule__DmplSubclause__Group__1 : rule__DmplSubclause__Group__1__Impl ;
     public final void rule__DmplSubclause__Group__1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:925:1: ( rule__DmplSubclause__Group__1__Impl )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:926:2: rule__DmplSubclause__Group__1__Impl
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:897:1: ( rule__DmplSubclause__Group__1__Impl )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:898:2: rule__DmplSubclause__Group__1__Impl
             {
-            pushFollow(FOLLOW_rule__DmplSubclause__Group__1__Impl_in_rule__DmplSubclause__Group__11895);
+            pushFollow(FOLLOW_rule__DmplSubclause__Group__1__Impl_in_rule__DmplSubclause__Group__11835);
             rule__DmplSubclause__Group__1__Impl();
 
             state._fsp--;
@@ -2604,23 +2527,23 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__DmplSubclause__Group__1__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:932:1: rule__DmplSubclause__Group__1__Impl : ( ( rule__DmplSubclause__ProgramAssignment_1 ) ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:904:1: rule__DmplSubclause__Group__1__Impl : ( ( rule__DmplSubclause__ProgramAssignment_1 ) ) ;
     public final void rule__DmplSubclause__Group__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:936:1: ( ( ( rule__DmplSubclause__ProgramAssignment_1 ) ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:937:1: ( ( rule__DmplSubclause__ProgramAssignment_1 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:908:1: ( ( ( rule__DmplSubclause__ProgramAssignment_1 ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:909:1: ( ( rule__DmplSubclause__ProgramAssignment_1 ) )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:937:1: ( ( rule__DmplSubclause__ProgramAssignment_1 ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:938:1: ( rule__DmplSubclause__ProgramAssignment_1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:909:1: ( ( rule__DmplSubclause__ProgramAssignment_1 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:910:1: ( rule__DmplSubclause__ProgramAssignment_1 )
             {
              before(grammarAccess.getDmplSubclauseAccess().getProgramAssignment_1()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:939:1: ( rule__DmplSubclause__ProgramAssignment_1 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:939:2: rule__DmplSubclause__ProgramAssignment_1
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:911:1: ( rule__DmplSubclause__ProgramAssignment_1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:911:2: rule__DmplSubclause__ProgramAssignment_1
             {
-            pushFollow(FOLLOW_rule__DmplSubclause__ProgramAssignment_1_in_rule__DmplSubclause__Group__1__Impl1922);
+            pushFollow(FOLLOW_rule__DmplSubclause__ProgramAssignment_1_in_rule__DmplSubclause__Group__1__Impl1862);
             rule__DmplSubclause__ProgramAssignment_1();
 
             state._fsp--;
@@ -2651,21 +2574,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Constant__Group__0"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:953:1: rule__Constant__Group__0 : rule__Constant__Group__0__Impl rule__Constant__Group__1 ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:925:1: rule__Constant__Group__0 : rule__Constant__Group__0__Impl rule__Constant__Group__1 ;
     public final void rule__Constant__Group__0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:957:1: ( rule__Constant__Group__0__Impl rule__Constant__Group__1 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:958:2: rule__Constant__Group__0__Impl rule__Constant__Group__1
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:929:1: ( rule__Constant__Group__0__Impl rule__Constant__Group__1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:930:2: rule__Constant__Group__0__Impl rule__Constant__Group__1
             {
-            pushFollow(FOLLOW_rule__Constant__Group__0__Impl_in_rule__Constant__Group__01956);
+            pushFollow(FOLLOW_rule__Constant__Group__0__Impl_in_rule__Constant__Group__01896);
             rule__Constant__Group__0__Impl();
 
             state._fsp--;
 
-            pushFollow(FOLLOW_rule__Constant__Group__1_in_rule__Constant__Group__01959);
+            pushFollow(FOLLOW_rule__Constant__Group__1_in_rule__Constant__Group__01899);
             rule__Constant__Group__1();
 
             state._fsp--;
@@ -2689,23 +2612,23 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Constant__Group__0__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:965:1: rule__Constant__Group__0__Impl : ( ( rule__Constant__Alternatives_0 ) ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:937:1: rule__Constant__Group__0__Impl : ( ( rule__Constant__Alternatives_0 ) ) ;
     public final void rule__Constant__Group__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:969:1: ( ( ( rule__Constant__Alternatives_0 ) ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:970:1: ( ( rule__Constant__Alternatives_0 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:941:1: ( ( ( rule__Constant__Alternatives_0 ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:942:1: ( ( rule__Constant__Alternatives_0 ) )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:970:1: ( ( rule__Constant__Alternatives_0 ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:971:1: ( rule__Constant__Alternatives_0 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:942:1: ( ( rule__Constant__Alternatives_0 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:943:1: ( rule__Constant__Alternatives_0 )
             {
              before(grammarAccess.getConstantAccess().getAlternatives_0()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:972:1: ( rule__Constant__Alternatives_0 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:972:2: rule__Constant__Alternatives_0
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:944:1: ( rule__Constant__Alternatives_0 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:944:2: rule__Constant__Alternatives_0
             {
-            pushFollow(FOLLOW_rule__Constant__Alternatives_0_in_rule__Constant__Group__0__Impl1986);
+            pushFollow(FOLLOW_rule__Constant__Alternatives_0_in_rule__Constant__Group__0__Impl1926);
             rule__Constant__Alternatives_0();
 
             state._fsp--;
@@ -2736,21 +2659,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Constant__Group__1"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:982:1: rule__Constant__Group__1 : rule__Constant__Group__1__Impl rule__Constant__Group__2 ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:954:1: rule__Constant__Group__1 : rule__Constant__Group__1__Impl rule__Constant__Group__2 ;
     public final void rule__Constant__Group__1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:986:1: ( rule__Constant__Group__1__Impl rule__Constant__Group__2 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:987:2: rule__Constant__Group__1__Impl rule__Constant__Group__2
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:958:1: ( rule__Constant__Group__1__Impl rule__Constant__Group__2 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:959:2: rule__Constant__Group__1__Impl rule__Constant__Group__2
             {
-            pushFollow(FOLLOW_rule__Constant__Group__1__Impl_in_rule__Constant__Group__12016);
+            pushFollow(FOLLOW_rule__Constant__Group__1__Impl_in_rule__Constant__Group__11956);
             rule__Constant__Group__1__Impl();
 
             state._fsp--;
 
-            pushFollow(FOLLOW_rule__Constant__Group__2_in_rule__Constant__Group__12019);
+            pushFollow(FOLLOW_rule__Constant__Group__2_in_rule__Constant__Group__11959);
             rule__Constant__Group__2();
 
             state._fsp--;
@@ -2774,23 +2697,23 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Constant__Group__1__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:994:1: rule__Constant__Group__1__Impl : ( ( rule__Constant__NameAssignment_1 ) ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:966:1: rule__Constant__Group__1__Impl : ( ( rule__Constant__NameAssignment_1 ) ) ;
     public final void rule__Constant__Group__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:998:1: ( ( ( rule__Constant__NameAssignment_1 ) ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:999:1: ( ( rule__Constant__NameAssignment_1 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:970:1: ( ( ( rule__Constant__NameAssignment_1 ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:971:1: ( ( rule__Constant__NameAssignment_1 ) )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:999:1: ( ( rule__Constant__NameAssignment_1 ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1000:1: ( rule__Constant__NameAssignment_1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:971:1: ( ( rule__Constant__NameAssignment_1 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:972:1: ( rule__Constant__NameAssignment_1 )
             {
              before(grammarAccess.getConstantAccess().getNameAssignment_1()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1001:1: ( rule__Constant__NameAssignment_1 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1001:2: rule__Constant__NameAssignment_1
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:973:1: ( rule__Constant__NameAssignment_1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:973:2: rule__Constant__NameAssignment_1
             {
-            pushFollow(FOLLOW_rule__Constant__NameAssignment_1_in_rule__Constant__Group__1__Impl2046);
+            pushFollow(FOLLOW_rule__Constant__NameAssignment_1_in_rule__Constant__Group__1__Impl1986);
             rule__Constant__NameAssignment_1();
 
             state._fsp--;
@@ -2821,21 +2744,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Constant__Group__2"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1011:1: rule__Constant__Group__2 : rule__Constant__Group__2__Impl rule__Constant__Group__3 ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:983:1: rule__Constant__Group__2 : rule__Constant__Group__2__Impl rule__Constant__Group__3 ;
     public final void rule__Constant__Group__2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1015:1: ( rule__Constant__Group__2__Impl rule__Constant__Group__3 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1016:2: rule__Constant__Group__2__Impl rule__Constant__Group__3
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:987:1: ( rule__Constant__Group__2__Impl rule__Constant__Group__3 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:988:2: rule__Constant__Group__2__Impl rule__Constant__Group__3
             {
-            pushFollow(FOLLOW_rule__Constant__Group__2__Impl_in_rule__Constant__Group__22076);
+            pushFollow(FOLLOW_rule__Constant__Group__2__Impl_in_rule__Constant__Group__22016);
             rule__Constant__Group__2__Impl();
 
             state._fsp--;
 
-            pushFollow(FOLLOW_rule__Constant__Group__3_in_rule__Constant__Group__22079);
+            pushFollow(FOLLOW_rule__Constant__Group__3_in_rule__Constant__Group__22019);
             rule__Constant__Group__3();
 
             state._fsp--;
@@ -2859,20 +2782,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Constant__Group__2__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1023:1: rule__Constant__Group__2__Impl : ( '=' ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:995:1: rule__Constant__Group__2__Impl : ( '=' ) ;
     public final void rule__Constant__Group__2__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1027:1: ( ( '=' ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1028:1: ( '=' )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:999:1: ( ( '=' ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1000:1: ( '=' )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1028:1: ( '=' )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1029:1: '='
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1000:1: ( '=' )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1001:1: '='
             {
              before(grammarAccess.getConstantAccess().getEqualsSignKeyword_2()); 
-            match(input,29,FOLLOW_29_in_rule__Constant__Group__2__Impl2107); 
+            match(input,29,FOLLOW_29_in_rule__Constant__Group__2__Impl2047); 
              after(grammarAccess.getConstantAccess().getEqualsSignKeyword_2()); 
 
             }
@@ -2896,21 +2819,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Constant__Group__3"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1042:1: rule__Constant__Group__3 : rule__Constant__Group__3__Impl rule__Constant__Group__4 ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1014:1: rule__Constant__Group__3 : rule__Constant__Group__3__Impl rule__Constant__Group__4 ;
     public final void rule__Constant__Group__3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1046:1: ( rule__Constant__Group__3__Impl rule__Constant__Group__4 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1047:2: rule__Constant__Group__3__Impl rule__Constant__Group__4
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1018:1: ( rule__Constant__Group__3__Impl rule__Constant__Group__4 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1019:2: rule__Constant__Group__3__Impl rule__Constant__Group__4
             {
-            pushFollow(FOLLOW_rule__Constant__Group__3__Impl_in_rule__Constant__Group__32138);
+            pushFollow(FOLLOW_rule__Constant__Group__3__Impl_in_rule__Constant__Group__32078);
             rule__Constant__Group__3__Impl();
 
             state._fsp--;
 
-            pushFollow(FOLLOW_rule__Constant__Group__4_in_rule__Constant__Group__32141);
+            pushFollow(FOLLOW_rule__Constant__Group__4_in_rule__Constant__Group__32081);
             rule__Constant__Group__4();
 
             state._fsp--;
@@ -2934,23 +2857,23 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Constant__Group__3__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1054:1: rule__Constant__Group__3__Impl : ( ( rule__Constant__ValueAssignment_3 ) ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1026:1: rule__Constant__Group__3__Impl : ( ( rule__Constant__ValueAssignment_3 ) ) ;
     public final void rule__Constant__Group__3__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1058:1: ( ( ( rule__Constant__ValueAssignment_3 ) ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1059:1: ( ( rule__Constant__ValueAssignment_3 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1030:1: ( ( ( rule__Constant__ValueAssignment_3 ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1031:1: ( ( rule__Constant__ValueAssignment_3 ) )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1059:1: ( ( rule__Constant__ValueAssignment_3 ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1060:1: ( rule__Constant__ValueAssignment_3 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1031:1: ( ( rule__Constant__ValueAssignment_3 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1032:1: ( rule__Constant__ValueAssignment_3 )
             {
              before(grammarAccess.getConstantAccess().getValueAssignment_3()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1061:1: ( rule__Constant__ValueAssignment_3 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1061:2: rule__Constant__ValueAssignment_3
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1033:1: ( rule__Constant__ValueAssignment_3 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1033:2: rule__Constant__ValueAssignment_3
             {
-            pushFollow(FOLLOW_rule__Constant__ValueAssignment_3_in_rule__Constant__Group__3__Impl2168);
+            pushFollow(FOLLOW_rule__Constant__ValueAssignment_3_in_rule__Constant__Group__3__Impl2108);
             rule__Constant__ValueAssignment_3();
 
             state._fsp--;
@@ -2981,16 +2904,16 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Constant__Group__4"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1071:1: rule__Constant__Group__4 : rule__Constant__Group__4__Impl ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1043:1: rule__Constant__Group__4 : rule__Constant__Group__4__Impl ;
     public final void rule__Constant__Group__4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1075:1: ( rule__Constant__Group__4__Impl )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1076:2: rule__Constant__Group__4__Impl
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1047:1: ( rule__Constant__Group__4__Impl )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1048:2: rule__Constant__Group__4__Impl
             {
-            pushFollow(FOLLOW_rule__Constant__Group__4__Impl_in_rule__Constant__Group__42198);
+            pushFollow(FOLLOW_rule__Constant__Group__4__Impl_in_rule__Constant__Group__42138);
             rule__Constant__Group__4__Impl();
 
             state._fsp--;
@@ -3014,20 +2937,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Constant__Group__4__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1082:1: rule__Constant__Group__4__Impl : ( ';' ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1054:1: rule__Constant__Group__4__Impl : ( ';' ) ;
     public final void rule__Constant__Group__4__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1086:1: ( ( ';' ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1087:1: ( ';' )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1058:1: ( ( ';' ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1059:1: ( ';' )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1087:1: ( ';' )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1088:1: ';'
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1059:1: ( ';' )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1060:1: ';'
             {
              before(grammarAccess.getConstantAccess().getSemicolonKeyword_4()); 
-            match(input,30,FOLLOW_30_in_rule__Constant__Group__4__Impl2226); 
+            match(input,30,FOLLOW_30_in_rule__Constant__Group__4__Impl2166); 
              after(grammarAccess.getConstantAccess().getSemicolonKeyword_4()); 
 
             }
@@ -3051,21 +2974,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__IntConst__Group__0"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1111:1: rule__IntConst__Group__0 : rule__IntConst__Group__0__Impl rule__IntConst__Group__1 ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1083:1: rule__IntConst__Group__0 : rule__IntConst__Group__0__Impl rule__IntConst__Group__1 ;
     public final void rule__IntConst__Group__0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1115:1: ( rule__IntConst__Group__0__Impl rule__IntConst__Group__1 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1116:2: rule__IntConst__Group__0__Impl rule__IntConst__Group__1
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1087:1: ( rule__IntConst__Group__0__Impl rule__IntConst__Group__1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1088:2: rule__IntConst__Group__0__Impl rule__IntConst__Group__1
             {
-            pushFollow(FOLLOW_rule__IntConst__Group__0__Impl_in_rule__IntConst__Group__02267);
+            pushFollow(FOLLOW_rule__IntConst__Group__0__Impl_in_rule__IntConst__Group__02207);
             rule__IntConst__Group__0__Impl();
 
             state._fsp--;
 
-            pushFollow(FOLLOW_rule__IntConst__Group__1_in_rule__IntConst__Group__02270);
+            pushFollow(FOLLOW_rule__IntConst__Group__1_in_rule__IntConst__Group__02210);
             rule__IntConst__Group__1();
 
             state._fsp--;
@@ -3089,20 +3012,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__IntConst__Group__0__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1123:1: rule__IntConst__Group__0__Impl : ( ( rule__IntConst__SignAssignment_0 )? ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1095:1: rule__IntConst__Group__0__Impl : ( ( rule__IntConst__SignAssignment_0 )? ) ;
     public final void rule__IntConst__Group__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1127:1: ( ( ( rule__IntConst__SignAssignment_0 )? ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1128:1: ( ( rule__IntConst__SignAssignment_0 )? )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1099:1: ( ( ( rule__IntConst__SignAssignment_0 )? ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1100:1: ( ( rule__IntConst__SignAssignment_0 )? )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1128:1: ( ( rule__IntConst__SignAssignment_0 )? )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1129:1: ( rule__IntConst__SignAssignment_0 )?
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1100:1: ( ( rule__IntConst__SignAssignment_0 )? )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1101:1: ( rule__IntConst__SignAssignment_0 )?
             {
              before(grammarAccess.getIntConstAccess().getSignAssignment_0()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1130:1: ( rule__IntConst__SignAssignment_0 )?
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1102:1: ( rule__IntConst__SignAssignment_0 )?
             int alt12=2;
             int LA12_0 = input.LA(1);
 
@@ -3111,9 +3034,9 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
             }
             switch (alt12) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1130:2: rule__IntConst__SignAssignment_0
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1102:2: rule__IntConst__SignAssignment_0
                     {
-                    pushFollow(FOLLOW_rule__IntConst__SignAssignment_0_in_rule__IntConst__Group__0__Impl2297);
+                    pushFollow(FOLLOW_rule__IntConst__SignAssignment_0_in_rule__IntConst__Group__0__Impl2237);
                     rule__IntConst__SignAssignment_0();
 
                     state._fsp--;
@@ -3147,16 +3070,16 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__IntConst__Group__1"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1140:1: rule__IntConst__Group__1 : rule__IntConst__Group__1__Impl ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1112:1: rule__IntConst__Group__1 : rule__IntConst__Group__1__Impl ;
     public final void rule__IntConst__Group__1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1144:1: ( rule__IntConst__Group__1__Impl )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1145:2: rule__IntConst__Group__1__Impl
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1116:1: ( rule__IntConst__Group__1__Impl )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1117:2: rule__IntConst__Group__1__Impl
             {
-            pushFollow(FOLLOW_rule__IntConst__Group__1__Impl_in_rule__IntConst__Group__12328);
+            pushFollow(FOLLOW_rule__IntConst__Group__1__Impl_in_rule__IntConst__Group__12268);
             rule__IntConst__Group__1__Impl();
 
             state._fsp--;
@@ -3180,23 +3103,23 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__IntConst__Group__1__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1151:1: rule__IntConst__Group__1__Impl : ( ( rule__IntConst__ValueAssignment_1 ) ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1123:1: rule__IntConst__Group__1__Impl : ( ( rule__IntConst__ValueAssignment_1 ) ) ;
     public final void rule__IntConst__Group__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1155:1: ( ( ( rule__IntConst__ValueAssignment_1 ) ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1156:1: ( ( rule__IntConst__ValueAssignment_1 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1127:1: ( ( ( rule__IntConst__ValueAssignment_1 ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1128:1: ( ( rule__IntConst__ValueAssignment_1 ) )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1156:1: ( ( rule__IntConst__ValueAssignment_1 ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1157:1: ( rule__IntConst__ValueAssignment_1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1128:1: ( ( rule__IntConst__ValueAssignment_1 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1129:1: ( rule__IntConst__ValueAssignment_1 )
             {
              before(grammarAccess.getIntConstAccess().getValueAssignment_1()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1158:1: ( rule__IntConst__ValueAssignment_1 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1158:2: rule__IntConst__ValueAssignment_1
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1130:1: ( rule__IntConst__ValueAssignment_1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1130:2: rule__IntConst__ValueAssignment_1
             {
-            pushFollow(FOLLOW_rule__IntConst__ValueAssignment_1_in_rule__IntConst__Group__1__Impl2355);
+            pushFollow(FOLLOW_rule__IntConst__ValueAssignment_1_in_rule__IntConst__Group__1__Impl2295);
             rule__IntConst__ValueAssignment_1();
 
             state._fsp--;
@@ -3227,21 +3150,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__DoubleConst__Group__0"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1172:1: rule__DoubleConst__Group__0 : rule__DoubleConst__Group__0__Impl rule__DoubleConst__Group__1 ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1144:1: rule__DoubleConst__Group__0 : rule__DoubleConst__Group__0__Impl rule__DoubleConst__Group__1 ;
     public final void rule__DoubleConst__Group__0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1176:1: ( rule__DoubleConst__Group__0__Impl rule__DoubleConst__Group__1 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1177:2: rule__DoubleConst__Group__0__Impl rule__DoubleConst__Group__1
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1148:1: ( rule__DoubleConst__Group__0__Impl rule__DoubleConst__Group__1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1149:2: rule__DoubleConst__Group__0__Impl rule__DoubleConst__Group__1
             {
-            pushFollow(FOLLOW_rule__DoubleConst__Group__0__Impl_in_rule__DoubleConst__Group__02389);
+            pushFollow(FOLLOW_rule__DoubleConst__Group__0__Impl_in_rule__DoubleConst__Group__02329);
             rule__DoubleConst__Group__0__Impl();
 
             state._fsp--;
 
-            pushFollow(FOLLOW_rule__DoubleConst__Group__1_in_rule__DoubleConst__Group__02392);
+            pushFollow(FOLLOW_rule__DoubleConst__Group__1_in_rule__DoubleConst__Group__02332);
             rule__DoubleConst__Group__1();
 
             state._fsp--;
@@ -3265,20 +3188,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__DoubleConst__Group__0__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1184:1: rule__DoubleConst__Group__0__Impl : ( ( rule__DoubleConst__SignAssignment_0 )? ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1156:1: rule__DoubleConst__Group__0__Impl : ( ( rule__DoubleConst__SignAssignment_0 )? ) ;
     public final void rule__DoubleConst__Group__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1188:1: ( ( ( rule__DoubleConst__SignAssignment_0 )? ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1189:1: ( ( rule__DoubleConst__SignAssignment_0 )? )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1160:1: ( ( ( rule__DoubleConst__SignAssignment_0 )? ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1161:1: ( ( rule__DoubleConst__SignAssignment_0 )? )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1189:1: ( ( rule__DoubleConst__SignAssignment_0 )? )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1190:1: ( rule__DoubleConst__SignAssignment_0 )?
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1161:1: ( ( rule__DoubleConst__SignAssignment_0 )? )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1162:1: ( rule__DoubleConst__SignAssignment_0 )?
             {
              before(grammarAccess.getDoubleConstAccess().getSignAssignment_0()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1191:1: ( rule__DoubleConst__SignAssignment_0 )?
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1163:1: ( rule__DoubleConst__SignAssignment_0 )?
             int alt13=2;
             int LA13_0 = input.LA(1);
 
@@ -3287,9 +3210,9 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
             }
             switch (alt13) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1191:2: rule__DoubleConst__SignAssignment_0
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1163:2: rule__DoubleConst__SignAssignment_0
                     {
-                    pushFollow(FOLLOW_rule__DoubleConst__SignAssignment_0_in_rule__DoubleConst__Group__0__Impl2419);
+                    pushFollow(FOLLOW_rule__DoubleConst__SignAssignment_0_in_rule__DoubleConst__Group__0__Impl2359);
                     rule__DoubleConst__SignAssignment_0();
 
                     state._fsp--;
@@ -3323,16 +3246,16 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__DoubleConst__Group__1"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1201:1: rule__DoubleConst__Group__1 : rule__DoubleConst__Group__1__Impl ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1173:1: rule__DoubleConst__Group__1 : rule__DoubleConst__Group__1__Impl ;
     public final void rule__DoubleConst__Group__1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1205:1: ( rule__DoubleConst__Group__1__Impl )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1206:2: rule__DoubleConst__Group__1__Impl
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1177:1: ( rule__DoubleConst__Group__1__Impl )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1178:2: rule__DoubleConst__Group__1__Impl
             {
-            pushFollow(FOLLOW_rule__DoubleConst__Group__1__Impl_in_rule__DoubleConst__Group__12450);
+            pushFollow(FOLLOW_rule__DoubleConst__Group__1__Impl_in_rule__DoubleConst__Group__12390);
             rule__DoubleConst__Group__1__Impl();
 
             state._fsp--;
@@ -3356,23 +3279,23 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__DoubleConst__Group__1__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1212:1: rule__DoubleConst__Group__1__Impl : ( ( rule__DoubleConst__ValueAssignment_1 ) ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1184:1: rule__DoubleConst__Group__1__Impl : ( ( rule__DoubleConst__ValueAssignment_1 ) ) ;
     public final void rule__DoubleConst__Group__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1216:1: ( ( ( rule__DoubleConst__ValueAssignment_1 ) ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1217:1: ( ( rule__DoubleConst__ValueAssignment_1 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1188:1: ( ( ( rule__DoubleConst__ValueAssignment_1 ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1189:1: ( ( rule__DoubleConst__ValueAssignment_1 ) )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1217:1: ( ( rule__DoubleConst__ValueAssignment_1 ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1218:1: ( rule__DoubleConst__ValueAssignment_1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1189:1: ( ( rule__DoubleConst__ValueAssignment_1 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1190:1: ( rule__DoubleConst__ValueAssignment_1 )
             {
              before(grammarAccess.getDoubleConstAccess().getValueAssignment_1()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1219:1: ( rule__DoubleConst__ValueAssignment_1 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1219:2: rule__DoubleConst__ValueAssignment_1
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1191:1: ( rule__DoubleConst__ValueAssignment_1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1191:2: rule__DoubleConst__ValueAssignment_1
             {
-            pushFollow(FOLLOW_rule__DoubleConst__ValueAssignment_1_in_rule__DoubleConst__Group__1__Impl2477);
+            pushFollow(FOLLOW_rule__DoubleConst__ValueAssignment_1_in_rule__DoubleConst__Group__1__Impl2417);
             rule__DoubleConst__ValueAssignment_1();
 
             state._fsp--;
@@ -3403,21 +3326,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Type__Group__0"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1233:1: rule__Type__Group__0 : rule__Type__Group__0__Impl rule__Type__Group__1 ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1205:1: rule__Type__Group__0 : rule__Type__Group__0__Impl rule__Type__Group__1 ;
     public final void rule__Type__Group__0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1237:1: ( rule__Type__Group__0__Impl rule__Type__Group__1 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1238:2: rule__Type__Group__0__Impl rule__Type__Group__1
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1209:1: ( rule__Type__Group__0__Impl rule__Type__Group__1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1210:2: rule__Type__Group__0__Impl rule__Type__Group__1
             {
-            pushFollow(FOLLOW_rule__Type__Group__0__Impl_in_rule__Type__Group__02511);
+            pushFollow(FOLLOW_rule__Type__Group__0__Impl_in_rule__Type__Group__02451);
             rule__Type__Group__0__Impl();
 
             state._fsp--;
 
-            pushFollow(FOLLOW_rule__Type__Group__1_in_rule__Type__Group__02514);
+            pushFollow(FOLLOW_rule__Type__Group__1_in_rule__Type__Group__02454);
             rule__Type__Group__1();
 
             state._fsp--;
@@ -3441,20 +3364,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Type__Group__0__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1245:1: rule__Type__Group__0__Impl : ( ( rule__Type__SignedAssignment_0 )? ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1217:1: rule__Type__Group__0__Impl : ( ( rule__Type__SignedAssignment_0 )? ) ;
     public final void rule__Type__Group__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1249:1: ( ( ( rule__Type__SignedAssignment_0 )? ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1250:1: ( ( rule__Type__SignedAssignment_0 )? )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1221:1: ( ( ( rule__Type__SignedAssignment_0 )? ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1222:1: ( ( rule__Type__SignedAssignment_0 )? )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1250:1: ( ( rule__Type__SignedAssignment_0 )? )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1251:1: ( rule__Type__SignedAssignment_0 )?
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1222:1: ( ( rule__Type__SignedAssignment_0 )? )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1223:1: ( rule__Type__SignedAssignment_0 )?
             {
              before(grammarAccess.getTypeAccess().getSignedAssignment_0()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1252:1: ( rule__Type__SignedAssignment_0 )?
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1224:1: ( rule__Type__SignedAssignment_0 )?
             int alt14=2;
             int LA14_0 = input.LA(1);
 
@@ -3463,9 +3386,9 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
             }
             switch (alt14) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1252:2: rule__Type__SignedAssignment_0
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1224:2: rule__Type__SignedAssignment_0
                     {
-                    pushFollow(FOLLOW_rule__Type__SignedAssignment_0_in_rule__Type__Group__0__Impl2541);
+                    pushFollow(FOLLOW_rule__Type__SignedAssignment_0_in_rule__Type__Group__0__Impl2481);
                     rule__Type__SignedAssignment_0();
 
                     state._fsp--;
@@ -3499,16 +3422,16 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Type__Group__1"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1262:1: rule__Type__Group__1 : rule__Type__Group__1__Impl ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1234:1: rule__Type__Group__1 : rule__Type__Group__1__Impl ;
     public final void rule__Type__Group__1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1266:1: ( rule__Type__Group__1__Impl )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1267:2: rule__Type__Group__1__Impl
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1238:1: ( rule__Type__Group__1__Impl )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1239:2: rule__Type__Group__1__Impl
             {
-            pushFollow(FOLLOW_rule__Type__Group__1__Impl_in_rule__Type__Group__12572);
+            pushFollow(FOLLOW_rule__Type__Group__1__Impl_in_rule__Type__Group__12512);
             rule__Type__Group__1__Impl();
 
             state._fsp--;
@@ -3532,23 +3455,23 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Type__Group__1__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1273:1: rule__Type__Group__1__Impl : ( ( rule__Type__SimpTypeAssignment_1 ) ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1245:1: rule__Type__Group__1__Impl : ( ( rule__Type__SimpTypeAssignment_1 ) ) ;
     public final void rule__Type__Group__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1277:1: ( ( ( rule__Type__SimpTypeAssignment_1 ) ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1278:1: ( ( rule__Type__SimpTypeAssignment_1 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1249:1: ( ( ( rule__Type__SimpTypeAssignment_1 ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1250:1: ( ( rule__Type__SimpTypeAssignment_1 ) )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1278:1: ( ( rule__Type__SimpTypeAssignment_1 ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1279:1: ( rule__Type__SimpTypeAssignment_1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1250:1: ( ( rule__Type__SimpTypeAssignment_1 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1251:1: ( rule__Type__SimpTypeAssignment_1 )
             {
              before(grammarAccess.getTypeAccess().getSimpTypeAssignment_1()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1280:1: ( rule__Type__SimpTypeAssignment_1 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1280:2: rule__Type__SimpTypeAssignment_1
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1252:1: ( rule__Type__SimpTypeAssignment_1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1252:2: rule__Type__SimpTypeAssignment_1
             {
-            pushFollow(FOLLOW_rule__Type__SimpTypeAssignment_1_in_rule__Type__Group__1__Impl2599);
+            pushFollow(FOLLOW_rule__Type__SimpTypeAssignment_1_in_rule__Type__Group__1__Impl2539);
             rule__Type__SimpTypeAssignment_1();
 
             state._fsp--;
@@ -3579,21 +3502,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__ProcNoAttr__Group__0"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1294:1: rule__ProcNoAttr__Group__0 : rule__ProcNoAttr__Group__0__Impl rule__ProcNoAttr__Group__1 ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1266:1: rule__ProcNoAttr__Group__0 : rule__ProcNoAttr__Group__0__Impl rule__ProcNoAttr__Group__1 ;
     public final void rule__ProcNoAttr__Group__0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1298:1: ( rule__ProcNoAttr__Group__0__Impl rule__ProcNoAttr__Group__1 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1299:2: rule__ProcNoAttr__Group__0__Impl rule__ProcNoAttr__Group__1
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1270:1: ( rule__ProcNoAttr__Group__0__Impl rule__ProcNoAttr__Group__1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1271:2: rule__ProcNoAttr__Group__0__Impl rule__ProcNoAttr__Group__1
             {
-            pushFollow(FOLLOW_rule__ProcNoAttr__Group__0__Impl_in_rule__ProcNoAttr__Group__02633);
+            pushFollow(FOLLOW_rule__ProcNoAttr__Group__0__Impl_in_rule__ProcNoAttr__Group__02573);
             rule__ProcNoAttr__Group__0__Impl();
 
             state._fsp--;
 
-            pushFollow(FOLLOW_rule__ProcNoAttr__Group__1_in_rule__ProcNoAttr__Group__02636);
+            pushFollow(FOLLOW_rule__ProcNoAttr__Group__1_in_rule__ProcNoAttr__Group__02576);
             rule__ProcNoAttr__Group__1();
 
             state._fsp--;
@@ -3617,23 +3540,23 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__ProcNoAttr__Group__0__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1306:1: rule__ProcNoAttr__Group__0__Impl : ( ( rule__ProcNoAttr__PrototypeAssignment_0 ) ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1278:1: rule__ProcNoAttr__Group__0__Impl : ( ( rule__ProcNoAttr__PrototypeAssignment_0 ) ) ;
     public final void rule__ProcNoAttr__Group__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1310:1: ( ( ( rule__ProcNoAttr__PrototypeAssignment_0 ) ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1311:1: ( ( rule__ProcNoAttr__PrototypeAssignment_0 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1282:1: ( ( ( rule__ProcNoAttr__PrototypeAssignment_0 ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1283:1: ( ( rule__ProcNoAttr__PrototypeAssignment_0 ) )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1311:1: ( ( rule__ProcNoAttr__PrototypeAssignment_0 ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1312:1: ( rule__ProcNoAttr__PrototypeAssignment_0 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1283:1: ( ( rule__ProcNoAttr__PrototypeAssignment_0 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1284:1: ( rule__ProcNoAttr__PrototypeAssignment_0 )
             {
              before(grammarAccess.getProcNoAttrAccess().getPrototypeAssignment_0()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1313:1: ( rule__ProcNoAttr__PrototypeAssignment_0 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1313:2: rule__ProcNoAttr__PrototypeAssignment_0
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1285:1: ( rule__ProcNoAttr__PrototypeAssignment_0 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1285:2: rule__ProcNoAttr__PrototypeAssignment_0
             {
-            pushFollow(FOLLOW_rule__ProcNoAttr__PrototypeAssignment_0_in_rule__ProcNoAttr__Group__0__Impl2663);
+            pushFollow(FOLLOW_rule__ProcNoAttr__PrototypeAssignment_0_in_rule__ProcNoAttr__Group__0__Impl2603);
             rule__ProcNoAttr__PrototypeAssignment_0();
 
             state._fsp--;
@@ -3664,16 +3587,16 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__ProcNoAttr__Group__1"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1323:1: rule__ProcNoAttr__Group__1 : rule__ProcNoAttr__Group__1__Impl ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1295:1: rule__ProcNoAttr__Group__1 : rule__ProcNoAttr__Group__1__Impl ;
     public final void rule__ProcNoAttr__Group__1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1327:1: ( rule__ProcNoAttr__Group__1__Impl )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1328:2: rule__ProcNoAttr__Group__1__Impl
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1299:1: ( rule__ProcNoAttr__Group__1__Impl )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1300:2: rule__ProcNoAttr__Group__1__Impl
             {
-            pushFollow(FOLLOW_rule__ProcNoAttr__Group__1__Impl_in_rule__ProcNoAttr__Group__12693);
+            pushFollow(FOLLOW_rule__ProcNoAttr__Group__1__Impl_in_rule__ProcNoAttr__Group__12633);
             rule__ProcNoAttr__Group__1__Impl();
 
             state._fsp--;
@@ -3697,20 +3620,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__ProcNoAttr__Group__1__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1334:1: rule__ProcNoAttr__Group__1__Impl : ( ';' ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1306:1: rule__ProcNoAttr__Group__1__Impl : ( ';' ) ;
     public final void rule__ProcNoAttr__Group__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1338:1: ( ( ';' ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1339:1: ( ';' )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1310:1: ( ( ';' ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1311:1: ( ';' )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1339:1: ( ';' )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1340:1: ';'
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1311:1: ( ';' )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1312:1: ';'
             {
              before(grammarAccess.getProcNoAttrAccess().getSemicolonKeyword_1()); 
-            match(input,30,FOLLOW_30_in_rule__ProcNoAttr__Group__1__Impl2721); 
+            match(input,30,FOLLOW_30_in_rule__ProcNoAttr__Group__1__Impl2661); 
              after(grammarAccess.getProcNoAttrAccess().getSemicolonKeyword_1()); 
 
             }
@@ -3734,21 +3657,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototype__Group__0"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1357:1: rule__FnPrototype__Group__0 : rule__FnPrototype__Group__0__Impl rule__FnPrototype__Group__1 ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1329:1: rule__FnPrototype__Group__0 : rule__FnPrototype__Group__0__Impl rule__FnPrototype__Group__1 ;
     public final void rule__FnPrototype__Group__0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1361:1: ( rule__FnPrototype__Group__0__Impl rule__FnPrototype__Group__1 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1362:2: rule__FnPrototype__Group__0__Impl rule__FnPrototype__Group__1
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1333:1: ( rule__FnPrototype__Group__0__Impl rule__FnPrototype__Group__1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1334:2: rule__FnPrototype__Group__0__Impl rule__FnPrototype__Group__1
             {
-            pushFollow(FOLLOW_rule__FnPrototype__Group__0__Impl_in_rule__FnPrototype__Group__02756);
+            pushFollow(FOLLOW_rule__FnPrototype__Group__0__Impl_in_rule__FnPrototype__Group__02696);
             rule__FnPrototype__Group__0__Impl();
 
             state._fsp--;
 
-            pushFollow(FOLLOW_rule__FnPrototype__Group__1_in_rule__FnPrototype__Group__02759);
+            pushFollow(FOLLOW_rule__FnPrototype__Group__1_in_rule__FnPrototype__Group__02699);
             rule__FnPrototype__Group__1();
 
             state._fsp--;
@@ -3772,20 +3695,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototype__Group__0__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1369:1: rule__FnPrototype__Group__0__Impl : ( ( rule__FnPrototype__ExternAssignment_0 )? ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1341:1: rule__FnPrototype__Group__0__Impl : ( ( rule__FnPrototype__ExternAssignment_0 )? ) ;
     public final void rule__FnPrototype__Group__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1373:1: ( ( ( rule__FnPrototype__ExternAssignment_0 )? ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1374:1: ( ( rule__FnPrototype__ExternAssignment_0 )? )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1345:1: ( ( ( rule__FnPrototype__ExternAssignment_0 )? ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1346:1: ( ( rule__FnPrototype__ExternAssignment_0 )? )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1374:1: ( ( rule__FnPrototype__ExternAssignment_0 )? )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1375:1: ( rule__FnPrototype__ExternAssignment_0 )?
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1346:1: ( ( rule__FnPrototype__ExternAssignment_0 )? )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1347:1: ( rule__FnPrototype__ExternAssignment_0 )?
             {
              before(grammarAccess.getFnPrototypeAccess().getExternAssignment_0()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1376:1: ( rule__FnPrototype__ExternAssignment_0 )?
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1348:1: ( rule__FnPrototype__ExternAssignment_0 )?
             int alt15=2;
             int LA15_0 = input.LA(1);
 
@@ -3794,9 +3717,9 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
             }
             switch (alt15) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1376:2: rule__FnPrototype__ExternAssignment_0
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1348:2: rule__FnPrototype__ExternAssignment_0
                     {
-                    pushFollow(FOLLOW_rule__FnPrototype__ExternAssignment_0_in_rule__FnPrototype__Group__0__Impl2786);
+                    pushFollow(FOLLOW_rule__FnPrototype__ExternAssignment_0_in_rule__FnPrototype__Group__0__Impl2726);
                     rule__FnPrototype__ExternAssignment_0();
 
                     state._fsp--;
@@ -3830,21 +3753,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototype__Group__1"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1386:1: rule__FnPrototype__Group__1 : rule__FnPrototype__Group__1__Impl rule__FnPrototype__Group__2 ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1358:1: rule__FnPrototype__Group__1 : rule__FnPrototype__Group__1__Impl rule__FnPrototype__Group__2 ;
     public final void rule__FnPrototype__Group__1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1390:1: ( rule__FnPrototype__Group__1__Impl rule__FnPrototype__Group__2 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1391:2: rule__FnPrototype__Group__1__Impl rule__FnPrototype__Group__2
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1362:1: ( rule__FnPrototype__Group__1__Impl rule__FnPrototype__Group__2 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1363:2: rule__FnPrototype__Group__1__Impl rule__FnPrototype__Group__2
             {
-            pushFollow(FOLLOW_rule__FnPrototype__Group__1__Impl_in_rule__FnPrototype__Group__12817);
+            pushFollow(FOLLOW_rule__FnPrototype__Group__1__Impl_in_rule__FnPrototype__Group__12757);
             rule__FnPrototype__Group__1__Impl();
 
             state._fsp--;
 
-            pushFollow(FOLLOW_rule__FnPrototype__Group__2_in_rule__FnPrototype__Group__12820);
+            pushFollow(FOLLOW_rule__FnPrototype__Group__2_in_rule__FnPrototype__Group__12760);
             rule__FnPrototype__Group__2();
 
             state._fsp--;
@@ -3868,20 +3791,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototype__Group__1__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1398:1: rule__FnPrototype__Group__1__Impl : ( ( rule__FnPrototype__PureAssignment_1 )? ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1370:1: rule__FnPrototype__Group__1__Impl : ( ( rule__FnPrototype__PureAssignment_1 )? ) ;
     public final void rule__FnPrototype__Group__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1402:1: ( ( ( rule__FnPrototype__PureAssignment_1 )? ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1403:1: ( ( rule__FnPrototype__PureAssignment_1 )? )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1374:1: ( ( ( rule__FnPrototype__PureAssignment_1 )? ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1375:1: ( ( rule__FnPrototype__PureAssignment_1 )? )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1403:1: ( ( rule__FnPrototype__PureAssignment_1 )? )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1404:1: ( rule__FnPrototype__PureAssignment_1 )?
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1375:1: ( ( rule__FnPrototype__PureAssignment_1 )? )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1376:1: ( rule__FnPrototype__PureAssignment_1 )?
             {
              before(grammarAccess.getFnPrototypeAccess().getPureAssignment_1()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1405:1: ( rule__FnPrototype__PureAssignment_1 )?
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1377:1: ( rule__FnPrototype__PureAssignment_1 )?
             int alt16=2;
             int LA16_0 = input.LA(1);
 
@@ -3890,9 +3813,9 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
             }
             switch (alt16) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1405:2: rule__FnPrototype__PureAssignment_1
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1377:2: rule__FnPrototype__PureAssignment_1
                     {
-                    pushFollow(FOLLOW_rule__FnPrototype__PureAssignment_1_in_rule__FnPrototype__Group__1__Impl2847);
+                    pushFollow(FOLLOW_rule__FnPrototype__PureAssignment_1_in_rule__FnPrototype__Group__1__Impl2787);
                     rule__FnPrototype__PureAssignment_1();
 
                     state._fsp--;
@@ -3926,16 +3849,16 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototype__Group__2"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1415:1: rule__FnPrototype__Group__2 : rule__FnPrototype__Group__2__Impl ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1387:1: rule__FnPrototype__Group__2 : rule__FnPrototype__Group__2__Impl ;
     public final void rule__FnPrototype__Group__2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1419:1: ( rule__FnPrototype__Group__2__Impl )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1420:2: rule__FnPrototype__Group__2__Impl
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1391:1: ( rule__FnPrototype__Group__2__Impl )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1392:2: rule__FnPrototype__Group__2__Impl
             {
-            pushFollow(FOLLOW_rule__FnPrototype__Group__2__Impl_in_rule__FnPrototype__Group__22878);
+            pushFollow(FOLLOW_rule__FnPrototype__Group__2__Impl_in_rule__FnPrototype__Group__22818);
             rule__FnPrototype__Group__2__Impl();
 
             state._fsp--;
@@ -3959,23 +3882,23 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototype__Group__2__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1426:1: rule__FnPrototype__Group__2__Impl : ( ( rule__FnPrototype__PrototypeAssignment_2 ) ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1398:1: rule__FnPrototype__Group__2__Impl : ( ( rule__FnPrototype__PrototypeAssignment_2 ) ) ;
     public final void rule__FnPrototype__Group__2__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1430:1: ( ( ( rule__FnPrototype__PrototypeAssignment_2 ) ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1431:1: ( ( rule__FnPrototype__PrototypeAssignment_2 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1402:1: ( ( ( rule__FnPrototype__PrototypeAssignment_2 ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1403:1: ( ( rule__FnPrototype__PrototypeAssignment_2 ) )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1431:1: ( ( rule__FnPrototype__PrototypeAssignment_2 ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1432:1: ( rule__FnPrototype__PrototypeAssignment_2 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1403:1: ( ( rule__FnPrototype__PrototypeAssignment_2 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1404:1: ( rule__FnPrototype__PrototypeAssignment_2 )
             {
              before(grammarAccess.getFnPrototypeAccess().getPrototypeAssignment_2()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1433:1: ( rule__FnPrototype__PrototypeAssignment_2 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1433:2: rule__FnPrototype__PrototypeAssignment_2
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1405:1: ( rule__FnPrototype__PrototypeAssignment_2 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1405:2: rule__FnPrototype__PrototypeAssignment_2
             {
-            pushFollow(FOLLOW_rule__FnPrototype__PrototypeAssignment_2_in_rule__FnPrototype__Group__2__Impl2905);
+            pushFollow(FOLLOW_rule__FnPrototype__PrototypeAssignment_2_in_rule__FnPrototype__Group__2__Impl2845);
             rule__FnPrototype__PrototypeAssignment_2();
 
             state._fsp--;
@@ -4006,21 +3929,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototypeNoDecors__Group_0__0"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1449:1: rule__FnPrototypeNoDecors__Group_0__0 : rule__FnPrototypeNoDecors__Group_0__0__Impl rule__FnPrototypeNoDecors__Group_0__1 ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1421:1: rule__FnPrototypeNoDecors__Group_0__0 : rule__FnPrototypeNoDecors__Group_0__0__Impl rule__FnPrototypeNoDecors__Group_0__1 ;
     public final void rule__FnPrototypeNoDecors__Group_0__0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1453:1: ( rule__FnPrototypeNoDecors__Group_0__0__Impl rule__FnPrototypeNoDecors__Group_0__1 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1454:2: rule__FnPrototypeNoDecors__Group_0__0__Impl rule__FnPrototypeNoDecors__Group_0__1
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1425:1: ( rule__FnPrototypeNoDecors__Group_0__0__Impl rule__FnPrototypeNoDecors__Group_0__1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1426:2: rule__FnPrototypeNoDecors__Group_0__0__Impl rule__FnPrototypeNoDecors__Group_0__1
             {
-            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_0__0__Impl_in_rule__FnPrototypeNoDecors__Group_0__02941);
+            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_0__0__Impl_in_rule__FnPrototypeNoDecors__Group_0__02881);
             rule__FnPrototypeNoDecors__Group_0__0__Impl();
 
             state._fsp--;
 
-            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_0__1_in_rule__FnPrototypeNoDecors__Group_0__02944);
+            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_0__1_in_rule__FnPrototypeNoDecors__Group_0__02884);
             rule__FnPrototypeNoDecors__Group_0__1();
 
             state._fsp--;
@@ -4044,21 +3967,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototypeNoDecors__Group_0__0__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1461:1: rule__FnPrototypeNoDecors__Group_0__0__Impl : ( () ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1433:1: rule__FnPrototypeNoDecors__Group_0__0__Impl : ( () ) ;
     public final void rule__FnPrototypeNoDecors__Group_0__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1465:1: ( ( () ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1466:1: ( () )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1437:1: ( ( () ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1438:1: ( () )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1466:1: ( () )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1467:1: ()
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1438:1: ( () )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1439:1: ()
             {
              before(grammarAccess.getFnPrototypeNoDecorsAccess().getThreadDeclarationAction_0_0()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1468:1: ()
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1470:1: 
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1440:1: ()
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1442:1: 
             {
             }
 
@@ -4081,21 +4004,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototypeNoDecors__Group_0__1"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1480:1: rule__FnPrototypeNoDecors__Group_0__1 : rule__FnPrototypeNoDecors__Group_0__1__Impl rule__FnPrototypeNoDecors__Group_0__2 ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1452:1: rule__FnPrototypeNoDecors__Group_0__1 : rule__FnPrototypeNoDecors__Group_0__1__Impl rule__FnPrototypeNoDecors__Group_0__2 ;
     public final void rule__FnPrototypeNoDecors__Group_0__1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1484:1: ( rule__FnPrototypeNoDecors__Group_0__1__Impl rule__FnPrototypeNoDecors__Group_0__2 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1485:2: rule__FnPrototypeNoDecors__Group_0__1__Impl rule__FnPrototypeNoDecors__Group_0__2
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1456:1: ( rule__FnPrototypeNoDecors__Group_0__1__Impl rule__FnPrototypeNoDecors__Group_0__2 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1457:2: rule__FnPrototypeNoDecors__Group_0__1__Impl rule__FnPrototypeNoDecors__Group_0__2
             {
-            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_0__1__Impl_in_rule__FnPrototypeNoDecors__Group_0__13002);
+            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_0__1__Impl_in_rule__FnPrototypeNoDecors__Group_0__12942);
             rule__FnPrototypeNoDecors__Group_0__1__Impl();
 
             state._fsp--;
 
-            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_0__2_in_rule__FnPrototypeNoDecors__Group_0__13005);
+            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_0__2_in_rule__FnPrototypeNoDecors__Group_0__12945);
             rule__FnPrototypeNoDecors__Group_0__2();
 
             state._fsp--;
@@ -4119,20 +4042,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototypeNoDecors__Group_0__1__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1492:1: rule__FnPrototypeNoDecors__Group_0__1__Impl : ( 'thread' ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1464:1: rule__FnPrototypeNoDecors__Group_0__1__Impl : ( 'thread' ) ;
     public final void rule__FnPrototypeNoDecors__Group_0__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1496:1: ( ( 'thread' ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1497:1: ( 'thread' )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1468:1: ( ( 'thread' ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1469:1: ( 'thread' )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1497:1: ( 'thread' )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1498:1: 'thread'
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1469:1: ( 'thread' )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1470:1: 'thread'
             {
              before(grammarAccess.getFnPrototypeNoDecorsAccess().getThreadKeyword_0_1()); 
-            match(input,31,FOLLOW_31_in_rule__FnPrototypeNoDecors__Group_0__1__Impl3033); 
+            match(input,31,FOLLOW_31_in_rule__FnPrototypeNoDecors__Group_0__1__Impl2973); 
              after(grammarAccess.getFnPrototypeNoDecorsAccess().getThreadKeyword_0_1()); 
 
             }
@@ -4156,16 +4079,16 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototypeNoDecors__Group_0__2"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1511:1: rule__FnPrototypeNoDecors__Group_0__2 : rule__FnPrototypeNoDecors__Group_0__2__Impl ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1483:1: rule__FnPrototypeNoDecors__Group_0__2 : rule__FnPrototypeNoDecors__Group_0__2__Impl ;
     public final void rule__FnPrototypeNoDecors__Group_0__2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1515:1: ( rule__FnPrototypeNoDecors__Group_0__2__Impl )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1516:2: rule__FnPrototypeNoDecors__Group_0__2__Impl
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1487:1: ( rule__FnPrototypeNoDecors__Group_0__2__Impl )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1488:2: rule__FnPrototypeNoDecors__Group_0__2__Impl
             {
-            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_0__2__Impl_in_rule__FnPrototypeNoDecors__Group_0__23064);
+            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_0__2__Impl_in_rule__FnPrototypeNoDecors__Group_0__23004);
             rule__FnPrototypeNoDecors__Group_0__2__Impl();
 
             state._fsp--;
@@ -4189,23 +4112,23 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototypeNoDecors__Group_0__2__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1522:1: rule__FnPrototypeNoDecors__Group_0__2__Impl : ( ( rule__FnPrototypeNoDecors__NameAssignment_0_2 ) ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1494:1: rule__FnPrototypeNoDecors__Group_0__2__Impl : ( ( rule__FnPrototypeNoDecors__NameAssignment_0_2 ) ) ;
     public final void rule__FnPrototypeNoDecors__Group_0__2__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1526:1: ( ( ( rule__FnPrototypeNoDecors__NameAssignment_0_2 ) ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1527:1: ( ( rule__FnPrototypeNoDecors__NameAssignment_0_2 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1498:1: ( ( ( rule__FnPrototypeNoDecors__NameAssignment_0_2 ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1499:1: ( ( rule__FnPrototypeNoDecors__NameAssignment_0_2 ) )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1527:1: ( ( rule__FnPrototypeNoDecors__NameAssignment_0_2 ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1528:1: ( rule__FnPrototypeNoDecors__NameAssignment_0_2 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1499:1: ( ( rule__FnPrototypeNoDecors__NameAssignment_0_2 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1500:1: ( rule__FnPrototypeNoDecors__NameAssignment_0_2 )
             {
              before(grammarAccess.getFnPrototypeNoDecorsAccess().getNameAssignment_0_2()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1529:1: ( rule__FnPrototypeNoDecors__NameAssignment_0_2 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1529:2: rule__FnPrototypeNoDecors__NameAssignment_0_2
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1501:1: ( rule__FnPrototypeNoDecors__NameAssignment_0_2 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1501:2: rule__FnPrototypeNoDecors__NameAssignment_0_2
             {
-            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__NameAssignment_0_2_in_rule__FnPrototypeNoDecors__Group_0__2__Impl3091);
+            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__NameAssignment_0_2_in_rule__FnPrototypeNoDecors__Group_0__2__Impl3031);
             rule__FnPrototypeNoDecors__NameAssignment_0_2();
 
             state._fsp--;
@@ -4236,21 +4159,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototypeNoDecors__Group_1__0"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1545:1: rule__FnPrototypeNoDecors__Group_1__0 : rule__FnPrototypeNoDecors__Group_1__0__Impl rule__FnPrototypeNoDecors__Group_1__1 ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1517:1: rule__FnPrototypeNoDecors__Group_1__0 : rule__FnPrototypeNoDecors__Group_1__0__Impl rule__FnPrototypeNoDecors__Group_1__1 ;
     public final void rule__FnPrototypeNoDecors__Group_1__0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1549:1: ( rule__FnPrototypeNoDecors__Group_1__0__Impl rule__FnPrototypeNoDecors__Group_1__1 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1550:2: rule__FnPrototypeNoDecors__Group_1__0__Impl rule__FnPrototypeNoDecors__Group_1__1
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1521:1: ( rule__FnPrototypeNoDecors__Group_1__0__Impl rule__FnPrototypeNoDecors__Group_1__1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1522:2: rule__FnPrototypeNoDecors__Group_1__0__Impl rule__FnPrototypeNoDecors__Group_1__1
             {
-            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_1__0__Impl_in_rule__FnPrototypeNoDecors__Group_1__03127);
+            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_1__0__Impl_in_rule__FnPrototypeNoDecors__Group_1__03067);
             rule__FnPrototypeNoDecors__Group_1__0__Impl();
 
             state._fsp--;
 
-            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_1__1_in_rule__FnPrototypeNoDecors__Group_1__03130);
+            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_1__1_in_rule__FnPrototypeNoDecors__Group_1__03070);
             rule__FnPrototypeNoDecors__Group_1__1();
 
             state._fsp--;
@@ -4274,21 +4197,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototypeNoDecors__Group_1__0__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1557:1: rule__FnPrototypeNoDecors__Group_1__0__Impl : ( () ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1529:1: rule__FnPrototypeNoDecors__Group_1__0__Impl : ( () ) ;
     public final void rule__FnPrototypeNoDecors__Group_1__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1561:1: ( ( () ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1562:1: ( () )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1533:1: ( ( () ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1534:1: ( () )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1562:1: ( () )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1563:1: ()
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1534:1: ( () )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1535:1: ()
             {
              before(grammarAccess.getFnPrototypeNoDecorsAccess().getFnPrototypeDeclarationAction_1_0()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1564:1: ()
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1566:1: 
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1536:1: ()
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1538:1: 
             {
             }
 
@@ -4311,21 +4234,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototypeNoDecors__Group_1__1"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1576:1: rule__FnPrototypeNoDecors__Group_1__1 : rule__FnPrototypeNoDecors__Group_1__1__Impl rule__FnPrototypeNoDecors__Group_1__2 ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1548:1: rule__FnPrototypeNoDecors__Group_1__1 : rule__FnPrototypeNoDecors__Group_1__1__Impl rule__FnPrototypeNoDecors__Group_1__2 ;
     public final void rule__FnPrototypeNoDecors__Group_1__1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1580:1: ( rule__FnPrototypeNoDecors__Group_1__1__Impl rule__FnPrototypeNoDecors__Group_1__2 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1581:2: rule__FnPrototypeNoDecors__Group_1__1__Impl rule__FnPrototypeNoDecors__Group_1__2
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1552:1: ( rule__FnPrototypeNoDecors__Group_1__1__Impl rule__FnPrototypeNoDecors__Group_1__2 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1553:2: rule__FnPrototypeNoDecors__Group_1__1__Impl rule__FnPrototypeNoDecors__Group_1__2
             {
-            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_1__1__Impl_in_rule__FnPrototypeNoDecors__Group_1__13188);
+            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_1__1__Impl_in_rule__FnPrototypeNoDecors__Group_1__13128);
             rule__FnPrototypeNoDecors__Group_1__1__Impl();
 
             state._fsp--;
 
-            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_1__2_in_rule__FnPrototypeNoDecors__Group_1__13191);
+            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_1__2_in_rule__FnPrototypeNoDecors__Group_1__13131);
             rule__FnPrototypeNoDecors__Group_1__2();
 
             state._fsp--;
@@ -4349,23 +4272,23 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototypeNoDecors__Group_1__1__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1588:1: rule__FnPrototypeNoDecors__Group_1__1__Impl : ( ( rule__FnPrototypeNoDecors__TypeAssignment_1_1 ) ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1560:1: rule__FnPrototypeNoDecors__Group_1__1__Impl : ( ( rule__FnPrototypeNoDecors__TypeAssignment_1_1 ) ) ;
     public final void rule__FnPrototypeNoDecors__Group_1__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1592:1: ( ( ( rule__FnPrototypeNoDecors__TypeAssignment_1_1 ) ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1593:1: ( ( rule__FnPrototypeNoDecors__TypeAssignment_1_1 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1564:1: ( ( ( rule__FnPrototypeNoDecors__TypeAssignment_1_1 ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1565:1: ( ( rule__FnPrototypeNoDecors__TypeAssignment_1_1 ) )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1593:1: ( ( rule__FnPrototypeNoDecors__TypeAssignment_1_1 ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1594:1: ( rule__FnPrototypeNoDecors__TypeAssignment_1_1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1565:1: ( ( rule__FnPrototypeNoDecors__TypeAssignment_1_1 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1566:1: ( rule__FnPrototypeNoDecors__TypeAssignment_1_1 )
             {
              before(grammarAccess.getFnPrototypeNoDecorsAccess().getTypeAssignment_1_1()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1595:1: ( rule__FnPrototypeNoDecors__TypeAssignment_1_1 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1595:2: rule__FnPrototypeNoDecors__TypeAssignment_1_1
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1567:1: ( rule__FnPrototypeNoDecors__TypeAssignment_1_1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1567:2: rule__FnPrototypeNoDecors__TypeAssignment_1_1
             {
-            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__TypeAssignment_1_1_in_rule__FnPrototypeNoDecors__Group_1__1__Impl3218);
+            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__TypeAssignment_1_1_in_rule__FnPrototypeNoDecors__Group_1__1__Impl3158);
             rule__FnPrototypeNoDecors__TypeAssignment_1_1();
 
             state._fsp--;
@@ -4396,21 +4319,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototypeNoDecors__Group_1__2"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1605:1: rule__FnPrototypeNoDecors__Group_1__2 : rule__FnPrototypeNoDecors__Group_1__2__Impl rule__FnPrototypeNoDecors__Group_1__3 ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1577:1: rule__FnPrototypeNoDecors__Group_1__2 : rule__FnPrototypeNoDecors__Group_1__2__Impl rule__FnPrototypeNoDecors__Group_1__3 ;
     public final void rule__FnPrototypeNoDecors__Group_1__2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1609:1: ( rule__FnPrototypeNoDecors__Group_1__2__Impl rule__FnPrototypeNoDecors__Group_1__3 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1610:2: rule__FnPrototypeNoDecors__Group_1__2__Impl rule__FnPrototypeNoDecors__Group_1__3
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1581:1: ( rule__FnPrototypeNoDecors__Group_1__2__Impl rule__FnPrototypeNoDecors__Group_1__3 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1582:2: rule__FnPrototypeNoDecors__Group_1__2__Impl rule__FnPrototypeNoDecors__Group_1__3
             {
-            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_1__2__Impl_in_rule__FnPrototypeNoDecors__Group_1__23248);
+            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_1__2__Impl_in_rule__FnPrototypeNoDecors__Group_1__23188);
             rule__FnPrototypeNoDecors__Group_1__2__Impl();
 
             state._fsp--;
 
-            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_1__3_in_rule__FnPrototypeNoDecors__Group_1__23251);
+            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_1__3_in_rule__FnPrototypeNoDecors__Group_1__23191);
             rule__FnPrototypeNoDecors__Group_1__3();
 
             state._fsp--;
@@ -4434,23 +4357,23 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototypeNoDecors__Group_1__2__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1617:1: rule__FnPrototypeNoDecors__Group_1__2__Impl : ( ( rule__FnPrototypeNoDecors__NameAssignment_1_2 ) ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1589:1: rule__FnPrototypeNoDecors__Group_1__2__Impl : ( ( rule__FnPrototypeNoDecors__NameAssignment_1_2 ) ) ;
     public final void rule__FnPrototypeNoDecors__Group_1__2__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1621:1: ( ( ( rule__FnPrototypeNoDecors__NameAssignment_1_2 ) ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1622:1: ( ( rule__FnPrototypeNoDecors__NameAssignment_1_2 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1593:1: ( ( ( rule__FnPrototypeNoDecors__NameAssignment_1_2 ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1594:1: ( ( rule__FnPrototypeNoDecors__NameAssignment_1_2 ) )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1622:1: ( ( rule__FnPrototypeNoDecors__NameAssignment_1_2 ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1623:1: ( rule__FnPrototypeNoDecors__NameAssignment_1_2 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1594:1: ( ( rule__FnPrototypeNoDecors__NameAssignment_1_2 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1595:1: ( rule__FnPrototypeNoDecors__NameAssignment_1_2 )
             {
              before(grammarAccess.getFnPrototypeNoDecorsAccess().getNameAssignment_1_2()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1624:1: ( rule__FnPrototypeNoDecors__NameAssignment_1_2 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1624:2: rule__FnPrototypeNoDecors__NameAssignment_1_2
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1596:1: ( rule__FnPrototypeNoDecors__NameAssignment_1_2 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1596:2: rule__FnPrototypeNoDecors__NameAssignment_1_2
             {
-            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__NameAssignment_1_2_in_rule__FnPrototypeNoDecors__Group_1__2__Impl3278);
+            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__NameAssignment_1_2_in_rule__FnPrototypeNoDecors__Group_1__2__Impl3218);
             rule__FnPrototypeNoDecors__NameAssignment_1_2();
 
             state._fsp--;
@@ -4481,21 +4404,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototypeNoDecors__Group_1__3"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1634:1: rule__FnPrototypeNoDecors__Group_1__3 : rule__FnPrototypeNoDecors__Group_1__3__Impl rule__FnPrototypeNoDecors__Group_1__4 ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1606:1: rule__FnPrototypeNoDecors__Group_1__3 : rule__FnPrototypeNoDecors__Group_1__3__Impl rule__FnPrototypeNoDecors__Group_1__4 ;
     public final void rule__FnPrototypeNoDecors__Group_1__3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1638:1: ( rule__FnPrototypeNoDecors__Group_1__3__Impl rule__FnPrototypeNoDecors__Group_1__4 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1639:2: rule__FnPrototypeNoDecors__Group_1__3__Impl rule__FnPrototypeNoDecors__Group_1__4
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1610:1: ( rule__FnPrototypeNoDecors__Group_1__3__Impl rule__FnPrototypeNoDecors__Group_1__4 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1611:2: rule__FnPrototypeNoDecors__Group_1__3__Impl rule__FnPrototypeNoDecors__Group_1__4
             {
-            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_1__3__Impl_in_rule__FnPrototypeNoDecors__Group_1__33308);
+            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_1__3__Impl_in_rule__FnPrototypeNoDecors__Group_1__33248);
             rule__FnPrototypeNoDecors__Group_1__3__Impl();
 
             state._fsp--;
 
-            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_1__4_in_rule__FnPrototypeNoDecors__Group_1__33311);
+            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_1__4_in_rule__FnPrototypeNoDecors__Group_1__33251);
             rule__FnPrototypeNoDecors__Group_1__4();
 
             state._fsp--;
@@ -4519,20 +4442,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototypeNoDecors__Group_1__3__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1646:1: rule__FnPrototypeNoDecors__Group_1__3__Impl : ( '(' ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1618:1: rule__FnPrototypeNoDecors__Group_1__3__Impl : ( '(' ) ;
     public final void rule__FnPrototypeNoDecors__Group_1__3__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1650:1: ( ( '(' ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1651:1: ( '(' )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1622:1: ( ( '(' ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1623:1: ( '(' )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1651:1: ( '(' )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1652:1: '('
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1623:1: ( '(' )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1624:1: '('
             {
              before(grammarAccess.getFnPrototypeNoDecorsAccess().getLeftParenthesisKeyword_1_3()); 
-            match(input,32,FOLLOW_32_in_rule__FnPrototypeNoDecors__Group_1__3__Impl3339); 
+            match(input,32,FOLLOW_32_in_rule__FnPrototypeNoDecors__Group_1__3__Impl3279); 
              after(grammarAccess.getFnPrototypeNoDecorsAccess().getLeftParenthesisKeyword_1_3()); 
 
             }
@@ -4556,16 +4479,16 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototypeNoDecors__Group_1__4"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1665:1: rule__FnPrototypeNoDecors__Group_1__4 : rule__FnPrototypeNoDecors__Group_1__4__Impl ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1637:1: rule__FnPrototypeNoDecors__Group_1__4 : rule__FnPrototypeNoDecors__Group_1__4__Impl ;
     public final void rule__FnPrototypeNoDecors__Group_1__4() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1669:1: ( rule__FnPrototypeNoDecors__Group_1__4__Impl )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1670:2: rule__FnPrototypeNoDecors__Group_1__4__Impl
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1641:1: ( rule__FnPrototypeNoDecors__Group_1__4__Impl )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1642:2: rule__FnPrototypeNoDecors__Group_1__4__Impl
             {
-            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_1__4__Impl_in_rule__FnPrototypeNoDecors__Group_1__43370);
+            pushFollow(FOLLOW_rule__FnPrototypeNoDecors__Group_1__4__Impl_in_rule__FnPrototypeNoDecors__Group_1__43310);
             rule__FnPrototypeNoDecors__Group_1__4__Impl();
 
             state._fsp--;
@@ -4589,20 +4512,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototypeNoDecors__Group_1__4__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1676:1: rule__FnPrototypeNoDecors__Group_1__4__Impl : ( ')' ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1648:1: rule__FnPrototypeNoDecors__Group_1__4__Impl : ( ')' ) ;
     public final void rule__FnPrototypeNoDecors__Group_1__4__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1680:1: ( ( ')' ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1681:1: ( ')' )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1652:1: ( ( ')' ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1653:1: ( ')' )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1681:1: ( ')' )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1682:1: ')'
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1653:1: ( ')' )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1654:1: ')'
             {
              before(grammarAccess.getFnPrototypeNoDecorsAccess().getRightParenthesisKeyword_1_4()); 
-            match(input,33,FOLLOW_33_in_rule__FnPrototypeNoDecors__Group_1__4__Impl3398); 
+            match(input,33,FOLLOW_33_in_rule__FnPrototypeNoDecors__Group_1__4__Impl3338); 
              after(grammarAccess.getFnPrototypeNoDecorsAccess().getRightParenthesisKeyword_1_4()); 
 
             }
@@ -4626,21 +4549,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Double__Group_1__0"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1705:1: rule__Double__Group_1__0 : rule__Double__Group_1__0__Impl rule__Double__Group_1__1 ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1677:1: rule__Double__Group_1__0 : rule__Double__Group_1__0__Impl rule__Double__Group_1__1 ;
     public final void rule__Double__Group_1__0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1709:1: ( rule__Double__Group_1__0__Impl rule__Double__Group_1__1 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1710:2: rule__Double__Group_1__0__Impl rule__Double__Group_1__1
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1681:1: ( rule__Double__Group_1__0__Impl rule__Double__Group_1__1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1682:2: rule__Double__Group_1__0__Impl rule__Double__Group_1__1
             {
-            pushFollow(FOLLOW_rule__Double__Group_1__0__Impl_in_rule__Double__Group_1__03439);
+            pushFollow(FOLLOW_rule__Double__Group_1__0__Impl_in_rule__Double__Group_1__03379);
             rule__Double__Group_1__0__Impl();
 
             state._fsp--;
 
-            pushFollow(FOLLOW_rule__Double__Group_1__1_in_rule__Double__Group_1__03442);
+            pushFollow(FOLLOW_rule__Double__Group_1__1_in_rule__Double__Group_1__03382);
             rule__Double__Group_1__1();
 
             state._fsp--;
@@ -4664,20 +4587,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Double__Group_1__0__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1717:1: rule__Double__Group_1__0__Impl : ( RULE_INT ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1689:1: rule__Double__Group_1__0__Impl : ( RULE_INT ) ;
     public final void rule__Double__Group_1__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1721:1: ( ( RULE_INT ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1722:1: ( RULE_INT )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1693:1: ( ( RULE_INT ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1694:1: ( RULE_INT )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1722:1: ( RULE_INT )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1723:1: RULE_INT
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1694:1: ( RULE_INT )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1695:1: RULE_INT
             {
              before(grammarAccess.getDoubleAccess().getINTTerminalRuleCall_1_0()); 
-            match(input,RULE_INT,FOLLOW_RULE_INT_in_rule__Double__Group_1__0__Impl3469); 
+            match(input,RULE_INT,FOLLOW_RULE_INT_in_rule__Double__Group_1__0__Impl3409); 
              after(grammarAccess.getDoubleAccess().getINTTerminalRuleCall_1_0()); 
 
             }
@@ -4701,21 +4624,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Double__Group_1__1"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1734:1: rule__Double__Group_1__1 : rule__Double__Group_1__1__Impl rule__Double__Group_1__2 ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1706:1: rule__Double__Group_1__1 : rule__Double__Group_1__1__Impl rule__Double__Group_1__2 ;
     public final void rule__Double__Group_1__1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1738:1: ( rule__Double__Group_1__1__Impl rule__Double__Group_1__2 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1739:2: rule__Double__Group_1__1__Impl rule__Double__Group_1__2
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1710:1: ( rule__Double__Group_1__1__Impl rule__Double__Group_1__2 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1711:2: rule__Double__Group_1__1__Impl rule__Double__Group_1__2
             {
-            pushFollow(FOLLOW_rule__Double__Group_1__1__Impl_in_rule__Double__Group_1__13498);
+            pushFollow(FOLLOW_rule__Double__Group_1__1__Impl_in_rule__Double__Group_1__13438);
             rule__Double__Group_1__1__Impl();
 
             state._fsp--;
 
-            pushFollow(FOLLOW_rule__Double__Group_1__2_in_rule__Double__Group_1__13501);
+            pushFollow(FOLLOW_rule__Double__Group_1__2_in_rule__Double__Group_1__13441);
             rule__Double__Group_1__2();
 
             state._fsp--;
@@ -4739,20 +4662,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Double__Group_1__1__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1746:1: rule__Double__Group_1__1__Impl : ( '.' ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1718:1: rule__Double__Group_1__1__Impl : ( '.' ) ;
     public final void rule__Double__Group_1__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1750:1: ( ( '.' ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1751:1: ( '.' )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1722:1: ( ( '.' ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1723:1: ( '.' )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1751:1: ( '.' )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1752:1: '.'
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1723:1: ( '.' )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1724:1: '.'
             {
              before(grammarAccess.getDoubleAccess().getFullStopKeyword_1_1()); 
-            match(input,34,FOLLOW_34_in_rule__Double__Group_1__1__Impl3529); 
+            match(input,34,FOLLOW_34_in_rule__Double__Group_1__1__Impl3469); 
              after(grammarAccess.getDoubleAccess().getFullStopKeyword_1_1()); 
 
             }
@@ -4776,16 +4699,16 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Double__Group_1__2"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1765:1: rule__Double__Group_1__2 : rule__Double__Group_1__2__Impl ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1737:1: rule__Double__Group_1__2 : rule__Double__Group_1__2__Impl ;
     public final void rule__Double__Group_1__2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1769:1: ( rule__Double__Group_1__2__Impl )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1770:2: rule__Double__Group_1__2__Impl
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1741:1: ( rule__Double__Group_1__2__Impl )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1742:2: rule__Double__Group_1__2__Impl
             {
-            pushFollow(FOLLOW_rule__Double__Group_1__2__Impl_in_rule__Double__Group_1__23560);
+            pushFollow(FOLLOW_rule__Double__Group_1__2__Impl_in_rule__Double__Group_1__23500);
             rule__Double__Group_1__2__Impl();
 
             state._fsp--;
@@ -4809,20 +4732,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Double__Group_1__2__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1776:1: rule__Double__Group_1__2__Impl : ( ( RULE_INT )? ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1748:1: rule__Double__Group_1__2__Impl : ( ( RULE_INT )? ) ;
     public final void rule__Double__Group_1__2__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1780:1: ( ( ( RULE_INT )? ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1781:1: ( ( RULE_INT )? )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1752:1: ( ( ( RULE_INT )? ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1753:1: ( ( RULE_INT )? )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1781:1: ( ( RULE_INT )? )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1782:1: ( RULE_INT )?
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1753:1: ( ( RULE_INT )? )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1754:1: ( RULE_INT )?
             {
              before(grammarAccess.getDoubleAccess().getINTTerminalRuleCall_1_2()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1783:1: ( RULE_INT )?
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1755:1: ( RULE_INT )?
             int alt17=2;
             int LA17_0 = input.LA(1);
 
@@ -4831,9 +4754,9 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
             }
             switch (alt17) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1783:3: RULE_INT
+                    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1755:3: RULE_INT
                     {
-                    match(input,RULE_INT,FOLLOW_RULE_INT_in_rule__Double__Group_1__2__Impl3588); 
+                    match(input,RULE_INT,FOLLOW_RULE_INT_in_rule__Double__Group_1__2__Impl3528); 
 
                     }
                     break;
@@ -4863,20 +4786,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Program__ProgramElementsAssignment_1"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1800:1: rule__Program__ProgramElementsAssignment_1 : ( ruleProgramElement ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1772:1: rule__Program__ProgramElementsAssignment_1 : ( ruleProgramElement ) ;
     public final void rule__Program__ProgramElementsAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1804:1: ( ( ruleProgramElement ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1805:1: ( ruleProgramElement )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1776:1: ( ( ruleProgramElement ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1777:1: ( ruleProgramElement )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1805:1: ( ruleProgramElement )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1806:1: ruleProgramElement
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1777:1: ( ruleProgramElement )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1778:1: ruleProgramElement
             {
              before(grammarAccess.getProgramAccess().getProgramElementsProgramElementParserRuleCall_1_0()); 
-            pushFollow(FOLLOW_ruleProgramElement_in_rule__Program__ProgramElementsAssignment_13630);
+            pushFollow(FOLLOW_ruleProgramElement_in_rule__Program__ProgramElementsAssignment_13570);
             ruleProgramElement();
 
             state._fsp--;
@@ -4904,20 +4827,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__DmplSubclause__ProgramAssignment_1"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1815:1: rule__DmplSubclause__ProgramAssignment_1 : ( ruleProgram ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1787:1: rule__DmplSubclause__ProgramAssignment_1 : ( ruleProgram ) ;
     public final void rule__DmplSubclause__ProgramAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1819:1: ( ( ruleProgram ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1820:1: ( ruleProgram )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1791:1: ( ( ruleProgram ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1792:1: ( ruleProgram )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1820:1: ( ruleProgram )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1821:1: ruleProgram
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1792:1: ( ruleProgram )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1793:1: ruleProgram
             {
              before(grammarAccess.getDmplSubclauseAccess().getProgramProgramParserRuleCall_1_0()); 
-            pushFollow(FOLLOW_ruleProgram_in_rule__DmplSubclause__ProgramAssignment_13661);
+            pushFollow(FOLLOW_ruleProgram_in_rule__DmplSubclause__ProgramAssignment_13601);
             ruleProgram();
 
             state._fsp--;
@@ -4945,20 +4868,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Constant__NameAssignment_1"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1830:1: rule__Constant__NameAssignment_1 : ( RULE_TIDENTIFIER ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1802:1: rule__Constant__NameAssignment_1 : ( RULE_TIDENTIFIER ) ;
     public final void rule__Constant__NameAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1834:1: ( ( RULE_TIDENTIFIER ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1835:1: ( RULE_TIDENTIFIER )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1806:1: ( ( RULE_TIDENTIFIER ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1807:1: ( RULE_TIDENTIFIER )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1835:1: ( RULE_TIDENTIFIER )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1836:1: RULE_TIDENTIFIER
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1807:1: ( RULE_TIDENTIFIER )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1808:1: RULE_TIDENTIFIER
             {
              before(grammarAccess.getConstantAccess().getNameTIDENTIFIERTerminalRuleCall_1_0()); 
-            match(input,RULE_TIDENTIFIER,FOLLOW_RULE_TIDENTIFIER_in_rule__Constant__NameAssignment_13692); 
+            match(input,RULE_TIDENTIFIER,FOLLOW_RULE_TIDENTIFIER_in_rule__Constant__NameAssignment_13632); 
              after(grammarAccess.getConstantAccess().getNameTIDENTIFIERTerminalRuleCall_1_0()); 
 
             }
@@ -4982,20 +4905,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Constant__ValueAssignment_3"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1845:1: rule__Constant__ValueAssignment_3 : ( ruleNumberConst ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1817:1: rule__Constant__ValueAssignment_3 : ( ruleNumberConst ) ;
     public final void rule__Constant__ValueAssignment_3() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1849:1: ( ( ruleNumberConst ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1850:1: ( ruleNumberConst )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1821:1: ( ( ruleNumberConst ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1822:1: ( ruleNumberConst )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1850:1: ( ruleNumberConst )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1851:1: ruleNumberConst
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1822:1: ( ruleNumberConst )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1823:1: ruleNumberConst
             {
              before(grammarAccess.getConstantAccess().getValueNumberConstParserRuleCall_3_0()); 
-            pushFollow(FOLLOW_ruleNumberConst_in_rule__Constant__ValueAssignment_33723);
+            pushFollow(FOLLOW_ruleNumberConst_in_rule__Constant__ValueAssignment_33663);
             ruleNumberConst();
 
             state._fsp--;
@@ -5023,20 +4946,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__IntConst__SignAssignment_0"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1860:1: rule__IntConst__SignAssignment_0 : ( ruleSign ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1832:1: rule__IntConst__SignAssignment_0 : ( ruleSign ) ;
     public final void rule__IntConst__SignAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1864:1: ( ( ruleSign ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1865:1: ( ruleSign )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1836:1: ( ( ruleSign ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1837:1: ( ruleSign )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1865:1: ( ruleSign )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1866:1: ruleSign
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1837:1: ( ruleSign )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1838:1: ruleSign
             {
              before(grammarAccess.getIntConstAccess().getSignSignParserRuleCall_0_0()); 
-            pushFollow(FOLLOW_ruleSign_in_rule__IntConst__SignAssignment_03754);
+            pushFollow(FOLLOW_ruleSign_in_rule__IntConst__SignAssignment_03694);
             ruleSign();
 
             state._fsp--;
@@ -5064,20 +4987,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__IntConst__ValueAssignment_1"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1875:1: rule__IntConst__ValueAssignment_1 : ( RULE_INT ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1847:1: rule__IntConst__ValueAssignment_1 : ( RULE_INT ) ;
     public final void rule__IntConst__ValueAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1879:1: ( ( RULE_INT ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1880:1: ( RULE_INT )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1851:1: ( ( RULE_INT ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1852:1: ( RULE_INT )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1880:1: ( RULE_INT )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1881:1: RULE_INT
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1852:1: ( RULE_INT )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1853:1: RULE_INT
             {
              before(grammarAccess.getIntConstAccess().getValueINTTerminalRuleCall_1_0()); 
-            match(input,RULE_INT,FOLLOW_RULE_INT_in_rule__IntConst__ValueAssignment_13785); 
+            match(input,RULE_INT,FOLLOW_RULE_INT_in_rule__IntConst__ValueAssignment_13725); 
              after(grammarAccess.getIntConstAccess().getValueINTTerminalRuleCall_1_0()); 
 
             }
@@ -5101,20 +5024,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__DoubleConst__SignAssignment_0"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1890:1: rule__DoubleConst__SignAssignment_0 : ( ruleSign ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1862:1: rule__DoubleConst__SignAssignment_0 : ( ruleSign ) ;
     public final void rule__DoubleConst__SignAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1894:1: ( ( ruleSign ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1895:1: ( ruleSign )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1866:1: ( ( ruleSign ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1867:1: ( ruleSign )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1895:1: ( ruleSign )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1896:1: ruleSign
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1867:1: ( ruleSign )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1868:1: ruleSign
             {
              before(grammarAccess.getDoubleConstAccess().getSignSignParserRuleCall_0_0()); 
-            pushFollow(FOLLOW_ruleSign_in_rule__DoubleConst__SignAssignment_03816);
+            pushFollow(FOLLOW_ruleSign_in_rule__DoubleConst__SignAssignment_03756);
             ruleSign();
 
             state._fsp--;
@@ -5142,20 +5065,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__DoubleConst__ValueAssignment_1"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1905:1: rule__DoubleConst__ValueAssignment_1 : ( ruleDouble ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1877:1: rule__DoubleConst__ValueAssignment_1 : ( ruleDouble ) ;
     public final void rule__DoubleConst__ValueAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1909:1: ( ( ruleDouble ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1910:1: ( ruleDouble )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1881:1: ( ( ruleDouble ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1882:1: ( ruleDouble )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1910:1: ( ruleDouble )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1911:1: ruleDouble
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1882:1: ( ruleDouble )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1883:1: ruleDouble
             {
              before(grammarAccess.getDoubleConstAccess().getValueDoubleParserRuleCall_1_0()); 
-            pushFollow(FOLLOW_ruleDouble_in_rule__DoubleConst__ValueAssignment_13847);
+            pushFollow(FOLLOW_ruleDouble_in_rule__DoubleConst__ValueAssignment_13787);
             ruleDouble();
 
             state._fsp--;
@@ -5183,20 +5106,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Type__SignedAssignment_0"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1920:1: rule__Type__SignedAssignment_0 : ( ruleSigned ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1892:1: rule__Type__SignedAssignment_0 : ( ruleSigned ) ;
     public final void rule__Type__SignedAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1924:1: ( ( ruleSigned ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1925:1: ( ruleSigned )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1896:1: ( ( ruleSigned ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1897:1: ( ruleSigned )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1925:1: ( ruleSigned )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1926:1: ruleSigned
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1897:1: ( ruleSigned )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1898:1: ruleSigned
             {
              before(grammarAccess.getTypeAccess().getSignedSignedParserRuleCall_0_0()); 
-            pushFollow(FOLLOW_ruleSigned_in_rule__Type__SignedAssignment_03878);
+            pushFollow(FOLLOW_ruleSigned_in_rule__Type__SignedAssignment_03818);
             ruleSigned();
 
             state._fsp--;
@@ -5224,20 +5147,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Type__SimpTypeAssignment_1"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1935:1: rule__Type__SimpTypeAssignment_1 : ( ruleSimpType ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1907:1: rule__Type__SimpTypeAssignment_1 : ( ruleSimpType ) ;
     public final void rule__Type__SimpTypeAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1939:1: ( ( ruleSimpType ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1940:1: ( ruleSimpType )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1911:1: ( ( ruleSimpType ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1912:1: ( ruleSimpType )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1940:1: ( ruleSimpType )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1941:1: ruleSimpType
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1912:1: ( ruleSimpType )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1913:1: ruleSimpType
             {
              before(grammarAccess.getTypeAccess().getSimpTypeSimpTypeParserRuleCall_1_0()); 
-            pushFollow(FOLLOW_ruleSimpType_in_rule__Type__SimpTypeAssignment_13909);
+            pushFollow(FOLLOW_ruleSimpType_in_rule__Type__SimpTypeAssignment_13849);
             ruleSimpType();
 
             state._fsp--;
@@ -5264,62 +5187,21 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
     // $ANTLR end "rule__Type__SimpTypeAssignment_1"
 
 
-    // $ANTLR start "rule__FnType__TypeAssignment"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1950:1: rule__FnType__TypeAssignment : ( ruleType ) ;
-    public final void rule__FnType__TypeAssignment() throws RecognitionException {
-
-        		int stackSize = keepStackSize();
-            
-        try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1954:1: ( ( ruleType ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1955:1: ( ruleType )
-            {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1955:1: ( ruleType )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1956:1: ruleType
-            {
-             before(grammarAccess.getFnTypeAccess().getTypeTypeParserRuleCall_0()); 
-            pushFollow(FOLLOW_ruleType_in_rule__FnType__TypeAssignment3940);
-            ruleType();
-
-            state._fsp--;
-
-             after(grammarAccess.getFnTypeAccess().getTypeTypeParserRuleCall_0()); 
-
-            }
-
-
-            }
-
-        }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-        }
-        finally {
-
-            	restoreStackSize(stackSize);
-
-        }
-        return ;
-    }
-    // $ANTLR end "rule__FnType__TypeAssignment"
-
-
     // $ANTLR start "rule__Procedure__ProcedureAssignment"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1965:1: rule__Procedure__ProcedureAssignment : ( ruleProcNoAttr ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1922:1: rule__Procedure__ProcedureAssignment : ( ruleProcNoAttr ) ;
     public final void rule__Procedure__ProcedureAssignment() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1969:1: ( ( ruleProcNoAttr ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1970:1: ( ruleProcNoAttr )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1926:1: ( ( ruleProcNoAttr ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1927:1: ( ruleProcNoAttr )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1970:1: ( ruleProcNoAttr )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1971:1: ruleProcNoAttr
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1927:1: ( ruleProcNoAttr )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1928:1: ruleProcNoAttr
             {
              before(grammarAccess.getProcedureAccess().getProcedureProcNoAttrParserRuleCall_0()); 
-            pushFollow(FOLLOW_ruleProcNoAttr_in_rule__Procedure__ProcedureAssignment3971);
+            pushFollow(FOLLOW_ruleProcNoAttr_in_rule__Procedure__ProcedureAssignment3880);
             ruleProcNoAttr();
 
             state._fsp--;
@@ -5347,20 +5229,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__ProcNoAttr__PrototypeAssignment_0"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1980:1: rule__ProcNoAttr__PrototypeAssignment_0 : ( ruleFnPrototype ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1937:1: rule__ProcNoAttr__PrototypeAssignment_0 : ( ruleFnPrototype ) ;
     public final void rule__ProcNoAttr__PrototypeAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1984:1: ( ( ruleFnPrototype ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1985:1: ( ruleFnPrototype )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1941:1: ( ( ruleFnPrototype ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1942:1: ( ruleFnPrototype )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1985:1: ( ruleFnPrototype )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1986:1: ruleFnPrototype
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1942:1: ( ruleFnPrototype )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1943:1: ruleFnPrototype
             {
              before(grammarAccess.getProcNoAttrAccess().getPrototypeFnPrototypeParserRuleCall_0_0()); 
-            pushFollow(FOLLOW_ruleFnPrototype_in_rule__ProcNoAttr__PrototypeAssignment_04002);
+            pushFollow(FOLLOW_ruleFnPrototype_in_rule__ProcNoAttr__PrototypeAssignment_03911);
             ruleFnPrototype();
 
             state._fsp--;
@@ -5388,23 +5270,23 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototype__ExternAssignment_0"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1995:1: rule__FnPrototype__ExternAssignment_0 : ( ( rule__FnPrototype__ExternAlternatives_0_0 ) ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1952:1: rule__FnPrototype__ExternAssignment_0 : ( ( rule__FnPrototype__ExternAlternatives_0_0 ) ) ;
     public final void rule__FnPrototype__ExternAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1999:1: ( ( ( rule__FnPrototype__ExternAlternatives_0_0 ) ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2000:1: ( ( rule__FnPrototype__ExternAlternatives_0_0 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1956:1: ( ( ( rule__FnPrototype__ExternAlternatives_0_0 ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1957:1: ( ( rule__FnPrototype__ExternAlternatives_0_0 ) )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2000:1: ( ( rule__FnPrototype__ExternAlternatives_0_0 ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2001:1: ( rule__FnPrototype__ExternAlternatives_0_0 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1957:1: ( ( rule__FnPrototype__ExternAlternatives_0_0 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1958:1: ( rule__FnPrototype__ExternAlternatives_0_0 )
             {
              before(grammarAccess.getFnPrototypeAccess().getExternAlternatives_0_0()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2002:1: ( rule__FnPrototype__ExternAlternatives_0_0 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2002:2: rule__FnPrototype__ExternAlternatives_0_0
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1959:1: ( rule__FnPrototype__ExternAlternatives_0_0 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1959:2: rule__FnPrototype__ExternAlternatives_0_0
             {
-            pushFollow(FOLLOW_rule__FnPrototype__ExternAlternatives_0_0_in_rule__FnPrototype__ExternAssignment_04033);
+            pushFollow(FOLLOW_rule__FnPrototype__ExternAlternatives_0_0_in_rule__FnPrototype__ExternAssignment_03942);
             rule__FnPrototype__ExternAlternatives_0_0();
 
             state._fsp--;
@@ -5435,23 +5317,23 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototype__PureAssignment_1"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2011:1: rule__FnPrototype__PureAssignment_1 : ( ( rule__FnPrototype__PureAlternatives_1_0 ) ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1968:1: rule__FnPrototype__PureAssignment_1 : ( ( rule__FnPrototype__PureAlternatives_1_0 ) ) ;
     public final void rule__FnPrototype__PureAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2015:1: ( ( ( rule__FnPrototype__PureAlternatives_1_0 ) ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2016:1: ( ( rule__FnPrototype__PureAlternatives_1_0 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1972:1: ( ( ( rule__FnPrototype__PureAlternatives_1_0 ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1973:1: ( ( rule__FnPrototype__PureAlternatives_1_0 ) )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2016:1: ( ( rule__FnPrototype__PureAlternatives_1_0 ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2017:1: ( rule__FnPrototype__PureAlternatives_1_0 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1973:1: ( ( rule__FnPrototype__PureAlternatives_1_0 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1974:1: ( rule__FnPrototype__PureAlternatives_1_0 )
             {
              before(grammarAccess.getFnPrototypeAccess().getPureAlternatives_1_0()); 
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2018:1: ( rule__FnPrototype__PureAlternatives_1_0 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2018:2: rule__FnPrototype__PureAlternatives_1_0
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1975:1: ( rule__FnPrototype__PureAlternatives_1_0 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1975:2: rule__FnPrototype__PureAlternatives_1_0
             {
-            pushFollow(FOLLOW_rule__FnPrototype__PureAlternatives_1_0_in_rule__FnPrototype__PureAssignment_14066);
+            pushFollow(FOLLOW_rule__FnPrototype__PureAlternatives_1_0_in_rule__FnPrototype__PureAssignment_13975);
             rule__FnPrototype__PureAlternatives_1_0();
 
             state._fsp--;
@@ -5482,20 +5364,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototype__PrototypeAssignment_2"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2027:1: rule__FnPrototype__PrototypeAssignment_2 : ( ruleFnPrototypeNoDecors ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1984:1: rule__FnPrototype__PrototypeAssignment_2 : ( ruleFnPrototypeNoDecors ) ;
     public final void rule__FnPrototype__PrototypeAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2031:1: ( ( ruleFnPrototypeNoDecors ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2032:1: ( ruleFnPrototypeNoDecors )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1988:1: ( ( ruleFnPrototypeNoDecors ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1989:1: ( ruleFnPrototypeNoDecors )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2032:1: ( ruleFnPrototypeNoDecors )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2033:1: ruleFnPrototypeNoDecors
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1989:1: ( ruleFnPrototypeNoDecors )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1990:1: ruleFnPrototypeNoDecors
             {
              before(grammarAccess.getFnPrototypeAccess().getPrototypeFnPrototypeNoDecorsParserRuleCall_2_0()); 
-            pushFollow(FOLLOW_ruleFnPrototypeNoDecors_in_rule__FnPrototype__PrototypeAssignment_24099);
+            pushFollow(FOLLOW_ruleFnPrototypeNoDecors_in_rule__FnPrototype__PrototypeAssignment_24008);
             ruleFnPrototypeNoDecors();
 
             state._fsp--;
@@ -5523,20 +5405,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototypeNoDecors__NameAssignment_0_2"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2042:1: rule__FnPrototypeNoDecors__NameAssignment_0_2 : ( RULE_TIDENTIFIER ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:1999:1: rule__FnPrototypeNoDecors__NameAssignment_0_2 : ( RULE_TIDENTIFIER ) ;
     public final void rule__FnPrototypeNoDecors__NameAssignment_0_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2046:1: ( ( RULE_TIDENTIFIER ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2047:1: ( RULE_TIDENTIFIER )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2003:1: ( ( RULE_TIDENTIFIER ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2004:1: ( RULE_TIDENTIFIER )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2047:1: ( RULE_TIDENTIFIER )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2048:1: RULE_TIDENTIFIER
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2004:1: ( RULE_TIDENTIFIER )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2005:1: RULE_TIDENTIFIER
             {
              before(grammarAccess.getFnPrototypeNoDecorsAccess().getNameTIDENTIFIERTerminalRuleCall_0_2_0()); 
-            match(input,RULE_TIDENTIFIER,FOLLOW_RULE_TIDENTIFIER_in_rule__FnPrototypeNoDecors__NameAssignment_0_24130); 
+            match(input,RULE_TIDENTIFIER,FOLLOW_RULE_TIDENTIFIER_in_rule__FnPrototypeNoDecors__NameAssignment_0_24039); 
              after(grammarAccess.getFnPrototypeNoDecorsAccess().getNameTIDENTIFIERTerminalRuleCall_0_2_0()); 
 
             }
@@ -5560,25 +5442,25 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototypeNoDecors__TypeAssignment_1_1"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2057:1: rule__FnPrototypeNoDecors__TypeAssignment_1_1 : ( ruleFnType ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2014:1: rule__FnPrototypeNoDecors__TypeAssignment_1_1 : ( ruleType ) ;
     public final void rule__FnPrototypeNoDecors__TypeAssignment_1_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2061:1: ( ( ruleFnType ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2062:1: ( ruleFnType )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2018:1: ( ( ruleType ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2019:1: ( ruleType )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2062:1: ( ruleFnType )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2063:1: ruleFnType
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2019:1: ( ruleType )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2020:1: ruleType
             {
-             before(grammarAccess.getFnPrototypeNoDecorsAccess().getTypeFnTypeParserRuleCall_1_1_0()); 
-            pushFollow(FOLLOW_ruleFnType_in_rule__FnPrototypeNoDecors__TypeAssignment_1_14161);
-            ruleFnType();
+             before(grammarAccess.getFnPrototypeNoDecorsAccess().getTypeTypeParserRuleCall_1_1_0()); 
+            pushFollow(FOLLOW_ruleType_in_rule__FnPrototypeNoDecors__TypeAssignment_1_14070);
+            ruleType();
 
             state._fsp--;
 
-             after(grammarAccess.getFnPrototypeNoDecorsAccess().getTypeFnTypeParserRuleCall_1_1_0()); 
+             after(grammarAccess.getFnPrototypeNoDecorsAccess().getTypeTypeParserRuleCall_1_1_0()); 
 
             }
 
@@ -5601,20 +5483,20 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__FnPrototypeNoDecors__NameAssignment_1_2"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2072:1: rule__FnPrototypeNoDecors__NameAssignment_1_2 : ( RULE_TIDENTIFIER ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2029:1: rule__FnPrototypeNoDecors__NameAssignment_1_2 : ( RULE_TIDENTIFIER ) ;
     public final void rule__FnPrototypeNoDecors__NameAssignment_1_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2076:1: ( ( RULE_TIDENTIFIER ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2077:1: ( RULE_TIDENTIFIER )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2033:1: ( ( RULE_TIDENTIFIER ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2034:1: ( RULE_TIDENTIFIER )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2077:1: ( RULE_TIDENTIFIER )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2078:1: RULE_TIDENTIFIER
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2034:1: ( RULE_TIDENTIFIER )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2035:1: RULE_TIDENTIFIER
             {
              before(grammarAccess.getFnPrototypeNoDecorsAccess().getNameTIDENTIFIERTerminalRuleCall_1_2_0()); 
-            match(input,RULE_TIDENTIFIER,FOLLOW_RULE_TIDENTIFIER_in_rule__FnPrototypeNoDecors__NameAssignment_1_24192); 
+            match(input,RULE_TIDENTIFIER,FOLLOW_RULE_TIDENTIFIER_in_rule__FnPrototypeNoDecors__NameAssignment_1_24101); 
              after(grammarAccess.getFnPrototypeNoDecorsAccess().getNameTIDENTIFIERTerminalRuleCall_1_2_0()); 
 
             }
@@ -5665,153 +5547,149 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
     public static final BitSet FOLLOW_ruleType_in_entryRuleType483 = new BitSet(new long[]{0x0000000000000000L});
     public static final BitSet FOLLOW_EOF_in_entryRuleType490 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_rule__Type__Group__0_in_ruleType516 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleFnType_in_entryRuleFnType543 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleFnType550 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__FnType__TypeAssignment_in_ruleFnType576 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleProcedure_in_entryRuleProcedure603 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleProcedure610 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Procedure__ProcedureAssignment_in_ruleProcedure636 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleProcNoAttr_in_entryRuleProcNoAttr663 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleProcNoAttr670 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__ProcNoAttr__Group__0_in_ruleProcNoAttr696 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleFnPrototype_in_entryRuleFnPrototype723 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleFnPrototype730 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__FnPrototype__Group__0_in_ruleFnPrototype756 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleFnPrototypeNoDecors_in_entryRuleFnPrototypeNoDecors783 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleFnPrototypeNoDecors790 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Alternatives_in_ruleFnPrototypeNoDecors816 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleSign_in_entryRuleSign843 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleSign850 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Sign__Alternatives_in_ruleSign876 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleSimpType_in_entryRuleSimpType903 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleSimpType910 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__SimpType__Alternatives_in_ruleSimpType936 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleSigned_in_entryRuleSigned963 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleSigned970 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Signed__Alternatives_in_ruleSigned996 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleDouble_in_entryRuleDouble1023 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleDouble1030 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Double__Alternatives_in_ruleDouble1056 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleConstant_in_rule__ProgramElement__Alternatives1098 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleProcedure_in_rule__ProgramElement__Alternatives1115 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_12_in_rule__Constant__Alternatives_01148 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_13_in_rule__Constant__Alternatives_01168 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleIntConst_in_rule__NumberConst__Alternatives1202 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleDoubleConst_in_rule__NumberConst__Alternatives1219 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_14_in_rule__FnPrototype__ExternAlternatives_0_01252 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_15_in_rule__FnPrototype__ExternAlternatives_0_01272 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_16_in_rule__FnPrototype__PureAlternatives_1_01307 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_17_in_rule__FnPrototype__PureAlternatives_1_01327 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_0__0_in_rule__FnPrototypeNoDecors__Alternatives1361 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_1__0_in_rule__FnPrototypeNoDecors__Alternatives1379 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_18_in_rule__Sign__Alternatives1413 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_19_in_rule__Sign__Alternatives1433 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_20_in_rule__SimpType__Alternatives1468 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_21_in_rule__SimpType__Alternatives1488 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_22_in_rule__SimpType__Alternatives1508 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_23_in_rule__SimpType__Alternatives1528 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_24_in_rule__SimpType__Alternatives1548 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_25_in_rule__SimpType__Alternatives1568 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_26_in_rule__Signed__Alternatives1603 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_27_in_rule__Signed__Alternatives1623 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_28_in_rule__Double__Alternatives1658 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Double__Group_1__0_in_rule__Double__Alternatives1677 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Program__Group__0__Impl_in_rule__Program__Group__01711 = new BitSet(new long[]{0x000000008FF3F000L});
-    public static final BitSet FOLLOW_rule__Program__Group__1_in_rule__Program__Group__01714 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Program__Group__1__Impl_in_rule__Program__Group__11772 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Program__ProgramElementsAssignment_1_in_rule__Program__Group__1__Impl1799 = new BitSet(new long[]{0x000000008FF3F002L});
-    public static final BitSet FOLLOW_rule__DmplSubclause__Group__0__Impl_in_rule__DmplSubclause__Group__01834 = new BitSet(new long[]{0x000000008FF3F000L});
-    public static final BitSet FOLLOW_rule__DmplSubclause__Group__1_in_rule__DmplSubclause__Group__01837 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__DmplSubclause__Group__1__Impl_in_rule__DmplSubclause__Group__11895 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__DmplSubclause__ProgramAssignment_1_in_rule__DmplSubclause__Group__1__Impl1922 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Constant__Group__0__Impl_in_rule__Constant__Group__01956 = new BitSet(new long[]{0x0000000000000020L});
-    public static final BitSet FOLLOW_rule__Constant__Group__1_in_rule__Constant__Group__01959 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Constant__Alternatives_0_in_rule__Constant__Group__0__Impl1986 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Constant__Group__1__Impl_in_rule__Constant__Group__12016 = new BitSet(new long[]{0x0000000020000000L});
-    public static final BitSet FOLLOW_rule__Constant__Group__2_in_rule__Constant__Group__12019 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Constant__NameAssignment_1_in_rule__Constant__Group__1__Impl2046 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Constant__Group__2__Impl_in_rule__Constant__Group__22076 = new BitSet(new long[]{0x00000000100C0010L});
-    public static final BitSet FOLLOW_rule__Constant__Group__3_in_rule__Constant__Group__22079 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_29_in_rule__Constant__Group__2__Impl2107 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Constant__Group__3__Impl_in_rule__Constant__Group__32138 = new BitSet(new long[]{0x0000000040000000L});
-    public static final BitSet FOLLOW_rule__Constant__Group__4_in_rule__Constant__Group__32141 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Constant__ValueAssignment_3_in_rule__Constant__Group__3__Impl2168 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Constant__Group__4__Impl_in_rule__Constant__Group__42198 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_30_in_rule__Constant__Group__4__Impl2226 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__IntConst__Group__0__Impl_in_rule__IntConst__Group__02267 = new BitSet(new long[]{0x00000000000C0010L});
-    public static final BitSet FOLLOW_rule__IntConst__Group__1_in_rule__IntConst__Group__02270 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__IntConst__SignAssignment_0_in_rule__IntConst__Group__0__Impl2297 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__IntConst__Group__1__Impl_in_rule__IntConst__Group__12328 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__IntConst__ValueAssignment_1_in_rule__IntConst__Group__1__Impl2355 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__DoubleConst__Group__0__Impl_in_rule__DoubleConst__Group__02389 = new BitSet(new long[]{0x00000000100C0010L});
-    public static final BitSet FOLLOW_rule__DoubleConst__Group__1_in_rule__DoubleConst__Group__02392 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__DoubleConst__SignAssignment_0_in_rule__DoubleConst__Group__0__Impl2419 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__DoubleConst__Group__1__Impl_in_rule__DoubleConst__Group__12450 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__DoubleConst__ValueAssignment_1_in_rule__DoubleConst__Group__1__Impl2477 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Type__Group__0__Impl_in_rule__Type__Group__02511 = new BitSet(new long[]{0x000000008FF3F000L});
-    public static final BitSet FOLLOW_rule__Type__Group__1_in_rule__Type__Group__02514 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Type__SignedAssignment_0_in_rule__Type__Group__0__Impl2541 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Type__Group__1__Impl_in_rule__Type__Group__12572 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Type__SimpTypeAssignment_1_in_rule__Type__Group__1__Impl2599 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__ProcNoAttr__Group__0__Impl_in_rule__ProcNoAttr__Group__02633 = new BitSet(new long[]{0x0000000040000000L});
-    public static final BitSet FOLLOW_rule__ProcNoAttr__Group__1_in_rule__ProcNoAttr__Group__02636 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__ProcNoAttr__PrototypeAssignment_0_in_rule__ProcNoAttr__Group__0__Impl2663 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__ProcNoAttr__Group__1__Impl_in_rule__ProcNoAttr__Group__12693 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_30_in_rule__ProcNoAttr__Group__1__Impl2721 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__FnPrototype__Group__0__Impl_in_rule__FnPrototype__Group__02756 = new BitSet(new long[]{0x000000008FF3F000L});
-    public static final BitSet FOLLOW_rule__FnPrototype__Group__1_in_rule__FnPrototype__Group__02759 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__FnPrototype__ExternAssignment_0_in_rule__FnPrototype__Group__0__Impl2786 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__FnPrototype__Group__1__Impl_in_rule__FnPrototype__Group__12817 = new BitSet(new long[]{0x000000008FF3F000L});
-    public static final BitSet FOLLOW_rule__FnPrototype__Group__2_in_rule__FnPrototype__Group__12820 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__FnPrototype__PureAssignment_1_in_rule__FnPrototype__Group__1__Impl2847 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__FnPrototype__Group__2__Impl_in_rule__FnPrototype__Group__22878 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__FnPrototype__PrototypeAssignment_2_in_rule__FnPrototype__Group__2__Impl2905 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_0__0__Impl_in_rule__FnPrototypeNoDecors__Group_0__02941 = new BitSet(new long[]{0x0000000080000000L});
-    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_0__1_in_rule__FnPrototypeNoDecors__Group_0__02944 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_0__1__Impl_in_rule__FnPrototypeNoDecors__Group_0__13002 = new BitSet(new long[]{0x0000000000000020L});
-    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_0__2_in_rule__FnPrototypeNoDecors__Group_0__13005 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_31_in_rule__FnPrototypeNoDecors__Group_0__1__Impl3033 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_0__2__Impl_in_rule__FnPrototypeNoDecors__Group_0__23064 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__NameAssignment_0_2_in_rule__FnPrototypeNoDecors__Group_0__2__Impl3091 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_1__0__Impl_in_rule__FnPrototypeNoDecors__Group_1__03127 = new BitSet(new long[]{0x000000008FF3F000L});
-    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_1__1_in_rule__FnPrototypeNoDecors__Group_1__03130 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_1__1__Impl_in_rule__FnPrototypeNoDecors__Group_1__13188 = new BitSet(new long[]{0x0000000000000020L});
-    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_1__2_in_rule__FnPrototypeNoDecors__Group_1__13191 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__TypeAssignment_1_1_in_rule__FnPrototypeNoDecors__Group_1__1__Impl3218 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_1__2__Impl_in_rule__FnPrototypeNoDecors__Group_1__23248 = new BitSet(new long[]{0x0000000100000000L});
-    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_1__3_in_rule__FnPrototypeNoDecors__Group_1__23251 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__NameAssignment_1_2_in_rule__FnPrototypeNoDecors__Group_1__2__Impl3278 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_1__3__Impl_in_rule__FnPrototypeNoDecors__Group_1__33308 = new BitSet(new long[]{0x0000000200000000L});
-    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_1__4_in_rule__FnPrototypeNoDecors__Group_1__33311 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_32_in_rule__FnPrototypeNoDecors__Group_1__3__Impl3339 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_1__4__Impl_in_rule__FnPrototypeNoDecors__Group_1__43370 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_33_in_rule__FnPrototypeNoDecors__Group_1__4__Impl3398 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Double__Group_1__0__Impl_in_rule__Double__Group_1__03439 = new BitSet(new long[]{0x0000000400000000L});
-    public static final BitSet FOLLOW_rule__Double__Group_1__1_in_rule__Double__Group_1__03442 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_INT_in_rule__Double__Group_1__0__Impl3469 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Double__Group_1__1__Impl_in_rule__Double__Group_1__13498 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_rule__Double__Group_1__2_in_rule__Double__Group_1__13501 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_34_in_rule__Double__Group_1__1__Impl3529 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__Double__Group_1__2__Impl_in_rule__Double__Group_1__23560 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_INT_in_rule__Double__Group_1__2__Impl3588 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleProgramElement_in_rule__Program__ProgramElementsAssignment_13630 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleProgram_in_rule__DmplSubclause__ProgramAssignment_13661 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_TIDENTIFIER_in_rule__Constant__NameAssignment_13692 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleNumberConst_in_rule__Constant__ValueAssignment_33723 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleSign_in_rule__IntConst__SignAssignment_03754 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_INT_in_rule__IntConst__ValueAssignment_13785 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleSign_in_rule__DoubleConst__SignAssignment_03816 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleDouble_in_rule__DoubleConst__ValueAssignment_13847 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleSigned_in_rule__Type__SignedAssignment_03878 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleSimpType_in_rule__Type__SimpTypeAssignment_13909 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleType_in_rule__FnType__TypeAssignment3940 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleProcNoAttr_in_rule__Procedure__ProcedureAssignment3971 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleFnPrototype_in_rule__ProcNoAttr__PrototypeAssignment_04002 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__FnPrototype__ExternAlternatives_0_0_in_rule__FnPrototype__ExternAssignment_04033 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__FnPrototype__PureAlternatives_1_0_in_rule__FnPrototype__PureAssignment_14066 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleFnPrototypeNoDecors_in_rule__FnPrototype__PrototypeAssignment_24099 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_TIDENTIFIER_in_rule__FnPrototypeNoDecors__NameAssignment_0_24130 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleFnType_in_rule__FnPrototypeNoDecors__TypeAssignment_1_14161 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_TIDENTIFIER_in_rule__FnPrototypeNoDecors__NameAssignment_1_24192 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleProcedure_in_entryRuleProcedure543 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleProcedure550 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Procedure__ProcedureAssignment_in_ruleProcedure576 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleProcNoAttr_in_entryRuleProcNoAttr603 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleProcNoAttr610 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__ProcNoAttr__Group__0_in_ruleProcNoAttr636 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleFnPrototype_in_entryRuleFnPrototype663 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleFnPrototype670 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__FnPrototype__Group__0_in_ruleFnPrototype696 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleFnPrototypeNoDecors_in_entryRuleFnPrototypeNoDecors723 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleFnPrototypeNoDecors730 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Alternatives_in_ruleFnPrototypeNoDecors756 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleSign_in_entryRuleSign783 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleSign790 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Sign__Alternatives_in_ruleSign816 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleSimpType_in_entryRuleSimpType843 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleSimpType850 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__SimpType__Alternatives_in_ruleSimpType876 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleSigned_in_entryRuleSigned903 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleSigned910 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Signed__Alternatives_in_ruleSigned936 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleDouble_in_entryRuleDouble963 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleDouble970 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Double__Alternatives_in_ruleDouble996 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleConstant_in_rule__ProgramElement__Alternatives1038 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleProcedure_in_rule__ProgramElement__Alternatives1055 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_12_in_rule__Constant__Alternatives_01088 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_13_in_rule__Constant__Alternatives_01108 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleIntConst_in_rule__NumberConst__Alternatives1142 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleDoubleConst_in_rule__NumberConst__Alternatives1159 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_14_in_rule__FnPrototype__ExternAlternatives_0_01192 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_15_in_rule__FnPrototype__ExternAlternatives_0_01212 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_16_in_rule__FnPrototype__PureAlternatives_1_01247 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_17_in_rule__FnPrototype__PureAlternatives_1_01267 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_0__0_in_rule__FnPrototypeNoDecors__Alternatives1301 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_1__0_in_rule__FnPrototypeNoDecors__Alternatives1319 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_18_in_rule__Sign__Alternatives1353 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_19_in_rule__Sign__Alternatives1373 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_20_in_rule__SimpType__Alternatives1408 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_21_in_rule__SimpType__Alternatives1428 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_22_in_rule__SimpType__Alternatives1448 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_23_in_rule__SimpType__Alternatives1468 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_24_in_rule__SimpType__Alternatives1488 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_25_in_rule__SimpType__Alternatives1508 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_26_in_rule__Signed__Alternatives1543 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_27_in_rule__Signed__Alternatives1563 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_28_in_rule__Double__Alternatives1598 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Double__Group_1__0_in_rule__Double__Alternatives1617 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Program__Group__0__Impl_in_rule__Program__Group__01651 = new BitSet(new long[]{0x000000008FF3F000L});
+    public static final BitSet FOLLOW_rule__Program__Group__1_in_rule__Program__Group__01654 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Program__Group__1__Impl_in_rule__Program__Group__11712 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Program__ProgramElementsAssignment_1_in_rule__Program__Group__1__Impl1739 = new BitSet(new long[]{0x000000008FF3F002L});
+    public static final BitSet FOLLOW_rule__DmplSubclause__Group__0__Impl_in_rule__DmplSubclause__Group__01774 = new BitSet(new long[]{0x000000008FF3F000L});
+    public static final BitSet FOLLOW_rule__DmplSubclause__Group__1_in_rule__DmplSubclause__Group__01777 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__DmplSubclause__Group__1__Impl_in_rule__DmplSubclause__Group__11835 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__DmplSubclause__ProgramAssignment_1_in_rule__DmplSubclause__Group__1__Impl1862 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Constant__Group__0__Impl_in_rule__Constant__Group__01896 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_rule__Constant__Group__1_in_rule__Constant__Group__01899 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Constant__Alternatives_0_in_rule__Constant__Group__0__Impl1926 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Constant__Group__1__Impl_in_rule__Constant__Group__11956 = new BitSet(new long[]{0x0000000020000000L});
+    public static final BitSet FOLLOW_rule__Constant__Group__2_in_rule__Constant__Group__11959 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Constant__NameAssignment_1_in_rule__Constant__Group__1__Impl1986 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Constant__Group__2__Impl_in_rule__Constant__Group__22016 = new BitSet(new long[]{0x00000000100C0010L});
+    public static final BitSet FOLLOW_rule__Constant__Group__3_in_rule__Constant__Group__22019 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_29_in_rule__Constant__Group__2__Impl2047 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Constant__Group__3__Impl_in_rule__Constant__Group__32078 = new BitSet(new long[]{0x0000000040000000L});
+    public static final BitSet FOLLOW_rule__Constant__Group__4_in_rule__Constant__Group__32081 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Constant__ValueAssignment_3_in_rule__Constant__Group__3__Impl2108 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Constant__Group__4__Impl_in_rule__Constant__Group__42138 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_30_in_rule__Constant__Group__4__Impl2166 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__IntConst__Group__0__Impl_in_rule__IntConst__Group__02207 = new BitSet(new long[]{0x00000000000C0010L});
+    public static final BitSet FOLLOW_rule__IntConst__Group__1_in_rule__IntConst__Group__02210 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__IntConst__SignAssignment_0_in_rule__IntConst__Group__0__Impl2237 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__IntConst__Group__1__Impl_in_rule__IntConst__Group__12268 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__IntConst__ValueAssignment_1_in_rule__IntConst__Group__1__Impl2295 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__DoubleConst__Group__0__Impl_in_rule__DoubleConst__Group__02329 = new BitSet(new long[]{0x00000000100C0010L});
+    public static final BitSet FOLLOW_rule__DoubleConst__Group__1_in_rule__DoubleConst__Group__02332 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__DoubleConst__SignAssignment_0_in_rule__DoubleConst__Group__0__Impl2359 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__DoubleConst__Group__1__Impl_in_rule__DoubleConst__Group__12390 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__DoubleConst__ValueAssignment_1_in_rule__DoubleConst__Group__1__Impl2417 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Type__Group__0__Impl_in_rule__Type__Group__02451 = new BitSet(new long[]{0x000000008FF3F000L});
+    public static final BitSet FOLLOW_rule__Type__Group__1_in_rule__Type__Group__02454 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Type__SignedAssignment_0_in_rule__Type__Group__0__Impl2481 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Type__Group__1__Impl_in_rule__Type__Group__12512 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Type__SimpTypeAssignment_1_in_rule__Type__Group__1__Impl2539 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__ProcNoAttr__Group__0__Impl_in_rule__ProcNoAttr__Group__02573 = new BitSet(new long[]{0x0000000040000000L});
+    public static final BitSet FOLLOW_rule__ProcNoAttr__Group__1_in_rule__ProcNoAttr__Group__02576 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__ProcNoAttr__PrototypeAssignment_0_in_rule__ProcNoAttr__Group__0__Impl2603 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__ProcNoAttr__Group__1__Impl_in_rule__ProcNoAttr__Group__12633 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_30_in_rule__ProcNoAttr__Group__1__Impl2661 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__FnPrototype__Group__0__Impl_in_rule__FnPrototype__Group__02696 = new BitSet(new long[]{0x000000008FF3F000L});
+    public static final BitSet FOLLOW_rule__FnPrototype__Group__1_in_rule__FnPrototype__Group__02699 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__FnPrototype__ExternAssignment_0_in_rule__FnPrototype__Group__0__Impl2726 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__FnPrototype__Group__1__Impl_in_rule__FnPrototype__Group__12757 = new BitSet(new long[]{0x000000008FF3F000L});
+    public static final BitSet FOLLOW_rule__FnPrototype__Group__2_in_rule__FnPrototype__Group__12760 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__FnPrototype__PureAssignment_1_in_rule__FnPrototype__Group__1__Impl2787 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__FnPrototype__Group__2__Impl_in_rule__FnPrototype__Group__22818 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__FnPrototype__PrototypeAssignment_2_in_rule__FnPrototype__Group__2__Impl2845 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_0__0__Impl_in_rule__FnPrototypeNoDecors__Group_0__02881 = new BitSet(new long[]{0x0000000080000000L});
+    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_0__1_in_rule__FnPrototypeNoDecors__Group_0__02884 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_0__1__Impl_in_rule__FnPrototypeNoDecors__Group_0__12942 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_0__2_in_rule__FnPrototypeNoDecors__Group_0__12945 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_31_in_rule__FnPrototypeNoDecors__Group_0__1__Impl2973 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_0__2__Impl_in_rule__FnPrototypeNoDecors__Group_0__23004 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__NameAssignment_0_2_in_rule__FnPrototypeNoDecors__Group_0__2__Impl3031 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_1__0__Impl_in_rule__FnPrototypeNoDecors__Group_1__03067 = new BitSet(new long[]{0x000000008FF3F000L});
+    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_1__1_in_rule__FnPrototypeNoDecors__Group_1__03070 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_1__1__Impl_in_rule__FnPrototypeNoDecors__Group_1__13128 = new BitSet(new long[]{0x0000000000000020L});
+    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_1__2_in_rule__FnPrototypeNoDecors__Group_1__13131 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__TypeAssignment_1_1_in_rule__FnPrototypeNoDecors__Group_1__1__Impl3158 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_1__2__Impl_in_rule__FnPrototypeNoDecors__Group_1__23188 = new BitSet(new long[]{0x0000000100000000L});
+    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_1__3_in_rule__FnPrototypeNoDecors__Group_1__23191 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__NameAssignment_1_2_in_rule__FnPrototypeNoDecors__Group_1__2__Impl3218 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_1__3__Impl_in_rule__FnPrototypeNoDecors__Group_1__33248 = new BitSet(new long[]{0x0000000200000000L});
+    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_1__4_in_rule__FnPrototypeNoDecors__Group_1__33251 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_32_in_rule__FnPrototypeNoDecors__Group_1__3__Impl3279 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__FnPrototypeNoDecors__Group_1__4__Impl_in_rule__FnPrototypeNoDecors__Group_1__43310 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_33_in_rule__FnPrototypeNoDecors__Group_1__4__Impl3338 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Double__Group_1__0__Impl_in_rule__Double__Group_1__03379 = new BitSet(new long[]{0x0000000400000000L});
+    public static final BitSet FOLLOW_rule__Double__Group_1__1_in_rule__Double__Group_1__03382 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_RULE_INT_in_rule__Double__Group_1__0__Impl3409 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Double__Group_1__1__Impl_in_rule__Double__Group_1__13438 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_rule__Double__Group_1__2_in_rule__Double__Group_1__13441 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_34_in_rule__Double__Group_1__1__Impl3469 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__Double__Group_1__2__Impl_in_rule__Double__Group_1__23500 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_RULE_INT_in_rule__Double__Group_1__2__Impl3528 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleProgramElement_in_rule__Program__ProgramElementsAssignment_13570 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleProgram_in_rule__DmplSubclause__ProgramAssignment_13601 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_RULE_TIDENTIFIER_in_rule__Constant__NameAssignment_13632 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleNumberConst_in_rule__Constant__ValueAssignment_33663 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleSign_in_rule__IntConst__SignAssignment_03694 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_RULE_INT_in_rule__IntConst__ValueAssignment_13725 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleSign_in_rule__DoubleConst__SignAssignment_03756 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleDouble_in_rule__DoubleConst__ValueAssignment_13787 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleSigned_in_rule__Type__SignedAssignment_03818 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleSimpType_in_rule__Type__SimpTypeAssignment_13849 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleProcNoAttr_in_rule__Procedure__ProcedureAssignment3880 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleFnPrototype_in_rule__ProcNoAttr__PrototypeAssignment_03911 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__FnPrototype__ExternAlternatives_0_0_in_rule__FnPrototype__ExternAssignment_03942 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__FnPrototype__PureAlternatives_1_0_in_rule__FnPrototype__PureAssignment_13975 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleFnPrototypeNoDecors_in_rule__FnPrototype__PrototypeAssignment_24008 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_RULE_TIDENTIFIER_in_rule__FnPrototypeNoDecors__NameAssignment_0_24039 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleType_in_rule__FnPrototypeNoDecors__TypeAssignment_1_14070 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_RULE_TIDENTIFIER_in_rule__FnPrototypeNoDecors__NameAssignment_1_24101 = new BitSet(new long[]{0x0000000000000002L});
 
 }

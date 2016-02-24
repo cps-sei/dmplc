@@ -252,22 +252,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		public RuleCall getSimpTypeSimpTypeParserRuleCall_1_0() { return cSimpTypeSimpTypeParserRuleCall_1_0; }
 	}
 
-	public class FnTypeElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "FnType");
-		private final Assignment cTypeAssignment = (Assignment)rule.eContents().get(1);
-		private final RuleCall cTypeTypeParserRuleCall_0 = (RuleCall)cTypeAssignment.eContents().get(0);
-		
-		//FnType:
-		//	type=Type;
-		@Override public ParserRule getRule() { return rule; }
-
-		//type=Type
-		public Assignment getTypeAssignment() { return cTypeAssignment; }
-
-		//Type
-		public RuleCall getTypeTypeParserRuleCall_0() { return cTypeTypeParserRuleCall_0; }
-	}
-
 	public class ProcedureElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Procedure");
 		private final Assignment cProcedureAssignment = (Assignment)rule.eContents().get(1);
@@ -374,7 +358,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
 		private final Action cFnPrototypeDeclarationAction_1_0 = (Action)cGroup_1.eContents().get(0);
 		private final Assignment cTypeAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
-		private final RuleCall cTypeFnTypeParserRuleCall_1_1_0 = (RuleCall)cTypeAssignment_1_1.eContents().get(0);
+		private final RuleCall cTypeTypeParserRuleCall_1_1_0 = (RuleCall)cTypeAssignment_1_1.eContents().get(0);
 		private final Assignment cNameAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
 		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_1_2_0 = (RuleCall)cNameAssignment_1_2.eContents().get(0);
 		private final Keyword cLeftParenthesisKeyword_1_3 = (Keyword)cGroup_1.eContents().get(3);
@@ -382,11 +366,11 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//FnPrototypeNoDecors:
 		//	{ThreadDeclaration} "thread" name=TIDENTIFIER | //TODO: param_list
-		//	{FnPrototypeDeclaration} type=FnType name=TIDENTIFIER "(" ")";
+		//	{FnPrototypeDeclaration} type=Type name=TIDENTIFIER "(" ")";
 		@Override public ParserRule getRule() { return rule; }
 
 		//{ThreadDeclaration} "thread" name=TIDENTIFIER | //TODO: param_list
-		//{FnPrototypeDeclaration} type=FnType name=TIDENTIFIER "(" ")"
+		//{FnPrototypeDeclaration} type=Type name=TIDENTIFIER "(" ")"
 		public Alternatives getAlternatives() { return cAlternatives; }
 
 		//{ThreadDeclaration} "thread" name=TIDENTIFIER
@@ -405,18 +389,18 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		public RuleCall getNameTIDENTIFIERTerminalRuleCall_0_2_0() { return cNameTIDENTIFIERTerminalRuleCall_0_2_0; }
 
 		////TODO: param_list
-		//{FnPrototypeDeclaration} type=FnType name=TIDENTIFIER "(" ")"
+		//{FnPrototypeDeclaration} type=Type name=TIDENTIFIER "(" ")"
 		public Group getGroup_1() { return cGroup_1; }
 
 		////TODO: param_list
 		//{FnPrototypeDeclaration}
 		public Action getFnPrototypeDeclarationAction_1_0() { return cFnPrototypeDeclarationAction_1_0; }
 
-		//type=FnType
+		//type=Type
 		public Assignment getTypeAssignment_1_1() { return cTypeAssignment_1_1; }
 
-		//FnType
-		public RuleCall getTypeFnTypeParserRuleCall_1_1_0() { return cTypeFnTypeParserRuleCall_1_1_0; }
+		//Type
+		public RuleCall getTypeTypeParserRuleCall_1_1_0() { return cTypeTypeParserRuleCall_1_1_0; }
 
 		//name=TIDENTIFIER
 		public Assignment getNameAssignment_1_2() { return cNameAssignment_1_2; }
@@ -673,7 +657,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final IntConstElements pIntConst;
 	private final DoubleConstElements pDoubleConst;
 	private final TypeElements pType;
-	private final FnTypeElements pFnType;
 	private final ProcedureElements pProcedure;
 	private final ProcNoAttrElements pProcNoAttr;
 	private final FnPrototypeElements pFnPrototype;
@@ -705,7 +688,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pIntConst = new IntConstElements();
 		this.pDoubleConst = new DoubleConstElements();
 		this.pType = new TypeElements();
-		this.pFnType = new FnTypeElements();
 		this.pProcedure = new ProcedureElements();
 		this.pProcNoAttr = new ProcNoAttrElements();
 		this.pFnPrototype = new FnPrototypeElements();
@@ -837,16 +819,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getTypeAccess().getRule();
 	}
 
-	//FnType:
-	//	type=Type;
-	public FnTypeElements getFnTypeAccess() {
-		return pFnType;
-	}
-	
-	public ParserRule getFnTypeRule() {
-		return getFnTypeAccess().getRule();
-	}
-
 	//Procedure: //TODO: OVERRIDE and attr_list
 	//	procedure=ProcNoAttr;
 	public ProcedureElements getProcedureAccess() {
@@ -879,7 +851,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 	//FnPrototypeNoDecors:
 	//	{ThreadDeclaration} "thread" name=TIDENTIFIER | //TODO: param_list
-	//	{FnPrototypeDeclaration} type=FnType name=TIDENTIFIER "(" ")";
+	//	{FnPrototypeDeclaration} type=Type name=TIDENTIFIER "(" ")";
 	public FnPrototypeNoDecorsElements getFnPrototypeNoDecorsAccess() {
 		return pFnPrototypeNoDecors;
 	}

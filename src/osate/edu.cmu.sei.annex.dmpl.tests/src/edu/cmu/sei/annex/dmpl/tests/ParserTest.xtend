@@ -200,56 +200,56 @@ class ParserTest {
 			8.assertEquals(programElements.size)
 			(programElements.get(0) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
 				"f1".assertEquals(name)
-				type.type => [
+				type => [
 					SignedEnum.UNSET.assertEquals(signed)
 					SimpTypeEnum.BOOL.assertEquals(simpType)
 				]
 			]
 			(programElements.get(1) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
 				"f2".assertEquals(name)
-				type.type => [
+				type => [
 					SignedEnum.UNSET.assertEquals(signed)
 					SimpTypeEnum.BOOL.assertEquals(simpType)
 				]
 			]
 			(programElements.get(2) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
 				"f3".assertEquals(name)
-				type.type => [
+				type => [
 					SignedEnum.UNSET.assertEquals(signed)
 					SimpTypeEnum.INT.assertEquals(simpType)
 				]
 			]
 			(programElements.get(3) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
 				"f4".assertEquals(name)
-				type.type => [
+				type => [
 					SignedEnum.UNSET.assertEquals(signed)
 					SimpTypeEnum.DOUBLE.assertEquals(simpType)
 				]
 			]
 			(programElements.get(4) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
 				"f5".assertEquals(name)
-				type.type => [
+				type => [
 					SignedEnum.UNSET.assertEquals(signed)
 					SimpTypeEnum.VOID.assertEquals(simpType)
 				]
 			]
 			(programElements.get(5) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
 				"f6".assertEquals(name)
-				type.type => [
+				type => [
 					SignedEnum.UNSET.assertEquals(signed)
 					SimpTypeEnum.CHAR.assertEquals(simpType)
 				]
 			]
 			(programElements.get(6) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
 				"f7".assertEquals(name)
-				type.type => [
+				type => [
 					SignedEnum.SIGNED.assertEquals(signed)
 					SimpTypeEnum.INT.assertEquals(simpType)
 				]
 			]
 			(programElements.get(7) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
 				"f8".assertEquals(name)
-				type.type => [
+				type => [
 					SignedEnum.UNSIGNED.assertEquals(signed)
 					SimpTypeEnum.INT.assertEquals(simpType)
 				]

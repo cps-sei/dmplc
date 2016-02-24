@@ -48,9 +48,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Type/signed"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Type/simpType"/>
     </genClasses>
-    <genClasses ecoreClass="Dmpl.ecore#//FnType">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnType/type"/>
-    </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Procedure">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Procedure/procedure"/>
     </genClasses>

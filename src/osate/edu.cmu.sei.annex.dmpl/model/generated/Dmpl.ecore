@@ -28,9 +28,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="signed" eType="#//SignedEnum"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="simpType" eType="#//SimpTypeEnum"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="FnType">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Type" containment="true"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Procedure" eSuperTypes="#//ProgramElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="procedure" eType="#//ProcNoAttr"
         containment="true"/>
@@ -67,7 +64,6 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ThreadDeclaration" eSuperTypes="#//FnPrototypeNoDecors"/>
   <eClassifiers xsi:type="ecore:EClass" name="FnPrototypeDeclaration" eSuperTypes="#//FnPrototypeNoDecors">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//FnType"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Type" containment="true"/>
   </eClassifiers>
 </ecore:EPackage>

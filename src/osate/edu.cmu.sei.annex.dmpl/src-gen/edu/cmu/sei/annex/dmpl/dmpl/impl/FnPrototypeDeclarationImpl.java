@@ -4,7 +4,7 @@ package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration;
-import edu.cmu.sei.annex.dmpl.dmpl.FnType;
+import edu.cmu.sei.annex.dmpl.dmpl.Type;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -37,7 +37,7 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeNoDecorsImpl implemen
    * @generated
    * @ordered
    */
-  protected FnType type;
+  protected Type type;
 
   /**
    * <!-- begin-user-doc -->
@@ -65,7 +65,7 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeNoDecorsImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public FnType getType()
+  public Type getType()
   {
     return type;
   }
@@ -75,9 +75,9 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeNoDecorsImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetType(FnType newType, NotificationChain msgs)
+  public NotificationChain basicSetType(Type newType, NotificationChain msgs)
   {
-    FnType oldType = type;
+    Type oldType = type;
     type = newType;
     if (eNotificationRequired())
     {
@@ -92,7 +92,7 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeNoDecorsImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setType(FnType newType)
+  public void setType(Type newType)
   {
     if (newType != type)
     {
@@ -151,7 +151,7 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeNoDecorsImpl implemen
     switch (featureID)
     {
       case DmplPackage.FN_PROTOTYPE_DECLARATION__TYPE:
-        setType((FnType)newValue);
+        setType((Type)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -168,7 +168,7 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeNoDecorsImpl implemen
     switch (featureID)
     {
       case DmplPackage.FN_PROTOTYPE_DECLARATION__TYPE:
-        setType((FnType)null);
+        setType((Type)null);
         return;
     }
     super.eUnset(featureID);
