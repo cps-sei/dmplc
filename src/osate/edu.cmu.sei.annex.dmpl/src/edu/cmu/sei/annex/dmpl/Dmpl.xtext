@@ -44,8 +44,13 @@ VarInit:
 ;
 
 VarAsgnList:
-	//TODO 'input', var_asgn, and multiplicity
-	var=Var
+	//TODO 'input', and multiplicity
+	var=Var | varAsgn=VarAsgn
+;
+
+VarAsgn:
+	//TODO 'input', '~', and expr
+	var=Var '=' fnBody=FnBody
 ;
 
 Var:

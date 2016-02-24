@@ -495,10 +495,10 @@ ruleVarAsgnList returns [EObject current=null]
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
-(
+((
 (
 		{ 
-	        newCompositeNode(grammarAccess.getVarAsgnListAccess().getVarVarParserRuleCall_0()); 
+	        newCompositeNode(grammarAccess.getVarAsgnListAccess().getVarVarParserRuleCall_0_0()); 
 	    }
 		lv_var_0_0=ruleVar		{
 	        if ($current==null) {
@@ -514,6 +514,86 @@ ruleVarAsgnList returns [EObject current=null]
 
 )
 )
+    |(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getVarAsgnListAccess().getVarAsgnVarAsgnParserRuleCall_1_0()); 
+	    }
+		lv_varAsgn_1_0=ruleVarAsgn		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getVarAsgnListRule());
+	        }
+       		set(
+       			$current, 
+       			"varAsgn",
+        		lv_varAsgn_1_0, 
+        		"VarAsgn");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))
+;
+
+
+
+
+
+// Entry rule entryRuleVarAsgn
+entryRuleVarAsgn returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getVarAsgnRule()); }
+	 iv_ruleVarAsgn=ruleVarAsgn 
+	 { $current=$iv_ruleVarAsgn.current; } 
+	 EOF 
+;
+
+// Rule VarAsgn
+ruleVarAsgn returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+((
+(
+		{ 
+	        newCompositeNode(grammarAccess.getVarAsgnAccess().getVarVarParserRuleCall_0_0()); 
+	    }
+		lv_var_0_0=ruleVar		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getVarAsgnRule());
+	        }
+       		set(
+       			$current, 
+       			"var",
+        		lv_var_0_0, 
+        		"Var");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)	otherlv_1='=' 
+    {
+    	newLeafNode(otherlv_1, grammarAccess.getVarAsgnAccess().getEqualsSignKeyword_1());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getVarAsgnAccess().getFnBodyFnBodyParserRuleCall_2_0()); 
+	    }
+		lv_fnBody_2_0=ruleFnBody		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getVarAsgnRule());
+	        }
+       		set(
+       			$current, 
+       			"fnBody",
+        		lv_fnBody_2_0, 
+        		"FnBody");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))
 ;
 
 

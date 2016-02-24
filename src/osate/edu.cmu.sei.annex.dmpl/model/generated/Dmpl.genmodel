@@ -50,6 +50,11 @@
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//VarAsgnList">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//VarAsgnList/var"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//VarAsgnList/varAsgn"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//VarAsgn">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//VarAsgn/var"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//VarAsgn/fnBody"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Var">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Var/name"/>

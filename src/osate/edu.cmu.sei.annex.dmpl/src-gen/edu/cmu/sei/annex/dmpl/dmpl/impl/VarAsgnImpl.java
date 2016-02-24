@@ -3,9 +3,9 @@
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
+import edu.cmu.sei.annex.dmpl.dmpl.FnBody;
 import edu.cmu.sei.annex.dmpl.dmpl.Var;
 import edu.cmu.sei.annex.dmpl.dmpl.VarAsgn;
-import edu.cmu.sei.annex.dmpl.dmpl.VarAsgnList;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -18,19 +18,19 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Var Asgn List</b></em>'.
+ * An implementation of the model object '<em><b>Var Asgn</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarAsgnListImpl#getVar <em>Var</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarAsgnListImpl#getVarAsgn <em>Var Asgn</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarAsgnImpl#getVar <em>Var</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarAsgnImpl#getFnBody <em>Fn Body</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class VarAsgnListImpl extends MinimalEObjectImpl.Container implements VarAsgnList
+public class VarAsgnImpl extends MinimalEObjectImpl.Container implements VarAsgn
 {
   /**
    * The cached value of the '{@link #getVar() <em>Var</em>}' containment reference.
@@ -43,21 +43,21 @@ public class VarAsgnListImpl extends MinimalEObjectImpl.Container implements Var
   protected Var var;
 
   /**
-   * The cached value of the '{@link #getVarAsgn() <em>Var Asgn</em>}' containment reference.
+   * The cached value of the '{@link #getFnBody() <em>Fn Body</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getVarAsgn()
+   * @see #getFnBody()
    * @generated
    * @ordered
    */
-  protected VarAsgn varAsgn;
+  protected FnBody fnBody;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected VarAsgnListImpl()
+  protected VarAsgnImpl()
   {
     super();
   }
@@ -70,7 +70,7 @@ public class VarAsgnListImpl extends MinimalEObjectImpl.Container implements Var
   @Override
   protected EClass eStaticClass()
   {
-    return DmplPackage.Literals.VAR_ASGN_LIST;
+    return DmplPackage.Literals.VAR_ASGN;
   }
 
   /**
@@ -94,7 +94,7 @@ public class VarAsgnListImpl extends MinimalEObjectImpl.Container implements Var
     var = newVar;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.VAR_ASGN_LIST__VAR, oldVar, newVar);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.VAR_ASGN__VAR, oldVar, newVar);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -111,14 +111,14 @@ public class VarAsgnListImpl extends MinimalEObjectImpl.Container implements Var
     {
       NotificationChain msgs = null;
       if (var != null)
-        msgs = ((InternalEObject)var).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.VAR_ASGN_LIST__VAR, null, msgs);
+        msgs = ((InternalEObject)var).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.VAR_ASGN__VAR, null, msgs);
       if (newVar != null)
-        msgs = ((InternalEObject)newVar).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.VAR_ASGN_LIST__VAR, null, msgs);
+        msgs = ((InternalEObject)newVar).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.VAR_ASGN__VAR, null, msgs);
       msgs = basicSetVar(newVar, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.VAR_ASGN_LIST__VAR, newVar, newVar));
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.VAR_ASGN__VAR, newVar, newVar));
   }
 
   /**
@@ -126,9 +126,9 @@ public class VarAsgnListImpl extends MinimalEObjectImpl.Container implements Var
    * <!-- end-user-doc -->
    * @generated
    */
-  public VarAsgn getVarAsgn()
+  public FnBody getFnBody()
   {
-    return varAsgn;
+    return fnBody;
   }
 
   /**
@@ -136,13 +136,13 @@ public class VarAsgnListImpl extends MinimalEObjectImpl.Container implements Var
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetVarAsgn(VarAsgn newVarAsgn, NotificationChain msgs)
+  public NotificationChain basicSetFnBody(FnBody newFnBody, NotificationChain msgs)
   {
-    VarAsgn oldVarAsgn = varAsgn;
-    varAsgn = newVarAsgn;
+    FnBody oldFnBody = fnBody;
+    fnBody = newFnBody;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.VAR_ASGN_LIST__VAR_ASGN, oldVarAsgn, newVarAsgn);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.VAR_ASGN__FN_BODY, oldFnBody, newFnBody);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -153,20 +153,20 @@ public class VarAsgnListImpl extends MinimalEObjectImpl.Container implements Var
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setVarAsgn(VarAsgn newVarAsgn)
+  public void setFnBody(FnBody newFnBody)
   {
-    if (newVarAsgn != varAsgn)
+    if (newFnBody != fnBody)
     {
       NotificationChain msgs = null;
-      if (varAsgn != null)
-        msgs = ((InternalEObject)varAsgn).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.VAR_ASGN_LIST__VAR_ASGN, null, msgs);
-      if (newVarAsgn != null)
-        msgs = ((InternalEObject)newVarAsgn).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.VAR_ASGN_LIST__VAR_ASGN, null, msgs);
-      msgs = basicSetVarAsgn(newVarAsgn, msgs);
+      if (fnBody != null)
+        msgs = ((InternalEObject)fnBody).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.VAR_ASGN__FN_BODY, null, msgs);
+      if (newFnBody != null)
+        msgs = ((InternalEObject)newFnBody).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.VAR_ASGN__FN_BODY, null, msgs);
+      msgs = basicSetFnBody(newFnBody, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.VAR_ASGN_LIST__VAR_ASGN, newVarAsgn, newVarAsgn));
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.VAR_ASGN__FN_BODY, newFnBody, newFnBody));
   }
 
   /**
@@ -179,10 +179,10 @@ public class VarAsgnListImpl extends MinimalEObjectImpl.Container implements Var
   {
     switch (featureID)
     {
-      case DmplPackage.VAR_ASGN_LIST__VAR:
+      case DmplPackage.VAR_ASGN__VAR:
         return basicSetVar(null, msgs);
-      case DmplPackage.VAR_ASGN_LIST__VAR_ASGN:
-        return basicSetVarAsgn(null, msgs);
+      case DmplPackage.VAR_ASGN__FN_BODY:
+        return basicSetFnBody(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -197,10 +197,10 @@ public class VarAsgnListImpl extends MinimalEObjectImpl.Container implements Var
   {
     switch (featureID)
     {
-      case DmplPackage.VAR_ASGN_LIST__VAR:
+      case DmplPackage.VAR_ASGN__VAR:
         return getVar();
-      case DmplPackage.VAR_ASGN_LIST__VAR_ASGN:
-        return getVarAsgn();
+      case DmplPackage.VAR_ASGN__FN_BODY:
+        return getFnBody();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -215,11 +215,11 @@ public class VarAsgnListImpl extends MinimalEObjectImpl.Container implements Var
   {
     switch (featureID)
     {
-      case DmplPackage.VAR_ASGN_LIST__VAR:
+      case DmplPackage.VAR_ASGN__VAR:
         setVar((Var)newValue);
         return;
-      case DmplPackage.VAR_ASGN_LIST__VAR_ASGN:
-        setVarAsgn((VarAsgn)newValue);
+      case DmplPackage.VAR_ASGN__FN_BODY:
+        setFnBody((FnBody)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -235,11 +235,11 @@ public class VarAsgnListImpl extends MinimalEObjectImpl.Container implements Var
   {
     switch (featureID)
     {
-      case DmplPackage.VAR_ASGN_LIST__VAR:
+      case DmplPackage.VAR_ASGN__VAR:
         setVar((Var)null);
         return;
-      case DmplPackage.VAR_ASGN_LIST__VAR_ASGN:
-        setVarAsgn((VarAsgn)null);
+      case DmplPackage.VAR_ASGN__FN_BODY:
+        setFnBody((FnBody)null);
         return;
     }
     super.eUnset(featureID);
@@ -255,12 +255,12 @@ public class VarAsgnListImpl extends MinimalEObjectImpl.Container implements Var
   {
     switch (featureID)
     {
-      case DmplPackage.VAR_ASGN_LIST__VAR:
+      case DmplPackage.VAR_ASGN__VAR:
         return var != null;
-      case DmplPackage.VAR_ASGN_LIST__VAR_ASGN:
-        return varAsgn != null;
+      case DmplPackage.VAR_ASGN__FN_BODY:
+        return fnBody != null;
     }
     return super.eIsSet(featureID);
   }
 
-} //VarAsgnListImpl
+} //VarAsgnImpl

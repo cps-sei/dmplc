@@ -125,6 +125,11 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createVarAsgnListAdapter();
       }
       @Override
+      public Adapter caseVarAsgn(VarAsgn object)
+      {
+        return createVarAsgnAdapter();
+      }
+      @Override
       public Adapter caseVar(Var object)
       {
         return createVarAdapter();
@@ -367,6 +372,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createVarAsgnListAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.VarAsgn <em>Var Asgn</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.VarAsgn
+   * @generated
+   */
+  public Adapter createVarAsgnAdapter()
   {
     return null;
   }

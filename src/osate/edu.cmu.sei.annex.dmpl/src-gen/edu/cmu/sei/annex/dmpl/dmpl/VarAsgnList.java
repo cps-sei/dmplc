@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.VarAsgnList#getVar <em>Var</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.VarAsgnList#getVarAsgn <em>Var Asgn</em>}</li>
  * </ul>
  *
  * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getVarAsgnList()
@@ -47,5 +48,31 @@ public interface VarAsgnList extends EObject
    * @generated
    */
   void setVar(Var value);
+
+  /**
+   * Returns the value of the '<em><b>Var Asgn</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Var Asgn</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Var Asgn</em>' containment reference.
+   * @see #setVarAsgn(VarAsgn)
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getVarAsgnList_VarAsgn()
+   * @model containment="true"
+   * @generated
+   */
+  VarAsgn getVarAsgn();
+
+  /**
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.VarAsgnList#getVarAsgn <em>Var Asgn</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Var Asgn</em>' containment reference.
+   * @see #getVarAsgn()
+   * @generated
+   */
+  void setVarAsgn(VarAsgn value);
 
 } // VarAsgnList

@@ -74,6 +74,7 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.DOUBLE_CONST: return createDoubleConst();
       case DmplPackage.VAR_INIT: return createVarInit();
       case DmplPackage.VAR_ASGN_LIST: return createVarAsgnList();
+      case DmplPackage.VAR_ASGN: return createVarAsgn();
       case DmplPackage.VAR: return createVar();
       case DmplPackage.DIMENSION: return createDimension();
       case DmplPackage.TYPE: return createType();
@@ -232,6 +233,17 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     VarAsgnListImpl varAsgnList = new VarAsgnListImpl();
     return varAsgnList;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public VarAsgn createVarAsgn()
+  {
+    VarAsgnImpl varAsgn = new VarAsgnImpl();
+    return varAsgn;
   }
 
   /**

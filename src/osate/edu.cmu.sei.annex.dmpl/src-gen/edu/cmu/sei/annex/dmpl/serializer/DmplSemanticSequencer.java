@@ -22,6 +22,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.Program;
 import edu.cmu.sei.annex.dmpl.dmpl.ThreadDeclaration;
 import edu.cmu.sei.annex.dmpl.dmpl.Type;
 import edu.cmu.sei.annex.dmpl.dmpl.Var;
+import edu.cmu.sei.annex.dmpl.dmpl.VarAsgn;
 import edu.cmu.sei.annex.dmpl.dmpl.VarAsgnList;
 import edu.cmu.sei.annex.dmpl.dmpl.VarInit;
 import edu.cmu.sei.annex.dmpl.dmpl.VarInitList;
@@ -94,6 +95,9 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.VAR:
 				sequence_Var(context, (Var) semanticObject); 
+				return; 
+			case DmplPackage.VAR_ASGN:
+				sequence_VarAsgn(context, (VarAsgn) semanticObject); 
 				return; 
 			case DmplPackage.VAR_ASGN_LIST:
 				sequence_VarAsgnList(context, (VarAsgnList) semanticObject); 
@@ -293,16 +297,28 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     var=Var
+	 *     (var=Var | varAsgn=VarAsgn)
 	 */
 	protected void sequence_VarAsgnList(EObject context, VarAsgnList semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (var=Var fnBody=FnBody)
+	 */
+	protected void sequence_VarAsgn(EObject context, VarAsgn semanticObject) {
 		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.VAR_ASGN_LIST__VAR) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.VAR_ASGN_LIST__VAR));
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.VAR_ASGN__VAR) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.VAR_ASGN__VAR));
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.VAR_ASGN__FN_BODY) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.VAR_ASGN__FN_BODY));
 		}
 		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getVarAsgnListAccess().getVarVarParserRuleCall_0(), semanticObject.getVar());
+		feeder.accept(grammarAccess.getVarAsgnAccess().getVarVarParserRuleCall_0_0(), semanticObject.getVar());
+		feeder.accept(grammarAccess.getVarAsgnAccess().getFnBodyFnBodyParserRuleCall_2_0(), semanticObject.getFnBody());
 		feeder.finish();
 	}
 	

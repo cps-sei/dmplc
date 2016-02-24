@@ -147,6 +147,13 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case DmplPackage.VAR_ASGN:
+      {
+        VarAsgn varAsgn = (VarAsgn)theEObject;
+        T result = caseVarAsgn(varAsgn);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case DmplPackage.VAR:
       {
         Var var = (Var)theEObject;
@@ -395,6 +402,22 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseVarAsgnList(VarAsgnList object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Var Asgn</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Var Asgn</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseVarAsgn(VarAsgn object)
   {
     return null;
   }
