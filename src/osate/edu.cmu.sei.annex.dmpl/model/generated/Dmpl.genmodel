@@ -44,6 +44,13 @@
     <genClasses ecoreClass="Dmpl.ecore#//DoubleConst">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//DoubleConst/value"/>
     </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//VarInit">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//VarInit/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//VarInit/varAsgnList"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//VarAsgnList">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//VarAsgnList/var"/>
+    </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Var">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Var/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Var/dimensions"/>
@@ -58,7 +65,10 @@
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//ProcNoAttr">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//ProcNoAttr/prototype"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//ProcNoAttr/fnBody"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//ProcNoAttr/fnBody"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//FnBody">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnBody/varInitList"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//FnPrototype">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//FnPrototype/extern"/>
@@ -68,6 +78,9 @@
     <genClasses ecoreClass="Dmpl.ecore#//Param">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Param/type"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Param/var"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//VarInitList">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//VarInitList/varInits"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//IntDimension">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//IntDimension/index"/>

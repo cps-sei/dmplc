@@ -3,6 +3,7 @@
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
+import edu.cmu.sei.annex.dmpl.dmpl.FnBody;
 import edu.cmu.sei.annex.dmpl.dmpl.FnPrototype;
 import edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr;
 
@@ -42,24 +43,14 @@ public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements Proc
   protected FnPrototype prototype;
 
   /**
-   * The default value of the '{@link #getFnBody() <em>Fn Body</em>}' attribute.
+   * The cached value of the '{@link #getFnBody() <em>Fn Body</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getFnBody()
    * @generated
    * @ordered
    */
-  protected static final String FN_BODY_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getFnBody() <em>Fn Body</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getFnBody()
-   * @generated
-   * @ordered
-   */
-  protected String fnBody = FN_BODY_EDEFAULT;
+  protected FnBody fnBody;
 
   /**
    * <!-- begin-user-doc -->
@@ -135,7 +126,7 @@ public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements Proc
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getFnBody()
+  public FnBody getFnBody()
   {
     return fnBody;
   }
@@ -145,12 +136,37 @@ public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements Proc
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setFnBody(String newFnBody)
+  public NotificationChain basicSetFnBody(FnBody newFnBody, NotificationChain msgs)
   {
-    String oldFnBody = fnBody;
+    FnBody oldFnBody = fnBody;
     fnBody = newFnBody;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.PROC_NO_ATTR__FN_BODY, oldFnBody, fnBody));
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.PROC_NO_ATTR__FN_BODY, oldFnBody, newFnBody);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setFnBody(FnBody newFnBody)
+  {
+    if (newFnBody != fnBody)
+    {
+      NotificationChain msgs = null;
+      if (fnBody != null)
+        msgs = ((InternalEObject)fnBody).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.PROC_NO_ATTR__FN_BODY, null, msgs);
+      if (newFnBody != null)
+        msgs = ((InternalEObject)newFnBody).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.PROC_NO_ATTR__FN_BODY, null, msgs);
+      msgs = basicSetFnBody(newFnBody, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.PROC_NO_ATTR__FN_BODY, newFnBody, newFnBody));
   }
 
   /**
@@ -165,6 +181,8 @@ public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements Proc
     {
       case DmplPackage.PROC_NO_ATTR__PROTOTYPE:
         return basicSetPrototype(null, msgs);
+      case DmplPackage.PROC_NO_ATTR__FN_BODY:
+        return basicSetFnBody(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -201,7 +219,7 @@ public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements Proc
         setPrototype((FnPrototype)newValue);
         return;
       case DmplPackage.PROC_NO_ATTR__FN_BODY:
-        setFnBody((String)newValue);
+        setFnBody((FnBody)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -221,7 +239,7 @@ public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements Proc
         setPrototype((FnPrototype)null);
         return;
       case DmplPackage.PROC_NO_ATTR__FN_BODY:
-        setFnBody(FN_BODY_EDEFAULT);
+        setFnBody((FnBody)null);
         return;
     }
     super.eUnset(featureID);
@@ -240,26 +258,9 @@ public class ProcNoAttrImpl extends MinimalEObjectImpl.Container implements Proc
       case DmplPackage.PROC_NO_ATTR__PROTOTYPE:
         return prototype != null;
       case DmplPackage.PROC_NO_ATTR__FN_BODY:
-        return FN_BODY_EDEFAULT == null ? fnBody != null : !FN_BODY_EDEFAULT.equals(fnBody);
+        return fnBody != null;
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (fnBody: ");
-    result.append(fnBody);
-    result.append(')');
-    return result.toString();
   }
 
 } //ProcNoAttrImpl

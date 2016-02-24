@@ -133,6 +133,20 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case DmplPackage.VAR_INIT:
+      {
+        VarInit varInit = (VarInit)theEObject;
+        T result = caseVarInit(varInit);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.VAR_ASGN_LIST:
+      {
+        VarAsgnList varAsgnList = (VarAsgnList)theEObject;
+        T result = caseVarAsgnList(varAsgnList);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case DmplPackage.VAR:
       {
         Var var = (Var)theEObject;
@@ -169,6 +183,13 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case DmplPackage.FN_BODY:
+      {
+        FnBody fnBody = (FnBody)theEObject;
+        T result = caseFnBody(fnBody);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case DmplPackage.FN_PROTOTYPE:
       {
         FnPrototype fnPrototype = (FnPrototype)theEObject;
@@ -180,6 +201,13 @@ public class DmplSwitch<T> extends Switch<T>
       {
         Param param = (Param)theEObject;
         T result = caseParam(param);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.VAR_INIT_LIST:
+      {
+        VarInitList varInitList = (VarInitList)theEObject;
+        T result = caseVarInitList(varInitList);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -340,6 +368,38 @@ public class DmplSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>Var Init</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Var Init</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseVarInit(VarInit object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Var Asgn List</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Var Asgn List</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseVarAsgnList(VarAsgnList object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Var</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -420,6 +480,22 @@ public class DmplSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>Fn Body</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Fn Body</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseFnBody(FnBody object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Fn Prototype</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -447,6 +523,22 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseParam(Param object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Var Init List</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Var Init List</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseVarInitList(VarInitList object)
   {
     return null;
   }

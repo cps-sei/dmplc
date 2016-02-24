@@ -115,6 +115,16 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createDoubleConstAdapter();
       }
       @Override
+      public Adapter caseVarInit(VarInit object)
+      {
+        return createVarInitAdapter();
+      }
+      @Override
+      public Adapter caseVarAsgnList(VarAsgnList object)
+      {
+        return createVarAsgnListAdapter();
+      }
+      @Override
       public Adapter caseVar(Var object)
       {
         return createVarAdapter();
@@ -140,6 +150,11 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createProcNoAttrAdapter();
       }
       @Override
+      public Adapter caseFnBody(FnBody object)
+      {
+        return createFnBodyAdapter();
+      }
+      @Override
       public Adapter caseFnPrototype(FnPrototype object)
       {
         return createFnPrototypeAdapter();
@@ -148,6 +163,11 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
       public Adapter caseParam(Param object)
       {
         return createParamAdapter();
+      }
+      @Override
+      public Adapter caseVarInitList(VarInitList object)
+      {
+        return createVarInitListAdapter();
       }
       @Override
       public Adapter caseIntDimension(IntDimension object)
@@ -322,6 +342,36 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.VarInit <em>Var Init</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.VarInit
+   * @generated
+   */
+  public Adapter createVarInitAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.VarAsgnList <em>Var Asgn List</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.VarAsgnList
+   * @generated
+   */
+  public Adapter createVarAsgnListAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Var <em>Var</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -397,6 +447,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.FnBody <em>Fn Body</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.FnBody
+   * @generated
+   */
+  public Adapter createFnBodyAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototype <em>Fn Prototype</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -422,6 +487,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createParamAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.VarInitList <em>Var Init List</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.VarInitList
+   * @generated
+   */
+  public Adapter createVarInitListAdapter()
   {
     return null;
   }

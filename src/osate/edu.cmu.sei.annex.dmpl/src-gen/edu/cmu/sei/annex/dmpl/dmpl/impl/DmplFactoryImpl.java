@@ -72,13 +72,17 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.NUMBER_CONST: return createNumberConst();
       case DmplPackage.INT_CONST: return createIntConst();
       case DmplPackage.DOUBLE_CONST: return createDoubleConst();
+      case DmplPackage.VAR_INIT: return createVarInit();
+      case DmplPackage.VAR_ASGN_LIST: return createVarAsgnList();
       case DmplPackage.VAR: return createVar();
       case DmplPackage.DIMENSION: return createDimension();
       case DmplPackage.TYPE: return createType();
       case DmplPackage.PROCEDURE: return createProcedure();
       case DmplPackage.PROC_NO_ATTR: return createProcNoAttr();
+      case DmplPackage.FN_BODY: return createFnBody();
       case DmplPackage.FN_PROTOTYPE: return createFnPrototype();
       case DmplPackage.PARAM: return createParam();
+      case DmplPackage.VAR_INIT_LIST: return createVarInitList();
       case DmplPackage.INT_DIMENSION: return createIntDimension();
       case DmplPackage.NODE_NUM_DIMENSION: return createNodeNumDimension();
       case DmplPackage.ID_DIMENSION: return createIdDimension();
@@ -213,6 +217,28 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  public VarInit createVarInit()
+  {
+    VarInitImpl varInit = new VarInitImpl();
+    return varInit;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public VarAsgnList createVarAsgnList()
+  {
+    VarAsgnListImpl varAsgnList = new VarAsgnListImpl();
+    return varAsgnList;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public Var createVar()
   {
     VarImpl var = new VarImpl();
@@ -268,6 +294,17 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  public FnBody createFnBody()
+  {
+    FnBodyImpl fnBody = new FnBodyImpl();
+    return fnBody;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public FnPrototype createFnPrototype()
   {
     FnPrototypeImpl fnPrototype = new FnPrototypeImpl();
@@ -283,6 +320,17 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     ParamImpl param = new ParamImpl();
     return param;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public VarInitList createVarInitList()
+  {
+    VarInitListImpl varInitList = new VarInitListImpl();
+    return varInitList;
   }
 
   /**

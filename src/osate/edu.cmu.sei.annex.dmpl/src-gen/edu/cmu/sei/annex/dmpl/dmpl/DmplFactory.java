@@ -86,6 +86,24 @@ public interface DmplFactory extends EFactory
   DoubleConst createDoubleConst();
 
   /**
+   * Returns a new object of class '<em>Var Init</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Var Init</em>'.
+   * @generated
+   */
+  VarInit createVarInit();
+
+  /**
+   * Returns a new object of class '<em>Var Asgn List</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Var Asgn List</em>'.
+   * @generated
+   */
+  VarAsgnList createVarAsgnList();
+
+  /**
    * Returns a new object of class '<em>Var</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -131,6 +149,15 @@ public interface DmplFactory extends EFactory
   ProcNoAttr createProcNoAttr();
 
   /**
+   * Returns a new object of class '<em>Fn Body</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Fn Body</em>'.
+   * @generated
+   */
+  FnBody createFnBody();
+
+  /**
    * Returns a new object of class '<em>Fn Prototype</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -147,6 +174,15 @@ public interface DmplFactory extends EFactory
    * @generated
    */
   Param createParam();
+
+  /**
+   * Returns a new object of class '<em>Var Init List</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Var Init List</em>'.
+   * @generated
+   */
+  VarInitList createVarInitList();
 
   /**
    * Returns a new object of class '<em>Int Dimension</em>'.

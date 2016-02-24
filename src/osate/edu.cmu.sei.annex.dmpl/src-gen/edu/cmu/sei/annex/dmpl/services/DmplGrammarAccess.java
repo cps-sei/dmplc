@@ -224,6 +224,51 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		public RuleCall getValueDoubleParserRuleCall_1_0() { return cValueDoubleParserRuleCall_1_0; }
 	}
 
+	public class VarInitElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "VarInit");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cTypeAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cTypeTypeParserRuleCall_0_0 = (RuleCall)cTypeAssignment_0.eContents().get(0);
+		private final Assignment cVarAsgnListAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cVarAsgnListVarAsgnListParserRuleCall_1_0 = (RuleCall)cVarAsgnListAssignment_1.eContents().get(0);
+		
+		//VarInit:
+		//	type=Type varAsgnList=VarAsgnList;
+		@Override public ParserRule getRule() { return rule; }
+
+		//type=Type varAsgnList=VarAsgnList
+		public Group getGroup() { return cGroup; }
+
+		//type=Type
+		public Assignment getTypeAssignment_0() { return cTypeAssignment_0; }
+
+		//Type
+		public RuleCall getTypeTypeParserRuleCall_0_0() { return cTypeTypeParserRuleCall_0_0; }
+
+		//varAsgnList=VarAsgnList
+		public Assignment getVarAsgnListAssignment_1() { return cVarAsgnListAssignment_1; }
+
+		//VarAsgnList
+		public RuleCall getVarAsgnListVarAsgnListParserRuleCall_1_0() { return cVarAsgnListVarAsgnListParserRuleCall_1_0; }
+	}
+
+	public class VarAsgnListElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "VarAsgnList");
+		private final Assignment cVarAssignment = (Assignment)rule.eContents().get(1);
+		private final RuleCall cVarVarParserRuleCall_0 = (RuleCall)cVarAssignment.eContents().get(0);
+		
+		//VarAsgnList: //TODO 'input', var_asgn, and multiplicity
+		//	var=Var;
+		@Override public ParserRule getRule() { return rule; }
+
+		////TODO 'input', var_asgn, and multiplicity
+		//var=Var
+		public Assignment getVarAssignment() { return cVarAssignment; }
+
+		//Var
+		public RuleCall getVarVarParserRuleCall_0() { return cVarVarParserRuleCall_0; }
+	}
+
 	public class VarElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Var");
 		private final Group cGroup = (Group)rule.eContents().get(1);
@@ -407,22 +452,30 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "FnBody");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cLeftCurlyBracketKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cVarInitListAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cVarInitListVarInitListParserRuleCall_1_0 = (RuleCall)cVarInitListAssignment_1.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		
 		//FnBody: //TODO var_init_list and stmt_list
-		//	"{" "}";
+		//	"{" varInitList=VarInitList "}";
 		@Override public ParserRule getRule() { return rule; }
 
 		////TODO var_init_list and stmt_list
-		//"{" "}"
+		//"{" varInitList=VarInitList "}"
 		public Group getGroup() { return cGroup; }
 
 		////TODO var_init_list and stmt_list
 		//"{"
 		public Keyword getLeftCurlyBracketKeyword_0() { return cLeftCurlyBracketKeyword_0; }
 
+		//varInitList=VarInitList
+		public Assignment getVarInitListAssignment_1() { return cVarInitListAssignment_1; }
+
+		//VarInitList
+		public RuleCall getVarInitListVarInitListParserRuleCall_1_0() { return cVarInitListVarInitListParserRuleCall_1_0; }
+
 		//"}"
-		public Keyword getRightCurlyBracketKeyword_1() { return cRightCurlyBracketKeyword_1; }
+		public Keyword getRightCurlyBracketKeyword_2() { return cRightCurlyBracketKeyword_2; }
 	}
 
 	public class FnPrototypeElements extends AbstractParserRuleElementFinder {
@@ -612,6 +665,38 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 		//Var
 		public RuleCall getVarVarParserRuleCall_1_0() { return cVarVarParserRuleCall_1_0; }
+	}
+
+	public class VarInitListElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "VarInitList");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cVarInitListAction_0 = (Action)cGroup.eContents().get(0);
+		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
+		private final Assignment cVarInitsAssignment_1_0 = (Assignment)cGroup_1.eContents().get(0);
+		private final RuleCall cVarInitsVarInitParserRuleCall_1_0_0 = (RuleCall)cVarInitsAssignment_1_0.eContents().get(0);
+		private final Keyword cSemicolonKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
+		
+		//VarInitList:
+		//	{VarInitList} (varInits+=VarInit ";")*;
+		@Override public ParserRule getRule() { return rule; }
+
+		//{VarInitList} (varInits+=VarInit ";")*
+		public Group getGroup() { return cGroup; }
+
+		//{VarInitList}
+		public Action getVarInitListAction_0() { return cVarInitListAction_0; }
+
+		//(varInits+=VarInit ";")*
+		public Group getGroup_1() { return cGroup_1; }
+
+		//varInits+=VarInit
+		public Assignment getVarInitsAssignment_1_0() { return cVarInitsAssignment_1_0; }
+
+		//VarInit
+		public RuleCall getVarInitsVarInitParserRuleCall_1_0_0() { return cVarInitsVarInitParserRuleCall_1_0_0; }
+
+		//";"
+		public Keyword getSemicolonKeyword_1_1() { return cSemicolonKeyword_1_1; }
 	}
 
 	public class SignElements extends AbstractParserRuleElementFinder {
@@ -855,6 +940,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final NumberConstElements pNumberConst;
 	private final IntConstElements pIntConst;
 	private final DoubleConstElements pDoubleConst;
+	private final VarInitElements pVarInit;
+	private final VarAsgnListElements pVarAsgnList;
 	private final VarElements pVar;
 	private final DimensionElements pDimension;
 	private final TypeElements pType;
@@ -863,6 +950,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final FnBodyElements pFnBody;
 	private final FnPrototypeElements pFnPrototype;
 	private final ParamElements pParam;
+	private final VarInitListElements pVarInitList;
 	private final SignEnumElements unknownRuleSignEnum;
 	private final SignElements pSign;
 	private final SimpTypeEnumElements unknownRuleSimpTypeEnum;
@@ -889,6 +977,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pNumberConst = new NumberConstElements();
 		this.pIntConst = new IntConstElements();
 		this.pDoubleConst = new DoubleConstElements();
+		this.pVarInit = new VarInitElements();
+		this.pVarAsgnList = new VarAsgnListElements();
 		this.pVar = new VarElements();
 		this.pDimension = new DimensionElements();
 		this.pType = new TypeElements();
@@ -897,6 +987,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pFnBody = new FnBodyElements();
 		this.pFnPrototype = new FnPrototypeElements();
 		this.pParam = new ParamElements();
+		this.pVarInitList = new VarInitListElements();
 		this.unknownRuleSignEnum = new SignEnumElements();
 		this.pSign = new SignElements();
 		this.unknownRuleSimpTypeEnum = new SimpTypeEnumElements();
@@ -1014,6 +1105,26 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getDoubleConstAccess().getRule();
 	}
 
+	//VarInit:
+	//	type=Type varAsgnList=VarAsgnList;
+	public VarInitElements getVarInitAccess() {
+		return pVarInit;
+	}
+	
+	public ParserRule getVarInitRule() {
+		return getVarInitAccess().getRule();
+	}
+
+	//VarAsgnList: //TODO 'input', var_asgn, and multiplicity
+	//	var=Var;
+	public VarAsgnListElements getVarAsgnListAccess() {
+		return pVarAsgnList;
+	}
+	
+	public ParserRule getVarAsgnListRule() {
+		return getVarAsgnListAccess().getRule();
+	}
+
 	//Var:
 	//	name=TIDENTIFIER ("[" dimensions+=Dimension "]")*;
 	public VarElements getVarAccess() {
@@ -1065,7 +1176,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//FnBody: //TODO var_init_list and stmt_list
-	//	"{" "}";
+	//	"{" varInitList=VarInitList "}";
 	public FnBodyElements getFnBodyAccess() {
 		return pFnBody;
 	}
@@ -1094,6 +1205,16 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getParamRule() {
 		return getParamAccess().getRule();
+	}
+
+	//VarInitList:
+	//	{VarInitList} (varInits+=VarInit ";")*;
+	public VarInitListElements getVarInitListAccess() {
+		return pVarInitList;
+	}
+	
+	public ParserRule getVarInitListRule() {
+		return getVarInitListAccess().getRule();
 	}
 
 	//enum SignEnum:
