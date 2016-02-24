@@ -5,7 +5,10 @@ import edu.cmu.sei.annex.dmpl.DmplInjectorProvider
 import edu.cmu.sei.annex.dmpl.dmpl.Constant
 import edu.cmu.sei.annex.dmpl.dmpl.DoubleConst
 import edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration
+import edu.cmu.sei.annex.dmpl.dmpl.IdDimension
 import edu.cmu.sei.annex.dmpl.dmpl.IntConst
+import edu.cmu.sei.annex.dmpl.dmpl.IntDimension
+import edu.cmu.sei.annex.dmpl.dmpl.NodeNumDimension
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure
 import edu.cmu.sei.annex.dmpl.dmpl.Program
 import edu.cmu.sei.annex.dmpl.dmpl.SignEnum
@@ -16,11 +19,13 @@ import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
 import org.eclipse.xtext.junit4.validation.ValidationTestHelper
+import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 
 import static extension org.junit.Assert.assertEquals
 import static extension org.junit.Assert.assertFalse
+import static extension org.junit.Assert.assertNull
 import static extension org.junit.Assert.assertTrue
 
 @RunWith(XtextRunner)
@@ -33,9 +38,7 @@ class ParserTest {
 	
 	@Test
 	def void testEmptyProgram() {
-		"".parse => [
-			programElements.empty.assertTrue
-		]
+		"".parse.programElements.empty.assertTrue
 	}
 	
 	@Test
@@ -135,51 +138,37 @@ class ParserTest {
 			(programElements.get(0) as Procedure).procedure.prototype => [
 				pure.assertFalse
 				extern.assertFalse
-				prototype as ThreadDeclaration => [
-					"t1".assertEquals(name)
-				]
+				"t1".assertEquals((prototype as ThreadDeclaration).name)
 			]
 			(programElements.get(1) as Procedure).procedure.prototype => [
 				pure.assertTrue
 				extern.assertFalse
-				prototype as ThreadDeclaration => [
-					"t2".assertEquals(name)
-				]
+				"t2".assertEquals((prototype as ThreadDeclaration).name)
 			]
 			(programElements.get(2) as Procedure).procedure.prototype => [
 				pure.assertTrue
 				extern.assertFalse
-				prototype as ThreadDeclaration => [
-					"t3".assertEquals(name)
-				]
+				"t3".assertEquals((prototype as ThreadDeclaration).name)
 			]
 			(programElements.get(3) as Procedure).procedure.prototype => [
 				pure.assertFalse
 				extern.assertTrue
-				prototype as ThreadDeclaration => [
-					"t4".assertEquals(name)
-				]
+				"t4".assertEquals((prototype as ThreadDeclaration).name)
 			]
 			(programElements.get(4) as Procedure).procedure.prototype => [
 				pure.assertFalse
 				extern.assertTrue
-				prototype as ThreadDeclaration => [
-					"t5".assertEquals(name)
-				]
+				"t5".assertEquals((prototype as ThreadDeclaration).name)
 			]
 			(programElements.get(5) as Procedure).procedure.prototype => [
 				pure.assertTrue
 				extern.assertTrue
-				prototype as ThreadDeclaration => [
-					"t6".assertEquals(name)
-				]
+				"t6".assertEquals((prototype as ThreadDeclaration).name)
 			]
 			(programElements.get(6) as Procedure).procedure.prototype => [
 				pure.assertTrue
 				extern.assertTrue
-				prototype as ThreadDeclaration => [
-					"t7".assertEquals(name)
-				]
+				"t7".assertEquals((prototype as ThreadDeclaration).name)
 			]
 		]
 	}
@@ -252,6 +241,155 @@ class ParserTest {
 				type => [
 					SignedEnum.UNSIGNED.assertEquals(signed)
 					SimpTypeEnum.INT.assertEquals(simpType)
+				]
+			]
+		]
+	}
+	
+	@Test
+	def void testParamList() {
+		'''
+			int f1();
+			int f2(int p1);
+			int f3(int p1, int p2);
+			int f4(int p1, int p2, int p3);
+		'''.parse => [
+			assertNoIssues
+			4.assertEquals(programElements.size)
+			(programElements.get(0) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
+				"f1".assertEquals(name)
+				paramList.params.empty.assertTrue
+			]
+			(programElements.get(1) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
+				"f2".assertEquals(name)
+				paramList => [
+					1.assertEquals(params.size)
+					params.head => [
+						type => [
+							SignedEnum.UNSET.assertEquals(signed)
+							SimpTypeEnum.INT.assertEquals(simpType)
+						]
+						"p1".assertEquals(^var.name)
+					]
+				]
+			]
+			(programElements.get(2) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
+				"f3".assertEquals(name)
+				paramList => [
+					2.assertEquals(params.size)
+					params.get(0) => [
+						type => [
+							SignedEnum.UNSET.assertEquals(signed)
+							SimpTypeEnum.INT.assertEquals(simpType)
+						]
+						"p1".assertEquals(^var.name)
+					]
+					params.get(1) => [
+						type => [
+							SignedEnum.UNSET.assertEquals(signed)
+							SimpTypeEnum.INT.assertEquals(simpType)
+						]
+						"p2".assertEquals(^var.name)
+					]
+				]
+			]
+			(programElements.get(3) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
+				"f4".assertEquals(name)
+				paramList => [
+					3.assertEquals(params.size)
+					params.get(0) => [
+						type => [
+							SignedEnum.UNSET.assertEquals(signed)
+							SimpTypeEnum.INT.assertEquals(simpType)
+						]
+						"p1".assertEquals(^var.name)
+					]
+					params.get(1) => [
+						type => [
+							SignedEnum.UNSET.assertEquals(signed)
+							SimpTypeEnum.INT.assertEquals(simpType)
+						]
+						"p2".assertEquals(^var.name)
+					]
+					params.get(2) => [
+						type => [
+							SignedEnum.UNSET.assertEquals(signed)
+							SimpTypeEnum.INT.assertEquals(simpType)
+						]
+						"p3".assertEquals(^var.name)
+					]
+				]
+			]
+		]
+	}
+	
+	@Test
+	def void testDimension() {
+		'''
+			int f1(int p1, int p2[0], int p3[1][2], int p4[3][4][5]);
+			int f2(int p1[0], int p2[#N], int p3[a]);
+		'''.parse => [
+			assertNoIssues
+			2.assertEquals(programElements.size)
+			(programElements.get(0) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
+				"f1".assertEquals(name)
+				paramList => [
+					4.assertEquals(params.size)
+					params.get(0).^var => [
+						"p1".assertEquals(name)
+						dimensions.assertNull
+					]
+					params.get(1).^var => [
+						"p2".assertEquals(name)
+						dimensions => [
+							1.assertEquals(dimensions.size)
+							0.assertEquals((dimensions.head as IntDimension).index)
+						]
+					]
+					params.get(2).^var => [
+						"p3".assertEquals(name)
+						dimensions => [
+							2.assertEquals(dimensions.size)
+							1.assertEquals((dimensions.get(0) as IntDimension).index)
+							2.assertEquals((dimensions.get(1) as IntDimension).index)
+						]
+					]
+					params.get(3).^var => [
+						"p4".assertEquals(name)
+						dimensions => [
+							3.assertEquals(dimensions.size)
+							3.assertEquals((dimensions.get(0) as IntDimension).index)
+							4.assertEquals((dimensions.get(1) as IntDimension).index)
+							5.assertEquals((dimensions.get(2) as IntDimension).index)
+						]
+					]
+				]
+			]
+			(programElements.get(1) as Procedure).procedure.prototype.prototype as FnPrototypeDeclaration => [
+				"f2".assertEquals(name)
+				paramList => [
+					3.assertEquals(params.size)
+					params.get(0).^var => [
+						"p1".assertEquals(name)
+						dimensions => [
+							1.assertEquals(dimensions.size)
+							0.assertEquals((dimensions.head as IntDimension).index)
+						]
+					]
+					params.get(1).^var => [
+						"p2".assertEquals(name)
+						dimensions => [
+							1.assertEquals(dimensions.size)
+							Assert.assertTrue(dimensions.head instanceof NodeNumDimension)
+						]
+					]
+					params.get(2).^var => [
+						"p3".assertEquals(name)
+						dimensions => [
+							1.assertEquals(dimensions.size)
+							"a".assertEquals((dimensions.head as IdDimension).index)
+						]
+					]
 				]
 			]
 		]

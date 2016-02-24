@@ -39,6 +39,20 @@ DoubleConst:
 	sign=Sign? value=Double
 ;
 
+Var:
+	name=TIDENTIFIER dimensions=Dimensions?
+;
+
+Dimensions:
+	('[' dimensions+=Dimension ']')+
+;
+
+Dimension:
+	{IntDimension} index=INT |
+	{NodeNumDimension} '#N' |
+	{IdDimension} index=TIDENTIFIER
+;
+
 Type:
 	signed=Signed? simpType=SimpType
 ;
@@ -60,7 +74,16 @@ FnPrototype:
 FnPrototypeNoDecors:
 	{ThreadDeclaration} 'thread' name=TIDENTIFIER |
 	//TODO: param_list
-	{FnPrototypeDeclaration} type=Type name=TIDENTIFIER '(' ')'
+	{FnPrototypeDeclaration} type=Type name=TIDENTIFIER '(' paramList=ParamList ')'
+;
+
+ParamList:
+	{ParamList}
+	(params+=Param (',' params+=Param)*)?
+;
+
+Param:
+	type=Type var=Var
 ;
 
 enum SignEnum:

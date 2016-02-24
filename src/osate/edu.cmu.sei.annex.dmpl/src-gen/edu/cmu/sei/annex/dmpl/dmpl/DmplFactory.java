@@ -86,6 +86,33 @@ public interface DmplFactory extends EFactory
   DoubleConst createDoubleConst();
 
   /**
+   * Returns a new object of class '<em>Var</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Var</em>'.
+   * @generated
+   */
+  Var createVar();
+
+  /**
+   * Returns a new object of class '<em>Dimensions</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Dimensions</em>'.
+   * @generated
+   */
+  Dimensions createDimensions();
+
+  /**
+   * Returns a new object of class '<em>Dimension</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Dimension</em>'.
+   * @generated
+   */
+  Dimension createDimension();
+
+  /**
    * Returns a new object of class '<em>Type</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -129,6 +156,51 @@ public interface DmplFactory extends EFactory
    * @generated
    */
   FnPrototypeNoDecors createFnPrototypeNoDecors();
+
+  /**
+   * Returns a new object of class '<em>Param List</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Param List</em>'.
+   * @generated
+   */
+  ParamList createParamList();
+
+  /**
+   * Returns a new object of class '<em>Param</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Param</em>'.
+   * @generated
+   */
+  Param createParam();
+
+  /**
+   * Returns a new object of class '<em>Int Dimension</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Int Dimension</em>'.
+   * @generated
+   */
+  IntDimension createIntDimension();
+
+  /**
+   * Returns a new object of class '<em>Node Num Dimension</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Node Num Dimension</em>'.
+   * @generated
+   */
+  NodeNumDimension createNodeNumDimension();
+
+  /**
+   * Returns a new object of class '<em>Id Dimension</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Id Dimension</em>'.
+   * @generated
+   */
+  IdDimension createIdDimension();
 
   /**
    * Returns a new object of class '<em>Thread Declaration</em>'.

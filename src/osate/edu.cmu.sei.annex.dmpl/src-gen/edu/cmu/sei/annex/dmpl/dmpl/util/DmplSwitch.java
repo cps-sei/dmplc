@@ -133,6 +133,27 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case DmplPackage.VAR:
+      {
+        Var var = (Var)theEObject;
+        T result = caseVar(var);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.DIMENSIONS:
+      {
+        Dimensions dimensions = (Dimensions)theEObject;
+        T result = caseDimensions(dimensions);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.DIMENSION:
+      {
+        Dimension dimension = (Dimension)theEObject;
+        T result = caseDimension(dimension);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case DmplPackage.TYPE:
       {
         Type type = (Type)theEObject;
@@ -166,6 +187,44 @@ public class DmplSwitch<T> extends Switch<T>
       {
         FnPrototypeNoDecors fnPrototypeNoDecors = (FnPrototypeNoDecors)theEObject;
         T result = caseFnPrototypeNoDecors(fnPrototypeNoDecors);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.PARAM_LIST:
+      {
+        ParamList paramList = (ParamList)theEObject;
+        T result = caseParamList(paramList);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.PARAM:
+      {
+        Param param = (Param)theEObject;
+        T result = caseParam(param);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.INT_DIMENSION:
+      {
+        IntDimension intDimension = (IntDimension)theEObject;
+        T result = caseIntDimension(intDimension);
+        if (result == null) result = caseDimension(intDimension);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.NODE_NUM_DIMENSION:
+      {
+        NodeNumDimension nodeNumDimension = (NodeNumDimension)theEObject;
+        T result = caseNodeNumDimension(nodeNumDimension);
+        if (result == null) result = caseDimension(nodeNumDimension);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.ID_DIMENSION:
+      {
+        IdDimension idDimension = (IdDimension)theEObject;
+        T result = caseIdDimension(idDimension);
+        if (result == null) result = caseDimension(idDimension);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -302,6 +361,54 @@ public class DmplSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>Var</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Var</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseVar(Var object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Dimensions</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Dimensions</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseDimensions(Dimensions object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Dimension</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Dimension</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseDimension(Dimension object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Type</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -377,6 +484,86 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseFnPrototypeNoDecors(FnPrototypeNoDecors object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Param List</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Param List</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseParamList(ParamList object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Param</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Param</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseParam(Param object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Int Dimension</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Int Dimension</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseIntDimension(IntDimension object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Node Num Dimension</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Node Num Dimension</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseNodeNumDimension(NodeNumDimension object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Id Dimension</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Id Dimension</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseIdDimension(IdDimension object)
   {
     return null;
   }

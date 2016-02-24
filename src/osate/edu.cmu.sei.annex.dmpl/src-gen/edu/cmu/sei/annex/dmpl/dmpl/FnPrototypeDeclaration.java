@@ -13,6 +13,7 @@ package edu.cmu.sei.annex.dmpl.dmpl;
  * </p>
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration#getType <em>Type</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration#getParamList <em>Param List</em>}</li>
  * </ul>
  *
  * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getFnPrototypeDeclaration()
@@ -46,5 +47,31 @@ public interface FnPrototypeDeclaration extends FnPrototypeNoDecors
    * @generated
    */
   void setType(Type value);
+
+  /**
+   * Returns the value of the '<em><b>Param List</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Param List</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Param List</em>' containment reference.
+   * @see #setParamList(ParamList)
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getFnPrototypeDeclaration_ParamList()
+   * @model containment="true"
+   * @generated
+   */
+  ParamList getParamList();
+
+  /**
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration#getParamList <em>Param List</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Param List</em>' containment reference.
+   * @see #getParamList()
+   * @generated
+   */
+  void setParamList(ParamList value);
 
 } // FnPrototypeDeclaration

@@ -3,9 +3,9 @@
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
-import edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration;
-import edu.cmu.sei.annex.dmpl.dmpl.ParamList;
+import edu.cmu.sei.annex.dmpl.dmpl.Param;
 import edu.cmu.sei.annex.dmpl.dmpl.Type;
+import edu.cmu.sei.annex.dmpl.dmpl.Var;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -14,22 +14,23 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Fn Prototype Declaration</b></em>'.
+ * An implementation of the model object '<em><b>Param</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnPrototypeDeclarationImpl#getType <em>Type</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnPrototypeDeclarationImpl#getParamList <em>Param List</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ParamImpl#getType <em>Type</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ParamImpl#getVar <em>Var</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class FnPrototypeDeclarationImpl extends FnPrototypeNoDecorsImpl implements FnPrototypeDeclaration
+public class ParamImpl extends MinimalEObjectImpl.Container implements Param
 {
   /**
    * The cached value of the '{@link #getType() <em>Type</em>}' containment reference.
@@ -42,21 +43,21 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeNoDecorsImpl implemen
   protected Type type;
 
   /**
-   * The cached value of the '{@link #getParamList() <em>Param List</em>}' containment reference.
+   * The cached value of the '{@link #getVar() <em>Var</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getParamList()
+   * @see #getVar()
    * @generated
    * @ordered
    */
-  protected ParamList paramList;
+  protected Var var;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected FnPrototypeDeclarationImpl()
+  protected ParamImpl()
   {
     super();
   }
@@ -69,7 +70,7 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeNoDecorsImpl implemen
   @Override
   protected EClass eStaticClass()
   {
-    return DmplPackage.Literals.FN_PROTOTYPE_DECLARATION;
+    return DmplPackage.Literals.PARAM;
   }
 
   /**
@@ -93,7 +94,7 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeNoDecorsImpl implemen
     type = newType;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.FN_PROTOTYPE_DECLARATION__TYPE, oldType, newType);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.PARAM__TYPE, oldType, newType);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -110,14 +111,14 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeNoDecorsImpl implemen
     {
       NotificationChain msgs = null;
       if (type != null)
-        msgs = ((InternalEObject)type).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.FN_PROTOTYPE_DECLARATION__TYPE, null, msgs);
+        msgs = ((InternalEObject)type).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.PARAM__TYPE, null, msgs);
       if (newType != null)
-        msgs = ((InternalEObject)newType).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.FN_PROTOTYPE_DECLARATION__TYPE, null, msgs);
+        msgs = ((InternalEObject)newType).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.PARAM__TYPE, null, msgs);
       msgs = basicSetType(newType, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.FN_PROTOTYPE_DECLARATION__TYPE, newType, newType));
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.PARAM__TYPE, newType, newType));
   }
 
   /**
@@ -125,9 +126,9 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeNoDecorsImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public ParamList getParamList()
+  public Var getVar()
   {
-    return paramList;
+    return var;
   }
 
   /**
@@ -135,13 +136,13 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeNoDecorsImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetParamList(ParamList newParamList, NotificationChain msgs)
+  public NotificationChain basicSetVar(Var newVar, NotificationChain msgs)
   {
-    ParamList oldParamList = paramList;
-    paramList = newParamList;
+    Var oldVar = var;
+    var = newVar;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.FN_PROTOTYPE_DECLARATION__PARAM_LIST, oldParamList, newParamList);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.PARAM__VAR, oldVar, newVar);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -152,20 +153,20 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeNoDecorsImpl implemen
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setParamList(ParamList newParamList)
+  public void setVar(Var newVar)
   {
-    if (newParamList != paramList)
+    if (newVar != var)
     {
       NotificationChain msgs = null;
-      if (paramList != null)
-        msgs = ((InternalEObject)paramList).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.FN_PROTOTYPE_DECLARATION__PARAM_LIST, null, msgs);
-      if (newParamList != null)
-        msgs = ((InternalEObject)newParamList).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.FN_PROTOTYPE_DECLARATION__PARAM_LIST, null, msgs);
-      msgs = basicSetParamList(newParamList, msgs);
+      if (var != null)
+        msgs = ((InternalEObject)var).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.PARAM__VAR, null, msgs);
+      if (newVar != null)
+        msgs = ((InternalEObject)newVar).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.PARAM__VAR, null, msgs);
+      msgs = basicSetVar(newVar, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.FN_PROTOTYPE_DECLARATION__PARAM_LIST, newParamList, newParamList));
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.PARAM__VAR, newVar, newVar));
   }
 
   /**
@@ -178,10 +179,10 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeNoDecorsImpl implemen
   {
     switch (featureID)
     {
-      case DmplPackage.FN_PROTOTYPE_DECLARATION__TYPE:
+      case DmplPackage.PARAM__TYPE:
         return basicSetType(null, msgs);
-      case DmplPackage.FN_PROTOTYPE_DECLARATION__PARAM_LIST:
-        return basicSetParamList(null, msgs);
+      case DmplPackage.PARAM__VAR:
+        return basicSetVar(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -196,10 +197,10 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeNoDecorsImpl implemen
   {
     switch (featureID)
     {
-      case DmplPackage.FN_PROTOTYPE_DECLARATION__TYPE:
+      case DmplPackage.PARAM__TYPE:
         return getType();
-      case DmplPackage.FN_PROTOTYPE_DECLARATION__PARAM_LIST:
-        return getParamList();
+      case DmplPackage.PARAM__VAR:
+        return getVar();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -214,11 +215,11 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeNoDecorsImpl implemen
   {
     switch (featureID)
     {
-      case DmplPackage.FN_PROTOTYPE_DECLARATION__TYPE:
+      case DmplPackage.PARAM__TYPE:
         setType((Type)newValue);
         return;
-      case DmplPackage.FN_PROTOTYPE_DECLARATION__PARAM_LIST:
-        setParamList((ParamList)newValue);
+      case DmplPackage.PARAM__VAR:
+        setVar((Var)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -234,11 +235,11 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeNoDecorsImpl implemen
   {
     switch (featureID)
     {
-      case DmplPackage.FN_PROTOTYPE_DECLARATION__TYPE:
+      case DmplPackage.PARAM__TYPE:
         setType((Type)null);
         return;
-      case DmplPackage.FN_PROTOTYPE_DECLARATION__PARAM_LIST:
-        setParamList((ParamList)null);
+      case DmplPackage.PARAM__VAR:
+        setVar((Var)null);
         return;
     }
     super.eUnset(featureID);
@@ -254,12 +255,12 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeNoDecorsImpl implemen
   {
     switch (featureID)
     {
-      case DmplPackage.FN_PROTOTYPE_DECLARATION__TYPE:
+      case DmplPackage.PARAM__TYPE:
         return type != null;
-      case DmplPackage.FN_PROTOTYPE_DECLARATION__PARAM_LIST:
-        return paramList != null;
+      case DmplPackage.PARAM__VAR:
+        return var != null;
     }
     return super.eIsSet(featureID);
   }
 
-} //FnPrototypeDeclarationImpl
+} //ParamImpl

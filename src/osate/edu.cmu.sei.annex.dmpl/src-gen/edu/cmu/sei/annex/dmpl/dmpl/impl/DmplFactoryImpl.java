@@ -72,11 +72,19 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.NUMBER_CONST: return createNumberConst();
       case DmplPackage.INT_CONST: return createIntConst();
       case DmplPackage.DOUBLE_CONST: return createDoubleConst();
+      case DmplPackage.VAR: return createVar();
+      case DmplPackage.DIMENSIONS: return createDimensions();
+      case DmplPackage.DIMENSION: return createDimension();
       case DmplPackage.TYPE: return createType();
       case DmplPackage.PROCEDURE: return createProcedure();
       case DmplPackage.PROC_NO_ATTR: return createProcNoAttr();
       case DmplPackage.FN_PROTOTYPE: return createFnPrototype();
       case DmplPackage.FN_PROTOTYPE_NO_DECORS: return createFnPrototypeNoDecors();
+      case DmplPackage.PARAM_LIST: return createParamList();
+      case DmplPackage.PARAM: return createParam();
+      case DmplPackage.INT_DIMENSION: return createIntDimension();
+      case DmplPackage.NODE_NUM_DIMENSION: return createNodeNumDimension();
+      case DmplPackage.ID_DIMENSION: return createIdDimension();
       case DmplPackage.THREAD_DECLARATION: return createThreadDeclaration();
       case DmplPackage.FN_PROTOTYPE_DECLARATION: return createFnPrototypeDeclaration();
       default:
@@ -208,6 +216,39 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  public Var createVar()
+  {
+    VarImpl var = new VarImpl();
+    return var;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Dimensions createDimensions()
+  {
+    DimensionsImpl dimensions = new DimensionsImpl();
+    return dimensions;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Dimension createDimension()
+  {
+    DimensionImpl dimension = new DimensionImpl();
+    return dimension;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public Type createType()
   {
     TypeImpl type = new TypeImpl();
@@ -256,6 +297,61 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     FnPrototypeNoDecorsImpl fnPrototypeNoDecors = new FnPrototypeNoDecorsImpl();
     return fnPrototypeNoDecors;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ParamList createParamList()
+  {
+    ParamListImpl paramList = new ParamListImpl();
+    return paramList;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Param createParam()
+  {
+    ParamImpl param = new ParamImpl();
+    return param;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public IntDimension createIntDimension()
+  {
+    IntDimensionImpl intDimension = new IntDimensionImpl();
+    return intDimension;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NodeNumDimension createNodeNumDimension()
+  {
+    NodeNumDimensionImpl nodeNumDimension = new NodeNumDimensionImpl();
+    return nodeNumDimension;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public IdDimension createIdDimension()
+  {
+    IdDimensionImpl idDimension = new IdDimensionImpl();
+    return idDimension;
   }
 
   /**

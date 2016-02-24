@@ -24,6 +24,16 @@
   <eClassifiers xsi:type="ecore:EClass" name="DoubleConst" eSuperTypes="#//NumberConst">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Var">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dimensions" eType="#//Dimensions"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Dimensions">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dimensions" upperBound="-1"
+        eType="#//Dimension" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Dimension"/>
   <eClassifiers xsi:type="ecore:EClass" name="Type">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="signed" eType="#//SignedEnum"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="simpType" eType="#//SimpTypeEnum"/>
@@ -45,6 +55,14 @@
   <eClassifiers xsi:type="ecore:EClass" name="FnPrototypeNoDecors">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ParamList">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"
+        eType="#//Param" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Param">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Type" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//Var" containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="SignEnum">
     <eLiterals name="unset" literal="unset"/>
     <eLiterals name="PLUS" value="1" literal="+"/>
@@ -62,8 +80,17 @@
     <eLiterals name="signed" value="1" literal="signed"/>
     <eLiterals name="unsigned" value="2" literal="unsigned"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IntDimension" eSuperTypes="#//Dimension">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="index" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeNumDimension" eSuperTypes="#//Dimension"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IdDimension" eSuperTypes="#//Dimension">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="index" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ThreadDeclaration" eSuperTypes="#//FnPrototypeNoDecors"/>
   <eClassifiers xsi:type="ecore:EClass" name="FnPrototypeDeclaration" eSuperTypes="#//FnPrototypeNoDecors">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Type" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="paramList" eType="#//ParamList"
+        containment="true"/>
   </eClassifiers>
 </ecore:EPackage>
