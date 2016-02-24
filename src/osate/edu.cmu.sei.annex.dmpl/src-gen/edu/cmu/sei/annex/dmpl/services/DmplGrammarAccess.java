@@ -458,17 +458,22 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cNameAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
 		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_1_2_0 = (RuleCall)cNameAssignment_1_2.eContents().get(0);
 		private final Keyword cLeftParenthesisKeyword_1_3 = (Keyword)cGroup_1.eContents().get(3);
-		private final Assignment cParamListAssignment_1_4 = (Assignment)cGroup_1.eContents().get(4);
-		private final RuleCall cParamListParamListParserRuleCall_1_4_0 = (RuleCall)cParamListAssignment_1_4.eContents().get(0);
+		private final Group cGroup_1_4 = (Group)cGroup_1.eContents().get(4);
+		private final Assignment cParamsAssignment_1_4_0 = (Assignment)cGroup_1_4.eContents().get(0);
+		private final RuleCall cParamsParamParserRuleCall_1_4_0_0 = (RuleCall)cParamsAssignment_1_4_0.eContents().get(0);
+		private final Group cGroup_1_4_1 = (Group)cGroup_1_4.eContents().get(1);
+		private final Keyword cCommaKeyword_1_4_1_0 = (Keyword)cGroup_1_4_1.eContents().get(0);
+		private final Assignment cParamsAssignment_1_4_1_1 = (Assignment)cGroup_1_4_1.eContents().get(1);
+		private final RuleCall cParamsParamParserRuleCall_1_4_1_1_0 = (RuleCall)cParamsAssignment_1_4_1_1.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_1_5 = (Keyword)cGroup_1.eContents().get(5);
 		
 		//FnPrototypeNoDecors:
-		//	{ThreadDeclaration} "thread" name=TIDENTIFIER | //TODO: param_list
-		//	{FnPrototypeDeclaration} type=Type name=TIDENTIFIER "(" paramList=ParamList ")";
+		//	{ThreadDeclaration} "thread" name=TIDENTIFIER | {FnPrototypeDeclaration} type=Type name=TIDENTIFIER "(" (params+=Param
+		//	("," params+=Param)*)? ")";
 		@Override public ParserRule getRule() { return rule; }
 
-		//{ThreadDeclaration} "thread" name=TIDENTIFIER | //TODO: param_list
-		//{FnPrototypeDeclaration} type=Type name=TIDENTIFIER "(" paramList=ParamList ")"
+		//{ThreadDeclaration} "thread" name=TIDENTIFIER | {FnPrototypeDeclaration} type=Type name=TIDENTIFIER "(" (params+=Param
+		//("," params+=Param)*)? ")"
 		public Alternatives getAlternatives() { return cAlternatives; }
 
 		//{ThreadDeclaration} "thread" name=TIDENTIFIER
@@ -486,11 +491,9 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//TIDENTIFIER
 		public RuleCall getNameTIDENTIFIERTerminalRuleCall_0_2_0() { return cNameTIDENTIFIERTerminalRuleCall_0_2_0; }
 
-		////TODO: param_list
-		//{FnPrototypeDeclaration} type=Type name=TIDENTIFIER "(" paramList=ParamList ")"
+		//{FnPrototypeDeclaration} type=Type name=TIDENTIFIER "(" (params+=Param ("," params+=Param)*)? ")"
 		public Group getGroup_1() { return cGroup_1; }
 
-		////TODO: param_list
 		//{FnPrototypeDeclaration}
 		public Action getFnPrototypeDeclarationAction_1_0() { return cFnPrototypeDeclarationAction_1_0; }
 
@@ -509,58 +512,29 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//"("
 		public Keyword getLeftParenthesisKeyword_1_3() { return cLeftParenthesisKeyword_1_3; }
 
-		//paramList=ParamList
-		public Assignment getParamListAssignment_1_4() { return cParamListAssignment_1_4; }
+		//(params+=Param ("," params+=Param)*)?
+		public Group getGroup_1_4() { return cGroup_1_4; }
 
-		//ParamList
-		public RuleCall getParamListParamListParserRuleCall_1_4_0() { return cParamListParamListParserRuleCall_1_4_0; }
+		//params+=Param
+		public Assignment getParamsAssignment_1_4_0() { return cParamsAssignment_1_4_0; }
+
+		//Param
+		public RuleCall getParamsParamParserRuleCall_1_4_0_0() { return cParamsParamParserRuleCall_1_4_0_0; }
+
+		//("," params+=Param)*
+		public Group getGroup_1_4_1() { return cGroup_1_4_1; }
+
+		//","
+		public Keyword getCommaKeyword_1_4_1_0() { return cCommaKeyword_1_4_1_0; }
+
+		//params+=Param
+		public Assignment getParamsAssignment_1_4_1_1() { return cParamsAssignment_1_4_1_1; }
+
+		//Param
+		public RuleCall getParamsParamParserRuleCall_1_4_1_1_0() { return cParamsParamParserRuleCall_1_4_1_1_0; }
 
 		//")"
 		public Keyword getRightParenthesisKeyword_1_5() { return cRightParenthesisKeyword_1_5; }
-	}
-
-	public class ParamListElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "ParamList");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cParamListAction_0 = (Action)cGroup.eContents().get(0);
-		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
-		private final Assignment cParamsAssignment_1_0 = (Assignment)cGroup_1.eContents().get(0);
-		private final RuleCall cParamsParamParserRuleCall_1_0_0 = (RuleCall)cParamsAssignment_1_0.eContents().get(0);
-		private final Group cGroup_1_1 = (Group)cGroup_1.eContents().get(1);
-		private final Keyword cCommaKeyword_1_1_0 = (Keyword)cGroup_1_1.eContents().get(0);
-		private final Assignment cParamsAssignment_1_1_1 = (Assignment)cGroup_1_1.eContents().get(1);
-		private final RuleCall cParamsParamParserRuleCall_1_1_1_0 = (RuleCall)cParamsAssignment_1_1_1.eContents().get(0);
-		
-		//ParamList:
-		//	{ParamList} (params+=Param ("," params+=Param)*)?;
-		@Override public ParserRule getRule() { return rule; }
-
-		//{ParamList} (params+=Param ("," params+=Param)*)?
-		public Group getGroup() { return cGroup; }
-
-		//{ParamList}
-		public Action getParamListAction_0() { return cParamListAction_0; }
-
-		//(params+=Param ("," params+=Param)*)?
-		public Group getGroup_1() { return cGroup_1; }
-
-		//params+=Param
-		public Assignment getParamsAssignment_1_0() { return cParamsAssignment_1_0; }
-
-		//Param
-		public RuleCall getParamsParamParserRuleCall_1_0_0() { return cParamsParamParserRuleCall_1_0_0; }
-
-		//("," params+=Param)*
-		public Group getGroup_1_1() { return cGroup_1_1; }
-
-		//","
-		public Keyword getCommaKeyword_1_1_0() { return cCommaKeyword_1_1_0; }
-
-		//params+=Param
-		public Assignment getParamsAssignment_1_1_1() { return cParamsAssignment_1_1_1; }
-
-		//Param
-		public RuleCall getParamsParamParserRuleCall_1_1_1_0() { return cParamsParamParserRuleCall_1_1_1_0; }
 	}
 
 	public class ParamElements extends AbstractParserRuleElementFinder {
@@ -839,7 +813,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final ProcNoAttrElements pProcNoAttr;
 	private final FnPrototypeElements pFnPrototype;
 	private final FnPrototypeNoDecorsElements pFnPrototypeNoDecors;
-	private final ParamListElements pParamList;
 	private final ParamElements pParam;
 	private final SignEnumElements unknownRuleSignEnum;
 	private final SignElements pSign;
@@ -874,7 +847,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pProcNoAttr = new ProcNoAttrElements();
 		this.pFnPrototype = new FnPrototypeElements();
 		this.pFnPrototypeNoDecors = new FnPrototypeNoDecorsElements();
-		this.pParamList = new ParamListElements();
 		this.pParam = new ParamElements();
 		this.unknownRuleSignEnum = new SignEnumElements();
 		this.pSign = new SignElements();
@@ -1054,24 +1026,14 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//FnPrototypeNoDecors:
-	//	{ThreadDeclaration} "thread" name=TIDENTIFIER | //TODO: param_list
-	//	{FnPrototypeDeclaration} type=Type name=TIDENTIFIER "(" paramList=ParamList ")";
+	//	{ThreadDeclaration} "thread" name=TIDENTIFIER | {FnPrototypeDeclaration} type=Type name=TIDENTIFIER "(" (params+=Param
+	//	("," params+=Param)*)? ")";
 	public FnPrototypeNoDecorsElements getFnPrototypeNoDecorsAccess() {
 		return pFnPrototypeNoDecors;
 	}
 	
 	public ParserRule getFnPrototypeNoDecorsRule() {
 		return getFnPrototypeNoDecorsAccess().getRule();
-	}
-
-	//ParamList:
-	//	{ParamList} (params+=Param ("," params+=Param)*)?;
-	public ParamListElements getParamListAccess() {
-		return pParamList;
-	}
-	
-	public ParserRule getParamListRule() {
-		return getParamListAccess().getRule();
 	}
 
 	//Param:

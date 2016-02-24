@@ -69,13 +69,7 @@ FnPrototype:
 
 FnPrototypeNoDecors:
 	{ThreadDeclaration} 'thread' name=TIDENTIFIER |
-	//TODO: param_list
-	{FnPrototypeDeclaration} type=Type name=TIDENTIFIER '(' paramList=ParamList ')'
-;
-
-ParamList:
-	{ParamList}
-	(params+=Param (',' params+=Param)*)?
+	{FnPrototypeDeclaration} type=Type name=TIDENTIFIER '(' (params+=Param (',' params+=Param)*)? ')'
 ;
 
 Param:

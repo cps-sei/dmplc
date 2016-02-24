@@ -67,9 +67,6 @@
     <genClasses ecoreClass="Dmpl.ecore#//FnPrototypeNoDecors">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//FnPrototypeNoDecors/name"/>
     </genClasses>
-    <genClasses ecoreClass="Dmpl.ecore#//ParamList">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//ParamList/params"/>
-    </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Param">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Param/type"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Param/var"/>
@@ -84,7 +81,7 @@
     <genClasses ecoreClass="Dmpl.ecore#//ThreadDeclaration"/>
     <genClasses ecoreClass="Dmpl.ecore#//FnPrototypeDeclaration">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnPrototypeDeclaration/type"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnPrototypeDeclaration/paramList"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnPrototypeDeclaration/params"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

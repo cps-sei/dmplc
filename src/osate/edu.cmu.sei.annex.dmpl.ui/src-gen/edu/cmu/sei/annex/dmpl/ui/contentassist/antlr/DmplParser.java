@@ -66,9 +66,8 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getFnPrototypeAccess().getGroup(), "rule__FnPrototype__Group__0");
 					put(grammarAccess.getFnPrototypeNoDecorsAccess().getGroup_0(), "rule__FnPrototypeNoDecors__Group_0__0");
 					put(grammarAccess.getFnPrototypeNoDecorsAccess().getGroup_1(), "rule__FnPrototypeNoDecors__Group_1__0");
-					put(grammarAccess.getParamListAccess().getGroup(), "rule__ParamList__Group__0");
-					put(grammarAccess.getParamListAccess().getGroup_1(), "rule__ParamList__Group_1__0");
-					put(grammarAccess.getParamListAccess().getGroup_1_1(), "rule__ParamList__Group_1_1__0");
+					put(grammarAccess.getFnPrototypeNoDecorsAccess().getGroup_1_4(), "rule__FnPrototypeNoDecors__Group_1_4__0");
+					put(grammarAccess.getFnPrototypeNoDecorsAccess().getGroup_1_4_1(), "rule__FnPrototypeNoDecors__Group_1_4_1__0");
 					put(grammarAccess.getParamAccess().getGroup(), "rule__Param__Group__0");
 					put(grammarAccess.getDoubleAccess().getGroup_1(), "rule__Double__Group_1__0");
 					put(grammarAccess.getProgramAccess().getProgramElementsAssignment_1(), "rule__Program__ProgramElementsAssignment_1");
@@ -93,9 +92,8 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getFnPrototypeNoDecorsAccess().getNameAssignment_0_2(), "rule__FnPrototypeNoDecors__NameAssignment_0_2");
 					put(grammarAccess.getFnPrototypeNoDecorsAccess().getTypeAssignment_1_1(), "rule__FnPrototypeNoDecors__TypeAssignment_1_1");
 					put(grammarAccess.getFnPrototypeNoDecorsAccess().getNameAssignment_1_2(), "rule__FnPrototypeNoDecors__NameAssignment_1_2");
-					put(grammarAccess.getFnPrototypeNoDecorsAccess().getParamListAssignment_1_4(), "rule__FnPrototypeNoDecors__ParamListAssignment_1_4");
-					put(grammarAccess.getParamListAccess().getParamsAssignment_1_0(), "rule__ParamList__ParamsAssignment_1_0");
-					put(grammarAccess.getParamListAccess().getParamsAssignment_1_1_1(), "rule__ParamList__ParamsAssignment_1_1_1");
+					put(grammarAccess.getFnPrototypeNoDecorsAccess().getParamsAssignment_1_4_0(), "rule__FnPrototypeNoDecors__ParamsAssignment_1_4_0");
+					put(grammarAccess.getFnPrototypeNoDecorsAccess().getParamsAssignment_1_4_1_1(), "rule__FnPrototypeNoDecors__ParamsAssignment_1_4_1_1");
 					put(grammarAccess.getParamAccess().getTypeAssignment_0(), "rule__Param__TypeAssignment_0");
 					put(grammarAccess.getParamAccess().getVarAssignment_1(), "rule__Param__VarAssignment_1");
 				}

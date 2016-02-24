@@ -79,7 +79,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.PROC_NO_ATTR: return createProcNoAttr();
       case DmplPackage.FN_PROTOTYPE: return createFnPrototype();
       case DmplPackage.FN_PROTOTYPE_NO_DECORS: return createFnPrototypeNoDecors();
-      case DmplPackage.PARAM_LIST: return createParamList();
       case DmplPackage.PARAM: return createParam();
       case DmplPackage.INT_DIMENSION: return createIntDimension();
       case DmplPackage.NODE_NUM_DIMENSION: return createNodeNumDimension();
@@ -285,17 +284,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     FnPrototypeNoDecorsImpl fnPrototypeNoDecors = new FnPrototypeNoDecorsImpl();
     return fnPrototypeNoDecors;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public ParamList createParamList()
-  {
-    ParamListImpl paramList = new ParamListImpl();
-    return paramList;
   }
 
   /**

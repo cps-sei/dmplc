@@ -551,34 +551,6 @@ public interface DmplPackage extends EPackage
   int FN_PROTOTYPE_NO_DECORS_FEATURE_COUNT = 1;
 
   /**
-   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ParamListImpl <em>Param List</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.ParamListImpl
-   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getParamList()
-   * @generated
-   */
-  int PARAM_LIST = 14;
-
-  /**
-   * The feature id for the '<em><b>Params</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PARAM_LIST__PARAMS = 0;
-
-  /**
-   * The number of structural features of the '<em>Param List</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PARAM_LIST_FEATURE_COUNT = 1;
-
-  /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ParamImpl <em>Param</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -586,7 +558,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getParam()
    * @generated
    */
-  int PARAM = 15;
+  int PARAM = 14;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -623,7 +595,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIntDimension()
    * @generated
    */
-  int INT_DIMENSION = 16;
+  int INT_DIMENSION = 15;
 
   /**
    * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -651,7 +623,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getNodeNumDimension()
    * @generated
    */
-  int NODE_NUM_DIMENSION = 17;
+  int NODE_NUM_DIMENSION = 16;
 
   /**
    * The number of structural features of the '<em>Node Num Dimension</em>' class.
@@ -670,7 +642,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIdDimension()
    * @generated
    */
-  int ID_DIMENSION = 18;
+  int ID_DIMENSION = 17;
 
   /**
    * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -698,7 +670,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getThreadDeclaration()
    * @generated
    */
-  int THREAD_DECLARATION = 19;
+  int THREAD_DECLARATION = 18;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -726,7 +698,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnPrototypeDeclaration()
    * @generated
    */
-  int FN_PROTOTYPE_DECLARATION = 20;
+  int FN_PROTOTYPE_DECLARATION = 19;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -747,13 +719,13 @@ public interface DmplPackage extends EPackage
   int FN_PROTOTYPE_DECLARATION__TYPE = FN_PROTOTYPE_NO_DECORS_FEATURE_COUNT + 0;
 
   /**
-   * The feature id for the '<em><b>Param List</b></em>' containment reference.
+   * The feature id for the '<em><b>Params</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int FN_PROTOTYPE_DECLARATION__PARAM_LIST = FN_PROTOTYPE_NO_DECORS_FEATURE_COUNT + 1;
+  int FN_PROTOTYPE_DECLARATION__PARAMS = FN_PROTOTYPE_NO_DECORS_FEATURE_COUNT + 1;
 
   /**
    * The number of structural features of the '<em>Fn Prototype Declaration</em>' class.
@@ -772,7 +744,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignEnum()
    * @generated
    */
-  int SIGN_ENUM = 21;
+  int SIGN_ENUM = 20;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum <em>Simp Type Enum</em>}' enum.
@@ -782,7 +754,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSimpTypeEnum()
    * @generated
    */
-  int SIMP_TYPE_ENUM = 22;
+  int SIMP_TYPE_ENUM = 21;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SignedEnum <em>Signed Enum</em>}' enum.
@@ -792,7 +764,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignedEnum()
    * @generated
    */
-  int SIGNED_ENUM = 23;
+  int SIGNED_ENUM = 22;
 
 
   /**
@@ -1123,27 +1095,6 @@ public interface DmplPackage extends EPackage
   EAttribute getFnPrototypeNoDecors_Name();
 
   /**
-   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.ParamList <em>Param List</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Param List</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.ParamList
-   * @generated
-   */
-  EClass getParamList();
-
-  /**
-   * Returns the meta object for the containment reference list '{@link edu.cmu.sei.annex.dmpl.dmpl.ParamList#getParams <em>Params</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Params</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.ParamList#getParams()
-   * @see #getParamList()
-   * @generated
-   */
-  EReference getParamList_Params();
-
-  /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.Param <em>Param</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1259,15 +1210,15 @@ public interface DmplPackage extends EPackage
   EReference getFnPrototypeDeclaration_Type();
 
   /**
-   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration#getParamList <em>Param List</em>}'.
+   * Returns the meta object for the containment reference list '{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration#getParams <em>Params</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Param List</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration#getParamList()
+   * @return the meta object for the containment reference list '<em>Params</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration#getParams()
    * @see #getFnPrototypeDeclaration()
    * @generated
    */
-  EReference getFnPrototypeDeclaration_ParamList();
+  EReference getFnPrototypeDeclaration_Params();
 
   /**
    * Returns the meta object for enum '{@link edu.cmu.sei.annex.dmpl.dmpl.SignEnum <em>Sign Enum</em>}'.
@@ -1599,24 +1550,6 @@ public interface DmplPackage extends EPackage
     EAttribute FN_PROTOTYPE_NO_DECORS__NAME = eINSTANCE.getFnPrototypeNoDecors_Name();
 
     /**
-     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ParamListImpl <em>Param List</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.ParamListImpl
-     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getParamList()
-     * @generated
-     */
-    EClass PARAM_LIST = eINSTANCE.getParamList();
-
-    /**
-     * The meta object literal for the '<em><b>Params</b></em>' containment reference list feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference PARAM_LIST__PARAMS = eINSTANCE.getParamList_Params();
-
-    /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ParamImpl <em>Param</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -1717,12 +1650,12 @@ public interface DmplPackage extends EPackage
     EReference FN_PROTOTYPE_DECLARATION__TYPE = eINSTANCE.getFnPrototypeDeclaration_Type();
 
     /**
-     * The meta object literal for the '<em><b>Param List</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Params</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference FN_PROTOTYPE_DECLARATION__PARAM_LIST = eINSTANCE.getFnPrototypeDeclaration_ParamList();
+    EReference FN_PROTOTYPE_DECLARATION__PARAMS = eINSTANCE.getFnPrototypeDeclaration_Params();
 
     /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SignEnum <em>Sign Enum</em>}' enum.

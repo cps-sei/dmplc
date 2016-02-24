@@ -150,11 +150,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createFnPrototypeNoDecorsAdapter();
       }
       @Override
-      public Adapter caseParamList(ParamList object)
-      {
-        return createParamListAdapter();
-      }
-      @Override
       public Adapter caseParam(Param object)
       {
         return createParamAdapter();
@@ -432,21 +427,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createFnPrototypeNoDecorsAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.ParamList <em>Param List</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.ParamList
-   * @generated
-   */
-  public Adapter createParamListAdapter()
   {
     return null;
   }

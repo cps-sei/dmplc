@@ -2,6 +2,7 @@
  */
 package edu.cmu.sei.annex.dmpl.dmpl;
 
+import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -13,7 +14,7 @@ package edu.cmu.sei.annex.dmpl.dmpl;
  * </p>
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration#getType <em>Type</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration#getParamList <em>Param List</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration#getParams <em>Params</em>}</li>
  * </ul>
  *
  * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getFnPrototypeDeclaration()
@@ -49,29 +50,19 @@ public interface FnPrototypeDeclaration extends FnPrototypeNoDecors
   void setType(Type value);
 
   /**
-   * Returns the value of the '<em><b>Param List</b></em>' containment reference.
+   * Returns the value of the '<em><b>Params</b></em>' containment reference list.
+   * The list contents are of type {@link edu.cmu.sei.annex.dmpl.dmpl.Param}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Param List</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Params</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Param List</em>' containment reference.
-   * @see #setParamList(ParamList)
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getFnPrototypeDeclaration_ParamList()
+   * @return the value of the '<em>Params</em>' containment reference list.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getFnPrototypeDeclaration_Params()
    * @model containment="true"
    * @generated
    */
-  ParamList getParamList();
-
-  /**
-   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration#getParamList <em>Param List</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Param List</em>' containment reference.
-   * @see #getParamList()
-   * @generated
-   */
-  void setParamList(ParamList value);
+  EList<Param> getParams();
 
 } // FnPrototypeDeclaration

@@ -897,96 +897,51 @@ ruleFnPrototypeNoDecors returns [EObject current=null]
     {
     	newLeafNode(otherlv_6, grammarAccess.getFnPrototypeNoDecorsAccess().getLeftParenthesisKeyword_1_3());
     }
-(
+((
 (
 		{ 
-	        newCompositeNode(grammarAccess.getFnPrototypeNoDecorsAccess().getParamListParamListParserRuleCall_1_4_0()); 
+	        newCompositeNode(grammarAccess.getFnPrototypeNoDecorsAccess().getParamsParamParserRuleCall_1_4_0_0()); 
 	    }
-		lv_paramList_7_0=ruleParamList		{
+		lv_params_7_0=ruleParam		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getFnPrototypeNoDecorsRule());
 	        }
-       		set(
+       		add(
        			$current, 
-       			"paramList",
-        		lv_paramList_7_0, 
-        		"ParamList");
+       			"params",
+        		lv_params_7_0, 
+        		"Param");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-)	otherlv_8=')' 
+)(	otherlv_8=',' 
     {
-    	newLeafNode(otherlv_8, grammarAccess.getFnPrototypeNoDecorsAccess().getRightParenthesisKeyword_1_5());
+    	newLeafNode(otherlv_8, grammarAccess.getFnPrototypeNoDecorsAccess().getCommaKeyword_1_4_1_0());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getFnPrototypeNoDecorsAccess().getParamsParamParserRuleCall_1_4_1_1_0()); 
+	    }
+		lv_params_9_0=ruleParam		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getFnPrototypeNoDecorsRule());
+	        }
+       		add(
+       			$current, 
+       			"params",
+        		lv_params_9_0, 
+        		"Param");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))*)?	otherlv_10=')' 
+    {
+    	newLeafNode(otherlv_10, grammarAccess.getFnPrototypeNoDecorsAccess().getRightParenthesisKeyword_1_5());
     }
 ))
-;
-
-
-
-
-
-// Entry rule entryRuleParamList
-entryRuleParamList returns [EObject current=null] 
-	:
-	{ newCompositeNode(grammarAccess.getParamListRule()); }
-	 iv_ruleParamList=ruleParamList 
-	 { $current=$iv_ruleParamList.current; } 
-	 EOF 
-;
-
-// Rule ParamList
-ruleParamList returns [EObject current=null] 
-    @init { enterRule(); 
-    }
-    @after { leaveRule(); }:
-((
-    {
-        $current = forceCreateModelElement(
-            grammarAccess.getParamListAccess().getParamListAction_0(),
-            $current);
-    }
-)((
-(
-		{ 
-	        newCompositeNode(grammarAccess.getParamListAccess().getParamsParamParserRuleCall_1_0_0()); 
-	    }
-		lv_params_1_0=ruleParam		{
-	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getParamListRule());
-	        }
-       		add(
-       			$current, 
-       			"params",
-        		lv_params_1_0, 
-        		"Param");
-	        afterParserOrEnumRuleCall();
-	    }
-
-)
-)(	otherlv_2=',' 
-    {
-    	newLeafNode(otherlv_2, grammarAccess.getParamListAccess().getCommaKeyword_1_1_0());
-    }
-(
-(
-		{ 
-	        newCompositeNode(grammarAccess.getParamListAccess().getParamsParamParserRuleCall_1_1_1_0()); 
-	    }
-		lv_params_3_0=ruleParam		{
-	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getParamListRule());
-	        }
-       		add(
-       			$current, 
-       			"params",
-        		lv_params_3_0, 
-        		"Param");
-	        afterParserOrEnumRuleCall();
-	    }
-
-)
-))*)?)
 ;
 
 

@@ -51,10 +51,6 @@
   <eClassifiers xsi:type="ecore:EClass" name="FnPrototypeNoDecors">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ParamList">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"
-        eType="#//Param" containment="true"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Param">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Type" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//Var" containment="true"/>
@@ -86,7 +82,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="ThreadDeclaration" eSuperTypes="#//FnPrototypeNoDecors"/>
   <eClassifiers xsi:type="ecore:EClass" name="FnPrototypeDeclaration" eSuperTypes="#//FnPrototypeNoDecors">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Type" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="paramList" eType="#//ParamList"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"
+        eType="#//Param" containment="true"/>
   </eClassifiers>
 </ecore:EPackage>
