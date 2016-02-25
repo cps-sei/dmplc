@@ -3,6 +3,7 @@
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
+import edu.cmu.sei.annex.dmpl.dmpl.Expr;
 import edu.cmu.sei.annex.dmpl.dmpl.FnBody;
 import edu.cmu.sei.annex.dmpl.dmpl.Var;
 import edu.cmu.sei.annex.dmpl.dmpl.VarAsgn;
@@ -26,6 +27,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarAsgnImpl#getVar <em>Var</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarAsgnImpl#getFnBody <em>Fn Body</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarAsgnImpl#getExpr <em>Expr</em>}</li>
  * </ul>
  *
  * @generated
@@ -51,6 +53,16 @@ public class VarAsgnImpl extends MinimalEObjectImpl.Container implements VarAsgn
    * @ordered
    */
   protected FnBody fnBody;
+
+  /**
+   * The cached value of the '{@link #getExpr() <em>Expr</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getExpr()
+   * @generated
+   * @ordered
+   */
+  protected Expr expr;
 
   /**
    * <!-- begin-user-doc -->
@@ -174,6 +186,54 @@ public class VarAsgnImpl extends MinimalEObjectImpl.Container implements VarAsgn
    * <!-- end-user-doc -->
    * @generated
    */
+  public Expr getExpr()
+  {
+    return expr;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetExpr(Expr newExpr, NotificationChain msgs)
+  {
+    Expr oldExpr = expr;
+    expr = newExpr;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.VAR_ASGN__EXPR, oldExpr, newExpr);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setExpr(Expr newExpr)
+  {
+    if (newExpr != expr)
+    {
+      NotificationChain msgs = null;
+      if (expr != null)
+        msgs = ((InternalEObject)expr).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.VAR_ASGN__EXPR, null, msgs);
+      if (newExpr != null)
+        msgs = ((InternalEObject)newExpr).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.VAR_ASGN__EXPR, null, msgs);
+      msgs = basicSetExpr(newExpr, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.VAR_ASGN__EXPR, newExpr, newExpr));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
@@ -183,6 +243,8 @@ public class VarAsgnImpl extends MinimalEObjectImpl.Container implements VarAsgn
         return basicSetVar(null, msgs);
       case DmplPackage.VAR_ASGN__FN_BODY:
         return basicSetFnBody(null, msgs);
+      case DmplPackage.VAR_ASGN__EXPR:
+        return basicSetExpr(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -201,6 +263,8 @@ public class VarAsgnImpl extends MinimalEObjectImpl.Container implements VarAsgn
         return getVar();
       case DmplPackage.VAR_ASGN__FN_BODY:
         return getFnBody();
+      case DmplPackage.VAR_ASGN__EXPR:
+        return getExpr();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -220,6 +284,9 @@ public class VarAsgnImpl extends MinimalEObjectImpl.Container implements VarAsgn
         return;
       case DmplPackage.VAR_ASGN__FN_BODY:
         setFnBody((FnBody)newValue);
+        return;
+      case DmplPackage.VAR_ASGN__EXPR:
+        setExpr((Expr)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -241,6 +308,9 @@ public class VarAsgnImpl extends MinimalEObjectImpl.Container implements VarAsgn
       case DmplPackage.VAR_ASGN__FN_BODY:
         setFnBody((FnBody)null);
         return;
+      case DmplPackage.VAR_ASGN__EXPR:
+        setExpr((Expr)null);
+        return;
     }
     super.eUnset(featureID);
   }
@@ -259,6 +329,8 @@ public class VarAsgnImpl extends MinimalEObjectImpl.Container implements VarAsgn
         return var != null;
       case DmplPackage.VAR_ASGN__FN_BODY:
         return fnBody != null;
+      case DmplPackage.VAR_ASGN__EXPR:
+        return expr != null;
     }
     return super.eIsSet(featureID);
   }

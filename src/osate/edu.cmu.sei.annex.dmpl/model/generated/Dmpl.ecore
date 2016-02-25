@@ -38,6 +38,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//Var" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="fnBody" eType="#//FnBody"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//Expr" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Var">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -75,6 +76,9 @@
   <eClassifiers xsi:type="ecore:EClass" name="VarInitList">
     <eStructuralFeatures xsi:type="ecore:EReference" name="varInits" upperBound="-1"
         eType="#//VarInit" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Expr">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="SignEnum">
     <eLiterals name="unset" literal="unset"/>

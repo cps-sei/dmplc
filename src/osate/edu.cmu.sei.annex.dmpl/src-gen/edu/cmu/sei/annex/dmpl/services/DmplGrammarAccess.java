@@ -288,18 +288,21 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cVarAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final RuleCall cVarVarParserRuleCall_0_0 = (RuleCall)cVarAssignment_0.eContents().get(0);
 		private final Keyword cEqualsSignKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Assignment cFnBodyAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cFnBodyFnBodyParserRuleCall_2_0 = (RuleCall)cFnBodyAssignment_2.eContents().get(0);
+		private final Alternatives cAlternatives_2 = (Alternatives)cGroup.eContents().get(2);
+		private final Assignment cFnBodyAssignment_2_0 = (Assignment)cAlternatives_2.eContents().get(0);
+		private final RuleCall cFnBodyFnBodyParserRuleCall_2_0_0 = (RuleCall)cFnBodyAssignment_2_0.eContents().get(0);
+		private final Assignment cExprAssignment_2_1 = (Assignment)cAlternatives_2.eContents().get(1);
+		private final RuleCall cExprExprParserRuleCall_2_1_0 = (RuleCall)cExprAssignment_2_1.eContents().get(0);
 		
-		//VarAsgn: //TODO 'input', '~', and expr
-		//	var=Var "=" fnBody=FnBody;
+		//VarAsgn: //TODO 'input' and '~'
+		//	var=Var "=" (fnBody=FnBody | expr=Expr);
 		@Override public ParserRule getRule() { return rule; }
 
-		////TODO 'input', '~', and expr
-		//var=Var "=" fnBody=FnBody
+		////TODO 'input' and '~'
+		//var=Var "=" (fnBody=FnBody | expr=Expr)
 		public Group getGroup() { return cGroup; }
 
-		////TODO 'input', '~', and expr
+		////TODO 'input' and '~'
 		//var=Var
 		public Assignment getVarAssignment_0() { return cVarAssignment_0; }
 
@@ -309,11 +312,20 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//"="
 		public Keyword getEqualsSignKeyword_1() { return cEqualsSignKeyword_1; }
 
+		//fnBody=FnBody | expr=Expr
+		public Alternatives getAlternatives_2() { return cAlternatives_2; }
+
 		//fnBody=FnBody
-		public Assignment getFnBodyAssignment_2() { return cFnBodyAssignment_2; }
+		public Assignment getFnBodyAssignment_2_0() { return cFnBodyAssignment_2_0; }
 
 		//FnBody
-		public RuleCall getFnBodyFnBodyParserRuleCall_2_0() { return cFnBodyFnBodyParserRuleCall_2_0; }
+		public RuleCall getFnBodyFnBodyParserRuleCall_2_0_0() { return cFnBodyFnBodyParserRuleCall_2_0_0; }
+
+		//expr=Expr
+		public Assignment getExprAssignment_2_1() { return cExprAssignment_2_1; }
+
+		//Expr
+		public RuleCall getExprExprParserRuleCall_2_1_0() { return cExprExprParserRuleCall_2_1_0; }
 	}
 
 	public class VarElements extends AbstractParserRuleElementFinder {
@@ -746,6 +758,23 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getSemicolonKeyword_1_1() { return cSemicolonKeyword_1_1; }
 	}
 
+	public class ExprElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Expr");
+		private final Assignment cValueAssignment = (Assignment)rule.eContents().get(1);
+		private final RuleCall cValueINTTerminalRuleCall_0 = (RuleCall)cValueAssignment.eContents().get(0);
+		
+		//Expr: //TODO
+		//	value=INT;
+		@Override public ParserRule getRule() { return rule; }
+
+		////TODO
+		//value=INT
+		public Assignment getValueAssignment() { return cValueAssignment; }
+
+		//INT
+		public RuleCall getValueINTTerminalRuleCall_0() { return cValueINTTerminalRuleCall_0; }
+	}
+
 	public class SignElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Sign");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
@@ -999,6 +1028,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final FnPrototypeElements pFnPrototype;
 	private final ParamElements pParam;
 	private final VarInitListElements pVarInitList;
+	private final ExprElements pExpr;
 	private final SignEnumElements unknownRuleSignEnum;
 	private final SignElements pSign;
 	private final SimpTypeEnumElements unknownRuleSimpTypeEnum;
@@ -1037,6 +1067,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pFnPrototype = new FnPrototypeElements();
 		this.pParam = new ParamElements();
 		this.pVarInitList = new VarInitListElements();
+		this.pExpr = new ExprElements();
 		this.unknownRuleSignEnum = new SignEnumElements();
 		this.pSign = new SignElements();
 		this.unknownRuleSimpTypeEnum = new SimpTypeEnumElements();
@@ -1174,8 +1205,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getVarAsgnListAccess().getRule();
 	}
 
-	//VarAsgn: //TODO 'input', '~', and expr
-	//	var=Var "=" fnBody=FnBody;
+	//VarAsgn: //TODO 'input' and '~'
+	//	var=Var "=" (fnBody=FnBody | expr=Expr);
 	public VarAsgnElements getVarAsgnAccess() {
 		return pVarAsgn;
 	}
@@ -1274,6 +1305,16 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getVarInitListRule() {
 		return getVarInitListAccess().getRule();
+	}
+
+	//Expr: //TODO
+	//	value=INT;
+	public ExprElements getExprAccess() {
+		return pExpr;
+	}
+	
+	public ParserRule getExprRule() {
+		return getExprAccess().getRule();
 	}
 
 	//enum SignEnum:

@@ -8,6 +8,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.DmplFactory;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplSubclause;
 import edu.cmu.sei.annex.dmpl.dmpl.DoubleConst;
+import edu.cmu.sei.annex.dmpl.dmpl.Expr;
 import edu.cmu.sei.annex.dmpl.dmpl.FnBody;
 import edu.cmu.sei.annex.dmpl.dmpl.FnPrototype;
 import edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration;
@@ -182,6 +183,13 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass varInitListEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass exprEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -540,6 +548,16 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EReference getVarAsgn_Expr()
+  {
+    return (EReference)varAsgnEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getVar()
   {
     return varEClass;
@@ -770,6 +788,26 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getExpr()
+  {
+    return exprEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getExpr_Value()
+  {
+    return (EAttribute)exprEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getIntDimension()
   {
     return intDimensionEClass;
@@ -947,6 +985,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     varAsgnEClass = createEClass(VAR_ASGN);
     createEReference(varAsgnEClass, VAR_ASGN__VAR);
     createEReference(varAsgnEClass, VAR_ASGN__FN_BODY);
+    createEReference(varAsgnEClass, VAR_ASGN__EXPR);
 
     varEClass = createEClass(VAR);
     createEAttribute(varEClass, VAR__NAME);
@@ -979,6 +1018,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     varInitListEClass = createEClass(VAR_INIT_LIST);
     createEReference(varInitListEClass, VAR_INIT_LIST__VAR_INITS);
+
+    exprEClass = createEClass(EXPR);
+    createEAttribute(exprEClass, EXPR__VALUE);
 
     intDimensionEClass = createEClass(INT_DIMENSION);
     createEAttribute(intDimensionEClass, INT_DIMENSION__INDEX);
@@ -1076,6 +1118,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEClass(varAsgnEClass, VarAsgn.class, "VarAsgn", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getVarAsgn_Var(), this.getVar(), null, "var", null, 0, 1, VarAsgn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getVarAsgn_FnBody(), this.getFnBody(), null, "fnBody", null, 0, 1, VarAsgn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getVarAsgn_Expr(), this.getExpr(), null, "expr", null, 0, 1, VarAsgn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(varEClass, Var.class, "Var", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getVar_Name(), ecorePackage.getEString(), "name", null, 0, 1, Var.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1108,6 +1151,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     initEClass(varInitListEClass, VarInitList.class, "VarInitList", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getVarInitList_VarInits(), this.getVarInit(), null, "varInits", null, 0, -1, VarInitList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(exprEClass, Expr.class, "Expr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getExpr_Value(), ecorePackage.getEInt(), "value", null, 0, 1, Expr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(intDimensionEClass, IntDimension.class, "IntDimension", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getIntDimension_Index(), ecorePackage.getEInt(), "index", null, 0, 1, IntDimension.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

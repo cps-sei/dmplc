@@ -175,6 +175,11 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createVarInitListAdapter();
       }
       @Override
+      public Adapter caseExpr(Expr object)
+      {
+        return createExprAdapter();
+      }
+      @Override
       public Adapter caseIntDimension(IntDimension object)
       {
         return createIntDimensionAdapter();
@@ -522,6 +527,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createVarInitListAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Expr <em>Expr</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Expr
+   * @generated
+   */
+  public Adapter createExprAdapter()
   {
     return null;
   }

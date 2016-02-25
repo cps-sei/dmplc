@@ -41,6 +41,7 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getConstantAccess().getAlternatives_0(), "rule__Constant__Alternatives_0");
 					put(grammarAccess.getNumberConstAccess().getAlternatives(), "rule__NumberConst__Alternatives");
 					put(grammarAccess.getVarAsgnListAccess().getAlternatives(), "rule__VarAsgnList__Alternatives");
+					put(grammarAccess.getVarAsgnAccess().getAlternatives_2(), "rule__VarAsgn__Alternatives_2");
 					put(grammarAccess.getDimensionAccess().getAlternatives(), "rule__Dimension__Alternatives");
 					put(grammarAccess.getProcNoAttrAccess().getAlternatives_1(), "rule__ProcNoAttr__Alternatives_1");
 					put(grammarAccess.getFnPrototypeAccess().getAlternatives(), "rule__FnPrototype__Alternatives");
@@ -91,7 +92,8 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getVarAsgnListAccess().getVarAssignment_0(), "rule__VarAsgnList__VarAssignment_0");
 					put(grammarAccess.getVarAsgnListAccess().getVarAsgnAssignment_1(), "rule__VarAsgnList__VarAsgnAssignment_1");
 					put(grammarAccess.getVarAsgnAccess().getVarAssignment_0(), "rule__VarAsgn__VarAssignment_0");
-					put(grammarAccess.getVarAsgnAccess().getFnBodyAssignment_2(), "rule__VarAsgn__FnBodyAssignment_2");
+					put(grammarAccess.getVarAsgnAccess().getFnBodyAssignment_2_0(), "rule__VarAsgn__FnBodyAssignment_2_0");
+					put(grammarAccess.getVarAsgnAccess().getExprAssignment_2_1(), "rule__VarAsgn__ExprAssignment_2_1");
 					put(grammarAccess.getVarAccess().getNameAssignment_0(), "rule__Var__NameAssignment_0");
 					put(grammarAccess.getVarAccess().getDimensionsAssignment_1_1(), "rule__Var__DimensionsAssignment_1_1");
 					put(grammarAccess.getDimensionAccess().getIndexAssignment_0_1(), "rule__Dimension__IndexAssignment_0_1");
@@ -114,6 +116,7 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getParamAccess().getTypeAssignment_0(), "rule__Param__TypeAssignment_0");
 					put(grammarAccess.getParamAccess().getVarAssignment_1(), "rule__Param__VarAssignment_1");
 					put(grammarAccess.getVarInitListAccess().getVarInitsAssignment_1_0(), "rule__VarInitList__VarInitsAssignment_1_0");
+					put(grammarAccess.getExprAccess().getValueAssignment(), "rule__Expr__ValueAssignment");
 				}
 			};
 		}

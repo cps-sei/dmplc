@@ -49,8 +49,8 @@ VarAsgnList:
 ;
 
 VarAsgn:
-	//TODO 'input', '~', and expr
-	var=Var '=' fnBody=FnBody
+	//TODO 'input' and '~'
+	var=Var '=' (fnBody=FnBody | expr=Expr)
 ;
 
 Var:
@@ -96,6 +96,11 @@ Param:
 VarInitList:
 	{VarInitList}
 	(varInits+=VarInit ';')*
+;
+
+Expr:
+	//TODO
+	value=INT
 ;
 
 enum SignEnum:

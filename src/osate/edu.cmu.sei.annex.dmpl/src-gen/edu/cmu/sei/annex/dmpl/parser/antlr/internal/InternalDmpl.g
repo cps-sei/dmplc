@@ -575,10 +575,10 @@ ruleVarAsgn returns [EObject current=null]
     {
     	newLeafNode(otherlv_1, grammarAccess.getVarAsgnAccess().getEqualsSignKeyword_1());
     }
-(
+((
 (
 		{ 
-	        newCompositeNode(grammarAccess.getVarAsgnAccess().getFnBodyFnBodyParserRuleCall_2_0()); 
+	        newCompositeNode(grammarAccess.getVarAsgnAccess().getFnBodyFnBodyParserRuleCall_2_0_0()); 
 	    }
 		lv_fnBody_2_0=ruleFnBody		{
 	        if ($current==null) {
@@ -593,7 +593,26 @@ ruleVarAsgn returns [EObject current=null]
 	    }
 
 )
-))
+)
+    |(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getVarAsgnAccess().getExprExprParserRuleCall_2_1_0()); 
+	    }
+		lv_expr_3_0=ruleExpr		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getVarAsgnRule());
+	        }
+       		set(
+       			$current, 
+       			"expr",
+        		lv_expr_3_0, 
+        		"Expr");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)))
 ;
 
 
@@ -1311,6 +1330,45 @@ ruleVarInitList returns [EObject current=null]
     	newLeafNode(otherlv_2, grammarAccess.getVarInitListAccess().getSemicolonKeyword_1_1());
     }
 )*)
+;
+
+
+
+
+
+// Entry rule entryRuleExpr
+entryRuleExpr returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getExprRule()); }
+	 iv_ruleExpr=ruleExpr 
+	 { $current=$iv_ruleExpr.current; } 
+	 EOF 
+;
+
+// Rule Expr
+ruleExpr returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(
+(
+		lv_value_0_0=RULE_INT
+		{
+			newLeafNode(lv_value_0_0, grammarAccess.getExprAccess().getValueINTTerminalRuleCall_0()); 
+		}
+		{
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getExprRule());
+	        }
+       		setWithLastConsumed(
+       			$current, 
+       			"value",
+        		lv_value_0_0, 
+        		"INT");
+	    }
+
+)
+)
 ;
 
 

@@ -84,6 +84,7 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.FN_PROTOTYPE: return createFnPrototype();
       case DmplPackage.PARAM: return createParam();
       case DmplPackage.VAR_INIT_LIST: return createVarInitList();
+      case DmplPackage.EXPR: return createExpr();
       case DmplPackage.INT_DIMENSION: return createIntDimension();
       case DmplPackage.NODE_NUM_DIMENSION: return createNodeNumDimension();
       case DmplPackage.ID_DIMENSION: return createIdDimension();
@@ -343,6 +344,17 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     VarInitListImpl varInitList = new VarInitListImpl();
     return varInitList;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Expr createExpr()
+  {
+    ExprImpl expr = new ExprImpl();
+    return expr;
   }
 
   /**
