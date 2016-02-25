@@ -825,13 +825,14 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final Action cLValExprAction_1_0 = (Action)cGroup_1.eContents().get(0);
 		private final Assignment cValueAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
 		private final RuleCall cValueLValParserRuleCall_1_1_0 = (RuleCall)cValueAssignment_1_1.eContents().get(0);
+		private final RuleCall cCallExprParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
 		
 		//Expr: //TODO
-		//	{IntExpr} value=INT | {LValExpr} value=LVal;
+		//	{IntExpr} value=INT | {LValExpr} value=LVal | CallExpr;
 		@Override public ParserRule getRule() { return rule; }
 
 		////TODO
-		//{IntExpr} value=INT | {LValExpr} value=LVal
+		//{IntExpr} value=INT | {LValExpr} value=LVal | CallExpr
 		public Alternatives getAlternatives() { return cAlternatives; }
 
 		////TODO
@@ -859,6 +860,89 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 		//LVal
 		public RuleCall getValueLValParserRuleCall_1_1_0() { return cValueLValParserRuleCall_1_1_0; }
+
+		//CallExpr
+		public RuleCall getCallExprParserRuleCall_2() { return cCallExprParserRuleCall_2; }
+	}
+
+	public class CallExprElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "CallExpr");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cNameAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_0_0 = (RuleCall)cNameAssignment_0.eContents().get(0);
+		private final Keyword cLeftParenthesisKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cArgListAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cArgListArgListParserRuleCall_2_0 = (RuleCall)cArgListAssignment_2.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		
+		//CallExpr:
+		//	name=TIDENTIFIER "(" argList=ArgList ")";
+		@Override public ParserRule getRule() { return rule; }
+
+		//name=TIDENTIFIER "(" argList=ArgList ")"
+		public Group getGroup() { return cGroup; }
+
+		//name=TIDENTIFIER
+		public Assignment getNameAssignment_0() { return cNameAssignment_0; }
+
+		//TIDENTIFIER
+		public RuleCall getNameTIDENTIFIERTerminalRuleCall_0_0() { return cNameTIDENTIFIERTerminalRuleCall_0_0; }
+
+		//"("
+		public Keyword getLeftParenthesisKeyword_1() { return cLeftParenthesisKeyword_1; }
+
+		//argList=ArgList
+		public Assignment getArgListAssignment_2() { return cArgListAssignment_2; }
+
+		//ArgList
+		public RuleCall getArgListArgListParserRuleCall_2_0() { return cArgListArgListParserRuleCall_2_0; }
+
+		//")"
+		public Keyword getRightParenthesisKeyword_3() { return cRightParenthesisKeyword_3; }
+	}
+
+	public class ArgListElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "ArgList");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cArgListAction_0 = (Action)cGroup.eContents().get(0);
+		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
+		private final Assignment cArgsAssignment_1_0 = (Assignment)cGroup_1.eContents().get(0);
+		private final RuleCall cArgsExprParserRuleCall_1_0_0 = (RuleCall)cArgsAssignment_1_0.eContents().get(0);
+		private final Group cGroup_1_1 = (Group)cGroup_1.eContents().get(1);
+		private final Keyword cCommaKeyword_1_1_0 = (Keyword)cGroup_1_1.eContents().get(0);
+		private final Assignment cArgsAssignment_1_1_1 = (Assignment)cGroup_1_1.eContents().get(1);
+		private final RuleCall cArgsExprParserRuleCall_1_1_1_0 = (RuleCall)cArgsAssignment_1_1_1.eContents().get(0);
+		
+		//ArgList:
+		//	{ArgList} (args+=Expr ("," args+=Expr)*)?;
+		@Override public ParserRule getRule() { return rule; }
+
+		//{ArgList} (args+=Expr ("," args+=Expr)*)?
+		public Group getGroup() { return cGroup; }
+
+		//{ArgList}
+		public Action getArgListAction_0() { return cArgListAction_0; }
+
+		//(args+=Expr ("," args+=Expr)*)?
+		public Group getGroup_1() { return cGroup_1; }
+
+		//args+=Expr
+		public Assignment getArgsAssignment_1_0() { return cArgsAssignment_1_0; }
+
+		//Expr
+		public RuleCall getArgsExprParserRuleCall_1_0_0() { return cArgsExprParserRuleCall_1_0_0; }
+
+		//("," args+=Expr)*
+		public Group getGroup_1_1() { return cGroup_1_1; }
+
+		//","
+		public Keyword getCommaKeyword_1_1_0() { return cCommaKeyword_1_1_0; }
+
+		//args+=Expr
+		public Assignment getArgsAssignment_1_1_1() { return cArgsAssignment_1_1_1; }
+
+		//Expr
+		public RuleCall getArgsExprParserRuleCall_1_1_1_0() { return cArgsExprParserRuleCall_1_1_1_0; }
 	}
 
 	public class SignElements extends AbstractParserRuleElementFinder {
@@ -1116,6 +1200,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final VarInitListElements pVarInitList;
 	private final LValElements pLVal;
 	private final ExprElements pExpr;
+	private final CallExprElements pCallExpr;
+	private final ArgListElements pArgList;
 	private final SignEnumElements unknownRuleSignEnum;
 	private final SignElements pSign;
 	private final SimpTypeEnumElements unknownRuleSimpTypeEnum;
@@ -1156,6 +1242,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pVarInitList = new VarInitListElements();
 		this.pLVal = new LValElements();
 		this.pExpr = new ExprElements();
+		this.pCallExpr = new CallExprElements();
+		this.pArgList = new ArgListElements();
 		this.unknownRuleSignEnum = new SignEnumElements();
 		this.pSign = new SignElements();
 		this.unknownRuleSimpTypeEnum = new SimpTypeEnumElements();
@@ -1406,13 +1494,33 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Expr: //TODO
-	//	{IntExpr} value=INT | {LValExpr} value=LVal;
+	//	{IntExpr} value=INT | {LValExpr} value=LVal | CallExpr;
 	public ExprElements getExprAccess() {
 		return pExpr;
 	}
 	
 	public ParserRule getExprRule() {
 		return getExprAccess().getRule();
+	}
+
+	//CallExpr:
+	//	name=TIDENTIFIER "(" argList=ArgList ")";
+	public CallExprElements getCallExprAccess() {
+		return pCallExpr;
+	}
+	
+	public ParserRule getCallExprRule() {
+		return getCallExprAccess().getRule();
+	}
+
+	//ArgList:
+	//	{ArgList} (args+=Expr ("," args+=Expr)*)?;
+	public ArgListElements getArgListAccess() {
+		return pArgList;
+	}
+	
+	public ParserRule getArgListRule() {
+		return getArgListAccess().getRule();
 	}
 
 	//enum SignEnum:

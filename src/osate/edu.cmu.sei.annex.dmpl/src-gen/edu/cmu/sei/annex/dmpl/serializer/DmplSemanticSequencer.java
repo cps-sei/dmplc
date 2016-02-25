@@ -5,6 +5,8 @@ package edu.cmu.sei.annex.dmpl.serializer;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import edu.cmu.sei.annex.dmpl.dmpl.ArgList;
+import edu.cmu.sei.annex.dmpl.dmpl.CallExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.Constant;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplSubclause;
@@ -51,6 +53,12 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	@Override
 	public void createSequence(EObject context, EObject semanticObject) {
 		if(semanticObject.eClass().getEPackage() == DmplPackage.eINSTANCE) switch(semanticObject.eClass().getClassifierID()) {
+			case DmplPackage.ARG_LIST:
+				sequence_ArgList(context, (ArgList) semanticObject); 
+				return; 
+			case DmplPackage.CALL_EXPR:
+				sequence_CallExpr(context, (CallExpr) semanticObject); 
+				return; 
 			case DmplPackage.CONSTANT:
 				sequence_Constant(context, (Constant) semanticObject); 
 				return; 
@@ -123,6 +131,34 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 			}
 		if (errorAcceptor != null) errorAcceptor.accept(diagnosticProvider.createInvalidContextOrTypeDiagnostic(semanticObject, context));
 	}
+	
+	/**
+	 * Constraint:
+	 *     ((args+=Expr args+=Expr*)?)
+	 */
+	protected void sequence_ArgList(EObject context, ArgList semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (name=TIDENTIFIER argList=ArgList)
+	 */
+	protected void sequence_CallExpr(EObject context, CallExpr semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.CALL_EXPR__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.CALL_EXPR__NAME));
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.CALL_EXPR__ARG_LIST) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.CALL_EXPR__ARG_LIST));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getCallExprAccess().getNameTIDENTIFIERTerminalRuleCall_0_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getCallExprAccess().getArgListArgListParserRuleCall_2_0(), semanticObject.getArgList());
+		feeder.finish();
+	}
+	
 	
 	/**
 	 * Constraint:

@@ -105,7 +105,18 @@ LVal:
 Expr:
 	//TODO
 	{IntExpr} value=INT |
-	{LValExpr} value=LVal
+	{LValExpr} value=LVal |
+	CallExpr
+;
+
+CallExpr:
+	//TODO
+	name=TIDENTIFIER '(' argList=ArgList ')'
+;
+
+ArgList:
+	{ArgList}
+	(args+=Expr (',' args+=Expr)*)?
 ;
 
 enum SignEnum:

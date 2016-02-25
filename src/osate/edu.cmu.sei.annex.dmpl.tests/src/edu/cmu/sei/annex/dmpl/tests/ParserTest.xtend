@@ -2,6 +2,7 @@ package edu.cmu.sei.annex.dmpl.tests
 
 import com.google.inject.Inject
 import edu.cmu.sei.annex.dmpl.DmplInjectorProvider
+import edu.cmu.sei.annex.dmpl.dmpl.CallExpr
 import edu.cmu.sei.annex.dmpl.dmpl.Constant
 import edu.cmu.sei.annex.dmpl.dmpl.DoubleConst
 import edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration
@@ -437,6 +438,41 @@ class ParserTest {
 					5.assertEquals((indices.get(0) as IntExpr).value)
 					6.assertEquals((indices.get(1) as IntExpr).value)
 					32.assertEquals((at as IntExpr).value)
+				]
+			]
+		]
+	}
+	
+	@Test
+	def void testArgList() {
+		'''
+			void f1() {
+				int v1 = f1();
+				int v2 = f2(1);
+				int v3 = f3(2, 3);
+			}
+		'''.parse => [
+			assertNoIssues;
+			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+				3.assertEquals(varInits.size)
+				(varInits.get(0).varAsgnList.varAsgn.expr as CallExpr) => [
+					"f1".assertEquals(name)
+					argList.args.empty.assertTrue
+				]
+				(varInits.get(1).varAsgnList.varAsgn.expr as CallExpr) => [
+					"f2".assertEquals(name)
+					argList => [
+						1.assertEquals(args.size)
+						1.assertEquals((args.head as IntExpr).value)
+					]
+				]
+				(varInits.get(2).varAsgnList.varAsgn.expr as CallExpr) => [
+					"f3".assertEquals(name)
+					argList => [
+						2.assertEquals(args.size)
+						2.assertEquals((args.get(0) as IntExpr).value)
+						3.assertEquals((args.get(1) as IntExpr).value)
+					]
 				]
 			]
 		]

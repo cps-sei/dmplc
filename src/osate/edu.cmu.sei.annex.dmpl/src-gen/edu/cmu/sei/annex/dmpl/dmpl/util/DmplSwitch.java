@@ -232,6 +232,21 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case DmplPackage.CALL_EXPR:
+      {
+        CallExpr callExpr = (CallExpr)theEObject;
+        T result = caseCallExpr(callExpr);
+        if (result == null) result = caseExpr(callExpr);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.ARG_LIST:
+      {
+        ArgList argList = (ArgList)theEObject;
+        T result = caseArgList(argList);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case DmplPackage.INT_DIMENSION:
       {
         IntDimension intDimension = (IntDimension)theEObject;
@@ -624,6 +639,38 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseExpr(Expr object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Call Expr</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Call Expr</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseCallExpr(CallExpr object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Arg List</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Arg List</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseArgList(ArgList object)
   {
     return null;
   }
