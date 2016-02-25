@@ -2,6 +2,7 @@ package edu.cmu.sei.annex.dmpl.tests
 
 import com.google.inject.Inject
 import edu.cmu.sei.annex.dmpl.DmplInjectorProvider
+import edu.cmu.sei.annex.dmpl.dmpl.BuiltInFunctionEnum
 import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum
 import edu.cmu.sei.annex.dmpl.services.DmplGrammarAccess
 import org.eclipse.xtext.conversion.IValueConverterService
@@ -47,5 +48,21 @@ class ValueConverterTest {
 		"double".assertEquals(valueConverter.toString(SimpTypeEnum.DOUBLE, grammarAccess.simpTypeRule.name))
 		"void".assertEquals(valueConverter.toString(SimpTypeEnum.VOID, grammarAccess.simpTypeRule.name))
 		"char".assertEquals(valueConverter.toString(SimpTypeEnum.CHAR, grammarAccess.simpTypeRule.name))
+	}
+	
+	@Test
+	def void testBuiltInFunction() {
+		//toValue
+		BuiltInFunctionEnum.EXISTS_OTHER.assertEquals(valueConverter.toValue("exists_other", grammarAccess.builtInFunctionRule.name, null))
+		BuiltInFunctionEnum.EXISTS_OTHER.assertEquals(valueConverter.toValue("EXISTS_OTHER", grammarAccess.builtInFunctionRule.name, null))
+		BuiltInFunctionEnum.EXISTS_HIGHER.assertEquals(valueConverter.toValue("exists_higher", grammarAccess.builtInFunctionRule.name, null))
+		BuiltInFunctionEnum.EXISTS_HIGHER.assertEquals(valueConverter.toValue("EXISTS_HIGHER", grammarAccess.builtInFunctionRule.name, null))
+		BuiltInFunctionEnum.EXISTS_LOWER.assertEquals(valueConverter.toValue("exists_lower", grammarAccess.builtInFunctionRule.name, null))
+		BuiltInFunctionEnum.EXISTS_LOWER.assertEquals(valueConverter.toValue("EXISTS_LOWER", grammarAccess.builtInFunctionRule.name, null))
+		
+		//toString
+		"exists_other".assertEquals(valueConverter.toString(BuiltInFunctionEnum.EXISTS_OTHER, grammarAccess.builtInFunctionRule.name))
+		"exists_higher".assertEquals(valueConverter.toString(BuiltInFunctionEnum.EXISTS_HIGHER, grammarAccess.builtInFunctionRule.name))
+		"exists_lower".assertEquals(valueConverter.toString(BuiltInFunctionEnum.EXISTS_LOWER, grammarAccess.builtInFunctionRule.name))
 	}
 }

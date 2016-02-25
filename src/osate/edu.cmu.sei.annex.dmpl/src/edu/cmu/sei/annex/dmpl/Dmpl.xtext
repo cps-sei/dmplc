@@ -104,9 +104,19 @@ LVal:
 
 Expr:
 	//TODO
+	TerminalExpr
+;
+
+TerminalExpr returns Expr:
+	LVal |
+	{IdExpr} 'id' |
 	{IntExpr} value=INT |
-	{LValExpr} value=LVal |
-	CallExpr
+	{DoubleExpr} value=Double |
+	{NodeNumExpr} '#N' |
+	{UnaryExpr} operator=UnaryOperator operand=Expr |
+	{BuiltInExpr} function=BuiltInFunction '(' firstArg=TIDENTIFIER ',' secondArg=Expr ')' |
+	CallExpr |
+	'(' Expr ')'
 ;
 
 CallExpr:
@@ -142,6 +152,21 @@ enum SignedEnum:
 
 Signed returns SignedEnum:
 	'signed' | 'unsigned'
+;
+
+enum UnaryOperator:
+	MINUS='-' |
+	PLUS='+' |
+	LOGICAL_NOT='!' |
+	BITWISE_NOT='~'
+;
+
+enum BuiltInFunctionEnum:
+	exists_other | exists_higher | exists_lower
+;
+
+BuiltInFunction returns BuiltInFunctionEnum:
+	'exists_other' | 'EXISTS_OTHER' | 'exists_higher' | 'EXISTS_HIGHER' | 'exists_lower' | 'EXISTS_LOWER'
 ;
 
 Double returns ecore::EDouble:

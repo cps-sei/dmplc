@@ -22,11 +22,13 @@ public class DmplSyntacticSequencer extends AbstractSyntacticSequencer {
 
 	protected DmplGrammarAccess grammarAccess;
 	protected AbstractElementAlias match_Constant_CONSTKeyword_0_1_or_ConstKeyword_0_0;
+	protected AbstractElementAlias match_TerminalExpr_LeftParenthesisKeyword_8_0_a;
 	
 	@Inject
 	protected void init(IGrammarAccess access) {
 		grammarAccess = (DmplGrammarAccess) access;
 		match_Constant_CONSTKeyword_0_1_or_ConstKeyword_0_0 = new AlternativeAlias(false, false, new TokenAlias(false, false, grammarAccess.getConstantAccess().getCONSTKeyword_0_1()), new TokenAlias(false, false, grammarAccess.getConstantAccess().getConstKeyword_0_0()));
+		match_TerminalExpr_LeftParenthesisKeyword_8_0_a = new TokenAlias(true, true, grammarAccess.getTerminalExprAccess().getLeftParenthesisKeyword_8_0());
 	}
 	
 	@Override
@@ -43,6 +45,8 @@ public class DmplSyntacticSequencer extends AbstractSyntacticSequencer {
 			List<INode> syntaxNodes = getNodesFor(transitionNodes, syntax);
 			if(match_Constant_CONSTKeyword_0_1_or_ConstKeyword_0_0.equals(syntax))
 				emit_Constant_CONSTKeyword_0_1_or_ConstKeyword_0_0(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_TerminalExpr_LeftParenthesisKeyword_8_0_a.equals(syntax))
+				emit_TerminalExpr_LeftParenthesisKeyword_8_0_a(semanticObject, getLastNavigableState(), syntaxNodes);
 			else acceptNodes(getLastNavigableState(), syntaxNodes);
 		}
 	}
@@ -55,6 +59,24 @@ public class DmplSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) name=TIDENTIFIER
 	 */
 	protected void emit_Constant_CONSTKeyword_0_1_or_ConstKeyword_0_0(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Ambiguous syntax:
+	 *     '('*
+	 *
+	 * This ambiguous syntax occurs at:
+	 *     (rule start) (ambiguity) '#N' (rule start)
+	 *     (rule start) (ambiguity) 'id' (rule start)
+	 *     (rule start) (ambiguity) function=BuiltInFunction
+	 *     (rule start) (ambiguity) name=TIDENTIFIER
+	 *     (rule start) (ambiguity) namespace=TIDENTIFIER
+	 *     (rule start) (ambiguity) operator=UnaryOperator
+	 *     (rule start) (ambiguity) value=Double
+	 *     (rule start) (ambiguity) value=INT
+	 */
+	protected void emit_TerminalExpr_LeftParenthesisKeyword_8_0_a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

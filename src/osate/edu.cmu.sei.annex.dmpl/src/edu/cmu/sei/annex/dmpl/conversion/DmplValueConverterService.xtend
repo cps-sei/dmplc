@@ -1,5 +1,6 @@
 package edu.cmu.sei.annex.dmpl.conversion
 
+import edu.cmu.sei.annex.dmpl.dmpl.BuiltInFunctionEnum
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage
 import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum
 import org.eclipse.emf.ecore.EcorePackage
@@ -49,6 +50,26 @@ class DmplValueConverterService extends DefaultTerminalConverters {
 			
 			override toString(SimpTypeEnum value) throws ValueConverterException {
 				simpTypeEnumConverter.toString(value)
+			}
+		}
+	}
+	
+	@ValueConverter(rule = "BuiltInFunction")
+	def IValueConverter<BuiltInFunctionEnum> BuiltInFunction() {
+		new IValueConverter<BuiltInFunctionEnum> {
+			val builtInFunctionEnumConverter = new EFactoryValueConverter(DmplPackage.eINSTANCE.builtInFunctionEnum)
+			
+			override toValue(String string, INode node) throws ValueConverterException {
+				switch string?.trim {
+					case "EXISTS_OTHER": BuiltInFunctionEnum.EXISTS_OTHER
+					case "EXISTS_HIGHER": BuiltInFunctionEnum.EXISTS_HIGHER
+					case "EXISTS_LOWER": BuiltInFunctionEnum.EXISTS_LOWER
+					default: builtInFunctionEnumConverter.toValue(string, node) as BuiltInFunctionEnum
+				}
+			}
+			
+			override toString(BuiltInFunctionEnum value) throws ValueConverterException {
+				builtInFunctionEnumConverter.toString(value)
 			}
 		}
 	}

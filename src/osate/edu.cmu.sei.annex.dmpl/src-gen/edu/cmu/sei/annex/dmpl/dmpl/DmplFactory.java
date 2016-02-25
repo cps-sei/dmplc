@@ -275,6 +275,15 @@ public interface DmplFactory extends EFactory
   FnPrototypeDeclaration createFnPrototypeDeclaration();
 
   /**
+   * Returns a new object of class '<em>Id Expr</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Id Expr</em>'.
+   * @generated
+   */
+  IdExpr createIdExpr();
+
+  /**
    * Returns a new object of class '<em>Int Expr</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -284,13 +293,40 @@ public interface DmplFactory extends EFactory
   IntExpr createIntExpr();
 
   /**
-   * Returns a new object of class '<em>LVal Expr</em>'.
+   * Returns a new object of class '<em>Double Expr</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>LVal Expr</em>'.
+   * @return a new object of class '<em>Double Expr</em>'.
    * @generated
    */
-  LValExpr createLValExpr();
+  DoubleExpr createDoubleExpr();
+
+  /**
+   * Returns a new object of class '<em>Node Num Expr</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Node Num Expr</em>'.
+   * @generated
+   */
+  NodeNumExpr createNodeNumExpr();
+
+  /**
+   * Returns a new object of class '<em>Unary Expr</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Unary Expr</em>'.
+   * @generated
+   */
+  UnaryExpr createUnaryExpr();
+
+  /**
+   * Returns a new object of class '<em>Built In Expr</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Built In Expr</em>'.
+   * @generated
+   */
+  BuiltInExpr createBuiltInExpr();
 
   /**
    * Returns the package supported by this factory.

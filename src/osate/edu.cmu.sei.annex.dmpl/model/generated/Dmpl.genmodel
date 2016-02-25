@@ -24,6 +24,17 @@
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SignedEnum/signed"/>
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SignedEnum/unsigned"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Dmpl.ecore#//UnaryOperator">
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//UnaryOperator/MINUS"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//UnaryOperator/PLUS"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//UnaryOperator/LOGICAL_NOT"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//UnaryOperator/BITWISE_NOT"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Dmpl.ecore#//BuiltInFunctionEnum">
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//BuiltInFunctionEnum/exists_other"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//BuiltInFunctionEnum/exists_higher"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//BuiltInFunctionEnum/exists_lower"/>
+    </genEnums>
     <genClasses ecoreClass="Dmpl.ecore#//Program">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Program/programElements"/>
     </genClasses>
@@ -115,11 +126,22 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnPrototypeDeclaration/type"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnPrototypeDeclaration/params"/>
     </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//IdExpr"/>
     <genClasses ecoreClass="Dmpl.ecore#//IntExpr">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//IntExpr/value"/>
     </genClasses>
-    <genClasses ecoreClass="Dmpl.ecore#//LValExpr">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//LValExpr/value"/>
+    <genClasses ecoreClass="Dmpl.ecore#//DoubleExpr">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//DoubleExpr/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//NodeNumExpr"/>
+    <genClasses ecoreClass="Dmpl.ecore#//UnaryExpr">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//UnaryExpr/operator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//UnaryExpr/operand"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//BuiltInExpr">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//BuiltInExpr/function"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//BuiltInExpr/firstArg"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//BuiltInExpr/secondArg"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

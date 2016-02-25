@@ -220,14 +220,34 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createFnPrototypeDeclarationAdapter();
       }
       @Override
+      public Adapter caseIdExpr(IdExpr object)
+      {
+        return createIdExprAdapter();
+      }
+      @Override
       public Adapter caseIntExpr(IntExpr object)
       {
         return createIntExprAdapter();
       }
       @Override
-      public Adapter caseLValExpr(LValExpr object)
+      public Adapter caseDoubleExpr(DoubleExpr object)
       {
-        return createLValExprAdapter();
+        return createDoubleExprAdapter();
+      }
+      @Override
+      public Adapter caseNodeNumExpr(NodeNumExpr object)
+      {
+        return createNodeNumExprAdapter();
+      }
+      @Override
+      public Adapter caseUnaryExpr(UnaryExpr object)
+      {
+        return createUnaryExprAdapter();
+      }
+      @Override
+      public Adapter caseBuiltInExpr(BuiltInExpr object)
+      {
+        return createBuiltInExprAdapter();
       }
       @Override
       public Adapter caseElement(Element object)
@@ -692,6 +712,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.IdExpr <em>Id Expr</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.IdExpr
+   * @generated
+   */
+  public Adapter createIdExprAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.IntExpr <em>Int Expr</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -707,16 +742,61 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.LValExpr <em>LVal Expr</em>}'.
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.DoubleExpr <em>Double Expr</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.LValExpr
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DoubleExpr
    * @generated
    */
-  public Adapter createLValExprAdapter()
+  public Adapter createDoubleExprAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.NodeNumExpr <em>Node Num Expr</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.NodeNumExpr
+   * @generated
+   */
+  public Adapter createNodeNumExprAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.UnaryExpr <em>Unary Expr</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.UnaryExpr
+   * @generated
+   */
+  public Adapter createUnaryExprAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.BuiltInExpr <em>Built In Expr</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.BuiltInExpr
+   * @generated
+   */
+  public Adapter createBuiltInExprAdapter()
   {
     return null;
   }

@@ -222,6 +222,7 @@ public class DmplSwitch<T> extends Switch<T>
       {
         LVal lVal = (LVal)theEObject;
         T result = caseLVal(lVal);
+        if (result == null) result = caseExpr(lVal);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -287,6 +288,14 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case DmplPackage.ID_EXPR:
+      {
+        IdExpr idExpr = (IdExpr)theEObject;
+        T result = caseIdExpr(idExpr);
+        if (result == null) result = caseExpr(idExpr);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case DmplPackage.INT_EXPR:
       {
         IntExpr intExpr = (IntExpr)theEObject;
@@ -295,11 +304,35 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case DmplPackage.LVAL_EXPR:
+      case DmplPackage.DOUBLE_EXPR:
       {
-        LValExpr lValExpr = (LValExpr)theEObject;
-        T result = caseLValExpr(lValExpr);
-        if (result == null) result = caseExpr(lValExpr);
+        DoubleExpr doubleExpr = (DoubleExpr)theEObject;
+        T result = caseDoubleExpr(doubleExpr);
+        if (result == null) result = caseExpr(doubleExpr);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.NODE_NUM_EXPR:
+      {
+        NodeNumExpr nodeNumExpr = (NodeNumExpr)theEObject;
+        T result = caseNodeNumExpr(nodeNumExpr);
+        if (result == null) result = caseExpr(nodeNumExpr);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.UNARY_EXPR:
+      {
+        UnaryExpr unaryExpr = (UnaryExpr)theEObject;
+        T result = caseUnaryExpr(unaryExpr);
+        if (result == null) result = caseExpr(unaryExpr);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.BUILT_IN_EXPR:
+      {
+        BuiltInExpr builtInExpr = (BuiltInExpr)theEObject;
+        T result = caseBuiltInExpr(builtInExpr);
+        if (result == null) result = caseExpr(builtInExpr);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -756,6 +789,22 @@ public class DmplSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>Id Expr</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Id Expr</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseIdExpr(IdExpr object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Int Expr</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -772,17 +821,65 @@ public class DmplSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>LVal Expr</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Double Expr</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>LVal Expr</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Double Expr</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseLValExpr(LValExpr object)
+  public T caseDoubleExpr(DoubleExpr object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Node Num Expr</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Node Num Expr</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseNodeNumExpr(NodeNumExpr object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Unary Expr</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Unary Expr</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseUnaryExpr(UnaryExpr object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Built In Expr</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Built In Expr</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseBuiltInExpr(BuiltInExpr object)
   {
     return null;
   }

@@ -2,22 +2,29 @@ package edu.cmu.sei.annex.dmpl.tests
 
 import com.google.inject.Inject
 import edu.cmu.sei.annex.dmpl.DmplInjectorProvider
+import edu.cmu.sei.annex.dmpl.dmpl.BuiltInExpr
+import edu.cmu.sei.annex.dmpl.dmpl.BuiltInFunctionEnum
 import edu.cmu.sei.annex.dmpl.dmpl.CallExpr
 import edu.cmu.sei.annex.dmpl.dmpl.Constant
 import edu.cmu.sei.annex.dmpl.dmpl.DoubleConst
+import edu.cmu.sei.annex.dmpl.dmpl.DoubleExpr
 import edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration
 import edu.cmu.sei.annex.dmpl.dmpl.IdDimension
+import edu.cmu.sei.annex.dmpl.dmpl.IdExpr
 import edu.cmu.sei.annex.dmpl.dmpl.IntConst
 import edu.cmu.sei.annex.dmpl.dmpl.IntDimension
 import edu.cmu.sei.annex.dmpl.dmpl.IntExpr
-import edu.cmu.sei.annex.dmpl.dmpl.LValExpr
+import edu.cmu.sei.annex.dmpl.dmpl.LVal
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumDimension
+import edu.cmu.sei.annex.dmpl.dmpl.NodeNumExpr
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure
 import edu.cmu.sei.annex.dmpl.dmpl.Program
 import edu.cmu.sei.annex.dmpl.dmpl.SignEnum
 import edu.cmu.sei.annex.dmpl.dmpl.SignedEnum
 import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum
 import edu.cmu.sei.annex.dmpl.dmpl.ThreadDeclaration
+import edu.cmu.sei.annex.dmpl.dmpl.UnaryExpr
+import edu.cmu.sei.annex.dmpl.dmpl.UnaryOperator
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
@@ -403,36 +410,36 @@ class ParserTest {
 			assertNoIssues;
 			(programElements.head as Procedure).procedure.fnBody.varInitList => [
 				6.assertEquals(varInits.size)
-				(varInits.get(0).varAsgnList.varAsgn.expr as LValExpr).value => [
+				varInits.get(0).varAsgnList.varAsgn.expr as LVal => [
 					"v7".assertEquals(name)
 					indices.empty.assertTrue
 					at.assertNull
 				]
-				(varInits.get(1).varAsgnList.varAsgn.expr as LValExpr).value => [
+				varInits.get(1).varAsgnList.varAsgn.expr as LVal => [
 					"v8".assertEquals(name)
 					1.assertEquals(indices.size)
 					1.assertEquals((indices.head as IntExpr).value)
 					at.assertNull
 				]
-				(varInits.get(2).varAsgnList.varAsgn.expr as LValExpr).value => [
+				varInits.get(2).varAsgnList.varAsgn.expr as LVal => [
 					"v9".assertEquals(name)
 					2.assertEquals(indices.size)
 					2.assertEquals((indices.get(0) as IntExpr).value)
 					3.assertEquals((indices.get(1) as IntExpr).value)
 					at.assertNull
 				]
-				(varInits.get(3).varAsgnList.varAsgn.expr as LValExpr).value => [
+				varInits.get(3).varAsgnList.varAsgn.expr as LVal => [
 					"v10".assertEquals(name)
 					indices.empty.assertTrue
 					42.assertEquals((at as IntExpr).value)
 				]
-				(varInits.get(4).varAsgnList.varAsgn.expr as LValExpr).value => [
+				varInits.get(4).varAsgnList.varAsgn.expr as LVal => [
 					"v11".assertEquals(name)
 					1.assertEquals(indices.size)
 					4.assertEquals((indices.head as IntExpr).value)
 					65.assertEquals((at as IntExpr).value)
 				]
-				(varInits.get(5).varAsgnList.varAsgn.expr as LValExpr).value => [
+				varInits.get(5).varAsgnList.varAsgn.expr as LVal => [
 					"v12".assertEquals(name)
 					2.assertEquals(indices.size)
 					5.assertEquals((indices.get(0) as IntExpr).value)
@@ -514,6 +521,140 @@ class ParserTest {
 					"f5".assertEquals(name)
 					argList.args.empty.assertTrue
 					95.assertEquals((at as IntExpr).value)
+				]
+			]
+		]
+	}
+	
+	@Test
+	def void testTerminalExpr() {
+		'''
+			void f1() {
+				int v1 = name1;
+				int v2 = id;
+				int v3 = 57;
+				int v4 = 89.034;
+				int v5 = #N;
+				int v6 = -name2;
+				int v7 = +name3;
+				int v8 = !name4;
+				int v9 = ~name5;
+				int v10 = f2();
+				int v11 = exists_other(name6, 2);
+				int v12 = EXISTS_OTHER(name7, 4);
+				int v13 = exists_higher(name8, 8);
+				int v14 = EXISTS_HIGHER(name9, 16);
+				int v15 = exists_lower(name10, 32);
+				int v16 = EXISTS_LOWER(name11, 64);
+				int v17 = (name9);
+			}
+		'''.parse => [
+			assertNoIssues;
+			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+				17.assertEquals(varInits.size)
+				varInits.get(0).varAsgnList.varAsgn => [
+					"v1".assertEquals(^var.name)
+					"name1".assertEquals((expr as LVal).name)
+				]
+				varInits.get(1).varAsgnList.varAsgn => [
+					"v2".assertEquals(^var.name)
+					Assert.assertTrue(expr instanceof IdExpr)
+				]
+				varInits.get(2).varAsgnList.varAsgn => [
+					"v3".assertEquals(^var.name)
+					57.assertEquals((expr as IntExpr).value)
+				]
+				varInits.get(3).varAsgnList.varAsgn => [
+					"v4".assertEquals(^var.name)
+					89.034.assertEquals((expr as DoubleExpr).value, 0)
+				]
+				varInits.get(4).varAsgnList.varAsgn => [
+					"v5".assertEquals(^var.name)
+					Assert.assertTrue(expr instanceof NodeNumExpr)
+				]
+				varInits.get(5).varAsgnList.varAsgn => [
+					"v6".assertEquals(^var.name)
+					expr as UnaryExpr => [
+						UnaryOperator.MINUS.assertEquals(operator)
+						"name2".assertEquals((operand as LVal).name)
+					]
+				]
+				varInits.get(6).varAsgnList.varAsgn => [
+					"v7".assertEquals(^var.name)
+					expr as UnaryExpr => [
+						UnaryOperator.PLUS.assertEquals(operator)
+						"name3".assertEquals((operand as LVal).name)
+					]
+				]
+				varInits.get(7).varAsgnList.varAsgn => [
+					"v8".assertEquals(^var.name)
+					expr as UnaryExpr => [
+						UnaryOperator.LOGICAL_NOT.assertEquals(operator)
+						"name4".assertEquals((operand as LVal).name)
+					]
+				]
+				varInits.get(8).varAsgnList.varAsgn => [
+					"v9".assertEquals(^var.name)
+					expr as UnaryExpr => [
+						UnaryOperator.BITWISE_NOT.assertEquals(operator)
+						"name5".assertEquals((operand as LVal).name)
+					]
+				]
+				varInits.get(9).varAsgnList.varAsgn => [
+					"v10".assertEquals(^var.name)
+					"f2".assertEquals((expr as CallExpr).name)
+				]
+				varInits.get(10).varAsgnList.varAsgn => [
+					"v11".assertEquals(^var.name)
+					expr as BuiltInExpr => [
+						BuiltInFunctionEnum.EXISTS_OTHER.assertEquals(function)
+						"name6".assertEquals(firstArg)
+						2.assertEquals((secondArg as IntExpr).value)
+					]
+				]
+				varInits.get(11).varAsgnList.varAsgn => [
+					"v12".assertEquals(^var.name)
+					expr as BuiltInExpr => [
+						BuiltInFunctionEnum.EXISTS_OTHER.assertEquals(function)
+						"name7".assertEquals(firstArg)
+						4.assertEquals((secondArg as IntExpr).value)
+					]
+				]
+				varInits.get(12).varAsgnList.varAsgn => [
+					"v13".assertEquals(^var.name)
+					expr as BuiltInExpr => [
+						BuiltInFunctionEnum.EXISTS_HIGHER.assertEquals(function)
+						"name8".assertEquals(firstArg)
+						8.assertEquals((secondArg as IntExpr).value)
+					]
+				]
+				varInits.get(13).varAsgnList.varAsgn => [
+					"v14".assertEquals(^var.name)
+					expr as BuiltInExpr => [
+						BuiltInFunctionEnum.EXISTS_HIGHER.assertEquals(function)
+						"name9".assertEquals(firstArg)
+						16.assertEquals((secondArg as IntExpr).value)
+					]
+				]
+				varInits.get(14).varAsgnList.varAsgn => [
+					"v15".assertEquals(^var.name)
+					expr as BuiltInExpr => [
+						BuiltInFunctionEnum.EXISTS_LOWER.assertEquals(function)
+						"name10".assertEquals(firstArg)
+						32.assertEquals((secondArg as IntExpr).value)
+					]
+				]
+				varInits.get(15).varAsgnList.varAsgn => [
+					"v16".assertEquals(^var.name)
+					expr as BuiltInExpr => [
+						BuiltInFunctionEnum.EXISTS_LOWER.assertEquals(function)
+						"name11".assertEquals(firstArg)
+						64.assertEquals((secondArg as IntExpr).value)
+					]
+				]
+				varInits.get(16).varAsgnList.varAsgn => [
+					"v17".assertEquals(^var.name)
+					"name9".assertEquals((expr as LVal).name)
 				]
 			]
 		]

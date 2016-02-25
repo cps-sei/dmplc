@@ -93,8 +93,12 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.ID_DIMENSION: return createIdDimension();
       case DmplPackage.THREAD_DECLARATION: return createThreadDeclaration();
       case DmplPackage.FN_PROTOTYPE_DECLARATION: return createFnPrototypeDeclaration();
+      case DmplPackage.ID_EXPR: return createIdExpr();
       case DmplPackage.INT_EXPR: return createIntExpr();
-      case DmplPackage.LVAL_EXPR: return createLValExpr();
+      case DmplPackage.DOUBLE_EXPR: return createDoubleExpr();
+      case DmplPackage.NODE_NUM_EXPR: return createNodeNumExpr();
+      case DmplPackage.UNARY_EXPR: return createUnaryExpr();
+      case DmplPackage.BUILT_IN_EXPR: return createBuiltInExpr();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -116,6 +120,10 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
         return createSimpTypeEnumFromString(eDataType, initialValue);
       case DmplPackage.SIGNED_ENUM:
         return createSignedEnumFromString(eDataType, initialValue);
+      case DmplPackage.UNARY_OPERATOR:
+        return createUnaryOperatorFromString(eDataType, initialValue);
+      case DmplPackage.BUILT_IN_FUNCTION_ENUM:
+        return createBuiltInFunctionEnumFromString(eDataType, initialValue);
       default:
         throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
@@ -137,6 +145,10 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
         return convertSimpTypeEnumToString(eDataType, instanceValue);
       case DmplPackage.SIGNED_ENUM:
         return convertSignedEnumToString(eDataType, instanceValue);
+      case DmplPackage.UNARY_OPERATOR:
+        return convertUnaryOperatorToString(eDataType, instanceValue);
+      case DmplPackage.BUILT_IN_FUNCTION_ENUM:
+        return convertBuiltInFunctionEnumToString(eDataType, instanceValue);
       default:
         throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
@@ -455,6 +467,17 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  public IdExpr createIdExpr()
+  {
+    IdExprImpl idExpr = new IdExprImpl();
+    return idExpr;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public IntExpr createIntExpr()
   {
     IntExprImpl intExpr = new IntExprImpl();
@@ -466,10 +489,43 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public LValExpr createLValExpr()
+  public DoubleExpr createDoubleExpr()
   {
-    LValExprImpl lValExpr = new LValExprImpl();
-    return lValExpr;
+    DoubleExprImpl doubleExpr = new DoubleExprImpl();
+    return doubleExpr;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NodeNumExpr createNodeNumExpr()
+  {
+    NodeNumExprImpl nodeNumExpr = new NodeNumExprImpl();
+    return nodeNumExpr;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public UnaryExpr createUnaryExpr()
+  {
+    UnaryExprImpl unaryExpr = new UnaryExprImpl();
+    return unaryExpr;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public BuiltInExpr createBuiltInExpr()
+  {
+    BuiltInExprImpl builtInExpr = new BuiltInExprImpl();
+    return builtInExpr;
   }
 
   /**
@@ -534,6 +590,50 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * @generated
    */
   public String convertSignedEnumToString(EDataType eDataType, Object instanceValue)
+  {
+    return instanceValue == null ? null : instanceValue.toString();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public UnaryOperator createUnaryOperatorFromString(EDataType eDataType, String initialValue)
+  {
+    UnaryOperator result = UnaryOperator.get(initialValue);
+    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+    return result;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertUnaryOperatorToString(EDataType eDataType, Object instanceValue)
+  {
+    return instanceValue == null ? null : instanceValue.toString();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public BuiltInFunctionEnum createBuiltInFunctionEnumFromString(EDataType eDataType, String initialValue)
+  {
+    BuiltInFunctionEnum result = BuiltInFunctionEnum.get(initialValue);
+    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+    return result;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertBuiltInFunctionEnumToString(EDataType eDataType, Object instanceValue)
   {
     return instanceValue == null ? null : instanceValue.toString();
   }

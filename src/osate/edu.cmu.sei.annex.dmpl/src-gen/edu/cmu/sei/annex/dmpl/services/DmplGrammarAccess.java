@@ -816,53 +816,179 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 	public class ExprElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Expr");
-		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
-		private final Action cIntExprAction_0_0 = (Action)cGroup_0.eContents().get(0);
-		private final Assignment cValueAssignment_0_1 = (Assignment)cGroup_0.eContents().get(1);
-		private final RuleCall cValueINTTerminalRuleCall_0_1_0 = (RuleCall)cValueAssignment_0_1.eContents().get(0);
-		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
-		private final Action cLValExprAction_1_0 = (Action)cGroup_1.eContents().get(0);
-		private final Assignment cValueAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
-		private final RuleCall cValueLValParserRuleCall_1_1_0 = (RuleCall)cValueAssignment_1_1.eContents().get(0);
-		private final RuleCall cCallExprParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		private final RuleCall cTerminalExprParserRuleCall = (RuleCall)rule.eContents().get(1);
 		
 		//Expr: //TODO
-		//	{IntExpr} value=INT | {LValExpr} value=LVal | CallExpr;
+		//	TerminalExpr;
 		@Override public ParserRule getRule() { return rule; }
 
 		////TODO
-		//{IntExpr} value=INT | {LValExpr} value=LVal | CallExpr
+		//TerminalExpr
+		public RuleCall getTerminalExprParserRuleCall() { return cTerminalExprParserRuleCall; }
+	}
+
+	public class TerminalExprElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "TerminalExpr");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final RuleCall cLValParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
+		private final Action cIdExprAction_1_0 = (Action)cGroup_1.eContents().get(0);
+		private final Keyword cIdKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
+		private final Group cGroup_2 = (Group)cAlternatives.eContents().get(2);
+		private final Action cIntExprAction_2_0 = (Action)cGroup_2.eContents().get(0);
+		private final Assignment cValueAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
+		private final RuleCall cValueINTTerminalRuleCall_2_1_0 = (RuleCall)cValueAssignment_2_1.eContents().get(0);
+		private final Group cGroup_3 = (Group)cAlternatives.eContents().get(3);
+		private final Action cDoubleExprAction_3_0 = (Action)cGroup_3.eContents().get(0);
+		private final Assignment cValueAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
+		private final RuleCall cValueDoubleParserRuleCall_3_1_0 = (RuleCall)cValueAssignment_3_1.eContents().get(0);
+		private final Group cGroup_4 = (Group)cAlternatives.eContents().get(4);
+		private final Action cNodeNumExprAction_4_0 = (Action)cGroup_4.eContents().get(0);
+		private final Keyword cNKeyword_4_1 = (Keyword)cGroup_4.eContents().get(1);
+		private final Group cGroup_5 = (Group)cAlternatives.eContents().get(5);
+		private final Action cUnaryExprAction_5_0 = (Action)cGroup_5.eContents().get(0);
+		private final Assignment cOperatorAssignment_5_1 = (Assignment)cGroup_5.eContents().get(1);
+		private final RuleCall cOperatorUnaryOperatorEnumRuleCall_5_1_0 = (RuleCall)cOperatorAssignment_5_1.eContents().get(0);
+		private final Assignment cOperandAssignment_5_2 = (Assignment)cGroup_5.eContents().get(2);
+		private final RuleCall cOperandExprParserRuleCall_5_2_0 = (RuleCall)cOperandAssignment_5_2.eContents().get(0);
+		private final Group cGroup_6 = (Group)cAlternatives.eContents().get(6);
+		private final Action cBuiltInExprAction_6_0 = (Action)cGroup_6.eContents().get(0);
+		private final Assignment cFunctionAssignment_6_1 = (Assignment)cGroup_6.eContents().get(1);
+		private final RuleCall cFunctionBuiltInFunctionParserRuleCall_6_1_0 = (RuleCall)cFunctionAssignment_6_1.eContents().get(0);
+		private final Keyword cLeftParenthesisKeyword_6_2 = (Keyword)cGroup_6.eContents().get(2);
+		private final Assignment cFirstArgAssignment_6_3 = (Assignment)cGroup_6.eContents().get(3);
+		private final RuleCall cFirstArgTIDENTIFIERTerminalRuleCall_6_3_0 = (RuleCall)cFirstArgAssignment_6_3.eContents().get(0);
+		private final Keyword cCommaKeyword_6_4 = (Keyword)cGroup_6.eContents().get(4);
+		private final Assignment cSecondArgAssignment_6_5 = (Assignment)cGroup_6.eContents().get(5);
+		private final RuleCall cSecondArgExprParserRuleCall_6_5_0 = (RuleCall)cSecondArgAssignment_6_5.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_6_6 = (Keyword)cGroup_6.eContents().get(6);
+		private final RuleCall cCallExprParserRuleCall_7 = (RuleCall)cAlternatives.eContents().get(7);
+		private final Group cGroup_8 = (Group)cAlternatives.eContents().get(8);
+		private final Keyword cLeftParenthesisKeyword_8_0 = (Keyword)cGroup_8.eContents().get(0);
+		private final RuleCall cExprParserRuleCall_8_1 = (RuleCall)cGroup_8.eContents().get(1);
+		private final Keyword cRightParenthesisKeyword_8_2 = (Keyword)cGroup_8.eContents().get(2);
+		
+		//TerminalExpr returns Expr:
+		//	LVal | {IdExpr} "id" | {IntExpr} value=INT | {DoubleExpr} value=Double | {NodeNumExpr} "#N" | {UnaryExpr}
+		//	operator=UnaryOperator operand=Expr | {BuiltInExpr} function=BuiltInFunction "(" firstArg=TIDENTIFIER ","
+		//	secondArg=Expr ")" | CallExpr | "(" Expr ")";
+		@Override public ParserRule getRule() { return rule; }
+
+		//LVal | {IdExpr} "id" | {IntExpr} value=INT | {DoubleExpr} value=Double | {NodeNumExpr} "#N" | {UnaryExpr}
+		//operator=UnaryOperator operand=Expr | {BuiltInExpr} function=BuiltInFunction "(" firstArg=TIDENTIFIER ","
+		//secondArg=Expr ")" | CallExpr | "(" Expr ")"
 		public Alternatives getAlternatives() { return cAlternatives; }
 
-		////TODO
-		//{IntExpr} value=INT
-		public Group getGroup_0() { return cGroup_0; }
+		//LVal
+		public RuleCall getLValParserRuleCall_0() { return cLValParserRuleCall_0; }
 
-		////TODO
-		//{IntExpr}
-		public Action getIntExprAction_0_0() { return cIntExprAction_0_0; }
-
-		//value=INT
-		public Assignment getValueAssignment_0_1() { return cValueAssignment_0_1; }
-
-		//INT
-		public RuleCall getValueINTTerminalRuleCall_0_1_0() { return cValueINTTerminalRuleCall_0_1_0; }
-
-		//{LValExpr} value=LVal
+		//{IdExpr} "id"
 		public Group getGroup_1() { return cGroup_1; }
 
-		//{LValExpr}
-		public Action getLValExprAction_1_0() { return cLValExprAction_1_0; }
+		//{IdExpr}
+		public Action getIdExprAction_1_0() { return cIdExprAction_1_0; }
 
-		//value=LVal
-		public Assignment getValueAssignment_1_1() { return cValueAssignment_1_1; }
+		//"id"
+		public Keyword getIdKeyword_1_1() { return cIdKeyword_1_1; }
 
-		//LVal
-		public RuleCall getValueLValParserRuleCall_1_1_0() { return cValueLValParserRuleCall_1_1_0; }
+		//{IntExpr} value=INT
+		public Group getGroup_2() { return cGroup_2; }
+
+		//{IntExpr}
+		public Action getIntExprAction_2_0() { return cIntExprAction_2_0; }
+
+		//value=INT
+		public Assignment getValueAssignment_2_1() { return cValueAssignment_2_1; }
+
+		//INT
+		public RuleCall getValueINTTerminalRuleCall_2_1_0() { return cValueINTTerminalRuleCall_2_1_0; }
+
+		//{DoubleExpr} value=Double
+		public Group getGroup_3() { return cGroup_3; }
+
+		//{DoubleExpr}
+		public Action getDoubleExprAction_3_0() { return cDoubleExprAction_3_0; }
+
+		//value=Double
+		public Assignment getValueAssignment_3_1() { return cValueAssignment_3_1; }
+
+		//Double
+		public RuleCall getValueDoubleParserRuleCall_3_1_0() { return cValueDoubleParserRuleCall_3_1_0; }
+
+		//{NodeNumExpr} "#N"
+		public Group getGroup_4() { return cGroup_4; }
+
+		//{NodeNumExpr}
+		public Action getNodeNumExprAction_4_0() { return cNodeNumExprAction_4_0; }
+
+		//"#N"
+		public Keyword getNKeyword_4_1() { return cNKeyword_4_1; }
+
+		//{UnaryExpr} operator=UnaryOperator operand=Expr
+		public Group getGroup_5() { return cGroup_5; }
+
+		//{UnaryExpr}
+		public Action getUnaryExprAction_5_0() { return cUnaryExprAction_5_0; }
+
+		//operator=UnaryOperator
+		public Assignment getOperatorAssignment_5_1() { return cOperatorAssignment_5_1; }
+
+		//UnaryOperator
+		public RuleCall getOperatorUnaryOperatorEnumRuleCall_5_1_0() { return cOperatorUnaryOperatorEnumRuleCall_5_1_0; }
+
+		//operand=Expr
+		public Assignment getOperandAssignment_5_2() { return cOperandAssignment_5_2; }
+
+		//Expr
+		public RuleCall getOperandExprParserRuleCall_5_2_0() { return cOperandExprParserRuleCall_5_2_0; }
+
+		//{BuiltInExpr} function=BuiltInFunction "(" firstArg=TIDENTIFIER "," secondArg=Expr ")"
+		public Group getGroup_6() { return cGroup_6; }
+
+		//{BuiltInExpr}
+		public Action getBuiltInExprAction_6_0() { return cBuiltInExprAction_6_0; }
+
+		//function=BuiltInFunction
+		public Assignment getFunctionAssignment_6_1() { return cFunctionAssignment_6_1; }
+
+		//BuiltInFunction
+		public RuleCall getFunctionBuiltInFunctionParserRuleCall_6_1_0() { return cFunctionBuiltInFunctionParserRuleCall_6_1_0; }
+
+		//"("
+		public Keyword getLeftParenthesisKeyword_6_2() { return cLeftParenthesisKeyword_6_2; }
+
+		//firstArg=TIDENTIFIER
+		public Assignment getFirstArgAssignment_6_3() { return cFirstArgAssignment_6_3; }
+
+		//TIDENTIFIER
+		public RuleCall getFirstArgTIDENTIFIERTerminalRuleCall_6_3_0() { return cFirstArgTIDENTIFIERTerminalRuleCall_6_3_0; }
+
+		//","
+		public Keyword getCommaKeyword_6_4() { return cCommaKeyword_6_4; }
+
+		//secondArg=Expr
+		public Assignment getSecondArgAssignment_6_5() { return cSecondArgAssignment_6_5; }
+
+		//Expr
+		public RuleCall getSecondArgExprParserRuleCall_6_5_0() { return cSecondArgExprParserRuleCall_6_5_0; }
+
+		//")"
+		public Keyword getRightParenthesisKeyword_6_6() { return cRightParenthesisKeyword_6_6; }
 
 		//CallExpr
-		public RuleCall getCallExprParserRuleCall_2() { return cCallExprParserRuleCall_2; }
+		public RuleCall getCallExprParserRuleCall_7() { return cCallExprParserRuleCall_7; }
+
+		//"(" Expr ")"
+		public Group getGroup_8() { return cGroup_8; }
+
+		//"("
+		public Keyword getLeftParenthesisKeyword_8_0() { return cLeftParenthesisKeyword_8_0; }
+
+		//Expr
+		public RuleCall getExprParserRuleCall_8_1() { return cExprParserRuleCall_8_1; }
+
+		//")"
+		public Keyword getRightParenthesisKeyword_8_2() { return cRightParenthesisKeyword_8_2; }
 	}
 
 	public class CallExprElements extends AbstractParserRuleElementFinder {
@@ -1053,6 +1179,42 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getUnsignedKeyword_1() { return cUnsignedKeyword_1; }
 	}
 
+	public class BuiltInFunctionElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "BuiltInFunction");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final Keyword cExists_otherKeyword_0 = (Keyword)cAlternatives.eContents().get(0);
+		private final Keyword cEXISTS_OTHERKeyword_1 = (Keyword)cAlternatives.eContents().get(1);
+		private final Keyword cExists_higherKeyword_2 = (Keyword)cAlternatives.eContents().get(2);
+		private final Keyword cEXISTS_HIGHERKeyword_3 = (Keyword)cAlternatives.eContents().get(3);
+		private final Keyword cExists_lowerKeyword_4 = (Keyword)cAlternatives.eContents().get(4);
+		private final Keyword cEXISTS_LOWERKeyword_5 = (Keyword)cAlternatives.eContents().get(5);
+		
+		//BuiltInFunction returns BuiltInFunctionEnum:
+		//	"exists_other" | "EXISTS_OTHER" | "exists_higher" | "EXISTS_HIGHER" | "exists_lower" | "EXISTS_LOWER";
+		@Override public ParserRule getRule() { return rule; }
+
+		//"exists_other" | "EXISTS_OTHER" | "exists_higher" | "EXISTS_HIGHER" | "exists_lower" | "EXISTS_LOWER"
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//"exists_other"
+		public Keyword getExists_otherKeyword_0() { return cExists_otherKeyword_0; }
+
+		//"EXISTS_OTHER"
+		public Keyword getEXISTS_OTHERKeyword_1() { return cEXISTS_OTHERKeyword_1; }
+
+		//"exists_higher"
+		public Keyword getExists_higherKeyword_2() { return cExists_higherKeyword_2; }
+
+		//"EXISTS_HIGHER"
+		public Keyword getEXISTS_HIGHERKeyword_3() { return cEXISTS_HIGHERKeyword_3; }
+
+		//"exists_lower"
+		public Keyword getExists_lowerKeyword_4() { return cExists_lowerKeyword_4; }
+
+		//"EXISTS_LOWER"
+		public Keyword getEXISTS_LOWERKeyword_5() { return cEXISTS_LOWERKeyword_5; }
+	}
+
 	public class DoubleElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Double");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
@@ -1209,6 +1371,86 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//"unsigned"
 		public Keyword getUnsignedUnsignedKeyword_2_0() { return cUnsignedUnsignedKeyword_2_0; }
 	}
+
+	public class UnaryOperatorElements extends AbstractEnumRuleElementFinder {
+		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "UnaryOperator");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final EnumLiteralDeclaration cMINUSEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
+		private final Keyword cMINUSHyphenMinusKeyword_0_0 = (Keyword)cMINUSEnumLiteralDeclaration_0.eContents().get(0);
+		private final EnumLiteralDeclaration cPLUSEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
+		private final Keyword cPLUSPlusSignKeyword_1_0 = (Keyword)cPLUSEnumLiteralDeclaration_1.eContents().get(0);
+		private final EnumLiteralDeclaration cLOGICAL_NOTEnumLiteralDeclaration_2 = (EnumLiteralDeclaration)cAlternatives.eContents().get(2);
+		private final Keyword cLOGICAL_NOTExclamationMarkKeyword_2_0 = (Keyword)cLOGICAL_NOTEnumLiteralDeclaration_2.eContents().get(0);
+		private final EnumLiteralDeclaration cBITWISE_NOTEnumLiteralDeclaration_3 = (EnumLiteralDeclaration)cAlternatives.eContents().get(3);
+		private final Keyword cBITWISE_NOTTildeKeyword_3_0 = (Keyword)cBITWISE_NOTEnumLiteralDeclaration_3.eContents().get(0);
+		
+		//enum UnaryOperator:
+		//	MINUS="-" | PLUS="+" | LOGICAL_NOT="!" | BITWISE_NOT="~";
+		public EnumRule getRule() { return rule; }
+
+		//MINUS="-" | PLUS="+" | LOGICAL_NOT="!" | BITWISE_NOT="~"
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//MINUS="-"
+		public EnumLiteralDeclaration getMINUSEnumLiteralDeclaration_0() { return cMINUSEnumLiteralDeclaration_0; }
+
+		//"-"
+		public Keyword getMINUSHyphenMinusKeyword_0_0() { return cMINUSHyphenMinusKeyword_0_0; }
+
+		//PLUS="+"
+		public EnumLiteralDeclaration getPLUSEnumLiteralDeclaration_1() { return cPLUSEnumLiteralDeclaration_1; }
+
+		//"+"
+		public Keyword getPLUSPlusSignKeyword_1_0() { return cPLUSPlusSignKeyword_1_0; }
+
+		//LOGICAL_NOT="!"
+		public EnumLiteralDeclaration getLOGICAL_NOTEnumLiteralDeclaration_2() { return cLOGICAL_NOTEnumLiteralDeclaration_2; }
+
+		//"!"
+		public Keyword getLOGICAL_NOTExclamationMarkKeyword_2_0() { return cLOGICAL_NOTExclamationMarkKeyword_2_0; }
+
+		//BITWISE_NOT="~"
+		public EnumLiteralDeclaration getBITWISE_NOTEnumLiteralDeclaration_3() { return cBITWISE_NOTEnumLiteralDeclaration_3; }
+
+		//"~"
+		public Keyword getBITWISE_NOTTildeKeyword_3_0() { return cBITWISE_NOTTildeKeyword_3_0; }
+	}
+
+	public class BuiltInFunctionEnumElements extends AbstractEnumRuleElementFinder {
+		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "BuiltInFunctionEnum");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final EnumLiteralDeclaration cExists_otherEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
+		private final Keyword cExists_otherExists_otherKeyword_0_0 = (Keyword)cExists_otherEnumLiteralDeclaration_0.eContents().get(0);
+		private final EnumLiteralDeclaration cExists_higherEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
+		private final Keyword cExists_higherExists_higherKeyword_1_0 = (Keyword)cExists_higherEnumLiteralDeclaration_1.eContents().get(0);
+		private final EnumLiteralDeclaration cExists_lowerEnumLiteralDeclaration_2 = (EnumLiteralDeclaration)cAlternatives.eContents().get(2);
+		private final Keyword cExists_lowerExists_lowerKeyword_2_0 = (Keyword)cExists_lowerEnumLiteralDeclaration_2.eContents().get(0);
+		
+		//enum BuiltInFunctionEnum:
+		//	exists_other | exists_higher | exists_lower;
+		public EnumRule getRule() { return rule; }
+
+		//exists_other | exists_higher | exists_lower
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//exists_other
+		public EnumLiteralDeclaration getExists_otherEnumLiteralDeclaration_0() { return cExists_otherEnumLiteralDeclaration_0; }
+
+		//"exists_other"
+		public Keyword getExists_otherExists_otherKeyword_0_0() { return cExists_otherExists_otherKeyword_0_0; }
+
+		//exists_higher
+		public EnumLiteralDeclaration getExists_higherEnumLiteralDeclaration_1() { return cExists_higherEnumLiteralDeclaration_1; }
+
+		//"exists_higher"
+		public Keyword getExists_higherExists_higherKeyword_1_0() { return cExists_higherExists_higherKeyword_1_0; }
+
+		//exists_lower
+		public EnumLiteralDeclaration getExists_lowerEnumLiteralDeclaration_2() { return cExists_lowerEnumLiteralDeclaration_2; }
+
+		//"exists_lower"
+		public Keyword getExists_lowerExists_lowerKeyword_2_0() { return cExists_lowerExists_lowerKeyword_2_0; }
+	}
 	
 	private final ProgramElements pProgram;
 	private final AnnexSubclauseElements pAnnexSubclause;
@@ -1232,6 +1474,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final VarInitListElements pVarInitList;
 	private final LValElements pLVal;
 	private final ExprElements pExpr;
+	private final TerminalExprElements pTerminalExpr;
 	private final CallExprElements pCallExpr;
 	private final ArgListElements pArgList;
 	private final SignEnumElements unknownRuleSignEnum;
@@ -1240,6 +1483,9 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final SimpTypeElements pSimpType;
 	private final SignedEnumElements unknownRuleSignedEnum;
 	private final SignedElements pSigned;
+	private final UnaryOperatorElements unknownRuleUnaryOperator;
+	private final BuiltInFunctionEnumElements unknownRuleBuiltInFunctionEnum;
+	private final BuiltInFunctionElements pBuiltInFunction;
 	private final DoubleElements pDouble;
 	private final TerminalRule tTIDENTIFIER;
 	
@@ -1274,6 +1520,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pVarInitList = new VarInitListElements();
 		this.pLVal = new LValElements();
 		this.pExpr = new ExprElements();
+		this.pTerminalExpr = new TerminalExprElements();
 		this.pCallExpr = new CallExprElements();
 		this.pArgList = new ArgListElements();
 		this.unknownRuleSignEnum = new SignEnumElements();
@@ -1282,6 +1529,9 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pSimpType = new SimpTypeElements();
 		this.unknownRuleSignedEnum = new SignedEnumElements();
 		this.pSigned = new SignedElements();
+		this.unknownRuleUnaryOperator = new UnaryOperatorElements();
+		this.unknownRuleBuiltInFunctionEnum = new BuiltInFunctionEnumElements();
+		this.pBuiltInFunction = new BuiltInFunctionElements();
 		this.pDouble = new DoubleElements();
 		this.tTIDENTIFIER = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "TIDENTIFIER");
 	}
@@ -1526,13 +1776,25 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Expr: //TODO
-	//	{IntExpr} value=INT | {LValExpr} value=LVal | CallExpr;
+	//	TerminalExpr;
 	public ExprElements getExprAccess() {
 		return pExpr;
 	}
 	
 	public ParserRule getExprRule() {
 		return getExprAccess().getRule();
+	}
+
+	//TerminalExpr returns Expr:
+	//	LVal | {IdExpr} "id" | {IntExpr} value=INT | {DoubleExpr} value=Double | {NodeNumExpr} "#N" | {UnaryExpr}
+	//	operator=UnaryOperator operand=Expr | {BuiltInExpr} function=BuiltInFunction "(" firstArg=TIDENTIFIER ","
+	//	secondArg=Expr ")" | CallExpr | "(" Expr ")";
+	public TerminalExprElements getTerminalExprAccess() {
+		return pTerminalExpr;
+	}
+	
+	public ParserRule getTerminalExprRule() {
+		return getTerminalExprAccess().getRule();
 	}
 
 	//CallExpr:
@@ -1613,6 +1875,36 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getSignedRule() {
 		return getSignedAccess().getRule();
+	}
+
+	//enum UnaryOperator:
+	//	MINUS="-" | PLUS="+" | LOGICAL_NOT="!" | BITWISE_NOT="~";
+	public UnaryOperatorElements getUnaryOperatorAccess() {
+		return unknownRuleUnaryOperator;
+	}
+	
+	public EnumRule getUnaryOperatorRule() {
+		return getUnaryOperatorAccess().getRule();
+	}
+
+	//enum BuiltInFunctionEnum:
+	//	exists_other | exists_higher | exists_lower;
+	public BuiltInFunctionEnumElements getBuiltInFunctionEnumAccess() {
+		return unknownRuleBuiltInFunctionEnum;
+	}
+	
+	public EnumRule getBuiltInFunctionEnumRule() {
+		return getBuiltInFunctionEnumAccess().getRule();
+	}
+
+	//BuiltInFunction returns BuiltInFunctionEnum:
+	//	"exists_other" | "EXISTS_OTHER" | "exists_higher" | "EXISTS_HIGHER" | "exists_lower" | "EXISTS_LOWER";
+	public BuiltInFunctionElements getBuiltInFunctionAccess() {
+		return pBuiltInFunction;
+	}
+	
+	public ParserRule getBuiltInFunctionRule() {
+		return getBuiltInFunctionAccess().getRule();
 	}
 
 	//Double returns ecore::EDouble:

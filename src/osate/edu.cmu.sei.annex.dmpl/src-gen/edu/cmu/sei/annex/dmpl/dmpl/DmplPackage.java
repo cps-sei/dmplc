@@ -745,52 +745,6 @@ public interface DmplPackage extends EPackage
   int VAR_INIT_LIST_FEATURE_COUNT = 1;
 
   /**
-   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.LValImpl <em>LVal</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.LValImpl
-   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getLVal()
-   * @generated
-   */
-  int LVAL = 19;
-
-  /**
-   * The feature id for the '<em><b>Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int LVAL__NAME = 0;
-
-  /**
-   * The feature id for the '<em><b>Indices</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int LVAL__INDICES = 1;
-
-  /**
-   * The feature id for the '<em><b>At</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int LVAL__AT = 2;
-
-  /**
-   * The number of structural features of the '<em>LVal</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int LVAL_FEATURE_COUNT = 3;
-
-  /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ExprImpl <em>Expr</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -808,6 +762,52 @@ public interface DmplPackage extends EPackage
    * @ordered
    */
   int EXPR_FEATURE_COUNT = 0;
+
+  /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.LValImpl <em>LVal</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.LValImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getLVal()
+   * @generated
+   */
+  int LVAL = 19;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int LVAL__NAME = EXPR_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Indices</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int LVAL__INDICES = EXPR_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>At</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int LVAL__AT = EXPR_FEATURE_COUNT + 2;
+
+  /**
+   * The number of structural features of the '<em>LVal</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int LVAL_FEATURE_COUNT = EXPR_FEATURE_COUNT + 3;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.CallExprImpl <em>Call Expr</em>}' class.
@@ -1078,6 +1078,25 @@ public interface DmplPackage extends EPackage
   int FN_PROTOTYPE_DECLARATION_FEATURE_COUNT = FN_PROTOTYPE_FEATURE_COUNT + 2;
 
   /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.IdExprImpl <em>Id Expr</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.IdExprImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIdExpr()
+   * @generated
+   */
+  int ID_EXPR = 28;
+
+  /**
+   * The number of structural features of the '<em>Id Expr</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ID_EXPR_FEATURE_COUNT = EXPR_FEATURE_COUNT + 0;
+
+  /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.IntExprImpl <em>Int Expr</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1085,7 +1104,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIntExpr()
    * @generated
    */
-  int INT_EXPR = 28;
+  int INT_EXPR = 29;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -1106,32 +1125,134 @@ public interface DmplPackage extends EPackage
   int INT_EXPR_FEATURE_COUNT = EXPR_FEATURE_COUNT + 1;
 
   /**
-   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.LValExprImpl <em>LVal Expr</em>}' class.
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.DoubleExprImpl <em>Double Expr</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.LValExprImpl
-   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getLValExpr()
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DoubleExprImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getDoubleExpr()
    * @generated
    */
-  int LVAL_EXPR = 29;
+  int DOUBLE_EXPR = 30;
 
   /**
-   * The feature id for the '<em><b>Value</b></em>' containment reference.
+   * The feature id for the '<em><b>Value</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int LVAL_EXPR__VALUE = EXPR_FEATURE_COUNT + 0;
+  int DOUBLE_EXPR__VALUE = EXPR_FEATURE_COUNT + 0;
 
   /**
-   * The number of structural features of the '<em>LVal Expr</em>' class.
+   * The number of structural features of the '<em>Double Expr</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int LVAL_EXPR_FEATURE_COUNT = EXPR_FEATURE_COUNT + 1;
+  int DOUBLE_EXPR_FEATURE_COUNT = EXPR_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.NodeNumExprImpl <em>Node Num Expr</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.NodeNumExprImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getNodeNumExpr()
+   * @generated
+   */
+  int NODE_NUM_EXPR = 31;
+
+  /**
+   * The number of structural features of the '<em>Node Num Expr</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NODE_NUM_EXPR_FEATURE_COUNT = EXPR_FEATURE_COUNT + 0;
+
+  /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.UnaryExprImpl <em>Unary Expr</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.UnaryExprImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getUnaryExpr()
+   * @generated
+   */
+  int UNARY_EXPR = 32;
+
+  /**
+   * The feature id for the '<em><b>Operator</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int UNARY_EXPR__OPERATOR = EXPR_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Operand</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int UNARY_EXPR__OPERAND = EXPR_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>Unary Expr</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int UNARY_EXPR_FEATURE_COUNT = EXPR_FEATURE_COUNT + 2;
+
+  /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.BuiltInExprImpl <em>Built In Expr</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.BuiltInExprImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBuiltInExpr()
+   * @generated
+   */
+  int BUILT_IN_EXPR = 33;
+
+  /**
+   * The feature id for the '<em><b>Function</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BUILT_IN_EXPR__FUNCTION = EXPR_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>First Arg</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BUILT_IN_EXPR__FIRST_ARG = EXPR_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>Second Arg</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BUILT_IN_EXPR__SECOND_ARG = EXPR_FEATURE_COUNT + 2;
+
+  /**
+   * The number of structural features of the '<em>Built In Expr</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BUILT_IN_EXPR_FEATURE_COUNT = EXPR_FEATURE_COUNT + 3;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SignEnum <em>Sign Enum</em>}' enum.
@@ -1141,7 +1262,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignEnum()
    * @generated
    */
-  int SIGN_ENUM = 30;
+  int SIGN_ENUM = 34;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum <em>Simp Type Enum</em>}' enum.
@@ -1151,7 +1272,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSimpTypeEnum()
    * @generated
    */
-  int SIMP_TYPE_ENUM = 31;
+  int SIMP_TYPE_ENUM = 35;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SignedEnum <em>Signed Enum</em>}' enum.
@@ -1161,7 +1282,27 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignedEnum()
    * @generated
    */
-  int SIGNED_ENUM = 32;
+  int SIGNED_ENUM = 36;
+
+  /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.UnaryOperator <em>Unary Operator</em>}' enum.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.UnaryOperator
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getUnaryOperator()
+   * @generated
+   */
+  int UNARY_OPERATOR = 37;
+
+  /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.BuiltInFunctionEnum <em>Built In Function Enum</em>}' enum.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.BuiltInFunctionEnum
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBuiltInFunctionEnum()
+   * @generated
+   */
+  int BUILT_IN_FUNCTION_ENUM = 38;
 
 
   /**
@@ -1885,6 +2026,16 @@ public interface DmplPackage extends EPackage
   EReference getFnPrototypeDeclaration_Params();
 
   /**
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.IdExpr <em>Id Expr</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Id Expr</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.IdExpr
+   * @generated
+   */
+  EClass getIdExpr();
+
+  /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.IntExpr <em>Int Expr</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1906,25 +2057,110 @@ public interface DmplPackage extends EPackage
   EAttribute getIntExpr_Value();
 
   /**
-   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.LValExpr <em>LVal Expr</em>}'.
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.DoubleExpr <em>Double Expr</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>LVal Expr</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.LValExpr
+   * @return the meta object for class '<em>Double Expr</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DoubleExpr
    * @generated
    */
-  EClass getLValExpr();
+  EClass getDoubleExpr();
 
   /**
-   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.LValExpr#getValue <em>Value</em>}'.
+   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.DoubleExpr#getValue <em>Value</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Value</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.LValExpr#getValue()
-   * @see #getLValExpr()
+   * @return the meta object for the attribute '<em>Value</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DoubleExpr#getValue()
+   * @see #getDoubleExpr()
    * @generated
    */
-  EReference getLValExpr_Value();
+  EAttribute getDoubleExpr_Value();
+
+  /**
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.NodeNumExpr <em>Node Num Expr</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Node Num Expr</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.NodeNumExpr
+   * @generated
+   */
+  EClass getNodeNumExpr();
+
+  /**
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.UnaryExpr <em>Unary Expr</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Unary Expr</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.UnaryExpr
+   * @generated
+   */
+  EClass getUnaryExpr();
+
+  /**
+   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.UnaryExpr#getOperator <em>Operator</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Operator</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.UnaryExpr#getOperator()
+   * @see #getUnaryExpr()
+   * @generated
+   */
+  EAttribute getUnaryExpr_Operator();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.UnaryExpr#getOperand <em>Operand</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Operand</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.UnaryExpr#getOperand()
+   * @see #getUnaryExpr()
+   * @generated
+   */
+  EReference getUnaryExpr_Operand();
+
+  /**
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.BuiltInExpr <em>Built In Expr</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Built In Expr</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.BuiltInExpr
+   * @generated
+   */
+  EClass getBuiltInExpr();
+
+  /**
+   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.BuiltInExpr#getFunction <em>Function</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Function</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.BuiltInExpr#getFunction()
+   * @see #getBuiltInExpr()
+   * @generated
+   */
+  EAttribute getBuiltInExpr_Function();
+
+  /**
+   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.BuiltInExpr#getFirstArg <em>First Arg</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>First Arg</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.BuiltInExpr#getFirstArg()
+   * @see #getBuiltInExpr()
+   * @generated
+   */
+  EAttribute getBuiltInExpr_FirstArg();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.BuiltInExpr#getSecondArg <em>Second Arg</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Second Arg</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.BuiltInExpr#getSecondArg()
+   * @see #getBuiltInExpr()
+   * @generated
+   */
+  EReference getBuiltInExpr_SecondArg();
 
   /**
    * Returns the meta object for enum '{@link edu.cmu.sei.annex.dmpl.dmpl.SignEnum <em>Sign Enum</em>}'.
@@ -1955,6 +2191,26 @@ public interface DmplPackage extends EPackage
    * @generated
    */
   EEnum getSignedEnum();
+
+  /**
+   * Returns the meta object for enum '{@link edu.cmu.sei.annex.dmpl.dmpl.UnaryOperator <em>Unary Operator</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for enum '<em>Unary Operator</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.UnaryOperator
+   * @generated
+   */
+  EEnum getUnaryOperator();
+
+  /**
+   * Returns the meta object for enum '{@link edu.cmu.sei.annex.dmpl.dmpl.BuiltInFunctionEnum <em>Built In Function Enum</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for enum '<em>Built In Function Enum</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.BuiltInFunctionEnum
+   * @generated
+   */
+  EEnum getBuiltInFunctionEnum();
 
   /**
    * Returns the factory that creates the instances of the model.
@@ -2580,6 +2836,16 @@ public interface DmplPackage extends EPackage
     EReference FN_PROTOTYPE_DECLARATION__PARAMS = eINSTANCE.getFnPrototypeDeclaration_Params();
 
     /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.IdExprImpl <em>Id Expr</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.IdExprImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIdExpr()
+     * @generated
+     */
+    EClass ID_EXPR = eINSTANCE.getIdExpr();
+
+    /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.IntExprImpl <em>Int Expr</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2598,22 +2864,92 @@ public interface DmplPackage extends EPackage
     EAttribute INT_EXPR__VALUE = eINSTANCE.getIntExpr_Value();
 
     /**
-     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.LValExprImpl <em>LVal Expr</em>}' class.
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.DoubleExprImpl <em>Double Expr</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.LValExprImpl
-     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getLValExpr()
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DoubleExprImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getDoubleExpr()
      * @generated
      */
-    EClass LVAL_EXPR = eINSTANCE.getLValExpr();
+    EClass DOUBLE_EXPR = eINSTANCE.getDoubleExpr();
 
     /**
-     * The meta object literal for the '<em><b>Value</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference LVAL_EXPR__VALUE = eINSTANCE.getLValExpr_Value();
+    EAttribute DOUBLE_EXPR__VALUE = eINSTANCE.getDoubleExpr_Value();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.NodeNumExprImpl <em>Node Num Expr</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.NodeNumExprImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getNodeNumExpr()
+     * @generated
+     */
+    EClass NODE_NUM_EXPR = eINSTANCE.getNodeNumExpr();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.UnaryExprImpl <em>Unary Expr</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.UnaryExprImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getUnaryExpr()
+     * @generated
+     */
+    EClass UNARY_EXPR = eINSTANCE.getUnaryExpr();
+
+    /**
+     * The meta object literal for the '<em><b>Operator</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute UNARY_EXPR__OPERATOR = eINSTANCE.getUnaryExpr_Operator();
+
+    /**
+     * The meta object literal for the '<em><b>Operand</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference UNARY_EXPR__OPERAND = eINSTANCE.getUnaryExpr_Operand();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.BuiltInExprImpl <em>Built In Expr</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.BuiltInExprImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBuiltInExpr()
+     * @generated
+     */
+    EClass BUILT_IN_EXPR = eINSTANCE.getBuiltInExpr();
+
+    /**
+     * The meta object literal for the '<em><b>Function</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute BUILT_IN_EXPR__FUNCTION = eINSTANCE.getBuiltInExpr_Function();
+
+    /**
+     * The meta object literal for the '<em><b>First Arg</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute BUILT_IN_EXPR__FIRST_ARG = eINSTANCE.getBuiltInExpr_FirstArg();
+
+    /**
+     * The meta object literal for the '<em><b>Second Arg</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference BUILT_IN_EXPR__SECOND_ARG = eINSTANCE.getBuiltInExpr_SecondArg();
 
     /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SignEnum <em>Sign Enum</em>}' enum.
@@ -2644,6 +2980,26 @@ public interface DmplPackage extends EPackage
      * @generated
      */
     EEnum SIGNED_ENUM = eINSTANCE.getSignedEnum();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.UnaryOperator <em>Unary Operator</em>}' enum.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.UnaryOperator
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getUnaryOperator()
+     * @generated
+     */
+    EEnum UNARY_OPERATOR = eINSTANCE.getUnaryOperator();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.BuiltInFunctionEnum <em>Built In Function Enum</em>}' enum.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.BuiltInFunctionEnum
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBuiltInFunctionEnum()
+     * @generated
+     */
+    EEnum BUILT_IN_FUNCTION_ENUM = eINSTANCE.getBuiltInFunctionEnum();
 
   }
 

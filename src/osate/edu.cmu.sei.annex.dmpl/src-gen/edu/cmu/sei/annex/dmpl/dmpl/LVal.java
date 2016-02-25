@@ -4,8 +4,6 @@ package edu.cmu.sei.annex.dmpl.dmpl;
 
 import org.eclipse.emf.common.util.EList;
 
-import org.eclipse.emf.ecore.EObject;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>LVal</b></em>'.
@@ -24,7 +22,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface LVal extends EObject
+public interface LVal extends Expr
 {
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.
