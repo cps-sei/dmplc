@@ -745,6 +745,34 @@ public interface DmplPackage extends EPackage
   int VAR_INIT_LIST_FEATURE_COUNT = 1;
 
   /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.LValImpl <em>LVal</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.LValImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getLVal()
+   * @generated
+   */
+  int LVAL = 19;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int LVAL__NAME = 0;
+
+  /**
+   * The number of structural features of the '<em>LVal</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int LVAL_FEATURE_COUNT = 1;
+
+  /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ExprImpl <em>Expr</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -752,16 +780,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getExpr()
    * @generated
    */
-  int EXPR = 19;
-
-  /**
-   * The feature id for the '<em><b>Value</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int EXPR__VALUE = 0;
+  int EXPR = 20;
 
   /**
    * The number of structural features of the '<em>Expr</em>' class.
@@ -770,7 +789,7 @@ public interface DmplPackage extends EPackage
    * @generated
    * @ordered
    */
-  int EXPR_FEATURE_COUNT = 1;
+  int EXPR_FEATURE_COUNT = 0;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.IntDimensionImpl <em>Int Dimension</em>}' class.
@@ -780,7 +799,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIntDimension()
    * @generated
    */
-  int INT_DIMENSION = 20;
+  int INT_DIMENSION = 21;
 
   /**
    * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -808,7 +827,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getNodeNumDimension()
    * @generated
    */
-  int NODE_NUM_DIMENSION = 21;
+  int NODE_NUM_DIMENSION = 22;
 
   /**
    * The number of structural features of the '<em>Node Num Dimension</em>' class.
@@ -827,7 +846,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIdDimension()
    * @generated
    */
-  int ID_DIMENSION = 22;
+  int ID_DIMENSION = 23;
 
   /**
    * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -855,7 +874,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getThreadDeclaration()
    * @generated
    */
-  int THREAD_DECLARATION = 23;
+  int THREAD_DECLARATION = 24;
 
   /**
    * The feature id for the '<em><b>Extern</b></em>' attribute.
@@ -901,7 +920,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnPrototypeDeclaration()
    * @generated
    */
-  int FN_PROTOTYPE_DECLARATION = 24;
+  int FN_PROTOTYPE_DECLARATION = 25;
 
   /**
    * The feature id for the '<em><b>Extern</b></em>' attribute.
@@ -958,6 +977,62 @@ public interface DmplPackage extends EPackage
   int FN_PROTOTYPE_DECLARATION_FEATURE_COUNT = FN_PROTOTYPE_FEATURE_COUNT + 2;
 
   /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.IntExprImpl <em>Int Expr</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.IntExprImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIntExpr()
+   * @generated
+   */
+  int INT_EXPR = 26;
+
+  /**
+   * The feature id for the '<em><b>Value</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int INT_EXPR__VALUE = EXPR_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Int Expr</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int INT_EXPR_FEATURE_COUNT = EXPR_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.LValExprImpl <em>LVal Expr</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.LValExprImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getLValExpr()
+   * @generated
+   */
+  int LVAL_EXPR = 27;
+
+  /**
+   * The feature id for the '<em><b>Value</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int LVAL_EXPR__VALUE = EXPR_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>LVal Expr</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int LVAL_EXPR_FEATURE_COUNT = EXPR_FEATURE_COUNT + 1;
+
+  /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SignEnum <em>Sign Enum</em>}' enum.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -965,7 +1040,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignEnum()
    * @generated
    */
-  int SIGN_ENUM = 25;
+  int SIGN_ENUM = 28;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum <em>Simp Type Enum</em>}' enum.
@@ -975,7 +1050,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSimpTypeEnum()
    * @generated
    */
-  int SIMP_TYPE_ENUM = 26;
+  int SIMP_TYPE_ENUM = 29;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SignedEnum <em>Signed Enum</em>}' enum.
@@ -985,7 +1060,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignedEnum()
    * @generated
    */
-  int SIGNED_ENUM = 27;
+  int SIGNED_ENUM = 30;
 
 
   /**
@@ -1487,6 +1562,27 @@ public interface DmplPackage extends EPackage
   EReference getVarInitList_VarInits();
 
   /**
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.LVal <em>LVal</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>LVal</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.LVal
+   * @generated
+   */
+  EClass getLVal();
+
+  /**
+   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.LVal#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.LVal#getName()
+   * @see #getLVal()
+   * @generated
+   */
+  EAttribute getLVal_Name();
+
+  /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.Expr <em>Expr</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1495,17 +1591,6 @@ public interface DmplPackage extends EPackage
    * @generated
    */
   EClass getExpr();
-
-  /**
-   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.Expr#getValue <em>Value</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Value</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.Expr#getValue()
-   * @see #getExpr()
-   * @generated
-   */
-  EAttribute getExpr_Value();
 
   /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.IntDimension <em>Int Dimension</em>}'.
@@ -1600,6 +1685,48 @@ public interface DmplPackage extends EPackage
    * @generated
    */
   EReference getFnPrototypeDeclaration_Params();
+
+  /**
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.IntExpr <em>Int Expr</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Int Expr</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.IntExpr
+   * @generated
+   */
+  EClass getIntExpr();
+
+  /**
+   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.IntExpr#getValue <em>Value</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Value</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.IntExpr#getValue()
+   * @see #getIntExpr()
+   * @generated
+   */
+  EAttribute getIntExpr_Value();
+
+  /**
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.LValExpr <em>LVal Expr</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>LVal Expr</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.LValExpr
+   * @generated
+   */
+  EClass getLValExpr();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.LValExpr#getValue <em>Value</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Value</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.LValExpr#getValue()
+   * @see #getLValExpr()
+   * @generated
+   */
+  EReference getLValExpr_Value();
 
   /**
    * Returns the meta object for enum '{@link edu.cmu.sei.annex.dmpl.dmpl.SignEnum <em>Sign Enum</em>}'.
@@ -2069,6 +2196,24 @@ public interface DmplPackage extends EPackage
     EReference VAR_INIT_LIST__VAR_INITS = eINSTANCE.getVarInitList_VarInits();
 
     /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.LValImpl <em>LVal</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.LValImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getLVal()
+     * @generated
+     */
+    EClass LVAL = eINSTANCE.getLVal();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute LVAL__NAME = eINSTANCE.getLVal_Name();
+
+    /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ExprImpl <em>Expr</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2077,14 +2222,6 @@ public interface DmplPackage extends EPackage
      * @generated
      */
     EClass EXPR = eINSTANCE.getExpr();
-
-    /**
-     * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute EXPR__VALUE = eINSTANCE.getExpr_Value();
 
     /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.IntDimensionImpl <em>Int Dimension</em>}' class.
@@ -2167,6 +2304,42 @@ public interface DmplPackage extends EPackage
      * @generated
      */
     EReference FN_PROTOTYPE_DECLARATION__PARAMS = eINSTANCE.getFnPrototypeDeclaration_Params();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.IntExprImpl <em>Int Expr</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.IntExprImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIntExpr()
+     * @generated
+     */
+    EClass INT_EXPR = eINSTANCE.getIntExpr();
+
+    /**
+     * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute INT_EXPR__VALUE = eINSTANCE.getIntExpr_Value();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.LValExprImpl <em>LVal Expr</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.LValExprImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getLValExpr()
+     * @generated
+     */
+    EClass LVAL_EXPR = eINSTANCE.getLValExpr();
+
+    /**
+     * The meta object literal for the '<em><b>Value</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference LVAL_EXPR__VALUE = eINSTANCE.getLValExpr_Value();
 
     /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SignEnum <em>Sign Enum</em>}' enum.

@@ -84,12 +84,15 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.FN_PROTOTYPE: return createFnPrototype();
       case DmplPackage.PARAM: return createParam();
       case DmplPackage.VAR_INIT_LIST: return createVarInitList();
+      case DmplPackage.LVAL: return createLVal();
       case DmplPackage.EXPR: return createExpr();
       case DmplPackage.INT_DIMENSION: return createIntDimension();
       case DmplPackage.NODE_NUM_DIMENSION: return createNodeNumDimension();
       case DmplPackage.ID_DIMENSION: return createIdDimension();
       case DmplPackage.THREAD_DECLARATION: return createThreadDeclaration();
       case DmplPackage.FN_PROTOTYPE_DECLARATION: return createFnPrototypeDeclaration();
+      case DmplPackage.INT_EXPR: return createIntExpr();
+      case DmplPackage.LVAL_EXPR: return createLValExpr();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -351,6 +354,17 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  public LVal createLVal()
+  {
+    LValImpl lVal = new LValImpl();
+    return lVal;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public Expr createExpr()
   {
     ExprImpl expr = new ExprImpl();
@@ -410,6 +424,28 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     FnPrototypeDeclarationImpl fnPrototypeDeclaration = new FnPrototypeDeclarationImpl();
     return fnPrototypeDeclaration;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public IntExpr createIntExpr()
+  {
+    IntExprImpl intExpr = new IntExprImpl();
+    return intExpr;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public LValExpr createLValExpr()
+  {
+    LValExprImpl lValExpr = new LValExprImpl();
+    return lValExpr;
   }
 
   /**

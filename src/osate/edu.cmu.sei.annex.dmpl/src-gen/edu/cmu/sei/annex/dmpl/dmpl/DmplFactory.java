@@ -194,6 +194,15 @@ public interface DmplFactory extends EFactory
   VarInitList createVarInitList();
 
   /**
+   * Returns a new object of class '<em>LVal</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>LVal</em>'.
+   * @generated
+   */
+  LVal createLVal();
+
+  /**
    * Returns a new object of class '<em>Expr</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -246,6 +255,24 @@ public interface DmplFactory extends EFactory
    * @generated
    */
   FnPrototypeDeclaration createFnPrototypeDeclaration();
+
+  /**
+   * Returns a new object of class '<em>Int Expr</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Int Expr</em>'.
+   * @generated
+   */
+  IntExpr createIntExpr();
+
+  /**
+   * Returns a new object of class '<em>LVal Expr</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>LVal Expr</em>'.
+   * @generated
+   */
+  LValExpr createLValExpr();
 
   /**
    * Returns the package supported by this factory.

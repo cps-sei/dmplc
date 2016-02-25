@@ -15,6 +15,9 @@ import edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration;
 import edu.cmu.sei.annex.dmpl.dmpl.IdDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.IntConst;
 import edu.cmu.sei.annex.dmpl.dmpl.IntDimension;
+import edu.cmu.sei.annex.dmpl.dmpl.IntExpr;
+import edu.cmu.sei.annex.dmpl.dmpl.LVal;
+import edu.cmu.sei.annex.dmpl.dmpl.LValExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.NumberConst;
 import edu.cmu.sei.annex.dmpl.dmpl.Param;
@@ -189,6 +192,13 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass lValEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass exprEClass = null;
 
   /**
@@ -225,6 +235,20 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass fnPrototypeDeclarationEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass intExprEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass lValExprEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -788,9 +812,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getExpr()
+  public EClass getLVal()
   {
-    return exprEClass;
+    return lValEClass;
   }
 
   /**
@@ -798,9 +822,19 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getExpr_Value()
+  public EAttribute getLVal_Name()
   {
-    return (EAttribute)exprEClass.getEStructuralFeatures().get(0);
+    return (EAttribute)lValEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getExpr()
+  {
+    return exprEClass;
   }
 
   /**
@@ -891,6 +925,46 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
   public EReference getFnPrototypeDeclaration_Params()
   {
     return (EReference)fnPrototypeDeclarationEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getIntExpr()
+  {
+    return intExprEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getIntExpr_Value()
+  {
+    return (EAttribute)intExprEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getLValExpr()
+  {
+    return lValExprEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getLValExpr_Value()
+  {
+    return (EReference)lValExprEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1019,8 +1093,10 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     varInitListEClass = createEClass(VAR_INIT_LIST);
     createEReference(varInitListEClass, VAR_INIT_LIST__VAR_INITS);
 
+    lValEClass = createEClass(LVAL);
+    createEAttribute(lValEClass, LVAL__NAME);
+
     exprEClass = createEClass(EXPR);
-    createEAttribute(exprEClass, EXPR__VALUE);
 
     intDimensionEClass = createEClass(INT_DIMENSION);
     createEAttribute(intDimensionEClass, INT_DIMENSION__INDEX);
@@ -1035,6 +1111,12 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     fnPrototypeDeclarationEClass = createEClass(FN_PROTOTYPE_DECLARATION);
     createEReference(fnPrototypeDeclarationEClass, FN_PROTOTYPE_DECLARATION__TYPE);
     createEReference(fnPrototypeDeclarationEClass, FN_PROTOTYPE_DECLARATION__PARAMS);
+
+    intExprEClass = createEClass(INT_EXPR);
+    createEAttribute(intExprEClass, INT_EXPR__VALUE);
+
+    lValExprEClass = createEClass(LVAL_EXPR);
+    createEReference(lValExprEClass, LVAL_EXPR__VALUE);
 
     // Create enums
     signEnumEEnum = createEEnum(SIGN_ENUM);
@@ -1084,6 +1166,8 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     idDimensionEClass.getESuperTypes().add(this.getDimension());
     threadDeclarationEClass.getESuperTypes().add(this.getFnPrototype());
     fnPrototypeDeclarationEClass.getESuperTypes().add(this.getFnPrototype());
+    intExprEClass.getESuperTypes().add(this.getExpr());
+    lValExprEClass.getESuperTypes().add(this.getExpr());
 
     // Initialize classes and features; add operations and parameters
     initEClass(programEClass, Program.class, "Program", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1152,8 +1236,10 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEClass(varInitListEClass, VarInitList.class, "VarInitList", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getVarInitList_VarInits(), this.getVarInit(), null, "varInits", null, 0, -1, VarInitList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(lValEClass, LVal.class, "LVal", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getLVal_Name(), ecorePackage.getEString(), "name", null, 0, 1, LVal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     initEClass(exprEClass, Expr.class, "Expr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getExpr_Value(), ecorePackage.getEInt(), "value", null, 0, 1, Expr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(intDimensionEClass, IntDimension.class, "IntDimension", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getIntDimension_Index(), ecorePackage.getEInt(), "index", null, 0, 1, IntDimension.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1168,6 +1254,12 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEClass(fnPrototypeDeclarationEClass, FnPrototypeDeclaration.class, "FnPrototypeDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getFnPrototypeDeclaration_Type(), this.getType(), null, "type", null, 0, 1, FnPrototypeDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getFnPrototypeDeclaration_Params(), this.getParam(), null, "params", null, 0, -1, FnPrototypeDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(intExprEClass, IntExpr.class, "IntExpr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getIntExpr_Value(), ecorePackage.getEInt(), "value", null, 0, 1, IntExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(lValExprEClass, LValExpr.class, "LValExpr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getLValExpr_Value(), this.getLVal(), null, "value", null, 0, 1, LValExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Initialize enums and add enum literals
     initEEnum(signEnumEEnum, SignEnum.class, "SignEnum");

@@ -1336,6 +1336,45 @@ ruleVarInitList returns [EObject current=null]
 
 
 
+// Entry rule entryRuleLVal
+entryRuleLVal returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getLValRule()); }
+	 iv_ruleLVal=ruleLVal 
+	 { $current=$iv_ruleLVal.current; } 
+	 EOF 
+;
+
+// Rule LVal
+ruleLVal returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(
+(
+		lv_name_0_0=RULE_TIDENTIFIER
+		{
+			newLeafNode(lv_name_0_0, grammarAccess.getLValAccess().getNameTIDENTIFIERTerminalRuleCall_0()); 
+		}
+		{
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getLValRule());
+	        }
+       		setWithLastConsumed(
+       			$current, 
+       			"name",
+        		lv_name_0_0, 
+        		"TIDENTIFIER");
+	    }
+
+)
+)
+;
+
+
+
+
+
 // Entry rule entryRuleExpr
 entryRuleExpr returns [EObject current=null] 
 	:
@@ -1350,11 +1389,17 @@ ruleExpr returns [EObject current=null]
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
+(((
+    {
+        $current = forceCreateModelElement(
+            grammarAccess.getExprAccess().getIntExprAction_0_0(),
+            $current);
+    }
+)(
 (
-(
-		lv_value_0_0=RULE_INT
+		lv_value_1_0=RULE_INT
 		{
-			newLeafNode(lv_value_0_0, grammarAccess.getExprAccess().getValueINTTerminalRuleCall_0()); 
+			newLeafNode(lv_value_1_0, grammarAccess.getExprAccess().getValueINTTerminalRuleCall_0_1_0()); 
 		}
 		{
 	        if ($current==null) {
@@ -1363,12 +1408,37 @@ ruleExpr returns [EObject current=null]
        		setWithLastConsumed(
        			$current, 
        			"value",
-        		lv_value_0_0, 
+        		lv_value_1_0, 
         		"INT");
 	    }
 
 )
+))
+    |((
+    {
+        $current = forceCreateModelElement(
+            grammarAccess.getExprAccess().getLValExprAction_1_0(),
+            $current);
+    }
+)(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getExprAccess().getValueLValParserRuleCall_1_1_0()); 
+	    }
+		lv_value_3_0=ruleLVal		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getExprRule());
+	        }
+       		set(
+       			$current, 
+       			"value",
+        		lv_value_3_0, 
+        		"LVal");
+	        afterParserOrEnumRuleCall();
+	    }
+
 )
+)))
 ;
 
 

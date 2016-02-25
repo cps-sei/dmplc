@@ -98,9 +98,15 @@ VarInitList:
 	(varInits+=VarInit ';')*
 ;
 
+LVal:
+	//TODO
+	name=TIDENTIFIER
+;
+
 Expr:
 	//TODO
-	value=INT
+	{IntExpr} value=INT |
+	{LValExpr} value=LVal
 ;
 
 enum SignEnum:

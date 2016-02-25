@@ -88,9 +88,10 @@
     <genClasses ecoreClass="Dmpl.ecore#//VarInitList">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//VarInitList/varInits"/>
     </genClasses>
-    <genClasses ecoreClass="Dmpl.ecore#//Expr">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Expr/value"/>
+    <genClasses ecoreClass="Dmpl.ecore#//LVal">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//LVal/name"/>
     </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//Expr"/>
     <genClasses ecoreClass="Dmpl.ecore#//IntDimension">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//IntDimension/index"/>
     </genClasses>
@@ -102,6 +103,12 @@
     <genClasses ecoreClass="Dmpl.ecore#//FnPrototypeDeclaration">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnPrototypeDeclaration/type"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnPrototypeDeclaration/params"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//IntExpr">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//IntExpr/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//LValExpr">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//LValExpr/value"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

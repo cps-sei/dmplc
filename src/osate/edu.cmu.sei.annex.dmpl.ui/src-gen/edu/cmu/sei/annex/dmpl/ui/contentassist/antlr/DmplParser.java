@@ -49,6 +49,7 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getFnPrototypeAccess().getPureAlternatives_0_2_0(), "rule__FnPrototype__PureAlternatives_0_2_0");
 					put(grammarAccess.getFnPrototypeAccess().getExternAlternatives_1_1_0(), "rule__FnPrototype__ExternAlternatives_1_1_0");
 					put(grammarAccess.getFnPrototypeAccess().getPureAlternatives_1_2_0(), "rule__FnPrototype__PureAlternatives_1_2_0");
+					put(grammarAccess.getExprAccess().getAlternatives(), "rule__Expr__Alternatives");
 					put(grammarAccess.getSignAccess().getAlternatives(), "rule__Sign__Alternatives");
 					put(grammarAccess.getSimpTypeAccess().getAlternatives(), "rule__SimpType__Alternatives");
 					put(grammarAccess.getSignedAccess().getAlternatives(), "rule__Signed__Alternatives");
@@ -78,6 +79,8 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getParamAccess().getGroup(), "rule__Param__Group__0");
 					put(grammarAccess.getVarInitListAccess().getGroup(), "rule__VarInitList__Group__0");
 					put(grammarAccess.getVarInitListAccess().getGroup_1(), "rule__VarInitList__Group_1__0");
+					put(grammarAccess.getExprAccess().getGroup_0(), "rule__Expr__Group_0__0");
+					put(grammarAccess.getExprAccess().getGroup_1(), "rule__Expr__Group_1__0");
 					put(grammarAccess.getDoubleAccess().getGroup_1(), "rule__Double__Group_1__0");
 					put(grammarAccess.getProgramAccess().getProgramElementsAssignment_1(), "rule__Program__ProgramElementsAssignment_1");
 					put(grammarAccess.getDmplSubclauseAccess().getProgramAssignment_1(), "rule__DmplSubclause__ProgramAssignment_1");
@@ -116,7 +119,9 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getParamAccess().getTypeAssignment_0(), "rule__Param__TypeAssignment_0");
 					put(grammarAccess.getParamAccess().getVarAssignment_1(), "rule__Param__VarAssignment_1");
 					put(grammarAccess.getVarInitListAccess().getVarInitsAssignment_1_0(), "rule__VarInitList__VarInitsAssignment_1_0");
-					put(grammarAccess.getExprAccess().getValueAssignment(), "rule__Expr__ValueAssignment");
+					put(grammarAccess.getLValAccess().getNameAssignment(), "rule__LVal__NameAssignment");
+					put(grammarAccess.getExprAccess().getValueAssignment_0_1(), "rule__Expr__ValueAssignment_0_1");
+					put(grammarAccess.getExprAccess().getValueAssignment_1_1(), "rule__Expr__ValueAssignment_1_1");
 				}
 			};
 		}

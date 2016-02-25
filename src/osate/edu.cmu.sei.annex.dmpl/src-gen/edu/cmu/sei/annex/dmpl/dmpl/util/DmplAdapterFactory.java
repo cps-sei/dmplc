@@ -175,6 +175,11 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createVarInitListAdapter();
       }
       @Override
+      public Adapter caseLVal(LVal object)
+      {
+        return createLValAdapter();
+      }
+      @Override
       public Adapter caseExpr(Expr object)
       {
         return createExprAdapter();
@@ -203,6 +208,16 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
       public Adapter caseFnPrototypeDeclaration(FnPrototypeDeclaration object)
       {
         return createFnPrototypeDeclarationAdapter();
+      }
+      @Override
+      public Adapter caseIntExpr(IntExpr object)
+      {
+        return createIntExprAdapter();
+      }
+      @Override
+      public Adapter caseLValExpr(LValExpr object)
+      {
+        return createLValExprAdapter();
       }
       @Override
       public Adapter caseElement(Element object)
@@ -532,6 +547,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.LVal <em>LVal</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.LVal
+   * @generated
+   */
+  public Adapter createLValAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Expr <em>Expr</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -617,6 +647,36 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createFnPrototypeDeclarationAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.IntExpr <em>Int Expr</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.IntExpr
+   * @generated
+   */
+  public Adapter createIntExprAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.LValExpr <em>LVal Expr</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.LValExpr
+   * @generated
+   */
+  public Adapter createLValExprAdapter()
   {
     return null;
   }

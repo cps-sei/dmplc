@@ -758,21 +758,68 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getSemicolonKeyword_1_1() { return cSemicolonKeyword_1_1; }
 	}
 
-	public class ExprElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Expr");
-		private final Assignment cValueAssignment = (Assignment)rule.eContents().get(1);
-		private final RuleCall cValueINTTerminalRuleCall_0 = (RuleCall)cValueAssignment.eContents().get(0);
+	public class LValElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "LVal");
+		private final Assignment cNameAssignment = (Assignment)rule.eContents().get(1);
+		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_0 = (RuleCall)cNameAssignment.eContents().get(0);
 		
-		//Expr: //TODO
-		//	value=INT;
+		//LVal: //TODO
+		//	name=TIDENTIFIER;
 		@Override public ParserRule getRule() { return rule; }
 
 		////TODO
+		//name=TIDENTIFIER
+		public Assignment getNameAssignment() { return cNameAssignment; }
+
+		//TIDENTIFIER
+		public RuleCall getNameTIDENTIFIERTerminalRuleCall_0() { return cNameTIDENTIFIERTerminalRuleCall_0; }
+	}
+
+	public class ExprElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Expr");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
+		private final Action cIntExprAction_0_0 = (Action)cGroup_0.eContents().get(0);
+		private final Assignment cValueAssignment_0_1 = (Assignment)cGroup_0.eContents().get(1);
+		private final RuleCall cValueINTTerminalRuleCall_0_1_0 = (RuleCall)cValueAssignment_0_1.eContents().get(0);
+		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
+		private final Action cLValExprAction_1_0 = (Action)cGroup_1.eContents().get(0);
+		private final Assignment cValueAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
+		private final RuleCall cValueLValParserRuleCall_1_1_0 = (RuleCall)cValueAssignment_1_1.eContents().get(0);
+		
+		//Expr: //TODO
+		//	{IntExpr} value=INT | {LValExpr} value=LVal;
+		@Override public ParserRule getRule() { return rule; }
+
+		////TODO
+		//{IntExpr} value=INT | {LValExpr} value=LVal
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		////TODO
+		//{IntExpr} value=INT
+		public Group getGroup_0() { return cGroup_0; }
+
+		////TODO
+		//{IntExpr}
+		public Action getIntExprAction_0_0() { return cIntExprAction_0_0; }
+
 		//value=INT
-		public Assignment getValueAssignment() { return cValueAssignment; }
+		public Assignment getValueAssignment_0_1() { return cValueAssignment_0_1; }
 
 		//INT
-		public RuleCall getValueINTTerminalRuleCall_0() { return cValueINTTerminalRuleCall_0; }
+		public RuleCall getValueINTTerminalRuleCall_0_1_0() { return cValueINTTerminalRuleCall_0_1_0; }
+
+		//{LValExpr} value=LVal
+		public Group getGroup_1() { return cGroup_1; }
+
+		//{LValExpr}
+		public Action getLValExprAction_1_0() { return cLValExprAction_1_0; }
+
+		//value=LVal
+		public Assignment getValueAssignment_1_1() { return cValueAssignment_1_1; }
+
+		//LVal
+		public RuleCall getValueLValParserRuleCall_1_1_0() { return cValueLValParserRuleCall_1_1_0; }
 	}
 
 	public class SignElements extends AbstractParserRuleElementFinder {
@@ -1028,6 +1075,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final FnPrototypeElements pFnPrototype;
 	private final ParamElements pParam;
 	private final VarInitListElements pVarInitList;
+	private final LValElements pLVal;
 	private final ExprElements pExpr;
 	private final SignEnumElements unknownRuleSignEnum;
 	private final SignElements pSign;
@@ -1067,6 +1115,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pFnPrototype = new FnPrototypeElements();
 		this.pParam = new ParamElements();
 		this.pVarInitList = new VarInitListElements();
+		this.pLVal = new LValElements();
 		this.pExpr = new ExprElements();
 		this.unknownRuleSignEnum = new SignEnumElements();
 		this.pSign = new SignElements();
@@ -1307,8 +1356,18 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getVarInitListAccess().getRule();
 	}
 
+	//LVal: //TODO
+	//	name=TIDENTIFIER;
+	public LValElements getLValAccess() {
+		return pLVal;
+	}
+	
+	public ParserRule getLValRule() {
+		return getLValAccess().getRule();
+	}
+
 	//Expr: //TODO
-	//	value=INT;
+	//	{IntExpr} value=INT | {LValExpr} value=LVal;
 	public ExprElements getExprAccess() {
 		return pExpr;
 	}
