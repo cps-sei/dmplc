@@ -888,7 +888,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getCallExpr_Name()
+  public EAttribute getCallExpr_Namespace()
   {
     return (EAttribute)callExprEClass.getEStructuralFeatures().get(0);
   }
@@ -898,9 +898,29 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EAttribute getCallExpr_Name()
+  {
+    return (EAttribute)callExprEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EReference getCallExpr_ArgList()
   {
-    return (EReference)callExprEClass.getEStructuralFeatures().get(1);
+    return (EReference)callExprEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getCallExpr_At()
+  {
+    return (EReference)callExprEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -1187,8 +1207,10 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     exprEClass = createEClass(EXPR);
 
     callExprEClass = createEClass(CALL_EXPR);
+    createEAttribute(callExprEClass, CALL_EXPR__NAMESPACE);
     createEAttribute(callExprEClass, CALL_EXPR__NAME);
     createEReference(callExprEClass, CALL_EXPR__ARG_LIST);
+    createEReference(callExprEClass, CALL_EXPR__AT);
 
     argListEClass = createEClass(ARG_LIST);
     createEReference(argListEClass, ARG_LIST__ARGS);
@@ -1340,8 +1362,10 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEClass(exprEClass, Expr.class, "Expr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(callExprEClass, CallExpr.class, "CallExpr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getCallExpr_Namespace(), ecorePackage.getEString(), "namespace", null, 0, 1, CallExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getCallExpr_Name(), ecorePackage.getEString(), "name", null, 0, 1, CallExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getCallExpr_ArgList(), this.getArgList(), null, "argList", null, 0, 1, CallExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getCallExpr_At(), this.getExpr(), null, "at", null, 0, 1, CallExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(argListEClass, ArgList.class, "ArgList", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getArgList_Args(), this.getExpr(), null, "args", null, 0, -1, ArgList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

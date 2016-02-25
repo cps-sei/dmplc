@@ -820,13 +820,22 @@ public interface DmplPackage extends EPackage
   int CALL_EXPR = 21;
 
   /**
+   * The feature id for the '<em><b>Namespace</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CALL_EXPR__NAMESPACE = EXPR_FEATURE_COUNT + 0;
+
+  /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int CALL_EXPR__NAME = EXPR_FEATURE_COUNT + 0;
+  int CALL_EXPR__NAME = EXPR_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>Arg List</b></em>' containment reference.
@@ -835,7 +844,16 @@ public interface DmplPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CALL_EXPR__ARG_LIST = EXPR_FEATURE_COUNT + 1;
+  int CALL_EXPR__ARG_LIST = EXPR_FEATURE_COUNT + 2;
+
+  /**
+   * The feature id for the '<em><b>At</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int CALL_EXPR__AT = EXPR_FEATURE_COUNT + 3;
 
   /**
    * The number of structural features of the '<em>Call Expr</em>' class.
@@ -844,7 +862,7 @@ public interface DmplPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CALL_EXPR_FEATURE_COUNT = EXPR_FEATURE_COUNT + 2;
+  int CALL_EXPR_FEATURE_COUNT = EXPR_FEATURE_COUNT + 4;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ArgListImpl <em>Arg List</em>}' class.
@@ -1708,6 +1726,17 @@ public interface DmplPackage extends EPackage
   EClass getCallExpr();
 
   /**
+   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.CallExpr#getNamespace <em>Namespace</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Namespace</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.CallExpr#getNamespace()
+   * @see #getCallExpr()
+   * @generated
+   */
+  EAttribute getCallExpr_Namespace();
+
+  /**
    * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.CallExpr#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1728,6 +1757,17 @@ public interface DmplPackage extends EPackage
    * @generated
    */
   EReference getCallExpr_ArgList();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.CallExpr#getAt <em>At</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>At</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.CallExpr#getAt()
+   * @see #getCallExpr()
+   * @generated
+   */
+  EReference getCallExpr_At();
 
   /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.ArgList <em>Arg List</em>}'.
@@ -2408,6 +2448,14 @@ public interface DmplPackage extends EPackage
     EClass CALL_EXPR = eINSTANCE.getCallExpr();
 
     /**
+     * The meta object literal for the '<em><b>Namespace</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute CALL_EXPR__NAMESPACE = eINSTANCE.getCallExpr_Namespace();
+
+    /**
      * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -2422,6 +2470,14 @@ public interface DmplPackage extends EPackage
      * @generated
      */
     EReference CALL_EXPR__ARG_LIST = eINSTANCE.getCallExpr_ArgList();
+
+    /**
+     * The meta object literal for the '<em><b>At</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference CALL_EXPR__AT = eINSTANCE.getCallExpr_At();
 
     /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ArgListImpl <em>Arg List</em>}' class.

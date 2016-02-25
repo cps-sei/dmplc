@@ -143,20 +143,10 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=TIDENTIFIER argList=ArgList)
+	 *     (namespace=TIDENTIFIER? name=TIDENTIFIER argList=ArgList at=Expr?)
 	 */
 	protected void sequence_CallExpr(EObject context, CallExpr semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.CALL_EXPR__NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.CALL_EXPR__NAME));
-			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.CALL_EXPR__ARG_LIST) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.CALL_EXPR__ARG_LIST));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getCallExprAccess().getNameTIDENTIFIERTerminalRuleCall_0_0(), semanticObject.getName());
-		feeder.accept(grammarAccess.getCallExprAccess().getArgListArgListParserRuleCall_2_0(), semanticObject.getArgList());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

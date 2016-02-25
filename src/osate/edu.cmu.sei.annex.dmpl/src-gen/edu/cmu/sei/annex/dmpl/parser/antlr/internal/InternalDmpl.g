@@ -1517,11 +1517,33 @@ ruleCallExpr returns [EObject current=null]
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
-((
+(((
 (
-		lv_name_0_0=RULE_TIDENTIFIER
+		lv_namespace_0_0=RULE_TIDENTIFIER
 		{
-			newLeafNode(lv_name_0_0, grammarAccess.getCallExprAccess().getNameTIDENTIFIERTerminalRuleCall_0_0()); 
+			newLeafNode(lv_namespace_0_0, grammarAccess.getCallExprAccess().getNamespaceTIDENTIFIERTerminalRuleCall_0_0_0()); 
+		}
+		{
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getCallExprRule());
+	        }
+       		setWithLastConsumed(
+       			$current, 
+       			"namespace",
+        		lv_namespace_0_0, 
+        		"TIDENTIFIER");
+	    }
+
+)
+)	otherlv_1='::' 
+    {
+    	newLeafNode(otherlv_1, grammarAccess.getCallExprAccess().getColonColonKeyword_0_1());
+    }
+)?(
+(
+		lv_name_2_0=RULE_TIDENTIFIER
+		{
+			newLeafNode(lv_name_2_0, grammarAccess.getCallExprAccess().getNameTIDENTIFIERTerminalRuleCall_1_0()); 
 		}
 		{
 	        if ($current==null) {
@@ -1530,38 +1552,60 @@ ruleCallExpr returns [EObject current=null]
        		setWithLastConsumed(
        			$current, 
        			"name",
-        		lv_name_0_0, 
+        		lv_name_2_0, 
         		"TIDENTIFIER");
 	    }
 
 )
-)	otherlv_1='(' 
+)	otherlv_3='(' 
     {
-    	newLeafNode(otherlv_1, grammarAccess.getCallExprAccess().getLeftParenthesisKeyword_1());
+    	newLeafNode(otherlv_3, grammarAccess.getCallExprAccess().getLeftParenthesisKeyword_2());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getCallExprAccess().getArgListArgListParserRuleCall_2_0()); 
+	        newCompositeNode(grammarAccess.getCallExprAccess().getArgListArgListParserRuleCall_3_0()); 
 	    }
-		lv_argList_2_0=ruleArgList		{
+		lv_argList_4_0=ruleArgList		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getCallExprRule());
 	        }
        		set(
        			$current, 
        			"argList",
-        		lv_argList_2_0, 
+        		lv_argList_4_0, 
         		"ArgList");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-)	otherlv_3=')' 
+)	otherlv_5=')' 
     {
-    	newLeafNode(otherlv_3, grammarAccess.getCallExprAccess().getRightParenthesisKeyword_3());
+    	newLeafNode(otherlv_5, grammarAccess.getCallExprAccess().getRightParenthesisKeyword_4());
     }
+(	otherlv_6='@' 
+    {
+    	newLeafNode(otherlv_6, grammarAccess.getCallExprAccess().getCommercialAtKeyword_5_0());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getCallExprAccess().getAtExprParserRuleCall_5_1_0()); 
+	    }
+		lv_at_7_0=ruleExpr		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getCallExprRule());
+	        }
+       		set(
+       			$current, 
+       			"at",
+        		lv_at_7_0, 
+        		"Expr");
+	        afterParserOrEnumRuleCall();
+	    }
+
 )
+))?)
 ;
 
 

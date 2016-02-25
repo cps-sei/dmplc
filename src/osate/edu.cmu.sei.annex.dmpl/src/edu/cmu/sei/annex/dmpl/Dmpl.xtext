@@ -110,8 +110,7 @@ Expr:
 ;
 
 CallExpr:
-	//TODO
-	name=TIDENTIFIER '(' argList=ArgList ')'
+	(namespace=TIDENTIFIER '::')? name=TIDENTIFIER '(' argList=ArgList ')' ('@' at=Expr)?
 ;
 
 ArgList:

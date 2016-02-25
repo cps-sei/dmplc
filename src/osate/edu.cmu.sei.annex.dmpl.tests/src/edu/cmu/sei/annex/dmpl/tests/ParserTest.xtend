@@ -447,32 +447,73 @@ class ParserTest {
 	def void testArgList() {
 		'''
 			void f1() {
-				int v1 = f1();
-				int v2 = f2(1);
-				int v3 = f3(2, 3);
+				int v1 = f2();
+				int v2 = f3(1);
+				int v3 = f4(2, 3);
 			}
 		'''.parse => [
 			assertNoIssues;
 			(programElements.head as Procedure).procedure.fnBody.varInitList => [
 				3.assertEquals(varInits.size)
 				(varInits.get(0).varAsgnList.varAsgn.expr as CallExpr) => [
-					"f1".assertEquals(name)
+					"f2".assertEquals(name)
 					argList.args.empty.assertTrue
 				]
 				(varInits.get(1).varAsgnList.varAsgn.expr as CallExpr) => [
-					"f2".assertEquals(name)
+					"f3".assertEquals(name)
 					argList => [
 						1.assertEquals(args.size)
 						1.assertEquals((args.head as IntExpr).value)
 					]
 				]
 				(varInits.get(2).varAsgnList.varAsgn.expr as CallExpr) => [
-					"f3".assertEquals(name)
+					"f4".assertEquals(name)
 					argList => [
 						2.assertEquals(args.size)
 						2.assertEquals((args.get(0) as IntExpr).value)
 						3.assertEquals((args.get(1) as IntExpr).value)
 					]
+				]
+			]
+		]
+	}
+	
+	@Test
+	def void testCallExpr() {
+		'''
+			void f1() {
+				int v1 = f2();
+				int v2 = ns1::f3();
+				int v3 = f4()@52;
+				int v4 = ns2::f5()@95;
+			}
+		'''.parse => [
+			assertNoIssues;
+			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+				4.assertEquals(varInits.size)
+				(varInits.get(0).varAsgnList.varAsgn.expr as CallExpr) => [
+					namespace.assertNull
+					"f2".assertEquals(name)
+					argList.args.empty.assertTrue
+					at.assertNull
+				]
+				(varInits.get(1).varAsgnList.varAsgn.expr as CallExpr) => [
+					"ns1".assertEquals(namespace)
+					"f3".assertEquals(name)
+					argList.args.empty.assertTrue
+					at.assertNull
+				]
+				(varInits.get(2).varAsgnList.varAsgn.expr as CallExpr) => [
+					namespace.assertNull
+					"f4".assertEquals(name)
+					argList.args.empty.assertTrue
+					52.assertEquals((at as IntExpr).value)
+				]
+				(varInits.get(3).varAsgnList.varAsgn.expr as CallExpr) => [
+					"ns2".assertEquals(namespace)
+					"f5".assertEquals(name)
+					argList.args.empty.assertTrue
+					95.assertEquals((at as IntExpr).value)
 				]
 			]
 		]

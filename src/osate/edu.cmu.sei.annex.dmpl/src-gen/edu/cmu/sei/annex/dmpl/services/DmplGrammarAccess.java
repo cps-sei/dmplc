@@ -868,37 +868,69 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	public class CallExprElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "CallExpr");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Assignment cNameAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_0_0 = (RuleCall)cNameAssignment_0.eContents().get(0);
-		private final Keyword cLeftParenthesisKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Assignment cArgListAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cArgListArgListParserRuleCall_2_0 = (RuleCall)cArgListAssignment_2.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Group cGroup_0 = (Group)cGroup.eContents().get(0);
+		private final Assignment cNamespaceAssignment_0_0 = (Assignment)cGroup_0.eContents().get(0);
+		private final RuleCall cNamespaceTIDENTIFIERTerminalRuleCall_0_0_0 = (RuleCall)cNamespaceAssignment_0_0.eContents().get(0);
+		private final Keyword cColonColonKeyword_0_1 = (Keyword)cGroup_0.eContents().get(1);
+		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Keyword cLeftParenthesisKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cArgListAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cArgListArgListParserRuleCall_3_0 = (RuleCall)cArgListAssignment_3.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Group cGroup_5 = (Group)cGroup.eContents().get(5);
+		private final Keyword cCommercialAtKeyword_5_0 = (Keyword)cGroup_5.eContents().get(0);
+		private final Assignment cAtAssignment_5_1 = (Assignment)cGroup_5.eContents().get(1);
+		private final RuleCall cAtExprParserRuleCall_5_1_0 = (RuleCall)cAtAssignment_5_1.eContents().get(0);
 		
 		//CallExpr:
-		//	name=TIDENTIFIER "(" argList=ArgList ")";
+		//	(namespace=TIDENTIFIER "::")? name=TIDENTIFIER "(" argList=ArgList ")" ("@" at=Expr)?;
 		@Override public ParserRule getRule() { return rule; }
 
-		//name=TIDENTIFIER "(" argList=ArgList ")"
+		//(namespace=TIDENTIFIER "::")? name=TIDENTIFIER "(" argList=ArgList ")" ("@" at=Expr)?
 		public Group getGroup() { return cGroup; }
 
-		//name=TIDENTIFIER
-		public Assignment getNameAssignment_0() { return cNameAssignment_0; }
+		//(namespace=TIDENTIFIER "::")?
+		public Group getGroup_0() { return cGroup_0; }
+
+		//namespace=TIDENTIFIER
+		public Assignment getNamespaceAssignment_0_0() { return cNamespaceAssignment_0_0; }
 
 		//TIDENTIFIER
-		public RuleCall getNameTIDENTIFIERTerminalRuleCall_0_0() { return cNameTIDENTIFIERTerminalRuleCall_0_0; }
+		public RuleCall getNamespaceTIDENTIFIERTerminalRuleCall_0_0_0() { return cNamespaceTIDENTIFIERTerminalRuleCall_0_0_0; }
+
+		//"::"
+		public Keyword getColonColonKeyword_0_1() { return cColonColonKeyword_0_1; }
+
+		//name=TIDENTIFIER
+		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+
+		//TIDENTIFIER
+		public RuleCall getNameTIDENTIFIERTerminalRuleCall_1_0() { return cNameTIDENTIFIERTerminalRuleCall_1_0; }
 
 		//"("
-		public Keyword getLeftParenthesisKeyword_1() { return cLeftParenthesisKeyword_1; }
+		public Keyword getLeftParenthesisKeyword_2() { return cLeftParenthesisKeyword_2; }
 
 		//argList=ArgList
-		public Assignment getArgListAssignment_2() { return cArgListAssignment_2; }
+		public Assignment getArgListAssignment_3() { return cArgListAssignment_3; }
 
 		//ArgList
-		public RuleCall getArgListArgListParserRuleCall_2_0() { return cArgListArgListParserRuleCall_2_0; }
+		public RuleCall getArgListArgListParserRuleCall_3_0() { return cArgListArgListParserRuleCall_3_0; }
 
 		//")"
-		public Keyword getRightParenthesisKeyword_3() { return cRightParenthesisKeyword_3; }
+		public Keyword getRightParenthesisKeyword_4() { return cRightParenthesisKeyword_4; }
+
+		//("@" at=Expr)?
+		public Group getGroup_5() { return cGroup_5; }
+
+		//"@"
+		public Keyword getCommercialAtKeyword_5_0() { return cCommercialAtKeyword_5_0; }
+
+		//at=Expr
+		public Assignment getAtAssignment_5_1() { return cAtAssignment_5_1; }
+
+		//Expr
+		public RuleCall getAtExprParserRuleCall_5_1_0() { return cAtExprParserRuleCall_5_1_0; }
 	}
 
 	public class ArgListElements extends AbstractParserRuleElementFinder {
@@ -1504,7 +1536,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//CallExpr:
-	//	name=TIDENTIFIER "(" argList=ArgList ")";
+	//	(namespace=TIDENTIFIER "::")? name=TIDENTIFIER "(" argList=ArgList ")" ("@" at=Expr)?;
 	public CallExprElements getCallExprAccess() {
 		return pCallExpr;
 	}
