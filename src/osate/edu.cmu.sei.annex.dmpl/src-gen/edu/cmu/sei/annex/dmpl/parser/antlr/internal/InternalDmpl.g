@@ -1439,14 +1439,91 @@ ruleExpr returns [EObject current=null]
     @after { leaveRule(); }:
 
     { 
-        newCompositeNode(grammarAccess.getExprAccess().getTerminalExprParserRuleCall()); 
+        newCompositeNode(grammarAccess.getExprAccess().getMultiplicativeExprParserRuleCall()); 
+    }
+    this_MultiplicativeExpr_0=ruleMultiplicativeExpr
+    { 
+        $current = $this_MultiplicativeExpr_0.current; 
+        afterParserOrEnumRuleCall();
+    }
+
+;
+
+
+
+
+
+// Entry rule entryRuleMultiplicativeExpr
+entryRuleMultiplicativeExpr returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getMultiplicativeExprRule()); }
+	 iv_ruleMultiplicativeExpr=ruleMultiplicativeExpr 
+	 { $current=$iv_ruleMultiplicativeExpr.current; } 
+	 EOF 
+;
+
+// Rule MultiplicativeExpr
+ruleMultiplicativeExpr returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(
+    { 
+        newCompositeNode(grammarAccess.getMultiplicativeExprAccess().getTerminalExprParserRuleCall_0()); 
     }
     this_TerminalExpr_0=ruleTerminalExpr
     { 
         $current = $this_TerminalExpr_0.current; 
         afterParserOrEnumRuleCall();
     }
+(((((
+)(
+(
+ruleMultiplicativeOperator
+)
+)))=>((
+    {
+        $current = forceCreateModelElementAndSet(
+            grammarAccess.getMultiplicativeExprAccess().getMultiplicativeExprLeftAction_1_0_0_0(),
+            $current);
+    }
+)(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getMultiplicativeExprAccess().getOperatorMultiplicativeOperatorEnumRuleCall_1_0_0_1_0()); 
+	    }
+		lv_operator_2_0=ruleMultiplicativeOperator		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getMultiplicativeExprRule());
+	        }
+       		set(
+       			$current, 
+       			"operator",
+        		lv_operator_2_0, 
+        		"MultiplicativeOperator");
+	        afterParserOrEnumRuleCall();
+	    }
 
+)
+)))(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getMultiplicativeExprAccess().getRightTerminalExprParserRuleCall_1_1_0()); 
+	    }
+		lv_right_3_0=ruleTerminalExpr		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getMultiplicativeExprRule());
+	        }
+       		set(
+       			$current, 
+       			"right",
+        		lv_right_3_0, 
+        		"TerminalExpr");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))*)
 ;
 
 
@@ -2118,6 +2195,31 @@ ruleDouble returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()]
 
 
 
+
+
+
+// Rule MultiplicativeOperator
+ruleMultiplicativeOperator returns [Enumerator current=null] 
+    @init { enterRule(); }
+    @after { leaveRule(); }:
+((	enumLiteral_0='*' 
+	{
+        $current = grammarAccess.getMultiplicativeOperatorAccess().getMULTIPLYEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_0, grammarAccess.getMultiplicativeOperatorAccess().getMULTIPLYEnumLiteralDeclaration_0()); 
+    }
+)
+    |(	enumLiteral_1='/' 
+	{
+        $current = grammarAccess.getMultiplicativeOperatorAccess().getDIVIDEEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_1, grammarAccess.getMultiplicativeOperatorAccess().getDIVIDEEnumLiteralDeclaration_1()); 
+    }
+)
+    |(	enumLiteral_2='%' 
+	{
+        $current = grammarAccess.getMultiplicativeOperatorAccess().getMODULUSEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_2, grammarAccess.getMultiplicativeOperatorAccess().getMODULUSEnumLiteralDeclaration_2()); 
+    }
+));
 
 
 

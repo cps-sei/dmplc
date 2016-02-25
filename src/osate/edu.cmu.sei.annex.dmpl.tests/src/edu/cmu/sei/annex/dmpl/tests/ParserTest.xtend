@@ -15,6 +15,8 @@ import edu.cmu.sei.annex.dmpl.dmpl.IntConst
 import edu.cmu.sei.annex.dmpl.dmpl.IntDimension
 import edu.cmu.sei.annex.dmpl.dmpl.IntExpr
 import edu.cmu.sei.annex.dmpl.dmpl.LVal
+import edu.cmu.sei.annex.dmpl.dmpl.MultiplicativeExpr
+import edu.cmu.sei.annex.dmpl.dmpl.MultiplicativeOperator
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumDimension
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumExpr
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure
@@ -655,6 +657,63 @@ class ParserTest {
 				varInits.get(16).varAsgnList.varAsgn => [
 					"v17".assertEquals(^var.name)
 					"name9".assertEquals((expr as LVal).name)
+				]
+			]
+		]
+	}
+	
+	@Test
+	def void testMultiplicativeExpr() {
+		'''
+			void f1() {
+				int v1 = name1 * name2;
+				int v2 = name3 / name4;
+				int v3 = name5 % name6;
+				int v4 = name7 * name8 / name9 % name10;
+			}
+		'''.parse => [
+			assertNoIssues;
+			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+				4.assertEquals(varInits.size)
+				varInits.get(0).varAsgnList.varAsgn => [
+					"v1".assertEquals(^var.name)
+					expr as MultiplicativeExpr => [
+						"name1".assertEquals((left as LVal).name)
+						MultiplicativeOperator.MULTIPLY.assertEquals(operator)
+						"name2".assertEquals((right as LVal).name)
+					]
+				]
+				varInits.get(1).varAsgnList.varAsgn => [
+					"v2".assertEquals(^var.name)
+					expr as MultiplicativeExpr => [
+						"name3".assertEquals((left as LVal).name)
+						MultiplicativeOperator.DIVIDE.assertEquals(operator)
+						"name4".assertEquals((right as LVal).name)
+					]
+				]
+				varInits.get(2).varAsgnList.varAsgn => [
+					"v3".assertEquals(^var.name)
+					expr as MultiplicativeExpr => [
+						"name5".assertEquals((left as LVal).name)
+						MultiplicativeOperator.MODULUS.assertEquals(operator)
+						"name6".assertEquals((right as LVal).name)
+					]
+				]
+				varInits.get(3).varAsgnList.varAsgn => [
+					"v4".assertEquals(^var.name)
+					expr as MultiplicativeExpr => [
+						left as MultiplicativeExpr => [
+							left as MultiplicativeExpr => [
+								"name7".assertEquals((left as LVal).name)
+								MultiplicativeOperator.MULTIPLY.assertEquals(operator)
+								"name8".assertEquals((right as LVal).name)
+							]
+							MultiplicativeOperator.DIVIDE.assertEquals(operator)
+							"name9".assertEquals((right as LVal).name)
+						]
+						MultiplicativeOperator.MODULUS.assertEquals(operator)
+						"name10".assertEquals((right as LVal).name)
+					]
 				]
 			]
 		]

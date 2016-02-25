@@ -104,7 +104,11 @@ LVal:
 
 Expr:
 	//TODO
-	TerminalExpr
+	MultiplicativeExpr
+;
+
+MultiplicativeExpr returns Expr:
+	TerminalExpr (=>({MultiplicativeExpr.left=current} operator=MultiplicativeOperator) right=TerminalExpr)*
 ;
 
 TerminalExpr returns Expr:
@@ -152,6 +156,12 @@ enum SignedEnum:
 
 Signed returns SignedEnum:
 	'signed' | 'unsigned'
+;
+
+enum MultiplicativeOperator:
+	MULTIPLY='*' |
+	DIVIDE='/' |
+	MODULUS='%'
 ;
 
 enum UnaryOperator:

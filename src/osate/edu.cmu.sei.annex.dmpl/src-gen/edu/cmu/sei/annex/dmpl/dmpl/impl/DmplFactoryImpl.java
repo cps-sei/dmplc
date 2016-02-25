@@ -93,6 +93,7 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.ID_DIMENSION: return createIdDimension();
       case DmplPackage.THREAD_DECLARATION: return createThreadDeclaration();
       case DmplPackage.FN_PROTOTYPE_DECLARATION: return createFnPrototypeDeclaration();
+      case DmplPackage.MULTIPLICATIVE_EXPR: return createMultiplicativeExpr();
       case DmplPackage.ID_EXPR: return createIdExpr();
       case DmplPackage.INT_EXPR: return createIntExpr();
       case DmplPackage.DOUBLE_EXPR: return createDoubleExpr();
@@ -120,6 +121,8 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
         return createSimpTypeEnumFromString(eDataType, initialValue);
       case DmplPackage.SIGNED_ENUM:
         return createSignedEnumFromString(eDataType, initialValue);
+      case DmplPackage.MULTIPLICATIVE_OPERATOR:
+        return createMultiplicativeOperatorFromString(eDataType, initialValue);
       case DmplPackage.UNARY_OPERATOR:
         return createUnaryOperatorFromString(eDataType, initialValue);
       case DmplPackage.BUILT_IN_FUNCTION_ENUM:
@@ -145,6 +148,8 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
         return convertSimpTypeEnumToString(eDataType, instanceValue);
       case DmplPackage.SIGNED_ENUM:
         return convertSignedEnumToString(eDataType, instanceValue);
+      case DmplPackage.MULTIPLICATIVE_OPERATOR:
+        return convertMultiplicativeOperatorToString(eDataType, instanceValue);
       case DmplPackage.UNARY_OPERATOR:
         return convertUnaryOperatorToString(eDataType, instanceValue);
       case DmplPackage.BUILT_IN_FUNCTION_ENUM:
@@ -467,6 +472,17 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  public MultiplicativeExpr createMultiplicativeExpr()
+  {
+    MultiplicativeExprImpl multiplicativeExpr = new MultiplicativeExprImpl();
+    return multiplicativeExpr;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public IdExpr createIdExpr()
   {
     IdExprImpl idExpr = new IdExprImpl();
@@ -590,6 +606,28 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * @generated
    */
   public String convertSignedEnumToString(EDataType eDataType, Object instanceValue)
+  {
+    return instanceValue == null ? null : instanceValue.toString();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public MultiplicativeOperator createMultiplicativeOperatorFromString(EDataType eDataType, String initialValue)
+  {
+    MultiplicativeOperator result = MultiplicativeOperator.get(initialValue);
+    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+    return result;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertMultiplicativeOperatorToString(EDataType eDataType, Object instanceValue)
   {
     return instanceValue == null ? null : instanceValue.toString();
   }

@@ -24,6 +24,11 @@
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SignedEnum/signed"/>
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SignedEnum/unsigned"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Dmpl.ecore#//MultiplicativeOperator">
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//MultiplicativeOperator/MULTIPLY"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//MultiplicativeOperator/DIVIDE"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//MultiplicativeOperator/MODULUS"/>
+    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Dmpl.ecore#//UnaryOperator">
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//UnaryOperator/MINUS"/>
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//UnaryOperator/PLUS"/>
@@ -125,6 +130,11 @@
     <genClasses ecoreClass="Dmpl.ecore#//FnPrototypeDeclaration">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnPrototypeDeclaration/type"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnPrototypeDeclaration/params"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//MultiplicativeExpr">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//MultiplicativeExpr/left"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//MultiplicativeExpr/operator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//MultiplicativeExpr/right"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//IdExpr"/>
     <genClasses ecoreClass="Dmpl.ecore#//IntExpr">
