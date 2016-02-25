@@ -760,19 +760,32 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 	public class LValElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "LVal");
-		private final Assignment cNameAssignment = (Assignment)rule.eContents().get(1);
-		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_0 = (RuleCall)cNameAssignment.eContents().get(0);
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cNameAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_0_0 = (RuleCall)cNameAssignment_0.eContents().get(0);
+		private final Assignment cIndicesAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cIndicesIndicesParserRuleCall_1_0 = (RuleCall)cIndicesAssignment_1.eContents().get(0);
 		
 		//LVal: //TODO
-		//	name=TIDENTIFIER;
+		//	name=TIDENTIFIER indices=Indices?;
 		@Override public ParserRule getRule() { return rule; }
 
 		////TODO
+		//name=TIDENTIFIER indices=Indices?
+		public Group getGroup() { return cGroup; }
+
+		////TODO
 		//name=TIDENTIFIER
-		public Assignment getNameAssignment() { return cNameAssignment; }
+		public Assignment getNameAssignment_0() { return cNameAssignment_0; }
 
 		//TIDENTIFIER
-		public RuleCall getNameTIDENTIFIERTerminalRuleCall_0() { return cNameTIDENTIFIERTerminalRuleCall_0; }
+		public RuleCall getNameTIDENTIFIERTerminalRuleCall_0_0() { return cNameTIDENTIFIERTerminalRuleCall_0_0; }
+
+		//indices=Indices?
+		public Assignment getIndicesAssignment_1() { return cIndicesAssignment_1; }
+
+		//Indices
+		public RuleCall getIndicesIndicesParserRuleCall_1_0() { return cIndicesIndicesParserRuleCall_1_0; }
 	}
 
 	public class ExprElements extends AbstractParserRuleElementFinder {
@@ -820,6 +833,34 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 		//LVal
 		public RuleCall getValueLValParserRuleCall_1_1_0() { return cValueLValParserRuleCall_1_1_0; }
+	}
+
+	public class IndicesElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Indices");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cLeftSquareBracketKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cIndicesAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cIndicesExprParserRuleCall_1_0 = (RuleCall)cIndicesAssignment_1.eContents().get(0);
+		private final Keyword cRightSquareBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		
+		//Indices:
+		//	("[" indices+=Expr "]")+;
+		@Override public ParserRule getRule() { return rule; }
+
+		//("[" indices+=Expr "]")+
+		public Group getGroup() { return cGroup; }
+
+		//"["
+		public Keyword getLeftSquareBracketKeyword_0() { return cLeftSquareBracketKeyword_0; }
+
+		//indices+=Expr
+		public Assignment getIndicesAssignment_1() { return cIndicesAssignment_1; }
+
+		//Expr
+		public RuleCall getIndicesExprParserRuleCall_1_0() { return cIndicesExprParserRuleCall_1_0; }
+
+		//"]"
+		public Keyword getRightSquareBracketKeyword_2() { return cRightSquareBracketKeyword_2; }
 	}
 
 	public class SignElements extends AbstractParserRuleElementFinder {
@@ -1077,6 +1118,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final VarInitListElements pVarInitList;
 	private final LValElements pLVal;
 	private final ExprElements pExpr;
+	private final IndicesElements pIndices;
 	private final SignEnumElements unknownRuleSignEnum;
 	private final SignElements pSign;
 	private final SimpTypeEnumElements unknownRuleSimpTypeEnum;
@@ -1117,6 +1159,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pVarInitList = new VarInitListElements();
 		this.pLVal = new LValElements();
 		this.pExpr = new ExprElements();
+		this.pIndices = new IndicesElements();
 		this.unknownRuleSignEnum = new SignEnumElements();
 		this.pSign = new SignElements();
 		this.unknownRuleSimpTypeEnum = new SimpTypeEnumElements();
@@ -1357,7 +1400,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//LVal: //TODO
-	//	name=TIDENTIFIER;
+	//	name=TIDENTIFIER indices=Indices?;
 	public LValElements getLValAccess() {
 		return pLVal;
 	}
@@ -1374,6 +1417,16 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getExprRule() {
 		return getExprAccess().getRule();
+	}
+
+	//Indices:
+	//	("[" indices+=Expr "]")+;
+	public IndicesElements getIndicesAccess() {
+		return pIndices;
+	}
+	
+	public ParserRule getIndicesRule() {
+		return getIndicesAccess().getRule();
 	}
 
 	//enum SignEnum:

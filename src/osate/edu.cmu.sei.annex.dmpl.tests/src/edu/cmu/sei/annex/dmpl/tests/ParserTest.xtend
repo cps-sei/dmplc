@@ -8,6 +8,8 @@ import edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration
 import edu.cmu.sei.annex.dmpl.dmpl.IdDimension
 import edu.cmu.sei.annex.dmpl.dmpl.IntConst
 import edu.cmu.sei.annex.dmpl.dmpl.IntDimension
+import edu.cmu.sei.annex.dmpl.dmpl.IntExpr
+import edu.cmu.sei.annex.dmpl.dmpl.LValExpr
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumDimension
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure
 import edu.cmu.sei.annex.dmpl.dmpl.Program
@@ -380,6 +382,41 @@ class ParserTest {
 					"p3".assertEquals(name)
 					1.assertEquals(dimensions.size)
 					"a".assertEquals((dimensions.head as IdDimension).index)
+				]
+			]
+		]
+	}
+	
+	@Test
+	def void testIndices() {
+		'''
+			void f1() {
+				int v1 = v4;
+				int v2 = v5[1];
+				int v3 = v6[2][3];
+			}
+		'''.parse => [
+			assertNoIssues;
+			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+				3.assertEquals(varInits.size)
+				(varInits.get(0).varAsgnList.varAsgn.expr as LValExpr).value => [
+					"v4".assertEquals(name)
+					indices.assertNull
+				]
+				(varInits.get(1).varAsgnList.varAsgn.expr as LValExpr).value => [
+					"v5".assertEquals(name)
+					indices => [
+						1.assertEquals(indices.size)
+						1.assertEquals((indices.head as IntExpr).value)
+					]
+				]
+				(varInits.get(2).varAsgnList.varAsgn.expr as LValExpr).value => [
+					"v6".assertEquals(name)
+					indices => [
+						2.assertEquals(indices.size)
+						2.assertEquals((indices.get(0) as IntExpr).value)
+						3.assertEquals((indices.get(1) as IntExpr).value)
+					]
 				]
 			]
 		]

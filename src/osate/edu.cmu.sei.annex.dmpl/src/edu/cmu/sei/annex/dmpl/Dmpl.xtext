@@ -100,13 +100,17 @@ VarInitList:
 
 LVal:
 	//TODO
-	name=TIDENTIFIER
+	name=TIDENTIFIER indices=Indices?
 ;
 
 Expr:
 	//TODO
 	{IntExpr} value=INT |
 	{LValExpr} value=LVal
+;
+
+Indices:
+	('[' indices+=Expr ']')+
 ;
 
 enum SignEnum:

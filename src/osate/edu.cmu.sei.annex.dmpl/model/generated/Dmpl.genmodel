@@ -90,8 +90,12 @@
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//LVal">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//LVal/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//LVal/indices"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Expr"/>
+    <genClasses ecoreClass="Dmpl.ecore#//Indices">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Indices/indices"/>
+    </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//IntDimension">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//IntDimension/index"/>
     </genClasses>

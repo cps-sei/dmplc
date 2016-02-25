@@ -86,6 +86,7 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.VAR_INIT_LIST: return createVarInitList();
       case DmplPackage.LVAL: return createLVal();
       case DmplPackage.EXPR: return createExpr();
+      case DmplPackage.INDICES: return createIndices();
       case DmplPackage.INT_DIMENSION: return createIntDimension();
       case DmplPackage.NODE_NUM_DIMENSION: return createNodeNumDimension();
       case DmplPackage.ID_DIMENSION: return createIdDimension();
@@ -369,6 +370,17 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     ExprImpl expr = new ExprImpl();
     return expr;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Indices createIndices()
+  {
+    IndicesImpl indices = new IndicesImpl();
+    return indices;
   }
 
   /**

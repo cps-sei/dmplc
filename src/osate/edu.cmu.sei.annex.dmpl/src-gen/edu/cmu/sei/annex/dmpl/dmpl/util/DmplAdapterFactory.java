@@ -185,6 +185,11 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createExprAdapter();
       }
       @Override
+      public Adapter caseIndices(Indices object)
+      {
+        return createIndicesAdapter();
+      }
+      @Override
       public Adapter caseIntDimension(IntDimension object)
       {
         return createIntDimensionAdapter();
@@ -572,6 +577,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createExprAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Indices <em>Indices</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Indices
+   * @generated
+   */
+  public Adapter createIndicesAdapter()
   {
     return null;
   }

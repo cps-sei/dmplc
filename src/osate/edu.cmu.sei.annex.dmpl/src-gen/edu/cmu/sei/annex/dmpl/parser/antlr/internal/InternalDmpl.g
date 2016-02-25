@@ -1350,11 +1350,11 @@ ruleLVal returns [EObject current=null]
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
-(
+((
 (
 		lv_name_0_0=RULE_TIDENTIFIER
 		{
-			newLeafNode(lv_name_0_0, grammarAccess.getLValAccess().getNameTIDENTIFIERTerminalRuleCall_0()); 
+			newLeafNode(lv_name_0_0, grammarAccess.getLValAccess().getNameTIDENTIFIERTerminalRuleCall_0_0()); 
 		}
 		{
 	        if ($current==null) {
@@ -1368,7 +1368,25 @@ ruleLVal returns [EObject current=null]
 	    }
 
 )
+)(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getLValAccess().getIndicesIndicesParserRuleCall_1_0()); 
+	    }
+		lv_indices_1_0=ruleIndices		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getLValRule());
+	        }
+       		set(
+       			$current, 
+       			"indices",
+        		lv_indices_1_0, 
+        		"Indices");
+	        afterParserOrEnumRuleCall();
+	    }
+
 )
+)?)
 ;
 
 
@@ -1439,6 +1457,53 @@ ruleExpr returns [EObject current=null]
 
 )
 )))
+;
+
+
+
+
+
+// Entry rule entryRuleIndices
+entryRuleIndices returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getIndicesRule()); }
+	 iv_ruleIndices=ruleIndices 
+	 { $current=$iv_ruleIndices.current; } 
+	 EOF 
+;
+
+// Rule Indices
+ruleIndices returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(	otherlv_0='[' 
+    {
+    	newLeafNode(otherlv_0, grammarAccess.getIndicesAccess().getLeftSquareBracketKeyword_0());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getIndicesAccess().getIndicesExprParserRuleCall_1_0()); 
+	    }
+		lv_indices_1_0=ruleExpr		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getIndicesRule());
+	        }
+       		add(
+       			$current, 
+       			"indices",
+        		lv_indices_1_0, 
+        		"Expr");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)	otherlv_2=']' 
+    {
+    	newLeafNode(otherlv_2, grammarAccess.getIndicesAccess().getRightSquareBracketKeyword_2());
+    }
+)+
 ;
 
 
