@@ -232,13 +232,6 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case DmplPackage.INDICES:
-      {
-        Indices indices = (Indices)theEObject;
-        T result = caseIndices(indices);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
       case DmplPackage.INT_DIMENSION:
       {
         IntDimension intDimension = (IntDimension)theEObject;
@@ -631,22 +624,6 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseExpr(Expr object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Indices</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Indices</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseIndices(Indices object)
   {
     return null;
   }

@@ -388,35 +388,55 @@ class ParserTest {
 	}
 	
 	@Test
-	def void testIndices() {
+	def void testLVal() {
 		'''
 			void f1() {
-				int v1 = v4;
-				int v2 = v5[1];
-				int v3 = v6[2][3];
+				int v1 = v7;
+				int v2 = v8[1];
+				int v3 = v9[2][3];
+				int v4 = v10@42;
+				int v5 = v11[4]@65;
+				int v6 = v12[5][6]@32;
 			}
 		'''.parse => [
 			assertNoIssues;
 			(programElements.head as Procedure).procedure.fnBody.varInitList => [
-				3.assertEquals(varInits.size)
+				6.assertEquals(varInits.size)
 				(varInits.get(0).varAsgnList.varAsgn.expr as LValExpr).value => [
-					"v4".assertEquals(name)
-					indices.assertNull
+					"v7".assertEquals(name)
+					indices.empty.assertTrue
+					at.assertNull
 				]
 				(varInits.get(1).varAsgnList.varAsgn.expr as LValExpr).value => [
-					"v5".assertEquals(name)
-					indices => [
-						1.assertEquals(indices.size)
-						1.assertEquals((indices.head as IntExpr).value)
-					]
+					"v8".assertEquals(name)
+					1.assertEquals(indices.size)
+					1.assertEquals((indices.head as IntExpr).value)
+					at.assertNull
 				]
 				(varInits.get(2).varAsgnList.varAsgn.expr as LValExpr).value => [
-					"v6".assertEquals(name)
-					indices => [
-						2.assertEquals(indices.size)
-						2.assertEquals((indices.get(0) as IntExpr).value)
-						3.assertEquals((indices.get(1) as IntExpr).value)
-					]
+					"v9".assertEquals(name)
+					2.assertEquals(indices.size)
+					2.assertEquals((indices.get(0) as IntExpr).value)
+					3.assertEquals((indices.get(1) as IntExpr).value)
+					at.assertNull
+				]
+				(varInits.get(3).varAsgnList.varAsgn.expr as LValExpr).value => [
+					"v10".assertEquals(name)
+					indices.empty.assertTrue
+					42.assertEquals((at as IntExpr).value)
+				]
+				(varInits.get(4).varAsgnList.varAsgn.expr as LValExpr).value => [
+					"v11".assertEquals(name)
+					1.assertEquals(indices.size)
+					4.assertEquals((indices.head as IntExpr).value)
+					65.assertEquals((at as IntExpr).value)
+				]
+				(varInits.get(5).varAsgnList.varAsgn.expr as LValExpr).value => [
+					"v12".assertEquals(name)
+					2.assertEquals(indices.size)
+					5.assertEquals((indices.get(0) as IntExpr).value)
+					6.assertEquals((indices.get(1) as IntExpr).value)
+					32.assertEquals((at as IntExpr).value)
 				]
 			]
 		]

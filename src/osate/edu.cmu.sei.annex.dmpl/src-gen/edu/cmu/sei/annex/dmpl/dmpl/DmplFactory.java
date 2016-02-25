@@ -212,15 +212,6 @@ public interface DmplFactory extends EFactory
   Expr createExpr();
 
   /**
-   * Returns a new object of class '<em>Indices</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Indices</em>'.
-   * @generated
-   */
-  Indices createIndices();
-
-  /**
    * Returns a new object of class '<em>Int Dimension</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

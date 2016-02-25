@@ -1368,25 +1368,55 @@ ruleLVal returns [EObject current=null]
 	    }
 
 )
-)(
+)(	otherlv_1='[' 
+    {
+    	newLeafNode(otherlv_1, grammarAccess.getLValAccess().getLeftSquareBracketKeyword_1_0());
+    }
+(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getLValAccess().getIndicesIndicesParserRuleCall_1_0()); 
+	        newCompositeNode(grammarAccess.getLValAccess().getIndicesExprParserRuleCall_1_1_0()); 
 	    }
-		lv_indices_1_0=ruleIndices		{
+		lv_indices_2_0=ruleExpr		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getLValRule());
+	        }
+       		add(
+       			$current, 
+       			"indices",
+        		lv_indices_2_0, 
+        		"Expr");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)	otherlv_3=']' 
+    {
+    	newLeafNode(otherlv_3, grammarAccess.getLValAccess().getRightSquareBracketKeyword_1_2());
+    }
+)*(	otherlv_4='@' 
+    {
+    	newLeafNode(otherlv_4, grammarAccess.getLValAccess().getCommercialAtKeyword_2_0());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getLValAccess().getAtExprParserRuleCall_2_1_0()); 
+	    }
+		lv_at_5_0=ruleExpr		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getLValRule());
 	        }
        		set(
        			$current, 
-       			"indices",
-        		lv_indices_1_0, 
-        		"Indices");
+       			"at",
+        		lv_at_5_0, 
+        		"Expr");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-)?)
+))?)
 ;
 
 
@@ -1457,53 +1487,6 @@ ruleExpr returns [EObject current=null]
 
 )
 )))
-;
-
-
-
-
-
-// Entry rule entryRuleIndices
-entryRuleIndices returns [EObject current=null] 
-	:
-	{ newCompositeNode(grammarAccess.getIndicesRule()); }
-	 iv_ruleIndices=ruleIndices 
-	 { $current=$iv_ruleIndices.current; } 
-	 EOF 
-;
-
-// Rule Indices
-ruleIndices returns [EObject current=null] 
-    @init { enterRule(); 
-    }
-    @after { leaveRule(); }:
-(	otherlv_0='[' 
-    {
-    	newLeafNode(otherlv_0, grammarAccess.getIndicesAccess().getLeftSquareBracketKeyword_0());
-    }
-(
-(
-		{ 
-	        newCompositeNode(grammarAccess.getIndicesAccess().getIndicesExprParserRuleCall_1_0()); 
-	    }
-		lv_indices_1_0=ruleExpr		{
-	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getIndicesRule());
-	        }
-       		add(
-       			$current, 
-       			"indices",
-        		lv_indices_1_0, 
-        		"Expr");
-	        afterParserOrEnumRuleCall();
-	    }
-
-)
-)	otherlv_2=']' 
-    {
-    	newLeafNode(otherlv_2, grammarAccess.getIndicesAccess().getRightSquareBracketKeyword_2());
-    }
-)+
 ;
 
 

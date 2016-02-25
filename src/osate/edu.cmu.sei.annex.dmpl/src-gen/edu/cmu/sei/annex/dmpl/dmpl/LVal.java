@@ -2,6 +2,8 @@
  */
 package edu.cmu.sei.annex.dmpl.dmpl;
 
+import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -15,6 +17,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.LVal#getName <em>Name</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.LVal#getIndices <em>Indices</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.LVal#getAt <em>At</em>}</li>
  * </ul>
  *
  * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getLVal()
@@ -50,29 +53,45 @@ public interface LVal extends EObject
   void setName(String value);
 
   /**
-   * Returns the value of the '<em><b>Indices</b></em>' containment reference.
+   * Returns the value of the '<em><b>Indices</b></em>' containment reference list.
+   * The list contents are of type {@link edu.cmu.sei.annex.dmpl.dmpl.Expr}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Indices</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Indices</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Indices</em>' containment reference.
-   * @see #setIndices(Indices)
+   * @return the value of the '<em>Indices</em>' containment reference list.
    * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getLVal_Indices()
    * @model containment="true"
    * @generated
    */
-  Indices getIndices();
+  EList<Expr> getIndices();
 
   /**
-   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.LVal#getIndices <em>Indices</em>}' containment reference.
+   * Returns the value of the '<em><b>At</b></em>' containment reference.
    * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>At</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Indices</em>' containment reference.
-   * @see #getIndices()
+   * @return the value of the '<em>At</em>' containment reference.
+   * @see #setAt(Expr)
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getLVal_At()
+   * @model containment="true"
    * @generated
    */
-  void setIndices(Indices value);
+  Expr getAt();
+
+  /**
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.LVal#getAt <em>At</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>At</em>' containment reference.
+   * @see #getAt()
+   * @generated
+   */
+  void setAt(Expr value);
 
 } // LVal

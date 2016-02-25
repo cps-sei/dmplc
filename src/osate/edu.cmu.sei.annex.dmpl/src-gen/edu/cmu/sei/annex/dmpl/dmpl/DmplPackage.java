@@ -764,7 +764,7 @@ public interface DmplPackage extends EPackage
   int LVAL__NAME = 0;
 
   /**
-   * The feature id for the '<em><b>Indices</b></em>' containment reference.
+   * The feature id for the '<em><b>Indices</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -773,13 +773,22 @@ public interface DmplPackage extends EPackage
   int LVAL__INDICES = 1;
 
   /**
+   * The feature id for the '<em><b>At</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int LVAL__AT = 2;
+
+  /**
    * The number of structural features of the '<em>LVal</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int LVAL_FEATURE_COUNT = 2;
+  int LVAL_FEATURE_COUNT = 3;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ExprImpl <em>Expr</em>}' class.
@@ -801,34 +810,6 @@ public interface DmplPackage extends EPackage
   int EXPR_FEATURE_COUNT = 0;
 
   /**
-   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.IndicesImpl <em>Indices</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.IndicesImpl
-   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIndices()
-   * @generated
-   */
-  int INDICES = 21;
-
-  /**
-   * The feature id for the '<em><b>Indices</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int INDICES__INDICES = 0;
-
-  /**
-   * The number of structural features of the '<em>Indices</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int INDICES_FEATURE_COUNT = 1;
-
-  /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.IntDimensionImpl <em>Int Dimension</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -836,7 +817,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIntDimension()
    * @generated
    */
-  int INT_DIMENSION = 22;
+  int INT_DIMENSION = 21;
 
   /**
    * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -864,7 +845,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getNodeNumDimension()
    * @generated
    */
-  int NODE_NUM_DIMENSION = 23;
+  int NODE_NUM_DIMENSION = 22;
 
   /**
    * The number of structural features of the '<em>Node Num Dimension</em>' class.
@@ -883,7 +864,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIdDimension()
    * @generated
    */
-  int ID_DIMENSION = 24;
+  int ID_DIMENSION = 23;
 
   /**
    * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -911,7 +892,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getThreadDeclaration()
    * @generated
    */
-  int THREAD_DECLARATION = 25;
+  int THREAD_DECLARATION = 24;
 
   /**
    * The feature id for the '<em><b>Extern</b></em>' attribute.
@@ -957,7 +938,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnPrototypeDeclaration()
    * @generated
    */
-  int FN_PROTOTYPE_DECLARATION = 26;
+  int FN_PROTOTYPE_DECLARATION = 25;
 
   /**
    * The feature id for the '<em><b>Extern</b></em>' attribute.
@@ -1021,7 +1002,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIntExpr()
    * @generated
    */
-  int INT_EXPR = 27;
+  int INT_EXPR = 26;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -1049,7 +1030,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getLValExpr()
    * @generated
    */
-  int LVAL_EXPR = 28;
+  int LVAL_EXPR = 27;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' containment reference.
@@ -1077,7 +1058,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignEnum()
    * @generated
    */
-  int SIGN_ENUM = 29;
+  int SIGN_ENUM = 28;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum <em>Simp Type Enum</em>}' enum.
@@ -1087,7 +1068,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSimpTypeEnum()
    * @generated
    */
-  int SIMP_TYPE_ENUM = 30;
+  int SIMP_TYPE_ENUM = 29;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SignedEnum <em>Signed Enum</em>}' enum.
@@ -1097,7 +1078,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignedEnum()
    * @generated
    */
-  int SIGNED_ENUM = 31;
+  int SIGNED_ENUM = 30;
 
 
   /**
@@ -1620,15 +1601,26 @@ public interface DmplPackage extends EPackage
   EAttribute getLVal_Name();
 
   /**
-   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.LVal#getIndices <em>Indices</em>}'.
+   * Returns the meta object for the containment reference list '{@link edu.cmu.sei.annex.dmpl.dmpl.LVal#getIndices <em>Indices</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Indices</em>'.
+   * @return the meta object for the containment reference list '<em>Indices</em>'.
    * @see edu.cmu.sei.annex.dmpl.dmpl.LVal#getIndices()
    * @see #getLVal()
    * @generated
    */
   EReference getLVal_Indices();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.LVal#getAt <em>At</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>At</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.LVal#getAt()
+   * @see #getLVal()
+   * @generated
+   */
+  EReference getLVal_At();
 
   /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.Expr <em>Expr</em>}'.
@@ -1639,27 +1631,6 @@ public interface DmplPackage extends EPackage
    * @generated
    */
   EClass getExpr();
-
-  /**
-   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.Indices <em>Indices</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Indices</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.Indices
-   * @generated
-   */
-  EClass getIndices();
-
-  /**
-   * Returns the meta object for the containment reference list '{@link edu.cmu.sei.annex.dmpl.dmpl.Indices#getIndices <em>Indices</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Indices</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.Indices#getIndices()
-   * @see #getIndices()
-   * @generated
-   */
-  EReference getIndices_Indices();
 
   /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.IntDimension <em>Int Dimension</em>}'.
@@ -2283,12 +2254,20 @@ public interface DmplPackage extends EPackage
     EAttribute LVAL__NAME = eINSTANCE.getLVal_Name();
 
     /**
-     * The meta object literal for the '<em><b>Indices</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Indices</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
     EReference LVAL__INDICES = eINSTANCE.getLVal_Indices();
+
+    /**
+     * The meta object literal for the '<em><b>At</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference LVAL__AT = eINSTANCE.getLVal_At();
 
     /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ExprImpl <em>Expr</em>}' class.
@@ -2299,24 +2278,6 @@ public interface DmplPackage extends EPackage
      * @generated
      */
     EClass EXPR = eINSTANCE.getExpr();
-
-    /**
-     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.IndicesImpl <em>Indices</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.IndicesImpl
-     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIndices()
-     * @generated
-     */
-    EClass INDICES = eINSTANCE.getIndices();
-
-    /**
-     * The meta object literal for the '<em><b>Indices</b></em>' containment reference list feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference INDICES__INDICES = eINSTANCE.getIndices_Indices();
 
     /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.IntDimensionImpl <em>Int Dimension</em>}' class.

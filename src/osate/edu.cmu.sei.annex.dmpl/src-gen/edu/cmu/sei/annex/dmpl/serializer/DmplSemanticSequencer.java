@@ -12,7 +12,6 @@ import edu.cmu.sei.annex.dmpl.dmpl.DoubleConst;
 import edu.cmu.sei.annex.dmpl.dmpl.FnBody;
 import edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration;
 import edu.cmu.sei.annex.dmpl.dmpl.IdDimension;
-import edu.cmu.sei.annex.dmpl.dmpl.Indices;
 import edu.cmu.sei.annex.dmpl.dmpl.IntConst;
 import edu.cmu.sei.annex.dmpl.dmpl.IntDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.IntExpr;
@@ -69,9 +68,6 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.ID_DIMENSION:
 				sequence_Dimension(context, (IdDimension) semanticObject); 
-				return; 
-			case DmplPackage.INDICES:
-				sequence_Indices(context, (Indices) semanticObject); 
 				return; 
 			case DmplPackage.INT_CONST:
 				sequence_IntConst(context, (IntConst) semanticObject); 
@@ -274,15 +270,6 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     indices+=Expr+
-	 */
-	protected void sequence_Indices(EObject context, Indices semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
 	 *     (sign=Sign? value=INT)
 	 */
 	protected void sequence_IntConst(EObject context, IntConst semanticObject) {
@@ -292,7 +279,7 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=TIDENTIFIER indices=Indices?)
+	 *     (name=TIDENTIFIER indices+=Expr* at=Expr?)
 	 */
 	protected void sequence_LVal(EObject context, LVal semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

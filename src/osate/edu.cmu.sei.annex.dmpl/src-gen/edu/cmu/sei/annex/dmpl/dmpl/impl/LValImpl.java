@@ -3,17 +3,24 @@
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
-import edu.cmu.sei.annex.dmpl.dmpl.Indices;
+import edu.cmu.sei.annex.dmpl.dmpl.Expr;
 import edu.cmu.sei.annex.dmpl.dmpl.LVal;
+
+import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -25,6 +32,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.LValImpl#getName <em>Name</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.LValImpl#getIndices <em>Indices</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.LValImpl#getAt <em>At</em>}</li>
  * </ul>
  *
  * @generated
@@ -52,14 +60,24 @@ public class LValImpl extends MinimalEObjectImpl.Container implements LVal
   protected String name = NAME_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getIndices() <em>Indices</em>}' containment reference.
+   * The cached value of the '{@link #getIndices() <em>Indices</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getIndices()
    * @generated
    * @ordered
    */
-  protected Indices indices;
+  protected EList<Expr> indices;
+
+  /**
+   * The cached value of the '{@link #getAt() <em>At</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getAt()
+   * @generated
+   * @ordered
+   */
+  protected Expr at;
 
   /**
    * <!-- begin-user-doc -->
@@ -110,8 +128,12 @@ public class LValImpl extends MinimalEObjectImpl.Container implements LVal
    * <!-- end-user-doc -->
    * @generated
    */
-  public Indices getIndices()
+  public EList<Expr> getIndices()
   {
+    if (indices == null)
+    {
+      indices = new EObjectContainmentEList<Expr>(Expr.class, this, DmplPackage.LVAL__INDICES);
+    }
     return indices;
   }
 
@@ -120,13 +142,23 @@ public class LValImpl extends MinimalEObjectImpl.Container implements LVal
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetIndices(Indices newIndices, NotificationChain msgs)
+  public Expr getAt()
   {
-    Indices oldIndices = indices;
-    indices = newIndices;
+    return at;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetAt(Expr newAt, NotificationChain msgs)
+  {
+    Expr oldAt = at;
+    at = newAt;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.LVAL__INDICES, oldIndices, newIndices);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.LVAL__AT, oldAt, newAt);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -137,20 +169,20 @@ public class LValImpl extends MinimalEObjectImpl.Container implements LVal
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setIndices(Indices newIndices)
+  public void setAt(Expr newAt)
   {
-    if (newIndices != indices)
+    if (newAt != at)
     {
       NotificationChain msgs = null;
-      if (indices != null)
-        msgs = ((InternalEObject)indices).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.LVAL__INDICES, null, msgs);
-      if (newIndices != null)
-        msgs = ((InternalEObject)newIndices).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.LVAL__INDICES, null, msgs);
-      msgs = basicSetIndices(newIndices, msgs);
+      if (at != null)
+        msgs = ((InternalEObject)at).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.LVAL__AT, null, msgs);
+      if (newAt != null)
+        msgs = ((InternalEObject)newAt).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.LVAL__AT, null, msgs);
+      msgs = basicSetAt(newAt, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.LVAL__INDICES, newIndices, newIndices));
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.LVAL__AT, newAt, newAt));
   }
 
   /**
@@ -164,7 +196,9 @@ public class LValImpl extends MinimalEObjectImpl.Container implements LVal
     switch (featureID)
     {
       case DmplPackage.LVAL__INDICES:
-        return basicSetIndices(null, msgs);
+        return ((InternalEList<?>)getIndices()).basicRemove(otherEnd, msgs);
+      case DmplPackage.LVAL__AT:
+        return basicSetAt(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -183,6 +217,8 @@ public class LValImpl extends MinimalEObjectImpl.Container implements LVal
         return getName();
       case DmplPackage.LVAL__INDICES:
         return getIndices();
+      case DmplPackage.LVAL__AT:
+        return getAt();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -192,6 +228,7 @@ public class LValImpl extends MinimalEObjectImpl.Container implements LVal
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
@@ -201,7 +238,11 @@ public class LValImpl extends MinimalEObjectImpl.Container implements LVal
         setName((String)newValue);
         return;
       case DmplPackage.LVAL__INDICES:
-        setIndices((Indices)newValue);
+        getIndices().clear();
+        getIndices().addAll((Collection<? extends Expr>)newValue);
+        return;
+      case DmplPackage.LVAL__AT:
+        setAt((Expr)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -221,7 +262,10 @@ public class LValImpl extends MinimalEObjectImpl.Container implements LVal
         setName(NAME_EDEFAULT);
         return;
       case DmplPackage.LVAL__INDICES:
-        setIndices((Indices)null);
+        getIndices().clear();
+        return;
+      case DmplPackage.LVAL__AT:
+        setAt((Expr)null);
         return;
     }
     super.eUnset(featureID);
@@ -240,7 +284,9 @@ public class LValImpl extends MinimalEObjectImpl.Container implements LVal
       case DmplPackage.LVAL__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case DmplPackage.LVAL__INDICES:
-        return indices != null;
+        return indices != null && !indices.isEmpty();
+      case DmplPackage.LVAL__AT:
+        return at != null;
     }
     return super.eIsSet(featureID);
   }
