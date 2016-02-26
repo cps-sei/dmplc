@@ -6,6 +6,7 @@ package edu.cmu.sei.annex.dmpl.serializer;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import edu.cmu.sei.annex.dmpl.dmpl.AdditiveExpr;
+import edu.cmu.sei.annex.dmpl.dmpl.AndExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.ArgList;
 import edu.cmu.sei.annex.dmpl.dmpl.BitwiseAndExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.BitwiseOrExpr;
@@ -67,6 +68,9 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 		if(semanticObject.eClass().getEPackage() == DmplPackage.eINSTANCE) switch(semanticObject.eClass().getClassifierID()) {
 			case DmplPackage.ADDITIVE_EXPR:
 				sequence_AdditiveExpr(context, (AdditiveExpr) semanticObject); 
+				return; 
+			case DmplPackage.AND_EXPR:
+				sequence_AndExpr(context, (AndExpr) semanticObject); 
 				return; 
 			case DmplPackage.ARG_LIST:
 				sequence_ArgList(context, (ArgList) semanticObject); 
@@ -198,6 +202,25 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 		feeder.accept(grammarAccess.getAdditiveExprAccess().getAdditiveExprLeftAction_1_0_0_0(), semanticObject.getLeft());
 		feeder.accept(grammarAccess.getAdditiveExprAccess().getOperatorAdditiveOperatorEnumRuleCall_1_0_0_1_0(), semanticObject.getOperator());
 		feeder.accept(grammarAccess.getAdditiveExprAccess().getRightMultiplicativeExprParserRuleCall_1_1_0(), semanticObject.getRight());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (left=AndExpr_AndExpr_1_0_0_0 right=BitwiseOrExpr)
+	 */
+	protected void sequence_AndExpr(EObject context, AndExpr semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.AND_EXPR__LEFT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.AND_EXPR__LEFT));
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.AND_EXPR__RIGHT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.AND_EXPR__RIGHT));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getAndExprAccess().getAndExprLeftAction_1_0_0_0(), semanticObject.getLeft());
+		feeder.accept(grammarAccess.getAndExprAccess().getRightBitwiseOrExprParserRuleCall_1_1_0(), semanticObject.getRight());
 		feeder.finish();
 	}
 	

@@ -104,7 +104,11 @@ LVal:
 
 Expr:
 	//TODO
-	BitwiseOrExpr
+	AndExpr
+;
+
+AndExpr returns Expr:
+	BitwiseOrExpr (=>({AndExpr.left=current} '&&') right=BitwiseOrExpr)*
 ;
 
 BitwiseOrExpr returns Expr:
