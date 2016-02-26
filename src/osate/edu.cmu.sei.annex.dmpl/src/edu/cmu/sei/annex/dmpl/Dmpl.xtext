@@ -104,7 +104,11 @@ LVal:
 
 Expr:
 	//TODO
-	XorExpr
+	BitwiseOrExpr
+;
+
+BitwiseOrExpr returns Expr:
+	XorExpr (=>({BitwiseOrExpr.left=current} '|') right=XorExpr)*
 ;
 
 XorExpr returns Expr:

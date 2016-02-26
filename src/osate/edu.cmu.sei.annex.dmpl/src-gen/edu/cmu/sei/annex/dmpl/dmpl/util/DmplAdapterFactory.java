@@ -220,6 +220,11 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createFnPrototypeDeclarationAdapter();
       }
       @Override
+      public Adapter caseBitwiseOrExpr(BitwiseOrExpr object)
+      {
+        return createBitwiseOrExprAdapter();
+      }
+      @Override
       public Adapter caseXorExpr(XorExpr object)
       {
         return createXorExprAdapter();
@@ -742,6 +747,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createFnPrototypeDeclarationAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.BitwiseOrExpr <em>Bitwise Or Expr</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.BitwiseOrExpr
+   * @generated
+   */
+  public Adapter createBitwiseOrExprAdapter()
   {
     return null;
   }

@@ -275,6 +275,15 @@ public interface DmplFactory extends EFactory
   FnPrototypeDeclaration createFnPrototypeDeclaration();
 
   /**
+   * Returns a new object of class '<em>Bitwise Or Expr</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Bitwise Or Expr</em>'.
+   * @generated
+   */
+  BitwiseOrExpr createBitwiseOrExpr();
+
+  /**
    * Returns a new object of class '<em>Xor Expr</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
