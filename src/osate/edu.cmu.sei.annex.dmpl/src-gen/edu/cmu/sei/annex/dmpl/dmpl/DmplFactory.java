@@ -275,6 +275,15 @@ public interface DmplFactory extends EFactory
   FnPrototypeDeclaration createFnPrototypeDeclaration();
 
   /**
+   * Returns a new object of class '<em>Additive Expr</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Additive Expr</em>'.
+   * @generated
+   */
+  AdditiveExpr createAdditiveExpr();
+
+  /**
    * Returns a new object of class '<em>Multiplicative Expr</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

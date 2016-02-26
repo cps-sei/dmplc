@@ -2,6 +2,8 @@ package edu.cmu.sei.annex.dmpl.tests
 
 import com.google.inject.Inject
 import edu.cmu.sei.annex.dmpl.DmplInjectorProvider
+import edu.cmu.sei.annex.dmpl.dmpl.AdditiveExpr
+import edu.cmu.sei.annex.dmpl.dmpl.AdditiveOperator
 import edu.cmu.sei.annex.dmpl.dmpl.BuiltInExpr
 import edu.cmu.sei.annex.dmpl.dmpl.BuiltInFunctionEnum
 import edu.cmu.sei.annex.dmpl.dmpl.CallExpr
@@ -713,6 +715,89 @@ class ParserTest {
 						]
 						MultiplicativeOperator.MODULUS.assertEquals(operator)
 						"name10".assertEquals((right as LVal).name)
+					]
+				]
+			]
+		]
+	}
+	
+	@Test
+	def void testAdditiveExpr() {
+		'''
+			void f1() {
+				int v1 = name1 + name2;
+				int v2 = name3 - name4;
+				int v3 = name5 + name6 - name7;
+				int v4 = name8 + name9 * name10;
+				int v5 = name11 * name12 + name13;
+				int v6 = (name14 + name15) * name16;
+			}
+		'''.parse => [
+			assertNoIssues;
+			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+				6.assertEquals(varInits.size)
+				varInits.get(0).varAsgnList.varAsgn => [
+					"v1".assertEquals(^var.name)
+					expr as AdditiveExpr => [
+						"name1".assertEquals((left as LVal).name)
+						AdditiveOperator.ADD.assertEquals(operator)
+						"name2".assertEquals((right as LVal).name)
+					]
+				]
+				varInits.get(1).varAsgnList.varAsgn => [
+					"v2".assertEquals(^var.name)
+					expr as AdditiveExpr => [
+						"name3".assertEquals((left as LVal).name)
+						AdditiveOperator.SUBTRACT.assertEquals(operator)
+						"name4".assertEquals((right as LVal).name)
+					]
+				]
+				varInits.get(2).varAsgnList.varAsgn => [
+					"v3".assertEquals(^var.name)
+					expr as AdditiveExpr => [
+						left as AdditiveExpr => [
+							"name5".assertEquals((left as LVal).name)
+							AdditiveOperator.ADD.assertEquals(operator)
+							"name6".assertEquals((right as LVal).name)
+						]
+						AdditiveOperator.SUBTRACT.assertEquals(operator)
+						"name7".assertEquals((right as LVal).name)
+					]
+				]
+				varInits.get(3).varAsgnList.varAsgn => [
+					"v4".assertEquals(^var.name)
+					expr as AdditiveExpr => [
+						"name8".assertEquals((left as LVal).name)
+						AdditiveOperator.ADD.assertEquals(operator)
+						right as MultiplicativeExpr => [
+							"name9".assertEquals((left as LVal).name)
+							MultiplicativeOperator.MULTIPLY.assertEquals(operator)
+							"name10".assertEquals((right as LVal).name)
+						]
+					]
+				]
+				varInits.get(4).varAsgnList.varAsgn => [
+					"v5".assertEquals(^var.name)
+					expr as AdditiveExpr => [
+						left as MultiplicativeExpr => [
+							"name11".assertEquals((left as LVal).name)
+							MultiplicativeOperator.MULTIPLY.assertEquals(operator)
+							"name12".assertEquals((right as LVal).name)
+						]
+						AdditiveOperator.ADD.assertEquals(operator)
+						"name13".assertEquals((right as LVal).name)
+					]
+				]
+				varInits.get(5).varAsgnList.varAsgn => [
+					"v6".assertEquals(^var.name)
+					expr as MultiplicativeExpr => [
+						left as AdditiveExpr => [
+							"name14".assertEquals((left as LVal).name)
+							AdditiveOperator.ADD.assertEquals(operator)
+							"name15".assertEquals((right as LVal).name)
+						]
+						MultiplicativeOperator.MULTIPLY.assertEquals(operator)
+						"name16".assertEquals((right as LVal).name)
 					]
 				]
 			]

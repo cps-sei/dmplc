@@ -816,15 +816,63 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 	public class ExprElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Expr");
-		private final RuleCall cMultiplicativeExprParserRuleCall = (RuleCall)rule.eContents().get(1);
+		private final RuleCall cAdditiveExprParserRuleCall = (RuleCall)rule.eContents().get(1);
 		
 		//Expr: //TODO
-		//	MultiplicativeExpr;
+		//	AdditiveExpr;
 		@Override public ParserRule getRule() { return rule; }
 
 		////TODO
+		//AdditiveExpr
+		public RuleCall getAdditiveExprParserRuleCall() { return cAdditiveExprParserRuleCall; }
+	}
+
+	public class AdditiveExprElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "AdditiveExpr");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final RuleCall cMultiplicativeExprParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
+		private final Group cGroup_1_0 = (Group)cGroup_1.eContents().get(0);
+		private final Group cGroup_1_0_0 = (Group)cGroup_1_0.eContents().get(0);
+		private final Action cAdditiveExprLeftAction_1_0_0_0 = (Action)cGroup_1_0_0.eContents().get(0);
+		private final Assignment cOperatorAssignment_1_0_0_1 = (Assignment)cGroup_1_0_0.eContents().get(1);
+		private final RuleCall cOperatorAdditiveOperatorEnumRuleCall_1_0_0_1_0 = (RuleCall)cOperatorAssignment_1_0_0_1.eContents().get(0);
+		private final Assignment cRightAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
+		private final RuleCall cRightMultiplicativeExprParserRuleCall_1_1_0 = (RuleCall)cRightAssignment_1_1.eContents().get(0);
+		
+		//AdditiveExpr returns Expr:
+		//	MultiplicativeExpr (=> ({AdditiveExpr.left=current} operator=AdditiveOperator) right=MultiplicativeExpr)*;
+		@Override public ParserRule getRule() { return rule; }
+
+		//MultiplicativeExpr (=> ({AdditiveExpr.left=current} operator=AdditiveOperator) right=MultiplicativeExpr)*
+		public Group getGroup() { return cGroup; }
+
 		//MultiplicativeExpr
-		public RuleCall getMultiplicativeExprParserRuleCall() { return cMultiplicativeExprParserRuleCall; }
+		public RuleCall getMultiplicativeExprParserRuleCall_0() { return cMultiplicativeExprParserRuleCall_0; }
+
+		//(=> ({AdditiveExpr.left=current} operator=AdditiveOperator) right=MultiplicativeExpr)*
+		public Group getGroup_1() { return cGroup_1; }
+
+		//=> ({AdditiveExpr.left=current} operator=AdditiveOperator)
+		public Group getGroup_1_0() { return cGroup_1_0; }
+
+		//{AdditiveExpr.left=current} operator=AdditiveOperator
+		public Group getGroup_1_0_0() { return cGroup_1_0_0; }
+
+		//{AdditiveExpr.left=current}
+		public Action getAdditiveExprLeftAction_1_0_0_0() { return cAdditiveExprLeftAction_1_0_0_0; }
+
+		//operator=AdditiveOperator
+		public Assignment getOperatorAssignment_1_0_0_1() { return cOperatorAssignment_1_0_0_1; }
+
+		//AdditiveOperator
+		public RuleCall getOperatorAdditiveOperatorEnumRuleCall_1_0_0_1_0() { return cOperatorAdditiveOperatorEnumRuleCall_1_0_0_1_0; }
+
+		//right=MultiplicativeExpr
+		public Assignment getRightAssignment_1_1() { return cRightAssignment_1_1; }
+
+		//MultiplicativeExpr
+		public RuleCall getRightMultiplicativeExprParserRuleCall_1_1_0() { return cRightMultiplicativeExprParserRuleCall_1_1_0; }
 	}
 
 	public class MultiplicativeExprElements extends AbstractParserRuleElementFinder {
@@ -1420,6 +1468,34 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getUnsignedUnsignedKeyword_2_0() { return cUnsignedUnsignedKeyword_2_0; }
 	}
 
+	public class AdditiveOperatorElements extends AbstractEnumRuleElementFinder {
+		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "AdditiveOperator");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final EnumLiteralDeclaration cADDEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
+		private final Keyword cADDPlusSignKeyword_0_0 = (Keyword)cADDEnumLiteralDeclaration_0.eContents().get(0);
+		private final EnumLiteralDeclaration cSUBTRACTEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
+		private final Keyword cSUBTRACTHyphenMinusKeyword_1_0 = (Keyword)cSUBTRACTEnumLiteralDeclaration_1.eContents().get(0);
+		
+		//enum AdditiveOperator:
+		//	ADD="+" | SUBTRACT="-";
+		public EnumRule getRule() { return rule; }
+
+		//ADD="+" | SUBTRACT="-"
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//ADD="+"
+		public EnumLiteralDeclaration getADDEnumLiteralDeclaration_0() { return cADDEnumLiteralDeclaration_0; }
+
+		//"+"
+		public Keyword getADDPlusSignKeyword_0_0() { return cADDPlusSignKeyword_0_0; }
+
+		//SUBTRACT="-"
+		public EnumLiteralDeclaration getSUBTRACTEnumLiteralDeclaration_1() { return cSUBTRACTEnumLiteralDeclaration_1; }
+
+		//"-"
+		public Keyword getSUBTRACTHyphenMinusKeyword_1_0() { return cSUBTRACTHyphenMinusKeyword_1_0; }
+	}
+
 	public class MultiplicativeOperatorElements extends AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "MultiplicativeOperator");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
@@ -1558,6 +1634,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final VarInitListElements pVarInitList;
 	private final LValElements pLVal;
 	private final ExprElements pExpr;
+	private final AdditiveExprElements pAdditiveExpr;
 	private final MultiplicativeExprElements pMultiplicativeExpr;
 	private final TerminalExprElements pTerminalExpr;
 	private final CallExprElements pCallExpr;
@@ -1568,6 +1645,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final SimpTypeElements pSimpType;
 	private final SignedEnumElements unknownRuleSignedEnum;
 	private final SignedElements pSigned;
+	private final AdditiveOperatorElements unknownRuleAdditiveOperator;
 	private final MultiplicativeOperatorElements unknownRuleMultiplicativeOperator;
 	private final UnaryOperatorElements unknownRuleUnaryOperator;
 	private final BuiltInFunctionEnumElements unknownRuleBuiltInFunctionEnum;
@@ -1606,6 +1684,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pVarInitList = new VarInitListElements();
 		this.pLVal = new LValElements();
 		this.pExpr = new ExprElements();
+		this.pAdditiveExpr = new AdditiveExprElements();
 		this.pMultiplicativeExpr = new MultiplicativeExprElements();
 		this.pTerminalExpr = new TerminalExprElements();
 		this.pCallExpr = new CallExprElements();
@@ -1616,6 +1695,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pSimpType = new SimpTypeElements();
 		this.unknownRuleSignedEnum = new SignedEnumElements();
 		this.pSigned = new SignedElements();
+		this.unknownRuleAdditiveOperator = new AdditiveOperatorElements();
 		this.unknownRuleMultiplicativeOperator = new MultiplicativeOperatorElements();
 		this.unknownRuleUnaryOperator = new UnaryOperatorElements();
 		this.unknownRuleBuiltInFunctionEnum = new BuiltInFunctionEnumElements();
@@ -1864,13 +1944,23 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Expr: //TODO
-	//	MultiplicativeExpr;
+	//	AdditiveExpr;
 	public ExprElements getExprAccess() {
 		return pExpr;
 	}
 	
 	public ParserRule getExprRule() {
 		return getExprAccess().getRule();
+	}
+
+	//AdditiveExpr returns Expr:
+	//	MultiplicativeExpr (=> ({AdditiveExpr.left=current} operator=AdditiveOperator) right=MultiplicativeExpr)*;
+	public AdditiveExprElements getAdditiveExprAccess() {
+		return pAdditiveExpr;
+	}
+	
+	public ParserRule getAdditiveExprRule() {
+		return getAdditiveExprAccess().getRule();
 	}
 
 	//MultiplicativeExpr returns Expr:
@@ -1973,6 +2063,16 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getSignedRule() {
 		return getSignedAccess().getRule();
+	}
+
+	//enum AdditiveOperator:
+	//	ADD="+" | SUBTRACT="-";
+	public AdditiveOperatorElements getAdditiveOperatorAccess() {
+		return unknownRuleAdditiveOperator;
+	}
+	
+	public EnumRule getAdditiveOperatorRule() {
+		return getAdditiveOperatorAccess().getRule();
 	}
 
 	//enum MultiplicativeOperator:

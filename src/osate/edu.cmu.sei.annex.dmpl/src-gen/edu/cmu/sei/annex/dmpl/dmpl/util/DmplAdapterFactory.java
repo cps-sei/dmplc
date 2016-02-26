@@ -220,6 +220,11 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createFnPrototypeDeclarationAdapter();
       }
       @Override
+      public Adapter caseAdditiveExpr(AdditiveExpr object)
+      {
+        return createAdditiveExprAdapter();
+      }
+      @Override
       public Adapter caseMultiplicativeExpr(MultiplicativeExpr object)
       {
         return createMultiplicativeExprAdapter();
@@ -712,6 +717,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createFnPrototypeDeclarationAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.AdditiveExpr <em>Additive Expr</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.AdditiveExpr
+   * @generated
+   */
+  public Adapter createAdditiveExprAdapter()
   {
     return null;
   }

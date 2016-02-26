@@ -104,7 +104,11 @@ LVal:
 
 Expr:
 	//TODO
-	MultiplicativeExpr
+	AdditiveExpr
+;
+
+AdditiveExpr returns Expr:
+	MultiplicativeExpr (=>({AdditiveExpr.left=current} operator=AdditiveOperator) right=MultiplicativeExpr)*
 ;
 
 MultiplicativeExpr returns Expr:
@@ -156,6 +160,11 @@ enum SignedEnum:
 
 Signed returns SignedEnum:
 	'signed' | 'unsigned'
+;
+
+enum AdditiveOperator:
+	ADD='+' |
+	SUBTRACT='-'
 ;
 
 enum MultiplicativeOperator:

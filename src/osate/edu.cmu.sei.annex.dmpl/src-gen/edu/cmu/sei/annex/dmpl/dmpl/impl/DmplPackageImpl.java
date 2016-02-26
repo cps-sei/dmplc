@@ -2,6 +2,8 @@
  */
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
+import edu.cmu.sei.annex.dmpl.dmpl.AdditiveExpr;
+import edu.cmu.sei.annex.dmpl.dmpl.AdditiveOperator;
 import edu.cmu.sei.annex.dmpl.dmpl.ArgList;
 import edu.cmu.sei.annex.dmpl.dmpl.BuiltInExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.BuiltInFunctionEnum;
@@ -265,6 +267,13 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass additiveExprEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass multiplicativeExprEClass = null;
 
   /**
@@ -329,6 +338,13 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EEnum signedEnumEEnum = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EEnum additiveOperatorEEnum = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -1102,6 +1118,46 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getAdditiveExpr()
+  {
+    return additiveExprEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getAdditiveExpr_Left()
+  {
+    return (EReference)additiveExprEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getAdditiveExpr_Operator()
+  {
+    return (EAttribute)additiveExprEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getAdditiveExpr_Right()
+  {
+    return (EReference)additiveExprEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getMultiplicativeExpr()
   {
     return multiplicativeExprEClass;
@@ -1302,6 +1358,16 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EEnum getAdditiveOperator()
+  {
+    return additiveOperatorEEnum;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EEnum getMultiplicativeOperator()
   {
     return multiplicativeOperatorEEnum;
@@ -1453,6 +1519,11 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     createEReference(fnPrototypeDeclarationEClass, FN_PROTOTYPE_DECLARATION__TYPE);
     createEReference(fnPrototypeDeclarationEClass, FN_PROTOTYPE_DECLARATION__PARAMS);
 
+    additiveExprEClass = createEClass(ADDITIVE_EXPR);
+    createEReference(additiveExprEClass, ADDITIVE_EXPR__LEFT);
+    createEAttribute(additiveExprEClass, ADDITIVE_EXPR__OPERATOR);
+    createEReference(additiveExprEClass, ADDITIVE_EXPR__RIGHT);
+
     multiplicativeExprEClass = createEClass(MULTIPLICATIVE_EXPR);
     createEReference(multiplicativeExprEClass, MULTIPLICATIVE_EXPR__LEFT);
     createEAttribute(multiplicativeExprEClass, MULTIPLICATIVE_EXPR__OPERATOR);
@@ -1481,6 +1552,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     signEnumEEnum = createEEnum(SIGN_ENUM);
     simpTypeEnumEEnum = createEEnum(SIMP_TYPE_ENUM);
     signedEnumEEnum = createEEnum(SIGNED_ENUM);
+    additiveOperatorEEnum = createEEnum(ADDITIVE_OPERATOR);
     multiplicativeOperatorEEnum = createEEnum(MULTIPLICATIVE_OPERATOR);
     unaryOperatorEEnum = createEEnum(UNARY_OPERATOR);
     builtInFunctionEnumEEnum = createEEnum(BUILT_IN_FUNCTION_ENUM);
@@ -1530,6 +1602,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     idDimensionEClass.getESuperTypes().add(this.getDimension());
     threadDeclarationEClass.getESuperTypes().add(this.getFnPrototype());
     fnPrototypeDeclarationEClass.getESuperTypes().add(this.getFnPrototype());
+    additiveExprEClass.getESuperTypes().add(this.getExpr());
     multiplicativeExprEClass.getESuperTypes().add(this.getExpr());
     idExprEClass.getESuperTypes().add(this.getExpr());
     intExprEClass.getESuperTypes().add(this.getExpr());
@@ -1635,6 +1708,11 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEReference(getFnPrototypeDeclaration_Type(), this.getType(), null, "type", null, 0, 1, FnPrototypeDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getFnPrototypeDeclaration_Params(), this.getParam(), null, "params", null, 0, -1, FnPrototypeDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(additiveExprEClass, AdditiveExpr.class, "AdditiveExpr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getAdditiveExpr_Left(), this.getExpr(), null, "left", null, 0, 1, AdditiveExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getAdditiveExpr_Operator(), this.getAdditiveOperator(), "operator", null, 0, 1, AdditiveExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getAdditiveExpr_Right(), this.getExpr(), null, "right", null, 0, 1, AdditiveExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     initEClass(multiplicativeExprEClass, MultiplicativeExpr.class, "MultiplicativeExpr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getMultiplicativeExpr_Left(), this.getExpr(), null, "left", null, 0, 1, MultiplicativeExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getMultiplicativeExpr_Operator(), this.getMultiplicativeOperator(), "operator", null, 0, 1, MultiplicativeExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1676,6 +1754,10 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     addEEnumLiteral(signedEnumEEnum, SignedEnum.UNSET);
     addEEnumLiteral(signedEnumEEnum, SignedEnum.SIGNED);
     addEEnumLiteral(signedEnumEEnum, SignedEnum.UNSIGNED);
+
+    initEEnum(additiveOperatorEEnum, AdditiveOperator.class, "AdditiveOperator");
+    addEEnumLiteral(additiveOperatorEEnum, AdditiveOperator.ADD);
+    addEEnumLiteral(additiveOperatorEEnum, AdditiveOperator.SUBTRACT);
 
     initEEnum(multiplicativeOperatorEEnum, MultiplicativeOperator.class, "MultiplicativeOperator");
     addEEnumLiteral(multiplicativeOperatorEEnum, MultiplicativeOperator.MULTIPLY);

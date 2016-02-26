@@ -5,6 +5,7 @@ package edu.cmu.sei.annex.dmpl.serializer;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import edu.cmu.sei.annex.dmpl.dmpl.AdditiveExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.ArgList;
 import edu.cmu.sei.annex.dmpl.dmpl.BuiltInExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.CallExpr;
@@ -58,6 +59,9 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	@Override
 	public void createSequence(EObject context, EObject semanticObject) {
 		if(semanticObject.eClass().getEPackage() == DmplPackage.eINSTANCE) switch(semanticObject.eClass().getClassifierID()) {
+			case DmplPackage.ADDITIVE_EXPR:
+				sequence_AdditiveExpr(context, (AdditiveExpr) semanticObject); 
+				return; 
 			case DmplPackage.ARG_LIST:
 				sequence_ArgList(context, (ArgList) semanticObject); 
 				return; 
@@ -151,6 +155,28 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 			}
 		if (errorAcceptor != null) errorAcceptor.accept(diagnosticProvider.createInvalidContextOrTypeDiagnostic(semanticObject, context));
 	}
+	
+	/**
+	 * Constraint:
+	 *     (left=AdditiveExpr_AdditiveExpr_1_0_0_0 operator=AdditiveOperator right=MultiplicativeExpr)
+	 */
+	protected void sequence_AdditiveExpr(EObject context, AdditiveExpr semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.ADDITIVE_EXPR__LEFT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.ADDITIVE_EXPR__LEFT));
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.ADDITIVE_EXPR__OPERATOR) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.ADDITIVE_EXPR__OPERATOR));
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.ADDITIVE_EXPR__RIGHT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.ADDITIVE_EXPR__RIGHT));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getAdditiveExprAccess().getAdditiveExprLeftAction_1_0_0_0(), semanticObject.getLeft());
+		feeder.accept(grammarAccess.getAdditiveExprAccess().getOperatorAdditiveOperatorEnumRuleCall_1_0_0_1_0(), semanticObject.getOperator());
+		feeder.accept(grammarAccess.getAdditiveExprAccess().getRightMultiplicativeExprParserRuleCall_1_1_0(), semanticObject.getRight());
+		feeder.finish();
+	}
+	
 	
 	/**
 	 * Constraint:
