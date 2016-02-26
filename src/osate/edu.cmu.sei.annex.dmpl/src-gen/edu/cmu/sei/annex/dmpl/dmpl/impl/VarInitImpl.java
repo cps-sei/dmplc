@@ -32,7 +32,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * </p>
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarInitImpl#getType <em>Type</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarInitImpl#getVarInitItems <em>Var Init Items</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarInitImpl#getVarAsgns <em>Var Asgns</em>}</li>
  * </ul>
  *
  * @generated
@@ -50,14 +50,14 @@ public class VarInitImpl extends MinimalEObjectImpl.Container implements VarInit
   protected Type type;
 
   /**
-   * The cached value of the '{@link #getVarInitItems() <em>Var Init Items</em>}' containment reference list.
+   * The cached value of the '{@link #getVarAsgns() <em>Var Asgns</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getVarInitItems()
+   * @see #getVarAsgns()
    * @generated
    * @ordered
    */
-  protected EList<VarAsgn> varInitItems;
+  protected EList<VarAsgn> varAsgns;
 
   /**
    * <!-- begin-user-doc -->
@@ -133,13 +133,13 @@ public class VarInitImpl extends MinimalEObjectImpl.Container implements VarInit
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<VarAsgn> getVarInitItems()
+  public EList<VarAsgn> getVarAsgns()
   {
-    if (varInitItems == null)
+    if (varAsgns == null)
     {
-      varInitItems = new EObjectContainmentEList<VarAsgn>(VarAsgn.class, this, DmplPackage.VAR_INIT__VAR_INIT_ITEMS);
+      varAsgns = new EObjectContainmentEList<VarAsgn>(VarAsgn.class, this, DmplPackage.VAR_INIT__VAR_ASGNS);
     }
-    return varInitItems;
+    return varAsgns;
   }
 
   /**
@@ -154,8 +154,8 @@ public class VarInitImpl extends MinimalEObjectImpl.Container implements VarInit
     {
       case DmplPackage.VAR_INIT__TYPE:
         return basicSetType(null, msgs);
-      case DmplPackage.VAR_INIT__VAR_INIT_ITEMS:
-        return ((InternalEList<?>)getVarInitItems()).basicRemove(otherEnd, msgs);
+      case DmplPackage.VAR_INIT__VAR_ASGNS:
+        return ((InternalEList<?>)getVarAsgns()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -172,8 +172,8 @@ public class VarInitImpl extends MinimalEObjectImpl.Container implements VarInit
     {
       case DmplPackage.VAR_INIT__TYPE:
         return getType();
-      case DmplPackage.VAR_INIT__VAR_INIT_ITEMS:
-        return getVarInitItems();
+      case DmplPackage.VAR_INIT__VAR_ASGNS:
+        return getVarAsgns();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -192,9 +192,9 @@ public class VarInitImpl extends MinimalEObjectImpl.Container implements VarInit
       case DmplPackage.VAR_INIT__TYPE:
         setType((Type)newValue);
         return;
-      case DmplPackage.VAR_INIT__VAR_INIT_ITEMS:
-        getVarInitItems().clear();
-        getVarInitItems().addAll((Collection<? extends VarAsgn>)newValue);
+      case DmplPackage.VAR_INIT__VAR_ASGNS:
+        getVarAsgns().clear();
+        getVarAsgns().addAll((Collection<? extends VarAsgn>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -213,8 +213,8 @@ public class VarInitImpl extends MinimalEObjectImpl.Container implements VarInit
       case DmplPackage.VAR_INIT__TYPE:
         setType((Type)null);
         return;
-      case DmplPackage.VAR_INIT__VAR_INIT_ITEMS:
-        getVarInitItems().clear();
+      case DmplPackage.VAR_INIT__VAR_ASGNS:
+        getVarAsgns().clear();
         return;
     }
     super.eUnset(featureID);
@@ -232,8 +232,8 @@ public class VarInitImpl extends MinimalEObjectImpl.Container implements VarInit
     {
       case DmplPackage.VAR_INIT__TYPE:
         return type != null;
-      case DmplPackage.VAR_INIT__VAR_INIT_ITEMS:
-        return varInitItems != null && !varInitItems.isEmpty();
+      case DmplPackage.VAR_INIT__VAR_ASGNS:
+        return varAsgns != null && !varAsgns.isEmpty();
     }
     return super.eIsSet(featureID);
   }

@@ -459,16 +459,16 @@ ruleVarInit returns [EObject current=null]
 )(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getVarInitAccess().getVarInitItemsVarAsgnParserRuleCall_1_0()); 
+	        newCompositeNode(grammarAccess.getVarInitAccess().getVarAsgnsVarAsgnParserRuleCall_1_0()); 
 	    }
-		lv_varInitItems_1_0=ruleVarAsgn		{
+		lv_varAsgns_1_0=ruleVarAsgn		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getVarInitRule());
 	        }
        		add(
        			$current, 
-       			"varInitItems",
-        		lv_varInitItems_1_0, 
+       			"varAsgns",
+        		lv_varAsgns_1_0, 
         		"VarAsgn");
 	        afterParserOrEnumRuleCall();
 	    }
@@ -481,16 +481,16 @@ ruleVarInit returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getVarInitAccess().getVarInitItemsVarAsgnParserRuleCall_2_1_0()); 
+	        newCompositeNode(grammarAccess.getVarInitAccess().getVarAsgnsVarAsgnParserRuleCall_2_1_0()); 
 	    }
-		lv_varInitItems_3_0=ruleVarAsgn		{
+		lv_varAsgns_3_0=ruleVarAsgn		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getVarInitRule());
 	        }
        		add(
        			$current, 
-       			"varInitItems",
-        		lv_varInitItems_3_0, 
+       			"varAsgns",
+        		lv_varAsgns_3_0, 
         		"VarAsgn");
 	        afterParserOrEnumRuleCall();
 	    }

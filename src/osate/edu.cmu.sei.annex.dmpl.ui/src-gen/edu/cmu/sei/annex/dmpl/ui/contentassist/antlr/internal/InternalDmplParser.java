@@ -8016,26 +8016,26 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__VarInit__Group__1__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2457:1: rule__VarInit__Group__1__Impl : ( ( rule__VarInit__VarInitItemsAssignment_1 ) ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2457:1: rule__VarInit__Group__1__Impl : ( ( rule__VarInit__VarAsgnsAssignment_1 ) ) ;
     public final void rule__VarInit__Group__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2461:1: ( ( ( rule__VarInit__VarInitItemsAssignment_1 ) ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2462:1: ( ( rule__VarInit__VarInitItemsAssignment_1 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2461:1: ( ( ( rule__VarInit__VarAsgnsAssignment_1 ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2462:1: ( ( rule__VarInit__VarAsgnsAssignment_1 ) )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2462:1: ( ( rule__VarInit__VarInitItemsAssignment_1 ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2463:1: ( rule__VarInit__VarInitItemsAssignment_1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2462:1: ( ( rule__VarInit__VarAsgnsAssignment_1 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2463:1: ( rule__VarInit__VarAsgnsAssignment_1 )
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getVarInitAccess().getVarInitItemsAssignment_1()); 
+               before(grammarAccess.getVarInitAccess().getVarAsgnsAssignment_1()); 
             }
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2464:1: ( rule__VarInit__VarInitItemsAssignment_1 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2464:2: rule__VarInit__VarInitItemsAssignment_1
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2464:1: ( rule__VarInit__VarAsgnsAssignment_1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2464:2: rule__VarInit__VarAsgnsAssignment_1
             {
-            pushFollow(FOLLOW_rule__VarInit__VarInitItemsAssignment_1_in_rule__VarInit__Group__1__Impl5246);
-            rule__VarInit__VarInitItemsAssignment_1();
+            pushFollow(FOLLOW_rule__VarInit__VarAsgnsAssignment_1_in_rule__VarInit__Group__1__Impl5246);
+            rule__VarInit__VarAsgnsAssignment_1();
 
             state._fsp--;
             if (state.failed) return ;
@@ -8043,7 +8043,7 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getVarInitAccess().getVarInitItemsAssignment_1()); 
+               after(grammarAccess.getVarInitAccess().getVarAsgnsAssignment_1()); 
             }
 
             }
@@ -8281,26 +8281,26 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__VarInit__Group_2__1__Impl"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2550:1: rule__VarInit__Group_2__1__Impl : ( ( rule__VarInit__VarInitItemsAssignment_2_1 ) ) ;
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2550:1: rule__VarInit__Group_2__1__Impl : ( ( rule__VarInit__VarAsgnsAssignment_2_1 ) ) ;
     public final void rule__VarInit__Group_2__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2554:1: ( ( ( rule__VarInit__VarInitItemsAssignment_2_1 ) ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2555:1: ( ( rule__VarInit__VarInitItemsAssignment_2_1 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2554:1: ( ( ( rule__VarInit__VarAsgnsAssignment_2_1 ) ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2555:1: ( ( rule__VarInit__VarAsgnsAssignment_2_1 ) )
             {
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2555:1: ( ( rule__VarInit__VarInitItemsAssignment_2_1 ) )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2556:1: ( rule__VarInit__VarInitItemsAssignment_2_1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2555:1: ( ( rule__VarInit__VarAsgnsAssignment_2_1 ) )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2556:1: ( rule__VarInit__VarAsgnsAssignment_2_1 )
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getVarInitAccess().getVarInitItemsAssignment_2_1()); 
+               before(grammarAccess.getVarInitAccess().getVarAsgnsAssignment_2_1()); 
             }
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2557:1: ( rule__VarInit__VarInitItemsAssignment_2_1 )
-            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2557:2: rule__VarInit__VarInitItemsAssignment_2_1
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2557:1: ( rule__VarInit__VarAsgnsAssignment_2_1 )
+            // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:2557:2: rule__VarInit__VarAsgnsAssignment_2_1
             {
-            pushFollow(FOLLOW_rule__VarInit__VarInitItemsAssignment_2_1_in_rule__VarInit__Group_2__1__Impl5429);
-            rule__VarInit__VarInitItemsAssignment_2_1();
+            pushFollow(FOLLOW_rule__VarInit__VarAsgnsAssignment_2_1_in_rule__VarInit__Group_2__1__Impl5429);
+            rule__VarInit__VarAsgnsAssignment_2_1();
 
             state._fsp--;
             if (state.failed) return ;
@@ -8308,7 +8308,7 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getVarInitAccess().getVarInitItemsAssignment_2_1()); 
+               after(grammarAccess.getVarInitAccess().getVarAsgnsAssignment_2_1()); 
             }
 
             }
@@ -24718,9 +24718,9 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
     // $ANTLR end "rule__VarInit__TypeAssignment_0"
 
 
-    // $ANTLR start "rule__VarInit__VarInitItemsAssignment_1"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:8516:1: rule__VarInit__VarInitItemsAssignment_1 : ( ruleVarAsgn ) ;
-    public final void rule__VarInit__VarInitItemsAssignment_1() throws RecognitionException {
+    // $ANTLR start "rule__VarInit__VarAsgnsAssignment_1"
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:8516:1: rule__VarInit__VarAsgnsAssignment_1 : ( ruleVarAsgn ) ;
+    public final void rule__VarInit__VarAsgnsAssignment_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
@@ -24732,15 +24732,15 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
             // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:8522:1: ruleVarAsgn
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getVarInitAccess().getVarInitItemsVarAsgnParserRuleCall_1_0()); 
+               before(grammarAccess.getVarInitAccess().getVarAsgnsVarAsgnParserRuleCall_1_0()); 
             }
-            pushFollow(FOLLOW_ruleVarAsgn_in_rule__VarInit__VarInitItemsAssignment_117146);
+            pushFollow(FOLLOW_ruleVarAsgn_in_rule__VarInit__VarAsgnsAssignment_117146);
             ruleVarAsgn();
 
             state._fsp--;
             if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getVarInitAccess().getVarInitItemsVarAsgnParserRuleCall_1_0()); 
+               after(grammarAccess.getVarInitAccess().getVarAsgnsVarAsgnParserRuleCall_1_0()); 
             }
 
             }
@@ -24760,12 +24760,12 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
         }
         return ;
     }
-    // $ANTLR end "rule__VarInit__VarInitItemsAssignment_1"
+    // $ANTLR end "rule__VarInit__VarAsgnsAssignment_1"
 
 
-    // $ANTLR start "rule__VarInit__VarInitItemsAssignment_2_1"
-    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:8531:1: rule__VarInit__VarInitItemsAssignment_2_1 : ( ruleVarAsgn ) ;
-    public final void rule__VarInit__VarInitItemsAssignment_2_1() throws RecognitionException {
+    // $ANTLR start "rule__VarInit__VarAsgnsAssignment_2_1"
+    // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:8531:1: rule__VarInit__VarAsgnsAssignment_2_1 : ( ruleVarAsgn ) ;
+    public final void rule__VarInit__VarAsgnsAssignment_2_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
@@ -24777,15 +24777,15 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
             // ../edu.cmu.sei.annex.dmpl.ui/src-gen/edu/cmu/sei/annex/dmpl/ui/contentassist/antlr/internal/InternalDmpl.g:8537:1: ruleVarAsgn
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getVarInitAccess().getVarInitItemsVarAsgnParserRuleCall_2_1_0()); 
+               before(grammarAccess.getVarInitAccess().getVarAsgnsVarAsgnParserRuleCall_2_1_0()); 
             }
-            pushFollow(FOLLOW_ruleVarAsgn_in_rule__VarInit__VarInitItemsAssignment_2_117177);
+            pushFollow(FOLLOW_ruleVarAsgn_in_rule__VarInit__VarAsgnsAssignment_2_117177);
             ruleVarAsgn();
 
             state._fsp--;
             if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getVarInitAccess().getVarInitItemsVarAsgnParserRuleCall_2_1_0()); 
+               after(grammarAccess.getVarInitAccess().getVarAsgnsVarAsgnParserRuleCall_2_1_0()); 
             }
 
             }
@@ -24805,7 +24805,7 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
         }
         return ;
     }
-    // $ANTLR end "rule__VarInit__VarInitItemsAssignment_2_1"
+    // $ANTLR end "rule__VarInit__VarAsgnsAssignment_2_1"
 
 
     // $ANTLR start "rule__VarAsgn__InputAssignment_0_0"
@@ -28423,14 +28423,14 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
     public static final BitSet FOLLOW_rule__VarInit__TypeAssignment_0_in_rule__VarInit__Group__0__Impl5186 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_rule__VarInit__Group__1__Impl_in_rule__VarInit__Group__15216 = new BitSet(new long[]{0x0004000000000000L});
     public static final BitSet FOLLOW_rule__VarInit__Group__2_in_rule__VarInit__Group__15219 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__VarInit__VarInitItemsAssignment_1_in_rule__VarInit__Group__1__Impl5246 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__VarInit__VarAsgnsAssignment_1_in_rule__VarInit__Group__1__Impl5246 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_rule__VarInit__Group__2__Impl_in_rule__VarInit__Group__25276 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_rule__VarInit__Group_2__0_in_rule__VarInit__Group__2__Impl5303 = new BitSet(new long[]{0x0004000000000002L});
     public static final BitSet FOLLOW_rule__VarInit__Group_2__0__Impl_in_rule__VarInit__Group_2__05340 = new BitSet(new long[]{0x0000000000000020L,0x0000000000000040L});
     public static final BitSet FOLLOW_rule__VarInit__Group_2__1_in_rule__VarInit__Group_2__05343 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_50_in_rule__VarInit__Group_2__0__Impl5371 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_rule__VarInit__Group_2__1__Impl_in_rule__VarInit__Group_2__15402 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_rule__VarInit__VarInitItemsAssignment_2_1_in_rule__VarInit__Group_2__1__Impl5429 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_rule__VarInit__VarAsgnsAssignment_2_1_in_rule__VarInit__Group_2__1__Impl5429 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_rule__VarAsgn__Group_0__0__Impl_in_rule__VarAsgn__Group_0__05463 = new BitSet(new long[]{0x0000000000000020L,0x0000000000000040L});
     public static final BitSet FOLLOW_rule__VarAsgn__Group_0__1_in_rule__VarAsgn__Group_0__05466 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_rule__VarAsgn__InputAssignment_0_0_in_rule__VarAsgn__Group_0__0__Impl5493 = new BitSet(new long[]{0x0000000000000002L});
@@ -28889,8 +28889,8 @@ public class InternalDmplParser extends AbstractInternalContentAssistParser {
     public static final BitSet FOLLOW_ruleSign_in_rule__DoubleConst__SignAssignment_017053 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleDouble_in_rule__DoubleConst__ValueAssignment_117084 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleType_in_rule__VarInit__TypeAssignment_017115 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleVarAsgn_in_rule__VarInit__VarInitItemsAssignment_117146 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleVarAsgn_in_rule__VarInit__VarInitItemsAssignment_2_117177 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleVarAsgn_in_rule__VarInit__VarAsgnsAssignment_117146 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleVarAsgn_in_rule__VarInit__VarAsgnsAssignment_2_117177 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_70_in_rule__VarAsgn__InputAssignment_0_017213 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleVar_in_rule__VarAsgn__VarAssignment_0_117252 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleVar_in_rule__VarAsgn__VarAssignment_1_1_0_017283 = new BitSet(new long[]{0x0000000000000002L});

@@ -702,7 +702,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getVarInit_VarInitItems()
+  public EReference getVarInit_VarAsgns()
   {
     return (EReference)varInitEClass.getEStructuralFeatures().get(1);
   }
@@ -1890,7 +1890,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     varInitEClass = createEClass(VAR_INIT);
     createEReference(varInitEClass, VAR_INIT__TYPE);
-    createEReference(varInitEClass, VAR_INIT__VAR_INIT_ITEMS);
+    createEReference(varInitEClass, VAR_INIT__VAR_ASGNS);
 
     varAsgnEClass = createEClass(VAR_ASGN);
     createEAttribute(varAsgnEClass, VAR_ASGN__INPUT);
@@ -2134,7 +2134,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     initEClass(varInitEClass, VarInit.class, "VarInit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getVarInit_Type(), this.getType(), null, "type", null, 0, 1, VarInit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getVarInit_VarInitItems(), this.getVarAsgn(), null, "varInitItems", null, 0, -1, VarInit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getVarInit_VarAsgns(), this.getVarAsgn(), null, "varAsgns", null, 0, -1, VarInit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(varAsgnEClass, VarAsgn.class, "VarAsgn", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getVarAsgn_Input(), ecorePackage.getEBoolean(), "input", null, 0, 1, VarAsgn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

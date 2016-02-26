@@ -347,13 +347,13 @@ public interface DmplPackage extends EPackage
   int VAR_INIT__TYPE = 0;
 
   /**
-   * The feature id for the '<em><b>Var Init Items</b></em>' containment reference list.
+   * The feature id for the '<em><b>Var Asgns</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int VAR_INIT__VAR_INIT_ITEMS = 1;
+  int VAR_INIT__VAR_ASGNS = 1;
 
   /**
    * The number of structural features of the '<em>Var Init</em>' class.
@@ -2031,15 +2031,15 @@ public interface DmplPackage extends EPackage
   EReference getVarInit_Type();
 
   /**
-   * Returns the meta object for the containment reference list '{@link edu.cmu.sei.annex.dmpl.dmpl.VarInit#getVarInitItems <em>Var Init Items</em>}'.
+   * Returns the meta object for the containment reference list '{@link edu.cmu.sei.annex.dmpl.dmpl.VarInit#getVarAsgns <em>Var Asgns</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Var Init Items</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.VarInit#getVarInitItems()
+   * @return the meta object for the containment reference list '<em>Var Asgns</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.VarInit#getVarAsgns()
    * @see #getVarInit()
    * @generated
    */
-  EReference getVarInit_VarInitItems();
+  EReference getVarInit_VarAsgns();
 
   /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.VarAsgn <em>Var Asgn</em>}'.
@@ -3404,12 +3404,12 @@ public interface DmplPackage extends EPackage
     EReference VAR_INIT__TYPE = eINSTANCE.getVarInit_Type();
 
     /**
-     * The meta object literal for the '<em><b>Var Init Items</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>Var Asgns</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference VAR_INIT__VAR_INIT_ITEMS = eINSTANCE.getVarInit_VarInitItems();
+    EReference VAR_INIT__VAR_ASGNS = eINSTANCE.getVarInit_VarAsgns();
 
     /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarAsgnImpl <em>Var Asgn</em>}' class.

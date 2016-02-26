@@ -2460,9 +2460,9 @@ rule__VarInit__Group__1__Impl
     }
 :
 (
-{ before(grammarAccess.getVarInitAccess().getVarInitItemsAssignment_1()); }
-(rule__VarInit__VarInitItemsAssignment_1)
-{ after(grammarAccess.getVarInitAccess().getVarInitItemsAssignment_1()); }
+{ before(grammarAccess.getVarInitAccess().getVarAsgnsAssignment_1()); }
+(rule__VarInit__VarAsgnsAssignment_1)
+{ after(grammarAccess.getVarInitAccess().getVarAsgnsAssignment_1()); }
 )
 
 ;
@@ -2553,9 +2553,9 @@ rule__VarInit__Group_2__1__Impl
     }
 :
 (
-{ before(grammarAccess.getVarInitAccess().getVarInitItemsAssignment_2_1()); }
-(rule__VarInit__VarInitItemsAssignment_2_1)
-{ after(grammarAccess.getVarInitAccess().getVarInitItemsAssignment_2_1()); }
+{ before(grammarAccess.getVarInitAccess().getVarAsgnsAssignment_2_1()); }
+(rule__VarInit__VarAsgnsAssignment_2_1)
+{ after(grammarAccess.getVarInitAccess().getVarAsgnsAssignment_2_1()); }
 )
 
 ;
@@ -8513,14 +8513,14 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__VarInit__VarInitItemsAssignment_1
+rule__VarInit__VarAsgnsAssignment_1
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getVarInitAccess().getVarInitItemsVarAsgnParserRuleCall_1_0()); }
-	ruleVarAsgn{ after(grammarAccess.getVarInitAccess().getVarInitItemsVarAsgnParserRuleCall_1_0()); }
+{ before(grammarAccess.getVarInitAccess().getVarAsgnsVarAsgnParserRuleCall_1_0()); }
+	ruleVarAsgn{ after(grammarAccess.getVarInitAccess().getVarAsgnsVarAsgnParserRuleCall_1_0()); }
 )
 
 ;
@@ -8528,14 +8528,14 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__VarInit__VarInitItemsAssignment_2_1
+rule__VarInit__VarAsgnsAssignment_2_1
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getVarInitAccess().getVarInitItemsVarAsgnParserRuleCall_2_1_0()); }
-	ruleVarAsgn{ after(grammarAccess.getVarInitAccess().getVarInitItemsVarAsgnParserRuleCall_2_1_0()); }
+{ before(grammarAccess.getVarInitAccess().getVarAsgnsVarAsgnParserRuleCall_2_1_0()); }
+	ruleVarAsgn{ after(grammarAccess.getVarInitAccess().getVarAsgnsVarAsgnParserRuleCall_2_1_0()); }
 )
 
 ;

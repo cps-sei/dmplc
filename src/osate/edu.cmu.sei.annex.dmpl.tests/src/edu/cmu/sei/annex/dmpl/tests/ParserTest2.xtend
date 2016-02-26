@@ -52,7 +52,7 @@ class ParserTest2 {
 			assertNoIssues;
 			(programElements.head as Procedure).procedure.fnBody.varInitList => [
 				5.assertEquals(varInits.size)
-				varInits.get(0).varInitItems.head as ExprVarAsgn => [
+				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
 					expr as EqualityExpr => [
 						"name1".assertEquals((left as LVal).name)
@@ -60,7 +60,7 @@ class ParserTest2 {
 						"name2".assertEquals((right as LVal).name)
 					]
 				]
-				varInits.get(1).varInitItems.head as ExprVarAsgn => [
+				varInits.get(1).varAsgns.head as ExprVarAsgn => [
 					"v2".assertEquals(^var.name)
 					expr as EqualityExpr => [
 						"name3".assertEquals((left as LVal).name)
@@ -68,7 +68,7 @@ class ParserTest2 {
 						"name4".assertEquals((right as LVal).name)
 					]
 				]
-				varInits.get(2).varInitItems.head as ExprVarAsgn => [
+				varInits.get(2).varAsgns.head as ExprVarAsgn => [
 					"v3".assertEquals(^var.name)
 					expr as EqualityExpr => [
 						left as EqualityExpr => [
@@ -80,7 +80,7 @@ class ParserTest2 {
 						"name7".assertEquals((right as LVal).name)
 					]
 				]
-				varInits.get(3).varInitItems.head as ExprVarAsgn => [
+				varInits.get(3).varAsgns.head as ExprVarAsgn => [
 					"v4".assertEquals(^var.name)
 					expr as EqualityExpr => [
 						"name8".assertEquals((left as LVal).name)
@@ -92,7 +92,7 @@ class ParserTest2 {
 						]
 					]
 				]
-				varInits.get(4).varInitItems.head as ExprVarAsgn => [
+				varInits.get(4).varAsgns.head as ExprVarAsgn => [
 					"v5".assertEquals(^var.name)
 					expr as EqualityExpr => [
 						left as CompareExpr => [
@@ -120,14 +120,14 @@ class ParserTest2 {
 			assertNoIssues;
 			(programElements.head as Procedure).procedure.fnBody.varInitList => [
 				3.assertEquals(varInits.size)
-				varInits.get(0).varInitItems.head as ExprVarAsgn => [
+				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
 					expr as BitwiseAndExpr => [
 						"name1".assertEquals((left as LVal).name)
 						"name2".assertEquals((right as LVal).name)
 					]
 				]
-				varInits.get(1).varInitItems.head as ExprVarAsgn => [
+				varInits.get(1).varAsgns.head as ExprVarAsgn => [
 					"v2".assertEquals(^var.name)
 					expr as BitwiseAndExpr => [
 						"name3".assertEquals((left as LVal).name)
@@ -138,7 +138,7 @@ class ParserTest2 {
 						]
 					]
 				]
-				varInits.get(2).varInitItems.head as ExprVarAsgn => [
+				varInits.get(2).varAsgns.head as ExprVarAsgn => [
 					"v3".assertEquals(^var.name)
 					expr as BitwiseAndExpr => [
 						left as EqualityExpr => [
@@ -165,14 +165,14 @@ class ParserTest2 {
 			assertNoIssues;
 			(programElements.head as Procedure).procedure.fnBody.varInitList => [
 				3.assertEquals(varInits.size)
-				varInits.get(0).varInitItems.head as ExprVarAsgn => [
+				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
 					expr as XorExpr => [
 						"name1".assertEquals((left as LVal).name)
 						"name2".assertEquals((right as LVal).name)
 					]
 				]
-				varInits.get(1).varInitItems.head as ExprVarAsgn => [
+				varInits.get(1).varAsgns.head as ExprVarAsgn => [
 					"v2".assertEquals(^var.name)
 					expr as XorExpr => [
 						"name3".assertEquals((left as LVal).name)
@@ -182,7 +182,7 @@ class ParserTest2 {
 						]
 					]
 				]
-				varInits.get(2).varInitItems.head as ExprVarAsgn => [
+				varInits.get(2).varAsgns.head as ExprVarAsgn => [
 					"v3".assertEquals(^var.name)
 					expr as XorExpr => [
 						left as BitwiseAndExpr => [
@@ -208,14 +208,14 @@ class ParserTest2 {
 			assertNoIssues;
 			(programElements.head as Procedure).procedure.fnBody.varInitList => [
 				3.assertEquals(varInits.size)
-				varInits.get(0).varInitItems.head as ExprVarAsgn => [
+				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
 					expr as BitwiseOrExpr => [
 						"name1".assertEquals((left as LVal).name)
 						"name2".assertEquals((right as LVal).name)
 					]
 				]
-				varInits.get(1).varInitItems.head as ExprVarAsgn => [
+				varInits.get(1).varAsgns.head as ExprVarAsgn => [
 					"v2".assertEquals(^var.name)
 					expr as BitwiseOrExpr => [
 						"name3".assertEquals((left as LVal).name)
@@ -225,7 +225,7 @@ class ParserTest2 {
 						]
 					]
 				]
-				varInits.get(2).varInitItems.head as ExprVarAsgn => [
+				varInits.get(2).varAsgns.head as ExprVarAsgn => [
 					"v3".assertEquals(^var.name)
 					expr as BitwiseOrExpr => [
 						left as XorExpr => [
@@ -251,14 +251,14 @@ class ParserTest2 {
 			assertNoIssues;
 			(programElements.head as Procedure).procedure.fnBody.varInitList => [
 				3.assertEquals(varInits.size)
-				varInits.get(0).varInitItems.head as ExprVarAsgn => [
+				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
 					expr as AndExpr => [
 						"name1".assertEquals((left as LVal).name)
 						"name2".assertEquals((right as LVal).name)
 					]
 				]
-				varInits.get(1).varInitItems.head as ExprVarAsgn => [
+				varInits.get(1).varAsgns.head as ExprVarAsgn => [
 					"v2".assertEquals(^var.name)
 					expr as AndExpr => [
 						"name3".assertEquals((left as LVal).name)
@@ -268,7 +268,7 @@ class ParserTest2 {
 						]
 					]
 				]
-				varInits.get(2).varInitItems.head as ExprVarAsgn => [
+				varInits.get(2).varAsgns.head as ExprVarAsgn => [
 					"v3".assertEquals(^var.name)
 					expr as AndExpr => [
 						left as BitwiseOrExpr => [
@@ -294,14 +294,14 @@ class ParserTest2 {
 			assertNoIssues;
 			(programElements.head as Procedure).procedure.fnBody.varInitList => [
 				3.assertEquals(varInits.size)
-				varInits.get(0).varInitItems.head as ExprVarAsgn => [
+				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
 					expr as OrExpr => [
 						"name1".assertEquals((left as LVal).name)
 						"name2".assertEquals((right as LVal).name)
 					]
 				]
-				varInits.get(1).varInitItems.head as ExprVarAsgn => [
+				varInits.get(1).varAsgns.head as ExprVarAsgn => [
 					"v2".assertEquals(^var.name)
 					expr as OrExpr => [
 						"name3".assertEquals((left as LVal).name)
@@ -311,7 +311,7 @@ class ParserTest2 {
 						]
 					]
 				]
-				varInits.get(2).varInitItems.head as ExprVarAsgn => [
+				varInits.get(2).varAsgns.head as ExprVarAsgn => [
 					"v3".assertEquals(^var.name)
 					expr as OrExpr => [
 						left as AndExpr => [
@@ -340,7 +340,7 @@ class ParserTest2 {
 			assertNoIssues;
 			(programElements.head as Procedure).procedure.fnBody.varInitList => [
 				6.assertEquals(varInits.size)
-				varInits.get(0).varInitItems.head as ExprVarAsgn => [
+				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
 					expr as TernaryExpr => [
 						"name1".assertEquals((condition as LVal).name)
@@ -348,7 +348,7 @@ class ParserTest2 {
 						"name3".assertEquals((^else as LVal).name)
 					]
 				]
-				varInits.get(1).varInitItems.head as ExprVarAsgn => [
+				varInits.get(1).varAsgns.head as ExprVarAsgn => [
 					"v2".assertEquals(^var.name)
 					expr as TernaryExpr => [
 						"name4".assertEquals((condition as LVal).name)
@@ -360,7 +360,7 @@ class ParserTest2 {
 						"name8".assertEquals((^else as LVal).name)
 					]
 				]
-				varInits.get(2).varInitItems.head as ExprVarAsgn => [
+				varInits.get(2).varAsgns.head as ExprVarAsgn => [
 					"v3".assertEquals(^var.name)
 					expr as TernaryExpr => [
 						"name9".assertEquals((condition as LVal).name)
@@ -372,7 +372,7 @@ class ParserTest2 {
 						]
 					]
 				]
-				varInits.get(3).varInitItems.head as ExprVarAsgn => [
+				varInits.get(3).varAsgns.head as ExprVarAsgn => [
 					"v4".assertEquals(^var.name)
 					expr as TernaryExpr => [
 						"name14".assertEquals((condition as LVal).name)
@@ -383,7 +383,7 @@ class ParserTest2 {
 						]
 					]
 				]
-				varInits.get(4).varInitItems.head as ExprVarAsgn => [
+				varInits.get(4).varAsgns.head as ExprVarAsgn => [
 					"v5".assertEquals(^var.name)
 					expr as TernaryExpr => [
 						"name18".assertEquals((condition as LVal).name)
@@ -394,7 +394,7 @@ class ParserTest2 {
 						"name21".assertEquals((^else as LVal).name)
 					]
 				]
-				varInits.get(5).varInitItems.head as ExprVarAsgn => [
+				varInits.get(5).varAsgns.head as ExprVarAsgn => [
 					"v6".assertEquals(^var.name)
 					expr as TernaryExpr => [
 						condition as OrExpr => [
@@ -426,30 +426,30 @@ class ParserTest2 {
 			assertNoIssues;
 			(programElements.head as Procedure).procedure.fnBody.varInitList => [
 				6.assertEquals(varInits.size)
-				varInits.get(0).varInitItems.head => [
+				varInits.get(0).varAsgns.head => [
 					"v1".assertEquals(^var.name)
 					input.assertFalse
 				]
-				varInits.get(1).varInitItems.head => [
+				varInits.get(1).varAsgns.head => [
 					"v2".assertEquals(^var.name)
 					input.assertTrue
 				]
-				varInits.get(2).varInitItems.head as ExprVarAsgn => [
+				varInits.get(2).varAsgns.head as ExprVarAsgn => [
 					"v3".assertEquals(^var.name)
 					input.assertFalse
 					"name1".assertEquals((expr as LVal).name)
 				]
-				varInits.get(3).varInitItems.head as FnVarAsgn => [
+				varInits.get(3).varAsgns.head as FnVarAsgn => [
 					"v4".assertEquals(^var.name)
 					input.assertFalse
 					fnBody.assertNotNull
 				]
-				varInits.get(4).varInitItems.head as ExprVarAsgn => [
+				varInits.get(4).varAsgns.head as ExprVarAsgn => [
 					"v5".assertEquals(^var.name)
 					input.assertTrue
 					"name2".assertEquals((expr as LVal).name)
 				]
-				varInits.get(5).varInitItems.head as FnVarAsgn => [
+				varInits.get(5).varAsgns.head as FnVarAsgn => [
 					"v6".assertEquals(^var.name)
 					input.assertTrue
 					fnBody.assertNotNull
@@ -472,21 +472,57 @@ class ParserTest2 {
 				3.assertEquals(varInits.size)
 				varInits.get(0) => [
 					SimpTypeEnum.INT.assertEquals(type.simpType)
-					1.assertEquals(varInitItems.size)
-					"v1".assertEquals(varInitItems.head.^var.name)
+					1.assertEquals(varAsgns.size)
+					"v1".assertEquals(varAsgns.head.^var.name)
 				]
 				varInits.get(1) => [
 					SimpTypeEnum.INT.assertEquals(type.simpType)
-					2.assertEquals(varInitItems.size)
-					"v2".assertEquals(varInitItems.get(0).^var.name)
-					"v3".assertEquals(varInitItems.get(1).^var.name)
+					2.assertEquals(varAsgns.size)
+					"v2".assertEquals(varAsgns.get(0).^var.name)
+					"v3".assertEquals(varAsgns.get(1).^var.name)
 				]
 				varInits.get(2) => [
 					SimpTypeEnum.INT.assertEquals(type.simpType)
-					3.assertEquals(varInitItems.size)
-					"v4".assertEquals(varInitItems.get(0).^var.name)
-					"v5".assertEquals(varInitItems.get(1).^var.name)
-					"v6".assertEquals(varInitItems.get(2).^var.name)
+					3.assertEquals(varAsgns.size)
+					"v4".assertEquals(varAsgns.get(0).^var.name)
+					"v5".assertEquals(varAsgns.get(1).^var.name)
+					"v6".assertEquals(varAsgns.get(2).^var.name)
+				]
+			]
+		]
+	}
+	
+	@Test
+	def void testVarInitList() {
+		'''
+			void f1() {
+			}
+			void f2() {
+				int v1;
+			}
+			void f3() {
+				int v2;
+				int v3;
+			}
+		'''.parse => [
+			assertNoIssues;
+			(programElements.get(0) as Procedure).procedure => [
+				"f1".assertEquals(prototype.name)
+				fnBody.varInitList.varInits.empty.assertTrue
+			]
+			(programElements.get(1) as Procedure).procedure => [
+				"f2".assertEquals(prototype.name)
+				fnBody.varInitList => [
+					1.assertEquals(varInits.size)
+					"v1".assertEquals(varInits.head.varAsgns.head.^var.name)
+				]
+			]
+			(programElements.get(2) as Procedure).procedure => [
+				"f3".assertEquals(prototype.name)
+				fnBody.varInitList => [
+					2.assertEquals(varInits.size)
+					"v2".assertEquals(varInits.get(0).varAsgns.head.^var.name)
+					"v3".assertEquals(varInits.get(1).varAsgns.head.^var.name)
 				]
 			]
 		]

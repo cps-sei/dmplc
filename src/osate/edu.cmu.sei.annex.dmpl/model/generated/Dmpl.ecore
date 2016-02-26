@@ -26,7 +26,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VarInit">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Type" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="varInitItems" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="varAsgns" upperBound="-1"
         eType="#//VarAsgn" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VarAsgn">

@@ -743,7 +743,7 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (type=Type varInitItems+=VarAsgn varInitItems+=VarAsgn*)
+	 *     (type=Type varAsgns+=VarAsgn varAsgns+=VarAsgn*)
 	 */
 	protected void sequence_VarInit(EObject context, VarInit semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

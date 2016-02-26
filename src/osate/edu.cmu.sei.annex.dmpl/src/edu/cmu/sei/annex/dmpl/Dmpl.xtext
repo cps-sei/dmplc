@@ -40,7 +40,7 @@ DoubleConst:
 ;
 
 VarInit:
-	type=Type varInitItems+=VarAsgn (',' varInitItems+=VarAsgn)*
+	type=Type varAsgns+=VarAsgn (',' varAsgns+=VarAsgn)*
 ;
 
 VarAsgn:

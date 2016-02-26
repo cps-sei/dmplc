@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.VarInit#getType <em>Type</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.VarInit#getVarInitItems <em>Var Init Items</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.VarInit#getVarAsgns <em>Var Asgns</em>}</li>
  * </ul>
  *
  * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getVarInit()
@@ -52,19 +52,19 @@ public interface VarInit extends EObject
   void setType(Type value);
 
   /**
-   * Returns the value of the '<em><b>Var Init Items</b></em>' containment reference list.
+   * Returns the value of the '<em><b>Var Asgns</b></em>' containment reference list.
    * The list contents are of type {@link edu.cmu.sei.annex.dmpl.dmpl.VarAsgn}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Var Init Items</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Var Asgns</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Var Init Items</em>' containment reference list.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getVarInit_VarInitItems()
+   * @return the value of the '<em>Var Asgns</em>' containment reference list.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getVarInit_VarAsgns()
    * @model containment="true"
    * @generated
    */
-  EList<VarAsgn> getVarInitItems();
+  EList<VarAsgn> getVarAsgns();
 
 } // VarInit

@@ -229,18 +229,18 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cTypeAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final RuleCall cTypeTypeParserRuleCall_0_0 = (RuleCall)cTypeAssignment_0.eContents().get(0);
-		private final Assignment cVarInitItemsAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cVarInitItemsVarAsgnParserRuleCall_1_0 = (RuleCall)cVarInitItemsAssignment_1.eContents().get(0);
+		private final Assignment cVarAsgnsAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cVarAsgnsVarAsgnParserRuleCall_1_0 = (RuleCall)cVarAsgnsAssignment_1.eContents().get(0);
 		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
 		private final Keyword cCommaKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
-		private final Assignment cVarInitItemsAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
-		private final RuleCall cVarInitItemsVarAsgnParserRuleCall_2_1_0 = (RuleCall)cVarInitItemsAssignment_2_1.eContents().get(0);
+		private final Assignment cVarAsgnsAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
+		private final RuleCall cVarAsgnsVarAsgnParserRuleCall_2_1_0 = (RuleCall)cVarAsgnsAssignment_2_1.eContents().get(0);
 		
 		//VarInit:
-		//	type=Type varInitItems+=VarAsgn ("," varInitItems+=VarAsgn)*;
+		//	type=Type varAsgns+=VarAsgn ("," varAsgns+=VarAsgn)*;
 		@Override public ParserRule getRule() { return rule; }
 
-		//type=Type varInitItems+=VarAsgn ("," varInitItems+=VarAsgn)*
+		//type=Type varAsgns+=VarAsgn ("," varAsgns+=VarAsgn)*
 		public Group getGroup() { return cGroup; }
 
 		//type=Type
@@ -249,23 +249,23 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//Type
 		public RuleCall getTypeTypeParserRuleCall_0_0() { return cTypeTypeParserRuleCall_0_0; }
 
-		//varInitItems+=VarAsgn
-		public Assignment getVarInitItemsAssignment_1() { return cVarInitItemsAssignment_1; }
+		//varAsgns+=VarAsgn
+		public Assignment getVarAsgnsAssignment_1() { return cVarAsgnsAssignment_1; }
 
 		//VarAsgn
-		public RuleCall getVarInitItemsVarAsgnParserRuleCall_1_0() { return cVarInitItemsVarAsgnParserRuleCall_1_0; }
+		public RuleCall getVarAsgnsVarAsgnParserRuleCall_1_0() { return cVarAsgnsVarAsgnParserRuleCall_1_0; }
 
-		//("," varInitItems+=VarAsgn)*
+		//("," varAsgns+=VarAsgn)*
 		public Group getGroup_2() { return cGroup_2; }
 
 		//","
 		public Keyword getCommaKeyword_2_0() { return cCommaKeyword_2_0; }
 
-		//varInitItems+=VarAsgn
-		public Assignment getVarInitItemsAssignment_2_1() { return cVarInitItemsAssignment_2_1; }
+		//varAsgns+=VarAsgn
+		public Assignment getVarAsgnsAssignment_2_1() { return cVarAsgnsAssignment_2_1; }
 
 		//VarAsgn
-		public RuleCall getVarInitItemsVarAsgnParserRuleCall_2_1_0() { return cVarInitItemsVarAsgnParserRuleCall_2_1_0; }
+		public RuleCall getVarAsgnsVarAsgnParserRuleCall_2_1_0() { return cVarAsgnsVarAsgnParserRuleCall_2_1_0; }
 	}
 
 	public class VarAsgnElements extends AbstractParserRuleElementFinder {
@@ -2433,7 +2433,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//VarInit:
-	//	type=Type varInitItems+=VarAsgn ("," varInitItems+=VarAsgn)*;
+	//	type=Type varAsgns+=VarAsgn ("," varAsgns+=VarAsgn)*;
 	public VarInitElements getVarInitAccess() {
 		return pVarInit;
 	}

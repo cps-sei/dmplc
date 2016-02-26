@@ -165,8 +165,8 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getDoubleConstAccess().getSignAssignment_0(), "rule__DoubleConst__SignAssignment_0");
 					put(grammarAccess.getDoubleConstAccess().getValueAssignment_1(), "rule__DoubleConst__ValueAssignment_1");
 					put(grammarAccess.getVarInitAccess().getTypeAssignment_0(), "rule__VarInit__TypeAssignment_0");
-					put(grammarAccess.getVarInitAccess().getVarInitItemsAssignment_1(), "rule__VarInit__VarInitItemsAssignment_1");
-					put(grammarAccess.getVarInitAccess().getVarInitItemsAssignment_2_1(), "rule__VarInit__VarInitItemsAssignment_2_1");
+					put(grammarAccess.getVarInitAccess().getVarAsgnsAssignment_1(), "rule__VarInit__VarAsgnsAssignment_1");
+					put(grammarAccess.getVarInitAccess().getVarAsgnsAssignment_2_1(), "rule__VarInit__VarAsgnsAssignment_2_1");
 					put(grammarAccess.getVarAsgnAccess().getInputAssignment_0_0(), "rule__VarAsgn__InputAssignment_0_0");
 					put(grammarAccess.getVarAsgnAccess().getVarAssignment_0_1(), "rule__VarAsgn__VarAssignment_0_1");
 					put(grammarAccess.getVarAsgnAccess().getVarAssignment_1_1_0_0(), "rule__VarAsgn__VarAssignment_1_1_0_0");

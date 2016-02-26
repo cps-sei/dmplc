@@ -1333,26 +1333,26 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleVarInit"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:437:1: ruleVarInit returns [EObject current=null] : ( ( (lv_type_0_0= ruleType ) ) ( (lv_varInitItems_1_0= ruleVarAsgn ) ) (otherlv_2= ',' ( (lv_varInitItems_3_0= ruleVarAsgn ) ) )* ) ;
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:437:1: ruleVarInit returns [EObject current=null] : ( ( (lv_type_0_0= ruleType ) ) ( (lv_varAsgns_1_0= ruleVarAsgn ) ) (otherlv_2= ',' ( (lv_varAsgns_3_0= ruleVarAsgn ) ) )* ) ;
     public final EObject ruleVarInit() throws RecognitionException {
         EObject current = null;
 
         Token otherlv_2=null;
         EObject lv_type_0_0 = null;
 
-        EObject lv_varInitItems_1_0 = null;
+        EObject lv_varAsgns_1_0 = null;
 
-        EObject lv_varInitItems_3_0 = null;
+        EObject lv_varAsgns_3_0 = null;
 
 
          enterRule(); 
             
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:440:28: ( ( ( (lv_type_0_0= ruleType ) ) ( (lv_varInitItems_1_0= ruleVarAsgn ) ) (otherlv_2= ',' ( (lv_varInitItems_3_0= ruleVarAsgn ) ) )* ) )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:441:1: ( ( (lv_type_0_0= ruleType ) ) ( (lv_varInitItems_1_0= ruleVarAsgn ) ) (otherlv_2= ',' ( (lv_varInitItems_3_0= ruleVarAsgn ) ) )* )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:440:28: ( ( ( (lv_type_0_0= ruleType ) ) ( (lv_varAsgns_1_0= ruleVarAsgn ) ) (otherlv_2= ',' ( (lv_varAsgns_3_0= ruleVarAsgn ) ) )* ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:441:1: ( ( (lv_type_0_0= ruleType ) ) ( (lv_varAsgns_1_0= ruleVarAsgn ) ) (otherlv_2= ',' ( (lv_varAsgns_3_0= ruleVarAsgn ) ) )* )
             {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:441:1: ( ( (lv_type_0_0= ruleType ) ) ( (lv_varInitItems_1_0= ruleVarAsgn ) ) (otherlv_2= ',' ( (lv_varInitItems_3_0= ruleVarAsgn ) ) )* )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:441:2: ( (lv_type_0_0= ruleType ) ) ( (lv_varInitItems_1_0= ruleVarAsgn ) ) (otherlv_2= ',' ( (lv_varInitItems_3_0= ruleVarAsgn ) ) )*
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:441:1: ( ( (lv_type_0_0= ruleType ) ) ( (lv_varAsgns_1_0= ruleVarAsgn ) ) (otherlv_2= ',' ( (lv_varAsgns_3_0= ruleVarAsgn ) ) )* )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:441:2: ( (lv_type_0_0= ruleType ) ) ( (lv_varAsgns_1_0= ruleVarAsgn ) ) (otherlv_2= ',' ( (lv_varAsgns_3_0= ruleVarAsgn ) ) )*
             {
             // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:441:2: ( (lv_type_0_0= ruleType ) )
             // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:442:1: (lv_type_0_0= ruleType )
@@ -1389,19 +1389,19 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
             }
 
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:459:2: ( (lv_varInitItems_1_0= ruleVarAsgn ) )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:460:1: (lv_varInitItems_1_0= ruleVarAsgn )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:459:2: ( (lv_varAsgns_1_0= ruleVarAsgn ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:460:1: (lv_varAsgns_1_0= ruleVarAsgn )
             {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:460:1: (lv_varInitItems_1_0= ruleVarAsgn )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:461:3: lv_varInitItems_1_0= ruleVarAsgn
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:460:1: (lv_varAsgns_1_0= ruleVarAsgn )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:461:3: lv_varAsgns_1_0= ruleVarAsgn
             {
             if ( state.backtracking==0 ) {
                
-              	        newCompositeNode(grammarAccess.getVarInitAccess().getVarInitItemsVarAsgnParserRuleCall_1_0()); 
+              	        newCompositeNode(grammarAccess.getVarInitAccess().getVarAsgnsVarAsgnParserRuleCall_1_0()); 
               	    
             }
             pushFollow(FOLLOW_ruleVarAsgn_in_ruleVarInit994);
-            lv_varInitItems_1_0=ruleVarAsgn();
+            lv_varAsgns_1_0=ruleVarAsgn();
 
             state._fsp--;
             if (state.failed) return current;
@@ -1412,8 +1412,8 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
               	        }
                      		add(
                      			current, 
-                     			"varInitItems",
-                      		lv_varInitItems_1_0, 
+                     			"varAsgns",
+                      		lv_varAsgns_1_0, 
                       		"VarAsgn");
               	        afterParserOrEnumRuleCall();
               	    
@@ -1424,7 +1424,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
             }
 
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:477:2: (otherlv_2= ',' ( (lv_varInitItems_3_0= ruleVarAsgn ) ) )*
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:477:2: (otherlv_2= ',' ( (lv_varAsgns_3_0= ruleVarAsgn ) ) )*
             loop7:
             do {
                 int alt7=2;
@@ -1437,7 +1437,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
                 switch (alt7) {
             	case 1 :
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:477:4: otherlv_2= ',' ( (lv_varInitItems_3_0= ruleVarAsgn ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:477:4: otherlv_2= ',' ( (lv_varAsgns_3_0= ruleVarAsgn ) )
             	    {
             	    otherlv_2=(Token)match(input,16,FOLLOW_16_in_ruleVarInit1007); if (state.failed) return current;
             	    if ( state.backtracking==0 ) {
@@ -1445,19 +1445,19 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
             	          	newLeafNode(otherlv_2, grammarAccess.getVarInitAccess().getCommaKeyword_2_0());
             	          
             	    }
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:481:1: ( (lv_varInitItems_3_0= ruleVarAsgn ) )
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:482:1: (lv_varInitItems_3_0= ruleVarAsgn )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:481:1: ( (lv_varAsgns_3_0= ruleVarAsgn ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:482:1: (lv_varAsgns_3_0= ruleVarAsgn )
             	    {
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:482:1: (lv_varInitItems_3_0= ruleVarAsgn )
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:483:3: lv_varInitItems_3_0= ruleVarAsgn
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:482:1: (lv_varAsgns_3_0= ruleVarAsgn )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:483:3: lv_varAsgns_3_0= ruleVarAsgn
             	    {
             	    if ( state.backtracking==0 ) {
             	       
-            	      	        newCompositeNode(grammarAccess.getVarInitAccess().getVarInitItemsVarAsgnParserRuleCall_2_1_0()); 
+            	      	        newCompositeNode(grammarAccess.getVarInitAccess().getVarAsgnsVarAsgnParserRuleCall_2_1_0()); 
             	      	    
             	    }
             	    pushFollow(FOLLOW_ruleVarAsgn_in_ruleVarInit1028);
-            	    lv_varInitItems_3_0=ruleVarAsgn();
+            	    lv_varAsgns_3_0=ruleVarAsgn();
 
             	    state._fsp--;
             	    if (state.failed) return current;
@@ -1468,8 +1468,8 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
             	      	        }
             	             		add(
             	             			current, 
-            	             			"varInitItems",
-            	              		lv_varInitItems_3_0, 
+            	             			"varAsgns",
+            	              		lv_varAsgns_3_0, 
             	              		"VarAsgn");
             	      	        afterParserOrEnumRuleCall();
             	      	    
