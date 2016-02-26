@@ -23,24 +23,14 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarAsgnImpl#getVar <em>Var</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarAsgnImpl#isInput <em>Input</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarAsgnImpl#getVar <em>Var</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class VarAsgnImpl extends MinimalEObjectImpl.Container implements VarAsgn
 {
-  /**
-   * The cached value of the '{@link #getVar() <em>Var</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getVar()
-   * @generated
-   * @ordered
-   */
-  protected Var var;
-
   /**
    * The default value of the '{@link #isInput() <em>Input</em>}' attribute.
    * <!-- begin-user-doc -->
@@ -62,6 +52,16 @@ public class VarAsgnImpl extends MinimalEObjectImpl.Container implements VarAsgn
   protected boolean input = INPUT_EDEFAULT;
 
   /**
+   * The cached value of the '{@link #getVar() <em>Var</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getVar()
+   * @generated
+   * @ordered
+   */
+  protected Var var;
+
+  /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -80,6 +80,29 @@ public class VarAsgnImpl extends MinimalEObjectImpl.Container implements VarAsgn
   protected EClass eStaticClass()
   {
     return DmplPackage.Literals.VAR_ASGN;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public boolean isInput()
+  {
+    return input;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setInput(boolean newInput)
+  {
+    boolean oldInput = input;
+    input = newInput;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.VAR_ASGN__INPUT, oldInput, input));
   }
 
   /**
@@ -135,29 +158,6 @@ public class VarAsgnImpl extends MinimalEObjectImpl.Container implements VarAsgn
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean isInput()
-  {
-    return input;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setInput(boolean newInput)
-  {
-    boolean oldInput = input;
-    input = newInput;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.VAR_ASGN__INPUT, oldInput, input));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
   {
@@ -179,10 +179,10 @@ public class VarAsgnImpl extends MinimalEObjectImpl.Container implements VarAsgn
   {
     switch (featureID)
     {
-      case DmplPackage.VAR_ASGN__VAR:
-        return getVar();
       case DmplPackage.VAR_ASGN__INPUT:
         return isInput();
+      case DmplPackage.VAR_ASGN__VAR:
+        return getVar();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -197,11 +197,11 @@ public class VarAsgnImpl extends MinimalEObjectImpl.Container implements VarAsgn
   {
     switch (featureID)
     {
-      case DmplPackage.VAR_ASGN__VAR:
-        setVar((Var)newValue);
-        return;
       case DmplPackage.VAR_ASGN__INPUT:
         setInput((Boolean)newValue);
+        return;
+      case DmplPackage.VAR_ASGN__VAR:
+        setVar((Var)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -217,11 +217,11 @@ public class VarAsgnImpl extends MinimalEObjectImpl.Container implements VarAsgn
   {
     switch (featureID)
     {
-      case DmplPackage.VAR_ASGN__VAR:
-        setVar((Var)null);
-        return;
       case DmplPackage.VAR_ASGN__INPUT:
         setInput(INPUT_EDEFAULT);
+        return;
+      case DmplPackage.VAR_ASGN__VAR:
+        setVar((Var)null);
         return;
     }
     super.eUnset(featureID);
@@ -237,10 +237,10 @@ public class VarAsgnImpl extends MinimalEObjectImpl.Container implements VarAsgn
   {
     switch (featureID)
     {
-      case DmplPackage.VAR_ASGN__VAR:
-        return var != null;
       case DmplPackage.VAR_ASGN__INPUT:
         return input != INPUT_EDEFAULT;
+      case DmplPackage.VAR_ASGN__VAR:
+        return var != null;
     }
     return super.eIsSet(featureID);
   }

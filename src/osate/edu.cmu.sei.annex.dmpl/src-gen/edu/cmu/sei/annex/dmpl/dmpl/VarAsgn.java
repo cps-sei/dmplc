@@ -13,8 +13,8 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.VarAsgn#getVar <em>Var</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.VarAsgn#isInput <em>Input</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.VarAsgn#getVar <em>Var</em>}</li>
  * </ul>
  *
  * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getVarAsgn()
@@ -23,32 +23,6 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface VarAsgn extends EObject
 {
-  /**
-   * Returns the value of the '<em><b>Var</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Var</em>' containment reference isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Var</em>' containment reference.
-   * @see #setVar(Var)
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getVarAsgn_Var()
-   * @model containment="true"
-   * @generated
-   */
-  Var getVar();
-
-  /**
-   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.VarAsgn#getVar <em>Var</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Var</em>' containment reference.
-   * @see #getVar()
-   * @generated
-   */
-  void setVar(Var value);
-
   /**
    * Returns the value of the '<em><b>Input</b></em>' attribute.
    * <!-- begin-user-doc -->
@@ -74,5 +48,31 @@ public interface VarAsgn extends EObject
    * @generated
    */
   void setInput(boolean value);
+
+  /**
+   * Returns the value of the '<em><b>Var</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Var</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Var</em>' containment reference.
+   * @see #setVar(Var)
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getVarAsgn_Var()
+   * @model containment="true"
+   * @generated
+   */
+  Var getVar();
+
+  /**
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.VarAsgn#getVar <em>Var</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Var</em>' containment reference.
+   * @see #getVar()
+   * @generated
+   */
+  void setVar(Var value);
 
 } // VarAsgn

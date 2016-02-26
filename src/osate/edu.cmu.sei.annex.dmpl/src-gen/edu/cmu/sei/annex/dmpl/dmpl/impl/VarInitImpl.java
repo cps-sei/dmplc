@@ -4,17 +4,24 @@ package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.Type;
-import edu.cmu.sei.annex.dmpl.dmpl.VarAsgnList;
+import edu.cmu.sei.annex.dmpl.dmpl.VarAsgn;
 import edu.cmu.sei.annex.dmpl.dmpl.VarInit;
+
+import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -25,7 +32,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * </p>
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarInitImpl#getType <em>Type</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarInitImpl#getVarAsgnList <em>Var Asgn List</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarInitImpl#getVarInitItems <em>Var Init Items</em>}</li>
  * </ul>
  *
  * @generated
@@ -43,14 +50,14 @@ public class VarInitImpl extends MinimalEObjectImpl.Container implements VarInit
   protected Type type;
 
   /**
-   * The cached value of the '{@link #getVarAsgnList() <em>Var Asgn List</em>}' containment reference.
+   * The cached value of the '{@link #getVarInitItems() <em>Var Init Items</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getVarAsgnList()
+   * @see #getVarInitItems()
    * @generated
    * @ordered
    */
-  protected VarAsgnList varAsgnList;
+  protected EList<VarAsgn> varInitItems;
 
   /**
    * <!-- begin-user-doc -->
@@ -126,47 +133,13 @@ public class VarInitImpl extends MinimalEObjectImpl.Container implements VarInit
    * <!-- end-user-doc -->
    * @generated
    */
-  public VarAsgnList getVarAsgnList()
+  public EList<VarAsgn> getVarInitItems()
   {
-    return varAsgnList;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetVarAsgnList(VarAsgnList newVarAsgnList, NotificationChain msgs)
-  {
-    VarAsgnList oldVarAsgnList = varAsgnList;
-    varAsgnList = newVarAsgnList;
-    if (eNotificationRequired())
+    if (varInitItems == null)
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.VAR_INIT__VAR_ASGN_LIST, oldVarAsgnList, newVarAsgnList);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      varInitItems = new EObjectContainmentEList<VarAsgn>(VarAsgn.class, this, DmplPackage.VAR_INIT__VAR_INIT_ITEMS);
     }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setVarAsgnList(VarAsgnList newVarAsgnList)
-  {
-    if (newVarAsgnList != varAsgnList)
-    {
-      NotificationChain msgs = null;
-      if (varAsgnList != null)
-        msgs = ((InternalEObject)varAsgnList).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.VAR_INIT__VAR_ASGN_LIST, null, msgs);
-      if (newVarAsgnList != null)
-        msgs = ((InternalEObject)newVarAsgnList).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.VAR_INIT__VAR_ASGN_LIST, null, msgs);
-      msgs = basicSetVarAsgnList(newVarAsgnList, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.VAR_INIT__VAR_ASGN_LIST, newVarAsgnList, newVarAsgnList));
+    return varInitItems;
   }
 
   /**
@@ -181,8 +154,8 @@ public class VarInitImpl extends MinimalEObjectImpl.Container implements VarInit
     {
       case DmplPackage.VAR_INIT__TYPE:
         return basicSetType(null, msgs);
-      case DmplPackage.VAR_INIT__VAR_ASGN_LIST:
-        return basicSetVarAsgnList(null, msgs);
+      case DmplPackage.VAR_INIT__VAR_INIT_ITEMS:
+        return ((InternalEList<?>)getVarInitItems()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -199,8 +172,8 @@ public class VarInitImpl extends MinimalEObjectImpl.Container implements VarInit
     {
       case DmplPackage.VAR_INIT__TYPE:
         return getType();
-      case DmplPackage.VAR_INIT__VAR_ASGN_LIST:
-        return getVarAsgnList();
+      case DmplPackage.VAR_INIT__VAR_INIT_ITEMS:
+        return getVarInitItems();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -210,6 +183,7 @@ public class VarInitImpl extends MinimalEObjectImpl.Container implements VarInit
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
@@ -218,8 +192,9 @@ public class VarInitImpl extends MinimalEObjectImpl.Container implements VarInit
       case DmplPackage.VAR_INIT__TYPE:
         setType((Type)newValue);
         return;
-      case DmplPackage.VAR_INIT__VAR_ASGN_LIST:
-        setVarAsgnList((VarAsgnList)newValue);
+      case DmplPackage.VAR_INIT__VAR_INIT_ITEMS:
+        getVarInitItems().clear();
+        getVarInitItems().addAll((Collection<? extends VarAsgn>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -238,8 +213,8 @@ public class VarInitImpl extends MinimalEObjectImpl.Container implements VarInit
       case DmplPackage.VAR_INIT__TYPE:
         setType((Type)null);
         return;
-      case DmplPackage.VAR_INIT__VAR_ASGN_LIST:
-        setVarAsgnList((VarAsgnList)null);
+      case DmplPackage.VAR_INIT__VAR_INIT_ITEMS:
+        getVarInitItems().clear();
         return;
     }
     super.eUnset(featureID);
@@ -257,8 +232,8 @@ public class VarInitImpl extends MinimalEObjectImpl.Container implements VarInit
     {
       case DmplPackage.VAR_INIT__TYPE:
         return type != null;
-      case DmplPackage.VAR_INIT__VAR_ASGN_LIST:
-        return varAsgnList != null;
+      case DmplPackage.VAR_INIT__VAR_INIT_ITEMS:
+        return varInitItems != null && !varInitItems.isEmpty();
     }
     return super.eIsSet(featureID);
   }

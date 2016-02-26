@@ -80,15 +80,11 @@
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//VarInit">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//VarInit/type"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//VarInit/varAsgnList"/>
-    </genClasses>
-    <genClasses ecoreClass="Dmpl.ecore#//VarAsgnList">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//VarAsgnList/var"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//VarAsgnList/varAsgn"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//VarInit/varInitItems"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//VarAsgn">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//VarAsgn/var"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//VarAsgn/input"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//VarAsgn/var"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Var">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Var/name"/>

@@ -95,15 +95,6 @@ public interface DmplFactory extends EFactory
   VarInit createVarInit();
 
   /**
-   * Returns a new object of class '<em>Var Asgn List</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Var Asgn List</em>'.
-   * @generated
-   */
-  VarAsgnList createVarAsgnList();
-
-  /**
    * Returns a new object of class '<em>Var Asgn</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

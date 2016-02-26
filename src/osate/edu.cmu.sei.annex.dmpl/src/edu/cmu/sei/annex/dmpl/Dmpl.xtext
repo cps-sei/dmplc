@@ -40,15 +40,11 @@ DoubleConst:
 ;
 
 VarInit:
-	type=Type varAsgnList=VarAsgnList
-;
-
-VarAsgnList:
-	//TODO 'input', and multiplicity
-	var=Var | varAsgn=VarAsgn
+	type=Type varInitItems+=VarAsgn (',' varInitItems+=VarAsgn)*
 ;
 
 VarAsgn:
+	input?='input'? var=Var |
 	{ExprVarAsgn} (var=Var '=' | input?='input' var=Var '~') expr=Expr |
 	{FnVarAsgn} (var=Var '=' | input?='input' var=Var '~') fnBody=FnBody
 ;

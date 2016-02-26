@@ -2,6 +2,8 @@
  */
 package edu.cmu.sei.annex.dmpl.dmpl;
 
+import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -14,7 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.VarInit#getType <em>Type</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.VarInit#getVarAsgnList <em>Var Asgn List</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.VarInit#getVarInitItems <em>Var Init Items</em>}</li>
  * </ul>
  *
  * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getVarInit()
@@ -50,29 +52,19 @@ public interface VarInit extends EObject
   void setType(Type value);
 
   /**
-   * Returns the value of the '<em><b>Var Asgn List</b></em>' containment reference.
+   * Returns the value of the '<em><b>Var Init Items</b></em>' containment reference list.
+   * The list contents are of type {@link edu.cmu.sei.annex.dmpl.dmpl.VarAsgn}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Var Asgn List</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Var Init Items</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Var Asgn List</em>' containment reference.
-   * @see #setVarAsgnList(VarAsgnList)
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getVarInit_VarAsgnList()
+   * @return the value of the '<em>Var Init Items</em>' containment reference list.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getVarInit_VarInitItems()
    * @model containment="true"
    * @generated
    */
-  VarAsgnList getVarAsgnList();
-
-  /**
-   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.VarInit#getVarAsgnList <em>Var Asgn List</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Var Asgn List</em>' containment reference.
-   * @see #getVarAsgnList()
-   * @generated
-   */
-  void setVarAsgnList(VarAsgnList value);
+  EList<VarAsgn> getVarInitItems();
 
 } // VarInit

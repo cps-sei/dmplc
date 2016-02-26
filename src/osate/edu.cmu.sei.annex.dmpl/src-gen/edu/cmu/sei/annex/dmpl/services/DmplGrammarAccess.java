@@ -229,14 +229,18 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cTypeAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final RuleCall cTypeTypeParserRuleCall_0_0 = (RuleCall)cTypeAssignment_0.eContents().get(0);
-		private final Assignment cVarAsgnListAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cVarAsgnListVarAsgnListParserRuleCall_1_0 = (RuleCall)cVarAsgnListAssignment_1.eContents().get(0);
+		private final Assignment cVarInitItemsAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cVarInitItemsVarAsgnParserRuleCall_1_0 = (RuleCall)cVarInitItemsAssignment_1.eContents().get(0);
+		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
+		private final Keyword cCommaKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
+		private final Assignment cVarInitItemsAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
+		private final RuleCall cVarInitItemsVarAsgnParserRuleCall_2_1_0 = (RuleCall)cVarInitItemsAssignment_2_1.eContents().get(0);
 		
 		//VarInit:
-		//	type=Type varAsgnList=VarAsgnList;
+		//	type=Type varInitItems+=VarAsgn ("," varInitItems+=VarAsgn)*;
 		@Override public ParserRule getRule() { return rule; }
 
-		//type=Type varAsgnList=VarAsgnList
+		//type=Type varInitItems+=VarAsgn ("," varInitItems+=VarAsgn)*
 		public Group getGroup() { return cGroup; }
 
 		//type=Type
@@ -245,63 +249,35 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//Type
 		public RuleCall getTypeTypeParserRuleCall_0_0() { return cTypeTypeParserRuleCall_0_0; }
 
-		//varAsgnList=VarAsgnList
-		public Assignment getVarAsgnListAssignment_1() { return cVarAsgnListAssignment_1; }
-
-		//VarAsgnList
-		public RuleCall getVarAsgnListVarAsgnListParserRuleCall_1_0() { return cVarAsgnListVarAsgnListParserRuleCall_1_0; }
-	}
-
-	public class VarAsgnListElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "VarAsgnList");
-		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final Assignment cVarAssignment_0 = (Assignment)cAlternatives.eContents().get(0);
-		private final RuleCall cVarVarParserRuleCall_0_0 = (RuleCall)cVarAssignment_0.eContents().get(0);
-		private final Assignment cVarAsgnAssignment_1 = (Assignment)cAlternatives.eContents().get(1);
-		private final RuleCall cVarAsgnVarAsgnParserRuleCall_1_0 = (RuleCall)cVarAsgnAssignment_1.eContents().get(0);
-		
-		//VarAsgnList: //TODO 'input', and multiplicity
-		//	var=Var | varAsgn=VarAsgn;
-		@Override public ParserRule getRule() { return rule; }
-
-		////TODO 'input', and multiplicity
-		//var=Var | varAsgn=VarAsgn
-		public Alternatives getAlternatives() { return cAlternatives; }
-
-		////TODO 'input', and multiplicity
-		//var=Var
-		public Assignment getVarAssignment_0() { return cVarAssignment_0; }
-
-		//Var
-		public RuleCall getVarVarParserRuleCall_0_0() { return cVarVarParserRuleCall_0_0; }
-
-		//varAsgn=VarAsgn
-		public Assignment getVarAsgnAssignment_1() { return cVarAsgnAssignment_1; }
+		//varInitItems+=VarAsgn
+		public Assignment getVarInitItemsAssignment_1() { return cVarInitItemsAssignment_1; }
 
 		//VarAsgn
-		public RuleCall getVarAsgnVarAsgnParserRuleCall_1_0() { return cVarAsgnVarAsgnParserRuleCall_1_0; }
+		public RuleCall getVarInitItemsVarAsgnParserRuleCall_1_0() { return cVarInitItemsVarAsgnParserRuleCall_1_0; }
+
+		//("," varInitItems+=VarAsgn)*
+		public Group getGroup_2() { return cGroup_2; }
+
+		//","
+		public Keyword getCommaKeyword_2_0() { return cCommaKeyword_2_0; }
+
+		//varInitItems+=VarAsgn
+		public Assignment getVarInitItemsAssignment_2_1() { return cVarInitItemsAssignment_2_1; }
+
+		//VarAsgn
+		public RuleCall getVarInitItemsVarAsgnParserRuleCall_2_1_0() { return cVarInitItemsVarAsgnParserRuleCall_2_1_0; }
 	}
 
 	public class VarAsgnElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "VarAsgn");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
-		private final Action cExprVarAsgnAction_0_0 = (Action)cGroup_0.eContents().get(0);
-		private final Alternatives cAlternatives_0_1 = (Alternatives)cGroup_0.eContents().get(1);
-		private final Group cGroup_0_1_0 = (Group)cAlternatives_0_1.eContents().get(0);
-		private final Assignment cVarAssignment_0_1_0_0 = (Assignment)cGroup_0_1_0.eContents().get(0);
-		private final RuleCall cVarVarParserRuleCall_0_1_0_0_0 = (RuleCall)cVarAssignment_0_1_0_0.eContents().get(0);
-		private final Keyword cEqualsSignKeyword_0_1_0_1 = (Keyword)cGroup_0_1_0.eContents().get(1);
-		private final Group cGroup_0_1_1 = (Group)cAlternatives_0_1.eContents().get(1);
-		private final Assignment cInputAssignment_0_1_1_0 = (Assignment)cGroup_0_1_1.eContents().get(0);
-		private final Keyword cInputInputKeyword_0_1_1_0_0 = (Keyword)cInputAssignment_0_1_1_0.eContents().get(0);
-		private final Assignment cVarAssignment_0_1_1_1 = (Assignment)cGroup_0_1_1.eContents().get(1);
-		private final RuleCall cVarVarParserRuleCall_0_1_1_1_0 = (RuleCall)cVarAssignment_0_1_1_1.eContents().get(0);
-		private final Keyword cTildeKeyword_0_1_1_2 = (Keyword)cGroup_0_1_1.eContents().get(2);
-		private final Assignment cExprAssignment_0_2 = (Assignment)cGroup_0.eContents().get(2);
-		private final RuleCall cExprExprParserRuleCall_0_2_0 = (RuleCall)cExprAssignment_0_2.eContents().get(0);
+		private final Assignment cInputAssignment_0_0 = (Assignment)cGroup_0.eContents().get(0);
+		private final Keyword cInputInputKeyword_0_0_0 = (Keyword)cInputAssignment_0_0.eContents().get(0);
+		private final Assignment cVarAssignment_0_1 = (Assignment)cGroup_0.eContents().get(1);
+		private final RuleCall cVarVarParserRuleCall_0_1_0 = (RuleCall)cVarAssignment_0_1.eContents().get(0);
 		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
-		private final Action cFnVarAsgnAction_1_0 = (Action)cGroup_1.eContents().get(0);
+		private final Action cExprVarAsgnAction_1_0 = (Action)cGroup_1.eContents().get(0);
 		private final Alternatives cAlternatives_1_1 = (Alternatives)cGroup_1.eContents().get(1);
 		private final Group cGroup_1_1_0 = (Group)cAlternatives_1_1.eContents().get(0);
 		private final Assignment cVarAssignment_1_1_0_0 = (Assignment)cGroup_1_1_0.eContents().get(0);
@@ -313,68 +289,53 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cVarAssignment_1_1_1_1 = (Assignment)cGroup_1_1_1.eContents().get(1);
 		private final RuleCall cVarVarParserRuleCall_1_1_1_1_0 = (RuleCall)cVarAssignment_1_1_1_1.eContents().get(0);
 		private final Keyword cTildeKeyword_1_1_1_2 = (Keyword)cGroup_1_1_1.eContents().get(2);
-		private final Assignment cFnBodyAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
-		private final RuleCall cFnBodyFnBodyParserRuleCall_1_2_0 = (RuleCall)cFnBodyAssignment_1_2.eContents().get(0);
+		private final Assignment cExprAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
+		private final RuleCall cExprExprParserRuleCall_1_2_0 = (RuleCall)cExprAssignment_1_2.eContents().get(0);
+		private final Group cGroup_2 = (Group)cAlternatives.eContents().get(2);
+		private final Action cFnVarAsgnAction_2_0 = (Action)cGroup_2.eContents().get(0);
+		private final Alternatives cAlternatives_2_1 = (Alternatives)cGroup_2.eContents().get(1);
+		private final Group cGroup_2_1_0 = (Group)cAlternatives_2_1.eContents().get(0);
+		private final Assignment cVarAssignment_2_1_0_0 = (Assignment)cGroup_2_1_0.eContents().get(0);
+		private final RuleCall cVarVarParserRuleCall_2_1_0_0_0 = (RuleCall)cVarAssignment_2_1_0_0.eContents().get(0);
+		private final Keyword cEqualsSignKeyword_2_1_0_1 = (Keyword)cGroup_2_1_0.eContents().get(1);
+		private final Group cGroup_2_1_1 = (Group)cAlternatives_2_1.eContents().get(1);
+		private final Assignment cInputAssignment_2_1_1_0 = (Assignment)cGroup_2_1_1.eContents().get(0);
+		private final Keyword cInputInputKeyword_2_1_1_0_0 = (Keyword)cInputAssignment_2_1_1_0.eContents().get(0);
+		private final Assignment cVarAssignment_2_1_1_1 = (Assignment)cGroup_2_1_1.eContents().get(1);
+		private final RuleCall cVarVarParserRuleCall_2_1_1_1_0 = (RuleCall)cVarAssignment_2_1_1_1.eContents().get(0);
+		private final Keyword cTildeKeyword_2_1_1_2 = (Keyword)cGroup_2_1_1.eContents().get(2);
+		private final Assignment cFnBodyAssignment_2_2 = (Assignment)cGroup_2.eContents().get(2);
+		private final RuleCall cFnBodyFnBodyParserRuleCall_2_2_0 = (RuleCall)cFnBodyAssignment_2_2.eContents().get(0);
 		
 		//VarAsgn:
-		//	{ExprVarAsgn} (var=Var "=" | input?="input" var=Var "~") expr=Expr | {FnVarAsgn} (var=Var "=" | input?="input" var=Var
-		//	"~") fnBody=FnBody;
+		//	input?="input"? var=Var | {ExprVarAsgn} (var=Var "=" | input?="input" var=Var "~") expr=Expr | {FnVarAsgn} (var=Var
+		//	"=" | input?="input" var=Var "~") fnBody=FnBody;
 		@Override public ParserRule getRule() { return rule; }
 
-		//{ExprVarAsgn} (var=Var "=" | input?="input" var=Var "~") expr=Expr | {FnVarAsgn} (var=Var "=" | input?="input" var=Var
-		//"~") fnBody=FnBody
+		//input?="input"? var=Var | {ExprVarAsgn} (var=Var "=" | input?="input" var=Var "~") expr=Expr | {FnVarAsgn} (var=Var "="
+		//| input?="input" var=Var "~") fnBody=FnBody
 		public Alternatives getAlternatives() { return cAlternatives; }
 
-		//{ExprVarAsgn} (var=Var "=" | input?="input" var=Var "~") expr=Expr
+		//input?="input"? var=Var
 		public Group getGroup_0() { return cGroup_0; }
 
-		//{ExprVarAsgn}
-		public Action getExprVarAsgnAction_0_0() { return cExprVarAsgnAction_0_0; }
-
-		//var=Var "=" | input?="input" var=Var "~"
-		public Alternatives getAlternatives_0_1() { return cAlternatives_0_1; }
-
-		//var=Var "="
-		public Group getGroup_0_1_0() { return cGroup_0_1_0; }
-
-		//var=Var
-		public Assignment getVarAssignment_0_1_0_0() { return cVarAssignment_0_1_0_0; }
-
-		//Var
-		public RuleCall getVarVarParserRuleCall_0_1_0_0_0() { return cVarVarParserRuleCall_0_1_0_0_0; }
-
-		//"="
-		public Keyword getEqualsSignKeyword_0_1_0_1() { return cEqualsSignKeyword_0_1_0_1; }
-
-		//input?="input" var=Var "~"
-		public Group getGroup_0_1_1() { return cGroup_0_1_1; }
-
-		//input?="input"
-		public Assignment getInputAssignment_0_1_1_0() { return cInputAssignment_0_1_1_0; }
+		//input?="input"?
+		public Assignment getInputAssignment_0_0() { return cInputAssignment_0_0; }
 
 		//"input"
-		public Keyword getInputInputKeyword_0_1_1_0_0() { return cInputInputKeyword_0_1_1_0_0; }
+		public Keyword getInputInputKeyword_0_0_0() { return cInputInputKeyword_0_0_0; }
 
 		//var=Var
-		public Assignment getVarAssignment_0_1_1_1() { return cVarAssignment_0_1_1_1; }
+		public Assignment getVarAssignment_0_1() { return cVarAssignment_0_1; }
 
 		//Var
-		public RuleCall getVarVarParserRuleCall_0_1_1_1_0() { return cVarVarParserRuleCall_0_1_1_1_0; }
+		public RuleCall getVarVarParserRuleCall_0_1_0() { return cVarVarParserRuleCall_0_1_0; }
 
-		//"~"
-		public Keyword getTildeKeyword_0_1_1_2() { return cTildeKeyword_0_1_1_2; }
-
-		//expr=Expr
-		public Assignment getExprAssignment_0_2() { return cExprAssignment_0_2; }
-
-		//Expr
-		public RuleCall getExprExprParserRuleCall_0_2_0() { return cExprExprParserRuleCall_0_2_0; }
-
-		//{FnVarAsgn} (var=Var "=" | input?="input" var=Var "~") fnBody=FnBody
+		//{ExprVarAsgn} (var=Var "=" | input?="input" var=Var "~") expr=Expr
 		public Group getGroup_1() { return cGroup_1; }
 
-		//{FnVarAsgn}
-		public Action getFnVarAsgnAction_1_0() { return cFnVarAsgnAction_1_0; }
+		//{ExprVarAsgn}
+		public Action getExprVarAsgnAction_1_0() { return cExprVarAsgnAction_1_0; }
 
 		//var=Var "=" | input?="input" var=Var "~"
 		public Alternatives getAlternatives_1_1() { return cAlternatives_1_1; }
@@ -409,11 +370,56 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//"~"
 		public Keyword getTildeKeyword_1_1_1_2() { return cTildeKeyword_1_1_1_2; }
 
+		//expr=Expr
+		public Assignment getExprAssignment_1_2() { return cExprAssignment_1_2; }
+
+		//Expr
+		public RuleCall getExprExprParserRuleCall_1_2_0() { return cExprExprParserRuleCall_1_2_0; }
+
+		//{FnVarAsgn} (var=Var "=" | input?="input" var=Var "~") fnBody=FnBody
+		public Group getGroup_2() { return cGroup_2; }
+
+		//{FnVarAsgn}
+		public Action getFnVarAsgnAction_2_0() { return cFnVarAsgnAction_2_0; }
+
+		//var=Var "=" | input?="input" var=Var "~"
+		public Alternatives getAlternatives_2_1() { return cAlternatives_2_1; }
+
+		//var=Var "="
+		public Group getGroup_2_1_0() { return cGroup_2_1_0; }
+
+		//var=Var
+		public Assignment getVarAssignment_2_1_0_0() { return cVarAssignment_2_1_0_0; }
+
+		//Var
+		public RuleCall getVarVarParserRuleCall_2_1_0_0_0() { return cVarVarParserRuleCall_2_1_0_0_0; }
+
+		//"="
+		public Keyword getEqualsSignKeyword_2_1_0_1() { return cEqualsSignKeyword_2_1_0_1; }
+
+		//input?="input" var=Var "~"
+		public Group getGroup_2_1_1() { return cGroup_2_1_1; }
+
+		//input?="input"
+		public Assignment getInputAssignment_2_1_1_0() { return cInputAssignment_2_1_1_0; }
+
+		//"input"
+		public Keyword getInputInputKeyword_2_1_1_0_0() { return cInputInputKeyword_2_1_1_0_0; }
+
+		//var=Var
+		public Assignment getVarAssignment_2_1_1_1() { return cVarAssignment_2_1_1_1; }
+
+		//Var
+		public RuleCall getVarVarParserRuleCall_2_1_1_1_0() { return cVarVarParserRuleCall_2_1_1_1_0; }
+
+		//"~"
+		public Keyword getTildeKeyword_2_1_1_2() { return cTildeKeyword_2_1_1_2; }
+
 		//fnBody=FnBody
-		public Assignment getFnBodyAssignment_1_2() { return cFnBodyAssignment_1_2; }
+		public Assignment getFnBodyAssignment_2_2() { return cFnBodyAssignment_2_2; }
 
 		//FnBody
-		public RuleCall getFnBodyFnBodyParserRuleCall_1_2_0() { return cFnBodyFnBodyParserRuleCall_1_2_0; }
+		public RuleCall getFnBodyFnBodyParserRuleCall_2_2_0() { return cFnBodyFnBodyParserRuleCall_2_2_0; }
 	}
 
 	public class VarElements extends AbstractParserRuleElementFinder {
@@ -2216,7 +2222,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final IntConstElements pIntConst;
 	private final DoubleConstElements pDoubleConst;
 	private final VarInitElements pVarInit;
-	private final VarAsgnListElements pVarAsgnList;
 	private final VarAsgnElements pVarAsgn;
 	private final VarElements pVar;
 	private final DimensionElements pDimension;
@@ -2277,7 +2282,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pIntConst = new IntConstElements();
 		this.pDoubleConst = new DoubleConstElements();
 		this.pVarInit = new VarInitElements();
-		this.pVarAsgnList = new VarAsgnListElements();
 		this.pVarAsgn = new VarAsgnElements();
 		this.pVar = new VarElements();
 		this.pDimension = new DimensionElements();
@@ -2429,7 +2433,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//VarInit:
-	//	type=Type varAsgnList=VarAsgnList;
+	//	type=Type varInitItems+=VarAsgn ("," varInitItems+=VarAsgn)*;
 	public VarInitElements getVarInitAccess() {
 		return pVarInit;
 	}
@@ -2438,19 +2442,9 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getVarInitAccess().getRule();
 	}
 
-	//VarAsgnList: //TODO 'input', and multiplicity
-	//	var=Var | varAsgn=VarAsgn;
-	public VarAsgnListElements getVarAsgnListAccess() {
-		return pVarAsgnList;
-	}
-	
-	public ParserRule getVarAsgnListRule() {
-		return getVarAsgnListAccess().getRule();
-	}
-
 	//VarAsgn:
-	//	{ExprVarAsgn} (var=Var "=" | input?="input" var=Var "~") expr=Expr | {FnVarAsgn} (var=Var "=" | input?="input" var=Var
-	//	"~") fnBody=FnBody;
+	//	input?="input"? var=Var | {ExprVarAsgn} (var=Var "=" | input?="input" var=Var "~") expr=Expr | {FnVarAsgn} (var=Var
+	//	"=" | input?="input" var=Var "~") fnBody=FnBody;
 	public VarAsgnElements getVarAsgnAccess() {
 		return pVarAsgn;
 	}
