@@ -248,6 +248,22 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case DmplPackage.EXPR_VAR_ASGN:
+      {
+        ExprVarAsgn exprVarAsgn = (ExprVarAsgn)theEObject;
+        T result = caseExprVarAsgn(exprVarAsgn);
+        if (result == null) result = caseVarAsgn(exprVarAsgn);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.FN_VAR_ASGN:
+      {
+        FnVarAsgn fnVarAsgn = (FnVarAsgn)theEObject;
+        T result = caseFnVarAsgn(fnVarAsgn);
+        if (result == null) result = caseVarAsgn(fnVarAsgn);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case DmplPackage.INT_DIMENSION:
       {
         IntDimension intDimension = (IntDimension)theEObject;
@@ -792,6 +808,38 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseArgList(ArgList object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Expr Var Asgn</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Expr Var Asgn</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseExprVarAsgn(ExprVarAsgn object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Fn Var Asgn</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Fn Var Asgn</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseFnVarAsgn(FnVarAsgn object)
   {
     return null;
   }

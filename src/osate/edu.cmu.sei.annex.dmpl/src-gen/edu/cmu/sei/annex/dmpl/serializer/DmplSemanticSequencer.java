@@ -19,8 +19,10 @@ import edu.cmu.sei.annex.dmpl.dmpl.DmplSubclause;
 import edu.cmu.sei.annex.dmpl.dmpl.DoubleConst;
 import edu.cmu.sei.annex.dmpl.dmpl.DoubleExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.EqualityExpr;
+import edu.cmu.sei.annex.dmpl.dmpl.ExprVarAsgn;
 import edu.cmu.sei.annex.dmpl.dmpl.FnBody;
 import edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration;
+import edu.cmu.sei.annex.dmpl.dmpl.FnVarAsgn;
 import edu.cmu.sei.annex.dmpl.dmpl.IdDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.IdExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.IntConst;
@@ -41,7 +43,6 @@ import edu.cmu.sei.annex.dmpl.dmpl.ThreadDeclaration;
 import edu.cmu.sei.annex.dmpl.dmpl.Type;
 import edu.cmu.sei.annex.dmpl.dmpl.UnaryExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.Var;
-import edu.cmu.sei.annex.dmpl.dmpl.VarAsgn;
 import edu.cmu.sei.annex.dmpl.dmpl.VarAsgnList;
 import edu.cmu.sei.annex.dmpl.dmpl.VarInit;
 import edu.cmu.sei.annex.dmpl.dmpl.VarInitList;
@@ -107,11 +108,17 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 			case DmplPackage.EQUALITY_EXPR:
 				sequence_EqualityExpr(context, (EqualityExpr) semanticObject); 
 				return; 
+			case DmplPackage.EXPR_VAR_ASGN:
+				sequence_VarAsgn(context, (ExprVarAsgn) semanticObject); 
+				return; 
 			case DmplPackage.FN_BODY:
 				sequence_FnBody(context, (FnBody) semanticObject); 
 				return; 
 			case DmplPackage.FN_PROTOTYPE_DECLARATION:
 				sequence_FnPrototype(context, (FnPrototypeDeclaration) semanticObject); 
+				return; 
+			case DmplPackage.FN_VAR_ASGN:
+				sequence_VarAsgn(context, (FnVarAsgn) semanticObject); 
 				return; 
 			case DmplPackage.ID_DIMENSION:
 				sequence_Dimension(context, (IdDimension) semanticObject); 
@@ -172,9 +179,6 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.VAR:
 				sequence_Var(context, (Var) semanticObject); 
-				return; 
-			case DmplPackage.VAR_ASGN:
-				sequence_VarAsgn(context, (VarAsgn) semanticObject); 
 				return; 
 			case DmplPackage.VAR_ASGN_LIST:
 				sequence_VarAsgnList(context, (VarAsgnList) semanticObject); 
@@ -712,9 +716,18 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (var=Var (fnBody=FnBody | expr=Expr))
+	 *     ((var=Var | (input?='input' var=Var)) expr=Expr)
 	 */
-	protected void sequence_VarAsgn(EObject context, VarAsgn semanticObject) {
+	protected void sequence_VarAsgn(EObject context, ExprVarAsgn semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     ((var=Var | (input?='input' var=Var)) fnBody=FnBody)
+	 */
+	protected void sequence_VarAsgn(EObject context, FnVarAsgn semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

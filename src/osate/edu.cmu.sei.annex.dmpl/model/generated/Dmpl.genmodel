@@ -88,8 +88,7 @@
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//VarAsgn">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//VarAsgn/var"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//VarAsgn/fnBody"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//VarAsgn/expr"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//VarAsgn/input"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Var">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Var/name"/>
@@ -136,6 +135,12 @@
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//ArgList">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//ArgList/args"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//ExprVarAsgn">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//ExprVarAsgn/expr"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//FnVarAsgn">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnVarAsgn/fnBody"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//IntDimension">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//IntDimension/index"/>

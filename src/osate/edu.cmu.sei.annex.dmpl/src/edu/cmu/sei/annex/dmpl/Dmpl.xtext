@@ -49,8 +49,8 @@ VarAsgnList:
 ;
 
 VarAsgn:
-	//TODO 'input' and '~'
-	var=Var '=' (fnBody=FnBody | expr=Expr)
+	{ExprVarAsgn} (var=Var '=' | input?='input' var=Var '~') expr=Expr |
+	{FnVarAsgn} (var=Var '=' | input?='input' var=Var '~') fnBody=FnBody
 ;
 
 Var:

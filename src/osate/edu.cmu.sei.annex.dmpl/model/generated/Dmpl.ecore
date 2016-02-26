@@ -36,9 +36,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VarAsgn">
     <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//Var" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="fnBody" eType="#//FnBody"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//Expr" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="input" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Var">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -145,6 +143,13 @@
     <eLiterals name="exists_other" literal="exists_other"/>
     <eLiterals name="exists_higher" value="1" literal="exists_higher"/>
     <eLiterals name="exists_lower" value="2" literal="exists_lower"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExprVarAsgn" eSuperTypes="#//VarAsgn">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//Expr" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FnVarAsgn" eSuperTypes="#//VarAsgn">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="fnBody" eType="#//FnBody"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IntDimension" eSuperTypes="#//Dimension">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="index" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>

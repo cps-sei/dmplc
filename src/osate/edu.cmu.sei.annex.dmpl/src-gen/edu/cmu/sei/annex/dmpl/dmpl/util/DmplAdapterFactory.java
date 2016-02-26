@@ -195,6 +195,16 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createArgListAdapter();
       }
       @Override
+      public Adapter caseExprVarAsgn(ExprVarAsgn object)
+      {
+        return createExprVarAsgnAdapter();
+      }
+      @Override
+      public Adapter caseFnVarAsgn(FnVarAsgn object)
+      {
+        return createFnVarAsgnAdapter();
+      }
+      @Override
       public Adapter caseIntDimension(IntDimension object)
       {
         return createIntDimensionAdapter();
@@ -687,6 +697,36 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createArgListAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.ExprVarAsgn <em>Expr Var Asgn</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ExprVarAsgn
+   * @generated
+   */
+  public Adapter createExprVarAsgnAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.FnVarAsgn <em>Fn Var Asgn</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.FnVarAsgn
+   * @generated
+   */
+  public Adapter createFnVarAsgnAdapter()
   {
     return null;
   }

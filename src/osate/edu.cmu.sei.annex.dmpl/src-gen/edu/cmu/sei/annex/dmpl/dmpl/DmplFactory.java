@@ -230,6 +230,24 @@ public interface DmplFactory extends EFactory
   ArgList createArgList();
 
   /**
+   * Returns a new object of class '<em>Expr Var Asgn</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Expr Var Asgn</em>'.
+   * @generated
+   */
+  ExprVarAsgn createExprVarAsgn();
+
+  /**
+   * Returns a new object of class '<em>Fn Var Asgn</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Fn Var Asgn</em>'.
+   * @generated
+   */
+  FnVarAsgn createFnVarAsgn();
+
+  /**
    * Returns a new object of class '<em>Int Dimension</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

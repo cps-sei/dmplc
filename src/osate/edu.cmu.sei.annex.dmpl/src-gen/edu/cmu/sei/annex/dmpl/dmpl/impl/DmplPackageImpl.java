@@ -23,9 +23,11 @@ import edu.cmu.sei.annex.dmpl.dmpl.DoubleExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.EqualityExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.EqualityOperator;
 import edu.cmu.sei.annex.dmpl.dmpl.Expr;
+import edu.cmu.sei.annex.dmpl.dmpl.ExprVarAsgn;
 import edu.cmu.sei.annex.dmpl.dmpl.FnBody;
 import edu.cmu.sei.annex.dmpl.dmpl.FnPrototype;
 import edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration;
+import edu.cmu.sei.annex.dmpl.dmpl.FnVarAsgn;
 import edu.cmu.sei.annex.dmpl.dmpl.IdDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.IdExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.IntConst;
@@ -238,6 +240,20 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass argListEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass exprVarAsgnEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass fnVarAsgnEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -754,19 +770,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getVarAsgn_FnBody()
+  public EAttribute getVarAsgn_Input()
   {
-    return (EReference)varAsgnEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getVarAsgn_Expr()
-  {
-    return (EReference)varAsgnEClass.getEStructuralFeatures().get(2);
+    return (EAttribute)varAsgnEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1117,6 +1123,46 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
   public EReference getArgList_Args()
   {
     return (EReference)argListEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getExprVarAsgn()
+  {
+    return exprVarAsgnEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getExprVarAsgn_Expr()
+  {
+    return (EReference)exprVarAsgnEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getFnVarAsgn()
+  {
+    return fnVarAsgnEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getFnVarAsgn_FnBody()
+  {
+    return (EReference)fnVarAsgnEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1890,8 +1936,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     varAsgnEClass = createEClass(VAR_ASGN);
     createEReference(varAsgnEClass, VAR_ASGN__VAR);
-    createEReference(varAsgnEClass, VAR_ASGN__FN_BODY);
-    createEReference(varAsgnEClass, VAR_ASGN__EXPR);
+    createEAttribute(varAsgnEClass, VAR_ASGN__INPUT);
 
     varEClass = createEClass(VAR);
     createEAttribute(varEClass, VAR__NAME);
@@ -1940,6 +1985,12 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     argListEClass = createEClass(ARG_LIST);
     createEReference(argListEClass, ARG_LIST__ARGS);
+
+    exprVarAsgnEClass = createEClass(EXPR_VAR_ASGN);
+    createEReference(exprVarAsgnEClass, EXPR_VAR_ASGN__EXPR);
+
+    fnVarAsgnEClass = createEClass(FN_VAR_ASGN);
+    createEReference(fnVarAsgnEClass, FN_VAR_ASGN__FN_BODY);
 
     intDimensionEClass = createEClass(INT_DIMENSION);
     createEAttribute(intDimensionEClass, INT_DIMENSION__INDEX);
@@ -2076,6 +2127,8 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     procedureEClass.getESuperTypes().add(this.getProgramElement());
     lValEClass.getESuperTypes().add(this.getExpr());
     callExprEClass.getESuperTypes().add(this.getExpr());
+    exprVarAsgnEClass.getESuperTypes().add(this.getVarAsgn());
+    fnVarAsgnEClass.getESuperTypes().add(this.getVarAsgn());
     intDimensionEClass.getESuperTypes().add(this.getDimension());
     nodeNumDimensionEClass.getESuperTypes().add(this.getDimension());
     idDimensionEClass.getESuperTypes().add(this.getDimension());
@@ -2131,8 +2184,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     initEClass(varAsgnEClass, VarAsgn.class, "VarAsgn", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getVarAsgn_Var(), this.getVar(), null, "var", null, 0, 1, VarAsgn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getVarAsgn_FnBody(), this.getFnBody(), null, "fnBody", null, 0, 1, VarAsgn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getVarAsgn_Expr(), this.getExpr(), null, "expr", null, 0, 1, VarAsgn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getVarAsgn_Input(), ecorePackage.getEBoolean(), "input", null, 0, 1, VarAsgn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(varEClass, Var.class, "Var", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getVar_Name(), ecorePackage.getEString(), "name", null, 0, 1, Var.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2181,6 +2233,12 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     initEClass(argListEClass, ArgList.class, "ArgList", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getArgList_Args(), this.getExpr(), null, "args", null, 0, -1, ArgList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(exprVarAsgnEClass, ExprVarAsgn.class, "ExprVarAsgn", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getExprVarAsgn_Expr(), this.getExpr(), null, "expr", null, 0, 1, ExprVarAsgn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(fnVarAsgnEClass, FnVarAsgn.class, "FnVarAsgn", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getFnVarAsgn_FnBody(), this.getFnBody(), null, "fnBody", null, 0, 1, FnVarAsgn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(intDimensionEClass, IntDimension.class, "IntDimension", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getIntDimension_Index(), ecorePackage.getEInt(), "index", null, 0, 1, IntDimension.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

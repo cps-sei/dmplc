@@ -14,8 +14,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.VarAsgn#getVar <em>Var</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.VarAsgn#getFnBody <em>Fn Body</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.VarAsgn#getExpr <em>Expr</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.VarAsgn#isInput <em>Input</em>}</li>
  * </ul>
  *
  * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getVarAsgn()
@@ -51,55 +50,29 @@ public interface VarAsgn extends EObject
   void setVar(Var value);
 
   /**
-   * Returns the value of the '<em><b>Fn Body</b></em>' containment reference.
+   * Returns the value of the '<em><b>Input</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Fn Body</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Input</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Fn Body</em>' containment reference.
-   * @see #setFnBody(FnBody)
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getVarAsgn_FnBody()
-   * @model containment="true"
+   * @return the value of the '<em>Input</em>' attribute.
+   * @see #setInput(boolean)
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getVarAsgn_Input()
+   * @model
    * @generated
    */
-  FnBody getFnBody();
+  boolean isInput();
 
   /**
-   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.VarAsgn#getFnBody <em>Fn Body</em>}' containment reference.
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.VarAsgn#isInput <em>Input</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Fn Body</em>' containment reference.
-   * @see #getFnBody()
+   * @param value the new value of the '<em>Input</em>' attribute.
+   * @see #isInput()
    * @generated
    */
-  void setFnBody(FnBody value);
-
-  /**
-   * Returns the value of the '<em><b>Expr</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Expr</em>' containment reference isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Expr</em>' containment reference.
-   * @see #setExpr(Expr)
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getVarAsgn_Expr()
-   * @model containment="true"
-   * @generated
-   */
-  Expr getExpr();
-
-  /**
-   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.VarAsgn#getExpr <em>Expr</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Expr</em>' containment reference.
-   * @see #getExpr()
-   * @generated
-   */
-  void setExpr(Expr value);
+  void setInput(boolean value);
 
 } // VarAsgn
