@@ -288,6 +288,14 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case DmplPackage.XOR_EXPR:
+      {
+        XorExpr xorExpr = (XorExpr)theEObject;
+        T result = caseXorExpr(xorExpr);
+        if (result == null) result = caseExpr(xorExpr);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case DmplPackage.BITWISE_AND_EXPR:
       {
         BitwiseAndExpr bitwiseAndExpr = (BitwiseAndExpr)theEObject;
@@ -832,6 +840,22 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseFnPrototypeDeclaration(FnPrototypeDeclaration object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Xor Expr</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Xor Expr</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseXorExpr(XorExpr object)
   {
     return null;
   }

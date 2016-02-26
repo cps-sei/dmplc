@@ -10,6 +10,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.EqualityOperator
 import edu.cmu.sei.annex.dmpl.dmpl.LVal
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure
 import edu.cmu.sei.annex.dmpl.dmpl.Program
+import edu.cmu.sei.annex.dmpl.dmpl.XorExpr
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
@@ -133,6 +134,49 @@ class ParserTest2 {
 						left as EqualityExpr => [
 							"name6".assertEquals((left as LVal).name)
 							EqualityOperator.EQUAL.assertEquals(operator)
+							"name7".assertEquals((right as LVal).name)
+						]
+						"name8".assertEquals((right as LVal).name)
+					]
+				]
+			]
+		]
+	}
+	
+	@Test
+	def void testXorExpr() {
+		'''
+			void f1() {
+				int v1 = name1 ^ name2;
+				int v2 = name3 ^ name4 & name5;
+				int v3 = name6 & name7 ^ name8;
+			}
+		'''.parse => [
+			assertNoIssues;
+			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+				3.assertEquals(varInits.size)
+				varInits.get(0).varAsgnList.varAsgn => [
+					"v1".assertEquals(^var.name)
+					expr as XorExpr => [
+						"name1".assertEquals((left as LVal).name)
+						"name2".assertEquals((right as LVal).name)
+					]
+				]
+				varInits.get(1).varAsgnList.varAsgn => [
+					"v2".assertEquals(^var.name)
+					expr as XorExpr => [
+						"name3".assertEquals((left as LVal).name)
+						right as BitwiseAndExpr => [
+							"name4".assertEquals((left as LVal).name)
+							"name5".assertEquals((right as LVal).name)
+						]
+					]
+				]
+				varInits.get(2).varAsgnList.varAsgn => [
+					"v3".assertEquals(^var.name)
+					expr as XorExpr => [
+						left as BitwiseAndExpr => [
+							"name6".assertEquals((left as LVal).name)
 							"name7".assertEquals((right as LVal).name)
 						]
 						"name8".assertEquals((right as LVal).name)

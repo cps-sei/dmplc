@@ -90,6 +90,10 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getLValAccess().getGroup(), "rule__LVal__Group__0");
 					put(grammarAccess.getLValAccess().getGroup_1(), "rule__LVal__Group_1__0");
 					put(grammarAccess.getLValAccess().getGroup_2(), "rule__LVal__Group_2__0");
+					put(grammarAccess.getXorExprAccess().getGroup(), "rule__XorExpr__Group__0");
+					put(grammarAccess.getXorExprAccess().getGroup_1(), "rule__XorExpr__Group_1__0");
+					put(grammarAccess.getXorExprAccess().getGroup_1_0(), "rule__XorExpr__Group_1_0__0");
+					put(grammarAccess.getXorExprAccess().getGroup_1_0_0(), "rule__XorExpr__Group_1_0_0__0");
 					put(grammarAccess.getBitwiseAndExprAccess().getGroup(), "rule__BitwiseAndExpr__Group__0");
 					put(grammarAccess.getBitwiseAndExprAccess().getGroup_1(), "rule__BitwiseAndExpr__Group_1__0");
 					put(grammarAccess.getBitwiseAndExprAccess().getGroup_1_0(), "rule__BitwiseAndExpr__Group_1_0__0");
@@ -168,6 +172,7 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getLValAccess().getNameAssignment_0(), "rule__LVal__NameAssignment_0");
 					put(grammarAccess.getLValAccess().getIndicesAssignment_1_1(), "rule__LVal__IndicesAssignment_1_1");
 					put(grammarAccess.getLValAccess().getAtAssignment_2_1(), "rule__LVal__AtAssignment_2_1");
+					put(grammarAccess.getXorExprAccess().getRightAssignment_1_1(), "rule__XorExpr__RightAssignment_1_1");
 					put(grammarAccess.getBitwiseAndExprAccess().getRightAssignment_1_1(), "rule__BitwiseAndExpr__RightAssignment_1_1");
 					put(grammarAccess.getEqualityExprAccess().getOperatorAssignment_1_0_0_1(), "rule__EqualityExpr__OperatorAssignment_1_0_0_1");
 					put(grammarAccess.getEqualityExprAccess().getRightAssignment_1_1(), "rule__EqualityExpr__RightAssignment_1_1");

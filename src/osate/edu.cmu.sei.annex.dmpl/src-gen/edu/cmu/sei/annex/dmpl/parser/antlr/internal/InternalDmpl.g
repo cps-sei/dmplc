@@ -1439,14 +1439,74 @@ ruleExpr returns [EObject current=null]
     @after { leaveRule(); }:
 
     { 
-        newCompositeNode(grammarAccess.getExprAccess().getBitwiseAndExprParserRuleCall()); 
+        newCompositeNode(grammarAccess.getExprAccess().getXorExprParserRuleCall()); 
+    }
+    this_XorExpr_0=ruleXorExpr
+    { 
+        $current = $this_XorExpr_0.current; 
+        afterParserOrEnumRuleCall();
+    }
+
+;
+
+
+
+
+
+// Entry rule entryRuleXorExpr
+entryRuleXorExpr returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getXorExprRule()); }
+	 iv_ruleXorExpr=ruleXorExpr 
+	 { $current=$iv_ruleXorExpr.current; } 
+	 EOF 
+;
+
+// Rule XorExpr
+ruleXorExpr returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(
+    { 
+        newCompositeNode(grammarAccess.getXorExprAccess().getBitwiseAndExprParserRuleCall_0()); 
     }
     this_BitwiseAndExpr_0=ruleBitwiseAndExpr
     { 
         $current = $this_BitwiseAndExpr_0.current; 
         afterParserOrEnumRuleCall();
     }
+(((((
+)	'^' 
+))=>((
+    {
+        $current = forceCreateModelElementAndSet(
+            grammarAccess.getXorExprAccess().getXorExprLeftAction_1_0_0_0(),
+            $current);
+    }
+)	otherlv_2='^' 
+    {
+    	newLeafNode(otherlv_2, grammarAccess.getXorExprAccess().getCircumflexAccentKeyword_1_0_0_1());
+    }
+))(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getXorExprAccess().getRightBitwiseAndExprParserRuleCall_1_1_0()); 
+	    }
+		lv_right_3_0=ruleBitwiseAndExpr		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getXorExprRule());
+	        }
+       		set(
+       			$current, 
+       			"right",
+        		lv_right_3_0, 
+        		"BitwiseAndExpr");
+	        afterParserOrEnumRuleCall();
+	    }
 
+)
+))*)
 ;
 
 
