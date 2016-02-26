@@ -9,6 +9,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.AdditiveExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.ArgList;
 import edu.cmu.sei.annex.dmpl.dmpl.BuiltInExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.CallExpr;
+import edu.cmu.sei.annex.dmpl.dmpl.CompareExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.Constant;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplSubclause;
@@ -71,6 +72,9 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.CALL_EXPR:
 				sequence_CallExpr(context, (CallExpr) semanticObject); 
+				return; 
+			case DmplPackage.COMPARE_EXPR:
+				sequence_CompareExpr(context, (CompareExpr) semanticObject); 
 				return; 
 			case DmplPackage.CONSTANT:
 				sequence_Constant(context, (Constant) semanticObject); 
@@ -197,6 +201,28 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 */
 	protected void sequence_CallExpr(EObject context, CallExpr semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (left=CompareExpr_CompareExpr_1_0_0_0 operator=CompareOperator right=ShiftExpr)
+	 */
+	protected void sequence_CompareExpr(EObject context, CompareExpr semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.COMPARE_EXPR__LEFT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.COMPARE_EXPR__LEFT));
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.COMPARE_EXPR__OPERATOR) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.COMPARE_EXPR__OPERATOR));
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.COMPARE_EXPR__RIGHT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.COMPARE_EXPR__RIGHT));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getCompareExprAccess().getCompareExprLeftAction_1_0_0_0(), semanticObject.getLeft());
+		feeder.accept(grammarAccess.getCompareExprAccess().getOperatorCompareOperatorEnumRuleCall_1_0_0_1_0(), semanticObject.getOperator());
+		feeder.accept(grammarAccess.getCompareExprAccess().getRightShiftExprParserRuleCall_1_1_0(), semanticObject.getRight());
+		feeder.finish();
 	}
 	
 	

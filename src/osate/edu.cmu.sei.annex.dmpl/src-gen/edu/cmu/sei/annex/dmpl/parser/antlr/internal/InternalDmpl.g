@@ -1439,14 +1439,91 @@ ruleExpr returns [EObject current=null]
     @after { leaveRule(); }:
 
     { 
-        newCompositeNode(grammarAccess.getExprAccess().getShiftExprParserRuleCall()); 
+        newCompositeNode(grammarAccess.getExprAccess().getCompareExprParserRuleCall()); 
+    }
+    this_CompareExpr_0=ruleCompareExpr
+    { 
+        $current = $this_CompareExpr_0.current; 
+        afterParserOrEnumRuleCall();
+    }
+
+;
+
+
+
+
+
+// Entry rule entryRuleCompareExpr
+entryRuleCompareExpr returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getCompareExprRule()); }
+	 iv_ruleCompareExpr=ruleCompareExpr 
+	 { $current=$iv_ruleCompareExpr.current; } 
+	 EOF 
+;
+
+// Rule CompareExpr
+ruleCompareExpr returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(
+    { 
+        newCompositeNode(grammarAccess.getCompareExprAccess().getShiftExprParserRuleCall_0()); 
     }
     this_ShiftExpr_0=ruleShiftExpr
     { 
         $current = $this_ShiftExpr_0.current; 
         afterParserOrEnumRuleCall();
     }
+(((((
+)(
+(
+ruleCompareOperator
+)
+)))=>((
+    {
+        $current = forceCreateModelElementAndSet(
+            grammarAccess.getCompareExprAccess().getCompareExprLeftAction_1_0_0_0(),
+            $current);
+    }
+)(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getCompareExprAccess().getOperatorCompareOperatorEnumRuleCall_1_0_0_1_0()); 
+	    }
+		lv_operator_2_0=ruleCompareOperator		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getCompareExprRule());
+	        }
+       		set(
+       			$current, 
+       			"operator",
+        		lv_operator_2_0, 
+        		"CompareOperator");
+	        afterParserOrEnumRuleCall();
+	    }
 
+)
+)))(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getCompareExprAccess().getRightShiftExprParserRuleCall_1_1_0()); 
+	    }
+		lv_right_3_0=ruleShiftExpr		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getCompareExprRule());
+	        }
+       		set(
+       			$current, 
+       			"right",
+        		lv_right_3_0, 
+        		"ShiftExpr");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))*)
 ;
 
 
@@ -2349,6 +2426,37 @@ ruleDouble returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()]
 
 
 
+
+
+
+// Rule CompareOperator
+ruleCompareOperator returns [Enumerator current=null] 
+    @init { enterRule(); }
+    @after { leaveRule(); }:
+((	enumLiteral_0='<' 
+	{
+        $current = grammarAccess.getCompareOperatorAccess().getLESSEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_0, grammarAccess.getCompareOperatorAccess().getLESSEnumLiteralDeclaration_0()); 
+    }
+)
+    |(	enumLiteral_1='<=' 
+	{
+        $current = grammarAccess.getCompareOperatorAccess().getLESS_EQUALEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_1, grammarAccess.getCompareOperatorAccess().getLESS_EQUALEnumLiteralDeclaration_1()); 
+    }
+)
+    |(	enumLiteral_2='>' 
+	{
+        $current = grammarAccess.getCompareOperatorAccess().getGREATEREnumLiteralDeclaration_2().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_2, grammarAccess.getCompareOperatorAccess().getGREATEREnumLiteralDeclaration_2()); 
+    }
+)
+    |(	enumLiteral_3='>=' 
+	{
+        $current = grammarAccess.getCompareOperatorAccess().getGREATER_EQUALEnumLiteralDeclaration_3().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_3, grammarAccess.getCompareOperatorAccess().getGREATER_EQUALEnumLiteralDeclaration_3()); 
+    }
+));
 
 
 

@@ -24,6 +24,12 @@
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SignedEnum/signed"/>
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SignedEnum/unsigned"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Dmpl.ecore#//CompareOperator">
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//CompareOperator/LESS"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//CompareOperator/LESS_EQUAL"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//CompareOperator/GREATER"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//CompareOperator/GREATER_EQUAL"/>
+    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Dmpl.ecore#//ShiftOperator">
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//ShiftOperator/LEFT"/>
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//ShiftOperator/RIGHT"/>
@@ -138,6 +144,11 @@
     <genClasses ecoreClass="Dmpl.ecore#//FnPrototypeDeclaration">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnPrototypeDeclaration/type"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnPrototypeDeclaration/params"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//CompareExpr">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//CompareExpr/left"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//CompareExpr/operator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//CompareExpr/right"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//ShiftExpr">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//ShiftExpr/left"/>

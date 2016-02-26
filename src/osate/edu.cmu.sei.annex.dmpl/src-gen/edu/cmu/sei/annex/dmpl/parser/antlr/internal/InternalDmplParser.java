@@ -23,11 +23,12 @@ import java.util.HashMap;
 @SuppressWarnings("all")
 public class InternalDmplParser extends AbstractInternalAntlrParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_TIDENTIFIER", "RULE_INT", "RULE_ID", "RULE_STRING", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'const'", "'CONST'", "'='", "';'", "'['", "']'", "'#N'", "'{'", "'}'", "'extern'", "'EXTERN'", "'pure'", "'PURE'", "'thread'", "'('", "','", "')'", "'@'", "'id'", "'::'", "'+'", "'-'", "'bool'", "'_Bool'", "'int'", "'double'", "'void'", "'char'", "'signed'", "'unsigned'", "'exists_other'", "'EXISTS_OTHER'", "'exists_higher'", "'EXISTS_HIGHER'", "'exists_lower'", "'EXISTS_LOWER'", "'NAN'", "'.'", "'<<'", "'>>'", "'*'", "'/'", "'%'", "'!'", "'~'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_TIDENTIFIER", "RULE_INT", "RULE_ID", "RULE_STRING", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'const'", "'CONST'", "'='", "';'", "'['", "']'", "'#N'", "'{'", "'}'", "'extern'", "'EXTERN'", "'pure'", "'PURE'", "'thread'", "'('", "','", "')'", "'@'", "'id'", "'::'", "'+'", "'-'", "'bool'", "'_Bool'", "'int'", "'double'", "'void'", "'char'", "'signed'", "'unsigned'", "'exists_other'", "'EXISTS_OTHER'", "'exists_higher'", "'EXISTS_HIGHER'", "'exists_lower'", "'EXISTS_LOWER'", "'NAN'", "'.'", "'<'", "'<='", "'>'", "'>='", "'<<'", "'>>'", "'*'", "'/'", "'%'", "'!'", "'~'"
     };
     public static final int T__50=50;
     public static final int T__19=19;
     public static final int T__15=15;
+    public static final int T__59=59;
     public static final int T__16=16;
     public static final int T__17=17;
     public static final int T__18=18;
@@ -35,12 +36,15 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
     public static final int T__12=12;
     public static final int T__56=56;
     public static final int T__13=13;
+    public static final int T__57=57;
     public static final int T__14=14;
+    public static final int T__58=58;
     public static final int T__51=51;
     public static final int T__52=52;
     public static final int T__53=53;
     public static final int T__54=54;
     public static final int RULE_TIDENTIFIER=4;
+    public static final int T__60=60;
     public static final int RULE_ID=6;
     public static final int T__26=26;
     public static final int T__27=27;
@@ -802,11 +806,11 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                 if ( (LA4_1==RULE_INT) ) {
                     int LA4_3 = input.LA(3);
 
-                    if ( (LA4_3==49) ) {
-                        alt4=2;
-                    }
-                    else if ( (LA4_3==EOF||LA4_3==15) ) {
+                    if ( (LA4_3==EOF||LA4_3==15) ) {
                         alt4=1;
+                    }
+                    else if ( (LA4_3==49) ) {
+                        alt4=2;
                     }
                     else {
                         if (state.backtracking>0) {state.failed=true; return current;}
@@ -832,14 +836,17 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                 {
                 int LA4_2 = input.LA(2);
 
-                if ( (LA4_2==RULE_INT) ) {
+                if ( (LA4_2==48) ) {
+                    alt4=2;
+                }
+                else if ( (LA4_2==RULE_INT) ) {
                     int LA4_3 = input.LA(3);
 
-                    if ( (LA4_3==49) ) {
-                        alt4=2;
-                    }
-                    else if ( (LA4_3==EOF||LA4_3==15) ) {
+                    if ( (LA4_3==EOF||LA4_3==15) ) {
                         alt4=1;
+                    }
+                    else if ( (LA4_3==49) ) {
+                        alt4=2;
                     }
                     else {
                         if (state.backtracking>0) {state.failed=true; return current;}
@@ -848,9 +855,6 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
                         throw nvae;
                     }
-                }
-                else if ( (LA4_2==48) ) {
-                    alt4=2;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return current;}
@@ -865,11 +869,11 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                 {
                 int LA4_3 = input.LA(2);
 
-                if ( (LA4_3==49) ) {
-                    alt4=2;
-                }
-                else if ( (LA4_3==EOF||LA4_3==15) ) {
+                if ( (LA4_3==EOF||LA4_3==15) ) {
                     alt4=1;
+                }
+                else if ( (LA4_3==49) ) {
+                    alt4=2;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return current;}
@@ -1703,7 +1707,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
             if ( (LA8_0==19) ) {
                 alt8=1;
             }
-            else if ( ((LA8_0>=RULE_TIDENTIFIER && LA8_0<=RULE_INT)||LA8_0==18||LA8_0==26||LA8_0==30||(LA8_0>=32 && LA8_0<=33)||(LA8_0>=42 && LA8_0<=48)||(LA8_0>=55 && LA8_0<=56)) ) {
+            else if ( ((LA8_0>=RULE_TIDENTIFIER && LA8_0<=RULE_INT)||LA8_0==18||LA8_0==26||LA8_0==30||(LA8_0>=32 && LA8_0<=33)||(LA8_0>=42 && LA8_0<=48)||(LA8_0>=59 && LA8_0<=60)) ) {
                 alt8=2;
             }
             else {
@@ -2920,11 +2924,11 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     {
                     int LA23_3 = input.LA(3);
 
-                    if ( ((LA23_3>=34 && LA23_3<=41)) ) {
-                        alt23=2;
-                    }
-                    else if ( (LA23_3==25) ) {
+                    if ( (LA23_3==25) ) {
                         alt23=1;
+                    }
+                    else if ( ((LA23_3>=34 && LA23_3<=41)) ) {
+                        alt23=2;
                     }
                     else {
                         if (state.backtracking>0) {state.failed=true; return current;}
@@ -2939,11 +2943,11 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     {
                     int LA23_4 = input.LA(3);
 
-                    if ( (LA23_4==25) ) {
-                        alt23=1;
-                    }
-                    else if ( ((LA23_4>=34 && LA23_4<=41)) ) {
+                    if ( ((LA23_4>=34 && LA23_4<=41)) ) {
                         alt23=2;
+                    }
+                    else if ( (LA23_4==25) ) {
+                        alt23=1;
                     }
                     else {
                         if (state.backtracking>0) {state.failed=true; return current;}
@@ -2952,6 +2956,11 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
                         throw nvae;
                     }
+                    }
+                    break;
+                case 25:
+                    {
+                    alt23=1;
                     }
                     break;
                 case 34:
@@ -2964,11 +2973,6 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                 case 41:
                     {
                     alt23=2;
-                    }
-                    break;
-                case 25:
-                    {
-                    alt23=1;
                     }
                     break;
                 default:
@@ -2988,11 +2992,11 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     {
                     int LA23_3 = input.LA(3);
 
-                    if ( ((LA23_3>=34 && LA23_3<=41)) ) {
-                        alt23=2;
-                    }
-                    else if ( (LA23_3==25) ) {
+                    if ( (LA23_3==25) ) {
                         alt23=1;
+                    }
+                    else if ( ((LA23_3>=34 && LA23_3<=41)) ) {
+                        alt23=2;
                     }
                     else {
                         if (state.backtracking>0) {state.failed=true; return current;}
@@ -3007,11 +3011,11 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     {
                     int LA23_4 = input.LA(3);
 
-                    if ( (LA23_4==25) ) {
-                        alt23=1;
-                    }
-                    else if ( ((LA23_4>=34 && LA23_4<=41)) ) {
+                    if ( ((LA23_4>=34 && LA23_4<=41)) ) {
                         alt23=2;
+                    }
+                    else if ( (LA23_4==25) ) {
+                        alt23=1;
                     }
                     else {
                         if (state.backtracking>0) {state.failed=true; return current;}
@@ -3053,11 +3057,11 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                 {
                 int LA23_3 = input.LA(2);
 
-                if ( ((LA23_3>=34 && LA23_3<=41)) ) {
-                    alt23=2;
-                }
-                else if ( (LA23_3==25) ) {
+                if ( (LA23_3==25) ) {
                     alt23=1;
+                }
+                else if ( ((LA23_3>=34 && LA23_3<=41)) ) {
+                    alt23=2;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return current;}
@@ -3072,11 +3076,11 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                 {
                 int LA23_4 = input.LA(2);
 
-                if ( (LA23_4==25) ) {
-                    alt23=1;
-                }
-                else if ( ((LA23_4>=34 && LA23_4<=41)) ) {
+                if ( ((LA23_4>=34 && LA23_4<=41)) ) {
                     alt23=2;
+                }
+                else if ( (LA23_4==25) ) {
+                    alt23=1;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return current;}
@@ -4345,32 +4349,32 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleExpr"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1436:1: ruleExpr returns [EObject current=null] : this_ShiftExpr_0= ruleShiftExpr ;
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1436:1: ruleExpr returns [EObject current=null] : this_CompareExpr_0= ruleCompareExpr ;
     public final EObject ruleExpr() throws RecognitionException {
         EObject current = null;
 
-        EObject this_ShiftExpr_0 = null;
+        EObject this_CompareExpr_0 = null;
 
 
          enterRule(); 
             
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1439:28: (this_ShiftExpr_0= ruleShiftExpr )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1441:5: this_ShiftExpr_0= ruleShiftExpr
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1439:28: (this_CompareExpr_0= ruleCompareExpr )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1441:5: this_CompareExpr_0= ruleCompareExpr
             {
             if ( state.backtracking==0 ) {
                
-                      newCompositeNode(grammarAccess.getExprAccess().getShiftExprParserRuleCall()); 
+                      newCompositeNode(grammarAccess.getExprAccess().getCompareExprParserRuleCall()); 
                   
             }
-            pushFollow(FOLLOW_ruleShiftExpr_in_ruleExpr3055);
-            this_ShiftExpr_0=ruleShiftExpr();
+            pushFollow(FOLLOW_ruleCompareExpr_in_ruleExpr3055);
+            this_CompareExpr_0=ruleCompareExpr();
 
             state._fsp--;
             if (state.failed) return current;
             if ( state.backtracking==0 ) {
                
-                      current = this_ShiftExpr_0; 
+                      current = this_CompareExpr_0; 
                       afterParserOrEnumRuleCall();
                   
             }
@@ -4393,30 +4397,30 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
     // $ANTLR end "ruleExpr"
 
 
-    // $ANTLR start "entryRuleShiftExpr"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1457:1: entryRuleShiftExpr returns [EObject current=null] : iv_ruleShiftExpr= ruleShiftExpr EOF ;
-    public final EObject entryRuleShiftExpr() throws RecognitionException {
+    // $ANTLR start "entryRuleCompareExpr"
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1457:1: entryRuleCompareExpr returns [EObject current=null] : iv_ruleCompareExpr= ruleCompareExpr EOF ;
+    public final EObject entryRuleCompareExpr() throws RecognitionException {
         EObject current = null;
 
-        EObject iv_ruleShiftExpr = null;
+        EObject iv_ruleCompareExpr = null;
 
 
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1458:2: (iv_ruleShiftExpr= ruleShiftExpr EOF )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1459:2: iv_ruleShiftExpr= ruleShiftExpr EOF
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1458:2: (iv_ruleCompareExpr= ruleCompareExpr EOF )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1459:2: iv_ruleCompareExpr= ruleCompareExpr EOF
             {
             if ( state.backtracking==0 ) {
-               newCompositeNode(grammarAccess.getShiftExprRule()); 
+               newCompositeNode(grammarAccess.getCompareExprRule()); 
             }
-            pushFollow(FOLLOW_ruleShiftExpr_in_entryRuleShiftExpr3089);
-            iv_ruleShiftExpr=ruleShiftExpr();
+            pushFollow(FOLLOW_ruleCompareExpr_in_entryRuleCompareExpr3089);
+            iv_ruleCompareExpr=ruleCompareExpr();
 
             state._fsp--;
             if (state.failed) return current;
             if ( state.backtracking==0 ) {
-               current =iv_ruleShiftExpr; 
+               current =iv_ruleCompareExpr; 
             }
-            match(input,EOF,FOLLOW_EOF_in_entryRuleShiftExpr3099); if (state.failed) return current;
+            match(input,EOF,FOLLOW_EOF_in_entryRuleCompareExpr3099); if (state.failed) return current;
 
             }
 
@@ -4430,15 +4434,15 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "entryRuleShiftExpr"
+    // $ANTLR end "entryRuleCompareExpr"
 
 
-    // $ANTLR start "ruleShiftExpr"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1466:1: ruleShiftExpr returns [EObject current=null] : (this_AdditiveExpr_0= ruleAdditiveExpr ( ( ( ( () ( ( ruleShiftOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleShiftOperator ) ) ) ) ( (lv_right_3_0= ruleAdditiveExpr ) ) )* ) ;
-    public final EObject ruleShiftExpr() throws RecognitionException {
+    // $ANTLR start "ruleCompareExpr"
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1466:1: ruleCompareExpr returns [EObject current=null] : (this_ShiftExpr_0= ruleShiftExpr ( ( ( ( () ( ( ruleCompareOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleCompareOperator ) ) ) ) ( (lv_right_3_0= ruleShiftExpr ) ) )* ) ;
+    public final EObject ruleCompareExpr() throws RecognitionException {
         EObject current = null;
 
-        EObject this_AdditiveExpr_0 = null;
+        EObject this_ShiftExpr_0 = null;
 
         Enumerator lv_operator_2_0 = null;
 
@@ -4448,35 +4452,35 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
          enterRule(); 
             
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1469:28: ( (this_AdditiveExpr_0= ruleAdditiveExpr ( ( ( ( () ( ( ruleShiftOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleShiftOperator ) ) ) ) ( (lv_right_3_0= ruleAdditiveExpr ) ) )* ) )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1470:1: (this_AdditiveExpr_0= ruleAdditiveExpr ( ( ( ( () ( ( ruleShiftOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleShiftOperator ) ) ) ) ( (lv_right_3_0= ruleAdditiveExpr ) ) )* )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1469:28: ( (this_ShiftExpr_0= ruleShiftExpr ( ( ( ( () ( ( ruleCompareOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleCompareOperator ) ) ) ) ( (lv_right_3_0= ruleShiftExpr ) ) )* ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1470:1: (this_ShiftExpr_0= ruleShiftExpr ( ( ( ( () ( ( ruleCompareOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleCompareOperator ) ) ) ) ( (lv_right_3_0= ruleShiftExpr ) ) )* )
             {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1470:1: (this_AdditiveExpr_0= ruleAdditiveExpr ( ( ( ( () ( ( ruleShiftOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleShiftOperator ) ) ) ) ( (lv_right_3_0= ruleAdditiveExpr ) ) )* )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1471:5: this_AdditiveExpr_0= ruleAdditiveExpr ( ( ( ( () ( ( ruleShiftOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleShiftOperator ) ) ) ) ( (lv_right_3_0= ruleAdditiveExpr ) ) )*
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1470:1: (this_ShiftExpr_0= ruleShiftExpr ( ( ( ( () ( ( ruleCompareOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleCompareOperator ) ) ) ) ( (lv_right_3_0= ruleShiftExpr ) ) )* )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1471:5: this_ShiftExpr_0= ruleShiftExpr ( ( ( ( () ( ( ruleCompareOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleCompareOperator ) ) ) ) ( (lv_right_3_0= ruleShiftExpr ) ) )*
             {
             if ( state.backtracking==0 ) {
                
-                      newCompositeNode(grammarAccess.getShiftExprAccess().getAdditiveExprParserRuleCall_0()); 
+                      newCompositeNode(grammarAccess.getCompareExprAccess().getShiftExprParserRuleCall_0()); 
                   
             }
-            pushFollow(FOLLOW_ruleAdditiveExpr_in_ruleShiftExpr3146);
-            this_AdditiveExpr_0=ruleAdditiveExpr();
+            pushFollow(FOLLOW_ruleShiftExpr_in_ruleCompareExpr3146);
+            this_ShiftExpr_0=ruleShiftExpr();
 
             state._fsp--;
             if (state.failed) return current;
             if ( state.backtracking==0 ) {
                
-                      current = this_AdditiveExpr_0; 
+                      current = this_ShiftExpr_0; 
                       afterParserOrEnumRuleCall();
                   
             }
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1479:1: ( ( ( ( () ( ( ruleShiftOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleShiftOperator ) ) ) ) ( (lv_right_3_0= ruleAdditiveExpr ) ) )*
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1479:1: ( ( ( ( () ( ( ruleCompareOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleCompareOperator ) ) ) ) ( (lv_right_3_0= ruleShiftExpr ) ) )*
             loop27:
             do {
                 int alt27=2;
-                int LA27_0 = input.LA(1);
-
-                if ( (LA27_0==50) ) {
+                switch ( input.LA(1) ) {
+                case 50:
+                    {
                     int LA27_2 = input.LA(2);
 
                     if ( (synpred1_InternalDmpl()) ) {
@@ -4484,8 +4488,10 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
 
 
-                }
-                else if ( (LA27_0==51) ) {
+                    }
+                    break;
+                case 51:
+                    {
                     int LA27_3 = input.LA(2);
 
                     if ( (synpred1_InternalDmpl()) ) {
@@ -4493,18 +4499,42 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
 
 
-                }
+                    }
+                    break;
+                case 52:
+                    {
+                    int LA27_4 = input.LA(2);
 
+                    if ( (synpred1_InternalDmpl()) ) {
+                        alt27=1;
+                    }
+
+
+                    }
+                    break;
+                case 53:
+                    {
+                    int LA27_5 = input.LA(2);
+
+                    if ( (synpred1_InternalDmpl()) ) {
+                        alt27=1;
+                    }
+
+
+                    }
+                    break;
+
+                }
 
                 switch (alt27) {
             	case 1 :
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1479:2: ( ( ( () ( ( ruleShiftOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleShiftOperator ) ) ) ) ( (lv_right_3_0= ruleAdditiveExpr ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1479:2: ( ( ( () ( ( ruleCompareOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleCompareOperator ) ) ) ) ( (lv_right_3_0= ruleShiftExpr ) )
             	    {
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1479:2: ( ( ( () ( ( ruleShiftOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleShiftOperator ) ) ) )
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1479:3: ( ( () ( ( ruleShiftOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleShiftOperator ) ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1479:2: ( ( ( () ( ( ruleCompareOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleCompareOperator ) ) ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1479:3: ( ( () ( ( ruleCompareOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleCompareOperator ) ) )
             	    {
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1484:6: ( () ( (lv_operator_2_0= ruleShiftOperator ) ) )
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1484:7: () ( (lv_operator_2_0= ruleShiftOperator ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1484:6: ( () ( (lv_operator_2_0= ruleCompareOperator ) ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1484:7: () ( (lv_operator_2_0= ruleCompareOperator ) )
             	    {
             	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1484:7: ()
             	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1485:5: 
@@ -4512,39 +4542,39 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
             	    if ( state.backtracking==0 ) {
 
             	              current = forceCreateModelElementAndSet(
-            	                  grammarAccess.getShiftExprAccess().getShiftExprLeftAction_1_0_0_0(),
+            	                  grammarAccess.getCompareExprAccess().getCompareExprLeftAction_1_0_0_0(),
             	                  current);
             	          
             	    }
 
             	    }
 
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1490:2: ( (lv_operator_2_0= ruleShiftOperator ) )
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1491:1: (lv_operator_2_0= ruleShiftOperator )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1490:2: ( (lv_operator_2_0= ruleCompareOperator ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1491:1: (lv_operator_2_0= ruleCompareOperator )
             	    {
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1491:1: (lv_operator_2_0= ruleShiftOperator )
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1492:3: lv_operator_2_0= ruleShiftOperator
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1491:1: (lv_operator_2_0= ruleCompareOperator )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1492:3: lv_operator_2_0= ruleCompareOperator
             	    {
             	    if ( state.backtracking==0 ) {
             	       
-            	      	        newCompositeNode(grammarAccess.getShiftExprAccess().getOperatorShiftOperatorEnumRuleCall_1_0_0_1_0()); 
+            	      	        newCompositeNode(grammarAccess.getCompareExprAccess().getOperatorCompareOperatorEnumRuleCall_1_0_0_1_0()); 
             	      	    
             	    }
-            	    pushFollow(FOLLOW_ruleShiftOperator_in_ruleShiftExpr3195);
-            	    lv_operator_2_0=ruleShiftOperator();
+            	    pushFollow(FOLLOW_ruleCompareOperator_in_ruleCompareExpr3195);
+            	    lv_operator_2_0=ruleCompareOperator();
 
             	    state._fsp--;
             	    if (state.failed) return current;
             	    if ( state.backtracking==0 ) {
 
             	      	        if (current==null) {
-            	      	            current = createModelElementForParent(grammarAccess.getShiftExprRule());
+            	      	            current = createModelElementForParent(grammarAccess.getCompareExprRule());
             	      	        }
             	             		set(
             	             			current, 
             	             			"operator",
             	              		lv_operator_2_0, 
-            	              		"ShiftOperator");
+            	              		"CompareOperator");
             	      	        afterParserOrEnumRuleCall();
             	      	    
             	    }
@@ -4560,32 +4590,32 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1508:4: ( (lv_right_3_0= ruleAdditiveExpr ) )
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1509:1: (lv_right_3_0= ruleAdditiveExpr )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1508:4: ( (lv_right_3_0= ruleShiftExpr ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1509:1: (lv_right_3_0= ruleShiftExpr )
             	    {
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1509:1: (lv_right_3_0= ruleAdditiveExpr )
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1510:3: lv_right_3_0= ruleAdditiveExpr
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1509:1: (lv_right_3_0= ruleShiftExpr )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1510:3: lv_right_3_0= ruleShiftExpr
             	    {
             	    if ( state.backtracking==0 ) {
             	       
-            	      	        newCompositeNode(grammarAccess.getShiftExprAccess().getRightAdditiveExprParserRuleCall_1_1_0()); 
+            	      	        newCompositeNode(grammarAccess.getCompareExprAccess().getRightShiftExprParserRuleCall_1_1_0()); 
             	      	    
             	    }
-            	    pushFollow(FOLLOW_ruleAdditiveExpr_in_ruleShiftExpr3218);
-            	    lv_right_3_0=ruleAdditiveExpr();
+            	    pushFollow(FOLLOW_ruleShiftExpr_in_ruleCompareExpr3218);
+            	    lv_right_3_0=ruleShiftExpr();
 
             	    state._fsp--;
             	    if (state.failed) return current;
             	    if ( state.backtracking==0 ) {
 
             	      	        if (current==null) {
-            	      	            current = createModelElementForParent(grammarAccess.getShiftExprRule());
+            	      	            current = createModelElementForParent(grammarAccess.getCompareExprRule());
             	      	        }
             	             		set(
             	             			current, 
             	             			"right",
             	              		lv_right_3_0, 
-            	              		"AdditiveExpr");
+            	              		"ShiftExpr");
             	      	        afterParserOrEnumRuleCall();
             	      	    
             	    }
@@ -4623,33 +4653,33 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "ruleShiftExpr"
+    // $ANTLR end "ruleCompareExpr"
 
 
-    // $ANTLR start "entryRuleAdditiveExpr"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1534:1: entryRuleAdditiveExpr returns [EObject current=null] : iv_ruleAdditiveExpr= ruleAdditiveExpr EOF ;
-    public final EObject entryRuleAdditiveExpr() throws RecognitionException {
+    // $ANTLR start "entryRuleShiftExpr"
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1534:1: entryRuleShiftExpr returns [EObject current=null] : iv_ruleShiftExpr= ruleShiftExpr EOF ;
+    public final EObject entryRuleShiftExpr() throws RecognitionException {
         EObject current = null;
 
-        EObject iv_ruleAdditiveExpr = null;
+        EObject iv_ruleShiftExpr = null;
 
 
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1535:2: (iv_ruleAdditiveExpr= ruleAdditiveExpr EOF )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1536:2: iv_ruleAdditiveExpr= ruleAdditiveExpr EOF
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1535:2: (iv_ruleShiftExpr= ruleShiftExpr EOF )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1536:2: iv_ruleShiftExpr= ruleShiftExpr EOF
             {
             if ( state.backtracking==0 ) {
-               newCompositeNode(grammarAccess.getAdditiveExprRule()); 
+               newCompositeNode(grammarAccess.getShiftExprRule()); 
             }
-            pushFollow(FOLLOW_ruleAdditiveExpr_in_entryRuleAdditiveExpr3256);
-            iv_ruleAdditiveExpr=ruleAdditiveExpr();
+            pushFollow(FOLLOW_ruleShiftExpr_in_entryRuleShiftExpr3256);
+            iv_ruleShiftExpr=ruleShiftExpr();
 
             state._fsp--;
             if (state.failed) return current;
             if ( state.backtracking==0 ) {
-               current =iv_ruleAdditiveExpr; 
+               current =iv_ruleShiftExpr; 
             }
-            match(input,EOF,FOLLOW_EOF_in_entryRuleAdditiveExpr3266); if (state.failed) return current;
+            match(input,EOF,FOLLOW_EOF_in_entryRuleShiftExpr3266); if (state.failed) return current;
 
             }
 
@@ -4663,15 +4693,15 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "entryRuleAdditiveExpr"
+    // $ANTLR end "entryRuleShiftExpr"
 
 
-    // $ANTLR start "ruleAdditiveExpr"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1543:1: ruleAdditiveExpr returns [EObject current=null] : (this_MultiplicativeExpr_0= ruleMultiplicativeExpr ( ( ( ( () ( ( ruleAdditiveOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleAdditiveOperator ) ) ) ) ( (lv_right_3_0= ruleMultiplicativeExpr ) ) )* ) ;
-    public final EObject ruleAdditiveExpr() throws RecognitionException {
+    // $ANTLR start "ruleShiftExpr"
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1543:1: ruleShiftExpr returns [EObject current=null] : (this_AdditiveExpr_0= ruleAdditiveExpr ( ( ( ( () ( ( ruleShiftOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleShiftOperator ) ) ) ) ( (lv_right_3_0= ruleAdditiveExpr ) ) )* ) ;
+    public final EObject ruleShiftExpr() throws RecognitionException {
         EObject current = null;
 
-        EObject this_MultiplicativeExpr_0 = null;
+        EObject this_AdditiveExpr_0 = null;
 
         Enumerator lv_operator_2_0 = null;
 
@@ -4681,35 +4711,35 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
          enterRule(); 
             
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1546:28: ( (this_MultiplicativeExpr_0= ruleMultiplicativeExpr ( ( ( ( () ( ( ruleAdditiveOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleAdditiveOperator ) ) ) ) ( (lv_right_3_0= ruleMultiplicativeExpr ) ) )* ) )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1547:1: (this_MultiplicativeExpr_0= ruleMultiplicativeExpr ( ( ( ( () ( ( ruleAdditiveOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleAdditiveOperator ) ) ) ) ( (lv_right_3_0= ruleMultiplicativeExpr ) ) )* )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1546:28: ( (this_AdditiveExpr_0= ruleAdditiveExpr ( ( ( ( () ( ( ruleShiftOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleShiftOperator ) ) ) ) ( (lv_right_3_0= ruleAdditiveExpr ) ) )* ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1547:1: (this_AdditiveExpr_0= ruleAdditiveExpr ( ( ( ( () ( ( ruleShiftOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleShiftOperator ) ) ) ) ( (lv_right_3_0= ruleAdditiveExpr ) ) )* )
             {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1547:1: (this_MultiplicativeExpr_0= ruleMultiplicativeExpr ( ( ( ( () ( ( ruleAdditiveOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleAdditiveOperator ) ) ) ) ( (lv_right_3_0= ruleMultiplicativeExpr ) ) )* )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1548:5: this_MultiplicativeExpr_0= ruleMultiplicativeExpr ( ( ( ( () ( ( ruleAdditiveOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleAdditiveOperator ) ) ) ) ( (lv_right_3_0= ruleMultiplicativeExpr ) ) )*
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1547:1: (this_AdditiveExpr_0= ruleAdditiveExpr ( ( ( ( () ( ( ruleShiftOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleShiftOperator ) ) ) ) ( (lv_right_3_0= ruleAdditiveExpr ) ) )* )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1548:5: this_AdditiveExpr_0= ruleAdditiveExpr ( ( ( ( () ( ( ruleShiftOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleShiftOperator ) ) ) ) ( (lv_right_3_0= ruleAdditiveExpr ) ) )*
             {
             if ( state.backtracking==0 ) {
                
-                      newCompositeNode(grammarAccess.getAdditiveExprAccess().getMultiplicativeExprParserRuleCall_0()); 
+                      newCompositeNode(grammarAccess.getShiftExprAccess().getAdditiveExprParserRuleCall_0()); 
                   
             }
-            pushFollow(FOLLOW_ruleMultiplicativeExpr_in_ruleAdditiveExpr3313);
-            this_MultiplicativeExpr_0=ruleMultiplicativeExpr();
+            pushFollow(FOLLOW_ruleAdditiveExpr_in_ruleShiftExpr3313);
+            this_AdditiveExpr_0=ruleAdditiveExpr();
 
             state._fsp--;
             if (state.failed) return current;
             if ( state.backtracking==0 ) {
                
-                      current = this_MultiplicativeExpr_0; 
+                      current = this_AdditiveExpr_0; 
                       afterParserOrEnumRuleCall();
                   
             }
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1556:1: ( ( ( ( () ( ( ruleAdditiveOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleAdditiveOperator ) ) ) ) ( (lv_right_3_0= ruleMultiplicativeExpr ) ) )*
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1556:1: ( ( ( ( () ( ( ruleShiftOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleShiftOperator ) ) ) ) ( (lv_right_3_0= ruleAdditiveExpr ) ) )*
             loop28:
             do {
                 int alt28=2;
                 int LA28_0 = input.LA(1);
 
-                if ( (LA28_0==32) ) {
+                if ( (LA28_0==54) ) {
                     int LA28_2 = input.LA(2);
 
                     if ( (synpred2_InternalDmpl()) ) {
@@ -4718,7 +4748,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
                 }
-                else if ( (LA28_0==33) ) {
+                else if ( (LA28_0==55) ) {
                     int LA28_3 = input.LA(2);
 
                     if ( (synpred2_InternalDmpl()) ) {
@@ -4731,13 +4761,13 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
                 switch (alt28) {
             	case 1 :
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1556:2: ( ( ( () ( ( ruleAdditiveOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleAdditiveOperator ) ) ) ) ( (lv_right_3_0= ruleMultiplicativeExpr ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1556:2: ( ( ( () ( ( ruleShiftOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleShiftOperator ) ) ) ) ( (lv_right_3_0= ruleAdditiveExpr ) )
             	    {
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1556:2: ( ( ( () ( ( ruleAdditiveOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleAdditiveOperator ) ) ) )
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1556:3: ( ( () ( ( ruleAdditiveOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleAdditiveOperator ) ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1556:2: ( ( ( () ( ( ruleShiftOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleShiftOperator ) ) ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1556:3: ( ( () ( ( ruleShiftOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleShiftOperator ) ) )
             	    {
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1561:6: ( () ( (lv_operator_2_0= ruleAdditiveOperator ) ) )
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1561:7: () ( (lv_operator_2_0= ruleAdditiveOperator ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1561:6: ( () ( (lv_operator_2_0= ruleShiftOperator ) ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1561:7: () ( (lv_operator_2_0= ruleShiftOperator ) )
             	    {
             	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1561:7: ()
             	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1562:5: 
@@ -4745,39 +4775,39 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
             	    if ( state.backtracking==0 ) {
 
             	              current = forceCreateModelElementAndSet(
-            	                  grammarAccess.getAdditiveExprAccess().getAdditiveExprLeftAction_1_0_0_0(),
+            	                  grammarAccess.getShiftExprAccess().getShiftExprLeftAction_1_0_0_0(),
             	                  current);
             	          
             	    }
 
             	    }
 
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1567:2: ( (lv_operator_2_0= ruleAdditiveOperator ) )
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1568:1: (lv_operator_2_0= ruleAdditiveOperator )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1567:2: ( (lv_operator_2_0= ruleShiftOperator ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1568:1: (lv_operator_2_0= ruleShiftOperator )
             	    {
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1568:1: (lv_operator_2_0= ruleAdditiveOperator )
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1569:3: lv_operator_2_0= ruleAdditiveOperator
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1568:1: (lv_operator_2_0= ruleShiftOperator )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1569:3: lv_operator_2_0= ruleShiftOperator
             	    {
             	    if ( state.backtracking==0 ) {
             	       
-            	      	        newCompositeNode(grammarAccess.getAdditiveExprAccess().getOperatorAdditiveOperatorEnumRuleCall_1_0_0_1_0()); 
+            	      	        newCompositeNode(grammarAccess.getShiftExprAccess().getOperatorShiftOperatorEnumRuleCall_1_0_0_1_0()); 
             	      	    
             	    }
-            	    pushFollow(FOLLOW_ruleAdditiveOperator_in_ruleAdditiveExpr3362);
-            	    lv_operator_2_0=ruleAdditiveOperator();
+            	    pushFollow(FOLLOW_ruleShiftOperator_in_ruleShiftExpr3362);
+            	    lv_operator_2_0=ruleShiftOperator();
 
             	    state._fsp--;
             	    if (state.failed) return current;
             	    if ( state.backtracking==0 ) {
 
             	      	        if (current==null) {
-            	      	            current = createModelElementForParent(grammarAccess.getAdditiveExprRule());
+            	      	            current = createModelElementForParent(grammarAccess.getShiftExprRule());
             	      	        }
             	             		set(
             	             			current, 
             	             			"operator",
             	              		lv_operator_2_0, 
-            	              		"AdditiveOperator");
+            	              		"ShiftOperator");
             	      	        afterParserOrEnumRuleCall();
             	      	    
             	    }
@@ -4793,32 +4823,32 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1585:4: ( (lv_right_3_0= ruleMultiplicativeExpr ) )
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1586:1: (lv_right_3_0= ruleMultiplicativeExpr )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1585:4: ( (lv_right_3_0= ruleAdditiveExpr ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1586:1: (lv_right_3_0= ruleAdditiveExpr )
             	    {
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1586:1: (lv_right_3_0= ruleMultiplicativeExpr )
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1587:3: lv_right_3_0= ruleMultiplicativeExpr
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1586:1: (lv_right_3_0= ruleAdditiveExpr )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1587:3: lv_right_3_0= ruleAdditiveExpr
             	    {
             	    if ( state.backtracking==0 ) {
             	       
-            	      	        newCompositeNode(grammarAccess.getAdditiveExprAccess().getRightMultiplicativeExprParserRuleCall_1_1_0()); 
+            	      	        newCompositeNode(grammarAccess.getShiftExprAccess().getRightAdditiveExprParserRuleCall_1_1_0()); 
             	      	    
             	    }
-            	    pushFollow(FOLLOW_ruleMultiplicativeExpr_in_ruleAdditiveExpr3385);
-            	    lv_right_3_0=ruleMultiplicativeExpr();
+            	    pushFollow(FOLLOW_ruleAdditiveExpr_in_ruleShiftExpr3385);
+            	    lv_right_3_0=ruleAdditiveExpr();
 
             	    state._fsp--;
             	    if (state.failed) return current;
             	    if ( state.backtracking==0 ) {
 
             	      	        if (current==null) {
-            	      	            current = createModelElementForParent(grammarAccess.getAdditiveExprRule());
+            	      	            current = createModelElementForParent(grammarAccess.getShiftExprRule());
             	      	        }
             	             		set(
             	             			current, 
             	             			"right",
             	              		lv_right_3_0, 
-            	              		"MultiplicativeExpr");
+            	              		"AdditiveExpr");
             	      	        afterParserOrEnumRuleCall();
             	      	    
             	    }
@@ -4856,33 +4886,33 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "ruleAdditiveExpr"
+    // $ANTLR end "ruleShiftExpr"
 
 
-    // $ANTLR start "entryRuleMultiplicativeExpr"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1611:1: entryRuleMultiplicativeExpr returns [EObject current=null] : iv_ruleMultiplicativeExpr= ruleMultiplicativeExpr EOF ;
-    public final EObject entryRuleMultiplicativeExpr() throws RecognitionException {
+    // $ANTLR start "entryRuleAdditiveExpr"
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1611:1: entryRuleAdditiveExpr returns [EObject current=null] : iv_ruleAdditiveExpr= ruleAdditiveExpr EOF ;
+    public final EObject entryRuleAdditiveExpr() throws RecognitionException {
         EObject current = null;
 
-        EObject iv_ruleMultiplicativeExpr = null;
+        EObject iv_ruleAdditiveExpr = null;
 
 
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1612:2: (iv_ruleMultiplicativeExpr= ruleMultiplicativeExpr EOF )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1613:2: iv_ruleMultiplicativeExpr= ruleMultiplicativeExpr EOF
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1612:2: (iv_ruleAdditiveExpr= ruleAdditiveExpr EOF )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1613:2: iv_ruleAdditiveExpr= ruleAdditiveExpr EOF
             {
             if ( state.backtracking==0 ) {
-               newCompositeNode(grammarAccess.getMultiplicativeExprRule()); 
+               newCompositeNode(grammarAccess.getAdditiveExprRule()); 
             }
-            pushFollow(FOLLOW_ruleMultiplicativeExpr_in_entryRuleMultiplicativeExpr3423);
-            iv_ruleMultiplicativeExpr=ruleMultiplicativeExpr();
+            pushFollow(FOLLOW_ruleAdditiveExpr_in_entryRuleAdditiveExpr3423);
+            iv_ruleAdditiveExpr=ruleAdditiveExpr();
 
             state._fsp--;
             if (state.failed) return current;
             if ( state.backtracking==0 ) {
-               current =iv_ruleMultiplicativeExpr; 
+               current =iv_ruleAdditiveExpr; 
             }
-            match(input,EOF,FOLLOW_EOF_in_entryRuleMultiplicativeExpr3433); if (state.failed) return current;
+            match(input,EOF,FOLLOW_EOF_in_entryRuleAdditiveExpr3433); if (state.failed) return current;
 
             }
 
@@ -4896,15 +4926,15 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
-    // $ANTLR end "entryRuleMultiplicativeExpr"
+    // $ANTLR end "entryRuleAdditiveExpr"
 
 
-    // $ANTLR start "ruleMultiplicativeExpr"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1620:1: ruleMultiplicativeExpr returns [EObject current=null] : (this_TerminalExpr_0= ruleTerminalExpr ( ( ( ( () ( ( ruleMultiplicativeOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleMultiplicativeOperator ) ) ) ) ( (lv_right_3_0= ruleTerminalExpr ) ) )* ) ;
-    public final EObject ruleMultiplicativeExpr() throws RecognitionException {
+    // $ANTLR start "ruleAdditiveExpr"
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1620:1: ruleAdditiveExpr returns [EObject current=null] : (this_MultiplicativeExpr_0= ruleMultiplicativeExpr ( ( ( ( () ( ( ruleAdditiveOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleAdditiveOperator ) ) ) ) ( (lv_right_3_0= ruleMultiplicativeExpr ) ) )* ) ;
+    public final EObject ruleAdditiveExpr() throws RecognitionException {
         EObject current = null;
 
-        EObject this_TerminalExpr_0 = null;
+        EObject this_MultiplicativeExpr_0 = null;
 
         Enumerator lv_operator_2_0 = null;
 
@@ -4914,35 +4944,35 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
          enterRule(); 
             
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1623:28: ( (this_TerminalExpr_0= ruleTerminalExpr ( ( ( ( () ( ( ruleMultiplicativeOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleMultiplicativeOperator ) ) ) ) ( (lv_right_3_0= ruleTerminalExpr ) ) )* ) )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1624:1: (this_TerminalExpr_0= ruleTerminalExpr ( ( ( ( () ( ( ruleMultiplicativeOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleMultiplicativeOperator ) ) ) ) ( (lv_right_3_0= ruleTerminalExpr ) ) )* )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1623:28: ( (this_MultiplicativeExpr_0= ruleMultiplicativeExpr ( ( ( ( () ( ( ruleAdditiveOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleAdditiveOperator ) ) ) ) ( (lv_right_3_0= ruleMultiplicativeExpr ) ) )* ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1624:1: (this_MultiplicativeExpr_0= ruleMultiplicativeExpr ( ( ( ( () ( ( ruleAdditiveOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleAdditiveOperator ) ) ) ) ( (lv_right_3_0= ruleMultiplicativeExpr ) ) )* )
             {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1624:1: (this_TerminalExpr_0= ruleTerminalExpr ( ( ( ( () ( ( ruleMultiplicativeOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleMultiplicativeOperator ) ) ) ) ( (lv_right_3_0= ruleTerminalExpr ) ) )* )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1625:5: this_TerminalExpr_0= ruleTerminalExpr ( ( ( ( () ( ( ruleMultiplicativeOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleMultiplicativeOperator ) ) ) ) ( (lv_right_3_0= ruleTerminalExpr ) ) )*
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1624:1: (this_MultiplicativeExpr_0= ruleMultiplicativeExpr ( ( ( ( () ( ( ruleAdditiveOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleAdditiveOperator ) ) ) ) ( (lv_right_3_0= ruleMultiplicativeExpr ) ) )* )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1625:5: this_MultiplicativeExpr_0= ruleMultiplicativeExpr ( ( ( ( () ( ( ruleAdditiveOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleAdditiveOperator ) ) ) ) ( (lv_right_3_0= ruleMultiplicativeExpr ) ) )*
             {
             if ( state.backtracking==0 ) {
                
-                      newCompositeNode(grammarAccess.getMultiplicativeExprAccess().getTerminalExprParserRuleCall_0()); 
+                      newCompositeNode(grammarAccess.getAdditiveExprAccess().getMultiplicativeExprParserRuleCall_0()); 
                   
             }
-            pushFollow(FOLLOW_ruleTerminalExpr_in_ruleMultiplicativeExpr3480);
-            this_TerminalExpr_0=ruleTerminalExpr();
+            pushFollow(FOLLOW_ruleMultiplicativeExpr_in_ruleAdditiveExpr3480);
+            this_MultiplicativeExpr_0=ruleMultiplicativeExpr();
 
             state._fsp--;
             if (state.failed) return current;
             if ( state.backtracking==0 ) {
                
-                      current = this_TerminalExpr_0; 
+                      current = this_MultiplicativeExpr_0; 
                       afterParserOrEnumRuleCall();
                   
             }
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1633:1: ( ( ( ( () ( ( ruleMultiplicativeOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleMultiplicativeOperator ) ) ) ) ( (lv_right_3_0= ruleTerminalExpr ) ) )*
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1633:1: ( ( ( ( () ( ( ruleAdditiveOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleAdditiveOperator ) ) ) ) ( (lv_right_3_0= ruleMultiplicativeExpr ) ) )*
             loop29:
             do {
                 int alt29=2;
-                switch ( input.LA(1) ) {
-                case 52:
-                    {
+                int LA29_0 = input.LA(1);
+
+                if ( (LA29_0==32) ) {
                     int LA29_2 = input.LA(2);
 
                     if ( (synpred3_InternalDmpl()) ) {
@@ -4950,10 +4980,8 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
 
 
-                    }
-                    break;
-                case 53:
-                    {
+                }
+                else if ( (LA29_0==33) ) {
                     int LA29_3 = input.LA(2);
 
                     if ( (synpred3_InternalDmpl()) ) {
@@ -4961,31 +4989,18 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
 
 
-                    }
-                    break;
-                case 54:
-                    {
-                    int LA29_4 = input.LA(2);
-
-                    if ( (synpred3_InternalDmpl()) ) {
-                        alt29=1;
-                    }
-
-
-                    }
-                    break;
-
                 }
+
 
                 switch (alt29) {
             	case 1 :
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1633:2: ( ( ( () ( ( ruleMultiplicativeOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleMultiplicativeOperator ) ) ) ) ( (lv_right_3_0= ruleTerminalExpr ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1633:2: ( ( ( () ( ( ruleAdditiveOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleAdditiveOperator ) ) ) ) ( (lv_right_3_0= ruleMultiplicativeExpr ) )
             	    {
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1633:2: ( ( ( () ( ( ruleMultiplicativeOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleMultiplicativeOperator ) ) ) )
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1633:3: ( ( () ( ( ruleMultiplicativeOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleMultiplicativeOperator ) ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1633:2: ( ( ( () ( ( ruleAdditiveOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleAdditiveOperator ) ) ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1633:3: ( ( () ( ( ruleAdditiveOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleAdditiveOperator ) ) )
             	    {
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1638:6: ( () ( (lv_operator_2_0= ruleMultiplicativeOperator ) ) )
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1638:7: () ( (lv_operator_2_0= ruleMultiplicativeOperator ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1638:6: ( () ( (lv_operator_2_0= ruleAdditiveOperator ) ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1638:7: () ( (lv_operator_2_0= ruleAdditiveOperator ) )
             	    {
             	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1638:7: ()
             	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1639:5: 
@@ -4993,39 +5008,39 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
             	    if ( state.backtracking==0 ) {
 
             	              current = forceCreateModelElementAndSet(
-            	                  grammarAccess.getMultiplicativeExprAccess().getMultiplicativeExprLeftAction_1_0_0_0(),
+            	                  grammarAccess.getAdditiveExprAccess().getAdditiveExprLeftAction_1_0_0_0(),
             	                  current);
             	          
             	    }
 
             	    }
 
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1644:2: ( (lv_operator_2_0= ruleMultiplicativeOperator ) )
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1645:1: (lv_operator_2_0= ruleMultiplicativeOperator )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1644:2: ( (lv_operator_2_0= ruleAdditiveOperator ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1645:1: (lv_operator_2_0= ruleAdditiveOperator )
             	    {
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1645:1: (lv_operator_2_0= ruleMultiplicativeOperator )
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1646:3: lv_operator_2_0= ruleMultiplicativeOperator
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1645:1: (lv_operator_2_0= ruleAdditiveOperator )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1646:3: lv_operator_2_0= ruleAdditiveOperator
             	    {
             	    if ( state.backtracking==0 ) {
             	       
-            	      	        newCompositeNode(grammarAccess.getMultiplicativeExprAccess().getOperatorMultiplicativeOperatorEnumRuleCall_1_0_0_1_0()); 
+            	      	        newCompositeNode(grammarAccess.getAdditiveExprAccess().getOperatorAdditiveOperatorEnumRuleCall_1_0_0_1_0()); 
             	      	    
             	    }
-            	    pushFollow(FOLLOW_ruleMultiplicativeOperator_in_ruleMultiplicativeExpr3529);
-            	    lv_operator_2_0=ruleMultiplicativeOperator();
+            	    pushFollow(FOLLOW_ruleAdditiveOperator_in_ruleAdditiveExpr3529);
+            	    lv_operator_2_0=ruleAdditiveOperator();
 
             	    state._fsp--;
             	    if (state.failed) return current;
             	    if ( state.backtracking==0 ) {
 
             	      	        if (current==null) {
-            	      	            current = createModelElementForParent(grammarAccess.getMultiplicativeExprRule());
+            	      	            current = createModelElementForParent(grammarAccess.getAdditiveExprRule());
             	      	        }
             	             		set(
             	             			current, 
             	             			"operator",
             	              		lv_operator_2_0, 
-            	              		"MultiplicativeOperator");
+            	              		"AdditiveOperator");
             	      	        afterParserOrEnumRuleCall();
             	      	    
             	    }
@@ -5041,32 +5056,32 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1662:4: ( (lv_right_3_0= ruleTerminalExpr ) )
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1663:1: (lv_right_3_0= ruleTerminalExpr )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1662:4: ( (lv_right_3_0= ruleMultiplicativeExpr ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1663:1: (lv_right_3_0= ruleMultiplicativeExpr )
             	    {
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1663:1: (lv_right_3_0= ruleTerminalExpr )
-            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1664:3: lv_right_3_0= ruleTerminalExpr
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1663:1: (lv_right_3_0= ruleMultiplicativeExpr )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1664:3: lv_right_3_0= ruleMultiplicativeExpr
             	    {
             	    if ( state.backtracking==0 ) {
             	       
-            	      	        newCompositeNode(grammarAccess.getMultiplicativeExprAccess().getRightTerminalExprParserRuleCall_1_1_0()); 
+            	      	        newCompositeNode(grammarAccess.getAdditiveExprAccess().getRightMultiplicativeExprParserRuleCall_1_1_0()); 
             	      	    
             	    }
-            	    pushFollow(FOLLOW_ruleTerminalExpr_in_ruleMultiplicativeExpr3552);
-            	    lv_right_3_0=ruleTerminalExpr();
+            	    pushFollow(FOLLOW_ruleMultiplicativeExpr_in_ruleAdditiveExpr3552);
+            	    lv_right_3_0=ruleMultiplicativeExpr();
 
             	    state._fsp--;
             	    if (state.failed) return current;
             	    if ( state.backtracking==0 ) {
 
             	      	        if (current==null) {
-            	      	            current = createModelElementForParent(grammarAccess.getMultiplicativeExprRule());
+            	      	            current = createModelElementForParent(grammarAccess.getAdditiveExprRule());
             	      	        }
             	             		set(
             	             			current, 
             	             			"right",
             	              		lv_right_3_0, 
-            	              		"TerminalExpr");
+            	              		"MultiplicativeExpr");
             	      	        afterParserOrEnumRuleCall();
             	      	    
             	    }
@@ -5104,11 +5119,259 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
         }
         return current;
     }
+    // $ANTLR end "ruleAdditiveExpr"
+
+
+    // $ANTLR start "entryRuleMultiplicativeExpr"
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1688:1: entryRuleMultiplicativeExpr returns [EObject current=null] : iv_ruleMultiplicativeExpr= ruleMultiplicativeExpr EOF ;
+    public final EObject entryRuleMultiplicativeExpr() throws RecognitionException {
+        EObject current = null;
+
+        EObject iv_ruleMultiplicativeExpr = null;
+
+
+        try {
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1689:2: (iv_ruleMultiplicativeExpr= ruleMultiplicativeExpr EOF )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1690:2: iv_ruleMultiplicativeExpr= ruleMultiplicativeExpr EOF
+            {
+            if ( state.backtracking==0 ) {
+               newCompositeNode(grammarAccess.getMultiplicativeExprRule()); 
+            }
+            pushFollow(FOLLOW_ruleMultiplicativeExpr_in_entryRuleMultiplicativeExpr3590);
+            iv_ruleMultiplicativeExpr=ruleMultiplicativeExpr();
+
+            state._fsp--;
+            if (state.failed) return current;
+            if ( state.backtracking==0 ) {
+               current =iv_ruleMultiplicativeExpr; 
+            }
+            match(input,EOF,FOLLOW_EOF_in_entryRuleMultiplicativeExpr3600); if (state.failed) return current;
+
+            }
+
+        }
+         
+            catch (RecognitionException re) { 
+                recover(input,re); 
+                appendSkippedTokens();
+            } 
+        finally {
+        }
+        return current;
+    }
+    // $ANTLR end "entryRuleMultiplicativeExpr"
+
+
+    // $ANTLR start "ruleMultiplicativeExpr"
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1697:1: ruleMultiplicativeExpr returns [EObject current=null] : (this_TerminalExpr_0= ruleTerminalExpr ( ( ( ( () ( ( ruleMultiplicativeOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleMultiplicativeOperator ) ) ) ) ( (lv_right_3_0= ruleTerminalExpr ) ) )* ) ;
+    public final EObject ruleMultiplicativeExpr() throws RecognitionException {
+        EObject current = null;
+
+        EObject this_TerminalExpr_0 = null;
+
+        Enumerator lv_operator_2_0 = null;
+
+        EObject lv_right_3_0 = null;
+
+
+         enterRule(); 
+            
+        try {
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1700:28: ( (this_TerminalExpr_0= ruleTerminalExpr ( ( ( ( () ( ( ruleMultiplicativeOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleMultiplicativeOperator ) ) ) ) ( (lv_right_3_0= ruleTerminalExpr ) ) )* ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1701:1: (this_TerminalExpr_0= ruleTerminalExpr ( ( ( ( () ( ( ruleMultiplicativeOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleMultiplicativeOperator ) ) ) ) ( (lv_right_3_0= ruleTerminalExpr ) ) )* )
+            {
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1701:1: (this_TerminalExpr_0= ruleTerminalExpr ( ( ( ( () ( ( ruleMultiplicativeOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleMultiplicativeOperator ) ) ) ) ( (lv_right_3_0= ruleTerminalExpr ) ) )* )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1702:5: this_TerminalExpr_0= ruleTerminalExpr ( ( ( ( () ( ( ruleMultiplicativeOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleMultiplicativeOperator ) ) ) ) ( (lv_right_3_0= ruleTerminalExpr ) ) )*
+            {
+            if ( state.backtracking==0 ) {
+               
+                      newCompositeNode(grammarAccess.getMultiplicativeExprAccess().getTerminalExprParserRuleCall_0()); 
+                  
+            }
+            pushFollow(FOLLOW_ruleTerminalExpr_in_ruleMultiplicativeExpr3647);
+            this_TerminalExpr_0=ruleTerminalExpr();
+
+            state._fsp--;
+            if (state.failed) return current;
+            if ( state.backtracking==0 ) {
+               
+                      current = this_TerminalExpr_0; 
+                      afterParserOrEnumRuleCall();
+                  
+            }
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1710:1: ( ( ( ( () ( ( ruleMultiplicativeOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleMultiplicativeOperator ) ) ) ) ( (lv_right_3_0= ruleTerminalExpr ) ) )*
+            loop30:
+            do {
+                int alt30=2;
+                switch ( input.LA(1) ) {
+                case 56:
+                    {
+                    int LA30_2 = input.LA(2);
+
+                    if ( (synpred4_InternalDmpl()) ) {
+                        alt30=1;
+                    }
+
+
+                    }
+                    break;
+                case 57:
+                    {
+                    int LA30_3 = input.LA(2);
+
+                    if ( (synpred4_InternalDmpl()) ) {
+                        alt30=1;
+                    }
+
+
+                    }
+                    break;
+                case 58:
+                    {
+                    int LA30_4 = input.LA(2);
+
+                    if ( (synpred4_InternalDmpl()) ) {
+                        alt30=1;
+                    }
+
+
+                    }
+                    break;
+
+                }
+
+                switch (alt30) {
+            	case 1 :
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1710:2: ( ( ( () ( ( ruleMultiplicativeOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleMultiplicativeOperator ) ) ) ) ( (lv_right_3_0= ruleTerminalExpr ) )
+            	    {
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1710:2: ( ( ( () ( ( ruleMultiplicativeOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleMultiplicativeOperator ) ) ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1710:3: ( ( () ( ( ruleMultiplicativeOperator ) ) ) )=> ( () ( (lv_operator_2_0= ruleMultiplicativeOperator ) ) )
+            	    {
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1715:6: ( () ( (lv_operator_2_0= ruleMultiplicativeOperator ) ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1715:7: () ( (lv_operator_2_0= ruleMultiplicativeOperator ) )
+            	    {
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1715:7: ()
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1716:5: 
+            	    {
+            	    if ( state.backtracking==0 ) {
+
+            	              current = forceCreateModelElementAndSet(
+            	                  grammarAccess.getMultiplicativeExprAccess().getMultiplicativeExprLeftAction_1_0_0_0(),
+            	                  current);
+            	          
+            	    }
+
+            	    }
+
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1721:2: ( (lv_operator_2_0= ruleMultiplicativeOperator ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1722:1: (lv_operator_2_0= ruleMultiplicativeOperator )
+            	    {
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1722:1: (lv_operator_2_0= ruleMultiplicativeOperator )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1723:3: lv_operator_2_0= ruleMultiplicativeOperator
+            	    {
+            	    if ( state.backtracking==0 ) {
+            	       
+            	      	        newCompositeNode(grammarAccess.getMultiplicativeExprAccess().getOperatorMultiplicativeOperatorEnumRuleCall_1_0_0_1_0()); 
+            	      	    
+            	    }
+            	    pushFollow(FOLLOW_ruleMultiplicativeOperator_in_ruleMultiplicativeExpr3696);
+            	    lv_operator_2_0=ruleMultiplicativeOperator();
+
+            	    state._fsp--;
+            	    if (state.failed) return current;
+            	    if ( state.backtracking==0 ) {
+
+            	      	        if (current==null) {
+            	      	            current = createModelElementForParent(grammarAccess.getMultiplicativeExprRule());
+            	      	        }
+            	             		set(
+            	             			current, 
+            	             			"operator",
+            	              		lv_operator_2_0, 
+            	              		"MultiplicativeOperator");
+            	      	        afterParserOrEnumRuleCall();
+            	      	    
+            	    }
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1739:4: ( (lv_right_3_0= ruleTerminalExpr ) )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1740:1: (lv_right_3_0= ruleTerminalExpr )
+            	    {
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1740:1: (lv_right_3_0= ruleTerminalExpr )
+            	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1741:3: lv_right_3_0= ruleTerminalExpr
+            	    {
+            	    if ( state.backtracking==0 ) {
+            	       
+            	      	        newCompositeNode(grammarAccess.getMultiplicativeExprAccess().getRightTerminalExprParserRuleCall_1_1_0()); 
+            	      	    
+            	    }
+            	    pushFollow(FOLLOW_ruleTerminalExpr_in_ruleMultiplicativeExpr3719);
+            	    lv_right_3_0=ruleTerminalExpr();
+
+            	    state._fsp--;
+            	    if (state.failed) return current;
+            	    if ( state.backtracking==0 ) {
+
+            	      	        if (current==null) {
+            	      	            current = createModelElementForParent(grammarAccess.getMultiplicativeExprRule());
+            	      	        }
+            	             		set(
+            	             			current, 
+            	             			"right",
+            	              		lv_right_3_0, 
+            	              		"TerminalExpr");
+            	      	        afterParserOrEnumRuleCall();
+            	      	    
+            	    }
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+            	    break;
+
+            	default :
+            	    break loop30;
+                }
+            } while (true);
+
+
+            }
+
+
+            }
+
+            if ( state.backtracking==0 ) {
+               leaveRule(); 
+            }
+        }
+         
+            catch (RecognitionException re) { 
+                recover(input,re); 
+                appendSkippedTokens();
+            } 
+        finally {
+        }
+        return current;
+    }
     // $ANTLR end "ruleMultiplicativeExpr"
 
 
     // $ANTLR start "entryRuleTerminalExpr"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1688:1: entryRuleTerminalExpr returns [EObject current=null] : iv_ruleTerminalExpr= ruleTerminalExpr EOF ;
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1765:1: entryRuleTerminalExpr returns [EObject current=null] : iv_ruleTerminalExpr= ruleTerminalExpr EOF ;
     public final EObject entryRuleTerminalExpr() throws RecognitionException {
         EObject current = null;
 
@@ -5116,13 +5379,13 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1689:2: (iv_ruleTerminalExpr= ruleTerminalExpr EOF )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1690:2: iv_ruleTerminalExpr= ruleTerminalExpr EOF
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1766:2: (iv_ruleTerminalExpr= ruleTerminalExpr EOF )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1767:2: iv_ruleTerminalExpr= ruleTerminalExpr EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getTerminalExprRule()); 
             }
-            pushFollow(FOLLOW_ruleTerminalExpr_in_entryRuleTerminalExpr3590);
+            pushFollow(FOLLOW_ruleTerminalExpr_in_entryRuleTerminalExpr3757);
             iv_ruleTerminalExpr=ruleTerminalExpr();
 
             state._fsp--;
@@ -5130,7 +5393,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
             if ( state.backtracking==0 ) {
                current =iv_ruleTerminalExpr; 
             }
-            match(input,EOF,FOLLOW_EOF_in_entryRuleTerminalExpr3600); if (state.failed) return current;
+            match(input,EOF,FOLLOW_EOF_in_entryRuleTerminalExpr3767); if (state.failed) return current;
 
             }
 
@@ -5148,7 +5411,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleTerminalExpr"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1697:1: ruleTerminalExpr returns [EObject current=null] : (this_LVal_0= ruleLVal | ( () otherlv_2= 'id' ) | ( () ( (lv_value_4_0= RULE_INT ) ) ) | ( () ( (lv_value_6_0= ruleDouble ) ) ) | ( () otherlv_8= '#N' ) | ( () ( (lv_operator_10_0= ruleUnaryOperator ) ) ( (lv_operand_11_0= ruleExpr ) ) ) | ( () ( (lv_function_13_0= ruleBuiltInFunction ) ) otherlv_14= '(' ( (lv_firstArg_15_0= RULE_TIDENTIFIER ) ) otherlv_16= ',' ( (lv_secondArg_17_0= ruleExpr ) ) otherlv_18= ')' ) | this_CallExpr_19= ruleCallExpr | (otherlv_20= '(' this_Expr_21= ruleExpr otherlv_22= ')' ) ) ;
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1774:1: ruleTerminalExpr returns [EObject current=null] : (this_LVal_0= ruleLVal | ( () otherlv_2= 'id' ) | ( () ( (lv_value_4_0= RULE_INT ) ) ) | ( () ( (lv_value_6_0= ruleDouble ) ) ) | ( () otherlv_8= '#N' ) | ( () ( (lv_operator_10_0= ruleUnaryOperator ) ) ( (lv_operand_11_0= ruleExpr ) ) ) | ( () ( (lv_function_13_0= ruleBuiltInFunction ) ) otherlv_14= '(' ( (lv_firstArg_15_0= RULE_TIDENTIFIER ) ) otherlv_16= ',' ( (lv_secondArg_17_0= ruleExpr ) ) otherlv_18= ')' ) | this_CallExpr_19= ruleCallExpr | (otherlv_20= '(' this_Expr_21= ruleExpr otherlv_22= ')' ) ) ;
     public final EObject ruleTerminalExpr() throws RecognitionException {
         EObject current = null;
 
@@ -5181,22 +5444,22 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
          enterRule(); 
             
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1700:28: ( (this_LVal_0= ruleLVal | ( () otherlv_2= 'id' ) | ( () ( (lv_value_4_0= RULE_INT ) ) ) | ( () ( (lv_value_6_0= ruleDouble ) ) ) | ( () otherlv_8= '#N' ) | ( () ( (lv_operator_10_0= ruleUnaryOperator ) ) ( (lv_operand_11_0= ruleExpr ) ) ) | ( () ( (lv_function_13_0= ruleBuiltInFunction ) ) otherlv_14= '(' ( (lv_firstArg_15_0= RULE_TIDENTIFIER ) ) otherlv_16= ',' ( (lv_secondArg_17_0= ruleExpr ) ) otherlv_18= ')' ) | this_CallExpr_19= ruleCallExpr | (otherlv_20= '(' this_Expr_21= ruleExpr otherlv_22= ')' ) ) )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1701:1: (this_LVal_0= ruleLVal | ( () otherlv_2= 'id' ) | ( () ( (lv_value_4_0= RULE_INT ) ) ) | ( () ( (lv_value_6_0= ruleDouble ) ) ) | ( () otherlv_8= '#N' ) | ( () ( (lv_operator_10_0= ruleUnaryOperator ) ) ( (lv_operand_11_0= ruleExpr ) ) ) | ( () ( (lv_function_13_0= ruleBuiltInFunction ) ) otherlv_14= '(' ( (lv_firstArg_15_0= RULE_TIDENTIFIER ) ) otherlv_16= ',' ( (lv_secondArg_17_0= ruleExpr ) ) otherlv_18= ')' ) | this_CallExpr_19= ruleCallExpr | (otherlv_20= '(' this_Expr_21= ruleExpr otherlv_22= ')' ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1777:28: ( (this_LVal_0= ruleLVal | ( () otherlv_2= 'id' ) | ( () ( (lv_value_4_0= RULE_INT ) ) ) | ( () ( (lv_value_6_0= ruleDouble ) ) ) | ( () otherlv_8= '#N' ) | ( () ( (lv_operator_10_0= ruleUnaryOperator ) ) ( (lv_operand_11_0= ruleExpr ) ) ) | ( () ( (lv_function_13_0= ruleBuiltInFunction ) ) otherlv_14= '(' ( (lv_firstArg_15_0= RULE_TIDENTIFIER ) ) otherlv_16= ',' ( (lv_secondArg_17_0= ruleExpr ) ) otherlv_18= ')' ) | this_CallExpr_19= ruleCallExpr | (otherlv_20= '(' this_Expr_21= ruleExpr otherlv_22= ')' ) ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1778:1: (this_LVal_0= ruleLVal | ( () otherlv_2= 'id' ) | ( () ( (lv_value_4_0= RULE_INT ) ) ) | ( () ( (lv_value_6_0= ruleDouble ) ) ) | ( () otherlv_8= '#N' ) | ( () ( (lv_operator_10_0= ruleUnaryOperator ) ) ( (lv_operand_11_0= ruleExpr ) ) ) | ( () ( (lv_function_13_0= ruleBuiltInFunction ) ) otherlv_14= '(' ( (lv_firstArg_15_0= RULE_TIDENTIFIER ) ) otherlv_16= ',' ( (lv_secondArg_17_0= ruleExpr ) ) otherlv_18= ')' ) | this_CallExpr_19= ruleCallExpr | (otherlv_20= '(' this_Expr_21= ruleExpr otherlv_22= ')' ) )
             {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1701:1: (this_LVal_0= ruleLVal | ( () otherlv_2= 'id' ) | ( () ( (lv_value_4_0= RULE_INT ) ) ) | ( () ( (lv_value_6_0= ruleDouble ) ) ) | ( () otherlv_8= '#N' ) | ( () ( (lv_operator_10_0= ruleUnaryOperator ) ) ( (lv_operand_11_0= ruleExpr ) ) ) | ( () ( (lv_function_13_0= ruleBuiltInFunction ) ) otherlv_14= '(' ( (lv_firstArg_15_0= RULE_TIDENTIFIER ) ) otherlv_16= ',' ( (lv_secondArg_17_0= ruleExpr ) ) otherlv_18= ')' ) | this_CallExpr_19= ruleCallExpr | (otherlv_20= '(' this_Expr_21= ruleExpr otherlv_22= ')' ) )
-            int alt30=9;
-            alt30 = dfa30.predict(input);
-            switch (alt30) {
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1778:1: (this_LVal_0= ruleLVal | ( () otherlv_2= 'id' ) | ( () ( (lv_value_4_0= RULE_INT ) ) ) | ( () ( (lv_value_6_0= ruleDouble ) ) ) | ( () otherlv_8= '#N' ) | ( () ( (lv_operator_10_0= ruleUnaryOperator ) ) ( (lv_operand_11_0= ruleExpr ) ) ) | ( () ( (lv_function_13_0= ruleBuiltInFunction ) ) otherlv_14= '(' ( (lv_firstArg_15_0= RULE_TIDENTIFIER ) ) otherlv_16= ',' ( (lv_secondArg_17_0= ruleExpr ) ) otherlv_18= ')' ) | this_CallExpr_19= ruleCallExpr | (otherlv_20= '(' this_Expr_21= ruleExpr otherlv_22= ')' ) )
+            int alt31=9;
+            alt31 = dfa31.predict(input);
+            switch (alt31) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1702:5: this_LVal_0= ruleLVal
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1779:5: this_LVal_0= ruleLVal
                     {
                     if ( state.backtracking==0 ) {
                        
                               newCompositeNode(grammarAccess.getTerminalExprAccess().getLValParserRuleCall_0()); 
                           
                     }
-                    pushFollow(FOLLOW_ruleLVal_in_ruleTerminalExpr3647);
+                    pushFollow(FOLLOW_ruleLVal_in_ruleTerminalExpr3814);
                     this_LVal_0=ruleLVal();
 
                     state._fsp--;
@@ -5211,13 +5474,13 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1711:6: ( () otherlv_2= 'id' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1788:6: ( () otherlv_2= 'id' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1711:6: ( () otherlv_2= 'id' )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1711:7: () otherlv_2= 'id'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1788:6: ( () otherlv_2= 'id' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1788:7: () otherlv_2= 'id'
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1711:7: ()
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1712:5: 
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1788:7: ()
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1789:5: 
                     {
                     if ( state.backtracking==0 ) {
 
@@ -5229,7 +5492,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    otherlv_2=(Token)match(input,30,FOLLOW_30_in_ruleTerminalExpr3674); if (state.failed) return current;
+                    otherlv_2=(Token)match(input,30,FOLLOW_30_in_ruleTerminalExpr3841); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                           	newLeafNode(otherlv_2, grammarAccess.getTerminalExprAccess().getIdKeyword_1_1());
@@ -5242,13 +5505,13 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1722:6: ( () ( (lv_value_4_0= RULE_INT ) ) )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1799:6: ( () ( (lv_value_4_0= RULE_INT ) ) )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1722:6: ( () ( (lv_value_4_0= RULE_INT ) ) )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1722:7: () ( (lv_value_4_0= RULE_INT ) )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1799:6: ( () ( (lv_value_4_0= RULE_INT ) ) )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1799:7: () ( (lv_value_4_0= RULE_INT ) )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1722:7: ()
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1723:5: 
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1799:7: ()
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1800:5: 
                     {
                     if ( state.backtracking==0 ) {
 
@@ -5260,13 +5523,13 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1728:2: ( (lv_value_4_0= RULE_INT ) )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1729:1: (lv_value_4_0= RULE_INT )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1805:2: ( (lv_value_4_0= RULE_INT ) )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1806:1: (lv_value_4_0= RULE_INT )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1729:1: (lv_value_4_0= RULE_INT )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1730:3: lv_value_4_0= RULE_INT
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1806:1: (lv_value_4_0= RULE_INT )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1807:3: lv_value_4_0= RULE_INT
                     {
-                    lv_value_4_0=(Token)match(input,RULE_INT,FOLLOW_RULE_INT_in_ruleTerminalExpr3708); if (state.failed) return current;
+                    lv_value_4_0=(Token)match(input,RULE_INT,FOLLOW_RULE_INT_in_ruleTerminalExpr3875); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                       			newLeafNode(lv_value_4_0, grammarAccess.getTerminalExprAccess().getValueINTTerminalRuleCall_2_1_0()); 
@@ -5297,13 +5560,13 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 4 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1747:6: ( () ( (lv_value_6_0= ruleDouble ) ) )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1824:6: ( () ( (lv_value_6_0= ruleDouble ) ) )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1747:6: ( () ( (lv_value_6_0= ruleDouble ) ) )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1747:7: () ( (lv_value_6_0= ruleDouble ) )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1824:6: ( () ( (lv_value_6_0= ruleDouble ) ) )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1824:7: () ( (lv_value_6_0= ruleDouble ) )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1747:7: ()
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1748:5: 
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1824:7: ()
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1825:5: 
                     {
                     if ( state.backtracking==0 ) {
 
@@ -5315,18 +5578,18 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1753:2: ( (lv_value_6_0= ruleDouble ) )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1754:1: (lv_value_6_0= ruleDouble )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1830:2: ( (lv_value_6_0= ruleDouble ) )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1831:1: (lv_value_6_0= ruleDouble )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1754:1: (lv_value_6_0= ruleDouble )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1755:3: lv_value_6_0= ruleDouble
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1831:1: (lv_value_6_0= ruleDouble )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1832:3: lv_value_6_0= ruleDouble
                     {
                     if ( state.backtracking==0 ) {
                        
                       	        newCompositeNode(grammarAccess.getTerminalExprAccess().getValueDoubleParserRuleCall_3_1_0()); 
                       	    
                     }
-                    pushFollow(FOLLOW_ruleDouble_in_ruleTerminalExpr3751);
+                    pushFollow(FOLLOW_ruleDouble_in_ruleTerminalExpr3918);
                     lv_value_6_0=ruleDouble();
 
                     state._fsp--;
@@ -5357,13 +5620,13 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 5 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1772:6: ( () otherlv_8= '#N' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1849:6: ( () otherlv_8= '#N' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1772:6: ( () otherlv_8= '#N' )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1772:7: () otherlv_8= '#N'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1849:6: ( () otherlv_8= '#N' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1849:7: () otherlv_8= '#N'
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1772:7: ()
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1773:5: 
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1849:7: ()
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1850:5: 
                     {
                     if ( state.backtracking==0 ) {
 
@@ -5375,7 +5638,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    otherlv_8=(Token)match(input,18,FOLLOW_18_in_ruleTerminalExpr3780); if (state.failed) return current;
+                    otherlv_8=(Token)match(input,18,FOLLOW_18_in_ruleTerminalExpr3947); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                           	newLeafNode(otherlv_8, grammarAccess.getTerminalExprAccess().getNKeyword_4_1());
@@ -5388,13 +5651,13 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 6 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1783:6: ( () ( (lv_operator_10_0= ruleUnaryOperator ) ) ( (lv_operand_11_0= ruleExpr ) ) )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1860:6: ( () ( (lv_operator_10_0= ruleUnaryOperator ) ) ( (lv_operand_11_0= ruleExpr ) ) )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1783:6: ( () ( (lv_operator_10_0= ruleUnaryOperator ) ) ( (lv_operand_11_0= ruleExpr ) ) )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1783:7: () ( (lv_operator_10_0= ruleUnaryOperator ) ) ( (lv_operand_11_0= ruleExpr ) )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1860:6: ( () ( (lv_operator_10_0= ruleUnaryOperator ) ) ( (lv_operand_11_0= ruleExpr ) ) )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1860:7: () ( (lv_operator_10_0= ruleUnaryOperator ) ) ( (lv_operand_11_0= ruleExpr ) )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1783:7: ()
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1784:5: 
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1860:7: ()
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1861:5: 
                     {
                     if ( state.backtracking==0 ) {
 
@@ -5406,18 +5669,18 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1789:2: ( (lv_operator_10_0= ruleUnaryOperator ) )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1790:1: (lv_operator_10_0= ruleUnaryOperator )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1866:2: ( (lv_operator_10_0= ruleUnaryOperator ) )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1867:1: (lv_operator_10_0= ruleUnaryOperator )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1790:1: (lv_operator_10_0= ruleUnaryOperator )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1791:3: lv_operator_10_0= ruleUnaryOperator
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1867:1: (lv_operator_10_0= ruleUnaryOperator )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1868:3: lv_operator_10_0= ruleUnaryOperator
                     {
                     if ( state.backtracking==0 ) {
                        
                       	        newCompositeNode(grammarAccess.getTerminalExprAccess().getOperatorUnaryOperatorEnumRuleCall_5_1_0()); 
                       	    
                     }
-                    pushFollow(FOLLOW_ruleUnaryOperator_in_ruleTerminalExpr3818);
+                    pushFollow(FOLLOW_ruleUnaryOperator_in_ruleTerminalExpr3985);
                     lv_operator_10_0=ruleUnaryOperator();
 
                     state._fsp--;
@@ -5441,18 +5704,18 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1807:2: ( (lv_operand_11_0= ruleExpr ) )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1808:1: (lv_operand_11_0= ruleExpr )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1884:2: ( (lv_operand_11_0= ruleExpr ) )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1885:1: (lv_operand_11_0= ruleExpr )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1808:1: (lv_operand_11_0= ruleExpr )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1809:3: lv_operand_11_0= ruleExpr
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1885:1: (lv_operand_11_0= ruleExpr )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1886:3: lv_operand_11_0= ruleExpr
                     {
                     if ( state.backtracking==0 ) {
                        
                       	        newCompositeNode(grammarAccess.getTerminalExprAccess().getOperandExprParserRuleCall_5_2_0()); 
                       	    
                     }
-                    pushFollow(FOLLOW_ruleExpr_in_ruleTerminalExpr3839);
+                    pushFollow(FOLLOW_ruleExpr_in_ruleTerminalExpr4006);
                     lv_operand_11_0=ruleExpr();
 
                     state._fsp--;
@@ -5483,13 +5746,13 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 7 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1826:6: ( () ( (lv_function_13_0= ruleBuiltInFunction ) ) otherlv_14= '(' ( (lv_firstArg_15_0= RULE_TIDENTIFIER ) ) otherlv_16= ',' ( (lv_secondArg_17_0= ruleExpr ) ) otherlv_18= ')' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1903:6: ( () ( (lv_function_13_0= ruleBuiltInFunction ) ) otherlv_14= '(' ( (lv_firstArg_15_0= RULE_TIDENTIFIER ) ) otherlv_16= ',' ( (lv_secondArg_17_0= ruleExpr ) ) otherlv_18= ')' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1826:6: ( () ( (lv_function_13_0= ruleBuiltInFunction ) ) otherlv_14= '(' ( (lv_firstArg_15_0= RULE_TIDENTIFIER ) ) otherlv_16= ',' ( (lv_secondArg_17_0= ruleExpr ) ) otherlv_18= ')' )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1826:7: () ( (lv_function_13_0= ruleBuiltInFunction ) ) otherlv_14= '(' ( (lv_firstArg_15_0= RULE_TIDENTIFIER ) ) otherlv_16= ',' ( (lv_secondArg_17_0= ruleExpr ) ) otherlv_18= ')'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1903:6: ( () ( (lv_function_13_0= ruleBuiltInFunction ) ) otherlv_14= '(' ( (lv_firstArg_15_0= RULE_TIDENTIFIER ) ) otherlv_16= ',' ( (lv_secondArg_17_0= ruleExpr ) ) otherlv_18= ')' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1903:7: () ( (lv_function_13_0= ruleBuiltInFunction ) ) otherlv_14= '(' ( (lv_firstArg_15_0= RULE_TIDENTIFIER ) ) otherlv_16= ',' ( (lv_secondArg_17_0= ruleExpr ) ) otherlv_18= ')'
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1826:7: ()
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1827:5: 
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1903:7: ()
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1904:5: 
                     {
                     if ( state.backtracking==0 ) {
 
@@ -5501,18 +5764,18 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1832:2: ( (lv_function_13_0= ruleBuiltInFunction ) )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1833:1: (lv_function_13_0= ruleBuiltInFunction )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1909:2: ( (lv_function_13_0= ruleBuiltInFunction ) )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1910:1: (lv_function_13_0= ruleBuiltInFunction )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1833:1: (lv_function_13_0= ruleBuiltInFunction )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1834:3: lv_function_13_0= ruleBuiltInFunction
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1910:1: (lv_function_13_0= ruleBuiltInFunction )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1911:3: lv_function_13_0= ruleBuiltInFunction
                     {
                     if ( state.backtracking==0 ) {
                        
                       	        newCompositeNode(grammarAccess.getTerminalExprAccess().getFunctionBuiltInFunctionParserRuleCall_6_1_0()); 
                       	    
                     }
-                    pushFollow(FOLLOW_ruleBuiltInFunction_in_ruleTerminalExpr3877);
+                    pushFollow(FOLLOW_ruleBuiltInFunction_in_ruleTerminalExpr4044);
                     lv_function_13_0=ruleBuiltInFunction();
 
                     state._fsp--;
@@ -5536,19 +5799,19 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    otherlv_14=(Token)match(input,26,FOLLOW_26_in_ruleTerminalExpr3889); if (state.failed) return current;
+                    otherlv_14=(Token)match(input,26,FOLLOW_26_in_ruleTerminalExpr4056); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                           	newLeafNode(otherlv_14, grammarAccess.getTerminalExprAccess().getLeftParenthesisKeyword_6_2());
                           
                     }
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1854:1: ( (lv_firstArg_15_0= RULE_TIDENTIFIER ) )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1855:1: (lv_firstArg_15_0= RULE_TIDENTIFIER )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1931:1: ( (lv_firstArg_15_0= RULE_TIDENTIFIER ) )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1932:1: (lv_firstArg_15_0= RULE_TIDENTIFIER )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1855:1: (lv_firstArg_15_0= RULE_TIDENTIFIER )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1856:3: lv_firstArg_15_0= RULE_TIDENTIFIER
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1932:1: (lv_firstArg_15_0= RULE_TIDENTIFIER )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1933:3: lv_firstArg_15_0= RULE_TIDENTIFIER
                     {
-                    lv_firstArg_15_0=(Token)match(input,RULE_TIDENTIFIER,FOLLOW_RULE_TIDENTIFIER_in_ruleTerminalExpr3906); if (state.failed) return current;
+                    lv_firstArg_15_0=(Token)match(input,RULE_TIDENTIFIER,FOLLOW_RULE_TIDENTIFIER_in_ruleTerminalExpr4073); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                       			newLeafNode(lv_firstArg_15_0, grammarAccess.getTerminalExprAccess().getFirstArgTIDENTIFIERTerminalRuleCall_6_3_0()); 
@@ -5572,24 +5835,24 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    otherlv_16=(Token)match(input,27,FOLLOW_27_in_ruleTerminalExpr3923); if (state.failed) return current;
+                    otherlv_16=(Token)match(input,27,FOLLOW_27_in_ruleTerminalExpr4090); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                           	newLeafNode(otherlv_16, grammarAccess.getTerminalExprAccess().getCommaKeyword_6_4());
                           
                     }
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1876:1: ( (lv_secondArg_17_0= ruleExpr ) )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1877:1: (lv_secondArg_17_0= ruleExpr )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1953:1: ( (lv_secondArg_17_0= ruleExpr ) )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1954:1: (lv_secondArg_17_0= ruleExpr )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1877:1: (lv_secondArg_17_0= ruleExpr )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1878:3: lv_secondArg_17_0= ruleExpr
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1954:1: (lv_secondArg_17_0= ruleExpr )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1955:3: lv_secondArg_17_0= ruleExpr
                     {
                     if ( state.backtracking==0 ) {
                        
                       	        newCompositeNode(grammarAccess.getTerminalExprAccess().getSecondArgExprParserRuleCall_6_5_0()); 
                       	    
                     }
-                    pushFollow(FOLLOW_ruleExpr_in_ruleTerminalExpr3944);
+                    pushFollow(FOLLOW_ruleExpr_in_ruleTerminalExpr4111);
                     lv_secondArg_17_0=ruleExpr();
 
                     state._fsp--;
@@ -5613,7 +5876,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    otherlv_18=(Token)match(input,28,FOLLOW_28_in_ruleTerminalExpr3956); if (state.failed) return current;
+                    otherlv_18=(Token)match(input,28,FOLLOW_28_in_ruleTerminalExpr4123); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                           	newLeafNode(otherlv_18, grammarAccess.getTerminalExprAccess().getRightParenthesisKeyword_6_6());
@@ -5626,14 +5889,14 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 8 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1900:5: this_CallExpr_19= ruleCallExpr
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1977:5: this_CallExpr_19= ruleCallExpr
                     {
                     if ( state.backtracking==0 ) {
                        
                               newCompositeNode(grammarAccess.getTerminalExprAccess().getCallExprParserRuleCall_7()); 
                           
                     }
-                    pushFollow(FOLLOW_ruleCallExpr_in_ruleTerminalExpr3985);
+                    pushFollow(FOLLOW_ruleCallExpr_in_ruleTerminalExpr4152);
                     this_CallExpr_19=ruleCallExpr();
 
                     state._fsp--;
@@ -5648,12 +5911,12 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 9 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1909:6: (otherlv_20= '(' this_Expr_21= ruleExpr otherlv_22= ')' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1986:6: (otherlv_20= '(' this_Expr_21= ruleExpr otherlv_22= ')' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1909:6: (otherlv_20= '(' this_Expr_21= ruleExpr otherlv_22= ')' )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1909:8: otherlv_20= '(' this_Expr_21= ruleExpr otherlv_22= ')'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1986:6: (otherlv_20= '(' this_Expr_21= ruleExpr otherlv_22= ')' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1986:8: otherlv_20= '(' this_Expr_21= ruleExpr otherlv_22= ')'
                     {
-                    otherlv_20=(Token)match(input,26,FOLLOW_26_in_ruleTerminalExpr4003); if (state.failed) return current;
+                    otherlv_20=(Token)match(input,26,FOLLOW_26_in_ruleTerminalExpr4170); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                           	newLeafNode(otherlv_20, grammarAccess.getTerminalExprAccess().getLeftParenthesisKeyword_8_0());
@@ -5664,7 +5927,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                               newCompositeNode(grammarAccess.getTerminalExprAccess().getExprParserRuleCall_8_1()); 
                           
                     }
-                    pushFollow(FOLLOW_ruleExpr_in_ruleTerminalExpr4025);
+                    pushFollow(FOLLOW_ruleExpr_in_ruleTerminalExpr4192);
                     this_Expr_21=ruleExpr();
 
                     state._fsp--;
@@ -5675,7 +5938,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                               afterParserOrEnumRuleCall();
                           
                     }
-                    otherlv_22=(Token)match(input,28,FOLLOW_28_in_ruleTerminalExpr4036); if (state.failed) return current;
+                    otherlv_22=(Token)match(input,28,FOLLOW_28_in_ruleTerminalExpr4203); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                           	newLeafNode(otherlv_22, grammarAccess.getTerminalExprAccess().getRightParenthesisKeyword_8_2());
@@ -5710,7 +5973,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleCallExpr"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1934:1: entryRuleCallExpr returns [EObject current=null] : iv_ruleCallExpr= ruleCallExpr EOF ;
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2011:1: entryRuleCallExpr returns [EObject current=null] : iv_ruleCallExpr= ruleCallExpr EOF ;
     public final EObject entryRuleCallExpr() throws RecognitionException {
         EObject current = null;
 
@@ -5718,13 +5981,13 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1935:2: (iv_ruleCallExpr= ruleCallExpr EOF )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1936:2: iv_ruleCallExpr= ruleCallExpr EOF
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2012:2: (iv_ruleCallExpr= ruleCallExpr EOF )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2013:2: iv_ruleCallExpr= ruleCallExpr EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getCallExprRule()); 
             }
-            pushFollow(FOLLOW_ruleCallExpr_in_entryRuleCallExpr4073);
+            pushFollow(FOLLOW_ruleCallExpr_in_entryRuleCallExpr4240);
             iv_ruleCallExpr=ruleCallExpr();
 
             state._fsp--;
@@ -5732,7 +5995,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
             if ( state.backtracking==0 ) {
                current =iv_ruleCallExpr; 
             }
-            match(input,EOF,FOLLOW_EOF_in_entryRuleCallExpr4083); if (state.failed) return current;
+            match(input,EOF,FOLLOW_EOF_in_entryRuleCallExpr4250); if (state.failed) return current;
 
             }
 
@@ -5750,7 +6013,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleCallExpr"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1943:1: ruleCallExpr returns [EObject current=null] : ( ( ( (lv_namespace_0_0= RULE_TIDENTIFIER ) ) otherlv_1= '::' )? ( (lv_name_2_0= RULE_TIDENTIFIER ) ) otherlv_3= '(' ( (lv_argList_4_0= ruleArgList ) ) otherlv_5= ')' (otherlv_6= '@' ( (lv_at_7_0= ruleExpr ) ) )? ) ;
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2020:1: ruleCallExpr returns [EObject current=null] : ( ( ( (lv_namespace_0_0= RULE_TIDENTIFIER ) ) otherlv_1= '::' )? ( (lv_name_2_0= RULE_TIDENTIFIER ) ) otherlv_3= '(' ( (lv_argList_4_0= ruleArgList ) ) otherlv_5= ')' (otherlv_6= '@' ( (lv_at_7_0= ruleExpr ) ) )? ) ;
     public final EObject ruleCallExpr() throws RecognitionException {
         EObject current = null;
 
@@ -5768,34 +6031,34 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
          enterRule(); 
             
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1946:28: ( ( ( ( (lv_namespace_0_0= RULE_TIDENTIFIER ) ) otherlv_1= '::' )? ( (lv_name_2_0= RULE_TIDENTIFIER ) ) otherlv_3= '(' ( (lv_argList_4_0= ruleArgList ) ) otherlv_5= ')' (otherlv_6= '@' ( (lv_at_7_0= ruleExpr ) ) )? ) )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1947:1: ( ( ( (lv_namespace_0_0= RULE_TIDENTIFIER ) ) otherlv_1= '::' )? ( (lv_name_2_0= RULE_TIDENTIFIER ) ) otherlv_3= '(' ( (lv_argList_4_0= ruleArgList ) ) otherlv_5= ')' (otherlv_6= '@' ( (lv_at_7_0= ruleExpr ) ) )? )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2023:28: ( ( ( ( (lv_namespace_0_0= RULE_TIDENTIFIER ) ) otherlv_1= '::' )? ( (lv_name_2_0= RULE_TIDENTIFIER ) ) otherlv_3= '(' ( (lv_argList_4_0= ruleArgList ) ) otherlv_5= ')' (otherlv_6= '@' ( (lv_at_7_0= ruleExpr ) ) )? ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2024:1: ( ( ( (lv_namespace_0_0= RULE_TIDENTIFIER ) ) otherlv_1= '::' )? ( (lv_name_2_0= RULE_TIDENTIFIER ) ) otherlv_3= '(' ( (lv_argList_4_0= ruleArgList ) ) otherlv_5= ')' (otherlv_6= '@' ( (lv_at_7_0= ruleExpr ) ) )? )
             {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1947:1: ( ( ( (lv_namespace_0_0= RULE_TIDENTIFIER ) ) otherlv_1= '::' )? ( (lv_name_2_0= RULE_TIDENTIFIER ) ) otherlv_3= '(' ( (lv_argList_4_0= ruleArgList ) ) otherlv_5= ')' (otherlv_6= '@' ( (lv_at_7_0= ruleExpr ) ) )? )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1947:2: ( ( (lv_namespace_0_0= RULE_TIDENTIFIER ) ) otherlv_1= '::' )? ( (lv_name_2_0= RULE_TIDENTIFIER ) ) otherlv_3= '(' ( (lv_argList_4_0= ruleArgList ) ) otherlv_5= ')' (otherlv_6= '@' ( (lv_at_7_0= ruleExpr ) ) )?
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2024:1: ( ( ( (lv_namespace_0_0= RULE_TIDENTIFIER ) ) otherlv_1= '::' )? ( (lv_name_2_0= RULE_TIDENTIFIER ) ) otherlv_3= '(' ( (lv_argList_4_0= ruleArgList ) ) otherlv_5= ')' (otherlv_6= '@' ( (lv_at_7_0= ruleExpr ) ) )? )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2024:2: ( ( (lv_namespace_0_0= RULE_TIDENTIFIER ) ) otherlv_1= '::' )? ( (lv_name_2_0= RULE_TIDENTIFIER ) ) otherlv_3= '(' ( (lv_argList_4_0= ruleArgList ) ) otherlv_5= ')' (otherlv_6= '@' ( (lv_at_7_0= ruleExpr ) ) )?
             {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1947:2: ( ( (lv_namespace_0_0= RULE_TIDENTIFIER ) ) otherlv_1= '::' )?
-            int alt31=2;
-            int LA31_0 = input.LA(1);
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2024:2: ( ( (lv_namespace_0_0= RULE_TIDENTIFIER ) ) otherlv_1= '::' )?
+            int alt32=2;
+            int LA32_0 = input.LA(1);
 
-            if ( (LA31_0==RULE_TIDENTIFIER) ) {
-                int LA31_1 = input.LA(2);
+            if ( (LA32_0==RULE_TIDENTIFIER) ) {
+                int LA32_1 = input.LA(2);
 
-                if ( (LA31_1==31) ) {
-                    alt31=1;
+                if ( (LA32_1==31) ) {
+                    alt32=1;
                 }
             }
-            switch (alt31) {
+            switch (alt32) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1947:3: ( (lv_namespace_0_0= RULE_TIDENTIFIER ) ) otherlv_1= '::'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2024:3: ( (lv_namespace_0_0= RULE_TIDENTIFIER ) ) otherlv_1= '::'
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1947:3: ( (lv_namespace_0_0= RULE_TIDENTIFIER ) )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1948:1: (lv_namespace_0_0= RULE_TIDENTIFIER )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2024:3: ( (lv_namespace_0_0= RULE_TIDENTIFIER ) )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2025:1: (lv_namespace_0_0= RULE_TIDENTIFIER )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1948:1: (lv_namespace_0_0= RULE_TIDENTIFIER )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1949:3: lv_namespace_0_0= RULE_TIDENTIFIER
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2025:1: (lv_namespace_0_0= RULE_TIDENTIFIER )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2026:3: lv_namespace_0_0= RULE_TIDENTIFIER
                     {
-                    lv_namespace_0_0=(Token)match(input,RULE_TIDENTIFIER,FOLLOW_RULE_TIDENTIFIER_in_ruleCallExpr4126); if (state.failed) return current;
+                    lv_namespace_0_0=(Token)match(input,RULE_TIDENTIFIER,FOLLOW_RULE_TIDENTIFIER_in_ruleCallExpr4293); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                       			newLeafNode(lv_namespace_0_0, grammarAccess.getCallExprAccess().getNamespaceTIDENTIFIERTerminalRuleCall_0_0_0()); 
@@ -5819,7 +6082,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    otherlv_1=(Token)match(input,31,FOLLOW_31_in_ruleCallExpr4143); if (state.failed) return current;
+                    otherlv_1=(Token)match(input,31,FOLLOW_31_in_ruleCallExpr4310); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                           	newLeafNode(otherlv_1, grammarAccess.getCallExprAccess().getColonColonKeyword_0_1());
@@ -5831,13 +6094,13 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
             }
 
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1969:3: ( (lv_name_2_0= RULE_TIDENTIFIER ) )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1970:1: (lv_name_2_0= RULE_TIDENTIFIER )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2046:3: ( (lv_name_2_0= RULE_TIDENTIFIER ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2047:1: (lv_name_2_0= RULE_TIDENTIFIER )
             {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1970:1: (lv_name_2_0= RULE_TIDENTIFIER )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1971:3: lv_name_2_0= RULE_TIDENTIFIER
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2047:1: (lv_name_2_0= RULE_TIDENTIFIER )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2048:3: lv_name_2_0= RULE_TIDENTIFIER
             {
-            lv_name_2_0=(Token)match(input,RULE_TIDENTIFIER,FOLLOW_RULE_TIDENTIFIER_in_ruleCallExpr4162); if (state.failed) return current;
+            lv_name_2_0=(Token)match(input,RULE_TIDENTIFIER,FOLLOW_RULE_TIDENTIFIER_in_ruleCallExpr4329); if (state.failed) return current;
             if ( state.backtracking==0 ) {
 
               			newLeafNode(lv_name_2_0, grammarAccess.getCallExprAccess().getNameTIDENTIFIERTerminalRuleCall_1_0()); 
@@ -5861,24 +6124,24 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_3=(Token)match(input,26,FOLLOW_26_in_ruleCallExpr4179); if (state.failed) return current;
+            otherlv_3=(Token)match(input,26,FOLLOW_26_in_ruleCallExpr4346); if (state.failed) return current;
             if ( state.backtracking==0 ) {
 
                   	newLeafNode(otherlv_3, grammarAccess.getCallExprAccess().getLeftParenthesisKeyword_2());
                   
             }
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1991:1: ( (lv_argList_4_0= ruleArgList ) )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1992:1: (lv_argList_4_0= ruleArgList )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2068:1: ( (lv_argList_4_0= ruleArgList ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2069:1: (lv_argList_4_0= ruleArgList )
             {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1992:1: (lv_argList_4_0= ruleArgList )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1993:3: lv_argList_4_0= ruleArgList
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2069:1: (lv_argList_4_0= ruleArgList )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2070:3: lv_argList_4_0= ruleArgList
             {
             if ( state.backtracking==0 ) {
                
               	        newCompositeNode(grammarAccess.getCallExprAccess().getArgListArgListParserRuleCall_3_0()); 
               	    
             }
-            pushFollow(FOLLOW_ruleArgList_in_ruleCallExpr4200);
+            pushFollow(FOLLOW_ruleArgList_in_ruleCallExpr4367);
             lv_argList_4_0=ruleArgList();
 
             state._fsp--;
@@ -5902,41 +6165,41 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_5=(Token)match(input,28,FOLLOW_28_in_ruleCallExpr4212); if (state.failed) return current;
+            otherlv_5=(Token)match(input,28,FOLLOW_28_in_ruleCallExpr4379); if (state.failed) return current;
             if ( state.backtracking==0 ) {
 
                   	newLeafNode(otherlv_5, grammarAccess.getCallExprAccess().getRightParenthesisKeyword_4());
                   
             }
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2013:1: (otherlv_6= '@' ( (lv_at_7_0= ruleExpr ) ) )?
-            int alt32=2;
-            int LA32_0 = input.LA(1);
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2090:1: (otherlv_6= '@' ( (lv_at_7_0= ruleExpr ) ) )?
+            int alt33=2;
+            int LA33_0 = input.LA(1);
 
-            if ( (LA32_0==29) ) {
-                alt32=1;
+            if ( (LA33_0==29) ) {
+                alt33=1;
             }
-            switch (alt32) {
+            switch (alt33) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2013:3: otherlv_6= '@' ( (lv_at_7_0= ruleExpr ) )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2090:3: otherlv_6= '@' ( (lv_at_7_0= ruleExpr ) )
                     {
-                    otherlv_6=(Token)match(input,29,FOLLOW_29_in_ruleCallExpr4225); if (state.failed) return current;
+                    otherlv_6=(Token)match(input,29,FOLLOW_29_in_ruleCallExpr4392); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                           	newLeafNode(otherlv_6, grammarAccess.getCallExprAccess().getCommercialAtKeyword_5_0());
                           
                     }
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2017:1: ( (lv_at_7_0= ruleExpr ) )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2018:1: (lv_at_7_0= ruleExpr )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2094:1: ( (lv_at_7_0= ruleExpr ) )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2095:1: (lv_at_7_0= ruleExpr )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2018:1: (lv_at_7_0= ruleExpr )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2019:3: lv_at_7_0= ruleExpr
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2095:1: (lv_at_7_0= ruleExpr )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2096:3: lv_at_7_0= ruleExpr
                     {
                     if ( state.backtracking==0 ) {
                        
                       	        newCompositeNode(grammarAccess.getCallExprAccess().getAtExprParserRuleCall_5_1_0()); 
                       	    
                     }
-                    pushFollow(FOLLOW_ruleExpr_in_ruleCallExpr4246);
+                    pushFollow(FOLLOW_ruleExpr_in_ruleCallExpr4413);
                     lv_at_7_0=ruleExpr();
 
                     state._fsp--;
@@ -5989,7 +6252,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleArgList"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2043:1: entryRuleArgList returns [EObject current=null] : iv_ruleArgList= ruleArgList EOF ;
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2120:1: entryRuleArgList returns [EObject current=null] : iv_ruleArgList= ruleArgList EOF ;
     public final EObject entryRuleArgList() throws RecognitionException {
         EObject current = null;
 
@@ -5997,13 +6260,13 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2044:2: (iv_ruleArgList= ruleArgList EOF )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2045:2: iv_ruleArgList= ruleArgList EOF
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2121:2: (iv_ruleArgList= ruleArgList EOF )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2122:2: iv_ruleArgList= ruleArgList EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getArgListRule()); 
             }
-            pushFollow(FOLLOW_ruleArgList_in_entryRuleArgList4284);
+            pushFollow(FOLLOW_ruleArgList_in_entryRuleArgList4451);
             iv_ruleArgList=ruleArgList();
 
             state._fsp--;
@@ -6011,7 +6274,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
             if ( state.backtracking==0 ) {
                current =iv_ruleArgList; 
             }
-            match(input,EOF,FOLLOW_EOF_in_entryRuleArgList4294); if (state.failed) return current;
+            match(input,EOF,FOLLOW_EOF_in_entryRuleArgList4461); if (state.failed) return current;
 
             }
 
@@ -6029,7 +6292,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleArgList"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2052:1: ruleArgList returns [EObject current=null] : ( () ( ( (lv_args_1_0= ruleExpr ) ) (otherlv_2= ',' ( (lv_args_3_0= ruleExpr ) ) )* )? ) ;
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2129:1: ruleArgList returns [EObject current=null] : ( () ( ( (lv_args_1_0= ruleExpr ) ) (otherlv_2= ',' ( (lv_args_3_0= ruleExpr ) ) )* )? ) ;
     public final EObject ruleArgList() throws RecognitionException {
         EObject current = null;
 
@@ -6042,14 +6305,14 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
          enterRule(); 
             
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2055:28: ( ( () ( ( (lv_args_1_0= ruleExpr ) ) (otherlv_2= ',' ( (lv_args_3_0= ruleExpr ) ) )* )? ) )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2056:1: ( () ( ( (lv_args_1_0= ruleExpr ) ) (otherlv_2= ',' ( (lv_args_3_0= ruleExpr ) ) )* )? )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2132:28: ( ( () ( ( (lv_args_1_0= ruleExpr ) ) (otherlv_2= ',' ( (lv_args_3_0= ruleExpr ) ) )* )? ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2133:1: ( () ( ( (lv_args_1_0= ruleExpr ) ) (otherlv_2= ',' ( (lv_args_3_0= ruleExpr ) ) )* )? )
             {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2056:1: ( () ( ( (lv_args_1_0= ruleExpr ) ) (otherlv_2= ',' ( (lv_args_3_0= ruleExpr ) ) )* )? )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2056:2: () ( ( (lv_args_1_0= ruleExpr ) ) (otherlv_2= ',' ( (lv_args_3_0= ruleExpr ) ) )* )?
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2133:1: ( () ( ( (lv_args_1_0= ruleExpr ) ) (otherlv_2= ',' ( (lv_args_3_0= ruleExpr ) ) )* )? )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2133:2: () ( ( (lv_args_1_0= ruleExpr ) ) (otherlv_2= ',' ( (lv_args_3_0= ruleExpr ) ) )* )?
             {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2056:2: ()
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2057:5: 
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2133:2: ()
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2134:5: 
             {
             if ( state.backtracking==0 ) {
 
@@ -6061,29 +6324,29 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
             }
 
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2062:2: ( ( (lv_args_1_0= ruleExpr ) ) (otherlv_2= ',' ( (lv_args_3_0= ruleExpr ) ) )* )?
-            int alt34=2;
-            int LA34_0 = input.LA(1);
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2139:2: ( ( (lv_args_1_0= ruleExpr ) ) (otherlv_2= ',' ( (lv_args_3_0= ruleExpr ) ) )* )?
+            int alt35=2;
+            int LA35_0 = input.LA(1);
 
-            if ( ((LA34_0>=RULE_TIDENTIFIER && LA34_0<=RULE_INT)||LA34_0==18||LA34_0==26||LA34_0==30||(LA34_0>=32 && LA34_0<=33)||(LA34_0>=42 && LA34_0<=48)||(LA34_0>=55 && LA34_0<=56)) ) {
-                alt34=1;
+            if ( ((LA35_0>=RULE_TIDENTIFIER && LA35_0<=RULE_INT)||LA35_0==18||LA35_0==26||LA35_0==30||(LA35_0>=32 && LA35_0<=33)||(LA35_0>=42 && LA35_0<=48)||(LA35_0>=59 && LA35_0<=60)) ) {
+                alt35=1;
             }
-            switch (alt34) {
+            switch (alt35) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2062:3: ( (lv_args_1_0= ruleExpr ) ) (otherlv_2= ',' ( (lv_args_3_0= ruleExpr ) ) )*
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2139:3: ( (lv_args_1_0= ruleExpr ) ) (otherlv_2= ',' ( (lv_args_3_0= ruleExpr ) ) )*
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2062:3: ( (lv_args_1_0= ruleExpr ) )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2063:1: (lv_args_1_0= ruleExpr )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2139:3: ( (lv_args_1_0= ruleExpr ) )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2140:1: (lv_args_1_0= ruleExpr )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2063:1: (lv_args_1_0= ruleExpr )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2064:3: lv_args_1_0= ruleExpr
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2140:1: (lv_args_1_0= ruleExpr )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2141:3: lv_args_1_0= ruleExpr
                     {
                     if ( state.backtracking==0 ) {
                        
                       	        newCompositeNode(grammarAccess.getArgListAccess().getArgsExprParserRuleCall_1_0_0()); 
                       	    
                     }
-                    pushFollow(FOLLOW_ruleExpr_in_ruleArgList4350);
+                    pushFollow(FOLLOW_ruleExpr_in_ruleArgList4517);
                     lv_args_1_0=ruleExpr();
 
                     state._fsp--;
@@ -6107,39 +6370,39 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
                     }
 
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2080:2: (otherlv_2= ',' ( (lv_args_3_0= ruleExpr ) ) )*
-                    loop33:
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2157:2: (otherlv_2= ',' ( (lv_args_3_0= ruleExpr ) ) )*
+                    loop34:
                     do {
-                        int alt33=2;
-                        int LA33_0 = input.LA(1);
+                        int alt34=2;
+                        int LA34_0 = input.LA(1);
 
-                        if ( (LA33_0==27) ) {
-                            alt33=1;
+                        if ( (LA34_0==27) ) {
+                            alt34=1;
                         }
 
 
-                        switch (alt33) {
+                        switch (alt34) {
                     	case 1 :
-                    	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2080:4: otherlv_2= ',' ( (lv_args_3_0= ruleExpr ) )
+                    	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2157:4: otherlv_2= ',' ( (lv_args_3_0= ruleExpr ) )
                     	    {
-                    	    otherlv_2=(Token)match(input,27,FOLLOW_27_in_ruleArgList4363); if (state.failed) return current;
+                    	    otherlv_2=(Token)match(input,27,FOLLOW_27_in_ruleArgList4530); if (state.failed) return current;
                     	    if ( state.backtracking==0 ) {
 
                     	          	newLeafNode(otherlv_2, grammarAccess.getArgListAccess().getCommaKeyword_1_1_0());
                     	          
                     	    }
-                    	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2084:1: ( (lv_args_3_0= ruleExpr ) )
-                    	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2085:1: (lv_args_3_0= ruleExpr )
+                    	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2161:1: ( (lv_args_3_0= ruleExpr ) )
+                    	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2162:1: (lv_args_3_0= ruleExpr )
                     	    {
-                    	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2085:1: (lv_args_3_0= ruleExpr )
-                    	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2086:3: lv_args_3_0= ruleExpr
+                    	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2162:1: (lv_args_3_0= ruleExpr )
+                    	    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2163:3: lv_args_3_0= ruleExpr
                     	    {
                     	    if ( state.backtracking==0 ) {
                     	       
                     	      	        newCompositeNode(grammarAccess.getArgListAccess().getArgsExprParserRuleCall_1_1_1_0()); 
                     	      	    
                     	    }
-                    	    pushFollow(FOLLOW_ruleExpr_in_ruleArgList4384);
+                    	    pushFollow(FOLLOW_ruleExpr_in_ruleArgList4551);
                     	    lv_args_3_0=ruleExpr();
 
                     	    state._fsp--;
@@ -6168,7 +6431,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     	    break;
 
                     	default :
-                    	    break loop33;
+                    	    break loop34;
                         }
                     } while (true);
 
@@ -6201,7 +6464,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleSign"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2110:1: entryRuleSign returns [String current=null] : iv_ruleSign= ruleSign EOF ;
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2187:1: entryRuleSign returns [String current=null] : iv_ruleSign= ruleSign EOF ;
     public final String entryRuleSign() throws RecognitionException {
         String current = null;
 
@@ -6209,13 +6472,13 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2111:2: (iv_ruleSign= ruleSign EOF )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2112:2: iv_ruleSign= ruleSign EOF
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2188:2: (iv_ruleSign= ruleSign EOF )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2189:2: iv_ruleSign= ruleSign EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getSignRule()); 
             }
-            pushFollow(FOLLOW_ruleSign_in_entryRuleSign4425);
+            pushFollow(FOLLOW_ruleSign_in_entryRuleSign4592);
             iv_ruleSign=ruleSign();
 
             state._fsp--;
@@ -6223,7 +6486,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
             if ( state.backtracking==0 ) {
                current =iv_ruleSign.getText(); 
             }
-            match(input,EOF,FOLLOW_EOF_in_entryRuleSign4436); if (state.failed) return current;
+            match(input,EOF,FOLLOW_EOF_in_entryRuleSign4603); if (state.failed) return current;
 
             }
 
@@ -6241,7 +6504,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleSign"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2119:1: ruleSign returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= '+' | kw= '-' ) ;
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2196:1: ruleSign returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= '+' | kw= '-' ) ;
     public final AntlrDatatypeRuleToken ruleSign() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -6250,31 +6513,31 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
          enterRule(); 
             
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2122:28: ( (kw= '+' | kw= '-' ) )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2123:1: (kw= '+' | kw= '-' )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2199:28: ( (kw= '+' | kw= '-' ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2200:1: (kw= '+' | kw= '-' )
             {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2123:1: (kw= '+' | kw= '-' )
-            int alt35=2;
-            int LA35_0 = input.LA(1);
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2200:1: (kw= '+' | kw= '-' )
+            int alt36=2;
+            int LA36_0 = input.LA(1);
 
-            if ( (LA35_0==32) ) {
-                alt35=1;
+            if ( (LA36_0==32) ) {
+                alt36=1;
             }
-            else if ( (LA35_0==33) ) {
-                alt35=2;
+            else if ( (LA36_0==33) ) {
+                alt36=2;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return current;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 35, 0, input);
+                    new NoViableAltException("", 36, 0, input);
 
                 throw nvae;
             }
-            switch (alt35) {
+            switch (alt36) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2124:2: kw= '+'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2201:2: kw= '+'
                     {
-                    kw=(Token)match(input,32,FOLLOW_32_in_ruleSign4474); if (state.failed) return current;
+                    kw=(Token)match(input,32,FOLLOW_32_in_ruleSign4641); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current.merge(kw);
@@ -6285,9 +6548,9 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2131:2: kw= '-'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2208:2: kw= '-'
                     {
-                    kw=(Token)match(input,33,FOLLOW_33_in_ruleSign4493); if (state.failed) return current;
+                    kw=(Token)match(input,33,FOLLOW_33_in_ruleSign4660); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current.merge(kw);
@@ -6320,7 +6583,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleSimpType"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2144:1: entryRuleSimpType returns [String current=null] : iv_ruleSimpType= ruleSimpType EOF ;
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2221:1: entryRuleSimpType returns [String current=null] : iv_ruleSimpType= ruleSimpType EOF ;
     public final String entryRuleSimpType() throws RecognitionException {
         String current = null;
 
@@ -6328,13 +6591,13 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2145:2: (iv_ruleSimpType= ruleSimpType EOF )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2146:2: iv_ruleSimpType= ruleSimpType EOF
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2222:2: (iv_ruleSimpType= ruleSimpType EOF )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2223:2: iv_ruleSimpType= ruleSimpType EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getSimpTypeRule()); 
             }
-            pushFollow(FOLLOW_ruleSimpType_in_entryRuleSimpType4534);
+            pushFollow(FOLLOW_ruleSimpType_in_entryRuleSimpType4701);
             iv_ruleSimpType=ruleSimpType();
 
             state._fsp--;
@@ -6342,7 +6605,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
             if ( state.backtracking==0 ) {
                current =iv_ruleSimpType.getText(); 
             }
-            match(input,EOF,FOLLOW_EOF_in_entryRuleSimpType4545); if (state.failed) return current;
+            match(input,EOF,FOLLOW_EOF_in_entryRuleSimpType4712); if (state.failed) return current;
 
             }
 
@@ -6360,7 +6623,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleSimpType"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2153:1: ruleSimpType returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= 'bool' | kw= '_Bool' | kw= 'int' | kw= 'double' | kw= 'void' | kw= 'char' ) ;
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2230:1: ruleSimpType returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= 'bool' | kw= '_Bool' | kw= 'int' | kw= 'double' | kw= 'void' | kw= 'char' ) ;
     public final AntlrDatatypeRuleToken ruleSimpType() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -6369,55 +6632,55 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
          enterRule(); 
             
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2156:28: ( (kw= 'bool' | kw= '_Bool' | kw= 'int' | kw= 'double' | kw= 'void' | kw= 'char' ) )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2157:1: (kw= 'bool' | kw= '_Bool' | kw= 'int' | kw= 'double' | kw= 'void' | kw= 'char' )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2233:28: ( (kw= 'bool' | kw= '_Bool' | kw= 'int' | kw= 'double' | kw= 'void' | kw= 'char' ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2234:1: (kw= 'bool' | kw= '_Bool' | kw= 'int' | kw= 'double' | kw= 'void' | kw= 'char' )
             {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2157:1: (kw= 'bool' | kw= '_Bool' | kw= 'int' | kw= 'double' | kw= 'void' | kw= 'char' )
-            int alt36=6;
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2234:1: (kw= 'bool' | kw= '_Bool' | kw= 'int' | kw= 'double' | kw= 'void' | kw= 'char' )
+            int alt37=6;
             switch ( input.LA(1) ) {
             case 34:
                 {
-                alt36=1;
+                alt37=1;
                 }
                 break;
             case 35:
                 {
-                alt36=2;
+                alt37=2;
                 }
                 break;
             case 36:
                 {
-                alt36=3;
+                alt37=3;
                 }
                 break;
             case 37:
                 {
-                alt36=4;
+                alt37=4;
                 }
                 break;
             case 38:
                 {
-                alt36=5;
+                alt37=5;
                 }
                 break;
             case 39:
                 {
-                alt36=6;
+                alt37=6;
                 }
                 break;
             default:
                 if (state.backtracking>0) {state.failed=true; return current;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 36, 0, input);
+                    new NoViableAltException("", 37, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt36) {
+            switch (alt37) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2158:2: kw= 'bool'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2235:2: kw= 'bool'
                     {
-                    kw=(Token)match(input,34,FOLLOW_34_in_ruleSimpType4583); if (state.failed) return current;
+                    kw=(Token)match(input,34,FOLLOW_34_in_ruleSimpType4750); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current.merge(kw);
@@ -6428,9 +6691,9 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2165:2: kw= '_Bool'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2242:2: kw= '_Bool'
                     {
-                    kw=(Token)match(input,35,FOLLOW_35_in_ruleSimpType4602); if (state.failed) return current;
+                    kw=(Token)match(input,35,FOLLOW_35_in_ruleSimpType4769); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current.merge(kw);
@@ -6441,9 +6704,9 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2172:2: kw= 'int'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2249:2: kw= 'int'
                     {
-                    kw=(Token)match(input,36,FOLLOW_36_in_ruleSimpType4621); if (state.failed) return current;
+                    kw=(Token)match(input,36,FOLLOW_36_in_ruleSimpType4788); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current.merge(kw);
@@ -6454,9 +6717,9 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 4 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2179:2: kw= 'double'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2256:2: kw= 'double'
                     {
-                    kw=(Token)match(input,37,FOLLOW_37_in_ruleSimpType4640); if (state.failed) return current;
+                    kw=(Token)match(input,37,FOLLOW_37_in_ruleSimpType4807); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current.merge(kw);
@@ -6467,9 +6730,9 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 5 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2186:2: kw= 'void'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2263:2: kw= 'void'
                     {
-                    kw=(Token)match(input,38,FOLLOW_38_in_ruleSimpType4659); if (state.failed) return current;
+                    kw=(Token)match(input,38,FOLLOW_38_in_ruleSimpType4826); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current.merge(kw);
@@ -6480,9 +6743,9 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 6 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2193:2: kw= 'char'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2270:2: kw= 'char'
                     {
-                    kw=(Token)match(input,39,FOLLOW_39_in_ruleSimpType4678); if (state.failed) return current;
+                    kw=(Token)match(input,39,FOLLOW_39_in_ruleSimpType4845); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current.merge(kw);
@@ -6515,7 +6778,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleSigned"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2206:1: entryRuleSigned returns [String current=null] : iv_ruleSigned= ruleSigned EOF ;
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2283:1: entryRuleSigned returns [String current=null] : iv_ruleSigned= ruleSigned EOF ;
     public final String entryRuleSigned() throws RecognitionException {
         String current = null;
 
@@ -6523,13 +6786,13 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2207:2: (iv_ruleSigned= ruleSigned EOF )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2208:2: iv_ruleSigned= ruleSigned EOF
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2284:2: (iv_ruleSigned= ruleSigned EOF )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2285:2: iv_ruleSigned= ruleSigned EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getSignedRule()); 
             }
-            pushFollow(FOLLOW_ruleSigned_in_entryRuleSigned4719);
+            pushFollow(FOLLOW_ruleSigned_in_entryRuleSigned4886);
             iv_ruleSigned=ruleSigned();
 
             state._fsp--;
@@ -6537,7 +6800,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
             if ( state.backtracking==0 ) {
                current =iv_ruleSigned.getText(); 
             }
-            match(input,EOF,FOLLOW_EOF_in_entryRuleSigned4730); if (state.failed) return current;
+            match(input,EOF,FOLLOW_EOF_in_entryRuleSigned4897); if (state.failed) return current;
 
             }
 
@@ -6555,7 +6818,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleSigned"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2215:1: ruleSigned returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= 'signed' | kw= 'unsigned' ) ;
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2292:1: ruleSigned returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= 'signed' | kw= 'unsigned' ) ;
     public final AntlrDatatypeRuleToken ruleSigned() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -6564,31 +6827,31 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
          enterRule(); 
             
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2218:28: ( (kw= 'signed' | kw= 'unsigned' ) )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2219:1: (kw= 'signed' | kw= 'unsigned' )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2295:28: ( (kw= 'signed' | kw= 'unsigned' ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2296:1: (kw= 'signed' | kw= 'unsigned' )
             {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2219:1: (kw= 'signed' | kw= 'unsigned' )
-            int alt37=2;
-            int LA37_0 = input.LA(1);
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2296:1: (kw= 'signed' | kw= 'unsigned' )
+            int alt38=2;
+            int LA38_0 = input.LA(1);
 
-            if ( (LA37_0==40) ) {
-                alt37=1;
+            if ( (LA38_0==40) ) {
+                alt38=1;
             }
-            else if ( (LA37_0==41) ) {
-                alt37=2;
+            else if ( (LA38_0==41) ) {
+                alt38=2;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return current;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 37, 0, input);
+                    new NoViableAltException("", 38, 0, input);
 
                 throw nvae;
             }
-            switch (alt37) {
+            switch (alt38) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2220:2: kw= 'signed'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2297:2: kw= 'signed'
                     {
-                    kw=(Token)match(input,40,FOLLOW_40_in_ruleSigned4768); if (state.failed) return current;
+                    kw=(Token)match(input,40,FOLLOW_40_in_ruleSigned4935); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current.merge(kw);
@@ -6599,9 +6862,9 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2227:2: kw= 'unsigned'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2304:2: kw= 'unsigned'
                     {
-                    kw=(Token)match(input,41,FOLLOW_41_in_ruleSigned4787); if (state.failed) return current;
+                    kw=(Token)match(input,41,FOLLOW_41_in_ruleSigned4954); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current.merge(kw);
@@ -6634,7 +6897,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleBuiltInFunction"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2240:1: entryRuleBuiltInFunction returns [String current=null] : iv_ruleBuiltInFunction= ruleBuiltInFunction EOF ;
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2317:1: entryRuleBuiltInFunction returns [String current=null] : iv_ruleBuiltInFunction= ruleBuiltInFunction EOF ;
     public final String entryRuleBuiltInFunction() throws RecognitionException {
         String current = null;
 
@@ -6642,13 +6905,13 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2241:2: (iv_ruleBuiltInFunction= ruleBuiltInFunction EOF )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2242:2: iv_ruleBuiltInFunction= ruleBuiltInFunction EOF
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2318:2: (iv_ruleBuiltInFunction= ruleBuiltInFunction EOF )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2319:2: iv_ruleBuiltInFunction= ruleBuiltInFunction EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getBuiltInFunctionRule()); 
             }
-            pushFollow(FOLLOW_ruleBuiltInFunction_in_entryRuleBuiltInFunction4828);
+            pushFollow(FOLLOW_ruleBuiltInFunction_in_entryRuleBuiltInFunction4995);
             iv_ruleBuiltInFunction=ruleBuiltInFunction();
 
             state._fsp--;
@@ -6656,7 +6919,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
             if ( state.backtracking==0 ) {
                current =iv_ruleBuiltInFunction.getText(); 
             }
-            match(input,EOF,FOLLOW_EOF_in_entryRuleBuiltInFunction4839); if (state.failed) return current;
+            match(input,EOF,FOLLOW_EOF_in_entryRuleBuiltInFunction5006); if (state.failed) return current;
 
             }
 
@@ -6674,7 +6937,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleBuiltInFunction"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2249:1: ruleBuiltInFunction returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= 'exists_other' | kw= 'EXISTS_OTHER' | kw= 'exists_higher' | kw= 'EXISTS_HIGHER' | kw= 'exists_lower' | kw= 'EXISTS_LOWER' ) ;
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2326:1: ruleBuiltInFunction returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= 'exists_other' | kw= 'EXISTS_OTHER' | kw= 'exists_higher' | kw= 'EXISTS_HIGHER' | kw= 'exists_lower' | kw= 'EXISTS_LOWER' ) ;
     public final AntlrDatatypeRuleToken ruleBuiltInFunction() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -6683,55 +6946,55 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
          enterRule(); 
             
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2252:28: ( (kw= 'exists_other' | kw= 'EXISTS_OTHER' | kw= 'exists_higher' | kw= 'EXISTS_HIGHER' | kw= 'exists_lower' | kw= 'EXISTS_LOWER' ) )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2253:1: (kw= 'exists_other' | kw= 'EXISTS_OTHER' | kw= 'exists_higher' | kw= 'EXISTS_HIGHER' | kw= 'exists_lower' | kw= 'EXISTS_LOWER' )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2329:28: ( (kw= 'exists_other' | kw= 'EXISTS_OTHER' | kw= 'exists_higher' | kw= 'EXISTS_HIGHER' | kw= 'exists_lower' | kw= 'EXISTS_LOWER' ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2330:1: (kw= 'exists_other' | kw= 'EXISTS_OTHER' | kw= 'exists_higher' | kw= 'EXISTS_HIGHER' | kw= 'exists_lower' | kw= 'EXISTS_LOWER' )
             {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2253:1: (kw= 'exists_other' | kw= 'EXISTS_OTHER' | kw= 'exists_higher' | kw= 'EXISTS_HIGHER' | kw= 'exists_lower' | kw= 'EXISTS_LOWER' )
-            int alt38=6;
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2330:1: (kw= 'exists_other' | kw= 'EXISTS_OTHER' | kw= 'exists_higher' | kw= 'EXISTS_HIGHER' | kw= 'exists_lower' | kw= 'EXISTS_LOWER' )
+            int alt39=6;
             switch ( input.LA(1) ) {
             case 42:
                 {
-                alt38=1;
+                alt39=1;
                 }
                 break;
             case 43:
                 {
-                alt38=2;
+                alt39=2;
                 }
                 break;
             case 44:
                 {
-                alt38=3;
+                alt39=3;
                 }
                 break;
             case 45:
                 {
-                alt38=4;
+                alt39=4;
                 }
                 break;
             case 46:
                 {
-                alt38=5;
+                alt39=5;
                 }
                 break;
             case 47:
                 {
-                alt38=6;
+                alt39=6;
                 }
                 break;
             default:
                 if (state.backtracking>0) {state.failed=true; return current;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 38, 0, input);
+                    new NoViableAltException("", 39, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt38) {
+            switch (alt39) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2254:2: kw= 'exists_other'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2331:2: kw= 'exists_other'
                     {
-                    kw=(Token)match(input,42,FOLLOW_42_in_ruleBuiltInFunction4877); if (state.failed) return current;
+                    kw=(Token)match(input,42,FOLLOW_42_in_ruleBuiltInFunction5044); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current.merge(kw);
@@ -6742,9 +7005,9 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2261:2: kw= 'EXISTS_OTHER'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2338:2: kw= 'EXISTS_OTHER'
                     {
-                    kw=(Token)match(input,43,FOLLOW_43_in_ruleBuiltInFunction4896); if (state.failed) return current;
+                    kw=(Token)match(input,43,FOLLOW_43_in_ruleBuiltInFunction5063); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current.merge(kw);
@@ -6755,9 +7018,9 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2268:2: kw= 'exists_higher'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2345:2: kw= 'exists_higher'
                     {
-                    kw=(Token)match(input,44,FOLLOW_44_in_ruleBuiltInFunction4915); if (state.failed) return current;
+                    kw=(Token)match(input,44,FOLLOW_44_in_ruleBuiltInFunction5082); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current.merge(kw);
@@ -6768,9 +7031,9 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 4 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2275:2: kw= 'EXISTS_HIGHER'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2352:2: kw= 'EXISTS_HIGHER'
                     {
-                    kw=(Token)match(input,45,FOLLOW_45_in_ruleBuiltInFunction4934); if (state.failed) return current;
+                    kw=(Token)match(input,45,FOLLOW_45_in_ruleBuiltInFunction5101); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current.merge(kw);
@@ -6781,9 +7044,9 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 5 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2282:2: kw= 'exists_lower'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2359:2: kw= 'exists_lower'
                     {
-                    kw=(Token)match(input,46,FOLLOW_46_in_ruleBuiltInFunction4953); if (state.failed) return current;
+                    kw=(Token)match(input,46,FOLLOW_46_in_ruleBuiltInFunction5120); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current.merge(kw);
@@ -6794,9 +7057,9 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 6 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2289:2: kw= 'EXISTS_LOWER'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2366:2: kw= 'EXISTS_LOWER'
                     {
-                    kw=(Token)match(input,47,FOLLOW_47_in_ruleBuiltInFunction4972); if (state.failed) return current;
+                    kw=(Token)match(input,47,FOLLOW_47_in_ruleBuiltInFunction5139); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current.merge(kw);
@@ -6829,7 +7092,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleDouble"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2302:1: entryRuleDouble returns [String current=null] : iv_ruleDouble= ruleDouble EOF ;
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2379:1: entryRuleDouble returns [String current=null] : iv_ruleDouble= ruleDouble EOF ;
     public final String entryRuleDouble() throws RecognitionException {
         String current = null;
 
@@ -6837,13 +7100,13 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2303:2: (iv_ruleDouble= ruleDouble EOF )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2304:2: iv_ruleDouble= ruleDouble EOF
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2380:2: (iv_ruleDouble= ruleDouble EOF )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2381:2: iv_ruleDouble= ruleDouble EOF
             {
             if ( state.backtracking==0 ) {
                newCompositeNode(grammarAccess.getDoubleRule()); 
             }
-            pushFollow(FOLLOW_ruleDouble_in_entryRuleDouble5013);
+            pushFollow(FOLLOW_ruleDouble_in_entryRuleDouble5180);
             iv_ruleDouble=ruleDouble();
 
             state._fsp--;
@@ -6851,7 +7114,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
             if ( state.backtracking==0 ) {
                current =iv_ruleDouble.getText(); 
             }
-            match(input,EOF,FOLLOW_EOF_in_entryRuleDouble5024); if (state.failed) return current;
+            match(input,EOF,FOLLOW_EOF_in_entryRuleDouble5191); if (state.failed) return current;
 
             }
 
@@ -6869,7 +7132,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleDouble"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2311:1: ruleDouble returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= 'NAN' | (this_INT_1= RULE_INT kw= '.' (this_INT_3= RULE_INT )? ) ) ;
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2388:1: ruleDouble returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= 'NAN' | (this_INT_1= RULE_INT kw= '.' (this_INT_3= RULE_INT )? ) ) ;
     public final AntlrDatatypeRuleToken ruleDouble() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -6880,31 +7143,31 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
          enterRule(); 
             
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2314:28: ( (kw= 'NAN' | (this_INT_1= RULE_INT kw= '.' (this_INT_3= RULE_INT )? ) ) )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2315:1: (kw= 'NAN' | (this_INT_1= RULE_INT kw= '.' (this_INT_3= RULE_INT )? ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2391:28: ( (kw= 'NAN' | (this_INT_1= RULE_INT kw= '.' (this_INT_3= RULE_INT )? ) ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2392:1: (kw= 'NAN' | (this_INT_1= RULE_INT kw= '.' (this_INT_3= RULE_INT )? ) )
             {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2315:1: (kw= 'NAN' | (this_INT_1= RULE_INT kw= '.' (this_INT_3= RULE_INT )? ) )
-            int alt40=2;
-            int LA40_0 = input.LA(1);
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2392:1: (kw= 'NAN' | (this_INT_1= RULE_INT kw= '.' (this_INT_3= RULE_INT )? ) )
+            int alt41=2;
+            int LA41_0 = input.LA(1);
 
-            if ( (LA40_0==48) ) {
-                alt40=1;
+            if ( (LA41_0==48) ) {
+                alt41=1;
             }
-            else if ( (LA40_0==RULE_INT) ) {
-                alt40=2;
+            else if ( (LA41_0==RULE_INT) ) {
+                alt41=2;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return current;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 40, 0, input);
+                    new NoViableAltException("", 41, 0, input);
 
                 throw nvae;
             }
-            switch (alt40) {
+            switch (alt41) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2316:2: kw= 'NAN'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2393:2: kw= 'NAN'
                     {
-                    kw=(Token)match(input,48,FOLLOW_48_in_ruleDouble5062); if (state.failed) return current;
+                    kw=(Token)match(input,48,FOLLOW_48_in_ruleDouble5229); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current.merge(kw);
@@ -6915,12 +7178,12 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2322:6: (this_INT_1= RULE_INT kw= '.' (this_INT_3= RULE_INT )? )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2399:6: (this_INT_1= RULE_INT kw= '.' (this_INT_3= RULE_INT )? )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2322:6: (this_INT_1= RULE_INT kw= '.' (this_INT_3= RULE_INT )? )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2322:11: this_INT_1= RULE_INT kw= '.' (this_INT_3= RULE_INT )?
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2399:6: (this_INT_1= RULE_INT kw= '.' (this_INT_3= RULE_INT )? )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2399:11: this_INT_1= RULE_INT kw= '.' (this_INT_3= RULE_INT )?
                     {
-                    this_INT_1=(Token)match(input,RULE_INT,FOLLOW_RULE_INT_in_ruleDouble5084); if (state.failed) return current;
+                    this_INT_1=(Token)match(input,RULE_INT,FOLLOW_RULE_INT_in_ruleDouble5251); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                       		current.merge(this_INT_1);
@@ -6931,25 +7194,25 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                           newLeafNode(this_INT_1, grammarAccess.getDoubleAccess().getINTTerminalRuleCall_1_0()); 
                           
                     }
-                    kw=(Token)match(input,49,FOLLOW_49_in_ruleDouble5102); if (state.failed) return current;
+                    kw=(Token)match(input,49,FOLLOW_49_in_ruleDouble5269); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current.merge(kw);
                               newLeafNode(kw, grammarAccess.getDoubleAccess().getFullStopKeyword_1_1()); 
                           
                     }
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2335:1: (this_INT_3= RULE_INT )?
-                    int alt39=2;
-                    int LA39_0 = input.LA(1);
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2412:1: (this_INT_3= RULE_INT )?
+                    int alt40=2;
+                    int LA40_0 = input.LA(1);
 
-                    if ( (LA39_0==RULE_INT) ) {
-                        alt39=1;
+                    if ( (LA40_0==RULE_INT) ) {
+                        alt40=1;
                     }
-                    switch (alt39) {
+                    switch (alt40) {
                         case 1 :
-                            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2335:6: this_INT_3= RULE_INT
+                            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2412:6: this_INT_3= RULE_INT
                             {
-                            this_INT_3=(Token)match(input,RULE_INT,FOLLOW_RULE_INT_in_ruleDouble5118); if (state.failed) return current;
+                            this_INT_3=(Token)match(input,RULE_INT,FOLLOW_RULE_INT_in_ruleDouble5285); if (state.failed) return current;
                             if ( state.backtracking==0 ) {
 
                               		current.merge(this_INT_3);
@@ -6994,8 +7257,153 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
     // $ANTLR end "ruleDouble"
 
 
+    // $ANTLR start "ruleCompareOperator"
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2433:1: ruleCompareOperator returns [Enumerator current=null] : ( (enumLiteral_0= '<' ) | (enumLiteral_1= '<=' ) | (enumLiteral_2= '>' ) | (enumLiteral_3= '>=' ) ) ;
+    public final Enumerator ruleCompareOperator() throws RecognitionException {
+        Enumerator current = null;
+
+        Token enumLiteral_0=null;
+        Token enumLiteral_1=null;
+        Token enumLiteral_2=null;
+        Token enumLiteral_3=null;
+
+         enterRule(); 
+        try {
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2435:28: ( ( (enumLiteral_0= '<' ) | (enumLiteral_1= '<=' ) | (enumLiteral_2= '>' ) | (enumLiteral_3= '>=' ) ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2436:1: ( (enumLiteral_0= '<' ) | (enumLiteral_1= '<=' ) | (enumLiteral_2= '>' ) | (enumLiteral_3= '>=' ) )
+            {
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2436:1: ( (enumLiteral_0= '<' ) | (enumLiteral_1= '<=' ) | (enumLiteral_2= '>' ) | (enumLiteral_3= '>=' ) )
+            int alt42=4;
+            switch ( input.LA(1) ) {
+            case 50:
+                {
+                alt42=1;
+                }
+                break;
+            case 51:
+                {
+                alt42=2;
+                }
+                break;
+            case 52:
+                {
+                alt42=3;
+                }
+                break;
+            case 53:
+                {
+                alt42=4;
+                }
+                break;
+            default:
+                if (state.backtracking>0) {state.failed=true; return current;}
+                NoViableAltException nvae =
+                    new NoViableAltException("", 42, 0, input);
+
+                throw nvae;
+            }
+
+            switch (alt42) {
+                case 1 :
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2436:2: (enumLiteral_0= '<' )
+                    {
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2436:2: (enumLiteral_0= '<' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2436:4: enumLiteral_0= '<'
+                    {
+                    enumLiteral_0=(Token)match(input,50,FOLLOW_50_in_ruleCompareOperator5353); if (state.failed) return current;
+                    if ( state.backtracking==0 ) {
+
+                              current = grammarAccess.getCompareOperatorAccess().getLESSEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
+                              newLeafNode(enumLiteral_0, grammarAccess.getCompareOperatorAccess().getLESSEnumLiteralDeclaration_0()); 
+                          
+                    }
+
+                    }
+
+
+                    }
+                    break;
+                case 2 :
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2442:6: (enumLiteral_1= '<=' )
+                    {
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2442:6: (enumLiteral_1= '<=' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2442:8: enumLiteral_1= '<='
+                    {
+                    enumLiteral_1=(Token)match(input,51,FOLLOW_51_in_ruleCompareOperator5370); if (state.failed) return current;
+                    if ( state.backtracking==0 ) {
+
+                              current = grammarAccess.getCompareOperatorAccess().getLESS_EQUALEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
+                              newLeafNode(enumLiteral_1, grammarAccess.getCompareOperatorAccess().getLESS_EQUALEnumLiteralDeclaration_1()); 
+                          
+                    }
+
+                    }
+
+
+                    }
+                    break;
+                case 3 :
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2448:6: (enumLiteral_2= '>' )
+                    {
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2448:6: (enumLiteral_2= '>' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2448:8: enumLiteral_2= '>'
+                    {
+                    enumLiteral_2=(Token)match(input,52,FOLLOW_52_in_ruleCompareOperator5387); if (state.failed) return current;
+                    if ( state.backtracking==0 ) {
+
+                              current = grammarAccess.getCompareOperatorAccess().getGREATEREnumLiteralDeclaration_2().getEnumLiteral().getInstance();
+                              newLeafNode(enumLiteral_2, grammarAccess.getCompareOperatorAccess().getGREATEREnumLiteralDeclaration_2()); 
+                          
+                    }
+
+                    }
+
+
+                    }
+                    break;
+                case 4 :
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2454:6: (enumLiteral_3= '>=' )
+                    {
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2454:6: (enumLiteral_3= '>=' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2454:8: enumLiteral_3= '>='
+                    {
+                    enumLiteral_3=(Token)match(input,53,FOLLOW_53_in_ruleCompareOperator5404); if (state.failed) return current;
+                    if ( state.backtracking==0 ) {
+
+                              current = grammarAccess.getCompareOperatorAccess().getGREATER_EQUALEnumLiteralDeclaration_3().getEnumLiteral().getInstance();
+                              newLeafNode(enumLiteral_3, grammarAccess.getCompareOperatorAccess().getGREATER_EQUALEnumLiteralDeclaration_3()); 
+                          
+                    }
+
+                    }
+
+
+                    }
+                    break;
+
+            }
+
+
+            }
+
+            if ( state.backtracking==0 ) {
+               leaveRule(); 
+            }
+        }
+         
+            catch (RecognitionException re) { 
+                recover(input,re); 
+                appendSkippedTokens();
+            } 
+        finally {
+        }
+        return current;
+    }
+    // $ANTLR end "ruleCompareOperator"
+
+
     // $ANTLR start "ruleShiftOperator"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2356:1: ruleShiftOperator returns [Enumerator current=null] : ( (enumLiteral_0= '<<' ) | (enumLiteral_1= '>>' ) ) ;
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2464:1: ruleShiftOperator returns [Enumerator current=null] : ( (enumLiteral_0= '<<' ) | (enumLiteral_1= '>>' ) ) ;
     public final Enumerator ruleShiftOperator() throws RecognitionException {
         Enumerator current = null;
 
@@ -7004,34 +7412,34 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
          enterRule(); 
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2358:28: ( ( (enumLiteral_0= '<<' ) | (enumLiteral_1= '>>' ) ) )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2359:1: ( (enumLiteral_0= '<<' ) | (enumLiteral_1= '>>' ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2466:28: ( ( (enumLiteral_0= '<<' ) | (enumLiteral_1= '>>' ) ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2467:1: ( (enumLiteral_0= '<<' ) | (enumLiteral_1= '>>' ) )
             {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2359:1: ( (enumLiteral_0= '<<' ) | (enumLiteral_1= '>>' ) )
-            int alt41=2;
-            int LA41_0 = input.LA(1);
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2467:1: ( (enumLiteral_0= '<<' ) | (enumLiteral_1= '>>' ) )
+            int alt43=2;
+            int LA43_0 = input.LA(1);
 
-            if ( (LA41_0==50) ) {
-                alt41=1;
+            if ( (LA43_0==54) ) {
+                alt43=1;
             }
-            else if ( (LA41_0==51) ) {
-                alt41=2;
+            else if ( (LA43_0==55) ) {
+                alt43=2;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return current;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 41, 0, input);
+                    new NoViableAltException("", 43, 0, input);
 
                 throw nvae;
             }
-            switch (alt41) {
+            switch (alt43) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2359:2: (enumLiteral_0= '<<' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2467:2: (enumLiteral_0= '<<' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2359:2: (enumLiteral_0= '<<' )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2359:4: enumLiteral_0= '<<'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2467:2: (enumLiteral_0= '<<' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2467:4: enumLiteral_0= '<<'
                     {
-                    enumLiteral_0=(Token)match(input,50,FOLLOW_50_in_ruleShiftOperator5186); if (state.failed) return current;
+                    enumLiteral_0=(Token)match(input,54,FOLLOW_54_in_ruleShiftOperator5449); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current = grammarAccess.getShiftOperatorAccess().getLEFTEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
@@ -7045,12 +7453,12 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2365:6: (enumLiteral_1= '>>' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2473:6: (enumLiteral_1= '>>' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2365:6: (enumLiteral_1= '>>' )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2365:8: enumLiteral_1= '>>'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2473:6: (enumLiteral_1= '>>' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2473:8: enumLiteral_1= '>>'
                     {
-                    enumLiteral_1=(Token)match(input,51,FOLLOW_51_in_ruleShiftOperator5203); if (state.failed) return current;
+                    enumLiteral_1=(Token)match(input,55,FOLLOW_55_in_ruleShiftOperator5466); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current = grammarAccess.getShiftOperatorAccess().getRIGHTEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
@@ -7086,7 +7494,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleAdditiveOperator"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2375:1: ruleAdditiveOperator returns [Enumerator current=null] : ( (enumLiteral_0= '+' ) | (enumLiteral_1= '-' ) ) ;
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2483:1: ruleAdditiveOperator returns [Enumerator current=null] : ( (enumLiteral_0= '+' ) | (enumLiteral_1= '-' ) ) ;
     public final Enumerator ruleAdditiveOperator() throws RecognitionException {
         Enumerator current = null;
 
@@ -7095,34 +7503,34 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
          enterRule(); 
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2377:28: ( ( (enumLiteral_0= '+' ) | (enumLiteral_1= '-' ) ) )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2378:1: ( (enumLiteral_0= '+' ) | (enumLiteral_1= '-' ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2485:28: ( ( (enumLiteral_0= '+' ) | (enumLiteral_1= '-' ) ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2486:1: ( (enumLiteral_0= '+' ) | (enumLiteral_1= '-' ) )
             {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2378:1: ( (enumLiteral_0= '+' ) | (enumLiteral_1= '-' ) )
-            int alt42=2;
-            int LA42_0 = input.LA(1);
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2486:1: ( (enumLiteral_0= '+' ) | (enumLiteral_1= '-' ) )
+            int alt44=2;
+            int LA44_0 = input.LA(1);
 
-            if ( (LA42_0==32) ) {
-                alt42=1;
+            if ( (LA44_0==32) ) {
+                alt44=1;
             }
-            else if ( (LA42_0==33) ) {
-                alt42=2;
+            else if ( (LA44_0==33) ) {
+                alt44=2;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return current;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 42, 0, input);
+                    new NoViableAltException("", 44, 0, input);
 
                 throw nvae;
             }
-            switch (alt42) {
+            switch (alt44) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2378:2: (enumLiteral_0= '+' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2486:2: (enumLiteral_0= '+' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2378:2: (enumLiteral_0= '+' )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2378:4: enumLiteral_0= '+'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2486:2: (enumLiteral_0= '+' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2486:4: enumLiteral_0= '+'
                     {
-                    enumLiteral_0=(Token)match(input,32,FOLLOW_32_in_ruleAdditiveOperator5248); if (state.failed) return current;
+                    enumLiteral_0=(Token)match(input,32,FOLLOW_32_in_ruleAdditiveOperator5511); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current = grammarAccess.getAdditiveOperatorAccess().getADDEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
@@ -7136,12 +7544,12 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2384:6: (enumLiteral_1= '-' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2492:6: (enumLiteral_1= '-' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2384:6: (enumLiteral_1= '-' )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2384:8: enumLiteral_1= '-'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2492:6: (enumLiteral_1= '-' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2492:8: enumLiteral_1= '-'
                     {
-                    enumLiteral_1=(Token)match(input,33,FOLLOW_33_in_ruleAdditiveOperator5265); if (state.failed) return current;
+                    enumLiteral_1=(Token)match(input,33,FOLLOW_33_in_ruleAdditiveOperator5528); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current = grammarAccess.getAdditiveOperatorAccess().getSUBTRACTEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
@@ -7177,7 +7585,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleMultiplicativeOperator"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2394:1: ruleMultiplicativeOperator returns [Enumerator current=null] : ( (enumLiteral_0= '*' ) | (enumLiteral_1= '/' ) | (enumLiteral_2= '%' ) ) ;
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2502:1: ruleMultiplicativeOperator returns [Enumerator current=null] : ( (enumLiteral_0= '*' ) | (enumLiteral_1= '/' ) | (enumLiteral_2= '%' ) ) ;
     public final Enumerator ruleMultiplicativeOperator() throws RecognitionException {
         Enumerator current = null;
 
@@ -7187,43 +7595,43 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
          enterRule(); 
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2396:28: ( ( (enumLiteral_0= '*' ) | (enumLiteral_1= '/' ) | (enumLiteral_2= '%' ) ) )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2397:1: ( (enumLiteral_0= '*' ) | (enumLiteral_1= '/' ) | (enumLiteral_2= '%' ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2504:28: ( ( (enumLiteral_0= '*' ) | (enumLiteral_1= '/' ) | (enumLiteral_2= '%' ) ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2505:1: ( (enumLiteral_0= '*' ) | (enumLiteral_1= '/' ) | (enumLiteral_2= '%' ) )
             {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2397:1: ( (enumLiteral_0= '*' ) | (enumLiteral_1= '/' ) | (enumLiteral_2= '%' ) )
-            int alt43=3;
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2505:1: ( (enumLiteral_0= '*' ) | (enumLiteral_1= '/' ) | (enumLiteral_2= '%' ) )
+            int alt45=3;
             switch ( input.LA(1) ) {
-            case 52:
+            case 56:
                 {
-                alt43=1;
+                alt45=1;
                 }
                 break;
-            case 53:
+            case 57:
                 {
-                alt43=2;
+                alt45=2;
                 }
                 break;
-            case 54:
+            case 58:
                 {
-                alt43=3;
+                alt45=3;
                 }
                 break;
             default:
                 if (state.backtracking>0) {state.failed=true; return current;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 43, 0, input);
+                    new NoViableAltException("", 45, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt43) {
+            switch (alt45) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2397:2: (enumLiteral_0= '*' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2505:2: (enumLiteral_0= '*' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2397:2: (enumLiteral_0= '*' )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2397:4: enumLiteral_0= '*'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2505:2: (enumLiteral_0= '*' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2505:4: enumLiteral_0= '*'
                     {
-                    enumLiteral_0=(Token)match(input,52,FOLLOW_52_in_ruleMultiplicativeOperator5310); if (state.failed) return current;
+                    enumLiteral_0=(Token)match(input,56,FOLLOW_56_in_ruleMultiplicativeOperator5573); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current = grammarAccess.getMultiplicativeOperatorAccess().getMULTIPLYEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
@@ -7237,12 +7645,12 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2403:6: (enumLiteral_1= '/' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2511:6: (enumLiteral_1= '/' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2403:6: (enumLiteral_1= '/' )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2403:8: enumLiteral_1= '/'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2511:6: (enumLiteral_1= '/' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2511:8: enumLiteral_1= '/'
                     {
-                    enumLiteral_1=(Token)match(input,53,FOLLOW_53_in_ruleMultiplicativeOperator5327); if (state.failed) return current;
+                    enumLiteral_1=(Token)match(input,57,FOLLOW_57_in_ruleMultiplicativeOperator5590); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current = grammarAccess.getMultiplicativeOperatorAccess().getDIVIDEEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
@@ -7256,12 +7664,12 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2409:6: (enumLiteral_2= '%' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2517:6: (enumLiteral_2= '%' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2409:6: (enumLiteral_2= '%' )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2409:8: enumLiteral_2= '%'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2517:6: (enumLiteral_2= '%' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2517:8: enumLiteral_2= '%'
                     {
-                    enumLiteral_2=(Token)match(input,54,FOLLOW_54_in_ruleMultiplicativeOperator5344); if (state.failed) return current;
+                    enumLiteral_2=(Token)match(input,58,FOLLOW_58_in_ruleMultiplicativeOperator5607); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current = grammarAccess.getMultiplicativeOperatorAccess().getMODULUSEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
@@ -7297,7 +7705,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleUnaryOperator"
-    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2419:1: ruleUnaryOperator returns [Enumerator current=null] : ( (enumLiteral_0= '-' ) | (enumLiteral_1= '+' ) | (enumLiteral_2= '!' ) | (enumLiteral_3= '~' ) ) ;
+    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2527:1: ruleUnaryOperator returns [Enumerator current=null] : ( (enumLiteral_0= '-' ) | (enumLiteral_1= '+' ) | (enumLiteral_2= '!' ) | (enumLiteral_3= '~' ) ) ;
     public final Enumerator ruleUnaryOperator() throws RecognitionException {
         Enumerator current = null;
 
@@ -7308,48 +7716,48 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
          enterRule(); 
         try {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2421:28: ( ( (enumLiteral_0= '-' ) | (enumLiteral_1= '+' ) | (enumLiteral_2= '!' ) | (enumLiteral_3= '~' ) ) )
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2422:1: ( (enumLiteral_0= '-' ) | (enumLiteral_1= '+' ) | (enumLiteral_2= '!' ) | (enumLiteral_3= '~' ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2529:28: ( ( (enumLiteral_0= '-' ) | (enumLiteral_1= '+' ) | (enumLiteral_2= '!' ) | (enumLiteral_3= '~' ) ) )
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2530:1: ( (enumLiteral_0= '-' ) | (enumLiteral_1= '+' ) | (enumLiteral_2= '!' ) | (enumLiteral_3= '~' ) )
             {
-            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2422:1: ( (enumLiteral_0= '-' ) | (enumLiteral_1= '+' ) | (enumLiteral_2= '!' ) | (enumLiteral_3= '~' ) )
-            int alt44=4;
+            // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2530:1: ( (enumLiteral_0= '-' ) | (enumLiteral_1= '+' ) | (enumLiteral_2= '!' ) | (enumLiteral_3= '~' ) )
+            int alt46=4;
             switch ( input.LA(1) ) {
             case 33:
                 {
-                alt44=1;
+                alt46=1;
                 }
                 break;
             case 32:
                 {
-                alt44=2;
+                alt46=2;
                 }
                 break;
-            case 55:
+            case 59:
                 {
-                alt44=3;
+                alt46=3;
                 }
                 break;
-            case 56:
+            case 60:
                 {
-                alt44=4;
+                alt46=4;
                 }
                 break;
             default:
                 if (state.backtracking>0) {state.failed=true; return current;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 44, 0, input);
+                    new NoViableAltException("", 46, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt44) {
+            switch (alt46) {
                 case 1 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2422:2: (enumLiteral_0= '-' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2530:2: (enumLiteral_0= '-' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2422:2: (enumLiteral_0= '-' )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2422:4: enumLiteral_0= '-'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2530:2: (enumLiteral_0= '-' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2530:4: enumLiteral_0= '-'
                     {
-                    enumLiteral_0=(Token)match(input,33,FOLLOW_33_in_ruleUnaryOperator5389); if (state.failed) return current;
+                    enumLiteral_0=(Token)match(input,33,FOLLOW_33_in_ruleUnaryOperator5652); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current = grammarAccess.getUnaryOperatorAccess().getMINUSEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
@@ -7363,12 +7771,12 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2428:6: (enumLiteral_1= '+' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2536:6: (enumLiteral_1= '+' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2428:6: (enumLiteral_1= '+' )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2428:8: enumLiteral_1= '+'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2536:6: (enumLiteral_1= '+' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2536:8: enumLiteral_1= '+'
                     {
-                    enumLiteral_1=(Token)match(input,32,FOLLOW_32_in_ruleUnaryOperator5406); if (state.failed) return current;
+                    enumLiteral_1=(Token)match(input,32,FOLLOW_32_in_ruleUnaryOperator5669); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current = grammarAccess.getUnaryOperatorAccess().getPLUSEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
@@ -7382,12 +7790,12 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2434:6: (enumLiteral_2= '!' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2542:6: (enumLiteral_2= '!' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2434:6: (enumLiteral_2= '!' )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2434:8: enumLiteral_2= '!'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2542:6: (enumLiteral_2= '!' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2542:8: enumLiteral_2= '!'
                     {
-                    enumLiteral_2=(Token)match(input,55,FOLLOW_55_in_ruleUnaryOperator5423); if (state.failed) return current;
+                    enumLiteral_2=(Token)match(input,59,FOLLOW_59_in_ruleUnaryOperator5686); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current = grammarAccess.getUnaryOperatorAccess().getLOGICAL_NOTEnumLiteralDeclaration_2().getEnumLiteral().getInstance();
@@ -7401,12 +7809,12 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 4 :
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2440:6: (enumLiteral_3= '~' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2548:6: (enumLiteral_3= '~' )
                     {
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2440:6: (enumLiteral_3= '~' )
-                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2440:8: enumLiteral_3= '~'
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2548:6: (enumLiteral_3= '~' )
+                    // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:2548:8: enumLiteral_3= '~'
                     {
-                    enumLiteral_3=(Token)match(input,56,FOLLOW_56_in_ruleUnaryOperator5440); if (state.failed) return current;
+                    enumLiteral_3=(Token)match(input,60,FOLLOW_60_in_ruleUnaryOperator5703); if (state.failed) return current;
                     if ( state.backtracking==0 ) {
 
                               current = grammarAccess.getUnaryOperatorAccess().getBITWISE_NOTEnumLiteralDeclaration_3().getEnumLiteral().getInstance();
@@ -7442,25 +7850,25 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred1_InternalDmpl
     public final void synpred1_InternalDmpl_fragment() throws RecognitionException {   
-        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1479:3: ( ( () ( ( ruleShiftOperator ) ) ) )
-        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1479:4: ( () ( ( ruleShiftOperator ) ) )
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1479:3: ( ( () ( ( ruleCompareOperator ) ) ) )
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1479:4: ( () ( ( ruleCompareOperator ) ) )
         {
-        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1479:4: ( () ( ( ruleShiftOperator ) ) )
-        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1479:5: () ( ( ruleShiftOperator ) )
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1479:4: ( () ( ( ruleCompareOperator ) ) )
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1479:5: () ( ( ruleCompareOperator ) )
         {
         // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1479:5: ()
         // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1480:1: 
         {
         }
 
-        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1480:2: ( ( ruleShiftOperator ) )
-        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1481:1: ( ruleShiftOperator )
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1480:2: ( ( ruleCompareOperator ) )
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1481:1: ( ruleCompareOperator )
         {
-        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1481:1: ( ruleShiftOperator )
-        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1482:1: ruleShiftOperator
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1481:1: ( ruleCompareOperator )
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1482:1: ruleCompareOperator
         {
-        pushFollow(FOLLOW_ruleShiftOperator_in_synpred1_InternalDmpl3165);
-        ruleShiftOperator();
+        pushFollow(FOLLOW_ruleCompareOperator_in_synpred1_InternalDmpl3165);
+        ruleCompareOperator();
 
         state._fsp--;
         if (state.failed) return ;
@@ -7480,25 +7888,25 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred2_InternalDmpl
     public final void synpred2_InternalDmpl_fragment() throws RecognitionException {   
-        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1556:3: ( ( () ( ( ruleAdditiveOperator ) ) ) )
-        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1556:4: ( () ( ( ruleAdditiveOperator ) ) )
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1556:3: ( ( () ( ( ruleShiftOperator ) ) ) )
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1556:4: ( () ( ( ruleShiftOperator ) ) )
         {
-        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1556:4: ( () ( ( ruleAdditiveOperator ) ) )
-        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1556:5: () ( ( ruleAdditiveOperator ) )
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1556:4: ( () ( ( ruleShiftOperator ) ) )
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1556:5: () ( ( ruleShiftOperator ) )
         {
         // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1556:5: ()
         // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1557:1: 
         {
         }
 
-        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1557:2: ( ( ruleAdditiveOperator ) )
-        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1558:1: ( ruleAdditiveOperator )
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1557:2: ( ( ruleShiftOperator ) )
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1558:1: ( ruleShiftOperator )
         {
-        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1558:1: ( ruleAdditiveOperator )
-        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1559:1: ruleAdditiveOperator
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1558:1: ( ruleShiftOperator )
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1559:1: ruleShiftOperator
         {
-        pushFollow(FOLLOW_ruleAdditiveOperator_in_synpred2_InternalDmpl3332);
-        ruleAdditiveOperator();
+        pushFollow(FOLLOW_ruleShiftOperator_in_synpred2_InternalDmpl3332);
+        ruleShiftOperator();
 
         state._fsp--;
         if (state.failed) return ;
@@ -7518,25 +7926,25 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
     // $ANTLR start synpred3_InternalDmpl
     public final void synpred3_InternalDmpl_fragment() throws RecognitionException {   
-        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1633:3: ( ( () ( ( ruleMultiplicativeOperator ) ) ) )
-        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1633:4: ( () ( ( ruleMultiplicativeOperator ) ) )
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1633:3: ( ( () ( ( ruleAdditiveOperator ) ) ) )
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1633:4: ( () ( ( ruleAdditiveOperator ) ) )
         {
-        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1633:4: ( () ( ( ruleMultiplicativeOperator ) ) )
-        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1633:5: () ( ( ruleMultiplicativeOperator ) )
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1633:4: ( () ( ( ruleAdditiveOperator ) ) )
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1633:5: () ( ( ruleAdditiveOperator ) )
         {
         // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1633:5: ()
         // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1634:1: 
         {
         }
 
-        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1634:2: ( ( ruleMultiplicativeOperator ) )
-        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1635:1: ( ruleMultiplicativeOperator )
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1634:2: ( ( ruleAdditiveOperator ) )
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1635:1: ( ruleAdditiveOperator )
         {
-        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1635:1: ( ruleMultiplicativeOperator )
-        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1636:1: ruleMultiplicativeOperator
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1635:1: ( ruleAdditiveOperator )
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1636:1: ruleAdditiveOperator
         {
-        pushFollow(FOLLOW_ruleMultiplicativeOperator_in_synpred3_InternalDmpl3499);
-        ruleMultiplicativeOperator();
+        pushFollow(FOLLOW_ruleAdditiveOperator_in_synpred3_InternalDmpl3499);
+        ruleAdditiveOperator();
 
         state._fsp--;
         if (state.failed) return ;
@@ -7554,6 +7962,44 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
     }
     // $ANTLR end synpred3_InternalDmpl
 
+    // $ANTLR start synpred4_InternalDmpl
+    public final void synpred4_InternalDmpl_fragment() throws RecognitionException {   
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1710:3: ( ( () ( ( ruleMultiplicativeOperator ) ) ) )
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1710:4: ( () ( ( ruleMultiplicativeOperator ) ) )
+        {
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1710:4: ( () ( ( ruleMultiplicativeOperator ) ) )
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1710:5: () ( ( ruleMultiplicativeOperator ) )
+        {
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1710:5: ()
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1711:1: 
+        {
+        }
+
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1711:2: ( ( ruleMultiplicativeOperator ) )
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1712:1: ( ruleMultiplicativeOperator )
+        {
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1712:1: ( ruleMultiplicativeOperator )
+        // ../edu.cmu.sei.annex.dmpl/src-gen/edu/cmu/sei/annex/dmpl/parser/antlr/internal/InternalDmpl.g:1713:1: ruleMultiplicativeOperator
+        {
+        pushFollow(FOLLOW_ruleMultiplicativeOperator_in_synpred4_InternalDmpl3666);
+        ruleMultiplicativeOperator();
+
+        state._fsp--;
+        if (state.failed) return ;
+
+        }
+
+
+        }
+
+
+        }
+
+
+        }
+    }
+    // $ANTLR end synpred4_InternalDmpl
+
     // Delegated rules
 
     public final boolean synpred3_InternalDmpl() {
@@ -7561,6 +8007,20 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
         int start = input.mark();
         try {
             synpred3_InternalDmpl_fragment(); // can never throw exception
+        } catch (RecognitionException re) {
+            System.err.println("impossible: "+re);
+        }
+        boolean success = !state.failed;
+        input.rewind(start);
+        state.backtracking--;
+        state.failed=false;
+        return success;
+    }
+    public final boolean synpred4_InternalDmpl() {
+        state.backtracking++;
+        int start = input.mark();
+        try {
+            synpred4_InternalDmpl_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -7601,7 +8061,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
 
 
     protected DFA7 dfa7 = new DFA7(this);
-    protected DFA30 dfa30 = new DFA30(this);
+    protected DFA31 dfa31 = new DFA31(this);
     static final String DFA7_eotS =
         "\11\uffff";
     static final String DFA7_eofS =
@@ -7659,23 +8119,23 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
             return "498:1: ( ( (lv_var_0_0= ruleVar ) ) | ( (lv_varAsgn_1_0= ruleVarAsgn ) ) )";
         }
     }
-    static final String DFA30_eotS =
+    static final String DFA31_eotS =
         "\14\uffff";
-    static final String DFA30_eofS =
-        "\1\uffff\1\11\1\uffff\1\13\10\uffff";
-    static final String DFA30_minS =
+    static final String DFA31_eofS =
+        "\1\uffff\1\12\1\uffff\1\13\10\uffff";
+    static final String DFA31_minS =
         "\1\4\1\17\1\uffff\1\17\10\uffff";
-    static final String DFA30_maxS =
-        "\1\70\1\66\1\uffff\1\66\10\uffff";
-    static final String DFA30_acceptS =
-        "\2\uffff\1\2\1\uffff\1\4\1\5\1\6\1\7\1\11\1\1\1\10\1\3";
-    static final String DFA30_specialS =
+    static final String DFA31_maxS =
+        "\1\74\1\72\1\uffff\1\72\10\uffff";
+    static final String DFA31_acceptS =
+        "\2\uffff\1\2\1\uffff\1\4\1\5\1\6\1\7\1\11\1\10\1\1\1\3";
+    static final String DFA31_specialS =
         "\14\uffff}>";
-    static final String[] DFA30_transitionS = {
-            "\1\1\1\3\14\uffff\1\5\7\uffff\1\10\3\uffff\1\2\1\uffff\2\6\10\uffff\6\7\1\4\6\uffff\2\6",
-            "\3\11\10\uffff\1\12\3\11\1\uffff\1\12\2\11\20\uffff\5\11",
+    static final String[] DFA31_transitionS = {
+            "\1\1\1\3\14\uffff\1\5\7\uffff\1\10\3\uffff\1\2\1\uffff\2\6\10\uffff\6\7\1\4\12\uffff\2\6",
+            "\3\12\10\uffff\1\11\3\12\1\uffff\1\11\2\12\20\uffff\11\12",
             "",
-            "\1\13\1\uffff\1\13\11\uffff\2\13\3\uffff\2\13\17\uffff\1\4\5\13",
+            "\1\13\1\uffff\1\13\11\uffff\2\13\3\uffff\2\13\17\uffff\1\4\11\13",
             "",
             "",
             "",
@@ -7686,37 +8146,37 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
             ""
     };
 
-    static final short[] DFA30_eot = DFA.unpackEncodedString(DFA30_eotS);
-    static final short[] DFA30_eof = DFA.unpackEncodedString(DFA30_eofS);
-    static final char[] DFA30_min = DFA.unpackEncodedStringToUnsignedChars(DFA30_minS);
-    static final char[] DFA30_max = DFA.unpackEncodedStringToUnsignedChars(DFA30_maxS);
-    static final short[] DFA30_accept = DFA.unpackEncodedString(DFA30_acceptS);
-    static final short[] DFA30_special = DFA.unpackEncodedString(DFA30_specialS);
-    static final short[][] DFA30_transition;
+    static final short[] DFA31_eot = DFA.unpackEncodedString(DFA31_eotS);
+    static final short[] DFA31_eof = DFA.unpackEncodedString(DFA31_eofS);
+    static final char[] DFA31_min = DFA.unpackEncodedStringToUnsignedChars(DFA31_minS);
+    static final char[] DFA31_max = DFA.unpackEncodedStringToUnsignedChars(DFA31_maxS);
+    static final short[] DFA31_accept = DFA.unpackEncodedString(DFA31_acceptS);
+    static final short[] DFA31_special = DFA.unpackEncodedString(DFA31_specialS);
+    static final short[][] DFA31_transition;
 
     static {
-        int numStates = DFA30_transitionS.length;
-        DFA30_transition = new short[numStates][];
+        int numStates = DFA31_transitionS.length;
+        DFA31_transition = new short[numStates][];
         for (int i=0; i<numStates; i++) {
-            DFA30_transition[i] = DFA.unpackEncodedString(DFA30_transitionS[i]);
+            DFA31_transition[i] = DFA.unpackEncodedString(DFA31_transitionS[i]);
         }
     }
 
-    class DFA30 extends DFA {
+    class DFA31 extends DFA {
 
-        public DFA30(BaseRecognizer recognizer) {
+        public DFA31(BaseRecognizer recognizer) {
             this.recognizer = recognizer;
-            this.decisionNumber = 30;
-            this.eot = DFA30_eot;
-            this.eof = DFA30_eof;
-            this.min = DFA30_min;
-            this.max = DFA30_max;
-            this.accept = DFA30_accept;
-            this.special = DFA30_special;
-            this.transition = DFA30_transition;
+            this.decisionNumber = 31;
+            this.eot = DFA31_eot;
+            this.eof = DFA31_eof;
+            this.min = DFA31_min;
+            this.max = DFA31_max;
+            this.accept = DFA31_accept;
+            this.special = DFA31_special;
+            this.transition = DFA31_transition;
         }
         public String getDescription() {
-            return "1701:1: (this_LVal_0= ruleLVal | ( () otherlv_2= 'id' ) | ( () ( (lv_value_4_0= RULE_INT ) ) ) | ( () ( (lv_value_6_0= ruleDouble ) ) ) | ( () otherlv_8= '#N' ) | ( () ( (lv_operator_10_0= ruleUnaryOperator ) ) ( (lv_operand_11_0= ruleExpr ) ) ) | ( () ( (lv_function_13_0= ruleBuiltInFunction ) ) otherlv_14= '(' ( (lv_firstArg_15_0= RULE_TIDENTIFIER ) ) otherlv_16= ',' ( (lv_secondArg_17_0= ruleExpr ) ) otherlv_18= ')' ) | this_CallExpr_19= ruleCallExpr | (otherlv_20= '(' this_Expr_21= ruleExpr otherlv_22= ')' ) )";
+            return "1778:1: (this_LVal_0= ruleLVal | ( () otherlv_2= 'id' ) | ( () ( (lv_value_4_0= RULE_INT ) ) ) | ( () ( (lv_value_6_0= ruleDouble ) ) ) | ( () otherlv_8= '#N' ) | ( () ( (lv_operator_10_0= ruleUnaryOperator ) ) ( (lv_operand_11_0= ruleExpr ) ) ) | ( () ( (lv_function_13_0= ruleBuiltInFunction ) ) otherlv_14= '(' ( (lv_firstArg_15_0= RULE_TIDENTIFIER ) ) otherlv_16= ',' ( (lv_secondArg_17_0= ruleExpr ) ) otherlv_18= ')' ) | this_CallExpr_19= ruleCallExpr | (otherlv_20= '(' this_Expr_21= ruleExpr otherlv_22= ')' ) )";
         }
     }
  
@@ -7762,7 +8222,7 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
     public static final BitSet FOLLOW_ruleVarAsgn_in_entryRuleVarAsgn1149 = new BitSet(new long[]{0x0000000000000000L});
     public static final BitSet FOLLOW_EOF_in_entryRuleVarAsgn1159 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleVar_in_ruleVarAsgn1205 = new BitSet(new long[]{0x0000000000004000L});
-    public static final BitSet FOLLOW_14_in_ruleVarAsgn1217 = new BitSet(new long[]{0x0181FC03440C0030L});
+    public static final BitSet FOLLOW_14_in_ruleVarAsgn1217 = new BitSet(new long[]{0x1801FC03440C0030L});
     public static final BitSet FOLLOW_ruleFnBody_in_ruleVarAsgn1239 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleExpr_in_ruleVarAsgn1266 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleVar_in_entryRuleVar1303 = new BitSet(new long[]{0x0000000000000000L});
@@ -7823,106 +8283,116 @@ public class InternalDmplParser extends AbstractInternalAntlrParser {
     public static final BitSet FOLLOW_ruleLVal_in_entryRuleLVal2822 = new BitSet(new long[]{0x0000000000000000L});
     public static final BitSet FOLLOW_EOF_in_entryRuleLVal2832 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_RULE_TIDENTIFIER_in_ruleLVal2874 = new BitSet(new long[]{0x0000000020010002L});
-    public static final BitSet FOLLOW_16_in_ruleLVal2892 = new BitSet(new long[]{0x0181FC03440C0030L});
+    public static final BitSet FOLLOW_16_in_ruleLVal2892 = new BitSet(new long[]{0x1801FC03440C0030L});
     public static final BitSet FOLLOW_ruleExpr_in_ruleLVal2913 = new BitSet(new long[]{0x0000000000020000L});
     public static final BitSet FOLLOW_17_in_ruleLVal2925 = new BitSet(new long[]{0x0000000020010002L});
-    public static final BitSet FOLLOW_29_in_ruleLVal2940 = new BitSet(new long[]{0x0181FC03440C0030L});
+    public static final BitSet FOLLOW_29_in_ruleLVal2940 = new BitSet(new long[]{0x1801FC03440C0030L});
     public static final BitSet FOLLOW_ruleExpr_in_ruleLVal2961 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleExpr_in_entryRuleExpr2999 = new BitSet(new long[]{0x0000000000000000L});
     public static final BitSet FOLLOW_EOF_in_entryRuleExpr3009 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleShiftExpr_in_ruleExpr3055 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleShiftExpr_in_entryRuleShiftExpr3089 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleShiftExpr3099 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleAdditiveExpr_in_ruleShiftExpr3146 = new BitSet(new long[]{0x000C000000000002L});
-    public static final BitSet FOLLOW_ruleShiftOperator_in_ruleShiftExpr3195 = new BitSet(new long[]{0x0181FC03440C0030L});
-    public static final BitSet FOLLOW_ruleAdditiveExpr_in_ruleShiftExpr3218 = new BitSet(new long[]{0x000C000000000002L});
-    public static final BitSet FOLLOW_ruleAdditiveExpr_in_entryRuleAdditiveExpr3256 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleAdditiveExpr3266 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleMultiplicativeExpr_in_ruleAdditiveExpr3313 = new BitSet(new long[]{0x0000000300000002L});
-    public static final BitSet FOLLOW_ruleAdditiveOperator_in_ruleAdditiveExpr3362 = new BitSet(new long[]{0x0181FC03440C0030L});
-    public static final BitSet FOLLOW_ruleMultiplicativeExpr_in_ruleAdditiveExpr3385 = new BitSet(new long[]{0x0000000300000002L});
-    public static final BitSet FOLLOW_ruleMultiplicativeExpr_in_entryRuleMultiplicativeExpr3423 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleMultiplicativeExpr3433 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleTerminalExpr_in_ruleMultiplicativeExpr3480 = new BitSet(new long[]{0x0070000000000002L});
-    public static final BitSet FOLLOW_ruleMultiplicativeOperator_in_ruleMultiplicativeExpr3529 = new BitSet(new long[]{0x0181FC03440C0030L});
-    public static final BitSet FOLLOW_ruleTerminalExpr_in_ruleMultiplicativeExpr3552 = new BitSet(new long[]{0x0070000000000002L});
-    public static final BitSet FOLLOW_ruleTerminalExpr_in_entryRuleTerminalExpr3590 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleTerminalExpr3600 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleLVal_in_ruleTerminalExpr3647 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_30_in_ruleTerminalExpr3674 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_INT_in_ruleTerminalExpr3708 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleDouble_in_ruleTerminalExpr3751 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_18_in_ruleTerminalExpr3780 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleUnaryOperator_in_ruleTerminalExpr3818 = new BitSet(new long[]{0x0181FC03440C0030L});
-    public static final BitSet FOLLOW_ruleExpr_in_ruleTerminalExpr3839 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleBuiltInFunction_in_ruleTerminalExpr3877 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_26_in_ruleTerminalExpr3889 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_RULE_TIDENTIFIER_in_ruleTerminalExpr3906 = new BitSet(new long[]{0x0000000008000000L});
-    public static final BitSet FOLLOW_27_in_ruleTerminalExpr3923 = new BitSet(new long[]{0x0181FC03440C0030L});
-    public static final BitSet FOLLOW_ruleExpr_in_ruleTerminalExpr3944 = new BitSet(new long[]{0x0000000010000000L});
-    public static final BitSet FOLLOW_28_in_ruleTerminalExpr3956 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleCallExpr_in_ruleTerminalExpr3985 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_26_in_ruleTerminalExpr4003 = new BitSet(new long[]{0x0181FC03440C0030L});
-    public static final BitSet FOLLOW_ruleExpr_in_ruleTerminalExpr4025 = new BitSet(new long[]{0x0000000010000000L});
-    public static final BitSet FOLLOW_28_in_ruleTerminalExpr4036 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleCallExpr_in_entryRuleCallExpr4073 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleCallExpr4083 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_TIDENTIFIER_in_ruleCallExpr4126 = new BitSet(new long[]{0x0000000080000000L});
-    public static final BitSet FOLLOW_31_in_ruleCallExpr4143 = new BitSet(new long[]{0x0000000000000010L});
-    public static final BitSet FOLLOW_RULE_TIDENTIFIER_in_ruleCallExpr4162 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_26_in_ruleCallExpr4179 = new BitSet(new long[]{0x0181FC03540C0030L});
-    public static final BitSet FOLLOW_ruleArgList_in_ruleCallExpr4200 = new BitSet(new long[]{0x0000000010000000L});
-    public static final BitSet FOLLOW_28_in_ruleCallExpr4212 = new BitSet(new long[]{0x0000000020000002L});
-    public static final BitSet FOLLOW_29_in_ruleCallExpr4225 = new BitSet(new long[]{0x0181FC03440C0030L});
-    public static final BitSet FOLLOW_ruleExpr_in_ruleCallExpr4246 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleArgList_in_entryRuleArgList4284 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleArgList4294 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleExpr_in_ruleArgList4350 = new BitSet(new long[]{0x0000000008000002L});
-    public static final BitSet FOLLOW_27_in_ruleArgList4363 = new BitSet(new long[]{0x0181FC03440C0030L});
-    public static final BitSet FOLLOW_ruleExpr_in_ruleArgList4384 = new BitSet(new long[]{0x0000000008000002L});
-    public static final BitSet FOLLOW_ruleSign_in_entryRuleSign4425 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleSign4436 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_32_in_ruleSign4474 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_33_in_ruleSign4493 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleSimpType_in_entryRuleSimpType4534 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleSimpType4545 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_34_in_ruleSimpType4583 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_35_in_ruleSimpType4602 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_36_in_ruleSimpType4621 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_37_in_ruleSimpType4640 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_38_in_ruleSimpType4659 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_39_in_ruleSimpType4678 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleSigned_in_entryRuleSigned4719 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleSigned4730 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_40_in_ruleSigned4768 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_41_in_ruleSigned4787 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleBuiltInFunction_in_entryRuleBuiltInFunction4828 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleBuiltInFunction4839 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_42_in_ruleBuiltInFunction4877 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_43_in_ruleBuiltInFunction4896 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_44_in_ruleBuiltInFunction4915 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_45_in_ruleBuiltInFunction4934 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_46_in_ruleBuiltInFunction4953 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_47_in_ruleBuiltInFunction4972 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleDouble_in_entryRuleDouble5013 = new BitSet(new long[]{0x0000000000000000L});
-    public static final BitSet FOLLOW_EOF_in_entryRuleDouble5024 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_48_in_ruleDouble5062 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_INT_in_ruleDouble5084 = new BitSet(new long[]{0x0002000000000000L});
-    public static final BitSet FOLLOW_49_in_ruleDouble5102 = new BitSet(new long[]{0x0000000000000022L});
-    public static final BitSet FOLLOW_RULE_INT_in_ruleDouble5118 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_50_in_ruleShiftOperator5186 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_51_in_ruleShiftOperator5203 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_32_in_ruleAdditiveOperator5248 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_33_in_ruleAdditiveOperator5265 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_52_in_ruleMultiplicativeOperator5310 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_53_in_ruleMultiplicativeOperator5327 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_54_in_ruleMultiplicativeOperator5344 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_33_in_ruleUnaryOperator5389 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_32_in_ruleUnaryOperator5406 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_55_in_ruleUnaryOperator5423 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_56_in_ruleUnaryOperator5440 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleShiftOperator_in_synpred1_InternalDmpl3165 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleAdditiveOperator_in_synpred2_InternalDmpl3332 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ruleMultiplicativeOperator_in_synpred3_InternalDmpl3499 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleCompareExpr_in_ruleExpr3055 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleCompareExpr_in_entryRuleCompareExpr3089 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleCompareExpr3099 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleShiftExpr_in_ruleCompareExpr3146 = new BitSet(new long[]{0x003C000000000002L});
+    public static final BitSet FOLLOW_ruleCompareOperator_in_ruleCompareExpr3195 = new BitSet(new long[]{0x1801FC03440C0030L});
+    public static final BitSet FOLLOW_ruleShiftExpr_in_ruleCompareExpr3218 = new BitSet(new long[]{0x003C000000000002L});
+    public static final BitSet FOLLOW_ruleShiftExpr_in_entryRuleShiftExpr3256 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleShiftExpr3266 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleAdditiveExpr_in_ruleShiftExpr3313 = new BitSet(new long[]{0x00C0000000000002L});
+    public static final BitSet FOLLOW_ruleShiftOperator_in_ruleShiftExpr3362 = new BitSet(new long[]{0x1801FC03440C0030L});
+    public static final BitSet FOLLOW_ruleAdditiveExpr_in_ruleShiftExpr3385 = new BitSet(new long[]{0x00C0000000000002L});
+    public static final BitSet FOLLOW_ruleAdditiveExpr_in_entryRuleAdditiveExpr3423 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleAdditiveExpr3433 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleMultiplicativeExpr_in_ruleAdditiveExpr3480 = new BitSet(new long[]{0x0000000300000002L});
+    public static final BitSet FOLLOW_ruleAdditiveOperator_in_ruleAdditiveExpr3529 = new BitSet(new long[]{0x1801FC03440C0030L});
+    public static final BitSet FOLLOW_ruleMultiplicativeExpr_in_ruleAdditiveExpr3552 = new BitSet(new long[]{0x0000000300000002L});
+    public static final BitSet FOLLOW_ruleMultiplicativeExpr_in_entryRuleMultiplicativeExpr3590 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleMultiplicativeExpr3600 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleTerminalExpr_in_ruleMultiplicativeExpr3647 = new BitSet(new long[]{0x0700000000000002L});
+    public static final BitSet FOLLOW_ruleMultiplicativeOperator_in_ruleMultiplicativeExpr3696 = new BitSet(new long[]{0x1801FC03440C0030L});
+    public static final BitSet FOLLOW_ruleTerminalExpr_in_ruleMultiplicativeExpr3719 = new BitSet(new long[]{0x0700000000000002L});
+    public static final BitSet FOLLOW_ruleTerminalExpr_in_entryRuleTerminalExpr3757 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleTerminalExpr3767 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleLVal_in_ruleTerminalExpr3814 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_30_in_ruleTerminalExpr3841 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_RULE_INT_in_ruleTerminalExpr3875 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleDouble_in_ruleTerminalExpr3918 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_18_in_ruleTerminalExpr3947 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleUnaryOperator_in_ruleTerminalExpr3985 = new BitSet(new long[]{0x1801FC03440C0030L});
+    public static final BitSet FOLLOW_ruleExpr_in_ruleTerminalExpr4006 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleBuiltInFunction_in_ruleTerminalExpr4044 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_26_in_ruleTerminalExpr4056 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_RULE_TIDENTIFIER_in_ruleTerminalExpr4073 = new BitSet(new long[]{0x0000000008000000L});
+    public static final BitSet FOLLOW_27_in_ruleTerminalExpr4090 = new BitSet(new long[]{0x1801FC03440C0030L});
+    public static final BitSet FOLLOW_ruleExpr_in_ruleTerminalExpr4111 = new BitSet(new long[]{0x0000000010000000L});
+    public static final BitSet FOLLOW_28_in_ruleTerminalExpr4123 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleCallExpr_in_ruleTerminalExpr4152 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_26_in_ruleTerminalExpr4170 = new BitSet(new long[]{0x1801FC03440C0030L});
+    public static final BitSet FOLLOW_ruleExpr_in_ruleTerminalExpr4192 = new BitSet(new long[]{0x0000000010000000L});
+    public static final BitSet FOLLOW_28_in_ruleTerminalExpr4203 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleCallExpr_in_entryRuleCallExpr4240 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleCallExpr4250 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_RULE_TIDENTIFIER_in_ruleCallExpr4293 = new BitSet(new long[]{0x0000000080000000L});
+    public static final BitSet FOLLOW_31_in_ruleCallExpr4310 = new BitSet(new long[]{0x0000000000000010L});
+    public static final BitSet FOLLOW_RULE_TIDENTIFIER_in_ruleCallExpr4329 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_26_in_ruleCallExpr4346 = new BitSet(new long[]{0x1801FC03540C0030L});
+    public static final BitSet FOLLOW_ruleArgList_in_ruleCallExpr4367 = new BitSet(new long[]{0x0000000010000000L});
+    public static final BitSet FOLLOW_28_in_ruleCallExpr4379 = new BitSet(new long[]{0x0000000020000002L});
+    public static final BitSet FOLLOW_29_in_ruleCallExpr4392 = new BitSet(new long[]{0x1801FC03440C0030L});
+    public static final BitSet FOLLOW_ruleExpr_in_ruleCallExpr4413 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleArgList_in_entryRuleArgList4451 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleArgList4461 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleExpr_in_ruleArgList4517 = new BitSet(new long[]{0x0000000008000002L});
+    public static final BitSet FOLLOW_27_in_ruleArgList4530 = new BitSet(new long[]{0x1801FC03440C0030L});
+    public static final BitSet FOLLOW_ruleExpr_in_ruleArgList4551 = new BitSet(new long[]{0x0000000008000002L});
+    public static final BitSet FOLLOW_ruleSign_in_entryRuleSign4592 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleSign4603 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_32_in_ruleSign4641 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_33_in_ruleSign4660 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleSimpType_in_entryRuleSimpType4701 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleSimpType4712 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_34_in_ruleSimpType4750 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_35_in_ruleSimpType4769 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_36_in_ruleSimpType4788 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_37_in_ruleSimpType4807 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_38_in_ruleSimpType4826 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_39_in_ruleSimpType4845 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleSigned_in_entryRuleSigned4886 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleSigned4897 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_40_in_ruleSigned4935 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_41_in_ruleSigned4954 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleBuiltInFunction_in_entryRuleBuiltInFunction4995 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleBuiltInFunction5006 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_42_in_ruleBuiltInFunction5044 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_43_in_ruleBuiltInFunction5063 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_44_in_ruleBuiltInFunction5082 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_45_in_ruleBuiltInFunction5101 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_46_in_ruleBuiltInFunction5120 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_47_in_ruleBuiltInFunction5139 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleDouble_in_entryRuleDouble5180 = new BitSet(new long[]{0x0000000000000000L});
+    public static final BitSet FOLLOW_EOF_in_entryRuleDouble5191 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_48_in_ruleDouble5229 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_RULE_INT_in_ruleDouble5251 = new BitSet(new long[]{0x0002000000000000L});
+    public static final BitSet FOLLOW_49_in_ruleDouble5269 = new BitSet(new long[]{0x0000000000000022L});
+    public static final BitSet FOLLOW_RULE_INT_in_ruleDouble5285 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_50_in_ruleCompareOperator5353 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_51_in_ruleCompareOperator5370 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_52_in_ruleCompareOperator5387 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_53_in_ruleCompareOperator5404 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_54_in_ruleShiftOperator5449 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_55_in_ruleShiftOperator5466 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_32_in_ruleAdditiveOperator5511 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_33_in_ruleAdditiveOperator5528 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_56_in_ruleMultiplicativeOperator5573 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_57_in_ruleMultiplicativeOperator5590 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_58_in_ruleMultiplicativeOperator5607 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_33_in_ruleUnaryOperator5652 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_32_in_ruleUnaryOperator5669 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_59_in_ruleUnaryOperator5686 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_60_in_ruleUnaryOperator5703 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleCompareOperator_in_synpred1_InternalDmpl3165 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleShiftOperator_in_synpred2_InternalDmpl3332 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleAdditiveOperator_in_synpred3_InternalDmpl3499 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleMultiplicativeOperator_in_synpred4_InternalDmpl3666 = new BitSet(new long[]{0x0000000000000002L});
 
 }

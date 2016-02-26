@@ -816,15 +816,63 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 	public class ExprElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Expr");
-		private final RuleCall cShiftExprParserRuleCall = (RuleCall)rule.eContents().get(1);
+		private final RuleCall cCompareExprParserRuleCall = (RuleCall)rule.eContents().get(1);
 		
 		//Expr: //TODO
-		//	ShiftExpr;
+		//	CompareExpr;
 		@Override public ParserRule getRule() { return rule; }
 
 		////TODO
+		//CompareExpr
+		public RuleCall getCompareExprParserRuleCall() { return cCompareExprParserRuleCall; }
+	}
+
+	public class CompareExprElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "CompareExpr");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final RuleCall cShiftExprParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
+		private final Group cGroup_1_0 = (Group)cGroup_1.eContents().get(0);
+		private final Group cGroup_1_0_0 = (Group)cGroup_1_0.eContents().get(0);
+		private final Action cCompareExprLeftAction_1_0_0_0 = (Action)cGroup_1_0_0.eContents().get(0);
+		private final Assignment cOperatorAssignment_1_0_0_1 = (Assignment)cGroup_1_0_0.eContents().get(1);
+		private final RuleCall cOperatorCompareOperatorEnumRuleCall_1_0_0_1_0 = (RuleCall)cOperatorAssignment_1_0_0_1.eContents().get(0);
+		private final Assignment cRightAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
+		private final RuleCall cRightShiftExprParserRuleCall_1_1_0 = (RuleCall)cRightAssignment_1_1.eContents().get(0);
+		
+		//CompareExpr returns Expr:
+		//	ShiftExpr (=> ({CompareExpr.left=current} operator=CompareOperator) right=ShiftExpr)*;
+		@Override public ParserRule getRule() { return rule; }
+
+		//ShiftExpr (=> ({CompareExpr.left=current} operator=CompareOperator) right=ShiftExpr)*
+		public Group getGroup() { return cGroup; }
+
 		//ShiftExpr
-		public RuleCall getShiftExprParserRuleCall() { return cShiftExprParserRuleCall; }
+		public RuleCall getShiftExprParserRuleCall_0() { return cShiftExprParserRuleCall_0; }
+
+		//(=> ({CompareExpr.left=current} operator=CompareOperator) right=ShiftExpr)*
+		public Group getGroup_1() { return cGroup_1; }
+
+		//=> ({CompareExpr.left=current} operator=CompareOperator)
+		public Group getGroup_1_0() { return cGroup_1_0; }
+
+		//{CompareExpr.left=current} operator=CompareOperator
+		public Group getGroup_1_0_0() { return cGroup_1_0_0; }
+
+		//{CompareExpr.left=current}
+		public Action getCompareExprLeftAction_1_0_0_0() { return cCompareExprLeftAction_1_0_0_0; }
+
+		//operator=CompareOperator
+		public Assignment getOperatorAssignment_1_0_0_1() { return cOperatorAssignment_1_0_0_1; }
+
+		//CompareOperator
+		public RuleCall getOperatorCompareOperatorEnumRuleCall_1_0_0_1_0() { return cOperatorCompareOperatorEnumRuleCall_1_0_0_1_0; }
+
+		//right=ShiftExpr
+		public Assignment getRightAssignment_1_1() { return cRightAssignment_1_1; }
+
+		//ShiftExpr
+		public RuleCall getRightShiftExprParserRuleCall_1_1_0() { return cRightShiftExprParserRuleCall_1_1_0; }
 	}
 
 	public class ShiftExprElements extends AbstractParserRuleElementFinder {
@@ -1516,6 +1564,50 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getUnsignedUnsignedKeyword_2_0() { return cUnsignedUnsignedKeyword_2_0; }
 	}
 
+	public class CompareOperatorElements extends AbstractEnumRuleElementFinder {
+		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "CompareOperator");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final EnumLiteralDeclaration cLESSEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
+		private final Keyword cLESSLessThanSignKeyword_0_0 = (Keyword)cLESSEnumLiteralDeclaration_0.eContents().get(0);
+		private final EnumLiteralDeclaration cLESS_EQUALEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
+		private final Keyword cLESS_EQUALLessThanSignEqualsSignKeyword_1_0 = (Keyword)cLESS_EQUALEnumLiteralDeclaration_1.eContents().get(0);
+		private final EnumLiteralDeclaration cGREATEREnumLiteralDeclaration_2 = (EnumLiteralDeclaration)cAlternatives.eContents().get(2);
+		private final Keyword cGREATERGreaterThanSignKeyword_2_0 = (Keyword)cGREATEREnumLiteralDeclaration_2.eContents().get(0);
+		private final EnumLiteralDeclaration cGREATER_EQUALEnumLiteralDeclaration_3 = (EnumLiteralDeclaration)cAlternatives.eContents().get(3);
+		private final Keyword cGREATER_EQUALGreaterThanSignEqualsSignKeyword_3_0 = (Keyword)cGREATER_EQUALEnumLiteralDeclaration_3.eContents().get(0);
+		
+		//enum CompareOperator:
+		//	LESS="<" | LESS_EQUAL="<=" | GREATER=">" | GREATER_EQUAL=">=";
+		public EnumRule getRule() { return rule; }
+
+		//LESS="<" | LESS_EQUAL="<=" | GREATER=">" | GREATER_EQUAL=">="
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//LESS="<"
+		public EnumLiteralDeclaration getLESSEnumLiteralDeclaration_0() { return cLESSEnumLiteralDeclaration_0; }
+
+		//"<"
+		public Keyword getLESSLessThanSignKeyword_0_0() { return cLESSLessThanSignKeyword_0_0; }
+
+		//LESS_EQUAL="<="
+		public EnumLiteralDeclaration getLESS_EQUALEnumLiteralDeclaration_1() { return cLESS_EQUALEnumLiteralDeclaration_1; }
+
+		//"<="
+		public Keyword getLESS_EQUALLessThanSignEqualsSignKeyword_1_0() { return cLESS_EQUALLessThanSignEqualsSignKeyword_1_0; }
+
+		//GREATER=">"
+		public EnumLiteralDeclaration getGREATEREnumLiteralDeclaration_2() { return cGREATEREnumLiteralDeclaration_2; }
+
+		//">"
+		public Keyword getGREATERGreaterThanSignKeyword_2_0() { return cGREATERGreaterThanSignKeyword_2_0; }
+
+		//GREATER_EQUAL=">="
+		public EnumLiteralDeclaration getGREATER_EQUALEnumLiteralDeclaration_3() { return cGREATER_EQUALEnumLiteralDeclaration_3; }
+
+		//">="
+		public Keyword getGREATER_EQUALGreaterThanSignEqualsSignKeyword_3_0() { return cGREATER_EQUALGreaterThanSignEqualsSignKeyword_3_0; }
+	}
+
 	public class ShiftOperatorElements extends AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "ShiftOperator");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
@@ -1710,6 +1802,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final VarInitListElements pVarInitList;
 	private final LValElements pLVal;
 	private final ExprElements pExpr;
+	private final CompareExprElements pCompareExpr;
 	private final ShiftExprElements pShiftExpr;
 	private final AdditiveExprElements pAdditiveExpr;
 	private final MultiplicativeExprElements pMultiplicativeExpr;
@@ -1722,6 +1815,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final SimpTypeElements pSimpType;
 	private final SignedEnumElements unknownRuleSignedEnum;
 	private final SignedElements pSigned;
+	private final CompareOperatorElements unknownRuleCompareOperator;
 	private final ShiftOperatorElements unknownRuleShiftOperator;
 	private final AdditiveOperatorElements unknownRuleAdditiveOperator;
 	private final MultiplicativeOperatorElements unknownRuleMultiplicativeOperator;
@@ -1762,6 +1856,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pVarInitList = new VarInitListElements();
 		this.pLVal = new LValElements();
 		this.pExpr = new ExprElements();
+		this.pCompareExpr = new CompareExprElements();
 		this.pShiftExpr = new ShiftExprElements();
 		this.pAdditiveExpr = new AdditiveExprElements();
 		this.pMultiplicativeExpr = new MultiplicativeExprElements();
@@ -1774,6 +1869,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pSimpType = new SimpTypeElements();
 		this.unknownRuleSignedEnum = new SignedEnumElements();
 		this.pSigned = new SignedElements();
+		this.unknownRuleCompareOperator = new CompareOperatorElements();
 		this.unknownRuleShiftOperator = new ShiftOperatorElements();
 		this.unknownRuleAdditiveOperator = new AdditiveOperatorElements();
 		this.unknownRuleMultiplicativeOperator = new MultiplicativeOperatorElements();
@@ -2024,13 +2120,23 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Expr: //TODO
-	//	ShiftExpr;
+	//	CompareExpr;
 	public ExprElements getExprAccess() {
 		return pExpr;
 	}
 	
 	public ParserRule getExprRule() {
 		return getExprAccess().getRule();
+	}
+
+	//CompareExpr returns Expr:
+	//	ShiftExpr (=> ({CompareExpr.left=current} operator=CompareOperator) right=ShiftExpr)*;
+	public CompareExprElements getCompareExprAccess() {
+		return pCompareExpr;
+	}
+	
+	public ParserRule getCompareExprRule() {
+		return getCompareExprAccess().getRule();
 	}
 
 	//ShiftExpr returns Expr:
@@ -2153,6 +2259,16 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getSignedRule() {
 		return getSignedAccess().getRule();
+	}
+
+	//enum CompareOperator:
+	//	LESS="<" | LESS_EQUAL="<=" | GREATER=">" | GREATER_EQUAL=">=";
+	public CompareOperatorElements getCompareOperatorAccess() {
+		return unknownRuleCompareOperator;
+	}
+	
+	public EnumRule getCompareOperatorRule() {
+		return getCompareOperatorAccess().getRule();
 	}
 
 	//enum ShiftOperator:

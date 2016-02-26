@@ -7,6 +7,8 @@ import edu.cmu.sei.annex.dmpl.dmpl.AdditiveOperator
 import edu.cmu.sei.annex.dmpl.dmpl.BuiltInExpr
 import edu.cmu.sei.annex.dmpl.dmpl.BuiltInFunctionEnum
 import edu.cmu.sei.annex.dmpl.dmpl.CallExpr
+import edu.cmu.sei.annex.dmpl.dmpl.CompareExpr
+import edu.cmu.sei.annex.dmpl.dmpl.CompareOperator
 import edu.cmu.sei.annex.dmpl.dmpl.Constant
 import edu.cmu.sei.annex.dmpl.dmpl.DoubleConst
 import edu.cmu.sei.annex.dmpl.dmpl.DoubleExpr
@@ -870,6 +872,102 @@ class ParserTest {
 						]
 						ShiftOperator.LEFT.assertEquals(operator)
 						"name13".assertEquals((right as LVal).name)
+					]
+				]
+			]
+		]
+	}
+	
+	@Test
+	def void testCompareExpr() {
+		'''
+			void f1() {
+				int v1 = name1 < name2;
+				int v2 = name3 <= name4;
+				int v3 = name5 > name6;
+				int v4 = name7 >= name8;
+				int v5 = name9 < name10 <= name11 > name12 >= name13;
+				int v6 = name14 < name15 << name16;
+				int v7 = name17 << name18 < name19;
+			}
+		'''.parse => [
+			assertNoIssues;
+			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+				7.assertEquals(varInits.size)
+				varInits.get(0).varAsgnList.varAsgn => [
+					"v1".assertEquals(^var.name)
+					expr as CompareExpr => [
+						"name1".assertEquals((left as LVal).name)
+						CompareOperator.LESS.assertEquals(operator)
+						"name2".assertEquals((right as LVal).name)
+					]
+				]
+				varInits.get(1).varAsgnList.varAsgn => [
+					"v2".assertEquals(^var.name)
+					expr as CompareExpr => [
+						"name3".assertEquals((left as LVal).name)
+						CompareOperator.LESS_EQUAL.assertEquals(operator)
+						"name4".assertEquals((right as LVal).name)
+					]
+				]
+				varInits.get(2).varAsgnList.varAsgn => [
+					"v3".assertEquals(^var.name)
+					expr as CompareExpr => [
+						"name5".assertEquals((left as LVal).name)
+						CompareOperator.GREATER.assertEquals(operator)
+						"name6".assertEquals((right as LVal).name)
+					]
+				]
+				varInits.get(3).varAsgnList.varAsgn => [
+					"v4".assertEquals(^var.name)
+					expr as CompareExpr => [
+						"name7".assertEquals((left as LVal).name)
+						CompareOperator.GREATER_EQUAL.assertEquals(operator)
+						"name8".assertEquals((right as LVal).name)
+					]
+				]
+				varInits.get(4).varAsgnList.varAsgn => [
+					"v5".assertEquals(^var.name)
+					expr as CompareExpr => [
+						left as CompareExpr => [
+							left as CompareExpr => [
+								left as CompareExpr => [
+									"name9".assertEquals((left as LVal).name)
+									CompareOperator.LESS.assertEquals(operator)
+									"name10".assertEquals((right as LVal).name)
+								]
+								CompareOperator.LESS_EQUAL.assertEquals(operator)
+								"name11".assertEquals((right as LVal).name)
+							]
+							CompareOperator.GREATER.assertEquals(operator)
+							"name12".assertEquals((right as LVal).name)
+						]
+						CompareOperator.GREATER_EQUAL.assertEquals(operator)
+						"name13".assertEquals((right as LVal).name)
+					]
+				]
+				varInits.get(5).varAsgnList.varAsgn => [
+					"v6".assertEquals(^var.name)
+					expr as CompareExpr => [
+						"name14".assertEquals((left as LVal).name)
+						CompareOperator.LESS.assertEquals(operator)
+						right as ShiftExpr => [
+							"name15".assertEquals((left as LVal).name)
+							ShiftOperator.LEFT.assertEquals(operator)
+							"name16".assertEquals((right as LVal).name)
+						]
+					]
+				]
+				varInits.get(6).varAsgnList.varAsgn => [
+					"v7".assertEquals(^var.name)
+					expr as CompareExpr => [
+						left as ShiftExpr => [
+							"name17".assertEquals((left as LVal).name)
+							ShiftOperator.LEFT.assertEquals(operator)
+							"name18".assertEquals((right as LVal).name)
+						]
+						CompareOperator.LESS.assertEquals(operator)
+						"name19".assertEquals((right as LVal).name)
 					]
 				]
 			]

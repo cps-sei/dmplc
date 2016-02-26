@@ -104,7 +104,11 @@ LVal:
 
 Expr:
 	//TODO
-	ShiftExpr
+	CompareExpr
+;
+
+CompareExpr returns Expr:
+	ShiftExpr (=>({CompareExpr.left=current} operator=CompareOperator) right=ShiftExpr)*
 ;
 
 ShiftExpr returns Expr:
@@ -164,6 +168,13 @@ enum SignedEnum:
 
 Signed returns SignedEnum:
 	'signed' | 'unsigned'
+;
+
+enum CompareOperator:
+	LESS='<' |
+	LESS_EQUAL='<=' |
+	GREATER='>' |
+	GREATER_EQUAL='>='
 ;
 
 enum ShiftOperator:

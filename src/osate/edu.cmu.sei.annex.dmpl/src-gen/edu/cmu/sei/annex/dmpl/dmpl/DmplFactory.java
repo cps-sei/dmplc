@@ -275,6 +275,15 @@ public interface DmplFactory extends EFactory
   FnPrototypeDeclaration createFnPrototypeDeclaration();
 
   /**
+   * Returns a new object of class '<em>Compare Expr</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Compare Expr</em>'.
+   * @generated
+   */
+  CompareExpr createCompareExpr();
+
+  /**
    * Returns a new object of class '<em>Shift Expr</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
