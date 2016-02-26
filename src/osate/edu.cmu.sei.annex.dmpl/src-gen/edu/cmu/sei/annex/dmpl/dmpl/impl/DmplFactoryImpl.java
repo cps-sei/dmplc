@@ -93,6 +93,7 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.ID_DIMENSION: return createIdDimension();
       case DmplPackage.THREAD_DECLARATION: return createThreadDeclaration();
       case DmplPackage.FN_PROTOTYPE_DECLARATION: return createFnPrototypeDeclaration();
+      case DmplPackage.OR_EXPR: return createOrExpr();
       case DmplPackage.AND_EXPR: return createAndExpr();
       case DmplPackage.BITWISE_OR_EXPR: return createBitwiseOrExpr();
       case DmplPackage.XOR_EXPR: return createXorExpr();
@@ -489,6 +490,17 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     FnPrototypeDeclarationImpl fnPrototypeDeclaration = new FnPrototypeDeclarationImpl();
     return fnPrototypeDeclaration;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public OrExpr createOrExpr()
+  {
+    OrExprImpl orExpr = new OrExprImpl();
+    return orExpr;
   }
 
   /**

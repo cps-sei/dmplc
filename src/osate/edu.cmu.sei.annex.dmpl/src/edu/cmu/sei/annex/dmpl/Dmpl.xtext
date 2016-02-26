@@ -104,7 +104,11 @@ LVal:
 
 Expr:
 	//TODO
-	AndExpr
+	OrExpr
+;
+
+OrExpr returns Expr:
+	AndExpr (=>({OrExpr.left=current} '||') right=AndExpr)*
 ;
 
 AndExpr returns Expr:

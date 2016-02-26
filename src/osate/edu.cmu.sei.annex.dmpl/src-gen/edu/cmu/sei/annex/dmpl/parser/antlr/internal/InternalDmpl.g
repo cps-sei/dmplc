@@ -1439,14 +1439,74 @@ ruleExpr returns [EObject current=null]
     @after { leaveRule(); }:
 
     { 
-        newCompositeNode(grammarAccess.getExprAccess().getAndExprParserRuleCall()); 
+        newCompositeNode(grammarAccess.getExprAccess().getOrExprParserRuleCall()); 
+    }
+    this_OrExpr_0=ruleOrExpr
+    { 
+        $current = $this_OrExpr_0.current; 
+        afterParserOrEnumRuleCall();
+    }
+
+;
+
+
+
+
+
+// Entry rule entryRuleOrExpr
+entryRuleOrExpr returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getOrExprRule()); }
+	 iv_ruleOrExpr=ruleOrExpr 
+	 { $current=$iv_ruleOrExpr.current; } 
+	 EOF 
+;
+
+// Rule OrExpr
+ruleOrExpr returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(
+    { 
+        newCompositeNode(grammarAccess.getOrExprAccess().getAndExprParserRuleCall_0()); 
     }
     this_AndExpr_0=ruleAndExpr
     { 
         $current = $this_AndExpr_0.current; 
         afterParserOrEnumRuleCall();
     }
+(((((
+)	'||' 
+))=>((
+    {
+        $current = forceCreateModelElementAndSet(
+            grammarAccess.getOrExprAccess().getOrExprLeftAction_1_0_0_0(),
+            $current);
+    }
+)	otherlv_2='||' 
+    {
+    	newLeafNode(otherlv_2, grammarAccess.getOrExprAccess().getVerticalLineVerticalLineKeyword_1_0_0_1());
+    }
+))(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getOrExprAccess().getRightAndExprParserRuleCall_1_1_0()); 
+	    }
+		lv_right_3_0=ruleAndExpr		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getOrExprRule());
+	        }
+       		set(
+       			$current, 
+       			"right",
+        		lv_right_3_0, 
+        		"AndExpr");
+	        afterParserOrEnumRuleCall();
+	    }
 
+)
+))*)
 ;
 
 

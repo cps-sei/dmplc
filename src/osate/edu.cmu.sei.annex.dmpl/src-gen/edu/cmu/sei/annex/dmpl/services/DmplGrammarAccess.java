@@ -816,15 +816,59 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 	public class ExprElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Expr");
-		private final RuleCall cAndExprParserRuleCall = (RuleCall)rule.eContents().get(1);
+		private final RuleCall cOrExprParserRuleCall = (RuleCall)rule.eContents().get(1);
 		
 		//Expr: //TODO
-		//	AndExpr;
+		//	OrExpr;
 		@Override public ParserRule getRule() { return rule; }
 
 		////TODO
+		//OrExpr
+		public RuleCall getOrExprParserRuleCall() { return cOrExprParserRuleCall; }
+	}
+
+	public class OrExprElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "OrExpr");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final RuleCall cAndExprParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
+		private final Group cGroup_1_0 = (Group)cGroup_1.eContents().get(0);
+		private final Group cGroup_1_0_0 = (Group)cGroup_1_0.eContents().get(0);
+		private final Action cOrExprLeftAction_1_0_0_0 = (Action)cGroup_1_0_0.eContents().get(0);
+		private final Keyword cVerticalLineVerticalLineKeyword_1_0_0_1 = (Keyword)cGroup_1_0_0.eContents().get(1);
+		private final Assignment cRightAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
+		private final RuleCall cRightAndExprParserRuleCall_1_1_0 = (RuleCall)cRightAssignment_1_1.eContents().get(0);
+		
+		//OrExpr returns Expr:
+		//	AndExpr (=> ({OrExpr.left=current} "||") right=AndExpr)*;
+		@Override public ParserRule getRule() { return rule; }
+
+		//AndExpr (=> ({OrExpr.left=current} "||") right=AndExpr)*
+		public Group getGroup() { return cGroup; }
+
 		//AndExpr
-		public RuleCall getAndExprParserRuleCall() { return cAndExprParserRuleCall; }
+		public RuleCall getAndExprParserRuleCall_0() { return cAndExprParserRuleCall_0; }
+
+		//(=> ({OrExpr.left=current} "||") right=AndExpr)*
+		public Group getGroup_1() { return cGroup_1; }
+
+		//=> ({OrExpr.left=current} "||")
+		public Group getGroup_1_0() { return cGroup_1_0; }
+
+		//{OrExpr.left=current} "||"
+		public Group getGroup_1_0_0() { return cGroup_1_0_0; }
+
+		//{OrExpr.left=current}
+		public Action getOrExprLeftAction_1_0_0_0() { return cOrExprLeftAction_1_0_0_0; }
+
+		//"||"
+		public Keyword getVerticalLineVerticalLineKeyword_1_0_0_1() { return cVerticalLineVerticalLineKeyword_1_0_0_1; }
+
+		//right=AndExpr
+		public Assignment getRightAssignment_1_1() { return cRightAssignment_1_1; }
+
+		//AndExpr
+		public RuleCall getRightAndExprParserRuleCall_1_1_0() { return cRightAndExprParserRuleCall_1_1_0; }
 	}
 
 	public class AndExprElements extends AbstractParserRuleElementFinder {
@@ -2054,6 +2098,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final VarInitListElements pVarInitList;
 	private final LValElements pLVal;
 	private final ExprElements pExpr;
+	private final OrExprElements pOrExpr;
 	private final AndExprElements pAndExpr;
 	private final BitwiseOrExprElements pBitwiseOrExpr;
 	private final XorExprElements pXorExpr;
@@ -2114,6 +2159,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pVarInitList = new VarInitListElements();
 		this.pLVal = new LValElements();
 		this.pExpr = new ExprElements();
+		this.pOrExpr = new OrExprElements();
 		this.pAndExpr = new AndExprElements();
 		this.pBitwiseOrExpr = new BitwiseOrExprElements();
 		this.pXorExpr = new XorExprElements();
@@ -2384,13 +2430,23 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Expr: //TODO
-	//	AndExpr;
+	//	OrExpr;
 	public ExprElements getExprAccess() {
 		return pExpr;
 	}
 	
 	public ParserRule getExprRule() {
 		return getExprAccess().getRule();
+	}
+
+	//OrExpr returns Expr:
+	//	AndExpr (=> ({OrExpr.left=current} "||") right=AndExpr)*;
+	public OrExprElements getOrExprAccess() {
+		return pOrExpr;
+	}
+	
+	public ParserRule getOrExprRule() {
+		return getOrExprAccess().getRule();
 	}
 
 	//AndExpr returns Expr:
