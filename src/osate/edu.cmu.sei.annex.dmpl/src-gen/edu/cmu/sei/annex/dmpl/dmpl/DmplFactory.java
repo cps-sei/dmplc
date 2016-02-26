@@ -275,6 +275,15 @@ public interface DmplFactory extends EFactory
   FnPrototypeDeclaration createFnPrototypeDeclaration();
 
   /**
+   * Returns a new object of class '<em>Ternary Expr</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Ternary Expr</em>'.
+   * @generated
+   */
+  TernaryExpr createTernaryExpr();
+
+  /**
    * Returns a new object of class '<em>Or Expr</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

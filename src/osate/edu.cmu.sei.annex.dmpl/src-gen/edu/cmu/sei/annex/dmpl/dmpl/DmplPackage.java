@@ -1078,6 +1078,52 @@ public interface DmplPackage extends EPackage
   int FN_PROTOTYPE_DECLARATION_FEATURE_COUNT = FN_PROTOTYPE_FEATURE_COUNT + 2;
 
   /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.TernaryExprImpl <em>Ternary Expr</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.TernaryExprImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getTernaryExpr()
+   * @generated
+   */
+  int TERNARY_EXPR = 28;
+
+  /**
+   * The feature id for the '<em><b>Condition</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int TERNARY_EXPR__CONDITION = EXPR_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Then</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int TERNARY_EXPR__THEN = EXPR_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>Else</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int TERNARY_EXPR__ELSE = EXPR_FEATURE_COUNT + 2;
+
+  /**
+   * The number of structural features of the '<em>Ternary Expr</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int TERNARY_EXPR_FEATURE_COUNT = EXPR_FEATURE_COUNT + 3;
+
+  /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.OrExprImpl <em>Or Expr</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1085,7 +1131,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getOrExpr()
    * @generated
    */
-  int OR_EXPR = 28;
+  int OR_EXPR = 29;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1122,7 +1168,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAndExpr()
    * @generated
    */
-  int AND_EXPR = 29;
+  int AND_EXPR = 30;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1159,7 +1205,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBitwiseOrExpr()
    * @generated
    */
-  int BITWISE_OR_EXPR = 30;
+  int BITWISE_OR_EXPR = 31;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1196,7 +1242,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getXorExpr()
    * @generated
    */
-  int XOR_EXPR = 31;
+  int XOR_EXPR = 32;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1233,7 +1279,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBitwiseAndExpr()
    * @generated
    */
-  int BITWISE_AND_EXPR = 32;
+  int BITWISE_AND_EXPR = 33;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1270,7 +1316,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getEqualityExpr()
    * @generated
    */
-  int EQUALITY_EXPR = 33;
+  int EQUALITY_EXPR = 34;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1316,7 +1362,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getCompareExpr()
    * @generated
    */
-  int COMPARE_EXPR = 34;
+  int COMPARE_EXPR = 35;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1362,7 +1408,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getShiftExpr()
    * @generated
    */
-  int SHIFT_EXPR = 35;
+  int SHIFT_EXPR = 36;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1408,7 +1454,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAdditiveExpr()
    * @generated
    */
-  int ADDITIVE_EXPR = 36;
+  int ADDITIVE_EXPR = 37;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1454,7 +1500,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getMultiplicativeExpr()
    * @generated
    */
-  int MULTIPLICATIVE_EXPR = 37;
+  int MULTIPLICATIVE_EXPR = 38;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1500,7 +1546,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIdExpr()
    * @generated
    */
-  int ID_EXPR = 38;
+  int ID_EXPR = 39;
 
   /**
    * The number of structural features of the '<em>Id Expr</em>' class.
@@ -1519,7 +1565,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIntExpr()
    * @generated
    */
-  int INT_EXPR = 39;
+  int INT_EXPR = 40;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -1547,7 +1593,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getDoubleExpr()
    * @generated
    */
-  int DOUBLE_EXPR = 40;
+  int DOUBLE_EXPR = 41;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -1575,7 +1621,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getNodeNumExpr()
    * @generated
    */
-  int NODE_NUM_EXPR = 41;
+  int NODE_NUM_EXPR = 42;
 
   /**
    * The number of structural features of the '<em>Node Num Expr</em>' class.
@@ -1594,7 +1640,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getUnaryExpr()
    * @generated
    */
-  int UNARY_EXPR = 42;
+  int UNARY_EXPR = 43;
 
   /**
    * The feature id for the '<em><b>Operator</b></em>' attribute.
@@ -1631,7 +1677,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBuiltInExpr()
    * @generated
    */
-  int BUILT_IN_EXPR = 43;
+  int BUILT_IN_EXPR = 44;
 
   /**
    * The feature id for the '<em><b>Function</b></em>' attribute.
@@ -1677,7 +1723,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignEnum()
    * @generated
    */
-  int SIGN_ENUM = 44;
+  int SIGN_ENUM = 45;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum <em>Simp Type Enum</em>}' enum.
@@ -1687,7 +1733,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSimpTypeEnum()
    * @generated
    */
-  int SIMP_TYPE_ENUM = 45;
+  int SIMP_TYPE_ENUM = 46;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SignedEnum <em>Signed Enum</em>}' enum.
@@ -1697,7 +1743,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignedEnum()
    * @generated
    */
-  int SIGNED_ENUM = 46;
+  int SIGNED_ENUM = 47;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.EqualityOperator <em>Equality Operator</em>}' enum.
@@ -1707,7 +1753,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getEqualityOperator()
    * @generated
    */
-  int EQUALITY_OPERATOR = 47;
+  int EQUALITY_OPERATOR = 48;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.CompareOperator <em>Compare Operator</em>}' enum.
@@ -1717,7 +1763,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getCompareOperator()
    * @generated
    */
-  int COMPARE_OPERATOR = 48;
+  int COMPARE_OPERATOR = 49;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.ShiftOperator <em>Shift Operator</em>}' enum.
@@ -1727,7 +1773,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getShiftOperator()
    * @generated
    */
-  int SHIFT_OPERATOR = 49;
+  int SHIFT_OPERATOR = 50;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.AdditiveOperator <em>Additive Operator</em>}' enum.
@@ -1737,7 +1783,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAdditiveOperator()
    * @generated
    */
-  int ADDITIVE_OPERATOR = 50;
+  int ADDITIVE_OPERATOR = 51;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.MultiplicativeOperator <em>Multiplicative Operator</em>}' enum.
@@ -1747,7 +1793,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getMultiplicativeOperator()
    * @generated
    */
-  int MULTIPLICATIVE_OPERATOR = 51;
+  int MULTIPLICATIVE_OPERATOR = 52;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.UnaryOperator <em>Unary Operator</em>}' enum.
@@ -1757,7 +1803,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getUnaryOperator()
    * @generated
    */
-  int UNARY_OPERATOR = 52;
+  int UNARY_OPERATOR = 53;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.BuiltInFunctionEnum <em>Built In Function Enum</em>}' enum.
@@ -1767,7 +1813,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBuiltInFunctionEnum()
    * @generated
    */
-  int BUILT_IN_FUNCTION_ENUM = 53;
+  int BUILT_IN_FUNCTION_ENUM = 54;
 
 
   /**
@@ -2489,6 +2535,49 @@ public interface DmplPackage extends EPackage
    * @generated
    */
   EReference getFnPrototypeDeclaration_Params();
+
+  /**
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.TernaryExpr <em>Ternary Expr</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Ternary Expr</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.TernaryExpr
+   * @generated
+   */
+  EClass getTernaryExpr();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.TernaryExpr#getCondition <em>Condition</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Condition</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.TernaryExpr#getCondition()
+   * @see #getTernaryExpr()
+   * @generated
+   */
+  EReference getTernaryExpr_Condition();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.TernaryExpr#getThen <em>Then</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Then</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.TernaryExpr#getThen()
+   * @see #getTernaryExpr()
+   * @generated
+   */
+  EReference getTernaryExpr_Then();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.TernaryExpr#getElse <em>Else</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Else</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.TernaryExpr#getElse()
+   * @see #getTernaryExpr()
+   * @generated
+   */
+  EReference getTernaryExpr_Else();
 
   /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.OrExpr <em>Or Expr</em>}'.
@@ -3724,6 +3813,40 @@ public interface DmplPackage extends EPackage
      * @generated
      */
     EReference FN_PROTOTYPE_DECLARATION__PARAMS = eINSTANCE.getFnPrototypeDeclaration_Params();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.TernaryExprImpl <em>Ternary Expr</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.TernaryExprImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getTernaryExpr()
+     * @generated
+     */
+    EClass TERNARY_EXPR = eINSTANCE.getTernaryExpr();
+
+    /**
+     * The meta object literal for the '<em><b>Condition</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference TERNARY_EXPR__CONDITION = eINSTANCE.getTernaryExpr_Condition();
+
+    /**
+     * The meta object literal for the '<em><b>Then</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference TERNARY_EXPR__THEN = eINSTANCE.getTernaryExpr_Then();
+
+    /**
+     * The meta object literal for the '<em><b>Else</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference TERNARY_EXPR__ELSE = eINSTANCE.getTernaryExpr_Else();
 
     /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.OrExprImpl <em>Or Expr</em>}' class.

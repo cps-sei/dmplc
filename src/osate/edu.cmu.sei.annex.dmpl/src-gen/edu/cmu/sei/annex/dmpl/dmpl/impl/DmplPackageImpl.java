@@ -48,6 +48,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.ShiftOperator;
 import edu.cmu.sei.annex.dmpl.dmpl.SignEnum;
 import edu.cmu.sei.annex.dmpl.dmpl.SignedEnum;
 import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum;
+import edu.cmu.sei.annex.dmpl.dmpl.TernaryExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.ThreadDeclaration;
 import edu.cmu.sei.annex.dmpl.dmpl.Type;
 import edu.cmu.sei.annex.dmpl.dmpl.UnaryExpr;
@@ -272,6 +273,13 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass fnPrototypeDeclarationEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass ternaryExprEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -1206,6 +1214,46 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getTernaryExpr()
+  {
+    return ternaryExprEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getTernaryExpr_Condition()
+  {
+    return (EReference)ternaryExprEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getTernaryExpr_Then()
+  {
+    return (EReference)ternaryExprEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getTernaryExpr_Else()
+  {
+    return (EReference)ternaryExprEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getOrExpr()
   {
     return orExprEClass;
@@ -1907,6 +1955,11 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     createEReference(fnPrototypeDeclarationEClass, FN_PROTOTYPE_DECLARATION__TYPE);
     createEReference(fnPrototypeDeclarationEClass, FN_PROTOTYPE_DECLARATION__PARAMS);
 
+    ternaryExprEClass = createEClass(TERNARY_EXPR);
+    createEReference(ternaryExprEClass, TERNARY_EXPR__CONDITION);
+    createEReference(ternaryExprEClass, TERNARY_EXPR__THEN);
+    createEReference(ternaryExprEClass, TERNARY_EXPR__ELSE);
+
     orExprEClass = createEClass(OR_EXPR);
     createEReference(orExprEClass, OR_EXPR__LEFT);
     createEReference(orExprEClass, OR_EXPR__RIGHT);
@@ -2028,6 +2081,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     idDimensionEClass.getESuperTypes().add(this.getDimension());
     threadDeclarationEClass.getESuperTypes().add(this.getFnPrototype());
     fnPrototypeDeclarationEClass.getESuperTypes().add(this.getFnPrototype());
+    ternaryExprEClass.getESuperTypes().add(this.getExpr());
     orExprEClass.getESuperTypes().add(this.getExpr());
     andExprEClass.getESuperTypes().add(this.getExpr());
     bitwiseOrExprEClass.getESuperTypes().add(this.getExpr());
@@ -2141,6 +2195,11 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEClass(fnPrototypeDeclarationEClass, FnPrototypeDeclaration.class, "FnPrototypeDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getFnPrototypeDeclaration_Type(), this.getType(), null, "type", null, 0, 1, FnPrototypeDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getFnPrototypeDeclaration_Params(), this.getParam(), null, "params", null, 0, -1, FnPrototypeDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(ternaryExprEClass, TernaryExpr.class, "TernaryExpr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getTernaryExpr_Condition(), this.getExpr(), null, "condition", null, 0, 1, TernaryExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getTernaryExpr_Then(), this.getExpr(), null, "then", null, 0, 1, TernaryExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getTernaryExpr_Else(), this.getExpr(), null, "else", null, 0, 1, TernaryExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(orExprEClass, OrExpr.class, "OrExpr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getOrExpr_Left(), this.getExpr(), null, "left", null, 0, 1, OrExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

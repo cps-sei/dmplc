@@ -103,8 +103,7 @@ LVal:
 ;
 
 Expr:
-	//TODO
-	OrExpr
+	OrExpr (=>({TernaryExpr.condition=current} '?') then=Expr ':' else=Expr)?
 ;
 
 OrExpr returns Expr:

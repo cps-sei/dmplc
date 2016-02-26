@@ -220,6 +220,11 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createFnPrototypeDeclarationAdapter();
       }
       @Override
+      public Adapter caseTernaryExpr(TernaryExpr object)
+      {
+        return createTernaryExprAdapter();
+      }
+      @Override
       public Adapter caseOrExpr(OrExpr object)
       {
         return createOrExprAdapter();
@@ -757,6 +762,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createFnPrototypeDeclarationAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.TernaryExpr <em>Ternary Expr</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.TernaryExpr
+   * @generated
+   */
+  public Adapter createTernaryExprAdapter()
   {
     return null;
   }

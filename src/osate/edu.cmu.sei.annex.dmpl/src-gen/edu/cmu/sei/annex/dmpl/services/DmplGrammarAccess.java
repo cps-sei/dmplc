@@ -816,15 +816,58 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 	public class ExprElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Expr");
-		private final RuleCall cOrExprParserRuleCall = (RuleCall)rule.eContents().get(1);
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final RuleCall cOrExprParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
+		private final Group cGroup_1_0 = (Group)cGroup_1.eContents().get(0);
+		private final Group cGroup_1_0_0 = (Group)cGroup_1_0.eContents().get(0);
+		private final Action cTernaryExprConditionAction_1_0_0_0 = (Action)cGroup_1_0_0.eContents().get(0);
+		private final Keyword cQuestionMarkKeyword_1_0_0_1 = (Keyword)cGroup_1_0_0.eContents().get(1);
+		private final Assignment cThenAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
+		private final RuleCall cThenExprParserRuleCall_1_1_0 = (RuleCall)cThenAssignment_1_1.eContents().get(0);
+		private final Keyword cColonKeyword_1_2 = (Keyword)cGroup_1.eContents().get(2);
+		private final Assignment cElseAssignment_1_3 = (Assignment)cGroup_1.eContents().get(3);
+		private final RuleCall cElseExprParserRuleCall_1_3_0 = (RuleCall)cElseAssignment_1_3.eContents().get(0);
 		
-		//Expr: //TODO
-		//	OrExpr;
+		//Expr:
+		//	OrExpr (=> ({TernaryExpr.condition=current} "?") then=Expr ":" else=Expr)?;
 		@Override public ParserRule getRule() { return rule; }
 
-		////TODO
+		//OrExpr (=> ({TernaryExpr.condition=current} "?") then=Expr ":" else=Expr)?
+		public Group getGroup() { return cGroup; }
+
 		//OrExpr
-		public RuleCall getOrExprParserRuleCall() { return cOrExprParserRuleCall; }
+		public RuleCall getOrExprParserRuleCall_0() { return cOrExprParserRuleCall_0; }
+
+		//(=> ({TernaryExpr.condition=current} "?") then=Expr ":" else=Expr)?
+		public Group getGroup_1() { return cGroup_1; }
+
+		//=> ({TernaryExpr.condition=current} "?")
+		public Group getGroup_1_0() { return cGroup_1_0; }
+
+		//{TernaryExpr.condition=current} "?"
+		public Group getGroup_1_0_0() { return cGroup_1_0_0; }
+
+		//{TernaryExpr.condition=current}
+		public Action getTernaryExprConditionAction_1_0_0_0() { return cTernaryExprConditionAction_1_0_0_0; }
+
+		//"?"
+		public Keyword getQuestionMarkKeyword_1_0_0_1() { return cQuestionMarkKeyword_1_0_0_1; }
+
+		//then=Expr
+		public Assignment getThenAssignment_1_1() { return cThenAssignment_1_1; }
+
+		//Expr
+		public RuleCall getThenExprParserRuleCall_1_1_0() { return cThenExprParserRuleCall_1_1_0; }
+
+		//":"
+		public Keyword getColonKeyword_1_2() { return cColonKeyword_1_2; }
+
+		//else=Expr
+		public Assignment getElseAssignment_1_3() { return cElseAssignment_1_3; }
+
+		//Expr
+		public RuleCall getElseExprParserRuleCall_1_3_0() { return cElseExprParserRuleCall_1_3_0; }
 	}
 
 	public class OrExprElements extends AbstractParserRuleElementFinder {
@@ -2429,8 +2472,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getLValAccess().getRule();
 	}
 
-	//Expr: //TODO
-	//	OrExpr;
+	//Expr:
+	//	OrExpr (=> ({TernaryExpr.condition=current} "?") then=Expr ":" else=Expr)?;
 	public ExprElements getExprAccess() {
 		return pExpr;
 	}

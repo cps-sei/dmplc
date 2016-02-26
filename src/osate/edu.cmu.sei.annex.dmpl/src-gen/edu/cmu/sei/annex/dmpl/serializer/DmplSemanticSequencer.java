@@ -36,6 +36,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr;
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
 import edu.cmu.sei.annex.dmpl.dmpl.Program;
 import edu.cmu.sei.annex.dmpl.dmpl.ShiftExpr;
+import edu.cmu.sei.annex.dmpl.dmpl.TernaryExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.ThreadDeclaration;
 import edu.cmu.sei.annex.dmpl.dmpl.Type;
 import edu.cmu.sei.annex.dmpl.dmpl.UnaryExpr;
@@ -156,6 +157,9 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.SHIFT_EXPR:
 				sequence_ShiftExpr(context, (ShiftExpr) semanticObject); 
+				return; 
+			case DmplPackage.TERNARY_EXPR:
+				sequence_Expr(context, (TernaryExpr) semanticObject); 
 				return; 
 			case DmplPackage.THREAD_DECLARATION:
 				sequence_FnPrototype(context, (ThreadDeclaration) semanticObject); 
@@ -403,6 +407,28 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 		feeder.accept(grammarAccess.getEqualityExprAccess().getEqualityExprLeftAction_1_0_0_0(), semanticObject.getLeft());
 		feeder.accept(grammarAccess.getEqualityExprAccess().getOperatorEqualityOperatorEnumRuleCall_1_0_0_1_0(), semanticObject.getOperator());
 		feeder.accept(grammarAccess.getEqualityExprAccess().getRightCompareExprParserRuleCall_1_1_0(), semanticObject.getRight());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (condition=Expr_TernaryExpr_1_0_0_0 then=Expr else=Expr)
+	 */
+	protected void sequence_Expr(EObject context, TernaryExpr semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.TERNARY_EXPR__CONDITION) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.TERNARY_EXPR__CONDITION));
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.TERNARY_EXPR__THEN) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.TERNARY_EXPR__THEN));
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.TERNARY_EXPR__ELSE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.TERNARY_EXPR__ELSE));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getExprAccess().getTernaryExprConditionAction_1_0_0_0(), semanticObject.getCondition());
+		feeder.accept(grammarAccess.getExprAccess().getThenExprParserRuleCall_1_1_0(), semanticObject.getThen());
+		feeder.accept(grammarAccess.getExprAccess().getElseExprParserRuleCall_1_3_0(), semanticObject.getElse());
 		feeder.finish();
 	}
 	
