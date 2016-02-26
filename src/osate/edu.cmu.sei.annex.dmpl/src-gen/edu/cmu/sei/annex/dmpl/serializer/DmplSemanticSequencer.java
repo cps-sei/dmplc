@@ -29,6 +29,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.Param;
 import edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr;
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
 import edu.cmu.sei.annex.dmpl.dmpl.Program;
+import edu.cmu.sei.annex.dmpl.dmpl.ShiftExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.ThreadDeclaration;
 import edu.cmu.sei.annex.dmpl.dmpl.Type;
 import edu.cmu.sei.annex.dmpl.dmpl.UnaryExpr;
@@ -127,6 +128,9 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.PROGRAM:
 				sequence_Program(context, (Program) semanticObject); 
+				return; 
+			case DmplPackage.SHIFT_EXPR:
+				sequence_ShiftExpr(context, (ShiftExpr) semanticObject); 
 				return; 
 			case DmplPackage.THREAD_DECLARATION:
 				sequence_FnPrototype(context, (ThreadDeclaration) semanticObject); 
@@ -398,6 +402,28 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 */
 	protected void sequence_Program(EObject context, Program semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (left=ShiftExpr_ShiftExpr_1_0_0_0 operator=ShiftOperator right=AdditiveExpr)
+	 */
+	protected void sequence_ShiftExpr(EObject context, ShiftExpr semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.SHIFT_EXPR__LEFT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.SHIFT_EXPR__LEFT));
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.SHIFT_EXPR__OPERATOR) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.SHIFT_EXPR__OPERATOR));
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.SHIFT_EXPR__RIGHT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.SHIFT_EXPR__RIGHT));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getShiftExprAccess().getShiftExprLeftAction_1_0_0_0(), semanticObject.getLeft());
+		feeder.accept(grammarAccess.getShiftExprAccess().getOperatorShiftOperatorEnumRuleCall_1_0_0_1_0(), semanticObject.getOperator());
+		feeder.accept(grammarAccess.getShiftExprAccess().getRightAdditiveExprParserRuleCall_1_1_0(), semanticObject.getRight());
+		feeder.finish();
 	}
 	
 	

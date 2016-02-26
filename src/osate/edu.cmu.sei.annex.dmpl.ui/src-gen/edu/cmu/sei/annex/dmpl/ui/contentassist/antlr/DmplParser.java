@@ -58,6 +58,7 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getSignEnumAccess().getAlternatives(), "rule__SignEnum__Alternatives");
 					put(grammarAccess.getSimpTypeEnumAccess().getAlternatives(), "rule__SimpTypeEnum__Alternatives");
 					put(grammarAccess.getSignedEnumAccess().getAlternatives(), "rule__SignedEnum__Alternatives");
+					put(grammarAccess.getShiftOperatorAccess().getAlternatives(), "rule__ShiftOperator__Alternatives");
 					put(grammarAccess.getAdditiveOperatorAccess().getAlternatives(), "rule__AdditiveOperator__Alternatives");
 					put(grammarAccess.getMultiplicativeOperatorAccess().getAlternatives(), "rule__MultiplicativeOperator__Alternatives");
 					put(grammarAccess.getUnaryOperatorAccess().getAlternatives(), "rule__UnaryOperator__Alternatives");
@@ -87,6 +88,10 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getLValAccess().getGroup(), "rule__LVal__Group__0");
 					put(grammarAccess.getLValAccess().getGroup_1(), "rule__LVal__Group_1__0");
 					put(grammarAccess.getLValAccess().getGroup_2(), "rule__LVal__Group_2__0");
+					put(grammarAccess.getShiftExprAccess().getGroup(), "rule__ShiftExpr__Group__0");
+					put(grammarAccess.getShiftExprAccess().getGroup_1(), "rule__ShiftExpr__Group_1__0");
+					put(grammarAccess.getShiftExprAccess().getGroup_1_0(), "rule__ShiftExpr__Group_1_0__0");
+					put(grammarAccess.getShiftExprAccess().getGroup_1_0_0(), "rule__ShiftExpr__Group_1_0_0__0");
 					put(grammarAccess.getAdditiveExprAccess().getGroup(), "rule__AdditiveExpr__Group__0");
 					put(grammarAccess.getAdditiveExprAccess().getGroup_1(), "rule__AdditiveExpr__Group_1__0");
 					put(grammarAccess.getAdditiveExprAccess().getGroup_1_0(), "rule__AdditiveExpr__Group_1_0__0");
@@ -149,6 +154,8 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getLValAccess().getNameAssignment_0(), "rule__LVal__NameAssignment_0");
 					put(grammarAccess.getLValAccess().getIndicesAssignment_1_1(), "rule__LVal__IndicesAssignment_1_1");
 					put(grammarAccess.getLValAccess().getAtAssignment_2_1(), "rule__LVal__AtAssignment_2_1");
+					put(grammarAccess.getShiftExprAccess().getOperatorAssignment_1_0_0_1(), "rule__ShiftExpr__OperatorAssignment_1_0_0_1");
+					put(grammarAccess.getShiftExprAccess().getRightAssignment_1_1(), "rule__ShiftExpr__RightAssignment_1_1");
 					put(grammarAccess.getAdditiveExprAccess().getOperatorAssignment_1_0_0_1(), "rule__AdditiveExpr__OperatorAssignment_1_0_0_1");
 					put(grammarAccess.getAdditiveExprAccess().getRightAssignment_1_1(), "rule__AdditiveExpr__RightAssignment_1_1");
 					put(grammarAccess.getMultiplicativeExprAccess().getOperatorAssignment_1_0_0_1(), "rule__MultiplicativeExpr__OperatorAssignment_1_0_0_1");

@@ -35,6 +35,8 @@ import edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr;
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
 import edu.cmu.sei.annex.dmpl.dmpl.Program;
 import edu.cmu.sei.annex.dmpl.dmpl.ProgramElement;
+import edu.cmu.sei.annex.dmpl.dmpl.ShiftExpr;
+import edu.cmu.sei.annex.dmpl.dmpl.ShiftOperator;
 import edu.cmu.sei.annex.dmpl.dmpl.SignEnum;
 import edu.cmu.sei.annex.dmpl.dmpl.SignedEnum;
 import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum;
@@ -267,6 +269,13 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass shiftExprEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass additiveExprEClass = null;
 
   /**
@@ -338,6 +347,13 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EEnum signedEnumEEnum = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EEnum shiftOperatorEEnum = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -1118,6 +1134,46 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getShiftExpr()
+  {
+    return shiftExprEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getShiftExpr_Left()
+  {
+    return (EReference)shiftExprEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getShiftExpr_Operator()
+  {
+    return (EAttribute)shiftExprEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getShiftExpr_Right()
+  {
+    return (EReference)shiftExprEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getAdditiveExpr()
   {
     return additiveExprEClass;
@@ -1358,6 +1414,16 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EEnum getShiftOperator()
+  {
+    return shiftOperatorEEnum;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EEnum getAdditiveOperator()
   {
     return additiveOperatorEEnum;
@@ -1519,6 +1585,11 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     createEReference(fnPrototypeDeclarationEClass, FN_PROTOTYPE_DECLARATION__TYPE);
     createEReference(fnPrototypeDeclarationEClass, FN_PROTOTYPE_DECLARATION__PARAMS);
 
+    shiftExprEClass = createEClass(SHIFT_EXPR);
+    createEReference(shiftExprEClass, SHIFT_EXPR__LEFT);
+    createEAttribute(shiftExprEClass, SHIFT_EXPR__OPERATOR);
+    createEReference(shiftExprEClass, SHIFT_EXPR__RIGHT);
+
     additiveExprEClass = createEClass(ADDITIVE_EXPR);
     createEReference(additiveExprEClass, ADDITIVE_EXPR__LEFT);
     createEAttribute(additiveExprEClass, ADDITIVE_EXPR__OPERATOR);
@@ -1552,6 +1623,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     signEnumEEnum = createEEnum(SIGN_ENUM);
     simpTypeEnumEEnum = createEEnum(SIMP_TYPE_ENUM);
     signedEnumEEnum = createEEnum(SIGNED_ENUM);
+    shiftOperatorEEnum = createEEnum(SHIFT_OPERATOR);
     additiveOperatorEEnum = createEEnum(ADDITIVE_OPERATOR);
     multiplicativeOperatorEEnum = createEEnum(MULTIPLICATIVE_OPERATOR);
     unaryOperatorEEnum = createEEnum(UNARY_OPERATOR);
@@ -1602,6 +1674,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     idDimensionEClass.getESuperTypes().add(this.getDimension());
     threadDeclarationEClass.getESuperTypes().add(this.getFnPrototype());
     fnPrototypeDeclarationEClass.getESuperTypes().add(this.getFnPrototype());
+    shiftExprEClass.getESuperTypes().add(this.getExpr());
     additiveExprEClass.getESuperTypes().add(this.getExpr());
     multiplicativeExprEClass.getESuperTypes().add(this.getExpr());
     idExprEClass.getESuperTypes().add(this.getExpr());
@@ -1708,6 +1781,11 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEReference(getFnPrototypeDeclaration_Type(), this.getType(), null, "type", null, 0, 1, FnPrototypeDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getFnPrototypeDeclaration_Params(), this.getParam(), null, "params", null, 0, -1, FnPrototypeDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(shiftExprEClass, ShiftExpr.class, "ShiftExpr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getShiftExpr_Left(), this.getExpr(), null, "left", null, 0, 1, ShiftExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getShiftExpr_Operator(), this.getShiftOperator(), "operator", null, 0, 1, ShiftExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getShiftExpr_Right(), this.getExpr(), null, "right", null, 0, 1, ShiftExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     initEClass(additiveExprEClass, AdditiveExpr.class, "AdditiveExpr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getAdditiveExpr_Left(), this.getExpr(), null, "left", null, 0, 1, AdditiveExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getAdditiveExpr_Operator(), this.getAdditiveOperator(), "operator", null, 0, 1, AdditiveExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1754,6 +1832,10 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     addEEnumLiteral(signedEnumEEnum, SignedEnum.UNSET);
     addEEnumLiteral(signedEnumEEnum, SignedEnum.SIGNED);
     addEEnumLiteral(signedEnumEEnum, SignedEnum.UNSIGNED);
+
+    initEEnum(shiftOperatorEEnum, ShiftOperator.class, "ShiftOperator");
+    addEEnumLiteral(shiftOperatorEEnum, ShiftOperator.LEFT);
+    addEEnumLiteral(shiftOperatorEEnum, ShiftOperator.RIGHT);
 
     initEEnum(additiveOperatorEEnum, AdditiveOperator.class, "AdditiveOperator");
     addEEnumLiteral(additiveOperatorEEnum, AdditiveOperator.ADD);

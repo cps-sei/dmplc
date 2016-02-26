@@ -23,6 +23,8 @@ import edu.cmu.sei.annex.dmpl.dmpl.NodeNumDimension
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumExpr
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure
 import edu.cmu.sei.annex.dmpl.dmpl.Program
+import edu.cmu.sei.annex.dmpl.dmpl.ShiftExpr
+import edu.cmu.sei.annex.dmpl.dmpl.ShiftOperator
 import edu.cmu.sei.annex.dmpl.dmpl.SignEnum
 import edu.cmu.sei.annex.dmpl.dmpl.SignedEnum
 import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum
@@ -798,6 +800,76 @@ class ParserTest {
 						]
 						MultiplicativeOperator.MULTIPLY.assertEquals(operator)
 						"name16".assertEquals((right as LVal).name)
+					]
+				]
+			]
+		]
+	}
+	
+	@Test
+	def void testShiftExpr() {
+		'''
+			void f1() {
+				int v1 = name1 << name2;
+				int v2 = name3 >> name4;
+				int v3 = name5 << name6 >> name7;
+				int v4 = name8 << name9 + name10;
+				int v5 = name11 + name12 << name13;
+			}
+		'''.parse => [
+			assertNoIssues;
+			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+				5.assertEquals(varInits.size)
+				varInits.get(0).varAsgnList.varAsgn => [
+					"v1".assertEquals(^var.name)
+					expr as ShiftExpr => [
+						"name1".assertEquals((left as LVal).name)
+						ShiftOperator.LEFT.assertEquals(operator)
+						"name2".assertEquals((right as LVal).name)
+					]
+				]
+				varInits.get(1).varAsgnList.varAsgn => [
+					"v2".assertEquals(^var.name)
+					expr as ShiftExpr => [
+						"name3".assertEquals((left as LVal).name)
+						ShiftOperator.RIGHT.assertEquals(operator)
+						"name4".assertEquals((right as LVal).name)
+					]
+				]
+				varInits.get(2).varAsgnList.varAsgn => [
+					"v3".assertEquals(^var.name)
+					expr as ShiftExpr => [
+						left as ShiftExpr => [
+							"name5".assertEquals((left as LVal).name)
+							ShiftOperator.LEFT.assertEquals(operator)
+							"name6".assertEquals((right as LVal).name)
+						]
+						ShiftOperator.RIGHT.assertEquals(operator)
+						"name7".assertEquals((right as LVal).name)
+					]
+				]
+				varInits.get(3).varAsgnList.varAsgn => [
+					"v4".assertEquals(^var.name)
+					expr as ShiftExpr => [
+						"name8".assertEquals((left as LVal).name)
+						ShiftOperator.LEFT.assertEquals(operator)
+						right as AdditiveExpr => [
+							"name9".assertEquals((left as LVal).name)
+							AdditiveOperator.ADD.assertEquals(operator)
+							"name10".assertEquals((right as LVal).name)
+						]
+					]
+				]
+				varInits.get(4).varAsgnList.varAsgn => [
+					"v5".assertEquals(^var.name)
+					expr as ShiftExpr => [
+						left as AdditiveExpr => [
+							"name11".assertEquals((left as LVal).name)
+							AdditiveOperator.ADD.assertEquals(operator)
+							"name12".assertEquals((right as LVal).name)
+						]
+						ShiftOperator.LEFT.assertEquals(operator)
+						"name13".assertEquals((right as LVal).name)
 					]
 				]
 			]

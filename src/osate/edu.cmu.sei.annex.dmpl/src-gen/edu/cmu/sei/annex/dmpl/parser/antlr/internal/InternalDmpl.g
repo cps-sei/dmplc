@@ -1439,14 +1439,91 @@ ruleExpr returns [EObject current=null]
     @after { leaveRule(); }:
 
     { 
-        newCompositeNode(grammarAccess.getExprAccess().getAdditiveExprParserRuleCall()); 
+        newCompositeNode(grammarAccess.getExprAccess().getShiftExprParserRuleCall()); 
+    }
+    this_ShiftExpr_0=ruleShiftExpr
+    { 
+        $current = $this_ShiftExpr_0.current; 
+        afterParserOrEnumRuleCall();
+    }
+
+;
+
+
+
+
+
+// Entry rule entryRuleShiftExpr
+entryRuleShiftExpr returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getShiftExprRule()); }
+	 iv_ruleShiftExpr=ruleShiftExpr 
+	 { $current=$iv_ruleShiftExpr.current; } 
+	 EOF 
+;
+
+// Rule ShiftExpr
+ruleShiftExpr returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(
+    { 
+        newCompositeNode(grammarAccess.getShiftExprAccess().getAdditiveExprParserRuleCall_0()); 
     }
     this_AdditiveExpr_0=ruleAdditiveExpr
     { 
         $current = $this_AdditiveExpr_0.current; 
         afterParserOrEnumRuleCall();
     }
+(((((
+)(
+(
+ruleShiftOperator
+)
+)))=>((
+    {
+        $current = forceCreateModelElementAndSet(
+            grammarAccess.getShiftExprAccess().getShiftExprLeftAction_1_0_0_0(),
+            $current);
+    }
+)(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getShiftExprAccess().getOperatorShiftOperatorEnumRuleCall_1_0_0_1_0()); 
+	    }
+		lv_operator_2_0=ruleShiftOperator		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getShiftExprRule());
+	        }
+       		set(
+       			$current, 
+       			"operator",
+        		lv_operator_2_0, 
+        		"ShiftOperator");
+	        afterParserOrEnumRuleCall();
+	    }
 
+)
+)))(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getShiftExprAccess().getRightAdditiveExprParserRuleCall_1_1_0()); 
+	    }
+		lv_right_3_0=ruleAdditiveExpr		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getShiftExprRule());
+	        }
+       		set(
+       			$current, 
+       			"right",
+        		lv_right_3_0, 
+        		"AdditiveExpr");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))*)
 ;
 
 
@@ -2272,6 +2349,25 @@ ruleDouble returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()]
 
 
 
+
+
+
+// Rule ShiftOperator
+ruleShiftOperator returns [Enumerator current=null] 
+    @init { enterRule(); }
+    @after { leaveRule(); }:
+((	enumLiteral_0='<<' 
+	{
+        $current = grammarAccess.getShiftOperatorAccess().getLEFTEnumLiteralDeclaration_0().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_0, grammarAccess.getShiftOperatorAccess().getLEFTEnumLiteralDeclaration_0()); 
+    }
+)
+    |(	enumLiteral_1='>>' 
+	{
+        $current = grammarAccess.getShiftOperatorAccess().getRIGHTEnumLiteralDeclaration_1().getEnumLiteral().getInstance();
+        newLeafNode(enumLiteral_1, grammarAccess.getShiftOperatorAccess().getRIGHTEnumLiteralDeclaration_1()); 
+    }
+));
 
 
 

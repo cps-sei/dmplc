@@ -288,6 +288,14 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case DmplPackage.SHIFT_EXPR:
+      {
+        ShiftExpr shiftExpr = (ShiftExpr)theEObject;
+        T result = caseShiftExpr(shiftExpr);
+        if (result == null) result = caseExpr(shiftExpr);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case DmplPackage.ADDITIVE_EXPR:
       {
         AdditiveExpr additiveExpr = (AdditiveExpr)theEObject;
@@ -800,6 +808,22 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseFnPrototypeDeclaration(FnPrototypeDeclaration object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Shift Expr</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Shift Expr</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseShiftExpr(ShiftExpr object)
   {
     return null;
   }

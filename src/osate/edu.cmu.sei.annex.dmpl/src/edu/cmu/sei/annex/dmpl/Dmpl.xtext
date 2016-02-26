@@ -104,7 +104,11 @@ LVal:
 
 Expr:
 	//TODO
-	AdditiveExpr
+	ShiftExpr
+;
+
+ShiftExpr returns Expr:
+	AdditiveExpr (=>({ShiftExpr.left=current} operator=ShiftOperator) right=AdditiveExpr)*
 ;
 
 AdditiveExpr returns Expr:
@@ -160,6 +164,11 @@ enum SignedEnum:
 
 Signed returns SignedEnum:
 	'signed' | 'unsigned'
+;
+
+enum ShiftOperator:
+	LEFT='<<' |
+	RIGHT='>>'
 ;
 
 enum AdditiveOperator:

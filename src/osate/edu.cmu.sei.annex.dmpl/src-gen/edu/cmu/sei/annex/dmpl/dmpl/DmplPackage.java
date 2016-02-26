@@ -1078,6 +1078,52 @@ public interface DmplPackage extends EPackage
   int FN_PROTOTYPE_DECLARATION_FEATURE_COUNT = FN_PROTOTYPE_FEATURE_COUNT + 2;
 
   /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ShiftExprImpl <em>Shift Expr</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.ShiftExprImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getShiftExpr()
+   * @generated
+   */
+  int SHIFT_EXPR = 28;
+
+  /**
+   * The feature id for the '<em><b>Left</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SHIFT_EXPR__LEFT = EXPR_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Operator</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SHIFT_EXPR__OPERATOR = EXPR_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>Right</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SHIFT_EXPR__RIGHT = EXPR_FEATURE_COUNT + 2;
+
+  /**
+   * The number of structural features of the '<em>Shift Expr</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SHIFT_EXPR_FEATURE_COUNT = EXPR_FEATURE_COUNT + 3;
+
+  /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.AdditiveExprImpl <em>Additive Expr</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1085,7 +1131,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAdditiveExpr()
    * @generated
    */
-  int ADDITIVE_EXPR = 28;
+  int ADDITIVE_EXPR = 29;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1131,7 +1177,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getMultiplicativeExpr()
    * @generated
    */
-  int MULTIPLICATIVE_EXPR = 29;
+  int MULTIPLICATIVE_EXPR = 30;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1177,7 +1223,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIdExpr()
    * @generated
    */
-  int ID_EXPR = 30;
+  int ID_EXPR = 31;
 
   /**
    * The number of structural features of the '<em>Id Expr</em>' class.
@@ -1196,7 +1242,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIntExpr()
    * @generated
    */
-  int INT_EXPR = 31;
+  int INT_EXPR = 32;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -1224,7 +1270,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getDoubleExpr()
    * @generated
    */
-  int DOUBLE_EXPR = 32;
+  int DOUBLE_EXPR = 33;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -1252,7 +1298,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getNodeNumExpr()
    * @generated
    */
-  int NODE_NUM_EXPR = 33;
+  int NODE_NUM_EXPR = 34;
 
   /**
    * The number of structural features of the '<em>Node Num Expr</em>' class.
@@ -1271,7 +1317,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getUnaryExpr()
    * @generated
    */
-  int UNARY_EXPR = 34;
+  int UNARY_EXPR = 35;
 
   /**
    * The feature id for the '<em><b>Operator</b></em>' attribute.
@@ -1308,7 +1354,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBuiltInExpr()
    * @generated
    */
-  int BUILT_IN_EXPR = 35;
+  int BUILT_IN_EXPR = 36;
 
   /**
    * The feature id for the '<em><b>Function</b></em>' attribute.
@@ -1354,7 +1400,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignEnum()
    * @generated
    */
-  int SIGN_ENUM = 36;
+  int SIGN_ENUM = 37;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum <em>Simp Type Enum</em>}' enum.
@@ -1364,7 +1410,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSimpTypeEnum()
    * @generated
    */
-  int SIMP_TYPE_ENUM = 37;
+  int SIMP_TYPE_ENUM = 38;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SignedEnum <em>Signed Enum</em>}' enum.
@@ -1374,7 +1420,17 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignedEnum()
    * @generated
    */
-  int SIGNED_ENUM = 38;
+  int SIGNED_ENUM = 39;
+
+  /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.ShiftOperator <em>Shift Operator</em>}' enum.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ShiftOperator
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getShiftOperator()
+   * @generated
+   */
+  int SHIFT_OPERATOR = 40;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.AdditiveOperator <em>Additive Operator</em>}' enum.
@@ -1384,7 +1440,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAdditiveOperator()
    * @generated
    */
-  int ADDITIVE_OPERATOR = 39;
+  int ADDITIVE_OPERATOR = 41;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.MultiplicativeOperator <em>Multiplicative Operator</em>}' enum.
@@ -1394,7 +1450,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getMultiplicativeOperator()
    * @generated
    */
-  int MULTIPLICATIVE_OPERATOR = 40;
+  int MULTIPLICATIVE_OPERATOR = 42;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.UnaryOperator <em>Unary Operator</em>}' enum.
@@ -1404,7 +1460,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getUnaryOperator()
    * @generated
    */
-  int UNARY_OPERATOR = 41;
+  int UNARY_OPERATOR = 43;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.BuiltInFunctionEnum <em>Built In Function Enum</em>}' enum.
@@ -1414,7 +1470,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBuiltInFunctionEnum()
    * @generated
    */
-  int BUILT_IN_FUNCTION_ENUM = 42;
+  int BUILT_IN_FUNCTION_ENUM = 44;
 
 
   /**
@@ -2138,6 +2194,49 @@ public interface DmplPackage extends EPackage
   EReference getFnPrototypeDeclaration_Params();
 
   /**
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.ShiftExpr <em>Shift Expr</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Shift Expr</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ShiftExpr
+   * @generated
+   */
+  EClass getShiftExpr();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.ShiftExpr#getLeft <em>Left</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Left</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ShiftExpr#getLeft()
+   * @see #getShiftExpr()
+   * @generated
+   */
+  EReference getShiftExpr_Left();
+
+  /**
+   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.ShiftExpr#getOperator <em>Operator</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Operator</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ShiftExpr#getOperator()
+   * @see #getShiftExpr()
+   * @generated
+   */
+  EAttribute getShiftExpr_Operator();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.ShiftExpr#getRight <em>Right</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Right</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ShiftExpr#getRight()
+   * @see #getShiftExpr()
+   * @generated
+   */
+  EReference getShiftExpr_Right();
+
+  /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.AdditiveExpr <em>Additive Expr</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2389,6 +2488,16 @@ public interface DmplPackage extends EPackage
    * @generated
    */
   EEnum getSignedEnum();
+
+  /**
+   * Returns the meta object for enum '{@link edu.cmu.sei.annex.dmpl.dmpl.ShiftOperator <em>Shift Operator</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for enum '<em>Shift Operator</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ShiftOperator
+   * @generated
+   */
+  EEnum getShiftOperator();
 
   /**
    * Returns the meta object for enum '{@link edu.cmu.sei.annex.dmpl.dmpl.AdditiveOperator <em>Additive Operator</em>}'.
@@ -3054,6 +3163,40 @@ public interface DmplPackage extends EPackage
     EReference FN_PROTOTYPE_DECLARATION__PARAMS = eINSTANCE.getFnPrototypeDeclaration_Params();
 
     /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ShiftExprImpl <em>Shift Expr</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.ShiftExprImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getShiftExpr()
+     * @generated
+     */
+    EClass SHIFT_EXPR = eINSTANCE.getShiftExpr();
+
+    /**
+     * The meta object literal for the '<em><b>Left</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference SHIFT_EXPR__LEFT = eINSTANCE.getShiftExpr_Left();
+
+    /**
+     * The meta object literal for the '<em><b>Operator</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute SHIFT_EXPR__OPERATOR = eINSTANCE.getShiftExpr_Operator();
+
+    /**
+     * The meta object literal for the '<em><b>Right</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference SHIFT_EXPR__RIGHT = eINSTANCE.getShiftExpr_Right();
+
+    /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.AdditiveExprImpl <em>Additive Expr</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3266,6 +3409,16 @@ public interface DmplPackage extends EPackage
      * @generated
      */
     EEnum SIGNED_ENUM = eINSTANCE.getSignedEnum();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.ShiftOperator <em>Shift Operator</em>}' enum.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.ShiftOperator
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getShiftOperator()
+     * @generated
+     */
+    EEnum SHIFT_OPERATOR = eINSTANCE.getShiftOperator();
 
     /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.AdditiveOperator <em>Additive Operator</em>}' enum.

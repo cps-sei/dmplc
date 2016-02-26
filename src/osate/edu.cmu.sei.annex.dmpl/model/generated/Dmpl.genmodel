@@ -24,6 +24,10 @@
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SignedEnum/signed"/>
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SignedEnum/unsigned"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Dmpl.ecore#//ShiftOperator">
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//ShiftOperator/LEFT"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//ShiftOperator/RIGHT"/>
+    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Dmpl.ecore#//AdditiveOperator">
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//AdditiveOperator/ADD"/>
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//AdditiveOperator/SUBTRACT"/>
@@ -134,6 +138,11 @@
     <genClasses ecoreClass="Dmpl.ecore#//FnPrototypeDeclaration">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnPrototypeDeclaration/type"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnPrototypeDeclaration/params"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//ShiftExpr">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//ShiftExpr/left"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//ShiftExpr/operator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//ShiftExpr/right"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//AdditiveExpr">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//AdditiveExpr/left"/>

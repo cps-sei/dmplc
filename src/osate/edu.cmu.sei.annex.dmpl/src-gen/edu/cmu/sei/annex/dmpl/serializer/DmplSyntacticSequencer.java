@@ -81,6 +81,7 @@ public class DmplSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) value=INT
 	 *     (rule start) (ambiguity) {AdditiveExpr.left=}
 	 *     (rule start) (ambiguity) {MultiplicativeExpr.left=}
+	 *     (rule start) (ambiguity) {ShiftExpr.left=}
 	 */
 	protected void emit_TerminalExpr_LeftParenthesisKeyword_8_0_a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
@@ -93,6 +94,7 @@ public class DmplSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * This ambiguous syntax occurs at:
 	 *     (rule start) (ambiguity) {AdditiveExpr.left=}
 	 *     (rule start) (ambiguity) {MultiplicativeExpr.left=}
+	 *     (rule start) (ambiguity) {ShiftExpr.left=}
 	 */
 	protected void emit_TerminalExpr_LeftParenthesisKeyword_8_0_p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);

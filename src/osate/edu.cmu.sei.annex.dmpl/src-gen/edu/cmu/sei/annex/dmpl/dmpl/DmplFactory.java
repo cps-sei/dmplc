@@ -275,6 +275,15 @@ public interface DmplFactory extends EFactory
   FnPrototypeDeclaration createFnPrototypeDeclaration();
 
   /**
+   * Returns a new object of class '<em>Shift Expr</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Shift Expr</em>'.
+   * @generated
+   */
+  ShiftExpr createShiftExpr();
+
+  /**
    * Returns a new object of class '<em>Additive Expr</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
