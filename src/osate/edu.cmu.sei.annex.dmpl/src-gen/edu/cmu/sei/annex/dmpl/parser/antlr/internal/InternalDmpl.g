@@ -1439,14 +1439,74 @@ ruleExpr returns [EObject current=null]
     @after { leaveRule(); }:
 
     { 
-        newCompositeNode(grammarAccess.getExprAccess().getEqualityExprParserRuleCall()); 
+        newCompositeNode(grammarAccess.getExprAccess().getBitwiseAndExprParserRuleCall()); 
+    }
+    this_BitwiseAndExpr_0=ruleBitwiseAndExpr
+    { 
+        $current = $this_BitwiseAndExpr_0.current; 
+        afterParserOrEnumRuleCall();
+    }
+
+;
+
+
+
+
+
+// Entry rule entryRuleBitwiseAndExpr
+entryRuleBitwiseAndExpr returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getBitwiseAndExprRule()); }
+	 iv_ruleBitwiseAndExpr=ruleBitwiseAndExpr 
+	 { $current=$iv_ruleBitwiseAndExpr.current; } 
+	 EOF 
+;
+
+// Rule BitwiseAndExpr
+ruleBitwiseAndExpr returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(
+    { 
+        newCompositeNode(grammarAccess.getBitwiseAndExprAccess().getEqualityExprParserRuleCall_0()); 
     }
     this_EqualityExpr_0=ruleEqualityExpr
     { 
         $current = $this_EqualityExpr_0.current; 
         afterParserOrEnumRuleCall();
     }
+(((((
+)	'&' 
+))=>((
+    {
+        $current = forceCreateModelElementAndSet(
+            grammarAccess.getBitwiseAndExprAccess().getBitwiseAndExprLeftAction_1_0_0_0(),
+            $current);
+    }
+)	otherlv_2='&' 
+    {
+    	newLeafNode(otherlv_2, grammarAccess.getBitwiseAndExprAccess().getAmpersandKeyword_1_0_0_1());
+    }
+))(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getBitwiseAndExprAccess().getRightEqualityExprParserRuleCall_1_1_0()); 
+	    }
+		lv_right_3_0=ruleEqualityExpr		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getBitwiseAndExprRule());
+	        }
+       		set(
+       			$current, 
+       			"right",
+        		lv_right_3_0, 
+        		"EqualityExpr");
+	        afterParserOrEnumRuleCall();
+	    }
 
+)
+))*)
 ;
 
 

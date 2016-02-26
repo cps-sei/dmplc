@@ -7,6 +7,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import edu.cmu.sei.annex.dmpl.dmpl.AdditiveExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.ArgList;
+import edu.cmu.sei.annex.dmpl.dmpl.BitwiseAndExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.BuiltInExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.CallExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.CompareExpr;
@@ -67,6 +68,9 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.ARG_LIST:
 				sequence_ArgList(context, (ArgList) semanticObject); 
+				return; 
+			case DmplPackage.BITWISE_AND_EXPR:
+				sequence_BitwiseAndExpr(context, (BitwiseAndExpr) semanticObject); 
 				return; 
 			case DmplPackage.BUILT_IN_EXPR:
 				sequence_TerminalExpr(context, (BuiltInExpr) semanticObject); 
@@ -196,6 +200,25 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 */
 	protected void sequence_ArgList(EObject context, ArgList semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (left=BitwiseAndExpr_BitwiseAndExpr_1_0_0_0 right=EqualityExpr)
+	 */
+	protected void sequence_BitwiseAndExpr(EObject context, BitwiseAndExpr semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.BITWISE_AND_EXPR__LEFT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.BITWISE_AND_EXPR__LEFT));
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.BITWISE_AND_EXPR__RIGHT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.BITWISE_AND_EXPR__RIGHT));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getBitwiseAndExprAccess().getBitwiseAndExprLeftAction_1_0_0_0(), semanticObject.getLeft());
+		feeder.accept(grammarAccess.getBitwiseAndExprAccess().getRightEqualityExprParserRuleCall_1_1_0(), semanticObject.getRight());
+		feeder.finish();
 	}
 	
 	

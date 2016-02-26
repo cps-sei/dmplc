@@ -288,6 +288,14 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case DmplPackage.BITWISE_AND_EXPR:
+      {
+        BitwiseAndExpr bitwiseAndExpr = (BitwiseAndExpr)theEObject;
+        T result = caseBitwiseAndExpr(bitwiseAndExpr);
+        if (result == null) result = caseExpr(bitwiseAndExpr);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case DmplPackage.EQUALITY_EXPR:
       {
         EqualityExpr equalityExpr = (EqualityExpr)theEObject;
@@ -824,6 +832,22 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseFnPrototypeDeclaration(FnPrototypeDeclaration object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Bitwise And Expr</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Bitwise And Expr</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseBitwiseAndExpr(BitwiseAndExpr object)
   {
     return null;
   }

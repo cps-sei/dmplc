@@ -1078,6 +1078,43 @@ public interface DmplPackage extends EPackage
   int FN_PROTOTYPE_DECLARATION_FEATURE_COUNT = FN_PROTOTYPE_FEATURE_COUNT + 2;
 
   /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.BitwiseAndExprImpl <em>Bitwise And Expr</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.BitwiseAndExprImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBitwiseAndExpr()
+   * @generated
+   */
+  int BITWISE_AND_EXPR = 28;
+
+  /**
+   * The feature id for the '<em><b>Left</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BITWISE_AND_EXPR__LEFT = EXPR_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Right</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BITWISE_AND_EXPR__RIGHT = EXPR_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>Bitwise And Expr</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int BITWISE_AND_EXPR_FEATURE_COUNT = EXPR_FEATURE_COUNT + 2;
+
+  /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.EqualityExprImpl <em>Equality Expr</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1085,7 +1122,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getEqualityExpr()
    * @generated
    */
-  int EQUALITY_EXPR = 28;
+  int EQUALITY_EXPR = 29;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1131,7 +1168,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getCompareExpr()
    * @generated
    */
-  int COMPARE_EXPR = 29;
+  int COMPARE_EXPR = 30;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1177,7 +1214,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getShiftExpr()
    * @generated
    */
-  int SHIFT_EXPR = 30;
+  int SHIFT_EXPR = 31;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1223,7 +1260,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAdditiveExpr()
    * @generated
    */
-  int ADDITIVE_EXPR = 31;
+  int ADDITIVE_EXPR = 32;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1269,7 +1306,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getMultiplicativeExpr()
    * @generated
    */
-  int MULTIPLICATIVE_EXPR = 32;
+  int MULTIPLICATIVE_EXPR = 33;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1315,7 +1352,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIdExpr()
    * @generated
    */
-  int ID_EXPR = 33;
+  int ID_EXPR = 34;
 
   /**
    * The number of structural features of the '<em>Id Expr</em>' class.
@@ -1334,7 +1371,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIntExpr()
    * @generated
    */
-  int INT_EXPR = 34;
+  int INT_EXPR = 35;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -1362,7 +1399,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getDoubleExpr()
    * @generated
    */
-  int DOUBLE_EXPR = 35;
+  int DOUBLE_EXPR = 36;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -1390,7 +1427,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getNodeNumExpr()
    * @generated
    */
-  int NODE_NUM_EXPR = 36;
+  int NODE_NUM_EXPR = 37;
 
   /**
    * The number of structural features of the '<em>Node Num Expr</em>' class.
@@ -1409,7 +1446,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getUnaryExpr()
    * @generated
    */
-  int UNARY_EXPR = 37;
+  int UNARY_EXPR = 38;
 
   /**
    * The feature id for the '<em><b>Operator</b></em>' attribute.
@@ -1446,7 +1483,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBuiltInExpr()
    * @generated
    */
-  int BUILT_IN_EXPR = 38;
+  int BUILT_IN_EXPR = 39;
 
   /**
    * The feature id for the '<em><b>Function</b></em>' attribute.
@@ -1492,7 +1529,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignEnum()
    * @generated
    */
-  int SIGN_ENUM = 39;
+  int SIGN_ENUM = 40;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum <em>Simp Type Enum</em>}' enum.
@@ -1502,7 +1539,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSimpTypeEnum()
    * @generated
    */
-  int SIMP_TYPE_ENUM = 40;
+  int SIMP_TYPE_ENUM = 41;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SignedEnum <em>Signed Enum</em>}' enum.
@@ -1512,7 +1549,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignedEnum()
    * @generated
    */
-  int SIGNED_ENUM = 41;
+  int SIGNED_ENUM = 42;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.EqualityOperator <em>Equality Operator</em>}' enum.
@@ -1522,7 +1559,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getEqualityOperator()
    * @generated
    */
-  int EQUALITY_OPERATOR = 42;
+  int EQUALITY_OPERATOR = 43;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.CompareOperator <em>Compare Operator</em>}' enum.
@@ -1532,7 +1569,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getCompareOperator()
    * @generated
    */
-  int COMPARE_OPERATOR = 43;
+  int COMPARE_OPERATOR = 44;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.ShiftOperator <em>Shift Operator</em>}' enum.
@@ -1542,7 +1579,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getShiftOperator()
    * @generated
    */
-  int SHIFT_OPERATOR = 44;
+  int SHIFT_OPERATOR = 45;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.AdditiveOperator <em>Additive Operator</em>}' enum.
@@ -1552,7 +1589,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAdditiveOperator()
    * @generated
    */
-  int ADDITIVE_OPERATOR = 45;
+  int ADDITIVE_OPERATOR = 46;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.MultiplicativeOperator <em>Multiplicative Operator</em>}' enum.
@@ -1562,7 +1599,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getMultiplicativeOperator()
    * @generated
    */
-  int MULTIPLICATIVE_OPERATOR = 46;
+  int MULTIPLICATIVE_OPERATOR = 47;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.UnaryOperator <em>Unary Operator</em>}' enum.
@@ -1572,7 +1609,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getUnaryOperator()
    * @generated
    */
-  int UNARY_OPERATOR = 47;
+  int UNARY_OPERATOR = 48;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.BuiltInFunctionEnum <em>Built In Function Enum</em>}' enum.
@@ -1582,7 +1619,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBuiltInFunctionEnum()
    * @generated
    */
-  int BUILT_IN_FUNCTION_ENUM = 48;
+  int BUILT_IN_FUNCTION_ENUM = 49;
 
 
   /**
@@ -2304,6 +2341,38 @@ public interface DmplPackage extends EPackage
    * @generated
    */
   EReference getFnPrototypeDeclaration_Params();
+
+  /**
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.BitwiseAndExpr <em>Bitwise And Expr</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Bitwise And Expr</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.BitwiseAndExpr
+   * @generated
+   */
+  EClass getBitwiseAndExpr();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.BitwiseAndExpr#getLeft <em>Left</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Left</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.BitwiseAndExpr#getLeft()
+   * @see #getBitwiseAndExpr()
+   * @generated
+   */
+  EReference getBitwiseAndExpr_Left();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.BitwiseAndExpr#getRight <em>Right</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Right</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.BitwiseAndExpr#getRight()
+   * @see #getBitwiseAndExpr()
+   * @generated
+   */
+  EReference getBitwiseAndExpr_Right();
 
   /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.EqualityExpr <em>Equality Expr</em>}'.
@@ -3379,6 +3448,32 @@ public interface DmplPackage extends EPackage
      * @generated
      */
     EReference FN_PROTOTYPE_DECLARATION__PARAMS = eINSTANCE.getFnPrototypeDeclaration_Params();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.BitwiseAndExprImpl <em>Bitwise And Expr</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.BitwiseAndExprImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBitwiseAndExpr()
+     * @generated
+     */
+    EClass BITWISE_AND_EXPR = eINSTANCE.getBitwiseAndExpr();
+
+    /**
+     * The meta object literal for the '<em><b>Left</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference BITWISE_AND_EXPR__LEFT = eINSTANCE.getBitwiseAndExpr_Left();
+
+    /**
+     * The meta object literal for the '<em><b>Right</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference BITWISE_AND_EXPR__RIGHT = eINSTANCE.getBitwiseAndExpr_Right();
 
     /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.EqualityExprImpl <em>Equality Expr</em>}' class.

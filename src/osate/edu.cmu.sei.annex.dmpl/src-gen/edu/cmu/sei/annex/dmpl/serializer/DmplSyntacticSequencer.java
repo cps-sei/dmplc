@@ -80,6 +80,7 @@ public class DmplSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) value=Double
 	 *     (rule start) (ambiguity) value=INT
 	 *     (rule start) (ambiguity) {AdditiveExpr.left=}
+	 *     (rule start) (ambiguity) {BitwiseAndExpr.left=}
 	 *     (rule start) (ambiguity) {CompareExpr.left=}
 	 *     (rule start) (ambiguity) {EqualityExpr.left=}
 	 *     (rule start) (ambiguity) {MultiplicativeExpr.left=}
@@ -95,6 +96,7 @@ public class DmplSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *
 	 * This ambiguous syntax occurs at:
 	 *     (rule start) (ambiguity) {AdditiveExpr.left=}
+	 *     (rule start) (ambiguity) {BitwiseAndExpr.left=}
 	 *     (rule start) (ambiguity) {CompareExpr.left=}
 	 *     (rule start) (ambiguity) {EqualityExpr.left=}
 	 *     (rule start) (ambiguity) {MultiplicativeExpr.left=}

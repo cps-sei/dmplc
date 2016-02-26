@@ -816,15 +816,59 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 	public class ExprElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Expr");
-		private final RuleCall cEqualityExprParserRuleCall = (RuleCall)rule.eContents().get(1);
+		private final RuleCall cBitwiseAndExprParserRuleCall = (RuleCall)rule.eContents().get(1);
 		
 		//Expr: //TODO
-		//	EqualityExpr;
+		//	BitwiseAndExpr;
 		@Override public ParserRule getRule() { return rule; }
 
 		////TODO
+		//BitwiseAndExpr
+		public RuleCall getBitwiseAndExprParserRuleCall() { return cBitwiseAndExprParserRuleCall; }
+	}
+
+	public class BitwiseAndExprElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "BitwiseAndExpr");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final RuleCall cEqualityExprParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
+		private final Group cGroup_1_0 = (Group)cGroup_1.eContents().get(0);
+		private final Group cGroup_1_0_0 = (Group)cGroup_1_0.eContents().get(0);
+		private final Action cBitwiseAndExprLeftAction_1_0_0_0 = (Action)cGroup_1_0_0.eContents().get(0);
+		private final Keyword cAmpersandKeyword_1_0_0_1 = (Keyword)cGroup_1_0_0.eContents().get(1);
+		private final Assignment cRightAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
+		private final RuleCall cRightEqualityExprParserRuleCall_1_1_0 = (RuleCall)cRightAssignment_1_1.eContents().get(0);
+		
+		//BitwiseAndExpr returns Expr:
+		//	EqualityExpr (=> ({BitwiseAndExpr.left=current} "&") right=EqualityExpr)*;
+		@Override public ParserRule getRule() { return rule; }
+
+		//EqualityExpr (=> ({BitwiseAndExpr.left=current} "&") right=EqualityExpr)*
+		public Group getGroup() { return cGroup; }
+
 		//EqualityExpr
-		public RuleCall getEqualityExprParserRuleCall() { return cEqualityExprParserRuleCall; }
+		public RuleCall getEqualityExprParserRuleCall_0() { return cEqualityExprParserRuleCall_0; }
+
+		//(=> ({BitwiseAndExpr.left=current} "&") right=EqualityExpr)*
+		public Group getGroup_1() { return cGroup_1; }
+
+		//=> ({BitwiseAndExpr.left=current} "&")
+		public Group getGroup_1_0() { return cGroup_1_0; }
+
+		//{BitwiseAndExpr.left=current} "&"
+		public Group getGroup_1_0_0() { return cGroup_1_0_0; }
+
+		//{BitwiseAndExpr.left=current}
+		public Action getBitwiseAndExprLeftAction_1_0_0_0() { return cBitwiseAndExprLeftAction_1_0_0_0; }
+
+		//"&"
+		public Keyword getAmpersandKeyword_1_0_0_1() { return cAmpersandKeyword_1_0_0_1; }
+
+		//right=EqualityExpr
+		public Assignment getRightAssignment_1_1() { return cRightAssignment_1_1; }
+
+		//EqualityExpr
+		public RuleCall getRightEqualityExprParserRuleCall_1_1_0() { return cRightEqualityExprParserRuleCall_1_1_0; }
 	}
 
 	public class EqualityExprElements extends AbstractParserRuleElementFinder {
@@ -1878,6 +1922,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final VarInitListElements pVarInitList;
 	private final LValElements pLVal;
 	private final ExprElements pExpr;
+	private final BitwiseAndExprElements pBitwiseAndExpr;
 	private final EqualityExprElements pEqualityExpr;
 	private final CompareExprElements pCompareExpr;
 	private final ShiftExprElements pShiftExpr;
@@ -1934,6 +1979,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pVarInitList = new VarInitListElements();
 		this.pLVal = new LValElements();
 		this.pExpr = new ExprElements();
+		this.pBitwiseAndExpr = new BitwiseAndExprElements();
 		this.pEqualityExpr = new EqualityExprElements();
 		this.pCompareExpr = new CompareExprElements();
 		this.pShiftExpr = new ShiftExprElements();
@@ -2200,13 +2246,23 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Expr: //TODO
-	//	EqualityExpr;
+	//	BitwiseAndExpr;
 	public ExprElements getExprAccess() {
 		return pExpr;
 	}
 	
 	public ParserRule getExprRule() {
 		return getExprAccess().getRule();
+	}
+
+	//BitwiseAndExpr returns Expr:
+	//	EqualityExpr (=> ({BitwiseAndExpr.left=current} "&") right=EqualityExpr)*;
+	public BitwiseAndExprElements getBitwiseAndExprAccess() {
+		return pBitwiseAndExpr;
+	}
+	
+	public ParserRule getBitwiseAndExprRule() {
+		return getBitwiseAndExprAccess().getRule();
 	}
 
 	//EqualityExpr returns Expr:

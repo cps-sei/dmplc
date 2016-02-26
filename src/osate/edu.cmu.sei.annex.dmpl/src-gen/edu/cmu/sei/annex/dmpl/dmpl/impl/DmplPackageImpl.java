@@ -5,6 +5,7 @@ package edu.cmu.sei.annex.dmpl.dmpl.impl;
 import edu.cmu.sei.annex.dmpl.dmpl.AdditiveExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.AdditiveOperator;
 import edu.cmu.sei.annex.dmpl.dmpl.ArgList;
+import edu.cmu.sei.annex.dmpl.dmpl.BitwiseAndExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.BuiltInExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.BuiltInFunctionEnum;
 import edu.cmu.sei.annex.dmpl.dmpl.CallExpr;
@@ -267,6 +268,13 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass fnPrototypeDeclarationEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass bitwiseAndExprEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -1166,6 +1174,36 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getBitwiseAndExpr()
+  {
+    return bitwiseAndExprEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getBitwiseAndExpr_Left()
+  {
+    return (EReference)bitwiseAndExprEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getBitwiseAndExpr_Right()
+  {
+    return (EReference)bitwiseAndExprEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getEqualityExpr()
   {
     return equalityExprEClass;
@@ -1717,6 +1755,10 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     createEReference(fnPrototypeDeclarationEClass, FN_PROTOTYPE_DECLARATION__TYPE);
     createEReference(fnPrototypeDeclarationEClass, FN_PROTOTYPE_DECLARATION__PARAMS);
 
+    bitwiseAndExprEClass = createEClass(BITWISE_AND_EXPR);
+    createEReference(bitwiseAndExprEClass, BITWISE_AND_EXPR__LEFT);
+    createEReference(bitwiseAndExprEClass, BITWISE_AND_EXPR__RIGHT);
+
     equalityExprEClass = createEClass(EQUALITY_EXPR);
     createEReference(equalityExprEClass, EQUALITY_EXPR__LEFT);
     createEAttribute(equalityExprEClass, EQUALITY_EXPR__OPERATOR);
@@ -1818,6 +1860,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     idDimensionEClass.getESuperTypes().add(this.getDimension());
     threadDeclarationEClass.getESuperTypes().add(this.getFnPrototype());
     fnPrototypeDeclarationEClass.getESuperTypes().add(this.getFnPrototype());
+    bitwiseAndExprEClass.getESuperTypes().add(this.getExpr());
     equalityExprEClass.getESuperTypes().add(this.getExpr());
     compareExprEClass.getESuperTypes().add(this.getExpr());
     shiftExprEClass.getESuperTypes().add(this.getExpr());
@@ -1926,6 +1969,10 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEClass(fnPrototypeDeclarationEClass, FnPrototypeDeclaration.class, "FnPrototypeDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getFnPrototypeDeclaration_Type(), this.getType(), null, "type", null, 0, 1, FnPrototypeDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getFnPrototypeDeclaration_Params(), this.getParam(), null, "params", null, 0, -1, FnPrototypeDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(bitwiseAndExprEClass, BitwiseAndExpr.class, "BitwiseAndExpr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getBitwiseAndExpr_Left(), this.getExpr(), null, "left", null, 0, 1, BitwiseAndExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getBitwiseAndExpr_Right(), this.getExpr(), null, "right", null, 0, 1, BitwiseAndExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(equalityExprEClass, EqualityExpr.class, "EqualityExpr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getEqualityExpr_Left(), this.getExpr(), null, "left", null, 0, 1, EqualityExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
