@@ -93,6 +93,7 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.ID_DIMENSION: return createIdDimension();
       case DmplPackage.THREAD_DECLARATION: return createThreadDeclaration();
       case DmplPackage.FN_PROTOTYPE_DECLARATION: return createFnPrototypeDeclaration();
+      case DmplPackage.EQUALITY_EXPR: return createEqualityExpr();
       case DmplPackage.COMPARE_EXPR: return createCompareExpr();
       case DmplPackage.SHIFT_EXPR: return createShiftExpr();
       case DmplPackage.ADDITIVE_EXPR: return createAdditiveExpr();
@@ -124,6 +125,8 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
         return createSimpTypeEnumFromString(eDataType, initialValue);
       case DmplPackage.SIGNED_ENUM:
         return createSignedEnumFromString(eDataType, initialValue);
+      case DmplPackage.EQUALITY_OPERATOR:
+        return createEqualityOperatorFromString(eDataType, initialValue);
       case DmplPackage.COMPARE_OPERATOR:
         return createCompareOperatorFromString(eDataType, initialValue);
       case DmplPackage.SHIFT_OPERATOR:
@@ -157,6 +160,8 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
         return convertSimpTypeEnumToString(eDataType, instanceValue);
       case DmplPackage.SIGNED_ENUM:
         return convertSignedEnumToString(eDataType, instanceValue);
+      case DmplPackage.EQUALITY_OPERATOR:
+        return convertEqualityOperatorToString(eDataType, instanceValue);
       case DmplPackage.COMPARE_OPERATOR:
         return convertCompareOperatorToString(eDataType, instanceValue);
       case DmplPackage.SHIFT_OPERATOR:
@@ -487,6 +492,17 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  public EqualityExpr createEqualityExpr()
+  {
+    EqualityExprImpl equalityExpr = new EqualityExprImpl();
+    return equalityExpr;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public CompareExpr createCompareExpr()
   {
     CompareExprImpl compareExpr = new CompareExprImpl();
@@ -654,6 +670,28 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * @generated
    */
   public String convertSignedEnumToString(EDataType eDataType, Object instanceValue)
+  {
+    return instanceValue == null ? null : instanceValue.toString();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EqualityOperator createEqualityOperatorFromString(EDataType eDataType, String initialValue)
+  {
+    EqualityOperator result = EqualityOperator.get(initialValue);
+    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+    return result;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertEqualityOperatorToString(EDataType eDataType, Object instanceValue)
   {
     return instanceValue == null ? null : instanceValue.toString();
   }

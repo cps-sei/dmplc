@@ -48,7 +48,7 @@ import static extension org.junit.Assert.assertTrue
 
 @RunWith(XtextRunner)
 @InjectWith(DmplInjectorProvider)
-class ParserTest {
+class ParserTest1 {
 	@Inject
 	extension ParseHelper<Program>
 	@Inject

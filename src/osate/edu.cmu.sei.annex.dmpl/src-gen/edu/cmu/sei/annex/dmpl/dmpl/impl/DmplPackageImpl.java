@@ -17,6 +17,8 @@ import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplSubclause;
 import edu.cmu.sei.annex.dmpl.dmpl.DoubleConst;
 import edu.cmu.sei.annex.dmpl.dmpl.DoubleExpr;
+import edu.cmu.sei.annex.dmpl.dmpl.EqualityExpr;
+import edu.cmu.sei.annex.dmpl.dmpl.EqualityOperator;
 import edu.cmu.sei.annex.dmpl.dmpl.Expr;
 import edu.cmu.sei.annex.dmpl.dmpl.FnBody;
 import edu.cmu.sei.annex.dmpl.dmpl.FnPrototype;
@@ -271,6 +273,13 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass equalityExprEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass compareExprEClass = null;
 
   /**
@@ -356,6 +365,13 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EEnum signedEnumEEnum = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EEnum equalityOperatorEEnum = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -1150,6 +1166,46 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getEqualityExpr()
+  {
+    return equalityExprEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getEqualityExpr_Left()
+  {
+    return (EReference)equalityExprEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getEqualityExpr_Operator()
+  {
+    return (EAttribute)equalityExprEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getEqualityExpr_Right()
+  {
+    return (EReference)equalityExprEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getCompareExpr()
   {
     return compareExprEClass;
@@ -1470,6 +1526,16 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EEnum getEqualityOperator()
+  {
+    return equalityOperatorEEnum;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EEnum getCompareOperator()
   {
     return compareOperatorEEnum;
@@ -1651,6 +1717,11 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     createEReference(fnPrototypeDeclarationEClass, FN_PROTOTYPE_DECLARATION__TYPE);
     createEReference(fnPrototypeDeclarationEClass, FN_PROTOTYPE_DECLARATION__PARAMS);
 
+    equalityExprEClass = createEClass(EQUALITY_EXPR);
+    createEReference(equalityExprEClass, EQUALITY_EXPR__LEFT);
+    createEAttribute(equalityExprEClass, EQUALITY_EXPR__OPERATOR);
+    createEReference(equalityExprEClass, EQUALITY_EXPR__RIGHT);
+
     compareExprEClass = createEClass(COMPARE_EXPR);
     createEReference(compareExprEClass, COMPARE_EXPR__LEFT);
     createEAttribute(compareExprEClass, COMPARE_EXPR__OPERATOR);
@@ -1694,6 +1765,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     signEnumEEnum = createEEnum(SIGN_ENUM);
     simpTypeEnumEEnum = createEEnum(SIMP_TYPE_ENUM);
     signedEnumEEnum = createEEnum(SIGNED_ENUM);
+    equalityOperatorEEnum = createEEnum(EQUALITY_OPERATOR);
     compareOperatorEEnum = createEEnum(COMPARE_OPERATOR);
     shiftOperatorEEnum = createEEnum(SHIFT_OPERATOR);
     additiveOperatorEEnum = createEEnum(ADDITIVE_OPERATOR);
@@ -1746,6 +1818,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     idDimensionEClass.getESuperTypes().add(this.getDimension());
     threadDeclarationEClass.getESuperTypes().add(this.getFnPrototype());
     fnPrototypeDeclarationEClass.getESuperTypes().add(this.getFnPrototype());
+    equalityExprEClass.getESuperTypes().add(this.getExpr());
     compareExprEClass.getESuperTypes().add(this.getExpr());
     shiftExprEClass.getESuperTypes().add(this.getExpr());
     additiveExprEClass.getESuperTypes().add(this.getExpr());
@@ -1854,6 +1927,11 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEReference(getFnPrototypeDeclaration_Type(), this.getType(), null, "type", null, 0, 1, FnPrototypeDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getFnPrototypeDeclaration_Params(), this.getParam(), null, "params", null, 0, -1, FnPrototypeDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(equalityExprEClass, EqualityExpr.class, "EqualityExpr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getEqualityExpr_Left(), this.getExpr(), null, "left", null, 0, 1, EqualityExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getEqualityExpr_Operator(), this.getEqualityOperator(), "operator", null, 0, 1, EqualityExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getEqualityExpr_Right(), this.getExpr(), null, "right", null, 0, 1, EqualityExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     initEClass(compareExprEClass, CompareExpr.class, "CompareExpr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getCompareExpr_Left(), this.getExpr(), null, "left", null, 0, 1, CompareExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getCompareExpr_Operator(), this.getCompareOperator(), "operator", null, 0, 1, CompareExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1910,6 +1988,10 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     addEEnumLiteral(signedEnumEEnum, SignedEnum.UNSET);
     addEEnumLiteral(signedEnumEEnum, SignedEnum.SIGNED);
     addEEnumLiteral(signedEnumEEnum, SignedEnum.UNSIGNED);
+
+    initEEnum(equalityOperatorEEnum, EqualityOperator.class, "EqualityOperator");
+    addEEnumLiteral(equalityOperatorEEnum, EqualityOperator.EQUAL);
+    addEEnumLiteral(equalityOperatorEEnum, EqualityOperator.NOT_EQUAL);
 
     initEEnum(compareOperatorEEnum, CompareOperator.class, "CompareOperator");
     addEEnumLiteral(compareOperatorEEnum, CompareOperator.LESS);

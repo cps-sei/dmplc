@@ -816,15 +816,63 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 	public class ExprElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Expr");
-		private final RuleCall cCompareExprParserRuleCall = (RuleCall)rule.eContents().get(1);
+		private final RuleCall cEqualityExprParserRuleCall = (RuleCall)rule.eContents().get(1);
 		
 		//Expr: //TODO
-		//	CompareExpr;
+		//	EqualityExpr;
 		@Override public ParserRule getRule() { return rule; }
 
 		////TODO
+		//EqualityExpr
+		public RuleCall getEqualityExprParserRuleCall() { return cEqualityExprParserRuleCall; }
+	}
+
+	public class EqualityExprElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "EqualityExpr");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final RuleCall cCompareExprParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
+		private final Group cGroup_1_0 = (Group)cGroup_1.eContents().get(0);
+		private final Group cGroup_1_0_0 = (Group)cGroup_1_0.eContents().get(0);
+		private final Action cEqualityExprLeftAction_1_0_0_0 = (Action)cGroup_1_0_0.eContents().get(0);
+		private final Assignment cOperatorAssignment_1_0_0_1 = (Assignment)cGroup_1_0_0.eContents().get(1);
+		private final RuleCall cOperatorEqualityOperatorEnumRuleCall_1_0_0_1_0 = (RuleCall)cOperatorAssignment_1_0_0_1.eContents().get(0);
+		private final Assignment cRightAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
+		private final RuleCall cRightCompareExprParserRuleCall_1_1_0 = (RuleCall)cRightAssignment_1_1.eContents().get(0);
+		
+		//EqualityExpr returns Expr:
+		//	CompareExpr (=> ({EqualityExpr.left=current} operator=EqualityOperator) right=CompareExpr)*;
+		@Override public ParserRule getRule() { return rule; }
+
+		//CompareExpr (=> ({EqualityExpr.left=current} operator=EqualityOperator) right=CompareExpr)*
+		public Group getGroup() { return cGroup; }
+
 		//CompareExpr
-		public RuleCall getCompareExprParserRuleCall() { return cCompareExprParserRuleCall; }
+		public RuleCall getCompareExprParserRuleCall_0() { return cCompareExprParserRuleCall_0; }
+
+		//(=> ({EqualityExpr.left=current} operator=EqualityOperator) right=CompareExpr)*
+		public Group getGroup_1() { return cGroup_1; }
+
+		//=> ({EqualityExpr.left=current} operator=EqualityOperator)
+		public Group getGroup_1_0() { return cGroup_1_0; }
+
+		//{EqualityExpr.left=current} operator=EqualityOperator
+		public Group getGroup_1_0_0() { return cGroup_1_0_0; }
+
+		//{EqualityExpr.left=current}
+		public Action getEqualityExprLeftAction_1_0_0_0() { return cEqualityExprLeftAction_1_0_0_0; }
+
+		//operator=EqualityOperator
+		public Assignment getOperatorAssignment_1_0_0_1() { return cOperatorAssignment_1_0_0_1; }
+
+		//EqualityOperator
+		public RuleCall getOperatorEqualityOperatorEnumRuleCall_1_0_0_1_0() { return cOperatorEqualityOperatorEnumRuleCall_1_0_0_1_0; }
+
+		//right=CompareExpr
+		public Assignment getRightAssignment_1_1() { return cRightAssignment_1_1; }
+
+		//CompareExpr
+		public RuleCall getRightCompareExprParserRuleCall_1_1_0() { return cRightCompareExprParserRuleCall_1_1_0; }
 	}
 
 	public class CompareExprElements extends AbstractParserRuleElementFinder {
@@ -1564,6 +1612,34 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getUnsignedUnsignedKeyword_2_0() { return cUnsignedUnsignedKeyword_2_0; }
 	}
 
+	public class EqualityOperatorElements extends AbstractEnumRuleElementFinder {
+		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "EqualityOperator");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final EnumLiteralDeclaration cEQUALEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
+		private final Keyword cEQUALEqualsSignEqualsSignKeyword_0_0 = (Keyword)cEQUALEnumLiteralDeclaration_0.eContents().get(0);
+		private final EnumLiteralDeclaration cNOT_EQUALEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
+		private final Keyword cNOT_EQUALExclamationMarkEqualsSignKeyword_1_0 = (Keyword)cNOT_EQUALEnumLiteralDeclaration_1.eContents().get(0);
+		
+		//enum EqualityOperator:
+		//	EQUAL="==" | NOT_EQUAL="!=";
+		public EnumRule getRule() { return rule; }
+
+		//EQUAL="==" | NOT_EQUAL="!="
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//EQUAL="=="
+		public EnumLiteralDeclaration getEQUALEnumLiteralDeclaration_0() { return cEQUALEnumLiteralDeclaration_0; }
+
+		//"=="
+		public Keyword getEQUALEqualsSignEqualsSignKeyword_0_0() { return cEQUALEqualsSignEqualsSignKeyword_0_0; }
+
+		//NOT_EQUAL="!="
+		public EnumLiteralDeclaration getNOT_EQUALEnumLiteralDeclaration_1() { return cNOT_EQUALEnumLiteralDeclaration_1; }
+
+		//"!="
+		public Keyword getNOT_EQUALExclamationMarkEqualsSignKeyword_1_0() { return cNOT_EQUALExclamationMarkEqualsSignKeyword_1_0; }
+	}
+
 	public class CompareOperatorElements extends AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "CompareOperator");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
@@ -1802,6 +1878,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final VarInitListElements pVarInitList;
 	private final LValElements pLVal;
 	private final ExprElements pExpr;
+	private final EqualityExprElements pEqualityExpr;
 	private final CompareExprElements pCompareExpr;
 	private final ShiftExprElements pShiftExpr;
 	private final AdditiveExprElements pAdditiveExpr;
@@ -1815,6 +1892,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final SimpTypeElements pSimpType;
 	private final SignedEnumElements unknownRuleSignedEnum;
 	private final SignedElements pSigned;
+	private final EqualityOperatorElements unknownRuleEqualityOperator;
 	private final CompareOperatorElements unknownRuleCompareOperator;
 	private final ShiftOperatorElements unknownRuleShiftOperator;
 	private final AdditiveOperatorElements unknownRuleAdditiveOperator;
@@ -1856,6 +1934,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pVarInitList = new VarInitListElements();
 		this.pLVal = new LValElements();
 		this.pExpr = new ExprElements();
+		this.pEqualityExpr = new EqualityExprElements();
 		this.pCompareExpr = new CompareExprElements();
 		this.pShiftExpr = new ShiftExprElements();
 		this.pAdditiveExpr = new AdditiveExprElements();
@@ -1869,6 +1948,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pSimpType = new SimpTypeElements();
 		this.unknownRuleSignedEnum = new SignedEnumElements();
 		this.pSigned = new SignedElements();
+		this.unknownRuleEqualityOperator = new EqualityOperatorElements();
 		this.unknownRuleCompareOperator = new CompareOperatorElements();
 		this.unknownRuleShiftOperator = new ShiftOperatorElements();
 		this.unknownRuleAdditiveOperator = new AdditiveOperatorElements();
@@ -2120,13 +2200,23 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Expr: //TODO
-	//	CompareExpr;
+	//	EqualityExpr;
 	public ExprElements getExprAccess() {
 		return pExpr;
 	}
 	
 	public ParserRule getExprRule() {
 		return getExprAccess().getRule();
+	}
+
+	//EqualityExpr returns Expr:
+	//	CompareExpr (=> ({EqualityExpr.left=current} operator=EqualityOperator) right=CompareExpr)*;
+	public EqualityExprElements getEqualityExprAccess() {
+		return pEqualityExpr;
+	}
+	
+	public ParserRule getEqualityExprRule() {
+		return getEqualityExprAccess().getRule();
 	}
 
 	//CompareExpr returns Expr:
@@ -2259,6 +2349,16 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getSignedRule() {
 		return getSignedAccess().getRule();
+	}
+
+	//enum EqualityOperator:
+	//	EQUAL="==" | NOT_EQUAL="!=";
+	public EqualityOperatorElements getEqualityOperatorAccess() {
+		return unknownRuleEqualityOperator;
+	}
+	
+	public EnumRule getEqualityOperatorRule() {
+		return getEqualityOperatorAccess().getRule();
 	}
 
 	//enum CompareOperator:

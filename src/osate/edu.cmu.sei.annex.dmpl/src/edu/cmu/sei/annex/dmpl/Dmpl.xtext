@@ -104,7 +104,11 @@ LVal:
 
 Expr:
 	//TODO
-	CompareExpr
+	EqualityExpr
+;
+
+EqualityExpr returns Expr:
+	CompareExpr (=>({EqualityExpr.left=current} operator=EqualityOperator) right=CompareExpr)*
 ;
 
 CompareExpr returns Expr:
@@ -168,6 +172,11 @@ enum SignedEnum:
 
 Signed returns SignedEnum:
 	'signed' | 'unsigned'
+;
+
+enum EqualityOperator:
+	EQUAL='==' |
+	NOT_EQUAL='!='
 ;
 
 enum CompareOperator:
