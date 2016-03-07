@@ -1094,7 +1094,7 @@ dmpl::gams::GAMSBuilder::build_function_declarations ()
 /*********************************************************************/
 void
 dmpl::gams::GAMSBuilder::build_function_declarations_for_thread (const Func & thread,
-                                                                  const Funcs & funcs)
+                                                                 const Funcs & funcs)
 {
   //-- NULL thread. needed for serial functions.
   if(thread == NULL) {
