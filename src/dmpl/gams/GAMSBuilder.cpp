@@ -1590,10 +1590,21 @@ dmpl::gams::GAMSBuilder::build_expect_thread_definition (const Role &role)
   buffer_ << "  {\n";
   buffer_ << "    madara::knowledge::ContextGuard guard(knowledge);\n";
 
-  //-- dump variables used in expect clauses
-  for(const Var &var : role->allVarsInScope()) {
-    //if(!var->usage_summary.anyExpect().any()) continue;
+  //-- process all expect specs to compute the set of variables used by them
+  VarSet expectVars;
+  for(const Spec &spec : role->allSpecsInScope()) {
+    //-- skip non-expect specifications
+    ExpectSpec *esp = dynamic_cast<ExpectSpec*>(spec.get());
+    if(esp == NULL) continue;
 
+    //-- process all variables
+    for(const Var &var : role->allVarsInScope())
+      if(esp->func->canRead(var) || esp->func->canWrite(var))
+        expectVars.insert(var);
+  }
+  
+  //-- dump variables used by expect specs
+  for(const Var &var : expectVars) {
     //-- get the namespace
     std::string ns = "::dmpl::" + nodeName(role->node) + "::";
     if(!role->node->hasVar(var)) ns += roleName(role->node, role) + "::";
@@ -1627,21 +1638,36 @@ dmpl::gams::GAMSBuilder::build_expect_thread_definition (const Role &role)
     }
   }
   
-  //-- dump pure extern functions with no arguments
+  //-- dump pure extern functions with no arguments used by expect specs
   BOOST_FOREACH(Funcs::value_type &it, builder_.program.funcs)
   {
     Func func = it.second;
     if(!func->isExtern || func->params.size() > 0 || func->retType->type == TVOID)
       continue;
+
+    //-- check if function called by expect spec
+    bool usedExpect = false;
+    for(const Spec &spec : role->allSpecsInScope()) {
+      ExpectSpec *esp = dynamic_cast<ExpectSpec*>(spec.get());
+      if(esp == NULL) continue;
+
+      bool canCall = false;
+      for(const auto &use : esp->func->allUsedSymbols) {
+        if(use.sym->getName() == func->name) { canCall = true; break; }
+      }
+        
+      if(canCall) { usedExpect = true; break; }
+    }
+
+    //-- skip functions not called by expect spec
+    if(!usedExpect) continue;
+      
     //std::cerr << "External Function: " << func->getName() << std::endl;
     //std::cerr << "  usage_summary: " << func->usage_summary << std::endl;
     //std::cerr << "  expect: " << func->usage_summary.anyExpect() << std::endl;
-    //if(func->usage_summary.anyExpect().any())
-    {
-      buffer_ << "    out << tv.tv_sec << \",\" << tv.tv_usec << \",\" << id << \",\" << id << \",\";\n";
-      buffer_ << "    out << \"" << func->getName() << ",\" << ::" << func->getName() << "();\n";
-      buffer_ << "    out << std::endl;\n";
-    }
+    buffer_ << "    out << tv.tv_sec << \",\" << tv.tv_usec << \",\" << id << \",\" << id << \",\";\n";
+    buffer_ << "    out << \"" << func->getName() << ",\" << ::" << func->getName() << "();\n";
+    buffer_ << "    out << std::endl;\n";
   }
   
   buffer_ << "  }\n";
