@@ -100,6 +100,7 @@ namespace dmpl
 
   class Specification;
   typedef std::shared_ptr<Specification> Spec;
+  typedef std::list <Spec> SpecList;
   typedef std::map<std::string,Spec> Specs;
 
   class RecordBase;
