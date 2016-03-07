@@ -158,6 +158,10 @@ namespace dmpl
     const Attribute *getAttribute(const Func &func, const std::string &name,
                                   int expectedArgs) const;
 
+    //-- return list of all specifications in scope, either in this
+    //-- role or in parent node
+    SpecList allSpecsInScope() const;
+
     ///find the platform initialzer function in this role or in the
     ///parent node
     Func findPlatformInitializer();

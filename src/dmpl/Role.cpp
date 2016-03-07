@@ -303,6 +303,23 @@ const dmpl::Attribute *dmpl::BaseRole::getAttribute(const Func &func, const std:
 }
 
 /*********************************************************************/
+//-- return list of all specifications in scope, either in this role
+//-- or in parent node
+/*********************************************************************/
+dmpl::SpecList dmpl::BaseRole::allSpecsInScope() const
+{
+  //-- collect all specs from this role
+  Specs allSpecs = specs;
+
+  //-- add variables declared in parent node
+  allSpecs.insert(node->specs.begin(), node->specs.end());
+  
+  SpecList res;
+  for(const auto &s : allSpecs) res.push_back(s.second);
+  return res;
+}
+
+/*********************************************************************/
 ///find the platform initialzer function in this role
 /*********************************************************************/
 dmpl::Func dmpl::BaseRole::findPlatformInitializer()
