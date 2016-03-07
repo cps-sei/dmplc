@@ -200,11 +200,6 @@ dmpl::gams::GAMSBuilder::build ()
   build_gams_functions ();
   build_global_functions ();
   build_nodes ();
-  if(do_expect_)
-  {
-    build_expect_thread_declaration ();
-    build_expect_thread_definition ();
-  }
   build_algo_declaration ();
   build_algo_functions ();
   build_role2Id ();
@@ -1081,6 +1076,9 @@ dmpl::gams::GAMSBuilder::build_function_declarations ()
       //-- declare functions for all threads
       for (Func thread : r.second->threads)
         build_function_declarations_for_thread(thread, thread->calledFuncs);
+
+      //-- declare expect thread
+      if(do_expect_) build_expect_thread_declaration(r.second);
       
       close_namespace(roleName(n.second, r.second));
     }
@@ -1145,6 +1143,28 @@ dmpl::gams::GAMSBuilder::build_function_declaration (const Func & thread, const 
 }
 
 /*********************************************************************/
+//-- generate class for the expect thread
+/*********************************************************************/
+void
+dmpl::gams::GAMSBuilder::build_expect_thread_declaration (const Role &role)
+{
+  build_comment("//-- Thread class to monitor for expect statements", "\n", "\n", 0);
+  buffer_ << "class ExpectThread : public threads::BaseThread\n";
+  buffer_ << "{\n";
+  buffer_ << "public:\n";
+  buffer_ << "  madara::knowledge::KnowledgeBase *_knowledge;\n";
+  buffer_ << "  ExpectThread (\n";
+  buffer_ << "    ostream &o = std::cout\n";
+  buffer_ << "  ) : out(o) {}\n";
+  buffer_ << "  virtual void init (engine::KnowledgeBase & context);\n";
+  buffer_ << "  virtual void run (void);\n";
+  buffer_ << "  virtual void cleanup (void) {}\n";
+  buffer_ << "protected:\n";
+  buffer_ << "  ostream &out;\n";
+  buffer_ << "};\n";
+}
+
+/*********************************************************************/
 //-- generate functions and variables used to interact with GAMS
 /*********************************************************************/
 void
@@ -1200,6 +1220,9 @@ dmpl::gams::GAMSBuilder::build_nodes (void)
       //-- build functions for all threads
       for (Func thread : r.second->threads)
         build_functions_for_thread(thread, n->second, thread->calledFuncs);
+
+      //-- build expect thread class methods
+      if(do_expect_) build_expect_thread_definition (r.second);
 
       //-- build constructors for the role
       build_comment("//-- Begin constructors for role " + r.second->name, "", "", 0);
@@ -1540,32 +1563,10 @@ dmpl::gams::GAMSBuilder::build_function (
 }
 
 /*********************************************************************/
-//-- generate class for the expect thread
-/*********************************************************************/
-void
-dmpl::gams::GAMSBuilder::build_expect_thread_declaration (void)
-{
-  build_comment("//-- Thread class to monitor for expect statements", "\n", "\n", 0);
-  buffer_ << "class ExpectThread : public threads::BaseThread\n";
-  buffer_ << "{\n";
-  buffer_ << "public:\n";
-  buffer_ << "  madara::knowledge::KnowledgeBase *_knowledge;\n";
-  buffer_ << "  ExpectThread (\n";
-  buffer_ << "    ostream &o = std::cout\n";
-  buffer_ << "  ) : out(o) {}\n";
-  buffer_ << "  virtual void init (engine::KnowledgeBase & context);\n";
-  buffer_ << "  virtual void run (void);\n";
-  buffer_ << "  virtual void cleanup (void) {}\n";
-  buffer_ << "protected:\n";
-  buffer_ << "  ostream &out;\n";
-  buffer_ << "};\n";
-}
-
-/*********************************************************************/
 //-- generate methods of expect thread
 /*********************************************************************/
 void
-dmpl::gams::GAMSBuilder::build_expect_thread_definition (void)
+dmpl::gams::GAMSBuilder::build_expect_thread_definition (const Role &role)
 {
   build_comment("//-- Methods for thread class to monitor for expect statements", "\n", "\n", 0);
   buffer_ << "void ExpectThread::init (engine::KnowledgeBase & context)\n";
@@ -2411,6 +2412,8 @@ dmpl::gams::GAMSBuilder::build_main_function ()
   buffer_ << "\n  //-- Creating algorithms\n";
   buffer_ << "  std::vector<Algo *> algos;\n";
   buffer_ << "  Algo *algo;\n";
+  if(do_expect_) buffer_ << "  threads::BaseThread *expect_thread = NULL;\n";
+
   for (const auto &n : builder_.program.nodes)
     for (const auto &r : n.second->roles)
       build_algo_creation(n.second, r.second);
@@ -2423,8 +2426,7 @@ dmpl::gams::GAMSBuilder::build_main_function ()
   buffer_ << "  knowledge.set(\"begin_sim\", \"1\");\n";
   
   if(do_expect_)
-    buffer_ << "  threader.run(5.0, \"expect_thread\", "
-            << "new ExpectThread(expect_file.is_open()?expect_file:std::cout));\n";
+    buffer_ << "  if(expect_thread) threader.run(5.0, \"expect_thread\", expect_thread);\n";
 
   buffer_ << "\n  //-- wait for all threads to terminate\n";
   buffer_ << "  threader.wait();\n";
@@ -2559,6 +2561,11 @@ void dmpl::gams::GAMSBuilder::build_algo_creation (const Node &node, const Role 
     }    
     buffer_ << "    algos.push_back(algo);\n";
   }
+
+  if(do_expect_)
+    buffer_ << "    expect_thread = new " << nodeName(node) << "::" << roleName(node,role)
+            << "::ExpectThread(expect_file.is_open()?expect_file:std::cout);\n";
+  
   buffer_ << "  }\n";
 
   if (platformFunction == NULL)

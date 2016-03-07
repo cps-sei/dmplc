@@ -189,6 +189,9 @@ namespace dmpl
        **/
       void build_function_declaration (const Func & thread, const Func & function);
 
+      //-- declare class that encapsulates the expect thread for a role
+      void build_expect_thread_declaration (const Role &role);
+
       void build_gams_functions (void);
 
       /**
@@ -239,9 +242,9 @@ namespace dmpl
        * @param  function  a defined function in the parsed program
        **/
       void build_function (const Func& thread, const dmpl::Node & node, const dmpl::Func& function);
-      
-      void build_expect_thread_declaration (void);
-      void build_expect_thread_definition (void);
+
+      //-- generate expect thread method definitions for a role
+      void build_expect_thread_definition (const Role &role);
 
       void build_algo_declaration (void);
       void build_algo_functions (void);
@@ -254,7 +257,6 @@ namespace dmpl
        * of functions.
        **/
       void compute_priorities (void);
-
 
       /**
        * Builds the main function
