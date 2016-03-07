@@ -1569,12 +1569,16 @@ void
 dmpl::gams::GAMSBuilder::build_expect_thread_definition (const Role &role)
 {
   build_comment("//-- Methods for thread class to monitor for expect statements", "\n", "\n", 0);
+
+  //-- generate function run once for initialization
   buffer_ << "void ExpectThread::init (engine::KnowledgeBase & context)\n";
   buffer_ << "{\n";
   buffer_ << "  _knowledge = &context;\n";
   buffer_ << "  out << \"Seconds,Micros,Node,At,Variable,Value\" << std::endl;\n";
   buffer_ << "}\n";
   buffer_ << "\n";
+
+  //-- generate function run periodically
   buffer_ << "void ExpectThread::run (void)\n";
   buffer_ << "{\n";
   buffer_ << "  timeval tv;\n";
@@ -1583,52 +1587,64 @@ dmpl::gams::GAMSBuilder::build_expect_thread_definition (const Role &role)
   buffer_ << "    tv.tv_usec = 0;\n";
   buffer_ << "  }\n";
 
-  Node &node = builder_.program.nodes.begin()->second;
+  buffer_ << "  {\n";
+  buffer_ << "    madara::knowledge::ContextGuard guard(knowledge);\n";
 
-  BOOST_FOREACH(Vars::value_type &it, node->locVars)
-  {
-    Var var = it.second;
-    if(var->type->dims.size() != 0)
+  //-- dump variables used in expect clauses
+  for(const Var &var : role->allVarsInScope()) {
+    //if(!var->usage_summary.anyExpect().any()) continue;
+
+    //-- get the namespace
+    std::string ns = "::dmpl::" + nodeName(role->node) + "::";
+    if(!role->node->hasVar(var)) ns += roleName(role->node, role) + "::";
+    
+    //-- dump local variable
+    if(var->scope == Variable::LOCAL) {
+      if(var->type->dims.size() != 0) continue;
+      buffer_ << "    out << tv.tv_sec << \",\" << tv.tv_usec << \",\" << id << \",\" << id << \",\";\n";
+      buffer_ << "    out << \"." << var->getName() << ",\" << " << ns << var->getName() << ";\n";
+      buffer_ << "    out << std::endl;\n";
       continue;
-    if(var->usage_summary.anyExpect().any())
-    {
-      buffer_ << "  out << tv.tv_sec << \",\" << tv.tv_usec << \",\" << id << \",\" << id << \",\";\n";
-      buffer_ << "  out << \"." << var->getName() << ",\" << ::dmpl::" << var->getName() << ";\n";
-      buffer_ << "  out << std::endl;\n\n";
     }
-  }
 
-  BOOST_FOREACH(Vars::value_type &it, node->globVars)
-  {
-    Var var = it.second;
-    if(var->type->dims.size() != 1)
-      continue;
-    if(var->usage_summary.anyExpect().any())
-    {
-      for(int i = 0; i < numNodes(); i++)
-      {
-        buffer_ << "  out << tv.tv_sec << \",\" << tv.tv_usec << \",\" << id << \",\" << " << i << " << \",\";\n";
-        buffer_ << "  out << \"" << var->getName() << ",\" << ::dmpl::" << var->getName() << "[" << i << "];\n";
-        buffer_ << "  out << std::endl;\n\n";
+    //-- dump global and group variables. we only dump for the indices
+    //-- correspondig to other nodes that can overlap with this node
+    //-- via this variable.
+    if(var->type->dims.size() != 1) continue;
+    for(const Process &proc : builder_.program.procsWithRole(role->name)) {
+      buffer_ << "    if (settings.id == " << proc.id << ") {\n";
+
+      std::set<dmpl::NodeId> on = builder_.program.overlappingNodes(proc, var->name);
+      on.insert(proc.id);
+      
+      for(dmpl::NodeId i : on) {
+        buffer_ << "      out << tv.tv_sec << \",\" << tv.tv_usec << \",\" << id << \",\" << "
+                << i << " << \",\";\n";
+        buffer_ << "      out << \"" << var->getName() << ",\" << " << ns << var->getName() << "[" << i << "];\n";
+        buffer_ << "      out << std::endl;\n";
       }
+      buffer_ << "    }\n";
     }
   }
-
+  
+  //-- dump pure extern functions with no arguments
   BOOST_FOREACH(Funcs::value_type &it, builder_.program.funcs)
   {
     Func func = it.second;
     if(!func->isExtern || func->params.size() > 0 || func->retType->type == TVOID)
       continue;
-    std::cerr << "External Function: " << func->getName() << std::endl;
-    std::cerr << "  usage_summary: " << func->usage_summary << std::endl;
-    std::cerr << "  expect: " << func->usage_summary.anyExpect() << std::endl;
-    if(func->usage_summary.anyExpect().any())
+    //std::cerr << "External Function: " << func->getName() << std::endl;
+    //std::cerr << "  usage_summary: " << func->usage_summary << std::endl;
+    //std::cerr << "  expect: " << func->usage_summary.anyExpect() << std::endl;
+    //if(func->usage_summary.anyExpect().any())
     {
-      buffer_ << "  out << tv.tv_sec << \",\" << tv.tv_usec << \",\" << id << \",\" << id << \",\";\n";
-      buffer_ << "  out << \"" << func->getName() << ",\" << ::dmpl::" << func->getName() << "();\n";
-      buffer_ << "  out << std::endl;\n\n";
+      buffer_ << "    out << tv.tv_sec << \",\" << tv.tv_usec << \",\" << id << \",\" << id << \",\";\n";
+      buffer_ << "    out << \"" << func->getName() << ",\" << ::" << func->getName() << "();\n";
+      buffer_ << "    out << std::endl;\n";
     }
   }
+  
+  buffer_ << "  }\n";
   buffer_ << "}\n";
   buffer_ << "\n";
 }
