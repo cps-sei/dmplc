@@ -2564,7 +2564,7 @@ void dmpl::gams::GAMSBuilder::build_algo_creation (const Node &node, const Role 
 
   if(do_expect_)
     buffer_ << "    expect_thread = new " << nodeName(node) << "::" << roleName(node,role)
-            << "::ExpectThread(expect_file.is_open()?expect_file:std::cout);\n";
+            << "::ExpectThread(expect_file.is_open() ? expect_file : std::cout);\n";
   
   buffer_ << "  }\n";
 
