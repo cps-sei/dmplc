@@ -1597,9 +1597,12 @@ dmpl::gams::GAMSBuilder::build_expect_thread_definition (const Role &role)
     ExpectSpec *esp = dynamic_cast<ExpectSpec*>(spec.get());
     if(esp == NULL) continue;
 
+    //-- find the appropriate expect function for this role
+    Func expectFunc = role->findFunc(esp->func->name);
+    
     //-- process all variables
     for(const Var &var : role->allVarsInScope())
-      if(esp->func->canRead(var) || esp->func->canWrite(var))
+      if(expectFunc->canRead(var) || expectFunc->canWrite(var))
         expectVars.insert(var);
   }
   
@@ -1651,8 +1654,11 @@ dmpl::gams::GAMSBuilder::build_expect_thread_definition (const Role &role)
       ExpectSpec *esp = dynamic_cast<ExpectSpec*>(spec.get());
       if(esp == NULL) continue;
 
+      //-- find the appropriate expect function for this role
+      Func expectFunc = role->findFunc(esp->func->name);
+
       bool canCall = false;
-      for(const auto &use : esp->func->allUsedSymbols) {
+      for(const auto &use : expectFunc->allUsedSymbols) {
         if(use.sym->getName() == func->name) { canCall = true; break; }
       }
         
