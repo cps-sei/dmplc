@@ -140,6 +140,12 @@ void dmpl::RecordBase::checkConstructorSanity(const Node &node, const Role &role
                                  " of node " + node->name + " constructor of record " +
                                  name + " writes to global variable " + v.first);
     }
+    for(const auto &v : initFunc->accInfo.writesGroup) {
+      if(!hasVar(v.second))
+        throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
+                                 " of node " + node->name + " constructor of record " +
+                                 name + " writes to group variable " + v.first);
+    }
   }
   if(assumeFunc != NULL) {
     if(!assumeFunc->accInfo.writesLoc.empty())
@@ -152,6 +158,11 @@ void dmpl::RecordBase::checkConstructorSanity(const Node &node, const Role &role
                                " of node " + node->name + " assume function of record " +
                                name + " writes to global variable " +
                                assumeFunc->accInfo.writesLoc.begin()->first);
+    if(!assumeFunc->accInfo.writesGroup.empty())
+      throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
+                               " of node " + node->name + " assume function of record " +
+                               name + " writes to group variable " +
+                               assumeFunc->accInfo.writesGroup.begin()->first);
   }
 }
 

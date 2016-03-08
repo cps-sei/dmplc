@@ -227,6 +227,12 @@ void dmpl::Variable::checkConstructorSanity(const Node &node, const Role &role) 
                                  " of node " + node->name + " constructor of variable " +
                                  name + " writes to global variable " + v.first);
     }
+    for(const auto &v : initFunc->accInfo.writesGroup) {
+      if(!(*v.second == *this))
+        throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
+                                 " of node " + node->name + " constructor of variable " +
+                                 name + " writes to group variable " + v.first);
+    }
   }
   //-- for input variables
   else {
@@ -240,6 +246,11 @@ void dmpl::Variable::checkConstructorSanity(const Node &node, const Role &role) 
                                " of node " + node->name + " assume function of variable " +
                                name + " writes to global variable " +
                                initFunc->accInfo.writesGlob.begin()->first);
+    if(!initFunc->accInfo.writesGroup.empty())
+      throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
+                               " of node " + node->name + " assume function of variable " +
+                               name + " writes to group variable " +
+                               initFunc->accInfo.writesGroup.begin()->first);
   }
 }
 
