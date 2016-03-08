@@ -189,7 +189,7 @@ dmpl::Function::printDecl (std::ostream &os,unsigned int indent)
 void dmpl::Function::computeCalled()
 {
   //-- clear previous results
-  calledFuncs.clear();
+  accInfo.calledFuncs.clear();
 
   FuncList allFuncs;
   if(role) allFuncs = role->allFuncsInScope();
@@ -211,7 +211,7 @@ void dmpl::Function::computeCalled()
       
       //std::cout << "** Function : " << name << " calls function "
       //<< func->name << '\n';
-      calledFuncs.insert(std::make_pair(f->name,f));
+      accInfo.calledFuncs.insert(std::make_pair(f->name,f));
       break;
     }
   }
@@ -224,8 +224,8 @@ void dmpl::Function::computeAccessed(FuncSet &visited)
 {
   //-- recursive process called functions and inherit, and collect
   //-- called functions
-  Funcs newCalled = calledFuncs;
-  for(const auto &f : calledFuncs) {
+  Funcs newCalled = accInfo.calledFuncs;
+  for(const auto &f : accInfo.calledFuncs) {
     /*
     std::cout << "**** node " << node->name
               << " role " << (role ? role->name : "null")
@@ -236,15 +236,14 @@ void dmpl::Function::computeAccessed(FuncSet &visited)
     */
     if(visited.insert(f.second).second) f.second->computeAccessed(visited);
     inherit(f.second);
-    newCalled.insert(f.second->calledFuncs.begin(), f.second->calledFuncs.end());
+    newCalled.insert(f.second->accInfo.calledFuncs.begin(), f.second->accInfo.calledFuncs.end());
   }
 
   //-- update called functions
-  calledFuncs = newCalled;
+  accInfo.calledFuncs = newCalled;
   
   //-- clear previous results
-  writesLoc.clear(); writesGlob.clear(); writesGroup.clear();
-  readsLoc.clear(); readsGlob.clear(); readsGroup.clear();
+  accInfo.clearAccessed();
   
   VarList allVars = role ? role->allVarsInScope() : node->allVars();
   std::set<std::string> processed;
@@ -267,29 +266,29 @@ void dmpl::Function::computeAccessed(FuncSet &visited)
 
       if(var->scope == Symbol::LOCAL) {
         if(use.info.anyWrite()) {
-          writesLoc.insert(std::make_pair(var->name,var));
+          accInfo.writesLoc.insert(std::make_pair(var->name,var));
           //std::cout << "** Function : " << name << " writes local " << var->name << '\n';
         }
         if(use.info.anyRead()) {
-          readsLoc.insert(std::make_pair(var->name,var));
+          accInfo.readsLoc.insert(std::make_pair(var->name,var));
           //std::cout << "** Function : " << name << " reads local " << var->name << '\n';
         }
       } else if(var->scope == Symbol::GLOBAL) {
         if(use.info.anyWrite()) {
-          writesGlob.insert(std::make_pair(var->name,var));
+          accInfo.writesGlob.insert(std::make_pair(var->name,var));
           //std::cout << "** Function : " << name << " writes global " << var->name << '\n';
         }
         if(use.info.anyRead()) {
-          readsGlob.insert(std::make_pair(var->name,var));
+          accInfo.readsGlob.insert(std::make_pair(var->name,var));
           //std::cout << "** Function : " << name << " reads global " << var->name << '\n';
         }
       } else if(var->scope == Symbol::GROUP) {
         if(use.info.anyWrite()) {
-          writesGroup.insert(std::make_pair(var->name,var));
+          accInfo.writesGroup.insert(std::make_pair(var->name,var));
           //std::cout << "** Function : " << name << " writes group " << var->name << '\n';
         }
         if(use.info.anyRead()) {
-          readsGroup.insert(std::make_pair(var->name,var));
+          accInfo.readsGroup.insert(std::make_pair(var->name,var));
           //std::cout << "** Function : " << name << " reads group " << var->name << '\n';
         }
       }
@@ -301,7 +300,7 @@ void dmpl::Function::computeAccessed(FuncSet &visited)
 /*********************************************************************/
 //-- return the set of all accessed local variables
 /*********************************************************************/
-dmpl::Vars dmpl::Function::accessedLoc() const
+dmpl::Vars dmpl::Function::AccessInfo::accessedLoc() const
 {
   Vars res = readsLoc;
   res.insert(writesLoc.begin(), writesLoc.end());
@@ -311,7 +310,7 @@ dmpl::Vars dmpl::Function::accessedLoc() const
 /*********************************************************************/
 //-- return the set of all accessed global variables
 /*********************************************************************/
-dmpl::Vars dmpl::Function::accessedGlob() const
+dmpl::Vars dmpl::Function::AccessInfo::accessedGlob() const
 {
   Vars res = readsGlob;
   res.insert(writesGlob.begin(), writesGlob.end());
@@ -321,7 +320,7 @@ dmpl::Vars dmpl::Function::accessedGlob() const
 /*********************************************************************/
 //-- return the set of all accessed group variables
 /*********************************************************************/
-dmpl::Vars dmpl::Function::accessedGroup() const
+dmpl::Vars dmpl::Function::AccessInfo::accessedGroup() const
 {
   Vars res = readsGroup;
   res.insert(writesGroup.begin(), writesGroup.end());
@@ -331,7 +330,7 @@ dmpl::Vars dmpl::Function::accessedGroup() const
 /*********************************************************************/
 //-- return the set of all read variables
 /*********************************************************************/
-dmpl::Vars dmpl::Function::reads() const
+dmpl::Vars dmpl::Function::AccessInfo::reads() const
 {
   Vars res = readsGlob;
   res.insert(readsLoc.begin(), readsLoc.end());
@@ -342,7 +341,7 @@ dmpl::Vars dmpl::Function::reads() const
 /*********************************************************************/
 //-- return the set of all written variables
 /*********************************************************************/
-dmpl::Vars dmpl::Function::writes() const
+dmpl::Vars dmpl::Function::AccessInfo::writes() const
 {
   Vars res = writesGlob;
   res.insert(writesLoc.begin(), writesLoc.end());

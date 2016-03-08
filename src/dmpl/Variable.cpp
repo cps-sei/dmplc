@@ -215,13 +215,13 @@ void dmpl::Variable::checkConstructorSanity(const Node &node, const Role &role) 
 
   //-- for non-input variables
   if(!isInput) {
-    for(const auto &v : initFunc->writesLoc) {
+    for(const auto &v : initFunc->accInfo.writesLoc) {
       if(!(*v.second == *this))
         throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
                                  " of node " + node->name + " constructor of variable " +
                                  name + " writes to local variable " + v.first);
     }
-    for(const auto &v : initFunc->writesGlob) {
+    for(const auto &v : initFunc->accInfo.writesGlob) {
       if(!(*v.second == *this))
         throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
                                  " of node " + node->name + " constructor of variable " +
@@ -230,16 +230,16 @@ void dmpl::Variable::checkConstructorSanity(const Node &node, const Role &role) 
   }
   //-- for input variables
   else {
-    if(!initFunc->writesLoc.empty())
+    if(!initFunc->accInfo.writesLoc.empty())
       throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
                                " of node " + node->name + " assume function of variable " +
                                name + " writes to local variable " +
-                               initFunc->writesLoc.begin()->first);
-    if(!initFunc->writesGlob.empty())
+                               initFunc->accInfo.writesLoc.begin()->first);
+    if(!initFunc->accInfo.writesGlob.empty())
       throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
                                " of node " + node->name + " assume function of variable " +
                                name + " writes to global variable " +
-                               initFunc->writesGlob.begin()->first);
+                               initFunc->accInfo.writesGlob.begin()->first);
   }
 }
 

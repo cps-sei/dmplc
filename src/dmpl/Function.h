@@ -76,7 +76,7 @@
 
 
 namespace dmpl
-{
+{ 
   /**
     * @class Function
     * @brief Represents a function definition
@@ -130,13 +130,89 @@ namespace dmpl
     VarList temps;
     Vars tempSet;
 
-    //-- local, global and group variables that this function reads
-    //-- and writes
-    Vars writesLoc, writesGlob, writesGroup;
-    Vars readsLoc, readsGlob, readsGroup;
+    /**
+     * This class encapsulates the set of local, global, and group
+     * variables accessed, and the set of functions called, by a
+     * function.
+     */
+    class AccessInfo
+    {
+    public:
+      //-- local, global and group variables that this function reads
+      //-- and writes
+      Vars writesLoc, writesGlob, writesGroup;
+      Vars readsLoc, readsGlob, readsGroup;
 
-    //-- functions that this function calls
-    Funcs calledFuncs;
+      //-- functions that this function calls
+      Funcs calledFuncs;
+      
+      //-- return true if this function reads the argument variable
+      bool canRead(const Var &var) const
+      {
+        if(var->scope == Variable::LOCAL) {
+          for(const auto &v : readsLoc) if(*v.second == *var) return true;
+          return false;
+        }
+        if(var->scope == Variable::GLOBAL) {
+          for(const auto &v : readsGlob) if(*v.second == *var) return true;
+          return false;
+        }
+        if(var->scope == Variable::GROUP) {
+          for(const auto &v : readsGroup) if(*v.second == *var) return true;
+          return false;
+        }
+      }
+      
+      //-- return true if this function writes the argument variable
+      bool canWrite(const Var &var) const
+      {
+        if(var->scope == Variable::LOCAL) {
+          for(const auto &v : writesLoc) if(*v.second == *var) return true;
+          return false;
+        }
+        if(var->scope == Variable::GLOBAL) {
+          for(const auto &v : writesGlob) if(*v.second == *var) return true;
+          return false;
+        }
+        if(var->scope == Variable::GROUP) {
+          for(const auto &v : writesGroup) if(*v.second == *var) return true;
+          return false;
+        }
+      }
+
+      //-- return true if this function calls the argument function
+      bool canCall(const Func &func) const
+      {
+        for(const auto &f : calledFuncs)
+          if(f.second->equalType(*func)) return true;
+        return false;
+      }
+
+      //-- clear accessed variables
+      void clearAccessed()
+      {
+        writesLoc.clear(); writesGlob.clear(); writesGroup.clear();
+        readsLoc.clear(); readsGlob.clear(); readsGroup.clear();
+      }
+
+      //-- return the set of all accessed local variables
+      Vars accessedLoc() const;
+      
+      //-- return the set of all accessed global variables
+      Vars accessedGlob() const;
+      
+      //-- return the set of all accessed group variables
+      Vars accessedGroup() const;
+      
+      //-- return the set of all read variables
+      Vars reads() const;
+      
+      //-- return the set of all written variables
+      Vars writes() const;
+    };
+
+    //-- info about variables accessed and functions called
+    AccessInfo accInfo;
 
     /**
      * The function body
@@ -221,19 +297,19 @@ namespace dmpl
     void computeAccessed(FuncSet &visited);
 
     //-- return the set of all accessed local variables
-    Vars accessedLoc() const;
+    Vars accessedLoc() const { return accInfo.accessedLoc(); }
 
     //-- return the set of all accessed global variables
-    Vars accessedGlob() const;
+    Vars accessedGlob() const { return accInfo.accessedGlob(); }
 
     //-- return the set of all accessed group variables
-    Vars accessedGroup() const;
+    Vars accessedGroup() const { return accInfo.accessedGroup(); }
 
     //-- return the set of all read variables
-    Vars reads() const;
+    Vars reads() const { return accInfo.reads(); }
 
     //-- return the set of all written variables
-    Vars writes() const;
+    Vars writes() const { return accInfo.writes(); }
     
     //-- return a string representation. just the name.
     std::string toString() const { return "function : " + name; }
@@ -256,46 +332,13 @@ namespace dmpl
     }
 
     //-- return true if this function reads the argument variable
-    bool canRead(const Var &var) const
-    {
-      if(var->scope == LOCAL) {
-        for(const auto &v : readsLoc) if(*v.second == *var) return true;
-        return false;
-      }
-      if(var->scope == GLOBAL) {
-        for(const auto &v : readsGlob) if(*v.second == *var) return true;
-        return false;
-      }
-      if(var->scope == GROUP) {
-        for(const auto &v : readsGroup) if(*v.second == *var) return true;
-        return false;
-      }
-    }
+    bool canRead(const Var &var) const { return accInfo.canRead(var); }
 
     //-- return true if this function writes the argument variable
-    bool canWrite(const Var &var) const
-    {
-      if(var->scope == LOCAL) {
-        for(const auto &v : writesLoc) if(*v.second == *var) return true;
-        return false;
-      }
-      if(var->scope == GLOBAL) {
-        for(const auto &v : writesGlob) if(*v.second == *var) return true;
-        return false;
-      }
-      if(var->scope == GROUP) {
-        for(const auto &v : writesGroup) if(*v.second == *var) return true;
-        return false;
-      }
-    }
+    bool canWrite(const Var &var) const { return accInfo.canWrite(var); }
 
     //-- return true if this function calls the argument function
-    bool canCall(const Func &func) const
-    {
-      for(const auto &f : calledFuncs)
-        if(f.second->equalType(*func)) return true;
-      return false;
-    }
+    bool canCall(const Func &func) const { return accInfo.canCall(func); }
     
   private:
     void doSetVars (const VarList &vars, Vars &dest)

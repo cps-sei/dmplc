@@ -1075,7 +1075,7 @@ dmpl::gams::GAMSBuilder::build_function_declarations ()
 
       //-- declare functions for all threads
       for (Func thread : r.second->threads)
-        build_function_declarations_for_thread(thread, thread->calledFuncs);
+        build_function_declarations_for_thread(thread, thread->accInfo.calledFuncs);
 
       //-- declare expect thread
       if(do_expect_) build_expect_thread_declaration(r.second);
@@ -1219,7 +1219,7 @@ dmpl::gams::GAMSBuilder::build_nodes (void)
       
       //-- build functions for all threads
       for (Func thread : r.second->threads)
-        build_functions_for_thread(thread, n->second, thread->calledFuncs);
+        build_functions_for_thread(thread, n->second, thread->accInfo.calledFuncs);
 
       //-- build expect thread class methods
       if(do_expect_) build_expect_thread_definition (r.second);
@@ -1392,11 +1392,11 @@ dmpl::gams::GAMSBuilder::build_refresh_modify_globals (const Node &node, const R
   //buffer_ << "  barrier.set (*id, barrier[*id]);\n\n";
 
   buffer_ << "  // Remodifying thread-specific global variables\n";
-  for(const auto &gv : thread->writesGlob)
+  for(const auto &gv : thread->accInfo.writesGlob)
     build_refresh_modify_global (node, gv.second);
 
   buffer_ << "  // Remodifying thread-specific group variables\n";
-  for(const auto &gv : thread->writesGroup)
+  for(const auto &gv : thread->accInfo.writesGroup)
     build_refresh_modify_global (node, gv.second);
     
   buffer_ << "  return Integer (0);\n";

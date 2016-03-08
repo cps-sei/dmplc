@@ -128,13 +128,13 @@ bool dmpl::RecordBase::hasVar(const Var &var) const
 void dmpl::RecordBase::checkConstructorSanity(const Node &node, const Role &role) const
 {
   if(initFunc != NULL) {
-    for(const auto &v : initFunc->writesLoc) {
+    for(const auto &v : initFunc->accInfo.writesLoc) {
       if(!hasVar(v.second))
         throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
                                  " of node " + node->name + " constructor of record " +
                                  name + " writes to local variable " + v.first);
     }
-    for(const auto &v : initFunc->writesGlob) {
+    for(const auto &v : initFunc->accInfo.writesGlob) {
       if(!hasVar(v.second))
         throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
                                  " of node " + node->name + " constructor of record " +
@@ -142,16 +142,16 @@ void dmpl::RecordBase::checkConstructorSanity(const Node &node, const Role &role
     }
   }
   if(assumeFunc != NULL) {
-    if(!assumeFunc->writesLoc.empty())
+    if(!assumeFunc->accInfo.writesLoc.empty())
       throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
                                " of node " + node->name + " assume function of record " +
                                name + " writes to local variable " +
-                               assumeFunc->writesLoc.begin()->first);
-    if(!assumeFunc->writesGlob.empty())
+                               assumeFunc->accInfo.writesLoc.begin()->first);
+    if(!assumeFunc->accInfo.writesGlob.empty())
       throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
                                " of node " + node->name + " assume function of record " +
                                name + " writes to global variable " +
-                               assumeFunc->writesLoc.begin()->first);
+                               assumeFunc->accInfo.writesLoc.begin()->first);
   }
 }
 
