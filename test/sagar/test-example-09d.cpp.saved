@@ -341,6 +341,7 @@ ArrayReference<Proactive<short, CachedReference>, 10> thread0_reg_y(knowledge, "
 //-- Used to implement Read-Execute-Write semantics
 /********************************************************************/
 CachedReference<short> thread1_fff(knowledge, ".fff");
+CachedReference<short> thread1_y(knowledge, ".y");
 
 /********************************************************************/
 //-- Defining global variables at scope of thread FOO
@@ -876,6 +877,8 @@ thread1_foobar (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
 thread1_foobar1 (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
+thread1_foobar2 (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
 thread2 (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
 thread2_WAYPOINT (engine::FunctionArguments & args, engine::Variables & vars);
@@ -1261,6 +1264,7 @@ thread1 (engine::FunctionArguments & args, engine::Variables & vars)
   {
     madara::knowledge::ContextGuard guard(knowledge);
     pull(thread1_fff);
+    pull(thread1_y);
   }
 
   //-- call thread function
@@ -1270,6 +1274,7 @@ thread1 (engine::FunctionArguments & args, engine::Variables & vars)
   {
     madara::knowledge::ContextGuard guard(knowledge);
     push(thread1_fff);
+    push(thread1_y);
   }
 
   return Integer(0);
@@ -1320,6 +1325,25 @@ thread1_foobar1 (engine::FunctionArguments & args, engine::Variables & vars)
 
   //-- Begin function body
   thread1_fff = Integer (10);
+  {
+    (void) (thread1_foobar2 (
+         __strip_const(engine::FunctionArguments(0))
+        , vars));
+  }
+
+  //-- Insert return statement, in case user program did not
+  return Integer(0);
+}
+
+KnowledgeRecord
+thread1_foobar2 (engine::FunctionArguments & args, engine::Variables & vars)
+{
+
+  //-- Declare local (parameter and temporary) variables
+
+
+  //-- Begin function body
+  thread1_y = (thread1_y + Integer (1));
 
   //-- Insert return statement, in case user program did not
   return Integer(0);
@@ -1434,10 +1458,10 @@ void ExpectThread::run (void)
     out << ".x," << ::dmpl::node_uav::x;
     out << std::endl;
     out << tv.tv_sec << "," << tv.tv_usec << "," << id << "," << id << ",";
-    out << ".y," << ::dmpl::node_uav::y;
+    out << ".xp," << ::dmpl::node_uav::xp;
     out << std::endl;
     out << tv.tv_sec << "," << tv.tv_usec << "," << id << "," << id << ",";
-    out << ".xp," << ::dmpl::node_uav::xp;
+    out << ".yp," << ::dmpl::node_uav::yp;
     out << std::endl;
   }
 }
@@ -1950,6 +1974,9 @@ void ExpectThread::run (void)
     madara::knowledge::ContextGuard guard(knowledge);
     out << tv.tv_sec << "," << tv.tv_usec << "," << id << "," << id << ",";
     out << ".x," << ::dmpl::node_uav::x;
+    out << std::endl;
+    out << tv.tv_sec << "," << tv.tv_usec << "," << id << "," << id << ",";
+    out << ".yp," << ::dmpl::node_uav::yp;
     out << std::endl;
     out << tv.tv_sec << "," << tv.tv_usec << "," << id << "," << id << ",";
     out << ".ox," << ::dmpl::node_uav::node_uav_role_Protector::ox;

@@ -163,7 +163,8 @@ node uav
   local bool waypointValid = 0; //xt, yt are valid
 
   pure int expProp1Func() { return expProp2Func() && x < 5; }
-  pure int expProp2Func() { return foo1() || xp > 6 && y < 5; }
+  pure int expProp2Func() { return foo1() || xp > 6 && yp < 5; }
+  pure int expProp3Func() { return yp < 5; }
   
   expect expProp1 : at_end => expProp1Func;
   //expect expProp2 : at_end => expProp2Func;
@@ -253,6 +254,7 @@ node uav
     }
   }
 
+  void foobar2() { y = y + 1; }
   void foobar1() { x = x + 1; }
   void foobar() { foobar1(); }
 
@@ -267,7 +269,7 @@ node uav
   role Leader {
     local char fff = 5;
 
-    override void foobar1() { fff = 10; }
+    override void foobar1() { fff = 10; foobar2(); }
 
     thread FOO;
 
@@ -392,8 +394,8 @@ node uav
   role Protector {
     thread FOO;
     
-    override pure int expProp1Func() { return expProp2Func() && x < 5; }
-    override pure int expProp2Func() { return ox == oy; }
+    //override pure int expProp1Func() { return expProp2Func() && x < 5; }
+    override pure int expProp2Func() { return ox == oy && expProp3Func(); }
 
     //-- position offset from leader
     local char input ox, input oy;
