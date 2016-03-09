@@ -67,6 +67,7 @@
 #include <list>
 #include <memory>
 #include "Symbol.h"
+#include "Function.h"
 
 namespace dmpl
 {
@@ -86,11 +87,19 @@ namespace dmpl
     //-- the role to which the specification belong
     Role role;
     
+    //-- info about variables accessed and functions called
+    AccessInfo accInfo;
+
     Specification(const std::string &n) : name(n) {}
     
     virtual std::string toString() const = 0;
     virtual void print (std::ostream &os,unsigned int indent) const = 0;
+    virtual Func getFunc() { return Func(); }
     std::string getName() const { return name; }
+
+    ///compute set of functions called transitively and accessed
+    ///variables under the context of a specific role
+    AccessInfo computeAccessInfo(const Role &role_);
   };
 
   //an expect specification
@@ -112,6 +121,9 @@ namespace dmpl
 
     //-- set the function
     void setFunc();
+
+    //-- set the function
+    Func getFunc() { return func; }
   };
 
   //an at_end expect specification
@@ -186,6 +198,9 @@ namespace dmpl
 
     //-- set the function
     void setFunc();
+
+    //-- set the function
+    Func getFunc() { return func; }
   };
 }
 
