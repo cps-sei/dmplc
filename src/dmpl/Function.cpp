@@ -184,9 +184,9 @@ dmpl::Function::printDecl (std::ostream &os,unsigned int indent)
 }
 
 /*********************************************************************/
-//-- set called functions
+//-- compute set of functions called directly
 /*********************************************************************/
-void dmpl::Function::computeCalled()
+void dmpl::Function::computeCalledDirect()
 {
   //-- clear previous results
   accInfo.calledFuncs.clear();
@@ -218,13 +218,45 @@ void dmpl::Function::computeCalled()
 }
 
 /*********************************************************************/
+//-- compute set of functions called transitively
+/*********************************************************************/
+void dmpl::Function::computeCalledTransitive()
+{
+  FuncList allFuncs;
+  if(role) allFuncs = role->allFuncsInScope();
+  else {
+    for(const auto &f : node->funcs) allFuncs.push_back(f.second);
+  }
+
+  Funcs frontier = accInfo.calledFuncs;
+  while(!frontier.empty()) {
+    Funcs newFront;
+    for(const auto &f1 : frontier) {
+      for(const auto &f2 : f1.second->accInfo.calledFuncs) {
+    
+        for(const auto &f3 : allFuncs) {
+          if(!f3->equalType(*f2.second)) continue;
+          
+          //std::cout << "** Function : " << name << " calls function "
+          //<< f2.second->name << '\n';
+          if(accInfo.calledFuncs.insert(std::make_pair(f3->name,f3)).second)
+            newFront.insert(std::make_pair(f3->name,f3));
+          break;
+        }        
+      }
+    }
+    frontier = newFront;
+  }
+}
+
+/*********************************************************************/
 //-- set accessed variables
 /*********************************************************************/
-void dmpl::Function::computeAccessed(FuncSet &visited)
+void dmpl::Function::computeAccessed()
 {
-  //-- recursive process called functions and inherit, and collect
-  //-- called functions
-  Funcs newCalled = accInfo.calledFuncs;
+  //-- collect all symbols used by this function and all called
+  //-- functions
+  UsedSymbols aus = allUsedSymbols;
   for(const auto &f : accInfo.calledFuncs) {
     /*
     std::cout << "**** node " << node->name
@@ -234,20 +266,15 @@ void dmpl::Function::computeAccessed(FuncSet &visited)
               << " role " << (f.second->role ? f.second->role->name : "null")
               << " func " << f.second->name << '\n';
     */
-    if(visited.insert(f.second).second) f.second->computeAccessed(visited);
-    inherit(f.second);
-    newCalled.insert(f.second->accInfo.calledFuncs.begin(), f.second->accInfo.calledFuncs.end());
+    aus.insert(aus.end(),f.second->allUsedSymbols.begin(),f.second->allUsedSymbols.end());
   }
 
-  //-- update called functions
-  accInfo.calledFuncs = newCalled;
-  
   //-- clear previous results
   accInfo.clearAccessed();
   
   VarList allVars = role ? role->allVarsInScope() : node->allVars();
   std::set<std::string> processed;
-  for(const auto &use : allUsedSymbols) {
+  for(const auto &use : aus) {
     //-- skip duplicate symbols
     if(!processed.insert(use.sym->getName()).second) continue;
     

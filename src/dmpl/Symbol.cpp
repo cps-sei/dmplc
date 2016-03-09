@@ -161,7 +161,7 @@ namespace dmpl
     FuncSet allFuncs;
     for(const auto &f : node.allFuncs()) {
       analyzeSymbolUsage(f, Context(&node, NULL, Spec(), f, false));
-      f->computeCalled();
+      f->computeCalledDirect();
       allFuncs.insert(f);
     }
     
@@ -169,16 +169,18 @@ namespace dmpl
     for(const Roles::value_type &r : node.roles) {
       for(const auto &f : r.second->allFuncs()) {
         analyzeSymbolUsage(f, Context(&node, r.second.get(), Spec(), f, false));
-        f->computeCalled();
+        f->computeCalledDirect();
         allFuncs.insert(f);
       }
     }
 
+    //-- compute for each function, the set of all functions called
+    //-- transitively
+    for(const auto &f : allFuncs) f->computeCalledTransitive();
+
     //-- compute for each function, the set of symbols used by
     //-- inheriting from called functions
-    FuncSet visited;
-    for(const auto &f : allFuncs)
-      if(visited.insert(f).second) f->computeAccessed(visited);    
+    for(const auto &f : allFuncs) f->computeAccessed();    
     
     //-- analyse node specifications
     for(const Specs::value_type &s : node.specs)

@@ -290,11 +290,14 @@ namespace dmpl
     ///print just the function declaration
     void printDecl (std::ostream &os,unsigned int indent);    
 
-    ///set called functions
-    void computeCalled();
+    ///compute set of functions called directly
+    void computeCalledDirect();
+
+    ///compute set of functions called transitively
+    void computeCalledTransitive();
 
     ///set accessed variables
-    void computeAccessed(FuncSet &visited);
+    void computeAccessed();
 
     //-- return the set of all accessed local variables
     Vars accessedLoc() const { return accInfo.accessedLoc(); }
