@@ -149,6 +149,12 @@ namespace dmpl
     
     //-- return the set of all written variables
     Vars writes() const;
+
+    //-- compute set of functions called transitively
+    void computeCalledTransitive(const Node &node, const Role &role);
+
+    //-- set accessed variables
+    void computeAccessed(const Node &node, const Role &role,const UsedSymbols &usedSym);
   };
     
   /**

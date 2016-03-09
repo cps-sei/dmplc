@@ -121,6 +121,113 @@ dmpl::Vars dmpl::AccessInfo::writes() const
 }
 
 /*********************************************************************/
+//-- compute set of functions called transitively
+/*********************************************************************/
+void dmpl::AccessInfo::computeCalledTransitive(const Node &node, const Role &role)
+{
+  FuncList allFuncs;
+  if(role) allFuncs = role->allFuncsInScope();
+  else {
+    for(const auto &f : node->funcs) allFuncs.push_back(f.second);
+  }
+
+  Funcs frontier = calledFuncs;
+  while(!frontier.empty()) {
+    Funcs newFront;
+    for(const auto &f1 : frontier) {
+      for(const auto &f2 : f1.second->accInfo.calledFuncs) {
+    
+        for(const auto &f3 : allFuncs) {
+          if(!f3->equalType(*f2.second)) continue;
+          
+          //std::cout << "** Function : " << name << " calls function "
+          //<< f2.second->name << '\n';
+          if(calledFuncs.insert(std::make_pair(f3->name,f3)).second)
+            newFront.insert(std::make_pair(f3->name,f3));
+          break;
+        }        
+      }
+    }
+    frontier = newFront;
+  }
+}
+
+/*********************************************************************/
+//-- set accessed variables
+/*********************************************************************/
+void dmpl::AccessInfo::computeAccessed(const Node &node, const Role &role,const UsedSymbols &usedSym)
+{
+  //-- collect all symbols used by this function and all called
+  //-- functions
+  UsedSymbols aus = usedSym;
+  for(const auto &f : calledFuncs) {
+    /*
+    std::cout << "**** node " << node->name
+              << " role " << (role ? role->name : "null")
+              << " func " << name << " +++++ calls ++++>"
+              << " node " << f.second->node->name
+              << " role " << (f.second->role ? f.second->role->name : "null")
+              << " func " << f.second->name << '\n';
+    */
+    aus.insert(aus.end(),f.second->allUsedSymbols.begin(),f.second->allUsedSymbols.end());
+  }
+
+  //-- clear previous results
+  clearAccessed();
+  
+  VarList allVars = role ? role->allVarsInScope() : node->allVars();
+  std::set<std::string> processed;
+  for(const auto &use : aus) {
+    //-- skip duplicate symbols
+    if(!processed.insert(use.sym->getName()).second) continue;
+    
+    //-- variables
+    Var var = use.sym->asVar();
+    if(var == NULL) continue;
+
+    /*
+    std::cout << "== node " << node->name
+              << " role " << (role ? role->name : "null")
+              << " func " << name << " accesses " << var->name << '\n';
+    */
+    
+    for(const Var &v : allVars) {
+      if(!(*v == *var)) continue;
+
+      if(var->scope == Symbol::LOCAL) {
+        if(use.info.anyWrite()) {
+          writesLoc.insert(std::make_pair(var->name,var));
+          //std::cout << "** Function : " << name << " writes local " << var->name << '\n';
+        }
+        if(use.info.anyRead()) {
+          readsLoc.insert(std::make_pair(var->name,var));
+          //std::cout << "** Function : " << name << " reads local " << var->name << '\n';
+        }
+      } else if(var->scope == Symbol::GLOBAL) {
+        if(use.info.anyWrite()) {
+          writesGlob.insert(std::make_pair(var->name,var));
+          //std::cout << "** Function : " << name << " writes global " << var->name << '\n';
+        }
+        if(use.info.anyRead()) {
+          readsGlob.insert(std::make_pair(var->name,var));
+          //std::cout << "** Function : " << name << " reads global " << var->name << '\n';
+        }
+      } else if(var->scope == Symbol::GROUP) {
+        if(use.info.anyWrite()) {
+          writesGroup.insert(std::make_pair(var->name,var));
+          //std::cout << "** Function : " << name << " writes group " << var->name << '\n';
+        }
+        if(use.info.anyRead()) {
+          readsGroup.insert(std::make_pair(var->name,var));
+          //std::cout << "** Function : " << name << " reads group " << var->name << '\n';
+        }
+      }
+      break;
+    }
+  }
+}
+
+/*********************************************************************/
 //-- return the set of parents needed for symbol usage analysis
 /*********************************************************************/
 dmpl::SymUserList dmpl::Function::getParents(dmpl::Function::Context &con)
@@ -284,31 +391,7 @@ void dmpl::Function::computeCalledDirect()
 /*********************************************************************/
 void dmpl::Function::computeCalledTransitive()
 {
-  FuncList allFuncs;
-  if(role) allFuncs = role->allFuncsInScope();
-  else {
-    for(const auto &f : node->funcs) allFuncs.push_back(f.second);
-  }
-
-  Funcs frontier = accInfo.calledFuncs;
-  while(!frontier.empty()) {
-    Funcs newFront;
-    for(const auto &f1 : frontier) {
-      for(const auto &f2 : f1.second->accInfo.calledFuncs) {
-    
-        for(const auto &f3 : allFuncs) {
-          if(!f3->equalType(*f2.second)) continue;
-          
-          //std::cout << "** Function : " << name << " calls function "
-          //<< f2.second->name << '\n';
-          if(accInfo.calledFuncs.insert(std::make_pair(f3->name,f3)).second)
-            newFront.insert(std::make_pair(f3->name,f3));
-          break;
-        }        
-      }
-    }
-    frontier = newFront;
-  }
+  accInfo.computeCalledTransitive(node, role);
 }
 
 /*********************************************************************/
@@ -316,74 +399,7 @@ void dmpl::Function::computeCalledTransitive()
 /*********************************************************************/
 void dmpl::Function::computeAccessed()
 {
-  //-- collect all symbols used by this function and all called
-  //-- functions
-  UsedSymbols aus = allUsedSymbols;
-  for(const auto &f : accInfo.calledFuncs) {
-    /*
-    std::cout << "**** node " << node->name
-              << " role " << (role ? role->name : "null")
-              << " func " << name << " +++++ calls ++++>"
-              << " node " << f.second->node->name
-              << " role " << (f.second->role ? f.second->role->name : "null")
-              << " func " << f.second->name << '\n';
-    */
-    aus.insert(aus.end(),f.second->allUsedSymbols.begin(),f.second->allUsedSymbols.end());
-  }
-
-  //-- clear previous results
-  accInfo.clearAccessed();
-  
-  VarList allVars = role ? role->allVarsInScope() : node->allVars();
-  std::set<std::string> processed;
-  for(const auto &use : aus) {
-    //-- skip duplicate symbols
-    if(!processed.insert(use.sym->getName()).second) continue;
-    
-    //-- variables
-    Var var = use.sym->asVar();
-    if(var == NULL) continue;
-
-    /*
-    std::cout << "== node " << node->name
-              << " role " << (role ? role->name : "null")
-              << " func " << name << " accesses " << var->name << '\n';
-    */
-    
-    for(const Var &v : allVars) {
-      if(!(*v == *var)) continue;
-
-      if(var->scope == Symbol::LOCAL) {
-        if(use.info.anyWrite()) {
-          accInfo.writesLoc.insert(std::make_pair(var->name,var));
-          //std::cout << "** Function : " << name << " writes local " << var->name << '\n';
-        }
-        if(use.info.anyRead()) {
-          accInfo.readsLoc.insert(std::make_pair(var->name,var));
-          //std::cout << "** Function : " << name << " reads local " << var->name << '\n';
-        }
-      } else if(var->scope == Symbol::GLOBAL) {
-        if(use.info.anyWrite()) {
-          accInfo.writesGlob.insert(std::make_pair(var->name,var));
-          //std::cout << "** Function : " << name << " writes global " << var->name << '\n';
-        }
-        if(use.info.anyRead()) {
-          accInfo.readsGlob.insert(std::make_pair(var->name,var));
-          //std::cout << "** Function : " << name << " reads global " << var->name << '\n';
-        }
-      } else if(var->scope == Symbol::GROUP) {
-        if(use.info.anyWrite()) {
-          accInfo.writesGroup.insert(std::make_pair(var->name,var));
-          //std::cout << "** Function : " << name << " writes group " << var->name << '\n';
-        }
-        if(use.info.anyRead()) {
-          accInfo.readsGroup.insert(std::make_pair(var->name,var));
-          //std::cout << "** Function : " << name << " reads group " << var->name << '\n';
-        }
-      }
-      break;
-    }
-  }
+  accInfo.computeAccessed(node, role, allUsedSymbols);
 }
 
 /*********************************************************************/
