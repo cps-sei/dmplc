@@ -59,6 +59,68 @@
 #include "Role.h"
 
 /*********************************************************************/
+//-- return true if this function calls the argument function
+/*********************************************************************/
+bool dmpl::AccessInfo::canCall(const Func &func) const
+{
+  for(const auto &f : calledFuncs)
+    if(f.second->equalType(*func)) return true;
+  return false;
+}
+
+/*********************************************************************/
+//-- return the set of all accessed local variables
+/*********************************************************************/
+dmpl::Vars dmpl::AccessInfo::accessedLoc() const
+{
+  Vars res = readsLoc;
+  res.insert(writesLoc.begin(), writesLoc.end());
+  return res;
+}
+
+/*********************************************************************/
+//-- return the set of all accessed global variables
+/*********************************************************************/
+dmpl::Vars dmpl::AccessInfo::accessedGlob() const
+{
+  Vars res = readsGlob;
+  res.insert(writesGlob.begin(), writesGlob.end());
+  return res;
+}
+
+/*********************************************************************/
+//-- return the set of all accessed group variables
+/*********************************************************************/
+dmpl::Vars dmpl::AccessInfo::accessedGroup() const
+{
+  Vars res = readsGroup;
+  res.insert(writesGroup.begin(), writesGroup.end());
+  return res;
+}
+
+/*********************************************************************/
+//-- return the set of all read variables
+/*********************************************************************/
+dmpl::Vars dmpl::AccessInfo::reads() const
+{
+  Vars res = readsGlob;
+  res.insert(readsLoc.begin(), readsLoc.end());
+  res.insert(readsGroup.begin(), readsGroup.end());
+  return res;
+}
+
+/*********************************************************************/
+//-- return the set of all written variables
+/*********************************************************************/
+dmpl::Vars dmpl::AccessInfo::writes() const
+{
+  Vars res = writesGlob;
+  res.insert(writesLoc.begin(), writesLoc.end());
+  res.insert(writesGroup.begin(), writesGroup.end());
+  return res;
+}
+
+/*********************************************************************/
 //-- return the set of parents needed for symbol usage analysis
 /*********************************************************************/
 dmpl::SymUserList dmpl::Function::getParents(dmpl::Function::Context &con)
@@ -322,58 +384,6 @@ void dmpl::Function::computeAccessed()
       break;
     }
   }
-}
-
-/*********************************************************************/
-//-- return the set of all accessed local variables
-/*********************************************************************/
-dmpl::Vars dmpl::Function::AccessInfo::accessedLoc() const
-{
-  Vars res = readsLoc;
-  res.insert(writesLoc.begin(), writesLoc.end());
-  return res;
-}
-
-/*********************************************************************/
-//-- return the set of all accessed global variables
-/*********************************************************************/
-dmpl::Vars dmpl::Function::AccessInfo::accessedGlob() const
-{
-  Vars res = readsGlob;
-  res.insert(writesGlob.begin(), writesGlob.end());
-  return res;
-}
-
-/*********************************************************************/
-//-- return the set of all accessed group variables
-/*********************************************************************/
-dmpl::Vars dmpl::Function::AccessInfo::accessedGroup() const
-{
-  Vars res = readsGroup;
-  res.insert(writesGroup.begin(), writesGroup.end());
-  return res;
-}
-
-/*********************************************************************/
-//-- return the set of all read variables
-/*********************************************************************/
-dmpl::Vars dmpl::Function::AccessInfo::reads() const
-{
-  Vars res = readsGlob;
-  res.insert(readsLoc.begin(), readsLoc.end());
-  res.insert(readsGroup.begin(), readsGroup.end());
-  return res;
-}
-
-/*********************************************************************/
-//-- return the set of all written variables
-/*********************************************************************/
-dmpl::Vars dmpl::Function::AccessInfo::writes() const
-{
-  Vars res = writesGlob;
-  res.insert(writesLoc.begin(), writesLoc.end());
-  res.insert(writesGroup.begin(), writesGroup.end());
-  return res;
 }
 
 /*********************************************************************/
