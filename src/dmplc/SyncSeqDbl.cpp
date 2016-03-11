@@ -460,12 +460,12 @@ void dmpl::SyncSeqDbl::computeRelevant()
 
     //-- compute the set of local and global variables read by the
     //-- spec function
-    Vars specVars = propFunc->reads();
+    Vars specVars = propFunc->reads(proc.role.get());
 
     //-- compute threads that write to variables read by the spec
     for(Func f : proc.role->threads) {
       for(const auto &v : specVars) {
-        if(!f->canWrite(v.second)) continue;
+        if(!f->canWrite(v.second,proc.role.get())) continue;
         //std::cout << "relevant thread : " << f->name << '\n';
 
         if(proc.role->getAttribute(f, "BarrierSync", 0) == NULL)
@@ -498,7 +498,7 @@ void dmpl::SyncSeqDbl::computeRelevant()
     //-- make variables read by relevant threads also spec relevant
     Func thread = relevantThreads[proc];
     if(thread != NULL) {
-      Vars tr = thread->reads();
+      Vars tr = thread->reads(proc.role.get());
       specVars.insert(tr.begin(), tr.end());
     }
 
@@ -522,7 +522,7 @@ void dmpl::SyncSeqDbl::computeRelevant()
         if(f->isThread() || f == propFunc) continue;
 
         for(const auto &v : specVars) {
-          if(!f->canWrite(v.second)) continue;
+          if(!f->canWrite(v.second,proc.role.get())) continue;
           //std::cout << "relevant function : " << f->name << " : due to : "
           //<< v.second->name << '\n';
           newFunc |= relevantFuncs[proc].insert(f).second;
@@ -537,7 +537,7 @@ void dmpl::SyncSeqDbl::computeRelevant()
         if(relevantFuncs[proc].find(f) != relevantFuncs[proc].end()) continue;
 
         for(const auto &v : specVars) {
-          if(!f->canWrite(v.second)) continue;
+          if(!f->canWrite(v.second,proc.role.get())) continue;
           //std::cout << "relevant function : " << f->name << " : due to : "
           //<< v.second->name << '\n';
           newFunc |= relevantFuncs[proc].insert(f).second;
@@ -552,7 +552,7 @@ void dmpl::SyncSeqDbl::computeRelevant()
         if(relevantFuncs[proc].find(f) != relevantFuncs[proc].end()) continue;
 
         for(const auto &v : specVars) {
-          if(!f->canRead(v.second)) continue;
+          if(!f->canRead(v.second,proc.role.get())) continue;
           //std::cout << "relevant function : " << f->name << " : due to : "
           //<< v.second->name << '\n';
           newFunc |= relevantFuncs[proc].insert(f).second;
@@ -565,7 +565,7 @@ void dmpl::SyncSeqDbl::computeRelevant()
       
       //-- make variables read by relevant threads also spec relevant
       for(const Func &f : relevantFuncs[proc]) {
-        Vars fr = f->reads();
+        Vars fr = f->reads(proc.role.get());
         specVars.insert(fr.begin(), fr.end());
       }
     }
@@ -581,7 +581,7 @@ void dmpl::SyncSeqDbl::computeRelevant()
     for(const Var &lv : relevantLocs[proc]) {
       for(Func f : proc.role->threads) {
         if(f->equalType(*relevantThreads[proc])) continue;
-        if(!f->canWrite(lv)) continue;
+        if(!f->canWrite(lv,proc.role.get())) continue;
         havocLocs[proc].insert(lv);
         break;
       }
@@ -591,13 +591,17 @@ void dmpl::SyncSeqDbl::computeRelevant()
     for(const Var &gv : relevantGlobs[proc]) {
       for(Func f : proc.role->threads) {
         if(f->equalType(*relevantThreads[proc])) continue;
-        if(!f->canWrite(gv)) continue;
+        if(!f->canWrite(gv,proc.role.get())) continue;
         havocGlobs[proc].insert(gv);
         break;
       }
     }
   }
 
+  //-- if a global is relevant to some process p1, and was not found
+  //-- to be relevant to another process p2, it must be made relevant
+  //-- to p2 and havoced for p2.
+  
   //-- sanity check
   if(relevantFuncs.empty())
     throw std::runtime_error("ERROR: no relevant functions found for property " +

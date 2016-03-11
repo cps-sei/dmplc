@@ -451,9 +451,9 @@ dmpl::gams::GAMSBuilder::build_program_variables ()
 
       //-- generate thread-read-execute-write variables
       for (const Func &thread : r.second->threads) {
-        build_thread_variables(thread, thread->accessedLoc(), "local");
-        build_thread_variables(thread, thread->accessedGlob(), "global");
-        build_thread_variables(thread, thread->accessedGroup(), "group");
+        build_thread_variables(thread, thread->accessedLoc(r.second.get()), "local");
+        build_thread_variables(thread, thread->accessedGlob(r.second.get()), "global");
+        build_thread_variables(thread, thread->accessedGroup(r.second.get()), "group");
       }
       
       buffer_ << '\n';
@@ -1075,7 +1075,7 @@ dmpl::gams::GAMSBuilder::build_function_declarations ()
 
       //-- declare functions for all threads
       for (Func thread : r.second->threads)
-        build_function_declarations_for_thread(thread, thread->accInfo.calledFuncs);
+        build_function_declarations_for_thread(thread, thread->getAccessInfo(r.second.get()).calledFuncs);
 
       //-- declare expect thread
       if(do_expect_) build_expect_thread_declaration(r.second);
@@ -1108,7 +1108,7 @@ dmpl::gams::GAMSBuilder::build_function_declarations_for_thread (const Func & th
 
   //-- declare other functions called by the thread
   for (auto i : funcs) {
-    if(!thread->canCall(i.second)) continue;
+    if(!thread->canCall(i.second,thread->role.get())) continue;
     
     //-- sanity check: threads cannot be called as functions
     if(i.second->isThread())
@@ -1219,7 +1219,7 @@ dmpl::gams::GAMSBuilder::build_nodes (void)
       
       //-- build functions for all threads
       for (Func thread : r.second->threads)
-        build_functions_for_thread(thread, n->second, thread->accInfo.calledFuncs);
+        build_functions_for_thread(thread, n->second, thread->getAccessInfo(r.second.get()).calledFuncs);
 
       //-- build expect thread class methods
       if(do_expect_) build_expect_thread_definition (r.second);
@@ -1392,11 +1392,11 @@ dmpl::gams::GAMSBuilder::build_refresh_modify_globals (const Node &node, const R
   //buffer_ << "  barrier.set (*id, barrier[*id]);\n\n";
 
   buffer_ << "  // Remodifying thread-specific global variables\n";
-  for(const auto &gv : thread->accInfo.writesGlob)
+  for(const auto &gv : thread->getAccessInfo(role.get()).writesGlob)
     build_refresh_modify_global (node, gv.second);
 
   buffer_ << "  // Remodifying thread-specific group variables\n";
-  for(const auto &gv : thread->accInfo.writesGroup)
+  for(const auto &gv : thread->getAccessInfo(role.get()).writesGroup)
     build_refresh_modify_global (node, gv.second);
     
   buffer_ << "  return Integer (0);\n";
@@ -1433,19 +1433,19 @@ dmpl::gams::GAMSBuilder::build_push_pull(const Func &thread, bool push)
   buffer_ << "    madara::knowledge::ContextGuard guard(knowledge);\n";
 
   //push-pull locals
-  for(const auto &var : thread->accessedLoc()) {
+  for(const auto &var : thread->accessedLoc(thread->role.get())) {
     buffer_ << "    " << (push?"push":"pull") << "(thread" << thread->threadID << "_"
             << var.first << ");" << std::endl;
   }
 
   //push-pull globals
-  for(const auto &var : thread->accessedGlob()) {
+  for(const auto &var : thread->accessedGlob(thread->role.get())) {
     buffer_ << "    " << (push?"push":"pull") << "(thread" << thread->threadID << "_"
             << var.first << (push?"[id]":"") << ");" << std::endl;
   }
 
   //push-pull group variables
-  for(const auto &var : thread->accessedGroup()) {
+  for(const auto &var : thread->accessedGroup(thread->role.get())) {
     buffer_ << "    " << (push?"push":"pull") << "(thread" << thread->threadID << "_"
             << var.first << (push?"[id]":"") << ");" << std::endl;
   }
@@ -1474,7 +1474,7 @@ dmpl::gams::GAMSBuilder::build_functions_for_thread (
 
   //-- generate other functions called by the thread
   for(const auto &f : funcs) {
-    if(thread->canCall(f.second))
+    if(thread->canCall(f.second,thread->role.get()))
       build_function (thread, node, f.second);
   }
 }
@@ -2500,11 +2500,11 @@ void dmpl::gams::GAMSBuilder::build_algo_creation (const Node &node, const Role 
       //-- compute the set of all nodes that overlap via global and
       //-- group vars
       std::set<NodeId> on;
-      for(const auto &v : thread->accessedGlob()) {
+      for(const auto &v : thread->accessedGlob(role.get())) {
         std::set<NodeId> onv = prog.overlappingNodes(proc, v.first);
         on.insert(onv.begin(), onv.end());
       }
-      for(const auto &v : thread->accessedGroup()) {
+      for(const auto &v : thread->accessedGroup(role.get())) {
         std::set<NodeId> onv = prog.overlappingNodes(proc, v.first);
         on.insert(onv.begin(), onv.end());
       }

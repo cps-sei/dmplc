@@ -150,10 +150,19 @@ namespace dmpl
     Vars writes() const;
 
     //-- compute set of functions called transitively
-    void computeCalledTransitive(const Node &node, const Role &role);
+    void computeCalledTransitive(const Node &node, const BaseRole *role);
 
     //-- set accessed variables
-    void computeAccessed(const Node &node, const Role &role,const UsedSymbols &usedSym);
+    void computeAccessed(const Node &node, const BaseRole *role,const UsedSymbols &usedSym);
+
+    //-- compute the set of transitively called functions and accessed
+    //-- variables under the context of the given role
+    void computeTransitive(const BaseRole *role,const UsedSymbols &usedSym);
+
+    //-- convert to a role. this means that functions called and
+    //-- variables accessed should be converted to their (possibly
+    //-- overridden) version for that role.
+    AccessInfo toRole(const BaseRole *role) const;
   };
     
   /**
@@ -209,8 +218,15 @@ namespace dmpl
     VarList temps;
     Vars tempSet;
 
-    //-- info about variables accessed and functions called
+  private:
+    //-- info about variables accessed and functions called directly
     AccessInfo accInfo;
+
+    //-- info about variables accessed and functions called under the
+    //-- context of a specific role
+    std::map<const BaseRole*,AccessInfo> accInfoRole;
+
+  public:
 
     /**
      * The function body
@@ -288,29 +304,27 @@ namespace dmpl
     ///print just the function declaration
     void printDecl (std::ostream &os,unsigned int indent);    
 
-    ///compute set of functions called directly
-    void computeCalledDirect();
+    //-- compute set of functions called and variables accessed directly
+    void computeAccessInfo();
 
-    ///compute set of functions called transitively
-    void computeCalledTransitive();
-
-    ///set accessed variables
-    void computeAccessed();
-
+    //-- return the access info under the context of a role. if role
+    //-- is NULL, return the direct access info.
+    const AccessInfo &getAccessInfo(const BaseRole *role_);
+    
     //-- return the set of all accessed local variables
-    Vars accessedLoc() const { return accInfo.accessedLoc(); }
+    Vars accessedLoc(const BaseRole *role_) { return getAccessInfo(role_).accessedLoc(); }
 
     //-- return the set of all accessed global variables
-    Vars accessedGlob() const { return accInfo.accessedGlob(); }
+    Vars accessedGlob(const BaseRole *role_) { return getAccessInfo(role_).accessedGlob(); }
 
     //-- return the set of all accessed group variables
-    Vars accessedGroup() const { return accInfo.accessedGroup(); }
+    Vars accessedGroup(const BaseRole *role_) { return getAccessInfo(role_).accessedGroup(); }
 
     //-- return the set of all read variables
-    Vars reads() const { return accInfo.reads(); }
+    Vars reads(const BaseRole *role_) { return getAccessInfo(role_).reads(); }
 
     //-- return the set of all written variables
-    Vars writes() const { return accInfo.writes(); }
+    Vars writes(const BaseRole *role_) { return getAccessInfo(role_).writes(); }
     
     //-- return a string representation. just the name.
     std::string toString() const { return "function : " + name; }
@@ -333,13 +347,13 @@ namespace dmpl
     }
 
     //-- return true if this function reads the argument variable
-    bool canRead(const Var &var) const { return accInfo.canRead(var); }
+    bool canRead(const Var &var,const BaseRole *role_) { return getAccessInfo(role_).canRead(var); }
 
     //-- return true if this function writes the argument variable
-    bool canWrite(const Var &var) const { return accInfo.canWrite(var); }
+    bool canWrite(const Var &var,const BaseRole *role_) { return getAccessInfo(role_).canWrite(var); }
 
     //-- return true if this function calls the argument function
-    bool canCall(const Func &func) const { return accInfo.canCall(func); }
+    bool canCall(const Func &func,const BaseRole *role_) { return getAccessInfo(role_).canCall(func); }
     
   private:
     void doSetVars (const VarList &vars, Vars &dest)

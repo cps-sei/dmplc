@@ -128,19 +128,19 @@ bool dmpl::RecordBase::hasVar(const Var &var) const
 void dmpl::RecordBase::checkConstructorSanity(const Node &node, const Role &role) const
 {
   if(initFunc != NULL) {
-    for(const auto &v : initFunc->accInfo.writesLoc) {
+    for(const auto &v : initFunc->getAccessInfo(role.get()).writesLoc) {
       if(!hasVar(v.second))
         throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
                                  " of node " + node->name + " constructor of record " +
                                  name + " writes to local variable " + v.first);
     }
-    for(const auto &v : initFunc->accInfo.writesGlob) {
+    for(const auto &v : initFunc->getAccessInfo(role.get()).writesGlob) {
       if(!hasVar(v.second))
         throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
                                  " of node " + node->name + " constructor of record " +
                                  name + " writes to global variable " + v.first);
     }
-    for(const auto &v : initFunc->accInfo.writesGroup) {
+    for(const auto &v : initFunc->getAccessInfo(role.get()).writesGroup) {
       if(!hasVar(v.second))
         throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
                                  " of node " + node->name + " constructor of record " +
@@ -148,21 +148,21 @@ void dmpl::RecordBase::checkConstructorSanity(const Node &node, const Role &role
     }
   }
   if(assumeFunc != NULL) {
-    if(!assumeFunc->accInfo.writesLoc.empty())
+    if(!assumeFunc->getAccessInfo(role.get()).writesLoc.empty())
       throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
                                " of node " + node->name + " assume function of record " +
                                name + " writes to local variable " +
-                               assumeFunc->accInfo.writesLoc.begin()->first);
-    if(!assumeFunc->accInfo.writesGlob.empty())
+                               assumeFunc->getAccessInfo(role.get()).writesLoc.begin()->first);
+    if(!assumeFunc->getAccessInfo(role.get()).writesGlob.empty())
       throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
                                " of node " + node->name + " assume function of record " +
                                name + " writes to global variable " +
-                               assumeFunc->accInfo.writesLoc.begin()->first);
-    if(!assumeFunc->accInfo.writesGroup.empty())
+                               assumeFunc->getAccessInfo(role.get()).writesLoc.begin()->first);
+    if(!assumeFunc->getAccessInfo(role.get()).writesGroup.empty())
       throw std::runtime_error("ERROR: in role " + (role == NULL ? "null" : role->name) +
                                " of node " + node->name + " assume function of record " +
                                name + " writes to group variable " +
-                               assumeFunc->accInfo.writesGroup.begin()->first);
+                               assumeFunc->getAccessInfo(role.get()).writesGroup.begin()->first);
   }
 }
 

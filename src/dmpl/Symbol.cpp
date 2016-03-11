@@ -158,30 +158,19 @@ namespace dmpl
   void SymbolUser::analyzeSymbolUsage(BaseNode &node)
   {
     //-- analyse functions
-    FuncSet allFuncs;
     for(const auto &f : node.allFuncs()) {
       analyzeSymbolUsage(f, Context(&node, NULL, Spec(), f, false));
-      f->computeCalledDirect();
-      allFuncs.insert(f);
+      f->computeAccessInfo();
     }
     
     //-- analyse roles
     for(const Roles::value_type &r : node.roles) {
       for(const auto &f : r.second->allFuncs()) {
         analyzeSymbolUsage(f, Context(&node, r.second.get(), Spec(), f, false));
-        f->computeCalledDirect();
-        allFuncs.insert(f);
+        f->computeAccessInfo();
       }
     }
 
-    //-- compute for each function, the set of all functions called
-    //-- transitively
-    for(const auto &f : allFuncs) f->computeCalledTransitive();
-
-    //-- compute for each function, the set of symbols used by
-    //-- inheriting from called functions
-    for(const auto &f : allFuncs) f->computeAccessed();    
-    
     //-- analyse node specifications
     for(const Specs::value_type &s : node.specs)
       s.second->useSymbols(Context(&node, NULL, s.second, Func(), false));

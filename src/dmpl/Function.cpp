@@ -124,7 +124,7 @@ dmpl::Vars dmpl::AccessInfo::writes() const
 /*********************************************************************/
 //-- compute set of functions called transitively
 /*********************************************************************/
-void dmpl::AccessInfo::computeCalledTransitive(const Node &node, const Role &role)
+void dmpl::AccessInfo::computeCalledTransitive(const Node &node, const BaseRole *role)
 {
   FuncList allFuncs;
   if(role) allFuncs = role->allFuncsInScope();
@@ -137,13 +137,13 @@ void dmpl::AccessInfo::computeCalledTransitive(const Node &node, const Role &rol
   while(!frontier.empty()) {
     Funcs newFront;
     for(const auto &f1 : frontier) {
-      for(const auto &f2 : f1.second->accInfo.calledFuncs) {
-    
+      for(const auto &f2 : f1.second->getAccessInfo(role).calledFuncs) {
         for(const auto &f3 : allFuncs) {
           if(!f3->equalType(*f2.second)) continue;
           
-          //std::cout << "** Function : " << f1.second->name << " calls function "
-          //<< f2.second->name << '\n';
+          //std::cout << "** Role : " << role->name << " : Function : "
+          //<< f1.second->name << " calls function "
+          //<< f3->name << '\n';
           if(calledFuncs.insert(std::make_pair(f3->name,f3)).second)
             newFront.insert(std::make_pair(f3->name,f3));
           break;
@@ -157,29 +157,14 @@ void dmpl::AccessInfo::computeCalledTransitive(const Node &node, const Role &rol
 /*********************************************************************/
 //-- set accessed variables
 /*********************************************************************/
-void dmpl::AccessInfo::computeAccessed(const Node &node, const Role &role,const UsedSymbols &usedSym)
+void dmpl::AccessInfo::computeAccessed(const Node &node, const BaseRole *role,const UsedSymbols &usedSym)
 {
-  //-- collect all symbols used by this function and all called
-  //-- functions
-  UsedSymbols aus = usedSym;
-  for(const auto &f : calledFuncs) {
-    /*
-    std::cout << "**** node " << node->name
-              << " role " << (role ? role->name : "null")
-              << " func " << name << " +++++ calls ++++>"
-              << " node " << f.second->node->name
-              << " role " << (f.second->role ? f.second->role->name : "null")
-              << " func " << f.second->name << '\n';
-    */
-    aus.insert(aus.end(),f.second->allUsedSymbols.begin(),f.second->allUsedSymbols.end());
-  }
-
   //-- clear previous results
   clearAccessed();
   
   VarList allVars = role ? role->allVarsInScope() : node->allVars();
   std::set<std::string> processed;
-  for(const auto &use : aus) {
+  for(const auto &use : usedSym) {
     //-- skip duplicate symbols
     if(!processed.insert(use.sym->getName()).second) continue;
     
@@ -227,6 +212,85 @@ void dmpl::AccessInfo::computeAccessed(const Node &node, const Role &role,const 
       break;
     }
   }
+}
+
+/*********************************************************************/
+//-- compute the set of transitively called functions and accessed
+//-- variables under the context of the given role
+/*********************************************************************/
+void dmpl::AccessInfo::computeTransitive(const BaseRole *role,const UsedSymbols &usedSym)
+{
+  computeCalledTransitive(role->node, role);
+
+  //-- collect all symbols used by this function and all called
+  //-- functions
+  UsedSymbols aus = usedSym;
+  for(const auto &f : calledFuncs) {
+    /*
+    std::cout << "**** node " << node->name
+              << " role " << (role ? role->name : "null")
+              << " func " << name << " +++++ calls ++++>"
+              << " node " << f.second->node->name
+              << " role " << (f.second->role ? f.second->role->name : "null")
+              << " func " << f.second->name << '\n';
+    */
+    aus.insert(aus.end(),f.second->allUsedSymbols.begin(),f.second->allUsedSymbols.end());
+  } 
+  
+  computeAccessed(role->node, role, aus);
+}
+
+/*********************************************************************/
+//-- convert to a role. this means that functions called and variables
+//-- accessed should be converted to their (possibly overridden)
+//-- version for that role.
+/*********************************************************************/
+dmpl::AccessInfo dmpl::AccessInfo::toRole(const BaseRole *role) const
+{
+  AccessInfo res;
+
+  FuncList allFuncs = role->allFuncsInScope();
+  for(const auto &f : role->node->program->funcs) allFuncs.push_back(f.second);
+
+  for(const Func &func : allFuncs)
+    if(canCall(func)) res.calledFuncs.insert(std::make_pair(func->name,func));
+
+  VarList allVars = role->allVarsInScope();
+
+  for(const Var &v : allVars) {
+    if(writesLoc.find(v->name) != writesLoc.end())
+      res.writesLoc.insert(std::make_pair(v->name,v));
+    if(writesGlob.find(v->name) != writesGlob.end())
+      res.writesGlob.insert(std::make_pair(v->name,v));
+    if(writesGroup.find(v->name) != writesGroup.end())
+      res.writesGroup.insert(std::make_pair(v->name,v));
+    if(readsLoc.find(v->name) != readsLoc.end())
+      res.readsLoc.insert(std::make_pair(v->name,v));
+    if(readsGlob.find(v->name) != readsGlob.end())
+      res.readsGlob.insert(std::make_pair(v->name,v));
+    if(readsGroup.find(v->name) != readsGroup.end())
+      res.readsGroup.insert(std::make_pair(v->name,v));
+  }
+
+  return res;
+}
+
+/*********************************************************************/
+//-- return the access info under the context of a role. if role is
+//-- NULL, return the direct access info.
+/*********************************************************************/
+const dmpl::AccessInfo &dmpl::Function::getAccessInfo(const BaseRole *role_)
+{
+  if(role_ == NULL) return accInfo;
+  
+  auto it = accInfoRole.find(role_);
+
+  if(it == accInfoRole.end()) {
+    it = accInfoRole.insert(std::make_pair(role_,accInfo.toRole(role_))).first;
+    it->second.computeTransitive(role_,allUsedSymbols);
+  }
+  
+  return it->second;
 }
 
 /*********************************************************************/
@@ -355,9 +419,9 @@ dmpl::Function::printDecl (std::ostream &os,unsigned int indent)
 }
 
 /*********************************************************************/
-//-- compute set of functions called directly
+//-- compute set of functions called and variables accessed directly
 /*********************************************************************/
-void dmpl::Function::computeCalledDirect()
+void dmpl::Function::computeAccessInfo()
 {
   //-- clear previous results
   accInfo.calledFuncs.clear();
@@ -387,23 +451,9 @@ void dmpl::Function::computeCalledDirect()
       break;
     }
   }
-}
 
-/*********************************************************************/
-//-- compute set of functions called transitively
-/*********************************************************************/
-void dmpl::Function::computeCalledTransitive()
-{
-  //std::cout << "Computing transitive function calls for " << name << "...\n";
-  accInfo.computeCalledTransitive(node, role);
-}
-
-/*********************************************************************/
-//-- set accessed variables
-/*********************************************************************/
-void dmpl::Function::computeAccessed()
-{
-  accInfo.computeAccessed(node, role, allUsedSymbols);
+  //-- compute accessed variables
+  accInfo.computeAccessed(node, role.get(), allUsedSymbols);
 }
 
 /*********************************************************************/

@@ -83,12 +83,12 @@ namespace
   using namespace dmpl;
 
   //-- forward declaration
-  void visitRec(const Record &rec, Vars &restVars, Records &restRecs,
+  void visitRec(const Record &rec, const BaseRole *role, Vars &restVars, Records &restRecs,
                 Vars &visitedVars, Records &visitedRecs,
                 std::map<size_t,Var> &sortedVars, std::map<size_t,Record> &sortedRecs);
 
   //-- visit a variable for dependency analysis
-  void visitVar(const Var &var, Vars &restVars, Records &restRecs,
+  void visitVar(const Var &var, const BaseRole *role, Vars &restVars, Records &restRecs,
                 Vars &visitedVars, Records &visitedRecs,
                 std::map<size_t,Var> &sortedVars, std::map<size_t,Record> &sortedRecs)
   {
@@ -101,7 +101,7 @@ namespace
     Records depRecs;
     
     if(var->initFunc != NULL)
-      for(const auto &v : var->initFunc->reads())
+      for(const auto &v : var->initFunc->reads(role))
         if(restVars.find(v.first) != restVars.end()) depVars.insert(v);
 
     for(const auto &v : depVars) {
@@ -112,12 +112,12 @@ namespace
     //-- visit all records this one depends on
     for(const auto &r : depRecs)
       if(restRecs.find(r.first) != restRecs.end())
-        visitRec(r.second, restVars, restRecs, visitedVars, visitedRecs, sortedVars, sortedRecs);
+        visitRec(r.second, role, restVars, restRecs, visitedVars, visitedRecs, sortedVars, sortedRecs);
 
     //-- visit all variables this one depends on
     for(const auto &v : depVars)
       if(restVars.find(v.first) != restVars.end())
-        visitVar(v.second, restVars, restRecs, visitedVars, visitedRecs, sortedVars, sortedRecs);
+        visitVar(v.second, role, restVars, restRecs, visitedVars, visitedRecs, sortedVars, sortedRecs);
 
     //-- update result
     //std::cout << "== sorted variable : \t" << (sortedVars.size() + sortedRecs.size())
@@ -125,8 +125,8 @@ namespace
     sortedVars[sortedVars.size() + sortedRecs.size()] = var;
   }
 
-  //-- visit a variable for dependency analysis
-  void visitRec(const Record &rec, Vars &restVars, Records &restRecs,
+  //-- visit a record for dependency analysis
+  void visitRec(const Record &rec, const BaseRole *role, Vars &restVars, Records &restRecs,
                 Vars &visitedVars, Records &visitedRecs,
                 std::map<size_t,Var> &sortedVars, std::map<size_t,Record> &sortedRecs)
   {
@@ -139,11 +139,11 @@ namespace
     Records depRecs;
     
     if(rec->initFunc != NULL)
-      for(const auto &v : rec->initFunc->reads())
+      for(const auto &v : rec->initFunc->reads(role))
         if(restVars.find(v.first) != restVars.end()) depVars.insert(v);
 
     if(rec->assumeFunc != NULL)
-      for(const auto &v : rec->assumeFunc->reads())
+      for(const auto &v : rec->assumeFunc->reads(role))
         if(restVars.find(v.first) != restVars.end()) depVars.insert(v);
 
     for(const auto &v : depVars) {
@@ -154,17 +154,17 @@ namespace
     //-- visit all records this one depends on
     for(const auto &r : depRecs)
       if(restRecs.find(r.first) != restRecs.end())
-        visitRec(r.second, restVars, restRecs, visitedVars, visitedRecs, sortedVars, sortedRecs);
+        visitRec(r.second, role, restVars, restRecs, visitedVars, visitedRecs, sortedVars, sortedRecs);
 
     //-- visit all variables this one depends on
     for(const auto &v : depVars)
       if(restVars.find(v.first) != restVars.end())
-        visitVar(v.second, restVars, restRecs, visitedVars, visitedRecs, sortedVars, sortedRecs);
+        visitVar(v.second, role, restVars, restRecs, visitedVars, visitedRecs, sortedVars, sortedRecs);
     
     //-- visit all variables in the record
     for(const Var &var : rec->vars)
       if(restVars.find(var->name) != restVars.end())
-        visitVar(var, restVars, restRecs, visitedVars, visitedRecs, sortedVars, sortedRecs);
+        visitVar(var, role, restVars, restRecs, visitedVars, visitedRecs, sortedVars, sortedRecs);
 
     //-- update result
     //std::cout << "== sorted record : \t" << (sortedVars.size() + sortedRecs.size())
@@ -192,12 +192,12 @@ void dmpl::BaseRole::orderVarsRecords(std::map<size_t,Var> &sortedVars,
 
   while(!restRecs.empty()) {
     Record rec = restRecs.begin()->second;
-    visitRec(rec, restVars, restRecs, visitedVars, visitedRecs, sortedVars, sortedRecs);
+    visitRec(rec, this, restVars, restRecs, visitedVars, visitedRecs, sortedVars, sortedRecs);
   }
 
   while(!restVars.empty()) {
     Var var = restVars.begin()->second;
-    visitVar(var, restVars, restRecs, visitedVars, visitedRecs, sortedVars, sortedRecs);
+    visitVar(var, this, restVars, restRecs, visitedVars, visitedRecs, sortedVars, sortedRecs);
   }
 }
 
@@ -396,13 +396,13 @@ bool dmpl::BaseRole::isSerialFunction(const Func &func) const
   
   //-- look for functions called by variable constructors
   for(const Var &v : allVarsInScope())
-    if(v->initFunc != NULL && v->initFunc->canCall(func)) return true;
+    if(v->initFunc != NULL && v->initFunc->canCall(func,this)) return true;
   
   //-- look for functions called by record constructors
   for(const auto &r : allRecordsInScope()) {
-    if(r->initFunc != NULL && r->initFunc->canCall(func))
+    if(r->initFunc != NULL && r->initFunc->canCall(func,this))
       return true;
-    if(r->assumeFunc != NULL && r->assumeFunc->canCall(func))
+    if(r->assumeFunc != NULL && r->assumeFunc->canCall(func,this))
       return true;
   }
 

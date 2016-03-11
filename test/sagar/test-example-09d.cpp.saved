@@ -1461,7 +1461,7 @@ void ExpectThread::run (void)
     out << ".xp," << ::dmpl::node_uav::xp;
     out << std::endl;
     out << tv.tv_sec << "," << tv.tv_usec << "," << id << "," << id << ",";
-    out << ".yp," << ::dmpl::node_uav::yp;
+    out << "foo1," << ::foo1();
     out << std::endl;
   }
 }

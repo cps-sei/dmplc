@@ -62,22 +62,13 @@
 /*********************************************************************/
 dmpl::AccessInfo dmpl::Specification::computeAccessInfo(const Role &role_)
 {
-  AccessInfo accInfo;
-  
   //-- if the specification does not call a function directly, then
   //-- nothing is accessed
   Func calledFunc = getFunc();
-  if(calledFunc == NULL) return accInfo;
+  if(calledFunc == NULL) return AccessInfo();
 
   //-- populate called functions with the function called directly
-  accInfo.calledFuncs.insert(std::make_pair(calledFunc->name,calledFunc));
-
-  //-- compute functions called transitively and variables accessed
-  accInfo.computeCalledTransitive(node, role_);
-  accInfo.computeAccessed(node, role_, allUsedSymbols);
-
-  //-- all done
-  return accInfo;
+  return calledFunc->getAccessInfo(role_.get());
 }
 
 /*********************************************************************/
