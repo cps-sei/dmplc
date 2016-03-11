@@ -1599,9 +1599,8 @@ dmpl::gams::GAMSBuilder::build_expect_thread_definition (const Role &role)
 
     //-- process all variables
     AccessInfo accInfo = esp->computeAccessInfo(role);
-    for(const Var &var : role->allVarsInScope())
-      if(accInfo.canRead(var) || accInfo.canWrite(var))
-        expectVars.insert(var);
+    for(const auto &var : accInfo.reads()) expectVars.insert(var.second);
+    for(const auto &var : accInfo.writes()) expectVars.insert(var.second);
   }
   
   //-- dump variables used by expect specs
