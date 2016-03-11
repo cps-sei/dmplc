@@ -1660,6 +1660,10 @@ dmpl::gams::GAMSBuilder::build_expect_thread_definition (const Role &role)
       }
         
       if(canCall) { usedExpect = true; break; }
+      //std::cout << "role : " << role->name << " spec : " << spec->name << " funcs : ";
+      //for(const auto &f : accInfo.calledFuncs) std::cout << f.second->name << ' ';
+      //std::cout << '\n';
+      
     }
 
     //-- skip functions not called by expect spec
