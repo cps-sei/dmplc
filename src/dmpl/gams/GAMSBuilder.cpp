@@ -1652,18 +1652,13 @@ dmpl::gams::GAMSBuilder::build_expect_thread_definition (const Role &role)
       if(esp == NULL) continue;
 
       //-- find the appropriate expect function for this role
-      Func expectFunc = role->findFunc(esp->func->name);
+      AccessInfo accInfo = esp->computeAccessInfo(role);
 
-      bool canCall = false;
-      for(const auto &use : expectFunc->allUsedSymbols) {
-        if(use.sym->getName() == func->name) { canCall = true; break; }
-      }
-        
-      if(canCall) { usedExpect = true; break; }
       //std::cout << "role : " << role->name << " spec : " << spec->name << " funcs : ";
       //for(const auto &f : accInfo.calledFuncs) std::cout << f.second->name << ' ';
       //std::cout << '\n';
       
+      if(accInfo.canCall(func)) { usedExpect = true; break; }
     }
 
     //-- skip functions not called by expect spec
