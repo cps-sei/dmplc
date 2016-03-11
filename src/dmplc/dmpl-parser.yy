@@ -235,6 +235,10 @@ program_element
     delete $1;
   }
   | procedure {
+    if(!(*$1)->isExtern || !(*$1)->isPrototype) {
+      throw std::runtime_error("ERROR: illegal top-level function " + ((*$1)->name) +
+                               ". Only extern function prototypes supported at the top-level!!");
+    }
     builder->program.addFunction(*$1);
     delete $1;
   }
