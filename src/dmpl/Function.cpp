@@ -54,6 +54,7 @@
 **/
 
 #include <iostream>
+#include "Program.h"
 #include "Function.h"
 #include "Node.h"
 #include "Role.h"
@@ -130,6 +131,7 @@ void dmpl::AccessInfo::computeCalledTransitive(const Node &node, const Role &rol
   else {
     for(const auto &f : node->funcs) allFuncs.push_back(f.second);
   }
+  for(const auto &f : node->program->funcs) allFuncs.push_back(f.second);
 
   Funcs frontier = calledFuncs;
   while(!frontier.empty()) {
@@ -140,7 +142,7 @@ void dmpl::AccessInfo::computeCalledTransitive(const Node &node, const Role &rol
         for(const auto &f3 : allFuncs) {
           if(!f3->equalType(*f2.second)) continue;
           
-          //std::cout << "** Function : " << name << " calls function "
+          //std::cout << "** Function : " << " calls function "
           //<< f2.second->name << '\n';
           if(calledFuncs.insert(std::make_pair(f3->name,f3)).second)
             newFront.insert(std::make_pair(f3->name,f3));
@@ -365,6 +367,7 @@ void dmpl::Function::computeCalledDirect()
   else {
     for(const auto &f : node->funcs) allFuncs.push_back(f.second);
   }
+  for(const auto &f : node->program->funcs) allFuncs.push_back(f.second);
   
   std::set<std::string> processed;
   for(const auto &use : allUsedSymbols) {
@@ -391,6 +394,7 @@ void dmpl::Function::computeCalledDirect()
 /*********************************************************************/
 void dmpl::Function::computeCalledTransitive()
 {
+  //std::cout << "Computing transitive function calls for " << name << "...\n";
   accInfo.computeCalledTransitive(node, role);
 }
 
