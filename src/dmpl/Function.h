@@ -83,15 +83,14 @@ namespace dmpl
   class AccessInfo
   {
   public:
-    //-- local, global and group variables that this function reads
-    //-- and writes
+    //-- local, global and group variables that are read and written
     Vars writesLoc, writesGlob, writesGroup;
     Vars readsLoc, readsGlob, readsGroup;
     
-    //-- functions that this function calls
+    //-- functions called
     Funcs calledFuncs;
     
-    //-- return true if this function reads the argument variable
+    //-- return true if the argument variable is read
     bool canRead(const Var &var) const
     {
       if(var->scope == Variable::LOCAL) {
@@ -108,7 +107,7 @@ namespace dmpl
       }
     }
     
-    //-- return true if this function writes the argument variable
+    //-- return true if the argument variable is written
     bool canWrite(const Var &var) const
     {
       if(var->scope == Variable::LOCAL) {
@@ -125,7 +124,7 @@ namespace dmpl
       }
     }
     
-    //-- return true if this function calls the argument function
+    //-- return true if the argument function is called
     bool canCall(const Func &func) const;
     
     //-- clear accessed variables
