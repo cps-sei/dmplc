@@ -142,7 +142,7 @@ void dmpl::AccessInfo::computeCalledTransitive(const Node &node, const Role &rol
         for(const auto &f3 : allFuncs) {
           if(!f3->equalType(*f2.second)) continue;
           
-          //std::cout << "** Function : " << " calls function "
+          //std::cout << "** Function : " << f1.second->name << " calls function "
           //<< f2.second->name << '\n';
           if(calledFuncs.insert(std::make_pair(f3->name,f3)).second)
             newFront.insert(std::make_pair(f3->name,f3));
