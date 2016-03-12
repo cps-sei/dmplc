@@ -196,7 +196,7 @@ function cleanup {
     else
         echo "Something crashed; aborting logging"
         if [ -n "$OUTLOG" ]; then
-            rm $OUTLOG
+            rm -f $OUTLOG
         fi
         exit 1
     fi
