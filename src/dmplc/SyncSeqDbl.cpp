@@ -1083,15 +1083,15 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
       fnParams = f->params;
       fnTemps = f->temps;
 
-      //create the forward version
-      {
+      //create the forward and backward version
+      for(int fwd = 0; fwd < 2; ++fwd) {
         StmtList fnBody;
 
         //-- if this is the thread, havoc variables
-        if(f->equalType(*pr.second)) callFunction("__HAVOC_fwd", fnBody);
+        if(f->equalType(*pr.second)) callFunction(std::string("__HAVOC_") + (fwd ? "fwd" : "bwd"), fnBody);
         
         BOOST_FOREACH(const Stmt &st,f->body) {
-          syncseqdbl::NodeTransformer nt(*this,builder.program,pr.first,true,f);
+          syncseqdbl::NodeTransformer nt(*this,builder.program,pr.first,fwd,f);
           std::string nodeId = *node->args.begin();
           nt.addIdMap(nodeId,pr.first.id);
           nt.visit(st);
@@ -1100,30 +1100,7 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
         }
         
         std::string fnName = node->name + "__" + f->name + "_" + 
-          boost::lexical_cast<std::string>(pr.first.id) + "_fwd";
-        Type retType = f->retType->isThread() ? voidType() : f->retType;
-        Func func(new Function(retType,fnName,fnParams,fnTemps,fnBody));
-        cprog.addFunction(func);
-      }
-
-      //create the backward version
-      {
-        StmtList fnBody;
-
-        //-- if this is the thread, havoc variables
-        if(f->equalType(*pr.second)) callFunction("__HAVOC_bwd", fnBody);
-
-        BOOST_FOREACH(const Stmt &st,f->body) {
-          syncseqdbl::NodeTransformer nt(*this,builder.program,pr.first,false,f);
-          std::string nodeId = *node->args.begin();
-          nt.addIdMap(nodeId,pr.first.id);
-          nt.visit(st);
-          nt.delIdMap(nodeId);
-          fnBody.push_back(nt.stmtMap[st]);
-        }
-        
-        std::string fnName = node->name + "__" + f->name + "_" + 
-          boost::lexical_cast<std::string>(pr.first.id) + "_bwd";
+          boost::lexical_cast<std::string>(pr.first.id) + (fwd ? "_fwd" : "_bwd");
         Type retType = f->retType->isThread() ? voidType() : f->retType;
         Func func(new Function(retType,fnName,fnParams,fnTemps,fnBody));
         cprog.addFunction(func);
