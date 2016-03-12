@@ -102,7 +102,6 @@ namespace dmpl {
   public:
     SyncSeqDblInd(DmplBuilder &b, const std::string &p, int r);
 
-    void callFunction(const std::string &funcName,StmtList &body);
     void callRoundFuncs(StmtList &body);
     void createMainFunc();
     void createAssume();

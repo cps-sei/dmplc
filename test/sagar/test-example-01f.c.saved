@@ -39,6 +39,8 @@ unsigned char yp_0;
 unsigned char yp_1;
 
 /************* function declarations ***********/
+void __HAVOC_bwd();
+void __HAVOC_fwd();
 void __INIT();
 int __INIT_foo_assume_0();
 void __INIT_foo_init_1();
@@ -86,6 +88,14 @@ void uav__NEXT_XY_1_bwd();
 void uav__NEXT_XY_1_fwd();
 
 /************* function definitions ***********/
+void __HAVOC_bwd()
+{
+}
+
+void __HAVOC_fwd()
+{
+}
+
 void __INIT()
 {
   __INIT_l1_0();
@@ -831,6 +841,7 @@ void round_fwd_copier()
 
 void uav__COLLISION_AVOIDANCE_0_bwd()
 {
+  __HAVOC_bwd();
   print_state(X,Y,0,x_0,y_0,xf_0,yf_0);
   if ((state_0)==(NEXT))
   {
@@ -868,6 +879,7 @@ void uav__COLLISION_AVOIDANCE_0_bwd()
 
 void uav__COLLISION_AVOIDANCE_0_fwd()
 {
+  __HAVOC_fwd();
   print_state(X,Y,0,x_0,y_0,xf_0,yf_0);
   if ((state_0)==(NEXT))
   {
@@ -905,6 +917,7 @@ void uav__COLLISION_AVOIDANCE_0_fwd()
 
 void uav__COLLISION_AVOIDANCE_1_bwd()
 {
+  __HAVOC_bwd();
   print_state(X,Y,1,x_1,y_1,xf_1,yf_1);
   if ((state_1)==(NEXT))
   {
@@ -942,6 +955,7 @@ void uav__COLLISION_AVOIDANCE_1_bwd()
 
 void uav__COLLISION_AVOIDANCE_1_fwd()
 {
+  __HAVOC_fwd();
   print_state(X,Y,1,x_1,y_1,xf_1,yf_1);
   if ((state_1)==(NEXT))
   {

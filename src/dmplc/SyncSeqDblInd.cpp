@@ -70,16 +70,6 @@ dmpl::SyncSeqDblInd::SyncSeqDblInd(dmpl::DmplBuilder &b, const std::string &p, i
   : SyncSeqDbl(b,p,r) {}
 
 /*********************************************************************/
-//-- call the function that asserts the safety properties
-/*********************************************************************/
-void dmpl::SyncSeqDblInd::callFunction(const std::string &funcName,StmtList &body)
-{
-  Expr callExpr(new LvalExpr(funcName));
-  Stmt callStmt(new CallStmt(callExpr,dmpl::ExprList()));
-  body.push_back(callStmt);
-}
-
-/*********************************************************************/
 //-- call round functions of each node once
 /*********************************************************************/
 void dmpl::SyncSeqDblInd::callRoundFuncs(StmtList &body)

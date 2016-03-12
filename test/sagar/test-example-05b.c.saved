@@ -42,6 +42,16 @@ _Bool lock_i_4[10][10];
 double loose_speed_0;
 unsigned char next_wp_x_0[5];
 unsigned char next_wp_y_0[5];
+_Bool num_changes_f_0;
+_Bool num_changes_f_1;
+_Bool num_changes_f_2;
+_Bool num_changes_f_3;
+_Bool num_changes_f_4;
+_Bool num_changes_i_0;
+_Bool num_changes_i_1;
+_Bool num_changes_i_2;
+_Bool num_changes_i_3;
+_Bool num_changes_i_4;
 double remaining_flt_time_0;
 unsigned char remaining_segs_0;
 unsigned char scenario_0;
@@ -99,6 +109,8 @@ unsigned char yt_4;
 extern double GET_HAZARD(int x,int y);
 extern void INIT_HAZARDS(int XX,int YY,int tx,int ty);
 extern void LOG(double x);
+void __HAVOC_bwd();
+void __HAVOC_fwd();
 void __INIT();
 void __INIT_changing_0();
 void __INIT_changing_1();
@@ -120,6 +132,11 @@ void __INIT_loose_speed_0();
 void __INIT_next_wp_init_0();
 void __INIT_next_wp_x_0();
 void __INIT_next_wp_y_0();
+void __INIT_num_changes_0();
+void __INIT_num_changes_1();
+void __INIT_num_changes_2();
+void __INIT_num_changes_3();
+void __INIT_num_changes_4();
 void __INIT_remaining_flt_time_0();
 void __INIT_remaining_segs_0();
 int __INIT_scenario_0();
@@ -185,6 +202,8 @@ extern int my_sleep(int seconds);
 _Bool nondet_changing_0();
 _Bool nondet_formation_f_0();
 _Bool nondet_formation_i_0();
+_Bool nondet_num_changes_f_0();
+_Bool nondet_num_changes_i_0();
 unsigned char nondet_scenario();
 _Bool nondet_waypointValid_0();
 _Bool nondet_waypointValid_1();
@@ -244,12 +263,60 @@ _Bool uav__NEXT_XY_DIAGONAL_4_bwd();
 _Bool uav__NEXT_XY_DIAGONAL_4_fwd();
 void uav__REACHED_NEXT_XY_0_bwd();
 void uav__REACHED_NEXT_XY_0_fwd();
+void uav__REACHED_NEXT_XY_1_bwd();
+void uav__REACHED_NEXT_XY_1_fwd();
+void uav__REACHED_NEXT_XY_2_bwd();
+void uav__REACHED_NEXT_XY_2_fwd();
+void uav__REACHED_NEXT_XY_3_bwd();
+void uav__REACHED_NEXT_XY_3_fwd();
+void uav__REACHED_NEXT_XY_4_bwd();
+void uav__REACHED_NEXT_XY_4_fwd();
 extern double wall_time();
 
 /************* function definitions ***********/
 double GET_HAZARD(int x,int y);
 void INIT_HAZARDS(int XX,int YY,int tx,int ty);
 void LOG(double x);
+void __HAVOC_bwd()
+{
+  waypointValid_0 = nondet_waypointValid_0();
+  changing_0 = nondet_changing_0();
+  xt_1 = nondet_xt_1();
+  yt_1 = nondet_yt_1();
+  waypointValid_1 = nondet_waypointValid_1();
+  xt_2 = nondet_xt_2();
+  yt_2 = nondet_yt_2();
+  waypointValid_2 = nondet_waypointValid_2();
+  xt_3 = nondet_xt_3();
+  yt_3 = nondet_yt_3();
+  waypointValid_3 = nondet_waypointValid_3();
+  xt_4 = nondet_xt_4();
+  yt_4 = nondet_yt_4();
+  waypointValid_4 = nondet_waypointValid_4();
+  formation_f_0 = nondet_formation_f_0();
+  num_changes_f_0 = nondet_num_changes_f_0();
+}
+
+void __HAVOC_fwd()
+{
+  waypointValid_0 = nondet_waypointValid_0();
+  changing_0 = nondet_changing_0();
+  xt_1 = nondet_xt_1();
+  yt_1 = nondet_yt_1();
+  waypointValid_1 = nondet_waypointValid_1();
+  xt_2 = nondet_xt_2();
+  yt_2 = nondet_yt_2();
+  waypointValid_2 = nondet_waypointValid_2();
+  xt_3 = nondet_xt_3();
+  yt_3 = nondet_yt_3();
+  waypointValid_3 = nondet_waypointValid_3();
+  xt_4 = nondet_xt_4();
+  yt_4 = nondet_yt_4();
+  waypointValid_4 = nondet_waypointValid_4();
+  formation_i_0 = nondet_formation_i_0();
+  num_changes_i_0 = nondet_num_changes_i_0();
+}
+
 void __INIT()
 {
   __INIT_next_wp_x_0();
@@ -272,6 +339,7 @@ void __INIT()
   __INIT_delay_until_0();
   __INIT_formation_0();
   __INIT_lock_0();
+  __INIT_num_changes_0();
   __INIT_started_move_0();
   __INIT_state_0();
   __INIT_waypointValid_0();
@@ -282,6 +350,7 @@ void __INIT()
   __CPROVER_assume(__INIT_x_1());
   __CPROVER_assume(__INIT_y_1());
   __INIT_lock_1();
+  __INIT_num_changes_1();
   __INIT_started_move_1();
   __INIT_state_1();
   __INIT_waypointValid_1();
@@ -294,6 +363,7 @@ void __INIT()
   __CPROVER_assume(__INIT_x_2());
   __CPROVER_assume(__INIT_y_2());
   __INIT_lock_2();
+  __INIT_num_changes_2();
   __INIT_started_move_2();
   __INIT_state_2();
   __INIT_waypointValid_2();
@@ -306,6 +376,7 @@ void __INIT()
   __CPROVER_assume(__INIT_x_3());
   __CPROVER_assume(__INIT_y_3());
   __INIT_lock_3();
+  __INIT_num_changes_3();
   __INIT_started_move_3();
   __INIT_state_3();
   __INIT_waypointValid_3();
@@ -318,6 +389,7 @@ void __INIT()
   __CPROVER_assume(__INIT_x_4());
   __CPROVER_assume(__INIT_y_4());
   __INIT_lock_4();
+  __INIT_num_changes_4();
   __INIT_started_move_4();
   __INIT_state_4();
   __INIT_waypointValid_4();
@@ -432,6 +504,31 @@ void __INIT_next_wp_x_0()
 
 void __INIT_next_wp_y_0()
 {
+}
+
+void __INIT_num_changes_0()
+{
+  num_changes_i_0 = 0;
+}
+
+void __INIT_num_changes_1()
+{
+  num_changes_i_1 = 0;
+}
+
+void __INIT_num_changes_2()
+{
+  num_changes_i_2 = 0;
+}
+
+void __INIT_num_changes_3()
+{
+  num_changes_i_3 = 0;
+}
+
+void __INIT_num_changes_4()
+{
+  num_changes_i_4 = 0;
 }
 
 void __INIT_remaining_flt_time_0()
@@ -1339,6 +1436,8 @@ int my_sleep(int seconds);
 _Bool nondet_changing_0();
 _Bool nondet_formation_f_0();
 _Bool nondet_formation_i_0();
+_Bool nondet_num_changes_f_0();
+_Bool nondet_num_changes_i_0();
 unsigned char nondet_scenario();
 _Bool nondet_waypointValid_0();
 _Bool nondet_waypointValid_1();
@@ -1466,6 +1565,7 @@ void round_bwd_copier()
   lock_i_0[9][8] = lock_f_0[9][8];
   lock_i_0[9][9] = lock_f_0[9][9];
   formation_i_0 = formation_f_0;
+  num_changes_i_0 = num_changes_f_0;
   lock_i_1[0][0] = lock_f_1[0][0];
   lock_i_1[0][1] = lock_f_1[0][1];
   lock_i_1[0][2] = lock_f_1[0][2];
@@ -1566,6 +1666,7 @@ void round_bwd_copier()
   lock_i_1[9][7] = lock_f_1[9][7];
   lock_i_1[9][8] = lock_f_1[9][8];
   lock_i_1[9][9] = lock_f_1[9][9];
+  num_changes_i_1 = num_changes_f_1;
   lock_i_2[0][0] = lock_f_2[0][0];
   lock_i_2[0][1] = lock_f_2[0][1];
   lock_i_2[0][2] = lock_f_2[0][2];
@@ -1666,6 +1767,7 @@ void round_bwd_copier()
   lock_i_2[9][7] = lock_f_2[9][7];
   lock_i_2[9][8] = lock_f_2[9][8];
   lock_i_2[9][9] = lock_f_2[9][9];
+  num_changes_i_2 = num_changes_f_2;
   lock_i_3[0][0] = lock_f_3[0][0];
   lock_i_3[0][1] = lock_f_3[0][1];
   lock_i_3[0][2] = lock_f_3[0][2];
@@ -1766,6 +1868,7 @@ void round_bwd_copier()
   lock_i_3[9][7] = lock_f_3[9][7];
   lock_i_3[9][8] = lock_f_3[9][8];
   lock_i_3[9][9] = lock_f_3[9][9];
+  num_changes_i_3 = num_changes_f_3;
   lock_i_4[0][0] = lock_f_4[0][0];
   lock_i_4[0][1] = lock_f_4[0][1];
   lock_i_4[0][2] = lock_f_4[0][2];
@@ -1866,6 +1969,7 @@ void round_bwd_copier()
   lock_i_4[9][7] = lock_f_4[9][7];
   lock_i_4[9][8] = lock_f_4[9][8];
   lock_i_4[9][9] = lock_f_4[9][9];
+  num_changes_i_4 = num_changes_f_4;
 }
 
 void round_fwd_copier()
@@ -1971,6 +2075,7 @@ void round_fwd_copier()
   lock_f_0[9][8] = lock_i_0[9][8];
   lock_f_0[9][9] = lock_i_0[9][9];
   formation_f_0 = formation_i_0;
+  num_changes_f_0 = num_changes_i_0;
   lock_f_1[0][0] = lock_i_1[0][0];
   lock_f_1[0][1] = lock_i_1[0][1];
   lock_f_1[0][2] = lock_i_1[0][2];
@@ -2071,6 +2176,7 @@ void round_fwd_copier()
   lock_f_1[9][7] = lock_i_1[9][7];
   lock_f_1[9][8] = lock_i_1[9][8];
   lock_f_1[9][9] = lock_i_1[9][9];
+  num_changes_f_1 = num_changes_i_1;
   lock_f_2[0][0] = lock_i_2[0][0];
   lock_f_2[0][1] = lock_i_2[0][1];
   lock_f_2[0][2] = lock_i_2[0][2];
@@ -2171,6 +2277,7 @@ void round_fwd_copier()
   lock_f_2[9][7] = lock_i_2[9][7];
   lock_f_2[9][8] = lock_i_2[9][8];
   lock_f_2[9][9] = lock_i_2[9][9];
+  num_changes_f_2 = num_changes_i_2;
   lock_f_3[0][0] = lock_i_3[0][0];
   lock_f_3[0][1] = lock_i_3[0][1];
   lock_f_3[0][2] = lock_i_3[0][2];
@@ -2271,6 +2378,7 @@ void round_fwd_copier()
   lock_f_3[9][7] = lock_i_3[9][7];
   lock_f_3[9][8] = lock_i_3[9][8];
   lock_f_3[9][9] = lock_i_3[9][9];
+  num_changes_f_3 = num_changes_i_3;
   lock_f_4[0][0] = lock_i_4[0][0];
   lock_f_4[0][1] = lock_i_4[0][1];
   lock_f_4[0][2] = lock_i_4[0][2];
@@ -2371,14 +2479,13 @@ void round_fwd_copier()
   lock_f_4[9][7] = lock_i_4[9][7];
   lock_f_4[9][8] = lock_i_4[9][8];
   lock_f_4[9][9] = lock_i_4[9][9];
+  num_changes_f_4 = num_changes_i_4;
 }
 
 double sqrt(double x);
 void uav__COLLISION_AVOIDANCE_0_bwd()
 {
-  waypointValid_0 = nondet_waypointValid_0();
-  changing_0 = nondet_changing_0();
-  formation_f_0 = nondet_formation_f_0();
+  __HAVOC_bwd();
   if ((wall_time())<(delay_until_0))
   {
     return;
@@ -2429,9 +2536,7 @@ void uav__COLLISION_AVOIDANCE_0_bwd()
 
 void uav__COLLISION_AVOIDANCE_0_fwd()
 {
-  waypointValid_0 = nondet_waypointValid_0();
-  changing_0 = nondet_changing_0();
-  formation_i_0 = nondet_formation_i_0();
+  __HAVOC_fwd();
   if ((wall_time())<(delay_until_0))
   {
     return;
@@ -2482,9 +2587,7 @@ void uav__COLLISION_AVOIDANCE_0_fwd()
 
 void uav__COLLISION_AVOIDANCE_1_bwd()
 {
-  xt_1 = nondet_xt_1();
-  yt_1 = nondet_yt_1();
-  waypointValid_1 = nondet_waypointValid_1();
+  __HAVOC_bwd();
   if ((wall_time())<(delay_until_1))
   {
     return;
@@ -2535,9 +2638,7 @@ void uav__COLLISION_AVOIDANCE_1_bwd()
 
 void uav__COLLISION_AVOIDANCE_1_fwd()
 {
-  xt_1 = nondet_xt_1();
-  yt_1 = nondet_yt_1();
-  waypointValid_1 = nondet_waypointValid_1();
+  __HAVOC_fwd();
   if ((wall_time())<(delay_until_1))
   {
     return;
@@ -2588,9 +2689,7 @@ void uav__COLLISION_AVOIDANCE_1_fwd()
 
 void uav__COLLISION_AVOIDANCE_2_bwd()
 {
-  xt_2 = nondet_xt_2();
-  yt_2 = nondet_yt_2();
-  waypointValid_2 = nondet_waypointValid_2();
+  __HAVOC_bwd();
   if ((wall_time())<(delay_until_2))
   {
     return;
@@ -2641,9 +2740,7 @@ void uav__COLLISION_AVOIDANCE_2_bwd()
 
 void uav__COLLISION_AVOIDANCE_2_fwd()
 {
-  xt_2 = nondet_xt_2();
-  yt_2 = nondet_yt_2();
-  waypointValid_2 = nondet_waypointValid_2();
+  __HAVOC_fwd();
   if ((wall_time())<(delay_until_2))
   {
     return;
@@ -2694,9 +2791,7 @@ void uav__COLLISION_AVOIDANCE_2_fwd()
 
 void uav__COLLISION_AVOIDANCE_3_bwd()
 {
-  xt_3 = nondet_xt_3();
-  yt_3 = nondet_yt_3();
-  waypointValid_3 = nondet_waypointValid_3();
+  __HAVOC_bwd();
   if ((wall_time())<(delay_until_3))
   {
     return;
@@ -2747,9 +2842,7 @@ void uav__COLLISION_AVOIDANCE_3_bwd()
 
 void uav__COLLISION_AVOIDANCE_3_fwd()
 {
-  xt_3 = nondet_xt_3();
-  yt_3 = nondet_yt_3();
-  waypointValid_3 = nondet_waypointValid_3();
+  __HAVOC_fwd();
   if ((wall_time())<(delay_until_3))
   {
     return;
@@ -2800,9 +2893,7 @@ void uav__COLLISION_AVOIDANCE_3_fwd()
 
 void uav__COLLISION_AVOIDANCE_4_bwd()
 {
-  xt_4 = nondet_xt_4();
-  yt_4 = nondet_yt_4();
-  waypointValid_4 = nondet_waypointValid_4();
+  __HAVOC_bwd();
   if ((wall_time())<(delay_until_4))
   {
     return;
@@ -2853,9 +2944,7 @@ void uav__COLLISION_AVOIDANCE_4_bwd()
 
 void uav__COLLISION_AVOIDANCE_4_fwd()
 {
-  xt_4 = nondet_xt_4();
-  yt_4 = nondet_yt_4();
-  waypointValid_4 = nondet_waypointValid_4();
+  __HAVOC_fwd();
   if ((wall_time())<(delay_until_4))
   {
     return;
@@ -3339,6 +3428,70 @@ void uav__REACHED_NEXT_XY_0_fwd()
   if ((((started_move_0)>(0))&&((formation_i_0)==(1)))&&((speed_factor_0)>(1)))
   {
     delay_until_0 = ((speed_factor_0)*(wall_time()))-(((speed_factor_0)-(1))*(started_move_0));
+  }
+}
+
+void uav__REACHED_NEXT_XY_1_bwd()
+{
+  if ((((num_changes_f_1)!=(num_changes_f_0))&&((x_1)==(xt_1)))&&((y_1)==(yt_1)))
+  {
+    num_changes_i_1 = (1)-(num_changes_f_1);
+  }
+}
+
+void uav__REACHED_NEXT_XY_1_fwd()
+{
+  if ((((num_changes_i_1)!=(num_changes_i_0))&&((x_1)==(xt_1)))&&((y_1)==(yt_1)))
+  {
+    num_changes_f_1 = (1)-(num_changes_i_1);
+  }
+}
+
+void uav__REACHED_NEXT_XY_2_bwd()
+{
+  if ((((num_changes_f_2)!=(num_changes_f_0))&&((x_2)==(xt_2)))&&((y_2)==(yt_2)))
+  {
+    num_changes_i_2 = (1)-(num_changes_f_2);
+  }
+}
+
+void uav__REACHED_NEXT_XY_2_fwd()
+{
+  if ((((num_changes_i_2)!=(num_changes_i_0))&&((x_2)==(xt_2)))&&((y_2)==(yt_2)))
+  {
+    num_changes_f_2 = (1)-(num_changes_i_2);
+  }
+}
+
+void uav__REACHED_NEXT_XY_3_bwd()
+{
+  if ((((num_changes_f_3)!=(num_changes_f_0))&&((x_3)==(xt_3)))&&((y_3)==(yt_3)))
+  {
+    num_changes_i_3 = (1)-(num_changes_f_3);
+  }
+}
+
+void uav__REACHED_NEXT_XY_3_fwd()
+{
+  if ((((num_changes_i_3)!=(num_changes_i_0))&&((x_3)==(xt_3)))&&((y_3)==(yt_3)))
+  {
+    num_changes_f_3 = (1)-(num_changes_i_3);
+  }
+}
+
+void uav__REACHED_NEXT_XY_4_bwd()
+{
+  if ((((num_changes_f_4)!=(num_changes_f_0))&&((x_4)==(xt_4)))&&((y_4)==(yt_4)))
+  {
+    num_changes_i_4 = (1)-(num_changes_f_4);
+  }
+}
+
+void uav__REACHED_NEXT_XY_4_fwd()
+{
+  if ((((num_changes_i_4)!=(num_changes_i_0))&&((x_4)==(xt_4)))&&((y_4)==(yt_4)))
+  {
+    num_changes_f_4 = (1)-(num_changes_i_4);
   }
 }
 

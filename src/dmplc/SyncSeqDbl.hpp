@@ -186,6 +186,9 @@ namespace dmpl {
     
     SyncSeqDbl(DmplBuilder &b, const std::string &p, int r);
 
+    //-- add function call statement
+    void callFunction(const std::string &funcName,StmtList &body);
+
     //-- compute relevant variables and functions for each process
     void computeRelevant();
 
@@ -203,6 +206,7 @@ namespace dmpl {
     void createSafety();
     void createHavocStmts(bool isGlob, bool fwd,const Var &var,StmtList &res,
                           ExprList indx,int pid);
+    void createHavoc();
     void createNodeFuncs();
     Expr createNondetFunc(const Expr &expr, const Type &type);
     void processExternFuncs();

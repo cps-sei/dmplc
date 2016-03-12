@@ -443,6 +443,16 @@ dmpl::SyncSeqDbl::SyncSeqDbl(dmpl::DmplBuilder &b, const std::string &p, int r)
   : builder(b), property(p), roundNum(r) {}
 
 /*********************************************************************/
+//-- add a statement that calls a void-void function with given name
+/*********************************************************************/
+void dmpl::SyncSeqDbl::callFunction(const std::string &funcName,StmtList &body)
+{
+  Expr callExpr(new LvalExpr(funcName));
+  Stmt callStmt(new CallStmt(callExpr,dmpl::ExprList()));
+  body.push_back(callStmt);
+}
+
+/*********************************************************************/
 //-- compute property relevant variables and functions for each
 //-- process
 /*********************************************************************/
@@ -599,8 +609,28 @@ void dmpl::SyncSeqDbl::computeRelevant()
   }
 
   //-- if a global is relevant to some process p1, and was not found
-  //-- to be relevant to another process p2, it must be made relevant
-  //-- to p2 and havoced for p2.
+  //-- to be relevant to another process p2, but is modified by some
+  //-- thread in p2, it must be made relevant to p2 and havoced for
+  //-- p2.
+  VarSet allRelGlobs;  
+  for(const auto &rg : relevantGlobs)
+    allRelGlobs.insert(rg.second.begin(), rg.second.end());
+  
+  for(const Var &gv : allRelGlobs) {
+    for(const Process &proc : builder.program.processes) {
+      if(isRelevantVar(proc,gv->name)) continue;
+
+      bool canWrite = false;
+      for(Func f : proc.role->threads) {
+        if(f->canWrite(gv,proc.role.get())) { canWrite = true; break; }
+      }
+
+      if(canWrite) {
+        relevantGlobs[proc].insert(gv);
+        havocGlobs[proc].insert(gv);
+      }
+    }
+  }
   
   //-- sanity check
   if(relevantFuncs.empty())
@@ -1001,6 +1031,38 @@ void dmpl::SyncSeqDbl::createHavocStmts(bool isGlob,bool fwd,const Var &var,
 }
 
 /*********************************************************************/
+//create the HAVOC() function. this assigns non-deterministic values
+//to all local and global shared variables that must be havoced.
+/*********************************************************************/
+void dmpl::SyncSeqDbl::createHavoc()
+{
+  //-- create both forward and backward versions
+  for(int fwd = 0;fwd < 2;++fwd) {
+    Node &node = builder.program.nodes.begin()->second;
+    StmtList havocFnBody;
+    dmpl::VarList fnParams, fnTemps;
+    
+    //-- havoc locals
+    for(const auto &hl : havocLocs) {
+      for(const Var &v : hl.second) {
+        createHavocStmts(false, fwd, v, havocFnBody, ExprList(), hl.first.id);
+      }
+    }
+    
+    //-- havoc globals
+    for(const auto &hg : havocGlobs) {
+      for(const Var &v : hg.second) {
+        createHavocStmts(true, fwd, v, havocFnBody, ExprList(), hg.first.id);
+      }
+    }
+
+    std::string fnName = std::string("__HAVOC_") + (fwd ? "fwd" : "bwd");
+    Func func(new Function(dmpl::voidType(),fnName,fnParams,fnTemps,havocFnBody));
+    cprog.addFunction(func);
+  }
+}
+
+/*********************************************************************/
 //create the functions for nodes
 /*********************************************************************/
 void dmpl::SyncSeqDbl::createNodeFuncs()
@@ -1026,18 +1088,7 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
         StmtList fnBody;
 
         //-- if this is the thread, havoc variables
-        if(f->equalType(*pr.second)) {
-          //-- havoc locals
-          for(const Var &v : havocLocs[pr.first]) {
-            Expr varExpr(new LvalExpr(v->name + "_" + boost::lexical_cast<std::string>(pr.first.id)));
-            Expr ndfn = createNondetFunc(varExpr, v->type);
-            Expr ndcall(new CallExpr(ndfn,ExprList()));
-            fnBody.push_back(Stmt(new AsgnStmt(varExpr,ndcall)));
-          }
-          //-- havoc globals
-          for(const Var &v : havocGlobs[pr.first])
-            createHavocStmts(true,true,v,fnBody,ExprList(),pr.first.id);
-        }
+        if(f->equalType(*pr.second)) callFunction("__HAVOC_fwd", fnBody);
         
         BOOST_FOREACH(const Stmt &st,f->body) {
           syncseqdbl::NodeTransformer nt(*this,builder.program,pr.first,true,f);
@@ -1060,18 +1111,7 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
         StmtList fnBody;
 
         //-- if this is the thread, havoc variables
-        if(f->equalType(*pr.second)) {
-          //-- havoc locals
-          for(const Var &v : havocLocs[pr.first]) {
-            Expr varExpr(new LvalExpr(v->name + "_" + boost::lexical_cast<std::string>(pr.first.id)));
-            Expr ndfn = createNondetFunc(varExpr, v->type);
-            Expr ndcall(new CallExpr(ndfn,ExprList()));
-            fnBody.push_back(Stmt(new AsgnStmt(varExpr,ndcall)));
-          }
-          //-- havoc globals
-          for(const Var &v : havocGlobs[pr.first])
-            createHavocStmts(true,false,v,fnBody,ExprList(),pr.first.id);
-        }
+        if(f->equalType(*pr.second)) callFunction("__HAVOC_bwd", fnBody);
 
         BOOST_FOREACH(const Stmt &st,f->body) {
           syncseqdbl::NodeTransformer nt(*this,builder.program,pr.first,false,f);
@@ -1211,6 +1251,7 @@ void dmpl::SyncSeqDbl::run()
   createMainFunc();
   createInit();
   createSafety();
+  createHavoc();
   createNodeFuncs();
 
   //-- add end of file footer

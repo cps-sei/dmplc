@@ -42,6 +42,16 @@ _Bool lock_i_4[10][10];
 double loose_speed_0;
 unsigned char next_wp_x_0[5];
 unsigned char next_wp_y_0[5];
+_Bool num_changes_f_0;
+_Bool num_changes_f_1;
+_Bool num_changes_f_2;
+_Bool num_changes_f_3;
+_Bool num_changes_f_4;
+_Bool num_changes_i_0;
+_Bool num_changes_i_1;
+_Bool num_changes_i_2;
+_Bool num_changes_i_3;
+_Bool num_changes_i_4;
 double remaining_flt_time_0;
 unsigned char remaining_segs_0;
 unsigned char scenario_0;
@@ -122,6 +132,11 @@ void __INIT_loose_speed_0();
 void __INIT_next_wp_init_0();
 void __INIT_next_wp_x_0();
 void __INIT_next_wp_y_0();
+void __INIT_num_changes_0();
+void __INIT_num_changes_1();
+void __INIT_num_changes_2();
+void __INIT_num_changes_3();
+void __INIT_num_changes_4();
 void __INIT_remaining_flt_time_0();
 void __INIT_remaining_segs_0();
 int __INIT_scenario_0();
@@ -203,6 +218,11 @@ _Bool nondet_lock_i_4();
 double nondet_loose_speed_0();
 unsigned char nondet_next_wp_x_0();
 unsigned char nondet_next_wp_y_0();
+_Bool nondet_num_changes_i_0();
+_Bool nondet_num_changes_i_1();
+_Bool nondet_num_changes_i_2();
+_Bool nondet_num_changes_i_3();
+_Bool nondet_num_changes_i_4();
 double nondet_remaining_flt_time_0();
 unsigned char nondet_remaining_segs_0();
 unsigned char nondet_scenario();
@@ -285,6 +305,10 @@ _Bool uav__NEXT_XY_DIAGONAL_2_fwd();
 _Bool uav__NEXT_XY_DIAGONAL_3_fwd();
 _Bool uav__NEXT_XY_DIAGONAL_4_fwd();
 void uav__REACHED_NEXT_XY_0_fwd();
+void uav__REACHED_NEXT_XY_1_fwd();
+void uav__REACHED_NEXT_XY_2_fwd();
+void uav__REACHED_NEXT_XY_3_fwd();
+void uav__REACHED_NEXT_XY_4_fwd();
 extern double wall_time();
 
 /************* function definitions ***********/
@@ -428,6 +452,7 @@ void __HAVOC()
   lock_i_0[9][8] = nondet_lock_i_0();
   lock_i_0[9][9] = nondet_lock_i_0();
   formation_i_0 = nondet_formation_i_0();
+  num_changes_i_0 = nondet_num_changes_i_0();
   state_1 = nondet_state_1();
   x_1 = nondet_x_1();
   y_1 = nondet_y_1();
@@ -539,6 +564,7 @@ void __HAVOC()
   lock_i_1[9][7] = nondet_lock_i_1();
   lock_i_1[9][8] = nondet_lock_i_1();
   lock_i_1[9][9] = nondet_lock_i_1();
+  num_changes_i_1 = nondet_num_changes_i_1();
   state_2 = nondet_state_2();
   x_2 = nondet_x_2();
   y_2 = nondet_y_2();
@@ -650,6 +676,7 @@ void __HAVOC()
   lock_i_2[9][7] = nondet_lock_i_2();
   lock_i_2[9][8] = nondet_lock_i_2();
   lock_i_2[9][9] = nondet_lock_i_2();
+  num_changes_i_2 = nondet_num_changes_i_2();
   state_3 = nondet_state_3();
   x_3 = nondet_x_3();
   y_3 = nondet_y_3();
@@ -761,6 +788,7 @@ void __HAVOC()
   lock_i_3[9][7] = nondet_lock_i_3();
   lock_i_3[9][8] = nondet_lock_i_3();
   lock_i_3[9][9] = nondet_lock_i_3();
+  num_changes_i_3 = nondet_num_changes_i_3();
   state_4 = nondet_state_4();
   x_4 = nondet_x_4();
   y_4 = nondet_y_4();
@@ -872,6 +900,7 @@ void __HAVOC()
   lock_i_4[9][7] = nondet_lock_i_4();
   lock_i_4[9][8] = nondet_lock_i_4();
   lock_i_4[9][9] = nondet_lock_i_4();
+  num_changes_i_4 = nondet_num_changes_i_4();
 }
 
 void __INIT()
@@ -896,6 +925,7 @@ void __INIT()
   __INIT_delay_until_0();
   __INIT_formation_0();
   __INIT_lock_0();
+  __INIT_num_changes_0();
   __INIT_started_move_0();
   __INIT_state_0();
   __INIT_waypointValid_0();
@@ -906,6 +936,7 @@ void __INIT()
   __CPROVER_assume(__INIT_x_1());
   __CPROVER_assume(__INIT_y_1());
   __INIT_lock_1();
+  __INIT_num_changes_1();
   __INIT_started_move_1();
   __INIT_state_1();
   __INIT_waypointValid_1();
@@ -918,6 +949,7 @@ void __INIT()
   __CPROVER_assume(__INIT_x_2());
   __CPROVER_assume(__INIT_y_2());
   __INIT_lock_2();
+  __INIT_num_changes_2();
   __INIT_started_move_2();
   __INIT_state_2();
   __INIT_waypointValid_2();
@@ -930,6 +962,7 @@ void __INIT()
   __CPROVER_assume(__INIT_x_3());
   __CPROVER_assume(__INIT_y_3());
   __INIT_lock_3();
+  __INIT_num_changes_3();
   __INIT_started_move_3();
   __INIT_state_3();
   __INIT_waypointValid_3();
@@ -942,6 +975,7 @@ void __INIT()
   __CPROVER_assume(__INIT_x_4());
   __CPROVER_assume(__INIT_y_4());
   __INIT_lock_4();
+  __INIT_num_changes_4();
   __INIT_started_move_4();
   __INIT_state_4();
   __INIT_waypointValid_4();
@@ -1056,6 +1090,31 @@ void __INIT_next_wp_x_0()
 
 void __INIT_next_wp_y_0()
 {
+}
+
+void __INIT_num_changes_0()
+{
+  num_changes_i_0 = 0;
+}
+
+void __INIT_num_changes_1()
+{
+  num_changes_i_1 = 0;
+}
+
+void __INIT_num_changes_2()
+{
+  num_changes_i_2 = 0;
+}
+
+void __INIT_num_changes_3()
+{
+  num_changes_i_3 = 0;
+}
+
+void __INIT_num_changes_4()
+{
+  num_changes_i_4 = 0;
 }
 
 void __INIT_remaining_flt_time_0()
@@ -1954,6 +2013,11 @@ _Bool nondet_lock_i_4();
 double nondet_loose_speed_0();
 unsigned char nondet_next_wp_x_0();
 unsigned char nondet_next_wp_y_0();
+_Bool nondet_num_changes_i_0();
+_Bool nondet_num_changes_i_1();
+_Bool nondet_num_changes_i_2();
+_Bool nondet_num_changes_i_3();
+_Bool nondet_num_changes_i_4();
 double nondet_remaining_flt_time_0();
 unsigned char nondet_remaining_segs_0();
 unsigned char nondet_scenario();
@@ -2120,6 +2184,7 @@ void round_bwd_copier()
   lock_i_0[9][8] = lock_f_0[9][8];
   lock_i_0[9][9] = lock_f_0[9][9];
   formation_i_0 = formation_f_0;
+  num_changes_i_0 = num_changes_f_0;
   lock_i_1[0][0] = lock_f_1[0][0];
   lock_i_1[0][1] = lock_f_1[0][1];
   lock_i_1[0][2] = lock_f_1[0][2];
@@ -2220,6 +2285,7 @@ void round_bwd_copier()
   lock_i_1[9][7] = lock_f_1[9][7];
   lock_i_1[9][8] = lock_f_1[9][8];
   lock_i_1[9][9] = lock_f_1[9][9];
+  num_changes_i_1 = num_changes_f_1;
   lock_i_2[0][0] = lock_f_2[0][0];
   lock_i_2[0][1] = lock_f_2[0][1];
   lock_i_2[0][2] = lock_f_2[0][2];
@@ -2320,6 +2386,7 @@ void round_bwd_copier()
   lock_i_2[9][7] = lock_f_2[9][7];
   lock_i_2[9][8] = lock_f_2[9][8];
   lock_i_2[9][9] = lock_f_2[9][9];
+  num_changes_i_2 = num_changes_f_2;
   lock_i_3[0][0] = lock_f_3[0][0];
   lock_i_3[0][1] = lock_f_3[0][1];
   lock_i_3[0][2] = lock_f_3[0][2];
@@ -2420,6 +2487,7 @@ void round_bwd_copier()
   lock_i_3[9][7] = lock_f_3[9][7];
   lock_i_3[9][8] = lock_f_3[9][8];
   lock_i_3[9][9] = lock_f_3[9][9];
+  num_changes_i_3 = num_changes_f_3;
   lock_i_4[0][0] = lock_f_4[0][0];
   lock_i_4[0][1] = lock_f_4[0][1];
   lock_i_4[0][2] = lock_f_4[0][2];
@@ -2520,6 +2588,7 @@ void round_bwd_copier()
   lock_i_4[9][7] = lock_f_4[9][7];
   lock_i_4[9][8] = lock_f_4[9][8];
   lock_i_4[9][9] = lock_f_4[9][9];
+  num_changes_i_4 = num_changes_f_4;
 }
 
 void round_fwd_copier()
@@ -2625,6 +2694,7 @@ void round_fwd_copier()
   lock_f_0[9][8] = lock_i_0[9][8];
   lock_f_0[9][9] = lock_i_0[9][9];
   formation_f_0 = formation_i_0;
+  num_changes_f_0 = num_changes_i_0;
   lock_f_1[0][0] = lock_i_1[0][0];
   lock_f_1[0][1] = lock_i_1[0][1];
   lock_f_1[0][2] = lock_i_1[0][2];
@@ -2725,6 +2795,7 @@ void round_fwd_copier()
   lock_f_1[9][7] = lock_i_1[9][7];
   lock_f_1[9][8] = lock_i_1[9][8];
   lock_f_1[9][9] = lock_i_1[9][9];
+  num_changes_f_1 = num_changes_i_1;
   lock_f_2[0][0] = lock_i_2[0][0];
   lock_f_2[0][1] = lock_i_2[0][1];
   lock_f_2[0][2] = lock_i_2[0][2];
@@ -2825,6 +2896,7 @@ void round_fwd_copier()
   lock_f_2[9][7] = lock_i_2[9][7];
   lock_f_2[9][8] = lock_i_2[9][8];
   lock_f_2[9][9] = lock_i_2[9][9];
+  num_changes_f_2 = num_changes_i_2;
   lock_f_3[0][0] = lock_i_3[0][0];
   lock_f_3[0][1] = lock_i_3[0][1];
   lock_f_3[0][2] = lock_i_3[0][2];
@@ -2925,6 +2997,7 @@ void round_fwd_copier()
   lock_f_3[9][7] = lock_i_3[9][7];
   lock_f_3[9][8] = lock_i_3[9][8];
   lock_f_3[9][9] = lock_i_3[9][9];
+  num_changes_f_3 = num_changes_i_3;
   lock_f_4[0][0] = lock_i_4[0][0];
   lock_f_4[0][1] = lock_i_4[0][1];
   lock_f_4[0][2] = lock_i_4[0][2];
@@ -3025,6 +3098,7 @@ void round_fwd_copier()
   lock_f_4[9][7] = lock_i_4[9][7];
   lock_f_4[9][8] = lock_i_4[9][8];
   lock_f_4[9][9] = lock_i_4[9][9];
+  num_changes_f_4 = num_changes_i_4;
 }
 
 double sqrt(double x);
@@ -3494,6 +3568,38 @@ void uav__REACHED_NEXT_XY_0_fwd()
   if ((((started_move_0)>(0))&&((formation_i_0)==(1)))&&((speed_factor_0)>(1)))
   {
     delay_until_0 = ((speed_factor_0)*(wall_time()))-(((speed_factor_0)-(1))*(started_move_0));
+  }
+}
+
+void uav__REACHED_NEXT_XY_1_fwd()
+{
+  if ((((num_changes_i_1)!=(num_changes_i_0))&&((x_1)==(xt_1)))&&((y_1)==(yt_1)))
+  {
+    num_changes_f_1 = (1)-(num_changes_i_1);
+  }
+}
+
+void uav__REACHED_NEXT_XY_2_fwd()
+{
+  if ((((num_changes_i_2)!=(num_changes_i_0))&&((x_2)==(xt_2)))&&((y_2)==(yt_2)))
+  {
+    num_changes_f_2 = (1)-(num_changes_i_2);
+  }
+}
+
+void uav__REACHED_NEXT_XY_3_fwd()
+{
+  if ((((num_changes_i_3)!=(num_changes_i_0))&&((x_3)==(xt_3)))&&((y_3)==(yt_3)))
+  {
+    num_changes_f_3 = (1)-(num_changes_i_3);
+  }
+}
+
+void uav__REACHED_NEXT_XY_4_fwd()
+{
+  if ((((num_changes_i_4)!=(num_changes_i_0))&&((x_4)==(xt_4)))&&((y_4)==(yt_4)))
+  {
+    num_changes_f_4 = (1)-(num_changes_i_4);
   }
 }
 
