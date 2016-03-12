@@ -353,7 +353,7 @@ for x in $(seq 1 $((NODENUM - 1))); do
     cpu_id=$(expr $x % $NUMCPU)
     args="$(eval echo \$$args_var)"
     ELOG=""
-    [ -n "$OUTLOG" ] && ELOG="-e $OUTDIR/expect${0}.log"
+    [ -n "$OUTLOG" ] && ELOG="-e $OUTDIR/expect${x}.log"
     cmd="$GDB ./$BIN $ELOG --platform $PLATFORM --id $x -l $LOG_LEVEL $NODE_DEBUG $args"
     taskset -c ${cpu_id} $cmd &> $OUTDIR/node${x}.out &
     pid=$!
