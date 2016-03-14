@@ -65,7 +65,7 @@
 #include "madara/knowledge/KnowledgeRecord.h"
 
 namespace engine = madara::knowledge;
-using madara::KnowledgeRecord;
+using engine::KnowledgeRecord;
 
 namespace dmpl
 {

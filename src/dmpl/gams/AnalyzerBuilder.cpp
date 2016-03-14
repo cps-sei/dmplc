@@ -99,7 +99,6 @@ dmpl::gams::AnalyzerBuilder::build_header_includes ()
   buffer_ << "#include \"madara/knowledge/Functions.h\"\n";
   buffer_ << "#include \"madara/knowledge/containers/IntegerVector.h\"\n";
   buffer_ << "#include \"madara/knowledge/containers/DoubleVector.h\"\n";
-  buffer_ << "#include \"madara/knowledge/containers/Vector_N.h\"\n";
   buffer_ << "#include \"madara/threads/Threader.h\"\n";
   buffer_ << "#include \"madara/filters/GenericFilters.h\"\n";
   buffer_ << "\n";
@@ -107,13 +106,13 @@ dmpl::gams::AnalyzerBuilder::build_header_includes ()
   buffer_ << "#include \"gams/algorithms/BaseAlgorithm.h\"\n";
   buffer_ << "#include \"gams/variables/Sensor.h\"\n";
   buffer_ << "#include \"gams/platforms/BasePlatform.h\"\n";
-  buffer_ << "#include \"gams/variables/Algorithm.h\"\n";
   buffer_ << "#include \"gams/variables/Self.h\"\n";
   buffer_ << "#include \"gams/utility/GPSPosition.h\"\n";
   buffer_ << "\n";
   buffer_ << "#include \"dmpl/Reference.hpp\"\n";
   buffer_ << "#include \"dmpl/ArrayReference.hpp\"\n";
   buffer_ << "#include \"dmpl/LogAnalyzer.hpp\"\n";
+  buffer_ << "#include \"dmpl/DefaultLogger.hpp\"\n";
 }
 
 void
@@ -127,10 +126,11 @@ void
 dmpl::gams::AnalyzerBuilder::build_common_global_variables ()
 {
   buffer_ << "// typedefs\n";
-  buffer_ << "typedef   madara::KnowledgeRecord::Integer   Integer;\n\n";
+  buffer_ << "using madara::knowledge::KnowledgeRecord;\n\n";
+  buffer_ << "typedef   KnowledgeRecord::Integer   Integer;\n\n";
   buffer_ << "// namespace shortcuts\n";
   //buffer_ << "namespace engine = madara::knowledge;\n";
-  buffer_ << "namespace threads = madara::Threads;\n\n";
+  buffer_ << "namespace threads = madara::threads;\n\n";
   buffer_ << "namespace containers = engine::containers;\n\n";
   buffer_ << "namespace controllers = gams::controllers;\n\n";
   buffer_ << "namespace platforms = gams::platforms;\n\n";
@@ -152,7 +152,7 @@ dmpl::gams::AnalyzerBuilder::build_common_global_variables ()
   buffer_ << "double integrate_knowledge(const std::string &name, double value)\n";
   buffer_ << "{\n";
   buffer_ << "  engine::VariableReference ref = knowledge.get_ref(name);\n";
-  buffer_ << "  madara::KnowledgeRecord rec = knowledge.get(ref);\n";
+  buffer_ << "  KnowledgeRecord rec = knowledge.get(ref);\n";
   buffer_ << "  double orig = rec.to_double();\n";
   buffer_ << "  double ret = orig + value * 0.2;\n";
   buffer_ << "  knowledge.set(ref, ret);\n";
@@ -167,7 +167,7 @@ dmpl::gams::AnalyzerBuilder::build_common_global_variables ()
   buffer_ << "  return const_cast<engine::FunctionArguments &>(c);\n";
   buffer_ << "}\n";
   buffer_ << "\n";
-  buffer_ << "inline engine::FunctionArguments &__chain_set(engine::FunctionArguments &c, int i, const madara::KnowledgeRecord &v)\n";
+  buffer_ << "inline engine::FunctionArguments &__chain_set(engine::FunctionArguments &c, int i, const KnowledgeRecord &v)\n";
   buffer_ << "{\n";
   buffer_ << "  c[i] = v;\n";
   buffer_ << "  return c;\n";
@@ -284,12 +284,12 @@ dmpl::gams::AnalyzerBuilder::build_common_filters_helper (
     const std::string filter_name,
     std::stringstream & filter_content)
 {
-  buffer_ << "madara::KnowledgeRecord\n";
+  buffer_ << "KnowledgeRecord\n";
   buffer_ << filter_name << " (madara::KnowledgeMap & records,\n";
   buffer_ << "  const madara::transport::TransportContext & context,\n";
   buffer_ << "  madara::knowledge::Variables & vars)\n";
   buffer_ << "{\n";
-  buffer_ << "  madara::KnowledgeRecord result;\n";
+  buffer_ << "  KnowledgeRecord result;\n";
   buffer_ << filter_content.str ();
   buffer_ << "  return result;\n";
   buffer_ << "}\n\n";
@@ -649,8 +649,11 @@ dmpl::gams::AnalyzerBuilder::build_parse_args ()
   buffer_ << "    {\n";
   buffer_ << "      if (i + 1 < argc)\n";
   buffer_ << "      {\n";
+  buffer_ << "        int log_level = 0;\n";
   buffer_ << "        std::stringstream buffer (argv[i + 1]);\n";
-  buffer_ << "        buffer >> MADARA_debug_level;\n";
+  buffer_ << "        buffer >> log_level;\n";
+  buffer_ << "        madara::logger::global_logger->set_level(log_level);\n";
+  buffer_ << "        gams::loggers::global_logger->set_level(log_level);\n";
   buffer_ << "      }\n";
   buffer_ << "      \n";
   buffer_ << "      ++i;\n";
@@ -682,7 +685,8 @@ dmpl::gams::AnalyzerBuilder::build_parse_args ()
   buffer_ << "    {\n";
   buffer_ << "      if (i + 1 < argc)\n";
   buffer_ << "      {\n";
-  buffer_ << "        madara::knowledge::KnowledgeBase::log_to_file (argv[i + 1]);\n";
+  buffer_ << "        ::madara::logger::global_logger->clear();\n";
+  buffer_ << "        ::madara::logger::global_logger->add_file(argv[i + 1]);\n";
   buffer_ << "      }\n";
   buffer_ << "      \n";
   buffer_ << "      ++i;\n";
@@ -756,7 +760,7 @@ dmpl::gams::AnalyzerBuilder::build_parse_args ()
 
   buffer_ << "    else\n";
   buffer_ << "    {\n";
-  buffer_ << "      MADARA_DEBUG (MADARA_LOG_EMERGENCY, (LM_DEBUG, \n";
+  buffer_ << "      madara_log (madara::logger::LOG_EMERGENCY, (LM_DEBUG, \n";
   buffer_ << "        \"\\nProgram summary for %s:\\n\\n\"\\\n";
   buffer_ << "        \" [-v|--verbose]           output additional information to stderr\\n\"\\\n";
   buffer_ << "        \" [-p|--platform type]     platform for loop (vrep, dronerk)\\n\"\\\n";
@@ -879,7 +883,7 @@ dmpl::gams::AnalyzerBuilder::build_function_declaration (
       !function->usage_summary.anyExpect().any())
     return;
 
-  buffer_ << "madara::KnowledgeRecord\n";
+  buffer_ << "KnowledgeRecord\n";
   buffer_ << node->name << "_" << function->name;
   buffer_ << " (engine::FunctionArguments & args, engine::Variables & vars);\n";
 }
@@ -902,7 +906,7 @@ dmpl::gams::AnalyzerBuilder::build_function (
     buffer_ << "\n";
   }
 
-  buffer_ << "madara::KnowledgeRecord\n";
+  buffer_ << "KnowledgeRecord\n";
   buffer_ << node->name << "_" << function->name;
   buffer_ << " (engine::FunctionArguments & args, engine::Variables & vars)\n";
   buffer_ << "{\n";
@@ -996,7 +1000,7 @@ dmpl::gams::AnalyzerBuilder::build_main_function ()
       buffer_ << "      " << node->idVar->getName() << " = n;" << std::endl;
     }
     buffer_ << "      engine::Variables vars;" << std::endl;
-    buffer_ << "      bool value = " << expectSpec->func << "();\n";
+    buffer_ << "      bool value = " << expectSpec->func->name << "();\n";
 
     AtEndSpec *atEndSpec = dynamic_cast<AtEndSpec*>(&*spec.second);
     AtLeastSpec *atLeastSpec = dynamic_cast<AtLeastSpec*>(&*spec.second);
