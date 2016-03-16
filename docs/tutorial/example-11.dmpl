@@ -226,8 +226,8 @@ node uav
     thread MOVER;
   }
 
-  //-- protector role
-  role Protector {
+  //-- follower role
+  role Follower {
     local char input ox;
     local char input oy;
 
