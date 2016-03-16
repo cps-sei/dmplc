@@ -97,7 +97,7 @@ void GRID_INIT()
  * @param y the y coordinate (up/down from default V-REP perspective)
  * @param z the altitude
  **/
-void GRID_PLACE(int x, int y, int z)
+void GRID_PLACE(double x, double y, double z)
 {
   //std::cerr << "GRID_PLACE" << x << " " << y << " "  << y << std::endl;
   knowledge.set(".initial_x", grid_leftX + x * grid_cellX);
@@ -115,7 +115,7 @@ void GRID_PLACE(int x, int y, int z)
  *
  * @return true if the platform is still moving, false otherwise
  **/
-int GRID_MOVE(int x, int y, int z, double epsilon = 0.1)
+int GRID_MOVE(double x, double y, double z, double epsilon = 0.1)
 {
   //std::cerr << "GRID_MOVE" << x << " " << y << " " << z << std::endl;
   int ret = platform->move(gams::utility::Position(grid_leftX + x * grid_cellX, grid_topY + y * grid_cellY, grid_topZ + z * grid_cellZ), epsilon);
