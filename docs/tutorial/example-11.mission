@@ -18,6 +18,6 @@ FX=4
 FY=9
 
 ARGS_0="--var_x $IX --var_y $IY --var_xt $FX --var_yt $FY"
-ARGS_1="--var_x $((IX+1)) --var_y $((IY+1)) --var_ox 0 --var_oy -1"
-ARGS_2="--var_x $((IX-1)) --var_y $((IY+1)) --var_ox 0 --var_oy -2"
+ARGS_1="--var_x $((IX)) --var_y $((IY-1)) --var_ox 0 --var_oy -1"
+ARGS_2="--var_x $((IX)) --var_y $((IY-2)) --var_ox 0 --var_oy -2"
 
