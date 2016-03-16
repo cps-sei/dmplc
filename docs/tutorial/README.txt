@@ -112,6 +112,10 @@ example-10: This is like example-09 but we have three groups instead
 of 2, to further demonstrate concepts in GBAC, e.g., how groups can
 overlap.
 
+example-11: An example with one leader followed by a sequence of
+followers in platoon formation. Used to demonstrate advantages of
+pipelined ZSRM.
+
 Subdirectories:
 --------------
 

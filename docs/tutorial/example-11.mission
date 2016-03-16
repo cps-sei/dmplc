@@ -1,0 +1,23 @@
+#!/bin/bash
+
+DMPL="example-11.dmpl"
+BIN=example-11
+
+OUTDIR=outdir
+MAPNAME=large
+GRIDSIZE=10
+ROLEDESC=uav:Leader:1:uav:Protector:2
+
+EXPECT_LOG_PERIOD=0.2
+
+MISSION_TIME=240
+
+IX=4
+IY=2
+FX=4
+FY=9
+
+ARGS_0="--var_x $IX --var_y $IY --var_xt $FX --var_yt $FY"
+ARGS_1="--var_x $((IX+1)) --var_y $((IY+1)) --var_ox 0 --var_oy -1"
+ARGS_2="--var_x $((IX-1)) --var_y $((IY+1)) --var_ox 0 --var_oy -2"
+
