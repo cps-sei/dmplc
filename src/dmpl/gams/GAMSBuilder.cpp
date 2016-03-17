@@ -1797,7 +1797,6 @@ dmpl::gams::GAMSBuilder::build_algo_declaration ()
   buffer_ << "  std::string mbarrier;\n";
   buffer_ << "  madara::knowledge::WaitSettings wait_settings;\n";
   buffer_ << "  engine::CompiledExpression round_logic;\n";
-  buffer_ << "  std::map <std::string, bool>  barrier_send_list;\n";
   buffer_ << "  std::stringstream barrier_string, barrier_data_string, barrier_sync;\n";
   buffer_ << "  engine::CompiledExpression barrier_logic;\n";
   buffer_ << "  engine::CompiledExpression barrier_data_logic;\n";
@@ -2054,9 +2053,6 @@ dmpl::gams::GAMSBuilder::build_algo_functions ()
   // build the barrier string  
   buffer_ << "  bool started = false;\n\n";
 
-  buffer_ << "  barrier_send_list [knowledge_->expand_statement (";
-  buffer_ << "\"\" + mbarrier + \".{.id}\")] = true;\n\n";
-  
   buffer_ << "  barrier_string << _exec_func << \"_REMODIFY_BARRIERS () ;> \";\n";
   buffer_ << "  barrier_data_string << _exec_func << \"_REMODIFY_GLOBALS () ;> \";\n";
   buffer_ << "  barrier_sync << \"\" + mbarrier + \".\";\n";
@@ -2134,7 +2130,6 @@ dmpl::gams::GAMSBuilder::build_algo_functions ()
   //buffer_ << "  std::cout << \"SyncAlgo::run phase \" << phase << std::endl;;\n";
   buffer_ << "    if(phase == 0)\n";
   buffer_ << "    {\n";
-  buffer_ << "      wait_settings.send_list = barrier_send_list; \n";
   buffer_ << "      wait_settings.delay_sending_modifieds = true; \n";
   buffer_ << "      knowledge_->evaluate (\"++\" + mbarrier + \".{.id}\", wait_settings); \n";
   buffer_ << "      phase++;\n";
@@ -2152,8 +2147,6 @@ dmpl::gams::GAMSBuilder::build_algo_functions ()
 
   buffer_ << "    if(phase == 2)\n";
   buffer_ << "    {\n";
-  buffer_ << "      // Send only barrier information \n";
-  buffer_ << "      wait_settings.send_list = barrier_send_list; \n";
   buffer_ << "      // Execute main user logic \n";
   buffer_ << "      wait_settings.delay_sending_modifieds = true; \n";
   buffer_ << "      knowledge_->evaluate (_exec_func + \"_PULL ()\", wait_settings); \n";

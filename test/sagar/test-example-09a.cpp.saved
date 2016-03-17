@@ -1820,7 +1820,6 @@ protected:
   std::string mbarrier;
   madara::knowledge::WaitSettings wait_settings;
   engine::CompiledExpression round_logic;
-  std::map <std::string, bool>  barrier_send_list;
   std::stringstream barrier_string, barrier_data_string, barrier_sync;
   engine::CompiledExpression barrier_logic;
   engine::CompiledExpression barrier_data_logic;
@@ -1930,8 +1929,6 @@ void SyncAlgo::init (engine::KnowledgeBase & context)
 {
   bool started = false;
 
-  barrier_send_list [knowledge_->expand_statement ("" + mbarrier + ".{.id}")] = true;
-
   barrier_string << _exec_func << "_REMODIFY_BARRIERS () ;> ";
   barrier_data_string << _exec_func << "_REMODIFY_GLOBALS () ;> ";
   barrier_sync << "" + mbarrier + ".";
@@ -1980,7 +1977,6 @@ void SyncAlgo::run (void)
     // Pre-round barrier increment
     if(phase == 0)
     {
-      wait_settings.send_list = barrier_send_list; 
       wait_settings.delay_sending_modifieds = true; 
       knowledge_->evaluate ("++" + mbarrier + ".{.id}", wait_settings); 
       phase++;
@@ -1996,8 +1992,6 @@ void SyncAlgo::run (void)
     }
     if(phase == 2)
     {
-      // Send only barrier information 
-      wait_settings.send_list = barrier_send_list; 
       // Execute main user logic 
       wait_settings.delay_sending_modifieds = true; 
       knowledge_->evaluate (_exec_func + "_PULL ()", wait_settings); 
