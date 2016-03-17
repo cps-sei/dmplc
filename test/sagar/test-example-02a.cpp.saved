@@ -1839,10 +1839,8 @@ protected:
   std::string mbarrier;
   madara::knowledge::WaitSettings wait_settings;
   engine::CompiledExpression round_logic;
-  std::stringstream barrier_string, barrier_data_string, barrier_sync;
-  engine::CompiledExpression barrier_logic;
+  std::stringstream barrier_data_string;
   engine::CompiledExpression barrier_data_logic;
-  engine::CompiledExpression barrier_sync_logic;
 };
 
 
@@ -1948,45 +1946,26 @@ void SyncAlgo::init (engine::KnowledgeBase & context)
 {
   bool started = false;
 
-  barrier_string << _exec_func << "_REMODIFY_BARRIERS () ;> ";
   barrier_data_string << _exec_func << "_REMODIFY_GLOBALS () ;> ";
-  barrier_sync << "" + mbarrier + ".";
-  barrier_sync << settings.id;
-  barrier_sync << " = (" + mbarrier + ".";
-  barrier_sync << settings.id;
-
   // create barrier check for partner ids
   for (size_t i : syncPartnerIds[_exec_func][settings.id])
   {
     if (started)
     {
-      barrier_string << " && ";
       barrier_data_string << " && ";
     }
 
-    barrier_string << "" + mbarrier + ".";
-    barrier_string << i;
-    barrier_string << " >= " + mbarrier + ".";
-    barrier_string << settings.id;
     barrier_data_string << "" + mbarrier + ".";
     barrier_data_string << i;
     barrier_data_string << " >= " + mbarrier + ".";
     barrier_data_string << settings.id;
-    barrier_sync << " ; ";
-    barrier_sync << "" + mbarrier + ".";
-    barrier_sync << i;
-
     if (!started)
       started = true;
   }
 
-  barrier_sync << ")";
 
   // Compile frequently used expressions
-  std::cout << "barrier_string: " << barrier_string.str() << std::endl;
-  barrier_logic = knowledge_->compile (barrier_string.str ());
   barrier_data_logic = knowledge_->compile (barrier_data_string.str ());
-  barrier_sync_logic = knowledge_->compile (barrier_sync.str ());
   Algo::init(context);
 }
 

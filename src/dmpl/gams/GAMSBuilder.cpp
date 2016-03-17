@@ -1797,10 +1797,8 @@ dmpl::gams::GAMSBuilder::build_algo_declaration ()
   buffer_ << "  std::string mbarrier;\n";
   buffer_ << "  madara::knowledge::WaitSettings wait_settings;\n";
   buffer_ << "  engine::CompiledExpression round_logic;\n";
-  buffer_ << "  std::stringstream barrier_string, barrier_data_string, barrier_sync;\n";
-  buffer_ << "  engine::CompiledExpression barrier_logic;\n";
+  buffer_ << "  std::stringstream barrier_data_string;\n";
   buffer_ << "  engine::CompiledExpression barrier_data_logic;\n";
-  buffer_ << "  engine::CompiledExpression barrier_sync_logic;\n";
   buffer_ << "};\n";
   buffer_ << "\n";
 }
@@ -2053,45 +2051,26 @@ dmpl::gams::GAMSBuilder::build_algo_functions ()
   // build the barrier string  
   buffer_ << "  bool started = false;\n\n";
 
-  buffer_ << "  barrier_string << _exec_func << \"_REMODIFY_BARRIERS () ;> \";\n";
   buffer_ << "  barrier_data_string << _exec_func << \"_REMODIFY_GLOBALS () ;> \";\n";
-  buffer_ << "  barrier_sync << \"\" + mbarrier + \".\";\n";
-  buffer_ << "  barrier_sync << settings.id;\n";
-  buffer_ << "  barrier_sync << \" = (\" + mbarrier + \".\";\n";
-  buffer_ << "  barrier_sync << settings.id;\n\n";
   buffer_ << "  // create barrier check for partner ids\n";
   buffer_ << "  for (size_t i : syncPartnerIds[_exec_func][settings.id])\n";
   buffer_ << "  {\n";
   buffer_ << "    if (started)\n";
   buffer_ << "    {\n";
-  buffer_ << "      barrier_string << \" && \";\n";
   buffer_ << "      barrier_data_string << \" && \";\n";
   buffer_ << "    }\n\n";
 
-  buffer_ << "    barrier_string << \"\" + mbarrier + \".\";\n";
-  buffer_ << "    barrier_string << i;\n";
-  buffer_ << "    barrier_string << \" >= \" + mbarrier + \".\";\n";
-  buffer_ << "    barrier_string << settings.id;\n";
   buffer_ << "    barrier_data_string << \"\" + mbarrier + \".\";\n";
   buffer_ << "    barrier_data_string << i;\n";
   buffer_ << "    barrier_data_string << \" >= \" + mbarrier + \".\";\n";
   buffer_ << "    barrier_data_string << settings.id;\n";
-  buffer_ << "    barrier_sync << \" ; \";\n";
-  buffer_ << "    barrier_sync << \"\" + mbarrier + \".\";\n";
-  buffer_ << "    barrier_sync << i;\n\n";
   buffer_ << "    if (!started)\n";
   buffer_ << "      started = true;\n";
   buffer_ << "  }\n\n";
-  buffer_ << "  barrier_sync << \")\";\n";
   buffer_ << '\n';
 
   buffer_ << "  // Compile frequently used expressions\n";
-
-  buffer_ << "  std::cout << \"barrier_string: \" << barrier_string.str() << std::endl;\n";
-
-  buffer_ << "  barrier_logic = knowledge_->compile (barrier_string.str ());\n";
   buffer_ << "  barrier_data_logic = knowledge_->compile (barrier_data_string.str ());\n";
-  buffer_ << "  barrier_sync_logic = knowledge_->compile (barrier_sync.str ());\n";
 
   buffer_ << "  Algo::init(context);\n";
   
