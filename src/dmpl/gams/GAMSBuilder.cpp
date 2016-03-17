@@ -1118,15 +1118,22 @@ dmpl::gams::GAMSBuilder::build_function_declarations_for_thread (const Func & th
     build_function_declaration (thread, i.second);
   }
 }
-  
+
 /*********************************************************************/
 //-- generate function declaration
 /*********************************************************************/
 void
 dmpl::gams::GAMSBuilder::build_function_declaration (const Func & thread, const Func & function)
 {
-  //-- if function is NULL, declare the thread entry function
+  //-- if function is NULL, declare the thread entry function, as well
+  //-- as the PULL and PUSH functions for referenced variables.
   if(function == NULL) {
+    buffer_ << "KnowledgeRecord\n"
+            << "thread" << thread->threadID
+            << "_PULL (engine::FunctionArguments & args, engine::Variables & vars);\n";
+    buffer_ << "KnowledgeRecord\n"
+            << "thread" << thread->threadID
+            << "_PUSH (engine::FunctionArguments & args, engine::Variables & vars);\n";
     buffer_ << "KnowledgeRecord\n"
             << "thread" << thread->threadID
             << " (engine::FunctionArguments & args, engine::Variables & vars);\n";
@@ -1488,6 +1495,29 @@ dmpl::gams::GAMSBuilder::build_function (
 {
   if (function != NULL && skip_func(function)) return;
 
+  //-- if we are generating the thread entry function, then generate
+  //-- the PULL and PUSH functions as well
+  if(function == NULL) {
+    buffer_ << "KnowledgeRecord\n";
+    buffer_ << "thread" << thread->threadID;
+    buffer_ << "_PULL (engine::FunctionArguments & args, engine::Variables & vars)\n";
+    buffer_ << "{\n";
+    buffer_ << "  std::cerr << \"PULL start\\n\";";
+    build_push_pull(thread, false);
+    buffer_ << "  std::cerr << \"PULL end\\n\";";
+    buffer_ << "  return Integer(0);\n";
+    buffer_ << "}\n\n";
+    buffer_ << "KnowledgeRecord\n";
+    buffer_ << "thread" << thread->threadID;
+    buffer_ << "_PUSH (engine::FunctionArguments & args, engine::Variables & vars)\n";
+    buffer_ << "{\n";
+    buffer_ << "  std::cerr << \"PUSH start\\n\";";
+    build_push_pull(thread, true);
+    buffer_ << "  std::cerr << \"PUSH end\\n\";";
+    buffer_ << "  return Integer(0);\n";
+    buffer_ << "}\n\n";
+  }
+
   //-- print attributes
   if(function != NULL) {
     BOOST_FOREACH (Attributes::value_type & attr, function->attrs)
@@ -1513,20 +1543,13 @@ dmpl::gams::GAMSBuilder::build_function (
 
   //-- if function is NULL, generate the thread entry function
   if(function == NULL) {
-    //-- pull initial variables
-    build_push_pull(thread, false);
-
     //-- call main thread function
-    buffer_ << "\n  //-- call thread function\n";
+    buffer_ << "  //-- call thread function\n";
     buffer_ << "  thread" << thread->threadID << "_";
-    buffer_ << thread->name << "(args, vars);\n";
-    
-    //-- push final variables
-    buffer_ << "\n";
-    build_push_pull(thread, true);
+    buffer_ << thread->name << "(args, vars);\n\n";
 
     //-- dummy return statement
-    buffer_ << "\n  return Integer(0);\n";
+    buffer_ << "  return Integer(0);\n";
     buffer_ << "}\n\n";
     return;
   }
@@ -1970,7 +1993,9 @@ dmpl::gams::GAMSBuilder::build_algo_functions ()
   buffer_ << "{\n";
   buffer_ << "  if (dmpl::debug)\n";
   buffer_ << "    std::cout << \"Executing thread: \" << _exec_func << \" at period \" << _period << \" us\" << std::endl;\n";
+  buffer_ << "  knowledge_->evaluate (_exec_func + \"_PULL ()\");\n";
   buffer_ << "  knowledge_->evaluate (_exec_func + \"()\");\n";
+  buffer_ << "  knowledge_->evaluate (_exec_func + \"_PUSH ()\");\n";
   buffer_ << "  return 0;\n";
   buffer_ << "}\n";
 
@@ -2131,6 +2156,7 @@ dmpl::gams::GAMSBuilder::build_algo_functions ()
   buffer_ << "      wait_settings.send_list = barrier_send_list; \n";
   buffer_ << "      // Execute main user logic \n";
   buffer_ << "      wait_settings.delay_sending_modifieds = true; \n";
+  buffer_ << "      knowledge_->evaluate (_exec_func + \"_PULL ()\", wait_settings); \n";
 
 #if USE_MZSRM==1
   if(schedType_ == MZSRM)
@@ -2150,10 +2176,12 @@ dmpl::gams::GAMSBuilder::build_algo_functions ()
   buffer_ << "    {\n";
   buffer_ << "      // second barrier for waiting on others to finish round \n";
   buffer_ << "      // Increment barrier and only send barrier update \n";
-  buffer_ << "      wait_settings.send_list = barrier_send_list; \n";
+  buffer_ << "      wait_settings.send_list.clear (); \n";
   buffer_ << "      wait_settings.delay_sending_modifieds = false; \n";
-  buffer_ << "      if(knowledge_->evaluate (barrier_logic, wait_settings).to_integer()) \n";
+  buffer_ << "      if(knowledge_->evaluate (barrier_data_logic, wait_settings).to_integer()) {\n";
+  buffer_ << "        knowledge_->evaluate (_exec_func + \"_PUSH ()\", wait_settings); \n";
   buffer_ << "        phase = 0;\n";
+  buffer_ << "      }\n";
   buffer_ << "    }\n";
   buffer_ << "  }\n";
   //buffer_ << "  loop.run_once(barrier_logic, barrier_send_list, wait_settings);\n";
@@ -2662,6 +2690,19 @@ dmpl::gams::GAMSBuilder::build_main_define_function (const Node & node, const Ro
     buffer_ << ");\n";
   }
 
+  //-- define thread PULL function
+  buffer_ << "  knowledge.define_function (\"" << funcName(node, role, thread) << "_PULL\",\n";
+  buffer_ << "                              " << nodeName(node) << "::"
+          << roleName(node, role) << "::thread" << thread->threadID;
+  buffer_ << "_PULL);\n";
+
+  //-- define thread PUSH function
+  buffer_ << "  knowledge.define_function (\"" << funcName(node, role, thread) << "_PUSH\",\n";
+  buffer_ << "                              " << nodeName(node) << "::"
+          << roleName(node, role) << "::thread" << thread->threadID;
+  buffer_ << "_PUSH);\n";
+
+  //-- define thread entry function
   buffer_ << "  knowledge.define_function (\"" << funcName(node, role, thread) << "\",\n";
   buffer_ << "                              " << nodeName(node) << "::"
           << roleName(node, role) << "::thread" << thread->threadID;

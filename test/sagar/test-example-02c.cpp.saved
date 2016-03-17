@@ -953,11 +953,19 @@ namespace node_uav_role_Leader
 KnowledgeRecord
 base_StartingPosition (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
+thread0_PULL (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
 thread0 (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
 thread0_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
 thread0_NEXT_XY (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread1_PULL (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread1_PUSH (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
 thread1 (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
@@ -975,11 +983,19 @@ namespace node_uav_role_ProtectorNE
 KnowledgeRecord
 base_StartingPosition (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
+thread0_PULL (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
 thread0 (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
 thread0_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
 thread0_NEXT_XY (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread2_PULL (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread2_PUSH (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
 thread2 (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
@@ -997,11 +1013,19 @@ namespace node_uav_role_ProtectorNW
 KnowledgeRecord
 base_StartingPosition (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
+thread0_PULL (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
 thread0 (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
 thread0_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
 thread0_NEXT_XY (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread3_PULL (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread3_PUSH (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
 thread3 (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
@@ -1019,11 +1043,19 @@ namespace node_uav_role_ProtectorSE
 KnowledgeRecord
 base_StartingPosition (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
+thread0_PULL (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
 thread0 (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
 thread0_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
 thread0_NEXT_XY (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread4_PULL (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread4_PUSH (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
 thread4 (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
@@ -1041,11 +1073,19 @@ namespace node_uav_role_ProtectorSW
 KnowledgeRecord
 base_StartingPosition (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
+thread0_PULL (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
 thread0 (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
 thread0_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
 thread0_NEXT_XY (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread5_PULL (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread5_PUSH (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
 thread5 (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
@@ -1139,9 +1179,9 @@ base_StartingPosition (engine::FunctionArguments & args, engine::Variables & var
 }
 
 KnowledgeRecord
-thread0 (engine::FunctionArguments & args, engine::Variables & vars)
+thread0_PULL (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  //-- Pull all referenced locals/globals
+  std::cerr << "PULL start\n";  //-- Pull all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     pull(thread0_state);
@@ -1154,11 +1194,13 @@ thread0 (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread0_yt);
     pull(thread0_lock);
   }
+  std::cerr << "PULL end\n";  return Integer(0);
+}
 
-  //-- call thread function
-  thread0_COLLISION_AVOIDANCE(args, vars);
-
-  //-- Push all referenced locals/globals
+KnowledgeRecord
+thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
+{
+  std::cerr << "PUSH start\n";  //-- Push all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     push(thread0_state);
@@ -1171,6 +1213,14 @@ thread0 (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread0_yt);
     push(thread0_lock[id]);
   }
+  std::cerr << "PUSH end\n";  return Integer(0);
+}
+
+KnowledgeRecord
+thread0 (engine::FunctionArguments & args, engine::Variables & vars)
+{
+  //-- call thread function
+  thread0_COLLISION_AVOIDANCE(args, vars);
 
   return Integer(0);
 }
@@ -1289,9 +1339,9 @@ thread0_NEXT_XY (engine::FunctionArguments & args, engine::Variables & vars)
 }
 
 KnowledgeRecord
-thread1 (engine::FunctionArguments & args, engine::Variables & vars)
+thread1_PULL (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  //-- Pull all referenced locals/globals
+  std::cerr << "PULL start\n";  //-- Pull all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     pull(thread1_waypointValid);
@@ -1301,11 +1351,13 @@ thread1 (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread1_lx);
     pull(thread1_ly);
   }
+  std::cerr << "PULL end\n";  return Integer(0);
+}
 
-  //-- call thread function
-  thread1_WAYPOINT(args, vars);
-
-  //-- Push all referenced locals/globals
+KnowledgeRecord
+thread1_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
+{
+  std::cerr << "PUSH start\n";  //-- Push all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     push(thread1_waypointValid);
@@ -1315,6 +1367,14 @@ thread1 (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread1_lx[id]);
     push(thread1_ly[id]);
   }
+  std::cerr << "PUSH end\n";  return Integer(0);
+}
+
+KnowledgeRecord
+thread1 (engine::FunctionArguments & args, engine::Variables & vars)
+{
+  //-- call thread function
+  thread1_WAYPOINT(args, vars);
 
   return Integer(0);
 }
@@ -1488,9 +1548,9 @@ base_StartingPosition (engine::FunctionArguments & args, engine::Variables & var
 }
 
 KnowledgeRecord
-thread0 (engine::FunctionArguments & args, engine::Variables & vars)
+thread0_PULL (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  //-- Pull all referenced locals/globals
+  std::cerr << "PULL start\n";  //-- Pull all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     pull(thread0_state);
@@ -1503,11 +1563,13 @@ thread0 (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread0_yt);
     pull(thread0_lock);
   }
+  std::cerr << "PULL end\n";  return Integer(0);
+}
 
-  //-- call thread function
-  thread0_COLLISION_AVOIDANCE(args, vars);
-
-  //-- Push all referenced locals/globals
+KnowledgeRecord
+thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
+{
+  std::cerr << "PUSH start\n";  //-- Push all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     push(thread0_state);
@@ -1520,6 +1582,14 @@ thread0 (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread0_yt);
     push(thread0_lock[id]);
   }
+  std::cerr << "PUSH end\n";  return Integer(0);
+}
+
+KnowledgeRecord
+thread0 (engine::FunctionArguments & args, engine::Variables & vars)
+{
+  //-- call thread function
+  thread0_COLLISION_AVOIDANCE(args, vars);
 
   return Integer(0);
 }
@@ -1638,9 +1708,9 @@ thread0_NEXT_XY (engine::FunctionArguments & args, engine::Variables & vars)
 }
 
 KnowledgeRecord
-thread2 (engine::FunctionArguments & args, engine::Variables & vars)
+thread2_PULL (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  //-- Pull all referenced locals/globals
+  std::cerr << "PULL start\n";  //-- Pull all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     pull(thread2_waypointValid);
@@ -1650,11 +1720,13 @@ thread2 (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread2_lx);
     pull(thread2_ly);
   }
+  std::cerr << "PULL end\n";  return Integer(0);
+}
 
-  //-- call thread function
-  thread2_WAYPOINT(args, vars);
-
-  //-- Push all referenced locals/globals
+KnowledgeRecord
+thread2_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
+{
+  std::cerr << "PUSH start\n";  //-- Push all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     push(thread2_waypointValid);
@@ -1664,6 +1736,14 @@ thread2 (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread2_lx[id]);
     push(thread2_ly[id]);
   }
+  std::cerr << "PUSH end\n";  return Integer(0);
+}
+
+KnowledgeRecord
+thread2 (engine::FunctionArguments & args, engine::Variables & vars)
+{
+  //-- call thread function
+  thread2_WAYPOINT(args, vars);
 
   return Integer(0);
 }
@@ -1840,9 +1920,9 @@ base_StartingPosition (engine::FunctionArguments & args, engine::Variables & var
 }
 
 KnowledgeRecord
-thread0 (engine::FunctionArguments & args, engine::Variables & vars)
+thread0_PULL (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  //-- Pull all referenced locals/globals
+  std::cerr << "PULL start\n";  //-- Pull all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     pull(thread0_state);
@@ -1855,11 +1935,13 @@ thread0 (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread0_yt);
     pull(thread0_lock);
   }
+  std::cerr << "PULL end\n";  return Integer(0);
+}
 
-  //-- call thread function
-  thread0_COLLISION_AVOIDANCE(args, vars);
-
-  //-- Push all referenced locals/globals
+KnowledgeRecord
+thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
+{
+  std::cerr << "PUSH start\n";  //-- Push all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     push(thread0_state);
@@ -1872,6 +1954,14 @@ thread0 (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread0_yt);
     push(thread0_lock[id]);
   }
+  std::cerr << "PUSH end\n";  return Integer(0);
+}
+
+KnowledgeRecord
+thread0 (engine::FunctionArguments & args, engine::Variables & vars)
+{
+  //-- call thread function
+  thread0_COLLISION_AVOIDANCE(args, vars);
 
   return Integer(0);
 }
@@ -1990,9 +2080,9 @@ thread0_NEXT_XY (engine::FunctionArguments & args, engine::Variables & vars)
 }
 
 KnowledgeRecord
-thread3 (engine::FunctionArguments & args, engine::Variables & vars)
+thread3_PULL (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  //-- Pull all referenced locals/globals
+  std::cerr << "PULL start\n";  //-- Pull all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     pull(thread3_waypointValid);
@@ -2002,11 +2092,13 @@ thread3 (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread3_lx);
     pull(thread3_ly);
   }
+  std::cerr << "PULL end\n";  return Integer(0);
+}
 
-  //-- call thread function
-  thread3_WAYPOINT(args, vars);
-
-  //-- Push all referenced locals/globals
+KnowledgeRecord
+thread3_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
+{
+  std::cerr << "PUSH start\n";  //-- Push all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     push(thread3_waypointValid);
@@ -2016,6 +2108,14 @@ thread3 (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread3_lx[id]);
     push(thread3_ly[id]);
   }
+  std::cerr << "PUSH end\n";  return Integer(0);
+}
+
+KnowledgeRecord
+thread3 (engine::FunctionArguments & args, engine::Variables & vars)
+{
+  //-- call thread function
+  thread3_WAYPOINT(args, vars);
 
   return Integer(0);
 }
@@ -2192,9 +2292,9 @@ base_StartingPosition (engine::FunctionArguments & args, engine::Variables & var
 }
 
 KnowledgeRecord
-thread0 (engine::FunctionArguments & args, engine::Variables & vars)
+thread0_PULL (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  //-- Pull all referenced locals/globals
+  std::cerr << "PULL start\n";  //-- Pull all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     pull(thread0_state);
@@ -2207,11 +2307,13 @@ thread0 (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread0_yt);
     pull(thread0_lock);
   }
+  std::cerr << "PULL end\n";  return Integer(0);
+}
 
-  //-- call thread function
-  thread0_COLLISION_AVOIDANCE(args, vars);
-
-  //-- Push all referenced locals/globals
+KnowledgeRecord
+thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
+{
+  std::cerr << "PUSH start\n";  //-- Push all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     push(thread0_state);
@@ -2224,6 +2326,14 @@ thread0 (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread0_yt);
     push(thread0_lock[id]);
   }
+  std::cerr << "PUSH end\n";  return Integer(0);
+}
+
+KnowledgeRecord
+thread0 (engine::FunctionArguments & args, engine::Variables & vars)
+{
+  //-- call thread function
+  thread0_COLLISION_AVOIDANCE(args, vars);
 
   return Integer(0);
 }
@@ -2342,9 +2452,9 @@ thread0_NEXT_XY (engine::FunctionArguments & args, engine::Variables & vars)
 }
 
 KnowledgeRecord
-thread4 (engine::FunctionArguments & args, engine::Variables & vars)
+thread4_PULL (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  //-- Pull all referenced locals/globals
+  std::cerr << "PULL start\n";  //-- Pull all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     pull(thread4_waypointValid);
@@ -2354,11 +2464,13 @@ thread4 (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread4_lx);
     pull(thread4_ly);
   }
+  std::cerr << "PULL end\n";  return Integer(0);
+}
 
-  //-- call thread function
-  thread4_WAYPOINT(args, vars);
-
-  //-- Push all referenced locals/globals
+KnowledgeRecord
+thread4_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
+{
+  std::cerr << "PUSH start\n";  //-- Push all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     push(thread4_waypointValid);
@@ -2368,6 +2480,14 @@ thread4 (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread4_lx[id]);
     push(thread4_ly[id]);
   }
+  std::cerr << "PUSH end\n";  return Integer(0);
+}
+
+KnowledgeRecord
+thread4 (engine::FunctionArguments & args, engine::Variables & vars)
+{
+  //-- call thread function
+  thread4_WAYPOINT(args, vars);
 
   return Integer(0);
 }
@@ -2544,9 +2664,9 @@ base_StartingPosition (engine::FunctionArguments & args, engine::Variables & var
 }
 
 KnowledgeRecord
-thread0 (engine::FunctionArguments & args, engine::Variables & vars)
+thread0_PULL (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  //-- Pull all referenced locals/globals
+  std::cerr << "PULL start\n";  //-- Pull all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     pull(thread0_state);
@@ -2559,11 +2679,13 @@ thread0 (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread0_yt);
     pull(thread0_lock);
   }
+  std::cerr << "PULL end\n";  return Integer(0);
+}
 
-  //-- call thread function
-  thread0_COLLISION_AVOIDANCE(args, vars);
-
-  //-- Push all referenced locals/globals
+KnowledgeRecord
+thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
+{
+  std::cerr << "PUSH start\n";  //-- Push all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     push(thread0_state);
@@ -2576,6 +2698,14 @@ thread0 (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread0_yt);
     push(thread0_lock[id]);
   }
+  std::cerr << "PUSH end\n";  return Integer(0);
+}
+
+KnowledgeRecord
+thread0 (engine::FunctionArguments & args, engine::Variables & vars)
+{
+  //-- call thread function
+  thread0_COLLISION_AVOIDANCE(args, vars);
 
   return Integer(0);
 }
@@ -2694,9 +2824,9 @@ thread0_NEXT_XY (engine::FunctionArguments & args, engine::Variables & vars)
 }
 
 KnowledgeRecord
-thread5 (engine::FunctionArguments & args, engine::Variables & vars)
+thread5_PULL (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  //-- Pull all referenced locals/globals
+  std::cerr << "PULL start\n";  //-- Pull all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     pull(thread5_waypointValid);
@@ -2706,11 +2836,13 @@ thread5 (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread5_lx);
     pull(thread5_ly);
   }
+  std::cerr << "PULL end\n";  return Integer(0);
+}
 
-  //-- call thread function
-  thread5_WAYPOINT(args, vars);
-
-  //-- Push all referenced locals/globals
+KnowledgeRecord
+thread5_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
+{
+  std::cerr << "PUSH start\n";  //-- Push all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     push(thread5_waypointValid);
@@ -2720,6 +2852,14 @@ thread5 (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread5_lx[id]);
     push(thread5_ly[id]);
   }
+  std::cerr << "PUSH end\n";  return Integer(0);
+}
+
+KnowledgeRecord
+thread5 (engine::FunctionArguments & args, engine::Variables & vars)
+{
+  //-- call thread function
+  thread5_WAYPOINT(args, vars);
 
   return Integer(0);
 }
@@ -2966,7 +3106,9 @@ int Algo::execute (void)
 {
   if (dmpl::debug)
     std::cout << "Executing thread: " << _exec_func << " at period " << _period << " us" << std::endl;
+  knowledge_->evaluate (_exec_func + "_PULL ()");
   knowledge_->evaluate (_exec_func + "()");
+  knowledge_->evaluate (_exec_func + "_PUSH ()");
   return 0;
 }
 
@@ -3073,6 +3215,7 @@ void SyncAlgo::run (void)
       wait_settings.send_list = barrier_send_list; 
       // Execute main user logic 
       wait_settings.delay_sending_modifieds = true; 
+      knowledge_->evaluate (_exec_func + "_PULL ()", wait_settings); 
       Algo::run(); 
       phase++;
     }
@@ -3080,10 +3223,12 @@ void SyncAlgo::run (void)
     {
       // second barrier for waiting on others to finish round 
       // Increment barrier and only send barrier update 
-      wait_settings.send_list = barrier_send_list; 
+      wait_settings.send_list.clear (); 
       wait_settings.delay_sending_modifieds = false; 
-      if(knowledge_->evaluate (barrier_logic, wait_settings).to_integer()) 
+      if(knowledge_->evaluate (barrier_data_logic, wait_settings).to_integer()) {
+        knowledge_->evaluate (_exec_func + "_PUSH ()", wait_settings); 
         phase = 0;
+      }
     }
   }
 }
@@ -3222,8 +3367,16 @@ int main (int argc, char ** argv)
                               node_uav::node_uav_role_Leader::REMODIFY_BARRIERS_COLLISION_AVOIDANCE);
   knowledge.define_function ("node_uav_role_Leader_COLLISION_AVOIDANCE_REMODIFY_GLOBALS",
                               node_uav::node_uav_role_Leader::REMODIFY_GLOBALS_COLLISION_AVOIDANCE);
+  knowledge.define_function ("node_uav_role_Leader_COLLISION_AVOIDANCE_PULL",
+                              node_uav::node_uav_role_Leader::thread0_PULL);
+  knowledge.define_function ("node_uav_role_Leader_COLLISION_AVOIDANCE_PUSH",
+                              node_uav::node_uav_role_Leader::thread0_PUSH);
   knowledge.define_function ("node_uav_role_Leader_COLLISION_AVOIDANCE",
                               node_uav::node_uav_role_Leader::thread0);
+  knowledge.define_function ("node_uav_role_Leader_WAYPOINT_PULL",
+                              node_uav::node_uav_role_Leader::thread1_PULL);
+  knowledge.define_function ("node_uav_role_Leader_WAYPOINT_PUSH",
+                              node_uav::node_uav_role_Leader::thread1_PUSH);
   knowledge.define_function ("node_uav_role_Leader_WAYPOINT",
                               node_uav::node_uav_role_Leader::thread1);
   if(node_name == "uav" && role_name == "ProtectorNE")
@@ -3233,8 +3386,16 @@ int main (int argc, char ** argv)
                               node_uav::node_uav_role_ProtectorNE::REMODIFY_BARRIERS_COLLISION_AVOIDANCE);
   knowledge.define_function ("node_uav_role_ProtectorNE_COLLISION_AVOIDANCE_REMODIFY_GLOBALS",
                               node_uav::node_uav_role_ProtectorNE::REMODIFY_GLOBALS_COLLISION_AVOIDANCE);
+  knowledge.define_function ("node_uav_role_ProtectorNE_COLLISION_AVOIDANCE_PULL",
+                              node_uav::node_uav_role_ProtectorNE::thread0_PULL);
+  knowledge.define_function ("node_uav_role_ProtectorNE_COLLISION_AVOIDANCE_PUSH",
+                              node_uav::node_uav_role_ProtectorNE::thread0_PUSH);
   knowledge.define_function ("node_uav_role_ProtectorNE_COLLISION_AVOIDANCE",
                               node_uav::node_uav_role_ProtectorNE::thread0);
+  knowledge.define_function ("node_uav_role_ProtectorNE_WAYPOINT_PULL",
+                              node_uav::node_uav_role_ProtectorNE::thread2_PULL);
+  knowledge.define_function ("node_uav_role_ProtectorNE_WAYPOINT_PUSH",
+                              node_uav::node_uav_role_ProtectorNE::thread2_PUSH);
   knowledge.define_function ("node_uav_role_ProtectorNE_WAYPOINT",
                               node_uav::node_uav_role_ProtectorNE::thread2);
   if(node_name == "uav" && role_name == "ProtectorNW")
@@ -3244,8 +3405,16 @@ int main (int argc, char ** argv)
                               node_uav::node_uav_role_ProtectorNW::REMODIFY_BARRIERS_COLLISION_AVOIDANCE);
   knowledge.define_function ("node_uav_role_ProtectorNW_COLLISION_AVOIDANCE_REMODIFY_GLOBALS",
                               node_uav::node_uav_role_ProtectorNW::REMODIFY_GLOBALS_COLLISION_AVOIDANCE);
+  knowledge.define_function ("node_uav_role_ProtectorNW_COLLISION_AVOIDANCE_PULL",
+                              node_uav::node_uav_role_ProtectorNW::thread0_PULL);
+  knowledge.define_function ("node_uav_role_ProtectorNW_COLLISION_AVOIDANCE_PUSH",
+                              node_uav::node_uav_role_ProtectorNW::thread0_PUSH);
   knowledge.define_function ("node_uav_role_ProtectorNW_COLLISION_AVOIDANCE",
                               node_uav::node_uav_role_ProtectorNW::thread0);
+  knowledge.define_function ("node_uav_role_ProtectorNW_WAYPOINT_PULL",
+                              node_uav::node_uav_role_ProtectorNW::thread3_PULL);
+  knowledge.define_function ("node_uav_role_ProtectorNW_WAYPOINT_PUSH",
+                              node_uav::node_uav_role_ProtectorNW::thread3_PUSH);
   knowledge.define_function ("node_uav_role_ProtectorNW_WAYPOINT",
                               node_uav::node_uav_role_ProtectorNW::thread3);
   if(node_name == "uav" && role_name == "ProtectorSE")
@@ -3255,8 +3424,16 @@ int main (int argc, char ** argv)
                               node_uav::node_uav_role_ProtectorSE::REMODIFY_BARRIERS_COLLISION_AVOIDANCE);
   knowledge.define_function ("node_uav_role_ProtectorSE_COLLISION_AVOIDANCE_REMODIFY_GLOBALS",
                               node_uav::node_uav_role_ProtectorSE::REMODIFY_GLOBALS_COLLISION_AVOIDANCE);
+  knowledge.define_function ("node_uav_role_ProtectorSE_COLLISION_AVOIDANCE_PULL",
+                              node_uav::node_uav_role_ProtectorSE::thread0_PULL);
+  knowledge.define_function ("node_uav_role_ProtectorSE_COLLISION_AVOIDANCE_PUSH",
+                              node_uav::node_uav_role_ProtectorSE::thread0_PUSH);
   knowledge.define_function ("node_uav_role_ProtectorSE_COLLISION_AVOIDANCE",
                               node_uav::node_uav_role_ProtectorSE::thread0);
+  knowledge.define_function ("node_uav_role_ProtectorSE_WAYPOINT_PULL",
+                              node_uav::node_uav_role_ProtectorSE::thread4_PULL);
+  knowledge.define_function ("node_uav_role_ProtectorSE_WAYPOINT_PUSH",
+                              node_uav::node_uav_role_ProtectorSE::thread4_PUSH);
   knowledge.define_function ("node_uav_role_ProtectorSE_WAYPOINT",
                               node_uav::node_uav_role_ProtectorSE::thread4);
   if(node_name == "uav" && role_name == "ProtectorSW")
@@ -3266,8 +3443,16 @@ int main (int argc, char ** argv)
                               node_uav::node_uav_role_ProtectorSW::REMODIFY_BARRIERS_COLLISION_AVOIDANCE);
   knowledge.define_function ("node_uav_role_ProtectorSW_COLLISION_AVOIDANCE_REMODIFY_GLOBALS",
                               node_uav::node_uav_role_ProtectorSW::REMODIFY_GLOBALS_COLLISION_AVOIDANCE);
+  knowledge.define_function ("node_uav_role_ProtectorSW_COLLISION_AVOIDANCE_PULL",
+                              node_uav::node_uav_role_ProtectorSW::thread0_PULL);
+  knowledge.define_function ("node_uav_role_ProtectorSW_COLLISION_AVOIDANCE_PUSH",
+                              node_uav::node_uav_role_ProtectorSW::thread0_PUSH);
   knowledge.define_function ("node_uav_role_ProtectorSW_COLLISION_AVOIDANCE",
                               node_uav::node_uav_role_ProtectorSW::thread0);
+  knowledge.define_function ("node_uav_role_ProtectorSW_WAYPOINT_PULL",
+                              node_uav::node_uav_role_ProtectorSW::thread5_PULL);
+  knowledge.define_function ("node_uav_role_ProtectorSW_WAYPOINT_PUSH",
+                              node_uav::node_uav_role_ProtectorSW::thread5_PUSH);
   knowledge.define_function ("node_uav_role_ProtectorSW_WAYPOINT",
                               node_uav::node_uav_role_ProtectorSW::thread5);
 

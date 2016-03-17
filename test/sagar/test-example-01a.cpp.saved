@@ -602,6 +602,10 @@ namespace node_uav_role_Uav
 KnowledgeRecord
 base_StartingPosition (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
+thread0_PULL (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
 thread0 (engine::FunctionArguments & args, engine::Variables & vars);
 KnowledgeRecord
 thread0_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Variables & vars);
@@ -696,9 +700,9 @@ base_StartingPosition (engine::FunctionArguments & args, engine::Variables & var
 }
 
 KnowledgeRecord
-thread0 (engine::FunctionArguments & args, engine::Variables & vars)
+thread0_PULL (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  //-- Pull all referenced locals/globals
+  std::cerr << "PULL start\n";  //-- Pull all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     pull(thread0_state);
@@ -710,11 +714,13 @@ thread0 (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread0_yp);
     pull(thread0_lock);
   }
+  std::cerr << "PULL end\n";  return Integer(0);
+}
 
-  //-- call thread function
-  thread0_COLLISION_AVOIDANCE(args, vars);
-
-  //-- Push all referenced locals/globals
+KnowledgeRecord
+thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
+{
+  std::cerr << "PUSH start\n";  //-- Push all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     push(thread0_state);
@@ -726,6 +732,14 @@ thread0 (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread0_yp);
     push(thread0_lock[id]);
   }
+  std::cerr << "PUSH end\n";  return Integer(0);
+}
+
+KnowledgeRecord
+thread0 (engine::FunctionArguments & args, engine::Variables & vars)
+{
+  //-- call thread function
+  thread0_COLLISION_AVOIDANCE(args, vars);
 
   return Integer(0);
 }
@@ -1037,7 +1051,9 @@ int Algo::execute (void)
 {
   if (dmpl::debug)
     std::cout << "Executing thread: " << _exec_func << " at period " << _period << " us" << std::endl;
+  knowledge_->evaluate (_exec_func + "_PULL ()");
   knowledge_->evaluate (_exec_func + "()");
+  knowledge_->evaluate (_exec_func + "_PUSH ()");
   return 0;
 }
 
@@ -1144,6 +1160,7 @@ void SyncAlgo::run (void)
       wait_settings.send_list = barrier_send_list; 
       // Execute main user logic 
       wait_settings.delay_sending_modifieds = true; 
+      knowledge_->evaluate (_exec_func + "_PULL ()", wait_settings); 
       Algo::run(); 
       phase++;
     }
@@ -1151,10 +1168,12 @@ void SyncAlgo::run (void)
     {
       // second barrier for waiting on others to finish round 
       // Increment barrier and only send barrier update 
-      wait_settings.send_list = barrier_send_list; 
+      wait_settings.send_list.clear (); 
       wait_settings.delay_sending_modifieds = false; 
-      if(knowledge_->evaluate (barrier_logic, wait_settings).to_integer()) 
+      if(knowledge_->evaluate (barrier_data_logic, wait_settings).to_integer()) {
+        knowledge_->evaluate (_exec_func + "_PUSH ()", wait_settings); 
         phase = 0;
+      }
     }
   }
 }
@@ -1285,6 +1304,10 @@ int main (int argc, char ** argv)
                               node_uav::node_uav_role_Uav::REMODIFY_BARRIERS_COLLISION_AVOIDANCE);
   knowledge.define_function ("node_uav_role_Uav_COLLISION_AVOIDANCE_REMODIFY_GLOBALS",
                               node_uav::node_uav_role_Uav::REMODIFY_GLOBALS_COLLISION_AVOIDANCE);
+  knowledge.define_function ("node_uav_role_Uav_COLLISION_AVOIDANCE_PULL",
+                              node_uav::node_uav_role_Uav::thread0_PULL);
+  knowledge.define_function ("node_uav_role_Uav_COLLISION_AVOIDANCE_PUSH",
+                              node_uav::node_uav_role_Uav::thread0_PUSH);
   knowledge.define_function ("node_uav_role_Uav_COLLISION_AVOIDANCE",
                               node_uav::node_uav_role_Uav::thread0);
 
