@@ -133,16 +133,6 @@ namespace dmpl
                                         std::stringstream & filter_content);
       
       /**
-       * Builds a threads's variables for Read-Execute-Write semantics
-       **/
-      void build_thread_variables (const Func &thread, const Vars & vars, const std::string &scope);
-
-      /**
-       * Builds a threads's variable for Read-Execute-Write semantics
-       **/
-      void build_thread_variable (const Func &thread, const Var & var);
-      
-      /**
        * Generate code to initialize the role2Id map
        **/
       void build_init_role_id (void);

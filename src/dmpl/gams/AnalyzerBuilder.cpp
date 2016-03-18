@@ -278,7 +278,6 @@ dmpl::gams::AnalyzerBuilder::build_header_includes ()
   buffer_ << "#include \"gams/utility/Rotation.h\"\n";
   buffer_ << "\n";
   buffer_ << "#include \"dmpl/Reference.hpp\"\n";
-  buffer_ << "#include \"dmpl/CachedReference.hpp\"\n";
   buffer_ << "#include \"dmpl/ArrayReference.hpp\"\n";
   buffer_ << "#include \"dmpl/ProactiveStorage.hpp\"\n";
   buffer_ << "#include \"dmpl/LogAnalyzer.hpp\"\n";
@@ -313,7 +312,6 @@ dmpl::gams::AnalyzerBuilder::build_common_global_variables ()
   build_comment("//-- for readability so we don't have to use full namespaces", "", "", 0);
   buffer_ << "using containers::Reference;\n";
   buffer_ << "using containers::ArrayReference;\n";
-  buffer_ << "using containers::CachedReference;\n";
   buffer_ << "using containers::StorageManager::Proactive;\n";
   buffer_ << "using madara::knowledge::knowledge_cast;\n";
   buffer_ << "using madara::knowledge::KnowledgeRecord;\n";
@@ -445,16 +443,9 @@ dmpl::gams::AnalyzerBuilder::build_program_variables ()
       open_namespace(roleName(n->second, r.second));
       build_role_variables(r.second, "global");
       build_role_variables(r.second, "group");
-      build_role_variables(r.second, "local");
-
-      //-- generate thread-read-execute-write variables
-      for (const Func &thread : r.second->threads) {
-        build_thread_variables(thread, thread->accessedLoc(r.second.get()), "local");
-        build_thread_variables(thread, thread->accessedGlob(r.second.get()), "global");
-        build_thread_variables(thread, thread->accessedGroup(r.second.get()), "group");
-      }
-      
+      build_role_variables(r.second, "local");      
       buffer_ << '\n';
+      
       close_namespace(roleName(n->second, r.second));
       build_comment("//-- End defining variables for role " + r.second->name, "", "", 0);
     }
@@ -582,52 +573,6 @@ dmpl::gams::AnalyzerBuilder::build_common_filters_helper (
   buffer_ << filter_content.str ();
   buffer_ << "  return result;\n";
   buffer_ << "}\n\n";
-}
-
-/*********************************************************************/
-//-- generate shared variables for a thread. scope = local/global/group
-/*********************************************************************/
-void
-dmpl::gams::AnalyzerBuilder::build_thread_variables (const Func &thread, const Vars & vars,
-                                                 const std::string &scope)
-{
-  if(scope != "local" && scope != "global" && scope != "group")
-    throw std::runtime_error("ERROR: illegal scope " + scope + " when declaring variables for thread " +
-                             thread->name + "!!");
-
-  build_comment("//-- Defining " + scope + " variables at scope of thread " + thread->name +
-                "\n//-- Used to implement Read-Execute-Write semantics", "\n", "", 0);
-  for (auto i : vars)
-    build_thread_variable (thread, i.second);
-}
-
-/*********************************************************************/
-//-- generate a shared variable for a thread
-/*********************************************************************/
-void
-dmpl::gams::AnalyzerBuilder::build_thread_variable (const Func &thread, const Var & var)
-{
-  // is this an array type?
-  if (var->type->dims.size () >= 1)
-  {
-    buffer_ << "ArrayReference<Proactive<" << get_type_name(var);
-    buffer_ << ", CachedReference>";
-    BOOST_FOREACH(int dim, var->type->dims)
-    {
-      buffer_ << ", " << (dim > 0 ? dim : numNodes ());
-    }
-    buffer_ << "> ";
-  }
-  else
-  {
-    buffer_ << "CachedReference<" << get_type_name(var) << "> ";
-  }
-  buffer_ << "thread" << thread->threadID << "_" << var->name;
-  buffer_ << "(knowledge, \"";
-  if(var->scope == Variable::LOCAL)
-    buffer_ << ".";
-  buffer_ << var->name << "\")";
-  buffer_ << ";\n";
 }
 
 /*********************************************************************/
