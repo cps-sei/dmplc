@@ -341,8 +341,6 @@ dmpl::gams::AnalyzerBuilder::build_common_global_variables ()
 
   build_comment("//-- default transport variables", "", "", 0);
   buffer_ << "std::string host (\"\");\n";
-  buffer_ << "std::vector<std::string> platform_params;\n";
-  buffer_ << "std::string platform_name (\"debug\");\n";
   buffer_ << "typedef void (*PlatformInitFn)(const std::vector<std::string> &, engine::KnowledgeBase &);\n";
   buffer_ << "typedef std::map<std::string, PlatformInitFn> PlatformInitFns;\n";
   buffer_ << "PlatformInitFns platform_init_fns;\n";
@@ -767,15 +765,6 @@ dmpl::gams::AnalyzerBuilder::build_parse_args ()
   buffer_ << "      }\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
-  buffer_ << "    else if (arg1 == \"-p\" || arg1 == \"--platform\")\n";
-  buffer_ << "    {\n";
-  buffer_ << "      if (i + 1 < argc)\n";
-  buffer_ << "      {\n";
-  buffer_ << "        tokenize(std::string(argv[i + 1]), platform_params, \":\");\n";
-  buffer_ << "        platform_name = (platform_params[0]);\n";
-  buffer_ << "      }\n";
-  buffer_ << "      ++i;\n";
-  buffer_ << "    }\n";
   buffer_ << "    else if (arg1 == \"-b\" || arg1 == \"--broadcast\")\n";
   buffer_ << "    {\n";
   buffer_ << "      if (i + 1 < argc)\n";
@@ -956,7 +945,6 @@ dmpl::gams::AnalyzerBuilder::build_parse_args ()
   buffer_ << "    {\n";
   buffer_ << "      madara_log (madara::logger::LOG_EMERGENCY, (LM_DEBUG, \n";
   buffer_ << "        \"\\nProgram summary for %s:\\n\\n\"\\\n";
-  buffer_ << "        \" [-p|--platform type]     platform for loop (vrep, dronerk)\\n\"\\\n";
   buffer_ << "        \" [-b|--broadcast ip:port] the broadcast ip to send and listen to\\n\"\\\n";
   buffer_ << "        \" [-d|--domain domain]     the knowledge domain to send and listen to\\n\"\\\n";
   buffer_ << "        \" [-e|--expect-log file]   file to log variables related to 'expect' clauses\\n\"\\\n";
