@@ -138,6 +138,11 @@ example-05b: Same as example-05 but uses an adaptation manager based
 on dynamic stochastic programming. This is newer work being done on
 proactive self-adaptation.
 
+example-05c: This is the new proactive self-adaptation scenario that
+has two tactics (change formation and change heights) and that provide
+different utilities in terms of detecting objects vs. protecting the
+leader.
+
 example-06: TBD
 
 example-07: Scenarios inspired by movable tiles that can attach to
