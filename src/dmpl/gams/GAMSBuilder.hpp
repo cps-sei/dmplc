@@ -75,7 +75,7 @@ namespace dmpl
        * @param  builder   the source for building a program
        **/
       GAMSBuilder (DmplBuilder & builder,const std::string &target, 
-                   SchedType & schedType, bool do_expect);
+                   const SchedType &schedType, bool do_expect);
 
       /**
        * Builds the underlying character stream that can then be printed

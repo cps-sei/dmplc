@@ -80,7 +80,7 @@ namespace dmpl
      * @param  builder   the source for building a program
      **/
     CodeGenerator (DmplBuilder & builder,const std::string &target,
-                   SchedType & schedType, bool do_expect)
+                   const SchedType & schedType, bool do_expect)
       : builder_ (builder), target_ (target),
         schedType_(schedType), do_expect_(do_expect) {}
 

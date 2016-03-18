@@ -170,9 +170,9 @@ namespace
 //-- constructor
 /*********************************************************************/
 dmpl::gams::GAMSBuilder::GAMSBuilder (dmpl::DmplBuilder & builder,
-                                        const std::string &target, 
-                                        SchedType & schedType,
-                                        bool do_expect)
+                                      const std::string &target, 
+                                      const SchedType & schedType,
+                                      bool do_expect)
   : CodeGenerator(builder,target, schedType, do_expect) {}
 
 /*********************************************************************/
