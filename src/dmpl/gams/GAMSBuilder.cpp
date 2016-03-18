@@ -367,10 +367,19 @@ dmpl::gams::GAMSBuilder::build_common_global_variables ()
   //buffer_ << "containers::IntegerArray barrier;\n";
   buffer_ << "Reference<unsigned int> id(knowledge, \".id\");\n";
   buffer_ << "Reference<unsigned int>  num_processes(knowledge, \".num_processes\");\n";
-  buffer_ << "engine::KnowledgeUpdateSettings private_update (true);\n";
+  buffer_ << "engine::KnowledgeUpdateSettings private_update (true);\n\n";
 
   buffer_ << "//-- used to synchronize and make sure that all nodes are up\n";
   buffer_ << "ArrayReference<unsigned int, " << numNodes () << "> startSync(knowledge, \"startSync\");\n";
+  buffer_ << "Reference<unsigned int> syncPhase(knowledge, \".syncPhase\");\n\n";
+
+  buffer_ << "KnowledgeRecord\n"
+          << "sync_inputs (engine::FunctionArguments & args, engine::Variables & vars)\n"
+          << "{\n"
+          << "  std::string syncStr(\"REMODIFY_INPUT_GLOBALS () ; startSync.{.id} = .syncPhase\");\n"
+          << "  knowledge.evaluate (syncStr);\n"
+          << "  return Integer(0);\n"
+          << "}\n";
 
   //-- define barrier variables for all synchronous threads
   build_comment("//-- barrier variables", "\n", "", 0);
@@ -2412,21 +2421,30 @@ dmpl::gams::GAMSBuilder::build_main_function ()
   build_main_define_functions ();
 
   buffer_ << "  //-- Synchronize to make sure all nodes are up\n";
-  buffer_ << "  {\n";
-  buffer_ << "    madara::knowledge::WaitSettings wait_settings;\n";
-  buffer_ << "    std::string syncStr(\"REMODIFY_INPUT_GLOBALS () ;> ++startSync.{.id}\");\n";
-  buffer_ << "    knowledge.evaluate (syncStr, wait_settings);\n";
-  buffer_ << "    for(;;) {\n";
-  buffer_ << "      size_t flag = 1;\n";
-  buffer_ << "      for(size_t i = 0;i < " << numNodes () << "; ++i)\n";
-  buffer_ << "        if(startSync[i] == 0) { flag = 0; break; }\n";
-  buffer_ << "      if(flag) break;\n";
-  buffer_ << "      sleep(0.2);\n";
-  buffer_ << "    }\n";
-  buffer_ << "    knowledge.evaluate (syncStr, wait_settings);\n";
-  buffer_ << "  }\n";
-
-  buffer_ << "\n  //-- Initializing platform\n";
+  buffer_ << "  knowledge.define_function (\"sync_inputs\", dmpl::sync_inputs);\n"
+          << "  threads::Threader threader(knowledge);\n"
+          << "  Algo *syncInputsAlgo = new Algo(1000000, \"sync_inputs\", &knowledge);\n"
+          << "  syncInputsAlgo->start(threader);\n"
+          << "  {\n"
+          << "    syncPhase = 1;\n"
+          << "    for(;;) {\n"
+          << "      size_t flag = 1;\n"
+          << "      for(size_t i = 0;i < " << numNodes() << "; ++i)\n"
+          << "        if(startSync[i] < syncPhase) { flag = 0; break; }\n"
+          << "      if(flag) break;\n"
+          << "      sleep(0.2);\n"
+          << "    }\n"
+          << "    syncPhase = 2;\n"
+          << "    for(;;) {\n"
+          << "      size_t flag = 1;\n"
+          << "      for(size_t i = 0;i < " << numNodes() << "; ++i)\n"
+          << "        if(startSync[i] < syncPhase) { flag = 0; break; }\n"
+          << "      if(flag) break;\n"
+          << "      sleep(0.2);\n"
+          << "    }\n"
+          << "  }\n\n";
+  
+  buffer_ << "  //-- Initializing platform\n";
   buffer_ << "  PlatformInitFns::iterator init_fn = platform_init_fns.find(platform_name);\n";
   buffer_ << "  if(init_fn != platform_init_fns.end())\n";
   buffer_ << "    init_fn->second(platform_params, knowledge);\n";
@@ -2463,7 +2481,6 @@ dmpl::gams::GAMSBuilder::build_main_function ()
       build_algo_creation(n.second, r.second);
   
   buffer_ << "\n  //-- start threads and simulation\n";
-  buffer_ << "  threads::Threader threader(knowledge);\n";
   buffer_ << "  for(int i = 0; i < algos.size(); i++)\n";
   buffer_ << "    algos[i]->start(threader);\n";
   

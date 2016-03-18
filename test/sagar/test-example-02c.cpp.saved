@@ -178,8 +178,18 @@ std::string role_name ("none");
 Reference<unsigned int> id(knowledge, ".id");
 Reference<unsigned int>  num_processes(knowledge, ".num_processes");
 engine::KnowledgeUpdateSettings private_update (true);
+
 //-- used to synchronize and make sure that all nodes are up
 ArrayReference<unsigned int, 5> startSync(knowledge, "startSync");
+Reference<unsigned int> syncPhase(knowledge, ".syncPhase");
+
+KnowledgeRecord
+sync_inputs (engine::FunctionArguments & args, engine::Variables & vars)
+{
+  std::string syncStr("REMODIFY_INPUT_GLOBALS () ; startSync.{.id} = .syncPhase");
+  knowledge.evaluate (syncStr);
+  return Integer(0);
+}
 
 /********************************************************************/
 //-- barrier variables
@@ -3430,18 +3440,27 @@ int main (int argc, char ** argv)
                               node_uav::node_uav_role_ProtectorSW::thread5);
 
   //-- Synchronize to make sure all nodes are up
+  knowledge.define_function ("sync_inputs", dmpl::sync_inputs);
+  threads::Threader threader(knowledge);
+  Algo *syncInputsAlgo = new Algo(1000000, "sync_inputs", &knowledge);
+  syncInputsAlgo->start(threader);
   {
-    madara::knowledge::WaitSettings wait_settings;
-    std::string syncStr("REMODIFY_INPUT_GLOBALS () ;> ++startSync.{.id}");
-    knowledge.evaluate (syncStr, wait_settings);
+    syncPhase = 1;
     for(;;) {
       size_t flag = 1;
       for(size_t i = 0;i < 5; ++i)
-        if(startSync[i] == 0) { flag = 0; break; }
+        if(startSync[i] < syncPhase) { flag = 0; break; }
       if(flag) break;
       sleep(0.2);
     }
-    knowledge.evaluate (syncStr, wait_settings);
+    syncPhase = 2;
+    for(;;) {
+      size_t flag = 1;
+      for(size_t i = 0;i < 5; ++i)
+        if(startSync[i] < syncPhase) { flag = 0; break; }
+      if(flag) break;
+      sleep(0.2);
+    }
   }
 
   //-- Initializing platform
@@ -3507,7 +3526,6 @@ int main (int argc, char ** argv)
   }
 
   //-- start threads and simulation
-  threads::Threader threader(knowledge);
   for(int i = 0; i < algos.size(); i++)
     algos[i]->start(threader);
   knowledge.set("begin_sim", "1");
