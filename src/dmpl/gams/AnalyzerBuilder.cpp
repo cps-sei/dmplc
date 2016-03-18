@@ -1796,7 +1796,7 @@ dmpl::gams::AnalyzerBuilder::build_main_function ()
         buffer_ << "    value = knowledge.get(\"AtEnd_RESULT." << proc.id << "."
                 << aes->name << "\").to_integer() == 1;\n";
         buffer_ << "    std::cout << \"AtEnd," << aes->name
-                << ",\" << " << proc.id << " << \",\" << value << std::endl;" << std::endl;
+                << "," << proc.id << ",\" << value << std::endl;" << std::endl;
         continue;
       }
       AtLeastSpec *als= dynamic_cast<AtLeastSpec*>(spec.get());
@@ -1807,7 +1807,7 @@ dmpl::gams::AnalyzerBuilder::build_main_function ()
                 << als->name << "\").to_double();\n";
         buffer_ << "    value = (total / count) >= " << als->threshold << ";\n";
         buffer_ << "    std::cout << \"AtLeast," << als->name
-                << ",\" << " << proc.id << " << \",\" << value << std::endl;" << std::endl;
+                << "," << proc.id << ",\" << value << std::endl;" << std::endl;
         continue;
       }
     }
