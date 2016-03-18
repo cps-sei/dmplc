@@ -992,18 +992,6 @@ dmpl::gams::AnalyzerBuilder::build_parse_args ()
   buffer_ << "      exit (0);\n";
   buffer_ << "    }\n";
   buffer_ << "  }\n";
-  buffer_ << "}\n";
-  
-  build_comment("//-- helper function to check validity of supplied arguments", "\n", "", 0);
-  buffer_ << "void check_argument_sanity()\n";
-  buffer_ << "{\n";
-  for (auto & n : builder_.program.nodes) {
-    for(auto & r : n.second->roles)
-      buffer_ << "  if(node_name == \"" << n.second->name << "\" && role_name == \""
-              << r.second->name << "\") return;\n";
-  }  
-  buffer_ << "  throw std::runtime_error(\"ERROR : illegal node and role combination : (\"\n"
-          << "                           + node_name + \" , \" + role_name + \")\");\n";
   buffer_ << "}\n\n";
 }
 
