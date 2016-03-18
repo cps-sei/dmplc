@@ -170,7 +170,7 @@ namespace
 //-- constructor
 /*********************************************************************/
 dmpl::gams::AnalyzerBuilder::AnalyzerBuilder (dmpl::DmplBuilder & builder,const std::string &target)
-  : CodeGenerator(builder,target, dmpl::NON_RT, false) {}
+  : CodeGenerator(builder,target, dmpl::NON_RT, true) {}
 
 /*********************************************************************/
 //-- top level code generator
