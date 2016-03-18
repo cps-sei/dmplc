@@ -245,9 +245,6 @@ namespace dmpl
       //-- generate expect thread method definitions for a role
       void build_expect_thread_definition (const Role &role);
 
-      void build_algo_declaration (void);
-      void build_algo_functions (void);
-
       //-- generate the role2Id function
       void build_role2Id (void);      
       
@@ -261,11 +258,6 @@ namespace dmpl
        * Builds the main function
        **/
       void build_main_function (void);
-
-      /**
-       * Generate code to create functions for a role
-       **/
-      void build_algo_creation (const Node &node, const dmpl::Role &role);
 
       /**
        * Builds the section of main that defines MADARA callable functions
