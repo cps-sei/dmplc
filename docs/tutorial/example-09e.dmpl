@@ -275,6 +275,9 @@ node uav
 	waypointArrival = 1;
       }
 
+      //-- to force retransmit in case earlier writes were dropped
+      waypointArrival = waypointArrival;
+      
       // if we have arrived and everyone else has arrived
       // to their waypoint; continue and move on to the next waypoint
       if ((waypointArrival == 1) && 
