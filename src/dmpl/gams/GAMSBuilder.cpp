@@ -1511,18 +1511,14 @@ dmpl::gams::GAMSBuilder::build_function (
     buffer_ << "thread" << thread->threadID;
     buffer_ << "_PULL (engine::FunctionArguments & args, engine::Variables & vars)\n";
     buffer_ << "{\n";
-    buffer_ << "  std::cerr << \"PULL start\\n\";";
     build_push_pull(thread, false);
-    buffer_ << "  std::cerr << \"PULL end\\n\";";
     buffer_ << "  return Integer(0);\n";
     buffer_ << "}\n\n";
     buffer_ << "KnowledgeRecord\n";
     buffer_ << "thread" << thread->threadID;
     buffer_ << "_PUSH (engine::FunctionArguments & args, engine::Variables & vars)\n";
     buffer_ << "{\n";
-    buffer_ << "  std::cerr << \"PUSH start\\n\";";
     build_push_pull(thread, true);
-    buffer_ << "  std::cerr << \"PUSH end\\n\";";
     buffer_ << "  return Integer(0);\n";
     buffer_ << "}\n\n";
   }
