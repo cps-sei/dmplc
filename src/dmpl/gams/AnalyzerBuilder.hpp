@@ -188,8 +188,8 @@ namespace dmpl
        **/
       void build_function_declaration (const Func & thread, const Func & function);
 
-      //-- declare class that encapsulates the expect thread for a role
-      void build_expect_thread_declaration (const Role &role);
+      //-- declare functions to evaluate expect specifications
+      void build_expect_spec_declaration (const Role &role);
 
       void build_gams_functions (void);
 
@@ -242,8 +242,8 @@ namespace dmpl
        **/
       void build_function (const Func& thread, const dmpl::Node & node, const dmpl::Func& function);
 
-      //-- generate expect thread method definitions for a role
-      void build_expect_thread_definition (const Role &role);
+      //-- generate functions to evaluate expect specifications
+      void build_expect_spec_definition (const Role &role);
 
       //-- generate the role2Id function
       void build_role2Id (void);      

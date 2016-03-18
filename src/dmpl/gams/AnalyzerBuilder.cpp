@@ -1069,8 +1069,8 @@ dmpl::gams::AnalyzerBuilder::build_function_declarations ()
       for (Func thread : r.second->threads)
         build_function_declarations_for_thread(thread, thread->getAccessInfo(r.second.get()).calledFuncs);
 
-      //-- declare expect thread
-      if(do_expect_) build_expect_thread_declaration(r.second);
+      //-- declare functions to evaluate expect specifications
+      if(do_expect_) build_expect_spec_declaration(r.second);
       
       close_namespace(roleName(n.second, r.second));
     }
@@ -1142,25 +1142,17 @@ dmpl::gams::AnalyzerBuilder::build_function_declaration (const Func & thread, co
 }
 
 /*********************************************************************/
-//-- generate class for the expect thread
+//-- declare functions to evaluate expect specifications
 /*********************************************************************/
 void
-dmpl::gams::AnalyzerBuilder::build_expect_thread_declaration (const Role &role)
+dmpl::gams::AnalyzerBuilder::build_expect_spec_declaration (const Role &role)
 {
-  build_comment("//-- Thread class to monitor for expect statements", "\n", "\n", 0);
-  buffer_ << "class ExpectThread : public threads::BaseThread\n";
-  buffer_ << "{\n";
-  buffer_ << "public:\n";
-  buffer_ << "  madara::knowledge::KnowledgeBase *_knowledge;\n";
-  buffer_ << "  ExpectThread (\n";
-  buffer_ << "    ostream &o = std::cout\n";
-  buffer_ << "  ) : out(o) {}\n";
-  buffer_ << "  virtual void init (engine::KnowledgeBase & context);\n";
-  buffer_ << "  virtual void run (void);\n";
-  buffer_ << "  virtual void cleanup (void) {}\n";
-  buffer_ << "protected:\n";
-  buffer_ << "  ostream &out;\n";
-  buffer_ << "};\n";
+  for(const Spec &spec : role->allSpecsInScope()) {
+    ExpectSpec *es = dynamic_cast<ExpectSpec*>(spec.get());
+    if(es == NULL) continue;
+    
+    buffer_ << "bool " << es->func->name << " ();\n";
+  }
 }
 
 /*********************************************************************/
@@ -1220,8 +1212,8 @@ dmpl::gams::AnalyzerBuilder::build_nodes (void)
       for (Func thread : r.second->threads)
         build_functions_for_thread(thread, n->second, thread->getAccessInfo(r.second.get()).calledFuncs);
 
-      //-- build expect thread class methods
-      if(do_expect_) build_expect_thread_definition (r.second);
+      //-- generate functions to evaluate expect specifications
+      if(do_expect_) build_expect_spec_definition (r.second);
 
       //-- build constructors for the role
       build_comment("//-- Begin constructors for role " + r.second->name, "", "", 0);
@@ -1574,118 +1566,17 @@ dmpl::gams::AnalyzerBuilder::build_function (
 }
 
 /*********************************************************************/
-//-- generate methods of expect thread
+//-- generate functions to evaluate expect specifications
 /*********************************************************************/
 void
-dmpl::gams::AnalyzerBuilder::build_expect_thread_definition (const Role &role)
+dmpl::gams::AnalyzerBuilder::build_expect_spec_definition (const Role &role)
 {
-  build_comment("//-- Methods for thread class to monitor for expect statements", "\n", "\n", 0);
-
-  //-- generate function run once for initialization
-  buffer_ << "void ExpectThread::init (engine::KnowledgeBase & context)\n";
-  buffer_ << "{\n";
-  buffer_ << "  _knowledge = &context;\n";
-  buffer_ << "  out << \"Seconds,Micros,Node,At,Variable,Value\" << std::endl;\n";
-  buffer_ << "}\n";
-  buffer_ << "\n";
-
-  //-- generate function run periodically
-  buffer_ << "void ExpectThread::run (void)\n";
-  buffer_ << "{\n";
-  buffer_ << "  timeval tv;\n";
-  buffer_ << "  if(gettimeofday(&tv, NULL) != 0) {\n";
-  buffer_ << "    tv.tv_sec = 0;\n";
-  buffer_ << "    tv.tv_usec = 0;\n";
-  buffer_ << "  }\n";
-
-  buffer_ << "  {\n";
-  buffer_ << "    madara::knowledge::ContextGuard guard(knowledge);\n";
-
-  //-- process all expect specs to compute the set of variables used by them
-  VarSet expectVars;
   for(const Spec &spec : role->allSpecsInScope()) {
-    //-- skip non-expect specifications
-    ExpectSpec *esp = dynamic_cast<ExpectSpec*>(spec.get());
-    if(esp == NULL) continue;
-
-    //-- process all variables
-    AccessInfo accInfo = esp->computeAccessInfo(role);
-    for(const auto &var : accInfo.reads()) expectVars.insert(var.second);
-    for(const auto &var : accInfo.writes()) expectVars.insert(var.second);
-  }
-  
-  //-- dump variables used by expect specs
-  for(const Var &var : expectVars) {
-    //-- get the namespace
-    std::string ns = "::dmpl::" + nodeName(role->node) + "::";
-    if(!role->node->hasVar(var)) ns += roleName(role->node, role) + "::";
+    ExpectSpec *es = dynamic_cast<ExpectSpec*>(spec.get());
+    if(es == NULL) continue;
     
-    //-- dump local variable
-    if(var->scope == Variable::LOCAL) {
-      if(var->type->dims.size() != 0) continue;
-      buffer_ << "    out << tv.tv_sec << \",\" << tv.tv_usec << \",\" << id << \",\" << id << \",\";\n";
-      buffer_ << "    out << \"." << var->getName() << ",\" << " << ns << var->getName() << ";\n";
-      buffer_ << "    out << std::endl;\n";
-      continue;
-    }
-
-    //-- dump global and group variables. we only dump for the indices
-    //-- correspondig to other nodes that can overlap with this node
-    //-- via this variable.
-    if(var->type->dims.size() != 1) continue;
-    for(const Process &proc : builder_.program.procsWithRole(role->name)) {
-      buffer_ << "    if (settings.id == " << proc.id << ") {\n";
-
-      std::set<dmpl::NodeId> on = builder_.program.overlappingNodes(proc, var->name);
-      on.insert(proc.id);
-      
-      for(dmpl::NodeId i : on) {
-        buffer_ << "      out << tv.tv_sec << \",\" << tv.tv_usec << \",\" << id << \",\" << "
-                << i << " << \",\";\n";
-        buffer_ << "      out << \"" << var->getName() << ",\" << " << ns << var->getName() << "[" << i << "];\n";
-        buffer_ << "      out << std::endl;\n";
-      }
-      buffer_ << "    }\n";
-    }
+    buffer_ << "bool " << es->func->name << " () { return 0; }\n\n";
   }
-  
-  //-- dump pure extern functions with no arguments used by expect specs
-  BOOST_FOREACH(Funcs::value_type &it, builder_.program.funcs)
-  {
-    Func func = it.second;
-    if(!func->isExtern || func->params.size() > 0 || func->retType->type == TVOID)
-      continue;
-
-    //-- check if function called by expect spec
-    bool usedExpect = false;
-    for(const Spec &spec : role->allSpecsInScope()) {
-      ExpectSpec *esp = dynamic_cast<ExpectSpec*>(spec.get());
-      if(esp == NULL) continue;
-
-      //-- find the appropriate expect function for this role
-      AccessInfo accInfo = esp->computeAccessInfo(role);
-
-      //std::cout << "role : " << role->name << " spec : " << spec->name << " funcs : ";
-      //for(const auto &f : accInfo.calledFuncs) std::cout << f.second->name << ' ';
-      //std::cout << '\n';
-      
-      if(accInfo.canCall(func)) { usedExpect = true; break; }
-    }
-
-    //-- skip functions not called by expect spec
-    if(!usedExpect) continue;
-      
-    //std::cerr << "External Function: " << func->getName() << std::endl;
-    //std::cerr << "  usage_summary: " << func->usage_summary << std::endl;
-    //std::cerr << "  expect: " << func->usage_summary.anyExpect() << std::endl;
-    buffer_ << "    out << tv.tv_sec << \",\" << tv.tv_usec << \",\" << id << \",\" << id << \",\";\n";
-    buffer_ << "    out << \"" << func->getName() << ",\" << ::" << func->getName() << "();\n";
-    buffer_ << "    out << std::endl;\n";
-  }
-  
-  buffer_ << "  }\n";
-  buffer_ << "}\n";
-  buffer_ << "\n";
 }
 
 /*********************************************************************/
