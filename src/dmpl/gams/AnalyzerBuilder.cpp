@@ -475,7 +475,6 @@ dmpl::gams::AnalyzerBuilder::build_node_variables (const Node &node, const std::
     const Var & var = i->second;
     if(scope != "local") var->type = var->type->incrDim(-1);
     build_program_variable_decl (var);
-    build_program_variable_init (var);
   }
 }
 
@@ -499,7 +498,6 @@ dmpl::gams::AnalyzerBuilder::build_role_variables (const Role &role, const std::
     if(var->isOverride) continue;
     if(scope != "local") var->type = var->type->incrDim(-1);
     build_program_variable_decl (var);
-    build_program_variable_init (var);
   }
 }
 
@@ -529,23 +527,6 @@ dmpl::gams::AnalyzerBuilder::build_program_variable_decl (const Var & var)
     buffer_ << ".";
   buffer_ << var->name << "\")";
   buffer_ << ";\n";
-}
-
-/*********************************************************************/
-//-- initialize a DMPL program specific global variable
-/*********************************************************************/
-void
-dmpl::gams::AnalyzerBuilder::build_program_variable_init (const Var & var)
-{
-  if (var->type->dims.size () <= 1)
-  {
-    buffer_ << get_type_name(var) << " var_init_";
-    buffer_ << var->name;
-    if (var->type->type == TDOUBLE_TYPE)
-      buffer_ << " (0.0);\n";
-    else
-      buffer_ << " (0);\n";
-  }
 }
 
 /*********************************************************************/

@@ -117,11 +117,6 @@ namespace dmpl
       void build_program_variable_decl (const Var & var);
       
       /**
-       * Builds the program's MADARA generated variables
-       **/
-      void build_program_variable_init (const Var & var);
-      
-      /**
        * Builds commonly used filters
        */
       void build_common_filters (void);
