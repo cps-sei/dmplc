@@ -1758,6 +1758,7 @@ dmpl::gams::AnalyzerBuilder::build_main_function ()
     for(const Spec &spec : proc.role->allSpecsInScope()) {
       AtEndSpec *aes= dynamic_cast<AtEndSpec*>(spec.get());
       if(aes) {
+        buffer_ << "    id = " << proc.id << ";\n";
         buffer_ << "    value = " << nodeName(proc.role->node) << "::"
                 << roleName(proc.role->node,proc.role) << "::" << aes->func->name << "();\n";
         buffer_ << "    knowledge.set(\"AtEnd_RESULT." << proc.id << "."
@@ -1766,6 +1767,7 @@ dmpl::gams::AnalyzerBuilder::build_main_function ()
       }
       AtLeastSpec *als= dynamic_cast<AtLeastSpec*>(spec.get());
       if(als) {
+        buffer_ << "    id = " << proc.id << ";\n";
         buffer_ << "    value = " << nodeName(proc.role->node) << "::"
                 << roleName(proc.role->node,proc.role) << "::" << als->func->name << "();\n";
         buffer_ << "    total_so_far = knowledge.get(\"AtLeast_TOTAL." << proc.id << "."
