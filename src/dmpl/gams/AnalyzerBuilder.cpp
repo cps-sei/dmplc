@@ -320,10 +320,6 @@ dmpl::gams::AnalyzerBuilder::build_common_global_variables ()
   buffer_ << "using madara::knowledge::KnowledgeMap;\n";
   buffer_ << "\n";
 
-  build_comment("//-- debug flag", "", "", 0);
-  buffer_ << "bool debug = 0;\n";
-  buffer_ << "\n";
-
   build_comment("//-- declare knowledge base", "", "", 0);
   buffer_ << "engine::KnowledgeBase knowledge;\n";
   buffer_ << "\n";
@@ -881,10 +877,6 @@ dmpl::gams::AnalyzerBuilder::build_parse_args ()
   buffer_ << "    {\n";
   buffer_ << "      settings.send_reduced_message_header = true;\n";
   buffer_ << "    }\n";
-  buffer_ << "    else if (arg1 == \"-dbg\" || arg1 == \"--debug\")\n";
-  buffer_ << "    {\n";
-  buffer_ << "      dmpl::debug = true;\n";
-  buffer_ << "    }\n";
   buffer_ << "    else if (arg1 == \"--write-fd\")\n";
   buffer_ << "    {\n";
   buffer_ << "      if (i + 1 < argc)\n";
@@ -975,7 +967,6 @@ dmpl::gams::AnalyzerBuilder::build_parse_args ()
   buffer_ << "        \" [-mb|--max-barrier-time time] time in seconds to barrier for other processes\\n\"\\\n";
   buffer_ << "        \" [-o|--host hostname]     the hostname of this process (def:localhost)\\n\"\\\n";
   buffer_ << "        \" [-r|--reduced]           use the reduced message header\\n\"\\\n";
-  buffer_ << "        \" [-dbg|--debug]           print debug messages\\n\"\\\n";
   buffer_ << "        \" [-u|--udp ip:port]       the udp ips to send to (first is self to bind to)\\n\"\\\n";
 
   buffer_ << variable_help.str ();
