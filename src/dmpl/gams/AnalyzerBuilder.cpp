@@ -1147,11 +1147,20 @@ dmpl::gams::AnalyzerBuilder::build_function_declaration (const Func & thread, co
 void
 dmpl::gams::AnalyzerBuilder::build_expect_spec_declaration (const Role &role)
 {
+  //-- collect all functions called by the expect specification
+  FuncSet specFuncs;
   for(const Spec &spec : role->allSpecsInScope()) {
     ExpectSpec *es = dynamic_cast<ExpectSpec*>(spec.get());
     if(es == NULL) continue;
-    
-    buffer_ << "bool " << es->func->name << " ();\n";
+
+    specFuncs.insert(es->func);
+    for(const Func &func: role->allFuncsInScope())
+      if(es->func->canCall(func, role.get()))
+        specFuncs.insert(func);
+  }
+  
+  for(const Func &func : specFuncs) {
+    buffer_ << "bool " << func->name << " ();\n";
   }
 }
 
@@ -1571,11 +1580,27 @@ dmpl::gams::AnalyzerBuilder::build_function (
 void
 dmpl::gams::AnalyzerBuilder::build_expect_spec_definition (const Role &role)
 {
+  //-- collect all functions called by the expect specification
+  FuncSet specFuncs;
   for(const Spec &spec : role->allSpecsInScope()) {
     ExpectSpec *es = dynamic_cast<ExpectSpec*>(spec.get());
     if(es == NULL) continue;
-    
-    buffer_ << "bool " << es->func->name << " () { return 0; }\n\n";
+
+    specFuncs.insert(es->func);
+    for(const Func &func: role->allFuncsInScope())
+      if(es->func->canCall(func, role.get()))
+        specFuncs.insert(func);
+  }
+  
+  for(const Func &func : specFuncs) {
+    buffer_ << "bool " << func->name << " ()\n";
+    buffer_ << "{\n";
+
+    dmpl::madara::GAMSCompiler visitor (func, role->node, Func(), builder_, buffer_, true);
+    BOOST_FOREACH (const Stmt & statement, func->body)
+      visitor.visit (statement);
+  
+    buffer_ << "}\n\n";
   }
 }
 
