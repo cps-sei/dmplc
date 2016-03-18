@@ -57,25 +57,24 @@
 #ifndef __GAMS_ANALYZER_BUILDER_H__
 #define __GAMS_ANALYZER_BUILDER_H__
 
-#include <iostream>
-#include <sstream>
-#include <dmpl/gams/GAMSBuilder.hpp>
+#include "dmplc/DmplBuilder.hpp"
+#include "dmplc/CodeGenerator.hpp"
 
 namespace dmpl
 {
   namespace gams
   {
     /*******************************************************************/
-    // Log analyzer program builder for GAMS
+    // Generator for analyzer for logs and evaluate expect specifications
     /*******************************************************************/
-    class AnalyzerBuilder
+    class AnalyzerBuilder : public CodeGenerator
     {
     public:
       /**
        * Constructor
        * @param  builder   the source for building a program
        **/
-      AnalyzerBuilder (DmplBuilder & builder, const std::string &target);
+      AnalyzerBuilder (DmplBuilder & builder,const std::string &target);
 
       /**
        * Builds the underlying character stream that can then be printed
@@ -83,27 +82,39 @@ namespace dmpl
       void build (void);
       
       /**
+       * Builds the target-specific thunk from the DASL program
+       */
+      void build_target_thunk (void);
+      
+      /**
        * Builds the header includes
        **/
       void build_header_includes (void);
-
-      void build_target_thunk_includes (void);
-      void build_target_thunk (void);
 
       /**
        * Builds the common global MADARA generated variables
        **/
       void build_common_global_variables (void);
-
+      
       /**
        * Builds the program's MADARA generated variables
        **/
       void build_program_variables (void);
       
       /**
+       * Declare and initialize node-level variables. scope = local/global/group
+       **/
+      void build_node_variables (const Node &node, const std::string &scope);
+      
+      /**
+       * Declare and initialize role-level variables. scope = local/global/group
+       **/
+      void build_role_variables (const Role &role, const std::string &scope);
+
+      /**
        * Builds the program's MADARA generated variables
        **/
-      void build_program_variable (const Var & var);
+      void build_program_variable_decl (const Var & var);
       
       /**
        * Builds the program's MADARA generated variables
@@ -111,14 +122,40 @@ namespace dmpl
       void build_program_variable_init (const Var & var);
       
       /**
-       * Builds the program's MADARA generated variable bindings in main
-       **/
-      void build_program_variables_bindings (void);
+       * Builds commonly used filters
+       */
+      void build_common_filters (void);
+
+      /**
+       * Helper function of build_common_filters
+       */
+      void build_common_filters_helper (const std::string filter_name,
+                                        std::stringstream & filter_content);
       
       /**
-       * Builds a MADARA generated variable binding in main
+       * Builds a threads's variables for Read-Execute-Write semantics
        **/
-      void build_program_variable_binding (const Var & var);
+      void build_thread_variables (const Func &thread, const Vars & vars, const std::string &scope);
+
+      /**
+       * Builds a threads's variable for Read-Execute-Write semantics
+       **/
+      void build_thread_variable (const Func &thread, const Var & var);
+      
+      /**
+       * Generate code to initialize the role2Id map
+       **/
+      void build_init_role_id (void);
+      
+      /**
+       * Generate code to initialize the nodesInGroup map
+       **/
+      void build_init_nodes_in_group (void);
+      
+      /**
+       * Generate constructor invocation for all program variables
+       **/
+      void build_constructors (void);
       
       /**
        * Builds a MADARA generated variable binding in main
@@ -134,23 +171,101 @@ namespace dmpl
        * Builds variable value parsing
        * @return help printout for variable
        **/
-      std::string build_parse_args (const Var& var);
+      std::string build_parse_args (const std::string &var,
+                                    const std::list<std::pair<Node,Role>> &roles);
 
       /**
        * Builds all function declarations to prevent undefined references
        **/
-      void build_functions_declarations (void);
-      
+      void build_function_declarations (void);
+
+      //-- build function declarations for a thread
+      void build_function_declarations_for_thread (const Func & thread, const Funcs & funcs);
+
       /**
        * Builds a function
        * @param  function  a defined function in the parsed program
        **/
-      void build_function_declaration (const dmpl::Node & node, dmpl::Func& function);
+      void build_function_declaration (const Func & thread, const Func & function);
+
+      //-- declare class that encapsulates the expect thread for a role
+      void build_expect_thread_declaration (const Role &role);
+
+      void build_gams_functions (void);
+
+      /**
+       * Builds global functions
+       **/
+      void build_global_functions (void);
+
+      /**
+       * Builds nodes
+       **/
+      void build_nodes (void);
+
+      /**
+       * Generate constructor for a variable
+       **/
+      void build_constructor_for_variable (Var &v, Node &node);
+
+      /**
+       * Builds a function for refreshing modification flag on input globals
+       **/
+      void build_refresh_modify_input_globals (const Node &node, const Role &role);
+
+      /**
+       * Builds a function for refreshing modification flag on globals
+       **/
+      void build_refresh_modify_globals (const Node &node, const Role &role, const Func &thread);
+      
+      /**
+       * Builds a refresh statement for modification on a global
+       **/
+      void build_refresh_modify_global (const Node &node, const Var& var);
+
+      void build_push_pull (const Func& thread, bool push);
+
+      /**
+       * Builds all functions for a specific thread
+       * @param  thread  the target thread
+       * @node  thread  the target node
+       * @param  function  a defined function in the parsed program
+       **/
+      void build_functions_for_thread (const Func& thread, const dmpl::Node & node,
+                                       const dmpl::Funcs & funcs);
+
+      /**
+       * Builds a function
+       * @param  thread  the target thread
+       * @node  thread  the target node
+       * @param  function  a defined function in the parsed program
+       **/
+      void build_function (const Func& thread, const dmpl::Node & node, const dmpl::Func& function);
+
+      //-- generate expect thread method definitions for a role
+      void build_expect_thread_definition (const Role &role);
+
+      void build_algo_declaration (void);
+      void build_algo_functions (void);
+
+      //-- generate the role2Id function
+      void build_role2Id (void);      
+      
+      /**
+       * Computes priorities, criticalities, and zero slack instants
+       * of functions.
+       **/
+      void compute_priorities (void);
 
       /**
        * Builds the main function
        **/
       void build_main_function (void);
+
+      /**
+       * Generate code to create functions for a role
+       **/
+      void build_algo_creation (const Node &node, const dmpl::Role &role);
 
       /**
        * Builds the section of main that defines MADARA callable functions
@@ -161,30 +276,9 @@ namespace dmpl
        * Builds a function definition for MADARA
        * @param  function  a defined function in the parsed program
        **/
-      void build_main_define_function (const dmpl::Node & node,
-        dmpl::Func& function);
-
-      /**
-       * Builds all functions
-       **/
-      void build_functions (void);
-
-      /**
-       * Builds a function
-       * @param  function  a defined function in the parsed program
-       **/
-      void build_function (const dmpl::Node & node, dmpl::Func& function);
+      void build_main_define_function (const dmpl::Node & node, const dmpl::Role &role,
+                                       const dmpl::Func& thread);
       
-      /**
-       * Builds commonly used filters
-       */
-      void build_common_filters (void);
-      
-      /**
-       * Builds the main logic loop for execution of ROUND
-       **/
-      void build_main_logic (void);
-
       /**
        * Clears the underlying buffer
        **/
@@ -196,47 +290,39 @@ namespace dmpl
        **/
       void print (std::ostream & os);
 
+      /**
+       * Begins a namespace
+       */
+      void open_namespace (const std::string &ns);
 
-    private:
+      /**
+       * Ends a namespace
+       */
+      void close_namespace (const std::string &ns);
+
+      /**
+       * Build a comment with prefix and suffix
+       */
+      void build_comment (const std::string &comment, const std::string &prefix,
+                          const std::string &suffix, size_t indent);
+
+    private:      
       /// character buffer for holding results of build
       std::stringstream buffer_;
 
-      /// the result of the DASL parsing function
-      DmplBuilder & builder_;
+      //-- map from function names to priorities, criticalities and
+      //-- Zero-Slack instants
+      std::map<std::string,unsigned> funcPrios;
+      std::map<std::string,unsigned> funcCrits;
+      std::map<std::string,unsigned> funcZsinsts;
 
-      /// the target to build against
-      std::string target_;
+      //-- map from roles to roles that their functions refer to
+      std::map<std::string,std::set<std::string>> rolesRefRoles;
 
-      /**
-       * Begins dmpl namespace
-       */
-      void open_dmpl_namespace (void);
-
-      /**
-       * Ends dmpl namespace
-       */
-      void close_dmpl_namespace (void);
-
-      /**
-       * Helper function of build_common_filters
-       */
-      void build_common_filters_helper (const std::string filter_name,
-                                        std::stringstream & filter_content);
-
-      /**
-       * Removes #include lines from target thunk and returns them
-       */
-      std::string remove_include_lines_from_target_thunk (void);
-
-      /**
-       * Splits target_str into 2 blocks of code;
-       * first block contains lines starting with #include;
-       * second block contains lines not starting with #include
-       */
-      std::pair<std::string, std::string>
-      split_include_and_non_include_blocks (const std::string target_str);
+      //-- helper function to return number of nodes
+      inline size_t numNodes() const { return builder_.program.processes.size (); }
     };
   } // namespace gams
 } //namespace dmpl
 
-#endif //__GAMS_SYNC_BUILDER_H__
+#endif //__GAMS_ANALYZER_BUILDER_H__
