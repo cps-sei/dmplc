@@ -519,12 +519,11 @@ dmpl::gams::AnalyzerBuilder::build_program_variable_decl (const Var & var)
   }
   else
   {
-    buffer_ << "Reference<" << get_type_name(var) << "> ";
+    buffer_ << "ArrayReference<" << get_type_name(var)
+            << ", " << numNodes () << "> ";
   }
   buffer_ << var->name;
   buffer_ << "(knowledge, \"";
-  if(var->scope == Variable::LOCAL)
-    buffer_ << ".";
   buffer_ << var->name << "\")";
   buffer_ << ";\n";
 }
