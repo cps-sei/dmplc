@@ -948,7 +948,7 @@ base_StartingPosition (engine::FunctionArguments & args, engine::Variables & var
 KnowledgeRecord
 thread0_PULL (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  std::cerr << "PULL start\n";  //-- Pull all referenced locals/globals
+  //-- Pull all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     pull(thread0_state);
@@ -961,13 +961,13 @@ thread0_PULL (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread0_yt);
     pull(thread0_lock);
   }
-  std::cerr << "PULL end\n";  return Integer(0);
+  return Integer(0);
 }
 
 KnowledgeRecord
 thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  std::cerr << "PUSH start\n";  //-- Push all referenced locals/globals
+  //-- Push all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     push(thread0_state);
@@ -980,7 +980,7 @@ thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread0_yt);
     push(thread0_lock[id]);
   }
-  std::cerr << "PUSH end\n";  return Integer(0);
+  return Integer(0);
 }
 
 KnowledgeRecord
@@ -1109,27 +1109,27 @@ thread0_NEXT_XY (engine::FunctionArguments & args, engine::Variables & vars)
 KnowledgeRecord
 thread1_PULL (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  std::cerr << "PULL start\n";  //-- Pull all referenced locals/globals
+  //-- Pull all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     pull(thread1_foo);
     pull(thread1_lx);
     pull(thread1_ly);
   }
-  std::cerr << "PULL end\n";  return Integer(0);
+  return Integer(0);
 }
 
 KnowledgeRecord
 thread1_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  std::cerr << "PUSH start\n";  //-- Push all referenced locals/globals
+  //-- Push all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     push(thread1_foo[id]);
     push(thread1_lx[id]);
     push(thread1_ly[id]);
   }
-  std::cerr << "PUSH end\n";  return Integer(0);
+  return Integer(0);
 }
 
 KnowledgeRecord
@@ -1161,7 +1161,7 @@ thread1_COLLISION_AVOIDANCE2 (engine::FunctionArguments & args, engine::Variable
 KnowledgeRecord
 thread2_PULL (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  std::cerr << "PULL start\n";  //-- Pull all referenced locals/globals
+  //-- Pull all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     pull(thread2_waypointValid);
@@ -1171,13 +1171,13 @@ thread2_PULL (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread2_lx);
     pull(thread2_ly);
   }
-  std::cerr << "PULL end\n";  return Integer(0);
+  return Integer(0);
 }
 
 KnowledgeRecord
 thread2_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  std::cerr << "PUSH start\n";  //-- Push all referenced locals/globals
+  //-- Push all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     push(thread2_waypointValid);
@@ -1187,7 +1187,7 @@ thread2_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread2_lx[id]);
     push(thread2_ly[id]);
   }
-  std::cerr << "PUSH end\n";  return Integer(0);
+  return Integer(0);
 }
 
 KnowledgeRecord
@@ -1401,7 +1401,7 @@ base_StartingPosition (engine::FunctionArguments & args, engine::Variables & var
 KnowledgeRecord
 thread0_PULL (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  std::cerr << "PULL start\n";  //-- Pull all referenced locals/globals
+  //-- Pull all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     pull(thread0_state);
@@ -1414,13 +1414,13 @@ thread0_PULL (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread0_yt);
     pull(thread0_lock);
   }
-  std::cerr << "PULL end\n";  return Integer(0);
+  return Integer(0);
 }
 
 KnowledgeRecord
 thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  std::cerr << "PUSH start\n";  //-- Push all referenced locals/globals
+  //-- Push all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     push(thread0_state);
@@ -1433,7 +1433,7 @@ thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread0_yt);
     push(thread0_lock[id]);
   }
-  std::cerr << "PUSH end\n";  return Integer(0);
+  return Integer(0);
 }
 
 KnowledgeRecord
@@ -1567,23 +1567,23 @@ thread0_NEXT_XY (engine::FunctionArguments & args, engine::Variables & vars)
 KnowledgeRecord
 thread1_PULL (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  std::cerr << "PULL start\n";  //-- Pull all referenced locals/globals
+  //-- Pull all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     pull(thread1_lx);
   }
-  std::cerr << "PULL end\n";  return Integer(0);
+  return Integer(0);
 }
 
 KnowledgeRecord
 thread1_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  std::cerr << "PUSH start\n";  //-- Push all referenced locals/globals
+  //-- Push all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     push(thread1_lx[id]);
   }
-  std::cerr << "PUSH end\n";  return Integer(0);
+  return Integer(0);
 }
 
 KnowledgeRecord
@@ -1613,7 +1613,7 @@ thread1_COLLISION_AVOIDANCE2 (engine::FunctionArguments & args, engine::Variable
 KnowledgeRecord
 thread3_PULL (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  std::cerr << "PULL start\n";  //-- Pull all referenced locals/globals
+  //-- Pull all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     pull(thread3_waypointValid);
@@ -1623,13 +1623,13 @@ thread3_PULL (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread3_lx);
     pull(thread3_ly);
   }
-  std::cerr << "PULL end\n";  return Integer(0);
+  return Integer(0);
 }
 
 KnowledgeRecord
 thread3_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  std::cerr << "PUSH start\n";  //-- Push all referenced locals/globals
+  //-- Push all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     push(thread3_waypointValid);
@@ -1639,7 +1639,7 @@ thread3_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread3_lx[id]);
     push(thread3_ly[id]);
   }
-  std::cerr << "PUSH end\n";  return Integer(0);
+  return Integer(0);
 }
 
 KnowledgeRecord
@@ -2013,6 +2013,7 @@ void SyncAlgo::run (void)
       wait_settings.send_list.clear (); 
       wait_settings.delay_sending_modifieds = false; 
       if(knowledge_->evaluate (barrier_data_logic, wait_settings).to_integer()) {
+        wait_settings.delay_sending_modifieds = true; 
         knowledge_->evaluate (_exec_func + "_PUSH ()", wait_settings); 
         phase = 0;
       }

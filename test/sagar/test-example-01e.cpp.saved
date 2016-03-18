@@ -937,7 +937,7 @@ base_StartingPosition (engine::FunctionArguments & args, engine::Variables & var
 KnowledgeRecord
 thread0_PULL (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  std::cerr << "PULL start\n";  //-- Pull all referenced locals/globals
+  //-- Pull all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     pull(thread0_state);
@@ -949,13 +949,13 @@ thread0_PULL (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread0_yp);
     pull(thread0_lock);
   }
-  std::cerr << "PULL end\n";  return Integer(0);
+  return Integer(0);
 }
 
 KnowledgeRecord
 thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  std::cerr << "PUSH start\n";  //-- Push all referenced locals/globals
+  //-- Push all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     push(thread0_state);
@@ -967,7 +967,7 @@ thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread0_yp);
     push(thread0_lock[id]);
   }
-  std::cerr << "PUSH end\n";  return Integer(0);
+  return Integer(0);
 }
 
 KnowledgeRecord
@@ -1236,7 +1236,7 @@ base_StartingPosition (engine::FunctionArguments & args, engine::Variables & var
 KnowledgeRecord
 thread0_PULL (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  std::cerr << "PULL start\n";  //-- Pull all referenced locals/globals
+  //-- Pull all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     pull(thread0_state);
@@ -1248,13 +1248,13 @@ thread0_PULL (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread0_yp);
     pull(thread0_lock);
   }
-  std::cerr << "PULL end\n";  return Integer(0);
+  return Integer(0);
 }
 
 KnowledgeRecord
 thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  std::cerr << "PUSH start\n";  //-- Push all referenced locals/globals
+  //-- Push all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     push(thread0_state);
@@ -1266,7 +1266,7 @@ thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread0_yp);
     push(thread0_lock[id]);
   }
-  std::cerr << "PUSH end\n";  return Integer(0);
+  return Integer(0);
 }
 
 KnowledgeRecord
@@ -1565,7 +1565,7 @@ base_StartingPosition (engine::FunctionArguments & args, engine::Variables & var
 KnowledgeRecord
 thread0_PULL (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  std::cerr << "PULL start\n";  //-- Pull all referenced locals/globals
+  //-- Pull all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     pull(thread0_state);
@@ -1577,13 +1577,13 @@ thread0_PULL (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread0_yp);
     pull(thread0_lock);
   }
-  std::cerr << "PULL end\n";  return Integer(0);
+  return Integer(0);
 }
 
 KnowledgeRecord
 thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
 {
-  std::cerr << "PUSH start\n";  //-- Push all referenced locals/globals
+  //-- Push all referenced locals/globals
   {
     madara::knowledge::ContextGuard guard(knowledge);
     push(thread0_state);
@@ -1595,7 +1595,7 @@ thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread0_yp);
     push(thread0_lock[id]);
   }
-  std::cerr << "PUSH end\n";  return Integer(0);
+  return Integer(0);
 }
 
 KnowledgeRecord
@@ -2028,6 +2028,7 @@ void SyncAlgo::run (void)
       wait_settings.send_list.clear (); 
       wait_settings.delay_sending_modifieds = false; 
       if(knowledge_->evaluate (barrier_data_logic, wait_settings).to_integer()) {
+        wait_settings.delay_sending_modifieds = true; 
         knowledge_->evaluate (_exec_func + "_PUSH ()", wait_settings); 
         phase = 0;
       }

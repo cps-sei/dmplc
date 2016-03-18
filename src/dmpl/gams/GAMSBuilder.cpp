@@ -2156,6 +2156,7 @@ dmpl::gams::GAMSBuilder::build_algo_functions ()
   buffer_ << "      wait_settings.send_list.clear (); \n";
   buffer_ << "      wait_settings.delay_sending_modifieds = false; \n";
   buffer_ << "      if(knowledge_->evaluate (barrier_data_logic, wait_settings).to_integer()) {\n";
+  buffer_ << "        wait_settings.delay_sending_modifieds = true; \n";
   buffer_ << "        knowledge_->evaluate (_exec_func + \"_PUSH ()\", wait_settings); \n";
   buffer_ << "        phase = 0;\n";
   buffer_ << "      }\n";
