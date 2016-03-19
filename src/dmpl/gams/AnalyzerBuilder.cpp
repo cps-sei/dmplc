@@ -1215,6 +1215,8 @@ dmpl::gams::AnalyzerBuilder::build_main_function ()
 
   buffer_ << "  std::cout << \"Time,Name,Node,Value\" << std::endl;\n";
   buffer_ << "  for(;;) {\n";
+  buffer_ << "    engine::FunctionArguments args;\n";
+  buffer_ << "    engine::Variables vars;\n";
   buffer_ << "    bool done = !analyzer.next_step();\n";
   buffer_ << "    bool value = 0;\n";
   buffer_ << "    int total_so_far = 0, count_so_far = 0;\n";
@@ -1225,7 +1227,8 @@ dmpl::gams::AnalyzerBuilder::build_main_function ()
       if(aes) {
         buffer_ << "    id = " << proc.id << ";\n";
         buffer_ << "    value = " << nodeName(proc.role->node) << "::"
-                << roleName(proc.role->node,proc.role) << "::" << aes->func->name << "();\n";
+                << roleName(proc.role->node,proc.role) << "::" << aes->func->name
+                << "(args,vars).to_integer();\n";
         buffer_ << "    knowledge.set(\"AtEnd_RESULT." << proc.id << "."
                 << aes->name << "\", Integer(value?1:0));\n";
         continue;
@@ -1234,7 +1237,8 @@ dmpl::gams::AnalyzerBuilder::build_main_function ()
       if(als) {
         buffer_ << "    id = " << proc.id << ";\n";
         buffer_ << "    value = " << nodeName(proc.role->node) << "::"
-                << roleName(proc.role->node,proc.role) << "::" << als->func->name << "();\n";
+                << roleName(proc.role->node,proc.role) << "::" << als->func->name
+                << "(args,vars).to_integer();\n";
         buffer_ << "    total_so_far = knowledge.get(\"AtLeast_TOTAL." << proc.id << "."
                 << als->name << "\").to_integer();\n";
         buffer_ << "    count_so_far = knowledge.get(\"AtLeast_COUNT." << proc.id << "."
