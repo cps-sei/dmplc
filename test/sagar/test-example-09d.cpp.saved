@@ -1525,7 +1525,7 @@ void ExpectThread::run (void)
     out << ".xp," << ::dmpl::node_uav::xp;
     out << std::endl;
     out << tv.tv_sec << "," << tv.tv_usec << "," << id << "," << id << ",";
-    out << "foo1," << ::foo1();
+    out << "EXTERN_foo1," << ::foo1();
     out << std::endl;
   }
 }
@@ -2077,6 +2077,9 @@ void ExpectThread::run (void)
     out << std::endl;
     out << tv.tv_sec << "," << tv.tv_usec << "," << id << "," << id << ",";
     out << ".oy," << ::dmpl::node_uav::node_uav_role_Protector::oy;
+    out << std::endl;
+    out << tv.tv_sec << "," << tv.tv_usec << "," << id << "," << id << ",";
+    out << "EXTERN_foo1," << ::foo1();
     out << std::endl;
   }
 }
