@@ -82,12 +82,12 @@ namespace dmpl
       GAMSCompiler (const Func & function, const Node & node,
                     const Func & thread,
                     DmplBuilder & builder, std::stringstream & buffer,
-                    bool do_vrep, bool do_analyzer = false);
+                    bool do_vrep, bool do_analyzer);
       
       GAMSCompiler (const Stmt & statement, const Node & node,
                     const Func & thread,
                     DmplBuilder & builder, std::stringstream & buffer,
-                    bool do_vrep, bool do_analyzer = false);
+                    bool do_vrep, bool do_analyzer);
       
       //-- construct a map from node ids to node ids that they should
       //-- iterate over given a specific type of iteration construct

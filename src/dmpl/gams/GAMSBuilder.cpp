@@ -159,7 +159,7 @@ namespace
       if(variable->initFunc == NULL) continue;
       
       dmpl::madara::GAMSCompiler visitor (variable->initFunc, node, dmpl::Func(),
-                                          builder_, buffer_, false);
+                                          builder_, buffer_, false, false);
       for (const dmpl::Stmt & statement : variable->initFunc->body)
         visitor.visit (statement);
     }
@@ -1258,7 +1258,7 @@ dmpl::gams::GAMSBuilder::build_nodes (void)
           
           //-- transform statements
           dmpl::madara::GAMSCompiler visitor (rec->initFunc, n->second, Func(),
-                                              builder_, buffer_, false);
+                                              builder_, buffer_, false, false);
           for (const Stmt & statement : rec->initFunc->body)
             visitor.visit (statement);
           buffer_ << "}\n";
@@ -1271,7 +1271,7 @@ dmpl::gams::GAMSBuilder::build_nodes (void)
         
           //-- transform statements
           dmpl::madara::GAMSCompiler visitor (rec->assumeFunc, n->second, Func(),
-                                              builder_, buffer_, false);
+                                              builder_, buffer_, false, false);
           for (const Stmt & statement : rec->assumeFunc->body)
             visitor.visit (statement);
           buffer_ << "}\n";
@@ -1345,7 +1345,7 @@ dmpl::gams::GAMSBuilder::build_constructor_for_variable (Var &v, Node &node)
     
     //-- transform statements
     dmpl::madara::GAMSCompiler visitor (v->initFunc, node, Func(),
-                                        builder_, buffer_, false);
+                                        builder_, buffer_, false, false);
     for (const Stmt & statement : v->initFunc->body)
       visitor.visit (statement);
   }
@@ -1569,7 +1569,7 @@ dmpl::gams::GAMSBuilder::build_function (
   buffer_ << "\n";
 
   buffer_ << "\n  //-- Begin function body\n";
-  dmpl::madara::GAMSCompiler visitor (actualFunc, node, thread, builder_, buffer_, false);
+  dmpl::madara::GAMSCompiler visitor (actualFunc, node, thread, builder_, buffer_, false, false);
 
   //transform the body of safety
   BOOST_FOREACH (const Stmt & statement, actualFunc->body)

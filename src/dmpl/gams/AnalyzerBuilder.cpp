@@ -159,7 +159,7 @@ namespace
       if(variable->initFunc == NULL) continue;
       
       dmpl::madara::GAMSCompiler visitor (variable->initFunc, node, dmpl::Func(),
-                                          builder_, buffer_, false);
+                                          builder_, buffer_, false, true);
       for (const dmpl::Stmt & statement : variable->initFunc->body)
         visitor.visit (statement);
     }
@@ -1010,7 +1010,7 @@ dmpl::gams::AnalyzerBuilder::build_function (const dmpl::Node & node, const dmpl
   buffer_ << "\n";
 
   buffer_ << "\n  //-- Begin function body\n";
-  dmpl::madara::GAMSCompiler visitor (actualFunc, node, Func(), builder_, buffer_, true);
+  dmpl::madara::GAMSCompiler visitor (actualFunc, node, Func(), builder_, buffer_, false, true);
 
   //transform the body of safety
   BOOST_FOREACH (const Stmt & statement, actualFunc->body)
