@@ -111,6 +111,8 @@ void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
     print_line(_X);
   }
 }
+
+int foo1() { return 100; }
 %%}
 
 //states of each node
@@ -124,6 +126,7 @@ extern void INIT_CONTROLLER(unsigned char x,unsigned char y);
 extern int my_sleep(int seconds);
 extern void print_state(int XX,int YY,int my_id, int x, int y, int xf, int yf);
 extern void print_int(int i);
+extern pure int foo1();
 
 node uav
 {
@@ -148,16 +151,16 @@ node uav
   
   local bool waypointValid = 0; //xt, yt are valid
 
-  pure int expProp1Func() { return x < 5; }
-  pure int expProp2Func() { return y < 5; }
+  pure int expProp1Func() { return expProp2Func() && x < 5; }
+  pure int expProp2Func() { return foo1() || xp > 6; }
+  pure int expProp3Func() { return yp < 5; }
   
   expect expProp1 : at_end => expProp1Func;
-  expect expProp2 : at_end => expProp2Func;
+  //expect expProp2 : at_end => expProp2Func;
 
   pure int coverage()
   {
-    return x + y < 8;
-    //return (GET_LAT() - GET_LNG()@0) > 0.9;
+    return (foo1() - foo1()@0) > 0.9;
   }
 
   expect expProp3 : at_least 0.5 => coverage;
@@ -222,6 +225,9 @@ node uav
   role Protector {
     local char input ox;
     local char input oy;
+
+    //override pure int expProp1Func() { return expProp2Func() && x < 5; }
+    override pure int expProp2Func() { return ox == oy && expProp3Func(); }
     
     //-- follower-specific waypoint thread
     @Period(100000);
