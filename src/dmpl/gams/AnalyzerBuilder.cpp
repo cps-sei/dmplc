@@ -948,9 +948,8 @@ dmpl::gams::AnalyzerBuilder::build_expect_spec_declaration (const Role &role)
     ExpectSpec *es = dynamic_cast<ExpectSpec*>(spec.get());
     if(es == NULL) continue;
 
-    specFuncs.insert(es->func);
     for(const Func &func: role->allFuncsInScope())
-      if(es->func->canCall(func, role.get()))
+      if(es->func->equalType(*func) || es->func->canCall(func, role.get()))
         specFuncs.insert(func);
   }
   
@@ -1071,9 +1070,8 @@ dmpl::gams::AnalyzerBuilder::build_expect_spec_definition (const Role &role)
     ExpectSpec *es = dynamic_cast<ExpectSpec*>(spec.get());
     if(es == NULL) continue;
 
-    specFuncs.insert(es->func);
     for(const Func &func: role->allFuncsInScope())
-      if(es->func->canCall(func, role.get()))
+      if(es->func->equalType(*func) || es->func->canCall(func, role.get()))
         specFuncs.insert(func);
   }
   
