@@ -387,6 +387,36 @@ dmpl::gams::AnalyzerBuilder::build_program_variables ()
   for (Program::ConstDef::const_iterator i = consts.begin (); i != consts.end (); ++i)
     buffer_ << "#define " << i->first << ' ' << i->second << '\n';
 
+
+  //-- declare variables for extern functions called by the spec
+  build_comment("//-- Begin defining variables for external functions", "\n", "", 0);
+  BOOST_FOREACH(Funcs::value_type &it, builder_.program.funcs)
+  {
+    Func func = it.second;
+    if(!func->isExtern || func->params.size() > 0 || func->retType->type == TVOID)
+      continue;
+
+    bool isSpecFunc = false;
+    for(const Process &proc : builder_.program.processes) {
+      for(const Spec &spec : proc.role->allSpecsInScope()) {
+        ExpectSpec *es = dynamic_cast<ExpectSpec*>(spec.get());
+        if(es == NULL) continue;
+
+        if(es->func->equalType(*func)) { isSpecFunc = true; break; }          
+        if(es->func->canCall(func, proc.role.get())) { isSpecFunc = true; break; }          
+      }
+      if(isSpecFunc) break;
+    }
+
+    if(isSpecFunc) {
+      buffer_ << "ArrayReference<unsigned int," << numNodes () << "> ";
+      buffer_ << "EXTERN_" << func->name;
+      buffer_ << "(knowledge, \"";
+      buffer_ << "EXTERN_" << func->name << "\")";
+      buffer_ << ";\n";
+    }
+  }
+  
   //-- define variables for each node
   Nodes & nodes = builder_.program.nodes;
   for (Nodes::const_iterator n = nodes.begin (); n != nodes.end (); ++n)
