@@ -235,7 +235,7 @@ MAPSIZE=$(echo $MAPNAME | cut -f1 -d'-')
 CPP_FILE=${MISSION}_${BIN}.cpp
 
 #function to compile DMPL file with dmplc. takes two arguments -- the
-#DMPL file and the output C++ file.
+#output C++ file and the DMPL file.
 function compile_dmpl {
     OUT_FILE="$1" && shift && IN_FILE="$*"
 
@@ -262,8 +262,8 @@ function compile_dmpl {
 #compile with dmplc
 compile_dmpl $CPP_FILE $DMPL 
 
-#function to compile CPP file with g++. takes two arguments -- the CPP
-#file and the output executable
+#function to compile CPP file with g++. takes two arguments -- the
+#output executable and the CPP file.
 function compile_cpp {
     OUT_FILE="$1" && IN_FILE="$2"
     if [ $IN_FILE -nt ${OUT_FILE} ]; then
