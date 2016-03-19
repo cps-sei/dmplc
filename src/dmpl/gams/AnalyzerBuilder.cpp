@@ -864,7 +864,7 @@ dmpl::gams::AnalyzerBuilder::build_function_declarations ()
   build_comment("//-- Forward declaring global functions", "", "", 0);
   Funcs & funcs = builder_.program.funcs;
   for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
-    build_function_declaration (NULL, i->second);
+    build_function_declaration (i->second);
   
   build_comment("//-- Forward declaring node and role functions", "\n", "", 0);
   Nodes & nodes = builder_.program.nodes;
@@ -877,15 +877,8 @@ dmpl::gams::AnalyzerBuilder::build_function_declarations ()
       build_comment("//-- Declaring functions for role " + r.second->name, "\n", "\n", 0);
       open_namespace(roleName(n.second, r.second));
 
-      //-- declare serial functions for the role with NULL thread.
-      build_function_declarations_for_thread(Func(), r.second->serialFunctions());
-
-      //-- declare functions for all threads
-      for (Func thread : r.second->threads)
-        build_function_declarations_for_thread(thread, thread->getAccessInfo(r.second.get()).calledFuncs);
-
       //-- declare functions to evaluate expect specifications
-      if(do_expect_) build_expect_spec_declaration(r.second);
+      build_expect_spec_declaration(r.second);
       
       close_namespace(roleName(n.second, r.second));
     }
@@ -895,63 +888,14 @@ dmpl::gams::AnalyzerBuilder::build_function_declarations ()
 }
 
 /*********************************************************************/
-//-- build function declarations for a thread
-/*********************************************************************/
-void
-dmpl::gams::AnalyzerBuilder::build_function_declarations_for_thread (const Func & thread,
-                                                                     const Funcs & funcs)
-{
-  //-- NULL thread. needed for serial functions.
-  if(thread == NULL) {
-    for (auto i : funcs) build_function_declaration (thread, i.second);
-    return;
-  }
-
-  //-- declare thread entry function
-  build_function_declaration (thread, Func());
-  
-  //-- declare the thread function
-  build_function_declaration (thread, thread);
-
-  //-- declare other functions called by the thread
-  for (auto i : funcs) {
-    if(!thread->canCall(i.second,thread->role.get())) continue;
-    
-    //-- sanity check: threads cannot be called as functions
-    if(i.second->isThread())
-      throw std::runtime_error("ERROR: thread " + thread->name + " calls thread " +
-                               i.second->name + " as a function!!");
-    
-    build_function_declaration (thread, i.second);
-  }
-}
-
-/*********************************************************************/
 //-- generate function declaration
 /*********************************************************************/
 void
-dmpl::gams::AnalyzerBuilder::build_function_declaration (const Func & thread, const Func & function)
+dmpl::gams::AnalyzerBuilder::build_function_declaration (const Func & function)
 {
-  //-- if function is NULL, declare the thread entry function, as well
-  //-- as the PULL and PUSH functions for referenced variables.
-  if(function == NULL) {
-    buffer_ << "KnowledgeRecord\n"
-            << "thread" << thread->threadID
-            << "_PULL (engine::FunctionArguments & args, engine::Variables & vars);\n";
-    buffer_ << "KnowledgeRecord\n"
-            << "thread" << thread->threadID
-            << "_PUSH (engine::FunctionArguments & args, engine::Variables & vars);\n";
-    buffer_ << "KnowledgeRecord\n"
-            << "thread" << thread->threadID
-            << " (engine::FunctionArguments & args, engine::Variables & vars);\n";
-    return;
-  }
-  
   if (skip_func(function)) return;
 
   buffer_ << "KnowledgeRecord\n";
-  if(thread) buffer_ << "thread" << thread->threadID << "_";
-  else buffer_ << "base_";
   buffer_ << function->name;
   buffer_ << " (engine::FunctionArguments & args, engine::Variables & vars);\n";
 }
@@ -974,9 +918,7 @@ dmpl::gams::AnalyzerBuilder::build_expect_spec_declaration (const Role &role)
         specFuncs.insert(func);
   }
   
-  for(const Func &func : specFuncs) {
-    buffer_ << "bool " << func->name << " ();\n";
-  }
+  for(const Func &func : specFuncs) build_function_declaration (func);
 }
 
 /*********************************************************************/

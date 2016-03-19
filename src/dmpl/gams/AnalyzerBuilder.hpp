@@ -157,14 +157,11 @@ namespace dmpl
        **/
       void build_function_declarations (void);
 
-      //-- build function declarations for a thread
-      void build_function_declarations_for_thread (const Func & thread, const Funcs & funcs);
-
       /**
        * Builds a function
        * @param  function  a defined function in the parsed program
        **/
-      void build_function_declaration (const Func & thread, const Func & function);
+      void build_function_declaration (const Func & function);
 
       //-- declare functions to evaluate expect specifications
       void build_expect_spec_declaration (const Role &role);
