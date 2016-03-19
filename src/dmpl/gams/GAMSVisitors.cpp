@@ -406,8 +406,10 @@ dmpl::madara::GAMSCompiler::exitCall (CallExpr & expression)
       exit(1);
     }
 
-    if(thread_) buffer_ << "thread" << thread_->threadID << "_";
-    else buffer_ << "base_";
+    if(!do_analyzer_) {
+      if(thread_) buffer_ << "thread" << thread_->threadID << "_";
+      else buffer_ << "base_";
+    }
     buffer_ << func_name << " (\n";
 
     buffer_ << sub_spacer << "     ";
