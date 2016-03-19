@@ -14,6 +14,20 @@ function test_code_gen {
     if [ "$?" == "0" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
 }
 
+##generate log analyzer and check against correct output
+function test_analyzer {
+    DMPL="$1"
+    OPTS="$2"
+    printf "analyzer     %30s : " $(basename $DMPL)
+    BN=$(basename $DMPL .dmpl)
+    OUT1="$BN.analyzer.cpp"
+    OUT2="$BN.analyzer.cpp.saved"
+    rm -f $OUT1
+    dmplc $OPTS --cube-grid 10 --map small -a -o $OUT1 $DMPL &> /dev/null
+    diff $OUT1 $OUT2 &> /dev/null
+    if [ "$?" == "0" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
+}
+
 ##generate code and compile
 function test_build {
     MISSION="$1"
@@ -145,6 +159,9 @@ test_code_gen test-example-02c.dmpl "--roles uav:ProtectorNW:1:uav:Leader:1:uav:
 test_code_gen test-example-09a.dmpl "--roles uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4 --groups coordinator+eastern=1:eastern=4:coordinator+western=1:western=4 --var-groups x1+y1+x2+y2=coordinator:lock+lx+ly+init=eastern+western"
 test_code_gen test-example-09c.dmpl "--roles uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4 --groups coordinator+eastern=1:eastern=4:coordinator+western=1:western=4 --var-groups reg_x+reg_y+reg_rad+waypointArrival=coordinator:lock+lx+ly+init=eastern+western"
 test_code_gen test-example-09d.dmpl "-e --roles uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4 --groups coordinator+eastern=1:eastern=4:coordinator+western=1:western=4 --var-groups reg_x+reg_y+reg_rad+waypointArrival=coordinator:lock+lx+ly+init=eastern+western"
+
+#analyzer generation tests
+test_analyzer test-example-09d.dmpl "--roles uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4 --groups coordinator+eastern=1:eastern=4:coordinator+western=1:western=4 --var-groups reg_x+reg_y+reg_rad+waypointArrival=coordinator:lock+lx+ly+init=eastern+western"
 
 #test building
 for i in ../../docs/tutorial/*.mission ../../docs/tutorial/example-05/dmpl/*.mission ; do

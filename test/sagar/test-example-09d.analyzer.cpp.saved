@@ -1,0 +1,909 @@
+//-- DMPLC Version: 0.2
+//-- DMPLC Command Line:  dmplc --roles uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4 --groups coordinator+eastern=1:eastern=4:coordinator+western=1:western=4 --var-groups reg_x+reg_y+reg_rad+waypointArrival=coordinator:lock+lx+ly+init=eastern+western --cube-grid 10 --map small -a -o test-example-09d.analyzer.cpp test-example-09d.dmpl
+
+/********************************************************************/
+//-- begin target (GNU_CPP) specific thunk
+/********************************************************************/
+
+#define GNU_WIN
+#include <stdlib.h>
+#include "madara/utility/Utility.h"
+
+int my_sleep (int seconds)
+{
+  madara::utility::sleep (seconds);
+  return 0;
+}
+
+int roundNum = 0;
+int xi,yi;
+
+void print_int(int i)
+{
+  printf("%i\n", i);
+}
+
+void print_line(int _X)
+{
+  printf("-");
+  for(int i = 0;i < _X;++i) printf("--");
+  printf("\n");
+}
+
+void print_region(int m, int _id, int _reg_x,int _reg_y, int _ox, int _oy)
+{
+  printf("%d: id = %d, reg_x = %d, reg_y = %d, ox = %d, oy = %d\n", m, _id, _reg_x, _reg_y, _ox, _oy);
+  fflush(stdout);
+}
+
+void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
+{
+  if(roundNum == 0) {
+    xi = x; yi = y;
+  }
+
+  for(int i = 0;i < 150;++i) printf("\n");
+  
+  printf("round = %d : id = %d\n", ++roundNum, id);
+  printf("_X = %d _Y = %d\n",_X,_Y);
+  print_line(_X);
+  for(int i = 0;i < _Y;++i) {
+    printf("|");
+    for(int j = 0;j < _X;++j) {
+      //printf("i = %d j = %d\n", i, j);
+      if(j == xf && i == yf) printf("o|");        
+      else if(j == x && i == y) printf("%d|",id);
+      else printf(" |");
+    }
+    printf("\n");
+    print_line(_X);
+  }
+}
+
+int foo1() { return 100; }
+
+
+/********************************************************************/
+//-- end target (GNU_CPP) specific thunk
+/********************************************************************/
+
+/********************************************************************/
+//-- begin header files
+/********************************************************************/
+
+#include <string>
+#include <vector>
+#include <sstream>
+#include <fstream>
+#include <cassert>
+#include <cmath>
+
+#include "madara/knowledge/KnowledgeBase.h"
+#include "madara/knowledge/KnowledgeRecord.h"
+#include "madara/knowledge/Functions.h"
+#include "madara/transport/PacketScheduler.h"
+#include "madara/threads/Threader.h"
+#include "madara/filters/GenericFilters.h"
+
+#define _GAMS_VREP_ 1
+#include "gams/controllers/BaseController.h"
+#include "gams/algorithms/BaseAlgorithm.h"
+#include "gams/variables/Sensor.h"
+#include "gams/platforms/BasePlatform.h"
+#include "gams/platforms/vrep/VREPBase.h"
+#include "gams/platforms/vrep/VREPQuadLaser.h"
+#include "gams/variables/Self.h"
+#include "gams/utility/GPSPosition.h"
+#include "gams/utility/Rotation.h"
+
+#include "dmpl/Reference.hpp"
+#include "dmpl/ArrayReference.hpp"
+#include "dmpl/ProactiveStorage.hpp"
+#include "dmpl/LogAnalyzer.hpp"
+#include "dmpl/DefaultLogger.hpp"
+extern "C" {
+#include <sys/time.h>
+}
+
+
+/********************************************************************/
+//-- end header files
+/********************************************************************/
+
+// begin dmpl namespace
+namespace dmpl
+{
+
+/********************************************************************/
+//-- typedefs
+/********************************************************************/
+typedef   madara::knowledge::KnowledgeRecord::Integer   Integer;
+
+/********************************************************************/
+//-- namespace shortcuts
+/********************************************************************/
+namespace threads = madara::threads;
+namespace containers = engine::containers;
+namespace controllers = gams::controllers;
+namespace platforms = gams::platforms;
+namespace variables = gams::variables;
+
+/********************************************************************/
+//-- for readability so we don't have to use full namespaces
+/********************************************************************/
+using containers::Reference;
+using containers::ArrayReference;
+using containers::StorageManager::Proactive;
+using madara::knowledge::knowledge_cast;
+using madara::knowledge::KnowledgeRecord;
+using madara::knowledge::KnowledgeMap;
+
+/********************************************************************/
+//-- declare knowledge base
+/********************************************************************/
+engine::KnowledgeBase knowledge;
+
+/********************************************************************/
+//-- Needed as a workaround for non-const-correctness in Madara;
+//-- Use carefully
+/********************************************************************/
+inline engine::FunctionArguments &__strip_const(const engine::FunctionArguments &c)
+{
+  return const_cast<engine::FunctionArguments &>(c);
+}
+
+/********************************************************************/
+//-- Needed to construct function arguments
+/********************************************************************/
+inline engine::FunctionArguments &__chain_set(engine::FunctionArguments &c, int i, KnowledgeRecord v)
+{
+  c[i] = v;
+  return c;
+}
+
+/********************************************************************/
+//-- default transport variables
+/********************************************************************/
+std::string host ("");
+typedef void (*PlatformInitFn)(const std::vector<std::string> &, engine::KnowledgeBase &);
+typedef std::map<std::string, PlatformInitFn> PlatformInitFns;
+PlatformInitFns platform_init_fns;
+const std::string default_multicast ("239.255.0.1:4150");
+madara::transport::QoSTransportSettings settings;
+int write_fd (-1);
+ofstream expect_file;
+std::string node_name ("none");
+std::string role_name ("none");
+
+/********************************************************************/
+//-- Containers for commonly used global variables
+/********************************************************************/
+Reference<unsigned int> id(knowledge, ".id");
+Reference<unsigned int>  num_processes(knowledge, ".num_processes");
+engine::KnowledgeUpdateSettings private_update (true);
+
+/********************************************************************/
+//-- map from synchronous threads to synchronous partner node ids
+/********************************************************************/
+std::map< std::string,std::map< size_t,std::set<size_t> > > syncPartnerIds;
+
+/********************************************************************/
+//-- function from node ids and role names to node ids
+/********************************************************************/
+size_t role2Id(size_t nodeId, const std::string &roleName);
+
+/********************************************************************/
+//-- number of participating processes
+/********************************************************************/
+unsigned int processes (10);
+
+/********************************************************************/
+//-- Defining program-specific constants
+/********************************************************************/
+#define BottomY -2.25
+#define BottomZ 0.0
+#define LeftX -2.25
+#define MOVE 4
+#define NEXT 1
+#define REQUEST 2
+#define RightX 2.25
+#define TopY 2.25
+#define TopZ 2.5
+#define WAITING 3
+#define X 10
+#define Y 10
+#define Z 10
+
+/********************************************************************/
+//-- Begin defining variables for external functions
+/********************************************************************/
+ArrayReference<int,10> EXTERN_foo1(knowledge, "EXTERN_foo1");
+
+/********************************************************************/
+//-- Begin defining variables for node uav
+/********************************************************************/
+
+// begin node_uav namespace
+namespace node_uav
+{
+
+/********************************************************************/
+//-- Defining global variables at node scope
+/********************************************************************/
+ArrayReference<_Bool, 10> missionOver(knowledge, "missionOver");
+
+/********************************************************************/
+//-- Defining group variables at node scope
+/********************************************************************/
+ArrayReference<_Bool, 10> init(knowledge, "init");
+ArrayReference<_Bool, 10, 10, 10> lock(knowledge, "lock");
+ArrayReference<short, 10> lx(knowledge, "lx");
+ArrayReference<short, 10> ly(knowledge, "ly");
+
+/********************************************************************/
+//-- Defining local variables at node scope
+/********************************************************************/
+ArrayReference<short, 10> state(knowledge, ".state");
+ArrayReference<_Bool, 10> waypointValid(knowledge, ".waypointValid");
+ArrayReference<short, 10> x(knowledge, ".x");
+ArrayReference<short, 10> xp(knowledge, ".xp");
+ArrayReference<short, 10> xt(knowledge, ".xt");
+ArrayReference<short, 10> y(knowledge, ".y");
+ArrayReference<short, 10> yp(knowledge, ".yp");
+ArrayReference<short, 10> yt(knowledge, ".yt");
+
+/********************************************************************/
+//-- Begin defining variables for role Leader
+/********************************************************************/
+
+// begin node_uav_role_Leader namespace
+namespace node_uav_role_Leader
+{
+
+/********************************************************************/
+//-- Defining global variables at role scope
+/********************************************************************/
+
+/********************************************************************/
+//-- Defining group variables at role scope
+/********************************************************************/
+ArrayReference<short, 10> reg_rad(knowledge, "reg_rad");
+ArrayReference<short, 10> reg_x(knowledge, "reg_x");
+ArrayReference<short, 10> reg_y(knowledge, "reg_y");
+ArrayReference<short, 10> waypointArrival(knowledge, "waypointArrival");
+
+/********************************************************************/
+//-- Defining local variables at role scope
+/********************************************************************/
+ArrayReference<short, 10> fff(knowledge, ".fff");
+ArrayReference<short, 10> wx(knowledge, ".wx");
+ArrayReference<short, 10> wy(knowledge, ".wy");
+
+} // end node_uav_role_Leader namespace
+
+/********************************************************************/
+//-- End defining variables for role Leader
+/********************************************************************/
+
+/********************************************************************/
+//-- Begin defining variables for role Protector
+/********************************************************************/
+
+// begin node_uav_role_Protector namespace
+namespace node_uav_role_Protector
+{
+
+/********************************************************************/
+//-- Defining global variables at role scope
+/********************************************************************/
+
+/********************************************************************/
+//-- Defining group variables at role scope
+/********************************************************************/
+
+/********************************************************************/
+//-- Defining local variables at role scope
+/********************************************************************/
+ArrayReference<short, 10> ox(knowledge, ".ox");
+ArrayReference<short, 10> oy(knowledge, ".oy");
+
+} // end node_uav_role_Protector namespace
+
+/********************************************************************/
+//-- End defining variables for role Protector
+/********************************************************************/
+
+} // end node_uav namespace
+
+/********************************************************************/
+//-- End defining variables for node uav
+/********************************************************************/
+
+/********************************************************************/
+//-- helper tokenizer method to handle command line arguments
+/********************************************************************/
+template < class ContainerT >
+void tokenize(const std::string& str, ContainerT& tokens,
+              const std::string& delimiters = " ", bool trimEmpty = false)
+{
+   std::string::size_type pos, lastPos = 0;
+
+   typedef typename ContainerT::value_type value_type;
+   typedef typename ContainerT::size_type size_type;
+
+   while(true)
+   {
+      pos = str.find_first_of(delimiters, lastPos);
+      if(pos == std::string::npos)
+      {
+         pos = str.length();
+
+         if(pos != lastPos || !trimEmpty)
+            tokens.push_back(value_type(str.data()+lastPos,
+                  (size_type)pos-lastPos ));
+
+         break;
+      }
+      else
+      {
+         if(pos != lastPos || !trimEmpty)
+            tokens.push_back(value_type(str.data()+lastPos,
+                  (size_type)pos-lastPos ));
+      }
+
+      lastPos = pos + 1;
+   }
+}
+
+/********************************************************************/
+//-- handle arguments from the command line
+/********************************************************************/
+void handle_arguments (int argc, char ** argv)
+{
+  for (int i = 1; i < argc; ++i)
+  {
+    std::string arg1 (argv[i]);
+
+    if (arg1 == "-m" || arg1 == "--multicast")
+    {
+      if (i + 1 < argc)
+      {
+        settings.hosts.push_back (argv[i + 1]);
+        settings.type = madara::transport::MULTICAST;
+      }
+      ++i;
+    }
+    else if (arg1 == "-b" || arg1 == "--broadcast")
+    {
+      if (i + 1 < argc)
+      {
+        settings.hosts.push_back (argv[i + 1]);
+        settings.type = madara::transport::BROADCAST;
+      }
+      ++i;
+    }
+    else if (arg1 == "-u" || arg1 == "--udp")
+    {
+      if (i + 1 < argc)
+      {
+        settings.hosts.push_back (argv[i + 1]);
+        settings.type = madara::transport::UDP;
+      }
+      ++i;
+    }
+    else if (arg1 == "-o" || arg1 == "--host")
+    {
+      if (i + 1 < argc)
+        host = argv[i + 1];
+        
+      ++i;
+    }
+    else if (arg1 == "-d" || arg1 == "--domain")
+    {
+      if (i + 1 < argc)
+        settings.domains = argv[i + 1];
+        
+      ++i;
+    }
+    else if (arg1 == "-i" || arg1 == "--id")
+    {
+      if (i + 1 < argc)
+      {
+        std::stringstream buffer (argv[i + 1]);
+        buffer >> settings.id;
+        if(settings.id < 0 || settings.id >= 10) {
+          std::cerr << "ERROR: Invalid node id: " << settings.id 
+                    << "  valid range: [0, 9]" << std::endl;
+          exit(1);
+        }
+        if(settings.id == 0) { node_name = "uav"; role_name = "Leader"; }
+        if(settings.id == 1) { node_name = "uav"; role_name = "Protector"; }
+        if(settings.id == 2) { node_name = "uav"; role_name = "Protector"; }
+        if(settings.id == 3) { node_name = "uav"; role_name = "Protector"; }
+        if(settings.id == 4) { node_name = "uav"; role_name = "Protector"; }
+        if(settings.id == 5) { node_name = "uav"; role_name = "Leader"; }
+        if(settings.id == 6) { node_name = "uav"; role_name = "Protector"; }
+        if(settings.id == 7) { node_name = "uav"; role_name = "Protector"; }
+        if(settings.id == 8) { node_name = "uav"; role_name = "Protector"; }
+        if(settings.id == 9) { node_name = "uav"; role_name = "Protector"; }
+      }
+      ++i;
+    }
+    else if (arg1 == "-l" || arg1 == "--level")
+    {
+      if (i + 1 < argc)
+      {
+        int log_level = 0;
+        std::stringstream buffer (argv[i + 1]);
+        buffer >> log_level;
+        madara::logger::global_logger->set_level(log_level);
+        gams::loggers::global_logger->set_level(log_level);
+      }
+      ++i;
+    }
+    else if (arg1 == "--drop-rate")
+    {
+      if (i + 1 < argc)
+      {
+        double drop_rate;
+        std::stringstream buffer (argv[i + 1]);
+        buffer >> drop_rate;
+        std::cerr << "drop_rate: " << drop_rate << std::endl;
+        settings.update_drop_rate (drop_rate,
+          madara::transport::PACKET_DROP_PROBABLISTIC);
+      }
+      ++i;
+    }
+    else if (arg1 == "-e" || arg1 == "--expect-log")
+    {
+      if (i + 1 < argc)
+      {
+        expect_file.open(argv[i + 1], ios::out | ios::trunc);
+      }
+      ++i;
+    }
+    else if (arg1 == "-f" || arg1 == "--logfile")
+    {
+      if (i + 1 < argc)
+      {
+        ::madara::logger::global_logger->clear();
+        ::madara::logger::global_logger->add_file(argv[i + 1]);
+      }
+      ++i;
+    }
+    else if (arg1 == "-r" || arg1 == "--reduced")
+    {
+      settings.send_reduced_message_header = true;
+    }
+    else if (arg1 == "--write-fd")
+    {
+      if (i + 1 < argc)
+      {
+        std::stringstream buffer (argv[i + 1]);
+        buffer >> write_fd;
+      }
+      ++i;
+    }
+    else
+    {
+      madara_log (madara::logger::LOG_EMERGENCY, (LM_DEBUG, 
+        "\nProgram summary for %s:\n\n"\
+        " [-b|--broadcast ip:port] the broadcast ip to send and listen to\n"\
+        " [-d|--domain domain]     the knowledge domain to send and listen to\n"\
+        " [-e|--expect-log file]   file to log variables related to 'expect' clauses\n"\
+        " [-f|--logfile file]      log to a file\n"\
+        " [-i|--id id]             the id of this agent (should be non-negative)\n"\
+        " [-l|--level level]       the logger level (0+, higher is higher detail)\n"\
+        " [-m|--multicast ip:port] the multicast ip to send and listen to\n"\
+        " [-mb|--max-barrier-time time] time in seconds to barrier for other processes\n"\
+        " [-o|--host hostname]     the hostname of this process (def:localhost)\n"\
+        " [-r|--reduced]           use the reduced message header\n"\
+        " [-u|--udp ip:port]       the udp ips to send to (first is self to bind to)\n"\
+        , argv[0]));
+      exit (0);
+    }
+  }
+}
+
+/********************************************************************/
+//-- Forward declaring global functions
+/********************************************************************/
+
+/********************************************************************/
+//-- Forward declaring node and role functions
+/********************************************************************/
+// begin node_uav namespace
+namespace node_uav
+{
+
+/********************************************************************/
+//-- Declaring functions for role Leader
+/********************************************************************/
+
+// begin node_uav_role_Leader namespace
+namespace node_uav_role_Leader
+{
+KnowledgeRecord
+expProp1Func (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+expProp2Func (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+coverage (engine::FunctionArguments & args, engine::Variables & vars);
+} // end node_uav_role_Leader namespace
+
+
+/********************************************************************/
+//-- Declaring functions for role Protector
+/********************************************************************/
+
+// begin node_uav_role_Protector namespace
+namespace node_uav_role_Protector
+{
+KnowledgeRecord
+expProp1Func (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+expProp3Func (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+coverage (engine::FunctionArguments & args, engine::Variables & vars);
+KnowledgeRecord
+expProp2Func (engine::FunctionArguments & args, engine::Variables & vars);
+} // end node_uav_role_Protector namespace
+
+} // end node_uav namespace
+
+
+/********************************************************************/
+//-- GAMS variables and functions
+/********************************************************************/
+
+#include "dmpl/PlatformGAMS.hpp"
+
+/********************************************************************/
+//-- Defining global functions
+/********************************************************************/
+
+
+/********************************************************************/
+//-- Begin node uav
+/********************************************************************/
+
+// begin node_uav namespace
+namespace node_uav
+{
+
+/********************************************************************/
+//-- Defining functions for role Leader
+/********************************************************************/
+
+// begin node_uav_role_Leader namespace
+namespace node_uav_role_Leader
+{
+KnowledgeRecord
+expProp1Func (engine::FunctionArguments & args, engine::Variables & vars)
+{
+
+  //-- Declare local (parameter and temporary) variables
+
+
+  //-- Begin function body
+  return (Integer(((expProp2Func (
+         __strip_const(engine::FunctionArguments(0))
+        , vars).to_integer()) && (x[id] < Integer (5)))));
+
+  //-- Insert return statement, in case user program did not
+  return Integer(0);
+}
+
+KnowledgeRecord
+expProp2Func (engine::FunctionArguments & args, engine::Variables & vars)
+{
+
+  //-- Declare local (parameter and temporary) variables
+
+
+  //-- Begin function body
+  return (Integer(((EXTERN_foo1[id]) || (xp[id] > Integer (6)))));
+
+  //-- Insert return statement, in case user program did not
+  return Integer(0);
+}
+
+KnowledgeRecord
+coverage (engine::FunctionArguments & args, engine::Variables & vars)
+{
+
+  //-- Declare local (parameter and temporary) variables
+
+
+  //-- Begin function body
+  return (Integer((((EXTERN_foo1[id]) - (EXTERN_foo1[Integer (0)])) > 0.9)));
+
+  //-- Insert return statement, in case user program did not
+  return Integer(0);
+}
+
+} // end node_uav_role_Leader namespace
+
+
+/********************************************************************/
+//-- Defining functions for role Protector
+/********************************************************************/
+
+// begin node_uav_role_Protector namespace
+namespace node_uav_role_Protector
+{
+KnowledgeRecord
+expProp1Func (engine::FunctionArguments & args, engine::Variables & vars)
+{
+
+  //-- Declare local (parameter and temporary) variables
+
+
+  //-- Begin function body
+  return (Integer(((expProp2Func (
+         __strip_const(engine::FunctionArguments(0))
+        , vars).to_integer()) && (x[id] < Integer (5)))));
+
+  //-- Insert return statement, in case user program did not
+  return Integer(0);
+}
+
+KnowledgeRecord
+expProp3Func (engine::FunctionArguments & args, engine::Variables & vars)
+{
+
+  //-- Declare local (parameter and temporary) variables
+
+
+  //-- Begin function body
+  return (Integer((yp[id] < Integer (5))));
+
+  //-- Insert return statement, in case user program did not
+  return Integer(0);
+}
+
+KnowledgeRecord
+coverage (engine::FunctionArguments & args, engine::Variables & vars)
+{
+
+  //-- Declare local (parameter and temporary) variables
+
+
+  //-- Begin function body
+  return (Integer((((EXTERN_foo1[id]) - (EXTERN_foo1[Integer (0)])) > 0.9)));
+
+  //-- Insert return statement, in case user program did not
+  return Integer(0);
+}
+
+KnowledgeRecord
+expProp2Func (engine::FunctionArguments & args, engine::Variables & vars)
+{
+
+  //-- Declare local (parameter and temporary) variables
+
+
+  //-- Begin function body
+  return (Integer(((expProp2Func (
+         __strip_const(engine::FunctionArguments(0))
+        , vars).to_integer()) || ((ox[id] == oy[id]) && (expProp3Func (
+         __strip_const(engine::FunctionArguments(0))
+        , vars).to_integer())))));
+
+  //-- Insert return statement, in case user program did not
+  return Integer(0);
+}
+
+} // end node_uav_role_Protector namespace
+
+} // end node_uav namespace
+
+
+/********************************************************************/
+//-- End node uav
+/********************************************************************/
+
+
+size_t role2Id(size_t nodeId, const std::string &roleName)
+{
+  throw std::runtime_error("ERROR: role2Id called with illegal arguments " + std::to_string(nodeId) + " and " + roleName + "!!");
+}
+
+} // end dmpl namespace
+
+using namespace dmpl;
+
+
+/********************************************************************/
+//-- Helper function to convert objects to strings
+/********************************************************************/
+
+template<class T> std::string to_string(const T &in)
+{
+  std::stringstream ss;
+  ss << in;
+  return ss.str();
+}
+
+/********************************************************************/
+//-- The main function. This is where everything starts.
+/********************************************************************/
+
+int main (int argc, char ** argv)
+{
+  //-- handle any command line arguments and check their sanity
+  handle_arguments (argc, argv);
+
+  //-- Initialize commonly used local variables
+  num_processes = processes;
+
+  LogAnalyzer analyzer(std::cin, knowledge);
+  std::cout << "Time,Name,Node,Value" << std::endl;
+  for(;;) {
+    engine::FunctionArguments args;
+    engine::Variables vars;
+    bool done = !analyzer.next_step();
+    bool value = 0;
+    int total_so_far = 0, count_so_far = 0;
+    id = 0;
+    value = node_uav::node_uav_role_Leader::expProp1Func(args,vars).to_integer();
+    knowledge.set("AtEnd_RESULT.0.expProp1", Integer(value?1:0));
+    id = 0;
+    value = node_uav::node_uav_role_Leader::coverage(args,vars).to_integer();
+    total_so_far = knowledge.get("AtLeast_TOTAL.0.expProp3").to_integer();
+    count_so_far = knowledge.get("AtLeast_COUNT.0.expProp3").to_integer();
+    knowledge.set("AtLeast_TOTAL.0.expProp3", total_so_far + Integer(value?1:0));
+    knowledge.set("AtLeast_COUNT.0.expProp3", Integer(count_so_far + 1));
+    id = 1;
+    value = node_uav::node_uav_role_Protector::expProp1Func(args,vars).to_integer();
+    knowledge.set("AtEnd_RESULT.1.expProp1", Integer(value?1:0));
+    id = 1;
+    value = node_uav::node_uav_role_Protector::coverage(args,vars).to_integer();
+    total_so_far = knowledge.get("AtLeast_TOTAL.1.expProp3").to_integer();
+    count_so_far = knowledge.get("AtLeast_COUNT.1.expProp3").to_integer();
+    knowledge.set("AtLeast_TOTAL.1.expProp3", total_so_far + Integer(value?1:0));
+    knowledge.set("AtLeast_COUNT.1.expProp3", Integer(count_so_far + 1));
+    id = 2;
+    value = node_uav::node_uav_role_Protector::expProp1Func(args,vars).to_integer();
+    knowledge.set("AtEnd_RESULT.2.expProp1", Integer(value?1:0));
+    id = 2;
+    value = node_uav::node_uav_role_Protector::coverage(args,vars).to_integer();
+    total_so_far = knowledge.get("AtLeast_TOTAL.2.expProp3").to_integer();
+    count_so_far = knowledge.get("AtLeast_COUNT.2.expProp3").to_integer();
+    knowledge.set("AtLeast_TOTAL.2.expProp3", total_so_far + Integer(value?1:0));
+    knowledge.set("AtLeast_COUNT.2.expProp3", Integer(count_so_far + 1));
+    id = 3;
+    value = node_uav::node_uav_role_Protector::expProp1Func(args,vars).to_integer();
+    knowledge.set("AtEnd_RESULT.3.expProp1", Integer(value?1:0));
+    id = 3;
+    value = node_uav::node_uav_role_Protector::coverage(args,vars).to_integer();
+    total_so_far = knowledge.get("AtLeast_TOTAL.3.expProp3").to_integer();
+    count_so_far = knowledge.get("AtLeast_COUNT.3.expProp3").to_integer();
+    knowledge.set("AtLeast_TOTAL.3.expProp3", total_so_far + Integer(value?1:0));
+    knowledge.set("AtLeast_COUNT.3.expProp3", Integer(count_so_far + 1));
+    id = 4;
+    value = node_uav::node_uav_role_Protector::expProp1Func(args,vars).to_integer();
+    knowledge.set("AtEnd_RESULT.4.expProp1", Integer(value?1:0));
+    id = 4;
+    value = node_uav::node_uav_role_Protector::coverage(args,vars).to_integer();
+    total_so_far = knowledge.get("AtLeast_TOTAL.4.expProp3").to_integer();
+    count_so_far = knowledge.get("AtLeast_COUNT.4.expProp3").to_integer();
+    knowledge.set("AtLeast_TOTAL.4.expProp3", total_so_far + Integer(value?1:0));
+    knowledge.set("AtLeast_COUNT.4.expProp3", Integer(count_so_far + 1));
+    id = 5;
+    value = node_uav::node_uav_role_Leader::expProp1Func(args,vars).to_integer();
+    knowledge.set("AtEnd_RESULT.5.expProp1", Integer(value?1:0));
+    id = 5;
+    value = node_uav::node_uav_role_Leader::coverage(args,vars).to_integer();
+    total_so_far = knowledge.get("AtLeast_TOTAL.5.expProp3").to_integer();
+    count_so_far = knowledge.get("AtLeast_COUNT.5.expProp3").to_integer();
+    knowledge.set("AtLeast_TOTAL.5.expProp3", total_so_far + Integer(value?1:0));
+    knowledge.set("AtLeast_COUNT.5.expProp3", Integer(count_so_far + 1));
+    id = 6;
+    value = node_uav::node_uav_role_Protector::expProp1Func(args,vars).to_integer();
+    knowledge.set("AtEnd_RESULT.6.expProp1", Integer(value?1:0));
+    id = 6;
+    value = node_uav::node_uav_role_Protector::coverage(args,vars).to_integer();
+    total_so_far = knowledge.get("AtLeast_TOTAL.6.expProp3").to_integer();
+    count_so_far = knowledge.get("AtLeast_COUNT.6.expProp3").to_integer();
+    knowledge.set("AtLeast_TOTAL.6.expProp3", total_so_far + Integer(value?1:0));
+    knowledge.set("AtLeast_COUNT.6.expProp3", Integer(count_so_far + 1));
+    id = 7;
+    value = node_uav::node_uav_role_Protector::expProp1Func(args,vars).to_integer();
+    knowledge.set("AtEnd_RESULT.7.expProp1", Integer(value?1:0));
+    id = 7;
+    value = node_uav::node_uav_role_Protector::coverage(args,vars).to_integer();
+    total_so_far = knowledge.get("AtLeast_TOTAL.7.expProp3").to_integer();
+    count_so_far = knowledge.get("AtLeast_COUNT.7.expProp3").to_integer();
+    knowledge.set("AtLeast_TOTAL.7.expProp3", total_so_far + Integer(value?1:0));
+    knowledge.set("AtLeast_COUNT.7.expProp3", Integer(count_so_far + 1));
+    id = 8;
+    value = node_uav::node_uav_role_Protector::expProp1Func(args,vars).to_integer();
+    knowledge.set("AtEnd_RESULT.8.expProp1", Integer(value?1:0));
+    id = 8;
+    value = node_uav::node_uav_role_Protector::coverage(args,vars).to_integer();
+    total_so_far = knowledge.get("AtLeast_TOTAL.8.expProp3").to_integer();
+    count_so_far = knowledge.get("AtLeast_COUNT.8.expProp3").to_integer();
+    knowledge.set("AtLeast_TOTAL.8.expProp3", total_so_far + Integer(value?1:0));
+    knowledge.set("AtLeast_COUNT.8.expProp3", Integer(count_so_far + 1));
+    id = 9;
+    value = node_uav::node_uav_role_Protector::expProp1Func(args,vars).to_integer();
+    knowledge.set("AtEnd_RESULT.9.expProp1", Integer(value?1:0));
+    id = 9;
+    value = node_uav::node_uav_role_Protector::coverage(args,vars).to_integer();
+    total_so_far = knowledge.get("AtLeast_TOTAL.9.expProp3").to_integer();
+    count_so_far = knowledge.get("AtLeast_COUNT.9.expProp3").to_integer();
+    knowledge.set("AtLeast_TOTAL.9.expProp3", total_so_far + Integer(value?1:0));
+    knowledge.set("AtLeast_COUNT.9.expProp3", Integer(count_so_far + 1));
+    if(done) break;
+  }
+  {
+    bool value = 0;
+    double total = 0.0, count = 0.0;
+    value = knowledge.get("AtEnd_RESULT.0.expProp1").to_integer() == 1;
+    std::cout << "AtEnd,expProp1,0," << value << std::endl;
+    total = knowledge.get("AtLeast_TOTAL.0.expProp3").to_double();
+    count = knowledge.get("AtLeast_COUNT.0.expProp3").to_double();
+    value = (total / count) >= 0.5;
+    std::cout << "AtLeast,expProp3,0," << value << std::endl;
+    value = knowledge.get("AtEnd_RESULT.1.expProp1").to_integer() == 1;
+    std::cout << "AtEnd,expProp1,1," << value << std::endl;
+    total = knowledge.get("AtLeast_TOTAL.1.expProp3").to_double();
+    count = knowledge.get("AtLeast_COUNT.1.expProp3").to_double();
+    value = (total / count) >= 0.5;
+    std::cout << "AtLeast,expProp3,1," << value << std::endl;
+    value = knowledge.get("AtEnd_RESULT.2.expProp1").to_integer() == 1;
+    std::cout << "AtEnd,expProp1,2," << value << std::endl;
+    total = knowledge.get("AtLeast_TOTAL.2.expProp3").to_double();
+    count = knowledge.get("AtLeast_COUNT.2.expProp3").to_double();
+    value = (total / count) >= 0.5;
+    std::cout << "AtLeast,expProp3,2," << value << std::endl;
+    value = knowledge.get("AtEnd_RESULT.3.expProp1").to_integer() == 1;
+    std::cout << "AtEnd,expProp1,3," << value << std::endl;
+    total = knowledge.get("AtLeast_TOTAL.3.expProp3").to_double();
+    count = knowledge.get("AtLeast_COUNT.3.expProp3").to_double();
+    value = (total / count) >= 0.5;
+    std::cout << "AtLeast,expProp3,3," << value << std::endl;
+    value = knowledge.get("AtEnd_RESULT.4.expProp1").to_integer() == 1;
+    std::cout << "AtEnd,expProp1,4," << value << std::endl;
+    total = knowledge.get("AtLeast_TOTAL.4.expProp3").to_double();
+    count = knowledge.get("AtLeast_COUNT.4.expProp3").to_double();
+    value = (total / count) >= 0.5;
+    std::cout << "AtLeast,expProp3,4," << value << std::endl;
+    value = knowledge.get("AtEnd_RESULT.5.expProp1").to_integer() == 1;
+    std::cout << "AtEnd,expProp1,5," << value << std::endl;
+    total = knowledge.get("AtLeast_TOTAL.5.expProp3").to_double();
+    count = knowledge.get("AtLeast_COUNT.5.expProp3").to_double();
+    value = (total / count) >= 0.5;
+    std::cout << "AtLeast,expProp3,5," << value << std::endl;
+    value = knowledge.get("AtEnd_RESULT.6.expProp1").to_integer() == 1;
+    std::cout << "AtEnd,expProp1,6," << value << std::endl;
+    total = knowledge.get("AtLeast_TOTAL.6.expProp3").to_double();
+    count = knowledge.get("AtLeast_COUNT.6.expProp3").to_double();
+    value = (total / count) >= 0.5;
+    std::cout << "AtLeast,expProp3,6," << value << std::endl;
+    value = knowledge.get("AtEnd_RESULT.7.expProp1").to_integer() == 1;
+    std::cout << "AtEnd,expProp1,7," << value << std::endl;
+    total = knowledge.get("AtLeast_TOTAL.7.expProp3").to_double();
+    count = knowledge.get("AtLeast_COUNT.7.expProp3").to_double();
+    value = (total / count) >= 0.5;
+    std::cout << "AtLeast,expProp3,7," << value << std::endl;
+    value = knowledge.get("AtEnd_RESULT.8.expProp1").to_integer() == 1;
+    std::cout << "AtEnd,expProp1,8," << value << std::endl;
+    total = knowledge.get("AtLeast_TOTAL.8.expProp3").to_double();
+    count = knowledge.get("AtLeast_COUNT.8.expProp3").to_double();
+    value = (total / count) >= 0.5;
+    std::cout << "AtLeast,expProp3,8," << value << std::endl;
+    value = knowledge.get("AtEnd_RESULT.9.expProp1").to_integer() == 1;
+    std::cout << "AtEnd,expProp1,9," << value << std::endl;
+    total = knowledge.get("AtLeast_TOTAL.9.expProp3").to_double();
+    count = knowledge.get("AtLeast_COUNT.9.expProp3").to_double();
+    value = (total / count) >= 0.5;
+    std::cout << "AtLeast,expProp3,9," << value << std::endl;
+  }
+  return 0;
+}
+
+/********************************************************************/
+//-- End of generated code
+/********************************************************************/
