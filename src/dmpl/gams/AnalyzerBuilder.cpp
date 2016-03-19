@@ -356,32 +356,6 @@ dmpl::gams::AnalyzerBuilder::build_common_global_variables ()
   buffer_ << "Reference<unsigned int>  num_processes(knowledge, \".num_processes\");\n";
   buffer_ << "engine::KnowledgeUpdateSettings private_update (true);\n\n";
 
-  //-- define barrier variables for all synchronous threads
-  build_comment("//-- barrier variables", "\n", "", 0);
-
-  //-- collect all synchronous threads
-  std::set<std::string> syncThreads;
-  for (const auto &n : builder_.program.nodes) {
-    for (const auto &thread : n.second->threads) {
-      if(thread->getAttribute("BarrierSync", 0) == NULL) continue;
-      syncThreads.insert(thread->name);
-    }
-    
-    for (const auto &r : n.second->roles) {
-      for (const auto &thread : r.second->threads) {
-        if(r.second->getAttribute(thread,"BarrierSync", 0) == NULL) continue;
-        syncThreads.insert(thread->name);
-      }
-    }
-  }
-
-  //-- generate barrier variables
-  for(const std::string &st : syncThreads) {
-    buffer_ << "ArrayReference<unsigned int, " << numNodes () << "> mbarrier_" << st;
-    buffer_ << "(knowledge, \"mbarrier_" << st << "\");\n";
-  }
-  buffer_ << "\n";
-
   //-- declare map from synchronous thread names and node ids to ids
   //-- of the other nodes that this thread must synchronize with
   build_comment("//-- map from synchronous threads to synchronous partner node ids", "", "", 0);
@@ -1046,15 +1020,6 @@ dmpl::gams::AnalyzerBuilder::build_nodes (void)
       build_comment("//-- Defining functions for role " + r.second->name, "\n", "\n", 0);
       open_namespace(roleName(n->second, r.second));
 
-      //-- build input global modifiers
-      build_refresh_modify_input_globals(n->second, r.second);
-      
-      //-- build global and barrier modifiers for synchronous threads
-      for (Func thread : r.second->threads) {
-        if(r.second->getAttribute(thread,"BarrierSync", 0) == NULL) continue;
-        build_refresh_modify_globals(n->second, r.second, thread);
-      }
-      
       //-- build serial functions for the role with NULL thread.
       build_functions_for_thread(Func(), n->second, r.second->serialFunctions());
       
@@ -1178,88 +1143,6 @@ dmpl::gams::AnalyzerBuilder::build_constructor_for_variable (Var &v, Node &node)
   else if(v->isInput) buffer_ << "  return 1;\n";
   
   buffer_ << "}\n";
-}
-
-/*********************************************************************/
-//-- generate functions that remodify input global shared variables to
-//-- force retransmit by MADARA.
-/*********************************************************************/
-void
-dmpl::gams::AnalyzerBuilder::build_refresh_modify_input_globals (const Node &node, const Role &role)
-{
-  build_comment("//-- Remodify input global shared variables to force MADARA retransmit", "\n", "", 0);
-  buffer_ << "KnowledgeRecord\n";
-  buffer_ << "REMODIFY_INPUT_GLOBALS";
-  buffer_ << " (engine::FunctionArguments & args,\n";
-  buffer_ << "  engine::Variables & vars)\n";
-  buffer_ << "{\n";
-  
-  buffer_ << "  // Remodifying role-specific global and group variables\n";
-  for(const auto &gv : role->allVarsInScope())
-    if(gv->isInput && (gv->scope == Symbol::GLOBAL || gv->scope == Symbol::GROUP))
-      build_refresh_modify_global (node, gv);
-    
-  buffer_ << "  return Integer (0);\n";
-  buffer_ << "}\n";
-}
-
-/*********************************************************************/
-//-- generate functions that remodify global shared and barrier
-//-- variables to force retransmit by MADARA.
-/*********************************************************************/
-void
-dmpl::gams::AnalyzerBuilder::build_refresh_modify_globals (const Node &node, const Role &role,
-                                                        const Func &thread)
-{
-  build_comment("//-- Remodify barries variables to force MADARA retransmit", "\n", "", 0);
-  buffer_ << "KnowledgeRecord\n";
-  buffer_ << "REMODIFY_BARRIERS_" << thread->name;
-  buffer_ << " (engine::FunctionArguments &,\n";
-  buffer_ << "  engine::Variables & vars)\n";
-  buffer_ << "{\n";
-  buffer_ << "  mark_modified(mbarrier_" << thread->name << "[id]);\n";
-  buffer_ << "  return Integer (0);\n";
-  buffer_ << "}\n";
-
-  build_comment("//-- Remodify global shared variables to force MADARA retransmit", "\n", "", 0);
-  buffer_ << "KnowledgeRecord\n";
-  buffer_ << "REMODIFY_GLOBALS_" << thread->name;
-  buffer_ << " (engine::FunctionArguments & args,\n";
-  buffer_ << "  engine::Variables & vars)\n";
-  buffer_ << "{\n";
-  
-  buffer_ << "  // Remodifying common global variables\n";
-  buffer_ << "  REMODIFY_BARRIERS_" << thread->name << " (args, vars);\n";
-  //buffer_ << "  barrier.set (*id, barrier[*id]);\n\n";
-
-  buffer_ << "  // Remodifying thread-specific global variables\n";
-  for(const auto &gv : thread->getAccessInfo(role.get()).writesGlob)
-    build_refresh_modify_global (node, gv.second);
-
-  buffer_ << "  // Remodifying thread-specific group variables\n";
-  for(const auto &gv : thread->getAccessInfo(role.get()).writesGroup)
-    build_refresh_modify_global (node, gv.second);
-    
-  buffer_ << "  return Integer (0);\n";
-  buffer_ << "}\n";
-}
-
-/*********************************************************************/
-//-- generate functions that remodifies a global shared variable to
-//-- force retransmit by MADARA.
-/*********************************************************************/
-void
-dmpl::gams::AnalyzerBuilder::build_refresh_modify_global (const Node &node, const Var & var)
-{
-  if (var->scope == Variable::GLOBAL || var->scope == Variable::GROUP)
-  {
-    buffer_ << "  mark_modified(" << var->name << "[id]);\n";
-  }
-  else
-  {
-    throw std::runtime_error("ERROR: cannot modify non-global/group variable " + var->name + "!!");
-    buffer_ << "  mark_modified(" << var->name << ")";
-  }
 }
 
 /*********************************************************************/
