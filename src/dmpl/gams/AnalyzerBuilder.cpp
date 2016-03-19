@@ -356,18 +356,6 @@ dmpl::gams::AnalyzerBuilder::build_common_global_variables ()
   buffer_ << "Reference<unsigned int>  num_processes(knowledge, \".num_processes\");\n";
   buffer_ << "engine::KnowledgeUpdateSettings private_update (true);\n\n";
 
-  buffer_ << "//-- used to synchronize and make sure that all nodes are up\n";
-  buffer_ << "ArrayReference<unsigned int, " << numNodes () << "> startSync(knowledge, \"startSync\");\n";
-  buffer_ << "Reference<unsigned int> syncPhase(knowledge, \".syncPhase\");\n\n";
-
-  buffer_ << "KnowledgeRecord\n"
-          << "sync_inputs (engine::FunctionArguments & args, engine::Variables & vars)\n"
-          << "{\n"
-          << "  std::string syncStr(\"REMODIFY_INPUT_GLOBALS () ; startSync.{.id} = .syncPhase\");\n"
-          << "  knowledge.evaluate (syncStr);\n"
-          << "  return Integer(0);\n"
-          << "}\n";
-
   //-- define barrier variables for all synchronous threads
   build_comment("//-- barrier variables", "\n", "", 0);
 
