@@ -192,6 +192,7 @@ function cleanup {
         #collate output log
         if [ -n "$OUTLOG" ]; then
             $SCDIR/expect_merge.py $EXPECT_LOG_PERIOD $OUTDIR/expect*.log > $OUTLOG
+            ./${BIN}_analyze < $OUTLOG
         fi
     else
         echo "Something crashed; aborting logging"
@@ -233,17 +234,16 @@ fi
 
 MAPSIZE=$(echo $MAPNAME | cut -f1 -d'-')
 CPP_FILE=${MISSION}_${BIN}.cpp
+ANALYZE_FILE=${MISSION}_${BIN}_analyze.cpp
 
-#function to compile DMPL file with dmplc. takes two arguments -- the
-#output C++ file and the DMPL file.
+#function to compile DMPL file with dmplc. takes three arguments --
+#the output C++ file, options to dmplc, and the DMPL file.
 function compile_dmpl {
-    OUT_FILE="$1" && shift && IN_FILE="$*"
+    OUT_FILE="$1" && shift && OPTS="$1" && shift && IN_FILE="$*"
 
-    DMPLC_FLAGS="-g --roles $ROLEDESC --cube-grid $GRIDSIZE --map $MAPSIZE"
+    DMPLC_FLAGS="$OPTS --roles $ROLEDESC --cube-grid $GRIDSIZE --map $MAPSIZE"
     [ ! -z "$GROUPDESC" ] && DMPLC_FLAGS+=" --groups $GROUPDESC"
     [ ! -z "$VARGROUPS" ] && DMPLC_FLAGS+=" --var-groups $VARGROUPS"
-    [ "$DEBUG" -eq 1 ] && DMPLC_FLAGS="$DMPLC_FLAGS --debug"
-    [ -n "$OUTLOG" ] && DMPLC_FLAGS="$DMPLC_FLAGS -e"
 
     #generate code with dmplc
     for file in $(which dmplc) $IN_FILE $MISSION; do
@@ -260,7 +260,10 @@ function compile_dmpl {
 }
 
 #compile with dmplc
-compile_dmpl $CPP_FILE $DMPL 
+DMPLC_OPTS="-g"
+[ -n "$OUTLOG" ] && DMPLC_OPTS="$DMPLC_OPTS -e"
+compile_dmpl $CPP_FILE "$DMPLC_OPTS" $DMPL 
+[ -n "$OUTLOG" ] && compile_dmpl $ANALYZE_FILE "-a" $DMPL 
 
 #function to compile CPP file with g++. takes two arguments -- the
 #output executable and the CPP file.
@@ -282,6 +285,7 @@ function compile_cpp {
 
 #compile with g++
 compile_cpp ${BIN} $CPP_FILE 
+[ -n "$OUTLOG" ] && compile_cpp ${BIN}_analyze $ANALYZE_FILE 
 
 [ "$BUILDONLY" -eq 1 ] && exit 0
 
