@@ -231,43 +231,57 @@ if [ ! -z "$RECORD" ]; then
     fi
 fi
 
-#compile tutorial 2
-
 MAPSIZE=$(echo $MAPNAME | cut -f1 -d'-')
-
 CPP_FILE=${MISSION}_${BIN}.cpp
-DMPLC_FLAGS="-g --roles $ROLEDESC --cube-grid $GRIDSIZE --map $MAPSIZE"
-[ ! -z "$GROUPDESC" ] && DMPLC_FLAGS+=" --groups $GROUPDESC"
-[ ! -z "$VARGROUPS" ] && DMPLC_FLAGS+=" --var-groups $VARGROUPS"
-[ "$DEBUG" -eq 1 ] && DMPLC_FLAGS="$DMPLC_FLAGS --debug"
-[ -n "$OUTLOG" ] && DMPLC_FLAGS="$DMPLC_FLAGS -e"
 
-#generate code with dmplc
-for file in $(which dmplc) $DMPL $MISSION; do
-    if [ $FORCEBUILD -eq 1 ] || [ $file -nt $CPP_FILE ]; then
-        echo "dmplc $DMPLC_FLAGS -o $CPP_FILE $DMPL"
-        $GDB dmplc $DMPLC_FLAGS -o $CPP_FILE $DMPL
+#function to compile DMPL file with dmplc. takes two arguments -- the
+#DMPL file and the output C++ file.
+function compile_dmpl {
+    OUT_FILE="$1" && shift && IN_FILE="$*"
+
+    DMPLC_FLAGS="-g --roles $ROLEDESC --cube-grid $GRIDSIZE --map $MAPSIZE"
+    [ ! -z "$GROUPDESC" ] && DMPLC_FLAGS+=" --groups $GROUPDESC"
+    [ ! -z "$VARGROUPS" ] && DMPLC_FLAGS+=" --var-groups $VARGROUPS"
+    [ "$DEBUG" -eq 1 ] && DMPLC_FLAGS="$DMPLC_FLAGS --debug"
+    [ -n "$OUTLOG" ] && DMPLC_FLAGS="$DMPLC_FLAGS -e"
+
+    #generate code with dmplc
+    for file in $(which dmplc) $IN_FILE $MISSION; do
+        if [ $FORCEBUILD -eq 1 ] || [ $file -nt $OUT_FILE ]; then
+            echo "dmplc $DMPLC_FLAGS -o $OUT_FILE $IN_FILE"
+            $GDB dmplc $DMPLC_FLAGS -o $OUT_FILE $IN_FILE
+            if [ "$?" != "0" ]; then
+                echo "ERROR: dmplc failed on $IN_FILE!!"
+                exit 1
+            fi
+            break
+        fi
+    done
+}
+
+#compile with dmplc
+compile_dmpl $CPP_FILE $DMPL 
+
+#function to compile CPP file with g++. takes two arguments -- the CPP
+#file and the output executable
+function compile_cpp {
+    OUT_FILE="$1" && IN_FILE="$2"
+    if [ $IN_FILE -nt ${OUT_FILE} ]; then
+        CFLAGS="$DBGFLAGS -std=c++11 -I$DMPL_ROOT/src -I$VREP_ROOT/programming/remoteApi -I$ACE_ROOT "
+        CFLAGS+="-I$MADARA_ROOT/include -I$GAMS_ROOT/src -I$DMPL_ROOT/include -Wno-deprecated-declarations"
+        LIBS="$LIBS $MADARA_ROOT/libMADARA.so $ACE_ROOT/lib/libACE.so $GAMS_ROOT/lib/libGAMS.so -lpthread"
+        echo "g++ $CFLAGS -o $OUT_FILE $IN_FILE $LIBS"
+        g++ $CFLAGS -o $OUT_FILE $IN_FILE $LIBS
+        
         if [ "$?" != "0" ]; then
-            echo "ERROR: dmplc failed on $DMPL!!"
+            echo "ERROR: g++ failed on $IN_FILE!!"
             exit 1
         fi
-        break
     fi
-done
+}
 
 #compile with g++
-if [ $CPP_FILE -nt ${BIN} ]; then
-    CFLAGS="$DBGFLAGS -std=c++11 -I$DMPL_ROOT/src -I$VREP_ROOT/programming/remoteApi -I$ACE_ROOT "
-    CFLAGS+="-I$MADARA_ROOT/include -I$GAMS_ROOT/src -I$DMPL_ROOT/include -Wno-deprecated-declarations"
-    LIBS="$LIBS $MADARA_ROOT/libMADARA.so $ACE_ROOT/lib/libACE.so $GAMS_ROOT/lib/libGAMS.so -lpthread"
-    echo "g++ $CFLAGS -o $BIN $CPP_FILE $LIBS"
-    g++ $CFLAGS -o $BIN $CPP_FILE $LIBS
-
-    if [ "$?" != "0" ]; then
-        echo "ERROR: g++ failed on $CPP_FILE!!"
-        exit 1
-    fi
-fi
+compile_cpp ${BIN} $CPP_FILE 
 
 [ "$BUILDONLY" -eq 1 ] && exit 0
 
