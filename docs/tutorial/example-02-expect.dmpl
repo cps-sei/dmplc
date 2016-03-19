@@ -156,7 +156,7 @@ node uav
   pure int expProp3Func() { return yp < 5; }
   
   expect expProp1 : at_end => expProp1Func;
-  //expect expProp2 : at_end => expProp2Func;
+  expect expProp2 : at_end => expProp2Func;
 
   pure int coverage()
   {
