@@ -113,6 +113,15 @@ void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
 }
 
 int foo1() { return 100; }
+
+double myrandom(double _lower, double _upper)
+{
+  double x = random() * 1.0 / RAND_MAX;
+  x = _lower + (_upper - _lower) * x;
+  printf("rnd = %lf\n", x);
+  return x;
+}
+
 %%}
 
 //states of each node
@@ -127,6 +136,7 @@ extern int my_sleep(int seconds);
 extern void print_state(int XX,int YY,int my_id, int x, int y, int xf, int yf);
 extern void print_int(int i);
 extern pure int foo1();
+extern pure double myrandom(double _lower, double _upper);
 
 node uav
 {
@@ -155,15 +165,24 @@ node uav
   pure int expProp2Func() { return foo1() || xp > 6; }
   pure int expProp3Func() { return yp < 5; }
   
-  expect expProp1 : at_end => expProp1Func;
-  expect expProp2 : at_end => expProp2Func;
+  //expect expProp1 : at_end => expProp1Func;
+  //expect expProp2 : at_end => expProp2Func;
 
   pure int coverage()
   {
     return (foo1() - foo1()@0) > 0.9;
   }
 
-  expect expProp3 : at_least 0.5 => coverage;
+  //expect expProp3 : at_least 0.5 => coverage;
+
+  //-- a random number periodically computed, and its lower and upper bounds
+  local double rnd = 0.0, lower = 0.2, upper = 0.6;
+
+  pure int expProp4Func() { return rnd > 0.4; }
+  expect expProp4 : at_end => expProp4Func;
+
+  pure int expProp5Func() { return rnd > 0.3; }
+  expect expProp5 : at_least 0.7 => expProp5Func;
   
   bool NEXT_XY () {
     if(!waypointValid) return 1;
@@ -181,6 +200,7 @@ node uav
   @PlatformController;
   @Period(100000);
   thread COLLISION_AVOIDANCE {
+    rnd = myrandom(lower, upper);
     print_state(X,Y,id,x,y,xt,yt);
     //my_sleep(1);
     if(state == NEXT) {
@@ -208,6 +228,12 @@ node uav
   }
 
   role Leader {
+    override local double lower = 0.3;
+    override pure int expProp5Func() { return rnd < 0.3 || rnd@1 >= lower@1; }
+
+    pure int expProp6Func() { return rnd < 0.3; }
+    expect expProp6 : at_least 0.8 => expProp6Func;
+
     //-- leader-specific waypoint thread
     @Period(100000);
     thread WAYPOINT {
