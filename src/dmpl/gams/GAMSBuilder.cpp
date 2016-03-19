@@ -1696,7 +1696,7 @@ dmpl::gams::GAMSBuilder::build_expect_thread_definition (const Role &role)
     //std::cerr << "  usage_summary: " << func->usage_summary << std::endl;
     //std::cerr << "  expect: " << func->usage_summary.anyExpect() << std::endl;
     buffer_ << "    out << tv.tv_sec << \",\" << tv.tv_usec << \",\" << id << \",\" << id << \",\";\n";
-    buffer_ << "    out << \"" << func->getName() << ",\" << ::" << func->getName() << "();\n";
+    buffer_ << "    out << \"EXTERN_" << func->getName() << ",\" << ::" << func->getName() << "();\n";
     buffer_ << "    out << std::endl;\n";
   }
   
