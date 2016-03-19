@@ -35,6 +35,9 @@ determine its own next waypoint relative to that of the leader.
 example-02.bug1: Same as example-02 but with a bug introduced in the
 collision avoidance protocol.
 
+example-02-expect: Same as example-02 but used to test expect
+specifications, log generation, and log analysis.
+
 example-03: This is similar to example-02 but has 9 nodes moving in a
 loose 3x3 grid formation -- one (leader) in the center of the grid and
 the remaining eight (followers) surrounding it on all sides. All nodes
