@@ -127,10 +127,16 @@ namespace
   /*******************************************************************/
   std::string get_type_name(const dmpl::Var &var)
   {
-    if(var->type->type == TCHAR)
-      return "short";
-    else
-      return var->type->toString();
+    return (var->type->type == TCHAR) ? "short" : var->type->toString();
+  }
+
+  /*******************************************************************/
+  //-- return type of a function. promote char to short since MADARA
+  //-- does not supprt char currently.
+  /*******************************************************************/
+  std::string get_ret_type_name(const dmpl::Func &func)
+  {
+    return (func->retType->type == TCHAR) ? "short" : func->retType->toString();
   }
 
   /*******************************************************************/
@@ -409,11 +415,9 @@ dmpl::gams::AnalyzerBuilder::build_program_variables ()
     }
 
     if(isSpecFunc) {
-      buffer_ << "ArrayReference<unsigned int," << numNodes () << "> ";
-      buffer_ << "EXTERN_" << func->name;
-      buffer_ << "(knowledge, \"";
-      buffer_ << "EXTERN_" << func->name << "\")";
-      buffer_ << ";\n";
+      buffer_ << "ArrayReference<" << get_ret_type_name(func) << "," << numNodes () << "> ";
+      buffer_ << "EXTERN_" << func->name << "(knowledge, \"";
+      buffer_ << "EXTERN_" << func->name << "\");\n";
     }
   }
   
