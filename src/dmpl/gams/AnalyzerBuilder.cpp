@@ -828,12 +828,6 @@ dmpl::gams::AnalyzerBuilder::build_parse_args ()
     }
   }
 
-  //-- now create parser for each variable
-  for(const auto &i : inputVars) {
-    buffer_ << "\n    //-- Providing init for input variable " << i.first << "\n";
-    variable_help << build_parse_args (i.first, i.second);
-  }
-
   if (false)
   {
     buffer_ << "\n    //-- Providing init for VREP variables";
@@ -897,51 +891,6 @@ dmpl::gams::AnalyzerBuilder::build_parse_args ()
   buffer_ << "    }\n";
   buffer_ << "  }\n";
   buffer_ << "}\n\n";
-}
-
-/*********************************************************************/
-//-- generate code to parse command line options for initializing a
-//-- DMPL variable.
-/*********************************************************************/
-std::string
-dmpl::gams::AnalyzerBuilder::build_parse_args (const std::string &var,
-                                            const std::list<std::pair<Node,Role>> &roles)
-{
-  std::stringstream return_value;
-  
-  // we do not allow setting multi-dimensional vars from command line
-  buffer_ << "    else if (arg1 == \"--var_" << var << "\")\n";
-  buffer_ << "    {\n";
-  buffer_ << "      if (i + 1 < argc)\n";
-  buffer_ << "      {\n";
-  buffer_ << "        std::stringstream buffer (argv[i + 1]);\n";
-  size_t count = 0;
-  for(const auto &nr : roles) {
-    //-- create appropriate namespace based on variable scope
-    std::string ns = nodeName(nr.first);
-    if(nr.first->findVar(var) == NULL) ns += "::" + roleName(nr.first,nr.second);
-    
-    buffer_ << "        " << (count ? "else if" : "if")
-            << "(node_name == \"" << nr.first->name << "\" && role_name == \""
-            << nr.second->name << "\")\n";
-    buffer_ << "          buffer >> " << ns << "::var_init_" << var << ";\n";
-    count++;
-  }
-  buffer_ << "        else throw std::runtime_error\n"
-          << "             (\"ERROR : no input variable "
-          << var << " for node and role combination : (\"\n"
-          << "              + node_name + \" , \" + role_name + \")\");\n";
-  buffer_ << "      }\n";
-  buffer_ << "      \n";
-  buffer_ << "      ++i;\n";
-  buffer_ << "    }\n";
-  
-  // build the help string
-  return_value << "        \" [--var_";
-  return_value << var;
-  return_value << "] sets the initial value of variable " << var << "\\n\"\\\n";
-
-  return return_value.str ();
 }
 
 /*********************************************************************/
