@@ -941,7 +941,7 @@ dmpl::gams::AnalyzerBuilder::build_global_functions (void)
   Funcs & funcs = builder_.program.funcs;
   for (Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
   {
-    build_function (NULL, Node (), i->second);
+    build_function (Node (), i->second);
   }
 }
 
@@ -962,92 +962,9 @@ dmpl::gams::AnalyzerBuilder::build_nodes (void)
       build_comment("//-- Defining functions for role " + r.second->name, "\n", "\n", 0);
       open_namespace(roleName(n->second, r.second));
 
-      //-- build serial functions for the role with NULL thread.
-      build_functions_for_thread(Func(), n->second, r.second->serialFunctions());
-      
-      //-- build functions for all threads
-      for (Func thread : r.second->threads)
-        build_functions_for_thread(thread, n->second, thread->getAccessInfo(r.second.get()).calledFuncs);
-
       //-- generate functions to evaluate expect specifications
-      if(do_expect_) build_expect_spec_definition (r.second);
+      build_expect_spec_definition (r.second);
 
-      //-- build constructors for the role
-      build_comment("//-- Begin constructors for role " + r.second->name, "", "", 0);
-      
-      //-- generator constructors and initial value checkers for
-      //-- variables
-      for(auto &v : r.second->allVarsInScope()) build_constructor_for_variable(v, n->second);
-      
-      //-- generator constructors and initial value checkers for
-      //-- records
-      for(auto &rec : r.second->allRecordsInScope()) {
-        if(rec->initFunc != NULL && !rec->initFunc->body.empty()) {
-          buffer_ << "void initialize_" << rec->name << " ()\n{\n";
-          buffer_ << "  engine::Variables vars;\n";
-          print_vars(buffer_, rec->initFunc->temps, false);
-          print_temp_inits(rec->initFunc, n->second, builder_, buffer_); 
-          
-          //-- transform statements
-          dmpl::madara::GAMSCompiler visitor (rec->initFunc, n->second, Func(),
-                                              builder_, buffer_, false);
-          for (const Stmt & statement : rec->initFunc->body)
-            visitor.visit (statement);
-          buffer_ << "}\n";
-        }
-        
-        if(rec->assumeFunc != NULL && !rec->assumeFunc->body.empty()) {
-          buffer_ << "int check_init_" << rec->name << " ()\n{\n";
-          print_vars(buffer_, rec->assumeFunc->temps, false);
-          print_temp_inits(rec->assumeFunc, n->second, builder_, buffer_); 
-        
-          //-- transform statements
-          dmpl::madara::GAMSCompiler visitor (rec->assumeFunc, n->second, Func(),
-                                              builder_, buffer_, false);
-          for (const Stmt & statement : rec->assumeFunc->body)
-            visitor.visit (statement);
-          buffer_ << "}\n";
-        }
-      }
-      
-      //-- generate the role level constructor
-      buffer_ << "void constructor ()\n{\n";
-
-      //-- sort variables and records by read-write dependency analysis
-      std::map<size_t,Var> sortedVars;
-      std::map<size_t,Record> sortedRecs;
-      r.second->orderVarsRecords(sortedVars, sortedRecs);
-
-      //-- invoke constructors in the computed dependency order
-      for(size_t i = 0; i < sortedVars.size() + sortedRecs.size(); ++i) {
-        //-- if the next one is a variable
-        if(sortedVars.find(i) != sortedVars.end()) {
-          const Var &var = sortedVars[i];
-
-          if(var->isInput)
-            buffer_ << "  if(!check_init_" << var->name
-                    << " ()) throw std::runtime_error(\"ERROR: illegal initial value of variable "
-                    << var->name << "\");\n";
-          else
-            buffer_ << "  initialize_" << var->name << " ();\n";
-        }
-
-        //-- if the next one is a record
-        else if(sortedRecs.find(i) != sortedRecs.end()) {
-          const Record &rec = sortedRecs[i];
-
-          if(rec->initFunc != NULL && !rec->initFunc->body.empty())
-            buffer_ << "  initialize_" << rec->name << " ();\n";
-        
-          if(rec->assumeFunc != NULL && !rec->assumeFunc->body.empty())
-            buffer_ << "  if(!check_init_" << rec->name
-                    << " ()) throw std::runtime_error(\"ERROR: illegal initial value of record "
-                    << rec->name << "\");\n";
-        }
-      }
-      
-      buffer_ << "}\n\n";
-      
       close_namespace(roleName(n->second, r.second));
     }
 
@@ -1059,119 +976,12 @@ dmpl::gams::AnalyzerBuilder::build_nodes (void)
 }
 
 /*********************************************************************/
-//-- generate constructor for a variable
-/*********************************************************************/
-void
-dmpl::gams::AnalyzerBuilder::build_constructor_for_variable (Var &v, Node &node)
-{
-  buffer_ << (v->isInput ? "int check_init_" : "void initialize_") << v->name << " ()\n{\n";
-  buffer_ << "  engine::Variables vars;\n";
-  
-  //-- bind initial value for inputs
-  if(v->isInput) build_program_variable_assignment(v);
-  
-  //-- generate constructor if one was defined
-  if(v->initFunc != NULL) {
-    print_vars(buffer_, v->initFunc->temps, false);
-    print_temp_inits(v->initFunc, node, builder_, buffer_); 
-    
-    //-- transform statements
-    dmpl::madara::GAMSCompiler visitor (v->initFunc, node, Func(),
-                                        builder_, buffer_, false);
-    for (const Stmt & statement : v->initFunc->body)
-      visitor.visit (statement);
-  }
-  //-- if no constructor was defined and this is an input variable, return 1
-  else if(v->isInput) buffer_ << "  return 1;\n";
-  
-  buffer_ << "}\n";
-}
-
-/*********************************************************************/
-//-- generate code to pull/push all necessary variables at the
-//-- start/end of each thread function (i.e., job)
-/*********************************************************************/
-void
-dmpl::gams::AnalyzerBuilder::build_push_pull(const Func &thread, bool push)
-{
-  buffer_ << "  //-- " << (push?"Push":"Pull") << " all referenced locals/globals\n";
-  buffer_ << "  {\n";
-  buffer_ << "    madara::knowledge::ContextGuard guard(knowledge);\n";
-
-  //push-pull locals
-  for(const auto &var : thread->accessedLoc(thread->role.get())) {
-    buffer_ << "    " << (push?"push":"pull") << "(thread" << thread->threadID << "_"
-            << var.first << ");" << std::endl;
-  }
-
-  //push-pull globals
-  for(const auto &var : thread->accessedGlob(thread->role.get())) {
-    buffer_ << "    " << (push?"push":"pull") << "(thread" << thread->threadID << "_"
-            << var.first << (push?"[id]":"") << ");" << std::endl;
-  }
-
-  //push-pull group variables
-  for(const auto &var : thread->accessedGroup(thread->role.get())) {
-    buffer_ << "    " << (push?"push":"pull") << "(thread" << thread->threadID << "_"
-            << var.first << (push?"[id]":"") << ");" << std::endl;
-  }
-
-  buffer_ << "  }\n";
-}
-
-/*********************************************************************/
-//-- generate code for all functions specific to a thread
-/*********************************************************************/
-void
-dmpl::gams::AnalyzerBuilder::build_functions_for_thread (
-  const Func& thread, const dmpl::Node & node, const dmpl::Funcs & funcs)
-{
-  //-- NULL thread. needed for serial functions.
-  if(thread == NULL) {
-    for(const auto &f : funcs) build_function (thread, node, f.second);
-    return;
-  }
-  
-  //-- generate the thread entry function
-  build_function (thread, node, Func());
-
-  //-- generate the thread function
-  build_function (thread, node, thread);
-
-  //-- generate other functions called by the thread
-  for(const auto &f : funcs) {
-    if(thread->canCall(f.second,thread->role.get()))
-      build_function (thread, node, f.second);
-  }
-}
- 
-/*********************************************************************/
 //-- generate code for a function
 /*********************************************************************/
 void
-dmpl::gams::AnalyzerBuilder::build_function (
-  const Func& thread, const dmpl::Node & node, const dmpl::Func & function)
+dmpl::gams::AnalyzerBuilder::build_function (const dmpl::Node & node, const dmpl::Func & function)
 {
   if (function != NULL && skip_func(function)) return;
-
-  //-- if we are generating the thread entry function, then generate
-  //-- the PULL and PUSH functions as well
-  if(function == NULL) {
-    buffer_ << "KnowledgeRecord\n";
-    buffer_ << "thread" << thread->threadID;
-    buffer_ << "_PULL (engine::FunctionArguments & args, engine::Variables & vars)\n";
-    buffer_ << "{\n";
-    build_push_pull(thread, false);
-    buffer_ << "  return Integer(0);\n";
-    buffer_ << "}\n\n";
-    buffer_ << "KnowledgeRecord\n";
-    buffer_ << "thread" << thread->threadID;
-    buffer_ << "_PUSH (engine::FunctionArguments & args, engine::Variables & vars)\n";
-    buffer_ << "{\n";
-    build_push_pull(thread, true);
-    buffer_ << "  return Integer(0);\n";
-    buffer_ << "}\n\n";
-  }
 
   //-- print attributes
   if(function != NULL) {
@@ -1186,28 +996,9 @@ dmpl::gams::AnalyzerBuilder::build_function (
 
   //-- function header
   buffer_ << "KnowledgeRecord\n";
-  if(function == NULL) {
-    buffer_ << "thread" << thread->threadID;
-  } else {
-    if(thread) buffer_ << "thread" << thread->threadID << "_";
-    else buffer_ << "base_";
-    buffer_ << function->name;
-  }
+  buffer_ << function->name;
   buffer_ << " (engine::FunctionArguments & args, engine::Variables & vars)\n";
   buffer_ << "{\n";
-
-  //-- if function is NULL, generate the thread entry function
-  if(function == NULL) {
-    //-- call main thread function
-    buffer_ << "  //-- call thread function\n";
-    buffer_ << "  thread" << thread->threadID << "_";
-    buffer_ << thread->name << "(args, vars);\n\n";
-
-    //-- dummy return statement
-    buffer_ << "  return Integer(0);\n";
-    buffer_ << "}\n\n";
-    return;
-  }
 
   //-- inherited prototype functions expand out to the the base version
   Func actualFunc = function->isPrototype ? node->findFunc(function->name) : function;
@@ -1219,20 +1010,12 @@ dmpl::gams::AnalyzerBuilder::build_function (
   buffer_ << "\n";
 
   buffer_ << "\n  //-- Begin function body\n";
-  dmpl::madara::GAMSCompiler visitor (actualFunc, node, thread, builder_, buffer_, false);
+  dmpl::madara::GAMSCompiler visitor (actualFunc, node, Func(), builder_, buffer_, true);
 
   //transform the body of safety
   BOOST_FOREACH (const Stmt & statement, actualFunc->body)
   {
     visitor.visit (statement);
-  }
-
-  //-- record the set of referred roles
-  if(!visitor.refRoles.empty()) {
-    if(thread->role == NULL)
-      throw std::runtime_error("ERROR: non-role thread " + thread->name + " in node " +
-                               node->name + " refers to role " + (*visitor.refRoles.begin()));
-    rolesRefRoles[thread->role->name].insert(visitor.refRoles.begin(), visitor.refRoles.end());
   }
 
   buffer_ << "\n  //-- Insert return statement, in case user program did not\n";
@@ -1258,16 +1041,7 @@ dmpl::gams::AnalyzerBuilder::build_expect_spec_definition (const Role &role)
         specFuncs.insert(func);
   }
   
-  for(const Func &func : specFuncs) {
-    buffer_ << "bool " << func->name << " ()\n";
-    buffer_ << "{\n";
-
-    dmpl::madara::GAMSCompiler visitor (func, role->node, Func(), builder_, buffer_, true);
-    BOOST_FOREACH (const Stmt & statement, func->body)
-      visitor.visit (statement);
-  
-    buffer_ << "}\n\n";
-  }
+  for(const Func &func : specFuncs) build_function(role->node, func);
 }
 
 /*********************************************************************/

@@ -179,28 +179,12 @@ namespace dmpl
       void build_nodes (void);
 
       /**
-       * Generate constructor for a variable
-       **/
-      void build_constructor_for_variable (Var &v, Node &node);
-
-      void build_push_pull (const Func& thread, bool push);
-
-      /**
-       * Builds all functions for a specific thread
-       * @param  thread  the target thread
-       * @node  thread  the target node
-       * @param  function  a defined function in the parsed program
-       **/
-      void build_functions_for_thread (const Func& thread, const dmpl::Node & node,
-                                       const dmpl::Funcs & funcs);
-
-      /**
        * Builds a function
        * @param  thread  the target thread
        * @node  thread  the target node
        * @param  function  a defined function in the parsed program
        **/
-      void build_function (const Func& thread, const dmpl::Node & node, const dmpl::Func& function);
+      void build_function (const dmpl::Node & node, const dmpl::Func& function);
 
       //-- generate functions to evaluate expect specifications
       void build_expect_spec_definition (const Role &role);
