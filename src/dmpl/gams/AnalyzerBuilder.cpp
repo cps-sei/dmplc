@@ -516,6 +516,8 @@ dmpl::gams::AnalyzerBuilder::build_program_variable_decl (const Var & var)
   }
   buffer_ << var->name;
   buffer_ << "(knowledge, \"";
+  if(var->scope == Variable::LOCAL)
+    buffer_ << ".";
   buffer_ << var->name << "\")";
   buffer_ << ";\n";
 }
