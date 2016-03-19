@@ -192,7 +192,7 @@ function cleanup {
         #collate output log
         if [ -n "$OUTLOG" ]; then
             $SCDIR/expect_merge.py $EXPECT_LOG_PERIOD $OUTDIR/expect*.log > $OUTLOG
-            ./${BIN}_analyze < $OUTLOG
+            ./${BIN}_analyze < $OUTLOG &> $OUTLOG.analyze
         fi
     else
         echo "Something crashed; aborting logging"
