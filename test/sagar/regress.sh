@@ -161,6 +161,7 @@ test_code_gen test-example-09c.dmpl "--roles uav:Leader:1:uav:Protector:4:uav:Le
 test_code_gen test-example-09d.dmpl "-e --roles uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4 --groups coordinator+eastern=1:eastern=4:coordinator+western=1:western=4 --var-groups reg_x+reg_y+reg_rad+waypointArrival=coordinator:lock+lx+ly+init=eastern+western"
 
 #analyzer generation tests
+test_analyzer test-example-02-expect.dmpl "--roles uav:Protector:4:uav:Leader:1"
 test_analyzer test-example-09d.dmpl "--roles uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4 --groups coordinator+eastern=1:eastern=4:coordinator+western=1:western=4 --var-groups reg_x+reg_y+reg_rad+waypointArrival=coordinator:lock+lx+ly+init=eastern+western"
 
 #test building
