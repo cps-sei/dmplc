@@ -167,7 +167,7 @@ node uav
 
   pure int coverage()
   {
-    return (GET_LAT() - GET_LNG()@0) > 0.9;
+    return 1;
   }
 
   expect expProp3 : at_least 0.5 => coverage;
