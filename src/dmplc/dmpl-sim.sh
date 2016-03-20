@@ -57,7 +57,7 @@ DEBUG=0
 NODE_DEBUG=""
 
 function usage {
-    echo "Usage : dmpl-sim.sh [-args] file.mission [output.log]"
+    echo "Usage : dmpl-sim.sh [-args] file.mission"
     echo "  Optional Arguments:"
     echo "    -b | --force-build  Fully rebuild the cpp file, and recompile it"
     echo "    -B | --build-only   Only build the software, don't run the simulation"
@@ -65,6 +65,7 @@ function usage {
     echo "   -nd | --node-debug   Run nodes with --debug option"
     echo "    -h | --headless     Run V-REP in headless mode"
     echo "    -M | --manual-start Don't start the simulation automatically"
+    echo '    -e | --expect $L    Evaluate expect specs using $L as log file'
     echo '    -p | --platform $P  Pass $P as the --platform option to the executable'
     echo '    -l | --log-level $L Pass $L as the -l option to the executable'
     echo "    -r | --realtime     Run V-REP in realtime mode"
@@ -116,6 +117,13 @@ while true; do
         -G|--debug)
             DBGFLAGS="-g -Og"
             ;;
+        -e|--expect)
+            shift
+            OUTLOG="$1"
+            if [ -z $OUTLOG ]; then
+                echo "ERROR: No expect log file specified!!"; usage; exit 1
+            fi
+            ;;
         -p|--platform)
             shift
             PLATFORM="$1"
@@ -131,9 +139,6 @@ while true; do
             case "$argc" in
                 0)
                     MISSION="$1"
-                    ;;
-                1)
-                    OUTLOG="$1"
                     ;;
                 *)
                     echo Unexpected argument: $1
