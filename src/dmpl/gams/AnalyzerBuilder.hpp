@@ -189,9 +189,6 @@ namespace dmpl
       //-- generate functions to evaluate expect specifications
       void build_expect_spec_definition (const Role &role);
 
-      //-- generate the role2Id function
-      void build_role2Id (void);      
-      
       /**
        * Computes priorities, criticalities, and zero slack instants
        * of functions.

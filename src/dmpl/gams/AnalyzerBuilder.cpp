@@ -203,7 +203,6 @@ dmpl::gams::AnalyzerBuilder::build ()
   build_gams_functions ();
   build_global_functions ();
   build_nodes ();
-  build_role2Id ();
 
   // close dmpl namespace
   close_namespace ("dmpl");
@@ -343,33 +342,9 @@ dmpl::gams::AnalyzerBuilder::build_common_global_variables ()
   buffer_ << "}\n";
   buffer_ << "\n";
 
-  build_comment("//-- default transport variables", "", "", 0);
-  buffer_ << "std::string host (\"\");\n";
-  buffer_ << "typedef void (*PlatformInitFn)(const std::vector<std::string> &, engine::KnowledgeBase &);\n";
-  buffer_ << "typedef std::map<std::string, PlatformInitFn> PlatformInitFns;\n";
-  buffer_ << "PlatformInitFns platform_init_fns;\n";
-  buffer_ << "const std::string default_multicast (\"239.255.0.1:4150\");\n";
-  buffer_ << "madara::transport::QoSTransportSettings settings;\n";
-  buffer_ << "int write_fd (-1);\n";
-  buffer_ << "ofstream expect_file;\n";
-  buffer_ << "std::string node_name (\"none\");\n";
-  buffer_ << "std::string role_name (\"none\");\n";
-  buffer_ << "\n";
-
-  build_comment("//-- Containers for commonly used global variables", "", "", 0);
+  build_comment("//-- Variable to store node id", "", "", 0);
   //buffer_ << "containers::IntegerArray barrier;\n";
-  buffer_ << "Reference<unsigned int> id(knowledge, \".id\");\n";
-  buffer_ << "Reference<unsigned int>  num_processes(knowledge, \".num_processes\");\n";
-  buffer_ << "engine::KnowledgeUpdateSettings private_update (true);\n\n";
-
-  //-- declare map from synchronous thread names and node ids to ids
-  //-- of the other nodes that this thread must synchronize with
-  build_comment("//-- map from synchronous threads to synchronous partner node ids", "", "", 0);
-  buffer_ << "std::map< std::string,std::map< size_t,std::set<size_t> > > syncPartnerIds;\n\n";
-  
-  //-- generate function from node ids and role names to node ids
-  build_comment("//-- function from node ids and role names to node ids", "", "", 0);
-  buffer_ << "size_t role2Id(size_t nodeId, const std::string &roleName);\n\n";
+  buffer_ << "Reference<unsigned int> id(knowledge, \".id\");\n\n";
 
   //-- the map from role ids to variable names to ids of roles that
   //-- are in the same group
@@ -633,9 +608,6 @@ dmpl::gams::AnalyzerBuilder::build_program_variable_assignment (const Var & var)
 void
 dmpl::gams::AnalyzerBuilder::build_parse_args ()
 {
-  //-- we use this to build up the help message
-  std::stringstream variable_help;
-
   //-- generate code to initialze common variables from the command
   //-- line
   build_comment("//-- helper tokenizer method to handle command line arguments", "\n", "", 0);
@@ -679,69 +651,7 @@ dmpl::gams::AnalyzerBuilder::build_parse_args ()
   buffer_ << "  {\n";
   buffer_ << "    std::string arg1 (argv[i]);\n";
   buffer_ << "\n";
-  buffer_ << "    if (arg1 == \"-m\" || arg1 == \"--multicast\")\n";
-  buffer_ << "    {\n";
-  buffer_ << "      if (i + 1 < argc)\n";
-  buffer_ << "      {\n";
-  buffer_ << "        settings.hosts.push_back (argv[i + 1]);\n";
-  buffer_ << "        settings.type = madara::transport::MULTICAST;\n";
-  buffer_ << "      }\n";
-  buffer_ << "      ++i;\n";
-  buffer_ << "    }\n";
-  buffer_ << "    else if (arg1 == \"-b\" || arg1 == \"--broadcast\")\n";
-  buffer_ << "    {\n";
-  buffer_ << "      if (i + 1 < argc)\n";
-  buffer_ << "      {\n";
-  buffer_ << "        settings.hosts.push_back (argv[i + 1]);\n";
-  buffer_ << "        settings.type = madara::transport::BROADCAST;\n";
-  buffer_ << "      }\n";
-  buffer_ << "      ++i;\n";
-  buffer_ << "    }\n";
-  buffer_ << "    else if (arg1 == \"-u\" || arg1 == \"--udp\")\n";
-  buffer_ << "    {\n";
-  buffer_ << "      if (i + 1 < argc)\n";
-  buffer_ << "      {\n";
-  buffer_ << "        settings.hosts.push_back (argv[i + 1]);\n";
-  buffer_ << "        settings.type = madara::transport::UDP;\n";
-  buffer_ << "      }\n";
-  buffer_ << "      ++i;\n";
-  buffer_ << "    }\n";
-  buffer_ << "    else if (arg1 == \"-o\" || arg1 == \"--host\")\n";
-  buffer_ << "    {\n";
-  buffer_ << "      if (i + 1 < argc)\n";
-  buffer_ << "        host = argv[i + 1];\n";
-  buffer_ << "        \n";
-  buffer_ << "      ++i;\n";
-  buffer_ << "    }\n";
-  buffer_ << "    else if (arg1 == \"-d\" || arg1 == \"--domain\")\n";
-  buffer_ << "    {\n";
-  buffer_ << "      if (i + 1 < argc)\n";
-  buffer_ << "        settings.domains = argv[i + 1];\n";
-  buffer_ << "        \n";
-  buffer_ << "      ++i;\n";
-  buffer_ << "    }\n";
-  buffer_ << "    else if (arg1 == \"-i\" || arg1 == \"--id\")\n";
-  buffer_ << "    {\n";
-  buffer_ << "      if (i + 1 < argc)\n";
-  buffer_ << "      {\n";
-  buffer_ << "        std::stringstream buffer (argv[i + 1]);\n";
-  buffer_ << "        buffer >> settings.id;\n";
-  buffer_ << "        if(settings.id < 0 || settings.id >= " << numNodes () << ") {\n";
-  buffer_ << "          std::cerr << \"ERROR: Invalid node id: \" << settings.id \n"
-          << "                    << \"  valid range: [0, " << (numNodes () - 1)
-          << "]\" << std::endl;\n";
-  buffer_ << "          exit(1);\n";
-  buffer_ << "        }\n";
-  size_t procId = 0;
-  for(const Process &proc : builder_.program.processes) {
-    buffer_ << "        if(settings.id == " << procId << ") { node_name = \""
-            << proc.getNode() << "\"; role_name = \"" << proc.getRole() << "\"; }\n";
-    ++procId;
-  }
-  buffer_ << "      }\n";
-  buffer_ << "      ++i;\n";
-  buffer_ << "    }\n";
-  buffer_ << "    else if (arg1 == \"-l\" || arg1 == \"--level\")\n";
+  buffer_ << "    if (arg1 == \"-l\" || arg1 == \"--level\")\n";
   buffer_ << "    {\n";
   buffer_ << "      if (i + 1 < argc)\n";
   buffer_ << "      {\n";
@@ -753,48 +663,12 @@ dmpl::gams::AnalyzerBuilder::build_parse_args ()
   buffer_ << "      }\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
-  buffer_ << "    else if (arg1 == \"--drop-rate\")\n";
-  buffer_ << "    {\n";
-  buffer_ << "      if (i + 1 < argc)\n";
-  buffer_ << "      {\n";
-  buffer_ << "        double drop_rate;\n";
-  buffer_ << "        std::stringstream buffer (argv[i + 1]);\n";
-  buffer_ << "        buffer >> drop_rate;\n";
-  buffer_ << "        std::cerr << \"drop_rate: \" << drop_rate << std::endl;\n";
-  //TODO: fix handling of packet drops in MADARA
-  //buffer_ << "        madara::transport::PacketScheduler::drop_rate_override = drop_rate;\n";
-  buffer_ << "        settings.update_drop_rate (drop_rate,\n";
-  buffer_ << "          madara::transport::PACKET_DROP_PROBABLISTIC);\n";
-  buffer_ << "      }\n";
-  buffer_ << "      ++i;\n";
-  buffer_ << "    }\n";
-  buffer_ << "    else if (arg1 == \"-e\" || arg1 == \"--expect-log\")\n";
-  buffer_ << "    {\n";
-  buffer_ << "      if (i + 1 < argc)\n";
-  buffer_ << "      {\n";
-  buffer_ << "        expect_file.open(argv[i + 1], ios::out | ios::trunc);\n";
-  buffer_ << "      }\n";
-  buffer_ << "      ++i;\n";
-  buffer_ << "    }\n";
   buffer_ << "    else if (arg1 == \"-f\" || arg1 == \"--logfile\")\n";
   buffer_ << "    {\n";
   buffer_ << "      if (i + 1 < argc)\n";
   buffer_ << "      {\n";
   buffer_ << "        ::madara::logger::global_logger->clear();\n";
   buffer_ << "        ::madara::logger::global_logger->add_file(argv[i + 1]);\n";
-  buffer_ << "      }\n";
-  buffer_ << "      ++i;\n";
-  buffer_ << "    }\n";
-  buffer_ << "    else if (arg1 == \"-r\" || arg1 == \"--reduced\")\n";
-  buffer_ << "    {\n";
-  buffer_ << "      settings.send_reduced_message_header = true;\n";
-  buffer_ << "    }\n";
-  buffer_ << "    else if (arg1 == \"--write-fd\")\n";
-  buffer_ << "    {\n";
-  buffer_ << "      if (i + 1 < argc)\n";
-  buffer_ << "      {\n";
-  buffer_ << "        std::stringstream buffer (argv[i + 1]);\n";
-  buffer_ << "        buffer >> write_fd;\n";
   buffer_ << "      }\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
@@ -826,63 +700,12 @@ dmpl::gams::AnalyzerBuilder::build_parse_args ()
     }
   }
 
-  if (false)
-  {
-    buffer_ << "\n    //-- Providing init for VREP variables";
-    buffer_ << "\n    else if (arg1 == \"-vq\" || arg1 == \"--vrep-quad\")";
-    buffer_ << "\n    {";
-    buffer_ << "\n       vrep_model = 1;";
-    buffer_ << "\n    }";
-    buffer_ << "\n    else if (arg1 == \"-va\" || arg1 == \"--vrep-ant\")";
-    buffer_ << "\n    {";
-    buffer_ << "\n       vrep_model = 2;";
-    buffer_ << "\n    }";
-    buffer_ << "\n    else if (arg1 == \"-vh\" || arg1 == \"--vrep-host\")";
-    buffer_ << "\n    {";
-    buffer_ << "\n      if (i + 1 < argc)";
-    buffer_ << "\n      {";
-    buffer_ << "\n        vrep_host = argv[i + 1];";
-    buffer_ << "\n      }";
-    buffer_ << "\n";
-    buffer_ << "\n      ++i;";
-    buffer_ << "\n    }";
-    buffer_ << "\n    else if (arg1 == \"-vp\" || arg1 == \"--vrep-port\")";
-    buffer_ << "\n    {";
-    buffer_ << "\n      if (i + 1 < argc)";
-    buffer_ << "\n      {";
-    buffer_ << "\n        std::stringstream buffer (argv[i + 1]);";
-    buffer_ << "\n        buffer >> vrep_port;";
-    buffer_ << "\n      }";
-    buffer_ << "\n";
-    buffer_ << "\n      ++i;";
-    buffer_ << "\n    }\n";
-  }
-
   buffer_ << "    else\n";
   buffer_ << "    {\n";
   buffer_ << "      madara_log (madara::logger::LOG_EMERGENCY, (LM_DEBUG, \n";
   buffer_ << "        \"\\nProgram summary for %s:\\n\\n\"\\\n";
-  buffer_ << "        \" [-b|--broadcast ip:port] the broadcast ip to send and listen to\\n\"\\\n";
-  buffer_ << "        \" [-d|--domain domain]     the knowledge domain to send and listen to\\n\"\\\n";
-  buffer_ << "        \" [-e|--expect-log file]   file to log variables related to 'expect' clauses\\n\"\\\n";
   buffer_ << "        \" [-f|--logfile file]      log to a file\\n\"\\\n";
-  buffer_ << "        \" [-i|--id id]             the id of this agent (should be non-negative)\\n\"\\\n";
   buffer_ << "        \" [-l|--level level]       the logger level (0+, higher is higher detail)\\n\"\\\n";
-  buffer_ << "        \" [-m|--multicast ip:port] the multicast ip to send and listen to\\n\"\\\n";
-  buffer_ << "        \" [-mb|--max-barrier-time time] time in seconds to barrier for other processes\\n\"\\\n";
-  buffer_ << "        \" [-o|--host hostname]     the hostname of this process (def:localhost)\\n\"\\\n";
-  buffer_ << "        \" [-r|--reduced]           use the reduced message header\\n\"\\\n";
-  buffer_ << "        \" [-u|--udp ip:port]       the udp ips to send to (first is self to bind to)\\n\"\\\n";
-
-  buffer_ << variable_help.str ();
-
-  if (false)
-  {
-    buffer_ << "        \" [-vq|--vrep-quad] use Quadricopter model in VREP (default)\\n\"\\\n";
-    buffer_ << "        \" [-va|--vrep-ant] use Ant model in VREP\\n\"\\\n";
-    buffer_ << "        \" [-vh|--vrep-host] sets the IP address of VREP\\n\"\\\n";
-    buffer_ << "        \" [-vp|--vrep-port] sets the IP port of VREP\\n\"\\\n";
-  }
 
   buffer_ << "        , argv[0]));\n";
   buffer_ << "      exit (0);\n";
@@ -1079,36 +902,6 @@ dmpl::gams::AnalyzerBuilder::build_expect_spec_definition (const Role &role)
 }
 
 /*********************************************************************/
-//-- generate the role2Id function
-/*********************************************************************/
-void dmpl::gams::AnalyzerBuilder::build_role2Id ()
-{
-  buffer_ << "size_t role2Id(size_t nodeId, const std::string &roleName)\n";
-  buffer_ << "{\n";
-  const Program &prog = builder_.program;
-  for(const auto &rr : rolesRefRoles) {
-    std::set<Process> procs = prog.procsWithRole(rr.first);
-    for(const Process &proc : procs) {
-      for(const std::string &rp : rr.second) {
-        std::set<Process> refProcs = prog.getRefProcs(proc,rp);
-        if(refProcs.empty())
-          throw std::runtime_error("ERROR: role " + rp + " referred by role " + rr.first +
-                                   " is empty, i.e., not instantiated by any node!!");
-        if(refProcs.size() > 1)
-          throw std::runtime_error("ERROR: role " + rp + " referred by role " + rr.first +
-                                   " is ambiguous, i.e., instantiated by multiple nodes!!");
-
-        buffer_ << "  if(nodeId == " << proc.id << " && roleName == \"" << rp << "\") return "
-                << refProcs.begin()->id << ";\n";
-      }
-    }
-  }
-  buffer_ << "  throw std::runtime_error(\"ERROR: role2Id called with illegal arguments \""
-          << " + std::to_string(nodeId) + \" and \" + roleName + \"!!\");\n";
-  buffer_ << "}\n\n";
-}
-
-/*********************************************************************/
 //-- compute priorities and criticalities of threads
 /*********************************************************************/
 void
@@ -1237,11 +1030,6 @@ dmpl::gams::AnalyzerBuilder::build_main_function ()
   buffer_ << "{\n";
   buffer_ << "  //-- handle any command line arguments and check their sanity\n";
   buffer_ << "  handle_arguments (argc, argv);\n";
-  buffer_ << "\n";
-
-  // set the values for id and processes
-  buffer_ << "  //-- Initialize commonly used local variables\n";  
-  buffer_ << "  num_processes = processes;\n";
   buffer_ << "\n";
 
   Node &node = builder_.program.nodes.begin()->second;
