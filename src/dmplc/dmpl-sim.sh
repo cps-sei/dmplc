@@ -127,10 +127,16 @@ while true; do
         -p|--platform)
             shift
             PLATFORM="$1"
+            if [ -z $PLATFORM ]; then
+                echo "ERROR: No platform specified!!"; usage; exit 1
+            fi
             ;;
         -l|--log-level)
             shift
             LOG_LEVEL="$1"
+            if [ -z $LOG_LEVEL ]; then
+                echo "ERROR: No log level specified!!"; usage; exit 1
+            fi
             ;;
         "")
             break
