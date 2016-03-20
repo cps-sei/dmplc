@@ -33,7 +33,7 @@ function test_build {
     MISSION="$1"
     printf "build        %30s : " $(basename $MISSION)
     (cd $(dirname $MISSION); \
-    dmpl-sim.sh -b -B $(basename $MISSION) &> /dev/null; \
+    dmpl-sim.sh -b -e /dev/null -B $(basename $MISSION) &> /dev/null; \
     if [ "$?" == "0" ]; then echo "SUCCESS"; else echo "FAILURE"; fi)
 }
 
