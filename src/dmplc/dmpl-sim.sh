@@ -375,6 +375,7 @@ mv $RAC.saved.mcda-vrep $RAC
 declare -A pid2cmd
 
 #start the nodes
+$SETENV_CMD
 NUMCPU=$(grep -c ^processor /proc/cpuinfo)
 for x in $(seq 1 $((NODENUM - 1))); do
     echo $x
