@@ -1,0 +1,47 @@
+//
+// Specification file for example-02-expect experiment
+//
+
+//
+// Target on which to run (e.g., TEST, SWARM or DART)
+//
+@target(DART)
+
+//
+// Name of the scenario to run
+//
+@scenario(example-02-expect);
+
+//
+// Target relative error value
+//
+@targetRE(0.05);
+
+//
+// Some explanitory text about the experiment
+//
+@begin(description)
+This simulation consists of a leader and four protectors.
+@end(description)
+
+//
+// Predicates to evaluate.  All experiements must include at least the mission.failure predicate
+//
+@begin(predicate)[expProp4.0]
+expect property expProp4 for node 0.
+@end(predicate)
+@begin(predicate)[expProp5.0]
+expect property expProp5 for node 0.
+@end(predicate)
+//-- TBD : add remaining predicates
+
+//
+// Input variables and their distributions
+//
+0.x = iuniform(0,9);
+0.y = iuniform(0,9);
+0.xt = iuniform(0,9);
+0.yt = iuniform(0,9);
+0.ox = -1;
+0.oy = -1;
+//-- TBD : add remaining random inputs
