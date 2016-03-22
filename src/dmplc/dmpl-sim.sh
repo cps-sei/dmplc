@@ -182,17 +182,12 @@ function cleanup {
     echo "Cleaning up ..."
     [ -n "$status_file" ] && rm $status_file
     
-    bin_count=$(ps --no-headers -C "$BIN" | wc -l)
-
     #kill nodes and VREP
+    bin_count=$(ps --no-headers -C "$BIN" | wc -l)
     killall $BIN vrep vrep.sh
-
     sleep 2
-
     killall gdb
-
     sleep 2
-    
     killall -9 gdb $BIN vrep vrep.sh
     
     #restore the VREP system/settings.dat
@@ -351,13 +346,13 @@ sleep 1
 SAFETY_TIME=30
 START_TIME=$(date +%s)
 while [ "$(grep STARTED $status_file | wc -l)" -lt 1 ]; do
-    vrep_count=$(ps --no-headers -C "vrep" | wc -l)
     cur_time=$(date +%s)
     if [ $((START_TIME + SAFETY_TIME)) -lt "$cur_time" ]; then
         echo Time limit exceeded\; crash assumed
         cleanup
         exit 1
     fi
+    vrep_count=$(ps --no-headers -C "vrep" | wc -l)
     if [ "$vrep_count" -lt 1 ]; then
         echo VREP crashed!
         cleanup
@@ -412,11 +407,8 @@ fi
 if [ -z $MISSION_TIME ]; then SAFETY_TIME=240; else SAFETY_TIME=$MISSION_TIME; fi
 START_TIME=$(date +%s)
 while [ "$(grep COMPLETE $status_file | wc -l)" -lt 1 ]; do
-    bin_count=$(ps --no-headers -C "$BIN" | wc -l)
-    vrep_count=$(ps --no-headers -C "vrep" | wc -l)
-    cur_time=$(date +%s)
-
     #check for timeout
+    cur_time=$(date +%s)
     if [ $((START_TIME + SAFETY_TIME)) -lt "$cur_time" ]; then
         echo Time limit exceeded\; crash assumed
         cleanup
@@ -424,8 +416,7 @@ while [ "$(grep COMPLETE $status_file | wc -l)" -lt 1 ]; do
     fi
 
     #check if all nodes are alive
-    for k in "${!pid2cmd[@]}"
-    do
+    for k in "${!pid2cmd[@]}"; do
         node_alive=$(ps --no-headers ax | awk '{print $1}' | grep "${k}$" | wc -l)
         if [ "$node_alive" == "0" ]; then
             echo A controller crashed!
@@ -436,6 +427,7 @@ while [ "$(grep COMPLETE $status_file | wc -l)" -lt 1 ]; do
     done
 
     #check if VREP is alive
+    vrep_count=$(ps --no-headers -C "vrep" | wc -l)
     if [ "$vrep_count" -lt 1 ]; then
         echo VREP crashed!
         cleanup
