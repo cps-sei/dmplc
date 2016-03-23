@@ -236,6 +236,18 @@ double GET_RANGE()
 }
 
 /**
+ * Gets the angle the range finder sensor is at relative to front of the
+ * platform.
+ *
+ * @return angle in degrees, where positive is counter-clockwise as viewed from
+ *         above. Returns NAN if platform has no such sensor.
+ **/
+double GET_RANGE_ANGLE()
+{
+  return HAS_RANGE() ? 0 : NAN;
+}
+
+/**
  * Gets the altitude read by the altitude sensor, if there is one.
  *
  * @return if there is no sensor, returns NAN. Else, if something is detected,
@@ -290,18 +302,6 @@ void SET_COLOR(unsigned int color)
     s->set_color(color);
     //std::cout << "RangeSensor: " << ret << std::endl;
   }
-}
-
-/**
- * Gets the angle the range finder sensor is at relative to front of the
- * platform.
- *
- * @return angle in degrees, where positive is counter-clockwise as viewed from
- *         above. Returns NAN if platform has no such sensor.
- **/
-double GET_RANGE_ANGLE()
-{
-  return HAS_RANGE() ? 0 : NAN;
 }
 
 #endif //__DMPL_PLATFORM_GAMS_HPP__
