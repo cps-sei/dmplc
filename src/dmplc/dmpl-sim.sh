@@ -178,12 +178,21 @@ VREP_GRACEFUL_EXIT=0
 
 status_file=""
 
+#map from node pids to command lines
+declare -A pid2cmd
+
 function cleanup {
     echo "Cleaning up ..."
     [ -n "$status_file" ] && rm $status_file
+
+    #check if all nodes are alive
+    bin_count=0
+    for k in "${!pid2cmd[@]}"; do
+        kill -0 $k &> /dev/null
+        if [ "$?" == "0" ]; then bin_count=$(expr $bin_count + 1); fi
+    done
     
     #kill nodes and VREP
-    bin_count=$(ps --no-headers -C "$BIN" | wc -l)
     killall $BIN vrep vrep.sh
     sleep 2
     killall gdb
@@ -366,9 +375,6 @@ cat $status_file
 #restore old VREP remoteApiConnections.txt file
 mv $RAC.saved.mcda-vrep $RAC
 
-#map from node pids to command lines
-declare -A pid2cmd
-
 #start the nodes
 $SETENV_CMD
 NUMCPU=$(grep -c ^processor /proc/cpuinfo)
@@ -417,8 +423,8 @@ while [ "$(grep COMPLETE $status_file | wc -l)" -lt 1 ]; do
 
     #check if all nodes are alive
     for k in "${!pid2cmd[@]}"; do
-        node_alive=$(ps --no-headers ax | awk '{print $1}' | grep "${k}$" | wc -l)
-        if [ "$node_alive" == "0" ]; then
+        kill -0 $k &> /dev/null
+        if [ "$?" != "0" ]; then
             echo A controller crashed!
             echo "pid = $k : cmd = ${pid2cmd[$k]}"
             cleanup
