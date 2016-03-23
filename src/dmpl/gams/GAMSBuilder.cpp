@@ -813,7 +813,7 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   buffer_ << "    else if (arg1 == \"-d\" || arg1 == \"--domain\")\n";
   buffer_ << "    {\n";
   buffer_ << "      if (i + 1 < argc)\n";
-  buffer_ << "        settings.domains = argv[i + 1];\n";
+  buffer_ << "        settings.write_domain = argv[i + 1];\n";
   buffer_ << "        \n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
