@@ -150,6 +150,13 @@ namespace dmpl
     Sym fsym = Sym(func);
     fsym->use();
     func->useSymbols(con);
+
+    //-- analyze constructors of temporary variables of functions
+    for(const dmpl::Var & variable : func->temps) {
+      if(variable->initFunc == NULL) continue;
+      analyzeSymbolUsage(variable->initFunc,
+                         Context(con.node, con.role, con.spec, variable->initFunc, false));
+    }
   }
   
   /*******************************************************************/

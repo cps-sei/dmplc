@@ -986,7 +986,7 @@ thread0_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Variables
   //-- Declare local (parameter and temporary) variables
   int t2;
   int t1;
-  t2 = (GRID_MOVE (xp, yp, Integer (1)));
+  t2 = (GRID_MOVE (thread0_xp, thread0_yp, Integer (1)));
   t1 = (my_sleep (t2));
 
 
@@ -1285,7 +1285,7 @@ thread0_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Variables
   //-- Declare local (parameter and temporary) variables
   int t2;
   int t1;
-  t2 = (GRID_MOVE (xp, yp, Integer (1)));
+  t2 = (GRID_MOVE (thread0_xp, thread0_yp, Integer (1)));
   t1 = (my_sleep (t2));
 
 
@@ -1614,7 +1614,7 @@ thread0_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Variables
   //-- Declare local (parameter and temporary) variables
   int t2;
   int t1;
-  t2 = (GRID_MOVE (xp, yp, Integer (1)));
+  t2 = (GRID_MOVE (thread0_xp, thread0_yp, Integer (1)));
   t1 = (my_sleep (t2));
 
 
