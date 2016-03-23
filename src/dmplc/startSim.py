@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 # Copyright 2006-2014 Dr. Marc Andreas Freese. All rights reserved. 
 # marc@coppeliarobotics.com
@@ -82,7 +82,7 @@ import sys
 import vrep
 
 ret=0
-print 'Program started'
+print ('Program started')
 vrep.simxFinish(-1) # just in case, close all opened connections
 clientID=vrep.simxStart('127.0.0.1',19001,True,True,5000,5)
 
@@ -103,15 +103,15 @@ if ((len(sys.argv) > 1) and (sys.argv[1] == "--record")):
     vrep.simxSetBooleanParameter(clientID,vrep.sim_boolparam_video_recording_triggered,1,vrep.simx_opmode_oneshot)
 
 if clientID!=-1:
-    print 'Connected to remote API server'
+    print ('Connected to remote API server')
     res=vrep.simxStartSimulation(clientID,vrep.simx_opmode_oneshot_wait)
     if res==vrep.simx_return_ok:
-        print 'Simulation started'
+        print ('Simulation started')
     else:
-        print 'Remote API function call returned with error code: ',res
+        print ('Remote API function call returned with error code: ',res)
         ret=1
     vrep.simxFinish(clientID)
 else:
-    print 'Failed connecting to remote API server'
-print 'Program ended'
+    print ('Failed connecting to remote API server')
+#print ('Program ended')
 sys.exit(ret);
