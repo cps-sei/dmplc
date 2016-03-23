@@ -13,6 +13,11 @@ EXPECT_LOG_PERIOD=0.2
 
 MISSION_TIME=10
 
+ix=${ix:-1}
+iy=${iy:-1}
+fx=${fx:-8}
+fy=${fy:-8}
+
 ARGS_0="--var_x $ix --var_y $iy --var_xt $fx --var_yt $fy"
 ARGS_1="--var_x $((ix-1)) --var_y $((iy-1)) --var_ox -1 --var_oy -1"
 ARGS_2="--var_x $((ix+1)) --var_y $((iy+1)) --var_ox 1 --var_oy 1"
