@@ -63,6 +63,7 @@ function usage {
     echo "    -B | --build-only   Only build the software, don't run the simulation"
     echo "    -d | --debug        Run with debug options (uses dmplc --debug, and gdb)"
     echo "   -nd | --node-debug   Run nodes with --debug option"
+    echo "   -ts | --taskset      Bind each node to a specifi CPU"
     echo "    -h | --headless     Run V-REP in headless mode"
     echo "    -M | --manual-start Don't start the simulation automatically"
     echo '    -e | --expect $L    Evaluate expect specs using $L as log file'
@@ -82,6 +83,7 @@ MANUALSTART=0
 RECORD=""
 DBGFLAGS="-O3"
 LOG_LEVEL="0"
+TASKSET="0"
 
 PLATFORM=vrep-uav::::0.1
 
@@ -95,6 +97,9 @@ while true; do
             ;;
         -nd|--node-debug)
             NODE_DEBUG="--debug"
+            ;;
+        -ts|--taskset)
+            TASKSET="1"
             ;;
         -b|--force-build)
             FORCEBUILD=1
@@ -388,7 +393,11 @@ for x in $(seq 1 $((NODENUM - 1))); do
     ELOG=""
     [ -n "$OUTLOG" ] && ELOG="-e $OUTDIR/expect${x}.log"
     cmd="$GDB ./$BIN $ELOG --platform $PLATFORM --id $x -l $LOG_LEVEL $NODE_DEBUG $args"
-    taskset -c ${cpu_id} $cmd &> $OUTDIR/node${x}.out &
+    if [ "$TASKSET" == "1" ]; then
+        taskset -c ${cpu_id} $cmd &> $OUTDIR/node${x}.out &
+    else
+        $cmd &> $OUTDIR/node${x}.out &
+    fi
     pid=$!
     echo "started node pid=$pid : cmd=$cmd"
     pid2cmd[$pid]="$cmd"
@@ -397,7 +406,11 @@ ELOG=""
 [ -n "$OUTLOG" ] && ELOG="-e $OUTDIR/expect0.log"
 #gdb --args $GDB ./$BIN $ELOG --platform $PLATFORM --id 0 $ARGS_0 # &> $OUTDIR/node0.out &
 cmd="$GDB ./$BIN $ELOG --platform $PLATFORM --id 0 -l $LOG_LEVEL $NODE_DEBUG $ARGS_0"
-taskset -c 0 $cmd &> $OUTDIR/node0.out &
+if [ "$TASKSET" == "1" ]; then
+    taskset -c 0 $cmd &> $OUTDIR/node0.out &
+else
+    $cmd &> $OUTDIR/node0.out &
+fi
 pid=$!
 echo "started node pid=$pid : cmd=$cmd" 
 pid2cmd[$pid]="$cmd"
