@@ -196,6 +196,9 @@ int ROTATE(double angle, double epsilon = 5)
 }
 
 using gams::platforms::HasRangeSensor;
+using gams::platforms::HasAltitudeSensor;
+using gams::platforms::HasColorSensor;
+using gams::platforms::HasColor;
 
 /**
  * Detect whether the platform as a range finder sensor, such as a laser
