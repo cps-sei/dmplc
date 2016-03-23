@@ -178,11 +178,19 @@ node uav
   //-- a random number periodically computed, and its lower and upper bounds
   local double rnd = 0.0, lower = 0.2, upper = 0.6;
 
-  pure int expProp4Func() { return rnd > 0.4; }
-  expect expProp4 : at_end => expProp4Func;
+  pure int expProp4Func() { return rnd@0 + rnd@1 + rnd@2 + rnd@3 + rnd@4 <= 2.1; }
+
+  //-- expected result = .5263 because the sum of the rnd's is a
+  //-- uniform[1.1,3.0]
+  expect expProp4 : at_end => expProp4Func; 
 
   pure int expProp5Func() { return rnd > 0.3; }
-  expect expProp5 : at_least 0.7 => expProp5Func;
+
+  //-- expected result = 0.69689 since there are about 50 samples of
+  //-- sum(rnd) in each trial and probability of a binomial variable x
+  //-- >= 25 with p=.5263 and N=50 is 0.69689 computed using
+  //-- http://stattrek.com/online-calculator/binomial.aspx
+  expect expProp5 : at_least 0.5 => expProp5Func;
   
   bool NEXT_XY () {
     if(!waypointValid) return 1;
@@ -229,7 +237,7 @@ node uav
 
   role Leader {
     override local double lower = 0.3;
-    override pure int expProp5Func() { return rnd < 0.3 || rnd@1 >= lower@1; }
+    override pure int expProp5Func() { return rnd@0 + rnd@1 + rnd@2 + rnd@3 + rnd@4 <= 2.1; }
 
     pure int expProp6Func() { return rnd < 0.3; }
     expect expProp6 : at_least 0.8 => expProp6Func;
