@@ -390,7 +390,7 @@ for x in $(seq 1 $((NODENUM - 1))); do
     cmd="$GDB ./$BIN $ELOG --platform $PLATFORM --id $x -l $LOG_LEVEL $NODE_DEBUG $args"
     taskset -c ${cpu_id} $cmd &> $OUTDIR/node${x}.out &
     pid=$!
-    echo "started pid=$pid : cmd=$cmd"
+    echo "started node pid=$pid : cmd=$cmd"
     pid2cmd[$pid]="$cmd"
 done
 ELOG=""
@@ -399,7 +399,7 @@ ELOG=""
 cmd="$GDB ./$BIN $ELOG --platform $PLATFORM --id 0 -l $LOG_LEVEL $NODE_DEBUG $ARGS_0"
 taskset -c 0 $cmd &> $OUTDIR/node0.out &
 pid=$!
-echo "started pid=$pid : cmd=$cmd" 
+echo "started node pid=$pid : cmd=$cmd" 
 pid2cmd[$pid]="$cmd"
 
 printf "press Ctrl-C to terminate the simulation ..."
