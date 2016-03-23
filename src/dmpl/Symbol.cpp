@@ -75,7 +75,7 @@ namespace dmpl
     "GET_CELL_SIZE_X", "GET_CELL_SIZE_Y", "GET_CELL_SIZE_Z",
     "GET_LAT", "GET_LNG", "GET_ALT",
     "ROTATE", "HAS_RANGE", "GET_RANGE", "GET_RANGE_ANGLE",
-    "MAG_ON"
+    "MAG_ON", "GET_SENSED_ALT", "GET_COLOR", "SET_COLOR"
   };
   std::set<std::string> platformSymbols(platSymArray,
                                         platSymArray + sizeof(platSymArray)/sizeof(platSymArray[0]));
