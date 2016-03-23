@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 
 # Copyright 2006-2014 Dr. Marc Andreas Freese. All rights reserved. 
 # marc@coppeliarobotics.com
