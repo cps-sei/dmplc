@@ -257,10 +257,8 @@ double GET_SENSED_ALT()
 /**
  * Gets the color read by the color sensor, if there is one.
  *
- * @return if there is no sensor, returns NAN. Else, if something is detected,
- *         returns the distance to it in meters. Else, returns the maximum
- *         possible detection distance (for this particular sensor) in meters,
- *         as a negative value.
+ * @return if there is no sensor, returns -1. Else, if something is
+ *         detected, returns its color as RGB.
  **/
 unsigned int GET_COLOR()
 {
@@ -273,7 +271,7 @@ unsigned int GET_COLOR()
     return ret;
   }
   else
-    return NAN;
+    return -1;
 }
 
 /**
