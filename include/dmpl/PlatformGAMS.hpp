@@ -279,10 +279,6 @@ unsigned int GET_COLOR()
 /**
  * Sets the color of the agent, if possible
  *
- * @return if there is no sensor, returns NAN. Else, if something is detected,
- *         returns the distance to it in meters. Else, returns the maximum
- *         possible detection distance (for this particular sensor) in meters,
- *         as a negative value.
  **/
 void SET_COLOR(unsigned int color)
 {
