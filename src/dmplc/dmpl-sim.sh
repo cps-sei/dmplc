@@ -388,8 +388,9 @@ NUMCPU=$(grep -c ^processor /proc/cpuinfo)
 for x in $(seq 1 $((NODENUM - 1))); do
     echo $x
     args_var=ARGS_$x
+    eargs_var=EARGS_$x
     cpu_id=$(expr $x % $NUMCPU)
-    args="$(eval echo \$$args_var)"
+    args="$(eval echo \$$args_var) $(eval echo \$$eargs_var)"
     ELOG=""
     [ -n "$OUTLOG" ] && ELOG="-e $OUTDIR/expect${x}.log"
     cmd="$GDB ./$BIN $ELOG --platform $PLATFORM --id $x -l $LOG_LEVEL $NODE_DEBUG $args"
