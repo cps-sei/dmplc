@@ -233,6 +233,69 @@ double GET_RANGE()
 }
 
 /**
+ * Gets the altitude read by the altitude sensor, if there is one.
+ *
+ * @return if there is no sensor, returns NAN. Else, if something is detected,
+ *         returns the distance to it in meters. Else, returns the maximum
+ *         possible detection distance (for this particular sensor) in meters,
+ *         as a negative value.
+ **/
+double GET_SENSED_ALT()
+{
+  HasAltitudeSensor *s = dynamic_cast<HasAltitudeSensor *>(platform);
+  //std::cout << "HasRangeSensor: " << reinterpret_cast<long>(s) << std::endl;
+  if(s)
+  {
+    double ret = s->get_altitude();
+    //std::cout << "RangeSensor: " << ret << std::endl;
+    return ret;
+  }
+  else
+    return NAN;
+}
+
+/**
+ * Gets the color read by the color sensor, if there is one.
+ *
+ * @return if there is no sensor, returns NAN. Else, if something is detected,
+ *         returns the distance to it in meters. Else, returns the maximum
+ *         possible detection distance (for this particular sensor) in meters,
+ *         as a negative value.
+ **/
+unsigned int GET_COLOR()
+{
+  HasColorSensor *s = dynamic_cast<HasColorSensor *>(platform);
+  //std::cout << "HasRangeSensor: " << reinterpret_cast<long>(s) << std::endl;
+  if(s)
+  {
+    uint32_t ret = s->get_color();
+    //std::cout << "RangeSensor: " << ret << std::endl;
+    return ret;
+  }
+  else
+    return NAN;
+}
+
+/**
+ * Sets the color of the agent, if possible
+ *
+ * @return if there is no sensor, returns NAN. Else, if something is detected,
+ *         returns the distance to it in meters. Else, returns the maximum
+ *         possible detection distance (for this particular sensor) in meters,
+ *         as a negative value.
+ **/
+void SET_COLOR(unsigned int color)
+{
+  HasColor *s = dynamic_cast<HasColor *>(platform);
+  //std::cout << "HasRangeSensor: " << reinterpret_cast<long>(s) << std::endl;
+  if(s)
+  {
+    s->set_color(color);
+    //std::cout << "RangeSensor: " << ret << std::endl;
+  }
+}
+
+/**
  * Gets the angle the range finder sensor is at relative to front of the
  * platform.
  *
