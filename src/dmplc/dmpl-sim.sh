@@ -407,7 +407,7 @@ printf "press Ctrl-C to terminate the simulation ..."
 if [ "$DEBUG" -eq 1 ]; then
     sleep 5
 else
-    sleep 2
+    sleep 5
 fi
 
 [ "$MANUALSTART" -ne 1 ] && ( cd $SCDIR; ./startSim.py $RECORD )
