@@ -193,11 +193,13 @@ function cleanup {
     done
     
     #kill nodes and VREP
-    killall $BIN vrep vrep.sh
+    for p in $(pstree -pal $$ | cut -d, -f2 | cut -d' ' -f1 | grep -v "$$$"); do
+        kill $p &> /dev/null
+    done
     sleep 2
-    killall gdb
-    sleep 2
-    killall -9 gdb $BIN vrep vrep.sh
+    for p in $(pstree -pal $$ | cut -d, -f2 | cut -d' ' -f1 | grep -v "$$$"); do
+        kill -9 $p &> /dev/null
+    done
     
     #restore the VREP system/settings.dat
     if [ -f $SDF.saved.mcda-vrep ]; then cp $SDF.saved.mcda-vrep $SDF; fi
