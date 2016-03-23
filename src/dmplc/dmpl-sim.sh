@@ -352,7 +352,7 @@ while [ "$(grep STARTED $status_file | wc -l)" -lt 1 ]; do
         cleanup
         exit 1
     fi
-    vrep_count=$(ps --no-headers -C "vrep" | wc -l)
+    vrep_count=$(pstree -pal $$ | grep "vrep" | wc -l)
     if [ "$vrep_count" -lt 1 ]; then
         echo VREP crashed!
         cleanup
@@ -427,7 +427,7 @@ while [ "$(grep COMPLETE $status_file | wc -l)" -lt 1 ]; do
     done
 
     #check if VREP is alive
-    vrep_count=$(ps --no-headers -C "vrep" | wc -l)
+    vrep_count=$(pstree -pal $$ | grep "vrep" | wc -l)
     if [ "$vrep_count" -lt 1 ]; then
         echo VREP crashed!
         cleanup
