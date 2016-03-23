@@ -39,7 +39,11 @@ expect property expProp5 for node 0.
 // Input variables and their distributions. Variables are of the form X.Y
 // where X is the variable name and Y is the node id.
 //
-x.0 = iuniform(1,3);
-y.0 = iuniform(1,3);
-xt.0 = iuniform(6,8);
-yt.0 = iuniform(6,8);
+ix = iuniform(1,3);
+iy = iuniform(1,3);
+fx = iuniform(6,8);
+fy = iuniform(6,8);
+ox.1 = -1;
+oy.1 = -1;
+ox.3 = -1;
+oy.3 = 1;
