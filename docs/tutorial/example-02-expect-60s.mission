@@ -1,0 +1,25 @@
+#!/bin/bash
+
+DMPL="example-02-expect.dmpl"
+BIN=example-02-expect-60s
+
+OUTDIR=outdir
+MAPNAME=small
+GRIDSIZE=10
+#ROLEDESC=uav:ProtectorNW:1:uav:Leader:1:uav:ProtectorSE:1:uav:ProtectorSW:1:uav:ProtectorNE:1
+ROLEDESC=uav:Leader:1:uav:Protector:4
+
+EXPECT_LOG_PERIOD=1.2
+
+MISSION_TIME=60
+
+ix=${ix:-1}
+iy=${iy:-1}
+fx=${fx:-8}
+fy=${fy:-8}
+
+ARGS_0="--var_x $ix --var_y $iy --var_xt $fx --var_yt $fy"
+ARGS_1="--var_x $((ix-1)) --var_y $((iy-1)) --var_ox -1 --var_oy -1"
+ARGS_2="--var_x $((ix+1)) --var_y $((iy+1)) --var_ox 1 --var_oy 1"
+ARGS_3="--var_x $((ix-1)) --var_y $((iy+1)) --var_ox -1 --var_oy 1"
+ARGS_4="--var_x $((ix+1)) --var_y $((iy-1)) --var_ox 1 --var_oy -1"
