@@ -191,7 +191,7 @@ node uav
  
     //-- using the binomial distribution, the probability of returning
     //-- 1 is 0.428415
-    return (rnd@0 + rnd@1 + rnd@2 + rnd@3 + rnd@4) >= 4; 
+    return (r0 + r1 + r2 + r3 + r4) >= 4; 
   }
 
   //-- expected result = .428415. see expProp4Func for details.
