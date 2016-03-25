@@ -14,6 +14,10 @@ use a version of synchronous collision avoidance (proposed by Arie)
 where they share only the locations that are being locked or requested
 instead of a 2D "lock" array of all possible cells.
 
+example-01-ag-await: Similar to example-01-ag but uses AWAIT
+statements instead of EXISTS_HIGHER and EXISTS_LOWER to enable
+parameterized verification.
+
 example-01-pipelined: The scenario is the same as example-01 but we
 are developing this to motivate and demonstrate applicability of
 pipelined ZSRM scheduling.
