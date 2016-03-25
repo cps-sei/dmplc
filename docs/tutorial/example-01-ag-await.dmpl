@@ -176,7 +176,7 @@ node uav
       /* wait until (xn,yn) becomes free for us */
       AWAIT(FORALL_HIGHER(other, x@other != xp || y@other != yp));
       AWAIT(FORALL_HIGHER(other, xnext@other != xp || ynext@other != yp));
-        state = MOVE;
+      state = MOVE;
     } else if (state == MOVE) {
       //now we have the lock on (xn,yn)
       if(GRID_MOVE(xnext,ynext,1)) return;
