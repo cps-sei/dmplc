@@ -524,6 +524,30 @@ namespace dmpl
       data->print(os,isBlock(data) ? indent : indent+2);
     }
   };
+
+  //for-all-await statement
+  class ForAllAwaitStmt : public Statement
+  {
+  public:
+    std::string id;
+    Expr cond;
+
+    virtual SymUserList getParents(Context &con) {
+      SymUserList ret;
+      ret.push_back(cond);
+      return ret;
+    }
+
+    ForAllAwaitStmt(const std::string &i,const Expr &c) : id(i),cond(c) {}
+    std::string toString() const {
+      return "AWAIT_FORALL (" + id + "," + cond->toString() + ")";
+    }
+    void print (std::ostream &os,unsigned int indent) const
+    {
+      std::string spacer (indent, ' ');
+      os << spacer << "AWAIT_FORALL(" << id << "," << cond->toString() << ");\n";
+    }
+  };
 }
 
 #endif // _DMPL_STATEMENT_H_
