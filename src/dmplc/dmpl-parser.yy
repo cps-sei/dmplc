@@ -162,7 +162,7 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
 %token <token> TNODENUM TEXTERN TTHREAD TPURE TOVERRIDE TRECORD
 %token <token> TELSE TFOR TWHILE
 %token <token> TBREAK TCONTINUE TRETURN TEXO TEXH TEXL
-%token <token> TFAN TFADNP TFAO TFAOL TFAOH
+%token <token> TFAN TFADNP TFAO TFAOL TFAOH TAWAIT
 %token <token> TCEQ TCNE TCLT TCLE TCGT TCGE TEQUAL
 %token <token> TLAND TLOR TLNOT TQUEST TCOLON
 %token <token> TLPAREN TRPAREN TLBRACE TRBRACE 
@@ -774,6 +774,10 @@ stmt : TLBRACE stmt_list TRBRACE { $$ = new dmpl::Stmt(new dmpl::BlockStmt(*$2))
 }
 | TFAOH TLPAREN TIDENTIFIER TRPAREN stmt {
   $$ = new dmpl::Stmt(new dmpl::FAOHStmt(*$3,*$5));
+  delete $3; delete $5;
+}
+| TAWAIT TLPAREN TIDENTIFIER TCOMMA expr TRPAREN TSEMICOLON {
+  $$ = new dmpl::Stmt(new dmpl::ForAllAwaitStmt(*$3,*$5));
   delete $3; delete $5;
 }
 ;

@@ -142,6 +142,8 @@ extern "C" int yywrap() { return 1; }
 "forall_other"              PRINT_TOKEN; return TOKEN(TFAO);
 "forall_other_lower"        PRINT_TOKEN; return TOKEN(TFAOL);
 "forall_other_higher"       PRINT_TOKEN; return TOKEN(TFAOH);
+"AWAIT_FORALL"              PRINT_TOKEN; return TOKEN(TAWAIT);
+"await_forall"              PRINT_TOKEN; return TOKEN(TAWAIT);
 "at_end"                    PRINT_TOKEN; return TOKEN(TATEND);
 "at_least"                  PRINT_TOKEN; return TOKEN(TATLEAST);
 "id"                        PRINT_TOKEN; return TID;
