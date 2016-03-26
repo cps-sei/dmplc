@@ -184,6 +184,16 @@ void dmpl::program::SanityChecker::exitFADNP(dmpl::FADNPStmt &stmt)
   delIdMap(stmt.id2);
 }
 
+bool dmpl::program::SanityChecker::enterForAllAwait(ForAllAwaitStmt &stmt)
+{
+  if(!func->isThread())
+    throw std::runtime_error("ERROR: non-thread function " + func->name +
+                             " in role " + (role ? role->name : "null") +
+                             " in node " + (node ? node->name : "null") +
+                             " uses forall_await statement!!");
+  return false;
+}
+
 void dmpl::program::SanityChecker::exitForAllAwait(ForAllAwaitStmt &stmt)
 {
   addIdMap(stmt.id,0);
