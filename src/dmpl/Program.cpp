@@ -184,6 +184,13 @@ void dmpl::program::SanityChecker::exitFADNP(dmpl::FADNPStmt &stmt)
   delIdMap(stmt.id2);
 }
 
+void dmpl::program::SanityChecker::exitForAllAwait(ForAllAwaitStmt &stmt)
+{
+  addIdMap(stmt.id,0);
+  visit(stmt.cond);
+  delIdMap(stmt.id);
+}
+
 /*********************************************************************/
 //print the program to an output stream
 /*********************************************************************/
