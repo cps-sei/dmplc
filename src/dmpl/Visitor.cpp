@@ -167,6 +167,9 @@ void dmpl::Visitor::visit(const dmpl::Stmt &stmt)
   } else if(FAOHStmt *st = dynamic_cast<FAOHStmt*>(&*stmt)) {
     hostStmt = stmt; if(enterFAOH(*st)) visit(st->data);
     hostStmt = stmt; exitFAOH(*st);
+  } else if(ForAllAwaitStmt *st = dynamic_cast<ForAllAwaitStmt*>(&*stmt)) {
+    hostStmt = stmt; if(enterForAllAwait(*st)) visit(st->cond);
+    hostStmt = stmt; exitForAllAwait(*st);
   } else assert(0 && "ERROR : visiting unknown statement!");
 }
 

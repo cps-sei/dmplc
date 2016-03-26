@@ -390,6 +390,19 @@ namespace dmpl
      * @param  stmt   the for all other higher nodes statement
      **/
     virtual void exitFAOH(FAOHStmt &stmt) {}
+    
+    /**
+     * Returns whether or not to visit a forall_await statement's
+     * subfields.
+     * @param  stmt   the forall_await statement
+     **/
+    virtual bool enterForAllAwait(ForAllAwaitStmt &stmt) { return true; }
+
+    /**
+     * Visits a forall_await statement.
+     * @param  stmt   the forall_await statement
+     **/
+    virtual void exitForAllAwait(ForAllAwaitStmt &stmt) {}
   };
 }
 
