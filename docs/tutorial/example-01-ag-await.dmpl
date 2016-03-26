@@ -168,14 +168,14 @@ node uav
       state = REQUEST;
     } else if (state == REQUEST) {
       /* Broadcast desired next position */
-      AWAIT(FORALL_LOWER(other, x@other != xp || y@other != yp));
-      AWAIT(FORALL_LOWER(other, xnext@other != xp || ynext@other != yp));
+      await_forall(other, other >= id || x@other != xp || y@other != yp);
+      await_forall(other, other >= id || xnext@other != xp || ynext@other != yp);
       xnext = xp; ynext = yp;
       state = WAITING;
     } else if (state == WAITING) {
       /* wait until (xn,yn) becomes free for us */
-      AWAIT(FORALL_HIGHER(other, x@other != xp || y@other != yp));
-      AWAIT(FORALL_HIGHER(other, xnext@other != xp || ynext@other != yp));
+      await_forall(other, other <= id || x@other != xp || y@other != yp);
+      await_forall(other, other <= id || xnext@other != xp || ynext@other != yp);
       state = MOVE;
     } else if (state == MOVE) {
       //now we have the lock on (xn,yn)
@@ -209,5 +209,4 @@ node uav
   
   //-- guaranteed properties
   require NoCollision => NoCollisions;
- }
-
+}
