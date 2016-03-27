@@ -304,6 +304,8 @@ namespace dmpl
     {
       idVar->scope = Variable::INDEP_ID;
     }
+
+    SingleIDBinder(const Var &v) : id(v->name), idVar(v) {}
   };
 
   class DualIDBinder : public SymbolBinder
@@ -349,6 +351,7 @@ namespace dmpl
     }
 
     EXOExpr(const std::string &i,const Expr &a) : SingleIDBinder(i),arg(a) {}
+    EXOExpr(const Var &v,const Expr &a) : SingleIDBinder(v),arg(a) {}
     std::string toString() const {
       return "EXISTS_OTHER(" + id + "," + arg->toString() + ")";
     }
