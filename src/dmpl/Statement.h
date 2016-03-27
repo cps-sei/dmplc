@@ -526,7 +526,7 @@ namespace dmpl
   };
 
   //for-all-await statement
-  class ForAllAwaitStmt : public SingleIDBinder, public Statement
+  class AwaitForallStmt : public SingleIDBinder, public Statement
   {
   public:
     Expr cond;
@@ -538,7 +538,7 @@ namespace dmpl
       return ret;
     }
 
-    ForAllAwaitStmt(const std::string &i,const Expr &c) : SingleIDBinder(i),cond(c) {}
+    AwaitForallStmt(const std::string &i,const Expr &c) : SingleIDBinder(i),cond(c) {}
     std::string toString() const {
       return "AWAIT_FORALL (" + id + "," + cond->toString() + ")";
     }

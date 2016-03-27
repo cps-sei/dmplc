@@ -184,7 +184,7 @@ void dmpl::program::SanityChecker::exitFADNP(dmpl::FADNPStmt &stmt)
   delIdMap(stmt.id2);
 }
 
-bool dmpl::program::SanityChecker::enterForAllAwait(ForAllAwaitStmt &stmt)
+bool dmpl::program::SanityChecker::enterAwaitForall(AwaitForallStmt &stmt)
 {
   if(!func->isThread())
     throw std::runtime_error("ERROR: non-thread function " + func->name +
@@ -194,7 +194,7 @@ bool dmpl::program::SanityChecker::enterForAllAwait(ForAllAwaitStmt &stmt)
   return false;
 }
 
-void dmpl::program::SanityChecker::exitForAllAwait(ForAllAwaitStmt &stmt)
+void dmpl::program::SanityChecker::exitAwaitForall(AwaitForallStmt &stmt)
 {
   addIdMap(stmt.id,0);
   visit(stmt.cond);

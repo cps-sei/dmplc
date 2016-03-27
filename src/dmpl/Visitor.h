@@ -396,13 +396,13 @@ namespace dmpl
      * subfields.
      * @param  stmt   the forall_await statement
      **/
-    virtual bool enterForAllAwait(ForAllAwaitStmt &stmt) { return true; }
+    virtual bool enterAwaitForall(AwaitForallStmt &stmt) { return true; }
 
     /**
      * Visits a forall_await statement.
      * @param  stmt   the forall_await statement
      **/
-    virtual void exitForAllAwait(ForAllAwaitStmt &stmt) {}
+    virtual void exitAwaitForall(AwaitForallStmt &stmt) {}
   };
 }
 
