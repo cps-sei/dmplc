@@ -526,10 +526,9 @@ namespace dmpl
   };
 
   //for-all-await statement
-  class ForAllAwaitStmt : public Statement
+  class ForAllAwaitStmt : public SingleIDBinder, public Statement
   {
   public:
-    std::string id;
     Expr cond;
 
     virtual SymUserList getParents(Context &con) {
@@ -538,7 +537,7 @@ namespace dmpl
       return ret;
     }
 
-    ForAllAwaitStmt(const std::string &i,const Expr &c) : id(i),cond(c) {}
+    ForAllAwaitStmt(const std::string &i,const Expr &c) : SingleIDBinder(i),cond(c) {}
     std::string toString() const {
       return "AWAIT_FORALL (" + id + "," + cond->toString() + ")";
     }
