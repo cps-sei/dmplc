@@ -65,6 +65,7 @@
 #include "dmpl/gams/AnalyzerBuilder.hpp"
 #include "SyncSeqDbl.hpp"
 #include "SyncSeqDblInd.hpp"
+#include "SyncSeqDblParam.hpp"
 
 /*********************************************************************/
 //options
@@ -94,6 +95,10 @@ namespace
   //-- sequential for checking inductive invariants for bounded model
   //-- checking
   bool do_seq_ind = false;
+
+  //-- sequentialize for parameterized verification via bounded and
+  //-- unbounded model checking
+  bool do_seq_param = false;
   
   //-- number of rounds to sequentialize for (-1 means infinity)
   int round_num = -1;
@@ -260,6 +265,25 @@ int main (int argc, char **argv)
     dmpl::SyncSeqDblInd syncSeqDblInd (builder, reqProp, round_num);
     syncSeqDblInd.run ();
     cprog = syncSeqDblInd.cprog;
+    
+    if (out_file.empty ())
+      cprog.print (std::cout, 0);
+    else {
+        std::ofstream os (out_file.c_str ());
+        cprog.print (os, 0);
+        os.close ();
+      }
+  }
+
+  //sequentialize for paramaterized verification and print result
+  if (do_seq_param)
+  {
+    //the C program produced by sequentialization
+    dmpl::CProgram cprog;
+    
+    dmpl::SyncSeqDblParam syncSeqDblParam (builder, reqProp, round_num);
+    syncSeqDblParam.run ();
+    cprog = syncSeqDblParam.cprog;
     
     if (out_file.empty ())
       cprog.print (std::cout, 0);
@@ -442,6 +466,10 @@ void parse_options (int argc, char **argv)
     {
       do_seq_ind = true;
     }
+    else if (arg1 == "-sp" || arg1 == "--seq-param")
+    {
+      do_seq_param = true;
+    }
     else if (arg1 == "-r" || arg1 == "--rounds")
     {
       if (i + 1 < argc)
@@ -499,7 +527,7 @@ void parse_options (int argc, char **argv)
   }
 
   //-- X, Y and Z must be defined
-  if(do_gams || do_seq || do_seq_ind) {
+  if(do_gams || do_seq || do_seq_ind || do_seq_param) {
     for(const std::string &d : { "X", "Y", "Z" }) {
       if(const_def.find(d) == const_def.end()) {
         std::cerr << "ERROR: no " << d << " dimension specified!!\n";
@@ -555,6 +583,7 @@ void usage (char *cmd)
 #endif
   std::cerr << "  -s|--seq                   generate sequentialized code to verify\n";
   std::cerr << "  -si|--seq-ind              generate sequentialized code to verify inductiveness\n";
+  std::cerr << "  -sp|--seq-param            generate sequentialized code for paramaterized verification\n";
   std::cerr << "  -r|--rounds rounds         number of verification rounds\n";
   std::cerr << "  --D<const_name> value      set a const to a value\n";
   exit (1);
