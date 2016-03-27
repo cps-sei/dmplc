@@ -399,19 +399,19 @@ namespace dmpl
   };
 
   //for-all-node statement
-  class FANStmt : public Statement
+  class FANStmt : public SingleIDBinder, public Statement
   {
   public:
-    std::string id;
     Stmt data;
 
     virtual SymUserList getParents(Context &con) {
       SymUserList ret;
+      addBinder(con);
       ret.push_back(data);
       return ret;
     }
 
-    FANStmt(const std::string &i,const Stmt &d) : id(i),data(d) {}
+    FANStmt(const std::string &i,const Stmt &d) : SingleIDBinder(i),data(d) {}
     std::string toString() const {
       return "FORALL_NODE (" + id + ") " + data->toString();
     }
@@ -424,20 +424,20 @@ namespace dmpl
   };
 
   //for-all-distinct-node-pair statement
-  class FADNPStmt : public Statement
+  class FADNPStmt : public DualIDBinder, public Statement
   {
   public:
-    std::string id1,id2;
     Stmt data;
 
     virtual SymUserList getParents(Context &con) {
       SymUserList ret;
+      addBinder(con);
       ret.push_back(data);
       return ret;
     }
 
     FADNPStmt(const std::string &i1,const std::string &i2,const Stmt &d) 
-      : id1(i1),id2(i2),data(d) {}
+      : DualIDBinder(i1,i2),data(d) {}
     std::string toString() const {
       return "FORALL_DISTINCT_NODE_PAIR (" + id1 + "," + id2 + ") " + data->toString();
     }
@@ -451,19 +451,19 @@ namespace dmpl
   };
 
   //for-all-other statement
-  class FAOStmt : public Statement
+  class FAOStmt : public SingleIDBinder, public Statement
   {
   public:
-    std::string id;
     Stmt data;
 
     virtual SymUserList getParents(Context &con) {
       SymUserList ret;
+      addBinder(con);
       ret.push_back(data);
       return ret;
     }
 
-    FAOStmt(const std::string &i,const Stmt &d) : id(i),data(d) {}
+    FAOStmt(const std::string &i,const Stmt &d) : SingleIDBinder(i),data(d) {}
     std::string toString() const {
       return "FORALL_OTHER (" + id + ") " + data->toString();
     }
@@ -476,19 +476,19 @@ namespace dmpl
   };
 
   //for-all-other-lower statement
-  class FAOLStmt : public Statement
+  class FAOLStmt : public SingleIDBinder, public Statement
   {
   public:
-    std::string id;
     Stmt data;
 
     virtual SymUserList getParents(Context &con) {
       SymUserList ret;
+      addBinder(con);
       ret.push_back(data);
       return ret;
     }
 
-    FAOLStmt(const std::string &i,const Stmt &d) : id(i),data(d) {}
+    FAOLStmt(const std::string &i,const Stmt &d) : SingleIDBinder(i),data(d) {}
     std::string toString() const {
       return "FORALL_OTHER_LOWER (" + id + ") " + data->toString();
     }
@@ -501,19 +501,19 @@ namespace dmpl
   };
 
   //for-all-other-higher statement
-  class FAOHStmt : public Statement
+  class FAOHStmt : public SingleIDBinder, public Statement
   {
   public:
-    std::string id;
     Stmt data;
 
     virtual SymUserList getParents(Context &con) {
       SymUserList ret;
+      addBinder(con);
       ret.push_back(data);
       return ret;
     }
 
-    FAOHStmt(const std::string &i,const Stmt &d) : id(i),data(d) {}
+    FAOHStmt(const std::string &i,const Stmt &d) : SingleIDBinder(i),data(d) {}
     std::string toString() const {
       return "FORALL_OTHER_HIGHER (" + id + ") " + data->toString();
     }
