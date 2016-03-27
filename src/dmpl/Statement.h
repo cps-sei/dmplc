@@ -533,6 +533,7 @@ namespace dmpl
 
     virtual SymUserList getParents(Context &con) {
       SymUserList ret;
+      reg(con);
       ret.push_back(cond);
       return ret;
     }
