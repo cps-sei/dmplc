@@ -317,7 +317,7 @@ namespace dmpl
       if(id1Var && id1Var->name == name)
         return std::static_pointer_cast<Sym::element_type>(id1Var);
       if(id2Var && id2Var->name == name)
-        return std::static_pointer_cast<Sym::element_type>(id1Var);
+        return std::static_pointer_cast<Sym::element_type>(id2Var);
       return Sym();
     }
 
