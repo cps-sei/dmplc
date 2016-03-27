@@ -237,61 +237,40 @@ int main (int argc, char **argv)
     delete ana_builder;
   }
 
-  //sequentialize and print result
-  if (do_seq)
-  {
+  //-- if doing sequentialization
+  if(do_seq || do_seq_ind || do_seq_param) {
     //the C program produced by sequentialization
     dmpl::CProgram cprog;
-    
-    dmpl::SyncSeqDbl syncSeqDbl (builder, reqProp, round_num);
-    syncSeqDbl.run ();
-    cprog = syncSeqDbl.cprog;
-    
-    if (out_file.empty ())
-      cprog.print (std::cout, 0);
-    else {
-        std::ofstream os (out_file.c_str ());
-        cprog.print (os, 0);
-        os.close ();
-      }
-  }
+  
+    //sequentialize
+    if (do_seq) {    
+      dmpl::SyncSeqDbl syncSeqDbl (builder, reqProp, round_num);
+      syncSeqDbl.run ();
+      cprog = syncSeqDbl.cprog;
+    }
 
-  //sequentialize for inductive check and print result
-  if (do_seq_ind)
-  {
-    //the C program produced by sequentialization
-    dmpl::CProgram cprog;
-    
-    dmpl::SyncSeqDblInd syncSeqDblInd (builder, reqProp, round_num);
-    syncSeqDblInd.run ();
-    cprog = syncSeqDblInd.cprog;
-    
-    if (out_file.empty ())
-      cprog.print (std::cout, 0);
-    else {
-        std::ofstream os (out_file.c_str ());
-        cprog.print (os, 0);
-        os.close ();
-      }
-  }
+    //sequentialize for inductive check
+    if (do_seq_ind) {
+      dmpl::SyncSeqDblInd syncSeqDblInd (builder, reqProp, round_num);
+      syncSeqDblInd.run ();
+      cprog = syncSeqDblInd.cprog;
+    }
 
-  //sequentialize for paramaterized verification and print result
-  if (do_seq_param)
-  {
-    //the C program produced by sequentialization
-    dmpl::CProgram cprog;
-    
-    dmpl::SyncSeqDblParam syncSeqDblParam (builder, reqProp, round_num);
-    syncSeqDblParam.run ();
-    cprog = syncSeqDblParam.cprog;
-    
+    //sequentialize for paramaterized verification
+    if (do_seq_param) {
+      dmpl::SyncSeqDblParam syncSeqDblParam (builder, reqProp, round_num);
+      syncSeqDblParam.run ();
+      cprog = syncSeqDblParam.cprog;
+    }
+
+    //print result
     if (out_file.empty ())
       cprog.print (std::cout, 0);
     else {
-        std::ofstream os (out_file.c_str ());
-        cprog.print (os, 0);
-        os.close ();
-      }
+      std::ofstream os (out_file.c_str ());
+      cprog.print (os, 0);
+      os.close ();
+    }
   }
 
   //all done
