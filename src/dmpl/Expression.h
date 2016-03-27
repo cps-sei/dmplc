@@ -295,7 +295,7 @@ namespace dmpl
       return Sym();
     }
 
-    void reg(SymbolUser::Context &con)
+    void addBinder(SymbolUser::Context &con)
     {
       con.addBinder(this);
     }
@@ -323,7 +323,7 @@ namespace dmpl
       return Sym();
     }
 
-    void reg(SymbolUser::Context &con)
+    void addBinder(SymbolUser::Context &con)
     {
       con.addBinder(this);
     }
@@ -345,7 +345,7 @@ namespace dmpl
 
     virtual SymUserList getParents(Context &con) {
       SymUserList ret;
-      reg(con);
+      addBinder(con);
       ret.push_back(arg);
       return ret;
     }
@@ -365,7 +365,7 @@ namespace dmpl
 
     virtual SymUserList getParents(Context &con) {
       SymUserList ret;
-      reg(con);
+      addBinder(con);
       ret.push_back(arg);
       return ret;
     }
@@ -384,7 +384,7 @@ namespace dmpl
 
     virtual SymUserList getParents(Context &con) {
       SymUserList ret;
-      reg(con);
+      addBinder(con);
       ret.push_back(arg);
       return ret;
     }
