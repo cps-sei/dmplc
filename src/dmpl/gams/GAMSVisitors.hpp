@@ -392,6 +392,12 @@ namespace dmpl
        **/
       virtual void exitFAOH(FAOHStmt &stmt);
 
+      //-- whether or not to visit forall_await statement's subfields
+      virtual bool enterForAllAwait(ForAllAwaitStmt &stmt);
+      
+      //-- visit forall_await statement's subfields
+      virtual void exitForAllAwait(ForAllAwaitStmt &stmt);
+      
       /// set of referred role names
       std::set<std::string> refRoles;
 

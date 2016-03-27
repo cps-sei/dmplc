@@ -1168,6 +1168,30 @@ dmpl::madara::GAMSCompiler::exitFAOH (FAOHStmt & statement)
 }
 
 /*********************************************************************/
+bool
+dmpl::madara::GAMSCompiler::enterForAllAwait (ForAllAwaitStmt & statement)
+{
+  return false;
+}
+
+/*********************************************************************/
+void
+dmpl::madara::GAMSCompiler::exitForAllAwait (ForAllAwaitStmt & statement)
+{
+  std::string spacer (indentation_, ' ');
+
+  buffer_ << spacer << "// FORALL_AWAIT\n";
+
+  //-- create an exists other expression with the negation of the
+  //-- expression and generate if (existsOther) return;
+  Expr negCond(new CompExpr(TLNOT, statement.cond));
+  Expr exoe(new EXOExpr(statement.idVar, negCond));
+  buffer_ << spacer << "if (";
+  visit(exoe);
+  buffer_ << ")\n" << spacer << "  return Integer(0);\n";
+}
+
+/*********************************************************************/
 //-- methods of GAMSInfoCollector class
 /*********************************************************************/
 
