@@ -63,6 +63,7 @@ fi
 function interrupt()
 {
     echo ">>> FOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO "
+    killall $!
     cleanup
     status='"status":'$1
     JSON="{$status}"
@@ -102,7 +103,10 @@ done
 echo ">>> running mission"
 DMPL_DIR="$(jget -i input.json dmpl_dir)"
 cd $DMPL_ROOT/$DMPL_DIR
-/usr/bin/time -p -f "%e" dmpl-sim.sh -r -h -e $TMPF $SCENARIO.mission |& tee $TMPF.simout; sim_status=${PIPESTATUS[0]}
+/usr/bin/time -p -f "%e" dmpl-sim.sh -r -h -e $TMPF $SCENARIO.mission |& tee $TMPF.simout &
+echo "waiting on $!"
+wait
+sim_status=${PIPESTATUS[0]}
 echo ">>> simulation status = $sim_status"
 cat $TMPF.analyze; cd $lpwd
 
