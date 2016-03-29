@@ -60,6 +60,15 @@ if [ -f /tmp/dart-run.sh.$PPID ]; then
     sleep 30
 fi
 
+echo ">>> Scott's a great guys .."
+echo ">>> Scott's a great guys .."
+echo ">>> Scott's a great guys .."
+echo ">>> Scott's a great guys .."
+echo ">>> Scott's a great guys .."
+echo ">>> Scott's a great guys .."
+echo ">>> Scott's a great guys .."
+echo ">>> Scott's a great guys .."
+
 echo ">>> checking out and compiling dmplc"
 DMPL_BRANCH="$(jget -i input.json dmpl_branch)"
 lpwd=$PWD; cd $DMPL_ROOT; checkout_dmplc_branch $DMPL_BRANCH; make; cd $lpwd
