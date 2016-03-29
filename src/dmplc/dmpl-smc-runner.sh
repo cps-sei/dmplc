@@ -61,13 +61,6 @@ if [ -f /tmp/dart-run.sh.$PPID ]; then
 fi
 
 echo ">>> Scott's a great guys .."
-echo ">>> Scott's a great guys .."
-echo ">>> Scott's a great guys .."
-echo ">>> Scott's a great guys .."
-echo ">>> Scott's a great guys .."
-echo ">>> Scott's a great guys .."
-echo ">>> Scott's a great guys .."
-echo ">>> Scott's a great guys .."
 
 echo ">>> checking out and compiling dmplc"
 DMPL_BRANCH="$(jget -i input.json dmpl_branch)"
