@@ -74,7 +74,10 @@ function interrupt()
 echo ">>> checking out and compiling dmplc"
 DMPL_BRANCH="$(jget -i input.json dmpl_branch)"
 lpwd=$PWD
-cd $DMPL_ROOT; checkout_dmplc_branch $DMPL_BRANCH; make&; wait
+cd $DMPL_ROOT
+checkout_dmplc_branch $DMPL_BRANCH
+make &
+wait
 cd $lpwd
 
 echo ">>> setting input variables"
