@@ -57,12 +57,35 @@
 if [ -f /tmp/dart-run.sh.$PPID ]; then
     echo ">>> hmmm ... simulation seems to have failed the last time ..."
     echo ">>> let's wait for a bit ..."
-    sleep 30
+    sleep 30 &
+    wait
 fi
+
+function cleanup()
+{
+    rm -f $TMPF $TMPF.analyze $TMPF.simout
+    rm -fr /tmp/xvfb-run.*
+}
+
+function interrupt()
+{
+    killall g++ dmpl-sim.sh
+    cleanup
+    status='"status":'$1
+    JSON="{$status}"
+    echo $JSON > $OUTPUT
+    echo ">>> run script terminated: $JSON"
+    exit
+}
 
 echo ">>> checking out and compiling dmplc"
 DMPL_BRANCH="$(jget -i input.json dmpl_branch)"
-lpwd=$PWD; cd $DMPL_ROOT; checkout_dmplc_branch $DMPL_BRANCH; make; cd $lpwd
+lpwd=$PWD
+cd $DMPL_ROOT
+checkout_dmplc_branch $DMPL_BRANCH
+make &
+wait
+cd $lpwd
 
 echo ">>> setting input variables"
 declare -a eargs eavars
@@ -91,8 +114,12 @@ done
 echo ">>> running mission"
 DMPL_DIR="$(jget -i input.json dmpl_dir)"
 cd $DMPL_ROOT/$DMPL_DIR
-/usr/bin/time -p -f "%e" dmpl-sim.sh -r -h -e $TMPF $SCENARIO.mission |& tee $TMPF.simout; sim_status=${PIPESTATUS[0]}
-echo ">>> simulation status = $sim_status"
+/usr/bin/time -p -f "%e" dmpl-sim.sh -r -h -e $TMPF $SCENARIO.mission |& tee $TMPF.simout &
+wait
+echo "######## return code = $?"
+grep -q "Command exited with non-zero status" $TMPF.simout
+sim_status=$?
+echo ">>> simulation succeeded = $sim_status"
 cat $TMPF.analyze; cd $lpwd
 
 #get various times and create stats and supplementary data
@@ -104,7 +131,7 @@ supdata='"supdata":{"foo":6,"bar":9,"dart":1}'
 
 #create result depending on whether simulation failed. if simulation
 #failed, also record it in a file
-if [ "x$sim_status" != "x0" ]; then 
+if [ "x$sim_status" == "x0" ]; then 
     touch /tmp/dart-run.sh.$PPID
     status='"status":-3'
     JSON="{$status,$stats,$supdata}"
