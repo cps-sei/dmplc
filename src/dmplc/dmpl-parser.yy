@@ -777,7 +777,7 @@ stmt : TLBRACE stmt_list TRBRACE { $$ = new dmpl::Stmt(new dmpl::BlockStmt(*$2))
   delete $3; delete $5;
 }
 | TAWAIT TLPAREN TIDENTIFIER TCOMMA expr TRPAREN TSEMICOLON {
-  $$ = new dmpl::Stmt(new dmpl::ForAllAwaitStmt(*$3,*$5));
+  $$ = new dmpl::Stmt(new dmpl::AwaitForallStmt(*$3,*$5));
   delete $3; delete $5;
 }
 ;

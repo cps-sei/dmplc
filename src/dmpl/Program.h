@@ -354,8 +354,8 @@ namespace dmpl
       void exitFAN(FANStmt &stmt);
       bool enterFADNP(FADNPStmt &stmt) { return false; }
       void exitFADNP(FADNPStmt &stmt);
-      bool enterForAllAwait(ForAllAwaitStmt &stmt);
-      void exitForAllAwait(ForAllAwaitStmt &stmt);
+      bool enterAwaitForall(AwaitForallStmt &stmt);
+      void exitAwaitForall(AwaitForallStmt &stmt);
     };
   } //namespace program
 }

@@ -1169,14 +1169,14 @@ dmpl::madara::GAMSCompiler::exitFAOH (FAOHStmt & statement)
 
 /*********************************************************************/
 bool
-dmpl::madara::GAMSCompiler::enterForAllAwait (ForAllAwaitStmt & statement)
+dmpl::madara::GAMSCompiler::enterAwaitForall (AwaitForallStmt & statement)
 {
   return false;
 }
 
 /*********************************************************************/
 void
-dmpl::madara::GAMSCompiler::exitForAllAwait (ForAllAwaitStmt & statement)
+dmpl::madara::GAMSCompiler::exitAwaitForall (AwaitForallStmt & statement)
 {
   std::string spacer (indentation_, ' ');
 
