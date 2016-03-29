@@ -62,8 +62,7 @@ fi
 
 function interrupt()
 {
-    echo ">>> FOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO "
-    killall dmpl-sim.sh
+    killall g++ dmpl-sim.sh
     cleanup
     status='"status":'$1
     JSON="{$status}"
@@ -74,7 +73,9 @@ function interrupt()
 
 echo ">>> checking out and compiling dmplc"
 DMPL_BRANCH="$(jget -i input.json dmpl_branch)"
-lpwd=$PWD; cd $DMPL_ROOT; checkout_dmplc_branch $DMPL_BRANCH; make; cd $lpwd
+lpwd=$PWD
+cd $DMPL_ROOT; checkout_dmplc_branch $DMPL_BRANCH; make&; wait
+cd $lpwd
 
 echo ">>> setting input variables"
 declare -a eargs eavars
@@ -104,8 +105,8 @@ echo ">>> running mission"
 DMPL_DIR="$(jget -i input.json dmpl_dir)"
 cd $DMPL_ROOT/$DMPL_DIR
 /usr/bin/time -p -f "%e" dmpl-sim.sh -r -h -e $TMPF $SCENARIO.mission |& tee $TMPF.simout &
-echo "waiting on $!"
 wait
+echo "######## return code = $?"
 sim_status=${PIPESTATUS[0]}
 echo ">>> simulation status = $sim_status"
 cat $TMPF.analyze; cd $lpwd
