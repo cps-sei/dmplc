@@ -115,7 +115,7 @@ cd $DMPL_ROOT/$DMPL_DIR
 /usr/bin/time -p -f "%e" dmpl-sim.sh -r -h -e $TMPF $SCENARIO.mission |& tee $TMPF.simout &
 wait
 echo "######## return code = $?"
-grep -q "dmpl-sim.sh exited gracefully" $TMPF.simout
+grep -q "Command exited with non-zero status" $TMPF.simout
 sim_status=$?
 echo ">>> simulation status = $sim_status"
 cat $TMPF.analyze; cd $lpwd
