@@ -117,7 +117,7 @@ wait
 echo "######## return code = $?"
 grep -q "Command exited with non-zero status" $TMPF.simout
 sim_status=$?
-echo ">>> simulation failed = $sim_status"
+echo ">>> simulation succeeded = $sim_status"
 cat $TMPF.analyze; cd $lpwd
 
 #get various times and create stats and supplementary data
