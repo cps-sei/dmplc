@@ -115,7 +115,7 @@ cd $DMPL_ROOT/$DMPL_DIR
 /usr/bin/time -p -f "%e" dmpl-sim.sh -r -h -e $TMPF $SCENARIO.mission |& tee $TMPF.simout &
 wait
 echo "######## return code = $?"
-grep -v "Command exited with non-zero status" $TMPF.simout
+grep -q "Command exited with non-zero status" $TMPF.simout
 sim_status=$?
 echo ">>> simulation status = $sim_status"
 cat $TMPF.analyze; cd $lpwd
@@ -129,7 +129,7 @@ supdata='"supdata":{"foo":6,"bar":9,"dart":1}'
 
 #create result depending on whether simulation failed. if simulation
 #failed, also record it in a file
-if [ "x$sim_status" != "x0" ]; then 
+if [ "x$sim_status" == "x0" ]; then 
     touch /tmp/dart-run.sh.$PPID
     status='"status":-3'
     JSON="{$status,$stats,$supdata}"
