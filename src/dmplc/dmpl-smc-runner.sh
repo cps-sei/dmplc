@@ -60,6 +60,11 @@ if [ -f /tmp/dart-run.sh.$PPID ]; then
     sleep 30
 fi
 
+function cleanup()
+{
+    echo ">>> cleanup does nothing ..."
+}
+
 function interrupt()
 {
     killall g++ dmpl-sim.sh
@@ -110,7 +115,8 @@ cd $DMPL_ROOT/$DMPL_DIR
 /usr/bin/time -p -f "%e" dmpl-sim.sh -r -h -e $TMPF $SCENARIO.mission |& tee $TMPF.simout &
 wait
 echo "######## return code = $?"
-sim_status=${PIPESTATUS[0]}
+grep -q "dmpl-sim.sh exited gracefully" $TMPF.simout
+sim_status=$?
 echo ">>> simulation status = $sim_status"
 cat $TMPF.analyze; cd $lpwd
 
