@@ -57,12 +57,14 @@
 if [ -f /tmp/dart-run.sh.$PPID ]; then
     echo ">>> hmmm ... simulation seems to have failed the last time ..."
     echo ">>> let's wait for a bit ..."
-    sleep 30
+    sleep 30 &
+    wait
 fi
 
 function cleanup()
 {
-    echo ">>> cleanup does nothing ..."
+    rm -f $TMPF $TMPF.analyze $TMPF.simout
+    rm -fr /tmp/xvfb-run.*
 }
 
 function interrupt()
