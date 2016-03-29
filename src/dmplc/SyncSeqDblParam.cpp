@@ -70,5 +70,42 @@ dmpl::SyncSeqDblParam::SyncSeqDblParam(dmpl::DmplBuilder &b, const std::string &
   : SyncSeqDbl(b,p,r) {}
 
 /*********************************************************************/
+//run the sequentialization, generating a C program
+/*********************************************************************/
+void dmpl::SyncSeqDblParam::run()
+{
+  std::cout << "Sequentializing with double-buffering and 2 processes "
+            << "for paramaterized verification ...\n";
+
+  //-- add command line as header
+  std::string header = "//-- DMPLC Version: " + builder.version + "\n";
+  header += "//-- DMPLC Command Line:";
+  for(const std::string &c : builder.cmdLine) header += std::string(" ") + c;
+  cprog.addHeader(header + "\n");
+  
+  //-- copy over constants
+  cprog.constDef = builder.program.constDef;
+  cprog.constDef["true"] = "1";
+  cprog.constDef["false"] = "0";
+
+  //-- create the property relevant variables and functions
+  computeRelevant();
+  
+  createGlobVars();
+  processExternFuncs();
+  createRoundCopier();
+  createMainFunc();
+  createInit();
+  createSafety();
+  createHavoc();
+  createNodeFuncs();
+
+  //-- add end of file footer
+  cprog.addFooter("//---------------------------------------------------------\n");
+  cprog.addFooter("//-- end of file\n");
+  cprog.addFooter("//---------------------------------------------------------\n");
+}
+
+/*********************************************************************/
 //end of file
 /*********************************************************************/

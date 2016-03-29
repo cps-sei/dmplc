@@ -73,6 +73,8 @@ namespace dmpl {
   {
   public:
     SyncSeqDblParam(DmplBuilder &b, const std::string &p, int r);
+
+    void run();
   };
 } //namespace dmpl
 
