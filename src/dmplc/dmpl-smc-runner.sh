@@ -60,7 +60,16 @@ if [ -f /tmp/dart-run.sh.$PPID ]; then
     sleep 30
 fi
 
-echo ">>> Scott's a great guys .."
+function interrupt()
+{
+    echo ">>> FOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO "
+    cleanup
+    status='"status":'$1
+    JSON="{$status}"
+    echo $JSON > $OUTPUT
+    echo ">>> run script terminated: $JSON"
+    exit
+}
 
 echo ">>> checking out and compiling dmplc"
 DMPL_BRANCH="$(jget -i input.json dmpl_branch)"
