@@ -10,7 +10,7 @@
 //
 // Name of the scenario to run
 //
-@name(dart-example-02-docker-60s);
+@name(dart-example-02-expect-docker-60s);
 @scenario(example-02-expect-60s);
 
 //
