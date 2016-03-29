@@ -225,6 +225,7 @@ function cleanup {
     fi
     
     #all done
+    echo "dmpl-sim.sh exited gracefully ..."
     exit 0
 }
 
