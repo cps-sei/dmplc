@@ -26,6 +26,11 @@ example-01-ranger: The scenario is the same as example-01 but we are
 developing this to explore simultaneous localization and mapping
 (SLAM).
 
+example-01-ag: The scenario is the same as example-01 but is used to
+demonstrate SMC+Hybrid verification. As such it interacts with the
+platform by first calling UPDATE_SETPOINT() and then repeatedly
+calling GRID_MOVE().
+
 example-02: An example demonstrating synchronous collision with
 formation. It has five nodes in tight formation -- one (leader) in the
 center of a square and the remaining four (followers) at the four

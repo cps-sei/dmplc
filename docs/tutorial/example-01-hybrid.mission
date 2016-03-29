@@ -1,0 +1,22 @@
+#!/bin/bash
+
+DMPL="example-01-hybrid.dmpl"
+BIN=example-01-hybrid
+
+OUTDIR=outdir
+MAPNAME=small
+GRIDSIZE=10
+ROLEDESC=uav:Uav:3
+
+EXPECT_LOG_PERIOD=0.2
+
+MISSION_TIME=120
+
+function make_args
+{
+  echo --var_x $1 --var_y $2 --var_xf $3 --var_yf $4
+}
+
+ARGS_0="$(make_args 0 5 9 5)"
+ARGS_1="$(make_args 5 0 5 9)"
+ARGS_2="$(make_args 0 3 8 9)"
