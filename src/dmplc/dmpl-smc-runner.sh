@@ -63,7 +63,7 @@ fi
 function interrupt()
 {
     echo ">>> FOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO "
-    killall $!
+    killall dmpl-sim.sh
     cleanup
     status='"status":'$1
     JSON="{$status}"
