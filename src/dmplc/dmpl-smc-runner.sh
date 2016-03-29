@@ -91,18 +91,14 @@ done
 echo ">>> running mission"
 DMPL_DIR="$(jget -i input.json dmpl_dir)"
 cd $DMPL_ROOT/$DMPL_DIR
-sim_start_time=$(date +%s)
-#/usr/bin/time -p -f "%e" dmpl-sim.sh -r -h -e $TMPF $SCENARIO.mission |& tee $TMPF.simout; sim_status=${PIPESTATUS[0]}
-(time dmpl-sim.sh -r -h -e $TMPF $SCENARIO.mission) |& tee $TMPF.simout; sim_status=${PIPESTATUS[0]}
+/usr/bin/time -p -f "%e" dmpl-sim.sh -r -h -e $TMPF $SCENARIO.mission |& tee $TMPF.simout; sim_status=${PIPESTATUS[0]}
 echo ">>> simulation status = $sim_status"
-sim_end_time=$(date +%s)
 cat $TMPF.analyze; cd $lpwd
 
 #get various times and create stats and supplementary data
 rw=1
 sw=0.91
-#tt=$(tail -n1 $TMPF.simout)
-tt=$(expr $sim_end_time - $sim_start_time)
+tt=$(tail -n1 $TMPF.simout)
 stats='"stats":{"totaltime":'$tt',"simtime.rw":'$rw',"simtime.sw":'$sw'}'
 supdata='"supdata":{"foo":6,"bar":9,"dart":1}'
 
