@@ -1,0 +1,29 @@
+node uav
+{
+  extern unsigned char nondet_uc();
+
+  
+  local bool ca_error = 0;
+  local unsigned char ca_state = CA_HOVER;
+
+  void GRID_SETPOINT(unsigned char _x, unsigned char _y, unsigned char _z)
+  {
+    if(ca_state == CA_HOVER) {
+      ca_state = CA_WAIT;
+      return;
+    }
+    ca_error = 1;
+  }
+
+  int GRID_ARRIVED()
+  {
+    if(ca_state == CA_WAIT) {
+      if(nondet_uc()) {
+        ca_state = CA_HOVER;
+        return  1;
+      } else return 0;
+    }
+    ca_error = 1;
+    return 0;
+  }
+}

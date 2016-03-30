@@ -113,6 +113,10 @@ const REQUEST = 2;
 const WAITING = 3;
 const MOVE = 4;
 
+//-- contract automaton states
+const CA_HOVER = 10;
+const CA_WAIT = 11;
+
 extern int my_sleep(int seconds);
 extern void print_state(int XX,int YY,int my_id, int x, int y, int xf, int yf);
 extern void print_int(int i);
@@ -200,6 +204,14 @@ node uav
     //-- supporting invariants for inductiveness
 
     FORALL_NODE(idp) {
+      /** contract automaton error unreachable */
+      if(ca_error@idp) return false;
+
+      /** invariants between CA state and node state */
+      if(ca_state@idp != CA_HOVER && ca_state@idp != CA_WAIT) return false;
+      if(state@idp != MOVE && ca_state@idp == CA_WAIT) return false;
+      if(state@idp == MOVE && ca_state@idp != CA_WAIT) return false;
+      
       /** state has to be between 0 and 4, (x,y), (xf,yf), and (xp,yp)
           have to be between 0 and X-1,Y-1 */
       if(!(state@idp >= NEXT && state@idp <= MOVE)) return false;

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+VERIF_NAME="example-01-hybrid"
+OUT="SUCCESSFUL"
+DMPL="example-01-hybrid.dmpl example-01-hybrid-controller.dmpl"
+GRIDSIZE=6
+ROLEDESC=uav:Uav:2
+PROPERTY="NoCollision"
+VERIF=bounded
+ROUNDS=5
