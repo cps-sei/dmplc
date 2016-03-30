@@ -1,14 +1,53 @@
 node uav
 {
   extern unsigned char nondet_uc();
+  extern double nondet_dbl();
 
-  
   local bool ca_error = 0;
   local unsigned char ca_state = CA_HOVER;
 
+  //-- controller position
+  local double pos_x = 0, pos_y = 0;
+
+  //-- controller setpoints
+  local unsigned char spcur_x = x, spnxt_x = xp;
+  local unsigned char spcur_y = y, spnxt_y = yp;
+  
   void GRID_SETPOINT(unsigned char _x, unsigned char _y, unsigned char _z)
   {
+    bool xmove = 0, ymove = 0;
+
+
+    xmove = (_x == spcur_x + 1 || _x == spcur_x - 1) && _y == spcur_y;
+    ymove = (_y == spcur_y + 1 || _y == spcur_y - 1) && _x == spcur_x;
+
+    
     if(ca_state == CA_HOVER) {
+      pos_x = nondet_dbl();
+      pos_y = nondet_dbl();
+
+      ASSUME(pos_x >= 5*spcur_x + 2 && pos_x <= 5*spcur_x + 3);
+      ASSUME(pos_y >= 5*spcur_y + 2 && pos_y <= 5*spcur_y + 3);
+
+      
+      if(!((xmove && !ymove) || (!xmove && ymove))) {
+        ca_error = 1;
+        return;
+      }
+
+      spnxt_x = _x; spnxt_y = _y;
+
+      if(((!((pos_x >= 5*spnxt_x - 3 && pos_x <= 5*spnxt_x +3) ||
+           (pos_x >= 5*spnxt_x + 2 && pos_x <= 5*spnxt_x + 10))) ||
+         (!(pos_y >= 5*spcur_y + 2 && pos_y <= 5*spcur_y + 3)))
+        &&
+        ((!(pos_x >= 5*spcur_x + 2 && pos_x <= 5*spcur_x + 3)) ||
+          (!((pos_y >= 5*spnxt_y - 3 && pos_y <= 5*spnxt_y +3) ||
+             (pos_y >= 5*spnxt_y + 2 && pos_y <= 5*spnxt_y + 10))))) {
+        ca_error = 1;
+        return;
+      }
+      
       ca_state = CA_WAIT;
       return;
     }
@@ -19,6 +58,7 @@ node uav
   {
     if(ca_state == CA_WAIT) {
       if(nondet_uc()) {
+        spcur_x = spnxt_x; spcur_y = spnxt_y;
         ca_state = CA_HOVER;
         return  1;
       } else return 0;
