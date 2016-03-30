@@ -37,13 +37,14 @@ node uav
 
       spnxt_x = _x; spnxt_y = _y;
 
-      if(((!((pos_x >= 5*spnxt_x - 3 && pos_x <= 5*spnxt_x +3) ||
-           (pos_x >= 5*spnxt_x + 2 && pos_x <= 5*spnxt_x + 10))) ||
-         (!(pos_y >= 5*spcur_y + 2 && pos_y <= 5*spcur_y + 3)))
-        &&
-        ((!(pos_x >= 5*spcur_x + 2 && pos_x <= 5*spcur_x + 3)) ||
-          (!((pos_y >= 5*spnxt_y - 3 && pos_y <= 5*spnxt_y +3) ||
-             (pos_y >= 5*spnxt_y + 2 && pos_y <= 5*spnxt_y + 10))))) {
+      xmove = ((pos_x >= 5*spnxt_x - 3 && pos_x <= 5*spnxt_x +3) ||
+               (pos_x >= 5*spnxt_x + 2 && pos_x <= 5*spnxt_x + 10)) &&
+        (pos_y >= 5*spcur_y + 2 && pos_y <= 5*spcur_y + 3);
+      ymove = ((pos_y >= 5*spnxt_y - 3 && pos_y <= 5*spnxt_y +3) ||
+               (pos_y >= 5*spnxt_y + 2 && pos_y <= 5*spnxt_y + 10)) &&
+        (pos_x >= 5*spcur_x + 2 && pos_x <= 5*spcur_x + 3);
+
+      if(!xmove && !ymove) {      
         ca_error = 1;
         return;
       }
