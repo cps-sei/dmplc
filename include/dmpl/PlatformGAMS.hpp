@@ -122,6 +122,30 @@ int GRID_MOVE(double x, double y, double z, double epsilon = 0.1)
   return ret != 2;
 }
 
+//-- the following four variables and two functions provide an
+//-- alternate API for moving a node. you first call GRID_SETPOINT()
+//-- and then repeatedly call GRID_ARRIVED(). they are built on top of
+//-- GRID_MOVE(). the four variables are used to record the arguments
+//-- to be passed to GRID_MOVE().
+double GRID_MOVE_x = 0;
+double GRID_MOVE_y = 0;
+double GRID_MOVE_z = 0;
+double GRID_MOVE_epsilon = 0;
+
+void GRID_SETPOINT(double x, double y, double z, double epsilon = 0.1)
+{
+  GRID_MOVE_x = x;
+  GRID_MOVE_y = y;
+  GRID_MOVE_z = z;
+  GRID_MOVE_epsilon = epsilon;
+  GRID_MOVE(GRID_MOVE_x,GRID_MOVE_y,GRID_MOVE_z,GRID_MOVE_epsilon);
+}
+
+int GRID_ARRIVED()
+{
+  return !GRID_MOVE(GRID_MOVE_x,GRID_MOVE_y,GRID_MOVE_z,GRID_MOVE_epsilon);
+}
+
 #if 0
 double GET_X()
 {

@@ -72,6 +72,7 @@ namespace dmpl
     "grid_topZ", "grid_bottomZ",
     "grid_cellX", "grid_cellY", "grid_cellZ",
     "GRID_INIT", "GRID_PLACE", "GRID_MOVE",
+    "GRID_SETPOINT", "GRID_ARRIVED",
     "GET_CELL_SIZE_X", "GET_CELL_SIZE_Y", "GET_CELL_SIZE_Z",
     "GET_LAT", "GET_LNG", "GET_ALT",
     "ROTATE", "HAS_RANGE", "GET_RANGE", "GET_RANGE_ANGLE",
