@@ -17,15 +17,14 @@ node uav
   {
     bool xmove = 0, ymove = 0;
 
-
     xmove = (_x == spcur_x + 1 || _x == spcur_x - 1) && _y == spcur_y;
     ymove = (_y == spcur_y + 1 || _y == spcur_y - 1) && _x == spcur_x;
-
     
     if(ca_state == CA_HOVER) {
       pos_x = nondet_dbl();
       pos_y = nondet_dbl();
 
+      ASSUME(spcur_x == spnxt_x && spcur_y == spnxt_y);
       ASSUME(pos_x >= 5*spcur_x + 2 && pos_x <= 5*spcur_x + 3);
       ASSUME(pos_y >= 5*spcur_y + 2 && pos_y <= 5*spcur_y + 3);
 
@@ -37,33 +36,59 @@ node uav
 
       spnxt_x = _x; spnxt_y = _y;
 
-      xmove = ((pos_x >= 5*spnxt_x - 3 && pos_x <= 5*spnxt_x +3) ||
-               (pos_x >= 5*spnxt_x + 2 && pos_x <= 5*spnxt_x + 10)) &&
-        (pos_y >= 5*spcur_y + 2 && pos_y <= 5*spcur_y + 3);
-      ymove = ((pos_y >= 5*spnxt_y - 3 && pos_y <= 5*spnxt_y +3) ||
-               (pos_y >= 5*spnxt_y + 2 && pos_y <= 5*spnxt_y + 10)) &&
-        (pos_x >= 5*spcur_x + 2 && pos_x <= 5*spcur_x + 3);
+      xmove = ((pos_x >= 5*spnxt_x - 3 && pos_x <= 5*spnxt_x +3 && spcur_x == spnxt_x - 1) ||
+               (pos_x >= 5*spnxt_x + 2 && pos_x <= 5*spnxt_x + 10 && spcur_x == spnxt_x + 1)) &&
+        (pos_y >= 5*spcur_y + 2 && pos_y <= 5*spcur_y + 3 && spcur_y == spnxt_y);
+      ymove = ((pos_y >= 5*spnxt_y - 3 && pos_y <= 5*spnxt_y +3 && spcur_y == spnxt_y - 1) ||
+               (pos_y >= 5*spnxt_y + 2 && pos_y <= 5*spnxt_y + 10 && spcur_y == spnxt_y + 1)) &&
+        (pos_x >= 5*spcur_x + 2 && pos_x <= 5*spcur_x + 3 && spcur_x == spnxt_x);
 
-      if(!xmove && !ymove) {      
-        ca_error = 1;
-        return;
-      }
+      if(!xmove && !ymove) { ca_error = 1; return; }
       
       ca_state = CA_WAIT;
       return;
     }
+
     ca_error = 1;
   }
 
   int GRID_ARRIVED()
   {
+    bool xmove = 0, ymove = 0;
+
     if(ca_state == CA_WAIT) {
+      pos_x = nondet_dbl();
+      pos_y = nondet_dbl();
+
+      xmove = ((pos_x >= 5*spnxt_x - 3 && pos_x <= 5*spnxt_x +3 && spcur_x == spnxt_x - 1) ||
+               (pos_x >= 5*spnxt_x + 2 && pos_x <= 5*spnxt_x + 10 && spcur_x == spnxt_x + 1)) &&
+        (pos_y >= 5*spcur_y + 2 && pos_y <= 5*spcur_y + 3 && spcur_y == spnxt_y);
+      ymove = ((pos_y >= 5*spnxt_y - 3 && pos_y <= 5*spnxt_y +3 && spcur_y == spnxt_y - 1) ||
+               (pos_y >= 5*spnxt_y + 2 && pos_y <= 5*spnxt_y + 10 && spcur_y == spnxt_y + 1)) &&
+        (pos_x >= 5*spcur_x + 2 && pos_x <= 5*spcur_x + 3 && spcur_x == spnxt_x);
+      
+      ASSUME(xmove || ymove);
+
       if(nondet_uc()) {
         spcur_x = spnxt_x; spcur_y = spnxt_y;
+
+        xmove = ((pos_x >= 5*spcur_x - 3 && pos_x <= 5*spcur_x +3 && spcur_x == spcur_x - 1) ||
+                 (pos_x >= 5*spcur_x + 2 && pos_x <= 5*spcur_x + 10 && spcur_x == spcur_x + 1)) &&
+          (pos_y >= 5*spcur_y + 2 && pos_y <= 5*spcur_y + 3 && spcur_y == spcur_y);
+        ymove = ((pos_y >= 5*spcur_y - 3 && pos_y <= 5*spcur_y +3 && spcur_y == spcur_y - 1) ||
+                 (pos_y >= 5*spcur_y + 2 && pos_y <= 5*spcur_y + 10 && spcur_y == spcur_y + 1)) &&
+          (pos_x >= 5*spcur_x + 2 && pos_x <= 5*spcur_x + 3 && spcur_x == spcur_x);
+
+        //if(!xmove && !ymove) { ca_error = 1; return; }
+
         ca_state = CA_HOVER;
         return  1;
-      } else return 0;
+      } else {
+        if(!xmove && !ymove) { ca_error = 1; return; }
+        return 0;
+      }
     }
+
     ca_error = 1;
     return 0;
   }
