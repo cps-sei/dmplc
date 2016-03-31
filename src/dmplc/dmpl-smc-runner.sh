@@ -56,7 +56,7 @@
 #check if we creashed the last time around
 if [ -f /tmp/dart-run.sh.$PPID ]; then
     echo ">>> hmmm ... simulation seems to have failed the last time ..."
-    echo ">>> let's wait for a bit ..."
+    echo ">>> let's wait for 30 seconds ..."
     sleep 30 &
     wait
 fi
@@ -113,13 +113,24 @@ done
 
 echo ">>> running mission"
 DMPL_DIR="$(jget -i input.json dmpl_dir)"
-cd $DMPL_ROOT/$DMPL_DIR
-/usr/bin/time -p -f "%e" dmpl-sim.sh -r -h -e $TMPF $SCENARIO.mission |& tee $TMPF.simout &
-wait
-echo "######## return code = $?"
-grep -q "Command exited with non-zero status" $TMPF.simout
-sim_status=$?
-echo ">>> simulation succeeded = $sim_status"
+
+sim_status=0
+for try in $(seq 1 $RETRIES); do
+    echo ">>> Try $try: running dmpl-sim.sh ..."
+    cd $DMPL_ROOT/$DMPL_DIR
+    /usr/bin/time -p -f "%e" dmpl-sim.sh -r -h -e $TMPF $SCENARIO.mission |& tee $TMPF.simout &
+    wait
+    echo "######## return code = $?"
+    grep -q "Command exited with non-zero status" $TMPF.simout
+    sim_status=$?
+    echo ">>> simulation succeeded = $sim_status"
+    [ $sim_status != "0" ] && break
+    [ $try == $RETRIES ] && break
+    _sleepytime=30 #$((${RANDOM}%$RETRY_DELAY + 1))
+    sleep $_sleepytime &
+    echo sleeping $_sleepytime on ${!} before continuing
+    wait
+done
 cat $TMPF.analyze; cd $lpwd
 
 #get various times and create stats and supplementary data
