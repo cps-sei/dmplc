@@ -38,7 +38,7 @@ while true; do
         *)
             case "$argc" in
                 0)
-                    VERIF="$1"
+                    VERIF_FILE="$1"
                     ;;
                 1)
                     OUTLOG="$1"
@@ -61,19 +61,19 @@ else
     touch $OUTLOG
 fi
 
-if [ -z "$VERIF" ]; then
+if [ -z "$VERIF_FILE" ]; then
     echo No .verif file specified
     usage
     exit 1
 fi
 
 #source the verif file
-source $VERIF
+source $VERIF_FILE
 
 #update rounds if forced by command line
 if [ "x$IND_ROUND" != "x" ]; then ROUNDS=$IND_ROUND; fi
 
-CFILE="$(basename $VERIF)_$VERIF_NAME.c"
+CFILE="$(basename $VERIF_FILE)_$VERIF_NAME.c"
 
 #create the DMPLC command line
 CMD="dmplc --roles $ROLEDESC --cube-grid $GRIDSIZE -r $ROUNDS"
@@ -88,16 +88,19 @@ else
     echo "ERROR: legal values are bounded and inductive!!" && exit 1
 fi
 
-if [ $FORCEBUILD -eq 1 ] || [ $DMPL -nt $CFILE ]; then
-    echo "========== running dmplc =========" >> $OUTLOG
-    echo $CMD >> $OUTLOG
-    $CMD 2>&1 >> $OUTLOG
-    if [ "$?" != "0" ]; then
-        echo "ERROR: dmplc failed on $DMPL!!"
-        echo "Command Line: $CMD"
-        exit 1
+for file in $(which dmplc) $DMPL $VERIF_FILE; do
+    if [ $FORCEBUILD -eq 1 ] || [ $file -nt $CFILE ]; then
+        echo "========== running dmplc =========" >> $OUTLOG
+        echo $CMD >> $OUTLOG
+        $CMD 2>&1 >> $OUTLOG
+        if [ "$?" != "0" ]; then
+            echo "ERROR: dmplc failed on $DMPL!!"
+            echo "Command Line: $CMD"
+            exit 1
+        fi
+        break
     fi
-fi
+done
 
 #if we don't have to verify we are done
 [ "$BUILDONLY" -eq 1 ] && exit 0
