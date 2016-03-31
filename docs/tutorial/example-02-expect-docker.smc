@@ -26,6 +26,11 @@ This simulation consists of a leader and four protectors.
 @end(description)
 
 //
+// Give each trial 4 CPUs
+//
+@weight(4);
+
+//
 // Predicates to evaluate. Predicates are of the form X.Y where X is the
 // expect specification name and Y is the node id.
 //
