@@ -244,19 +244,10 @@ if [ ! -e "$MAPFILE" ]; then
 fi
 
 #set camera position for record depending on map-type
-if [ ! -z "$RECORD" ]; then
-    if [ "$MAPNAME" == "small-obstacle" ]; then
-        RECORD="$RECORD -0.0499 -6.4213 6.3789"
-    elif [ "$MAPNAME" == "small-gams-obstacle" ]; then
-        RECORD="$RECORD -3.6278 -6.1996 3.1356"
-    elif [ "$MAPNAME" == "small-gams-many-obstacles" ]; then
-        RECORD="$RECORD -2.6892 -6.9720 4.1355"
-    elif [ "$MAPNAME" == "large" ]; then
-        RECORD="$RECORD -3.2090 1.2665 39.7362"
-    else
-        RECORD="$RECORD 0.0421 -0.2489 11.2217"
-    fi
-fi
+[ ! -z "$RECORD" ] && [ -z "$REC_CAM_POS" ] && \
+    echo "ERROR: cannot record .. no REC_CAM_POS specified in mission file ..." && \
+    exit 1
+[ ! -z "$RECORD" ] && RECORD="$RECORD $REC_CAM_POS"
 
 MAPSIZE=$(echo $MAPNAME | cut -f1 -d'-')
 CPP_FILE=${MISSION}_${BIN}.cpp

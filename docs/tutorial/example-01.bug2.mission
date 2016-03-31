@@ -5,6 +5,7 @@ BIN=example-01.bug2
 
 OUTDIR=outdir
 MAPNAME=small
+REC_CAM_POS="0.0421 -0.2489 11.2217"
 GRIDSIZE=10
 ROLEDESC=uav:Uav:3
 

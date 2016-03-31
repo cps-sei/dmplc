@@ -5,6 +5,7 @@ BIN=example-09c
 
 OUTDIR=outdir
 MAPNAME=large
+REC_CAM_POS="-3.2090 1.2665 39.7362"
 GRIDSIZE=20
 
 #node to role assignment

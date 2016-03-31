@@ -5,6 +5,7 @@ BIN=example-04
 
 OUTDIR=outdir
 MAPNAME=large
+REC_CAM_POS="-3.2090 1.2665 39.7362"
 GRIDSIZE=10
 ROLEDESC=uav:Leader:1:uav:Protector:8
 
