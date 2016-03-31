@@ -115,6 +115,7 @@ echo ">>> running mission"
 DMPL_DIR="$(jget -i input.json dmpl_dir)"
 
 sim_status=0
+RETRIES=5
 for try in $(seq 1 $RETRIES); do
     echo ">>> Try $try: running dmpl-sim.sh ..."
     cd $DMPL_ROOT/$DMPL_DIR
