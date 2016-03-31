@@ -56,7 +56,7 @@
 #check if we creashed the last time around
 if [ -f /tmp/dart-run.sh.$PPID ]; then
     echo ">>> hmmm ... simulation seems to have failed the last time ..."
-    echo ">>> let's wait for a bit ..."
+    echo ">>> let's wait for 30 seconds ..."
     sleep 30 &
     wait
 fi
@@ -126,7 +126,7 @@ for try in $(seq 1 $RETRIES); do
     echo ">>> simulation succeeded = $sim_status"
     [ $sim_status != "0" ] && break
     [ $try == $RETRIES ] && break
-    _sleepytime=$((${RANDOM}%$RETRY_DELAY + 1))
+    _sleepytime=30 #$((${RANDOM}%$RETRY_DELAY + 1))
     sleep $_sleepytime &
     echo sleeping $_sleepytime on ${!} before continuing
     wait
