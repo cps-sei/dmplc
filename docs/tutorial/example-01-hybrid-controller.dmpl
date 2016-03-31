@@ -66,19 +66,15 @@ node uav
       
       ASSUME((xmove && !ymove) || (!xmove && ymove));
 
-      xarrived = ((pos_x <= 5*spnxt_x * 2.51) || (pos_x >= 5*spnxt_x * 2.49)) && (spcur_y == spnxt_y);
-      yarrived = ((pos_y <= 5*spnxt_y * 2.51) || (pos_y >= 5*spnxt_y * 2.49)) && (spcur_x == spnxt_x);
+      xarrived = (pos_x <= 5*spnxt_x * 2.51 && pos_x >= 5*spnxt_x * 2.49 && spcur_y == spnxt_y);
+      yarrived = (pos_y <= 5*spnxt_y * 2.51 && pos_y >= 5*spnxt_y * 2.49 && spcur_x == spnxt_x);
       
       if(xarrived || yarrived) {
         spcur_x = spnxt_x; spcur_y = spnxt_y;
 
-        /*
         if(!(spcur_x == spnxt_x && spcur_y == spnxt_y) ||
            !(pos_x >= 5*spcur_x + 2 && pos_x <= 5*spcur_x + 3) ||
            !(pos_y >= 5*spcur_y + 2 && pos_y <= 5*spcur_y + 3)) { ca_error = 1; return; }
-        */
-
-        if(!(spcur_x == spnxt_x && spcur_y == spnxt_y)) { ca_error = 1; return; }
         
         ca_state = CA_HOVER;
         return  1;
