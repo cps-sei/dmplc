@@ -3,9 +3,6 @@ node uav
   extern unsigned char nondet_uc();
   extern double nondet_dbl();
 
-  local bool ca_error = 0;
-  local unsigned char ca_state = CA_HOVER;
-
   //-- controller position
   local double pos_x = 0, pos_y = 0;
 

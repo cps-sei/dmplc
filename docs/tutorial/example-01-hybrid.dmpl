@@ -193,6 +193,9 @@ node uav
     GRID_PLACE(x, y, 1);
   }
 
+  local bool ca_error = 0;
+  local unsigned char ca_state = CA_HOVER;
+  
   //the safety property checked at the beginning of each round
   pure bool NoCollisions ()
   {
