@@ -29,11 +29,11 @@ node uav
 
       spnxt_x = _x; spnxt_y = _y;
 
-      xmove = ((pos_x >= 5*spnxt_x - 3 && pos_x <= 5*spnxt_x +3 && spcur_x == spnxt_x - 1) ||
-               (pos_x >= 5*spnxt_x + 2 && pos_x <= 5*spnxt_x + 10 && spcur_x == spnxt_x + 1)) &&
+      xmove = ((pos_x >= 5*spnxt_x - 3 && pos_x <= 5*spnxt_x + 3 && spcur_x == spnxt_x - 1) ||
+               (pos_x >= 5*spnxt_x + 2 && pos_x <= 5*spnxt_x + 8 && spcur_x == spnxt_x + 1)) &&
         (pos_y >= 5*spcur_y + 2 && pos_y <= 5*spcur_y + 3 && spcur_y == spnxt_y);
-      ymove = ((pos_y >= 5*spnxt_y - 3 && pos_y <= 5*spnxt_y +3 && spcur_y == spnxt_y - 1) ||
-               (pos_y >= 5*spnxt_y + 2 && pos_y <= 5*spnxt_y + 10 && spcur_y == spnxt_y + 1)) &&
+      ymove = ((pos_y >= 5*spnxt_y - 3 && pos_y <= 5*spnxt_y + 3 && spcur_y == spnxt_y - 1) ||
+               (pos_y >= 5*spnxt_y + 2 && pos_y <= 5*spnxt_y + 8 && spcur_y == spnxt_y + 1)) &&
         (pos_x >= 5*spcur_x + 2 && pos_x <= 5*spcur_x + 3 && spcur_x == spnxt_x);
 
       if(!((xmove && !ymove) || (!xmove && ymove))) { ca_error = 1; return; }
@@ -54,11 +54,11 @@ node uav
       pos_x = nondet_dbl();
       pos_y = nondet_dbl();
 
-      xmove = ((pos_x >= 5*spnxt_x - 3 && pos_x <= 5*spnxt_x +3 && spcur_x == spnxt_x - 1) ||
-               (pos_x >= 5*spnxt_x + 2 && pos_x <= 5*spnxt_x + 10 && spcur_x == spnxt_x + 1)) &&
+      xmove = ((pos_x >= 5*spnxt_x - 3 && pos_x <= 5*spnxt_x + 3 && spcur_x == spnxt_x - 1) ||
+               (pos_x >= 5*spnxt_x + 2 && pos_x <= 5*spnxt_x + 8 && spcur_x == spnxt_x + 1)) &&
         (pos_y >= 5*spcur_y + 2 && pos_y <= 5*spcur_y + 3 && spcur_y == spnxt_y);
-      ymove = ((pos_y >= 5*spnxt_y - 3 && pos_y <= 5*spnxt_y +3 && spcur_y == spnxt_y - 1) ||
-               (pos_y >= 5*spnxt_y + 2 && pos_y <= 5*spnxt_y + 10 && spcur_y == spnxt_y + 1)) &&
+      ymove = ((pos_y >= 5*spnxt_y - 3 && pos_y <= 5*spnxt_y + 3 && spcur_y == spnxt_y - 1) ||
+               (pos_y >= 5*spnxt_y + 2 && pos_y <= 5*spnxt_y + 8 && spcur_y == spnxt_y + 1)) &&
         (pos_x >= 5*spcur_x + 2 && pos_x <= 5*spcur_x + 3 && spcur_x == spnxt_x);
       
       ASSUME((xmove && !ymove) || (!xmove && ymove));
