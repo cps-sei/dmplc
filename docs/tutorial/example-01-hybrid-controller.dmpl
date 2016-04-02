@@ -63,8 +63,8 @@ node uav
       
       ASSUME((xmove && !ymove) || (!xmove && ymove));
 
-      xarrived = (pos_x <= 5*spnxt_x * 2.51 && pos_x >= 5*spnxt_x * 2.49 && spcur_y == spnxt_y);
-      yarrived = (pos_y <= 5*spnxt_y * 2.51 && pos_y >= 5*spnxt_y * 2.49 && spcur_x == spnxt_x);
+      xarrived = (pos_x <= 5*spnxt_x + 2.51 && pos_x >= 5*spnxt_x + 2.49 && spcur_y == spnxt_y);
+      yarrived = (pos_y <= 5*spnxt_y + 2.51 && pos_y >= 5*spnxt_y + 2.49 && spcur_x == spnxt_x);
       
       if(xarrived || yarrived) {
         spcur_x = spnxt_x; spcur_y = spnxt_y;
