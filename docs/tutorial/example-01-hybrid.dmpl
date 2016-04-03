@@ -193,8 +193,15 @@ node uav
     GRID_PLACE(x, y, 1);
   }
 
+  //-- flag to indicate error in refining the contract automaton
   local bool ca_error = 0;
+
+  //-- controller state
   local unsigned char ca_state = CA_HOVER;
+
+  //-- controller setpoints
+  local unsigned char spcur_x = x, spnxt_x = xp;
+  local unsigned char spcur_y = y, spnxt_y = yp;
   
   //the safety property checked at the beginning of each round
   pure bool NoCollisions ()

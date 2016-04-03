@@ -5,10 +5,6 @@ node uav
 
   //-- controller position
   local double pos_x = 0, pos_y = 0;
-
-  //-- controller setpoints
-  local unsigned char spcur_x = x, spnxt_x = xp;
-  local unsigned char spcur_y = y, spnxt_y = yp;
   
   void GRID_SETPOINT(unsigned char _x, unsigned char _y, unsigned char _z)
   {
