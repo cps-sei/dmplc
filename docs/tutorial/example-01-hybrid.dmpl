@@ -199,22 +199,36 @@ node uav
   //the safety property checked at the beginning of each round
   pure bool NoCollisions ()
   {
+    bool xmove = 0, ymove = 0, xysame = 0;
+
+    FORALL_NODE(idp) {
+      /** contract automaton error unreachable */
+      if(ca_error@idp) return false;
+      
+      /** invariants between CA state and node state */
+      if(ca_state@idp != CA_HOVER && ca_state@idp != CA_WAIT) return false;
+      if(state@idp != MOVE && ca_state@idp != CA_HOVER) return false;
+      if(state@idp == MOVE && ca_state@idp != CA_WAIT) return false;
+      
+      xmove = (xp@idp == spcur_x@idp + 1 || xp@idp == spcur_x@idp - 1) &&
+        x@idp == spcur_x@idp && y@idp == spcur_y@idp && yp@idp == spcur_y@idp;
+      ymove = (yp@idp == spcur_y@idp + 1 || yp@idp == spcur_y@idp - 1) &&
+        x@idp == spcur_x@idp && y@idp == spcur_y@idp && xp@idp == spcur_x@idp;
+      xysame = (x@idp == xp@idp && xp@idp == spcur_x@idp && y@idp == yp@idp && yp@idp == spcur_y@idp);
+      if(state@idp == NEXT && !xysame) return false;
+      if(state@idp == REQUEST && (!((xmove && !ymove) || (!xmove && ymove)))) return false;
+      if(state@idp == WAITING && (!((xmove && !ymove) || (!xmove && ymove)))) return false;
+      if(state@idp == MOVE && (!((xmove && !ymove) || (!xmove && ymove)))) return false;
+      if(state@idp == MOVE && (xp@idp != spnxt_x@idp || yp@idp != spnxt_y@idp)) return false;
+    }
+    
     //-- the main property
     FORALL_DISTINCT_NODE_PAIR (id1,id2) {
       if(x@id1 == x@id2 && y@id1 == y@id2) return false;
     }
     
     //-- supporting invariants for inductiveness
-
     FORALL_NODE(idp) {
-      /** contract automaton error unreachable */
-      if(ca_error@idp) return false;
-
-      /** invariants between CA state and node state */
-      if(ca_state@idp != CA_HOVER && ca_state@idp != CA_WAIT) return false;
-      if(state@idp != MOVE && ca_state@idp == CA_WAIT) return false;
-      if(state@idp == MOVE && ca_state@idp != CA_WAIT) return false;
-      
       /** state has to be between 0 and 4, (x,y), (xf,yf), and (xp,yp)
           have to be between 0 and X-1,Y-1 */
       if(!(state@idp >= NEXT && state@idp <= MOVE)) return false;
