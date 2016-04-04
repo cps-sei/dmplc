@@ -412,7 +412,7 @@ void parse_options (int argc, char **argv)
       }
       else
       {
-        std::cerr << "ERROR: Cube Grid Size (-cg|--cube-grid) must have a value!!\n";
+        std::cerr << "ERROR: Map Size (--map) must have a value!!\n";
         usage (argv[0]);
       }
       ++i;
