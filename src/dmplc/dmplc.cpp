@@ -387,6 +387,33 @@ void parse_options (int argc, char **argv)
       }
       ++i;
     }
+    else if (arg1 == "-X" || arg1 == "--grid-x")
+    {
+      if (i + 1 < argc) const_def["X"] = argv[i + 1];
+      else {
+        std::cerr << "ERROR: Cube Grid X Size (-X|--grid-x) must have a value!!\n";
+        usage (argv[0]);
+      }
+      ++i;
+    }
+    else if (arg1 == "-Y" || arg1 == "--grid-y")
+    {
+      if (i + 1 < argc) const_def["Y"] = argv[i + 1];
+      else {
+        std::cerr << "ERROR: Cube Grid Y Size (-Y|--grid-y) must have a value!!\n";
+        usage (argv[0]);
+      }
+      ++i;
+    }
+    else if (arg1 == "-Z" || arg1 == "--grid-z")
+    {
+      if (i + 1 < argc) const_def["Z"] = argv[i + 1];
+      else {
+        std::cerr << "ERROR: Cube Grid Z Size (-Z|--grid-z) must have a value!!\n";
+        usage (argv[0]);
+      }
+      ++i;
+    }
     else if (arg1 == "--map")
     {
       if (i + 1 < argc)
@@ -554,6 +581,9 @@ void usage (char *cmd)
   std::cerr << "  -g|--gams                  generate C++/GAMS code to run\n";
   std::cerr << "  -e|--expect                check and log 'expect' statements\n";
   std::cerr << "  -cg|--cube-grid s          specify number of cells on each side of a cubic grid\n";
+  std::cerr << "  -X|--grid-x s              specify number of cells on X dimension of grid\n";
+  std::cerr << "  -Y|--grid-y s              specify number of cells on Y dimension of grid\n";
+  std::cerr << "  -Z|--grid-z s              specify number of cells on Z dimension of grid\n";
   std::cerr << "  --map s                    specify map size (small|large)\n";
   std::cerr << "  -t|--target|--platform p   specify a target platform\n";
   std::cerr << "                             Available platforms: WIN_CPP, GNU_CPP (default)\n";

@@ -258,7 +258,9 @@ ANALYZE_FILE=${MISSION}_${BIN}_analyze.cpp
 function compile_dmpl {
     OUT_FILE="$1" && shift && OPTS="$1" && shift && IN_FILE="$*"
 
-    DMPLC_FLAGS="$OPTS --roles $ROLEDESC --cube-grid $GRIDSIZE --map $MAPSIZE"
+    DMPLC_FLAGS="$OPTS --roles $ROLEDESC --map $MAPSIZE"
+    [ ! -z "$GRIDSIZE" ] && GRID_X=$GRIDSIZE && GRID_Y=$GRIDSIZE && GRID_Z=$GRIDSIZE
+    DMPLC_FLAGS+=" --grid-x $GRID_X --grid-y $GRID_Y --grid-z $GRID_Z"
     [ ! -z "$GROUPDESC" ] && DMPLC_FLAGS+=" --groups $GROUPDESC"
     [ ! -z "$VARGROUPS" ] && DMPLC_FLAGS+=" --var-groups $VARGROUPS"
 
