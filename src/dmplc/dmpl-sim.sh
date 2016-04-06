@@ -279,6 +279,7 @@ function compile_dmpl {
 }
 
 #compile with dmplc
+[ ! -z "$PRE_DMPLC_CMD" ] && $PRE_DMPLC_CMD
 DMPLC_OPTS="-g"
 [ -n "$OUTLOG" ] && DMPLC_OPTS="$DMPLC_OPTS -e"
 compile_dmpl $CPP_FILE "$DMPLC_OPTS" $DMPL 
@@ -380,7 +381,7 @@ cat $status_file
 mv $RAC.saved.mcda-vrep $RAC
 
 #start the nodes
-$SETENV_CMD
+[ ! -z "$PRE_SIM_CMD" ] && $PRE_SIM_CMD
 NUMCPU=$(grep -c ^processor /proc/cpuinfo)
 for x in $(seq 1 $((NODENUM - 1))); do
     echo $x
