@@ -101,7 +101,7 @@ for ivar in $(jget -k -i input.json); do
     ival=$(jget -k -i input.json $ivar)
 
     echo ">>> input variable $varn"
-    if [[ "$varn" == "sup_prop_*" ]]; then
+    if [[ "${varn:0:9}" == "sup_prop_" ]]; then
         sup_props+=" $ival"
         continue;
     fi
