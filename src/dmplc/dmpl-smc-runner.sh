@@ -183,8 +183,8 @@ else
         if [ $count == "0" ]; then count=1; else supdata+=","; fi
         supdata+='"'$pred'":'$pred_val
     done
-    
-    supdata+= '}'
+
+    supdata+='}'
     JSON="{$status,$preds,$stats,$supdata}"
 fi
 
