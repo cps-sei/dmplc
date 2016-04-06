@@ -100,7 +100,6 @@ for ivar in $(jget -k -i input.json); do
 
     ival=$(jget -k -i input.json $ivar)
 
-    echo ">>> input variable $varn"
     if [[ "${varn:0:9}" == "sup_prop_" ]]; then
         sup_props+=" $ival"
         continue;
@@ -117,8 +116,6 @@ for ivar in $(jget -k -i input.json); do
         export ${eavars[$node]}="${eargs[$node]}"
     fi
 done
-
-echo ">>> found supplementary properties : $sup_props"
 
 echo ">>> running mission"
 DMPL_DIR="$(jget -i input.json dmpl_dir)"
