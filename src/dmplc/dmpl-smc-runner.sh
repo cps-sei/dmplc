@@ -89,6 +89,7 @@ cd $lpwd
 
 echo ">>> setting input variables"
 declare -a eargs eavars
+sup_props=""
 for ivar in $(jget -k -i input.json); do
     varn=$(echo $ivar | awk -F'.' '{print $1}')
     node=$(echo $ivar | awk -F'.' '{print $2}')
@@ -99,6 +100,10 @@ for ivar in $(jget -k -i input.json); do
 
     ival=$(jget -k -i input.json $ivar)
 
+    if [[ "$varn" == "sup_prop_*" ]]; then
+        sup_props+=" $ival"
+    fi
+    
     #if node input
     if [ "x$node" == "x" ]; then
         #echo ">>> ===  $varn=$ival"
@@ -110,6 +115,8 @@ for ivar in $(jget -k -i input.json); do
         export ${eavars[$node]}="${eargs[$node]}"
     fi
 done
+
+echo ">>> found supplementary properties : $sup_props"
 
 echo ">>> running mission"
 DMPL_DIR="$(jget -i input.json dmpl_dir)"
@@ -139,17 +146,19 @@ rw=1
 sw=0.91
 tt=$(tail -n1 $TMPF.simout)
 stats='"stats":{"totaltime":'$tt',"simtime.rw":'$rw',"simtime.sw":'$sw'}'
-supdata='"supdata":{"foo":6,"bar":9,"dart":1}'
+#supdata='"supdata":{"foo":6,"bar":9,"dart":1}'
 
 #create result depending on whether simulation failed. if simulation
 #failed, also record it in a file
 if [ "x$sim_status" == "x0" ]; then 
     touch /tmp/dart-run.sh.$PPID
     status='"status":-3'
-    JSON="{$status,$stats,$supdata}"
+    JSON="{$status,$stats}"
 else
     rm -f /tmp/dart-run.sh.$PPID
     status='"status":0'
+
+    #grab predicate values
     preds='"predicates":{'
     count=0
     for pred in $(jget -k -i $PREDICATE tests); do
@@ -161,6 +170,21 @@ else
         preds+='"'$pred'":'$pred_val
     done
     preds+='}'
+
+    #grab supplementary property values
+    supdata='"supdata":{'
+    
+    count=0
+    for pred in $sup_props; do
+        pred_name=$(echo $pred | awk -F'.' '{print $1}')
+        node_id=$(echo $pred | awk -F'.' '{print $2}')
+        pred_val=$(cat $TMPF.analyze | grep "${pred_name},${node_id}" | awk -F',' '{print $4}')
+        
+        if [ $count == "0" ]; then count=1; else supdata+=","; fi
+        supdata+='"'$pred'":'$pred_val
+    done
+    
+    supdata+= '}'
     JSON="{$status,$preds,$stats,$supdata}"
 fi
 
