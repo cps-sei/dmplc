@@ -217,11 +217,27 @@ node uav
     return 0;
   }
 
+  //-- used to average expProp7Func
+  local double expProp7Total = 0, expProp7TotalCount = 0;
+
+  pure int expProp7Func()
+  {
+    return expProp7Total / expProp7TotalCount;
+  }
+  expect expProp7 : at_end => expProp7Func;
+  
+  pure double expProp8Func() { return rnd; }
+  expect expProp8 : at_end => expProp8Func;
+    
   @BarrierSync;
   @PlatformController;
   @Period(100000);
   thread COLLISION_AVOIDANCE {
     rnd = myrandom(lower, upper);
+    if(rnd < 0.3) expProp7Total = expProp7Total + 10;
+    else expProp7Total = expProp7Total + 20;
+    expProp7TotalCount = expProp7TotalCount + 1;
+    
     print_state(X,Y,id,x,y,xt,yt);
     //my_sleep(1);
     if(state == NEXT) {

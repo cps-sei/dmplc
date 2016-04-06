@@ -1040,8 +1040,8 @@ dmpl::gams::AnalyzerBuilder::build_main_function ()
   buffer_ << "    engine::FunctionArguments args;\n";
   buffer_ << "    engine::Variables vars;\n";
   buffer_ << "    bool done = !analyzer.next_step();\n";
-  buffer_ << "    bool value = 0;\n";
-  buffer_ << "    int total_so_far = 0, count_so_far = 0;\n";
+  buffer_ << "    double value = 0.0;\n";
+  buffer_ << "    double total_so_far = 0.0, count_so_far = 0.0;\n";
 
   for(const Process &proc : builder_.program.processes) {
     for(const Spec &spec : proc.role->allSpecsInScope()) {
@@ -1050,9 +1050,9 @@ dmpl::gams::AnalyzerBuilder::build_main_function ()
         buffer_ << "    id = " << proc.id << ";\n";
         buffer_ << "    value = " << nodeName(proc.role->node) << "::"
                 << roleName(proc.role->node,proc.role) << "::" << aes->func->name
-                << "(args,vars).to_integer();\n";
+                << "(args,vars).to_double();\n";
         buffer_ << "    knowledge.set(\"AtEnd_RESULT." << proc.id << "."
-                << aes->name << "\", Integer(value?1:0));\n";
+                << aes->name << "\", value);\n";
         continue;
       }
       AtLeastSpec *als= dynamic_cast<AtLeastSpec*>(spec.get());
@@ -1060,15 +1060,15 @@ dmpl::gams::AnalyzerBuilder::build_main_function ()
         buffer_ << "    id = " << proc.id << ";\n";
         buffer_ << "    value = " << nodeName(proc.role->node) << "::"
                 << roleName(proc.role->node,proc.role) << "::" << als->func->name
-                << "(args,vars).to_integer();\n";
+                << "(args,vars).to_double();\n";
         buffer_ << "    total_so_far = knowledge.get(\"AtLeast_TOTAL." << proc.id << "."
-                << als->name << "\").to_integer();\n";
+                << als->name << "\").to_double();\n";
         buffer_ << "    count_so_far = knowledge.get(\"AtLeast_COUNT." << proc.id << "."
-                << als->name << "\").to_integer();\n";
+                << als->name << "\").to_double();\n";
         buffer_ << "    knowledge.set(\"AtLeast_TOTAL." << proc.id << "."
-                << als->name << "\", total_so_far + Integer(value?1:0));\n";
+                << als->name << "\", total_so_far + value);\n";
         buffer_ << "    knowledge.set(\"AtLeast_COUNT." << proc.id << "."
-                << als->name << "\", Integer(count_so_far + 1));\n";
+                << als->name << "\", count_so_far + 1);\n";
         continue;
       }
     }
@@ -1078,14 +1078,13 @@ dmpl::gams::AnalyzerBuilder::build_main_function ()
   buffer_ << "  }\n";
 
   buffer_ << "  {\n";
-  buffer_ << "    bool value = 0;\n";
-  buffer_ << "    double total = 0.0, count = 0.0;\n";
+  buffer_ << "    double value = 0.0, total = 0.0, count = 0.0;\n";
   for(const Process &proc : builder_.program.processes) {
     for(const Spec &spec : proc.role->allSpecsInScope()) {
       AtEndSpec *aes= dynamic_cast<AtEndSpec*>(spec.get());
       if(aes) {
         buffer_ << "    value = knowledge.get(\"AtEnd_RESULT." << proc.id << "."
-                << aes->name << "\").to_integer() == 1;\n";
+                << aes->name << "\").to_double();\n";
         buffer_ << "    std::cout << \"AtEnd," << aes->name
                 << "," << proc.id << ",\" << value << std::endl;" << std::endl;
         continue;
