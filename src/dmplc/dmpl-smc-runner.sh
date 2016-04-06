@@ -172,9 +172,9 @@ else
     preds+='}'
 
     #grab supplementary property values
-    supdata='"supdata":{'
+    supdata='"supdata":{"foo":6'
     
-    count=0
+    count=1
     for pred in $sup_props; do
         pred_name=$(echo $pred | awk -F'.' '{print $1}')
         node_id=$(echo $pred | awk -F'.' '{print $2}')
