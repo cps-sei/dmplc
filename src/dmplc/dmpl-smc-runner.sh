@@ -172,9 +172,9 @@ else
     preds+='}'
 
     #grab supplementary property values
-    supdata='"supdata":{"foo":6'
+    supdata='"supdata":{'
     
-    count=1
+    count=0
     for pred in $sup_props; do
         pred_name=$(echo $pred | awk -F'.' '{print $1}')
         node_id=$(echo $pred | awk -F'.' '{print $2}')
@@ -183,7 +183,7 @@ else
         if [ $count == "0" ]; then count=1; else supdata+=","; fi
         supdata+='"'$pred'":'$pred_val
     done
-
+    
     supdata+='}'
     JSON="{$status,$preds,$stats,$supdata}"
 fi
