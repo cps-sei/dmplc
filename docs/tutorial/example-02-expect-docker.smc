@@ -55,3 +55,7 @@ ox.1 = -1;
 oy.1 = -1;
 ox.3 = -1;
 oy.3 = 1;
+
+//-- supplementary properties. will be emitted as supplementary data.
+sup_prop_0 = "expProp7.0";
+sup_prop_1 = "expProp8.0";
