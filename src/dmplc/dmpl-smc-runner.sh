@@ -78,11 +78,9 @@ function interrupt()
     exit
 }
 
-echo ">>> checking out and compiling dmplc"
-DMPL_BRANCH="$(jget -i input.json dmpl_branch)"
+echo ">>> compiling dmplc"
 lpwd=$PWD
 cd $DMPL_ROOT
-checkout_dmplc_branch $DMPL_BRANCH
 make &
 wait
 cd $lpwd
