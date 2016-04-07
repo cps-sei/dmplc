@@ -279,7 +279,10 @@ function compile_dmpl {
 }
 
 #compile with dmplc
-[ ! -z "$PRE_DMPLC_CMD" ] && $PRE_DMPLC_CMD
+if [ ! -z "$PRE_DMPLC_CMD" ]; then
+    $PRE_DMPLC_CMD &
+    wait
+fi
 DMPLC_OPTS="-g"
 [ -n "$OUTLOG" ] && DMPLC_OPTS="$DMPLC_OPTS -e"
 compile_dmpl $CPP_FILE "$DMPLC_OPTS" $DMPL 
