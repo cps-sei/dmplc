@@ -1727,6 +1727,15 @@ dmpl::gams::GAMSBuilder::build_expect_thread_definition (const Role &role)
     buffer_ << "    out << \"EXTERN_" << func->getName() << ",\" << ::" << func->getName() << "();\n";
     buffer_ << "    out << std::endl;\n";
   }
+
+  //-- check if mission ended
+  buffer_ << "    if(" << nodeName(role->node) << "::" << dmpl::missionExitVarName
+          << " != 0) {\n";
+  buffer_ << "      std::cerr << \"expect logger: node \" << id << \" exited mission with code \" << "
+          << nodeName(role->node) << "::" << dmpl::missionExitVarName << " << '\\n';\n";
+  buffer_ << "      ::exit (0);\n";
+  buffer_ << "    }\n";
+  
   
   buffer_ << "  }\n";
   buffer_ << "}\n";
