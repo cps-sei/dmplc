@@ -476,6 +476,8 @@ while [ "$(grep COMPLETE $status_file | wc -l)" -lt 1 ]; do
         [ "$mission_exit" != "0" ] && MISSION_EXIT=1 && VREP_GRACEFUL_EXIT=1 && cleanup
         kill -0 $k &> /dev/null
         if [ "$?" != "0" ]; then
+            mission_exit=$(grep "$srch" $OUTDIR/node${pid2node[$k]}.out | wc -l)
+            [ "$mission_exit" != "0" ] && MISSION_EXIT=1 && VREP_GRACEFUL_EXIT=1 && cleanup
             echo "Node ${pid2node[$k]} crashed!"
             echo "Node id = ${pid2node[$k]} : pid = $k : cmd = ${pid2cmd[$k]}"
             cleanup
