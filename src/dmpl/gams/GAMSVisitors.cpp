@@ -461,7 +461,19 @@ dmpl::madara::GAMSCompiler::exitCall (CallExpr & expression)
   }
   else
   {
-    if(func_name == "INTEGRATE" && expression.args.size() == 1)
+    if(func_name == "EXIT" && expression.args.size() == 1)
+    {
+      if(do_expect_) {
+        buffer_ << "thread" << thread_->threadID << "_" << missionExitVarName << " = ";
+        visit(expression.args.front());
+      } else {
+        buffer_ << "std::cerr << \"node \" << id << \" exited mission with code \" << "; 
+        visit(expression.args.front());
+        buffer_ << " << '\\n'); ";
+        buffer_ << "(::exit (0)";
+      }
+    }
+    else if(func_name == "INTEGRATE" && expression.args.size() == 1)
     {
       static int integrate_id = 0;
       buffer_ << "integrate_knowledge((\".INTEGRAL." << integrate_id++

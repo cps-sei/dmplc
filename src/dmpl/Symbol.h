@@ -124,6 +124,11 @@ namespace dmpl
   bool isPlatformSymbol(const std::string &s);
 
   /*******************************************************************/
+  //-- name of variable to indicate mission exit
+  /*******************************************************************/
+  const std::string missionExitVarName("MISSION_EXIT");
+  
+  /*******************************************************************/
   //-- helpful templates
   /*******************************************************************/
   struct virtual_enable_shared_from_this_base:

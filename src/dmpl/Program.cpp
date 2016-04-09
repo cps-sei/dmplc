@@ -96,8 +96,8 @@ void dmpl::program::SanityChecker::exitLval(dmpl::LvalExpr &expr)
   //-- check special cases and constants
   if(expr.var == "true" || expr.var == "false") return;
   if(expr.var == "X" || expr.var == "Y" || expr.var == "Z") return;
-  if(expr.var == "ND" || expr.var == "ASSUME" ||
-     expr.var == "ASSERT" || expr.var == "INTEGRATE") return;
+  if(expr.var == "ND" || expr.var == "ASSUME" || expr.var == "ASSERT" ||
+     expr.var == "EXIT" || expr.var == "INTEGRATE") return;
   if(prog.constDef.find(expr.var) != prog.constDef.end()) return;
 
   //-- check platform symbols

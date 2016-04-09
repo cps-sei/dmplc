@@ -165,6 +165,16 @@ namespace
         visitor.visit (statement);
     }
   }
+
+  /*******************************************************************/
+  //-- return the mission exit variable
+  /*******************************************************************/
+  dmpl::Var missionExitVar()
+  {
+    dmpl::Var mev(new dmpl::Variable(dmpl::missionExitVarName));
+    mev->scope = dmpl::Symbol::LOCAL; mev->type = dmpl::intType();
+    return mev;
+  }
 }
 
 /*********************************************************************/
@@ -498,6 +508,10 @@ dmpl::gams::GAMSBuilder::build_node_variables (const Node &node, const std::stri
     build_program_variable_decl (var);
     build_program_variable_init (var);
   }
+
+  //-- declare mission exit variable
+  if(do_expect_ && scope == "local")
+    build_program_variable_decl (missionExitVar());
 }
 
 /*********************************************************************/
@@ -611,6 +625,10 @@ dmpl::gams::GAMSBuilder::build_thread_variables (const Func &thread, const Vars 
                 "\n//-- Used to implement Read-Execute-Write semantics", "\n", "", 0);
   for (auto i : vars)
     build_thread_variable (thread, i.second);
+
+  //-- declare mission exit variable
+  if(do_expect_ && scope == "local")
+    build_thread_variable (thread, missionExitVar());
 }
 
 /*********************************************************************/
@@ -1453,6 +1471,12 @@ dmpl::gams::GAMSBuilder::build_push_pull(const Func &thread, bool push)
   for(const auto &var : thread->accessedLoc(thread->role.get())) {
     buffer_ << "    " << (push?"push":"pull") << "(thread" << thread->threadID << "_"
             << var.first << ");" << std::endl;
+  }
+
+  //-- push-pull mission exit variable
+  if(do_expect_) {
+    buffer_ << "    " << (push?"push":"pull") << "(thread" << thread->threadID << "_"
+            << missionExitVar()->name << ");" << std::endl;
   }
 
   //push-pull globals
