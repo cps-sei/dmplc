@@ -375,17 +375,20 @@ dmpl::madara::GAMSCompiler::exitCall (CallExpr & expression)
   LvalExpr &lval = expression.func->requireLval ();
   if(!do_analyzer_ && lval.node != NULL)
   {
-    std::cerr << "ERROR: using @ operator on function calls not supported in this output mode\n";
-    exit(1);
+    std::cerr << "ERROR: processing call " << expression.toString()
+              << " in node " << node_->name << " ...\n";
+    throw std::runtime_error("ERROR: @ operator on function calls illegal in non-expect functions!!");
   }
+  
   std::string func_name = lval.var;
   Sym sym = lval.sym;
   Func func = std::dynamic_pointer_cast<Function>(sym);
 
   if (sym != NULL && func == NULL)
   {
-    std::cerr << "Error: " << func_name << " is not a function" << std::endl;
-    exit(1);
+    std::cerr << "ERROR: processing call " << expression.toString()
+              << " in node " << node_->name << " ...\n";
+    throw std::runtime_error("Error: " + func_name + " is not a function!!");
   }
 
   Funcs::const_iterator nodeFunc = node_->funcs.find (func_name);
