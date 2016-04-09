@@ -180,11 +180,12 @@ fi
 NODENUM=$(echo $ROLEDESC | awk -F':' '{out=$3; for(i=6;i<=NF;i=i+3){out=out"+"$i}; print out}' | bc -l)
 
 VREP_GRACEFUL_EXIT=0
-
+MISSION_EXIT=0
 status_file=""
 
-#map from node pids to command lines
+#map from node pids to command lines and node ids
 declare -A pid2cmd
+declare -A pid2node
 
 function cleanup {
     echo "Cleaning up ..."
@@ -201,7 +202,7 @@ function cleanup {
     #remove status file
     [ -n "$status_file" ] && rm $status_file
 
-    #check if all nodes are alive
+    #count number of alive nodes
     bin_count=0
     for k in "${!pid2cmd[@]}"; do
         kill -0 $k &> /dev/null
@@ -223,18 +224,20 @@ function cleanup {
     #restore the VREP system/settings.dat
     [ -f $SDF.saved.mcda-vrep ] && cp $SDF.saved.mcda-vrep $SDF
     
-    echo $bin_count  $NODENUM $VREP_GRACEFUL_EXIT
+    echo $bin_count $NODENUM $VREP_GRACEFUL_EXIT
+    [ "$MISSION_EXIT" == "1" ] && bin_count=$NODENUM
     if [ "$bin_count" -eq $NODENUM ] && [ "$VREP_GRACEFUL_EXIT" -ge 1 ]; then
         #collate output log
         if [ -n "$OUTLOG" ]; then
+            echo "collating and analyzing expect log ..."
             $SCDIR/expect_merge.py $EXPECT_LOG_PERIOD $OUTDIR/expect*.log > $OUTLOG
             ./${BIN}_analyze < $OUTLOG &> $OUTLOG.analyze
         fi
     else
+        [ "$bin_count" -ne $NODENUM ] && echo "A node crashed; aborting logging"
+        [ "$VREP_GRACEFUL_EXIT" -lt 1 ] && echo "VREP crashed; aborting logging"
         echo "Something crashed; aborting logging"
-        if [ -n "$OUTLOG" ]; then
-            rm -f $OUTLOG
-        fi
+        [ -n "$OUTLOG" ] && rm -f $OUTLOG
         exit 1
     fi
     
@@ -429,6 +432,7 @@ for x in $(seq 1 $((NODENUM - 1))); do
     pid=$!
     echo "started node $x pid=$pid : cmd=$cmd"
     pid2cmd[$pid]="$cmd"
+    pid2node[$pid]="$x"
 done
 ELOG=""
 [ -n "$OUTLOG" ] && ELOG="-e $OUTDIR/expect0.log"
@@ -442,6 +446,7 @@ fi
 pid=$!
 echo "started node 0 pid=$pid : cmd=$cmd" 
 pid2cmd[$pid]="$cmd"
+pid2node[$pid]="0"
 
 printf "press Ctrl-C to terminate the simulation ..."
 
@@ -466,10 +471,13 @@ while [ "$(grep COMPLETE $status_file | wc -l)" -lt 1 ]; do
 
     #check if all nodes are alive
     for k in "${!pid2cmd[@]}"; do
+        srch="node ${pid2node[$k]} exited mission with code "
+        mission_exit=$(grep "$srch" $OUTDIR/node${pid2node[$k]}.out | wc -l)
+        [ "$mission_exit" != "0" ] && MISSION_EXIT=1 && VREP_GRACEFUL_EXIT=1 && cleanup
         kill -0 $k &> /dev/null
         if [ "$?" != "0" ]; then
-            echo "A controller crashed!"
-            echo "pid = $k : cmd = ${pid2cmd[$k]}"
+            echo "Node ${pid2node[$k]} crashed!"
+            echo "Node id = ${pid2node[$k]} : pid = $k : cmd = ${pid2cmd[$k]}"
             cleanup
             exit 1
         fi
