@@ -404,7 +404,8 @@ while [ "$(grep STARTED $status_file | wc -l)" -lt 1 ]; do
     sleep 0.2
 done
 
-cat $status_file
+#cat $status_file
+echo "VREP fired up properly .. now starting nodes ..."
 
 #restore old VREP remoteApiConnections.txt file
 mv $RAC.saved.mcda-vrep $RAC
