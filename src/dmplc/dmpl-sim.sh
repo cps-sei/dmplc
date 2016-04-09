@@ -188,6 +188,11 @@ declare -A pid2cmd
 
 function cleanup {
     echo "Cleaning up ..."
+
+    #if the status file has not been created, just exit
+    [ -z "$status_file" ] && exit 1
+
+    #remove status file
     [ -n "$status_file" ] && rm $status_file
 
     #check if all nodes are alive
