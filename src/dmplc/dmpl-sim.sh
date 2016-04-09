@@ -296,8 +296,12 @@ if [ ! -z "$PRE_DMPLC_CMD" ]; then
 fi
 DMPLC_OPTS="-g"
 [ -n "$OUTLOG" ] && DMPLC_OPTS="$DMPLC_OPTS -e"
-compile_dmpl $CPP_FILE "$DMPLC_OPTS" $DMPL 
-[ -n "$OUTLOG" ] && compile_dmpl $ANALYZE_FILE "-a" $DMPL 
+compile_dmpl $CPP_FILE "$DMPLC_OPTS" $DMPL &
+wait
+if [ -n "$OUTLOG" ]; then
+    compile_dmpl $ANALYZE_FILE "-a" $DMPL &
+    wait
+fi
 
 #function to compile CPP file with g++. takes two arguments -- the
 #output executable and the CPP file.
@@ -318,8 +322,12 @@ function compile_cpp {
 }
 
 #compile with g++
-compile_cpp ${BIN} $CPP_FILE 
-[ -n "$OUTLOG" ] && compile_cpp ${BIN}_analyze $ANALYZE_FILE 
+compile_cpp ${BIN} $CPP_FILE &
+wait
+if [ -n "$OUTLOG" ]; then
+    compile_cpp ${BIN}_analyze $ANALYZE_FILE &
+    wait
+fi
 
 [ "$BUILDONLY" -eq 1 ] && exit 0
 
