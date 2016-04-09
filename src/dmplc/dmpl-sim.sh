@@ -212,10 +212,13 @@ function cleanup {
     for p in $(pstree -pal $$ | cut -d, -f2 | cut -d' ' -f1 | grep -v "$$$"); do
         kill $p &> /dev/null
     done
-    sleep 2
-    for p in $(pstree -pal $$ | cut -d, -f2 | cut -d' ' -f1 | grep -v "$$$"); do
-        kill -9 $p &> /dev/null
-    done
+
+    #if kill did not work, try kill -9
+    if [ $(pstree -pal $$ | cut -d, -f2 | cut -d' ' -f1 | grep -v "$$$" | wc -l) != "0" ]; then
+        for p in $(pstree -pal $$ | cut -d, -f2 | cut -d' ' -f1 | grep -v "$$$"); do
+            kill -9 $p &> /dev/null
+        done
+    fi
     
     #restore the VREP system/settings.dat
     [ -f $SDF.saved.mcda-vrep ] && cp $SDF.saved.mcda-vrep $SDF
