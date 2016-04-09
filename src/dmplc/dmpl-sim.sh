@@ -414,7 +414,6 @@ mv $RAC.saved.mcda-vrep $RAC
 [ ! -z "$PRE_SIM_CMD" ] && $PRE_SIM_CMD
 NUMCPU=$(grep -c ^processor /proc/cpuinfo)
 for x in $(seq 1 $((NODENUM - 1))); do
-    echo $x
     args_var=ARGS_$x
     eargs_var=EARGS_$x
     cpu_id=$(expr $x % $NUMCPU)
@@ -428,7 +427,7 @@ for x in $(seq 1 $((NODENUM - 1))); do
         $cmd &> $OUTDIR/node${x}.out &
     fi
     pid=$!
-    echo "started node pid=$pid : cmd=$cmd"
+    echo "started node $x pid=$pid : cmd=$cmd"
     pid2cmd[$pid]="$cmd"
 done
 ELOG=""
@@ -441,7 +440,7 @@ else
     $cmd &> $OUTDIR/node0.out &
 fi
 pid=$!
-echo "started node pid=$pid : cmd=$cmd" 
+echo "started node 0 pid=$pid : cmd=$cmd" 
 pid2cmd[$pid]="$cmd"
 
 printf "press Ctrl-C to terminate the simulation ..."
