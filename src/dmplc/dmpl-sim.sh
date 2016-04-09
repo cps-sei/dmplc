@@ -224,7 +224,7 @@ function cleanup {
     #restore the VREP system/settings.dat
     [ -f $SDF.saved.mcda-vrep ] && cp $SDF.saved.mcda-vrep $SDF
     
-    echo $bin_count $NODENUM $VREP_GRACEFUL_EXIT
+    echo "alive_nodes=$bin_count, total_nodes=$NODENUM, vrep_graceful_exit=$VREP_GRACEFUL_EXIT ..."
     [ "$MISSION_EXIT" == "1" ] && bin_count=$NODENUM
     if [ "$bin_count" -eq $NODENUM ] && [ "$VREP_GRACEFUL_EXIT" -ge 1 ]; then
         #collate output log
