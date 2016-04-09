@@ -189,8 +189,14 @@ declare -A pid2cmd
 function cleanup {
     echo "Cleaning up ..."
 
-    #if the status file has not been created, just exit
-    [ -z "$status_file" ] && exit 1
+    #if the status file has not been created, kill all child processes
+    #and exit
+    if [ -z "$status_file" ]; then
+        for p in $(pstree -pal $$ | cut -d, -f2 | cut -d' ' -f1 | grep -v "$$$"); do
+            kill $p &> /dev/null
+        done
+        exit 1
+    fi
 
     #remove status file
     [ -n "$status_file" ] && rm $status_file
