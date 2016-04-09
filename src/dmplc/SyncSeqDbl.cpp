@@ -243,8 +243,8 @@ void dmpl::syncseqdbl::NodeTransformer::exitLval(dmpl::LvalExpr &expr)
 
   //handle assume and assert
   if(newName == "ASSUME") newName = "__CPROVER_assume";
-  else if(newName == "ASSERT")
-    newName = "assert";
+  else if(newName == "ASSERT") newName = "assert";
+
   //handle function call -- change name if the function is defined at top-level
   else if(inCall && prog.isInternalFunction(newName)) 
     newName += (std::string("_") + (fwd ? "fwd" : "bwd"));
