@@ -276,7 +276,7 @@ function compile_dmpl {
             $GDB dmplc $DMPLC_FLAGS -o $OUT_FILE $IN_FILE
             if [ "$?" != "0" ]; then
                 echo "ERROR: dmplc failed on $IN_FILE!!"
-                exit 1
+                cleanup
             fi
             break
         fi
@@ -306,7 +306,7 @@ function compile_cpp {
         
         if [ "$?" != "0" ]; then
             echo "ERROR: g++ failed on $IN_FILE!!"
-            exit 1
+            cleanup
         fi
     fi
 }
