@@ -385,6 +385,7 @@ function run_vrep()
 run_vrep "$status_file"
 sleep 1
 
+#wait for vrep to fire up properly
 SAFETY_TIME=30
 START_TIME=$(date +%s)
 while [ "$(grep STARTED $status_file | wc -l)" -lt 1 ]; do
