@@ -345,6 +345,7 @@ if [ -f $SDF ]; then cp $SDF $SDF.saved.mcda-vrep; fi
 echo "starting VREP .. output is in $OUTDIR/vrep.out ..."
 
 status_file=$(mktemp /tmp/dmpl-sim.sh.XXXXXXXX)
+[ ! -f $status_file ] && echo "ERROR creating temp file!!" && cleanup
 
 function run_vrep()
 {
