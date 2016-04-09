@@ -365,13 +365,13 @@ START_TIME=$(date +%s)
 while [ "$(grep STARTED $status_file | wc -l)" -lt 1 ]; do
     cur_time=$(date +%s)
     if [ $((START_TIME + SAFETY_TIME)) -lt "$cur_time" ]; then
-        echo Time limit exceeded\; crash assumed
+        echo "VREP start time limit exceeded\; VREP crash assumed!"
         cleanup
         exit 1
     fi
     vrep_count=$(pstree -pal $$ | grep "vrep," | wc -l)
     if [ "$vrep_count" -lt 1 ]; then
-        echo VREP crashed!
+        echo "VREP crashed!"
         cleanup
         exit 1
     fi
