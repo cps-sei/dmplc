@@ -1333,6 +1333,9 @@ dmpl::gams::GAMSBuilder::build_nodes (void)
         }
       }
       
+      //-- initialize mission exit variable
+      if(do_expect_) buffer_ << "  " << missionExitVarName << " = 0;\n";
+      
       buffer_ << "}\n\n";
       
       close_namespace(roleName(n->second, r.second));
