@@ -379,7 +379,7 @@ function run_vrep()
     else
         ./vrep.sh "-g$MISSION_TIME" "-g$1" -q "-b$DMPL_ROOT/src/vrep/timer.lua" $MAPFILE &> $OUTDIR/vrep.out &
     fi
-    cd -
+    cd - >& /dev/null
 }
 
 run_vrep "$status_file"
