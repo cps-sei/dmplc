@@ -423,7 +423,7 @@ void handle_arguments (int argc, char ** argv)
         if(settings.id < 0 || settings.id >= 3) {
           std::cerr << "ERROR: Invalid node id: " << settings.id 
                     << "  valid range: [0, 2]" << std::endl;
-          exit(1);
+          ::exit(1);
         }
         if(settings.id == 0) { node_name = "uav"; role_name = "Uav"; }
         if(settings.id == 1) { node_name = "uav"; role_name = "Uav"; }
@@ -576,7 +576,7 @@ void handle_arguments (int argc, char ** argv)
         " [--var_y] sets the initial value of variable y\n"\
         " [--var_yf] sets the initial value of variable yf\n"\
         , argv[0]));
-      exit (0);
+      ::exit (1);
     }
   }
 }

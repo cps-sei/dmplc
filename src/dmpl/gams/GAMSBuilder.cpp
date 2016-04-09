@@ -846,7 +846,7 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   buffer_ << "          std::cerr << \"ERROR: Invalid node id: \" << settings.id \n"
           << "                    << \"  valid range: [0, " << (numNodes () - 1)
           << "]\" << std::endl;\n";
-  buffer_ << "          exit(1);\n";
+  buffer_ << "          ::exit(1);\n";
   buffer_ << "        }\n";
   size_t procId = 0;
   for(const Process &proc : builder_.program.processes) {
@@ -1013,7 +1013,7 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   }
 
   buffer_ << "        , argv[0]));\n";
-  buffer_ << "      exit (0);\n";
+  buffer_ << "      ::exit (1);\n";
   buffer_ << "    }\n";
   buffer_ << "  }\n";
   buffer_ << "}\n";
