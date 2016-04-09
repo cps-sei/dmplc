@@ -360,11 +360,13 @@ done
 #save the VREP system/settings.dat
 SDF=$VREP_ROOT/system/settings.dat
 if [ -f $SDF ]; then cp $SDF $SDF.saved.mcda-vrep; fi
+
 #start vrep
 echo "starting VREP .. output is in $OUTDIR/vrep.out ..."
 
+#create temp file to record VREP status
 status_file=$(mktemp /tmp/dmpl-sim.sh.XXXXXXXX)
-[ ! -f $status_file ] && echo "ERROR creating temp file!!" && cleanup
+[ ! -f $status_file ] && echo "ERROR: couldn't create temp file!!" && cleanup
 
 function run_vrep()
 {
