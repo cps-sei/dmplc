@@ -82,12 +82,7 @@ namespace dmpl
       GAMSCompiler (const Func & function, const Node & node,
                     const Func & thread,
                     DmplBuilder & builder, std::stringstream & buffer,
-                    bool do_vrep, bool do_analyzer);
-      
-      GAMSCompiler (const Stmt & statement, const Node & node,
-                    const Func & thread,
-                    DmplBuilder & builder, std::stringstream & buffer,
-                    bool do_vrep, bool do_analyzer);
+                    bool do_expect, bool do_analyzer);
       
       //-- construct a map from node ids to node ids that they should
       //-- iterate over given a specific type of iteration construct
@@ -419,8 +414,11 @@ namespace dmpl
       std::stringstream & buffer_;
 
       ///whether we are generating code for VREP
-      bool do_vrep_;
+      //bool do_vrep_;
 
+      ///whether we are generating code with an expect logger
+      bool do_expect_;
+      
       ///whether we are generating code for expect log analyzer
       bool do_analyzer_;
 

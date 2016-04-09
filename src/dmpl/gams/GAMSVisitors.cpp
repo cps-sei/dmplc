@@ -64,9 +64,11 @@
 /*********************************************************************/
 dmpl::madara::GAMSCompiler::GAMSCompiler (
   const Func & function, const Node & node, const Func & thread,
-  DmplBuilder & builder, std::stringstream & buffer, bool do_vrep, bool do_analyzer)
+  DmplBuilder & builder, std::stringstream & buffer,
+  bool do_expect, bool do_analyzer)
   : function_ (function), node_ (node), thread_ (thread),
-    builder_ (builder), buffer_ (buffer), do_vrep_(do_vrep), do_analyzer_(do_analyzer),
+    builder_ (builder), buffer_ (buffer),
+    do_expect_(do_expect), do_analyzer_(do_analyzer),
     indentation_ (2), assignment_ (0) {}
 
 /*********************************************************************/

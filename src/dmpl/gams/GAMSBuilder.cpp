@@ -154,13 +154,13 @@ namespace
   /*******************************************************************/
   void print_temp_inits(const dmpl::Func &func, const dmpl::Node &node,
                         const dmpl::Func &thread, dmpl::DmplBuilder & builder_,
-                        std::stringstream & buffer_)
+                        std::stringstream & buffer_, bool do_expect)
   {
     for(const dmpl::Var & variable : func->temps) {
       if(variable->initFunc == NULL) continue;
       
       dmpl::madara::GAMSCompiler visitor (variable->initFunc, node, thread,
-                                          builder_, buffer_, false, false);
+                                          builder_, buffer_, do_expect, false);
       for (const dmpl::Stmt & statement : variable->initFunc->body)
         visitor.visit (statement);
     }
@@ -1255,11 +1255,11 @@ dmpl::gams::GAMSBuilder::build_nodes (void)
           buffer_ << "void initialize_" << rec->name << " ()\n{\n";
           buffer_ << "  engine::Variables vars;\n";
           print_vars(buffer_, rec->initFunc->temps, false);
-          print_temp_inits(rec->initFunc, n->second, Func(), builder_, buffer_); 
+          print_temp_inits(rec->initFunc, n->second, Func(), builder_, buffer_, do_expect_); 
           
           //-- transform statements
           dmpl::madara::GAMSCompiler visitor (rec->initFunc, n->second, Func(),
-                                              builder_, buffer_, false, false);
+                                              builder_, buffer_, do_expect_, false);
           for (const Stmt & statement : rec->initFunc->body)
             visitor.visit (statement);
           buffer_ << "}\n";
@@ -1268,11 +1268,11 @@ dmpl::gams::GAMSBuilder::build_nodes (void)
         if(rec->assumeFunc != NULL && !rec->assumeFunc->body.empty()) {
           buffer_ << "int check_init_" << rec->name << " ()\n{\n";
           print_vars(buffer_, rec->assumeFunc->temps, false);
-          print_temp_inits(rec->assumeFunc, n->second, Func(), builder_, buffer_); 
+          print_temp_inits(rec->assumeFunc, n->second, Func(), builder_, buffer_, do_expect_); 
         
           //-- transform statements
           dmpl::madara::GAMSCompiler visitor (rec->assumeFunc, n->second, Func(),
-                                              builder_, buffer_, false, false);
+                                              builder_, buffer_, do_expect_, false);
           for (const Stmt & statement : rec->assumeFunc->body)
             visitor.visit (statement);
           buffer_ << "}\n";
@@ -1342,11 +1342,11 @@ dmpl::gams::GAMSBuilder::build_constructor_for_variable (Var &v, Node &node)
   //-- generate constructor if one was defined
   if(v->initFunc != NULL) {
     print_vars(buffer_, v->initFunc->temps, false);
-    print_temp_inits(v->initFunc, node, Func(), builder_, buffer_); 
+    print_temp_inits(v->initFunc, node, Func(), builder_, buffer_, do_expect_); 
     
     //-- transform statements
     dmpl::madara::GAMSCompiler visitor (v->initFunc, node, Func(),
-                                        builder_, buffer_, false, false);
+                                        builder_, buffer_, do_expect_, false);
     for (const Stmt & statement : v->initFunc->body)
       visitor.visit (statement);
   }
@@ -1566,11 +1566,11 @@ dmpl::gams::GAMSBuilder::build_function (
   buffer_ << "\n  //-- Declare local (parameter and temporary) variables\n";
   print_vars(buffer_, actualFunc->params, true);
   print_vars(buffer_, actualFunc->temps, false);
-  print_temp_inits(actualFunc, node, thread, builder_, buffer_); 
+  print_temp_inits(actualFunc, node, thread, builder_, buffer_, do_expect_); 
   buffer_ << "\n";
 
   buffer_ << "\n  //-- Begin function body\n";
-  dmpl::madara::GAMSCompiler visitor (actualFunc, node, thread, builder_, buffer_, false, false);
+  dmpl::madara::GAMSCompiler visitor (actualFunc, node, thread, builder_, buffer_, do_expect_, false);
 
   //transform the body of safety
   BOOST_FOREACH (const Stmt & statement, actualFunc->body)
