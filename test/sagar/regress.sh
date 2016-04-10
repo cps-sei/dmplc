@@ -1,10 +1,23 @@
 #!/bin/bash
 
+ARGS="$*"
+
+#return 1 if this is a valid test
+function valid_test {
+    [ -z "$ARGS" ] && echo 1 && return
+    for i in $ARGS; do
+        [ "$i" == "$1" ] && echo 1 && return
+    done
+    echo 0
+}
+
 ##generate code and check against correct output
 function test_code_gen {
-    DMPL="$1"
-    OPTS="$2"
-    printf "code gen     %30s : " $(basename $DMPL)
+    TESTID="$1"
+    DMPL="$2"
+    OPTS="$3"
+    [ $(valid_test $TESTID) == "0" ] && return
+    printf "code gen     %5s %30s : " $TESTID $(basename $DMPL)
     BN=$(basename $DMPL .dmpl)
     OUT1="$BN.cpp"
     OUT2="$BN.cpp.saved"
@@ -16,9 +29,11 @@ function test_code_gen {
 
 ##generate log analyzer and check against correct output
 function test_analyzer {
-    DMPL="$1"
-    OPTS="$2"
-    printf "analyzer     %30s : " $(basename $DMPL)
+    TESTID="$1"
+    DMPL="$2"
+    OPTS="$3"
+    [ $(valid_test $TESTID) == "0" ] && return
+    printf "analyzer     %5s %30s : " $TESTID $(basename $DMPL)
     BN=$(basename $DMPL .dmpl)
     OUT1="$BN.analyzer.cpp"
     OUT2="$BN.analyzer.cpp.saved"
@@ -30,8 +45,10 @@ function test_analyzer {
 
 ##generate code and compile
 function test_build {
-    MISSION="$1"
-    printf "build        %30s : " $(basename $MISSION)
+    TESTID="$1"
+    MISSION="$2"
+    [ $(valid_test $TESTID) == "0" ] && return
+    printf "build        %5s %30s : " $TESTID $(basename $MISSION)
     (cd $(dirname $MISSION); \
     dmpl-sim.sh -b -e /dev/null -B $(basename $MISSION) &> /dev/null; \
     if [ "$?" == "0" ]; then echo "SUCCESS"; else echo "FAILURE"; fi)
@@ -39,9 +56,11 @@ function test_build {
 
 ##sequentialize and check against correct output
 function test_seq {
-    DMPL="$1"
-    ROLES="$2"
-    printf "sequentialize%30s : " $(basename $DMPL)
+    TESTID="$1"
+    DMPL="$2"
+    ROLES="$3"
+    [ $(valid_test $TESTID) == "0" ] && return
+    printf "sequentialize%5s %30s : " $TESTID $(basename $DMPL)
     BN=$(basename $DMPL .dmpl)
     OUT1="$BN.c"
     OUT2="$BN.c.saved"
@@ -53,9 +72,11 @@ function test_seq {
 
 ##sequentialize inductively and check against correct output
 function test_seq_ind {
-    DMPL="$1"
-    ROLES="$2"
-    printf "seq ind      %30s : " $(basename $DMPL)
+    TESTID="$1"
+    DMPL="$2"
+    ROLES="$3"
+    [ $(valid_test $TESTID) == "0" ] && return
+    printf "seq ind      %5s %30s : " $TESTID $(basename $DMPL)
     BN=$(basename $DMPL .dmpl)
     OUT1="$BN.ind.c"
     OUT2="$BN.ind.c.saved"
@@ -68,9 +89,11 @@ function test_seq_ind {
 ##parse a file and output. then parse this output and output
 ##again. the two outputs should be identical.
 function test_double_parse {
-    DMPL="$1"
-    OPTS="$2"
-    printf "double parse %30s : " $(basename $DMPL)
+    TESTID="$1"
+    DMPL="$2"
+    OPTS="$3"
+    [ $(valid_test $TESTID) == "0" ] && return
+    printf "double parse %5s %30s : " $TESTID $(basename $DMPL)
     BN=$(basename $DMPL .dmpl)
     OUT1="$BN.1.dmpl"
     OUT2="$BN.2.dmpl"
@@ -83,11 +106,13 @@ function test_double_parse {
 
 ##verify and check against expected output
 function test_verif {
-    DMPL="$1"
-    OPTS="$2"
-    ROLES="$3"
-    OUTPUT="$4"
-    printf "verification %30s : " $(basename $DMPL)
+    TESTID="$1"
+    DMPL="$2"
+    OPTS="$3"
+    ROLES="$4"
+    OUTPUT="$5"
+    [ $(valid_test $TESTID) == "0" ] && return
+    printf "verification %5s %30s : " $TESTID $(basename $DMPL)
     BN=$(basename $DMPL .dmpl)
     OUT1="$BN.c"
     rm -f $OUT1
@@ -98,11 +123,13 @@ function test_verif {
 
 ##verify inductively and check against expected output
 function test_verif_ind {
-    DMPL="$1"
-    OPTS="$2"
-    ROLES="$3"
-    OUTPUT="$4"
-    printf "induct verif %30s : " $(basename $DMPL)
+    TESTID="$1"
+    DMPL="$2"
+    OPTS="$3"
+    ROLES="$4"
+    OUTPUT="$5"
+    [ $(valid_test $TESTID) == "0" ] && return
+    printf "induct verif %5s %30s : " $TESTID $(basename $DMPL)
     BN=$(basename $DMPL .dmpl)
     OUT1="$BN.c"
     rm -f $OUT1
@@ -114,91 +141,87 @@ function test_verif_ind {
 #role descriptors for various examples
 EX02ROLES="uav:Leader:1:uav:ProtectorSE:1"
 
-#if arguments were passed, they refer to a specific test. just run that.
-if [ "$#" -gt "0" ]; then
-    $*
-    exit $?
-fi
-
 #double parse tests
-test_double_parse test-example-01a.dmpl ""
-test_double_parse test-example-01b.dmpl ""
-test_double_parse test-example-01c.dmpl ""
-test_double_parse test-example-01d.dmpl ""
-test_double_parse test-example-01e.dmpl ""
-test_double_parse test-example-01f.dmpl ""
-test_double_parse test-example-01g.dmpl ""
-test_double_parse test-01.dmpl ""
-test_double_parse test-example-02a.dmpl ""
-test_double_parse test-example-02b.dmpl ""
-test_double_parse test-example-05.dmpl ""
-test_double_parse test-example-09a.dmpl ""
-test_double_parse test-example-09c.dmpl ""
-test_double_parse test-example-09d.dmpl ""
-test_double_parse ../../docs/tutorial/example-01.dmpl ""
-test_double_parse ../../docs/tutorial/example-01.bug1.dmpl ""
-test_double_parse ../../docs/tutorial/example-01.bug2.dmpl ""
-test_double_parse ../../docs/tutorial/example-02.dmpl ../../docs/tutorial/example-02-AADL.dmpl
-test_double_parse ../../docs/tutorial/example-02.bug1.dmpl ../../docs/tutorial/example-02-AADL.dmpl
-test_double_parse ../../docs/tutorial/example-03.dmpl ../../docs/tutorial/example-03-AADL.dmpl
-test_double_parse ../../docs/tutorial/example-05/dmpl/example-05.dmpl ../../docs/tutorial/example-05/dmpl/example-05-AADL.dmpl
-test_double_parse ../../docs/tutorial/example-07/dmpl/example-07-2.dmpl
-test_double_parse ../../docs/tutorial/example-09.dmpl ""
-test_double_parse ../../docs/tutorial/example-09a.dmpl ""
-test_double_parse ../../docs/tutorial/example-09b.dmpl ""
-test_double_parse ../../docs/tutorial/example-09c.dmpl ""
-test_double_parse ../../docs/tutorial/example-09d.dmpl ""
-test_double_parse ../../docs/tutorial/example-09e.dmpl ""
-test_double_parse ../../docs/tutorial/example-10.dmpl ""
+test_double_parse DP1 test-example-01a.dmpl ""
+test_double_parse DP2 test-example-01b.dmpl ""
+test_double_parse DP3 test-example-01c.dmpl ""
+test_double_parse DP4 test-example-01d.dmpl ""
+test_double_parse DP5 test-example-01e.dmpl ""
+test_double_parse DP6 test-example-01f.dmpl ""
+test_double_parse DP7 test-example-01g.dmpl ""
+test_double_parse DP8 test-01.dmpl ""
+test_double_parse DP9 test-example-02a.dmpl ""
+test_double_parse DP10 test-example-02b.dmpl ""
+test_double_parse DP11 test-example-05.dmpl ""
+test_double_parse DP12 test-example-09a.dmpl ""
+test_double_parse DP13 test-example-09c.dmpl ""
+test_double_parse DP14 test-example-09d.dmpl ""
+test_double_parse DP15 ../../docs/tutorial/example-01.dmpl ""
+test_double_parse DP16 ../../docs/tutorial/example-01.bug1.dmpl ""
+test_double_parse DP17 ../../docs/tutorial/example-01.bug2.dmpl ""
+test_double_parse DP18 ../../docs/tutorial/example-02.dmpl ../../docs/tutorial/example-02-AADL.dmpl
+test_double_parse DP19 ../../docs/tutorial/example-02.bug1.dmpl ../../docs/tutorial/example-02-AADL.dmpl
+test_double_parse DP20 ../../docs/tutorial/example-03.dmpl ../../docs/tutorial/example-03-AADL.dmpl
+test_double_parse DP21 ../../docs/tutorial/example-05/dmpl/example-05.dmpl ../../docs/tutorial/example-05/dmpl/example-05-AADL.dmpl
+test_double_parse DP22 ../../docs/tutorial/example-07/dmpl/example-07-2.dmpl
+test_double_parse DP23 ../../docs/tutorial/example-09.dmpl ""
+test_double_parse DP24 ../../docs/tutorial/example-09a.dmpl ""
+test_double_parse DP25 ../../docs/tutorial/example-09b.dmpl ""
+test_double_parse DP26 ../../docs/tutorial/example-09c.dmpl ""
+test_double_parse DP27 ../../docs/tutorial/example-09d.dmpl ""
+test_double_parse DP28 ../../docs/tutorial/example-09e.dmpl ""
+test_double_parse DP29 ../../docs/tutorial/example-10.dmpl ""
 
 #code generation tests
-test_code_gen test-example-01a.dmpl "--roles uav:Uav:3"
-test_code_gen test-example-01e.dmpl "--roles uav:Uav1:2:uav:Uav2:1:uav:Uav3:1"
-test_code_gen test-example-01g.dmpl "--roles uav:Uav:3"
-test_code_gen test-example-02a.dmpl "--roles uav:Leader:1:uav:Protector:4"
-test_code_gen test-example-02b.dmpl "--roles uav:Leader:1:uav:Protector:4"
-test_code_gen test-example-02c.dmpl "--roles uav:ProtectorNW:1:uav:Leader:1:uav:ProtectorSE:1:uav:ProtectorSW:1:uav:ProtectorNE:1"
-test_code_gen test-example-09a.dmpl "--roles uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4 --groups coordinator+eastern=1:eastern=4:coordinator+western=1:western=4 --var-groups x1+y1+x2+y2=coordinator:lock+lx+ly+init=eastern+western"
-test_code_gen test-example-09c.dmpl "--roles uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4 --groups coordinator+eastern=1:eastern=4:coordinator+western=1:western=4 --var-groups reg_x+reg_y+reg_rad+waypointArrival=coordinator:lock+lx+ly+init=eastern+western"
-test_code_gen test-example-09d.dmpl "-e --roles uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4 --groups coordinator+eastern=1:eastern=4:coordinator+western=1:western=4 --var-groups reg_x+reg_y+reg_rad+waypointArrival=coordinator:lock+lx+ly+init=eastern+western"
+test_code_gen CG1 test-example-01a.dmpl "--roles uav:Uav:3"
+test_code_gen CG2 test-example-01e.dmpl "--roles uav:Uav1:2:uav:Uav2:1:uav:Uav3:1"
+test_code_gen CG3 test-example-01g.dmpl "--roles uav:Uav:3"
+test_code_gen CG4 test-example-02a.dmpl "--roles uav:Leader:1:uav:Protector:4"
+test_code_gen CG5 test-example-02b.dmpl "--roles uav:Leader:1:uav:Protector:4"
+test_code_gen CG6 test-example-02c.dmpl "--roles uav:ProtectorNW:1:uav:Leader:1:uav:ProtectorSE:1:uav:ProtectorSW:1:uav:ProtectorNE:1"
+test_code_gen CG7 test-example-09a.dmpl "--roles uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4 --groups coordinator+eastern=1:eastern=4:coordinator+western=1:western=4 --var-groups x1+y1+x2+y2=coordinator:lock+lx+ly+init=eastern+western"
+test_code_gen CG8 test-example-09c.dmpl "--roles uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4 --groups coordinator+eastern=1:eastern=4:coordinator+western=1:western=4 --var-groups reg_x+reg_y+reg_rad+waypointArrival=coordinator:lock+lx+ly+init=eastern+western"
+test_code_gen CG9 test-example-09d.dmpl "-e --roles uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4 --groups coordinator+eastern=1:eastern=4:coordinator+western=1:western=4 --var-groups reg_x+reg_y+reg_rad+waypointArrival=coordinator:lock+lx+ly+init=eastern+western"
 
 #analyzer generation tests
-test_analyzer test-example-02-expect.dmpl "--roles uav:Protector:4:uav:Leader:1"
-test_analyzer test-example-09d.dmpl "--roles uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4 --groups coordinator+eastern=1:eastern=4:coordinator+western=1:western=4 --var-groups reg_x+reg_y+reg_rad+waypointArrival=coordinator:lock+lx+ly+init=eastern+western"
+test_analyzer TA1 test-example-02-expect.dmpl "--roles uav:Protector:4:uav:Leader:1"
+test_analyzer TA2 test-example-09d.dmpl "--roles uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4 --groups coordinator+eastern=1:eastern=4:coordinator+western=1:western=4 --var-groups reg_x+reg_y+reg_rad+waypointArrival=coordinator:lock+lx+ly+init=eastern+western"
 
 #test building
+COUNT=1
 for i in ../../docs/tutorial/*.mission ../../docs/tutorial/example-05/dmpl/*.mission ; do
-    test_build $i
+    test_build BD${COUNT} $i
+    COUNT=$((COUNT + 1))
 done
 
 #sequentialization tests
-test_seq test-example-01c.dmpl uav:Uav1:2:uav:Uav2:1
-test_seq test-example-05b.dmpl uav:Leader:1:uav:Protector:4
-test_seq test-example-01f.dmpl uav:Uav1:1:uav:Uav2:1
-test_seq test-example-01g.dmpl uav:Uav:3
+test_seq SQ1 test-example-01c.dmpl uav:Uav1:2:uav:Uav2:1
+test_seq SQ2 test-example-05b.dmpl uav:Leader:1:uav:Protector:4
+test_seq SQ3 test-example-01f.dmpl uav:Uav1:1:uav:Uav2:1
+test_seq SQ4 test-example-01g.dmpl uav:Uav:3
 
 #inductive sequentialization tests
-test_seq_ind test-example-01c.dmpl uav:Uav1:2:uav:Uav2:1
-test_seq_ind test-example-05b.dmpl uav:Leader:1:uav:Protector:4
-test_seq_ind test-example-01f.dmpl uav:Uav1:1:uav:Uav2:1
-test_seq_ind test-example-01g.dmpl uav:Uav:3
+test_seq_ind SI1 test-example-01c.dmpl uav:Uav1:2:uav:Uav2:1
+test_seq_ind SI2 test-example-05b.dmpl uav:Leader:1:uav:Protector:4
+test_seq_ind SI3 test-example-01f.dmpl uav:Uav1:1:uav:Uav2:1
+test_seq_ind SI4 test-example-01g.dmpl uav:Uav:3
 
 #verification tests
-test_verif ../../docs/tutorial/example-01.dmpl "" uav:Uav:2 SUCCESSFUL
-test_verif ../../docs/tutorial/example-01.bug1.dmpl "" uav:Uav:2 FAILED
-test_verif ../../docs/tutorial/example-01.bug2.dmpl "" uav:Uav:2 FAILED
-test_verif ../../docs/tutorial/example-02.dmpl ../../docs/tutorial/example-02-AADL.dmpl $EX02ROLES SUCCESSFUL
-test_verif ../../docs/tutorial/example-02.bug1.dmpl ../../docs/tutorial/example-02-AADL.dmpl $EX02ROLES FAILED
-test_verif ../../docs/tutorial/example-03.dmpl ../../docs/tutorial/example-03-AADL.dmpl uav:Leader:1:uav:Protector:1 SUCCESSFUL
-test_verif ../../docs/tutorial/example-04.dmpl ../../docs/tutorial/example-04-AADL.dmpl uav:Leader:1:uav:Protector:1 FAILED
-test_verif ../../docs/tutorial/example-01-hybrid.dmpl ../../docs/tutorial/example-01-hybrid-controller.dmpl uav:Uav:2 SUCCESSFUL
+test_verif VF1 ../../docs/tutorial/example-01.dmpl "" uav:Uav:2 SUCCESSFUL
+test_verif VF2 ../../docs/tutorial/example-01.bug1.dmpl "" uav:Uav:2 FAILED
+test_verif VF3 ../../docs/tutorial/example-01.bug2.dmpl "" uav:Uav:2 FAILED
+test_verif VF4 ../../docs/tutorial/example-02.dmpl ../../docs/tutorial/example-02-AADL.dmpl $EX02ROLES SUCCESSFUL
+test_verif VF5 ../../docs/tutorial/example-02.bug1.dmpl ../../docs/tutorial/example-02-AADL.dmpl $EX02ROLES FAILED
+test_verif VF6 ../../docs/tutorial/example-03.dmpl ../../docs/tutorial/example-03-AADL.dmpl uav:Leader:1:uav:Protector:1 SUCCESSFUL
+test_verif VF7 ../../docs/tutorial/example-04.dmpl ../../docs/tutorial/example-04-AADL.dmpl uav:Leader:1:uav:Protector:1 FAILED
+test_verif VF8 ../../docs/tutorial/example-01-hybrid.dmpl ../../docs/tutorial/example-01-hybrid-controller.dmpl uav:Uav:2 SUCCESSFUL
 
 #inductive verification tests
-test_verif_ind ../../docs/tutorial/example-01.dmpl uav:Uav:2 SUCCESSFUL
-test_verif_ind ../../docs/tutorial/example-01.bug1.dmpl uav:Uav:2 FAILED
-test_verif_ind ../../docs/tutorial/example-01.bug2.dmpl uav:Uav:2 FAILED
-test_verif_ind ../../docs/tutorial/example-02.dmpl ../../docs/tutorial/example-02-AADL.dmpl $EX02ROLES SUCCESSFUL
-test_verif_ind ../../docs/tutorial/example-02.bug1.dmpl ../../docs/tutorial/example-02-AADL.dmpl $EX02ROLES FAILED
-test_verif_ind ../../docs/tutorial/example-03.dmpl ../../docs/tutorial/example-03-AADL.dmpl uav:Leader:1:uav:Protector:1 SUCCESSFUL
-test_verif_ind ../../docs/tutorial/example-04.dmpl ../../docs/tutorial/example-04-AADL.dmpl uav:Leader:1:uav:Protector:1 FAILED
-test_verif_ind ../../docs/tutorial/example-01-hybrid.dmpl ../../docs/tutorial/example-01-hybrid-controller.dmpl uav:Uav:2 SUCCESSFUL
+test_verif_ind VI1 ../../docs/tutorial/example-01.dmpl uav:Uav:2 SUCCESSFUL
+test_verif_ind VI2 ../../docs/tutorial/example-01.bug1.dmpl uav:Uav:2 FAILED
+test_verif_ind VI3 ../../docs/tutorial/example-01.bug2.dmpl uav:Uav:2 FAILED
+test_verif_ind VI4 ../../docs/tutorial/example-02.dmpl ../../docs/tutorial/example-02-AADL.dmpl $EX02ROLES SUCCESSFUL
+test_verif_ind VI5 ../../docs/tutorial/example-02.bug1.dmpl ../../docs/tutorial/example-02-AADL.dmpl $EX02ROLES FAILED
+test_verif_ind VI6 ../../docs/tutorial/example-03.dmpl ../../docs/tutorial/example-03-AADL.dmpl uav:Leader:1:uav:Protector:1 SUCCESSFUL
+test_verif_ind VI7 ../../docs/tutorial/example-04.dmpl ../../docs/tutorial/example-04-AADL.dmpl uav:Leader:1:uav:Protector:1 FAILED
+test_verif_ind VI8 ../../docs/tutorial/example-01-hybrid.dmpl ../../docs/tutorial/example-01-hybrid-controller.dmpl uav:Uav:2 SUCCESSFUL
