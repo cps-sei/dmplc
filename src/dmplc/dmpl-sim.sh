@@ -288,6 +288,7 @@ function compile_dmpl {
             $GDB dmplc $DMPLC_FLAGS -o $OUT_FILE $IN_FILE
             if [ "$?" != "0" ]; then
                 echo "ERROR: dmplc failed on $IN_FILE!!"
+                rm -f $OUT_FILE
                 cleanup
             fi
             break
@@ -304,9 +305,11 @@ DMPLC_OPTS="-g"
 [ -n "$OUTLOG" ] && DMPLC_OPTS="$DMPLC_OPTS -e"
 compile_dmpl $CPP_FILE "$DMPLC_OPTS" $DMPL &
 wait
+[ ! -f $CPP_FILE ] && cleanup
 if [ -n "$OUTLOG" ]; then
     compile_dmpl $ANALYZE_FILE "-a" $DMPL &
     wait
+    [ ! -f $ANALYZE_FILE ] && cleanup
 fi
 
 #function to compile CPP file with g++. takes two arguments -- the
@@ -322,6 +325,7 @@ function compile_cpp {
         
         if [ "$?" != "0" ]; then
             echo "ERROR: g++ failed on $IN_FILE!!"
+            rm -f $OUT_FILE
             cleanup
         fi
     fi
@@ -330,9 +334,11 @@ function compile_cpp {
 #compile with g++
 compile_cpp ${BIN} $CPP_FILE &
 wait
+[ ! -f ${BIN} ] && cleanup
 if [ -n "$OUTLOG" ]; then
     compile_cpp ${BIN}_analyze $ANALYZE_FILE &
     wait
+    [ ! -f ${BIN}_analyze ] && cleanup
 fi
 
 [ "$BUILDONLY" -eq 1 ] && exit 0
