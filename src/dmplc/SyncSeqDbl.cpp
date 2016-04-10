@@ -293,6 +293,13 @@ void dmpl::syncseqdbl::NodeTransformer::exitLval(dmpl::LvalExpr &expr)
 void dmpl::syncseqdbl::NodeTransformer::exitCall(dmpl::CallExpr &expr) 
 {
   Expr shost = hostExpr;
+
+  //-- handle calls to EXIT() and PRINT()
+  if(expr.func->toString() == "EXIT" || expr.func->toString() == "PRINT") {
+    exprMap[shost] = Expr(new CallExpr(expr.func, ExprList()));
+    return;
+  }
+  
   inCall = true;
   visit(expr.func);
   inCall = false;
