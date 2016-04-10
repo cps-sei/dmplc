@@ -1138,6 +1138,9 @@ thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
 KnowledgeRecord
 thread0 (engine::FunctionArguments & args, engine::Variables & vars)
 {
+  //-- check mission exit status
+  if (MISSION_EXIT_STATUS != 0) return Integer(0);
+
   //-- call thread function
   thread0_COLLISION_AVOIDANCE(args, vars);
 
@@ -1350,6 +1353,9 @@ thread1_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
 KnowledgeRecord
 thread1 (engine::FunctionArguments & args, engine::Variables & vars)
 {
+  //-- check mission exit status
+  if (MISSION_EXIT_STATUS != 0) return Integer(0);
+
   //-- call thread function
   thread1_FOO(args, vars);
 
@@ -1478,6 +1484,9 @@ thread2_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
 KnowledgeRecord
 thread2 (engine::FunctionArguments & args, engine::Variables & vars)
 {
+  //-- check mission exit status
+  if (MISSION_EXIT_STATUS != 0) return Integer(0);
+
   //-- call thread function
   thread2_WAYPOINT(args, vars);
 
@@ -1804,6 +1813,9 @@ thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
 KnowledgeRecord
 thread0 (engine::FunctionArguments & args, engine::Variables & vars)
 {
+  //-- check mission exit status
+  if (MISSION_EXIT_STATUS != 0) return Integer(0);
+
   //-- call thread function
   thread0_COLLISION_AVOIDANCE(args, vars);
 
@@ -1961,6 +1973,9 @@ thread1_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
 KnowledgeRecord
 thread1 (engine::FunctionArguments & args, engine::Variables & vars)
 {
+  //-- check mission exit status
+  if (MISSION_EXIT_STATUS != 0) return Integer(0);
+
   //-- call thread function
   thread1_FOO(args, vars);
 
@@ -2060,6 +2075,9 @@ thread3_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
 KnowledgeRecord
 thread3 (engine::FunctionArguments & args, engine::Variables & vars)
 {
+  //-- check mission exit status
+  if (MISSION_EXIT_STATUS != 0) return Integer(0);
+
   //-- call thread function
   thread3_WAYPOINT(args, vars);
 

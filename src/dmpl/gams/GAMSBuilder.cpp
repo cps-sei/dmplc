@@ -1595,6 +1595,12 @@ dmpl::gams::GAMSBuilder::build_function (
 
   //-- if function is NULL, generate the thread entry function
   if(function == NULL) {
+    //-- check mission exit status. if set, return.
+    if(do_expect_) {
+      buffer_ << "  //-- check mission exit status\n";
+      buffer_ << "  if (" << missionExitStatus()->name << " != 0) return Integer(0);\n\n";
+    }
+    
     //-- call main thread function
     buffer_ << "  //-- call thread function\n";
     buffer_ << "  thread" << thread->threadID << "_";
