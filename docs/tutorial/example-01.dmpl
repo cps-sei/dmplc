@@ -113,6 +113,8 @@ const REQUEST = 2;
 const WAITING = 3;
 const MOVE = 4;
 
+const MSG_MARKER = "message: ";
+
 extern int my_sleep(int seconds);
 extern void print_state(int XX,int YY,int my_id, int x, int y, int xf, int yf);
 extern void print_int(int i);
@@ -149,7 +151,9 @@ node uav
   @BarrierSync;
   @PlatformController;
   thread COLLISION_AVOIDANCE {
-    print_state(X,Y,id,x,y,xf,yf);
+    PRINT(MSG_MARKER, "id = ", id, " X = ", X, " Y = ", Y, " x = ", x, " y = ", y,
+          " state = ", state, "\n");
+    //print_state(X,Y,id,x,y,xf,yf);
     //my_sleep(1);
     if (state == NEXT) {
       //compute next point on route

@@ -183,7 +183,7 @@ dmpl::CallExpr::Context dmpl::CallExpr::useSymbols(Context con)
   Func f = std::dynamic_pointer_cast<Function>(lval.sym);
   if(f == NULL) {
     if(lval.var != "ASSERT" && lval.var != "ASSUME" && lval.var != "EXIT" &&
-       !isPlatformSymbol(lval.var))
+       lval.var != "PRINT" && !isPlatformSymbol(lval.var))
       std::cerr << "Symbol not found: " << lval.var << std::endl;
   }
   return con;

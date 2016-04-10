@@ -74,6 +74,9 @@ void dmpl::Visitor::visit(const dmpl::Expr &expr)
   } else if(DoubleExpr *ex = dynamic_cast<DoubleExpr*>(&*expr)) {
     hostExpr = expr; enterDouble(*ex);
     hostExpr = expr; exitDouble(*ex);
+  } else if(StringExpr *ex = dynamic_cast<StringExpr*>(&*expr)) {
+    hostExpr = expr; enterString(*ex);
+    hostExpr = expr; exitString(*ex);
   } else if(LvalExpr *ex = dynamic_cast<LvalExpr*>(&*expr)) {
     hostExpr = expr; 
     if(enterLval(*ex)) BOOST_FOREACH(Expr &e,ex->indices) visit(e);

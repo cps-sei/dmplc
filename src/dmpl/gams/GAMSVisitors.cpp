@@ -240,6 +240,20 @@ dmpl::madara::GAMSCompiler::exitDouble (DoubleExpr & expression)
 
 /*********************************************************************/
 bool
+dmpl::madara::GAMSCompiler::enterString (StringExpr & expression)
+{
+  return false;
+}
+
+/*********************************************************************/
+void
+dmpl::madara::GAMSCompiler::exitString (StringExpr & expression)
+{
+  buffer_ << expression.data;
+}
+
+/*********************************************************************/
+bool
 dmpl::madara::GAMSCompiler::enterLval (LvalExpr & expression)
 {
   return false;
@@ -472,6 +486,11 @@ dmpl::madara::GAMSCompiler::exitCall (CallExpr & expression)
         buffer_ << " << '\\n'); ";
         buffer_ << "(::exit (0)";
       }
+    }
+    else if(func_name == "PRINT")
+    {
+      buffer_ << "std::cerr ";
+      for(auto &a : expression.args) { buffer_ << " << "; visit(a); }
     }
     else if(func_name == "INTEGRATE" && expression.args.size() == 1)
     {

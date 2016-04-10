@@ -146,6 +146,15 @@ namespace dmpl
     return strtod(dynamic_cast<const DoubleExpr &>(*this).data.c_str(), NULL);
   }
 
+  //a string constant expression
+  class StringExpr : public Expression
+  {
+  public:
+    std::string data;
+    StringExpr(const std::string &s) : data(s) {}
+    std::string toString() const { return data; }
+  };
+
   //an lvalue expression
   class LvalExpr : public Expression
   {

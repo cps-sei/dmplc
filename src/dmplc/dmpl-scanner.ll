@@ -150,7 +150,8 @@ extern "C" int yywrap() { return 1; }
 "NAN"                       SAVE_TOKEN; return TDOUBLE;
 [0-9]+\.[0-9]*              SAVE_TOKEN; return TDOUBLE;
 [0-9]+                      SAVE_TOKEN; return TINTEGER;
-  /* [a-zA-Z_][a-zA-Z0-9_]*(::[a-zA-Z_][a-zA-Z0-9_]*)+  SAVE_TOKEN; return TNAMESPACE; */
+\"(\\.|[^"])*\"             SAVE_TOKEN; return TSTRING;
+ /* [a-zA-Z_][a-zA-Z0-9_]*(::[a-zA-Z_][a-zA-Z0-9_]*)+  SAVE_TOKEN; return TNAMESPACE; */
 [a-zA-Z_][a-zA-Z0-9_]*  {
                           /** substitute constant definitions */
                           /*std::map<std::string,std::string>::const_iterator it = 

@@ -98,8 +98,17 @@ std::string thunk;
 void check_const_valid(const std::string &name)
 {
   if(name == "X" || name == "Y" || name == "TopY" || name == "LeftX" ||
+     name == "id" || name == "ASSERT" || name == "ASSUME" ||
+     name == "EXIT" || name == "PRINT" ||
      name == "BottomY" || name == "RightX" || name == "TopZ" || name == "BottomZ")
-    throw std::runtime_error("ERROR: cannot define " + name + " as a constant. It is a platform parameter!!");
+    throw std::runtime_error("ERROR: cannot define reserved keyword " + name + " as a constant!!");
+}
+
+/** check if a function call is legal */
+void check_call_valid(const std::string &funcName, const dmpl::ExprList &args)
+{
+  if(funcName == "PRINT" && args.empty())
+    throw std::runtime_error("ERROR: PRINT() must be called with at least one argument!!");
 }
 
 }
@@ -154,7 +163,7 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
 /* Define our terminal symbols (tokens). This should match our
    dmpl-scanner.ll lex file. We also define the node type they
    represent.  */
-%token <string> TIDENTIFIER TINTEGER TDOUBLE TATTRIBUTE
+%token <string> TIDENTIFIER TINTEGER TSTRING TDOUBLE TATTRIBUTE
 %token <string> TIF TREQUIRE TEXPECT TATEND TATLEAST
 %token <token> TSEMICOLON TCONST TNODE TROLE TINPUT
 %token <token> TGLOBAL TLOCAL TGROUP TALIAS TTARGET TTHUNK TID
@@ -175,7 +184,7 @@ void apply_fn_decors(dmpl::Func func, std::list<int> decors)
    we call an ident (defined by union type ident) we are really
    calling an (NIdentifier*). It makes the compiler happy.
  */
-%type <string> int_const double_const
+%type <string> int_const double_const string_const
 %type <token> program constant
 %type <role> role role_no_attr role_body
 %type <node> node_body node_no_attr node
@@ -272,6 +281,12 @@ constant : TCONST TIDENTIFIER TEQUAL int_const TSEMICOLON {
     builder->program.constDef[*$2] = *$4;
   delete $2; delete $4;
 }
+| TCONST TIDENTIFIER TEQUAL string_const TSEMICOLON {
+  check_const_valid(*$2);
+  if(builder->program.constDef.find(*$2) == builder->program.constDef.end())
+    builder->program.constDef[*$2] = *$4;
+  delete $2; delete $4;
+}
 ;
 
 int_const : TINTEGER { $$ = $1; }
@@ -282,6 +297,9 @@ int_const : TINTEGER { $$ = $1; }
 double_const : TDOUBLE { $$ = $1; }
 | TPLUS TDOUBLE { $$ = $2; }
 | TMINUS TDOUBLE { $$ = $2; *$$ = "-" + *$$; }
+;
+
+string_const : TSTRING { $$ = $1; }
 ;
 
 node : node_no_attr { $$ = $1; }
@@ -843,8 +861,11 @@ expr : lval { $$ = new dmpl::Expr($1); printExpr(*$$); }
   delete $1; printExpr(*$$); 
 }
 | TDOUBLE {
-  if (*$1 == "NAN") $$ = new dmpl::Expr(new dmpl::DoubleExpr(*$1)); 
-  else $$ = new dmpl::Expr(new dmpl::DoubleExpr(*$1));
+  $$ = new dmpl::Expr(new dmpl::DoubleExpr(*$1));
+  delete $1; printExpr(*$$);
+}
+| TSTRING {
+  $$ = new dmpl::Expr(new dmpl::StringExpr(*$1));
   delete $1; printExpr(*$$);
 }
 | TNODENUM { MAKE_NULL($$,$1); }
@@ -887,28 +908,34 @@ expr : lval { $$ = new dmpl::Expr($1); printExpr(*$$); }
 | TLPAREN expr TRPAREN { $$ = $2; }
 ;
 
-call_expr : TIDENTIFIER TLPAREN arg_list TRPAREN { 
+call_expr : TIDENTIFIER TLPAREN arg_list TRPAREN {
+  check_call_valid(*$1,*$3);
   $$ = new dmpl::Expr(new dmpl::CallExpr(dmpl::Expr(new dmpl::LvalExpr(*$1)),*$3));
   delete $1; delete $3; printExpr(*$$);
 }
 | TIDENTIFIER TDCOLON TIDENTIFIER TLPAREN arg_list TRPAREN { 
+  check_call_valid(*$1,*$5);
   $$ = new dmpl::Expr(new dmpl::CallExpr(dmpl::Expr(new dmpl::LvalExpr(*$1, *$3)),*$5));
   delete $1; delete $3; delete $5; printExpr(*$$);
 }
 | TIDENTIFIER TLPAREN arg_list TRPAREN TAT expr { 
+  check_call_valid(*$1,*$3);
   $$ = new dmpl::Expr(new dmpl::CallExpr(dmpl::Expr(new dmpl::LvalExpr(*$1, *$6)),*$3));
   delete $1; delete $3; delete $6; printExpr(*$$);
 }
 | TIDENTIFIER TDCOLON TIDENTIFIER TLPAREN arg_list TRPAREN TAT expr { 
+  check_call_valid(*$1,*$5);
   $$ = new dmpl::Expr(new dmpl::CallExpr(dmpl::Expr(new dmpl::LvalExpr(*$1, *$3, *$8)),*$5));
   delete $1; delete $3; delete $5; delete $8; printExpr(*$$);
 }
 | TIDENTIFIER TLPAREN arg_list TRPAREN TATTRIBUTE { 
+  check_call_valid(*$1,*$3);
   $$ = new dmpl::Expr(new dmpl::CallExpr(
     dmpl::Expr(new dmpl::LvalExpr(*$1, dmpl::Expr(new dmpl::LvalExpr($5->substr(1))))),*$3));
   delete $1; delete $3; delete $5; printExpr(*$$);
 }
 | TIDENTIFIER TDCOLON TIDENTIFIER TLPAREN arg_list TRPAREN TATTRIBUTE { 
+  check_call_valid(*$1,*$5);
   $$ = new dmpl::Expr(new dmpl::CallExpr(
     dmpl::Expr(new dmpl::LvalExpr(*$1, *$3, dmpl::Expr(new dmpl::LvalExpr($7->substr(1))))),*$5));
   delete $1; delete $3; delete $5; delete $7; printExpr(*$$);

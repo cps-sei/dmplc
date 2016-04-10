@@ -116,6 +116,10 @@ namespace dmpl
        **/
       virtual void exitDouble(DoubleExpr &expr);
 
+      //-- visitors for string expressions
+      virtual bool enterString(StringExpr &expr);
+      virtual void exitString(StringExpr &expr);
+
       /**
        * Returns whether or not to visit a variable's subfields first
        * @param  expr   the variable expression
