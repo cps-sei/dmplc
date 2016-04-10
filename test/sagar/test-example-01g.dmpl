@@ -158,6 +158,7 @@ node uav
     if (state == NEXT) {
       //compute next point on route
       if(x == xf && y == yf) return;
+      EXIT(2);
       NEXT_XY();
       state = REQUEST;
     } else if (state == REQUEST) {

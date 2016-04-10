@@ -175,11 +175,13 @@ done
 test_seq test-example-01c.dmpl uav:Uav1:2:uav:Uav2:1
 test_seq test-example-05b.dmpl uav:Leader:1:uav:Protector:4
 test_seq test-example-01f.dmpl uav:Uav1:1:uav:Uav2:1
+test_seq test-example-01g.dmpl uav:Uav:3
 
 #inductive sequentialization tests
 test_seq_ind test-example-01c.dmpl uav:Uav1:2:uav:Uav2:1
 test_seq_ind test-example-05b.dmpl uav:Leader:1:uav:Protector:4
 test_seq_ind test-example-01f.dmpl uav:Uav1:1:uav:Uav2:1
+test_seq_ind test-example-01g.dmpl uav:Uav:3
 
 #verification tests
 test_verif ../../docs/tutorial/example-01.dmpl "" uav:Uav:2 SUCCESSFUL

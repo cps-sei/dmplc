@@ -1,0 +1,1702 @@
+//-- DMPLC Version: 0.2
+//-- DMPLC Command Line: dmplc --cube-grid 10 --roles uav:Uav:3 -r 0 -si -rp NoCollision -o test-example-01g.ind.c test-example-01g.dmpl
+
+/************* external functions ***********/
+
+/************* constants ***********/
+#define MOVE 4
+#define MSG_MARKER "message: "
+#define NEXT 1
+#define REQUEST 2
+#define WAITING 3
+#define X 10
+#define Y 10
+#define Z 10
+#define false 0
+#define true 1
+
+/************* global variables ***********/
+_Bool lock_f_0[10][10];
+_Bool lock_f_1[10][10];
+_Bool lock_f_2[10][10];
+_Bool lock_i_0[10][10];
+_Bool lock_i_1[10][10];
+_Bool lock_i_2[10][10];
+unsigned char state_0;
+unsigned char state_1;
+unsigned char state_2;
+unsigned char x_0;
+unsigned char x_1;
+unsigned char x_2;
+unsigned char xf_0;
+unsigned char xf_1;
+unsigned char xf_2;
+unsigned char xp_0;
+unsigned char xp_1;
+unsigned char xp_2;
+unsigned char y_0;
+unsigned char y_1;
+unsigned char y_2;
+unsigned char yf_0;
+unsigned char yf_1;
+unsigned char yf_2;
+unsigned char yp_0;
+unsigned char yp_1;
+unsigned char yp_2;
+
+/************* function declarations ***********/
+void __ASSUME();
+void __HAVOC();
+void __INIT();
+void __INIT_lock_0();
+void __INIT_lock_1();
+void __INIT_lock_2();
+void __INIT_state_0();
+void __INIT_state_1();
+void __INIT_state_2();
+int __INIT_x_0();
+int __INIT_x_1();
+int __INIT_x_2();
+int __INIT_xf_0();
+int __INIT_xf_1();
+int __INIT_xf_2();
+void __INIT_xp_0();
+void __INIT_xp_1();
+void __INIT_xp_2();
+int __INIT_y_0();
+int __INIT_y_1();
+int __INIT_y_2();
+int __INIT_yf_0();
+int __INIT_yf_1();
+int __INIT_yf_2();
+void __INIT_yp_0();
+void __INIT_yp_1();
+void __INIT_yp_2();
+_Bool __SAFETY_NoCollision_bwd();
+_Bool __SAFETY_NoCollision_fwd();
+void __SAFETY_bwd();
+void __SAFETY_fwd();
+int main();
+extern int my_sleep(int seconds);
+_Bool nondet_lock_i_0();
+_Bool nondet_lock_i_1();
+_Bool nondet_lock_i_2();
+unsigned char nondet_state_0();
+unsigned char nondet_state_1();
+unsigned char nondet_state_2();
+unsigned char nondet_x();
+unsigned char nondet_x_0();
+unsigned char nondet_x_1();
+unsigned char nondet_x_2();
+unsigned char nondet_xf();
+unsigned char nondet_xf_0();
+unsigned char nondet_xf_1();
+unsigned char nondet_xf_2();
+unsigned char nondet_xp_0();
+unsigned char nondet_xp_1();
+unsigned char nondet_xp_2();
+unsigned char nondet_y();
+unsigned char nondet_y_0();
+unsigned char nondet_y_1();
+unsigned char nondet_y_2();
+unsigned char nondet_yf();
+unsigned char nondet_yf_0();
+unsigned char nondet_yf_1();
+unsigned char nondet_yf_2();
+unsigned char nondet_yp_0();
+unsigned char nondet_yp_1();
+unsigned char nondet_yp_2();
+extern void print_int(int i);
+extern void print_state(int XX,int YY,int my_id,int x,int y,int xf,int yf);
+void round_bwd_copier();
+void round_fwd_copier();
+void uav__COLLISION_AVOIDANCE_0_fwd();
+void uav__COLLISION_AVOIDANCE_1_fwd();
+void uav__COLLISION_AVOIDANCE_2_fwd();
+void uav__NEXT_XY_0_fwd();
+void uav__NEXT_XY_1_fwd();
+void uav__NEXT_XY_2_fwd();
+
+/************* function definitions ***********/
+void __ASSUME()
+{
+  __CPROVER_assume(__SAFETY_NoCollision_fwd());
+}
+
+void __HAVOC()
+{
+  state_0 = nondet_state_0();
+  x_0 = nondet_x_0();
+  y_0 = nondet_y_0();
+  xp_0 = nondet_xp_0();
+  yp_0 = nondet_yp_0();
+  xf_0 = nondet_xf_0();
+  yf_0 = nondet_yf_0();
+  lock_i_0[0][0] = nondet_lock_i_0();
+  lock_i_0[0][1] = nondet_lock_i_0();
+  lock_i_0[0][2] = nondet_lock_i_0();
+  lock_i_0[0][3] = nondet_lock_i_0();
+  lock_i_0[0][4] = nondet_lock_i_0();
+  lock_i_0[0][5] = nondet_lock_i_0();
+  lock_i_0[0][6] = nondet_lock_i_0();
+  lock_i_0[0][7] = nondet_lock_i_0();
+  lock_i_0[0][8] = nondet_lock_i_0();
+  lock_i_0[0][9] = nondet_lock_i_0();
+  lock_i_0[1][0] = nondet_lock_i_0();
+  lock_i_0[1][1] = nondet_lock_i_0();
+  lock_i_0[1][2] = nondet_lock_i_0();
+  lock_i_0[1][3] = nondet_lock_i_0();
+  lock_i_0[1][4] = nondet_lock_i_0();
+  lock_i_0[1][5] = nondet_lock_i_0();
+  lock_i_0[1][6] = nondet_lock_i_0();
+  lock_i_0[1][7] = nondet_lock_i_0();
+  lock_i_0[1][8] = nondet_lock_i_0();
+  lock_i_0[1][9] = nondet_lock_i_0();
+  lock_i_0[2][0] = nondet_lock_i_0();
+  lock_i_0[2][1] = nondet_lock_i_0();
+  lock_i_0[2][2] = nondet_lock_i_0();
+  lock_i_0[2][3] = nondet_lock_i_0();
+  lock_i_0[2][4] = nondet_lock_i_0();
+  lock_i_0[2][5] = nondet_lock_i_0();
+  lock_i_0[2][6] = nondet_lock_i_0();
+  lock_i_0[2][7] = nondet_lock_i_0();
+  lock_i_0[2][8] = nondet_lock_i_0();
+  lock_i_0[2][9] = nondet_lock_i_0();
+  lock_i_0[3][0] = nondet_lock_i_0();
+  lock_i_0[3][1] = nondet_lock_i_0();
+  lock_i_0[3][2] = nondet_lock_i_0();
+  lock_i_0[3][3] = nondet_lock_i_0();
+  lock_i_0[3][4] = nondet_lock_i_0();
+  lock_i_0[3][5] = nondet_lock_i_0();
+  lock_i_0[3][6] = nondet_lock_i_0();
+  lock_i_0[3][7] = nondet_lock_i_0();
+  lock_i_0[3][8] = nondet_lock_i_0();
+  lock_i_0[3][9] = nondet_lock_i_0();
+  lock_i_0[4][0] = nondet_lock_i_0();
+  lock_i_0[4][1] = nondet_lock_i_0();
+  lock_i_0[4][2] = nondet_lock_i_0();
+  lock_i_0[4][3] = nondet_lock_i_0();
+  lock_i_0[4][4] = nondet_lock_i_0();
+  lock_i_0[4][5] = nondet_lock_i_0();
+  lock_i_0[4][6] = nondet_lock_i_0();
+  lock_i_0[4][7] = nondet_lock_i_0();
+  lock_i_0[4][8] = nondet_lock_i_0();
+  lock_i_0[4][9] = nondet_lock_i_0();
+  lock_i_0[5][0] = nondet_lock_i_0();
+  lock_i_0[5][1] = nondet_lock_i_0();
+  lock_i_0[5][2] = nondet_lock_i_0();
+  lock_i_0[5][3] = nondet_lock_i_0();
+  lock_i_0[5][4] = nondet_lock_i_0();
+  lock_i_0[5][5] = nondet_lock_i_0();
+  lock_i_0[5][6] = nondet_lock_i_0();
+  lock_i_0[5][7] = nondet_lock_i_0();
+  lock_i_0[5][8] = nondet_lock_i_0();
+  lock_i_0[5][9] = nondet_lock_i_0();
+  lock_i_0[6][0] = nondet_lock_i_0();
+  lock_i_0[6][1] = nondet_lock_i_0();
+  lock_i_0[6][2] = nondet_lock_i_0();
+  lock_i_0[6][3] = nondet_lock_i_0();
+  lock_i_0[6][4] = nondet_lock_i_0();
+  lock_i_0[6][5] = nondet_lock_i_0();
+  lock_i_0[6][6] = nondet_lock_i_0();
+  lock_i_0[6][7] = nondet_lock_i_0();
+  lock_i_0[6][8] = nondet_lock_i_0();
+  lock_i_0[6][9] = nondet_lock_i_0();
+  lock_i_0[7][0] = nondet_lock_i_0();
+  lock_i_0[7][1] = nondet_lock_i_0();
+  lock_i_0[7][2] = nondet_lock_i_0();
+  lock_i_0[7][3] = nondet_lock_i_0();
+  lock_i_0[7][4] = nondet_lock_i_0();
+  lock_i_0[7][5] = nondet_lock_i_0();
+  lock_i_0[7][6] = nondet_lock_i_0();
+  lock_i_0[7][7] = nondet_lock_i_0();
+  lock_i_0[7][8] = nondet_lock_i_0();
+  lock_i_0[7][9] = nondet_lock_i_0();
+  lock_i_0[8][0] = nondet_lock_i_0();
+  lock_i_0[8][1] = nondet_lock_i_0();
+  lock_i_0[8][2] = nondet_lock_i_0();
+  lock_i_0[8][3] = nondet_lock_i_0();
+  lock_i_0[8][4] = nondet_lock_i_0();
+  lock_i_0[8][5] = nondet_lock_i_0();
+  lock_i_0[8][6] = nondet_lock_i_0();
+  lock_i_0[8][7] = nondet_lock_i_0();
+  lock_i_0[8][8] = nondet_lock_i_0();
+  lock_i_0[8][9] = nondet_lock_i_0();
+  lock_i_0[9][0] = nondet_lock_i_0();
+  lock_i_0[9][1] = nondet_lock_i_0();
+  lock_i_0[9][2] = nondet_lock_i_0();
+  lock_i_0[9][3] = nondet_lock_i_0();
+  lock_i_0[9][4] = nondet_lock_i_0();
+  lock_i_0[9][5] = nondet_lock_i_0();
+  lock_i_0[9][6] = nondet_lock_i_0();
+  lock_i_0[9][7] = nondet_lock_i_0();
+  lock_i_0[9][8] = nondet_lock_i_0();
+  lock_i_0[9][9] = nondet_lock_i_0();
+  state_1 = nondet_state_1();
+  x_1 = nondet_x_1();
+  y_1 = nondet_y_1();
+  xp_1 = nondet_xp_1();
+  yp_1 = nondet_yp_1();
+  xf_1 = nondet_xf_1();
+  yf_1 = nondet_yf_1();
+  lock_i_1[0][0] = nondet_lock_i_1();
+  lock_i_1[0][1] = nondet_lock_i_1();
+  lock_i_1[0][2] = nondet_lock_i_1();
+  lock_i_1[0][3] = nondet_lock_i_1();
+  lock_i_1[0][4] = nondet_lock_i_1();
+  lock_i_1[0][5] = nondet_lock_i_1();
+  lock_i_1[0][6] = nondet_lock_i_1();
+  lock_i_1[0][7] = nondet_lock_i_1();
+  lock_i_1[0][8] = nondet_lock_i_1();
+  lock_i_1[0][9] = nondet_lock_i_1();
+  lock_i_1[1][0] = nondet_lock_i_1();
+  lock_i_1[1][1] = nondet_lock_i_1();
+  lock_i_1[1][2] = nondet_lock_i_1();
+  lock_i_1[1][3] = nondet_lock_i_1();
+  lock_i_1[1][4] = nondet_lock_i_1();
+  lock_i_1[1][5] = nondet_lock_i_1();
+  lock_i_1[1][6] = nondet_lock_i_1();
+  lock_i_1[1][7] = nondet_lock_i_1();
+  lock_i_1[1][8] = nondet_lock_i_1();
+  lock_i_1[1][9] = nondet_lock_i_1();
+  lock_i_1[2][0] = nondet_lock_i_1();
+  lock_i_1[2][1] = nondet_lock_i_1();
+  lock_i_1[2][2] = nondet_lock_i_1();
+  lock_i_1[2][3] = nondet_lock_i_1();
+  lock_i_1[2][4] = nondet_lock_i_1();
+  lock_i_1[2][5] = nondet_lock_i_1();
+  lock_i_1[2][6] = nondet_lock_i_1();
+  lock_i_1[2][7] = nondet_lock_i_1();
+  lock_i_1[2][8] = nondet_lock_i_1();
+  lock_i_1[2][9] = nondet_lock_i_1();
+  lock_i_1[3][0] = nondet_lock_i_1();
+  lock_i_1[3][1] = nondet_lock_i_1();
+  lock_i_1[3][2] = nondet_lock_i_1();
+  lock_i_1[3][3] = nondet_lock_i_1();
+  lock_i_1[3][4] = nondet_lock_i_1();
+  lock_i_1[3][5] = nondet_lock_i_1();
+  lock_i_1[3][6] = nondet_lock_i_1();
+  lock_i_1[3][7] = nondet_lock_i_1();
+  lock_i_1[3][8] = nondet_lock_i_1();
+  lock_i_1[3][9] = nondet_lock_i_1();
+  lock_i_1[4][0] = nondet_lock_i_1();
+  lock_i_1[4][1] = nondet_lock_i_1();
+  lock_i_1[4][2] = nondet_lock_i_1();
+  lock_i_1[4][3] = nondet_lock_i_1();
+  lock_i_1[4][4] = nondet_lock_i_1();
+  lock_i_1[4][5] = nondet_lock_i_1();
+  lock_i_1[4][6] = nondet_lock_i_1();
+  lock_i_1[4][7] = nondet_lock_i_1();
+  lock_i_1[4][8] = nondet_lock_i_1();
+  lock_i_1[4][9] = nondet_lock_i_1();
+  lock_i_1[5][0] = nondet_lock_i_1();
+  lock_i_1[5][1] = nondet_lock_i_1();
+  lock_i_1[5][2] = nondet_lock_i_1();
+  lock_i_1[5][3] = nondet_lock_i_1();
+  lock_i_1[5][4] = nondet_lock_i_1();
+  lock_i_1[5][5] = nondet_lock_i_1();
+  lock_i_1[5][6] = nondet_lock_i_1();
+  lock_i_1[5][7] = nondet_lock_i_1();
+  lock_i_1[5][8] = nondet_lock_i_1();
+  lock_i_1[5][9] = nondet_lock_i_1();
+  lock_i_1[6][0] = nondet_lock_i_1();
+  lock_i_1[6][1] = nondet_lock_i_1();
+  lock_i_1[6][2] = nondet_lock_i_1();
+  lock_i_1[6][3] = nondet_lock_i_1();
+  lock_i_1[6][4] = nondet_lock_i_1();
+  lock_i_1[6][5] = nondet_lock_i_1();
+  lock_i_1[6][6] = nondet_lock_i_1();
+  lock_i_1[6][7] = nondet_lock_i_1();
+  lock_i_1[6][8] = nondet_lock_i_1();
+  lock_i_1[6][9] = nondet_lock_i_1();
+  lock_i_1[7][0] = nondet_lock_i_1();
+  lock_i_1[7][1] = nondet_lock_i_1();
+  lock_i_1[7][2] = nondet_lock_i_1();
+  lock_i_1[7][3] = nondet_lock_i_1();
+  lock_i_1[7][4] = nondet_lock_i_1();
+  lock_i_1[7][5] = nondet_lock_i_1();
+  lock_i_1[7][6] = nondet_lock_i_1();
+  lock_i_1[7][7] = nondet_lock_i_1();
+  lock_i_1[7][8] = nondet_lock_i_1();
+  lock_i_1[7][9] = nondet_lock_i_1();
+  lock_i_1[8][0] = nondet_lock_i_1();
+  lock_i_1[8][1] = nondet_lock_i_1();
+  lock_i_1[8][2] = nondet_lock_i_1();
+  lock_i_1[8][3] = nondet_lock_i_1();
+  lock_i_1[8][4] = nondet_lock_i_1();
+  lock_i_1[8][5] = nondet_lock_i_1();
+  lock_i_1[8][6] = nondet_lock_i_1();
+  lock_i_1[8][7] = nondet_lock_i_1();
+  lock_i_1[8][8] = nondet_lock_i_1();
+  lock_i_1[8][9] = nondet_lock_i_1();
+  lock_i_1[9][0] = nondet_lock_i_1();
+  lock_i_1[9][1] = nondet_lock_i_1();
+  lock_i_1[9][2] = nondet_lock_i_1();
+  lock_i_1[9][3] = nondet_lock_i_1();
+  lock_i_1[9][4] = nondet_lock_i_1();
+  lock_i_1[9][5] = nondet_lock_i_1();
+  lock_i_1[9][6] = nondet_lock_i_1();
+  lock_i_1[9][7] = nondet_lock_i_1();
+  lock_i_1[9][8] = nondet_lock_i_1();
+  lock_i_1[9][9] = nondet_lock_i_1();
+  state_2 = nondet_state_2();
+  x_2 = nondet_x_2();
+  y_2 = nondet_y_2();
+  xp_2 = nondet_xp_2();
+  yp_2 = nondet_yp_2();
+  xf_2 = nondet_xf_2();
+  yf_2 = nondet_yf_2();
+  lock_i_2[0][0] = nondet_lock_i_2();
+  lock_i_2[0][1] = nondet_lock_i_2();
+  lock_i_2[0][2] = nondet_lock_i_2();
+  lock_i_2[0][3] = nondet_lock_i_2();
+  lock_i_2[0][4] = nondet_lock_i_2();
+  lock_i_2[0][5] = nondet_lock_i_2();
+  lock_i_2[0][6] = nondet_lock_i_2();
+  lock_i_2[0][7] = nondet_lock_i_2();
+  lock_i_2[0][8] = nondet_lock_i_2();
+  lock_i_2[0][9] = nondet_lock_i_2();
+  lock_i_2[1][0] = nondet_lock_i_2();
+  lock_i_2[1][1] = nondet_lock_i_2();
+  lock_i_2[1][2] = nondet_lock_i_2();
+  lock_i_2[1][3] = nondet_lock_i_2();
+  lock_i_2[1][4] = nondet_lock_i_2();
+  lock_i_2[1][5] = nondet_lock_i_2();
+  lock_i_2[1][6] = nondet_lock_i_2();
+  lock_i_2[1][7] = nondet_lock_i_2();
+  lock_i_2[1][8] = nondet_lock_i_2();
+  lock_i_2[1][9] = nondet_lock_i_2();
+  lock_i_2[2][0] = nondet_lock_i_2();
+  lock_i_2[2][1] = nondet_lock_i_2();
+  lock_i_2[2][2] = nondet_lock_i_2();
+  lock_i_2[2][3] = nondet_lock_i_2();
+  lock_i_2[2][4] = nondet_lock_i_2();
+  lock_i_2[2][5] = nondet_lock_i_2();
+  lock_i_2[2][6] = nondet_lock_i_2();
+  lock_i_2[2][7] = nondet_lock_i_2();
+  lock_i_2[2][8] = nondet_lock_i_2();
+  lock_i_2[2][9] = nondet_lock_i_2();
+  lock_i_2[3][0] = nondet_lock_i_2();
+  lock_i_2[3][1] = nondet_lock_i_2();
+  lock_i_2[3][2] = nondet_lock_i_2();
+  lock_i_2[3][3] = nondet_lock_i_2();
+  lock_i_2[3][4] = nondet_lock_i_2();
+  lock_i_2[3][5] = nondet_lock_i_2();
+  lock_i_2[3][6] = nondet_lock_i_2();
+  lock_i_2[3][7] = nondet_lock_i_2();
+  lock_i_2[3][8] = nondet_lock_i_2();
+  lock_i_2[3][9] = nondet_lock_i_2();
+  lock_i_2[4][0] = nondet_lock_i_2();
+  lock_i_2[4][1] = nondet_lock_i_2();
+  lock_i_2[4][2] = nondet_lock_i_2();
+  lock_i_2[4][3] = nondet_lock_i_2();
+  lock_i_2[4][4] = nondet_lock_i_2();
+  lock_i_2[4][5] = nondet_lock_i_2();
+  lock_i_2[4][6] = nondet_lock_i_2();
+  lock_i_2[4][7] = nondet_lock_i_2();
+  lock_i_2[4][8] = nondet_lock_i_2();
+  lock_i_2[4][9] = nondet_lock_i_2();
+  lock_i_2[5][0] = nondet_lock_i_2();
+  lock_i_2[5][1] = nondet_lock_i_2();
+  lock_i_2[5][2] = nondet_lock_i_2();
+  lock_i_2[5][3] = nondet_lock_i_2();
+  lock_i_2[5][4] = nondet_lock_i_2();
+  lock_i_2[5][5] = nondet_lock_i_2();
+  lock_i_2[5][6] = nondet_lock_i_2();
+  lock_i_2[5][7] = nondet_lock_i_2();
+  lock_i_2[5][8] = nondet_lock_i_2();
+  lock_i_2[5][9] = nondet_lock_i_2();
+  lock_i_2[6][0] = nondet_lock_i_2();
+  lock_i_2[6][1] = nondet_lock_i_2();
+  lock_i_2[6][2] = nondet_lock_i_2();
+  lock_i_2[6][3] = nondet_lock_i_2();
+  lock_i_2[6][4] = nondet_lock_i_2();
+  lock_i_2[6][5] = nondet_lock_i_2();
+  lock_i_2[6][6] = nondet_lock_i_2();
+  lock_i_2[6][7] = nondet_lock_i_2();
+  lock_i_2[6][8] = nondet_lock_i_2();
+  lock_i_2[6][9] = nondet_lock_i_2();
+  lock_i_2[7][0] = nondet_lock_i_2();
+  lock_i_2[7][1] = nondet_lock_i_2();
+  lock_i_2[7][2] = nondet_lock_i_2();
+  lock_i_2[7][3] = nondet_lock_i_2();
+  lock_i_2[7][4] = nondet_lock_i_2();
+  lock_i_2[7][5] = nondet_lock_i_2();
+  lock_i_2[7][6] = nondet_lock_i_2();
+  lock_i_2[7][7] = nondet_lock_i_2();
+  lock_i_2[7][8] = nondet_lock_i_2();
+  lock_i_2[7][9] = nondet_lock_i_2();
+  lock_i_2[8][0] = nondet_lock_i_2();
+  lock_i_2[8][1] = nondet_lock_i_2();
+  lock_i_2[8][2] = nondet_lock_i_2();
+  lock_i_2[8][3] = nondet_lock_i_2();
+  lock_i_2[8][4] = nondet_lock_i_2();
+  lock_i_2[8][5] = nondet_lock_i_2();
+  lock_i_2[8][6] = nondet_lock_i_2();
+  lock_i_2[8][7] = nondet_lock_i_2();
+  lock_i_2[8][8] = nondet_lock_i_2();
+  lock_i_2[8][9] = nondet_lock_i_2();
+  lock_i_2[9][0] = nondet_lock_i_2();
+  lock_i_2[9][1] = nondet_lock_i_2();
+  lock_i_2[9][2] = nondet_lock_i_2();
+  lock_i_2[9][3] = nondet_lock_i_2();
+  lock_i_2[9][4] = nondet_lock_i_2();
+  lock_i_2[9][5] = nondet_lock_i_2();
+  lock_i_2[9][6] = nondet_lock_i_2();
+  lock_i_2[9][7] = nondet_lock_i_2();
+  lock_i_2[9][8] = nondet_lock_i_2();
+  lock_i_2[9][9] = nondet_lock_i_2();
+}
+
+void __INIT()
+{
+  __CPROVER_assume(__INIT_x_0());
+  __CPROVER_assume(__INIT_y_0());
+  __INIT_lock_0();
+  __INIT_state_0();
+  __CPROVER_assume(__INIT_xf_0());
+  __INIT_xp_0();
+  __CPROVER_assume(__INIT_yf_0());
+  __INIT_yp_0();
+  __CPROVER_assume(__INIT_x_1());
+  __CPROVER_assume(__INIT_y_1());
+  __INIT_lock_1();
+  __INIT_state_1();
+  __CPROVER_assume(__INIT_xf_1());
+  __INIT_xp_1();
+  __CPROVER_assume(__INIT_yf_1());
+  __INIT_yp_1();
+  __CPROVER_assume(__INIT_x_2());
+  __CPROVER_assume(__INIT_y_2());
+  __INIT_lock_2();
+  __INIT_state_2();
+  __CPROVER_assume(__INIT_xf_2());
+  __INIT_xp_2();
+  __CPROVER_assume(__INIT_yf_2());
+  __INIT_yp_2();
+  __CPROVER_assume(__SAFETY_NoCollision_fwd());
+}
+
+void __INIT_lock_0()
+{
+  lock_i_0[x_0][y_0] = 1;
+}
+
+void __INIT_lock_1()
+{
+  lock_i_1[x_1][y_1] = 1;
+}
+
+void __INIT_lock_2()
+{
+  lock_i_2[x_2][y_2] = 1;
+}
+
+void __INIT_state_0()
+{
+  state_0 = NEXT;
+}
+
+void __INIT_state_1()
+{
+  state_1 = NEXT;
+}
+
+void __INIT_state_2()
+{
+  state_2 = NEXT;
+}
+
+int __INIT_x_0()
+{
+  x_0 = nondet_x();
+  return ((0)<=(x_0))&&((x_0)<(X));
+}
+
+int __INIT_x_1()
+{
+  x_1 = nondet_x();
+  return ((0)<=(x_1))&&((x_1)<(X));
+}
+
+int __INIT_x_2()
+{
+  x_2 = nondet_x();
+  return ((0)<=(x_2))&&((x_2)<(X));
+}
+
+int __INIT_xf_0()
+{
+  xf_0 = nondet_xf();
+  return ((0)<=(xf_0))&&((xf_0)<(X));
+}
+
+int __INIT_xf_1()
+{
+  xf_1 = nondet_xf();
+  return ((0)<=(xf_1))&&((xf_1)<(X));
+}
+
+int __INIT_xf_2()
+{
+  xf_2 = nondet_xf();
+  return ((0)<=(xf_2))&&((xf_2)<(X));
+}
+
+void __INIT_xp_0()
+{
+  xp_0 = x_0;
+}
+
+void __INIT_xp_1()
+{
+  xp_1 = x_1;
+}
+
+void __INIT_xp_2()
+{
+  xp_2 = x_2;
+}
+
+int __INIT_y_0()
+{
+  y_0 = nondet_y();
+  return ((0)<=(y_0))&&((y_0)<(Y));
+}
+
+int __INIT_y_1()
+{
+  y_1 = nondet_y();
+  return ((0)<=(y_1))&&((y_1)<(Y));
+}
+
+int __INIT_y_2()
+{
+  y_2 = nondet_y();
+  return ((0)<=(y_2))&&((y_2)<(Y));
+}
+
+int __INIT_yf_0()
+{
+  yf_0 = nondet_yf();
+  return ((0)<=(yf_0))&&((yf_0)<(Y));
+}
+
+int __INIT_yf_1()
+{
+  yf_1 = nondet_yf();
+  return ((0)<=(yf_1))&&((yf_1)<(Y));
+}
+
+int __INIT_yf_2()
+{
+  yf_2 = nondet_yf();
+  return ((0)<=(yf_2))&&((yf_2)<(Y));
+}
+
+void __INIT_yp_0()
+{
+  yp_0 = y_0;
+}
+
+void __INIT_yp_1()
+{
+  yp_1 = y_1;
+}
+
+void __INIT_yp_2()
+{
+  yp_2 = y_2;
+}
+
+_Bool __SAFETY_NoCollision_bwd()
+{
+  {
+    {
+      if (((x_0)==(x_1))&&((y_0)==(y_1)))
+        return false;
+    }
+    {
+      if (((x_0)==(x_2))&&((y_0)==(y_2)))
+        return false;
+    }
+    {
+      if (((x_1)==(x_2))&&((y_1)==(y_2)))
+        return false;
+    }
+  }
+  {
+    {
+      if (!(((state_0)>=(NEXT))&&((state_0)<=(MOVE))))
+        return false;
+      if (!(((x_0)>=(0))&&((x_0)<(X))))
+        return false;
+      if (!(((y_0)>=(0))&&((y_0)<(Y))))
+        return false;
+      if (!(((xf_0)>=(0))&&((xf_0)<(X))))
+        return false;
+      if (!(((yf_0)>=(0))&&((yf_0)<(Y))))
+        return false;
+      if (!(((xp_0)>=(0))&&((xp_0)<(X))))
+        return false;
+      if (!(((yp_0)>=(0))&&((yp_0)<(Y))))
+        return false;
+      if (!((((state_0)==(NEXT))||((x_0)!=(xp_0)))||((y_0)!=(yp_0))))
+        return false;
+      if (!((((((state_0)!=(NEXT))&&((state_0)!=(REQUEST)))&&((state_0)!=(WAITING)))&&((state_0)!=(MOVE)))||(lock_f_0[x_0][y_0])))
+        return false;
+      if (!(((((state_0)!=(NEXT))&&((state_0)!=(WAITING)))&&((state_0)!=(MOVE)))||((lock_f_0[x_0][y_0])&&(lock_f_0[xp_0][yp_0]))))
+        return false;
+      if (!(((state_0)==(NEXT))||((((x_0)==((xp_0)-(1)))||((x_0)==((xp_0)+(1))))^(((y_0)==((yp_0)-(1)))||((y_0)==((yp_0)+(1)))))))
+        return false;
+    }
+    {
+      if (!(((state_1)>=(NEXT))&&((state_1)<=(MOVE))))
+        return false;
+      if (!(((x_1)>=(0))&&((x_1)<(X))))
+        return false;
+      if (!(((y_1)>=(0))&&((y_1)<(Y))))
+        return false;
+      if (!(((xf_1)>=(0))&&((xf_1)<(X))))
+        return false;
+      if (!(((yf_1)>=(0))&&((yf_1)<(Y))))
+        return false;
+      if (!(((xp_1)>=(0))&&((xp_1)<(X))))
+        return false;
+      if (!(((yp_1)>=(0))&&((yp_1)<(Y))))
+        return false;
+      if (!((((state_1)==(NEXT))||((x_1)!=(xp_1)))||((y_1)!=(yp_1))))
+        return false;
+      if (!((((((state_1)!=(NEXT))&&((state_1)!=(REQUEST)))&&((state_1)!=(WAITING)))&&((state_1)!=(MOVE)))||(lock_f_1[x_1][y_1])))
+        return false;
+      if (!(((((state_1)!=(NEXT))&&((state_1)!=(WAITING)))&&((state_1)!=(MOVE)))||((lock_f_1[x_1][y_1])&&(lock_f_1[xp_1][yp_1]))))
+        return false;
+      if (!(((state_1)==(NEXT))||((((x_1)==((xp_1)-(1)))||((x_1)==((xp_1)+(1))))^(((y_1)==((yp_1)-(1)))||((y_1)==((yp_1)+(1)))))))
+        return false;
+    }
+    {
+      if (!(((state_2)>=(NEXT))&&((state_2)<=(MOVE))))
+        return false;
+      if (!(((x_2)>=(0))&&((x_2)<(X))))
+        return false;
+      if (!(((y_2)>=(0))&&((y_2)<(Y))))
+        return false;
+      if (!(((xf_2)>=(0))&&((xf_2)<(X))))
+        return false;
+      if (!(((yf_2)>=(0))&&((yf_2)<(Y))))
+        return false;
+      if (!(((xp_2)>=(0))&&((xp_2)<(X))))
+        return false;
+      if (!(((yp_2)>=(0))&&((yp_2)<(Y))))
+        return false;
+      if (!((((state_2)==(NEXT))||((x_2)!=(xp_2)))||((y_2)!=(yp_2))))
+        return false;
+      if (!((((((state_2)!=(NEXT))&&((state_2)!=(REQUEST)))&&((state_2)!=(WAITING)))&&((state_2)!=(MOVE)))||(lock_f_2[x_2][y_2])))
+        return false;
+      if (!(((((state_2)!=(NEXT))&&((state_2)!=(WAITING)))&&((state_2)!=(MOVE)))||((lock_f_2[x_2][y_2])&&(lock_f_2[xp_2][yp_2]))))
+        return false;
+      if (!(((state_2)==(NEXT))||((((x_2)==((xp_2)-(1)))||((x_2)==((xp_2)+(1))))^(((y_2)==((yp_2)-(1)))||((y_2)==((yp_2)+(1)))))))
+        return false;
+    }
+  }
+  {
+    {
+      if (!(((((((state_0)!=(NEXT))&&((state_0)!=(MOVE)))||((state_1)!=(WAITING)))||((0)>=(1)))||((xp_0)!=(xp_1)))||((yp_0)!=(yp_1))))
+        return false;
+      if (!((((state_0)!=(MOVE))||((state_1)!=(MOVE)))||((((((xp_0)!=(xp_1))||((yp_0)!=(yp_1)))&&(((xp_0)!=(x_1))||((yp_0)!=(y_1))))&&(((x_0)!=(xp_1))||((y_0)!=(yp_1))))&&(((x_0)!=(x_1))||((y_0)!=(y_1))))))
+        return false;
+      if (!(((((state_1)!=(WAITING))||((0)>=(1)))||((x_0)!=(xp_1)))||((y_0)!=(yp_1))))
+        return false;
+      if (!(((((state_1)!=(MOVE))||((x_0)!=(xp_1)))||((y_0)!=(yp_1)))&&((((state_0)!=(4))||((xp_0)!=(x_1)))||((yp_0)!=(y_1)))))
+        return false;
+      if (!(((x_0)!=(x_1))||((y_0)!=(y_1))))
+        return false;
+    }
+    {
+      if (!(((((((state_0)!=(NEXT))&&((state_0)!=(MOVE)))||((state_2)!=(WAITING)))||((0)>=(2)))||((xp_0)!=(xp_2)))||((yp_0)!=(yp_2))))
+        return false;
+      if (!((((state_0)!=(MOVE))||((state_2)!=(MOVE)))||((((((xp_0)!=(xp_2))||((yp_0)!=(yp_2)))&&(((xp_0)!=(x_2))||((yp_0)!=(y_2))))&&(((x_0)!=(xp_2))||((y_0)!=(yp_2))))&&(((x_0)!=(x_2))||((y_0)!=(y_2))))))
+        return false;
+      if (!(((((state_2)!=(WAITING))||((0)>=(2)))||((x_0)!=(xp_2)))||((y_0)!=(yp_2))))
+        return false;
+      if (!(((((state_2)!=(MOVE))||((x_0)!=(xp_2)))||((y_0)!=(yp_2)))&&((((state_0)!=(4))||((xp_0)!=(x_2)))||((yp_0)!=(y_2)))))
+        return false;
+      if (!(((x_0)!=(x_2))||((y_0)!=(y_2))))
+        return false;
+    }
+    {
+      if (!(((((((state_1)!=(NEXT))&&((state_1)!=(MOVE)))||((state_2)!=(WAITING)))||((1)>=(2)))||((xp_1)!=(xp_2)))||((yp_1)!=(yp_2))))
+        return false;
+      if (!((((state_1)!=(MOVE))||((state_2)!=(MOVE)))||((((((xp_1)!=(xp_2))||((yp_1)!=(yp_2)))&&(((xp_1)!=(x_2))||((yp_1)!=(y_2))))&&(((x_1)!=(xp_2))||((y_1)!=(yp_2))))&&(((x_1)!=(x_2))||((y_1)!=(y_2))))))
+        return false;
+      if (!(((((state_2)!=(WAITING))||((1)>=(2)))||((x_1)!=(xp_2)))||((y_1)!=(yp_2))))
+        return false;
+      if (!(((((state_2)!=(MOVE))||((x_1)!=(xp_2)))||((y_1)!=(yp_2)))&&((((state_1)!=(4))||((xp_1)!=(x_2)))||((yp_1)!=(y_2)))))
+        return false;
+      if (!(((x_1)!=(x_2))||((y_1)!=(y_2))))
+        return false;
+    }
+  }
+  return true;
+}
+
+_Bool __SAFETY_NoCollision_fwd()
+{
+  {
+    {
+      if (((x_0)==(x_1))&&((y_0)==(y_1)))
+        return false;
+    }
+    {
+      if (((x_0)==(x_2))&&((y_0)==(y_2)))
+        return false;
+    }
+    {
+      if (((x_1)==(x_2))&&((y_1)==(y_2)))
+        return false;
+    }
+  }
+  {
+    {
+      if (!(((state_0)>=(NEXT))&&((state_0)<=(MOVE))))
+        return false;
+      if (!(((x_0)>=(0))&&((x_0)<(X))))
+        return false;
+      if (!(((y_0)>=(0))&&((y_0)<(Y))))
+        return false;
+      if (!(((xf_0)>=(0))&&((xf_0)<(X))))
+        return false;
+      if (!(((yf_0)>=(0))&&((yf_0)<(Y))))
+        return false;
+      if (!(((xp_0)>=(0))&&((xp_0)<(X))))
+        return false;
+      if (!(((yp_0)>=(0))&&((yp_0)<(Y))))
+        return false;
+      if (!((((state_0)==(NEXT))||((x_0)!=(xp_0)))||((y_0)!=(yp_0))))
+        return false;
+      if (!((((((state_0)!=(NEXT))&&((state_0)!=(REQUEST)))&&((state_0)!=(WAITING)))&&((state_0)!=(MOVE)))||(lock_i_0[x_0][y_0])))
+        return false;
+      if (!(((((state_0)!=(NEXT))&&((state_0)!=(WAITING)))&&((state_0)!=(MOVE)))||((lock_i_0[x_0][y_0])&&(lock_i_0[xp_0][yp_0]))))
+        return false;
+      if (!(((state_0)==(NEXT))||((((x_0)==((xp_0)-(1)))||((x_0)==((xp_0)+(1))))^(((y_0)==((yp_0)-(1)))||((y_0)==((yp_0)+(1)))))))
+        return false;
+    }
+    {
+      if (!(((state_1)>=(NEXT))&&((state_1)<=(MOVE))))
+        return false;
+      if (!(((x_1)>=(0))&&((x_1)<(X))))
+        return false;
+      if (!(((y_1)>=(0))&&((y_1)<(Y))))
+        return false;
+      if (!(((xf_1)>=(0))&&((xf_1)<(X))))
+        return false;
+      if (!(((yf_1)>=(0))&&((yf_1)<(Y))))
+        return false;
+      if (!(((xp_1)>=(0))&&((xp_1)<(X))))
+        return false;
+      if (!(((yp_1)>=(0))&&((yp_1)<(Y))))
+        return false;
+      if (!((((state_1)==(NEXT))||((x_1)!=(xp_1)))||((y_1)!=(yp_1))))
+        return false;
+      if (!((((((state_1)!=(NEXT))&&((state_1)!=(REQUEST)))&&((state_1)!=(WAITING)))&&((state_1)!=(MOVE)))||(lock_i_1[x_1][y_1])))
+        return false;
+      if (!(((((state_1)!=(NEXT))&&((state_1)!=(WAITING)))&&((state_1)!=(MOVE)))||((lock_i_1[x_1][y_1])&&(lock_i_1[xp_1][yp_1]))))
+        return false;
+      if (!(((state_1)==(NEXT))||((((x_1)==((xp_1)-(1)))||((x_1)==((xp_1)+(1))))^(((y_1)==((yp_1)-(1)))||((y_1)==((yp_1)+(1)))))))
+        return false;
+    }
+    {
+      if (!(((state_2)>=(NEXT))&&((state_2)<=(MOVE))))
+        return false;
+      if (!(((x_2)>=(0))&&((x_2)<(X))))
+        return false;
+      if (!(((y_2)>=(0))&&((y_2)<(Y))))
+        return false;
+      if (!(((xf_2)>=(0))&&((xf_2)<(X))))
+        return false;
+      if (!(((yf_2)>=(0))&&((yf_2)<(Y))))
+        return false;
+      if (!(((xp_2)>=(0))&&((xp_2)<(X))))
+        return false;
+      if (!(((yp_2)>=(0))&&((yp_2)<(Y))))
+        return false;
+      if (!((((state_2)==(NEXT))||((x_2)!=(xp_2)))||((y_2)!=(yp_2))))
+        return false;
+      if (!((((((state_2)!=(NEXT))&&((state_2)!=(REQUEST)))&&((state_2)!=(WAITING)))&&((state_2)!=(MOVE)))||(lock_i_2[x_2][y_2])))
+        return false;
+      if (!(((((state_2)!=(NEXT))&&((state_2)!=(WAITING)))&&((state_2)!=(MOVE)))||((lock_i_2[x_2][y_2])&&(lock_i_2[xp_2][yp_2]))))
+        return false;
+      if (!(((state_2)==(NEXT))||((((x_2)==((xp_2)-(1)))||((x_2)==((xp_2)+(1))))^(((y_2)==((yp_2)-(1)))||((y_2)==((yp_2)+(1)))))))
+        return false;
+    }
+  }
+  {
+    {
+      if (!(((((((state_0)!=(NEXT))&&((state_0)!=(MOVE)))||((state_1)!=(WAITING)))||((0)>=(1)))||((xp_0)!=(xp_1)))||((yp_0)!=(yp_1))))
+        return false;
+      if (!((((state_0)!=(MOVE))||((state_1)!=(MOVE)))||((((((xp_0)!=(xp_1))||((yp_0)!=(yp_1)))&&(((xp_0)!=(x_1))||((yp_0)!=(y_1))))&&(((x_0)!=(xp_1))||((y_0)!=(yp_1))))&&(((x_0)!=(x_1))||((y_0)!=(y_1))))))
+        return false;
+      if (!(((((state_1)!=(WAITING))||((0)>=(1)))||((x_0)!=(xp_1)))||((y_0)!=(yp_1))))
+        return false;
+      if (!(((((state_1)!=(MOVE))||((x_0)!=(xp_1)))||((y_0)!=(yp_1)))&&((((state_0)!=(4))||((xp_0)!=(x_1)))||((yp_0)!=(y_1)))))
+        return false;
+      if (!(((x_0)!=(x_1))||((y_0)!=(y_1))))
+        return false;
+    }
+    {
+      if (!(((((((state_0)!=(NEXT))&&((state_0)!=(MOVE)))||((state_2)!=(WAITING)))||((0)>=(2)))||((xp_0)!=(xp_2)))||((yp_0)!=(yp_2))))
+        return false;
+      if (!((((state_0)!=(MOVE))||((state_2)!=(MOVE)))||((((((xp_0)!=(xp_2))||((yp_0)!=(yp_2)))&&(((xp_0)!=(x_2))||((yp_0)!=(y_2))))&&(((x_0)!=(xp_2))||((y_0)!=(yp_2))))&&(((x_0)!=(x_2))||((y_0)!=(y_2))))))
+        return false;
+      if (!(((((state_2)!=(WAITING))||((0)>=(2)))||((x_0)!=(xp_2)))||((y_0)!=(yp_2))))
+        return false;
+      if (!(((((state_2)!=(MOVE))||((x_0)!=(xp_2)))||((y_0)!=(yp_2)))&&((((state_0)!=(4))||((xp_0)!=(x_2)))||((yp_0)!=(y_2)))))
+        return false;
+      if (!(((x_0)!=(x_2))||((y_0)!=(y_2))))
+        return false;
+    }
+    {
+      if (!(((((((state_1)!=(NEXT))&&((state_1)!=(MOVE)))||((state_2)!=(WAITING)))||((1)>=(2)))||((xp_1)!=(xp_2)))||((yp_1)!=(yp_2))))
+        return false;
+      if (!((((state_1)!=(MOVE))||((state_2)!=(MOVE)))||((((((xp_1)!=(xp_2))||((yp_1)!=(yp_2)))&&(((xp_1)!=(x_2))||((yp_1)!=(y_2))))&&(((x_1)!=(xp_2))||((y_1)!=(yp_2))))&&(((x_1)!=(x_2))||((y_1)!=(y_2))))))
+        return false;
+      if (!(((((state_2)!=(WAITING))||((1)>=(2)))||((x_1)!=(xp_2)))||((y_1)!=(yp_2))))
+        return false;
+      if (!(((((state_2)!=(MOVE))||((x_1)!=(xp_2)))||((y_1)!=(yp_2)))&&((((state_1)!=(4))||((xp_1)!=(x_2)))||((yp_1)!=(y_2)))))
+        return false;
+      if (!(((x_1)!=(x_2))||((y_1)!=(y_2))))
+        return false;
+    }
+  }
+  return true;
+}
+
+void __SAFETY_bwd()
+{
+  assert(__SAFETY_NoCollision_bwd());
+}
+
+void __SAFETY_fwd()
+{
+  assert(__SAFETY_NoCollision_fwd());
+}
+
+int main()
+{
+  __INIT();
+  __SAFETY_fwd();
+  __HAVOC();
+  __ASSUME();
+  round_fwd_copier();
+  uav__COLLISION_AVOIDANCE_0_fwd();
+  uav__COLLISION_AVOIDANCE_1_fwd();
+  uav__COLLISION_AVOIDANCE_2_fwd();
+  round_bwd_copier();
+  __SAFETY_fwd();
+}
+
+int my_sleep(int seconds);
+_Bool nondet_lock_i_0();
+_Bool nondet_lock_i_1();
+_Bool nondet_lock_i_2();
+unsigned char nondet_state_0();
+unsigned char nondet_state_1();
+unsigned char nondet_state_2();
+unsigned char nondet_x();
+unsigned char nondet_x_0();
+unsigned char nondet_x_1();
+unsigned char nondet_x_2();
+unsigned char nondet_xf();
+unsigned char nondet_xf_0();
+unsigned char nondet_xf_1();
+unsigned char nondet_xf_2();
+unsigned char nondet_xp_0();
+unsigned char nondet_xp_1();
+unsigned char nondet_xp_2();
+unsigned char nondet_y();
+unsigned char nondet_y_0();
+unsigned char nondet_y_1();
+unsigned char nondet_y_2();
+unsigned char nondet_yf();
+unsigned char nondet_yf_0();
+unsigned char nondet_yf_1();
+unsigned char nondet_yf_2();
+unsigned char nondet_yp_0();
+unsigned char nondet_yp_1();
+unsigned char nondet_yp_2();
+void print_int(int i);
+void print_state(int XX,int YY,int my_id,int x,int y,int xf,int yf);
+void round_bwd_copier()
+{
+  lock_i_0[0][0] = lock_f_0[0][0];
+  lock_i_0[0][1] = lock_f_0[0][1];
+  lock_i_0[0][2] = lock_f_0[0][2];
+  lock_i_0[0][3] = lock_f_0[0][3];
+  lock_i_0[0][4] = lock_f_0[0][4];
+  lock_i_0[0][5] = lock_f_0[0][5];
+  lock_i_0[0][6] = lock_f_0[0][6];
+  lock_i_0[0][7] = lock_f_0[0][7];
+  lock_i_0[0][8] = lock_f_0[0][8];
+  lock_i_0[0][9] = lock_f_0[0][9];
+  lock_i_0[1][0] = lock_f_0[1][0];
+  lock_i_0[1][1] = lock_f_0[1][1];
+  lock_i_0[1][2] = lock_f_0[1][2];
+  lock_i_0[1][3] = lock_f_0[1][3];
+  lock_i_0[1][4] = lock_f_0[1][4];
+  lock_i_0[1][5] = lock_f_0[1][5];
+  lock_i_0[1][6] = lock_f_0[1][6];
+  lock_i_0[1][7] = lock_f_0[1][7];
+  lock_i_0[1][8] = lock_f_0[1][8];
+  lock_i_0[1][9] = lock_f_0[1][9];
+  lock_i_0[2][0] = lock_f_0[2][0];
+  lock_i_0[2][1] = lock_f_0[2][1];
+  lock_i_0[2][2] = lock_f_0[2][2];
+  lock_i_0[2][3] = lock_f_0[2][3];
+  lock_i_0[2][4] = lock_f_0[2][4];
+  lock_i_0[2][5] = lock_f_0[2][5];
+  lock_i_0[2][6] = lock_f_0[2][6];
+  lock_i_0[2][7] = lock_f_0[2][7];
+  lock_i_0[2][8] = lock_f_0[2][8];
+  lock_i_0[2][9] = lock_f_0[2][9];
+  lock_i_0[3][0] = lock_f_0[3][0];
+  lock_i_0[3][1] = lock_f_0[3][1];
+  lock_i_0[3][2] = lock_f_0[3][2];
+  lock_i_0[3][3] = lock_f_0[3][3];
+  lock_i_0[3][4] = lock_f_0[3][4];
+  lock_i_0[3][5] = lock_f_0[3][5];
+  lock_i_0[3][6] = lock_f_0[3][6];
+  lock_i_0[3][7] = lock_f_0[3][7];
+  lock_i_0[3][8] = lock_f_0[3][8];
+  lock_i_0[3][9] = lock_f_0[3][9];
+  lock_i_0[4][0] = lock_f_0[4][0];
+  lock_i_0[4][1] = lock_f_0[4][1];
+  lock_i_0[4][2] = lock_f_0[4][2];
+  lock_i_0[4][3] = lock_f_0[4][3];
+  lock_i_0[4][4] = lock_f_0[4][4];
+  lock_i_0[4][5] = lock_f_0[4][5];
+  lock_i_0[4][6] = lock_f_0[4][6];
+  lock_i_0[4][7] = lock_f_0[4][7];
+  lock_i_0[4][8] = lock_f_0[4][8];
+  lock_i_0[4][9] = lock_f_0[4][9];
+  lock_i_0[5][0] = lock_f_0[5][0];
+  lock_i_0[5][1] = lock_f_0[5][1];
+  lock_i_0[5][2] = lock_f_0[5][2];
+  lock_i_0[5][3] = lock_f_0[5][3];
+  lock_i_0[5][4] = lock_f_0[5][4];
+  lock_i_0[5][5] = lock_f_0[5][5];
+  lock_i_0[5][6] = lock_f_0[5][6];
+  lock_i_0[5][7] = lock_f_0[5][7];
+  lock_i_0[5][8] = lock_f_0[5][8];
+  lock_i_0[5][9] = lock_f_0[5][9];
+  lock_i_0[6][0] = lock_f_0[6][0];
+  lock_i_0[6][1] = lock_f_0[6][1];
+  lock_i_0[6][2] = lock_f_0[6][2];
+  lock_i_0[6][3] = lock_f_0[6][3];
+  lock_i_0[6][4] = lock_f_0[6][4];
+  lock_i_0[6][5] = lock_f_0[6][5];
+  lock_i_0[6][6] = lock_f_0[6][6];
+  lock_i_0[6][7] = lock_f_0[6][7];
+  lock_i_0[6][8] = lock_f_0[6][8];
+  lock_i_0[6][9] = lock_f_0[6][9];
+  lock_i_0[7][0] = lock_f_0[7][0];
+  lock_i_0[7][1] = lock_f_0[7][1];
+  lock_i_0[7][2] = lock_f_0[7][2];
+  lock_i_0[7][3] = lock_f_0[7][3];
+  lock_i_0[7][4] = lock_f_0[7][4];
+  lock_i_0[7][5] = lock_f_0[7][5];
+  lock_i_0[7][6] = lock_f_0[7][6];
+  lock_i_0[7][7] = lock_f_0[7][7];
+  lock_i_0[7][8] = lock_f_0[7][8];
+  lock_i_0[7][9] = lock_f_0[7][9];
+  lock_i_0[8][0] = lock_f_0[8][0];
+  lock_i_0[8][1] = lock_f_0[8][1];
+  lock_i_0[8][2] = lock_f_0[8][2];
+  lock_i_0[8][3] = lock_f_0[8][3];
+  lock_i_0[8][4] = lock_f_0[8][4];
+  lock_i_0[8][5] = lock_f_0[8][5];
+  lock_i_0[8][6] = lock_f_0[8][6];
+  lock_i_0[8][7] = lock_f_0[8][7];
+  lock_i_0[8][8] = lock_f_0[8][8];
+  lock_i_0[8][9] = lock_f_0[8][9];
+  lock_i_0[9][0] = lock_f_0[9][0];
+  lock_i_0[9][1] = lock_f_0[9][1];
+  lock_i_0[9][2] = lock_f_0[9][2];
+  lock_i_0[9][3] = lock_f_0[9][3];
+  lock_i_0[9][4] = lock_f_0[9][4];
+  lock_i_0[9][5] = lock_f_0[9][5];
+  lock_i_0[9][6] = lock_f_0[9][6];
+  lock_i_0[9][7] = lock_f_0[9][7];
+  lock_i_0[9][8] = lock_f_0[9][8];
+  lock_i_0[9][9] = lock_f_0[9][9];
+  lock_i_1[0][0] = lock_f_1[0][0];
+  lock_i_1[0][1] = lock_f_1[0][1];
+  lock_i_1[0][2] = lock_f_1[0][2];
+  lock_i_1[0][3] = lock_f_1[0][3];
+  lock_i_1[0][4] = lock_f_1[0][4];
+  lock_i_1[0][5] = lock_f_1[0][5];
+  lock_i_1[0][6] = lock_f_1[0][6];
+  lock_i_1[0][7] = lock_f_1[0][7];
+  lock_i_1[0][8] = lock_f_1[0][8];
+  lock_i_1[0][9] = lock_f_1[0][9];
+  lock_i_1[1][0] = lock_f_1[1][0];
+  lock_i_1[1][1] = lock_f_1[1][1];
+  lock_i_1[1][2] = lock_f_1[1][2];
+  lock_i_1[1][3] = lock_f_1[1][3];
+  lock_i_1[1][4] = lock_f_1[1][4];
+  lock_i_1[1][5] = lock_f_1[1][5];
+  lock_i_1[1][6] = lock_f_1[1][6];
+  lock_i_1[1][7] = lock_f_1[1][7];
+  lock_i_1[1][8] = lock_f_1[1][8];
+  lock_i_1[1][9] = lock_f_1[1][9];
+  lock_i_1[2][0] = lock_f_1[2][0];
+  lock_i_1[2][1] = lock_f_1[2][1];
+  lock_i_1[2][2] = lock_f_1[2][2];
+  lock_i_1[2][3] = lock_f_1[2][3];
+  lock_i_1[2][4] = lock_f_1[2][4];
+  lock_i_1[2][5] = lock_f_1[2][5];
+  lock_i_1[2][6] = lock_f_1[2][6];
+  lock_i_1[2][7] = lock_f_1[2][7];
+  lock_i_1[2][8] = lock_f_1[2][8];
+  lock_i_1[2][9] = lock_f_1[2][9];
+  lock_i_1[3][0] = lock_f_1[3][0];
+  lock_i_1[3][1] = lock_f_1[3][1];
+  lock_i_1[3][2] = lock_f_1[3][2];
+  lock_i_1[3][3] = lock_f_1[3][3];
+  lock_i_1[3][4] = lock_f_1[3][4];
+  lock_i_1[3][5] = lock_f_1[3][5];
+  lock_i_1[3][6] = lock_f_1[3][6];
+  lock_i_1[3][7] = lock_f_1[3][7];
+  lock_i_1[3][8] = lock_f_1[3][8];
+  lock_i_1[3][9] = lock_f_1[3][9];
+  lock_i_1[4][0] = lock_f_1[4][0];
+  lock_i_1[4][1] = lock_f_1[4][1];
+  lock_i_1[4][2] = lock_f_1[4][2];
+  lock_i_1[4][3] = lock_f_1[4][3];
+  lock_i_1[4][4] = lock_f_1[4][4];
+  lock_i_1[4][5] = lock_f_1[4][5];
+  lock_i_1[4][6] = lock_f_1[4][6];
+  lock_i_1[4][7] = lock_f_1[4][7];
+  lock_i_1[4][8] = lock_f_1[4][8];
+  lock_i_1[4][9] = lock_f_1[4][9];
+  lock_i_1[5][0] = lock_f_1[5][0];
+  lock_i_1[5][1] = lock_f_1[5][1];
+  lock_i_1[5][2] = lock_f_1[5][2];
+  lock_i_1[5][3] = lock_f_1[5][3];
+  lock_i_1[5][4] = lock_f_1[5][4];
+  lock_i_1[5][5] = lock_f_1[5][5];
+  lock_i_1[5][6] = lock_f_1[5][6];
+  lock_i_1[5][7] = lock_f_1[5][7];
+  lock_i_1[5][8] = lock_f_1[5][8];
+  lock_i_1[5][9] = lock_f_1[5][9];
+  lock_i_1[6][0] = lock_f_1[6][0];
+  lock_i_1[6][1] = lock_f_1[6][1];
+  lock_i_1[6][2] = lock_f_1[6][2];
+  lock_i_1[6][3] = lock_f_1[6][3];
+  lock_i_1[6][4] = lock_f_1[6][4];
+  lock_i_1[6][5] = lock_f_1[6][5];
+  lock_i_1[6][6] = lock_f_1[6][6];
+  lock_i_1[6][7] = lock_f_1[6][7];
+  lock_i_1[6][8] = lock_f_1[6][8];
+  lock_i_1[6][9] = lock_f_1[6][9];
+  lock_i_1[7][0] = lock_f_1[7][0];
+  lock_i_1[7][1] = lock_f_1[7][1];
+  lock_i_1[7][2] = lock_f_1[7][2];
+  lock_i_1[7][3] = lock_f_1[7][3];
+  lock_i_1[7][4] = lock_f_1[7][4];
+  lock_i_1[7][5] = lock_f_1[7][5];
+  lock_i_1[7][6] = lock_f_1[7][6];
+  lock_i_1[7][7] = lock_f_1[7][7];
+  lock_i_1[7][8] = lock_f_1[7][8];
+  lock_i_1[7][9] = lock_f_1[7][9];
+  lock_i_1[8][0] = lock_f_1[8][0];
+  lock_i_1[8][1] = lock_f_1[8][1];
+  lock_i_1[8][2] = lock_f_1[8][2];
+  lock_i_1[8][3] = lock_f_1[8][3];
+  lock_i_1[8][4] = lock_f_1[8][4];
+  lock_i_1[8][5] = lock_f_1[8][5];
+  lock_i_1[8][6] = lock_f_1[8][6];
+  lock_i_1[8][7] = lock_f_1[8][7];
+  lock_i_1[8][8] = lock_f_1[8][8];
+  lock_i_1[8][9] = lock_f_1[8][9];
+  lock_i_1[9][0] = lock_f_1[9][0];
+  lock_i_1[9][1] = lock_f_1[9][1];
+  lock_i_1[9][2] = lock_f_1[9][2];
+  lock_i_1[9][3] = lock_f_1[9][3];
+  lock_i_1[9][4] = lock_f_1[9][4];
+  lock_i_1[9][5] = lock_f_1[9][5];
+  lock_i_1[9][6] = lock_f_1[9][6];
+  lock_i_1[9][7] = lock_f_1[9][7];
+  lock_i_1[9][8] = lock_f_1[9][8];
+  lock_i_1[9][9] = lock_f_1[9][9];
+  lock_i_2[0][0] = lock_f_2[0][0];
+  lock_i_2[0][1] = lock_f_2[0][1];
+  lock_i_2[0][2] = lock_f_2[0][2];
+  lock_i_2[0][3] = lock_f_2[0][3];
+  lock_i_2[0][4] = lock_f_2[0][4];
+  lock_i_2[0][5] = lock_f_2[0][5];
+  lock_i_2[0][6] = lock_f_2[0][6];
+  lock_i_2[0][7] = lock_f_2[0][7];
+  lock_i_2[0][8] = lock_f_2[0][8];
+  lock_i_2[0][9] = lock_f_2[0][9];
+  lock_i_2[1][0] = lock_f_2[1][0];
+  lock_i_2[1][1] = lock_f_2[1][1];
+  lock_i_2[1][2] = lock_f_2[1][2];
+  lock_i_2[1][3] = lock_f_2[1][3];
+  lock_i_2[1][4] = lock_f_2[1][4];
+  lock_i_2[1][5] = lock_f_2[1][5];
+  lock_i_2[1][6] = lock_f_2[1][6];
+  lock_i_2[1][7] = lock_f_2[1][7];
+  lock_i_2[1][8] = lock_f_2[1][8];
+  lock_i_2[1][9] = lock_f_2[1][9];
+  lock_i_2[2][0] = lock_f_2[2][0];
+  lock_i_2[2][1] = lock_f_2[2][1];
+  lock_i_2[2][2] = lock_f_2[2][2];
+  lock_i_2[2][3] = lock_f_2[2][3];
+  lock_i_2[2][4] = lock_f_2[2][4];
+  lock_i_2[2][5] = lock_f_2[2][5];
+  lock_i_2[2][6] = lock_f_2[2][6];
+  lock_i_2[2][7] = lock_f_2[2][7];
+  lock_i_2[2][8] = lock_f_2[2][8];
+  lock_i_2[2][9] = lock_f_2[2][9];
+  lock_i_2[3][0] = lock_f_2[3][0];
+  lock_i_2[3][1] = lock_f_2[3][1];
+  lock_i_2[3][2] = lock_f_2[3][2];
+  lock_i_2[3][3] = lock_f_2[3][3];
+  lock_i_2[3][4] = lock_f_2[3][4];
+  lock_i_2[3][5] = lock_f_2[3][5];
+  lock_i_2[3][6] = lock_f_2[3][6];
+  lock_i_2[3][7] = lock_f_2[3][7];
+  lock_i_2[3][8] = lock_f_2[3][8];
+  lock_i_2[3][9] = lock_f_2[3][9];
+  lock_i_2[4][0] = lock_f_2[4][0];
+  lock_i_2[4][1] = lock_f_2[4][1];
+  lock_i_2[4][2] = lock_f_2[4][2];
+  lock_i_2[4][3] = lock_f_2[4][3];
+  lock_i_2[4][4] = lock_f_2[4][4];
+  lock_i_2[4][5] = lock_f_2[4][5];
+  lock_i_2[4][6] = lock_f_2[4][6];
+  lock_i_2[4][7] = lock_f_2[4][7];
+  lock_i_2[4][8] = lock_f_2[4][8];
+  lock_i_2[4][9] = lock_f_2[4][9];
+  lock_i_2[5][0] = lock_f_2[5][0];
+  lock_i_2[5][1] = lock_f_2[5][1];
+  lock_i_2[5][2] = lock_f_2[5][2];
+  lock_i_2[5][3] = lock_f_2[5][3];
+  lock_i_2[5][4] = lock_f_2[5][4];
+  lock_i_2[5][5] = lock_f_2[5][5];
+  lock_i_2[5][6] = lock_f_2[5][6];
+  lock_i_2[5][7] = lock_f_2[5][7];
+  lock_i_2[5][8] = lock_f_2[5][8];
+  lock_i_2[5][9] = lock_f_2[5][9];
+  lock_i_2[6][0] = lock_f_2[6][0];
+  lock_i_2[6][1] = lock_f_2[6][1];
+  lock_i_2[6][2] = lock_f_2[6][2];
+  lock_i_2[6][3] = lock_f_2[6][3];
+  lock_i_2[6][4] = lock_f_2[6][4];
+  lock_i_2[6][5] = lock_f_2[6][5];
+  lock_i_2[6][6] = lock_f_2[6][6];
+  lock_i_2[6][7] = lock_f_2[6][7];
+  lock_i_2[6][8] = lock_f_2[6][8];
+  lock_i_2[6][9] = lock_f_2[6][9];
+  lock_i_2[7][0] = lock_f_2[7][0];
+  lock_i_2[7][1] = lock_f_2[7][1];
+  lock_i_2[7][2] = lock_f_2[7][2];
+  lock_i_2[7][3] = lock_f_2[7][3];
+  lock_i_2[7][4] = lock_f_2[7][4];
+  lock_i_2[7][5] = lock_f_2[7][5];
+  lock_i_2[7][6] = lock_f_2[7][6];
+  lock_i_2[7][7] = lock_f_2[7][7];
+  lock_i_2[7][8] = lock_f_2[7][8];
+  lock_i_2[7][9] = lock_f_2[7][9];
+  lock_i_2[8][0] = lock_f_2[8][0];
+  lock_i_2[8][1] = lock_f_2[8][1];
+  lock_i_2[8][2] = lock_f_2[8][2];
+  lock_i_2[8][3] = lock_f_2[8][3];
+  lock_i_2[8][4] = lock_f_2[8][4];
+  lock_i_2[8][5] = lock_f_2[8][5];
+  lock_i_2[8][6] = lock_f_2[8][6];
+  lock_i_2[8][7] = lock_f_2[8][7];
+  lock_i_2[8][8] = lock_f_2[8][8];
+  lock_i_2[8][9] = lock_f_2[8][9];
+  lock_i_2[9][0] = lock_f_2[9][0];
+  lock_i_2[9][1] = lock_f_2[9][1];
+  lock_i_2[9][2] = lock_f_2[9][2];
+  lock_i_2[9][3] = lock_f_2[9][3];
+  lock_i_2[9][4] = lock_f_2[9][4];
+  lock_i_2[9][5] = lock_f_2[9][5];
+  lock_i_2[9][6] = lock_f_2[9][6];
+  lock_i_2[9][7] = lock_f_2[9][7];
+  lock_i_2[9][8] = lock_f_2[9][8];
+  lock_i_2[9][9] = lock_f_2[9][9];
+}
+
+void round_fwd_copier()
+{
+  lock_f_0[0][0] = lock_i_0[0][0];
+  lock_f_0[0][1] = lock_i_0[0][1];
+  lock_f_0[0][2] = lock_i_0[0][2];
+  lock_f_0[0][3] = lock_i_0[0][3];
+  lock_f_0[0][4] = lock_i_0[0][4];
+  lock_f_0[0][5] = lock_i_0[0][5];
+  lock_f_0[0][6] = lock_i_0[0][6];
+  lock_f_0[0][7] = lock_i_0[0][7];
+  lock_f_0[0][8] = lock_i_0[0][8];
+  lock_f_0[0][9] = lock_i_0[0][9];
+  lock_f_0[1][0] = lock_i_0[1][0];
+  lock_f_0[1][1] = lock_i_0[1][1];
+  lock_f_0[1][2] = lock_i_0[1][2];
+  lock_f_0[1][3] = lock_i_0[1][3];
+  lock_f_0[1][4] = lock_i_0[1][4];
+  lock_f_0[1][5] = lock_i_0[1][5];
+  lock_f_0[1][6] = lock_i_0[1][6];
+  lock_f_0[1][7] = lock_i_0[1][7];
+  lock_f_0[1][8] = lock_i_0[1][8];
+  lock_f_0[1][9] = lock_i_0[1][9];
+  lock_f_0[2][0] = lock_i_0[2][0];
+  lock_f_0[2][1] = lock_i_0[2][1];
+  lock_f_0[2][2] = lock_i_0[2][2];
+  lock_f_0[2][3] = lock_i_0[2][3];
+  lock_f_0[2][4] = lock_i_0[2][4];
+  lock_f_0[2][5] = lock_i_0[2][5];
+  lock_f_0[2][6] = lock_i_0[2][6];
+  lock_f_0[2][7] = lock_i_0[2][7];
+  lock_f_0[2][8] = lock_i_0[2][8];
+  lock_f_0[2][9] = lock_i_0[2][9];
+  lock_f_0[3][0] = lock_i_0[3][0];
+  lock_f_0[3][1] = lock_i_0[3][1];
+  lock_f_0[3][2] = lock_i_0[3][2];
+  lock_f_0[3][3] = lock_i_0[3][3];
+  lock_f_0[3][4] = lock_i_0[3][4];
+  lock_f_0[3][5] = lock_i_0[3][5];
+  lock_f_0[3][6] = lock_i_0[3][6];
+  lock_f_0[3][7] = lock_i_0[3][7];
+  lock_f_0[3][8] = lock_i_0[3][8];
+  lock_f_0[3][9] = lock_i_0[3][9];
+  lock_f_0[4][0] = lock_i_0[4][0];
+  lock_f_0[4][1] = lock_i_0[4][1];
+  lock_f_0[4][2] = lock_i_0[4][2];
+  lock_f_0[4][3] = lock_i_0[4][3];
+  lock_f_0[4][4] = lock_i_0[4][4];
+  lock_f_0[4][5] = lock_i_0[4][5];
+  lock_f_0[4][6] = lock_i_0[4][6];
+  lock_f_0[4][7] = lock_i_0[4][7];
+  lock_f_0[4][8] = lock_i_0[4][8];
+  lock_f_0[4][9] = lock_i_0[4][9];
+  lock_f_0[5][0] = lock_i_0[5][0];
+  lock_f_0[5][1] = lock_i_0[5][1];
+  lock_f_0[5][2] = lock_i_0[5][2];
+  lock_f_0[5][3] = lock_i_0[5][3];
+  lock_f_0[5][4] = lock_i_0[5][4];
+  lock_f_0[5][5] = lock_i_0[5][5];
+  lock_f_0[5][6] = lock_i_0[5][6];
+  lock_f_0[5][7] = lock_i_0[5][7];
+  lock_f_0[5][8] = lock_i_0[5][8];
+  lock_f_0[5][9] = lock_i_0[5][9];
+  lock_f_0[6][0] = lock_i_0[6][0];
+  lock_f_0[6][1] = lock_i_0[6][1];
+  lock_f_0[6][2] = lock_i_0[6][2];
+  lock_f_0[6][3] = lock_i_0[6][3];
+  lock_f_0[6][4] = lock_i_0[6][4];
+  lock_f_0[6][5] = lock_i_0[6][5];
+  lock_f_0[6][6] = lock_i_0[6][6];
+  lock_f_0[6][7] = lock_i_0[6][7];
+  lock_f_0[6][8] = lock_i_0[6][8];
+  lock_f_0[6][9] = lock_i_0[6][9];
+  lock_f_0[7][0] = lock_i_0[7][0];
+  lock_f_0[7][1] = lock_i_0[7][1];
+  lock_f_0[7][2] = lock_i_0[7][2];
+  lock_f_0[7][3] = lock_i_0[7][3];
+  lock_f_0[7][4] = lock_i_0[7][4];
+  lock_f_0[7][5] = lock_i_0[7][5];
+  lock_f_0[7][6] = lock_i_0[7][6];
+  lock_f_0[7][7] = lock_i_0[7][7];
+  lock_f_0[7][8] = lock_i_0[7][8];
+  lock_f_0[7][9] = lock_i_0[7][9];
+  lock_f_0[8][0] = lock_i_0[8][0];
+  lock_f_0[8][1] = lock_i_0[8][1];
+  lock_f_0[8][2] = lock_i_0[8][2];
+  lock_f_0[8][3] = lock_i_0[8][3];
+  lock_f_0[8][4] = lock_i_0[8][4];
+  lock_f_0[8][5] = lock_i_0[8][5];
+  lock_f_0[8][6] = lock_i_0[8][6];
+  lock_f_0[8][7] = lock_i_0[8][7];
+  lock_f_0[8][8] = lock_i_0[8][8];
+  lock_f_0[8][9] = lock_i_0[8][9];
+  lock_f_0[9][0] = lock_i_0[9][0];
+  lock_f_0[9][1] = lock_i_0[9][1];
+  lock_f_0[9][2] = lock_i_0[9][2];
+  lock_f_0[9][3] = lock_i_0[9][3];
+  lock_f_0[9][4] = lock_i_0[9][4];
+  lock_f_0[9][5] = lock_i_0[9][5];
+  lock_f_0[9][6] = lock_i_0[9][6];
+  lock_f_0[9][7] = lock_i_0[9][7];
+  lock_f_0[9][8] = lock_i_0[9][8];
+  lock_f_0[9][9] = lock_i_0[9][9];
+  lock_f_1[0][0] = lock_i_1[0][0];
+  lock_f_1[0][1] = lock_i_1[0][1];
+  lock_f_1[0][2] = lock_i_1[0][2];
+  lock_f_1[0][3] = lock_i_1[0][3];
+  lock_f_1[0][4] = lock_i_1[0][4];
+  lock_f_1[0][5] = lock_i_1[0][5];
+  lock_f_1[0][6] = lock_i_1[0][6];
+  lock_f_1[0][7] = lock_i_1[0][7];
+  lock_f_1[0][8] = lock_i_1[0][8];
+  lock_f_1[0][9] = lock_i_1[0][9];
+  lock_f_1[1][0] = lock_i_1[1][0];
+  lock_f_1[1][1] = lock_i_1[1][1];
+  lock_f_1[1][2] = lock_i_1[1][2];
+  lock_f_1[1][3] = lock_i_1[1][3];
+  lock_f_1[1][4] = lock_i_1[1][4];
+  lock_f_1[1][5] = lock_i_1[1][5];
+  lock_f_1[1][6] = lock_i_1[1][6];
+  lock_f_1[1][7] = lock_i_1[1][7];
+  lock_f_1[1][8] = lock_i_1[1][8];
+  lock_f_1[1][9] = lock_i_1[1][9];
+  lock_f_1[2][0] = lock_i_1[2][0];
+  lock_f_1[2][1] = lock_i_1[2][1];
+  lock_f_1[2][2] = lock_i_1[2][2];
+  lock_f_1[2][3] = lock_i_1[2][3];
+  lock_f_1[2][4] = lock_i_1[2][4];
+  lock_f_1[2][5] = lock_i_1[2][5];
+  lock_f_1[2][6] = lock_i_1[2][6];
+  lock_f_1[2][7] = lock_i_1[2][7];
+  lock_f_1[2][8] = lock_i_1[2][8];
+  lock_f_1[2][9] = lock_i_1[2][9];
+  lock_f_1[3][0] = lock_i_1[3][0];
+  lock_f_1[3][1] = lock_i_1[3][1];
+  lock_f_1[3][2] = lock_i_1[3][2];
+  lock_f_1[3][3] = lock_i_1[3][3];
+  lock_f_1[3][4] = lock_i_1[3][4];
+  lock_f_1[3][5] = lock_i_1[3][5];
+  lock_f_1[3][6] = lock_i_1[3][6];
+  lock_f_1[3][7] = lock_i_1[3][7];
+  lock_f_1[3][8] = lock_i_1[3][8];
+  lock_f_1[3][9] = lock_i_1[3][9];
+  lock_f_1[4][0] = lock_i_1[4][0];
+  lock_f_1[4][1] = lock_i_1[4][1];
+  lock_f_1[4][2] = lock_i_1[4][2];
+  lock_f_1[4][3] = lock_i_1[4][3];
+  lock_f_1[4][4] = lock_i_1[4][4];
+  lock_f_1[4][5] = lock_i_1[4][5];
+  lock_f_1[4][6] = lock_i_1[4][6];
+  lock_f_1[4][7] = lock_i_1[4][7];
+  lock_f_1[4][8] = lock_i_1[4][8];
+  lock_f_1[4][9] = lock_i_1[4][9];
+  lock_f_1[5][0] = lock_i_1[5][0];
+  lock_f_1[5][1] = lock_i_1[5][1];
+  lock_f_1[5][2] = lock_i_1[5][2];
+  lock_f_1[5][3] = lock_i_1[5][3];
+  lock_f_1[5][4] = lock_i_1[5][4];
+  lock_f_1[5][5] = lock_i_1[5][5];
+  lock_f_1[5][6] = lock_i_1[5][6];
+  lock_f_1[5][7] = lock_i_1[5][7];
+  lock_f_1[5][8] = lock_i_1[5][8];
+  lock_f_1[5][9] = lock_i_1[5][9];
+  lock_f_1[6][0] = lock_i_1[6][0];
+  lock_f_1[6][1] = lock_i_1[6][1];
+  lock_f_1[6][2] = lock_i_1[6][2];
+  lock_f_1[6][3] = lock_i_1[6][3];
+  lock_f_1[6][4] = lock_i_1[6][4];
+  lock_f_1[6][5] = lock_i_1[6][5];
+  lock_f_1[6][6] = lock_i_1[6][6];
+  lock_f_1[6][7] = lock_i_1[6][7];
+  lock_f_1[6][8] = lock_i_1[6][8];
+  lock_f_1[6][9] = lock_i_1[6][9];
+  lock_f_1[7][0] = lock_i_1[7][0];
+  lock_f_1[7][1] = lock_i_1[7][1];
+  lock_f_1[7][2] = lock_i_1[7][2];
+  lock_f_1[7][3] = lock_i_1[7][3];
+  lock_f_1[7][4] = lock_i_1[7][4];
+  lock_f_1[7][5] = lock_i_1[7][5];
+  lock_f_1[7][6] = lock_i_1[7][6];
+  lock_f_1[7][7] = lock_i_1[7][7];
+  lock_f_1[7][8] = lock_i_1[7][8];
+  lock_f_1[7][9] = lock_i_1[7][9];
+  lock_f_1[8][0] = lock_i_1[8][0];
+  lock_f_1[8][1] = lock_i_1[8][1];
+  lock_f_1[8][2] = lock_i_1[8][2];
+  lock_f_1[8][3] = lock_i_1[8][3];
+  lock_f_1[8][4] = lock_i_1[8][4];
+  lock_f_1[8][5] = lock_i_1[8][5];
+  lock_f_1[8][6] = lock_i_1[8][6];
+  lock_f_1[8][7] = lock_i_1[8][7];
+  lock_f_1[8][8] = lock_i_1[8][8];
+  lock_f_1[8][9] = lock_i_1[8][9];
+  lock_f_1[9][0] = lock_i_1[9][0];
+  lock_f_1[9][1] = lock_i_1[9][1];
+  lock_f_1[9][2] = lock_i_1[9][2];
+  lock_f_1[9][3] = lock_i_1[9][3];
+  lock_f_1[9][4] = lock_i_1[9][4];
+  lock_f_1[9][5] = lock_i_1[9][5];
+  lock_f_1[9][6] = lock_i_1[9][6];
+  lock_f_1[9][7] = lock_i_1[9][7];
+  lock_f_1[9][8] = lock_i_1[9][8];
+  lock_f_1[9][9] = lock_i_1[9][9];
+  lock_f_2[0][0] = lock_i_2[0][0];
+  lock_f_2[0][1] = lock_i_2[0][1];
+  lock_f_2[0][2] = lock_i_2[0][2];
+  lock_f_2[0][3] = lock_i_2[0][3];
+  lock_f_2[0][4] = lock_i_2[0][4];
+  lock_f_2[0][5] = lock_i_2[0][5];
+  lock_f_2[0][6] = lock_i_2[0][6];
+  lock_f_2[0][7] = lock_i_2[0][7];
+  lock_f_2[0][8] = lock_i_2[0][8];
+  lock_f_2[0][9] = lock_i_2[0][9];
+  lock_f_2[1][0] = lock_i_2[1][0];
+  lock_f_2[1][1] = lock_i_2[1][1];
+  lock_f_2[1][2] = lock_i_2[1][2];
+  lock_f_2[1][3] = lock_i_2[1][3];
+  lock_f_2[1][4] = lock_i_2[1][4];
+  lock_f_2[1][5] = lock_i_2[1][5];
+  lock_f_2[1][6] = lock_i_2[1][6];
+  lock_f_2[1][7] = lock_i_2[1][7];
+  lock_f_2[1][8] = lock_i_2[1][8];
+  lock_f_2[1][9] = lock_i_2[1][9];
+  lock_f_2[2][0] = lock_i_2[2][0];
+  lock_f_2[2][1] = lock_i_2[2][1];
+  lock_f_2[2][2] = lock_i_2[2][2];
+  lock_f_2[2][3] = lock_i_2[2][3];
+  lock_f_2[2][4] = lock_i_2[2][4];
+  lock_f_2[2][5] = lock_i_2[2][5];
+  lock_f_2[2][6] = lock_i_2[2][6];
+  lock_f_2[2][7] = lock_i_2[2][7];
+  lock_f_2[2][8] = lock_i_2[2][8];
+  lock_f_2[2][9] = lock_i_2[2][9];
+  lock_f_2[3][0] = lock_i_2[3][0];
+  lock_f_2[3][1] = lock_i_2[3][1];
+  lock_f_2[3][2] = lock_i_2[3][2];
+  lock_f_2[3][3] = lock_i_2[3][3];
+  lock_f_2[3][4] = lock_i_2[3][4];
+  lock_f_2[3][5] = lock_i_2[3][5];
+  lock_f_2[3][6] = lock_i_2[3][6];
+  lock_f_2[3][7] = lock_i_2[3][7];
+  lock_f_2[3][8] = lock_i_2[3][8];
+  lock_f_2[3][9] = lock_i_2[3][9];
+  lock_f_2[4][0] = lock_i_2[4][0];
+  lock_f_2[4][1] = lock_i_2[4][1];
+  lock_f_2[4][2] = lock_i_2[4][2];
+  lock_f_2[4][3] = lock_i_2[4][3];
+  lock_f_2[4][4] = lock_i_2[4][4];
+  lock_f_2[4][5] = lock_i_2[4][5];
+  lock_f_2[4][6] = lock_i_2[4][6];
+  lock_f_2[4][7] = lock_i_2[4][7];
+  lock_f_2[4][8] = lock_i_2[4][8];
+  lock_f_2[4][9] = lock_i_2[4][9];
+  lock_f_2[5][0] = lock_i_2[5][0];
+  lock_f_2[5][1] = lock_i_2[5][1];
+  lock_f_2[5][2] = lock_i_2[5][2];
+  lock_f_2[5][3] = lock_i_2[5][3];
+  lock_f_2[5][4] = lock_i_2[5][4];
+  lock_f_2[5][5] = lock_i_2[5][5];
+  lock_f_2[5][6] = lock_i_2[5][6];
+  lock_f_2[5][7] = lock_i_2[5][7];
+  lock_f_2[5][8] = lock_i_2[5][8];
+  lock_f_2[5][9] = lock_i_2[5][9];
+  lock_f_2[6][0] = lock_i_2[6][0];
+  lock_f_2[6][1] = lock_i_2[6][1];
+  lock_f_2[6][2] = lock_i_2[6][2];
+  lock_f_2[6][3] = lock_i_2[6][3];
+  lock_f_2[6][4] = lock_i_2[6][4];
+  lock_f_2[6][5] = lock_i_2[6][5];
+  lock_f_2[6][6] = lock_i_2[6][6];
+  lock_f_2[6][7] = lock_i_2[6][7];
+  lock_f_2[6][8] = lock_i_2[6][8];
+  lock_f_2[6][9] = lock_i_2[6][9];
+  lock_f_2[7][0] = lock_i_2[7][0];
+  lock_f_2[7][1] = lock_i_2[7][1];
+  lock_f_2[7][2] = lock_i_2[7][2];
+  lock_f_2[7][3] = lock_i_2[7][3];
+  lock_f_2[7][4] = lock_i_2[7][4];
+  lock_f_2[7][5] = lock_i_2[7][5];
+  lock_f_2[7][6] = lock_i_2[7][6];
+  lock_f_2[7][7] = lock_i_2[7][7];
+  lock_f_2[7][8] = lock_i_2[7][8];
+  lock_f_2[7][9] = lock_i_2[7][9];
+  lock_f_2[8][0] = lock_i_2[8][0];
+  lock_f_2[8][1] = lock_i_2[8][1];
+  lock_f_2[8][2] = lock_i_2[8][2];
+  lock_f_2[8][3] = lock_i_2[8][3];
+  lock_f_2[8][4] = lock_i_2[8][4];
+  lock_f_2[8][5] = lock_i_2[8][5];
+  lock_f_2[8][6] = lock_i_2[8][6];
+  lock_f_2[8][7] = lock_i_2[8][7];
+  lock_f_2[8][8] = lock_i_2[8][8];
+  lock_f_2[8][9] = lock_i_2[8][9];
+  lock_f_2[9][0] = lock_i_2[9][0];
+  lock_f_2[9][1] = lock_i_2[9][1];
+  lock_f_2[9][2] = lock_i_2[9][2];
+  lock_f_2[9][3] = lock_i_2[9][3];
+  lock_f_2[9][4] = lock_i_2[9][4];
+  lock_f_2[9][5] = lock_i_2[9][5];
+  lock_f_2[9][6] = lock_i_2[9][6];
+  lock_f_2[9][7] = lock_i_2[9][7];
+  lock_f_2[9][8] = lock_i_2[9][8];
+  lock_f_2[9][9] = lock_i_2[9][9];
+}
+
+void uav__COLLISION_AVOIDANCE_0_fwd()
+{
+  PRINT();
+  if ((state_0)==(NEXT))
+  {
+    if (((x_0)==(xf_0))&&((y_0)==(yf_0)))
+      return;
+    EXIT();
+    uav__NEXT_XY_0_fwd();
+    state_0 = REQUEST;
+  }
+  else
+    if ((state_0)==(REQUEST))
+    {
+      if (0)
+        return;
+      lock_f_0[xp_0][yp_0] = 1;
+      state_0 = WAITING;
+    }
+    else
+      if ((state_0)==(WAITING))
+      {
+        if (((lock_i_1[xp_0][yp_0])!=(0))||((lock_i_2[xp_0][yp_0])!=(0)))
+          return;
+        state_0 = MOVE;
+      }
+      else
+        if ((state_0)==(MOVE))
+        {
+          if (GRID_MOVE(xp_0,yp_0,1))
+            return;
+          lock_f_0[x_0][y_0] = 0;
+          x_0 = xp_0;
+          y_0 = yp_0;
+          state_0 = NEXT;
+        }
+}
+
+void uav__COLLISION_AVOIDANCE_1_fwd()
+{
+  PRINT();
+  if ((state_1)==(NEXT))
+  {
+    if (((x_1)==(xf_1))&&((y_1)==(yf_1)))
+      return;
+    EXIT();
+    uav__NEXT_XY_1_fwd();
+    state_1 = REQUEST;
+  }
+  else
+    if ((state_1)==(REQUEST))
+    {
+      if ((lock_i_0[xp_1][yp_1])!=(0))
+        return;
+      lock_f_1[xp_1][yp_1] = 1;
+      state_1 = WAITING;
+    }
+    else
+      if ((state_1)==(WAITING))
+      {
+        if ((lock_i_2[xp_1][yp_1])!=(0))
+          return;
+        state_1 = MOVE;
+      }
+      else
+        if ((state_1)==(MOVE))
+        {
+          if (GRID_MOVE(xp_1,yp_1,1))
+            return;
+          lock_f_1[x_1][y_1] = 0;
+          x_1 = xp_1;
+          y_1 = yp_1;
+          state_1 = NEXT;
+        }
+}
+
+void uav__COLLISION_AVOIDANCE_2_fwd()
+{
+  PRINT();
+  if ((state_2)==(NEXT))
+  {
+    if (((x_2)==(xf_2))&&((y_2)==(yf_2)))
+      return;
+    EXIT();
+    uav__NEXT_XY_2_fwd();
+    state_2 = REQUEST;
+  }
+  else
+    if ((state_2)==(REQUEST))
+    {
+      if (((lock_i_0[xp_2][yp_2])!=(0))||((lock_i_1[xp_2][yp_2])!=(0)))
+        return;
+      lock_f_2[xp_2][yp_2] = 1;
+      state_2 = WAITING;
+    }
+    else
+      if ((state_2)==(WAITING))
+      {
+        if (0)
+          return;
+        state_2 = MOVE;
+      }
+      else
+        if ((state_2)==(MOVE))
+        {
+          if (GRID_MOVE(xp_2,yp_2,1))
+            return;
+          lock_f_2[x_2][y_2] = 0;
+          x_2 = xp_2;
+          y_2 = yp_2;
+          state_2 = NEXT;
+        }
+}
+
+void uav__NEXT_XY_0_fwd()
+{
+  xp_0 = x_0;
+  yp_0 = y_0;
+  if ((x_0)<(xf_0))
+    xp_0 = (x_0)+(1);
+  else
+    if ((x_0)>(xf_0))
+      xp_0 = (x_0)-(1);
+    else
+      if ((y_0)<(yf_0))
+        yp_0 = (y_0)+(1);
+      else
+        yp_0 = (y_0)-(1);
+}
+
+void uav__NEXT_XY_1_fwd()
+{
+  xp_1 = x_1;
+  yp_1 = y_1;
+  if ((x_1)<(xf_1))
+    xp_1 = (x_1)+(1);
+  else
+    if ((x_1)>(xf_1))
+      xp_1 = (x_1)-(1);
+    else
+      if ((y_1)<(yf_1))
+        yp_1 = (y_1)+(1);
+      else
+        yp_1 = (y_1)-(1);
+}
+
+void uav__NEXT_XY_2_fwd()
+{
+  xp_2 = x_2;
+  yp_2 = y_2;
+  if ((x_2)<(xf_2))
+    xp_2 = (x_2)+(1);
+  else
+    if ((x_2)>(xf_2))
+      xp_2 = (x_2)-(1);
+    else
+      if ((y_2)<(yf_2))
+        yp_2 = (y_2)+(1);
+      else
+        yp_2 = (y_2)-(1);
+}
+
+
+//---------------------------------------------------------
+//-- end of file
+//---------------------------------------------------------

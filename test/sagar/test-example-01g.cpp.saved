@@ -772,6 +772,9 @@ thread0_COLLISION_AVOIDANCE (engine::FunctionArguments & args, engine::Variables
       return Integer(0);
     }
     {
+      (void) (std::cerr << "node " << id << " exited mission with code " << Integer (2) << '\n'); (::exit (0));
+    }
+    {
       (void) (thread0_NEXT_XY (
            __strip_const(engine::FunctionArguments(0))
           , vars));
