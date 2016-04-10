@@ -186,11 +186,6 @@ void dmpl::program::SanityChecker::exitFADNP(dmpl::FADNPStmt &stmt)
 
 bool dmpl::program::SanityChecker::enterAwaitForall(AwaitForallStmt &stmt)
 {
-  if(!func->isThread())
-    throw std::runtime_error("ERROR: non-thread function " + func->name +
-                             " in role " + (role ? role->name : "null") +
-                             " in node " + (node ? node->name : "null") +
-                             " uses forall_await statement!!");
   return false;
 }
 

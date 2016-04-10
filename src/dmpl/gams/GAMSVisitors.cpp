@@ -1227,7 +1227,7 @@ dmpl::madara::GAMSCompiler::exitAwaitForall (AwaitForallStmt & statement)
   Expr exoe(new EXOExpr(statement.idVar, negCond));
   buffer_ << spacer << "if (";
   visit(exoe);
-  buffer_ << ")\n" << spacer << "  return Integer(0);\n";
+  buffer_ << ")\n" << spacer << "  throw JobAbortException();\n";
 }
 
 /*********************************************************************/
