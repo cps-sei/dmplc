@@ -147,6 +147,9 @@ node uav
 
 node uav
 {
+  //-- variable to indicate mission completion
+  global bool missionOver = 0;
+  
   @Period(100000);
   @BarrierSync;
   @PlatformController;
@@ -157,7 +160,14 @@ node uav
     //my_sleep(1);
     if (state == NEXT) {
       //compute next point on route
-      if(x == xf && y == yf) return;
+      if(x == xf && y == yf) {
+        if(missionOver == 0) {
+          missionOver = 1;
+          PRINT("node ", id, " completed mission ...\n");
+        }
+        if(EXISTS_OTHER(idp,missionOver@idp == 0)) return;
+        EXIT(id);
+      }
       NEXT_XY();
       state = REQUEST;
     } else if (state == REQUEST) {

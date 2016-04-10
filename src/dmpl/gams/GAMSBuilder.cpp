@@ -167,11 +167,21 @@ namespace
   }
 
   /*******************************************************************/
-  //-- return the mission exit variable
+  //-- return the mission exit status variable
   /*******************************************************************/
-  dmpl::Var missionExitVar()
+  dmpl::Var missionExitStatus()
   {
-    dmpl::Var mev(new dmpl::Variable(dmpl::missionExitVarName));
+    dmpl::Var mev(new dmpl::Variable(dmpl::missionExitStatusName));
+    mev->scope = dmpl::Symbol::LOCAL; mev->type = dmpl::intType();
+    return mev;
+  }
+
+  /*******************************************************************/
+  //-- return the mission exit code variable
+  /*******************************************************************/
+  dmpl::Var missionExitCode()
+  {
+    dmpl::Var mev(new dmpl::Variable(dmpl::missionExitCodeName));
     mev->scope = dmpl::Symbol::LOCAL; mev->type = dmpl::intType();
     return mev;
   }
@@ -509,9 +519,11 @@ dmpl::gams::GAMSBuilder::build_node_variables (const Node &node, const std::stri
     build_program_variable_init (var);
   }
 
-  //-- declare mission exit variable
-  if(do_expect_ && scope == "local")
-    build_program_variable_decl (missionExitVar());
+  //-- declare mission exit variables
+  if(do_expect_ && scope == "local") {
+    build_program_variable_decl (missionExitStatus());
+    build_program_variable_decl (missionExitCode());
+  }
 }
 
 /*********************************************************************/
@@ -627,8 +639,10 @@ dmpl::gams::GAMSBuilder::build_thread_variables (const Func &thread, const Vars 
     build_thread_variable (thread, i.second);
 
   //-- declare mission exit variable
-  if(do_expect_ && scope == "local")
-    build_thread_variable (thread, missionExitVar());
+  if(do_expect_ && scope == "local") {
+    build_thread_variable (thread, missionExitStatus());
+    build_thread_variable (thread, missionExitCode());
+  }
 }
 
 /*********************************************************************/
@@ -1333,8 +1347,11 @@ dmpl::gams::GAMSBuilder::build_nodes (void)
         }
       }
       
-      //-- initialize mission exit variable
-      if(do_expect_) buffer_ << "  " << missionExitVarName << " = 0;\n";
+      //-- initialize mission exit variables
+      if(do_expect_) {
+        buffer_ << "  " << missionExitStatus()->name << " = 0;\n";
+        buffer_ << "  " << missionExitCode()->name << " = 0;\n";
+      }
       
       buffer_ << "}\n\n";
       
@@ -1476,10 +1493,12 @@ dmpl::gams::GAMSBuilder::build_push_pull(const Func &thread, bool push)
             << var.first << ");" << std::endl;
   }
 
-  //-- push-pull mission exit variable
+  //-- push-pull mission exit variables
   if(do_expect_) {
     buffer_ << "    " << (push?"push":"pull") << "(thread" << thread->threadID << "_"
-            << missionExitVar()->name << ");" << std::endl;
+            << missionExitStatus()->name << ");" << std::endl;
+    buffer_ << "    " << (push?"push":"pull") << "(thread" << thread->threadID << "_"
+            << missionExitCode()->name << ");" << std::endl;
   }
 
   //push-pull globals
@@ -1729,10 +1748,10 @@ dmpl::gams::GAMSBuilder::build_expect_thread_definition (const Role &role)
   }
 
   //-- check if mission ended
-  buffer_ << "    if(" << nodeName(role->node) << "::" << dmpl::missionExitVarName
+  buffer_ << "    if(" << nodeName(role->node) << "::" << missionExitStatus()->name
           << " != 0) {\n";
   buffer_ << "      std::cerr << \"expect logger: node \" << id << \" exited mission with code \" << "
-          << nodeName(role->node) << "::" << dmpl::missionExitVarName << " << '\\n';\n";
+          << nodeName(role->node) << "::" << missionExitCode()->name << " << '\\n';\n";
   buffer_ << "      ::exit (0);\n";
   buffer_ << "    }\n";
   

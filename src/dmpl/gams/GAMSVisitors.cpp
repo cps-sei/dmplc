@@ -478,7 +478,8 @@ dmpl::madara::GAMSCompiler::exitCall (CallExpr & expression)
     if(func_name == "EXIT" && expression.args.size() == 1)
     {
       if(do_expect_) {
-        buffer_ << "thread" << thread_->threadID << "_" << missionExitVarName << " = ";
+        buffer_ << "thread" << thread_->threadID << "_" << missionExitStatusName << " = 1); (";
+        buffer_ << "thread" << thread_->threadID << "_" << missionExitCodeName << " = ";
         visit(expression.args.front());
       } else {
         buffer_ << "std::cerr << \"node \" << id << \" exited mission with code \" << "; 

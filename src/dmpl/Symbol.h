@@ -124,9 +124,10 @@ namespace dmpl
   bool isPlatformSymbol(const std::string &s);
 
   /*******************************************************************/
-  //-- name of variable to indicate mission exit
+  //-- names of variables to indicate mission exit, and exit code 
   /*******************************************************************/
-  const std::string missionExitVarName("MISSION_EXIT");
+  const std::string missionExitStatusName("MISSION_EXIT_STATUS");
+  const std::string missionExitCodeName("MISSION_EXIT_CODE");
   
   /*******************************************************************/
   //-- helpful templates
