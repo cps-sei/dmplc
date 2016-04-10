@@ -284,7 +284,8 @@ Reference<short> yp(knowledge, ".yp");
 short var_init_yp (0);
 Reference<short> yt(knowledge, ".yt");
 short var_init_yt (0);
-Reference<int> MISSION_EXIT(knowledge, ".MISSION_EXIT");
+Reference<int> MISSION_EXIT_STATUS(knowledge, ".MISSION_EXIT_STATUS");
+Reference<int> MISSION_EXIT_CODE(knowledge, ".MISSION_EXIT_CODE");
 
 /********************************************************************/
 //-- Begin defining variables for role Leader
@@ -332,7 +333,8 @@ CachedReference<short> thread0_xt(knowledge, ".xt");
 CachedReference<short> thread0_y(knowledge, ".y");
 CachedReference<short> thread0_yp(knowledge, ".yp");
 CachedReference<short> thread0_yt(knowledge, ".yt");
-CachedReference<int> thread0_MISSION_EXIT(knowledge, ".MISSION_EXIT");
+CachedReference<int> thread0_MISSION_EXIT_STATUS(knowledge, ".MISSION_EXIT_STATUS");
+CachedReference<int> thread0_MISSION_EXIT_CODE(knowledge, ".MISSION_EXIT_CODE");
 
 /********************************************************************/
 //-- Defining global variables at scope of thread COLLISION_AVOIDANCE
@@ -354,7 +356,8 @@ ArrayReference<Proactive<short, CachedReference>, 10> thread0_reg_y(knowledge, "
 /********************************************************************/
 CachedReference<short> thread1_fff(knowledge, ".fff");
 CachedReference<short> thread1_y(knowledge, ".y");
-CachedReference<int> thread1_MISSION_EXIT(knowledge, ".MISSION_EXIT");
+CachedReference<int> thread1_MISSION_EXIT_STATUS(knowledge, ".MISSION_EXIT_STATUS");
+CachedReference<int> thread1_MISSION_EXIT_CODE(knowledge, ".MISSION_EXIT_CODE");
 
 /********************************************************************/
 //-- Defining global variables at scope of thread FOO
@@ -379,7 +382,8 @@ CachedReference<short> thread2_xt(knowledge, ".xt");
 CachedReference<short> thread2_y(knowledge, ".y");
 CachedReference<short> thread2_yp(knowledge, ".yp");
 CachedReference<short> thread2_yt(knowledge, ".yt");
-CachedReference<int> thread2_MISSION_EXIT(knowledge, ".MISSION_EXIT");
+CachedReference<int> thread2_MISSION_EXIT_STATUS(knowledge, ".MISSION_EXIT_STATUS");
+CachedReference<int> thread2_MISSION_EXIT_CODE(knowledge, ".MISSION_EXIT_CODE");
 
 /********************************************************************/
 //-- Defining global variables at scope of thread WAYPOINT
@@ -437,7 +441,8 @@ CachedReference<short> thread0_xt(knowledge, ".xt");
 CachedReference<short> thread0_y(knowledge, ".y");
 CachedReference<short> thread0_yp(knowledge, ".yp");
 CachedReference<short> thread0_yt(knowledge, ".yt");
-CachedReference<int> thread0_MISSION_EXIT(knowledge, ".MISSION_EXIT");
+CachedReference<int> thread0_MISSION_EXIT_STATUS(knowledge, ".MISSION_EXIT_STATUS");
+CachedReference<int> thread0_MISSION_EXIT_CODE(knowledge, ".MISSION_EXIT_CODE");
 
 /********************************************************************/
 //-- Defining global variables at scope of thread COLLISION_AVOIDANCE
@@ -455,7 +460,8 @@ ArrayReference<Proactive<_Bool, CachedReference>, 10, 10, 10> thread0_lock(knowl
 //-- Used to implement Read-Execute-Write semantics
 /********************************************************************/
 CachedReference<short> thread1_x(knowledge, ".x");
-CachedReference<int> thread1_MISSION_EXIT(knowledge, ".MISSION_EXIT");
+CachedReference<int> thread1_MISSION_EXIT_STATUS(knowledge, ".MISSION_EXIT_STATUS");
+CachedReference<int> thread1_MISSION_EXIT_CODE(knowledge, ".MISSION_EXIT_CODE");
 
 /********************************************************************/
 //-- Defining global variables at scope of thread FOO
@@ -476,7 +482,8 @@ CachedReference<short> thread3_oy(knowledge, ".oy");
 CachedReference<_Bool> thread3_waypointValid(knowledge, ".waypointValid");
 CachedReference<short> thread3_xt(knowledge, ".xt");
 CachedReference<short> thread3_yt(knowledge, ".yt");
-CachedReference<int> thread3_MISSION_EXIT(knowledge, ".MISSION_EXIT");
+CachedReference<int> thread3_MISSION_EXIT_STATUS(knowledge, ".MISSION_EXIT_STATUS");
+CachedReference<int> thread3_MISSION_EXIT_CODE(knowledge, ".MISSION_EXIT_CODE");
 
 /********************************************************************/
 //-- Defining global variables at scope of thread WAYPOINT
@@ -1094,7 +1101,8 @@ thread0_PULL (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread0_y);
     pull(thread0_yp);
     pull(thread0_yt);
-    pull(thread0_MISSION_EXIT);
+    pull(thread0_MISSION_EXIT_STATUS);
+    pull(thread0_MISSION_EXIT_CODE);
     pull(thread0_lock);
     pull(thread0_reg_rad);
     pull(thread0_reg_x);
@@ -1117,7 +1125,8 @@ thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread0_y);
     push(thread0_yp);
     push(thread0_yt);
-    push(thread0_MISSION_EXIT);
+    push(thread0_MISSION_EXIT_STATUS);
+    push(thread0_MISSION_EXIT_CODE);
     push(thread0_lock[id]);
     push(thread0_reg_rad[id]);
     push(thread0_reg_x[id]);
@@ -1318,7 +1327,8 @@ thread1_PULL (engine::FunctionArguments & args, engine::Variables & vars)
     madara::knowledge::ContextGuard guard(knowledge);
     pull(thread1_fff);
     pull(thread1_y);
-    pull(thread1_MISSION_EXIT);
+    pull(thread1_MISSION_EXIT_STATUS);
+    pull(thread1_MISSION_EXIT_CODE);
   }
   return Integer(0);
 }
@@ -1331,7 +1341,8 @@ thread1_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
     madara::knowledge::ContextGuard guard(knowledge);
     push(thread1_fff);
     push(thread1_y);
-    push(thread1_MISSION_EXIT);
+    push(thread1_MISSION_EXIT_STATUS);
+    push(thread1_MISSION_EXIT_CODE);
   }
   return Integer(0);
 }
@@ -1429,7 +1440,8 @@ thread2_PULL (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread2_y);
     pull(thread2_yp);
     pull(thread2_yt);
-    pull(thread2_MISSION_EXIT);
+    pull(thread2_MISSION_EXIT_STATUS);
+    pull(thread2_MISSION_EXIT_CODE);
     pull(thread2_init);
     pull(thread2_lx);
     pull(thread2_ly);
@@ -1453,7 +1465,8 @@ thread2_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread2_y);
     push(thread2_yp);
     push(thread2_yt);
-    push(thread2_MISSION_EXIT);
+    push(thread2_MISSION_EXIT_STATUS);
+    push(thread2_MISSION_EXIT_CODE);
     push(thread2_init[id]);
     push(thread2_lx[id]);
     push(thread2_ly[id]);
@@ -1540,8 +1553,8 @@ void ExpectThread::run (void)
     out << tv.tv_sec << "," << tv.tv_usec << "," << id << "," << id << ",";
     out << "EXTERN_foo1," << ::foo1();
     out << std::endl;
-    if(node_uav::MISSION_EXIT != 0) {
-      std::cerr << "expect logger: node " << id << " exited mission with code " << node_uav::MISSION_EXIT << '\n';
+    if(node_uav::MISSION_EXIT_STATUS != 0) {
+      std::cerr << "expect logger: node " << id << " exited mission with code " << node_uav::MISSION_EXIT_CODE << '\n';
       ::exit (0);
     }
   }
@@ -1675,7 +1688,8 @@ void constructor ()
   if(!check_init_xt ()) throw std::runtime_error("ERROR: illegal initial value of variable xt");
   initialize_yp ();
   if(!check_init_yt ()) throw std::runtime_error("ERROR: illegal initial value of variable yt");
-  MISSION_EXIT = 0;
+  MISSION_EXIT_STATUS = 0;
+  MISSION_EXIT_CODE = 0;
 }
 
 } // end node_uav_role_Leader namespace
@@ -1759,7 +1773,8 @@ thread0_PULL (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread0_y);
     pull(thread0_yp);
     pull(thread0_yt);
-    pull(thread0_MISSION_EXIT);
+    pull(thread0_MISSION_EXIT_STATUS);
+    pull(thread0_MISSION_EXIT_CODE);
     pull(thread0_lock);
   }
   return Integer(0);
@@ -1779,7 +1794,8 @@ thread0_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread0_y);
     push(thread0_yp);
     push(thread0_yt);
-    push(thread0_MISSION_EXIT);
+    push(thread0_MISSION_EXIT_STATUS);
+    push(thread0_MISSION_EXIT_CODE);
     push(thread0_lock[id]);
   }
   return Integer(0);
@@ -1923,7 +1939,8 @@ thread1_PULL (engine::FunctionArguments & args, engine::Variables & vars)
   {
     madara::knowledge::ContextGuard guard(knowledge);
     pull(thread1_x);
-    pull(thread1_MISSION_EXIT);
+    pull(thread1_MISSION_EXIT_STATUS);
+    pull(thread1_MISSION_EXIT_CODE);
   }
   return Integer(0);
 }
@@ -1935,7 +1952,8 @@ thread1_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
   {
     madara::knowledge::ContextGuard guard(knowledge);
     push(thread1_x);
-    push(thread1_MISSION_EXIT);
+    push(thread1_MISSION_EXIT_STATUS);
+    push(thread1_MISSION_EXIT_CODE);
   }
   return Integer(0);
 }
@@ -2010,7 +2028,8 @@ thread3_PULL (engine::FunctionArguments & args, engine::Variables & vars)
     pull(thread3_waypointValid);
     pull(thread3_xt);
     pull(thread3_yt);
-    pull(thread3_MISSION_EXIT);
+    pull(thread3_MISSION_EXIT_STATUS);
+    pull(thread3_MISSION_EXIT_CODE);
     pull(thread3_init);
     pull(thread3_lx);
     pull(thread3_ly);
@@ -2029,7 +2048,8 @@ thread3_PUSH (engine::FunctionArguments & args, engine::Variables & vars)
     push(thread3_waypointValid);
     push(thread3_xt);
     push(thread3_yt);
-    push(thread3_MISSION_EXIT);
+    push(thread3_MISSION_EXIT_STATUS);
+    push(thread3_MISSION_EXIT_CODE);
     push(thread3_init[id]);
     push(thread3_lx[id]);
     push(thread3_ly[id]);
@@ -2105,8 +2125,8 @@ void ExpectThread::run (void)
     out << tv.tv_sec << "," << tv.tv_usec << "," << id << "," << id << ",";
     out << "EXTERN_foo1," << ::foo1();
     out << std::endl;
-    if(node_uav::MISSION_EXIT != 0) {
-      std::cerr << "expect logger: node " << id << " exited mission with code " << node_uav::MISSION_EXIT << '\n';
+    if(node_uav::MISSION_EXIT_STATUS != 0) {
+      std::cerr << "expect logger: node " << id << " exited mission with code " << node_uav::MISSION_EXIT_CODE << '\n';
       ::exit (0);
     }
   }
@@ -2213,7 +2233,8 @@ void constructor ()
   if(!check_init_xt ()) throw std::runtime_error("ERROR: illegal initial value of variable xt");
   initialize_yp ();
   if(!check_init_yt ()) throw std::runtime_error("ERROR: illegal initial value of variable yt");
-  MISSION_EXIT = 0;
+  MISSION_EXIT_STATUS = 0;
+  MISSION_EXIT_CODE = 0;
 }
 
 } // end node_uav_role_Protector namespace
