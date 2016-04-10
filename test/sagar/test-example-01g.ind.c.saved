@@ -1541,7 +1541,7 @@ void uav__COLLISION_AVOIDANCE_0_fwd()
   {
     if (((x_0)==(xf_0))&&((y_0)==(yf_0)))
       return;
-    EXIT();
+    exit(0);
     uav__NEXT_XY_0_fwd();
     state_0 = REQUEST;
   }
@@ -1579,7 +1579,7 @@ void uav__COLLISION_AVOIDANCE_1_fwd()
   {
     if (((x_1)==(xf_1))&&((y_1)==(yf_1)))
       return;
-    EXIT();
+    exit(0);
     uav__NEXT_XY_1_fwd();
     state_1 = REQUEST;
   }
@@ -1617,7 +1617,7 @@ void uav__COLLISION_AVOIDANCE_2_fwd()
   {
     if (((x_2)==(xf_2))&&((y_2)==(yf_2)))
       return;
-    EXIT();
+    exit(0);
     uav__NEXT_XY_2_fwd();
     state_2 = REQUEST;
   }
