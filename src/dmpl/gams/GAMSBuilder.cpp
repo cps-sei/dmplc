@@ -270,6 +270,7 @@ dmpl::gams::GAMSBuilder::build_header_includes ()
   buffer_ << "#include <vector>\n";
   buffer_ << "#include <sstream>\n";
   buffer_ << "#include <fstream>\n";
+  buffer_ << "#include <exception>\n";
   buffer_ << "#include <cassert>\n";
   buffer_ << "#include <cmath>\n";
   buffer_ << "\n";
@@ -382,6 +383,7 @@ dmpl::gams::GAMSBuilder::build_common_global_variables ()
   buffer_ << "ofstream expect_file;\n";
   buffer_ << "std::string node_name (\"none\");\n";
   buffer_ << "std::string role_name (\"none\");\n";
+  buffer_ << "struct JobAbortException : public std::exception {};\n";
   buffer_ << "\n";
 
   build_comment("//-- Containers for commonly used global variables", "", "", 0);
@@ -1603,8 +1605,10 @@ dmpl::gams::GAMSBuilder::build_function (
     
     //-- call main thread function
     buffer_ << "  //-- call thread function\n";
-    buffer_ << "  thread" << thread->threadID << "_";
-    buffer_ << thread->name << "(args, vars);\n\n";
+    buffer_ << "  try {\n";
+    buffer_ << "    thread" << thread->threadID << "_";
+    buffer_ << thread->name << "(args, vars);\n";
+    buffer_ << "  } catch (JobAbortException &ex) {}\n\n";
 
     //-- dummy return statement
     buffer_ << "  return Integer(0);\n";

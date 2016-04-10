@@ -67,6 +67,7 @@ void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
 #include <vector>
 #include <sstream>
 #include <fstream>
+#include <exception>
 #include <cassert>
 #include <cmath>
 
@@ -171,6 +172,7 @@ int write_fd (-1);
 ofstream expect_file;
 std::string node_name ("none");
 std::string role_name ("none");
+struct JobAbortException : public std::exception {};
 
 /********************************************************************/
 //-- Containers for commonly used global variables
@@ -974,7 +976,9 @@ KnowledgeRecord
 thread0 (engine::FunctionArguments & args, engine::Variables & vars)
 {
   //-- call thread function
-  thread0_COLLISION_AVOIDANCE(args, vars);
+  try {
+    thread0_COLLISION_AVOIDANCE(args, vars);
+  } catch (JobAbortException &ex) {}
 
   return Integer(0);
 }
@@ -1273,7 +1277,9 @@ KnowledgeRecord
 thread0 (engine::FunctionArguments & args, engine::Variables & vars)
 {
   //-- call thread function
-  thread0_COLLISION_AVOIDANCE(args, vars);
+  try {
+    thread0_COLLISION_AVOIDANCE(args, vars);
+  } catch (JobAbortException &ex) {}
 
   return Integer(0);
 }
@@ -1602,7 +1608,9 @@ KnowledgeRecord
 thread0 (engine::FunctionArguments & args, engine::Variables & vars)
 {
   //-- call thread function
-  thread0_COLLISION_AVOIDANCE(args, vars);
+  try {
+    thread0_COLLISION_AVOIDANCE(args, vars);
+  } catch (JobAbortException &ex) {}
 
   return Integer(0);
 }

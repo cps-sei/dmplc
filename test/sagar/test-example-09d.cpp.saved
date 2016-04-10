@@ -75,6 +75,7 @@ int foo1() { return 100; }
 #include <vector>
 #include <sstream>
 #include <fstream>
+#include <exception>
 #include <cassert>
 #include <cmath>
 
@@ -183,6 +184,7 @@ int write_fd (-1);
 ofstream expect_file;
 std::string node_name ("none");
 std::string role_name ("none");
+struct JobAbortException : public std::exception {};
 
 /********************************************************************/
 //-- Containers for commonly used global variables
@@ -1142,7 +1144,9 @@ thread0 (engine::FunctionArguments & args, engine::Variables & vars)
   if (MISSION_EXIT_STATUS != 0) return Integer(0);
 
   //-- call thread function
-  thread0_COLLISION_AVOIDANCE(args, vars);
+  try {
+    thread0_COLLISION_AVOIDANCE(args, vars);
+  } catch (JobAbortException &ex) {}
 
   return Integer(0);
 }
@@ -1357,7 +1361,9 @@ thread1 (engine::FunctionArguments & args, engine::Variables & vars)
   if (MISSION_EXIT_STATUS != 0) return Integer(0);
 
   //-- call thread function
-  thread1_FOO(args, vars);
+  try {
+    thread1_FOO(args, vars);
+  } catch (JobAbortException &ex) {}
 
   return Integer(0);
 }
@@ -1488,7 +1494,9 @@ thread2 (engine::FunctionArguments & args, engine::Variables & vars)
   if (MISSION_EXIT_STATUS != 0) return Integer(0);
 
   //-- call thread function
-  thread2_WAYPOINT(args, vars);
+  try {
+    thread2_WAYPOINT(args, vars);
+  } catch (JobAbortException &ex) {}
 
   return Integer(0);
 }
@@ -1817,7 +1825,9 @@ thread0 (engine::FunctionArguments & args, engine::Variables & vars)
   if (MISSION_EXIT_STATUS != 0) return Integer(0);
 
   //-- call thread function
-  thread0_COLLISION_AVOIDANCE(args, vars);
+  try {
+    thread0_COLLISION_AVOIDANCE(args, vars);
+  } catch (JobAbortException &ex) {}
 
   return Integer(0);
 }
@@ -1977,7 +1987,9 @@ thread1 (engine::FunctionArguments & args, engine::Variables & vars)
   if (MISSION_EXIT_STATUS != 0) return Integer(0);
 
   //-- call thread function
-  thread1_FOO(args, vars);
+  try {
+    thread1_FOO(args, vars);
+  } catch (JobAbortException &ex) {}
 
   return Integer(0);
 }
@@ -2079,7 +2091,9 @@ thread3 (engine::FunctionArguments & args, engine::Variables & vars)
   if (MISSION_EXIT_STATUS != 0) return Integer(0);
 
   //-- call thread function
-  thread3_WAYPOINT(args, vars);
+  try {
+    thread3_WAYPOINT(args, vars);
+  } catch (JobAbortException &ex) {}
 
   return Integer(0);
 }
