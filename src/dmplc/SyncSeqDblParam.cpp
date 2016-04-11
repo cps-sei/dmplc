@@ -665,8 +665,8 @@ void dmpl::SyncSeqDblParam::createMainFunc()
 //-- the variable is an input.
 /*********************************************************************/
 dmpl::Stmt dmpl::SyncSeqDblParam::createConstructor(const std::string &name,
-                                               const Type &type, bool isInput,
-                                               const Func &initFunc, const Process &proc)
+                                                    const Type &type, bool isInput,
+                                                    const Func &initFunc, const Process &proc)
 {
   Node &node = proc.role->node;
   dmpl::VarList fnParams, fnTemps;
