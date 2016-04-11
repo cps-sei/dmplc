@@ -64,6 +64,26 @@
 #include "SyncSeqDblParam.hpp"
 
 /*********************************************************************/
+//-- local stuff
+/*********************************************************************/
+namespace
+{
+  using namespace dmpl;
+  
+  //-- names of variables
+  const std::string nodeIdsVarName = "nodeIds";
+  const std::string nodeIdsVar = "nodeIds";
+  const std::string nodeIdVar = "nodeId";
+
+  //-- function that returns nodeIds(x)
+  dmpl::Expr nodeIds(int i)
+  {
+    ExprList idel = { Expr(new IntExpr(std::to_string(i))) };
+    return Expr(new LvalExpr(nodeIdsVarName, idel));
+  }
+}
+
+/*********************************************************************/
 //methods for GlobalTransformer
 /*********************************************************************/
 
@@ -482,9 +502,9 @@ void dmpl::SyncSeqDblParam::createGlobVars()
       cprog.addGlobVar(v->incrDim(cutoff));
     
     //-- add non-deterministic id variables
-    Var nodeIds(new Variable("nodeIds",ucharType()));
+    Var nodeIds(new Variable(nodeIdsVar,ucharType()));
     cprog.addGlobVar(nodeIds->incrDim(cutoff));
-    Var nodeId(new Variable("nodeId",ucharType()));
+    Var nodeId(new Variable(nodeIdVar,ucharType()));
     cprog.addGlobVar(nodeId);
 
     //-- done
@@ -590,6 +610,10 @@ void dmpl::SyncSeqDblParam::createMainFunc()
     roundBody.push_back(callStmtBwd);
   }
 
+  //initialize nodeIds
+  for(int i = 0;i < cutoff;++i)
+    mainBody.push_back(Stmt(new AsgnStmt(nodeIds(i), Expr(new IntExpr(std::to_string(i))))));
+  
   //add call to INIT()
   Expr callExpr3(new LvalExpr("__INIT"));
   Stmt callStmt3(new CallStmt(callExpr3,dmpl::ExprList()));
