@@ -468,21 +468,27 @@ void dmpl::SyncSeqDblParam::createGlobVars()
   for(const auto &rg : relevantGlobs) {
     //-- process each relevant global var
     for(const Var &v : rg.second) {
-      cprog.addGlobVar(v->instName(std::string("_i_") + boost::lexical_cast<std::string>(rg.first.id)));
-      cprog.addGlobVar(v->instName(std::string("_f_") + boost::lexical_cast<std::string>(rg.first.id)));
+      cprog.addGlobVar(v->instName(std::string("_i"))->incrDim(cutoff));
+      cprog.addGlobVar(v->instName(std::string("_f"))->incrDim(cutoff));
     }
+
+    //-- done
+    break;
   }
 
   //instantiate node-local variables by adding _i for each node id i
   for(const auto &rl : relevantLocs) {
     for(const Var &v : rl.second)
-      cprog.addGlobVar(v->instName(std::string("_") + 
-                                   boost::lexical_cast<std::string>(rl.first.id)));
+      cprog.addGlobVar(v->incrDim(cutoff));
+    
     //-- add non-deterministic id variables
     Var idVar(new Variable("idVar"));
     idVar->type = ucharType();
     cprog.addGlobVar(idVar->instName(std::string("_") + 
                                      boost::lexical_cast<std::string>(rl.first.id)));
+
+    //-- done
+    break;
   }
 }
 
