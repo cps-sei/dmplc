@@ -482,10 +482,10 @@ void dmpl::SyncSeqDblParam::createGlobVars()
       cprog.addGlobVar(v->incrDim(cutoff));
     
     //-- add non-deterministic id variables
-    Var idVar(new Variable("idVar"));
-    idVar->type = ucharType();
-    cprog.addGlobVar(idVar->instName(std::string("_") + 
-                                     boost::lexical_cast<std::string>(rl.first.id)));
+    Var nodeIds(new Variable("nodeIds",ucharType()));
+    cprog.addGlobVar(nodeIds->incrDim(cutoff));
+    Var nodeId(new Variable("nodeId",ucharType()));
+    cprog.addGlobVar(nodeId);
 
     //-- done
     break;
