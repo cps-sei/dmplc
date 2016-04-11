@@ -163,7 +163,7 @@ namespace dmpl {
 
     void createGlobVars();
     size_t globVarDim(const Var &var);
-    void createCopyStmts(bool fwd,const Var &var,StmtList &res,ExprList indx,int pid);
+    void createCopyStmts(bool fwd,const Var &var,StmtList &res,ExprList indx);
     void createRoundCopier();
     void createMainFunc();
     Stmt createConstructor(const std::string &name, const Type &type, bool isInput,

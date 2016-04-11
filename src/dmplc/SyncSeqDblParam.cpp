@@ -496,13 +496,12 @@ void dmpl::SyncSeqDblParam::createGlobVars()
 //create list of statements that copy new value of var into old value
 //of var. append list of statements to res.
 /*********************************************************************/
-void dmpl::SyncSeqDblParam::createCopyStmts(bool fwd,const Var &var,StmtList &res,ExprList indx,int pid)
+void dmpl::SyncSeqDblParam::createCopyStmts(bool fwd,const Var &var,StmtList &res,ExprList indx)
 {
   //non-array type
   if(var->type->dims.empty()) {
-    std::string pidStr = boost::lexical_cast<std::string>(pid);
-    Expr lhs(new LvalExpr(var->name + std::string(fwd ? "_f_" : "_i_") + pidStr,indx));
-    Expr rhs(new LvalExpr(var->name + std::string(fwd ? "_i_" : "_f_")  + pidStr,indx));
+    Expr lhs(new LvalExpr(var->name + std::string(fwd ? "_f" : "_i"),indx));
+    Expr rhs(new LvalExpr(var->name + std::string(fwd ? "_i" : "_f"),indx));
     Stmt stmt(new AsgnStmt(lhs,rhs));
     res.push_back(stmt);
   }
@@ -515,7 +514,7 @@ void dmpl::SyncSeqDblParam::createCopyStmts(bool fwd,const Var &var,StmtList &re
       ExprList newIndx = indx;
       newIndx.push_back(Expr(new IntExpr(boost::lexical_cast<std::string>(i))));
       Var newVar = var->decrDim();
-      createCopyStmts(fwd,newVar,res,newIndx,pid);
+      createCopyStmts(fwd,newVar,res,newIndx);
     }
   }
 }
@@ -531,9 +530,9 @@ void dmpl::SyncSeqDblParam::createRoundCopier()
   for(const auto &rg : relevantGlobs) {
     for(const Var &v : rg.second) {
       //create the copier from _f to _i
-      createCopyStmts(false,v,fnBody1,ExprList(),rg.first.id);
+      createCopyStmts(false,v->incrDim(cutoff),fnBody1,ExprList());
       //create the copier from _i to _f
-      createCopyStmts(true,v,fnBody2,ExprList(),rg.first.id);
+      createCopyStmts(true,v->incrDim(cutoff),fnBody2,ExprList());
     }
   }
 
