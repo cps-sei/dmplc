@@ -183,6 +183,16 @@ dmpl::Var dmpl::Variable::decrDim() const
 }
 
 /*********************************************************************/
+///return a copy with one more dimension (added at front)
+/*********************************************************************/
+dmpl::Var dmpl::Variable::incrDim(int d) const
+{
+  Var res(new Variable(*this));
+  res->type = res->type->incrDim(d);
+  return res;  
+}
+
+/*********************************************************************/
 ///return the initial expression
 /*********************************************************************/
 dmpl::Expr dmpl::Variable::initExpr() const

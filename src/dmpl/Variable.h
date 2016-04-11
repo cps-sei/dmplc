@@ -172,6 +172,9 @@ namespace dmpl
     ///return a copy with one less dimension
     Var decrDim() const;
 
+    ///return a copy with one more dimension (added at front)
+    Var incrDim(int d) const;
+
     ///return the initial expression for the variable. this assumes
     ///that the variable was initialized via direct assignment and not
     ///a constructor. the return value is the RHS of the first
