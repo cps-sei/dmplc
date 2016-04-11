@@ -455,7 +455,7 @@ void dmpl::syncseqdblparam::NodeTransformer::exitFAOH(dmpl::FAOHStmt &stmt)
 //constructor
 /*********************************************************************/
 dmpl::SyncSeqDblParam::SyncSeqDblParam(dmpl::DmplBuilder &b, const std::string &p, int r) 
-  : SyncSeqDbl(b,p,r) {}
+  : SyncSeqDbl(b,p,r), cutoff(2) {}
 
 /*********************************************************************/
 //create the global variables

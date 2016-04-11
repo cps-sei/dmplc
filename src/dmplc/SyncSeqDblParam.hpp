@@ -156,6 +156,9 @@ namespace dmpl {
   class SyncSeqDblParam : public SyncSeqDbl
   {
   public:
+    //-- cutoff for parameterized verification. currently set to 2.
+    size_t cutoff;
+    
     SyncSeqDblParam(DmplBuilder &b, const std::string &p, int r);
 
     void createGlobVars();
