@@ -685,7 +685,7 @@ dmpl::Stmt dmpl::SyncSeqDblParam::createConstructor(const std::string &name,
     Expr ndfn = createNondetFunc(varExpr, type);
     Expr ndcall(new CallExpr(ndfn,ExprList()));
     Stmt ndAsgn(new AsgnStmt(varExpr,ndcall));    
-    syncseqdbl::NodeTransformer nt(*this,builder.program,proc,false,initFunc);
+    syncseqdblparam::NodeTransformer nt(*this,builder.program,proc,false,initFunc);
     std::string nodeId = *node->args.begin();
     nt.addIdMap(nodeId,proc.id);
     nt.visit(ndAsgn);
@@ -696,7 +696,7 @@ dmpl::Stmt dmpl::SyncSeqDblParam::createConstructor(const std::string &name,
   //-- initialize _i version
   if(initFunc != NULL) {
     BOOST_FOREACH(const Stmt &st,initFunc->body) {
-      syncseqdbl::NodeTransformer nt(*this,builder.program,proc,false,initFunc);
+      syncseqdblparam::NodeTransformer nt(*this,builder.program,proc,false,initFunc);
       std::string nodeId = *node->args.begin();
       nt.addIdMap(nodeId,proc.id);
       nt.visit(st);
@@ -788,7 +788,7 @@ void dmpl::SyncSeqDblParam::createSafetyFwdBwd(bool fwd)
   //transform the body of safety
   StmtList fnBody;
   BOOST_FOREACH(const Stmt &st,propFunc->body) {
-    syncseqdbl::GlobalTransformer gt(*this,builder.program,fwd,propFunc);
+    syncseqdblparam::GlobalTransformer gt(*this,builder.program,fwd,propFunc);
     gt.visit(st);
     fnBody.push_back(gt.stmtMap[st]);
   }
@@ -914,7 +914,7 @@ void dmpl::SyncSeqDblParam::createNodeFuncs()
         if(f->equalType(*pr.second)) callFunction(std::string("__HAVOC_") + (fwd ? "fwd" : "bwd"), fnBody);
         
         BOOST_FOREACH(const Stmt &st,f->body) {
-          syncseqdbl::NodeTransformer nt(*this,builder.program,pr.first,fwd,f);
+          syncseqdblparam::NodeTransformer nt(*this,builder.program,pr.first,fwd,f);
           std::string nodeId = *node->args.begin();
           nt.addIdMap(nodeId,pr.first.id);
           nt.visit(st);
