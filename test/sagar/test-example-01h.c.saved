@@ -60,6 +60,7 @@ unsigned char __id_0(unsigned char x);
 unsigned char __id_1(unsigned char x);
 int main();
 extern int my_sleep(int seconds);
+unsigned char nondet_nodeIds();
 unsigned char nondet_x();
 unsigned char nondet_xf();
 unsigned char nondet_y();
@@ -379,8 +380,8 @@ unsigned char __id_1(unsigned char x)
 
 int main()
 {
-  nodeIds[0] = 0;
-  nodeIds[1] = 1;
+  nodeIds[0] = nondet_nodeIds();
+  nodeIds[1] = nondet_nodeIds();
   __INIT();
   __SAFETY_fwd();
   round_fwd_copier();
@@ -406,6 +407,7 @@ int main()
 }
 
 int my_sleep(int seconds);
+unsigned char nondet_nodeIds();
 unsigned char nondet_x();
 unsigned char nondet_xf();
 unsigned char nondet_y();

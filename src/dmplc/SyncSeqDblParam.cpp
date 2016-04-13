@@ -666,8 +666,10 @@ void dmpl::SyncSeqDblParam::createMainFunc()
   }
 
   //initialize nodeIds
+  Expr ndfn = createNondetFunc(Expr(new LvalExpr(nodeIdsVar)), ucharType());
+  Expr ndcall(new CallExpr(ndfn,ExprList()));
   for(int i = 0;i < cutoff;++i)
-    mainBody.push_back(Stmt(new AsgnStmt(nodeIds(i), Expr(new IntExpr(std::to_string(i))))));
+    mainBody.push_back(Stmt(new AsgnStmt(nodeIds(i), ndcall)));
   
   //add call to INIT()
   Expr callExpr3(new LvalExpr("__INIT"));
