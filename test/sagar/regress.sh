@@ -223,13 +223,6 @@ test_code_gen CG9 test-example-09d.dmpl "-e --roles uav:Leader:1:uav:Protector:4
 test_analyzer TA1 test-example-02-expect.dmpl "--roles uav:Protector:4:uav:Leader:1"
 test_analyzer TA2 test-example-09d.dmpl "--roles uav:Leader:1:uav:Protector:4:uav:Leader:1:uav:Protector:4 --groups coordinator+eastern=1:eastern=4:coordinator+western=1:western=4 --var-groups reg_x+reg_y+reg_rad+waypointArrival=coordinator:lock+lx+ly+init=eastern+western"
 
-#test building
-COUNT=1
-for i in ../../docs/tutorial/*.mission ../../docs/tutorial/example-05/dmpl/*.mission ; do
-    test_build BD${COUNT} $i
-    COUNT=$((COUNT + 1))
-done
-
 #sequentialization tests
 test_seq SQ1 test-example-01c.dmpl uav:Uav1:2:uav:Uav2:1
 test_seq SQ2 test-example-05b.dmpl uav:Leader:1:uav:Protector:4
@@ -245,6 +238,13 @@ test_seq_ind SI4 test-example-01g.dmpl uav:Uav:3
 #parameterized sequentialization tests
 test_seq_param SP1 test-example-01h.dmpl uav:Uav:2
 test_seq_param SP2 test-example-01i.dmpl uav:Uav:2
+
+#test building
+COUNT=1
+for i in ../../docs/tutorial/*.mission ../../docs/tutorial/example-05/dmpl/*.mission ; do
+    test_build BD${COUNT} $i
+    COUNT=$((COUNT + 1))
+done
 
 #verification tests
 test_verif VF1 ../../docs/tutorial/example-01.dmpl "" uav:Uav:2 SUCCESSFUL
