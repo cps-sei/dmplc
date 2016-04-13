@@ -75,10 +75,17 @@ namespace
   const std::string nodeIdVar = "nodeId";
   const std::string idFunc = "__id";
 
-  //-- function that returns nodeIds(x)
+  //-- function that returns nodeIds(i)
   dmpl::Expr nodeIds(int i)
   {
     ExprList idel = { Expr(new IntExpr(std::to_string(i))) };
+    return Expr(new LvalExpr(nodeIdsVarName, idel));
+  }
+
+  //-- function that returns nodeIds(x)
+  dmpl::Expr nodeIds(const std::string &x)
+  {
+    ExprList idel = { Expr(new LvalExpr(x)) };
     return Expr(new LvalExpr(nodeIdsVarName, idel));
   }
 }
@@ -534,9 +541,8 @@ void dmpl::SyncSeqDblParam::createNodeIdNormalizer()
     std::string funcName = idFunc + "_" + std::to_string(proc.id);
     dmpl::VarList fnParams = { Var(new Variable("x", dmpl::ucharType())) },fnTemps;
 
-    //-- x == nodeids[proc.id]
-    Expr xe(new LvalExpr("x"));
-    Expr xeeq(new CompExpr(TCEQ, xe, nodeIds(proc.id)));
+    //-- nodeIds[x] == nodeids[proc.id]
+    Expr xeeq(new CompExpr(TCEQ, nodeIds("x"), nodeIds(proc.id)));
 
     //-- proc.id and 1-proc.id
     Expr ide(new IntExpr(std::to_string(proc.id)));
