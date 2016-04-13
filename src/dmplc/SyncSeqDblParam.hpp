@@ -126,22 +126,9 @@ namespace dmpl {
 
     void createGlobVars();
     void createNodeIdNormalizer();
-    size_t globVarDim(const Var &var);
     void createCopyStmts(bool fwd,const Var &var,StmtList &res,ExprList indx);
     void createRoundCopier();
     void createMainFunc();
-    Stmt createConstructor(const std::string &name, const Type &type, bool isInput,
-                           const Func &initFunc,const Process &proc);
-    void createInit();
-    void createSafetyFwdBwd(bool fwd);
-    void createSafety();
-    void createHavocStmts(bool isGlob, bool fwd,const Var &var,StmtList &res,
-                          ExprList indx,int pid);
-    void createHavoc();
-    void createNodeFuncs();
-    Expr createNondetFunc(const Expr &expr, const Type &type);
-    void processExternFuncs();
-
     void run();
   };
 } //namespace dmpl
