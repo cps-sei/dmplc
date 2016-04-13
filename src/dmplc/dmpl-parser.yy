@@ -574,6 +574,8 @@ dimension : TINTEGER { $$ = atoi($1->c_str()); delete $1; }
 | TIDENTIFIER {
   std::map<std::string,std::string>::const_iterator it = 
     builder->program.constDef.find(*$1);
+  if(it == builder->program.constDef.end())
+    throw std::runtime_error("ERROR: illegal dimension (" + *$1 + ") -- must be a defined constant!!");
   $$ = atoi(it->second.c_str());
   delete $1;
 }
