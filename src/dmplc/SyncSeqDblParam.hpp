@@ -76,79 +76,27 @@ namespace dmpl {
     /*****************************************************************/
     //a visitor that transforms at the global level
     /*****************************************************************/
-    struct GlobalTransformer : public CopyVisitor
+    struct GlobalTransformer : public syncseqdbl::GlobalTransformer
     {
-      ///reference to callee class for callbacks
-      SyncSeqDblParam &syncSeq;
-
-      //the DASL program being transformed
-      dmpl::Program &prog;
-
-      //direction -- true if forward, false if backward
-      bool fwd;
-
-      //the function being processed, if any
-      Func func;
-      
-      //map from variables to constants for substitution
-      std::map<std::string,size_t> idMap;
-
       //constructors
-      GlobalTransformer(SyncSeqDblParam &ss,dmpl::Program &p,bool f,const Func &fn) 
-        : syncSeq(ss),prog(p),fwd(f), func(fn) {}
-
-      //update substitution mapping
-      void addIdMap(const std::string &s,size_t i);
-      void delIdMap(const std::string &s);
+      GlobalTransformer(SyncSeqDbl &ss,dmpl::Program &p,bool f,const Func &fn) 
+        : syncseqdbl::GlobalTransformer(ss, p, f, fn) {}
 
       //dispatchers
       void exitLval(LvalExpr &expr);
-      void exitComp(CompExpr &expr);
-      void exitPrivate(PrivateStmt &stmt);
-      void exitCall(CallStmt &stmt);
-      bool enterFAN(FANStmt &stmt) { return false; }
-      void exitFAN(FANStmt &stmt);
-      bool enterFADNP(FADNPStmt &stmt) { return false; }
-      void exitFADNP(FADNPStmt &stmt);
-
-      std::string getNodeStr(const LvalExpr &expr) const;
     };
 
     /*****************************************************************/
     //a visitor that transforms at the process level
     /*****************************************************************/
-    struct NodeTransformer : public GlobalTransformer
+    struct NodeTransformer : public syncseqdbl::NodeTransformer
     {
-      ///the process being transformed
-      Process proc;
-
-      //flags to indicate whether we are processing a function call, or
-      //lhs of an assignment
-      bool inCall, inLhs;
-
-      NodeTransformer(SyncSeqDblParam &ss,Program &p,const Process &pr,bool f,const Func &fn)
-        : GlobalTransformer(ss,p,f,fn),proc(pr),inCall(0),inLhs(0) {}
-
-      void exitLval(LvalExpr &expr);
-      bool enterCall(CallExpr &expr) { return false; }
-      void exitCall(CallExpr &expr);
-      bool enterEXO(EXOExpr &expr) { return false; }
-      void exitEXO(EXOExpr &expr);
-      bool enterEXH(EXHExpr &expr) { return false; }
-      void exitEXH(EXHExpr &expr);
-      bool enterEXL(EXLExpr &expr) { return false; }
-      void exitEXL(EXLExpr &expr);
-      bool enterAsgn(AsgnStmt &stmt) { return false; }
-      void exitAsgn(AsgnStmt &stmt);
-      bool enterFAO(FAOStmt &stmt) { return false; }
-      void exitFAO(FAOStmt &stmt);
-      bool enterFAOL(FAOLStmt &stmt) { return false; }
-      void exitFAOL(FAOLStmt &stmt);
-      bool enterFAOH(FAOHStmt &stmt) { return false; }
-      void exitFAOH(FAOHStmt &stmt);
+      NodeTransformer(SyncSeqDbl &ss,Program &p,const Process &pr,bool f,const Func &fn)
+        : syncseqdbl::NodeTransformer(ss,p,pr,f,fn) {}
 
       Expr normalizeNodeId(int i) const;
       Expr normalizeNodeId(const LvalExpr &expr) const;
+      void exitLval(LvalExpr &expr);
     };
 
   } //namespace syncseqdblparam
@@ -163,6 +111,18 @@ namespace dmpl {
     size_t cutoff;
     
     SyncSeqDblParam(DmplBuilder &b, const std::string &p, int r);
+
+    //-- return encapsulated pointers to transformers. these must be
+    //-- overridden by appropriate base classes.
+    virtual GlobalTrans getGlobalTrans(SyncSeqDbl &ss,dmpl::Program &p,bool f,const Func &fn)
+    {
+      return GlobalTrans(new syncseqdblparam::GlobalTransformer(ss,p,f,fn));
+    }
+    
+    virtual NodeTrans getNodeTrans(SyncSeqDbl &ss,Program &p,const Process &pr,bool f,const Func &fn)
+    {
+      return NodeTrans(new syncseqdblparam::NodeTransformer(ss,p,pr,f,fn));
+    }
 
     void createGlobVars();
     void createNodeIdNormalizer();

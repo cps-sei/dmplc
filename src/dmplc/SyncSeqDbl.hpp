@@ -103,7 +103,7 @@ namespace dmpl {
       void delIdMap(const std::string &s);
 
       //dispatchers
-      void exitLval(LvalExpr &expr);
+      virtual void exitLval(LvalExpr &expr);
       void exitComp(CompExpr &expr);
       void exitPrivate(PrivateStmt &stmt);
       void exitCall(CallStmt &stmt);
@@ -130,7 +130,7 @@ namespace dmpl {
       NodeTransformer(SyncSeqDbl &ss,Program &p,const Process &pr,bool f,const Func &fn)
         : GlobalTransformer(ss,p,f,fn),proc(pr),inCall(0),inLhs(0) {}
 
-      void exitLval(LvalExpr &expr);
+      virtual void exitLval(LvalExpr &expr);
       bool enterCall(CallExpr &expr) { return false; }
       void exitCall(CallExpr &expr);
       bool enterEXO(EXOExpr &expr) { return false; }
@@ -151,6 +151,11 @@ namespace dmpl {
 
   } //namespace syncseqdbl
 
+  //-- encapsulated pointers to transformers to make better use of
+  //-- inheritance
+  typedef std::shared_ptr<syncseqdbl::GlobalTransformer> GlobalTrans;
+  typedef std::shared_ptr<syncseqdbl::NodeTransformer> NodeTrans;
+  
   /*******************************************************************/
   //sequentializer for synchronous
   /*******************************************************************/
@@ -186,6 +191,18 @@ namespace dmpl {
     
     SyncSeqDbl(DmplBuilder &b, const std::string &p, int r);
 
+    //-- return encapsulated pointers to transformers. these must be
+    //-- overridden by appropriate base classes.
+    virtual GlobalTrans getGlobalTrans(SyncSeqDbl &ss,dmpl::Program &p,bool f,const Func &fn)
+    {
+      return GlobalTrans(new syncseqdbl::GlobalTransformer(ss,p,f,fn));
+    }
+    
+    virtual NodeTrans getNodeTrans(SyncSeqDbl &ss,Program &p,const Process &pr,bool f,const Func &fn)
+    {
+      return NodeTrans(new syncseqdbl::NodeTransformer(ss,p,pr,f,fn));
+    }
+    
     //-- add function call statement
     void callFunction(const std::string &funcName,StmtList &body);
 

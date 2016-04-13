@@ -94,65 +94,9 @@ namespace
 //methods for GlobalTransformer
 /*********************************************************************/
 
-//add id to int mapping
-void dmpl::syncseqdblparam::GlobalTransformer::addIdMap(const std::string &s,size_t i)
-{
-  idMap[s] = i;
-}
-
-//remove id to int mappiing
-void dmpl::syncseqdblparam::GlobalTransformer::delIdMap(const std::string &s)
-{
-  idMap.erase(s);
-}
-
 /*********************************************************************/
 //dispatchers for expressions
 /*********************************************************************/
-
-void dmpl::syncseqdblparam::GlobalTransformer::exitComp(dmpl::CompExpr &expr)
-{
-  if(expr.op == TNODENUM)
-    throw std::runtime_error("ERROR: found unsupported #N dimension!!");
-  else
-    exprMap[hostExpr] = dmpl::Expr(new dmpl::CompExpr(expr.op,collect(expr.args)));
-}
-
-/*********************************************************************/
-//-- return string corresponding to a node id
-/*********************************************************************/
-std::string dmpl::syncseqdblparam::GlobalTransformer::getNodeStr(const dmpl::LvalExpr &expr) const
-{
-  Expr nodeExpr = expr.node;
-  try
-  {
-    int id = nodeExpr->requireInt();
-    return std::to_string(id);
-  }
-  catch(std::bad_cast)
-  {
-    try
-    {
-      const LvalExpr &nodeLVal = nodeExpr->requireLval();
-      std::map<std::string,size_t>::const_iterator iit = idMap.find(nodeLVal.var);
-      if(iit == idMap.end() || nodeLVal.node != NULL || nodeLVal.indices.size() > 0 )
-      {
-        std::cerr << "Error: bad @node specifier. Unknown identifier: " << nodeExpr->toString() << '\n';
-        exit(1);
-      }
-      else
-      {
-        return std::to_string(iit->second);
-      }
-    }
-    catch(std::bad_cast)
-    {
-      std::cerr << "Error: bad @node specifier (" << nodeExpr->toString()
-                << "); must be integer, or identifier" << std::endl;
-      exit(1);
-    }
-  }
-}
 
 void dmpl::syncseqdblparam::GlobalTransformer::exitLval(dmpl::LvalExpr &expr)
 {
@@ -186,73 +130,6 @@ void dmpl::syncseqdblparam::GlobalTransformer::exitLval(dmpl::LvalExpr &expr)
 }
 
 /*********************************************************************/
-//dispatchers for statements
-/*********************************************************************/
-
-void dmpl::syncseqdblparam::GlobalTransformer::exitPrivate(dmpl::PrivateStmt &stmt)
-{
-  stmtMap[hostStmt] = stmtMap[stmt.data];
-}
-
-void dmpl::syncseqdblparam::GlobalTransformer::exitCall(dmpl::CallStmt &stmt) 
-{ 
-  //handle calls to ND(x) -- assign x non-deterministically
-  CallExpr *expr = dynamic_cast<CallExpr*>(stmt.data.get());
-  if(expr->func->toString() == "ND") {
-    throw std::runtime_error("ERROR: found call to unsupported function ND()!!");
-    /*
-    const Expr &arg = exprMap[*(expr->args.begin())];
-    Expr ndfn = syncSeq.createNondetFunc(arg);
-    Expr ndcall(new CallExpr(ndfn,ExprList()));
-    stmtMap[hostStmt] = Stmt(new AsgnStmt(arg,ndcall));
-    */
-    return;
-  }
-
-  stmtMap[hostStmt] = Stmt(new CallStmt(exprMap[stmt.data]));
-}
-
-void dmpl::syncseqdblparam::GlobalTransformer::exitFAN(dmpl::FANStmt &stmt) 
-{ 
-  Stmt shost = hostStmt;
-  StmtList sl;
-
-  for(const auto &pr : syncSeq.relevantThreads) {
-    syncseqdblparam::NodeTransformer nt(syncSeq,prog,pr.first,fwd,func);
-    nt.idMap = idMap;
-    nt.addIdMap(stmt.id,pr.first.id);
-    nt.visit(stmt.data);
-    sl.push_back(nt.stmtMap[stmt.data]);
-    nt.delIdMap(stmt.id);
-  }
-
-  stmtMap[shost] = Stmt(new dmpl::BlockStmt(sl));
-}
-
-void dmpl::syncseqdblparam::GlobalTransformer::exitFADNP(dmpl::FADNPStmt &stmt) 
-{ 
-  Stmt shost = hostStmt;
-  StmtList sl;
-
-  auto it1 = syncSeq.relevantThreads.begin();
-  for(;it1 != syncSeq.relevantThreads.end();++it1) {
-    auto it2 = it1; ++it2;
-    for(;it2 != syncSeq.relevantThreads.end();++it2) {
-      syncseqdblparam::NodeTransformer nt(syncSeq,prog,it1->first,fwd,func);
-      nt.idMap = idMap;
-      nt.addIdMap(stmt.id1,it1->first.id);
-      nt.addIdMap(stmt.id2,it2->first.id);
-      nt.visit(stmt.data);
-      sl.push_back(nt.stmtMap[stmt.data]);
-      nt.delIdMap(stmt.id1);
-      nt.delIdMap(stmt.id2);
-    }
-  }
-
-  stmtMap[shost] = Stmt(new dmpl::BlockStmt(sl));
-}
-
-/*********************************************************************/
 //methods for NodeTransformer
 /*********************************************************************/
 
@@ -268,7 +145,7 @@ Expr dmpl::syncseqdblparam::NodeTransformer::normalizeNodeId(int i) const
   return Expr(new CallExpr(call, args));
 }
 
-//
+//-- normalize a node id for an expression to 0 or 1
 Expr dmpl::syncseqdblparam::NodeTransformer::normalizeNodeId(const dmpl::LvalExpr &expr) const
 {
   return normalizeNodeId(atoi(getNodeStr(expr).c_str()));
@@ -338,168 +215,6 @@ void dmpl::syncseqdblparam::NodeTransformer::exitLval(dmpl::LvalExpr &expr)
   //std::cout << "**************************************\n";
   //std::cout << hostExpr->toString() << '\n';
   //std::cout << exprMap[hostExpr]->toString() << '\n';
-}
-
-void dmpl::syncseqdblparam::NodeTransformer::exitCall(dmpl::CallExpr &expr) 
-{
-  Expr shost = hostExpr;
-
-  //-- handle calls to EXIT()
-  if(expr.func->toString() == "EXIT") {
-    Expr exitFunc(new LvalExpr("exit"));
-    Expr exitArg(new IntExpr("0"));
-    ExprList exitArgs = {exitArg};
-    exprMap[shost] = Expr(new CallExpr(exitFunc, exitArgs));
-    return;
-  }
-  
-  //-- handle calls to PRINT()
-  if(expr.func->toString() == "PRINT") {
-    exprMap[shost] = Expr(new CallExpr(expr.func, ExprList()));
-    return;
-  }
-  
-  inCall = true;
-  visit(expr.func);
-  inCall = false;
-  BOOST_FOREACH(Expr &e,expr.args) visit(e);
-  exprMap[shost] = dmpl::Expr(new dmpl::CallExpr(exprMap[expr.func],collect(expr.args)));
-}
-
-//compute disjunction over all other node ids
-void dmpl::syncseqdblparam::NodeTransformer::exitEXO(dmpl::EXOExpr &expr)
-{
-  Expr shost = hostExpr;
-  exprMap[shost] = Expr();
-  for(const auto &pr : syncSeq.relevantThreads) {
-    if(pr.first == proc) continue;
-    addIdMap(expr.id,pr.first.id);
-    visit(expr.arg);
-    delIdMap(expr.id);
-    if(exprMap[shost].get()) 
-      exprMap[shost] = 
-        dmpl::Expr(new dmpl::CompExpr(TLOR,exprMap[shost],exprMap[expr.arg]));
-    else
-      exprMap[shost] = exprMap[expr.arg];
-  }
-
-  //turn empty disjunct into "0"
-  if(!exprMap[shost].get())
-    exprMap[shost] = Expr(new dmpl::IntExpr("0"));
-}
-
-//compute disjunction over all higher node ids
-void dmpl::syncseqdblparam::NodeTransformer::exitEXH(dmpl::EXHExpr &expr)
-{
-  Expr shost = hostExpr;
-  exprMap[shost] = Expr();
-  for(const auto &pr : syncSeq.relevantThreads) {
-    if(pr.first.id <= proc.id) continue;
-    addIdMap(expr.id,pr.first.id);
-    visit(expr.arg);
-    delIdMap(expr.id);
-    if(exprMap[shost].get()) 
-      exprMap[shost] = 
-        dmpl::Expr(new dmpl::CompExpr(TLOR,exprMap[shost],exprMap[expr.arg]));
-    else
-      exprMap[shost] = exprMap[expr.arg];
-  }
-
-  //turn empty disjunct into "0"
-  if(!exprMap[shost].get())
-    exprMap[shost] = Expr(new dmpl::IntExpr("0"));
-}
-
-//compute disjunction over all lower node ids
-void dmpl::syncseqdblparam::NodeTransformer::exitEXL(dmpl::EXLExpr &expr)
-{
-  Expr shost = hostExpr;
-  exprMap[shost] = Expr();
-  for(const auto &pr : syncSeq.relevantThreads) {
-    if(pr.first.id >= proc.id) continue;
-    addIdMap(expr.id,pr.first.id);
-    visit(expr.arg);
-    delIdMap(expr.id);
-    if(exprMap[shost].get()) 
-      exprMap[shost] = 
-        dmpl::Expr(new dmpl::CompExpr(TLOR,exprMap[shost],exprMap[expr.arg]));
-    else
-      exprMap[shost] = exprMap[expr.arg];
-  }
-
-  //turn empty disjunct into "0"
-  if(!exprMap[shost].get())
-    exprMap[shost] = Expr(new dmpl::IntExpr("0"));
-}
-
-void dmpl::syncseqdblparam::NodeTransformer::exitAsgn(dmpl::AsgnStmt &stmt)
-{
-  Stmt shost = hostStmt;
-
-  bool tempParam = false;
-  const LvalExpr &lval = stmt.lhs->requireLval();
-  if(func) {
-    if(func->tempSet.find(lval.var) != func->tempSet.end()) tempParam = true;
-    else if(func->paramSet.find(lval.var) != func->paramSet.end()) tempParam = true;
-  }
-  
-  //-- if the lhs is not spec relevant, then turn this into a NOP
-  if(!tempParam && !syncSeq.isRelevantVar(proc,stmt.lhs)) {
-    stmtMap[shost] = dmpl::Stmt(new dmpl::BlockStmt(StmtList()));
-    return;
-  }
-
-  inLhs = true; visit(stmt.lhs); inLhs = false;
-  visit(stmt.rhs);
-  stmtMap[shost] = dmpl::Stmt(new dmpl::AsgnStmt(exprMap[stmt.lhs],exprMap[stmt.rhs]));
-}
-
-void dmpl::syncseqdblparam::NodeTransformer::exitFAO(dmpl::FAOStmt &stmt)
-{
-  Stmt shost = hostStmt;
-  StmtList sl;
-
-  for(const auto &pr : syncSeq.relevantThreads) {
-    if(pr.first == proc) continue;
-    addIdMap(stmt.id,pr.first.id);
-    visit(stmt.data);
-    sl.push_back(stmtMap[stmt.data]);
-    delIdMap(stmt.id);
-  }
-
-  stmtMap[shost] = Stmt(new dmpl::BlockStmt(sl));
-}
-
-void dmpl::syncseqdblparam::NodeTransformer::exitFAOL(dmpl::FAOLStmt &stmt)
-{
-  Stmt shost = hostStmt;
-  StmtList sl;
-
-  for(const auto &pr : syncSeq.relevantThreads) {
-    if(pr.first.id >= proc.id) continue;
-    addIdMap(stmt.id,pr.first.id);
-    visit(stmt.data);
-    sl.push_back(stmtMap[stmt.data]);
-    delIdMap(stmt.id);
-  }
-
-  stmtMap[shost] = Stmt(new dmpl::BlockStmt(sl));
-}
-
-void dmpl::syncseqdblparam::NodeTransformer::exitFAOH(dmpl::FAOHStmt &stmt)
-{
-  Stmt shost = hostStmt;
-  StmtList sl;
-
-  for(const auto &pr : syncSeq.relevantThreads) {
-    if(pr.first.id <= proc.id) continue;
-    addIdMap(stmt.id,pr.first.id);
-    visit(stmt.data);
-    sl.push_back(stmtMap[stmt.data]);
-    delIdMap(stmt.id);
-  }
-
-  stmtMap[shost] = Stmt(new dmpl::BlockStmt(sl));
 }
 
 /*********************************************************************/
@@ -742,23 +457,23 @@ dmpl::Stmt dmpl::SyncSeqDblParam::createConstructor(const std::string &name,
     Expr ndfn = createNondetFunc(varExpr, type);
     Expr ndcall(new CallExpr(ndfn,ExprList()));
     Stmt ndAsgn(new AsgnStmt(varExpr,ndcall));    
-    syncseqdblparam::NodeTransformer nt(*this,builder.program,proc,false,initFunc);
+    NodeTrans nt = getNodeTrans(*this,builder.program,proc,false,initFunc);
     std::string nodeId = *node->args.begin();
-    nt.addIdMap(nodeId,proc.id);
-    nt.visit(ndAsgn);
-    nt.delIdMap(nodeId);
-    initFnBody.push_back(nt.stmtMap[ndAsgn]);
+    nt->addIdMap(nodeId,proc.id);
+    nt->visit(ndAsgn);
+    nt->delIdMap(nodeId);
+    initFnBody.push_back(nt->stmtMap[ndAsgn]);
   }
 
   //-- initialize _i version
   if(initFunc != NULL) {
     BOOST_FOREACH(const Stmt &st,initFunc->body) {
-      syncseqdblparam::NodeTransformer nt(*this,builder.program,proc,false,initFunc);
+      NodeTrans nt = getNodeTrans(*this,builder.program,proc,false,initFunc);
       std::string nodeId = *node->args.begin();
-      nt.addIdMap(nodeId,proc.id);
-      nt.visit(st);
-      nt.delIdMap(nodeId);
-      initFnBody.push_back(nt.stmtMap[st]);
+      nt->addIdMap(nodeId,proc.id);
+      nt->visit(st);
+      nt->delIdMap(nodeId);
+      initFnBody.push_back(nt->stmtMap[st]);
     }
   }
   
@@ -971,12 +686,12 @@ void dmpl::SyncSeqDblParam::createNodeFuncs()
         if(f->equalType(*pr.second)) callFunction(std::string("__HAVOC_") + (fwd ? "fwd" : "bwd"), fnBody);
         
         BOOST_FOREACH(const Stmt &st,f->body) {
-          syncseqdblparam::NodeTransformer nt(*this,builder.program,pr.first,fwd,f);
+          NodeTrans nt = getNodeTrans(*this,builder.program,pr.first,fwd,f);
           std::string nodeId = *node->args.begin();
-          nt.addIdMap(nodeId,pr.first.id);
-          nt.visit(st);
-          nt.delIdMap(nodeId);
-          fnBody.push_back(nt.stmtMap[st]);
+          nt->addIdMap(nodeId,pr.first.id);
+          nt->visit(st);
+          nt->delIdMap(nodeId);
+          fnBody.push_back(nt->stmtMap[st]);
         }
         
         std::string fnName = node->name + "__" + f->name + "_" + 

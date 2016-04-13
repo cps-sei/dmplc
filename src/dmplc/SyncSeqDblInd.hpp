@@ -79,8 +79,8 @@ namespace dmpl {
     struct GlobalTransformer : public syncseqdbl::GlobalTransformer
     {
       //constructors
-      GlobalTransformer(SyncSeqDbl &ss,dmpl::Program &p,const Func &fn)
-        : syncseqdbl::GlobalTransformer(ss,p,true,fn) {}
+      GlobalTransformer(SyncSeqDbl &ss,dmpl::Program &p,bool f,const Func &fn)
+        : syncseqdbl::GlobalTransformer(ss,p,f,fn) {}
     };
 
     /*****************************************************************/
@@ -101,6 +101,18 @@ namespace dmpl {
   {
   public:
     SyncSeqDblInd(DmplBuilder &b, const std::string &p, int r);
+
+    //-- return encapsulated pointers to transformers. these must be
+    //-- overridden by appropriate base classes.
+    virtual GlobalTrans getGlobalTrans(SyncSeqDbl &ss,dmpl::Program &p,bool f,const Func &fn)
+    {
+      return GlobalTrans(new syncseqdblind::GlobalTransformer(ss,p,f,fn));
+    }
+    
+    virtual NodeTrans getNodeTrans(SyncSeqDbl &ss,Program &p,const Process &pr,bool f,const Func &fn)
+    {
+      return NodeTrans(new syncseqdblind::NodeTransformer(ss,p,pr,f,fn));
+    }
 
     void callRoundFuncs(StmtList &body);
     void createMainFunc();

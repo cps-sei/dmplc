@@ -199,12 +199,12 @@ void dmpl::SyncSeqDblInd::createNodeFuncs()
         StmtList fnBody;
 
         BOOST_FOREACH(const Stmt &st,f->body) {
-          syncseqdblind::NodeTransformer nt(*this,builder.program,pr.first,true,f);
+          NodeTrans nt = getNodeTrans(*this,builder.program,pr.first,true,f);
           std::string nodeId = *node->args.begin();
-          nt.addIdMap(nodeId,pr.first.id);
-          nt.visit(st);
-          nt.delIdMap(nodeId);
-          fnBody.push_back(nt.stmtMap[st]);
+          nt->addIdMap(nodeId,pr.first.id);
+          nt->visit(st);
+          nt->delIdMap(nodeId);
+          fnBody.push_back(nt->stmtMap[st]);
         }
         
         std::string fnName = node->name + "__" + f->name + "_" + 

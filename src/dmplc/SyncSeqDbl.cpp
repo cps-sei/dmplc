@@ -190,12 +190,12 @@ void dmpl::syncseqdbl::GlobalTransformer::exitFAN(dmpl::FANStmt &stmt)
   StmtList sl;
 
   for(const auto &pr : syncSeq.relevantThreads) {
-    syncseqdbl::NodeTransformer nt(syncSeq,prog,pr.first,fwd,func);
-    nt.idMap = idMap;
-    nt.addIdMap(stmt.id,pr.first.id);
-    nt.visit(stmt.data);
-    sl.push_back(nt.stmtMap[stmt.data]);
-    nt.delIdMap(stmt.id);
+    NodeTrans nt = syncSeq.getNodeTrans(syncSeq,prog,pr.first,fwd,func);
+    nt->idMap = idMap;
+    nt->addIdMap(stmt.id,pr.first.id);
+    nt->visit(stmt.data);
+    sl.push_back(nt->stmtMap[stmt.data]);
+    nt->delIdMap(stmt.id);
   }
 
   stmtMap[shost] = Stmt(new dmpl::BlockStmt(sl));
@@ -210,14 +210,14 @@ void dmpl::syncseqdbl::GlobalTransformer::exitFADNP(dmpl::FADNPStmt &stmt)
   for(;it1 != syncSeq.relevantThreads.end();++it1) {
     auto it2 = it1; ++it2;
     for(;it2 != syncSeq.relevantThreads.end();++it2) {
-      syncseqdbl::NodeTransformer nt(syncSeq,prog,it1->first,fwd,func);
-      nt.idMap = idMap;
-      nt.addIdMap(stmt.id1,it1->first.id);
-      nt.addIdMap(stmt.id2,it2->first.id);
-      nt.visit(stmt.data);
-      sl.push_back(nt.stmtMap[stmt.data]);
-      nt.delIdMap(stmt.id1);
-      nt.delIdMap(stmt.id2);
+      NodeTrans nt = syncSeq.getNodeTrans(syncSeq,prog,it1->first,fwd,func);
+      nt->idMap = idMap;
+      nt->addIdMap(stmt.id1,it1->first.id);
+      nt->addIdMap(stmt.id2,it2->first.id);
+      nt->visit(stmt.data);
+      sl.push_back(nt->stmtMap[stmt.data]);
+      nt->delIdMap(stmt.id1);
+      nt->delIdMap(stmt.id2);
     }
   }
 
@@ -879,23 +879,23 @@ dmpl::Stmt dmpl::SyncSeqDbl::createConstructor(const std::string &name,
     Expr ndfn = createNondetFunc(varExpr, type);
     Expr ndcall(new CallExpr(ndfn,ExprList()));
     Stmt ndAsgn(new AsgnStmt(varExpr,ndcall));    
-    syncseqdbl::NodeTransformer nt(*this,builder.program,proc,false,initFunc);
+    NodeTrans nt = getNodeTrans(*this,builder.program,proc,false,initFunc);
     std::string nodeId = *node->args.begin();
-    nt.addIdMap(nodeId,proc.id);
-    nt.visit(ndAsgn);
-    nt.delIdMap(nodeId);
-    initFnBody.push_back(nt.stmtMap[ndAsgn]);
+    nt->addIdMap(nodeId,proc.id);
+    nt->visit(ndAsgn);
+    nt->delIdMap(nodeId);
+    initFnBody.push_back(nt->stmtMap[ndAsgn]);
   }
 
   //-- initialize _i version
   if(initFunc != NULL) {
     BOOST_FOREACH(const Stmt &st,initFunc->body) {
-      syncseqdbl::NodeTransformer nt(*this,builder.program,proc,false,initFunc);
+      NodeTrans nt = getNodeTrans(*this,builder.program,proc,false,initFunc);
       std::string nodeId = *node->args.begin();
-      nt.addIdMap(nodeId,proc.id);
-      nt.visit(st);
-      nt.delIdMap(nodeId);
-      initFnBody.push_back(nt.stmtMap[st]);
+      nt->addIdMap(nodeId,proc.id);
+      nt->visit(st);
+      nt->delIdMap(nodeId);
+      initFnBody.push_back(nt->stmtMap[st]);
     }
   }
   
@@ -982,9 +982,9 @@ void dmpl::SyncSeqDbl::createSafetyFwdBwd(bool fwd)
   //transform the body of safety
   StmtList fnBody;
   BOOST_FOREACH(const Stmt &st,propFunc->body) {
-    syncseqdbl::GlobalTransformer gt(*this,builder.program,fwd,propFunc);
-    gt.visit(st);
-    fnBody.push_back(gt.stmtMap[st]);
+    GlobalTrans gt = getGlobalTrans(*this,builder.program,fwd,propFunc);
+    gt->visit(st);
+    fnBody.push_back(gt->stmtMap[st]);
   }
   
   std::string fname = "__SAFETY_" + property + (fwd ? "_fwd" : "_bwd");
@@ -1108,12 +1108,12 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
         if(f->equalType(*pr.second)) callFunction(std::string("__HAVOC_") + (fwd ? "fwd" : "bwd"), fnBody);
         
         BOOST_FOREACH(const Stmt &st,f->body) {
-          syncseqdbl::NodeTransformer nt(*this,builder.program,pr.first,fwd,f);
+          NodeTrans nt = getNodeTrans(*this,builder.program,pr.first,fwd,f);
           std::string nodeId = *node->args.begin();
-          nt.addIdMap(nodeId,pr.first.id);
-          nt.visit(st);
-          nt.delIdMap(nodeId);
-          fnBody.push_back(nt.stmtMap[st]);
+          nt->addIdMap(nodeId,pr.first.id);
+          nt->visit(st);
+          nt->delIdMap(nodeId);
+          fnBody.push_back(nt->stmtMap[st]);
         }
         
         std::string fnName = node->name + "__" + f->name + "_" + 
