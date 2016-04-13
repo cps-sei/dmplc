@@ -67,6 +67,7 @@
 #include <list>
 #include <vector>
 #include <memory>
+#include <cassert>
 #include <boost/foreach.hpp>
 #include "Attribute.h"
 #include "Expression.h"

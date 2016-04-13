@@ -232,9 +232,9 @@ namespace dmpl
       if(nodeId != processes.size())
         throw std::runtime_error(std::string("ERROR: adding process with node ") + nodeName +
                                  " and role " + roleName + " and id " +
-                                 boost::lexical_cast<std::string>(nodeId) +
+                                 std::to_string(nodeId) +
                                  " when next id should be " +
-                                 boost::lexical_cast<std::string>(processes.size()) + "!!");
+                                 std::to_string(processes.size()) + "!!");
         
       processes.push_back(Process(it2->second, nodeId));
     }

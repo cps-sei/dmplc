@@ -69,7 +69,6 @@
 #include <exception>
 #include <memory>
 #include <boost/foreach.hpp>
-#include <boost/lexical_cast.hpp>
 #include "Variable.h"
 
 

@@ -956,11 +956,11 @@ dmpl::gams::AnalyzerBuilder::compute_priorities ()
         continue;
 
       std::string arg = f.second->name;
-      arg += ":" + boost::lexical_cast<std::string>(f.second->attrs["Period"].paramList.front()->requireInt());
-      arg += ":" + boost::lexical_cast<std::string>(f.second->attrs["WCExecTimeOverload"].paramList.front()->requireInt());
-      arg += ":" + boost::lexical_cast<std::string>(f.second->attrs["WCExecTimeNominal"].paramList.front()->requireInt());
-      arg += ":" + boost::lexical_cast<std::string>(maxCrit + 1 - f.second->attrs["Criticality"].paramList.front()->requireInt());
-      arg += ":" + boost::lexical_cast<std::string>(nextPrio - funcPrios[f.second->name]);
+      arg += ":" + std::to_string(f.second->attrs["Period"].paramList.front()->requireInt());
+      arg += ":" + std::to_string(f.second->attrs["WCExecTimeOverload"].paramList.front()->requireInt());
+      arg += ":" + std::to_string(f.second->attrs["WCExecTimeNominal"].paramList.front()->requireInt());
+      arg += ":" + std::to_string(maxCrit + 1 - f.second->attrs["Criticality"].paramList.front()->requireInt());
+      arg += ":" + std::to_string(nextPrio - funcPrios[f.second->name]);
 
       if(jvmArg.empty()) jvmArg = arg;
       else jvmArg += "," + arg;

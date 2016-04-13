@@ -56,11 +56,11 @@
 #ifndef _DMPL_ATTRIBUTE_H_
 #define _DMPL_ATTRIBUTE_H_
 
+#include <iostream>
 #include <vector>
 #include <exception>
 #include <map>
 #include <string>
-#include <boost/lexical_cast.hpp>
 
 namespace dmpl
 {
@@ -158,9 +158,9 @@ namespace dmpl
         throw std::runtime_error("Required attribute @" + name + " not found!!");
       else if (it->second.paramList.size() != expectedArgs)
         throw std::runtime_error("Required attribute @" + name
-                                 + " must have " + boost::lexical_cast<std::string>(expectedArgs)
+                                 + " must have " + std::to_string(expectedArgs)
                                  + " arguments; has "
-                                 + boost::lexical_cast<std::string>(it->second.paramList.size()));
+                                 + std::to_string(it->second.paramList.size()));
       else
         return it->second;
     }

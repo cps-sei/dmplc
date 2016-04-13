@@ -53,7 +53,6 @@
  * DM-0002494
 **/
 
-#include <boost/lexical_cast.hpp>
 #include "dmpl/Type.h"
 #include "dmpl/Variable.h"
 #include "dmpl/Expression.h"
@@ -78,7 +77,7 @@ void dmpl::SyncSeqDblInd::callRoundFuncs(StmtList &body)
     //call the _fwd version of the ROUND function of the node. this
     //copies from _i to _f
     std::string callNameFwd = pr.first.getNode() + "__" + pr.second->name + "_" + 
-      boost::lexical_cast<std::string>(pr.first.id) + "_fwd";
+      std::to_string(pr.first.id) + "_fwd";
     callFunction(callNameFwd,body);
   }
 }
@@ -209,7 +208,7 @@ void dmpl::SyncSeqDblInd::createNodeFuncs()
         }
         
         std::string fnName = node->name + "__" + f->name + "_" + 
-          boost::lexical_cast<std::string>(pr.first.id) + "_fwd";
+          std::to_string(pr.first.id) + "_fwd";
         Type retType = f->retType->isThread() ? voidType() : f->retType;
         Func func(new Function(retType,fnName,fnParams,fnTemps,fnBody));
         cprog.addFunction(func);

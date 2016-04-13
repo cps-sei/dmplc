@@ -56,7 +56,6 @@
 #include <iostream>
 #include <stdio.h>
 #include <boost/foreach.hpp>
-#include <boost/lexical_cast.hpp>
 #include "Variable.h"
 #include "Function.h"
 #include "Node.h"
@@ -85,7 +84,7 @@ std::string dmpl::Variable::toString() const
 {
   std::string res = type->toString() + " " + (isInput ? "input " : "") + name;
   BOOST_FOREACH(int d,type->dims) {
-    res += "[" + ((d == -1) ? "#N" : boost::lexical_cast<std::string>(d)) + "]";
+    res += "[" + ((d == -1) ? "#N" : std::to_string(d)) + "]";
   }
   return res;
 }
@@ -146,7 +145,7 @@ dmpl::Variable::printC (std::ostream &os,unsigned int indent)
 
   res += type->toString() + " " + name;
   BOOST_FOREACH(int d,type->dims) {
-    res += "[" + ((d == -1) ? "#N" : boost::lexical_cast<std::string>(d)) + "]";
+    res += "[" + ((d == -1) ? "#N" : std::to_string(d)) + "]";
   }
   
   os << res;

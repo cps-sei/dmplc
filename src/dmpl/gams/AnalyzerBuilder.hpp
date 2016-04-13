@@ -57,6 +57,7 @@
 #ifndef __GAMS_ANALYZER_BUILDER_H__
 #define __GAMS_ANALYZER_BUILDER_H__
 
+#include <sstream>
 #include "dmplc/DmplBuilder.hpp"
 #include "dmplc/CodeGenerator.hpp"
 

@@ -53,8 +53,6 @@
  * DM-0002494
 **/
 
-
-#include <boost/lexical_cast.hpp>
 #include "dmpl/Type.h"
 #include "dmpl/Variable.h"
 #include "dmpl/Expression.h"
@@ -101,7 +99,7 @@ std::string dmpl::syncseqdbl::GlobalTransformer::getNodeStr(const dmpl::LvalExpr
   try
   {
     int id = nodeExpr->requireInt();
-    return boost::lexical_cast<std::string>(id);
+    return std::to_string(id);
   }
   catch(std::bad_cast)
   {
@@ -116,7 +114,7 @@ std::string dmpl::syncseqdbl::GlobalTransformer::getNodeStr(const dmpl::LvalExpr
       }
       else
       {
-        return boost::lexical_cast<std::string>(iit->second);
+        return std::to_string(iit->second);
       }
     }
     catch(std::bad_cast)
@@ -147,7 +145,7 @@ void dmpl::syncseqdbl::GlobalTransformer::exitLval(dmpl::LvalExpr &expr)
 
   //substitute .id with its mapping in idMap
   std::map<std::string,size_t>::const_iterator iit = idMap.find(expr.var);
-  newName = iit == idMap.end() ? newName : boost::lexical_cast<std::string>(iit->second);
+  newName = iit == idMap.end() ? newName : std::to_string(iit->second);
 
   if(expr.node != NULL)
     newName = newName + "_" + getNodeStr(expr);
@@ -242,7 +240,7 @@ void dmpl::syncseqdbl::NodeTransformer::exitLval(dmpl::LvalExpr &expr)
 
   //create the string for the nodeId part of the expression, if any
   std::string nodeIdStr = (expr.node != NULL) ? getNodeStr(expr)
-    : boost::lexical_cast<std::string>(proc.id);
+    : std::to_string(proc.id);
 
   //handle assume and assert
   if(newName == "ASSUME") newName = "__CPROVER_assume";
@@ -277,11 +275,11 @@ void dmpl::syncseqdbl::NodeTransformer::exitLval(dmpl::LvalExpr &expr)
 
     //handle local variables
     //if(node->locVars.count(expr.var))
-      //newName += "_" + boost::lexical_cast<std::string>(nodeId);
+      //newName += "_" + std::to_string(nodeId);
 
     //substitute .id with its mapping in idMap
     std::map<std::string,size_t>::const_iterator iit = idMap.find(expr.var);
-    newName = iit == idMap.end() ? newName : boost::lexical_cast<std::string>(iit->second);
+    newName = iit == idMap.end() ? newName : std::to_string(iit->second);
 
     if(isGlob || isLoc) newName += "_" + nodeIdStr;
   }
@@ -698,8 +696,8 @@ void dmpl::SyncSeqDbl::createGlobVars()
   for(const auto &rg : relevantGlobs) {
     //-- process each relevant global var
     for(const Var &v : rg.second) {
-      cprog.addGlobVar(v->instName(std::string("_i_") + boost::lexical_cast<std::string>(rg.first.id)));
-      cprog.addGlobVar(v->instName(std::string("_f_") + boost::lexical_cast<std::string>(rg.first.id)));
+      cprog.addGlobVar(v->instName(std::string("_i_") + std::to_string(rg.first.id)));
+      cprog.addGlobVar(v->instName(std::string("_f_") + std::to_string(rg.first.id)));
     }
   }
 
@@ -707,7 +705,7 @@ void dmpl::SyncSeqDbl::createGlobVars()
   for(const auto &rl : relevantLocs) {
     for(const Var &v : rl.second)
       cprog.addGlobVar(v->instName(std::string("_") + 
-                                   boost::lexical_cast<std::string>(rl.first.id)));
+                                   std::to_string(rl.first.id)));
   }
 }
 
@@ -719,7 +717,7 @@ void dmpl::SyncSeqDbl::createCopyStmts(bool fwd,const Var &var,StmtList &res,Exp
 {
   //non-array type
   if(var->type->dims.empty()) {
-    std::string pidStr = boost::lexical_cast<std::string>(pid);
+    std::string pidStr = std::to_string(pid);
     Expr lhs(new LvalExpr(var->name + std::string(fwd ? "_f_" : "_i_") + pidStr,indx));
     Expr rhs(new LvalExpr(var->name + std::string(fwd ? "_i_" : "_f_")  + pidStr,indx));
     Stmt stmt(new AsgnStmt(lhs,rhs));
@@ -732,7 +730,7 @@ void dmpl::SyncSeqDbl::createCopyStmts(bool fwd,const Var &var,StmtList &res,Exp
     int dim = *(var->type->dims.begin());
     for(int i = 0;i < dim;++i) {
       ExprList newIndx = indx;
-      newIndx.push_back(Expr(new IntExpr(boost::lexical_cast<std::string>(i))));
+      newIndx.push_back(Expr(new IntExpr(std::to_string(i))));
       Var newVar = var->decrDim();
       createCopyStmts(fwd,newVar,res,newIndx,pid);
     }
@@ -783,7 +781,7 @@ void dmpl::SyncSeqDbl::createMainFunc()
     //call the _fwd version of the ROUND function of the node. this
     //copies from _i to _f
     std::string callNameFwd = pr.first.getNode() + "__" + pr.second->name + "_" + 
-      boost::lexical_cast<std::string>(pr.first.id) + "_fwd";
+      std::to_string(pr.first.id) + "_fwd";
     Expr callExprFwd(new LvalExpr(callNameFwd));
     Stmt callStmtFwd(new CallStmt(callExprFwd,dmpl::ExprList()));
     roundBody.push_back(callStmtFwd);
@@ -804,7 +802,7 @@ void dmpl::SyncSeqDbl::createMainFunc()
     //call the _bwd version of the ROUND function of the node. this
     //copies from _f to _i
     std::string callNameBwd = pr.first.getNode() + "__" + pr.second->name + "_" + 
-      boost::lexical_cast<std::string>(pr.first.id) + "_bwd";
+      std::to_string(pr.first.id) + "_bwd";
     Expr callExprBwd(new LvalExpr(callNameBwd));
     Stmt callStmtBwd(new CallStmt(callExprBwd,dmpl::ExprList()));
     roundBody.push_back(callStmtBwd);
@@ -840,7 +838,7 @@ void dmpl::SyncSeqDbl::createMainFunc()
         //call the _fwd version of the ROUND function of the
         //node. this copies from _i to _f
         std::string callNameFwd = pr.first.getNode() + "__" + pr.second->name + "_" + 
-          boost::lexical_cast<std::string>(pr.first.id) + "_fwd";
+          std::to_string(pr.first.id) + "_fwd";
         Expr callExprFwd(new LvalExpr(callNameFwd));
         Stmt callStmtFwd(new CallStmt(callExprFwd,dmpl::ExprList()));
         mainBody.push_back(callStmtFwd);
@@ -873,7 +871,7 @@ dmpl::Stmt dmpl::SyncSeqDbl::createConstructor(const std::string &name,
   }
   
   StmtList initFnBody;
-  std::string initFnName = "__INIT_" + name + "_" + boost::lexical_cast<std::string>(proc.id);
+  std::string initFnName = "__INIT_" + name + "_" + std::to_string(proc.id);
 
   //-- if the variable is an input, assign it non-deterministically
   if(!type->isVoid() && isInput) {
@@ -1027,7 +1025,7 @@ void dmpl::SyncSeqDbl::createHavocStmts(bool isGlob,bool fwd,const Var &var,
 {
   //non-array type
   if(var->type->dims.empty()) {
-    std::string pidStr = boost::lexical_cast<std::string>(pid);
+    std::string pidStr = std::to_string(pid);
     Expr varExpr(new LvalExpr(var->name +
                               std::string(isGlob ? (fwd ? "_i_" : "_f_") : "_")  +
                               pidStr,indx));
@@ -1042,7 +1040,7 @@ void dmpl::SyncSeqDbl::createHavocStmts(bool isGlob,bool fwd,const Var &var,
     int dim = *(var->type->dims.begin());
     for(int i = 0;i < dim;++i) {
       ExprList newIndx = indx;
-      newIndx.push_back(Expr(new IntExpr(boost::lexical_cast<std::string>(i))));
+      newIndx.push_back(Expr(new IntExpr(std::to_string(i))));
       Var newVar = var->decrDim();
       createHavocStmts(isGlob,fwd,newVar,res,newIndx,pid);
     }
@@ -1119,7 +1117,7 @@ void dmpl::SyncSeqDbl::createNodeFuncs()
         }
         
         std::string fnName = node->name + "__" + f->name + "_" + 
-          boost::lexical_cast<std::string>(pr.first.id) + (fwd ? "_fwd" : "_bwd");
+          std::to_string(pr.first.id) + (fwd ? "_fwd" : "_bwd");
         Type retType = f->retType->isThread() ? voidType() : f->retType;
         Func func(new Function(retType,fnName,fnParams,fnTemps,fnBody));
         cprog.addFunction(func);

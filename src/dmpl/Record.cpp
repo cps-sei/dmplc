@@ -55,8 +55,6 @@
 
 #include <iostream>
 #include <stdio.h>
-#include <boost/foreach.hpp>
-#include <boost/lexical_cast.hpp>
 #include "Record.hpp"
 #include "Variable.h"
 #include "Function.h"

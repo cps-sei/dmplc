@@ -53,7 +53,6 @@
  * DM-0002494
 **/
 
-#include <boost/lexical_cast.hpp>
 #include "dmpl/Type.h"
 #include "dmpl/Variable.h"
 #include "dmpl/Expression.h"

@@ -53,7 +53,6 @@
  * DM-0002494
 **/
 
-#include <boost/lexical_cast.hpp>
 #include <boost/foreach.hpp>
 #include "dmpl/Type.h"
 #include "dmpl/Variable.h"
@@ -85,7 +84,7 @@ void dmpl::ArrayElim::expandArrayVar(const Variable &var)
   int dim = var.type->getFirstDim();
   for(int i = 0;i < dim;++i) {
     Variable v1 = var.decrDim();
-    Variable v2 = v1.instName("_" + boost::lexical_cast<std::string>(i));
+    Variable v2 = v1.instName("_" + std::to_string(i));
     expandArrayVar(v2);
   }
 }
@@ -113,9 +112,9 @@ void dmpl::ArrayElim::createGetterBody(const std::string &varName,const Expr &co
   const Variable &param = *(params.begin());
 
   for(int i = 0;i < dim;++i) {
-    std::string newVarName = varName + "_" + boost::lexical_cast<std::string>(i);
+    std::string newVarName = varName + "_" + std::to_string(i);
     Expr eq(new CompExpr(TCEQ,Expr(new LvalExpr(param.name)),
-                         Expr(new IntExpr(boost::lexical_cast<std::string>(i)))));
+                         Expr(new IntExpr(std::to_string(i)))));
     Expr newCond = cond.get() ? Expr(new CompExpr(TLAND, cond, eq)) : eq;
     createGetterBody(newVarName,newCond,newType,newParams,body);
   }
@@ -143,7 +142,7 @@ dmpl::Expr dmpl::ArrayElim::createGetter(const LvalExpr &expr)
   //create parameters
   dmpl::VariablesList params;
   for(unsigned int i = 0;i < expr.indices.size();++i) {
-    params.push_back(Variable("idx_" + boost::lexical_cast<std::string>(i),dmpl::ucharType()));
+    params.push_back(Variable("idx_" + std::to_string(i),dmpl::ucharType()));
   }
 
   //create the body
@@ -185,9 +184,9 @@ void dmpl::ArrayElim::createSetterBody(const std::string &varName,const Expr &co
   const Variable &param = *(params.begin());
 
   for(int i = 0;i < dim;++i) {
-    std::string newVarName = varName + "_" + boost::lexical_cast<std::string>(i);
+    std::string newVarName = varName + "_" + std::to_string(i);
     Expr eq(new CompExpr(TCEQ,Expr(new LvalExpr(param.name)),
-                         Expr(new IntExpr(boost::lexical_cast<std::string>(i)))));
+                         Expr(new IntExpr(std::to_string(i)))));
     Expr newCond = cond.get() ? Expr(new CompExpr(TLAND, cond, eq)) : eq;
     createSetterBody(newVarName,newCond,newType,newParams,body);
   }
@@ -215,7 +214,7 @@ dmpl::Expr dmpl::ArrayElim::createSetter(const LvalExpr &expr)
   //create parameters
   dmpl::VariablesList params;
   for(unsigned int i = 0;i < expr.indices.size();++i) {
-    params.push_back(Variable("idx_" + boost::lexical_cast<std::string>(i),dmpl::ucharType()));
+    params.push_back(Variable("idx_" + std::to_string(i),dmpl::ucharType()));
   }
   params.push_back(Variable("val", elemType));
 
