@@ -111,6 +111,9 @@ void dmpl::syncseqdblparam::GlobalTransformer::exitComp(dmpl::CompExpr &expr)
     exprMap[hostExpr] = dmpl::Expr(new dmpl::CompExpr(expr.op,collect(expr.args)));
 }
 
+/*********************************************************************/
+//-- return string corresponding to a node id
+/*********************************************************************/
 std::string dmpl::syncseqdblparam::GlobalTransformer::getNodeStr(const dmpl::LvalExpr &expr) const
 {
   Expr nodeExpr = expr.node;
@@ -144,6 +147,14 @@ std::string dmpl::syncseqdblparam::GlobalTransformer::getNodeStr(const dmpl::Lva
   }
 }
 
+/*********************************************************************/
+//-- return expression corresponding to a node id
+/*********************************************************************/
+Expr dmpl::syncseqdblparam::GlobalTransformer::getNodeId(const dmpl::LvalExpr &expr) const
+{
+  return nodeIds(atoi(getNodeStr(expr).c_str()));
+}
+
 void dmpl::syncseqdblparam::GlobalTransformer::exitLval(dmpl::LvalExpr &expr)
 {
   exprMap[hostExpr] = hostExpr;
@@ -165,10 +176,10 @@ void dmpl::syncseqdblparam::GlobalTransformer::exitLval(dmpl::LvalExpr &expr)
   std::map<std::string,size_t>::const_iterator iit = idMap.find(expr.var);
   newName = iit == idMap.end() ? newName : boost::lexical_cast<std::string>(iit->second);
 
-  if(expr.node != NULL)
-    newName = newName + "_" + getNodeStr(expr);
+  ExprList indices = collect(expr.indices);
+  if(expr.node != NULL) indices.push_front(getNodeId(expr));
 
-  exprMap[hostExpr] = dmpl::Expr(new dmpl::LvalExpr(newName,collect(expr.indices)));
+  exprMap[hostExpr] = dmpl::Expr(new dmpl::LvalExpr(newName,indices));
   
   //std::cout << "**************************************\n";
   //std::cout << hostExpr->toString() << '\n';
@@ -259,6 +270,8 @@ void dmpl::syncseqdblparam::NodeTransformer::exitLval(dmpl::LvalExpr &expr)
   //create the string for the nodeId part of the expression, if any
   std::string nodeIdStr = (expr.node != NULL) ? getNodeStr(expr)
     : boost::lexical_cast<std::string>(proc.id);
+  ExprList indices = collect(expr.indices);
+  Expr nodeId = (expr.node != NULL) ? getNodeId(expr) : nodeIds(proc.id);
 
   //handle assume and assert
   if(newName == "ASSUME") newName = "__CPROVER_assume";
@@ -299,10 +312,10 @@ void dmpl::syncseqdblparam::NodeTransformer::exitLval(dmpl::LvalExpr &expr)
     std::map<std::string,size_t>::const_iterator iit = idMap.find(expr.var);
     newName = iit == idMap.end() ? newName : boost::lexical_cast<std::string>(iit->second);
 
-    if(isGlob || isLoc) newName += "_" + nodeIdStr;
+    if(isGlob || isLoc) indices.push_front(nodeId);
   }
 
-  exprMap[hostExpr] = dmpl::Expr(new dmpl::LvalExpr(newName,collect(expr.indices)));
+  exprMap[hostExpr] = dmpl::Expr(new dmpl::LvalExpr(newName,indices));
   
   //std::cout << "**************************************\n";
   //std::cout << hostExpr->toString() << '\n';
