@@ -159,7 +159,7 @@ std::string dmpl::syncseqdblparam::GlobalTransformer::getNodeStr(const dmpl::Lva
 /*********************************************************************/
 Expr dmpl::syncseqdblparam::GlobalTransformer::getNodeId(const dmpl::LvalExpr &expr) const
 {
-  return nodeIds(atoi(getNodeStr(expr).c_str()));
+  return Expr(new IntExpr(getNodeStr(expr)));
 }
 
 void dmpl::syncseqdblparam::GlobalTransformer::exitLval(dmpl::LvalExpr &expr)
@@ -264,6 +264,25 @@ void dmpl::syncseqdblparam::GlobalTransformer::exitFADNP(dmpl::FADNPStmt &stmt)
 //methods for NodeTransformer
 /*********************************************************************/
 
+/*********************************************************************/
+//-- return expression corresponding to a node id
+/*********************************************************************/
+
+//-- normalize a node id to 0 or 1
+Expr dmpl::syncseqdblparam::NodeTransformer::normalizeNodeId(int i) const
+{
+  Expr call(new LvalExpr(idFunc + "_" + std::to_string(proc.id)));
+  ExprList args = { Expr(new IntExpr(std::to_string(i))) };
+  return Expr(new CallExpr(call, args));
+}
+
+//
+Expr dmpl::syncseqdblparam::NodeTransformer::normalizeNodeId(const dmpl::LvalExpr &expr) const
+{
+  return normalizeNodeId(atoi(getNodeStr(expr).c_str()));
+}
+
+
 void dmpl::syncseqdblparam::NodeTransformer::exitLval(dmpl::LvalExpr &expr)
 {
   exprMap[hostExpr] = hostExpr;
@@ -278,7 +297,7 @@ void dmpl::syncseqdblparam::NodeTransformer::exitLval(dmpl::LvalExpr &expr)
   std::string nodeIdStr = (expr.node != NULL) ? getNodeStr(expr)
     : std::to_string(proc.id);
   ExprList indices = collect(expr.indices);
-  Expr nodeId = (expr.node != NULL) ? getNodeId(expr) : nodeIds(proc.id);
+  Expr nodeId = (expr.node != NULL) ? normalizeNodeId(expr) : normalizeNodeId(proc.id);
 
   //handle assume and assert
   if(newName == "ASSUME") newName = "__CPROVER_assume";

@@ -147,6 +147,9 @@ namespace dmpl {
       void exitFAOL(FAOLStmt &stmt);
       bool enterFAOH(FAOHStmt &stmt) { return false; }
       void exitFAOH(FAOHStmt &stmt);
+
+      Expr normalizeNodeId(int i) const;
+      Expr getNodeId(const LvalExpr &expr) const;
     };
 
   } //namespace syncseqdblparam
