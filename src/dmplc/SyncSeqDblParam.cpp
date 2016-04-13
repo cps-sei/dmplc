@@ -154,14 +154,6 @@ std::string dmpl::syncseqdblparam::GlobalTransformer::getNodeStr(const dmpl::Lva
   }
 }
 
-/*********************************************************************/
-//-- return expression corresponding to a node id
-/*********************************************************************/
-Expr dmpl::syncseqdblparam::GlobalTransformer::getNodeId(const dmpl::LvalExpr &expr) const
-{
-  return Expr(new IntExpr(getNodeStr(expr)));
-}
-
 void dmpl::syncseqdblparam::GlobalTransformer::exitLval(dmpl::LvalExpr &expr)
 {
   exprMap[hostExpr] = hostExpr;
@@ -184,7 +176,7 @@ void dmpl::syncseqdblparam::GlobalTransformer::exitLval(dmpl::LvalExpr &expr)
   newName = iit == idMap.end() ? newName : std::to_string(iit->second);
 
   ExprList indices = collect(expr.indices);
-  if(expr.node != NULL) indices.push_front(getNodeId(expr));
+  if(expr.node != NULL) indices.push_front(Expr(new IntExpr(getNodeStr(expr))));
 
   exprMap[hostExpr] = dmpl::Expr(new dmpl::LvalExpr(newName,indices));
   

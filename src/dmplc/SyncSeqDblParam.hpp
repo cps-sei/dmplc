@@ -112,7 +112,6 @@ namespace dmpl {
       void exitFADNP(FADNPStmt &stmt);
 
       std::string getNodeStr(const LvalExpr &expr) const;
-      Expr getNodeId(const LvalExpr &expr) const;
     };
 
     /*****************************************************************/
@@ -149,7 +148,7 @@ namespace dmpl {
       void exitFAOH(FAOHStmt &stmt);
 
       Expr normalizeNodeId(int i) const;
-      Expr getNodeId(const LvalExpr &expr) const;
+      Expr normalizeNodeId(const LvalExpr &expr) const;
     };
 
   } //namespace syncseqdblparam
