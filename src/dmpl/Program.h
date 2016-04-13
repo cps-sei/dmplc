@@ -141,7 +141,8 @@ namespace dmpl
 
     //constant definitions
     typedef std::map<std::string,std::string> ConstDef;
-    ConstDef constDef;
+    ConstDef extConstDef; //-- externally supplied constant definitions. these won't be printed.
+    ConstDef constDef; //-- all constant definitions
 
     /**
      * A map of function names to function definitions

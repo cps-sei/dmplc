@@ -209,8 +209,12 @@ dmpl::Program::print (std::ostream &os,unsigned int indent)
     os << spacer << "target " << tt.first << " %%{" << tt.second << "%%}\n";
 
   //print CONST definitions
-  BOOST_FOREACH(ConstDef::value_type &cd,constDef)
+  BOOST_FOREACH(ConstDef::value_type &cd,constDef) {
+    //-- don't print external constants
+    if(extConstDef.find(cd.first) != extConstDef.end()) continue;
+    
     os << spacer << "const " << cd.first << " = " << cd.second << ";\n";
+  }
   os << '\n';
 
   //print external function declarations

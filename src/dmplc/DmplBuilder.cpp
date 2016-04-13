@@ -83,6 +83,7 @@ dmpl::DmplBuilder::DmplBuilder(const std::string &ver, const std::list<std::stri
   : version(ver), cmdLine(cmdl), fileNames(fns), debug(d) 
 {
   program.constDef = constDef;
+  program.extConstDef = constDef;
 }
 
 /*********************************************************************/
