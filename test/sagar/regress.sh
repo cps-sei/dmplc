@@ -93,7 +93,7 @@ function test_seq_param {
     DMPL="$2"
     ROLES="$3"
     [ $(valid_test $TESTID) == "0" ] && return
-    printf "seq param %5s %30s : " $TESTID $(basename $DMPL)
+    printf "seq param    %5s %30s : " $TESTID $(basename $DMPL)
     BN=$(basename $DMPL .dmpl)
     OUT1="$BN.c"
     OUT2="$BN.c.saved"
@@ -163,7 +163,7 @@ function test_verif_param {
     ROLES="$4"
     OUTPUT="$5"
     [ $(valid_test $TESTID) == "0" ] && return
-    printf "verification %5s %30s : " $TESTID $(basename $DMPL)
+    printf "param verif  %5s %30s : " $TESTID $(basename $DMPL)
     BN=$(basename $DMPL .dmpl)
     OUT1="$BN.c"
     rm -f $OUT1
