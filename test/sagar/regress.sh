@@ -86,6 +86,23 @@ function test_seq_ind {
     if [ "$?" == "0" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
 }
 
+##sequentialize for parameterized verification and check against
+##correct output
+function test_seq_param {
+    TESTID="$1"
+    DMPL="$2"
+    ROLES="$3"
+    [ $(valid_test $TESTID) == "0" ] && return
+    printf "seq param %5s %30s : " $TESTID $(basename $DMPL)
+    BN=$(basename $DMPL .dmpl)
+    OUT1="$BN.c"
+    OUT2="$BN.c.saved"
+    rm -f $OUT1
+    dmplc --cube-grid 10 --roles $ROLES -r 5 -sp -rp NoCollision -o $OUT1 $DMPL &> /dev/null
+    diff $OUT1 $OUT2 &> /dev/null
+    if [ "$?" == "0" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
+}
+
 ##parse a file and output. then parse this output and output
 ##again. the two outputs should be identical.
 function test_double_parse {
@@ -171,6 +188,8 @@ test_double_parse DP26 ../../docs/tutorial/example-09c.dmpl ""
 test_double_parse DP27 ../../docs/tutorial/example-09d.dmpl ""
 test_double_parse DP28 ../../docs/tutorial/example-09e.dmpl ""
 test_double_parse DP29 ../../docs/tutorial/example-10.dmpl ""
+test_double_parse DP30 test-example-01h.dmpl ""
+test_double_parse DP31 test-example-01i.dmpl ""
 
 #code generation tests
 test_code_gen CG1 test-example-01a.dmpl "--roles uav:Uav:3"
@@ -205,6 +224,10 @@ test_seq_ind SI1 test-example-01c.dmpl uav:Uav1:2:uav:Uav2:1
 test_seq_ind SI2 test-example-05b.dmpl uav:Leader:1:uav:Protector:4
 test_seq_ind SI3 test-example-01f.dmpl uav:Uav1:1:uav:Uav2:1
 test_seq_ind SI4 test-example-01g.dmpl uav:Uav:3
+
+#parameterized sequentialization tests
+test_seq_param SP1 test-example-01h.dmpl uav:Uav:2
+test_seq_param SP2 test-example-01i.dmpl uav:Uav:2
 
 #verification tests
 test_verif VF1 ../../docs/tutorial/example-01.dmpl "" uav:Uav:2 SUCCESSFUL
