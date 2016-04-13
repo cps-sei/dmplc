@@ -92,6 +92,9 @@ void dmpl::syncseqdbl::GlobalTransformer::exitComp(dmpl::CompExpr &expr)
     exprMap[hostExpr] = dmpl::Expr(new dmpl::CompExpr(expr.op,collect(expr.args)));
 }
 
+/*********************************************************************/
+//-- return string corresponding to a node id
+/*********************************************************************/
 std::string dmpl::syncseqdbl::GlobalTransformer::getNodeStr(const dmpl::LvalExpr &expr) const
 {
   Expr nodeExpr = expr.node;
