@@ -73,6 +73,7 @@ namespace
   const std::string nodeIdsVarName = "nodeIds";
   const std::string nodeIdsVar = "nodeIds";
   const std::string nodeIdVar = "nodeId";
+  const std::string idFunc = "__id";
 
   //-- function that returns nodeIds(x)
   dmpl::Expr nodeIds(int i)
@@ -521,6 +522,31 @@ void dmpl::SyncSeqDblParam::createGlobVars()
 
     //-- done
     break;
+  }
+}
+
+/*********************************************************************/
+//create functions that normalize node ids
+/*********************************************************************/
+void dmpl::SyncSeqDblParam::createNodeIdNormalizer()
+{
+  for(const Process &proc : builder.program.processes) {
+    std::string funcName = idFunc + "_" + std::to_string(proc.id);
+    dmpl::VarList fnParams = { Var(new Variable("x", dmpl::ucharType())) },fnTemps;
+
+    //-- x == nodeids[proc.id]
+    Expr xe(new LvalExpr("x"));
+    Expr xeeq(new CompExpr(TCEQ, xe, nodeIds(proc.id)));
+
+    //-- proc.id and 1-proc.id
+    Expr ide(new IntExpr(std::to_string(proc.id)));
+    Expr oide(new IntExpr(std::to_string(builder.program.processes.size() - 1 - proc.id)));
+
+    //-- return x == nodeids[proc.id] ? proc.id : 1-proc.id
+    Expr conde(new CompExpr(TQUEST, xeeq, ide, oide));
+    StmtList fnBody = { Stmt(new RetStmt(conde)) };
+    
+    cprog.addFunction(Func(new Function(dmpl::ucharType(),funcName,fnParams,fnTemps,fnBody)));
   }
 }
 
@@ -1059,6 +1085,7 @@ void dmpl::SyncSeqDblParam::run()
   
   createGlobVars();
   processExternFuncs();
+  createNodeIdNormalizer();
   createRoundCopier();
   createMainFunc();
   createInit();

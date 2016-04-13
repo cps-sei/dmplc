@@ -163,6 +163,7 @@ namespace dmpl {
     SyncSeqDblParam(DmplBuilder &b, const std::string &p, int r);
 
     void createGlobVars();
+    void createNodeIdNormalizer();
     size_t globVarDim(const Var &var);
     void createCopyStmts(bool fwd,const Var &var,StmtList &res,ExprList indx);
     void createRoundCopier();
