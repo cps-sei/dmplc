@@ -115,8 +115,8 @@ function test_double_parse {
     OUT1="$BN.1.dmpl"
     OUT2="$BN.2.dmpl"
     rm -f $OUT1 $OUT2
-    dmplc -p -o $OUT1 $DMPL $OPTS &> /dev/null
-    dmplc -p -o $OUT2 $OUT1 $OPTS &> /dev/null
+    dmplc -p --cube-grid 10 --map small -o $OUT1 $DMPL $OPTS &> /dev/null
+    dmplc -p --cube-grid 10 --map small -o $OUT2 $OUT1 $OPTS &> /dev/null
     diff $OUT1 $OUT2 &> /dev/null
     if [ "$?" == "0" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
 }
