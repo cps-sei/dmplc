@@ -155,6 +155,23 @@ function test_verif_ind {
     if [ "$OUT2" == "$OUTPUT" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
 }
 
+##verify parameterized and check against expected output
+function test_verif_param {
+    TESTID="$1"
+    DMPL="$2"
+    OPTS="$3"
+    ROLES="$4"
+    OUTPUT="$5"
+    [ $(valid_test $TESTID) == "0" ] && return
+    printf "verification %5s %30s : " $TESTID $(basename $DMPL)
+    BN=$(basename $DMPL .dmpl)
+    OUT1="$BN.c"
+    rm -f $OUT1
+    dmplc --roles $ROLES --cube-grid 5 -r 5 -sp -rp NoCollision -o $OUT1 $DMPL $OPTS &> /dev/null
+    OUT2=$(cbmc $OUT1 2>&1 | grep VERIFICATION | awk '{print $2}')
+    if [ "$OUT2" == "$OUTPUT" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
+}
+
 #role descriptors for various examples
 EX02ROLES="uav:Leader:1:uav:ProtectorSE:1"
 
@@ -248,3 +265,8 @@ test_verif_ind VI5 ../../docs/tutorial/example-02.bug1.dmpl ../../docs/tutorial/
 test_verif_ind VI6 ../../docs/tutorial/example-03.dmpl ../../docs/tutorial/example-03-AADL.dmpl uav:Leader:1:uav:Protector:1 SUCCESSFUL
 test_verif_ind VI7 ../../docs/tutorial/example-04.dmpl ../../docs/tutorial/example-04-AADL.dmpl uav:Leader:1:uav:Protector:1 FAILED
 test_verif_ind VI8 ../../docs/tutorial/example-01-hybrid.dmpl ../../docs/tutorial/example-01-hybrid-controller.dmpl uav:Uav:2 SUCCESSFUL
+
+#parameterized verification tests
+test_verif_param VP1 ../../docs/tutorial/example-01.dmpl "" uav:Uav:2 SUCCESSFUL
+test_verif_param VP2 ../../docs/tutorial/example-01.bug1.dmpl "" uav:Uav:2 FAILED
+test_verif_param VP3 ../../docs/tutorial/example-01.bug2.dmpl "" uav:Uav:2 FAILED
