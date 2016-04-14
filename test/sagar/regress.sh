@@ -207,6 +207,7 @@ test_double_parse DP28 ../../docs/tutorial/example-09e.dmpl ""
 test_double_parse DP29 ../../docs/tutorial/example-10.dmpl ""
 test_double_parse DP30 test-example-01h.dmpl ""
 test_double_parse DP31 test-example-01i.dmpl ""
+test_double_parse DP32 ../../docs/tutorial/example-01-ag-await.dmpl ""
 
 #code generation tests
 test_code_gen CG1 test-example-01a.dmpl "--roles uav:Uav:3"
@@ -238,6 +239,7 @@ test_seq_ind SI4 test-example-01g.dmpl uav:Uav:3
 #parameterized sequentialization tests
 test_seq_param SP1 test-example-01h.dmpl uav:Uav:2
 test_seq_param SP2 test-example-01i.dmpl uav:Uav:2
+test_seq_param SP3 test-example-01-ag-await-a.dmpl uav:Uav:2
 
 #test building
 COUNT=1
