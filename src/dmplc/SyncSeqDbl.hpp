@@ -148,7 +148,7 @@ namespace dmpl {
       bool enterFAOH(FAOHStmt &stmt) { return false; }
       void exitFAOH(FAOHStmt &stmt);
       bool enterAwaitForall(AwaitForallStmt &stmt) { return false; }
-      void exitAwaitForall(AwaitForallStmt &stmt);
+      virtual void exitAwaitForall(AwaitForallStmt &stmt);
     };
   } //namespace syncseqdbl
 

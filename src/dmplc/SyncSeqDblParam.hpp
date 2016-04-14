@@ -97,6 +97,7 @@ namespace dmpl {
       Expr normalizeNodeId(int i) const;
       Expr normalizeNodeId(const LvalExpr &expr) const;
       void exitLval(LvalExpr &expr);
+      void exitAwaitForall(AwaitForallStmt &stmt);
     };
 
   } //namespace syncseqdblparam

@@ -216,6 +216,31 @@ void dmpl::syncseqdblparam::NodeTransformer::exitLval(dmpl::LvalExpr &expr)
   //std::cout << exprMap[hostExpr]->toString() << '\n';
 }
 
+void dmpl::syncseqdblparam::NodeTransformer::exitAwaitForall(AwaitForallStmt &stmt)
+{
+  Stmt shost = hostStmt;
+  ExprList el;
+
+  for(const auto &pr : syncSeq.relevantThreads) {
+    addIdMap(stmt.id,pr.first.id);
+    visit(stmt.cond);
+    el.push_back(exprMap[stmt.cond]);
+    delIdMap(stmt.id);
+  }
+
+  Expr awaitCond(new CompExpr(TLAND, el));
+  Expr negCond(new CompExpr(TLNOT, awaitCond));
+  Stmt await(new CondStmt(negCond, Stmt(new RetVoidStmt())));
+
+  Expr ndfn = syncSeq.createNondetFunc(boolType());
+  Expr ndcall(new CallExpr(ndfn,ExprList()));
+  Stmt skip(new CondStmt(ndcall, Stmt(new RetVoidStmt())));
+
+  StmtList sl = { skip, await };
+
+  stmtMap[shost] = Stmt(new BlockStmt(sl));
+}
+
 /*********************************************************************/
 //constructor
 /*********************************************************************/
