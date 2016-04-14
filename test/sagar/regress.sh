@@ -272,3 +272,4 @@ test_verif_ind VI8 ../../docs/tutorial/example-01-hybrid.dmpl ../../docs/tutoria
 test_verif_param VP1 ../../docs/tutorial/example-01.dmpl "" uav:Uav:2 SUCCESSFUL
 test_verif_param VP2 ../../docs/tutorial/example-01.bug1.dmpl "" uav:Uav:2 FAILED
 test_verif_param VP3 ../../docs/tutorial/example-01.bug2.dmpl "" uav:Uav:2 FAILED
+test_verif_param VP4 ../../docs/tutorial/example-01-ag-await.dmpl "" uav:Uav:2 SUCCESSFUL
