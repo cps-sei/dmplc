@@ -453,6 +453,23 @@ void dmpl::syncseqdbl::NodeTransformer::exitFAOH(dmpl::FAOHStmt &stmt)
   stmtMap[shost] = Stmt(new dmpl::BlockStmt(sl));
 }
 
+void dmpl::syncseqdbl::NodeTransformer::exitAwaitForall(AwaitForallStmt &stmt)
+{
+  Stmt shost = hostStmt;
+  ExprList el;
+
+  for(const auto &pr : syncSeq.relevantThreads) {
+    addIdMap(stmt.id,pr.first.id);
+    visit(stmt.cond);
+    el.push_back(exprMap[stmt.cond]);
+    delIdMap(stmt.id);
+  }
+
+  Expr awaitCond(new CompExpr(TLAND, el));
+  Expr negCond(new CompExpr(TLNOT, awaitCond));
+  stmtMap[shost] = Stmt(new CondStmt(negCond, Stmt(new RetVoidStmt())));
+}
+
 /*********************************************************************/
 //constructor
 /*********************************************************************/
