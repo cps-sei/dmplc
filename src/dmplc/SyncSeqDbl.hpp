@@ -187,7 +187,8 @@ namespace dmpl {
     std::map<Process,VarSet> havocGlobs;
     std::map<Process,VarSet> havocLocs;
     
-    //-- set of variables for which non-det functions have been created
+    //-- set of variables and types for which non-det functions have
+    //-- been created
     std::set<std::string> nondetFuncs;
     
     SyncSeqDbl(DmplBuilder &b, const std::string &p, int r);
@@ -225,6 +226,7 @@ namespace dmpl {
                           ExprList indx,int pid);
     void createHavoc();
     void createNodeFuncs();
+    Expr createNondetFunc(const Type &type);
     Expr createNondetFunc(const Expr &expr, const Type &type);
     void processExternFuncs();
     void run();

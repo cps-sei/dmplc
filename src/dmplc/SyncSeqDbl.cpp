@@ -53,6 +53,7 @@
  * DM-0002494
 **/
 
+#include <algorithm>
 #include "dmpl/Type.h"
 #include "dmpl/Variable.h"
 #include "dmpl/Expression.h"
@@ -1156,6 +1157,27 @@ dmpl::Expr dmpl::SyncSeqDbl::createNondetFunc(const Expr &expr, const Type &type
   std::string fnName = "nondet_" + lve->var;
   
   if(nondetFuncs.insert(lve->var).second) {
+    dmpl::VarList fnParams,fnTemps;
+    StmtList fnBody;
+    Func func(new Function(type,fnName,fnParams,fnTemps,fnBody));
+    func->isPrototype = true;
+    cprog.addFunction(func);
+  }
+  
+  return Expr(new LvalExpr(fnName));
+}
+
+/*********************************************************************/
+//create a nondet function for a type. add its declaration to the C
+//program if a new function was created
+/*********************************************************************/
+dmpl::Expr dmpl::SyncSeqDbl::createNondetFunc(const Type &type)
+{
+  std::string typeName = type->toString();
+  std::replace(typeName.begin(), typeName.end(), ' ', '_');
+  std::string fnName = "nondet_" + typeName;
+  
+  if(nondetFuncs.insert(typeName).second) {
     dmpl::VarList fnParams,fnTemps;
     StmtList fnBody;
     Func func(new Function(type,fnName,fnParams,fnTemps,fnBody));
