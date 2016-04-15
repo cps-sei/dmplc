@@ -1116,6 +1116,10 @@ void SyncAlgo::init (engine::KnowledgeBase & context)
       started = true;
   }
 
+  // take care of the case when there are no partner ids
+  if (syncPartnerIds[_exec_func][settings.id].empty()) {
+    barrier_data_string << "1";
+  }
 
   // Compile frequently used expressions
   barrier_data_logic = knowledge_->compile (barrier_data_string.str ());
