@@ -9,6 +9,7 @@ MAPNAME=small-hazard
 REC_CAM_POS="0.0421 -0.2489 11.2217"
 GRIDSIZE=10
 ROLEDESC=uav:Leader:1:uav:Protector:4
+PRE_DMPLC_CMD="make"
 
 EXPECT_LOG_PERIOD=0.2
 
