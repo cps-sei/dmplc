@@ -207,6 +207,7 @@ namespace dmpl {
     
     //-- add function call statement
     void callFunction(const std::string &funcName,StmtList &body);
+    void callFunction(const std::string &funcName,const ExprList &args,StmtList &body);
 
     //-- compute relevant variables and functions for each process
     void computeRelevant();
