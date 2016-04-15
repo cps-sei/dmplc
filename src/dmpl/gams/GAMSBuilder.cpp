@@ -2138,7 +2138,11 @@ dmpl::gams::GAMSBuilder::build_algo_functions ()
   buffer_ << "    if (!started)\n";
   buffer_ << "      started = true;\n";
   buffer_ << "  }\n\n";
-  buffer_ << '\n';
+
+  buffer_ << "  // take care of the case when there are no partner ids\n";
+  buffer_ << "  if (syncPartnerIds[_exec_func][settings.id].empty()) {\n"
+          << "    barrier_data_string << \"1\";\n"
+          << "  }\n\n";
 
   buffer_ << "  // Compile frequently used expressions\n";
   buffer_ << "  barrier_data_logic = knowledge_->compile (barrier_data_string.str ());\n";
@@ -2591,13 +2595,13 @@ void dmpl::gams::GAMSBuilder::build_algo_creation (const Node &node, const Role 
       on.erase(proc.id);
 
       if(on.empty())
-        throw std::runtime_error("ERROR: synchronous thread " + thread->name +
-                                 " in role " + role->name + " in node " + node->name +
-                                 " does not synchronize with any other node!!");
+        std::cerr << "WARNING: synchronous thread " << thread->name
+                  << " in role " << role->name << " in node " << node->name
+                  << " does not synchronize with any other node!!\n";
       
-      buffer_ << "    syncPartnerIds[\"" << funcName(node, role, thread) << "\"][" << proc.id << "] = ";
+      buffer_ << "    syncPartnerIds[\"" << funcName(node, role, thread) << "\"][" << proc.id << "] = {";
       size_t start = 0;
-      for(NodeId i : on) buffer_ << (start++ ? ',' : '{') << i;
+      for(NodeId i : on) buffer_ << (start++ ? "," : "") << i;
       buffer_ << "};\n";
     }
   }
