@@ -17,7 +17,7 @@ function test_code_gen {
     DMPL="$2"
     OPTS="$3"
     [ $(valid_test $TESTID) == "0" ] && return
-    printf "code gen     %5s %32s : " $TESTID $(basename $DMPL)
+    printf "code gen        %5s %32s : " $TESTID $(basename $DMPL)
     BN=$(basename $DMPL .dmpl)
     OUT1="$BN.cpp"
     OUT2="$BN.cpp.saved"
@@ -33,7 +33,7 @@ function test_analyzer {
     DMPL="$2"
     OPTS="$3"
     [ $(valid_test $TESTID) == "0" ] && return
-    printf "analyzer     %5s %32s : " $TESTID $(basename $DMPL)
+    printf "analyzer        %5s %32s : " $TESTID $(basename $DMPL)
     BN=$(basename $DMPL .dmpl)
     OUT1="$BN.analyzer.cpp"
     OUT2="$BN.analyzer.cpp.saved"
@@ -48,7 +48,7 @@ function test_build {
     TESTID="$1"
     MISSION="$2"
     [ $(valid_test $TESTID) == "0" ] && return
-    printf "build        %5s %32s : " $TESTID $(basename $MISSION)
+    printf "build           %5s %32s : " $TESTID $(basename $MISSION)
     (cd $(dirname $MISSION); \
     dmpl-sim.sh -b -e /dev/null -B $(basename $MISSION) &> /dev/null; \
     if [ "$?" == "0" ]; then echo "SUCCESS"; else echo "FAILURE"; fi)
@@ -60,7 +60,7 @@ function test_seq {
     DMPL="$2"
     ROLES="$3"
     [ $(valid_test $TESTID) == "0" ] && return
-    printf "sequentialize%5s %32s : " $TESTID $(basename $DMPL)
+    printf "sequentialize   %5s %32s : " $TESTID $(basename $DMPL)
     BN=$(basename $DMPL .dmpl)
     OUT1="$BN.c"
     OUT2="$BN.c.saved"
@@ -76,7 +76,7 @@ function test_seq_ind {
     DMPL="$2"
     ROLES="$3"
     [ $(valid_test $TESTID) == "0" ] && return
-    printf "seq ind      %5s %32s : " $TESTID $(basename $DMPL)
+    printf "seq ind         %5s %32s : " $TESTID $(basename $DMPL)
     BN=$(basename $DMPL .dmpl)
     OUT1="$BN.ind.c"
     OUT2="$BN.ind.c.saved"
@@ -93,7 +93,7 @@ function test_seq_ind_param {
     DMPL="$2"
     ROLES="$3"
     [ $(valid_test $TESTID) == "0" ] && return
-    printf "seq ind param%5s %32s : " $TESTID $(basename $DMPL)
+    printf "seq ind param   %5s %32s : " $TESTID $(basename $DMPL)
     BN=$(basename $DMPL .dmpl)
     OUT1="$BN.ind.c"
     OUT2="$BN.ind.c.saved"
@@ -110,7 +110,7 @@ function test_seq_param {
     DMPL="$2"
     ROLES="$3"
     [ $(valid_test $TESTID) == "0" ] && return
-    printf "seq param    %5s %32s : " $TESTID $(basename $DMPL)
+    printf "seq param       %5s %32s : " $TESTID $(basename $DMPL)
     BN=$(basename $DMPL .dmpl)
     OUT1="$BN.c"
     OUT2="$BN.c.saved"
@@ -127,7 +127,7 @@ function test_double_parse {
     DMPL="$2"
     OPTS="$3"
     [ $(valid_test $TESTID) == "0" ] && return
-    printf "double parse %5s %32s : " $TESTID $(basename $DMPL)
+    printf "double parse    %5s %32s : " $TESTID $(basename $DMPL)
     BN=$(basename $DMPL .dmpl)
     OUT1="$BN.1.dmpl"
     OUT2="$BN.2.dmpl"
@@ -146,7 +146,7 @@ function test_verif {
     ROLES="$4"
     OUTPUT="$5"
     [ $(valid_test $TESTID) == "0" ] && return
-    printf "verification %5s %32s : " $TESTID $(basename $DMPL)
+    printf "verification    %5s %32s : " $TESTID $(basename $DMPL)
     BN=$(basename $DMPL .dmpl)
     OUT1="$BN.c"
     rm -f $OUT1
@@ -163,7 +163,7 @@ function test_verif_ind {
     ROLES="$4"
     OUTPUT="$5"
     [ $(valid_test $TESTID) == "0" ] && return
-    printf "induct verif %5s %32s : " $TESTID $(basename $DMPL)
+    printf "induct verif    %5s %32s : " $TESTID $(basename $DMPL)
     BN=$(basename $DMPL .dmpl)
     OUT1="$BN.c"
     rm -f $OUT1
@@ -180,11 +180,29 @@ function test_verif_param {
     ROLES="$4"
     OUTPUT="$5"
     [ $(valid_test $TESTID) == "0" ] && return
-    printf "param verif  %5s %32s : " $TESTID $(basename $DMPL)
+    printf "param verif     %5s %32s : " $TESTID $(basename $DMPL)
     BN=$(basename $DMPL .dmpl)
     OUT1="$BN.c"
     rm -f $OUT1
     dmplc --roles $ROLES --cube-grid 5 -r 5 -sp -rp NoCollision -o $OUT1 $DMPL $OPTS &> /dev/null
+    OUT2=$(cbmc $OUT1 2>&1 | grep VERIFICATION | awk '{print $2}')
+    if [ "$OUT2" == "$OUTPUT" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
+}
+
+##verify inductively and parameterized and check against expected
+##output
+function test_verif_ind_param {
+    TESTID="$1"
+    DMPL="$2"
+    OPTS="$3"
+    ROLES="$4"
+    OUTPUT="$5"
+    [ $(valid_test $TESTID) == "0" ] && return
+    printf "ind-param verif %5s %32s : " $TESTID $(basename $DMPL)
+    BN=$(basename $DMPL .dmpl)
+    OUT1="$BN.c"
+    rm -f $OUT1
+    dmplc --roles $ROLES --cube-grid 5 -r 0 -sip -rp NoCollision -o $OUT1 $DMPL $OPTS &> /dev/null
     OUT2=$(cbmc $OUT1 2>&1 | grep VERIFICATION | awk '{print $2}')
     if [ "$OUT2" == "$OUTPUT" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
 }
@@ -294,3 +312,8 @@ test_verif_param VP1 ../../docs/tutorial/example-01.dmpl "" uav:Uav:2 SUCCESSFUL
 test_verif_param VP2 ../../docs/tutorial/example-01.bug1.dmpl "" uav:Uav:2 FAILED
 test_verif_param VP3 ../../docs/tutorial/example-01.bug2.dmpl "" uav:Uav:2 FAILED
 test_verif_param VP4 ../../docs/tutorial/example-01-ag-await.dmpl "" uav:Uav:2 SUCCESSFUL
+
+#parameterized inductive verification tests
+test_verif_ind_param VIP1 ../../docs/tutorial/example-01.dmpl "" uav:Uav:2 SUCCESSFUL
+test_verif_ind_param VIP2 ../../docs/tutorial/example-01.bug1.dmpl "" uav:Uav:2 FAILED
+test_verif_ind_param VIP3 ../../docs/tutorial/example-01.bug2.dmpl "" uav:Uav:2 FAILED
