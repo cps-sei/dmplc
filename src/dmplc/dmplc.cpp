@@ -66,6 +66,7 @@
 #include "SyncSeqDbl.hpp"
 #include "SyncSeqDblInd.hpp"
 #include "SyncSeqDblParam.hpp"
+#include "SyncSeqDblIndParam.hpp"
 
 /*********************************************************************/
 //options
@@ -92,13 +93,18 @@ namespace
   //-- sequentialize for verification via bounded model checking
   bool do_seq = false;
   
-  //-- sequential for checking inductive invariants for bounded model
+  //-- sequentialize for checking inductive invariants for bounded model
   //-- checking
   bool do_seq_ind = false;
 
   //-- sequentialize for parameterized verification via bounded and
   //-- unbounded model checking
   bool do_seq_param = false;
+
+  //-- sequentialize for checking inductive invariants for
+  //-- parameterized verification via bounded and unbounded model
+  //-- checking
+  bool do_seq_ind_param = false;
   
   //-- number of rounds to sequentialize for (-1 means infinity)
   int round_num = -1;
@@ -238,7 +244,7 @@ int main (int argc, char **argv)
   }
 
   //-- if doing sequentialization
-  if(do_seq || do_seq_ind || do_seq_param) {
+  if(do_seq || do_seq_ind || do_seq_param || do_seq_ind_param) {
     //the C program produced by sequentialization
     dmpl::CProgram cprog;
   
@@ -261,6 +267,13 @@ int main (int argc, char **argv)
       dmpl::SyncSeqDblParam syncSeqDblParam (builder, reqProp, round_num);
       syncSeqDblParam.run ();
       cprog = syncSeqDblParam.cprog;
+    }
+
+    //sequentialize for paramaterized inductive verification
+    if (do_seq_ind_param) {
+      dmpl::SyncSeqDblIndParam syncSeqDblIndParam (builder, reqProp, round_num);
+      syncSeqDblIndParam.run ();
+      cprog = syncSeqDblIndParam.cprog;
     }
 
     //print result
@@ -476,6 +489,10 @@ void parse_options (int argc, char **argv)
     {
       do_seq_param = true;
     }
+    else if (arg1 == "-sip" || arg1 == "--seq-ind-param")
+    {
+      do_seq_ind_param = true;
+    }
     else if (arg1 == "-r" || arg1 == "--rounds")
     {
       if (i + 1 < argc)
@@ -533,7 +550,7 @@ void parse_options (int argc, char **argv)
   }
 
   //-- X, Y and Z must be defined
-  if(do_gams || do_seq || do_seq_ind || do_seq_param) {
+  if(do_gams || do_seq || do_seq_ind || do_seq_param || do_seq_ind_param) {
     for(const std::string &d : { "X", "Y", "Z" }) {
       if(const_def.find(d) == const_def.end()) {
         std::cerr << "ERROR: no " << d << " dimension specified!!\n";
@@ -593,6 +610,7 @@ void usage (char *cmd)
   std::cerr << "  -s|--seq                   generate sequentialized code to verify\n";
   std::cerr << "  -si|--seq-ind              generate sequentialized code to verify inductiveness\n";
   std::cerr << "  -sp|--seq-param            generate sequentialized code for paramaterized verification\n";
+  std::cerr << "  -sip|--seq-ind-param       generate sequentialized code for paramaterized inductive verification\n";
   std::cerr << "  -r|--rounds rounds         number of verification rounds\n";
   std::cerr << "  --D<const_name> value      set a const to a value\n";
   exit (1);

@@ -1,7 +1,8 @@
 MZSRM=0
 
 SRC=dmpl-scanner.cpp dmpl-parser.cpp DmplBuilder.cpp CopyVisitor.cpp \
-SyncSeqDbl.cpp SyncSeqDblInd.cpp SyncSeqDblParam.cpp ../dmpl/Attribute.cpp \
+SyncSeqDbl.cpp SyncSeqDblInd.cpp SyncSeqDblParam.cpp \
+SyncSeqDblIndParam.cpp ../dmpl/Attribute.cpp \
 ../dmpl/Expression.cpp ../dmpl/Function.cpp ../dmpl/Record.cpp \
 ../dmpl/Node.cpp ../dmpl/Program.cpp ../dmpl/Symbol.cpp \
 ../dmpl/Variable.cpp ../dmpl/Statement.cpp ../dmpl/Type.cpp \
