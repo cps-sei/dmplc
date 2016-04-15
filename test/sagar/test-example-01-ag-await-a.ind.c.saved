@@ -1,0 +1,515 @@
+//-- DMPLC Version: 0.2
+//-- DMPLC Command Line: dmplc --cube-grid 10 --roles uav:Uav:2 -r 0 -sip -rp NoCollision -o test-example-01-ag-await-a.ind.c test-example-01-ag-await-a.dmpl
+
+/************* external functions ***********/
+
+/************* constants ***********/
+#define MOVE 4
+#define NEXT 1
+#define REQUEST 2
+#define WAITING 3
+#define X 10
+#define Y 10
+#define Z 10
+#define false 0
+#define true 1
+
+/************* global variables ***********/
+unsigned char nodeId;
+unsigned char nodeIds[2];
+unsigned char state[2];
+unsigned char x_f[2];
+unsigned char x_i[2];
+unsigned char xf[2];
+unsigned char xnext_f[2];
+unsigned char xnext_i[2];
+unsigned char xp[2];
+unsigned char y_f[2];
+unsigned char y_i[2];
+unsigned char yf[2];
+unsigned char ynext_f[2];
+unsigned char ynext_i[2];
+unsigned char yp[2];
+
+/************* function declarations ***********/
+void __ASSUME();
+void __HAVOC();
+void __INIT();
+void __INIT_state_0();
+void __INIT_state_1();
+int __INIT_x_0();
+int __INIT_x_1();
+int __INIT_xf_0();
+int __INIT_xf_1();
+void __INIT_xnext_0();
+void __INIT_xnext_1();
+void __INIT_xp_0();
+void __INIT_xp_1();
+int __INIT_y_0();
+int __INIT_y_1();
+int __INIT_yf_0();
+int __INIT_yf_1();
+void __INIT_ynext_0();
+void __INIT_ynext_1();
+void __INIT_yp_0();
+void __INIT_yp_1();
+_Bool __SAFETY_NoCollision_bwd();
+_Bool __SAFETY_NoCollision_fwd();
+void __SAFETY_bwd();
+void __SAFETY_fwd();
+unsigned char __id_0(unsigned char x);
+unsigned char __id_1(unsigned char x);
+int main();
+extern int my_sleep(int seconds);
+_Bool nondet__Bool();
+unsigned char nondet_nodeIds();
+unsigned char nondet_state();
+unsigned char nondet_x();
+unsigned char nondet_x_i();
+unsigned char nondet_xf();
+unsigned char nondet_xnext_i();
+unsigned char nondet_xp();
+unsigned char nondet_y();
+unsigned char nondet_y_i();
+unsigned char nondet_yf();
+unsigned char nondet_ynext_i();
+unsigned char nondet_yp();
+extern void print_int(int i);
+extern void print_state(int XX,int YY,int my_id,int x,int y,int xf,int yf);
+void round_bwd_copier();
+void round_fwd_copier();
+void uav__COLLISION_AVOIDANCE_0_fwd();
+void uav__COLLISION_AVOIDANCE_1_fwd();
+void uav__NEXT_XY_0_fwd();
+void uav__NEXT_XY_1_fwd();
+
+/************* function definitions ***********/
+void __ASSUME()
+{
+  __CPROVER_assume(__SAFETY_NoCollision_fwd());
+}
+
+void __HAVOC()
+{
+  state[0] = nondet_state();
+  state[1] = nondet_state();
+  xp[0] = nondet_xp();
+  xp[1] = nondet_xp();
+  yp[0] = nondet_yp();
+  yp[1] = nondet_yp();
+  xf[0] = nondet_xf();
+  xf[1] = nondet_xf();
+  yf[0] = nondet_yf();
+  yf[1] = nondet_yf();
+  x_i[0] = nondet_x_i();
+  x_i[1] = nondet_x_i();
+  y_i[0] = nondet_y_i();
+  y_i[1] = nondet_y_i();
+  xnext_i[0] = nondet_xnext_i();
+  xnext_i[1] = nondet_xnext_i();
+  ynext_i[0] = nondet_ynext_i();
+  ynext_i[1] = nondet_ynext_i();
+  state[0] = nondet_state();
+  state[1] = nondet_state();
+  xp[0] = nondet_xp();
+  xp[1] = nondet_xp();
+  yp[0] = nondet_yp();
+  yp[1] = nondet_yp();
+  xf[0] = nondet_xf();
+  xf[1] = nondet_xf();
+  yf[0] = nondet_yf();
+  yf[1] = nondet_yf();
+  x_i[0] = nondet_x_i();
+  x_i[1] = nondet_x_i();
+  y_i[0] = nondet_y_i();
+  y_i[1] = nondet_y_i();
+  xnext_i[0] = nondet_xnext_i();
+  xnext_i[1] = nondet_xnext_i();
+  ynext_i[0] = nondet_ynext_i();
+  ynext_i[1] = nondet_ynext_i();
+}
+
+void __INIT()
+{
+  __INIT_state_0();
+  __CPROVER_assume(__INIT_x_0());
+  __CPROVER_assume(__INIT_xf_0());
+  __INIT_xnext_0();
+  __INIT_xp_0();
+  __CPROVER_assume(__INIT_y_0());
+  __CPROVER_assume(__INIT_yf_0());
+  __INIT_ynext_0();
+  __INIT_yp_0();
+  __INIT_state_1();
+  __CPROVER_assume(__INIT_x_1());
+  __CPROVER_assume(__INIT_xf_1());
+  __INIT_xnext_1();
+  __INIT_xp_1();
+  __CPROVER_assume(__INIT_y_1());
+  __CPROVER_assume(__INIT_yf_1());
+  __INIT_ynext_1();
+  __INIT_yp_1();
+  __CPROVER_assume(__SAFETY_NoCollision_fwd());
+}
+
+void __INIT_state_0()
+{
+  state[__id_0(0)] = NEXT;
+}
+
+void __INIT_state_1()
+{
+  state[__id_1(1)] = NEXT;
+}
+
+int __INIT_x_0()
+{
+  x_i[__id_0(0)] = nondet_x();
+  return ((0)<=(x_i[__id_0(0)]))&&((x_i[__id_0(0)])<(X));
+}
+
+int __INIT_x_1()
+{
+  x_i[__id_1(1)] = nondet_x();
+  return ((0)<=(x_i[__id_1(1)]))&&((x_i[__id_1(1)])<(X));
+}
+
+int __INIT_xf_0()
+{
+  xf[__id_0(0)] = nondet_xf();
+  return ((0)<=(xf[__id_0(0)]))&&((xf[__id_0(0)])<(X));
+}
+
+int __INIT_xf_1()
+{
+  xf[__id_1(1)] = nondet_xf();
+  return ((0)<=(xf[__id_1(1)]))&&((xf[__id_1(1)])<(X));
+}
+
+void __INIT_xnext_0()
+{
+  xnext_i[__id_0(0)] = x_i[__id_0(0)];
+}
+
+void __INIT_xnext_1()
+{
+  xnext_i[__id_1(1)] = x_i[__id_1(1)];
+}
+
+void __INIT_xp_0()
+{
+  xp[__id_0(0)] = x_i[__id_0(0)];
+}
+
+void __INIT_xp_1()
+{
+  xp[__id_1(1)] = x_i[__id_1(1)];
+}
+
+int __INIT_y_0()
+{
+  y_i[__id_0(0)] = nondet_y();
+  return ((0)<=(y_i[__id_0(0)]))&&((y_i[__id_0(0)])<(Y));
+}
+
+int __INIT_y_1()
+{
+  y_i[__id_1(1)] = nondet_y();
+  return ((0)<=(y_i[__id_1(1)]))&&((y_i[__id_1(1)])<(Y));
+}
+
+int __INIT_yf_0()
+{
+  yf[__id_0(0)] = nondet_yf();
+  return ((0)<=(yf[__id_0(0)]))&&((yf[__id_0(0)])<(Y));
+}
+
+int __INIT_yf_1()
+{
+  yf[__id_1(1)] = nondet_yf();
+  return ((0)<=(yf[__id_1(1)]))&&((yf[__id_1(1)])<(Y));
+}
+
+void __INIT_ynext_0()
+{
+  ynext_i[__id_0(0)] = y_i[__id_0(0)];
+}
+
+void __INIT_ynext_1()
+{
+  ynext_i[__id_1(1)] = y_i[__id_1(1)];
+}
+
+void __INIT_yp_0()
+{
+  yp[__id_0(0)] = y_i[__id_0(0)];
+}
+
+void __INIT_yp_1()
+{
+  yp[__id_1(1)] = y_i[__id_1(1)];
+}
+
+_Bool __SAFETY_NoCollision_bwd()
+{
+  {
+    {
+      if (((x_f[__id_0(0)])==(x_f[__id_0(1)]))&&((y_f[__id_0(0)])==(y_f[__id_0(1)])))
+        return false;
+    }
+  }
+  return true;
+}
+
+_Bool __SAFETY_NoCollision_fwd()
+{
+  {
+    {
+      if (((x_i[__id_0(0)])==(x_i[__id_0(1)]))&&((y_i[__id_0(0)])==(y_i[__id_0(1)])))
+        return false;
+    }
+  }
+  return true;
+}
+
+void __SAFETY_bwd()
+{
+  assert(__SAFETY_NoCollision_bwd());
+}
+
+void __SAFETY_fwd()
+{
+  assert(__SAFETY_NoCollision_fwd());
+}
+
+unsigned char __id_0(unsigned char x)
+{
+  return ((nodeIds[x])==(nodeIds[0]))?(0):(1);
+}
+
+unsigned char __id_1(unsigned char x)
+{
+  return ((nodeIds[x])==(nodeIds[1]))?(1):(0);
+}
+
+int main()
+{
+  nodeIds[0] = nondet_nodeIds();
+  nodeIds[1] = nondet_nodeIds();
+  __INIT();
+  __SAFETY_fwd();
+  __HAVOC();
+  __ASSUME();
+  round_fwd_copier();
+  uav__COLLISION_AVOIDANCE_0_fwd();
+  uav__COLLISION_AVOIDANCE_1_fwd();
+  round_bwd_copier();
+  __SAFETY_fwd();
+}
+
+int my_sleep(int seconds);
+_Bool nondet__Bool();
+unsigned char nondet_nodeIds();
+unsigned char nondet_state();
+unsigned char nondet_x();
+unsigned char nondet_x_i();
+unsigned char nondet_xf();
+unsigned char nondet_xnext_i();
+unsigned char nondet_xp();
+unsigned char nondet_y();
+unsigned char nondet_y_i();
+unsigned char nondet_yf();
+unsigned char nondet_ynext_i();
+unsigned char nondet_yp();
+void print_int(int i);
+void print_state(int XX,int YY,int my_id,int x,int y,int xf,int yf);
+void round_bwd_copier()
+{
+  x_i[0] = x_f[0];
+  x_i[1] = x_f[1];
+  y_i[0] = y_f[0];
+  y_i[1] = y_f[1];
+  xnext_i[0] = xnext_f[0];
+  xnext_i[1] = xnext_f[1];
+  ynext_i[0] = ynext_f[0];
+  ynext_i[1] = ynext_f[1];
+  x_i[0] = x_f[0];
+  x_i[1] = x_f[1];
+  y_i[0] = y_f[0];
+  y_i[1] = y_f[1];
+  xnext_i[0] = xnext_f[0];
+  xnext_i[1] = xnext_f[1];
+  ynext_i[0] = ynext_f[0];
+  ynext_i[1] = ynext_f[1];
+}
+
+void round_fwd_copier()
+{
+  x_f[0] = x_i[0];
+  x_f[1] = x_i[1];
+  y_f[0] = y_i[0];
+  y_f[1] = y_i[1];
+  xnext_f[0] = xnext_i[0];
+  xnext_f[1] = xnext_i[1];
+  ynext_f[0] = ynext_i[0];
+  ynext_f[1] = ynext_i[1];
+  x_f[0] = x_i[0];
+  x_f[1] = x_i[1];
+  y_f[0] = y_i[0];
+  y_f[1] = y_i[1];
+  xnext_f[0] = xnext_i[0];
+  xnext_f[1] = xnext_i[1];
+  ynext_f[0] = ynext_i[0];
+  ynext_f[1] = ynext_i[1];
+}
+
+void uav__COLLISION_AVOIDANCE_0_fwd()
+{
+  print_state(X,Y,0,x_i[__id_0(0)],y_i[__id_0(0)],xf[__id_0(0)],yf[__id_0(0)]);
+  if ((state[__id_0(0)])==(NEXT))
+  {
+    if (((x_i[__id_0(0)])==(xf[__id_0(0)]))&&((y_i[__id_0(0)])==(yf[__id_0(0)])))
+      return;
+    uav__NEXT_XY_0_fwd();
+    state[__id_0(0)] = REQUEST;
+  }
+  else
+    if ((state[__id_0(0)])==(REQUEST))
+    {
+      {
+        if (nondet__Bool())
+          return;
+        if (!(((((0)>=(0))||((x_i[__id_0(0)])!=(xp[__id_0(0)])))||((y_i[__id_0(0)])!=(yp[__id_0(0)])))&&((((1)>=(0))||((x_i[__id_0(1)])!=(xp[__id_0(0)])))||((y_i[__id_0(1)])!=(yp[__id_0(0)])))))
+          return;
+      }
+      {
+        if (nondet__Bool())
+          return;
+        if (!(((((0)>=(0))||((xnext_i[__id_0(0)])!=(xp[__id_0(0)])))||((ynext_i[__id_0(0)])!=(yp[__id_0(0)])))&&((((1)>=(0))||((xnext_i[__id_0(1)])!=(xp[__id_0(0)])))||((ynext_i[__id_0(1)])!=(yp[__id_0(0)])))))
+          return;
+      }
+      xnext_f[__id_0(0)] = xp[__id_0(0)];
+      ynext_f[__id_0(0)] = yp[__id_0(0)];
+      state[__id_0(0)] = WAITING;
+    }
+    else
+      if ((state[__id_0(0)])==(WAITING))
+      {
+        {
+          if (nondet__Bool())
+            return;
+          if (!(((((0)<=(0))||((x_i[__id_0(0)])!=(xp[__id_0(0)])))||((y_i[__id_0(0)])!=(yp[__id_0(0)])))&&((((1)<=(0))||((x_i[__id_0(1)])!=(xp[__id_0(0)])))||((y_i[__id_0(1)])!=(yp[__id_0(0)])))))
+            return;
+        }
+        {
+          if (nondet__Bool())
+            return;
+          if (!(((((0)<=(0))||((xnext_i[__id_0(0)])!=(xp[__id_0(0)])))||((ynext_i[__id_0(0)])!=(yp[__id_0(0)])))&&((((1)<=(0))||((xnext_i[__id_0(1)])!=(xp[__id_0(0)])))||((ynext_i[__id_0(1)])!=(yp[__id_0(0)])))))
+            return;
+        }
+        state[__id_0(0)] = MOVE;
+      }
+      else
+        if ((state[__id_0(0)])==(MOVE))
+        {
+          if (GRID_MOVE(xnext_i[__id_0(0)],ynext_i[__id_0(0)],1))
+            return;
+          x_f[__id_0(0)] = xnext_i[__id_0(0)];
+          y_f[__id_0(0)] = ynext_i[__id_0(0)];
+          state[__id_0(0)] = NEXT;
+        }
+}
+
+void uav__COLLISION_AVOIDANCE_1_fwd()
+{
+  print_state(X,Y,1,x_i[__id_1(1)],y_i[__id_1(1)],xf[__id_1(1)],yf[__id_1(1)]);
+  if ((state[__id_1(1)])==(NEXT))
+  {
+    if (((x_i[__id_1(1)])==(xf[__id_1(1)]))&&((y_i[__id_1(1)])==(yf[__id_1(1)])))
+      return;
+    uav__NEXT_XY_1_fwd();
+    state[__id_1(1)] = REQUEST;
+  }
+  else
+    if ((state[__id_1(1)])==(REQUEST))
+    {
+      {
+        if (nondet__Bool())
+          return;
+        if (!(((((0)>=(1))||((x_i[__id_1(0)])!=(xp[__id_1(1)])))||((y_i[__id_1(0)])!=(yp[__id_1(1)])))&&((((1)>=(1))||((x_i[__id_1(1)])!=(xp[__id_1(1)])))||((y_i[__id_1(1)])!=(yp[__id_1(1)])))))
+          return;
+      }
+      {
+        if (nondet__Bool())
+          return;
+        if (!(((((0)>=(1))||((xnext_i[__id_1(0)])!=(xp[__id_1(1)])))||((ynext_i[__id_1(0)])!=(yp[__id_1(1)])))&&((((1)>=(1))||((xnext_i[__id_1(1)])!=(xp[__id_1(1)])))||((ynext_i[__id_1(1)])!=(yp[__id_1(1)])))))
+          return;
+      }
+      xnext_f[__id_1(1)] = xp[__id_1(1)];
+      ynext_f[__id_1(1)] = yp[__id_1(1)];
+      state[__id_1(1)] = WAITING;
+    }
+    else
+      if ((state[__id_1(1)])==(WAITING))
+      {
+        {
+          if (nondet__Bool())
+            return;
+          if (!(((((0)<=(1))||((x_i[__id_1(0)])!=(xp[__id_1(1)])))||((y_i[__id_1(0)])!=(yp[__id_1(1)])))&&((((1)<=(1))||((x_i[__id_1(1)])!=(xp[__id_1(1)])))||((y_i[__id_1(1)])!=(yp[__id_1(1)])))))
+            return;
+        }
+        {
+          if (nondet__Bool())
+            return;
+          if (!(((((0)<=(1))||((xnext_i[__id_1(0)])!=(xp[__id_1(1)])))||((ynext_i[__id_1(0)])!=(yp[__id_1(1)])))&&((((1)<=(1))||((xnext_i[__id_1(1)])!=(xp[__id_1(1)])))||((ynext_i[__id_1(1)])!=(yp[__id_1(1)])))))
+            return;
+        }
+        state[__id_1(1)] = MOVE;
+      }
+      else
+        if ((state[__id_1(1)])==(MOVE))
+        {
+          if (GRID_MOVE(xnext_i[__id_1(1)],ynext_i[__id_1(1)],1))
+            return;
+          x_f[__id_1(1)] = xnext_i[__id_1(1)];
+          y_f[__id_1(1)] = ynext_i[__id_1(1)];
+          state[__id_1(1)] = NEXT;
+        }
+}
+
+void uav__NEXT_XY_0_fwd()
+{
+  xp[__id_0(0)] = x_i[__id_0(0)];
+  yp[__id_0(0)] = y_i[__id_0(0)];
+  if ((x_i[__id_0(0)])<(xf[__id_0(0)]))
+    xp[__id_0(0)] = (x_i[__id_0(0)])+(1);
+  else
+    if ((x_i[__id_0(0)])>(xf[__id_0(0)]))
+      xp[__id_0(0)] = (x_i[__id_0(0)])-(1);
+    else
+      if ((y_i[__id_0(0)])<(yf[__id_0(0)]))
+        yp[__id_0(0)] = (y_i[__id_0(0)])+(1);
+      else
+        yp[__id_0(0)] = (y_i[__id_0(0)])-(1);
+}
+
+void uav__NEXT_XY_1_fwd()
+{
+  xp[__id_1(1)] = x_i[__id_1(1)];
+  yp[__id_1(1)] = y_i[__id_1(1)];
+  if ((x_i[__id_1(1)])<(xf[__id_1(1)]))
+    xp[__id_1(1)] = (x_i[__id_1(1)])+(1);
+  else
+    if ((x_i[__id_1(1)])>(xf[__id_1(1)]))
+      xp[__id_1(1)] = (x_i[__id_1(1)])-(1);
+    else
+      if ((y_i[__id_1(1)])<(yf[__id_1(1)]))
+        yp[__id_1(1)] = (y_i[__id_1(1)])+(1);
+      else
+        yp[__id_1(1)] = (y_i[__id_1(1)])-(1);
+}
+
+
+//---------------------------------------------------------
+//-- end of file
+//---------------------------------------------------------

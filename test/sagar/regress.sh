@@ -242,7 +242,8 @@ test_double_parse DP28 ../../docs/tutorial/example-09e.dmpl ""
 test_double_parse DP29 ../../docs/tutorial/example-10.dmpl ""
 test_double_parse DP30 test-example-01h.dmpl ""
 test_double_parse DP31 test-example-01i.dmpl ""
-test_double_parse DP32 ../../docs/tutorial/example-01-ag-await.dmpl ""
+test_double_parse DP32 ../../docs/tutorial/example-01-ag.dmpl ""
+test_double_parse DP33 ../../docs/tutorial/example-01-ag-await.dmpl ""
 
 #code generation tests
 test_code_gen CG1 test-example-01a.dmpl "--roles uav:Uav:3"
@@ -279,6 +280,7 @@ test_seq_param SP3 test-example-01-ag-await-a.dmpl uav:Uav:2
 #inductive parameterized sequentialization tests
 test_seq_ind_param SIP1 test-example-01h.dmpl uav:Uav:2
 test_seq_ind_param SIP2 test-example-01i.dmpl uav:Uav:2
+test_seq_ind_param SIP3 test-example-01-ag-await-a.dmpl uav:Uav:2
 
 #test building
 COUNT=1
@@ -296,6 +298,8 @@ test_verif VF5 ../../docs/tutorial/example-02.bug1.dmpl ../../docs/tutorial/exam
 test_verif VF6 ../../docs/tutorial/example-03.dmpl ../../docs/tutorial/example-03-AADL.dmpl uav:Leader:1:uav:Protector:1 SUCCESSFUL
 test_verif VF7 ../../docs/tutorial/example-04.dmpl ../../docs/tutorial/example-04-AADL.dmpl uav:Leader:1:uav:Protector:1 FAILED
 test_verif VF8 ../../docs/tutorial/example-01-hybrid.dmpl ../../docs/tutorial/example-01-hybrid-controller.dmpl uav:Uav:2 SUCCESSFUL
+test_verif VF9 ../../docs/tutorial/example-01-ag.dmpl "" uav:Uav:2 SUCCESSFUL
+test_verif VF10 ../../docs/tutorial/example-01-ag-await.dmpl "" uav:Uav:2 SUCCESSFUL
 
 #inductive verification tests
 test_verif_ind VI1 ../../docs/tutorial/example-01.dmpl uav:Uav:2 SUCCESSFUL
@@ -306,14 +310,19 @@ test_verif_ind VI5 ../../docs/tutorial/example-02.bug1.dmpl ../../docs/tutorial/
 test_verif_ind VI6 ../../docs/tutorial/example-03.dmpl ../../docs/tutorial/example-03-AADL.dmpl uav:Leader:1:uav:Protector:1 SUCCESSFUL
 test_verif_ind VI7 ../../docs/tutorial/example-04.dmpl ../../docs/tutorial/example-04-AADL.dmpl uav:Leader:1:uav:Protector:1 FAILED
 test_verif_ind VI8 ../../docs/tutorial/example-01-hybrid.dmpl ../../docs/tutorial/example-01-hybrid-controller.dmpl uav:Uav:2 SUCCESSFUL
+test_verif_ind VI9 ../../docs/tutorial/example-01-ag.dmpl "" uav:Uav:2 SUCCESSFUL
+test_verif_ind VI10 ../../docs/tutorial/example-01-ag-await.dmpl "" uav:Uav:2 SUCCESSFUL
 
 #parameterized verification tests
 test_verif_param VP1 ../../docs/tutorial/example-01.dmpl "" uav:Uav:2 SUCCESSFUL
 test_verif_param VP2 ../../docs/tutorial/example-01.bug1.dmpl "" uav:Uav:2 FAILED
 test_verif_param VP3 ../../docs/tutorial/example-01.bug2.dmpl "" uav:Uav:2 FAILED
-test_verif_param VP4 ../../docs/tutorial/example-01-ag-await.dmpl "" uav:Uav:2 SUCCESSFUL
+test_verif_param VP4 ../../docs/tutorial/example-01-ag.dmpl "" uav:Uav:2 SUCCESSFUL
+test_verif_param VP5 ../../docs/tutorial/example-01-ag-await.dmpl "" uav:Uav:2 SUCCESSFUL
 
 #parameterized inductive verification tests
 test_verif_ind_param VIP1 ../../docs/tutorial/example-01.dmpl "" uav:Uav:2 SUCCESSFUL
 test_verif_ind_param VIP2 ../../docs/tutorial/example-01.bug1.dmpl "" uav:Uav:2 FAILED
 test_verif_ind_param VIP3 ../../docs/tutorial/example-01.bug2.dmpl "" uav:Uav:2 FAILED
+test_verif_ind_param VIP4 ../../docs/tutorial/example-01-ag.dmpl "" uav:Uav:2 SUCCESSFUL
+test_verif_ind_param VIP5 ../../docs/tutorial/example-01-ag-await.dmpl "" uav:Uav:2 SUCCESSFUL
