@@ -86,6 +86,23 @@ function test_seq_ind {
     if [ "$?" == "0" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
 }
 
+##sequentialize inductively for parameterized verification and check
+##against correct output
+function test_seq_ind_param {
+    TESTID="$1"
+    DMPL="$2"
+    ROLES="$3"
+    [ $(valid_test $TESTID) == "0" ] && return
+    printf "seq ind param%5s %32s : " $TESTID $(basename $DMPL)
+    BN=$(basename $DMPL .dmpl)
+    OUT1="$BN.ind.c"
+    OUT2="$BN.ind.c.saved"
+    rm -f $OUT1
+    dmplc --cube-grid 10 --roles $ROLES -r 0 -sip -rp NoCollision -o $OUT1 $DMPL &> /dev/null
+    diff $OUT1 $OUT2 &> /dev/null
+    if [ "$?" == "0" ]; then echo "SUCCESS"; else echo "FAILURE"; fi
+}
+
 ##sequentialize for parameterized verification and check against
 ##correct output
 function test_seq_param {
@@ -240,6 +257,10 @@ test_seq_ind SI4 test-example-01g.dmpl uav:Uav:3
 test_seq_param SP1 test-example-01h.dmpl uav:Uav:2
 test_seq_param SP2 test-example-01i.dmpl uav:Uav:2
 test_seq_param SP3 test-example-01-ag-await-a.dmpl uav:Uav:2
+
+#inductive parameterized sequentialization tests
+test_seq_ind_param SIP1 test-example-01h.dmpl uav:Uav:2
+test_seq_ind_param SIP2 test-example-01i.dmpl uav:Uav:2
 
 #test building
 COUNT=1
