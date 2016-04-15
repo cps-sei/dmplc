@@ -409,6 +409,14 @@ void dmpl::SyncSeqDblParam::createMainFunc()
   Expr ndcall(new CallExpr(ndfn,ExprList()));
   for(int i = 0;i < cutoff;++i)
     mainBody.push_back(Stmt(new AsgnStmt(nodeIds(i), ndcall)));
+
+  //-- make sure node ids are distinct
+  for(int i = 0;i < cutoff;++i) {
+    for(int j = i+1;j < cutoff;++j) {
+      Expr dist(new CompExpr(TCNE, nodeIds(i), nodeIds(j)));
+      callFunction("__CPROVER_assume", { dist }, mainBody);
+    }
+  }
   
   //add call to INIT()
   Expr callExpr3(new LvalExpr("__INIT"));

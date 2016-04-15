@@ -816,6 +816,7 @@ int main()
 {
   nodeIds[0] = nondet_nodeIds();
   nodeIds[1] = nondet_nodeIds();
+  __CPROVER_assume((nodeIds[0])!=(nodeIds[1]));
   __INIT();
   __SAFETY_fwd();
   __HAVOC();

@@ -482,8 +482,17 @@ dmpl::SyncSeqDbl::SyncSeqDbl(dmpl::DmplBuilder &b, const std::string &p, int r)
 /*********************************************************************/
 void dmpl::SyncSeqDbl::callFunction(const std::string &funcName,StmtList &body)
 {
+  callFunction(funcName, dmpl::ExprList(), body);
+}
+
+/*********************************************************************/
+//-- add a statement that calls a void function with given name and
+//-- arguments.
+/*********************************************************************/
+void dmpl::SyncSeqDbl::callFunction(const std::string &funcName,const ExprList &args,StmtList &body)
+{
   Expr callExpr(new LvalExpr(funcName));
-  Stmt callStmt(new CallStmt(callExpr,dmpl::ExprList()));
+  Stmt callStmt(new CallStmt(callExpr,args));
   body.push_back(callStmt);
 }
 
