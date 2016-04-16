@@ -5,6 +5,7 @@ and Programming Language (DMPL). It must be installed as part of the
 [DART](https://github.com/cps-sei/dart) toolchain. Here are the
 [instructions](https://github.com/cps-sei/dart/wiki/Building-DART-v0.2--(and-later)-Software).
 
+#### Changelog
 **2016-01-21 : [v0.2.3]** Added a laser range finder to the quadcopter model. Ported to latest V-REP version 3.2.3.
             
 **2015-12-17 : [v0.2.2]** Updated to new MADARA and GAMS. There have been major changes in these two packages since our last release.
