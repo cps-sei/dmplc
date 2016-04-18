@@ -80,14 +80,14 @@ dmpl::CProgram::print (std::ostream &os,unsigned int indent)
   os << '\n';
 
   //print constants
-  os << spacer << "/************* constants ***********/\n";
+  os << spacer << "/***************** constants ****************/\n";
   BOOST_FOREACH(dmpl::Program::ConstDef::value_type &cd, constDef) {
     os << spacer << "#define " << cd.first << " " << cd.second << "\n";
   }
   os << '\n';
   
   //print global variables
-  os << spacer << "/************* global variables ***********/\n";
+  os << spacer << "/************* global variables *************/\n";
   for (dmpl::Vars::iterator i = globVars.begin (); i != globVars.end (); ++i) {
     i->second->printC (os,indent);
     os << ";\n";
@@ -95,13 +95,13 @@ dmpl::CProgram::print (std::ostream &os,unsigned int indent)
   os << '\n';
 
   //print function declarations
-  os << spacer << "/************* function declarations ***********/\n";
+  os << spacer << "/*********** function declarations **********/\n";
   for (dmpl::Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
     i->second->printDecl (os,indent);
   os << '\n';
 
   //print functions
-  os << spacer << "/************* function definitions ***********/\n";
+  os << spacer << "/*********** function definitions ***********/\n";
   for (dmpl::Funcs::iterator i = funcs.begin (); i != funcs.end (); ++i)
     i->second->print (os,indent);
 
