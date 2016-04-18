@@ -1,9 +1,9 @@
 //-- DMPLC Version: 0.2
 //-- DMPLC Command Line: dmplc --cube-grid 10 --roles uav:Uav1:1:uav:Uav2:1 -r 5 -s -rp NoCollision -o test-example-01f.c test-example-01f.dmpl
 
-/************* external functions ***********/
+/************************ external functions **********************/
 
-/***************** constants ****************/
+/**************************** constants ***************************/
 #define MOVE 4
 #define NEXT 1
 #define REQUEST 2
@@ -14,7 +14,7 @@
 #define false 0
 #define true 1
 
-/************* global variables *************/
+/************************ global variables ************************/
 int l1_0;
 int l1_1;
 int l2_1;
@@ -38,7 +38,7 @@ unsigned char yf_1;
 unsigned char yp_0;
 unsigned char yp_1;
 
-/*********** function declarations **********/
+/********************** function declarations *********************/
 void __HAVOC_bwd();
 void __HAVOC_fwd();
 void __INIT();
@@ -87,7 +87,7 @@ void uav__NEXT_XY_0_fwd();
 void uav__NEXT_XY_1_bwd();
 void uav__NEXT_XY_1_fwd();
 
-/*********** function definitions ***********/
+/********************** function definitions **********************/
 void __HAVOC_bwd()
 {
 }
@@ -1062,6 +1062,6 @@ void uav__NEXT_XY_1_fwd()
 }
 
 
-//---------------------------------------------------------
+/******************************************************************/
 //-- end of file
-//---------------------------------------------------------
+/******************************************************************/
