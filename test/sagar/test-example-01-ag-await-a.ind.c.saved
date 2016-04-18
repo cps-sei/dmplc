@@ -3,7 +3,7 @@
 
 /************* external functions ***********/
 
-/************* constants ***********/
+/***************** constants ****************/
 #define MOVE 4
 #define NEXT 1
 #define REQUEST 2
@@ -14,7 +14,7 @@
 #define false 0
 #define true 1
 
-/************* global variables ***********/
+/************* global variables *************/
 unsigned char nodeId;
 unsigned char nodeIds[2];
 unsigned char state[2];
@@ -31,7 +31,7 @@ unsigned char ynext_f[2];
 unsigned char ynext_i[2];
 unsigned char yp[2];
 
-/************* function declarations ***********/
+/*********** function declarations **********/
 void __ASSUME();
 void __HAVOC();
 void __INIT();
@@ -83,7 +83,7 @@ void uav__COLLISION_AVOIDANCE_1_fwd();
 void uav__NEXT_XY_0_fwd();
 void uav__NEXT_XY_1_fwd();
 
-/************* function definitions ***********/
+/*********** function definitions ***********/
 void __ASSUME()
 {
   __CPROVER_assume(__SAFETY_NoCollision_fwd());

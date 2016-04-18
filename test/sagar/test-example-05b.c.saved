@@ -3,7 +3,7 @@
 
 /************* external functions ***********/
 
-/************* constants ***********/
+/***************** constants ****************/
 #define FORM_CHANGE_TIME 20.0
 #define MOVE 4
 #define NEXT 1
@@ -16,7 +16,7 @@
 #define false 0
 #define true 1
 
-/************* global variables ***********/
+/************* global variables *************/
 _Bool changing_0;
 _Bool changing_1;
 _Bool changing_2;
@@ -105,7 +105,7 @@ unsigned char yt_2;
 unsigned char yt_3;
 unsigned char yt_4;
 
-/************* function declarations ***********/
+/*********** function declarations **********/
 extern double GET_HAZARD(int x,int y);
 extern void INIT_HAZARDS(int XX,int YY,int tx,int ty);
 extern void LOG(double x);
@@ -273,7 +273,7 @@ void uav__REACHED_NEXT_XY_4_bwd();
 void uav__REACHED_NEXT_XY_4_fwd();
 extern double wall_time();
 
-/************* function definitions ***********/
+/*********** function definitions ***********/
 double GET_HAZARD(int x,int y);
 void INIT_HAZARDS(int XX,int YY,int tx,int ty);
 void LOG(double x);
