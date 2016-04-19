@@ -205,6 +205,9 @@ namespace dmpl {
       return NodeTrans(new syncseqdbl::NodeTransformer(ss,p,pr,f,fn));
     }
     
+    //-- add svcomp specific stuff
+    void targetSvcomp();
+    
     //-- add function call statement
     void callFunction(const std::string &funcName,StmtList &body);
     void callFunction(const std::string &funcName,const ExprList &args,StmtList &body);

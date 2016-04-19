@@ -231,6 +231,9 @@ void dmpl::SyncSeqDblInd::run()
   for(const std::string &c : builder.cmdLine) header += std::string(" ") + c;
   cprog.addHeader(header + "\n");
 
+  //-- add svcomp specific stuff
+  targetSvcomp();
+
   //copy over constants
   cprog.constDef = builder.program.constDef;
   cprog.constDef["true"] = "1";

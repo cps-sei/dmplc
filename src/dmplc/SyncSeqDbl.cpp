@@ -478,6 +478,18 @@ dmpl::SyncSeqDbl::SyncSeqDbl(dmpl::DmplBuilder &b, const std::string &p, int r)
   : builder(b), property(p), roundNum(r) {}
 
 /*********************************************************************/
+//-- add svcomp specific stuff
+/*********************************************************************/
+void dmpl::SyncSeqDbl::targetSvcomp()
+{
+  cprog.addHeader("\n\n/*********************** SVCOMP Interface *************************/\n");
+  cprog.addHeader("extern void __VERIFIER_assume(int);\n");
+  cprog.addHeader("extern void __VERIFIER_error(void);\n");
+  cprog.addHeader("#define __CPROVER_assume __VERIFIER_assume\n");
+  cprog.addHeader("#define assert(X) if(!(X)){__VERIFIER_error ();}\n");
+}
+
+/*********************************************************************/
 //-- add a statement that calls a void-void function with given name
 /*********************************************************************/
 void dmpl::SyncSeqDbl::callFunction(const std::string &funcName,StmtList &body)
@@ -1278,6 +1290,9 @@ void dmpl::SyncSeqDbl::run()
   header += "//-- DMPLC Command Line:";
   for(const std::string &c : builder.cmdLine) header += std::string(" ") + c;
   cprog.addHeader(header + "\n");
+
+  //-- add svcomp specific stuff
+  targetSvcomp();
   
   //-- copy over constants
   cprog.constDef = builder.program.constDef;
