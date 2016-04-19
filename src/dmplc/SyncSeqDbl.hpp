@@ -166,6 +166,7 @@ namespace dmpl {
     DmplBuilder &builder;  //-- the builder containing parsed DMPL file
     std::string property;  //-- the name of target require property
     int roundNum;          //-- the number of rounds
+    bool svcomp;           //-- whether to target SVCOMP
     CProgram cprog;        //-- the generated C program
 
     //-- map from processes to local and global variables that are
@@ -191,7 +192,7 @@ namespace dmpl {
     //-- been created
     std::set<std::string> nondetFuncs;
     
-    SyncSeqDbl(DmplBuilder &b, const std::string &p, int r);
+    SyncSeqDbl(DmplBuilder &b, const std::string &p, int r, bool svc);
 
     //-- return encapsulated pointers to transformers. these must be
     //-- overridden by appropriate base classes.

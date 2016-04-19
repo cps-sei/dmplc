@@ -89,6 +89,9 @@ namespace
 
   //-- parse and print the DMPL file
   bool do_print = false;
+
+  //-- whether to target SVCOMP format when sequentialization
+  bool seq_svcomp = false;
   
   //-- sequentialize for verification via bounded model checking
   bool do_seq = false;
@@ -250,28 +253,28 @@ int main (int argc, char **argv)
   
     //sequentialize
     if (do_seq) {    
-      dmpl::SyncSeqDbl syncSeqDbl (builder, reqProp, round_num);
+      dmpl::SyncSeqDbl syncSeqDbl (builder, reqProp, round_num, seq_svcomp);
       syncSeqDbl.run ();
       cprog = syncSeqDbl.cprog;
     }
 
     //sequentialize for inductive check
     if (do_seq_ind) {
-      dmpl::SyncSeqDblInd syncSeqDblInd (builder, reqProp, round_num);
+      dmpl::SyncSeqDblInd syncSeqDblInd (builder, reqProp, round_num, seq_svcomp);
       syncSeqDblInd.run ();
       cprog = syncSeqDblInd.cprog;
     }
 
     //sequentialize for paramaterized verification
     if (do_seq_param) {
-      dmpl::SyncSeqDblParam syncSeqDblParam (builder, reqProp, round_num);
+      dmpl::SyncSeqDblParam syncSeqDblParam (builder, reqProp, round_num, seq_svcomp);
       syncSeqDblParam.run ();
       cprog = syncSeqDblParam.cprog;
     }
 
     //sequentialize for paramaterized inductive verification
     if (do_seq_ind_param) {
-      dmpl::SyncSeqDblIndParam syncSeqDblIndParam (builder, reqProp, round_num);
+      dmpl::SyncSeqDblIndParam syncSeqDblIndParam (builder, reqProp, round_num, seq_svcomp);
       syncSeqDblIndParam.run ();
       cprog = syncSeqDblIndParam.cprog;
     }
@@ -477,6 +480,8 @@ void parse_options (int argc, char **argv)
       schedType = dmpl::MZSRM;
     }
 #endif
+    else if (arg1 == "-svc" || arg1 == "--svcomp")
+      seq_svcomp = true;
     else if (arg1 == "-s" || arg1 == "--seq")
     {
       do_seq = true;
@@ -607,6 +612,7 @@ void usage (char *cmd)
 #if MZSRM==1
   std::cerr << "  -mz|--mzsrm                generate code that targets MZSRM scheduler\n";
 #endif
+  std::cerr << "  -svc|--svcomp              sequentialized code should target SVCOMP format\n";
   std::cerr << "  -s|--seq                   generate sequentialized code to verify\n";
   std::cerr << "  -si|--seq-ind              generate sequentialized code to verify inductiveness\n";
   std::cerr << "  -sp|--seq-param            generate sequentialized code for paramaterized verification\n";

@@ -65,8 +65,8 @@
 /*********************************************************************/
 //constructor
 /*********************************************************************/
-dmpl::SyncSeqDblInd::SyncSeqDblInd(dmpl::DmplBuilder &b, const std::string &p, int r) 
-  : SyncSeqDbl(b,p,r) {}
+dmpl::SyncSeqDblInd::SyncSeqDblInd(dmpl::DmplBuilder &b, const std::string &p, int r, bool svc) 
+  : SyncSeqDbl(b,p,r,svc) {}
 
 /*********************************************************************/
 //-- call round functions of each node once

@@ -93,8 +93,8 @@ namespace
 /*********************************************************************/
 //constructor
 /*********************************************************************/
-dmpl::SyncSeqDblIndParam::SyncSeqDblIndParam(dmpl::DmplBuilder &b, const std::string &p, int r) 
-  : SyncSeqDbl(b,p,r), cutoff(b.program.processes.size()) {}
+dmpl::SyncSeqDblIndParam::SyncSeqDblIndParam(dmpl::DmplBuilder &b, const std::string &p, int r, bool svc) 
+  : SyncSeqDbl(b,p,r,svc), cutoff(b.program.processes.size()) {}
 
 /*********************************************************************/
 //create the global variables
