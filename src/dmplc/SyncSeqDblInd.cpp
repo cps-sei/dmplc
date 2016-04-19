@@ -65,8 +65,8 @@
 /*********************************************************************/
 //constructor
 /*********************************************************************/
-dmpl::SyncSeqDblInd::SyncSeqDblInd(dmpl::DmplBuilder &b, const std::string &p, int r) 
-  : SyncSeqDbl(b,p,r) {}
+dmpl::SyncSeqDblInd::SyncSeqDblInd(dmpl::DmplBuilder &b, const std::string &p, int r, bool svc) 
+  : SyncSeqDbl(b,p,r,svc) {}
 
 /*********************************************************************/
 //-- call round functions of each node once
@@ -230,6 +230,9 @@ void dmpl::SyncSeqDblInd::run()
   header += "//-- DMPLC Command Line:";
   for(const std::string &c : builder.cmdLine) header += std::string(" ") + c;
   cprog.addHeader(header + "\n");
+
+  //-- add svcomp specific stuff
+  targetSvcomp();
 
   //copy over constants
   cprog.constDef = builder.program.constDef;

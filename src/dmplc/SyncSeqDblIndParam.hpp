@@ -103,7 +103,7 @@ namespace dmpl {
     //-- cutoff for parameterized verification. currently set to 2.
     size_t cutoff;
     
-    SyncSeqDblIndParam(DmplBuilder &b, const std::string &p, int r);
+    SyncSeqDblIndParam(DmplBuilder &b, const std::string &p, int r, bool svc);
 
     //-- return encapsulated pointers to transformers. these must be
     //-- overridden by appropriate base classes.

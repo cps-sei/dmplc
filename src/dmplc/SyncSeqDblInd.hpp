@@ -100,7 +100,7 @@ namespace dmpl {
   class SyncSeqDblInd : public SyncSeqDbl
   {
   public:
-    SyncSeqDblInd(DmplBuilder &b, const std::string &p, int r);
+    SyncSeqDblInd(DmplBuilder &b, const std::string &p, int r, bool svc);
 
     //-- return encapsulated pointers to transformers. these must be
     //-- overridden by appropriate base classes.

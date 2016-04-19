@@ -474,8 +474,21 @@ void dmpl::syncseqdbl::NodeTransformer::exitAwaitForall(AwaitForallStmt &stmt)
 /*********************************************************************/
 //constructor
 /*********************************************************************/
-dmpl::SyncSeqDbl::SyncSeqDbl(dmpl::DmplBuilder &b, const std::string &p, int r) 
-  : builder(b), property(p), roundNum(r) {}
+dmpl::SyncSeqDbl::SyncSeqDbl(dmpl::DmplBuilder &b, const std::string &p, int r, bool svc) 
+  : builder(b), property(p), roundNum(r), svcomp(svc) {}
+
+/*********************************************************************/
+//-- add svcomp specific stuff
+/*********************************************************************/
+void dmpl::SyncSeqDbl::targetSvcomp()
+{
+  if(!svcomp) return;
+  cprog.addHeader("\n\n/*********************** SVCOMP Interface *************************/\n");
+  cprog.addHeader("extern void __VERIFIER_assume(int);\n");
+  cprog.addHeader("extern void __VERIFIER_error(void);\n");
+  cprog.addHeader("#define __CPROVER_assume __VERIFIER_assume\n");
+  cprog.addHeader("#define assert(X) if(!(X)){__VERIFIER_error ();}\n");
+}
 
 /*********************************************************************/
 //-- add a statement that calls a void-void function with given name
@@ -1278,6 +1291,9 @@ void dmpl::SyncSeqDbl::run()
   header += "//-- DMPLC Command Line:";
   for(const std::string &c : builder.cmdLine) header += std::string(" ") + c;
   cprog.addHeader(header + "\n");
+
+  //-- add svcomp specific stuff
+  targetSvcomp();
   
   //-- copy over constants
   cprog.constDef = builder.program.constDef;
@@ -1297,9 +1313,9 @@ void dmpl::SyncSeqDbl::run()
   createNodeFuncs();
 
   //-- add end of file footer
-  cprog.addFooter("//---------------------------------------------------------\n");
+  cprog.addFooter("/******************************************************************/\n");
   cprog.addFooter("//-- end of file\n");
-  cprog.addFooter("//---------------------------------------------------------\n");
+  cprog.addFooter("/******************************************************************/\n");
 }
 
 /*********************************************************************/
