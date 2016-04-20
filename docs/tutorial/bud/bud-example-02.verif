@@ -1,0 +1,10 @@
+#!/bin/bash
+
+VERIF_NAME="bud-example-02"
+OUT="SUCCESSFUL"
+DMPL="bud-example-02.dmpl"
+GRIDSIZE=10
+ROLEDESC=uav:Uav:2
+PROPERTY="NoCollision"
+VERIF=inductive
+ROUNDS=0

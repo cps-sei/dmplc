@@ -1,0 +1,552 @@
+/**
+ * Copyright (c) 2015 Carnegie Mellon University. All Rights Reserved.
+
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+
+ * 1. Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following acknowledgments
+ * and disclaimers.
+
+ * 2. Redistributions in binary form must reproduce the above
+ * copyright notice, this list of conditions and the following
+ * disclaimer in the documentation and/or other materials provided
+ * with the distribution.
+
+ * 3. The names "Carnegie Mellon University," "SEI" and/or "Software
+ * Engineering Institute" shall not be used to endorse or promote
+ * products derived from this software without prior written
+ * permission. For written permission, please contact
+ * permission@sei.cmu.edu.
+
+ * 4. Products derived from this software may not be called "SEI" nor
+ * may "SEI" appear in their names without prior written permission of
+ * permission@sei.cmu.edu.
+
+ * 5. Redistributions of any form whatsoever must retain the following
+ * acknowledgment:
+
+ * This material is based upon work funded and supported by the
+ * Department of Defense under Contract No. FA8721-05-C-0003 with
+ * Carnegie Mellon University for the operation of the Software
+ * Engineering Institute, a federally funded research and development
+ * center.
+
+ * Any opinions, findings and conclusions or recommendations expressed
+ * in this material are those of the author(s) and do not necessarily
+ * reflect the views of the United States Department of Defense.
+
+ * NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE
+ * ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS"
+ * BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND,
+ * EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT
+ * LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY,
+ * EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE
+ * MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH
+ * RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT
+ * INFRINGEMENT.
+
+ * This material has been approved for public release and unlimited
+ * distribution.
+
+ * DM-0002494
+**/
+
+//-- this is a generic example demonstrating the synchronous collision
+//-- avoidance algorithm
+
+target GNU_CPP,WIN_CPP %%{
+#define GNU_WIN
+#include <stdlib.h>
+#include "madara/utility/Utility.h"
+
+int my_sleep (int seconds)
+{
+  madara::utility::sleep (seconds);
+  return 0;
+}
+
+int roundNum = 0;
+int xi,yi;
+
+void print_int(int i)
+{
+  printf("%i\n", i);
+}
+
+void print_line(int _X)
+{
+  printf("-");
+  for(int i = 0;i < _X;++i) printf("--");
+  printf("\n");
+}
+
+void print_state(int _X,int _Y,int state,int id, int x, int y, int xf, int yf)
+{
+  if(roundNum == 0) {
+    xi = x; yi = y;
+  }
+
+  for(int i = 0;i < 150;++i) printf("\n");
+  
+  printf("round = %d : id = %d : state = %d\n", ++roundNum, id, state);
+  printf("_X = %d _Y = %d\n",_X,_Y);
+  print_line(_X);
+  for(int i = 0;i < _Y;++i) {
+    printf("|");
+    for(int j = 0;j < _X;++j) {
+      //printf("i = %d j = %d\n", i, j);
+      if(j == xf && i == yf) printf("o|");        
+      else if(j == x && i == y) printf("%d|",id);
+      else printf(" |");
+    }
+    printf("\n");
+    print_line(_X);
+  }
+}
+
+void print_range(int x, int y, int xp, int yp, double ma, double r,int opos)
+{
+  printf("x = %d, y = %d, xp = %d, yp = %d, move_angle = %f, range = %f, obs_pos = %d\n",
+         x, y, xp, yp, ma, r, opos);
+}
+
+void print_color(int _marker,int _color)
+{
+  printf("%d : obstacle color = %d : %s ...\n", _marker, _color,
+         _color == 0 ? "none" : (_color == 1 ? "blue" : "red"));
+  fflush(stdout);
+}
+
+void print_color_double(int _marker,double _color)
+{
+  printf("%d : obstacle color = %lf ...\n", _marker, _color);
+  fflush(stdout);
+}
+ 
+%%}
+
+//states of each node
+const NEXT = 1;
+const REQUEST = 2;
+const WAITING = 3;
+const MOVE = 4;
+const WAITING_UP = 5;
+const MOVE_UP = 6;
+const WAITING_DN = 7;
+const MOVE_DN = 8;
+const REQUEST_OBS = 9;
+const WAITING_OBS = 10;
+const MOVE_OBS = 11;
+const ROT_SENSOR = 12;
+
+//-- obstacle colors
+const OBS_BLUE = 1;
+const OBS_RED = 2;
+
+//-- height to move to avoid red and blue obstacles -- remember small
+//-- means higher
+const OBSHT_BLUE = 5;
+const OBSHT_RED = 3;
+
+//amount to change height by
+const HTCH = 3;
+
+extern int my_sleep(int seconds);
+extern void print_state(int XX,int YY,int state,int my_id, int x, int y, int xf, int yf);
+extern void print_int(int i);
+extern int isnan(double x);
+extern void print_range(int x, int y, int xp, int yp, double ma, double r,int opos);
+extern void print_color(int _marker,int _code);
+extern void print_color_double(int _marker,double _code);
+
+node uav
+{
+  //shared variables -- visible across nodes.
+  global _Bool lock [X][Y][Z] = {
+    lock[x][y][z] = 1;
+  };
+
+  //-- a global array storing whether a cell has a detected
+  //-- obstacle. 0 means none, 1 means blue, 2 means red.
+  global unsigned char obstacles [X][Y];
+  
+  //private variables -- local to the node.
+  //preserved across rounds
+  local unsigned char state = NEXT; //the state
+  //current coordinates
+  local unsigned char input x ~ (0 <= x && x < X);
+  local unsigned char input y ~ (0 <= y && y < Y);
+  local unsigned char input z ~ (0 <= z && z < Z);
+  local unsigned char xp = x, yp = y, zp = z; //next coordinates
+  //store the initial height
+  local unsigned char zinit = z;
+  //final coordinates
+  local unsigned char input xf ~ (0 <= xf && xf < X), input yf ~ (0 <= yf && yf < Y);
+
+  //the angle denoting the current direction of movement
+  local double moveAngle = 0.0;
+  
+  //-- saves the next waypoint in (xp,yp). also updates the angle of
+  //-- movement.
+  void NEXT_XY () {
+    xp = x; yp = y;
+    if(x < xf) {
+      xp = x + 1;
+      moveAngle = 0.0;
+    } else if(x > xf) {
+      xp = x - 1;
+      moveAngle = 180.0;
+    } else if(y < yf) {
+      yp = y + 1;
+      moveAngle = 270.0;
+    } else {
+      yp = y - 1;
+      moveAngle = 90.0;
+    }
+  }
+  
+  //-- saves the next waypoint in (xp,yp). also updates the angle of
+  //-- movement. this has zig-zag movement.
+  void NEXT_XY_ZIG_ZAG () {
+    unsigned char xdiff,ydiff;
+    xp = x; yp = y;
+
+    xdiff = xf-x;
+    if(xdiff < 0) xdiff = -xdiff;
+    ydiff = yf-y;
+    if(ydiff < 0) ydiff = -ydiff;
+
+    if(xdiff > ydiff) {
+      if(x < xf) {
+        xp = x + 1;
+        moveAngle = 0.0;
+      } else {
+        xp = x - 1;
+        moveAngle = 180.0;
+      }
+    } else {
+      if(y < yf) {
+        yp = y + 1;
+        moveAngle = 270.0;
+      } else {
+        yp = y - 1;
+        moveAngle = 90.0;
+      }
+    }
+  }
+}
+
+node uav
+{
+  //-- return true if we are over an obstacle.
+  bool overObstacle()
+  {
+    return obstacles[x][y] || exists_other(idp, obstacles[x][y]@idp);
+  }
+
+  //-- if the next waypoint has an obstacle, return its color, else
+  //-- return 0.
+  unsigned char obstacleIsNext()
+  {
+    unsigned char res = 0;
+
+    FORALL_NODE(idp) {
+      if(obstacles[xp][yp]@idp > res) res = obstacles[xp][yp]@idp;
+    }
+
+    return res;
+  }
+
+  //-- a hack to get the correct color since we know the map. this is
+  //-- workaround till we get GAMS fixed
+  unsigned char get_color_code(unsigned char _x, unsigned char _y)
+  {
+    if(_x == 5 && _y == 3) return OBS_RED;
+    if(_x == 2 && _y == 5) return OBS_BLUE;
+    if(_x == 8 && _y == 7) return OBS_BLUE;
+    if(_x == 5 && _y == 7) return OBS_RED;
+    return 0;
+  }
+  
+  //-- this thread is responsible for detecting obstacles and updating
+  //-- the obstacles map
+  @Period(300000);
+  thread OBSTACLE_DETECTOR {
+    //-- the observed position of an obstacle
+    unsigned char obs_pos = 0;
+    double range = -1;
+    unsigned int color = 0;
+    unsigned char color_code = 0;
+    
+    //-- get the range to the obstacle, and its color, and update the
+    //-- obstacles array
+    range = GET_RANGE();
+    color = GET_COLOR();
+    color_code = 0;
+    if(color != -1) {
+      if(color == 11141120) color_code = OBS_RED;
+      else color_code = OBS_BLUE;
+    }
+
+    //print_color(100,color);
+    //print_color(200,color_code);
+    
+    //-- if an obstacle was detected
+    if(!isnan(range) && range >= 0) {
+      if(moveAngle == 0) {
+        if(range <= GET_CELL_SIZE_X()) {
+          obs_pos = x + 1;
+          color_code = get_color_code(obs_pos,y);
+          if(obs_pos < X) obstacles[obs_pos][y] = color_code;
+        } else obs_pos = -1;
+        //print_range(x, y, xp, yp, moveAngle, range, obs_pos);
+      }
+      if(moveAngle == 180) {
+        if(range <= GET_CELL_SIZE_X()) {
+          obs_pos = x - 1;
+          color_code = get_color_code(obs_pos,y);
+          if(obs_pos >= 0) obstacles[obs_pos][y] = color_code;
+        } else obs_pos = -1;
+        //print_range(x, y, xp, yp, moveAngle, range, obs_pos);
+      }
+      if(moveAngle == 270) {
+        if(range <= (-1 * GET_CELL_SIZE_Y())) {
+          obs_pos = y + 1;
+          color_code = get_color_code(x,obs_pos);
+          if(obs_pos < Y) obstacles[x][obs_pos] = color_code;
+        } else obs_pos = -1;
+        //print_range(x, y, xp, yp, moveAngle, range, obs_pos);
+      }
+      if(moveAngle == 90) {
+        if(range <= (-1 * GET_CELL_SIZE_Y())) {
+          obs_pos = y - 1;
+          color_code = get_color_code(x,obs_pos);
+          if(obs_pos >= 0) obstacles[x][obs_pos] = color_code;
+        } else obs_pos = -1;
+        //print_range(x, y, xp, yp, moveAngle, range, obs_pos);
+      }
+    }
+  }
+
+
+  //-- function to use downward sensor
+  void sense_down()
+  {
+    double sensed_alt = -2;
+
+    if(z >= zinit) return;
+
+    //-- fake the downward sensor till GAMS is fixed
+    if(x == 5 && y == 3) obstacles[x][y] = OBS_BLUE;
+    if(x == 2 && y == 5) obstacles[x][y] = OBS_BLUE;
+    if(x == 3 && y == 5) obstacles[x][y] = OBS_BLUE;
+    if(x == 8 && y == 7) obstacles[x][y] = OBS_BLUE;
+    if(x == 8 && y == 8) obstacles[x][y] = OBS_BLUE;
+    if(x == 5 && y == 7) obstacles[x][y] = OBS_BLUE;
+    return;
+    
+    //-- use the downward sensor
+    sensed_alt = GET_SENSED_ALT();
+    print_color_double(210,sensed_alt);
+    if(!isnan(sensed_alt) && sensed_alt >= 0) {
+      obstacles[x][y] = OBS_BLUE;
+    }
+  }
+  
+  //-- the height to move to avoid obstacle
+  local unsigned char obsht = Z;
+  
+  @Period(500000);
+  @BarrierSync;
+  @PlatformController;
+  thread COLLISION_AVOIDANCE {
+    //-- the type of detected obstacle
+    unsigned char obs_type = 0;
+    
+    //print_state(X,Y,state,id,x,y,xf,yf);
+    //my_sleep(1);
+    if (state == NEXT) {
+      //compute next point on route
+      if(x == xf && y == yf) return;
+      NEXT_XY();
+      state = ROT_SENSOR;
+    }
+    if (state == ROT_SENSOR) {
+      if(ROTATE(moveAngle - GET_RANGE_ANGLE())) return;
+
+      //-- if the next position has an obstacle, move up to avoid it
+      obs_type = obstacleIsNext();
+      if(obs_type == OBS_BLUE) obsht = OBSHT_BLUE;
+      else if(obs_type == OBS_RED) obsht = OBSHT_RED;
+      else obsht = Z;
+      if(z > obsht) { state = REQUEST_OBS; }
+
+      //-- check if we should and can move down
+      else if(z == zinit || overObstacle() || EXISTS_LOWER(idp,lock[x][y][zinit]@idp != 0)) {
+        state = REQUEST;
+      } else {
+        lock[x][y][zinit] = 1;
+        state = WAITING_DN;
+      }
+    }
+    //print_state(X,Y,state,id,x,y,xf,yf);
+    //-- we can move up to avoid obstacles in the same round
+    if (state == REQUEST_OBS) {
+      if(EXISTS_LOWER(idp, lock[x][y][obsht]@idp != 0)) return;
+      lock[x][y][obsht] = 1;
+      state = WAITING_OBS;
+    }
+    //-- we can move up to avoid obstacles in the same round
+    else if (state == WAITING_OBS) {
+      if(EXISTS_HIGHER(idp, lock[x][y][obsht]@idp != 0)) return;
+      state = MOVE_OBS;
+    }
+    //-- we can start locking as soon as we have the next waypoint
+    else if (state == REQUEST) {
+      //request the lock but only if it is free
+      if(EXISTS_LOWER(idp,lock[xp][yp][zp]@idp != 0)) {
+        if(z < zinit || EXISTS_LOWER(idp,lock[x][y][obsht]@idp != 0)) return;
+        lock[x][y][obsht] = 1;
+        state = WAITING_UP;
+        return;
+      }
+      lock[xp][yp][zp] = 1;
+      state = WAITING;
+    } else if (state == WAITING_UP) {
+      if(EXISTS_HIGHER(idp, lock[x][y][obsht]@idp != 0)) return;
+      state = MOVE_UP;
+    } else if (state == WAITING_DN) {
+      if(EXISTS_HIGHER(idp, lock[x][y][zinit]@idp != 0)) return;
+      state = MOVE_DN;
+    } else if (state == WAITING) {
+      //grab the lock if we are the highest 
+      //id node to request or hold the lock
+      if(EXISTS_HIGHER(idp, lock[xp][yp][zp]@idp != 0)) return;
+      state = MOVE;
+    }
+    //print_state(X,Y,state,id,x,y,xf,yf);
+    //-- move up to avoid obstacle
+    if (state == MOVE_OBS) {
+      //now we have the lock on (x’,y’)
+      if(GRID_MOVE(x,y,obsht)) return;
+      lock[x][y][z] = 0; 
+      z = obsht; zp = z;
+      sense_down();      
+      state = REQUEST;
+    }
+    //print_state(X,Y,state,id,x,y,xf,yf);
+    //-- move up to avoid another node
+    if (state == MOVE_UP) {
+      //now we have the lock on (x’,y’)
+      if(GRID_MOVE(x,y,z-HTCH)) return;
+      lock[x][y][z] = 0; 
+      z = z-HTCH; zp = z;
+      sense_down();      
+      state = REQUEST;
+    }
+    //print_state(X,Y,state,id,x,y,xf,yf);
+    //-- move down
+    if (state == MOVE_DN) {
+      //now we have the lock on (x’,y’)
+      if(GRID_MOVE(x,y,zinit)) return;
+      lock[x][y][z] = 0; 
+      z = zinit; zp = z;
+      sense_down();      
+      state = REQUEST;
+    }
+    //print_state(X,Y,state,id,x,y,xf,yf);
+    //-- we can start moving as soon as we get the lock
+    if (state == MOVE) {
+      //now we have the lock on (x’,y’)
+      if(GRID_MOVE(xp,yp,zp)) return;
+      lock[x][y][z] = 0; 
+      x = xp; y = yp; z = zp;
+      sense_down();      
+      state = NEXT;
+    }
+  }
+  
+  role Uav {
+    thread OBSTACLE_DETECTOR;
+    thread COLLISION_AVOIDANCE;
+  }
+
+  @InitSim;
+  void StartingPosition ()
+  {
+    GRID_INIT();
+    GRID_PLACE(x, y, z);
+  }
+
+  //the safety property checked at the beginning of each round
+  pure bool NoCollisions ()
+  {
+    //-- the main property
+    FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+      if(x@id1 == x@id2 && y@id1 == y@id2 && z@id1 == z@id2) return false;
+    }
+    
+    //-- supporting invariants for inductiveness
+
+    FORALL_NODE(idp) {
+      /** state has to be between 0 and 4, (x,y,z), (xf,yf), and (xp,yp,zp)
+          have to be between 0 and X-1,Y-1,Z-1 */
+      if(!(state@idp >= NEXT && state@idp <= MOVE)) return false;
+      if(!(x@idp >= 0 && x@idp < X)) return false;
+      if(!(y@idp >= 0 && y@idp < Y)) return false;
+      if(!(z@idp >= 0 && z@idp < Z)) return false;
+      if(!(xf@idp >= 0 && xf@idp < X)) return false;
+      if(!(yf@idp >= 0 && yf@idp < Y)) return false;
+      if(!(xp@idp >= 0 && xp@idp < X)) return false;
+      if(!(yp@idp >= 0 && yp@idp < Y)) return false;
+      if(!(zp@idp >= 0 && zp@idp < Z)) return false;
+      /** if we are in not in NEXT, then xp,yp,zp != x,y,z */
+      if(!(state@idp == NEXT || x@idp != xp@idp || y@idp != yp@idp || z@idp != zp@idp)) return false;
+      /** if we are in NEXT, REQUEST, WAITING or MOVE, we have lock on
+          x,y,z */
+      if(!((state@idp != NEXT && state@idp != REQUEST && state@idp != WAITING && state@idp != MOVE) ||
+           lock[x@idp][y@idp][z@idp]@idp)) return false;
+      /** if we are in NEXT, WAITING or MOVE, then we have lock on x,y,z
+          and xp,yp,zp */
+      if(!((state@idp != NEXT && state@idp != WAITING && state@idp != MOVE) ||
+           (lock[x@idp][y@idp][z@idp]@idp && lock[xp@idp][yp@idp][zp@idp]@idp))) return false;
+      /** if we are not in NEXT, then x,y,z and xp,yp,zp are
+          adjacent */
+      if(!(state@idp == NEXT || (((x@idp == xp@idp - 1) || (x@idp == xp@idp + 1)) ^ ((y@idp == yp@idp - 1) || (y@idp == yp@idp + 1))))) return false;
+    }
+  
+    //-- the rest are supporting invariants. you only need them for
+    //-- plain induction. you can skip them (by uncommenting the
+    //-- following return statement) out if you are doing K-induction
+    //-- with K>=3.
+    //return true;
+      
+    FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+      /** if node1 is in MOVE/NEXT and has lower id than node2 which is
+          WAITING then they have different xp,yp,zp */
+      if(!((state@id1 != NEXT && state@id1 != MOVE) || state@id2 != WAITING || id1 >= id2 || xp@id1 != xp@id2 || yp@id1 != yp@id2 || zp@id1 != zp@id2)) return false;
+      /** if two distinct nodes are in MOVE, they have different
+          (xp,yp,zp) */
+      if(!(state@id1 != MOVE || state@id2 != MOVE ||                        
+           ((xp@id1 != xp@id2 || yp@id1 != yp@id2 || zp@id1 != zp@id2) &&             
+            (xp@id1 != x@id2 || yp@id1 != y@id2 || zp@id1 != z@id2) &&               
+            (x@id1 != xp@id2 || y@id1 != yp@id2 || z@id1 != zp@id2) &&               
+            (x@id1 != x@id2 || y@id1 != y@id2 || z@id1 != z@id2)))) return false;
+      /** if node2 in WAITING, and node1 has lower id than node 2, then
+          node1.(x,y,z) != node2.(xp,yp,zp) */
+      if(!(state@id2 != WAITING || id1 >= id2 || x@id1 != xp@id2 || y@id1 != yp@id2 || z@id1 != zp@id2)) return false;
+      /** if node2 in MOVE, then node1.(x,y,z) != node2.(xp,yp,zp) */
+      if(!((state@id2 != MOVE || x@id1 != xp@id2 || y@id1 != yp@id2 || z@id1 != zp@id2) &&
+           (state@id1 != MOVE || xp@id1 != x@id2 || yp@id1 != y@id2 || zp@id1 != z@id2))) return false;
+      /** two distinct nodes have different (x,y,z) */
+      if(!(x@id1 != x@id2 || y@id1 != y@id2 || z@id1 != z@id2)) return false;
+    }
+
+    return true;
+  }
+
+  //-- guaranteed properties
+  require NoCollision => NoCollisions;
+}

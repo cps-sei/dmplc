@@ -1,0 +1,26 @@
+#!/bin/bash
+
+DMPL="bud-example-12.dmpl"
+BIN=bud-example-12
+
+OUTDIR=outdir
+MAPNAME=small-gams-many-obstacles
+REC_CAM_POS="-2.6892 -6.9720 4.1355"
+#MAPNAME=small-gams-obstacle
+#REC_CAM_POS="-3.6278 -6.1996 3.1356"
+GRIDSIZE=10
+ROLEDESC=uav:Uav:3
+
+PLATFORM=vrep-uav-laser::::0.1
+EXPECT_LOG_PERIOD=0.2
+
+MISSION_TIME=300
+
+function make_args
+{
+  echo --var_x $1 --var_y $2 --var_z $3 --var_xf $4 --var_yf $5
+}
+
+ARGS_0="$(make_args 0 5 8 9 5)"
+ARGS_1="$(make_args 5 0 8 5 9)"
+ARGS_2="$(make_args 0 3 8 8 9)"

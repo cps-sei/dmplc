@@ -1,0 +1,25 @@
+#!/bin/bash
+
+DMPL="bud-example-04.dmpl"
+BIN=bud-example-04
+
+OUTDIR=outdir
+MAPNAME=small
+REC_CAM_POS="0.0421 -0.2489 11.2217"
+GRIDSIZE=10
+ROLEDESC=uav:Uav:5
+
+EXPECT_LOG_PERIOD=0.2
+
+MISSION_TIME=120
+
+function make_args
+{
+  echo --var_x $1 --var_y $2 --var_z $3 --var_xf $4 --var_yf $5
+}
+
+ARGS_0="$(make_args 0 5 7 9 5)"
+ARGS_1="$(make_args 5 0 7 5 9)"
+ARGS_2="$(make_args 0 3 7 8 9)"
+ARGS_3="$(make_args 2 8 7 7 0)"
+ARGS_4="$(make_args 8 9 7 5 1)"

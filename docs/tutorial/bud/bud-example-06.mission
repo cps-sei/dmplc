@@ -1,0 +1,25 @@
+#!/bin/bash
+
+DMPL="bud-example-06.dmpl"
+BIN=bud-example-06
+
+OUTDIR=outdir
+MAPNAME=small
+REC_CAM_POS="0.0421 -0.2489 11.2217"
+GRIDSIZE=10
+ROLEDESC=uav:Leader:1:uav:Protector:4
+
+EXPECT_LOG_PERIOD=0.2
+
+MISSION_TIME=240
+
+IX=1
+IY=1
+FX=8
+FY=8
+
+ARGS_0="--var_x $IX --var_y $IY --var_z 1 --var_xf $FX --var_yf $FY"
+ARGS_1="--var_x $((IX+1)) --var_y $((IY+1)) --var_z 1"
+ARGS_2="--var_x $((IX-1)) --var_y $((IY+1)) --var_z 1"
+ARGS_3="--var_x $((IX-1)) --var_y $((IY-1)) --var_z 1"
+ARGS_4="--var_x $((IX+1)) --var_y $((IY-1)) --var_z 1"

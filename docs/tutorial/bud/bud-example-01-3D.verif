@@ -1,0 +1,10 @@
+#!/bin/bash
+
+VERIF_NAME="bud-example-01-3D"
+OUT="SUCCESSFUL"
+DMPL="bud-example-01-3D.dmpl"
+GRIDSIZE=10
+ROLEDESC=uav:Uav:2
+PROPERTY="NoCollision"
+VERIF=bounded
+ROUNDS=5
