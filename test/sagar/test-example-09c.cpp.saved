@@ -509,6 +509,7 @@ void handle_arguments (int argc, char ** argv)
         settings.hosts.push_back (argv[i + 1]);
         settings.type = madara::transport::MULTICAST;
       }
+      else goto WRONG_ARG;
       ++i;
     }
     else if (arg1 == "-p" || arg1 == "--platform")
@@ -518,6 +519,7 @@ void handle_arguments (int argc, char ** argv)
         tokenize(std::string(argv[i + 1]), platform_params, ":");
         platform_name = (platform_params[0]);
       }
+      else goto WRONG_ARG;
       ++i;
     }
     else if (arg1 == "-b" || arg1 == "--broadcast")
@@ -527,6 +529,7 @@ void handle_arguments (int argc, char ** argv)
         settings.hosts.push_back (argv[i + 1]);
         settings.type = madara::transport::BROADCAST;
       }
+      else goto WRONG_ARG;
       ++i;
     }
     else if (arg1 == "-u" || arg1 == "--udp")
@@ -536,20 +539,21 @@ void handle_arguments (int argc, char ** argv)
         settings.hosts.push_back (argv[i + 1]);
         settings.type = madara::transport::UDP;
       }
+      else goto WRONG_ARG;
       ++i;
     }
     else if (arg1 == "-o" || arg1 == "--host")
     {
       if (i + 1 < argc)
         host = argv[i + 1];
-        
+      else goto WRONG_ARG;
       ++i;
     }
     else if (arg1 == "-d" || arg1 == "--domain")
     {
       if (i + 1 < argc)
         settings.domains = argv[i + 1];
-        
+      else goto WRONG_ARG;
       ++i;
     }
     else if (arg1 == "-i" || arg1 == "--id")
@@ -574,6 +578,7 @@ void handle_arguments (int argc, char ** argv)
         if(settings.id == 8) { node_name = "uav"; role_name = "Protector"; }
         if(settings.id == 9) { node_name = "uav"; role_name = "Protector"; }
       }
+      else goto WRONG_ARG;
       ++i;
     }
     else if (arg1 == "-l" || arg1 == "--level")
@@ -586,6 +591,7 @@ void handle_arguments (int argc, char ** argv)
         madara::logger::global_logger->set_level(log_level);
         gams::loggers::global_logger->set_level(log_level);
       }
+      else goto WRONG_ARG;
       ++i;
     }
     else if (arg1 == "--drop-rate")
@@ -599,6 +605,7 @@ void handle_arguments (int argc, char ** argv)
         settings.update_drop_rate (drop_rate,
           madara::transport::PACKET_DROP_PROBABLISTIC);
       }
+      else goto WRONG_ARG;
       ++i;
     }
     else if (arg1 == "-e" || arg1 == "--expect-log")
@@ -607,6 +614,7 @@ void handle_arguments (int argc, char ** argv)
       {
         expect_file.open(argv[i + 1], ios::out | ios::trunc);
       }
+      else goto WRONG_ARG;
       ++i;
     }
     else if (arg1 == "-f" || arg1 == "--logfile")
@@ -616,6 +624,7 @@ void handle_arguments (int argc, char ** argv)
         ::madara::logger::global_logger->clear();
         ::madara::logger::global_logger->add_file(argv[i + 1]);
       }
+      else goto WRONG_ARG;
       ++i;
     }
     else if (arg1 == "-r" || arg1 == "--reduced")
@@ -633,6 +642,7 @@ void handle_arguments (int argc, char ** argv)
         std::stringstream buffer (argv[i + 1]);
         buffer >> write_fd;
       }
+      else goto WRONG_ARG;
       ++i;
     }
 
@@ -649,6 +659,7 @@ void handle_arguments (int argc, char ** argv)
               + node_name + " , " + role_name + ")");
       }
       
+      else goto WRONG_ARG;
       ++i;
     }
 
@@ -665,6 +676,7 @@ void handle_arguments (int argc, char ** argv)
               + node_name + " , " + role_name + ")");
       }
       
+      else goto WRONG_ARG;
       ++i;
     }
 
@@ -681,6 +693,7 @@ void handle_arguments (int argc, char ** argv)
               + node_name + " , " + role_name + ")");
       }
       
+      else goto WRONG_ARG;
       ++i;
     }
 
@@ -697,6 +710,7 @@ void handle_arguments (int argc, char ** argv)
               + node_name + " , " + role_name + ")");
       }
       
+      else goto WRONG_ARG;
       ++i;
     }
 
@@ -715,6 +729,7 @@ void handle_arguments (int argc, char ** argv)
               + node_name + " , " + role_name + ")");
       }
       
+      else goto WRONG_ARG;
       ++i;
     }
 
@@ -733,6 +748,7 @@ void handle_arguments (int argc, char ** argv)
               + node_name + " , " + role_name + ")");
       }
       
+      else goto WRONG_ARG;
       ++i;
     }
 
@@ -751,6 +767,7 @@ void handle_arguments (int argc, char ** argv)
               + node_name + " , " + role_name + ")");
       }
       
+      else goto WRONG_ARG;
       ++i;
     }
 
@@ -769,12 +786,15 @@ void handle_arguments (int argc, char ** argv)
               + node_name + " , " + role_name + ")");
       }
       
+      else goto WRONG_ARG;
       ++i;
     }
     else
     {
-      madara_log (madara::logger::LOG_EMERGENCY, (LM_DEBUG, 
-        "\nProgram summary for %s:\n\n"\
+      WRONG_ARG:
+      std::cerr << "Illegal argument : " << arg1 << '\n'
+                << "Usage : " << argv[0] << " <options> <dmpl-file>\n"
+                << "Options :\n" <<
         " [-p|--platform type]     platform for loop (vrep, dronerk)\n"\
         " [-b|--broadcast ip:port] the broadcast ip to send and listen to\n"\
         " [-d|--domain domain]     the knowledge domain to send and listen to\n"\
@@ -796,7 +816,7 @@ void handle_arguments (int argc, char ** argv)
         " [--var_xt] sets the initial value of variable xt\n"\
         " [--var_y] sets the initial value of variable y\n"\
         " [--var_yt] sets the initial value of variable yt\n"\
-        , argv[0]));
+        ;
       ::exit (1);
     }
   }

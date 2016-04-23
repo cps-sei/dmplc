@@ -809,6 +809,7 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   buffer_ << "        settings.hosts.push_back (argv[i + 1]);\n";
   buffer_ << "        settings.type = madara::transport::MULTICAST;\n";
   buffer_ << "      }\n";
+  buffer_ << "      else goto WRONG_ARG;\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
   buffer_ << "    else if (arg1 == \"-p\" || arg1 == \"--platform\")\n";
@@ -818,6 +819,7 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   buffer_ << "        tokenize(std::string(argv[i + 1]), platform_params, \":\");\n";
   buffer_ << "        platform_name = (platform_params[0]);\n";
   buffer_ << "      }\n";
+  buffer_ << "      else goto WRONG_ARG;\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
   buffer_ << "    else if (arg1 == \"-b\" || arg1 == \"--broadcast\")\n";
@@ -827,6 +829,7 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   buffer_ << "        settings.hosts.push_back (argv[i + 1]);\n";
   buffer_ << "        settings.type = madara::transport::BROADCAST;\n";
   buffer_ << "      }\n";
+  buffer_ << "      else goto WRONG_ARG;\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
   buffer_ << "    else if (arg1 == \"-u\" || arg1 == \"--udp\")\n";
@@ -836,20 +839,21 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   buffer_ << "        settings.hosts.push_back (argv[i + 1]);\n";
   buffer_ << "        settings.type = madara::transport::UDP;\n";
   buffer_ << "      }\n";
+  buffer_ << "      else goto WRONG_ARG;\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
   buffer_ << "    else if (arg1 == \"-o\" || arg1 == \"--host\")\n";
   buffer_ << "    {\n";
   buffer_ << "      if (i + 1 < argc)\n";
   buffer_ << "        host = argv[i + 1];\n";
-  buffer_ << "        \n";
+  buffer_ << "      else goto WRONG_ARG;\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
   buffer_ << "    else if (arg1 == \"-d\" || arg1 == \"--domain\")\n";
   buffer_ << "    {\n";
   buffer_ << "      if (i + 1 < argc)\n";
   buffer_ << "        settings.domains = argv[i + 1];\n";
-  buffer_ << "        \n";
+  buffer_ << "      else goto WRONG_ARG;\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
   buffer_ << "    else if (arg1 == \"-i\" || arg1 == \"--id\")\n";
@@ -871,6 +875,7 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
     ++procId;
   }
   buffer_ << "      }\n";
+  buffer_ << "      else goto WRONG_ARG;\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
   buffer_ << "    else if (arg1 == \"-l\" || arg1 == \"--level\")\n";
@@ -883,6 +888,7 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   buffer_ << "        madara::logger::global_logger->set_level(log_level);\n";
   buffer_ << "        gams::loggers::global_logger->set_level(log_level);\n";
   buffer_ << "      }\n";
+  buffer_ << "      else goto WRONG_ARG;\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
   buffer_ << "    else if (arg1 == \"--drop-rate\")\n";
@@ -898,6 +904,7 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   buffer_ << "        settings.update_drop_rate (drop_rate,\n";
   buffer_ << "          madara::transport::PACKET_DROP_PROBABLISTIC);\n";
   buffer_ << "      }\n";
+  buffer_ << "      else goto WRONG_ARG;\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
   buffer_ << "    else if (arg1 == \"-e\" || arg1 == \"--expect-log\")\n";
@@ -906,6 +913,7 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   buffer_ << "      {\n";
   buffer_ << "        expect_file.open(argv[i + 1], ios::out | ios::trunc);\n";
   buffer_ << "      }\n";
+  buffer_ << "      else goto WRONG_ARG;\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
   buffer_ << "    else if (arg1 == \"-f\" || arg1 == \"--logfile\")\n";
@@ -915,6 +923,7 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   buffer_ << "        ::madara::logger::global_logger->clear();\n";
   buffer_ << "        ::madara::logger::global_logger->add_file(argv[i + 1]);\n";
   buffer_ << "      }\n";
+  buffer_ << "      else goto WRONG_ARG;\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
   buffer_ << "    else if (arg1 == \"-r\" || arg1 == \"--reduced\")\n";
@@ -932,6 +941,7 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   buffer_ << "        std::stringstream buffer (argv[i + 1]);\n";
   buffer_ << "        buffer >> write_fd;\n";
   buffer_ << "      }\n";
+  buffer_ << "      else goto WRONG_ARG;\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
 
@@ -1002,21 +1012,24 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
 
   buffer_ << "    else\n";
   buffer_ << "    {\n";
-  buffer_ << "      madara_log (madara::logger::LOG_EMERGENCY, (LM_DEBUG, \n";
-  buffer_ << "        \"\\nProgram summary for %s:\\n\\n\"\\\n";
-  buffer_ << "        \" [-p|--platform type]     platform for loop (vrep, dronerk)\\n\"\\\n";
-  buffer_ << "        \" [-b|--broadcast ip:port] the broadcast ip to send and listen to\\n\"\\\n";
-  buffer_ << "        \" [-d|--domain domain]     the knowledge domain to send and listen to\\n\"\\\n";
-  buffer_ << "        \" [-e|--expect-log file]   file to log variables related to 'expect' clauses\\n\"\\\n";
-  buffer_ << "        \" [-f|--logfile file]      log to a file\\n\"\\\n";
-  buffer_ << "        \" [-i|--id id]             the id of this agent (should be non-negative)\\n\"\\\n";
-  buffer_ << "        \" [-l|--level level]       the logger level (0+, higher is higher detail)\\n\"\\\n";
-  buffer_ << "        \" [-m|--multicast ip:port] the multicast ip to send and listen to\\n\"\\\n";
-  buffer_ << "        \" [-mb|--max-barrier-time time] time in seconds to barrier for other processes\\n\"\\\n";
-  buffer_ << "        \" [-o|--host hostname]     the hostname of this process (def:localhost)\\n\"\\\n";
-  buffer_ << "        \" [-r|--reduced]           use the reduced message header\\n\"\\\n";
-  buffer_ << "        \" [-dbg|--debug]           print debug messages\\n\"\\\n";
-  buffer_ << "        \" [-u|--udp ip:port]       the udp ips to send to (first is self to bind to)\\n\"\\\n";
+
+  buffer_ << "      WRONG_ARG:\n"
+          << "      std::cerr << \"Illegal argument : \" << arg1 << '\\n'" << '\n'
+          << "                << \"Usage : \" << argv[0] << \" <options> <dmpl-file>\\n\"\n"
+          << "                << \"Options :\\n\" <<\n"
+          << "        \" [-p|--platform type]     platform for loop (vrep, dronerk)\\n\"\\\n"
+          << "        \" [-b|--broadcast ip:port] the broadcast ip to send and listen to\\n\"\\\n"
+          << "        \" [-d|--domain domain]     the knowledge domain to send and listen to\\n\"\\\n"
+          << "        \" [-e|--expect-log file]   file to log variables related to 'expect' clauses\\n\"\\\n"
+          << "        \" [-f|--logfile file]      log to a file\\n\"\\\n"
+          << "        \" [-i|--id id]             the id of this agent (should be non-negative)\\n\"\\\n"
+          << "        \" [-l|--level level]       the logger level (0+, higher is higher detail)\\n\"\\\n"
+          << "        \" [-m|--multicast ip:port] the multicast ip to send and listen to\\n\"\\\n"
+          << "        \" [-mb|--max-barrier-time time] time in seconds to barrier for other processes\\n\"\\\n"
+          << "        \" [-o|--host hostname]     the hostname of this process (def:localhost)\\n\"\\\n"
+          << "        \" [-r|--reduced]           use the reduced message header\\n\"\\\n"
+          << "        \" [-dbg|--debug]           print debug messages\\n\"\\\n"
+          << "        \" [-u|--udp ip:port]       the udp ips to send to (first is self to bind to)\\n\"\\\n";
 
   buffer_ << variable_help.str ();
 
@@ -1028,7 +1041,7 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
     buffer_ << "        \" [-vp|--vrep-port] sets the IP port of VREP\\n\"\\\n";
   }
 
-  buffer_ << "        , argv[0]));\n";
+  buffer_ << "        ;\n";
   buffer_ << "      ::exit (1);\n";
   buffer_ << "    }\n";
   buffer_ << "  }\n";
@@ -1081,6 +1094,7 @@ dmpl::gams::GAMSBuilder::build_parse_args (const std::string &var,
           << "              + node_name + \" , \" + role_name + \")\");\n";
   buffer_ << "      }\n";
   buffer_ << "      \n";
+  buffer_ << "      else goto WRONG_ARG;\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
   
