@@ -135,12 +135,6 @@ extern void print_int(int i);
 
 node uav
 {
-  //shared variables -- visible across nodes. 
-  //must be accessed via R() and W()
-  group bool lock [X][Y] = {
-    lock[x][y] = 1;
-  };
-  
   group unsigned char lx = 0,ly = 0; //leader's destination coordinates
   group bool init = 0; //leader's destination has been initialized
 
@@ -151,9 +145,15 @@ node uav
   //preserved across rounds
   local unsigned char state = NEXT; //the state
 
-  //current coordinates
-  local unsigned char input x ~ (0 <= x && x < X), input y ~ (0 <= y && y < Y);
-  local unsigned char xp = x, yp = y; //next coordinates
+  // -- current, globally visible, coordinates
+  global unsigned char input x ~ (0 <= x && x < X), input y ~ (0 <= y && y < Y);
+  
+  // globally visible next desired coordinate
+  global unsigned char xnext = x ,ynext = y; 
+  
+  // locally visible next coordinates
+  local unsigned char xp = x, yp = y; 
+
   //final coordinates
   local unsigned char input xt ~ (0 <= xt && xt < X), input yt ~ (0 <= yt && yt < Y);
   
@@ -231,21 +231,23 @@ node uav
       if(x == xt && y == yt) return;
       if(NEXT_XY()) return;
       state = REQUEST;
-    } else if(state == REQUEST) {
-      //request the lock but only if it is free
-      if(EXISTS_LOWER(idp,lock[xp][yp]@idp != 0)) return;
-      lock[xp][yp] = 1;
+    }
+    if(state == REQUEST) {
+      /* Broadcast desired next position */
+      if (EXISTS_LOWER (other, x@other == xp && y@other == yp)) return;
+      if (EXISTS_LOWER (other, xnext@other == xp && ynext@other == yp)) return;
+      xnext = xp; ynext = yp;
       state = WAITING;
     } else if(state == WAITING) {
-      //grab the lock if we are the highest 
-      //id node to request or hold the lock
-      if(EXISTS_HIGHER(idp, lock[xp][yp]@idp != 0)) return;
+      /* wait until (xn,yn) becomes free for us */
+      if (EXISTS_HIGHER (other, xnext == x@other && ynext == y@other)) return;
+      if (EXISTS_HIGHER (other, xnext == xnext@other && ynext == ynext@other)) return;
       state = MOVE;
-    } else if(state == MOVE) {
+    }
+    if(state == MOVE) {
       //now we have the lock on (x’,y’)
-      if(GRID_MOVE(xp,yp,1)) return;
-      lock[x][y] = 0; 
-      x = xp; y = yp;
+      if(GRID_MOVE(xnext,ynext,1)) return;
+      x = xnext; y = ynext;
       state = NEXT;
     }
   }
@@ -402,40 +404,33 @@ node uav
     FORALL_DISTINCT_NODE_PAIR (id1,id2) {
       if(x@id1 == x@id2 && y@id1 == y@id2) return false;
     }
-    
+
     //-- supporting invariants for inductiveness
 
     FORALL_NODE(idp) {
-      /** state has to be between 0 and 4, (x,y), (xf,yf), and (xp,yp)
-          have to be between 0 and X-1,Y-1 */
+      /** state has to be between 0 and 4, (x,y), (xnext, ynext),
+          (xp,yp), and (xp,yp) have to be between 0 and X-1,Y-1 */
       if(!(state@idp >= NEXT && state@idp <= MOVE)) return false;
       if(!(x@idp >= 0 && x@idp < X)) return false;
       if(!(y@idp >= 0 && y@idp < Y)) return false;
-      //if(!(xt@idp >= 0 && xt@idp < X)) return false;
-      //if(!(yt@idp >= 0 && yt@idp < Y)) return false;
+      if(!(xnext@idp >= 0 && xnext@idp < X)) return false;
+      if(!(ynext@idp >= 0 && ynext@idp < Y)) return false;
+      if(!(xp@idp >= 0 && xp@idp < X)) return false;
+      if(!(yp@idp >= 0 && yp@idp < Y)) return false;
       if(!(xp@idp >= 0 && xp@idp < X)) return false;
       if(!(yp@idp >= 0 && yp@idp < Y)) return false;
       /** if we are in not in NEXT, then xp,yp != x,y */
       if(!(state@idp == NEXT || x@idp != xp@idp || y@idp != yp@idp)) return false;
-      /** if we are in NEXT, REQUEST, WAITING or MOVE, we have lock on
-          x,y */
-      if(!((state@idp != NEXT && state@idp != REQUEST && state@idp != WAITING && state@idp != MOVE) ||
-           lock[x@idp][y@idp]@idp)) return false;
       /** if we are in NEXT, WAITING or MOVE, then we have lock on x,y
           and xp,yp */
       if(!((state@idp != NEXT && state@idp != WAITING && state@idp != MOVE) ||
-           (lock[x@idp][y@idp]@idp && lock[xp@idp][yp@idp]@idp))) return false;
+           ((xp@idp == x@idp && yp@idp == y@idp) ||
+            (xp@idp == xnext@idp && yp@idp == ynext@idp)))) return false;
       /** if we are not in NEXT, then x,y and xp,yp are
           adjacent */
       if(!(state@idp == NEXT || (((x@idp == xp@idp - 1) || (x@idp == xp@idp + 1)) ^ ((y@idp == yp@idp - 1) || (y@idp == yp@idp + 1))))) return false;
     }
   
-    //-- the rest are supporting invariants. you only need them for
-    //-- plain induction. you can skip them (by uncommenting the
-    //-- following return statement) out if you are doing K-induction
-    //-- with K>=3.
-    //return true;
-      
     FORALL_DISTINCT_NODE_PAIR (id1,id2) {
       /** if node1 is in MOVE/NEXT and has lower id than node2 which is
           WAITING then they have different xp,yp */
@@ -458,7 +453,7 @@ node uav
     
     return true;
   }
-
+  
   //-- guaranteed properties
   require NoCollision => NoCollisions;
 }
