@@ -104,6 +104,10 @@ destinations. Thus, the group reaching the midpoint first (usually the
 one whose coordinator has the higher id) waits for the other to reach
 its midpoint, before continuing on to its final destination.
 
+example-09c-nolock: Like example-09c but uses two variables instead of
+the "lock" array for collision avoidance. Should lead to faster
+movement.
+
 examples-09d: Like example-09 but region variables are accessed by the
 asynchronous WAYPOINT thread and a (local) proximity detector flag is
 computed. Only this flag is read by the synchronous
