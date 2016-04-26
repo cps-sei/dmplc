@@ -132,6 +132,9 @@ example-11: An example with one leader followed by a sequence of
 followers in platoon formation. Used to demonstrate advantages of
 pipelined ZSRM.
 
+example-12: An example with one pursuer and one evader. We are
+developing this for the SMC LENS.
+
 Subdirectories:
 --------------
 
