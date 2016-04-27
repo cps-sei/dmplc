@@ -18,6 +18,9 @@
 //
 @targetRE(0.05);
 
+//1 hour timeout
+@timeout(3600);
+
 //
 // Some explanitory text about the experiment
 //
