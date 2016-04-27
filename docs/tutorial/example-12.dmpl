@@ -209,11 +209,22 @@ node uav
 
     //-- a counter used to implement slowdown
     local int slow_count = 0;
+
+    //-- mission success flag
+    local bool success = 0;
+
+    //-- mission success property
+    pure int expProp1Func()
+    {
+      return success;
+    }
+    expect expProp1 : at_end => expProp1Func; 
     
     @Period(100000);
     @PlatformController;
     thread EVADE {
       if(dist2(x,y,safety_x,safety_y) <= safety_range * safety_range) {
+        success = 1;
         PRINT("EVADER SUCCESS!!\n");
         EXIT(id);
       }
