@@ -117,8 +117,16 @@ const MOVE = 2;
 
 node uav
 {
+  //-- the quadrant in which the evader is located. the pursuer is
+  //-- always located in the diametrically opposite quadrant.
+  local int input quadrant;
+  
+  //-- initial coordinates. this assumes quadrant 0 and is updated
+  //-- according to the quadrant.
+  local int input ix ~ (0 <= ix && ix < X), input iy ~ (0 <= iy && iy < Y);
+
   //-- current coordinates
-  global int input x ~ (0 <= x && x < X), input y ~ (0 <= y && y < Y);
+  global int x, y;
 
   //-- next coordinates
   local int xp = x, yp = y; 
@@ -173,11 +181,21 @@ node uav
 
     return 0;
   }
-}
 
-node uav
-{
+  /*******************************************************************/
+  //-- evader role
+  /*******************************************************************/
   role Evader {
+    //-- actual initial position. based on ix, iy and quadrant
+    override global int x = {
+      if(quadrant == 0 || quadrant == 3) x = ix;
+      else x = 19 - ix;
+    };
+    override global int y = {
+      if(quadrant == 0 || quadrant == 1) y = iy;
+      else y = 19 - iy;
+    };
+
     //-- range of safety zone
     local int input safety_range;
 
@@ -195,7 +213,6 @@ node uav
     @Period(100000);
     @PlatformController;
     thread EVADE {
-      int d;
       if(dist2(x,y,safety_x,safety_y) <= safety_range * safety_range) {
         PRINT("EVADER SUCCESS!!\n");
         EXIT(id);
@@ -220,7 +237,20 @@ node uav
     }
   }
 
+  /*******************************************************************/
+  //-- pursuer role
+  /*******************************************************************/
   role Pursuer {
+    //-- actual initial position. based on ix, iy and quadrant
+    override global int x = {
+      if(quadrant == 0 || quadrant == 3) x = ix;
+      else x = 19 - ix;
+    };
+    override global int y = {
+      if(quadrant == 0 || quadrant == 1) y = iy;
+      else y = 19 - iy;
+    };
+    
     //-- range of pursuer
     local int input pursuer_range;
     

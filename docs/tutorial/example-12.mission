@@ -20,6 +20,7 @@ slowdown=${slowdown:-2}
 pursuer_ix=${pursuer_ix:-19}
 pursuer_iy=${pursuer_iy:-19}
 pursuer_range=${pursuer_range:-5}
+quadrant=${quadrant:-0}
 
-ARGS_0="--var_x ${evader_ix} --var_y ${evader_iy} --var_safety_range ${safety_range} --var_slowdown ${slowdown}"
-ARGS_1="--var_x ${pursuer_ix} --var_y ${pursuer_iy} --var_pursuer_range ${pursuer_range}"
+ARGS_0="--var_ix ${evader_ix} --var_iy ${evader_iy} --var_safety_range ${safety_range} --var_slowdown ${slowdown} --var_quadrant ${quadrant}"
+ARGS_1="--var_ix ${pursuer_ix} --var_iy ${pursuer_iy} --var_pursuer_range ${pursuer_range} --var_quadrant ${quadrant}"
