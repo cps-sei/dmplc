@@ -1,0 +1,26 @@
+#!/bin/bash
+
+DMPL="example-12a.dmpl"
+BIN=example-12a
+
+OUTDIR=outdir
+MAPNAME=large
+REC_CAM_POS="0.0421 -0.2489 11.2217"
+GRIDSIZE=20
+ROLEDESC=uav:Evader:1:uav:Pursuer:1
+
+EXPECT_LOG_PERIOD=0.2
+
+MISSION_TIME=360
+
+evader_ix=${evader_ix:-9}
+evader_iy=${evader_iy:-9}
+timeout=${timeout:-180}
+slowdown=${slowdown:-0}
+pursuer_ix=${pursuer_ix:-19}
+pursuer_iy=${pursuer_iy:-19}
+pursuer_range=${pursuer_range:-5}
+quadrant=${quadrant:-0}
+
+ARGS_0="--var_ix ${evader_ix} --var_iy ${evader_iy} --var_timeout ${timeout} --var_slowdown ${slowdown} --var_quadrant ${quadrant}"
+ARGS_1="--var_ix ${pursuer_ix} --var_iy ${pursuer_iy} --var_pursuer_range ${pursuer_range} --var_quadrant ${quadrant}"

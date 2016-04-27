@@ -135,6 +135,10 @@ pipelined ZSRM.
 example-12: An example with one pursuer and one evader. We are
 developing this for the SMC LENS.
 
+example-12a: Like example-12 but instead of a safety zone we have a
+chase timeout. The evader wins if the timeout expires without the
+pursuer getting within range.
+
 Subdirectories:
 --------------
 
