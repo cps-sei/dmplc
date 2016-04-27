@@ -185,6 +185,12 @@ node uav
     //-- evader is initially located
     local int safety_x = (x < 10) ? 0 : 19;
     local int safety_y = (y < 10) ? 0 : 19;
+
+    //-- a slowdown factor of evader compared to the pursuer
+    local int input slowdown;
+
+    //-- a counter used to implement slowdown
+    local int slow_count = 0;
     
     @Period(100000);
     @PlatformController;
@@ -195,6 +201,11 @@ node uav
         EXIT(id);
       }
       if(state == REST) {
+        if(slow_count < slowdown * 10) {
+          slow_count = slow_count+1;
+          return;
+        }
+        
         xf = safety_x;
         yf = safety_y;
         NEXT_XY_ZIG_ZAG();
@@ -203,6 +214,7 @@ node uav
       if(state == MOVE) {
         if(GRID_MOVE(xp,yp,1)) return;
         x = xp; y = yp;
+        slow_count = 0;
         state = REST;
       }
     }
