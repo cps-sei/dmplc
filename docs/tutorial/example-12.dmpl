@@ -118,16 +118,22 @@ const MOVE = 2;
 node uav
 {
   //-- current coordinates
-  global unsigned char input x ~ (0 <= x && x < X), input y ~ (0 <= y && y < Y);
+  global int input x ~ (0 <= x && x < X), input y ~ (0 <= y && y < Y);
 
   //-- next coordinates
-  local unsigned char xp = x, yp = y; 
+  local int xp = x, yp = y; 
 
   //-- final coordinates
-  local unsigned char xf = 0, yf = 0;
+  local int xf = 0, yf = 0;
 
   //-- state of the node
-  local unsigned char state = REST;
+  local int state = REST;
+
+  //-- square of distance between two coordinates
+  int dist2(int x1, int y1, int x2, int y2)
+  {
+    return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
+  }
   
   //-- saves the next waypoint in (xp,yp)
   void NEXT_XY () {
@@ -142,18 +148,19 @@ node uav
 node uav
 {
   role Evader {
-    //-- variable to indicate mission completion
-    global bool missionOver = 0;
+    //-- range of safety zone
+    local int input safety_range;
 
     //-- safety location -- extreme corner of the quadrant in which
     //-- evader is initially located
-    local unsigned char safety_x = (x < 5) ? 0 : 9;
-    local unsigned char safety_y = (y < 5) ? 0 : 9;
+    local int safety_x = (x < 5) ? 0 : 9;
+    local int safety_y = (y < 5) ? 0 : 9;
     
     @Period(100000);
     @PlatformController;
     thread EVADE {
-      if(x == safety_x && y == safety_y) {
+      int d;
+      if(dist2(x,y,safety_x,safety_y) <= safety_range * safety_range) {
         PRINT("EVADER SUCCESS!!\n");
         EXIT(id);
       }
@@ -172,10 +179,13 @@ node uav
   }
 
   role Pursuer {
+    //-- range of pursuer
+    local int input pursuer_range;
+    
     @Period(100000);
     @PlatformController;
     thread PURSUE {
-      if((x - x@Evader) * (x - x@Evader) + (y - y@Evader) * (y - y@Evader) <= 9) {
+      if(dist2(x,y,x@Evader,y@Evader) <= pursuer_range * pursuer_range) {
         PRINT("PURSUER SUCCESS!!\n");
         EXIT(id);
       }
