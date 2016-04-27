@@ -4,14 +4,14 @@ DMPL="example-12.dmpl"
 BIN=example-12
 
 OUTDIR=outdir
-MAPNAME=small
+MAPNAME=large
 REC_CAM_POS="0.0421 -0.2489 11.2217"
-GRIDSIZE=10
+GRIDSIZE=20
 ROLEDESC=uav:Evader:1:uav:Pursuer:1
 
 EXPECT_LOG_PERIOD=0.2
 
 MISSION_TIME=360
 
-ARGS_0="--var_x 4 --var_y 4 --var_safety_range 2"
-ARGS_1="--var_x 9 --var_y 9 --var_pursuer_range 3"
+ARGS_0="--var_x 9 --var_y 9 --var_safety_range 2"
+ARGS_1="--var_x 19 --var_y 19 --var_pursuer_range 5"
