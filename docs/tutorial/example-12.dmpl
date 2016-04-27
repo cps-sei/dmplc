@@ -107,34 +107,28 @@ void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
 }
 %%}
 
-//states of each node
-const NEXT = 1;
-const REQUEST = 2;
-const WAITING = 3;
-const MOVE = 4;
-
-const MSG_MARKER = "message: ";
-
 extern int my_sleep(int seconds);
 extern void print_state(int XX,int YY,int my_id, int x, int y, int xf, int yf);
 extern void print_int(int i);
 
+//-- states of the UAV
+const REST = 1;
+const MOVE = 2;
+
 node uav
 {
-  //shared variables -- visible across nodes. 
-  global _Bool lock [X][Y] = {
-    lock[x][y] = 1;
-  }; 
+  //-- current coordinates
+  global unsigned char input x ~ (0 <= x && x < X), input y ~ (0 <= y && y < Y);
 
-  //private variables -- local to the node.
-  //preserved across rounds
-  local unsigned char state = NEXT; //the state
-  //current coordinates
-  local unsigned char input x ~ (0 <= x && x < X), input y ~ (0 <= y && y < Y);
-  local unsigned char xp = x, yp = y; //next coordinates
-  //final coordinates
-  local unsigned char input xf ~ (0 <= xf && xf < X), input yf ~ (0 <= yf && yf < Y);
+  //-- next coordinates
+  local unsigned char xp = x, yp = y; 
 
+  //-- final coordinates
+  local unsigned char xf = 0, yf = 0;
+
+  //-- state of the node
+  local unsigned char state = REST;
+  
   //-- saves the next waypoint in (xp,yp)
   void NEXT_XY () {
     xp = x; yp = y;
@@ -147,50 +141,56 @@ node uav
 
 node uav
 {
-  //-- variable to indicate mission completion
-  global bool missionOver = 0;
-  
-  @Period(100000);
-  @BarrierSync;
-  @PlatformController;
-  thread COLLISION_AVOIDANCE {
-    PRINT(MSG_MARKER, "id = ", id, " X = ", X, " Y = ", Y, " x = ", x, " y = ", y,
-          " state = ", state, "\n");
-    //print_state(X,Y,id,x,y,xf,yf);
-    //my_sleep(1);
-    if (state == NEXT) {
-      //compute next point on route
-      if(x == xf && y == yf) {
-        if(missionOver == 0) {
-          missionOver = 1;
-          PRINT("node ", id, " completed mission ...\n");
-        }
-        if(EXISTS_OTHER(idp,missionOver@idp == 0)) return;
+  role Evader {
+    //-- variable to indicate mission completion
+    global bool missionOver = 0;
+
+    //-- safety location -- extreme corner of the quadrant in which
+    //-- evader is initially located
+    local unsigned char safety_x = (x < 5) ? 0 : 9;
+    local unsigned char safety_y = (y < 5) ? 0 : 9;
+    
+    @Period(100000);
+    @PlatformController;
+    thread EVADE {
+      if(x == safety_x && y == safety_y) {
+        PRINT("EVADER SUCCESS!!\n");
         EXIT(id);
       }
-      NEXT_XY();
-      state = REQUEST;
-    } else if (state == REQUEST) {
-      //request the lock but only if it is free
-      if(EXISTS_LOWER(idp,lock[xp][yp]@idp != 0)) return;
-      lock[xp][yp] = 1;
-      state = WAITING;
-    } else if (state == WAITING) {
-      //grab the lock if we are the highest 
-      //id node to request or hold the lock
-      if(EXISTS_HIGHER(idp, lock[xp][yp]@idp != 0)) return;
-      state = MOVE;
-    } else if (state == MOVE) {
-      //now we have the lock on (x’,y’)
-      if(GRID_MOVE(xp,yp,1)) return;
-      lock[x][y] = 0; 
-      x = xp; y = yp;
-      state = NEXT;
+      if(state == REST) {
+        xf = safety_x;
+        yf = safety_y;
+        NEXT_XY();
+        state = MOVE;
+      }
+      if(state == MOVE) {
+        if(GRID_MOVE(xp,yp,1)) return;
+        x = xp; y = yp;
+        state = REST;
+      }
     }
   }
 
-  role Uav {
-    thread COLLISION_AVOIDANCE;
+  role Pursuer {
+    @Period(100000);
+    @PlatformController;
+    thread PURSUE {
+      if((x - x@Evader) * (x - x@Evader) + (y - y@Evader) * (y - y@Evader) <= 9) {
+        PRINT("PURSUER SUCCESS!!\n");
+        EXIT(id);
+      }
+      if(state == REST) {
+        xf = x@Evader;
+        yf = y@Evader;
+        NEXT_XY();
+        state = MOVE;
+      }
+      if(state == MOVE) {
+        if(GRID_MOVE(xp,yp,1)) return;
+        x = xp; y = yp;
+        state = REST;
+      }
+    }
   }
 
   @InitSim;
@@ -199,71 +199,4 @@ node uav
     GRID_INIT();
     GRID_PLACE(x, y, 1);
   }
-
-  //the safety property checked at the beginning of each round
-  pure bool NoCollisions ()
-  {
-    //-- the main property
-    FORALL_DISTINCT_NODE_PAIR (id1,id2) {
-      if(x@id1 == x@id2 && y@id1 == y@id2) return false;
-    }
-    
-    //-- supporting invariants for inductiveness
-
-    FORALL_NODE(idp) {
-      /** state has to be between 0 and 4, (x,y), (xf,yf), and (xp,yp)
-          have to be between 0 and X-1,Y-1 */
-      if(!(state@idp >= NEXT && state@idp <= MOVE)) return false;
-      if(!(x@idp >= 0 && x@idp < X)) return false;
-      if(!(y@idp >= 0 && y@idp < Y)) return false;
-      if(!(xf@idp >= 0 && xf@idp < X)) return false;
-      if(!(yf@idp >= 0 && yf@idp < Y)) return false;
-      if(!(xp@idp >= 0 && xp@idp < X)) return false;
-      if(!(yp@idp >= 0 && yp@idp < Y)) return false;
-      /** if we are in not in NEXT, then xp,yp != x,y */
-      if(!(state@idp == NEXT || x@idp != xp@idp || y@idp != yp@idp)) return false;
-      /** if we are in NEXT, REQUEST, WAITING or MOVE, we have lock on
-          x,y */
-      if(!((state@idp != NEXT && state@idp != REQUEST && state@idp != WAITING && state@idp != MOVE) ||
-           lock[x@idp][y@idp]@idp)) return false;
-      /** if we are in NEXT, WAITING or MOVE, then we have lock on x,y
-          and xp,yp */
-      if(!((state@idp != NEXT && state@idp != WAITING && state@idp != MOVE) ||
-           (lock[x@idp][y@idp]@idp && lock[xp@idp][yp@idp]@idp))) return false;
-      /** if we are not in NEXT, then x,y and xp,yp are
-          adjacent */
-      if(!(state@idp == NEXT || (((x@idp == xp@idp - 1) || (x@idp == xp@idp + 1)) ^ ((y@idp == yp@idp - 1) || (y@idp == yp@idp + 1))))) return false;
-    }
-  
-    //-- the rest are supporting invariants. you only need them for
-    //-- plain induction. you can skip them (by uncommenting the
-    //-- following return statement) out if you are doing K-induction
-    //-- with K>=3.
-    //return true;
-      
-    FORALL_DISTINCT_NODE_PAIR (id1,id2) {
-      /** if node1 is in MOVE/NEXT and has lower id than node2 which is
-          WAITING then they have different xp,yp */
-      if(!((state@id1 != NEXT && state@id1 != MOVE) || state@id2 != WAITING || id1 >= id2 || xp@id1 != xp@id2 || yp@id1 != yp@id2)) return false;
-      /** if two distinct nodes are in MOVE, they have different
-          (xp,yp) */
-      if(!(state@id1 != MOVE || state@id2 != MOVE ||                        
-           ((xp@id1 != xp@id2 || yp@id1 != yp@id2) &&             
-            (xp@id1 != x@id2 || yp@id1 != y@id2) &&               
-            (x@id1 != xp@id2 || y@id1 != yp@id2) &&               
-            (x@id1 != x@id2 || y@id1 != y@id2)))) return false;
-      /** if node2 in WAITING, and node1 has lower id than node 2, then
-          node1.(x,y) != node2.(xp,yp) */
-      if(!(state@id2 != WAITING || id1 >= id2 || x@id1 != xp@id2 || y@id1 != yp@id2)) return false;
-      /** if node2 in MOVE, then node1.(x,y) != node2.(xp,yp) */
-      if(!((state@id2 != MOVE || x@id1 != xp@id2 || y@id1 != yp@id2) && (state@id1 != 4 || xp@id1 != x@id2 || yp@id1 != y@id2))) return false;
-      /** two distinct nodes have different (x,y) */
-      if(!(x@id1 != x@id2 || y@id1 != y@id2)) return false;
-    }
-    
-    return true;
-  }
-
-  //-- guaranteed properties
-  require NoCollision => NoCollisions;
 }
