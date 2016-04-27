@@ -1,0 +1,62 @@
+//
+// Specification file for example-12 experiment
+//
+
+//
+// Target on which to run (e.g., TEST, SWARM or DART)
+//
+@target(DART)
+
+//
+// Name of the scenario to run
+//
+@name(dart-example-12-simple);
+@scenario(example-12);
+
+//
+// Target relative error value
+//
+@targetRE(0.05);
+
+//1 hour timeout
+@timeout(3600);
+
+//
+// Some explanitory text about the experiment
+//
+@begin(description)
+This simulation is of a pursuit-evasion game with one pursuer and one
+evader. The evader tries to reach safety and the pursuer tries to reaching
+within a certain range of the evader. The mission succeeds if the
+evader reaches safety before the pursuer catches up. This is a simpler
+version of dart-example-12 where the only random variables are the
+initial locations of the pursuer and the evader.
+@end(description)
+
+//
+// Give each trial 2 CPUs
+//
+@weight(2);
+
+//
+// Predicates to evaluate. Predicates are of the form X.Y where X is the
+// expect specification name and Y is the node id.
+//
+@begin(predicate)[expProp1.0]
+expect property expProp1 for node 0.
+@end(predicate)
+
+//
+// Input variables and their distributions. Variables are of the form X.Y
+// where X is the variable name and Y is the node id.
+//
+dmpl_branch = "develop";
+dmpl_dir = "docs/tutorial";
+evader_ix = iuniform(0,9);
+evader_iy = iuniform(0,9);
+safety_range = 0;
+slowdown = 0;
+pursuer_ix = iuniform(10,19);
+pursuer_iy = iuniform(10,19);
+pursuer_range = 5;
+quadrant = 0;
