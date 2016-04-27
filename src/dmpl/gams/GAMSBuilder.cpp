@@ -545,8 +545,8 @@ dmpl::gams::GAMSBuilder::build_role_variables (const Role &role, const std::stri
 
   for (Vars::const_iterator i = vars.begin (); i != vars.end (); ++i) {
     const Var & var = i->second;
-    if(var->isOverride) continue;
     if(scope != "local") var->type = var->type->incrDim(-1);
+    if(var->isOverride) continue;
     build_program_variable_decl (var);
     build_program_variable_init (var);
   }
