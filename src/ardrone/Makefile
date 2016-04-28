@@ -1,6 +1,8 @@
 LIB=libdmpl-ardrone.a
-SRC=ardrone_testing_tool.c Navdata/navdata.c Video/video_stage.c
-OBJ=$(SRC:.c=.o)
+CSRC=ardrone_testing_tool.c Navdata/navdata.c Video/video_stage.c
+COBJ=$(CSRC:.c=.o)
+CPPSRC=PlatformARDrone.cpp
+CPPOBJ=$(CPPSRC:.cpp=.o)
 INC=-I$(ARDRONE_ROOT)/ARDroneLib/VP_SDK -I$(ARDRONE_ROOT)/ARDroneLib/Soft/Lib
 INC+=-I$(ARDRONE_ROOT)/ARDroneLib/VP_SDK/VP_Os/linux -I$(ARDRONE_ROOT)/ARDroneLib/Soft/Common
 INC+=-I$(ARDRONE_ROOT)/ARDroneLib
@@ -12,19 +14,25 @@ LIBS+=-pthread
 
 all : PlatformARDrone
 
-PlatformARDrone : PlatformARDrone.cpp $(LIB)
-	g++ -o $@ PlatformARDrone.cpp $(INC) -L. -ldmpl-ardrone $(LIBS)
+PlatformARDrone : $(CPPOBJ) $(LIB)
+	g++ -o $@ $(CPPOBJ) $(INC) -L. -ldmpl-ardrone $(LIBS)
 
-$(LIB) : $(OBJ)
-	ar rc $@ $(OBJ)
+$(LIB) : $(COBJ)
+	ar rc $@ $(COBJ)
 
 %.o : %.c
 	gcc $(INC) -c -o $@ $<
 
+%.o : %.cpp
+	g++ $(INC) -c -o $@ $<
+
 %.d : %.c
 	gcc -MM -MG -MT $(@:.d=.o) -o $@ $(INC) $<
 
-clean :
-	rm -f $(LIB) $(OBJ) $(SRC:.c=.d) PlatformARDrone
+%.d : %.cpp
+	g++ -MM -MG -MT $(@:.d=.o) -o $@ $(INC) $<
 
--include $(SRC:.c=.d)
+clean :
+	rm -f $(LIB) $(COBJ) $(CPPOBJ) $(CSRC:.c=.d) $(CPPSRC:.cpp=.d) PlatformARDrone
+
+-include $(CSRC:.c=.d) $(CPPSRC:.cpp=.d)
