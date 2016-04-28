@@ -56,6 +56,10 @@
 #ifndef __DMPL_PLATFORM_ARDRONE_HPP__
 #define __DMPL_PLATFORM_ARDRONE_HPP__
 
+extern "C" {
+#include "ardrone_testing_tool.h"
+}
+
 /********************************************************************/
 //-- ARDRONE variables
 /********************************************************************/
@@ -64,14 +68,19 @@
 //-- ARDRONE functions
 /********************************************************************/
 
+//-- the ardrone_tool thread
+pthread_t ardrone_thread;
+
+//-- arguments passed to the ardrone_tool thread
+char *ardrone_args[] = {(char*)"-ip", (char*)"192.168.1.1"};
+
 /**
  * Call before simulation start, and before calling GRID_PLACE, to initialize
  * needed globals.
  **/
 void GRID_INIT()
 {
-  char *x[] = {(char*)"foo", (char*)"bar"};
-  ardrone_testing_tool_main(2,x);
+  pthread_create(&ardrone_thread, NULL, ardrone_testing_tool_main, ardrone_args);
 }
 
 /**
@@ -83,6 +92,15 @@ void GRID_INIT()
  **/
 void GRID_PLACE(double x, double y, double z)
 {
+}
+
+/**
+ * Call after simulation is done, mainly to land the drone properly
+ * and do other cleanup.
+ **/
+void GRID_REMOVE()
+{
+  pthread_cancel(ardrone_thread);
 }
 
 /**

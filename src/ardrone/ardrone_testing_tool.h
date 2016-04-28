@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <VP_Os/vp_os_types.h>
 
-int ardrone_testing_tool_main(int argc, char** argv);
+void *ardrone_testing_tool_main(void *args);
 
 C_RESULT signal_exit();
 
