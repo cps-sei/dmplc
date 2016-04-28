@@ -10,10 +10,10 @@ LIBS+=$(ARDRONE_ROOT)/ARDroneLib/Soft/Build/targets_versions/vlib_PROD_MODE_Linu
 LIBS+=$(ARDRONE_ROOT)/ARDroneLib/Soft/Build/targets_versions/sdk_PROD_MODE_vlib_Linux_3.13.0-85-generic_GNU_Linux_usrbingcc_4.8.4/libsdk.a
 LIBS+=-pthread
 
-all : ardrone_testing_tool
+all : PlatformARDrone
 
-ardrone_testing_tool : ardrone_testing_tool.cpp $(LIB)
-	g++ -o $@ ardrone_testing_tool.cpp $(INC) -L. -ldmpl-ardrone $(LIBS)
+PlatformARDrone : PlatformARDrone.cpp $(LIB)
+	g++ -o $@ PlatformARDrone.cpp $(INC) -L. -ldmpl-ardrone $(LIBS)
 
 $(LIB) : $(OBJ)
 	ar rc $@ $(OBJ)
@@ -25,6 +25,6 @@ $(LIB) : $(OBJ)
 	gcc -MM -MG -MT $(@:.d=.o) -o $@ $(INC) $<
 
 clean :
-	rm -f $(LIB) $(OBJ) $(SRC:.c=.d) ardrone_testing_tool
+	rm -f $(LIB) $(OBJ) $(SRC:.c=.d) PlatformARDrone
 
 -include $(SRC:.c=.d)
