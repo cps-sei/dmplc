@@ -57,6 +57,8 @@
 #define __DMPL_PLATFORM_ARDRONE_HPP__
 
 extern "C" {
+#include "ardrone_api.h"
+#include <ardrone_tool/UI/ardrone_input.h>
 #include "ardrone_testing_tool.h"
 }
 
@@ -92,11 +94,19 @@ void GRID_INIT()
  **/
 void GRID_PLACE(double x, double y, double z)
 {
+  ardrone_tool_set_ui_pad_start(1);
 }
 
 /**
- * Call after simulation is done, mainly to land the drone properly
- * and do other cleanup.
+ * Call after simulation is done, mainly to land the drone properly..
+ **/
+void GRID_LAND()
+{
+  ardrone_tool_set_ui_pad_start(0);
+}
+
+/**
+ * Call after GRID_LAND() to do other cleanup.
  **/
 void GRID_REMOVE()
 {
