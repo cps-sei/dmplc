@@ -1,3 +1,4 @@
+LIB=libdmpl-ardrone.a
 OBJS=ardrone_testing_tool.o Navdata/navdata.o Video/video_stage.o
 INCDIR=-I$(ARDRONE_ROOT)/ARDroneLib/VP_SDK -I$(ARDRONE_ROOT)/ARDroneLib/Soft/Lib
 INCDIR+=-I$(ARDRONE_ROOT)/ARDroneLib/VP_SDK/VP_Os/linux -I$(ARDRONE_ROOT)/ARDroneLib/Soft/Common
@@ -10,11 +11,14 @@ LIBS+=-pthread
 
 all : ardrone_testing_tool
 
-ardrone_testing_tool : $(OBJS)
-	gcc -o $@ $(OBJS) $(LIBS)
+ardrone_testing_tool : ardrone_testing_tool.cpp $(LIB)
+	g++ -o $@ ardrone_testing_tool.cpp $(INCDIR) -L. -ldmpl-ardrone $(LIBS)
+
+$(LIB) : $(OBJS)
+	ar rc $@ $(OBJS)
 
 %.o : %.c
 	gcc $(INCDIR) -c -o $@ $<
 
 clean :
-	rm -f $(OBJS) ardrone_testing_tool
+	rm -f $(LIB) $(OBJS) ardrone_testing_tool
