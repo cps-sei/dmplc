@@ -70,6 +70,8 @@
  **/
 void GRID_INIT()
 {
+  char *x[] = {(char*)"foo", (char*)"bar"};
+  ardrone_testing_tool_main(2,x);
 }
 
 /**
