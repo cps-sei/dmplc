@@ -29,7 +29,7 @@ static int32_t exit_ihm_program = 1;
 /* Implementing Custom methods for the main function of an ARDrone application */
 void *ardrone_testing_tool_main(void *args)
 {
-  ardrone_tool_main(2, (char**)(args));
+  ardrone_tool_main(3, (char**)(args));
   return NULL;
 }
 

@@ -72,7 +72,7 @@ extern "C" {
 pthread_t ardrone_thread;
 
 //-- arguments passed to the ardrone_tool thread
-char *ardrone_args[] = {(char*)"-ip", (char*)"192.168.1.1"};
+char *ardrone_args[] = { (char*)"PlatformARDrone", (char*)"-ip", (char*)"192.168.1.1" };
 
 /**
  * Call before simulation start, and before calling GRID_PLACE, to initialize
