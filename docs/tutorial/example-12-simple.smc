@@ -26,7 +26,7 @@
 //
 @begin(description)
 This simulation is of a pursuit-evasion game with one pursuer and one
-evader. The evader tries to reach safety and the pursuer tries to reaching
+evader. The evader tries to reach safety and the pursuer tries to reach
 within a certain range of the evader. The mission succeeds if the
 evader reaches safety before the pursuer catches up. This is a simpler
 version of dart-example-12 where the only random variables are the
