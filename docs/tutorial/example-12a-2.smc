@@ -1,5 +1,5 @@
 //
-// Specification file for example-12 experiment
+// Specification file for example-12a-2 experiment
 //
 
 //
@@ -56,7 +56,6 @@ evader_ix = iuniform(9,19);
 evader_iy = iuniform(9,19);
 timeout = 180;
 slowdown = 0; 
-slowdown = 0;
 pursuer_ix = iuniform(9,19);
 pursuer_iy = iuniform(9,19);
 pursuer_range = 5;
