@@ -146,6 +146,8 @@ away from the pursuer.
 example-12c: Like example-12b but the slowdown is applied uniformly to
 both evader and pursuer.
 
+example-12d: Like example-12c but the nodes move diagonally.
+
 Subdirectories:
 --------------
 
