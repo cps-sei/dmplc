@@ -85,6 +85,7 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.VAR_INIT_LIST: return createVarInitList();
       case DmplPackage.STMT_LIST: return createStmtList();
       case DmplPackage.STMT: return createStmt();
+      case DmplPackage.ASSIGNMENT_STMT: return createAssignmentStmt();
       case DmplPackage.LVAL: return createLVal();
       case DmplPackage.EXPR: return createExpr();
       case DmplPackage.CALL_EXPR: return createCallExpr();
@@ -97,8 +98,8 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.THREAD_DECLARATION: return createThreadDeclaration();
       case DmplPackage.FN_PROTOTYPE_DECLARATION: return createFnPrototypeDeclaration();
       case DmplPackage.NESTED_STMT: return createNestedStmt();
-      case DmplPackage.ASSIGNMENT_STMT: return createAssignmentStmt();
       case DmplPackage.WHILE_STMT: return createWhileStmt();
+      case DmplPackage.FOR_STMT: return createForStmt();
       case DmplPackage.SIMPLE_STMT: return createSimpleStmt();
       case DmplPackage.RETURN_VALUE_STMT: return createReturnValueStmt();
       case DmplPackage.FOR_ALL_STMT: return createForAllStmt();
@@ -428,6 +429,17 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  public AssignmentStmt createAssignmentStmt()
+  {
+    AssignmentStmtImpl assignmentStmt = new AssignmentStmtImpl();
+    return assignmentStmt;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public LVal createLVal()
   {
     LValImpl lVal = new LValImpl();
@@ -560,10 +572,10 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public AssignmentStmt createAssignmentStmt()
+  public WhileStmt createWhileStmt()
   {
-    AssignmentStmtImpl assignmentStmt = new AssignmentStmtImpl();
-    return assignmentStmt;
+    WhileStmtImpl whileStmt = new WhileStmtImpl();
+    return whileStmt;
   }
 
   /**
@@ -571,10 +583,10 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public WhileStmt createWhileStmt()
+  public ForStmt createForStmt()
   {
-    WhileStmtImpl whileStmt = new WhileStmtImpl();
-    return whileStmt;
+    ForStmtImpl forStmt = new ForStmtImpl();
+    return forStmt;
   }
 
   /**

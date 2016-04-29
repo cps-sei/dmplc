@@ -203,6 +203,15 @@ public interface DmplFactory extends EFactory
   Stmt createStmt();
 
   /**
+   * Returns a new object of class '<em>Assignment Stmt</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Assignment Stmt</em>'.
+   * @generated
+   */
+  AssignmentStmt createAssignmentStmt();
+
+  /**
    * Returns a new object of class '<em>LVal</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -311,15 +320,6 @@ public interface DmplFactory extends EFactory
   NestedStmt createNestedStmt();
 
   /**
-   * Returns a new object of class '<em>Assignment Stmt</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Assignment Stmt</em>'.
-   * @generated
-   */
-  AssignmentStmt createAssignmentStmt();
-
-  /**
    * Returns a new object of class '<em>While Stmt</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -327,6 +327,15 @@ public interface DmplFactory extends EFactory
    * @generated
    */
   WhileStmt createWhileStmt();
+
+  /**
+   * Returns a new object of class '<em>For Stmt</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>For Stmt</em>'.
+   * @generated
+   */
+  ForStmt createForStmt();
 
   /**
    * Returns a new object of class '<em>Simple Stmt</em>'.

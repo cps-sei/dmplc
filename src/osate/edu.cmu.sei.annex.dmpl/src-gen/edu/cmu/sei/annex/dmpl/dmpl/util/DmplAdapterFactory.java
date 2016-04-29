@@ -180,6 +180,11 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createStmtAdapter();
       }
       @Override
+      public Adapter caseAssignmentStmt(AssignmentStmt object)
+      {
+        return createAssignmentStmtAdapter();
+      }
+      @Override
       public Adapter caseLVal(LVal object)
       {
         return createLValAdapter();
@@ -240,14 +245,14 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createNestedStmtAdapter();
       }
       @Override
-      public Adapter caseAssignmentStmt(AssignmentStmt object)
-      {
-        return createAssignmentStmtAdapter();
-      }
-      @Override
       public Adapter caseWhileStmt(WhileStmt object)
       {
         return createWhileStmtAdapter();
+      }
+      @Override
+      public Adapter caseForStmt(ForStmt object)
+      {
+        return createForStmtAdapter();
       }
       @Override
       public Adapter caseSimpleStmt(SimpleStmt object)
@@ -697,6 +702,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.AssignmentStmt <em>Assignment Stmt</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.AssignmentStmt
+   * @generated
+   */
+  public Adapter createAssignmentStmtAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.LVal <em>LVal</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -877,21 +897,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.AssignmentStmt <em>Assignment Stmt</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.AssignmentStmt
-   * @generated
-   */
-  public Adapter createAssignmentStmtAdapter()
-  {
-    return null;
-  }
-
-  /**
    * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.WhileStmt <em>While Stmt</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -902,6 +907,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createWhileStmtAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.ForStmt <em>For Stmt</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ForStmt
+   * @generated
+   */
+  public Adapter createForStmtAdapter()
   {
     return null;
   }

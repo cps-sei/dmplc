@@ -16,6 +16,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.FadnpStmt
 import edu.cmu.sei.annex.dmpl.dmpl.FnVarAsgn
 import edu.cmu.sei.annex.dmpl.dmpl.ForAllFunctionEnum
 import edu.cmu.sei.annex.dmpl.dmpl.ForAllStmt
+import edu.cmu.sei.annex.dmpl.dmpl.ForStmt
 import edu.cmu.sei.annex.dmpl.dmpl.IntExpr
 import edu.cmu.sei.annex.dmpl.dmpl.LVal
 import edu.cmu.sei.annex.dmpl.dmpl.NestedStmt
@@ -39,6 +40,7 @@ import org.junit.runner.RunWith
 import static extension org.junit.Assert.assertEquals
 import static extension org.junit.Assert.assertFalse
 import static extension org.junit.Assert.assertNotNull
+import static extension org.junit.Assert.assertNull
 import static extension org.junit.Assert.assertTrue
 
 @RunWith(XtextRunner)
@@ -719,6 +721,74 @@ class ParserTest2 {
 								"v16".assertEquals(variable.name)
 								15.assertEquals((value as IntExpr).value)
 							]
+						]
+					]
+				]
+			]
+		]
+	}
+	
+	@Test
+	def void testForStmt() {
+		'''
+			void f1() {
+				for (;;)
+					v1 = 1;
+				for (v2 = 2, v3 = 3, v4 = 4;;)
+					v5 = 5;
+				for (v6 = 6; v7; v8 = 7)
+					v9 = 8;
+			}
+		'''.parse => [
+			assertNoIssues;
+			(programElements.head as Procedure).procedure => [
+				"f1".assertEquals(prototype.name)
+				fnBody.stmtList => [
+					3.assertEquals(stmts.size)
+					stmts.get(0) as ForStmt => [
+						inits.empty.assertTrue
+						condition.assertNull
+						update.assertNull
+						stmt as AssignmentStmt => [
+							"v1".assertEquals(variable.name)
+							1.assertEquals((value as IntExpr).value)
+						]
+					]
+					stmts.get(1) as ForStmt => [
+						3.assertEquals(inits.size)
+						inits.get(0) => [
+							"v2".assertEquals(variable.name)
+							2.assertEquals((value as IntExpr).value)
+						]
+						inits.get(1) => [
+							"v3".assertEquals(variable.name)
+							3.assertEquals((value as IntExpr).value)
+						]
+						inits.get(2) => [
+							"v4".assertEquals(variable.name)
+							4.assertEquals((value as IntExpr).value)
+						]
+						condition.assertNull
+						update.assertNull
+						stmt as AssignmentStmt => [
+							"v5".assertEquals(variable.name)
+							5.assertEquals((value as IntExpr).value)
+						]
+					]
+					stmts.get(2) as ForStmt => [
+						1.assertEquals(inits.size)
+						inits.head => [
+							"v6".assertEquals(variable.name)
+							6.assertEquals((value as IntExpr).value)
+						]
+						"v7".assertEquals((condition as LVal).name)
+						update => [
+							"v8".assertEquals(variable.name)
+							7.assertEquals((value as IntExpr).value)
+						]
+						stmt as AssignmentStmt => [
+							"v9".assertEquals(variable.name)
+							8.assertEquals((value as IntExpr).value)
 						]
 					]
 				]

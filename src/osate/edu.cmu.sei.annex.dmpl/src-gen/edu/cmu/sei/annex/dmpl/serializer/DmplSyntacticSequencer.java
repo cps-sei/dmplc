@@ -22,7 +22,7 @@ public class DmplSyntacticSequencer extends AbstractSyntacticSequencer {
 
 	protected DmplGrammarAccess grammarAccess;
 	protected AbstractElementAlias match_Constant_CONSTKeyword_0_1_or_ConstKeyword_0_0;
-	protected AbstractElementAlias match_Stmt_FORALL_DISTINCT_NODE_PAIRKeyword_7_1_1_or_Forall_distinct_node_pairKeyword_7_1_0;
+	protected AbstractElementAlias match_Stmt_FORALL_DISTINCT_NODE_PAIRKeyword_8_1_1_or_Forall_distinct_node_pairKeyword_8_1_0;
 	protected AbstractElementAlias match_TerminalExpr_LeftParenthesisKeyword_8_0_a;
 	protected AbstractElementAlias match_TerminalExpr_LeftParenthesisKeyword_8_0_p;
 	
@@ -30,7 +30,7 @@ public class DmplSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected void init(IGrammarAccess access) {
 		grammarAccess = (DmplGrammarAccess) access;
 		match_Constant_CONSTKeyword_0_1_or_ConstKeyword_0_0 = new AlternativeAlias(false, false, new TokenAlias(false, false, grammarAccess.getConstantAccess().getCONSTKeyword_0_1()), new TokenAlias(false, false, grammarAccess.getConstantAccess().getConstKeyword_0_0()));
-		match_Stmt_FORALL_DISTINCT_NODE_PAIRKeyword_7_1_1_or_Forall_distinct_node_pairKeyword_7_1_0 = new AlternativeAlias(false, false, new TokenAlias(false, false, grammarAccess.getStmtAccess().getFORALL_DISTINCT_NODE_PAIRKeyword_7_1_1()), new TokenAlias(false, false, grammarAccess.getStmtAccess().getForall_distinct_node_pairKeyword_7_1_0()));
+		match_Stmt_FORALL_DISTINCT_NODE_PAIRKeyword_8_1_1_or_Forall_distinct_node_pairKeyword_8_1_0 = new AlternativeAlias(false, false, new TokenAlias(false, false, grammarAccess.getStmtAccess().getFORALL_DISTINCT_NODE_PAIRKeyword_8_1_1()), new TokenAlias(false, false, grammarAccess.getStmtAccess().getForall_distinct_node_pairKeyword_8_1_0()));
 		match_TerminalExpr_LeftParenthesisKeyword_8_0_a = new TokenAlias(true, true, grammarAccess.getTerminalExprAccess().getLeftParenthesisKeyword_8_0());
 		match_TerminalExpr_LeftParenthesisKeyword_8_0_p = new TokenAlias(true, false, grammarAccess.getTerminalExprAccess().getLeftParenthesisKeyword_8_0());
 	}
@@ -49,8 +49,8 @@ public class DmplSyntacticSequencer extends AbstractSyntacticSequencer {
 			List<INode> syntaxNodes = getNodesFor(transitionNodes, syntax);
 			if(match_Constant_CONSTKeyword_0_1_or_ConstKeyword_0_0.equals(syntax))
 				emit_Constant_CONSTKeyword_0_1_or_ConstKeyword_0_0(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_Stmt_FORALL_DISTINCT_NODE_PAIRKeyword_7_1_1_or_Forall_distinct_node_pairKeyword_7_1_0.equals(syntax))
-				emit_Stmt_FORALL_DISTINCT_NODE_PAIRKeyword_7_1_1_or_Forall_distinct_node_pairKeyword_7_1_0(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_Stmt_FORALL_DISTINCT_NODE_PAIRKeyword_8_1_1_or_Forall_distinct_node_pairKeyword_8_1_0.equals(syntax))
+				emit_Stmt_FORALL_DISTINCT_NODE_PAIRKeyword_8_1_1_or_Forall_distinct_node_pairKeyword_8_1_0(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_TerminalExpr_LeftParenthesisKeyword_8_0_a.equals(syntax))
 				emit_TerminalExpr_LeftParenthesisKeyword_8_0_a(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_TerminalExpr_LeftParenthesisKeyword_8_0_p.equals(syntax))
@@ -77,7 +77,7 @@ public class DmplSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * This ambiguous syntax occurs at:
 	 *     (rule start) (ambiguity) '(' node1=TIDENTIFIER
 	 */
-	protected void emit_Stmt_FORALL_DISTINCT_NODE_PAIRKeyword_7_1_1_or_Forall_distinct_node_pairKeyword_7_1_0(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_Stmt_FORALL_DISTINCT_NODE_PAIRKeyword_8_1_1_or_Forall_distinct_node_pairKeyword_8_1_0(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

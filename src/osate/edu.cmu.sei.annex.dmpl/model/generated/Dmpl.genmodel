@@ -133,6 +133,10 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//StmtList/stmts"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Stmt"/>
+    <genClasses ecoreClass="Dmpl.ecore#//AssignmentStmt">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//AssignmentStmt/variable"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//AssignmentStmt/value"/>
+    </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//LVal">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//LVal/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//LVal/indices"/>
@@ -169,13 +173,15 @@
     <genClasses ecoreClass="Dmpl.ecore#//NestedStmt">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//NestedStmt/stmtList"/>
     </genClasses>
-    <genClasses ecoreClass="Dmpl.ecore#//AssignmentStmt">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//AssignmentStmt/variable"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//AssignmentStmt/value"/>
-    </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//WhileStmt">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//WhileStmt/condition"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//WhileStmt/stmt"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//ForStmt">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//ForStmt/inits"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//ForStmt/condition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//ForStmt/update"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//ForStmt/stmt"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//SimpleStmt">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//SimpleStmt/name"/>

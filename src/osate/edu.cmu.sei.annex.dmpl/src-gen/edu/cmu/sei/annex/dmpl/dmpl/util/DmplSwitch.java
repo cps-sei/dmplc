@@ -225,6 +225,14 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case DmplPackage.ASSIGNMENT_STMT:
+      {
+        AssignmentStmt assignmentStmt = (AssignmentStmt)theEObject;
+        T result = caseAssignmentStmt(assignmentStmt);
+        if (result == null) result = caseStmt(assignmentStmt);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case DmplPackage.LVAL:
       {
         LVal lVal = (LVal)theEObject;
@@ -320,19 +328,19 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case DmplPackage.ASSIGNMENT_STMT:
-      {
-        AssignmentStmt assignmentStmt = (AssignmentStmt)theEObject;
-        T result = caseAssignmentStmt(assignmentStmt);
-        if (result == null) result = caseStmt(assignmentStmt);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
       case DmplPackage.WHILE_STMT:
       {
         WhileStmt whileStmt = (WhileStmt)theEObject;
         T result = caseWhileStmt(whileStmt);
         if (result == null) result = caseStmt(whileStmt);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.FOR_STMT:
+      {
+        ForStmt forStmt = (ForStmt)theEObject;
+        T result = caseForStmt(forStmt);
+        if (result == null) result = caseStmt(forStmt);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -829,6 +837,22 @@ public class DmplSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>Assignment Stmt</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Assignment Stmt</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseAssignmentStmt(AssignmentStmt object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>LVal</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -1021,22 +1045,6 @@ public class DmplSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Assignment Stmt</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Assignment Stmt</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseAssignmentStmt(AssignmentStmt object)
-  {
-    return null;
-  }
-
-  /**
    * Returns the result of interpreting the object as an instance of '<em>While Stmt</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -1048,6 +1056,22 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseWhileStmt(WhileStmt object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>For Stmt</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>For Stmt</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseForStmt(ForStmt object)
   {
     return null;
   }

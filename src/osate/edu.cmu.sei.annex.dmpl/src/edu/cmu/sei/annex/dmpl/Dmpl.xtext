@@ -100,14 +100,19 @@ StmtList:
 
 Stmt:
 	{NestedStmt} '{' stmtList=StmtList '}' |
-	{AssignmentStmt} variable=LVal '=' value=Expr ';' |
+	AssignmentStmt ';' |
 	{WhileStmt} 'while' '(' condition=Expr ')' stmt=Stmt |
-	//TODO for and cond_stmt
+	{ForStmt} 'for' '(' (inits+=AssignmentStmt (',' inits+=AssignmentStmt)*)? ';' condition=Expr? ';' update=AssignmentStmt? ')' stmt=Stmt |
+	//TODO cond_stmt
 	{SimpleStmt} name=SimpleStmtKeyword ';' |
 	{ReturnValueStmt} 'return' value=Expr ';' |
 	CallExpr ';' |
 	{ForAllStmt} name=ForAllFunction '(' node=TIDENTIFIER ')' stmt=Stmt |
 	{FadnpStmt} ('forall_distinct_node_pair' | 'FORALL_DISTINCT_NODE_PAIR') '(' node1=TIDENTIFIER ',' node2=TIDENTIFIER ')' stmt=Stmt
+;
+
+AssignmentStmt:
+	variable=LVal '=' value=Expr
 ;
 
 LVal:
