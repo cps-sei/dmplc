@@ -29,7 +29,7 @@ This simulation is of a pursuit-evasion game with one pursuer and one
 evader. The evader tries to run away and the pursuer tries to reach
 within a certain range of the evader. The mission succeeds if the
 timeout expires before the pursuer catches up. This is similar to
-example-12c except that the same slowdown is applied to both evader
+example-12b except that the same slowdown is applied to both evader
 and pursuer.
 @end(description)
 
