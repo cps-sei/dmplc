@@ -14,6 +14,8 @@ import edu.cmu.sei.annex.dmpl.dmpl.BitwiseOrExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.BuiltInExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.CallExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.CompareExpr;
+import edu.cmu.sei.annex.dmpl.dmpl.CondStmt;
+import edu.cmu.sei.annex.dmpl.dmpl.CondStmtNoAttr;
 import edu.cmu.sei.annex.dmpl.dmpl.Constant;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplSubclause;
@@ -104,6 +106,12 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.COMPARE_EXPR:
 				sequence_CompareExpr(context, (CompareExpr) semanticObject); 
+				return; 
+			case DmplPackage.COND_STMT:
+				sequence_CondStmt(context, (CondStmt) semanticObject); 
+				return; 
+			case DmplPackage.COND_STMT_NO_ATTR:
+				sequence_CondStmtNoAttr(context, (CondStmtNoAttr) semanticObject); 
 				return; 
 			case DmplPackage.CONSTANT:
 				sequence_Constant(context, (Constant) semanticObject); 
@@ -366,6 +374,31 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 		feeder.accept(grammarAccess.getCompareExprAccess().getCompareExprLeftAction_1_0_0_0(), semanticObject.getLeft());
 		feeder.accept(grammarAccess.getCompareExprAccess().getOperatorCompareOperatorEnumRuleCall_1_0_0_1_0(), semanticObject.getOperator());
 		feeder.accept(grammarAccess.getCompareExprAccess().getRightShiftExprParserRuleCall_1_1_0(), semanticObject.getRight());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (condition=Expr then=Stmt else=Stmt?)
+	 */
+	protected void sequence_CondStmtNoAttr(EObject context, CondStmtNoAttr semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     stmt=CondStmtNoAttr
+	 */
+	protected void sequence_CondStmt(EObject context, CondStmt semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.COND_STMT__STMT) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.COND_STMT__STMT));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getCondStmtAccess().getStmtCondStmtNoAttrParserRuleCall_0(), semanticObject.getStmt());
 		feeder.finish();
 	}
 	
@@ -687,9 +720,9 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 		}
 		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getStmtAccess().getNode1TIDENTIFIERTerminalRuleCall_8_3_0(), semanticObject.getNode1());
-		feeder.accept(grammarAccess.getStmtAccess().getNode2TIDENTIFIERTerminalRuleCall_8_5_0(), semanticObject.getNode2());
-		feeder.accept(grammarAccess.getStmtAccess().getStmtStmtParserRuleCall_8_7_0(), semanticObject.getStmt());
+		feeder.accept(grammarAccess.getStmtAccess().getNode1TIDENTIFIERTerminalRuleCall_9_3_0(), semanticObject.getNode1());
+		feeder.accept(grammarAccess.getStmtAccess().getNode2TIDENTIFIERTerminalRuleCall_9_5_0(), semanticObject.getNode2());
+		feeder.accept(grammarAccess.getStmtAccess().getStmtStmtParserRuleCall_9_7_0(), semanticObject.getStmt());
 		feeder.finish();
 	}
 	
@@ -709,9 +742,9 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 		}
 		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getStmtAccess().getNameForAllFunctionParserRuleCall_7_1_0(), semanticObject.getName());
-		feeder.accept(grammarAccess.getStmtAccess().getNodeTIDENTIFIERTerminalRuleCall_7_3_0(), semanticObject.getNode());
-		feeder.accept(grammarAccess.getStmtAccess().getStmtStmtParserRuleCall_7_5_0(), semanticObject.getStmt());
+		feeder.accept(grammarAccess.getStmtAccess().getNameForAllFunctionParserRuleCall_8_1_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getStmtAccess().getNodeTIDENTIFIERTerminalRuleCall_8_3_0(), semanticObject.getNode());
+		feeder.accept(grammarAccess.getStmtAccess().getStmtStmtParserRuleCall_8_5_0(), semanticObject.getStmt());
 		feeder.finish();
 	}
 	
@@ -752,7 +785,7 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 		}
 		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getStmtAccess().getValueExprParserRuleCall_5_2_0(), semanticObject.getValue());
+		feeder.accept(grammarAccess.getStmtAccess().getValueExprParserRuleCall_6_2_0(), semanticObject.getValue());
 		feeder.finish();
 	}
 	
@@ -768,7 +801,7 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 		}
 		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getStmtAccess().getNameSimpleStmtKeywordParserRuleCall_4_1_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getStmtAccess().getNameSimpleStmtKeywordParserRuleCall_5_1_0(), semanticObject.getName());
 		feeder.finish();
 	}
 	

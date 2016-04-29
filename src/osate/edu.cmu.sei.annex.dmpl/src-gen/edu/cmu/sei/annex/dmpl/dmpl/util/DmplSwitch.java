@@ -218,6 +218,21 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case DmplPackage.COND_STMT:
+      {
+        CondStmt condStmt = (CondStmt)theEObject;
+        T result = caseCondStmt(condStmt);
+        if (result == null) result = caseStmt(condStmt);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.COND_STMT_NO_ATTR:
+      {
+        CondStmtNoAttr condStmtNoAttr = (CondStmtNoAttr)theEObject;
+        T result = caseCondStmtNoAttr(condStmtNoAttr);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case DmplPackage.STMT:
       {
         Stmt stmt = (Stmt)theEObject;
@@ -816,6 +831,38 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseStmtList(StmtList object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Cond Stmt</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Cond Stmt</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseCondStmt(CondStmt object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Cond Stmt No Attr</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Cond Stmt No Attr</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseCondStmtNoAttr(CondStmtNoAttr object)
   {
     return null;
   }

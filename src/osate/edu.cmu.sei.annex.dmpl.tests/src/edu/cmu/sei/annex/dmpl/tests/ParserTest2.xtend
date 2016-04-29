@@ -9,6 +9,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.BitwiseOrExpr
 import edu.cmu.sei.annex.dmpl.dmpl.CallExpr
 import edu.cmu.sei.annex.dmpl.dmpl.CompareExpr
 import edu.cmu.sei.annex.dmpl.dmpl.CompareOperator
+import edu.cmu.sei.annex.dmpl.dmpl.CondStmt
 import edu.cmu.sei.annex.dmpl.dmpl.EqualityExpr
 import edu.cmu.sei.annex.dmpl.dmpl.EqualityOperator
 import edu.cmu.sei.annex.dmpl.dmpl.ExprVarAsgn
@@ -789,6 +790,41 @@ class ParserTest2 {
 						stmt as AssignmentStmt => [
 							"v9".assertEquals(variable.name)
 							8.assertEquals((value as IntExpr).value)
+						]
+					]
+				]
+			]
+		]
+	}
+	
+	@Test
+	def void testCondStmtNoAttr() {
+		'''
+			void f1() {
+				if (v1)
+					v2 = 1;
+				else if (v3)
+					v4 = 2;
+			}
+		'''.parse => [
+			assertNoIssues;
+			(programElements.head as Procedure).procedure => [
+				"f1".assertEquals(prototype.name)
+				fnBody.stmtList => [
+					1.assertEquals(stmts.size)
+					(stmts.head as CondStmt).stmt => [
+						"v1".assertEquals((condition as LVal).name)
+						then as AssignmentStmt => [
+							"v2".assertEquals(variable.name)
+							1.assertEquals((value as IntExpr).value)
+						]
+						(^else as CondStmt).stmt => [
+							"v3".assertEquals((condition as LVal).name)
+							then as AssignmentStmt => [
+								"v4".assertEquals(variable.name)
+								2.assertEquals((value as IntExpr).value)
+							]
+							^else.assertNull
 						]
 					]
 				]

@@ -98,12 +98,20 @@ StmtList:
 	{StmtList} stmts+=Stmt*
 ;
 
+CondStmt:
+	stmt=CondStmtNoAttr
+;
+
+CondStmtNoAttr:
+	'if' '(' condition=Expr ')' then=Stmt (=>'else' else=Stmt)?
+;
+
 Stmt:
 	{NestedStmt} '{' stmtList=StmtList '}' |
 	AssignmentStmt ';' |
 	{WhileStmt} 'while' '(' condition=Expr ')' stmt=Stmt |
 	{ForStmt} 'for' '(' (inits+=AssignmentStmt (',' inits+=AssignmentStmt)*)? ';' condition=Expr? ';' update=AssignmentStmt? ')' stmt=Stmt |
-	//TODO cond_stmt
+	CondStmt |
 	{SimpleStmt} name=SimpleStmtKeyword ';' |
 	{ReturnValueStmt} 'return' value=Expr ';' |
 	CallExpr ';' |

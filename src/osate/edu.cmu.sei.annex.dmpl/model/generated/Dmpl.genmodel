@@ -132,6 +132,14 @@
     <genClasses ecoreClass="Dmpl.ecore#//StmtList">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//StmtList/stmts"/>
     </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//CondStmt">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//CondStmt/stmt"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//CondStmtNoAttr">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//CondStmtNoAttr/condition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//CondStmtNoAttr/then"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//CondStmtNoAttr/else"/>
+    </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Stmt"/>
     <genClasses ecoreClass="Dmpl.ecore#//AssignmentStmt">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//AssignmentStmt/variable"/>
