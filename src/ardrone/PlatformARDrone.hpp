@@ -59,6 +59,8 @@
 extern "C" {
 #include "ardrone_api.h"
 #include <ardrone_tool/UI/ardrone_input.h>
+#include <ardrone_tool/ardrone_tool_configuration.h>
+#include <config_keys.h>
 #include "ardrone_testing_tool.h"
 }
 
@@ -86,19 +88,33 @@ void GRID_INIT()
 }
 
 /**
- * Call before simulation start to initialize where the platform should spawn
+ * Call before simulation start to initialize where the platform
+ * should spawn. This is a no-op for ARDRONE since this will be done
+ * manually.
  *
- * @param x the x coordinate (left/right from default V-REP perspective)
- * @param y the y coordinate (up/down from default V-REP perspective)
+ * @param x the x coordinate
+ * @param y the y coordinate
  * @param z the altitude
  **/
 void GRID_PLACE(double x, double y, double z)
 {
-  ardrone_tool_set_ui_pad_start(1);
 }
 
 /**
- * Call after simulation is done, mainly to land the drone properly..
+ * Make the drone takeoff
+ **/
+void GRID_TAKEOFF()
+{
+  ardrone_tool_set_ui_pad_start(1);
+  sleep(3);
+  int detectType = CAD_TYPE_ORIENTED_COCARDE_BW;
+  ARDRONE_TOOL_CONFIGURATION_ADDEVENT(detect_type, &detectType, NULL);
+  int fMode = FLYING_MODE_HOVER_ON_TOP_OF_ORIENTED_ROUNDEL;  
+  ARDRONE_TOOL_CONFIGURATION_ADDEVENT(flying_mode, &fMode, NULL);
+}
+
+/**
+ * Call after simulation is done, mainly to land the drone properly.
  **/
 void GRID_LAND()
 {
