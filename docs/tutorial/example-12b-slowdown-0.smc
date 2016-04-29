@@ -10,7 +10,7 @@
 //
 // Name of the scenario to run
 //
-@name(dart-example-12b);
+@name(dart-example-12b-slowdown-0);
 @scenario(example-12b);
 
 //
