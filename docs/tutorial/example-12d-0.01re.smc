@@ -1,0 +1,61 @@
+//
+// Specification file for example-12d experiment
+//
+
+//
+// Target on which to run (e.g., TEST, SWARM or DART)
+//
+@target(DART)
+
+//
+// Name of the scenario to run
+//
+@name(dart-example-12d-0.01re);
+@scenario(example-12d);
+
+//
+// Target relative error value
+//
+@targetRE(0.01);
+
+//1 hour timeout
+@timeout(3600);
+
+//
+// Some explanitory text about the experiment
+//
+@begin(description)
+This simulation is of a pursuit-evasion game with one pursuer and one
+evader. The evader tries to run away and the pursuer tries to reach
+within a certain range of the evader. The mission succeeds if the
+timeout expires before the pursuer catches up. This is similar to
+example-12d except that target RE is 0.01.
+@end(description)
+
+//
+// Give each trial 2 CPUs
+//
+@weight(2);
+
+//
+// Predicates to evaluate. Predicates are of the form X.Y where X is the
+// expect specification name and Y is the node id.
+//
+@begin(predicate)[expProp1.0]
+expect property expProp1 for node 0.
+@end(predicate)
+
+//
+// Input variables and their distributions. Variables are of the form X.Y
+// where X is the variable name and Y is the node id.
+//
+dmpl_branch = "develop";
+dmpl_dir = "docs/tutorial";
+evader_ix = iuniform(6,13);
+evader_iy = iuniform(6,13);
+timeout = 180;
+slowdown = 2; 
+pursuer_ix = iuniform(6,13);
+pursuer_iy = iuniform(6,13);
+pursuer_range = 2;
+quadrant = 0;
