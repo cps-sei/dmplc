@@ -56,6 +56,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="FnBody">
     <eStructuralFeatures xsi:type="ecore:EReference" name="varInitList" eType="#//VarInitList"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="stmtList" eType="#//StmtList"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FnPrototype">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="extern" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -70,6 +72,17 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="varInits" upperBound="-1"
         eType="#//VarInit" containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="StmtList">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="stmts" upperBound="-1"
+        eType="#//Stmt" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Stmt"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AssignmentStmt" eSuperTypes="#//Stmt">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="variable" eType="#//LVal"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//Expr"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="LVal" eSuperTypes="#//Expr">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="indices" upperBound="-1"
@@ -77,7 +90,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="at" eType="#//Expr" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Expr"/>
-  <eClassifiers xsi:type="ecore:EClass" name="CallExpr" eSuperTypes="#//Expr">
+  <eClassifiers xsi:type="ecore:EClass" name="CallExpr" eSuperTypes="#//Stmt #//Expr">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespace" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="argList" eType="#//ArgList"
@@ -104,6 +117,17 @@
     <eLiterals name="unset" literal="unset"/>
     <eLiterals name="signed" value="1" literal="signed"/>
     <eLiterals name="unsigned" value="2" literal="unsigned"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="SimpleStmtKeywordEnum">
+    <eLiterals name="break" literal="break"/>
+    <eLiterals name="continue" value="1" literal="continue"/>
+    <eLiterals name="return" value="2" literal="return"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ForAllFunctionEnum">
+    <eLiterals name="forall_node" literal="forall_node"/>
+    <eLiterals name="forall_other" value="1" literal="forall_other"/>
+    <eLiterals name="forall_other_lower" value="2" literal="forall_other_lower"/>
+    <eLiterals name="forall_other_higher" value="3" literal="forall_other_higher"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="EqualityOperator">
     <eLiterals name="EQUAL" literal="=="/>
@@ -158,6 +182,41 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Type" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"
         eType="#//Param" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NestedStmt" eSuperTypes="#//Stmt">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="stmtList" eType="#//StmtList"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="WhileStmt" eSuperTypes="#//Stmt">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="condition" eType="#//Expr"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="stmt" eType="#//Stmt" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ForStmt" eSuperTypes="#//Stmt">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="inits" upperBound="-1"
+        eType="#//AssignmentStmt" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="condition" eType="#//Expr"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="update" eType="#//AssignmentStmt"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="stmt" eType="#//Stmt" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SimpleStmt" eSuperTypes="#//Stmt">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="#//SimpleStmtKeywordEnum"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ReturnValueStmt" eSuperTypes="#//Stmt">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//Expr"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ForAllStmt" eSuperTypes="#//Stmt">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="#//ForAllFunctionEnum"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="node" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="stmt" eType="#//Stmt" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FadnpStmt" eSuperTypes="#//Stmt">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="node1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="node2" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="stmt" eType="#//Stmt" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TernaryExpr" eSuperTypes="#//Expr">
     <eStructuralFeatures xsi:type="ecore:EReference" name="condition" eType="#//Expr"

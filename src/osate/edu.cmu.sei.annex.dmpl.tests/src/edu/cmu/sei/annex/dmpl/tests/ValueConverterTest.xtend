@@ -3,6 +3,7 @@ package edu.cmu.sei.annex.dmpl.tests
 import com.google.inject.Inject
 import edu.cmu.sei.annex.dmpl.DmplInjectorProvider
 import edu.cmu.sei.annex.dmpl.dmpl.BuiltInFunctionEnum
+import edu.cmu.sei.annex.dmpl.dmpl.ForAllFunctionEnum
 import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum
 import edu.cmu.sei.annex.dmpl.services.DmplGrammarAccess
 import org.eclipse.xtext.conversion.IValueConverterService
@@ -64,5 +65,24 @@ class ValueConverterTest {
 		"exists_other".assertEquals(valueConverter.toString(BuiltInFunctionEnum.EXISTS_OTHER, grammarAccess.builtInFunctionRule.name))
 		"exists_higher".assertEquals(valueConverter.toString(BuiltInFunctionEnum.EXISTS_HIGHER, grammarAccess.builtInFunctionRule.name))
 		"exists_lower".assertEquals(valueConverter.toString(BuiltInFunctionEnum.EXISTS_LOWER, grammarAccess.builtInFunctionRule.name))
+	}
+	
+	@Test
+	def void testForAllFunction() {
+		//toValue
+		ForAllFunctionEnum.FORALL_NODE.assertEquals(valueConverter.toValue("forall_node", grammarAccess.forAllFunctionRule.name, null))
+		ForAllFunctionEnum.FORALL_NODE.assertEquals(valueConverter.toValue("FORALL_NODE", grammarAccess.forAllFunctionRule.name, null))
+		ForAllFunctionEnum.FORALL_OTHER.assertEquals(valueConverter.toValue("forall_other", grammarAccess.forAllFunctionRule.name, null))
+		ForAllFunctionEnum.FORALL_OTHER.assertEquals(valueConverter.toValue("FORALL_OTHER", grammarAccess.forAllFunctionRule.name, null))
+		ForAllFunctionEnum.FORALL_OTHER_LOWER.assertEquals(valueConverter.toValue("forall_other_lower", grammarAccess.forAllFunctionRule.name, null))
+		ForAllFunctionEnum.FORALL_OTHER_LOWER.assertEquals(valueConverter.toValue("FORALL_OTHER_LOWER", grammarAccess.forAllFunctionRule.name, null))
+		ForAllFunctionEnum.FORALL_OTHER_HIGHER.assertEquals(valueConverter.toValue("forall_other_higher", grammarAccess.forAllFunctionRule.name, null))
+		ForAllFunctionEnum.FORALL_OTHER_HIGHER.assertEquals(valueConverter.toValue("FORALL_OTHER_HIGHER", grammarAccess.forAllFunctionRule.name, null))
+		
+		//toString
+		"forall_node".assertEquals(valueConverter.toString(ForAllFunctionEnum.FORALL_NODE, grammarAccess.forAllFunctionRule.name))
+		"forall_other".assertEquals(valueConverter.toString(ForAllFunctionEnum.FORALL_OTHER, grammarAccess.forAllFunctionRule.name))
+		"forall_other_lower".assertEquals(valueConverter.toString(ForAllFunctionEnum.FORALL_OTHER_LOWER, grammarAccess.forAllFunctionRule.name))
+		"forall_other_higher".assertEquals(valueConverter.toString(ForAllFunctionEnum.FORALL_OTHER_HIGHER, grammarAccess.forAllFunctionRule.name))
 	}
 }

@@ -75,7 +75,7 @@ ProcNoAttr:
 
 FnBody:
 	//TODO var_init_list and stmt_list
-	'{' varInitList=VarInitList '}'
+	'{' varInitList=VarInitList stmtList=StmtList '}'
 ;
 
 FnPrototype:
@@ -92,6 +92,27 @@ Param:
 VarInitList:
 	{VarInitList}
 	(varInits+=VarInit ';')*
+;
+
+StmtList:
+	{StmtList} stmts+=Stmt*
+;
+
+Stmt:
+	{NestedStmt} '{' stmtList=StmtList '}' |
+	AssignmentStmt ';' |
+	{WhileStmt} 'while' '(' condition=Expr ')' stmt=Stmt |
+	{ForStmt} 'for' '(' (inits+=AssignmentStmt (',' inits+=AssignmentStmt)*)? ';' condition=Expr? ';' update=AssignmentStmt? ')' stmt=Stmt |
+	//TODO cond_stmt
+	{SimpleStmt} name=SimpleStmtKeyword ';' |
+	{ReturnValueStmt} 'return' value=Expr ';' |
+	CallExpr ';' |
+	{ForAllStmt} name=ForAllFunction '(' node=TIDENTIFIER ')' stmt=Stmt |
+	{FadnpStmt} ('forall_distinct_node_pair' | 'FORALL_DISTINCT_NODE_PAIR') '(' node1=TIDENTIFIER ',' node2=TIDENTIFIER ')' stmt=Stmt
+;
+
+AssignmentStmt:
+	variable=LVal '=' value=Expr
 ;
 
 LVal:
@@ -187,6 +208,22 @@ enum SignedEnum:
 
 Signed returns SignedEnum:
 	'signed' | 'unsigned'
+;
+
+enum SimpleStmtKeywordEnum:
+	break | continue | return
+;
+
+SimpleStmtKeyword returns SimpleStmtKeywordEnum:
+	'break' | 'continue' | 'return'
+;
+
+enum ForAllFunctionEnum:
+	forall_node | forall_other | forall_other_lower | forall_other_higher
+;
+
+ForAllFunction returns ForAllFunctionEnum:
+	'forall_node' | 'FORALL_NODE' | 'forall_other' | 'FORALL_OTHER' | 'forall_other_lower' | 'FORALL_OTHER_LOWER' | 'forall_other_higher' | 'FORALL_OTHER_HIGHER'
 ;
 
 enum EqualityOperator:

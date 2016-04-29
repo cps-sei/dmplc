@@ -579,13 +579,22 @@ public interface DmplPackage extends EPackage
   int FN_BODY__VAR_INIT_LIST = 0;
 
   /**
+   * The feature id for the '<em><b>Stmt List</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FN_BODY__STMT_LIST = 1;
+
+  /**
    * The number of structural features of the '<em>Fn Body</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int FN_BODY_FEATURE_COUNT = 1;
+  int FN_BODY_FEATURE_COUNT = 2;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnPrototypeImpl <em>Fn Prototype</em>}' class.
@@ -699,6 +708,90 @@ public interface DmplPackage extends EPackage
   int VAR_INIT_LIST_FEATURE_COUNT = 1;
 
   /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.StmtListImpl <em>Stmt List</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.StmtListImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getStmtList()
+   * @generated
+   */
+  int STMT_LIST = 18;
+
+  /**
+   * The feature id for the '<em><b>Stmts</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int STMT_LIST__STMTS = 0;
+
+  /**
+   * The number of structural features of the '<em>Stmt List</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int STMT_LIST_FEATURE_COUNT = 1;
+
+  /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.StmtImpl <em>Stmt</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.StmtImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getStmt()
+   * @generated
+   */
+  int STMT = 19;
+
+  /**
+   * The number of structural features of the '<em>Stmt</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int STMT_FEATURE_COUNT = 0;
+
+  /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.AssignmentStmtImpl <em>Assignment Stmt</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.AssignmentStmtImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAssignmentStmt()
+   * @generated
+   */
+  int ASSIGNMENT_STMT = 20;
+
+  /**
+   * The feature id for the '<em><b>Variable</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ASSIGNMENT_STMT__VARIABLE = STMT_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Value</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ASSIGNMENT_STMT__VALUE = STMT_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>Assignment Stmt</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ASSIGNMENT_STMT_FEATURE_COUNT = STMT_FEATURE_COUNT + 2;
+
+  /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ExprImpl <em>Expr</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -706,7 +799,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getExpr()
    * @generated
    */
-  int EXPR = 19;
+  int EXPR = 22;
 
   /**
    * The number of structural features of the '<em>Expr</em>' class.
@@ -725,7 +818,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getLVal()
    * @generated
    */
-  int LVAL = 18;
+  int LVAL = 21;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -771,7 +864,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getCallExpr()
    * @generated
    */
-  int CALL_EXPR = 20;
+  int CALL_EXPR = 23;
 
   /**
    * The feature id for the '<em><b>Namespace</b></em>' attribute.
@@ -780,7 +873,7 @@ public interface DmplPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CALL_EXPR__NAMESPACE = EXPR_FEATURE_COUNT + 0;
+  int CALL_EXPR__NAMESPACE = STMT_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -789,7 +882,7 @@ public interface DmplPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CALL_EXPR__NAME = EXPR_FEATURE_COUNT + 1;
+  int CALL_EXPR__NAME = STMT_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>Arg List</b></em>' containment reference.
@@ -798,7 +891,7 @@ public interface DmplPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CALL_EXPR__ARG_LIST = EXPR_FEATURE_COUNT + 2;
+  int CALL_EXPR__ARG_LIST = STMT_FEATURE_COUNT + 2;
 
   /**
    * The feature id for the '<em><b>At</b></em>' containment reference.
@@ -807,7 +900,7 @@ public interface DmplPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CALL_EXPR__AT = EXPR_FEATURE_COUNT + 3;
+  int CALL_EXPR__AT = STMT_FEATURE_COUNT + 3;
 
   /**
    * The number of structural features of the '<em>Call Expr</em>' class.
@@ -816,7 +909,7 @@ public interface DmplPackage extends EPackage
    * @generated
    * @ordered
    */
-  int CALL_EXPR_FEATURE_COUNT = EXPR_FEATURE_COUNT + 4;
+  int CALL_EXPR_FEATURE_COUNT = STMT_FEATURE_COUNT + 4;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ArgListImpl <em>Arg List</em>}' class.
@@ -826,7 +919,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getArgList()
    * @generated
    */
-  int ARG_LIST = 21;
+  int ARG_LIST = 24;
 
   /**
    * The feature id for the '<em><b>Args</b></em>' containment reference list.
@@ -854,7 +947,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getExprVarAsgn()
    * @generated
    */
-  int EXPR_VAR_ASGN = 22;
+  int EXPR_VAR_ASGN = 25;
 
   /**
    * The feature id for the '<em><b>Input</b></em>' attribute.
@@ -900,7 +993,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnVarAsgn()
    * @generated
    */
-  int FN_VAR_ASGN = 23;
+  int FN_VAR_ASGN = 26;
 
   /**
    * The feature id for the '<em><b>Input</b></em>' attribute.
@@ -946,7 +1039,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIntDimension()
    * @generated
    */
-  int INT_DIMENSION = 24;
+  int INT_DIMENSION = 27;
 
   /**
    * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -974,7 +1067,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getNodeNumDimension()
    * @generated
    */
-  int NODE_NUM_DIMENSION = 25;
+  int NODE_NUM_DIMENSION = 28;
 
   /**
    * The number of structural features of the '<em>Node Num Dimension</em>' class.
@@ -993,7 +1086,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIdDimension()
    * @generated
    */
-  int ID_DIMENSION = 26;
+  int ID_DIMENSION = 29;
 
   /**
    * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -1021,7 +1114,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getThreadDeclaration()
    * @generated
    */
-  int THREAD_DECLARATION = 27;
+  int THREAD_DECLARATION = 30;
 
   /**
    * The feature id for the '<em><b>Extern</b></em>' attribute.
@@ -1067,7 +1160,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnPrototypeDeclaration()
    * @generated
    */
-  int FN_PROTOTYPE_DECLARATION = 28;
+  int FN_PROTOTYPE_DECLARATION = 31;
 
   /**
    * The feature id for the '<em><b>Extern</b></em>' attribute.
@@ -1124,6 +1217,274 @@ public interface DmplPackage extends EPackage
   int FN_PROTOTYPE_DECLARATION_FEATURE_COUNT = FN_PROTOTYPE_FEATURE_COUNT + 2;
 
   /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.NestedStmtImpl <em>Nested Stmt</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.NestedStmtImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getNestedStmt()
+   * @generated
+   */
+  int NESTED_STMT = 32;
+
+  /**
+   * The feature id for the '<em><b>Stmt List</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NESTED_STMT__STMT_LIST = STMT_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Nested Stmt</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NESTED_STMT_FEATURE_COUNT = STMT_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.WhileStmtImpl <em>While Stmt</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.WhileStmtImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getWhileStmt()
+   * @generated
+   */
+  int WHILE_STMT = 33;
+
+  /**
+   * The feature id for the '<em><b>Condition</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int WHILE_STMT__CONDITION = STMT_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Stmt</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int WHILE_STMT__STMT = STMT_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>While Stmt</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int WHILE_STMT_FEATURE_COUNT = STMT_FEATURE_COUNT + 2;
+
+  /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ForStmtImpl <em>For Stmt</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.ForStmtImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getForStmt()
+   * @generated
+   */
+  int FOR_STMT = 34;
+
+  /**
+   * The feature id for the '<em><b>Inits</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FOR_STMT__INITS = STMT_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Condition</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FOR_STMT__CONDITION = STMT_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>Update</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FOR_STMT__UPDATE = STMT_FEATURE_COUNT + 2;
+
+  /**
+   * The feature id for the '<em><b>Stmt</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FOR_STMT__STMT = STMT_FEATURE_COUNT + 3;
+
+  /**
+   * The number of structural features of the '<em>For Stmt</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FOR_STMT_FEATURE_COUNT = STMT_FEATURE_COUNT + 4;
+
+  /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.SimpleStmtImpl <em>Simple Stmt</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.SimpleStmtImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSimpleStmt()
+   * @generated
+   */
+  int SIMPLE_STMT = 35;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SIMPLE_STMT__NAME = STMT_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Simple Stmt</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SIMPLE_STMT_FEATURE_COUNT = STMT_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ReturnValueStmtImpl <em>Return Value Stmt</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.ReturnValueStmtImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getReturnValueStmt()
+   * @generated
+   */
+  int RETURN_VALUE_STMT = 36;
+
+  /**
+   * The feature id for the '<em><b>Value</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RETURN_VALUE_STMT__VALUE = STMT_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Return Value Stmt</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RETURN_VALUE_STMT_FEATURE_COUNT = STMT_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ForAllStmtImpl <em>For All Stmt</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.ForAllStmtImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getForAllStmt()
+   * @generated
+   */
+  int FOR_ALL_STMT = 37;
+
+  /**
+   * The feature id for the '<em><b>Name</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FOR_ALL_STMT__NAME = STMT_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Node</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FOR_ALL_STMT__NODE = STMT_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>Stmt</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FOR_ALL_STMT__STMT = STMT_FEATURE_COUNT + 2;
+
+  /**
+   * The number of structural features of the '<em>For All Stmt</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FOR_ALL_STMT_FEATURE_COUNT = STMT_FEATURE_COUNT + 3;
+
+  /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FadnpStmtImpl <em>Fadnp Stmt</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.FadnpStmtImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFadnpStmt()
+   * @generated
+   */
+  int FADNP_STMT = 38;
+
+  /**
+   * The feature id for the '<em><b>Node1</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FADNP_STMT__NODE1 = STMT_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Node2</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FADNP_STMT__NODE2 = STMT_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>Stmt</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FADNP_STMT__STMT = STMT_FEATURE_COUNT + 2;
+
+  /**
+   * The number of structural features of the '<em>Fadnp Stmt</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int FADNP_STMT_FEATURE_COUNT = STMT_FEATURE_COUNT + 3;
+
+  /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.TernaryExprImpl <em>Ternary Expr</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1131,7 +1492,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getTernaryExpr()
    * @generated
    */
-  int TERNARY_EXPR = 29;
+  int TERNARY_EXPR = 39;
 
   /**
    * The feature id for the '<em><b>Condition</b></em>' containment reference.
@@ -1177,7 +1538,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getOrExpr()
    * @generated
    */
-  int OR_EXPR = 30;
+  int OR_EXPR = 40;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1214,7 +1575,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAndExpr()
    * @generated
    */
-  int AND_EXPR = 31;
+  int AND_EXPR = 41;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1251,7 +1612,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBitwiseOrExpr()
    * @generated
    */
-  int BITWISE_OR_EXPR = 32;
+  int BITWISE_OR_EXPR = 42;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1288,7 +1649,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getXorExpr()
    * @generated
    */
-  int XOR_EXPR = 33;
+  int XOR_EXPR = 43;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1325,7 +1686,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBitwiseAndExpr()
    * @generated
    */
-  int BITWISE_AND_EXPR = 34;
+  int BITWISE_AND_EXPR = 44;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1362,7 +1723,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getEqualityExpr()
    * @generated
    */
-  int EQUALITY_EXPR = 35;
+  int EQUALITY_EXPR = 45;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1408,7 +1769,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getCompareExpr()
    * @generated
    */
-  int COMPARE_EXPR = 36;
+  int COMPARE_EXPR = 46;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1454,7 +1815,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getShiftExpr()
    * @generated
    */
-  int SHIFT_EXPR = 37;
+  int SHIFT_EXPR = 47;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1500,7 +1861,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAdditiveExpr()
    * @generated
    */
-  int ADDITIVE_EXPR = 38;
+  int ADDITIVE_EXPR = 48;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1546,7 +1907,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getMultiplicativeExpr()
    * @generated
    */
-  int MULTIPLICATIVE_EXPR = 39;
+  int MULTIPLICATIVE_EXPR = 49;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1592,7 +1953,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIdExpr()
    * @generated
    */
-  int ID_EXPR = 40;
+  int ID_EXPR = 50;
 
   /**
    * The number of structural features of the '<em>Id Expr</em>' class.
@@ -1611,7 +1972,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIntExpr()
    * @generated
    */
-  int INT_EXPR = 41;
+  int INT_EXPR = 51;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -1639,7 +2000,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getDoubleExpr()
    * @generated
    */
-  int DOUBLE_EXPR = 42;
+  int DOUBLE_EXPR = 52;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -1667,7 +2028,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getNodeNumExpr()
    * @generated
    */
-  int NODE_NUM_EXPR = 43;
+  int NODE_NUM_EXPR = 53;
 
   /**
    * The number of structural features of the '<em>Node Num Expr</em>' class.
@@ -1686,7 +2047,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getUnaryExpr()
    * @generated
    */
-  int UNARY_EXPR = 44;
+  int UNARY_EXPR = 54;
 
   /**
    * The feature id for the '<em><b>Operator</b></em>' attribute.
@@ -1723,7 +2084,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBuiltInExpr()
    * @generated
    */
-  int BUILT_IN_EXPR = 45;
+  int BUILT_IN_EXPR = 55;
 
   /**
    * The feature id for the '<em><b>Function</b></em>' attribute.
@@ -1769,7 +2130,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignEnum()
    * @generated
    */
-  int SIGN_ENUM = 46;
+  int SIGN_ENUM = 56;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum <em>Simp Type Enum</em>}' enum.
@@ -1779,7 +2140,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSimpTypeEnum()
    * @generated
    */
-  int SIMP_TYPE_ENUM = 47;
+  int SIMP_TYPE_ENUM = 57;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SignedEnum <em>Signed Enum</em>}' enum.
@@ -1789,7 +2150,27 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignedEnum()
    * @generated
    */
-  int SIGNED_ENUM = 48;
+  int SIGNED_ENUM = 58;
+
+  /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SimpleStmtKeywordEnum <em>Simple Stmt Keyword Enum</em>}' enum.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.SimpleStmtKeywordEnum
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSimpleStmtKeywordEnum()
+   * @generated
+   */
+  int SIMPLE_STMT_KEYWORD_ENUM = 59;
+
+  /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.ForAllFunctionEnum <em>For All Function Enum</em>}' enum.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ForAllFunctionEnum
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getForAllFunctionEnum()
+   * @generated
+   */
+  int FOR_ALL_FUNCTION_ENUM = 60;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.EqualityOperator <em>Equality Operator</em>}' enum.
@@ -1799,7 +2180,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getEqualityOperator()
    * @generated
    */
-  int EQUALITY_OPERATOR = 49;
+  int EQUALITY_OPERATOR = 61;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.CompareOperator <em>Compare Operator</em>}' enum.
@@ -1809,7 +2190,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getCompareOperator()
    * @generated
    */
-  int COMPARE_OPERATOR = 50;
+  int COMPARE_OPERATOR = 62;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.ShiftOperator <em>Shift Operator</em>}' enum.
@@ -1819,7 +2200,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getShiftOperator()
    * @generated
    */
-  int SHIFT_OPERATOR = 51;
+  int SHIFT_OPERATOR = 63;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.AdditiveOperator <em>Additive Operator</em>}' enum.
@@ -1829,7 +2210,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAdditiveOperator()
    * @generated
    */
-  int ADDITIVE_OPERATOR = 52;
+  int ADDITIVE_OPERATOR = 64;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.MultiplicativeOperator <em>Multiplicative Operator</em>}' enum.
@@ -1839,7 +2220,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getMultiplicativeOperator()
    * @generated
    */
-  int MULTIPLICATIVE_OPERATOR = 53;
+  int MULTIPLICATIVE_OPERATOR = 65;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.UnaryOperator <em>Unary Operator</em>}' enum.
@@ -1849,7 +2230,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getUnaryOperator()
    * @generated
    */
-  int UNARY_OPERATOR = 54;
+  int UNARY_OPERATOR = 66;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.BuiltInFunctionEnum <em>Built In Function Enum</em>}' enum.
@@ -1859,7 +2240,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBuiltInFunctionEnum()
    * @generated
    */
-  int BUILT_IN_FUNCTION_ENUM = 55;
+  int BUILT_IN_FUNCTION_ENUM = 67;
 
 
   /**
@@ -2222,6 +2603,17 @@ public interface DmplPackage extends EPackage
   EReference getFnBody_VarInitList();
 
   /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.FnBody#getStmtList <em>Stmt List</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Stmt List</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.FnBody#getStmtList()
+   * @see #getFnBody()
+   * @generated
+   */
+  EReference getFnBody_StmtList();
+
+  /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototype <em>Fn Prototype</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2316,6 +2708,69 @@ public interface DmplPackage extends EPackage
    * @generated
    */
   EReference getVarInitList_VarInits();
+
+  /**
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.StmtList <em>Stmt List</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Stmt List</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.StmtList
+   * @generated
+   */
+  EClass getStmtList();
+
+  /**
+   * Returns the meta object for the containment reference list '{@link edu.cmu.sei.annex.dmpl.dmpl.StmtList#getStmts <em>Stmts</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>Stmts</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.StmtList#getStmts()
+   * @see #getStmtList()
+   * @generated
+   */
+  EReference getStmtList_Stmts();
+
+  /**
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.Stmt <em>Stmt</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Stmt</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Stmt
+   * @generated
+   */
+  EClass getStmt();
+
+  /**
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.AssignmentStmt <em>Assignment Stmt</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Assignment Stmt</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.AssignmentStmt
+   * @generated
+   */
+  EClass getAssignmentStmt();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.AssignmentStmt#getVariable <em>Variable</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Variable</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.AssignmentStmt#getVariable()
+   * @see #getAssignmentStmt()
+   * @generated
+   */
+  EReference getAssignmentStmt_Variable();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.AssignmentStmt#getValue <em>Value</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Value</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.AssignmentStmt#getValue()
+   * @see #getAssignmentStmt()
+   * @generated
+   */
+  EReference getAssignmentStmt_Value();
 
   /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.LVal <em>LVal</em>}'.
@@ -2580,6 +3035,241 @@ public interface DmplPackage extends EPackage
    * @generated
    */
   EReference getFnPrototypeDeclaration_Params();
+
+  /**
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.NestedStmt <em>Nested Stmt</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Nested Stmt</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.NestedStmt
+   * @generated
+   */
+  EClass getNestedStmt();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.NestedStmt#getStmtList <em>Stmt List</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Stmt List</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.NestedStmt#getStmtList()
+   * @see #getNestedStmt()
+   * @generated
+   */
+  EReference getNestedStmt_StmtList();
+
+  /**
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.WhileStmt <em>While Stmt</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>While Stmt</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.WhileStmt
+   * @generated
+   */
+  EClass getWhileStmt();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.WhileStmt#getCondition <em>Condition</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Condition</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.WhileStmt#getCondition()
+   * @see #getWhileStmt()
+   * @generated
+   */
+  EReference getWhileStmt_Condition();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.WhileStmt#getStmt <em>Stmt</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Stmt</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.WhileStmt#getStmt()
+   * @see #getWhileStmt()
+   * @generated
+   */
+  EReference getWhileStmt_Stmt();
+
+  /**
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.ForStmt <em>For Stmt</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>For Stmt</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ForStmt
+   * @generated
+   */
+  EClass getForStmt();
+
+  /**
+   * Returns the meta object for the containment reference list '{@link edu.cmu.sei.annex.dmpl.dmpl.ForStmt#getInits <em>Inits</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>Inits</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ForStmt#getInits()
+   * @see #getForStmt()
+   * @generated
+   */
+  EReference getForStmt_Inits();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.ForStmt#getCondition <em>Condition</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Condition</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ForStmt#getCondition()
+   * @see #getForStmt()
+   * @generated
+   */
+  EReference getForStmt_Condition();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.ForStmt#getUpdate <em>Update</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Update</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ForStmt#getUpdate()
+   * @see #getForStmt()
+   * @generated
+   */
+  EReference getForStmt_Update();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.ForStmt#getStmt <em>Stmt</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Stmt</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ForStmt#getStmt()
+   * @see #getForStmt()
+   * @generated
+   */
+  EReference getForStmt_Stmt();
+
+  /**
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.SimpleStmt <em>Simple Stmt</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Simple Stmt</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.SimpleStmt
+   * @generated
+   */
+  EClass getSimpleStmt();
+
+  /**
+   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.SimpleStmt#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.SimpleStmt#getName()
+   * @see #getSimpleStmt()
+   * @generated
+   */
+  EAttribute getSimpleStmt_Name();
+
+  /**
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.ReturnValueStmt <em>Return Value Stmt</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Return Value Stmt</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ReturnValueStmt
+   * @generated
+   */
+  EClass getReturnValueStmt();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.ReturnValueStmt#getValue <em>Value</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Value</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ReturnValueStmt#getValue()
+   * @see #getReturnValueStmt()
+   * @generated
+   */
+  EReference getReturnValueStmt_Value();
+
+  /**
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.ForAllStmt <em>For All Stmt</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>For All Stmt</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ForAllStmt
+   * @generated
+   */
+  EClass getForAllStmt();
+
+  /**
+   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.ForAllStmt#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ForAllStmt#getName()
+   * @see #getForAllStmt()
+   * @generated
+   */
+  EAttribute getForAllStmt_Name();
+
+  /**
+   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.ForAllStmt#getNode <em>Node</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Node</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ForAllStmt#getNode()
+   * @see #getForAllStmt()
+   * @generated
+   */
+  EAttribute getForAllStmt_Node();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.ForAllStmt#getStmt <em>Stmt</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Stmt</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ForAllStmt#getStmt()
+   * @see #getForAllStmt()
+   * @generated
+   */
+  EReference getForAllStmt_Stmt();
+
+  /**
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.FadnpStmt <em>Fadnp Stmt</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Fadnp Stmt</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.FadnpStmt
+   * @generated
+   */
+  EClass getFadnpStmt();
+
+  /**
+   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.FadnpStmt#getNode1 <em>Node1</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Node1</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.FadnpStmt#getNode1()
+   * @see #getFadnpStmt()
+   * @generated
+   */
+  EAttribute getFadnpStmt_Node1();
+
+  /**
+   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.FadnpStmt#getNode2 <em>Node2</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Node2</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.FadnpStmt#getNode2()
+   * @see #getFadnpStmt()
+   * @generated
+   */
+  EAttribute getFadnpStmt_Node2();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.FadnpStmt#getStmt <em>Stmt</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Stmt</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.FadnpStmt#getStmt()
+   * @see #getFadnpStmt()
+   * @generated
+   */
+  EReference getFadnpStmt_Stmt();
 
   /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.TernaryExpr <em>Ternary Expr</em>}'.
@@ -3167,6 +3857,26 @@ public interface DmplPackage extends EPackage
   EEnum getSignedEnum();
 
   /**
+   * Returns the meta object for enum '{@link edu.cmu.sei.annex.dmpl.dmpl.SimpleStmtKeywordEnum <em>Simple Stmt Keyword Enum</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for enum '<em>Simple Stmt Keyword Enum</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.SimpleStmtKeywordEnum
+   * @generated
+   */
+  EEnum getSimpleStmtKeywordEnum();
+
+  /**
+   * Returns the meta object for enum '{@link edu.cmu.sei.annex.dmpl.dmpl.ForAllFunctionEnum <em>For All Function Enum</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for enum '<em>For All Function Enum</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ForAllFunctionEnum
+   * @generated
+   */
+  EEnum getForAllFunctionEnum();
+
+  /**
    * Returns the meta object for enum '{@link edu.cmu.sei.annex.dmpl.dmpl.EqualityOperator <em>Equality Operator</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -3562,6 +4272,14 @@ public interface DmplPackage extends EPackage
     EReference FN_BODY__VAR_INIT_LIST = eINSTANCE.getFnBody_VarInitList();
 
     /**
+     * The meta object literal for the '<em><b>Stmt List</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference FN_BODY__STMT_LIST = eINSTANCE.getFnBody_StmtList();
+
+    /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnPrototypeImpl <em>Fn Prototype</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3638,6 +4356,60 @@ public interface DmplPackage extends EPackage
      * @generated
      */
     EReference VAR_INIT_LIST__VAR_INITS = eINSTANCE.getVarInitList_VarInits();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.StmtListImpl <em>Stmt List</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.StmtListImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getStmtList()
+     * @generated
+     */
+    EClass STMT_LIST = eINSTANCE.getStmtList();
+
+    /**
+     * The meta object literal for the '<em><b>Stmts</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference STMT_LIST__STMTS = eINSTANCE.getStmtList_Stmts();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.StmtImpl <em>Stmt</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.StmtImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getStmt()
+     * @generated
+     */
+    EClass STMT = eINSTANCE.getStmt();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.AssignmentStmtImpl <em>Assignment Stmt</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.AssignmentStmtImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAssignmentStmt()
+     * @generated
+     */
+    EClass ASSIGNMENT_STMT = eINSTANCE.getAssignmentStmt();
+
+    /**
+     * The meta object literal for the '<em><b>Variable</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference ASSIGNMENT_STMT__VARIABLE = eINSTANCE.getAssignmentStmt_Variable();
+
+    /**
+     * The meta object literal for the '<em><b>Value</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference ASSIGNMENT_STMT__VALUE = eINSTANCE.getAssignmentStmt_Value();
 
     /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.LValImpl <em>LVal</em>}' class.
@@ -3860,6 +4632,196 @@ public interface DmplPackage extends EPackage
      * @generated
      */
     EReference FN_PROTOTYPE_DECLARATION__PARAMS = eINSTANCE.getFnPrototypeDeclaration_Params();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.NestedStmtImpl <em>Nested Stmt</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.NestedStmtImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getNestedStmt()
+     * @generated
+     */
+    EClass NESTED_STMT = eINSTANCE.getNestedStmt();
+
+    /**
+     * The meta object literal for the '<em><b>Stmt List</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference NESTED_STMT__STMT_LIST = eINSTANCE.getNestedStmt_StmtList();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.WhileStmtImpl <em>While Stmt</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.WhileStmtImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getWhileStmt()
+     * @generated
+     */
+    EClass WHILE_STMT = eINSTANCE.getWhileStmt();
+
+    /**
+     * The meta object literal for the '<em><b>Condition</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference WHILE_STMT__CONDITION = eINSTANCE.getWhileStmt_Condition();
+
+    /**
+     * The meta object literal for the '<em><b>Stmt</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference WHILE_STMT__STMT = eINSTANCE.getWhileStmt_Stmt();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ForStmtImpl <em>For Stmt</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.ForStmtImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getForStmt()
+     * @generated
+     */
+    EClass FOR_STMT = eINSTANCE.getForStmt();
+
+    /**
+     * The meta object literal for the '<em><b>Inits</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference FOR_STMT__INITS = eINSTANCE.getForStmt_Inits();
+
+    /**
+     * The meta object literal for the '<em><b>Condition</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference FOR_STMT__CONDITION = eINSTANCE.getForStmt_Condition();
+
+    /**
+     * The meta object literal for the '<em><b>Update</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference FOR_STMT__UPDATE = eINSTANCE.getForStmt_Update();
+
+    /**
+     * The meta object literal for the '<em><b>Stmt</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference FOR_STMT__STMT = eINSTANCE.getForStmt_Stmt();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.SimpleStmtImpl <em>Simple Stmt</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.SimpleStmtImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSimpleStmt()
+     * @generated
+     */
+    EClass SIMPLE_STMT = eINSTANCE.getSimpleStmt();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute SIMPLE_STMT__NAME = eINSTANCE.getSimpleStmt_Name();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ReturnValueStmtImpl <em>Return Value Stmt</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.ReturnValueStmtImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getReturnValueStmt()
+     * @generated
+     */
+    EClass RETURN_VALUE_STMT = eINSTANCE.getReturnValueStmt();
+
+    /**
+     * The meta object literal for the '<em><b>Value</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference RETURN_VALUE_STMT__VALUE = eINSTANCE.getReturnValueStmt_Value();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ForAllStmtImpl <em>For All Stmt</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.ForAllStmtImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getForAllStmt()
+     * @generated
+     */
+    EClass FOR_ALL_STMT = eINSTANCE.getForAllStmt();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute FOR_ALL_STMT__NAME = eINSTANCE.getForAllStmt_Name();
+
+    /**
+     * The meta object literal for the '<em><b>Node</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute FOR_ALL_STMT__NODE = eINSTANCE.getForAllStmt_Node();
+
+    /**
+     * The meta object literal for the '<em><b>Stmt</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference FOR_ALL_STMT__STMT = eINSTANCE.getForAllStmt_Stmt();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FadnpStmtImpl <em>Fadnp Stmt</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.FadnpStmtImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFadnpStmt()
+     * @generated
+     */
+    EClass FADNP_STMT = eINSTANCE.getFadnpStmt();
+
+    /**
+     * The meta object literal for the '<em><b>Node1</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute FADNP_STMT__NODE1 = eINSTANCE.getFadnpStmt_Node1();
+
+    /**
+     * The meta object literal for the '<em><b>Node2</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute FADNP_STMT__NODE2 = eINSTANCE.getFadnpStmt_Node2();
+
+    /**
+     * The meta object literal for the '<em><b>Stmt</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference FADNP_STMT__STMT = eINSTANCE.getFadnpStmt_Stmt();
 
     /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.TernaryExprImpl <em>Ternary Expr</em>}' class.
@@ -4340,6 +5302,26 @@ public interface DmplPackage extends EPackage
      * @generated
      */
     EEnum SIGNED_ENUM = eINSTANCE.getSignedEnum();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SimpleStmtKeywordEnum <em>Simple Stmt Keyword Enum</em>}' enum.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.SimpleStmtKeywordEnum
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSimpleStmtKeywordEnum()
+     * @generated
+     */
+    EEnum SIMPLE_STMT_KEYWORD_ENUM = eINSTANCE.getSimpleStmtKeywordEnum();
+
+    /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.ForAllFunctionEnum <em>For All Function Enum</em>}' enum.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.ForAllFunctionEnum
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getForAllFunctionEnum()
+     * @generated
+     */
+    EEnum FOR_ALL_FUNCTION_ENUM = eINSTANCE.getForAllFunctionEnum();
 
     /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.EqualityOperator <em>Equality Operator</em>}' enum.

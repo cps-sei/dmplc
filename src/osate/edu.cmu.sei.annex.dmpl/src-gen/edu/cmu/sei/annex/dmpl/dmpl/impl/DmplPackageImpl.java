@@ -6,6 +6,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.AdditiveExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.AdditiveOperator;
 import edu.cmu.sei.annex.dmpl.dmpl.AndExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.ArgList;
+import edu.cmu.sei.annex.dmpl.dmpl.AssignmentStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.BitwiseAndExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.BitwiseOrExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.BuiltInExpr;
@@ -24,10 +25,14 @@ import edu.cmu.sei.annex.dmpl.dmpl.EqualityExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.EqualityOperator;
 import edu.cmu.sei.annex.dmpl.dmpl.Expr;
 import edu.cmu.sei.annex.dmpl.dmpl.ExprVarAsgn;
+import edu.cmu.sei.annex.dmpl.dmpl.FadnpStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.FnBody;
 import edu.cmu.sei.annex.dmpl.dmpl.FnPrototype;
 import edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration;
 import edu.cmu.sei.annex.dmpl.dmpl.FnVarAsgn;
+import edu.cmu.sei.annex.dmpl.dmpl.ForAllFunctionEnum;
+import edu.cmu.sei.annex.dmpl.dmpl.ForAllStmt;
+import edu.cmu.sei.annex.dmpl.dmpl.ForStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.IdDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.IdExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.IntConst;
@@ -36,6 +41,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.IntExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.LVal;
 import edu.cmu.sei.annex.dmpl.dmpl.MultiplicativeExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.MultiplicativeOperator;
+import edu.cmu.sei.annex.dmpl.dmpl.NestedStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.NumberConst;
@@ -45,11 +51,16 @@ import edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr;
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
 import edu.cmu.sei.annex.dmpl.dmpl.Program;
 import edu.cmu.sei.annex.dmpl.dmpl.ProgramElement;
+import edu.cmu.sei.annex.dmpl.dmpl.ReturnValueStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.ShiftExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.ShiftOperator;
 import edu.cmu.sei.annex.dmpl.dmpl.SignEnum;
 import edu.cmu.sei.annex.dmpl.dmpl.SignedEnum;
 import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum;
+import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmt;
+import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmtKeywordEnum;
+import edu.cmu.sei.annex.dmpl.dmpl.Stmt;
+import edu.cmu.sei.annex.dmpl.dmpl.StmtList;
 import edu.cmu.sei.annex.dmpl.dmpl.TernaryExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.ThreadDeclaration;
 import edu.cmu.sei.annex.dmpl.dmpl.Type;
@@ -59,6 +70,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.Var;
 import edu.cmu.sei.annex.dmpl.dmpl.VarAsgn;
 import edu.cmu.sei.annex.dmpl.dmpl.VarInit;
 import edu.cmu.sei.annex.dmpl.dmpl.VarInitList;
+import edu.cmu.sei.annex.dmpl.dmpl.WhileStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.XorExpr;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -210,6 +222,27 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass stmtListEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass stmtEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass assignmentStmtEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass lValEClass = null;
 
   /**
@@ -281,6 +314,55 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass fnPrototypeDeclarationEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass nestedStmtEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass whileStmtEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass forStmtEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass simpleStmtEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass returnValueStmtEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass forAllStmtEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass fadnpStmtEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -421,6 +503,20 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EEnum signedEnumEEnum = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EEnum simpleStmtKeywordEnumEEnum = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EEnum forAllFunctionEnumEEnum = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -882,6 +978,16 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EReference getFnBody_StmtList()
+  {
+    return (EReference)fnBodyEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getFnPrototype()
   {
     return fnPrototypeEClass;
@@ -965,6 +1071,66 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
   public EReference getVarInitList_VarInits()
   {
     return (EReference)varInitListEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getStmtList()
+  {
+    return stmtListEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getStmtList_Stmts()
+  {
+    return (EReference)stmtListEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getStmt()
+  {
+    return stmtEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getAssignmentStmt()
+  {
+    return assignmentStmtEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getAssignmentStmt_Variable()
+  {
+    return (EReference)assignmentStmtEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getAssignmentStmt_Value()
+  {
+    return (EReference)assignmentStmtEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1215,6 +1381,226 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
   public EReference getFnPrototypeDeclaration_Params()
   {
     return (EReference)fnPrototypeDeclarationEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getNestedStmt()
+  {
+    return nestedStmtEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getNestedStmt_StmtList()
+  {
+    return (EReference)nestedStmtEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getWhileStmt()
+  {
+    return whileStmtEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getWhileStmt_Condition()
+  {
+    return (EReference)whileStmtEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getWhileStmt_Stmt()
+  {
+    return (EReference)whileStmtEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getForStmt()
+  {
+    return forStmtEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getForStmt_Inits()
+  {
+    return (EReference)forStmtEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getForStmt_Condition()
+  {
+    return (EReference)forStmtEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getForStmt_Update()
+  {
+    return (EReference)forStmtEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getForStmt_Stmt()
+  {
+    return (EReference)forStmtEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getSimpleStmt()
+  {
+    return simpleStmtEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getSimpleStmt_Name()
+  {
+    return (EAttribute)simpleStmtEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getReturnValueStmt()
+  {
+    return returnValueStmtEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getReturnValueStmt_Value()
+  {
+    return (EReference)returnValueStmtEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getForAllStmt()
+  {
+    return forAllStmtEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getForAllStmt_Name()
+  {
+    return (EAttribute)forAllStmtEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getForAllStmt_Node()
+  {
+    return (EAttribute)forAllStmtEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getForAllStmt_Stmt()
+  {
+    return (EReference)forAllStmtEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getFadnpStmt()
+  {
+    return fadnpStmtEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getFadnpStmt_Node1()
+  {
+    return (EAttribute)fadnpStmtEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getFadnpStmt_Node2()
+  {
+    return (EAttribute)fadnpStmtEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getFadnpStmt_Stmt()
+  {
+    return (EReference)fadnpStmtEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -1772,6 +2158,26 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EEnum getSimpleStmtKeywordEnum()
+  {
+    return simpleStmtKeywordEnumEEnum;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EEnum getForAllFunctionEnum()
+  {
+    return forAllFunctionEnumEEnum;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EEnum getEqualityOperator()
   {
     return equalityOperatorEEnum;
@@ -1915,6 +2321,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     fnBodyEClass = createEClass(FN_BODY);
     createEReference(fnBodyEClass, FN_BODY__VAR_INIT_LIST);
+    createEReference(fnBodyEClass, FN_BODY__STMT_LIST);
 
     fnPrototypeEClass = createEClass(FN_PROTOTYPE);
     createEAttribute(fnPrototypeEClass, FN_PROTOTYPE__EXTERN);
@@ -1927,6 +2334,15 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     varInitListEClass = createEClass(VAR_INIT_LIST);
     createEReference(varInitListEClass, VAR_INIT_LIST__VAR_INITS);
+
+    stmtListEClass = createEClass(STMT_LIST);
+    createEReference(stmtListEClass, STMT_LIST__STMTS);
+
+    stmtEClass = createEClass(STMT);
+
+    assignmentStmtEClass = createEClass(ASSIGNMENT_STMT);
+    createEReference(assignmentStmtEClass, ASSIGNMENT_STMT__VARIABLE);
+    createEReference(assignmentStmtEClass, ASSIGNMENT_STMT__VALUE);
 
     lValEClass = createEClass(LVAL);
     createEAttribute(lValEClass, LVAL__NAME);
@@ -1963,6 +2379,35 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     fnPrototypeDeclarationEClass = createEClass(FN_PROTOTYPE_DECLARATION);
     createEReference(fnPrototypeDeclarationEClass, FN_PROTOTYPE_DECLARATION__TYPE);
     createEReference(fnPrototypeDeclarationEClass, FN_PROTOTYPE_DECLARATION__PARAMS);
+
+    nestedStmtEClass = createEClass(NESTED_STMT);
+    createEReference(nestedStmtEClass, NESTED_STMT__STMT_LIST);
+
+    whileStmtEClass = createEClass(WHILE_STMT);
+    createEReference(whileStmtEClass, WHILE_STMT__CONDITION);
+    createEReference(whileStmtEClass, WHILE_STMT__STMT);
+
+    forStmtEClass = createEClass(FOR_STMT);
+    createEReference(forStmtEClass, FOR_STMT__INITS);
+    createEReference(forStmtEClass, FOR_STMT__CONDITION);
+    createEReference(forStmtEClass, FOR_STMT__UPDATE);
+    createEReference(forStmtEClass, FOR_STMT__STMT);
+
+    simpleStmtEClass = createEClass(SIMPLE_STMT);
+    createEAttribute(simpleStmtEClass, SIMPLE_STMT__NAME);
+
+    returnValueStmtEClass = createEClass(RETURN_VALUE_STMT);
+    createEReference(returnValueStmtEClass, RETURN_VALUE_STMT__VALUE);
+
+    forAllStmtEClass = createEClass(FOR_ALL_STMT);
+    createEAttribute(forAllStmtEClass, FOR_ALL_STMT__NAME);
+    createEAttribute(forAllStmtEClass, FOR_ALL_STMT__NODE);
+    createEReference(forAllStmtEClass, FOR_ALL_STMT__STMT);
+
+    fadnpStmtEClass = createEClass(FADNP_STMT);
+    createEAttribute(fadnpStmtEClass, FADNP_STMT__NODE1);
+    createEAttribute(fadnpStmtEClass, FADNP_STMT__NODE2);
+    createEReference(fadnpStmtEClass, FADNP_STMT__STMT);
 
     ternaryExprEClass = createEClass(TERNARY_EXPR);
     createEReference(ternaryExprEClass, TERNARY_EXPR__CONDITION);
@@ -2037,6 +2482,8 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     signEnumEEnum = createEEnum(SIGN_ENUM);
     simpTypeEnumEEnum = createEEnum(SIMP_TYPE_ENUM);
     signedEnumEEnum = createEEnum(SIGNED_ENUM);
+    simpleStmtKeywordEnumEEnum = createEEnum(SIMPLE_STMT_KEYWORD_ENUM);
+    forAllFunctionEnumEEnum = createEEnum(FOR_ALL_FUNCTION_ENUM);
     equalityOperatorEEnum = createEEnum(EQUALITY_OPERATOR);
     compareOperatorEEnum = createEEnum(COMPARE_OPERATOR);
     shiftOperatorEEnum = createEEnum(SHIFT_OPERATOR);
@@ -2083,7 +2530,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     intConstEClass.getESuperTypes().add(this.getNumberConst());
     doubleConstEClass.getESuperTypes().add(this.getNumberConst());
     procedureEClass.getESuperTypes().add(this.getProgramElement());
+    assignmentStmtEClass.getESuperTypes().add(this.getStmt());
     lValEClass.getESuperTypes().add(this.getExpr());
+    callExprEClass.getESuperTypes().add(this.getStmt());
     callExprEClass.getESuperTypes().add(this.getExpr());
     exprVarAsgnEClass.getESuperTypes().add(this.getVarAsgn());
     fnVarAsgnEClass.getESuperTypes().add(this.getVarAsgn());
@@ -2092,6 +2541,13 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     idDimensionEClass.getESuperTypes().add(this.getDimension());
     threadDeclarationEClass.getESuperTypes().add(this.getFnPrototype());
     fnPrototypeDeclarationEClass.getESuperTypes().add(this.getFnPrototype());
+    nestedStmtEClass.getESuperTypes().add(this.getStmt());
+    whileStmtEClass.getESuperTypes().add(this.getStmt());
+    forStmtEClass.getESuperTypes().add(this.getStmt());
+    simpleStmtEClass.getESuperTypes().add(this.getStmt());
+    returnValueStmtEClass.getESuperTypes().add(this.getStmt());
+    forAllStmtEClass.getESuperTypes().add(this.getStmt());
+    fadnpStmtEClass.getESuperTypes().add(this.getStmt());
     ternaryExprEClass.getESuperTypes().add(this.getExpr());
     orExprEClass.getESuperTypes().add(this.getExpr());
     andExprEClass.getESuperTypes().add(this.getExpr());
@@ -2159,6 +2615,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     initEClass(fnBodyEClass, FnBody.class, "FnBody", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getFnBody_VarInitList(), this.getVarInitList(), null, "varInitList", null, 0, 1, FnBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getFnBody_StmtList(), this.getStmtList(), null, "stmtList", null, 0, 1, FnBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(fnPrototypeEClass, FnPrototype.class, "FnPrototype", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getFnPrototype_Extern(), ecorePackage.getEBoolean(), "extern", null, 0, 1, FnPrototype.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2171,6 +2628,15 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     initEClass(varInitListEClass, VarInitList.class, "VarInitList", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getVarInitList_VarInits(), this.getVarInit(), null, "varInits", null, 0, -1, VarInitList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(stmtListEClass, StmtList.class, "StmtList", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getStmtList_Stmts(), this.getStmt(), null, "stmts", null, 0, -1, StmtList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(stmtEClass, Stmt.class, "Stmt", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(assignmentStmtEClass, AssignmentStmt.class, "AssignmentStmt", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getAssignmentStmt_Variable(), this.getLVal(), null, "variable", null, 0, 1, AssignmentStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getAssignmentStmt_Value(), this.getExpr(), null, "value", null, 0, 1, AssignmentStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(lValEClass, LVal.class, "LVal", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getLVal_Name(), ecorePackage.getEString(), "name", null, 0, 1, LVal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2207,6 +2673,35 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEClass(fnPrototypeDeclarationEClass, FnPrototypeDeclaration.class, "FnPrototypeDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getFnPrototypeDeclaration_Type(), this.getType(), null, "type", null, 0, 1, FnPrototypeDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getFnPrototypeDeclaration_Params(), this.getParam(), null, "params", null, 0, -1, FnPrototypeDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(nestedStmtEClass, NestedStmt.class, "NestedStmt", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getNestedStmt_StmtList(), this.getStmtList(), null, "stmtList", null, 0, 1, NestedStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(whileStmtEClass, WhileStmt.class, "WhileStmt", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getWhileStmt_Condition(), this.getExpr(), null, "condition", null, 0, 1, WhileStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getWhileStmt_Stmt(), this.getStmt(), null, "stmt", null, 0, 1, WhileStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(forStmtEClass, ForStmt.class, "ForStmt", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getForStmt_Inits(), this.getAssignmentStmt(), null, "inits", null, 0, -1, ForStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getForStmt_Condition(), this.getExpr(), null, "condition", null, 0, 1, ForStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getForStmt_Update(), this.getAssignmentStmt(), null, "update", null, 0, 1, ForStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getForStmt_Stmt(), this.getStmt(), null, "stmt", null, 0, 1, ForStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(simpleStmtEClass, SimpleStmt.class, "SimpleStmt", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getSimpleStmt_Name(), this.getSimpleStmtKeywordEnum(), "name", null, 0, 1, SimpleStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(returnValueStmtEClass, ReturnValueStmt.class, "ReturnValueStmt", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getReturnValueStmt_Value(), this.getExpr(), null, "value", null, 0, 1, ReturnValueStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(forAllStmtEClass, ForAllStmt.class, "ForAllStmt", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getForAllStmt_Name(), this.getForAllFunctionEnum(), "name", null, 0, 1, ForAllStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getForAllStmt_Node(), ecorePackage.getEString(), "node", null, 0, 1, ForAllStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getForAllStmt_Stmt(), this.getStmt(), null, "stmt", null, 0, 1, ForAllStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(fadnpStmtEClass, FadnpStmt.class, "FadnpStmt", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getFadnpStmt_Node1(), ecorePackage.getEString(), "node1", null, 0, 1, FadnpStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getFadnpStmt_Node2(), ecorePackage.getEString(), "node2", null, 0, 1, FadnpStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getFadnpStmt_Stmt(), this.getStmt(), null, "stmt", null, 0, 1, FadnpStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(ternaryExprEClass, TernaryExpr.class, "TernaryExpr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getTernaryExpr_Condition(), this.getExpr(), null, "condition", null, 0, 1, TernaryExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2294,6 +2789,17 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     addEEnumLiteral(signedEnumEEnum, SignedEnum.UNSET);
     addEEnumLiteral(signedEnumEEnum, SignedEnum.SIGNED);
     addEEnumLiteral(signedEnumEEnum, SignedEnum.UNSIGNED);
+
+    initEEnum(simpleStmtKeywordEnumEEnum, SimpleStmtKeywordEnum.class, "SimpleStmtKeywordEnum");
+    addEEnumLiteral(simpleStmtKeywordEnumEEnum, SimpleStmtKeywordEnum.BREAK);
+    addEEnumLiteral(simpleStmtKeywordEnumEEnum, SimpleStmtKeywordEnum.CONTINUE);
+    addEEnumLiteral(simpleStmtKeywordEnumEEnum, SimpleStmtKeywordEnum.RETURN);
+
+    initEEnum(forAllFunctionEnumEEnum, ForAllFunctionEnum.class, "ForAllFunctionEnum");
+    addEEnumLiteral(forAllFunctionEnumEEnum, ForAllFunctionEnum.FORALL_NODE);
+    addEEnumLiteral(forAllFunctionEnumEEnum, ForAllFunctionEnum.FORALL_OTHER);
+    addEEnumLiteral(forAllFunctionEnumEEnum, ForAllFunctionEnum.FORALL_OTHER_LOWER);
+    addEEnumLiteral(forAllFunctionEnumEEnum, ForAllFunctionEnum.FORALL_OTHER_HIGHER);
 
     initEEnum(equalityOperatorEEnum, EqualityOperator.class, "EqualityOperator");
     addEEnumLiteral(equalityOperatorEEnum, EqualityOperator.EQUAL);
