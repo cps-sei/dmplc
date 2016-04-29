@@ -139,6 +139,10 @@ example-12a: Like example-12 but instead of a safety zone we have a
 chase timeout. The evader wins if the timeout expires without the
 pursuer getting within range.
 
+example-12b: Like example-12a but both nodes start in the middle of
+the grid with random initial locations and the evader always moves
+away from the pursuer.
+
 Subdirectories:
 --------------
 
