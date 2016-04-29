@@ -7,6 +7,10 @@ int main(int argc,char **argv)
 {
   GRID_INIT();
   std::cout << "sleeping for 5 seconds ...\n";
-  sleep(5);
+  sleep(3);
+  GRID_PLACE(0,0,0);
+  sleep(10);
+  GRID_LAND();
+  sleep(3);
   GRID_REMOVE();
 }
