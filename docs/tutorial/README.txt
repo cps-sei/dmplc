@@ -143,6 +143,9 @@ example-12b: Like example-12a but both nodes start in the middle of
 the grid with random initial locations and the evader always moves
 away from the pursuer.
 
+example-12c: Like example-12b but the slowdown is applied uniformly to
+both evader and pursuer.
+
 Subdirectories:
 --------------
 
