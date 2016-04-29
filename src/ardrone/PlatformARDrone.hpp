@@ -100,17 +100,36 @@ void GRID_PLACE(double x, double y, double z)
 {
 }
 
+void detectCallBack(int success)
+{
+  if(success)
+    std::cerr << "successfully set detect type ...\n";
+  else
+    std::cerr << "failed to set detect type ...\n";
+}
+
+void flyingModeCallBack(int success)
+{
+  if(success)
+    std::cerr << "successfully set flying mode ...\n";
+  else
+    std::cerr << "failed to set flying mode ...\n";
+}
+
 /**
  * Make the drone takeoff
  **/
 void GRID_TAKEOFF()
 {
+  int detectType = CAD_TYPE_MULTIPLE_DETECTION_MODE;
+  ARDRONE_TOOL_CONFIGURATION_ADDEVENT(detect_type, &detectType, detectCallBack);
+  int32_t detectVhsync = TAG_TYPE_MASK(TAG_TYPE_BLACK_ROUNDEL);
+  ARDRONE_TOOL_CONFIGURATION_ADDEVENT(detections_select_v_hsync, &detectVhsync, detectCallBack);  
+  int fMode = FLYING_MODE_HOVER_ON_TOP_OF_ORIENTED_ROUNDEL;  
+  ARDRONE_TOOL_CONFIGURATION_ADDEVENT(flying_mode, &fMode, flyingModeCallBack);
+  sleep(3);
   ardrone_tool_set_ui_pad_start(1);
   sleep(3);
-  int detectType = CAD_TYPE_ORIENTED_COCARDE_BW;
-  ARDRONE_TOOL_CONFIGURATION_ADDEVENT(detect_type, &detectType, NULL);
-  int fMode = FLYING_MODE_HOVER_ON_TOP_OF_ORIENTED_ROUNDEL;  
-  ARDRONE_TOOL_CONFIGURATION_ADDEVENT(flying_mode, &fMode, NULL);
 }
 
 /**
