@@ -10,7 +10,7 @@
 //
 // Name of the scenario to run
 //
-@name(dart-example-12c-0,01re);
+@name(dart-example-12c-0.01re);
 @scenario(example-12c);
 
 //
