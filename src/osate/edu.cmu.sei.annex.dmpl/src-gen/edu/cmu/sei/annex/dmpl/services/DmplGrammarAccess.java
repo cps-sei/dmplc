@@ -607,14 +607,16 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cLeftCurlyBracketKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cVarInitListAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cVarInitListVarInitListParserRuleCall_1_0 = (RuleCall)cVarInitListAssignment_1.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cStmtListAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cStmtListStmtListParserRuleCall_2_0 = (RuleCall)cStmtListAssignment_2.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		
 		//FnBody: //TODO var_init_list and stmt_list
-		//	"{" varInitList=VarInitList "}";
+		//	"{" varInitList=VarInitList stmtList=StmtList "}";
 		@Override public ParserRule getRule() { return rule; }
 
 		////TODO var_init_list and stmt_list
-		//"{" varInitList=VarInitList "}"
+		//"{" varInitList=VarInitList stmtList=StmtList "}"
 		public Group getGroup() { return cGroup; }
 
 		////TODO var_init_list and stmt_list
@@ -627,8 +629,14 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//VarInitList
 		public RuleCall getVarInitListVarInitListParserRuleCall_1_0() { return cVarInitListVarInitListParserRuleCall_1_0; }
 
+		//stmtList=StmtList
+		public Assignment getStmtListAssignment_2() { return cStmtListAssignment_2; }
+
+		//StmtList
+		public RuleCall getStmtListStmtListParserRuleCall_2_0() { return cStmtListStmtListParserRuleCall_2_0; }
+
 		//"}"
-		public Keyword getRightCurlyBracketKeyword_2() { return cRightCurlyBracketKeyword_2; }
+		public Keyword getRightCurlyBracketKeyword_3() { return cRightCurlyBracketKeyword_3; }
 	}
 
 	public class FnPrototypeElements extends AbstractParserRuleElementFinder {
@@ -850,6 +858,297 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 		//";"
 		public Keyword getSemicolonKeyword_1_1() { return cSemicolonKeyword_1_1; }
+	}
+
+	public class StmtListElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "StmtList");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cStmtListAction_0 = (Action)cGroup.eContents().get(0);
+		private final Assignment cStmtsAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cStmtsStmtParserRuleCall_1_0 = (RuleCall)cStmtsAssignment_1.eContents().get(0);
+		
+		//StmtList:
+		//	{StmtList} stmts+=Stmt*;
+		@Override public ParserRule getRule() { return rule; }
+
+		//{StmtList} stmts+=Stmt*
+		public Group getGroup() { return cGroup; }
+
+		//{StmtList}
+		public Action getStmtListAction_0() { return cStmtListAction_0; }
+
+		//stmts+=Stmt*
+		public Assignment getStmtsAssignment_1() { return cStmtsAssignment_1; }
+
+		//Stmt
+		public RuleCall getStmtsStmtParserRuleCall_1_0() { return cStmtsStmtParserRuleCall_1_0; }
+	}
+
+	public class StmtElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Stmt");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
+		private final Action cNestedStmtAction_0_0 = (Action)cGroup_0.eContents().get(0);
+		private final Keyword cLeftCurlyBracketKeyword_0_1 = (Keyword)cGroup_0.eContents().get(1);
+		private final Assignment cStmtListAssignment_0_2 = (Assignment)cGroup_0.eContents().get(2);
+		private final RuleCall cStmtListStmtListParserRuleCall_0_2_0 = (RuleCall)cStmtListAssignment_0_2.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_0_3 = (Keyword)cGroup_0.eContents().get(3);
+		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
+		private final Action cAssignmentStmtAction_1_0 = (Action)cGroup_1.eContents().get(0);
+		private final Assignment cVariableAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
+		private final RuleCall cVariableLValParserRuleCall_1_1_0 = (RuleCall)cVariableAssignment_1_1.eContents().get(0);
+		private final Keyword cEqualsSignKeyword_1_2 = (Keyword)cGroup_1.eContents().get(2);
+		private final Assignment cValueAssignment_1_3 = (Assignment)cGroup_1.eContents().get(3);
+		private final RuleCall cValueExprParserRuleCall_1_3_0 = (RuleCall)cValueAssignment_1_3.eContents().get(0);
+		private final Keyword cSemicolonKeyword_1_4 = (Keyword)cGroup_1.eContents().get(4);
+		private final Group cGroup_2 = (Group)cAlternatives.eContents().get(2);
+		private final Action cWhileStmtAction_2_0 = (Action)cGroup_2.eContents().get(0);
+		private final Keyword cWhileKeyword_2_1 = (Keyword)cGroup_2.eContents().get(1);
+		private final Keyword cLeftParenthesisKeyword_2_2 = (Keyword)cGroup_2.eContents().get(2);
+		private final Assignment cConditionAssignment_2_3 = (Assignment)cGroup_2.eContents().get(3);
+		private final RuleCall cConditionExprParserRuleCall_2_3_0 = (RuleCall)cConditionAssignment_2_3.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_2_4 = (Keyword)cGroup_2.eContents().get(4);
+		private final Assignment cStmtAssignment_2_5 = (Assignment)cGroup_2.eContents().get(5);
+		private final RuleCall cStmtStmtParserRuleCall_2_5_0 = (RuleCall)cStmtAssignment_2_5.eContents().get(0);
+		private final Group cGroup_3 = (Group)cAlternatives.eContents().get(3);
+		private final Action cSimpleStmtAction_3_0 = (Action)cGroup_3.eContents().get(0);
+		private final Assignment cNameAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
+		private final RuleCall cNameSimpleStmtKeywordParserRuleCall_3_1_0 = (RuleCall)cNameAssignment_3_1.eContents().get(0);
+		private final Keyword cSemicolonKeyword_3_2 = (Keyword)cGroup_3.eContents().get(2);
+		private final Group cGroup_4 = (Group)cAlternatives.eContents().get(4);
+		private final Action cReturnValueStmtAction_4_0 = (Action)cGroup_4.eContents().get(0);
+		private final Keyword cReturnKeyword_4_1 = (Keyword)cGroup_4.eContents().get(1);
+		private final Assignment cValueAssignment_4_2 = (Assignment)cGroup_4.eContents().get(2);
+		private final RuleCall cValueExprParserRuleCall_4_2_0 = (RuleCall)cValueAssignment_4_2.eContents().get(0);
+		private final Keyword cSemicolonKeyword_4_3 = (Keyword)cGroup_4.eContents().get(3);
+		private final Group cGroup_5 = (Group)cAlternatives.eContents().get(5);
+		private final RuleCall cCallExprParserRuleCall_5_0 = (RuleCall)cGroup_5.eContents().get(0);
+		private final Keyword cSemicolonKeyword_5_1 = (Keyword)cGroup_5.eContents().get(1);
+		private final Group cGroup_6 = (Group)cAlternatives.eContents().get(6);
+		private final Action cForAllStmtAction_6_0 = (Action)cGroup_6.eContents().get(0);
+		private final Assignment cNameAssignment_6_1 = (Assignment)cGroup_6.eContents().get(1);
+		private final RuleCall cNameForAllFunctionParserRuleCall_6_1_0 = (RuleCall)cNameAssignment_6_1.eContents().get(0);
+		private final Keyword cLeftParenthesisKeyword_6_2 = (Keyword)cGroup_6.eContents().get(2);
+		private final Assignment cNodeAssignment_6_3 = (Assignment)cGroup_6.eContents().get(3);
+		private final RuleCall cNodeTIDENTIFIERTerminalRuleCall_6_3_0 = (RuleCall)cNodeAssignment_6_3.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_6_4 = (Keyword)cGroup_6.eContents().get(4);
+		private final Assignment cStmtAssignment_6_5 = (Assignment)cGroup_6.eContents().get(5);
+		private final RuleCall cStmtStmtParserRuleCall_6_5_0 = (RuleCall)cStmtAssignment_6_5.eContents().get(0);
+		private final Group cGroup_7 = (Group)cAlternatives.eContents().get(7);
+		private final Action cFadnpStmtAction_7_0 = (Action)cGroup_7.eContents().get(0);
+		private final Alternatives cAlternatives_7_1 = (Alternatives)cGroup_7.eContents().get(1);
+		private final Keyword cForall_distinct_node_pairKeyword_7_1_0 = (Keyword)cAlternatives_7_1.eContents().get(0);
+		private final Keyword cFORALL_DISTINCT_NODE_PAIRKeyword_7_1_1 = (Keyword)cAlternatives_7_1.eContents().get(1);
+		private final Keyword cLeftParenthesisKeyword_7_2 = (Keyword)cGroup_7.eContents().get(2);
+		private final Assignment cNode1Assignment_7_3 = (Assignment)cGroup_7.eContents().get(3);
+		private final RuleCall cNode1TIDENTIFIERTerminalRuleCall_7_3_0 = (RuleCall)cNode1Assignment_7_3.eContents().get(0);
+		private final Keyword cCommaKeyword_7_4 = (Keyword)cGroup_7.eContents().get(4);
+		private final Assignment cNode2Assignment_7_5 = (Assignment)cGroup_7.eContents().get(5);
+		private final RuleCall cNode2TIDENTIFIERTerminalRuleCall_7_5_0 = (RuleCall)cNode2Assignment_7_5.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_7_6 = (Keyword)cGroup_7.eContents().get(6);
+		private final Assignment cStmtAssignment_7_7 = (Assignment)cGroup_7.eContents().get(7);
+		private final RuleCall cStmtStmtParserRuleCall_7_7_0 = (RuleCall)cStmtAssignment_7_7.eContents().get(0);
+		
+		//Stmt:
+		//	{NestedStmt} "{" stmtList=StmtList "}" | {AssignmentStmt} variable=LVal "=" value=Expr ";" | {WhileStmt} "while" "("
+		//	condition=Expr ")" stmt=Stmt | //TODO for and cond_stmt
+		//	{SimpleStmt} name=SimpleStmtKeyword ";" | {ReturnValueStmt} "return" value=Expr ";" | CallExpr ";" | {ForAllStmt}
+		//	name=ForAllFunction "(" node=TIDENTIFIER ")" stmt=Stmt | {FadnpStmt} ("forall_distinct_node_pair" |
+		//	"FORALL_DISTINCT_NODE_PAIR") "(" node1=TIDENTIFIER "," node2=TIDENTIFIER ")" stmt=Stmt;
+		@Override public ParserRule getRule() { return rule; }
+
+		//{NestedStmt} "{" stmtList=StmtList "}" | {AssignmentStmt} variable=LVal "=" value=Expr ";" | {WhileStmt} "while" "("
+		//condition=Expr ")" stmt=Stmt | //TODO for and cond_stmt
+		//{SimpleStmt} name=SimpleStmtKeyword ";" | {ReturnValueStmt} "return" value=Expr ";" | CallExpr ";" | {ForAllStmt}
+		//name=ForAllFunction "(" node=TIDENTIFIER ")" stmt=Stmt | {FadnpStmt} ("forall_distinct_node_pair" |
+		//"FORALL_DISTINCT_NODE_PAIR") "(" node1=TIDENTIFIER "," node2=TIDENTIFIER ")" stmt=Stmt
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//{NestedStmt} "{" stmtList=StmtList "}"
+		public Group getGroup_0() { return cGroup_0; }
+
+		//{NestedStmt}
+		public Action getNestedStmtAction_0_0() { return cNestedStmtAction_0_0; }
+
+		//"{"
+		public Keyword getLeftCurlyBracketKeyword_0_1() { return cLeftCurlyBracketKeyword_0_1; }
+
+		//stmtList=StmtList
+		public Assignment getStmtListAssignment_0_2() { return cStmtListAssignment_0_2; }
+
+		//StmtList
+		public RuleCall getStmtListStmtListParserRuleCall_0_2_0() { return cStmtListStmtListParserRuleCall_0_2_0; }
+
+		//"}"
+		public Keyword getRightCurlyBracketKeyword_0_3() { return cRightCurlyBracketKeyword_0_3; }
+
+		//{AssignmentStmt} variable=LVal "=" value=Expr ";"
+		public Group getGroup_1() { return cGroup_1; }
+
+		//{AssignmentStmt}
+		public Action getAssignmentStmtAction_1_0() { return cAssignmentStmtAction_1_0; }
+
+		//variable=LVal
+		public Assignment getVariableAssignment_1_1() { return cVariableAssignment_1_1; }
+
+		//LVal
+		public RuleCall getVariableLValParserRuleCall_1_1_0() { return cVariableLValParserRuleCall_1_1_0; }
+
+		//"="
+		public Keyword getEqualsSignKeyword_1_2() { return cEqualsSignKeyword_1_2; }
+
+		//value=Expr
+		public Assignment getValueAssignment_1_3() { return cValueAssignment_1_3; }
+
+		//Expr
+		public RuleCall getValueExprParserRuleCall_1_3_0() { return cValueExprParserRuleCall_1_3_0; }
+
+		//";"
+		public Keyword getSemicolonKeyword_1_4() { return cSemicolonKeyword_1_4; }
+
+		//{WhileStmt} "while" "(" condition=Expr ")" stmt=Stmt
+		public Group getGroup_2() { return cGroup_2; }
+
+		//{WhileStmt}
+		public Action getWhileStmtAction_2_0() { return cWhileStmtAction_2_0; }
+
+		//"while"
+		public Keyword getWhileKeyword_2_1() { return cWhileKeyword_2_1; }
+
+		//"("
+		public Keyword getLeftParenthesisKeyword_2_2() { return cLeftParenthesisKeyword_2_2; }
+
+		//condition=Expr
+		public Assignment getConditionAssignment_2_3() { return cConditionAssignment_2_3; }
+
+		//Expr
+		public RuleCall getConditionExprParserRuleCall_2_3_0() { return cConditionExprParserRuleCall_2_3_0; }
+
+		//")"
+		public Keyword getRightParenthesisKeyword_2_4() { return cRightParenthesisKeyword_2_4; }
+
+		//stmt=Stmt
+		public Assignment getStmtAssignment_2_5() { return cStmtAssignment_2_5; }
+
+		//Stmt
+		public RuleCall getStmtStmtParserRuleCall_2_5_0() { return cStmtStmtParserRuleCall_2_5_0; }
+
+		////TODO for and cond_stmt
+		//{SimpleStmt} name=SimpleStmtKeyword ";"
+		public Group getGroup_3() { return cGroup_3; }
+
+		////TODO for and cond_stmt
+		//{SimpleStmt}
+		public Action getSimpleStmtAction_3_0() { return cSimpleStmtAction_3_0; }
+
+		//name=SimpleStmtKeyword
+		public Assignment getNameAssignment_3_1() { return cNameAssignment_3_1; }
+
+		//SimpleStmtKeyword
+		public RuleCall getNameSimpleStmtKeywordParserRuleCall_3_1_0() { return cNameSimpleStmtKeywordParserRuleCall_3_1_0; }
+
+		//";"
+		public Keyword getSemicolonKeyword_3_2() { return cSemicolonKeyword_3_2; }
+
+		//{ReturnValueStmt} "return" value=Expr ";"
+		public Group getGroup_4() { return cGroup_4; }
+
+		//{ReturnValueStmt}
+		public Action getReturnValueStmtAction_4_0() { return cReturnValueStmtAction_4_0; }
+
+		//"return"
+		public Keyword getReturnKeyword_4_1() { return cReturnKeyword_4_1; }
+
+		//value=Expr
+		public Assignment getValueAssignment_4_2() { return cValueAssignment_4_2; }
+
+		//Expr
+		public RuleCall getValueExprParserRuleCall_4_2_0() { return cValueExprParserRuleCall_4_2_0; }
+
+		//";"
+		public Keyword getSemicolonKeyword_4_3() { return cSemicolonKeyword_4_3; }
+
+		//CallExpr ";"
+		public Group getGroup_5() { return cGroup_5; }
+
+		//CallExpr
+		public RuleCall getCallExprParserRuleCall_5_0() { return cCallExprParserRuleCall_5_0; }
+
+		//";"
+		public Keyword getSemicolonKeyword_5_1() { return cSemicolonKeyword_5_1; }
+
+		//{ForAllStmt} name=ForAllFunction "(" node=TIDENTIFIER ")" stmt=Stmt
+		public Group getGroup_6() { return cGroup_6; }
+
+		//{ForAllStmt}
+		public Action getForAllStmtAction_6_0() { return cForAllStmtAction_6_0; }
+
+		//name=ForAllFunction
+		public Assignment getNameAssignment_6_1() { return cNameAssignment_6_1; }
+
+		//ForAllFunction
+		public RuleCall getNameForAllFunctionParserRuleCall_6_1_0() { return cNameForAllFunctionParserRuleCall_6_1_0; }
+
+		//"("
+		public Keyword getLeftParenthesisKeyword_6_2() { return cLeftParenthesisKeyword_6_2; }
+
+		//node=TIDENTIFIER
+		public Assignment getNodeAssignment_6_3() { return cNodeAssignment_6_3; }
+
+		//TIDENTIFIER
+		public RuleCall getNodeTIDENTIFIERTerminalRuleCall_6_3_0() { return cNodeTIDENTIFIERTerminalRuleCall_6_3_0; }
+
+		//")"
+		public Keyword getRightParenthesisKeyword_6_4() { return cRightParenthesisKeyword_6_4; }
+
+		//stmt=Stmt
+		public Assignment getStmtAssignment_6_5() { return cStmtAssignment_6_5; }
+
+		//Stmt
+		public RuleCall getStmtStmtParserRuleCall_6_5_0() { return cStmtStmtParserRuleCall_6_5_0; }
+
+		//{FadnpStmt} ("forall_distinct_node_pair" | "FORALL_DISTINCT_NODE_PAIR") "(" node1=TIDENTIFIER "," node2=TIDENTIFIER ")"
+		//stmt=Stmt
+		public Group getGroup_7() { return cGroup_7; }
+
+		//{FadnpStmt}
+		public Action getFadnpStmtAction_7_0() { return cFadnpStmtAction_7_0; }
+
+		//"forall_distinct_node_pair" | "FORALL_DISTINCT_NODE_PAIR"
+		public Alternatives getAlternatives_7_1() { return cAlternatives_7_1; }
+
+		//"forall_distinct_node_pair"
+		public Keyword getForall_distinct_node_pairKeyword_7_1_0() { return cForall_distinct_node_pairKeyword_7_1_0; }
+
+		//"FORALL_DISTINCT_NODE_PAIR"
+		public Keyword getFORALL_DISTINCT_NODE_PAIRKeyword_7_1_1() { return cFORALL_DISTINCT_NODE_PAIRKeyword_7_1_1; }
+
+		//"("
+		public Keyword getLeftParenthesisKeyword_7_2() { return cLeftParenthesisKeyword_7_2; }
+
+		//node1=TIDENTIFIER
+		public Assignment getNode1Assignment_7_3() { return cNode1Assignment_7_3; }
+
+		//TIDENTIFIER
+		public RuleCall getNode1TIDENTIFIERTerminalRuleCall_7_3_0() { return cNode1TIDENTIFIERTerminalRuleCall_7_3_0; }
+
+		//","
+		public Keyword getCommaKeyword_7_4() { return cCommaKeyword_7_4; }
+
+		//node2=TIDENTIFIER
+		public Assignment getNode2Assignment_7_5() { return cNode2Assignment_7_5; }
+
+		//TIDENTIFIER
+		public RuleCall getNode2TIDENTIFIERTerminalRuleCall_7_5_0() { return cNode2TIDENTIFIERTerminalRuleCall_7_5_0; }
+
+		//")"
+		public Keyword getRightParenthesisKeyword_7_6() { return cRightParenthesisKeyword_7_6; }
+
+		//stmt=Stmt
+		public Assignment getStmtAssignment_7_7() { return cStmtAssignment_7_7; }
+
+		//Stmt
+		public RuleCall getStmtStmtParserRuleCall_7_7_0() { return cStmtStmtParserRuleCall_7_7_0; }
 	}
 
 	public class LValElements extends AbstractParserRuleElementFinder {
@@ -1776,6 +2075,76 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getUnsignedKeyword_1() { return cUnsignedKeyword_1; }
 	}
 
+	public class SimpleStmtKeywordElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "SimpleStmtKeyword");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final Keyword cBreakKeyword_0 = (Keyword)cAlternatives.eContents().get(0);
+		private final Keyword cContinueKeyword_1 = (Keyword)cAlternatives.eContents().get(1);
+		private final Keyword cReturnKeyword_2 = (Keyword)cAlternatives.eContents().get(2);
+		
+		//SimpleStmtKeyword returns SimpleStmtKeywordEnum:
+		//	"break" | "continue" | "return";
+		@Override public ParserRule getRule() { return rule; }
+
+		//"break" | "continue" | "return"
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//"break"
+		public Keyword getBreakKeyword_0() { return cBreakKeyword_0; }
+
+		//"continue"
+		public Keyword getContinueKeyword_1() { return cContinueKeyword_1; }
+
+		//"return"
+		public Keyword getReturnKeyword_2() { return cReturnKeyword_2; }
+	}
+
+	public class ForAllFunctionElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "ForAllFunction");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final Keyword cForall_nodeKeyword_0 = (Keyword)cAlternatives.eContents().get(0);
+		private final Keyword cFORALL_NODEKeyword_1 = (Keyword)cAlternatives.eContents().get(1);
+		private final Keyword cForall_otherKeyword_2 = (Keyword)cAlternatives.eContents().get(2);
+		private final Keyword cFORALL_OTHERKeyword_3 = (Keyword)cAlternatives.eContents().get(3);
+		private final Keyword cForall_other_lowerKeyword_4 = (Keyword)cAlternatives.eContents().get(4);
+		private final Keyword cFORALL_OTHER_LOWERKeyword_5 = (Keyword)cAlternatives.eContents().get(5);
+		private final Keyword cForall_other_higherKeyword_6 = (Keyword)cAlternatives.eContents().get(6);
+		private final Keyword cFORALL_OTHER_HIGHERKeyword_7 = (Keyword)cAlternatives.eContents().get(7);
+		
+		//ForAllFunction returns ForAllFunctionEnum:
+		//	"forall_node" | "FORALL_NODE" | "forall_other" | "FORALL_OTHER" | "forall_other_lower" | "FORALL_OTHER_LOWER" |
+		//	"forall_other_higher" | "FORALL_OTHER_HIGHER";
+		@Override public ParserRule getRule() { return rule; }
+
+		//"forall_node" | "FORALL_NODE" | "forall_other" | "FORALL_OTHER" | "forall_other_lower" | "FORALL_OTHER_LOWER" |
+		//"forall_other_higher" | "FORALL_OTHER_HIGHER"
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//"forall_node"
+		public Keyword getForall_nodeKeyword_0() { return cForall_nodeKeyword_0; }
+
+		//"FORALL_NODE"
+		public Keyword getFORALL_NODEKeyword_1() { return cFORALL_NODEKeyword_1; }
+
+		//"forall_other"
+		public Keyword getForall_otherKeyword_2() { return cForall_otherKeyword_2; }
+
+		//"FORALL_OTHER"
+		public Keyword getFORALL_OTHERKeyword_3() { return cFORALL_OTHERKeyword_3; }
+
+		//"forall_other_lower"
+		public Keyword getForall_other_lowerKeyword_4() { return cForall_other_lowerKeyword_4; }
+
+		//"FORALL_OTHER_LOWER"
+		public Keyword getFORALL_OTHER_LOWERKeyword_5() { return cFORALL_OTHER_LOWERKeyword_5; }
+
+		//"forall_other_higher"
+		public Keyword getForall_other_higherKeyword_6() { return cForall_other_higherKeyword_6; }
+
+		//"FORALL_OTHER_HIGHER"
+		public Keyword getFORALL_OTHER_HIGHERKeyword_7() { return cFORALL_OTHER_HIGHERKeyword_7; }
+	}
+
 	public class BuiltInFunctionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "BuiltInFunction");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
@@ -1967,6 +2336,86 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 		//"unsigned"
 		public Keyword getUnsignedUnsignedKeyword_2_0() { return cUnsignedUnsignedKeyword_2_0; }
+	}
+
+	public class SimpleStmtKeywordEnumElements extends AbstractEnumRuleElementFinder {
+		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "SimpleStmtKeywordEnum");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final EnumLiteralDeclaration cBreakEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
+		private final Keyword cBreakBreakKeyword_0_0 = (Keyword)cBreakEnumLiteralDeclaration_0.eContents().get(0);
+		private final EnumLiteralDeclaration cContinueEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
+		private final Keyword cContinueContinueKeyword_1_0 = (Keyword)cContinueEnumLiteralDeclaration_1.eContents().get(0);
+		private final EnumLiteralDeclaration cReturnEnumLiteralDeclaration_2 = (EnumLiteralDeclaration)cAlternatives.eContents().get(2);
+		private final Keyword cReturnReturnKeyword_2_0 = (Keyword)cReturnEnumLiteralDeclaration_2.eContents().get(0);
+		
+		//enum SimpleStmtKeywordEnum:
+		//	break | continue | return;
+		public EnumRule getRule() { return rule; }
+
+		//break | continue | return
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//break
+		public EnumLiteralDeclaration getBreakEnumLiteralDeclaration_0() { return cBreakEnumLiteralDeclaration_0; }
+
+		//"break"
+		public Keyword getBreakBreakKeyword_0_0() { return cBreakBreakKeyword_0_0; }
+
+		//continue
+		public EnumLiteralDeclaration getContinueEnumLiteralDeclaration_1() { return cContinueEnumLiteralDeclaration_1; }
+
+		//"continue"
+		public Keyword getContinueContinueKeyword_1_0() { return cContinueContinueKeyword_1_0; }
+
+		//return
+		public EnumLiteralDeclaration getReturnEnumLiteralDeclaration_2() { return cReturnEnumLiteralDeclaration_2; }
+
+		//"return"
+		public Keyword getReturnReturnKeyword_2_0() { return cReturnReturnKeyword_2_0; }
+	}
+
+	public class ForAllFunctionEnumElements extends AbstractEnumRuleElementFinder {
+		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "ForAllFunctionEnum");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final EnumLiteralDeclaration cForall_nodeEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
+		private final Keyword cForall_nodeForall_nodeKeyword_0_0 = (Keyword)cForall_nodeEnumLiteralDeclaration_0.eContents().get(0);
+		private final EnumLiteralDeclaration cForall_otherEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
+		private final Keyword cForall_otherForall_otherKeyword_1_0 = (Keyword)cForall_otherEnumLiteralDeclaration_1.eContents().get(0);
+		private final EnumLiteralDeclaration cForall_other_lowerEnumLiteralDeclaration_2 = (EnumLiteralDeclaration)cAlternatives.eContents().get(2);
+		private final Keyword cForall_other_lowerForall_other_lowerKeyword_2_0 = (Keyword)cForall_other_lowerEnumLiteralDeclaration_2.eContents().get(0);
+		private final EnumLiteralDeclaration cForall_other_higherEnumLiteralDeclaration_3 = (EnumLiteralDeclaration)cAlternatives.eContents().get(3);
+		private final Keyword cForall_other_higherForall_other_higherKeyword_3_0 = (Keyword)cForall_other_higherEnumLiteralDeclaration_3.eContents().get(0);
+		
+		//enum ForAllFunctionEnum:
+		//	forall_node | forall_other | forall_other_lower | forall_other_higher;
+		public EnumRule getRule() { return rule; }
+
+		//forall_node | forall_other | forall_other_lower | forall_other_higher
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//forall_node
+		public EnumLiteralDeclaration getForall_nodeEnumLiteralDeclaration_0() { return cForall_nodeEnumLiteralDeclaration_0; }
+
+		//"forall_node"
+		public Keyword getForall_nodeForall_nodeKeyword_0_0() { return cForall_nodeForall_nodeKeyword_0_0; }
+
+		//forall_other
+		public EnumLiteralDeclaration getForall_otherEnumLiteralDeclaration_1() { return cForall_otherEnumLiteralDeclaration_1; }
+
+		//"forall_other"
+		public Keyword getForall_otherForall_otherKeyword_1_0() { return cForall_otherForall_otherKeyword_1_0; }
+
+		//forall_other_lower
+		public EnumLiteralDeclaration getForall_other_lowerEnumLiteralDeclaration_2() { return cForall_other_lowerEnumLiteralDeclaration_2; }
+
+		//"forall_other_lower"
+		public Keyword getForall_other_lowerForall_other_lowerKeyword_2_0() { return cForall_other_lowerForall_other_lowerKeyword_2_0; }
+
+		//forall_other_higher
+		public EnumLiteralDeclaration getForall_other_higherEnumLiteralDeclaration_3() { return cForall_other_higherEnumLiteralDeclaration_3; }
+
+		//"forall_other_higher"
+		public Keyword getForall_other_higherForall_other_higherKeyword_3_0() { return cForall_other_higherForall_other_higherKeyword_3_0; }
 	}
 
 	public class EqualityOperatorElements extends AbstractEnumRuleElementFinder {
@@ -2232,6 +2681,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final FnPrototypeElements pFnPrototype;
 	private final ParamElements pParam;
 	private final VarInitListElements pVarInitList;
+	private final StmtListElements pStmtList;
+	private final StmtElements pStmt;
 	private final LValElements pLVal;
 	private final ExprElements pExpr;
 	private final OrExprElements pOrExpr;
@@ -2253,6 +2704,10 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final SimpTypeElements pSimpType;
 	private final SignedEnumElements unknownRuleSignedEnum;
 	private final SignedElements pSigned;
+	private final SimpleStmtKeywordEnumElements unknownRuleSimpleStmtKeywordEnum;
+	private final SimpleStmtKeywordElements pSimpleStmtKeyword;
+	private final ForAllFunctionEnumElements unknownRuleForAllFunctionEnum;
+	private final ForAllFunctionElements pForAllFunction;
 	private final EqualityOperatorElements unknownRuleEqualityOperator;
 	private final CompareOperatorElements unknownRuleCompareOperator;
 	private final ShiftOperatorElements unknownRuleShiftOperator;
@@ -2292,6 +2747,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pFnPrototype = new FnPrototypeElements();
 		this.pParam = new ParamElements();
 		this.pVarInitList = new VarInitListElements();
+		this.pStmtList = new StmtListElements();
+		this.pStmt = new StmtElements();
 		this.pLVal = new LValElements();
 		this.pExpr = new ExprElements();
 		this.pOrExpr = new OrExprElements();
@@ -2313,6 +2770,10 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pSimpType = new SimpTypeElements();
 		this.unknownRuleSignedEnum = new SignedEnumElements();
 		this.pSigned = new SignedElements();
+		this.unknownRuleSimpleStmtKeywordEnum = new SimpleStmtKeywordEnumElements();
+		this.pSimpleStmtKeyword = new SimpleStmtKeywordElements();
+		this.unknownRuleForAllFunctionEnum = new ForAllFunctionEnumElements();
+		this.pForAllFunction = new ForAllFunctionElements();
 		this.unknownRuleEqualityOperator = new EqualityOperatorElements();
 		this.unknownRuleCompareOperator = new CompareOperatorElements();
 		this.unknownRuleShiftOperator = new ShiftOperatorElements();
@@ -2504,7 +2965,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//FnBody: //TODO var_init_list and stmt_list
-	//	"{" varInitList=VarInitList "}";
+	//	"{" varInitList=VarInitList stmtList=StmtList "}";
 	public FnBodyElements getFnBodyAccess() {
 		return pFnBody;
 	}
@@ -2543,6 +3004,30 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getVarInitListRule() {
 		return getVarInitListAccess().getRule();
+	}
+
+	//StmtList:
+	//	{StmtList} stmts+=Stmt*;
+	public StmtListElements getStmtListAccess() {
+		return pStmtList;
+	}
+	
+	public ParserRule getStmtListRule() {
+		return getStmtListAccess().getRule();
+	}
+
+	//Stmt:
+	//	{NestedStmt} "{" stmtList=StmtList "}" | {AssignmentStmt} variable=LVal "=" value=Expr ";" | {WhileStmt} "while" "("
+	//	condition=Expr ")" stmt=Stmt | //TODO for and cond_stmt
+	//	{SimpleStmt} name=SimpleStmtKeyword ";" | {ReturnValueStmt} "return" value=Expr ";" | CallExpr ";" | {ForAllStmt}
+	//	name=ForAllFunction "(" node=TIDENTIFIER ")" stmt=Stmt | {FadnpStmt} ("forall_distinct_node_pair" |
+	//	"FORALL_DISTINCT_NODE_PAIR") "(" node1=TIDENTIFIER "," node2=TIDENTIFIER ")" stmt=Stmt;
+	public StmtElements getStmtAccess() {
+		return pStmt;
+	}
+	
+	public ParserRule getStmtRule() {
+		return getStmtAccess().getRule();
 	}
 
 	//LVal:
@@ -2755,6 +3240,47 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getSignedRule() {
 		return getSignedAccess().getRule();
+	}
+
+	//enum SimpleStmtKeywordEnum:
+	//	break | continue | return;
+	public SimpleStmtKeywordEnumElements getSimpleStmtKeywordEnumAccess() {
+		return unknownRuleSimpleStmtKeywordEnum;
+	}
+	
+	public EnumRule getSimpleStmtKeywordEnumRule() {
+		return getSimpleStmtKeywordEnumAccess().getRule();
+	}
+
+	//SimpleStmtKeyword returns SimpleStmtKeywordEnum:
+	//	"break" | "continue" | "return";
+	public SimpleStmtKeywordElements getSimpleStmtKeywordAccess() {
+		return pSimpleStmtKeyword;
+	}
+	
+	public ParserRule getSimpleStmtKeywordRule() {
+		return getSimpleStmtKeywordAccess().getRule();
+	}
+
+	//enum ForAllFunctionEnum:
+	//	forall_node | forall_other | forall_other_lower | forall_other_higher;
+	public ForAllFunctionEnumElements getForAllFunctionEnumAccess() {
+		return unknownRuleForAllFunctionEnum;
+	}
+	
+	public EnumRule getForAllFunctionEnumRule() {
+		return getForAllFunctionEnumAccess().getRule();
+	}
+
+	//ForAllFunction returns ForAllFunctionEnum:
+	//	"forall_node" | "FORALL_NODE" | "forall_other" | "FORALL_OTHER" | "forall_other_lower" | "FORALL_OTHER_LOWER" |
+	//	"forall_other_higher" | "FORALL_OTHER_HIGHER";
+	public ForAllFunctionElements getForAllFunctionAccess() {
+		return pForAllFunction;
+	}
+	
+	public ParserRule getForAllFunctionRule() {
+		return getForAllFunctionAccess().getRule();
 	}
 
 	//enum EqualityOperator:

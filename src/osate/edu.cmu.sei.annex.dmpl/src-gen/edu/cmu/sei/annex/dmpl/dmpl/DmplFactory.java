@@ -185,6 +185,24 @@ public interface DmplFactory extends EFactory
   VarInitList createVarInitList();
 
   /**
+   * Returns a new object of class '<em>Stmt List</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Stmt List</em>'.
+   * @generated
+   */
+  StmtList createStmtList();
+
+  /**
+   * Returns a new object of class '<em>Stmt</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Stmt</em>'.
+   * @generated
+   */
+  Stmt createStmt();
+
+  /**
    * Returns a new object of class '<em>LVal</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -282,6 +300,69 @@ public interface DmplFactory extends EFactory
    * @generated
    */
   FnPrototypeDeclaration createFnPrototypeDeclaration();
+
+  /**
+   * Returns a new object of class '<em>Nested Stmt</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Nested Stmt</em>'.
+   * @generated
+   */
+  NestedStmt createNestedStmt();
+
+  /**
+   * Returns a new object of class '<em>Assignment Stmt</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Assignment Stmt</em>'.
+   * @generated
+   */
+  AssignmentStmt createAssignmentStmt();
+
+  /**
+   * Returns a new object of class '<em>While Stmt</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>While Stmt</em>'.
+   * @generated
+   */
+  WhileStmt createWhileStmt();
+
+  /**
+   * Returns a new object of class '<em>Simple Stmt</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Simple Stmt</em>'.
+   * @generated
+   */
+  SimpleStmt createSimpleStmt();
+
+  /**
+   * Returns a new object of class '<em>Return Value Stmt</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Return Value Stmt</em>'.
+   * @generated
+   */
+  ReturnValueStmt createReturnValueStmt();
+
+  /**
+   * Returns a new object of class '<em>For All Stmt</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>For All Stmt</em>'.
+   * @generated
+   */
+  ForAllStmt createForAllStmt();
+
+  /**
+   * Returns a new object of class '<em>Fadnp Stmt</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Fadnp Stmt</em>'.
+   * @generated
+   */
+  FadnpStmt createFadnpStmt();
 
   /**
    * Returns a new object of class '<em>Ternary Expr</em>'.

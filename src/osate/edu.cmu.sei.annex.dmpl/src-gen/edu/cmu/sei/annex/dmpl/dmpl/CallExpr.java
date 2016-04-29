@@ -22,7 +22,7 @@ package edu.cmu.sei.annex.dmpl.dmpl;
  * @model
  * @generated
  */
-public interface CallExpr extends Expr
+public interface CallExpr extends Stmt, Expr
 {
   /**
    * Returns the value of the '<em><b>Namespace</b></em>' attribute.

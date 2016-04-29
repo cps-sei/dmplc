@@ -2,6 +2,7 @@ package edu.cmu.sei.annex.dmpl.conversion
 
 import edu.cmu.sei.annex.dmpl.dmpl.BuiltInFunctionEnum
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage
+import edu.cmu.sei.annex.dmpl.dmpl.ForAllFunctionEnum
 import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum
 import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.xtext.common.services.DefaultTerminalConverters
@@ -70,6 +71,27 @@ class DmplValueConverterService extends DefaultTerminalConverters {
 			
 			override toString(BuiltInFunctionEnum value) throws ValueConverterException {
 				builtInFunctionEnumConverter.toString(value)
+			}
+		}
+	}
+	
+	@ValueConverter(rule = "ForAllFunction")
+	def IValueConverter<ForAllFunctionEnum> ForAllFunction() {
+		new IValueConverter<ForAllFunctionEnum> {
+			val forAllFunctionEnumConverter = new EFactoryValueConverter(DmplPackage.eINSTANCE.forAllFunctionEnum)
+			
+			override toValue(String string, INode node) throws ValueConverterException {
+				switch string?.trim {
+					case "FORALL_NODE": ForAllFunctionEnum.FORALL_NODE
+					case "FORALL_OTHER": ForAllFunctionEnum.FORALL_OTHER
+					case "FORALL_OTHER_LOWER": ForAllFunctionEnum.FORALL_OTHER_LOWER
+					case "FORALL_OTHER_HIGHER": ForAllFunctionEnum.FORALL_OTHER_HIGHER
+					default: forAllFunctionEnumConverter.toValue(string, node) as ForAllFunctionEnum
+				}
+			}
+			
+			override toString(ForAllFunctionEnum value) throws ValueConverterException {
+				forAllFunctionEnumConverter.toString(value)
 			}
 		}
 	}

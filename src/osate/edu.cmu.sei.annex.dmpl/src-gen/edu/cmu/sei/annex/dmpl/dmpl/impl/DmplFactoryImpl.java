@@ -83,6 +83,8 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.FN_PROTOTYPE: return createFnPrototype();
       case DmplPackage.PARAM: return createParam();
       case DmplPackage.VAR_INIT_LIST: return createVarInitList();
+      case DmplPackage.STMT_LIST: return createStmtList();
+      case DmplPackage.STMT: return createStmt();
       case DmplPackage.LVAL: return createLVal();
       case DmplPackage.EXPR: return createExpr();
       case DmplPackage.CALL_EXPR: return createCallExpr();
@@ -94,6 +96,13 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.ID_DIMENSION: return createIdDimension();
       case DmplPackage.THREAD_DECLARATION: return createThreadDeclaration();
       case DmplPackage.FN_PROTOTYPE_DECLARATION: return createFnPrototypeDeclaration();
+      case DmplPackage.NESTED_STMT: return createNestedStmt();
+      case DmplPackage.ASSIGNMENT_STMT: return createAssignmentStmt();
+      case DmplPackage.WHILE_STMT: return createWhileStmt();
+      case DmplPackage.SIMPLE_STMT: return createSimpleStmt();
+      case DmplPackage.RETURN_VALUE_STMT: return createReturnValueStmt();
+      case DmplPackage.FOR_ALL_STMT: return createForAllStmt();
+      case DmplPackage.FADNP_STMT: return createFadnpStmt();
       case DmplPackage.TERNARY_EXPR: return createTernaryExpr();
       case DmplPackage.OR_EXPR: return createOrExpr();
       case DmplPackage.AND_EXPR: return createAndExpr();
@@ -132,6 +141,10 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
         return createSimpTypeEnumFromString(eDataType, initialValue);
       case DmplPackage.SIGNED_ENUM:
         return createSignedEnumFromString(eDataType, initialValue);
+      case DmplPackage.SIMPLE_STMT_KEYWORD_ENUM:
+        return createSimpleStmtKeywordEnumFromString(eDataType, initialValue);
+      case DmplPackage.FOR_ALL_FUNCTION_ENUM:
+        return createForAllFunctionEnumFromString(eDataType, initialValue);
       case DmplPackage.EQUALITY_OPERATOR:
         return createEqualityOperatorFromString(eDataType, initialValue);
       case DmplPackage.COMPARE_OPERATOR:
@@ -167,6 +180,10 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
         return convertSimpTypeEnumToString(eDataType, instanceValue);
       case DmplPackage.SIGNED_ENUM:
         return convertSignedEnumToString(eDataType, instanceValue);
+      case DmplPackage.SIMPLE_STMT_KEYWORD_ENUM:
+        return convertSimpleStmtKeywordEnumToString(eDataType, instanceValue);
+      case DmplPackage.FOR_ALL_FUNCTION_ENUM:
+        return convertForAllFunctionEnumToString(eDataType, instanceValue);
       case DmplPackage.EQUALITY_OPERATOR:
         return convertEqualityOperatorToString(eDataType, instanceValue);
       case DmplPackage.COMPARE_OPERATOR:
@@ -389,6 +406,28 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  public StmtList createStmtList()
+  {
+    StmtListImpl stmtList = new StmtListImpl();
+    return stmtList;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Stmt createStmt()
+  {
+    StmtImpl stmt = new StmtImpl();
+    return stmt;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public LVal createLVal()
   {
     LValImpl lVal = new LValImpl();
@@ -503,6 +542,83 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     FnPrototypeDeclarationImpl fnPrototypeDeclaration = new FnPrototypeDeclarationImpl();
     return fnPrototypeDeclaration;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NestedStmt createNestedStmt()
+  {
+    NestedStmtImpl nestedStmt = new NestedStmtImpl();
+    return nestedStmt;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public AssignmentStmt createAssignmentStmt()
+  {
+    AssignmentStmtImpl assignmentStmt = new AssignmentStmtImpl();
+    return assignmentStmt;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public WhileStmt createWhileStmt()
+  {
+    WhileStmtImpl whileStmt = new WhileStmtImpl();
+    return whileStmt;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public SimpleStmt createSimpleStmt()
+  {
+    SimpleStmtImpl simpleStmt = new SimpleStmtImpl();
+    return simpleStmt;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ReturnValueStmt createReturnValueStmt()
+  {
+    ReturnValueStmtImpl returnValueStmt = new ReturnValueStmtImpl();
+    return returnValueStmt;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ForAllStmt createForAllStmt()
+  {
+    ForAllStmtImpl forAllStmt = new ForAllStmtImpl();
+    return forAllStmt;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public FadnpStmt createFadnpStmt()
+  {
+    FadnpStmtImpl fadnpStmt = new FadnpStmtImpl();
+    return fadnpStmt;
   }
 
   /**
@@ -754,6 +870,50 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * @generated
    */
   public String convertSignedEnumToString(EDataType eDataType, Object instanceValue)
+  {
+    return instanceValue == null ? null : instanceValue.toString();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public SimpleStmtKeywordEnum createSimpleStmtKeywordEnumFromString(EDataType eDataType, String initialValue)
+  {
+    SimpleStmtKeywordEnum result = SimpleStmtKeywordEnum.get(initialValue);
+    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+    return result;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertSimpleStmtKeywordEnumToString(EDataType eDataType, Object instanceValue)
+  {
+    return instanceValue == null ? null : instanceValue.toString();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ForAllFunctionEnum createForAllFunctionEnumFromString(EDataType eDataType, String initialValue)
+  {
+    ForAllFunctionEnum result = ForAllFunctionEnum.get(initialValue);
+    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+    return result;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertForAllFunctionEnumToString(EDataType eDataType, Object instanceValue)
   {
     return instanceValue == null ? null : instanceValue.toString();
   }

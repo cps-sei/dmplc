@@ -31,7 +31,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class CallExprImpl extends ExprImpl implements CallExpr
+public class CallExprImpl extends StmtImpl implements CallExpr
 {
   /**
    * The default value of the '{@link #getNamespace() <em>Namespace</em>}' attribute.

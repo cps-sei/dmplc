@@ -24,6 +24,17 @@
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SignedEnum/signed"/>
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SignedEnum/unsigned"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Dmpl.ecore#//SimpleStmtKeywordEnum">
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SimpleStmtKeywordEnum/break"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SimpleStmtKeywordEnum/continue"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//SimpleStmtKeywordEnum/return"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Dmpl.ecore#//ForAllFunctionEnum">
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//ForAllFunctionEnum/forall_node"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//ForAllFunctionEnum/forall_other"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//ForAllFunctionEnum/forall_other_lower"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//ForAllFunctionEnum/forall_other_higher"/>
+    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Dmpl.ecore#//EqualityOperator">
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//EqualityOperator/EQUAL"/>
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//EqualityOperator/NOT_EQUAL"/>
@@ -104,6 +115,7 @@
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//FnBody">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnBody/varInitList"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnBody/stmtList"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//FnPrototype">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//FnPrototype/extern"/>
@@ -117,6 +129,10 @@
     <genClasses ecoreClass="Dmpl.ecore#//VarInitList">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//VarInitList/varInits"/>
     </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//StmtList">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//StmtList/stmts"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//Stmt"/>
     <genClasses ecoreClass="Dmpl.ecore#//LVal">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//LVal/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//LVal/indices"/>
@@ -149,6 +165,33 @@
     <genClasses ecoreClass="Dmpl.ecore#//FnPrototypeDeclaration">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnPrototypeDeclaration/type"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnPrototypeDeclaration/params"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//NestedStmt">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//NestedStmt/stmtList"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//AssignmentStmt">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//AssignmentStmt/variable"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//AssignmentStmt/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//WhileStmt">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//WhileStmt/condition"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//WhileStmt/stmt"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//SimpleStmt">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//SimpleStmt/name"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//ReturnValueStmt">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//ReturnValueStmt/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//ForAllStmt">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//ForAllStmt/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//ForAllStmt/node"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//ForAllStmt/stmt"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//FadnpStmt">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//FadnpStmt/node1"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//FadnpStmt/node2"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FadnpStmt/stmt"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//TernaryExpr">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//TernaryExpr/condition"/>
