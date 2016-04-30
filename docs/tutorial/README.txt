@@ -148,6 +148,8 @@ both evader and pursuer.
 
 example-12d: Like example-12c but the nodes move diagonally.
 
+example-12d-3D: Like example-12d but the nodes move in 3D.
+
 Subdirectories:
 --------------
 

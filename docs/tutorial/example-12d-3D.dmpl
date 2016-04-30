@@ -1,0 +1,320 @@
+/**
+ * Copyright (c) 2015 Carnegie Mellon University. All Rights Reserved.
+
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+
+ * 1. Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following acknowledgments
+ * and disclaimers.
+
+ * 2. Redistributions in binary form must reproduce the above
+ * copyright notice, this list of conditions and the following
+ * disclaimer in the documentation and/or other materials provided
+ * with the distribution.
+
+ * 3. The names "Carnegie Mellon University," "SEI" and/or "Software
+ * Engineering Institute" shall not be used to endorse or promote
+ * products derived from this software without prior written
+ * permission. For written permission, please contact
+ * permission@sei.cmu.edu.
+
+ * 4. Products derived from this software may not be called "SEI" nor
+ * may "SEI" appear in their names without prior written permission of
+ * permission@sei.cmu.edu.
+
+ * 5. Redistributions of any form whatsoever must retain the following
+ * acknowledgment:
+
+ * This material is based upon work funded and supported by the
+ * Department of Defense under Contract No. FA8721-05-C-0003 with
+ * Carnegie Mellon University for the operation of the Software
+ * Engineering Institute, a federally funded research and development
+ * center.
+
+ * Any opinions, findings and conclusions or recommendations expressed
+ * in this material are those of the author(s) and do not necessarily
+ * reflect the views of the United States Department of Defense.
+
+ * NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE
+ * ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS"
+ * BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND,
+ * EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT
+ * LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY,
+ * EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE
+ * MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH
+ * RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT
+ * INFRINGEMENT.
+
+ * This material has been approved for public release and unlimited
+ * distribution.
+
+ * DM-0002494
+**/
+
+//-- this is a generic example demonstrating the synchronous collision
+//-- avoidance algorithm
+
+target GNU_CPP,WIN_CPP %%{
+#define GNU_WIN
+#include <stdlib.h>
+#include "madara/utility/Utility.h"
+
+int my_sleep (int seconds)
+{
+  madara::utility::sleep (seconds);
+  return 0;
+}
+
+int roundNum = 0;
+int xi,yi;
+
+void print_int(int i)
+{
+  printf("%i\n", i);
+}
+
+void print_line(int _X)
+{
+  printf("-");
+  for(int i = 0;i < _X;++i) printf("--");
+  printf("\n");
+}
+
+void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
+{
+  if(roundNum == 0) {
+    xi = x; yi = y;
+  }
+
+  for(int i = 0;i < 150;++i) printf("\n");
+  
+  printf("round = %d : id = %d\n", ++roundNum, id);
+  printf("_X = %d _Y = %d\n",_X,_Y);
+  print_line(_X);
+  for(int i = 0;i < _Y;++i) {
+    printf("|");
+    for(int j = 0;j < _X;++j) {
+      //printf("i = %d j = %d\n", i, j);
+      if(j == xf && i == yf) printf("o|");        
+      else if(j == x && i == y) printf("%d|",id);
+      else printf(" |");
+    }
+    printf("\n");
+    print_line(_X);
+  }
+}
+%%}
+
+extern int my_sleep(int seconds);
+extern void print_state(int XX,int YY,int my_id, int x, int y, int xf, int yf);
+extern void print_int(int i);
+
+//-- states of the UAV
+const REST = 1;
+const MOVE = 2;
+
+node uav
+{
+  //-- the quadrant in which the evader is located. the pursuer is
+  //-- always located in the diametrically opposite quadrant.
+  local int input quadrant;
+  
+  //-- initial coordinates. this assumes quadrant 0 and is updated
+  //-- according to the quadrant.
+  local int input ix ~ (0 <= ix && ix < X);
+  local int input iy ~ (0 <= iy && iy < Y);
+  local int input iz ~ (0 <= iz && iz < Z);
+
+  //-- a slowdown factor of evader compared to the pursuer
+  local int input slowdown;
+
+  //-- current coordinates
+  global int x, y, z;
+
+  //-- next coordinates
+  local int xp = x, yp = y, zp = z; 
+
+  //-- final coordinates
+  local int xf = 0, yf = 0, zf = 0;
+
+  //-- state of the node
+  local int state = REST;
+
+  //-- a counter used to implement slowdown
+  local int slow_count = 0;
+
+  //-- square of distance between two coordinates
+  int dist2(int x1, int y1, int z1, int x2, int y2, int z2)
+  {
+    return (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) + (z1 - z2) * (z1 - z2);
+  }
+  
+  //-- saves the next waypoint in (xp,yp,zp)
+  void NEXT_XYZ () {
+    xp = x; yp = y; zp = z;
+    if(x < xf) xp = x + 1;
+    else if(x > xf) xp = x - 1;
+    else if(y < yf) yp = y + 1;
+    else if(y > yf) yp = y - 1;
+    else if(z < zf) zp = z + 1;
+    else zp = z - 1;
+  }
+
+  //-- use this instead of NEXT_XYZ to enable diagonal movement. note
+  //-- collision avoidance is not guaranteed under such movement.
+  bool NEXT_XYZ_DIAGONAL ()
+  {
+    xp = x; yp = y; zp = z;
+    if(x < xf) xp = x + 1;
+    if(x > xf) xp = x - 1;
+    if(y < yf) yp = y + 1;
+    if(y > yf) yp = y - 1;
+    if(z < zf) zp = z + 1;
+    if(z > zf) zp = z - 1;
+    return 0;
+  }
+  
+  
+  //-- saves the next waypoint in (xp,yp). also updates the angle of
+  //-- movement. this has zig-zag movement. for reference only. not
+  //-- actually used.
+  bool NEXT_XY_ZIG_ZAG () {
+    unsigned char xdiff,ydiff;
+
+    xp = x; yp = y;
+
+    xdiff = xf-x;
+    if(xdiff < 0) xdiff = -xdiff;
+    ydiff = yf-y;
+    if(ydiff < 0) ydiff = -ydiff;
+
+    if(xdiff > ydiff) {
+      if(x < xf) {
+        xp = x + 1;
+      } else {
+        xp = x - 1;
+      }
+    } else {
+      if(y < yf) {
+        yp = y + 1;
+      } else {
+        yp = y - 1;
+      }
+    }
+
+    return 0;
+  }
+
+  /*******************************************************************/
+  //-- evader role
+  /*******************************************************************/
+  role Evader {
+    //-- actual initial position. based on ix, iy and quadrant
+    override global int x = ix;
+    override global int y = iy;
+    override global int z = iz;
+
+    //-- pursuer initial locations
+    local int input pursuer_ix, input pursuer_iy, input pursuer_iz;
+    
+    //-- timeout for chase duration
+    local int input timeout;
+
+    //-- safety location -- extreme corner of the quadrant in which
+    //-- evader is initially located
+    local int safety_x = (x < pursuer_ix) ? 0 : 19;
+    local int safety_y = (y < pursuer_iy) ? 0 : 19;
+    local int safety_z = (z < pursuer_iz) ? 0 : 19;
+
+    //-- mission success flag
+    local bool success = 0;
+
+    //-- mission success property
+    pure int expProp1Func()
+    {
+      return success;
+    }
+    expect expProp1 : at_end => expProp1Func; 
+
+    //-- counter for chase duration
+    local int chase_count = 0;
+    
+    @Period(100000);
+    @PlatformController;
+    thread EVADE {
+      if(chase_count >= timeout) {
+        success = 1;
+        PRINT("EVADER SUCCESS!!\n");
+        EXIT(id);
+      }
+      chase_count = chase_count + 1;
+      if(state == REST) {
+        if(slow_count < slowdown * 10) {
+          slow_count = slow_count+1;
+          return;
+        }
+        
+        xf = safety_x;
+        yf = safety_y;
+        zf = safety_z;
+        NEXT_XYZ_DIAGONAL();
+        state = MOVE;
+      }
+      if(state == MOVE) {
+        if(GRID_MOVE(xp,yp,zp)) return;
+        x = xp; y = yp; z = zp;
+        slow_count = 0;
+        state = REST;
+      }
+    }
+  }
+
+  /*******************************************************************/
+  //-- pursuer role
+  /*******************************************************************/
+  role Pursuer {
+    //-- actual initial position. based on ix, iy and quadrant
+    override global int x = ix;
+    override global int y = iy;
+    override global int z = iz;
+    
+    //-- range of pursuer
+    local int input pursuer_range;
+    
+    @Period(100000);
+    @PlatformController;
+    thread PURSUE {
+      if(dist2(x,y,z,x@Evader,y@Evader,z@Evader) <= pursuer_range * pursuer_range) {
+        PRINT("PURSUER SUCCESS!!\n");
+        EXIT(id);
+      }
+      if(state == REST) {
+        if(slow_count < slowdown * 10) {
+          slow_count = slow_count+1;
+          return;
+        }
+        
+        xf = x@Evader;
+        yf = y@Evader;
+        zf = z@Evader;
+        NEXT_XYZ_DIAGONAL();
+        state = MOVE;
+      }
+      if(state == MOVE) {
+        if(GRID_MOVE(xp,yp,zp)) return;
+        x = xp; y = yp; z = zp;
+        slow_count = 0;
+        state = REST;
+      }
+    }
+  }
+
+  @InitSim;
+  void StartingPosition ()
+  {
+    GRID_INIT();
+    GRID_PLACE(x, y, z);
+  }
+}
