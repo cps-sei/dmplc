@@ -47,7 +47,6 @@ import edu.cmu.sei.annex.dmpl.dmpl.Program;
 import edu.cmu.sei.annex.dmpl.dmpl.ReturnValueStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.ShiftExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmt;
-import edu.cmu.sei.annex.dmpl.dmpl.StmtList;
 import edu.cmu.sei.annex.dmpl.dmpl.TernaryExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.ThreadDeclaration;
 import edu.cmu.sei.annex.dmpl.dmpl.Type;
@@ -55,7 +54,6 @@ import edu.cmu.sei.annex.dmpl.dmpl.UnaryExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.Var;
 import edu.cmu.sei.annex.dmpl.dmpl.VarAsgn;
 import edu.cmu.sei.annex.dmpl.dmpl.VarInit;
-import edu.cmu.sei.annex.dmpl.dmpl.VarInitList;
 import edu.cmu.sei.annex.dmpl.dmpl.WhileStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.XorExpr;
 import edu.cmu.sei.annex.dmpl.services.DmplGrammarAccess;
@@ -203,9 +201,6 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 			case DmplPackage.SIMPLE_STMT:
 				sequence_Stmt(context, (SimpleStmt) semanticObject); 
 				return; 
-			case DmplPackage.STMT_LIST:
-				sequence_StmtList(context, (StmtList) semanticObject); 
-				return; 
 			case DmplPackage.TERNARY_EXPR:
 				sequence_Expr(context, (TernaryExpr) semanticObject); 
 				return; 
@@ -226,9 +221,6 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.VAR_INIT:
 				sequence_VarInit(context, (VarInit) semanticObject); 
-				return; 
-			case DmplPackage.VAR_INIT_LIST:
-				sequence_VarInitList(context, (VarInitList) semanticObject); 
 				return; 
 			case DmplPackage.WHILE_STMT:
 				sequence_Stmt(context, (WhileStmt) semanticObject); 
@@ -511,20 +503,10 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (varInitList=VarInitList stmtList=StmtList)
+	 *     (varInits+=VarInit* stmts+=Stmt*)
 	 */
 	protected void sequence_FnBody(EObject context, FnBody semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.FN_BODY__VAR_INIT_LIST) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.FN_BODY__VAR_INIT_LIST));
-			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.FN_BODY__STMT_LIST) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.FN_BODY__STMT_LIST));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getFnBodyAccess().getVarInitListVarInitListParserRuleCall_1_0(), semanticObject.getVarInitList());
-		feeder.accept(grammarAccess.getFnBodyAccess().getStmtListStmtListParserRuleCall_2_0(), semanticObject.getStmtList());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -682,15 +664,6 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (stmts+=Stmt*)
-	 */
-	protected void sequence_StmtList(EObject context, StmtList semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
 	 *     (attrList=AttrList? condition=Expr then=Stmt else=Stmt?)
 	 */
 	protected void sequence_Stmt(EObject context, CondStmt semanticObject) {
@@ -753,17 +726,10 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     stmtList=StmtList
+	 *     (stmts+=Stmt*)
 	 */
 	protected void sequence_Stmt(EObject context, NestedStmt semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.NESTED_STMT__STMT_LIST) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.NESTED_STMT__STMT_LIST));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getStmtAccess().getStmtListStmtListParserRuleCall_0_2_0(), semanticObject.getStmtList());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -941,15 +907,6 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     (input?='input'? var=Var)
 	 */
 	protected void sequence_VarAsgn(EObject context, VarAsgn semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (varInits+=VarInit*)
-	 */
-	protected void sequence_VarInitList(EObject context, VarInitList semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

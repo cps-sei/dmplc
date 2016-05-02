@@ -194,24 +194,6 @@ public interface DmplFactory extends EFactory
   Param createParam();
 
   /**
-   * Returns a new object of class '<em>Var Init List</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Var Init List</em>'.
-   * @generated
-   */
-  VarInitList createVarInitList();
-
-  /**
-   * Returns a new object of class '<em>Stmt List</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Stmt List</em>'.
-   * @generated
-   */
-  StmtList createStmtList();
-
-  /**
    * Returns a new object of class '<em>Stmt</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

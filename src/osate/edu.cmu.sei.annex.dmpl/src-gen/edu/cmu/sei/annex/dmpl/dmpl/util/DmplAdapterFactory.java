@@ -175,16 +175,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createParamAdapter();
       }
       @Override
-      public Adapter caseVarInitList(VarInitList object)
-      {
-        return createVarInitListAdapter();
-      }
-      @Override
-      public Adapter caseStmtList(StmtList object)
-      {
-        return createStmtListAdapter();
-      }
-      @Override
       public Adapter caseStmt(Stmt object)
       {
         return createStmtAdapter();
@@ -692,36 +682,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createParamAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.VarInitList <em>Var Init List</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.VarInitList
-   * @generated
-   */
-  public Adapter createVarInitListAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.StmtList <em>Stmt List</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.StmtList
-   * @generated
-   */
-  public Adapter createStmtListAdapter()
   {
     return null;
   }

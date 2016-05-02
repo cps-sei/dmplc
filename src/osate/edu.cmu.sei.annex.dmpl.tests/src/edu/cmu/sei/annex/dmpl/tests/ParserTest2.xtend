@@ -64,7 +64,7 @@ class ParserTest2 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+			(programElements.head as Procedure).procedure.fnBody => [
 				5.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
@@ -132,7 +132,7 @@ class ParserTest2 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+			(programElements.head as Procedure).procedure.fnBody => [
 				3.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
@@ -177,7 +177,7 @@ class ParserTest2 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+			(programElements.head as Procedure).procedure.fnBody => [
 				3.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
@@ -220,7 +220,7 @@ class ParserTest2 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+			(programElements.head as Procedure).procedure.fnBody => [
 				3.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
@@ -263,7 +263,7 @@ class ParserTest2 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+			(programElements.head as Procedure).procedure.fnBody => [
 				3.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
@@ -306,7 +306,7 @@ class ParserTest2 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+			(programElements.head as Procedure).procedure.fnBody => [
 				3.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
@@ -352,7 +352,7 @@ class ParserTest2 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+			(programElements.head as Procedure).procedure.fnBody => [
 				6.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
@@ -438,7 +438,7 @@ class ParserTest2 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+			(programElements.head as Procedure).procedure.fnBody => [
 				6.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head => [
 					"v1".assertEquals(^var.name)
@@ -482,7 +482,7 @@ class ParserTest2 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+			(programElements.head as Procedure).procedure.fnBody => [
 				3.assertEquals(varInits.size)
 				varInits.get(0) => [
 					SimpTypeEnum.INT.assertEquals(type.simpType)
@@ -522,18 +522,18 @@ class ParserTest2 {
 			assertNoIssues;
 			(programElements.get(0) as Procedure).procedure => [
 				"f1".assertEquals(prototype.name)
-				fnBody.varInitList.varInits.empty.assertTrue
+				fnBody.varInits.empty.assertTrue
 			]
 			(programElements.get(1) as Procedure).procedure => [
 				"f2".assertEquals(prototype.name)
-				fnBody.varInitList => [
+				fnBody => [
 					1.assertEquals(varInits.size)
 					"v1".assertEquals(varInits.head.varAsgns.head.^var.name)
 				]
 			]
 			(programElements.get(2) as Procedure).procedure => [
 				"f3".assertEquals(prototype.name)
-				fnBody.varInitList => [
+				fnBody => [
 					2.assertEquals(varInits.size)
 					"v2".assertEquals(varInits.get(0).varAsgns.head.^var.name)
 					"v3".assertEquals(varInits.get(1).varAsgns.head.^var.name)
@@ -591,12 +591,10 @@ class ParserTest2 {
 			assertNoIssues;
 			(programElements.head as Procedure).procedure => [
 				"f1".assertEquals(prototype.name)
-				fnBody.stmtList => [
+				fnBody => [
 					20.assertEquals(stmts.size)
-					stmts.get(0) as NestedStmt => [
-						stmtList.stmts.empty.assertTrue
-					]
-					(stmts.get(1) as NestedStmt).stmtList => [
+					(stmts.get(0) as NestedStmt).stmts.empty.assertTrue;
+					(stmts.get(1) as NestedStmt) => [
 						1.assertEquals(stmts.size)
 						stmts.head as AssignmentStmt => [
 							"v1".assertEquals(variable.name)
@@ -616,7 +614,7 @@ class ParserTest2 {
 					]
 					stmts.get(4) as WhileStmt => [
 						"v5".assertEquals((condition as LVal).name)
-						(stmt as NestedStmt).stmtList => [
+						stmt as NestedStmt => [
 							1.assertEquals(stmts.size)
 							stmts.head as AssignmentStmt => [
 								"v6".assertEquals(variable.name)
@@ -640,7 +638,7 @@ class ParserTest2 {
 					stmts.get(11) as ForAllStmt => [
 						ForAllFunctionEnum.FORALL_NODE.assertEquals(name)
 						"n2".assertEquals(node)
-						(stmt as NestedStmt).stmtList => [
+						stmt as NestedStmt => [
 							1.assertEquals(stmts.size)
 							stmts.head as AssignmentStmt => [
 								"v8".assertEquals(variable.name)
@@ -659,7 +657,7 @@ class ParserTest2 {
 					stmts.get(13) as FadnpStmt => [
 						"n5".assertEquals(node1)
 						"n6".assertEquals(node2)
-						(stmt as NestedStmt).stmtList => [
+						stmt as NestedStmt => [
 							1.assertEquals(stmts.size)
 							stmts.head as AssignmentStmt => [
 								"v10".assertEquals(variable.name)
@@ -678,7 +676,7 @@ class ParserTest2 {
 					stmts.get(15) as ForAllStmt => [
 						ForAllFunctionEnum.FORALL_OTHER.assertEquals(name)
 						"n8".assertEquals(node)
-						(stmt as NestedStmt).stmtList => [
+						stmt as NestedStmt => [
 							1.assertEquals(stmts.size)
 							stmts.head as AssignmentStmt => [
 								"v12".assertEquals(variable.name)
@@ -697,7 +695,7 @@ class ParserTest2 {
 					stmts.get(17) as ForAllStmt => [
 						ForAllFunctionEnum.FORALL_OTHER_LOWER.assertEquals(name)
 						"n10".assertEquals(node)
-						(stmt as NestedStmt).stmtList => [
+						stmt as NestedStmt => [
 							1.assertEquals(stmts.size)
 							stmts.head as AssignmentStmt => [
 								"v14".assertEquals(variable.name)
@@ -716,7 +714,7 @@ class ParserTest2 {
 					stmts.get(19) as ForAllStmt => [
 						ForAllFunctionEnum.FORALL_OTHER_HIGHER.assertEquals(name)
 						"n12".assertEquals(node)
-						(stmt as NestedStmt).stmtList => [
+						stmt as NestedStmt => [
 							1.assertEquals(stmts.size)
 							stmts.head as AssignmentStmt => [
 								"v16".assertEquals(variable.name)
@@ -744,7 +742,7 @@ class ParserTest2 {
 			assertNoIssues;
 			(programElements.head as Procedure).procedure => [
 				"f1".assertEquals(prototype.name)
-				fnBody.stmtList => [
+				fnBody => [
 					3.assertEquals(stmts.size)
 					stmts.get(0) as ForStmt => [
 						inits.empty.assertTrue
@@ -810,7 +808,7 @@ class ParserTest2 {
 			assertNoIssues;
 			(programElements.head as Procedure).procedure => [
 				"f1".assertEquals(prototype.name)
-				fnBody.stmtList => [
+				fnBody => [
 					1.assertEquals(stmts.size)
 					stmts.head as CondStmt => [
 						"v1".assertEquals((condition as LVal).name)
@@ -847,7 +845,7 @@ class ParserTest2 {
 			assertNoIssues;
 			(programElements.head as Procedure).procedure => [
 				"f1".assertEquals(prototype.name)
-				fnBody.stmtList => [
+				fnBody => [
 					3.assertEquals(stmts.size)
 					(stmts.get(0) as CondStmt).attrList => [
 						3.assertEquals(attrs.size)

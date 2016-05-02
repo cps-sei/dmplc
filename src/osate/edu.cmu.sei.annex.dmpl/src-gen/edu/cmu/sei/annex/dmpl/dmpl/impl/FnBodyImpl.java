@@ -4,17 +4,22 @@ package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.FnBody;
-import edu.cmu.sei.annex.dmpl.dmpl.StmtList;
-import edu.cmu.sei.annex.dmpl.dmpl.VarInitList;
+import edu.cmu.sei.annex.dmpl.dmpl.Stmt;
+import edu.cmu.sei.annex.dmpl.dmpl.VarInit;
 
-import org.eclipse.emf.common.notify.Notification;
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -24,8 +29,8 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnBodyImpl#getVarInitList <em>Var Init List</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnBodyImpl#getStmtList <em>Stmt List</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnBodyImpl#getVarInits <em>Var Inits</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnBodyImpl#getStmts <em>Stmts</em>}</li>
  * </ul>
  *
  * @generated
@@ -33,24 +38,24 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 public class FnBodyImpl extends MinimalEObjectImpl.Container implements FnBody
 {
   /**
-   * The cached value of the '{@link #getVarInitList() <em>Var Init List</em>}' containment reference.
+   * The cached value of the '{@link #getVarInits() <em>Var Inits</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getVarInitList()
+   * @see #getVarInits()
    * @generated
    * @ordered
    */
-  protected VarInitList varInitList;
+  protected EList<VarInit> varInits;
 
   /**
-   * The cached value of the '{@link #getStmtList() <em>Stmt List</em>}' containment reference.
+   * The cached value of the '{@link #getStmts() <em>Stmts</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getStmtList()
+   * @see #getStmts()
    * @generated
    * @ordered
    */
-  protected StmtList stmtList;
+  protected EList<Stmt> stmts;
 
   /**
    * <!-- begin-user-doc -->
@@ -78,26 +83,13 @@ public class FnBodyImpl extends MinimalEObjectImpl.Container implements FnBody
    * <!-- end-user-doc -->
    * @generated
    */
-  public VarInitList getVarInitList()
+  public EList<VarInit> getVarInits()
   {
-    return varInitList;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetVarInitList(VarInitList newVarInitList, NotificationChain msgs)
-  {
-    VarInitList oldVarInitList = varInitList;
-    varInitList = newVarInitList;
-    if (eNotificationRequired())
+    if (varInits == null)
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.FN_BODY__VAR_INIT_LIST, oldVarInitList, newVarInitList);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      varInits = new EObjectContainmentEList<VarInit>(VarInit.class, this, DmplPackage.FN_BODY__VAR_INITS);
     }
-    return msgs;
+    return varInits;
   }
 
   /**
@@ -105,68 +97,13 @@ public class FnBodyImpl extends MinimalEObjectImpl.Container implements FnBody
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setVarInitList(VarInitList newVarInitList)
+  public EList<Stmt> getStmts()
   {
-    if (newVarInitList != varInitList)
+    if (stmts == null)
     {
-      NotificationChain msgs = null;
-      if (varInitList != null)
-        msgs = ((InternalEObject)varInitList).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.FN_BODY__VAR_INIT_LIST, null, msgs);
-      if (newVarInitList != null)
-        msgs = ((InternalEObject)newVarInitList).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.FN_BODY__VAR_INIT_LIST, null, msgs);
-      msgs = basicSetVarInitList(newVarInitList, msgs);
-      if (msgs != null) msgs.dispatch();
+      stmts = new EObjectContainmentEList<Stmt>(Stmt.class, this, DmplPackage.FN_BODY__STMTS);
     }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.FN_BODY__VAR_INIT_LIST, newVarInitList, newVarInitList));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public StmtList getStmtList()
-  {
-    return stmtList;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetStmtList(StmtList newStmtList, NotificationChain msgs)
-  {
-    StmtList oldStmtList = stmtList;
-    stmtList = newStmtList;
-    if (eNotificationRequired())
-    {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.FN_BODY__STMT_LIST, oldStmtList, newStmtList);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
-    }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setStmtList(StmtList newStmtList)
-  {
-    if (newStmtList != stmtList)
-    {
-      NotificationChain msgs = null;
-      if (stmtList != null)
-        msgs = ((InternalEObject)stmtList).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.FN_BODY__STMT_LIST, null, msgs);
-      if (newStmtList != null)
-        msgs = ((InternalEObject)newStmtList).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.FN_BODY__STMT_LIST, null, msgs);
-      msgs = basicSetStmtList(newStmtList, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.FN_BODY__STMT_LIST, newStmtList, newStmtList));
+    return stmts;
   }
 
   /**
@@ -179,10 +116,10 @@ public class FnBodyImpl extends MinimalEObjectImpl.Container implements FnBody
   {
     switch (featureID)
     {
-      case DmplPackage.FN_BODY__VAR_INIT_LIST:
-        return basicSetVarInitList(null, msgs);
-      case DmplPackage.FN_BODY__STMT_LIST:
-        return basicSetStmtList(null, msgs);
+      case DmplPackage.FN_BODY__VAR_INITS:
+        return ((InternalEList<?>)getVarInits()).basicRemove(otherEnd, msgs);
+      case DmplPackage.FN_BODY__STMTS:
+        return ((InternalEList<?>)getStmts()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -197,10 +134,10 @@ public class FnBodyImpl extends MinimalEObjectImpl.Container implements FnBody
   {
     switch (featureID)
     {
-      case DmplPackage.FN_BODY__VAR_INIT_LIST:
-        return getVarInitList();
-      case DmplPackage.FN_BODY__STMT_LIST:
-        return getStmtList();
+      case DmplPackage.FN_BODY__VAR_INITS:
+        return getVarInits();
+      case DmplPackage.FN_BODY__STMTS:
+        return getStmts();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -210,16 +147,19 @@ public class FnBodyImpl extends MinimalEObjectImpl.Container implements FnBody
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case DmplPackage.FN_BODY__VAR_INIT_LIST:
-        setVarInitList((VarInitList)newValue);
+      case DmplPackage.FN_BODY__VAR_INITS:
+        getVarInits().clear();
+        getVarInits().addAll((Collection<? extends VarInit>)newValue);
         return;
-      case DmplPackage.FN_BODY__STMT_LIST:
-        setStmtList((StmtList)newValue);
+      case DmplPackage.FN_BODY__STMTS:
+        getStmts().clear();
+        getStmts().addAll((Collection<? extends Stmt>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -235,11 +175,11 @@ public class FnBodyImpl extends MinimalEObjectImpl.Container implements FnBody
   {
     switch (featureID)
     {
-      case DmplPackage.FN_BODY__VAR_INIT_LIST:
-        setVarInitList((VarInitList)null);
+      case DmplPackage.FN_BODY__VAR_INITS:
+        getVarInits().clear();
         return;
-      case DmplPackage.FN_BODY__STMT_LIST:
-        setStmtList((StmtList)null);
+      case DmplPackage.FN_BODY__STMTS:
+        getStmts().clear();
         return;
     }
     super.eUnset(featureID);
@@ -255,10 +195,10 @@ public class FnBodyImpl extends MinimalEObjectImpl.Container implements FnBody
   {
     switch (featureID)
     {
-      case DmplPackage.FN_BODY__VAR_INIT_LIST:
-        return varInitList != null;
-      case DmplPackage.FN_BODY__STMT_LIST:
-        return stmtList != null;
+      case DmplPackage.FN_BODY__VAR_INITS:
+        return varInits != null && !varInits.isEmpty();
+      case DmplPackage.FN_BODY__STMTS:
+        return stmts != null && !stmts.isEmpty();
     }
     return super.eIsSet(featureID);
   }

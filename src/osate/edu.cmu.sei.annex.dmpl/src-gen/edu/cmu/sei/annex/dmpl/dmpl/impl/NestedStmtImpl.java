@@ -4,15 +4,19 @@ package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.NestedStmt;
-import edu.cmu.sei.annex.dmpl.dmpl.StmtList;
+import edu.cmu.sei.annex.dmpl.dmpl.Stmt;
 
-import org.eclipse.emf.common.notify.Notification;
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,7 +26,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.NestedStmtImpl#getStmtList <em>Stmt List</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.NestedStmtImpl#getStmts <em>Stmts</em>}</li>
  * </ul>
  *
  * @generated
@@ -30,14 +34,14 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 public class NestedStmtImpl extends StmtImpl implements NestedStmt
 {
   /**
-   * The cached value of the '{@link #getStmtList() <em>Stmt List</em>}' containment reference.
+   * The cached value of the '{@link #getStmts() <em>Stmts</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getStmtList()
+   * @see #getStmts()
    * @generated
    * @ordered
    */
-  protected StmtList stmtList;
+  protected EList<Stmt> stmts;
 
   /**
    * <!-- begin-user-doc -->
@@ -65,47 +69,13 @@ public class NestedStmtImpl extends StmtImpl implements NestedStmt
    * <!-- end-user-doc -->
    * @generated
    */
-  public StmtList getStmtList()
+  public EList<Stmt> getStmts()
   {
-    return stmtList;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetStmtList(StmtList newStmtList, NotificationChain msgs)
-  {
-    StmtList oldStmtList = stmtList;
-    stmtList = newStmtList;
-    if (eNotificationRequired())
+    if (stmts == null)
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.NESTED_STMT__STMT_LIST, oldStmtList, newStmtList);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      stmts = new EObjectContainmentEList<Stmt>(Stmt.class, this, DmplPackage.NESTED_STMT__STMTS);
     }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setStmtList(StmtList newStmtList)
-  {
-    if (newStmtList != stmtList)
-    {
-      NotificationChain msgs = null;
-      if (stmtList != null)
-        msgs = ((InternalEObject)stmtList).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.NESTED_STMT__STMT_LIST, null, msgs);
-      if (newStmtList != null)
-        msgs = ((InternalEObject)newStmtList).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.NESTED_STMT__STMT_LIST, null, msgs);
-      msgs = basicSetStmtList(newStmtList, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.NESTED_STMT__STMT_LIST, newStmtList, newStmtList));
+    return stmts;
   }
 
   /**
@@ -118,8 +88,8 @@ public class NestedStmtImpl extends StmtImpl implements NestedStmt
   {
     switch (featureID)
     {
-      case DmplPackage.NESTED_STMT__STMT_LIST:
-        return basicSetStmtList(null, msgs);
+      case DmplPackage.NESTED_STMT__STMTS:
+        return ((InternalEList<?>)getStmts()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -134,8 +104,8 @@ public class NestedStmtImpl extends StmtImpl implements NestedStmt
   {
     switch (featureID)
     {
-      case DmplPackage.NESTED_STMT__STMT_LIST:
-        return getStmtList();
+      case DmplPackage.NESTED_STMT__STMTS:
+        return getStmts();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -145,13 +115,15 @@ public class NestedStmtImpl extends StmtImpl implements NestedStmt
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case DmplPackage.NESTED_STMT__STMT_LIST:
-        setStmtList((StmtList)newValue);
+      case DmplPackage.NESTED_STMT__STMTS:
+        getStmts().clear();
+        getStmts().addAll((Collection<? extends Stmt>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -167,8 +139,8 @@ public class NestedStmtImpl extends StmtImpl implements NestedStmt
   {
     switch (featureID)
     {
-      case DmplPackage.NESTED_STMT__STMT_LIST:
-        setStmtList((StmtList)null);
+      case DmplPackage.NESTED_STMT__STMTS:
+        getStmts().clear();
         return;
     }
     super.eUnset(featureID);
@@ -184,8 +156,8 @@ public class NestedStmtImpl extends StmtImpl implements NestedStmt
   {
     switch (featureID)
     {
-      case DmplPackage.NESTED_STMT__STMT_LIST:
-        return stmtList != null;
+      case DmplPackage.NESTED_STMT__STMTS:
+        return stmts != null && !stmts.isEmpty();
     }
     return super.eIsSet(featureID);
   }

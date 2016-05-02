@@ -74,8 +74,7 @@ ProcNoAttr:
 ;
 
 FnBody:
-	//TODO var_init_list and stmt_list
-	'{' varInitList=VarInitList stmtList=StmtList '}'
+	{FnBody} '{' (varInits+=VarInit ';')* stmts+=Stmt* '}'
 ;
 
 FnPrototype:
@@ -97,17 +96,8 @@ Param:
 	type=Type var=Var
 ;
 
-VarInitList:
-	{VarInitList}
-	(varInits+=VarInit ';')*
-;
-
-StmtList:
-	{StmtList} stmts+=Stmt*
-;
-
 Stmt:
-	{NestedStmt} '{' stmtList=StmtList '}' |
+	{NestedStmt} '{' stmts+=Stmt* '}' |
 	AssignmentStmt ';' |
 	{WhileStmt} 'while' '(' condition=Expr ')' stmt=Stmt |
 	{ForStmt} 'for' '(' (inits+=AssignmentStmt (',' inits+=AssignmentStmt)*)? ';' condition=Expr? ';' update=AssignmentStmt? ')' stmt=Stmt |

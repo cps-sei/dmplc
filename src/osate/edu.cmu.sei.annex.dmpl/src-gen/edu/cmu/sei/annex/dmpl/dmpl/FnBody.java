@@ -2,6 +2,8 @@
  */
 package edu.cmu.sei.annex.dmpl.dmpl;
 
+import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -13,8 +15,8 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.FnBody#getVarInitList <em>Var Init List</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.FnBody#getStmtList <em>Stmt List</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.FnBody#getVarInits <em>Var Inits</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.FnBody#getStmts <em>Stmts</em>}</li>
  * </ul>
  *
  * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getFnBody()
@@ -24,55 +26,35 @@ import org.eclipse.emf.ecore.EObject;
 public interface FnBody extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Var Init List</b></em>' containment reference.
+   * Returns the value of the '<em><b>Var Inits</b></em>' containment reference list.
+   * The list contents are of type {@link edu.cmu.sei.annex.dmpl.dmpl.VarInit}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Var Init List</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Var Inits</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Var Init List</em>' containment reference.
-   * @see #setVarInitList(VarInitList)
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getFnBody_VarInitList()
+   * @return the value of the '<em>Var Inits</em>' containment reference list.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getFnBody_VarInits()
    * @model containment="true"
    * @generated
    */
-  VarInitList getVarInitList();
+  EList<VarInit> getVarInits();
 
   /**
-   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.FnBody#getVarInitList <em>Var Init List</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Var Init List</em>' containment reference.
-   * @see #getVarInitList()
-   * @generated
-   */
-  void setVarInitList(VarInitList value);
-
-  /**
-   * Returns the value of the '<em><b>Stmt List</b></em>' containment reference.
+   * Returns the value of the '<em><b>Stmts</b></em>' containment reference list.
+   * The list contents are of type {@link edu.cmu.sei.annex.dmpl.dmpl.Stmt}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Stmt List</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Stmts</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Stmt List</em>' containment reference.
-   * @see #setStmtList(StmtList)
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getFnBody_StmtList()
+   * @return the value of the '<em>Stmts</em>' containment reference list.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getFnBody_Stmts()
    * @model containment="true"
    * @generated
    */
-  StmtList getStmtList();
-
-  /**
-   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.FnBody#getStmtList <em>Stmt List</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Stmt List</em>' containment reference.
-   * @see #getStmtList()
-   * @generated
-   */
-  void setStmtList(StmtList value);
+  EList<Stmt> getStmts();
 
 } // FnBody

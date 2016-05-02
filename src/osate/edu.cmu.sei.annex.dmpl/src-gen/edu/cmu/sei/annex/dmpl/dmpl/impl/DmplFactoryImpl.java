@@ -84,8 +84,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.ATTR_LIST: return createAttrList();
       case DmplPackage.ATTR: return createAttr();
       case DmplPackage.PARAM: return createParam();
-      case DmplPackage.VAR_INIT_LIST: return createVarInitList();
-      case DmplPackage.STMT_LIST: return createStmtList();
       case DmplPackage.STMT: return createStmt();
       case DmplPackage.ASSIGNMENT_STMT: return createAssignmentStmt();
       case DmplPackage.LVAL: return createLVal();
@@ -413,28 +411,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     ParamImpl param = new ParamImpl();
     return param;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public VarInitList createVarInitList()
-  {
-    VarInitListImpl varInitList = new VarInitListImpl();
-    return varInitList;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public StmtList createStmtList()
-  {
-    StmtListImpl stmtList = new StmtListImpl();
-    return stmtList;
   }
 
   /**

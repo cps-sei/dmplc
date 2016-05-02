@@ -604,39 +604,49 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	public class FnBodyElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "FnBody");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cLeftCurlyBracketKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cVarInitListAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cVarInitListVarInitListParserRuleCall_1_0 = (RuleCall)cVarInitListAssignment_1.eContents().get(0);
-		private final Assignment cStmtListAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cStmtListStmtListParserRuleCall_2_0 = (RuleCall)cStmtListAssignment_2.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Action cFnBodyAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cLeftCurlyBracketKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
+		private final Assignment cVarInitsAssignment_2_0 = (Assignment)cGroup_2.eContents().get(0);
+		private final RuleCall cVarInitsVarInitParserRuleCall_2_0_0 = (RuleCall)cVarInitsAssignment_2_0.eContents().get(0);
+		private final Keyword cSemicolonKeyword_2_1 = (Keyword)cGroup_2.eContents().get(1);
+		private final Assignment cStmtsAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cStmtsStmtParserRuleCall_3_0 = (RuleCall)cStmtsAssignment_3.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
-		//FnBody: //TODO var_init_list and stmt_list
-		//	"{" varInitList=VarInitList stmtList=StmtList "}";
+		//FnBody:
+		//	{FnBody} "{" (varInits+=VarInit ";")* stmts+=Stmt* "}";
 		@Override public ParserRule getRule() { return rule; }
 
-		////TODO var_init_list and stmt_list
-		//"{" varInitList=VarInitList stmtList=StmtList "}"
+		//{FnBody} "{" (varInits+=VarInit ";")* stmts+=Stmt* "}"
 		public Group getGroup() { return cGroup; }
 
-		////TODO var_init_list and stmt_list
+		//{FnBody}
+		public Action getFnBodyAction_0() { return cFnBodyAction_0; }
+
 		//"{"
-		public Keyword getLeftCurlyBracketKeyword_0() { return cLeftCurlyBracketKeyword_0; }
+		public Keyword getLeftCurlyBracketKeyword_1() { return cLeftCurlyBracketKeyword_1; }
 
-		//varInitList=VarInitList
-		public Assignment getVarInitListAssignment_1() { return cVarInitListAssignment_1; }
+		//(varInits+=VarInit ";")*
+		public Group getGroup_2() { return cGroup_2; }
 
-		//VarInitList
-		public RuleCall getVarInitListVarInitListParserRuleCall_1_0() { return cVarInitListVarInitListParserRuleCall_1_0; }
+		//varInits+=VarInit
+		public Assignment getVarInitsAssignment_2_0() { return cVarInitsAssignment_2_0; }
 
-		//stmtList=StmtList
-		public Assignment getStmtListAssignment_2() { return cStmtListAssignment_2; }
+		//VarInit
+		public RuleCall getVarInitsVarInitParserRuleCall_2_0_0() { return cVarInitsVarInitParserRuleCall_2_0_0; }
 
-		//StmtList
-		public RuleCall getStmtListStmtListParserRuleCall_2_0() { return cStmtListStmtListParserRuleCall_2_0; }
+		//";"
+		public Keyword getSemicolonKeyword_2_1() { return cSemicolonKeyword_2_1; }
+
+		//stmts+=Stmt*
+		public Assignment getStmtsAssignment_3() { return cStmtsAssignment_3; }
+
+		//Stmt
+		public RuleCall getStmtsStmtParserRuleCall_3_0() { return cStmtsStmtParserRuleCall_3_0; }
 
 		//"}"
-		public Keyword getRightCurlyBracketKeyword_3() { return cRightCurlyBracketKeyword_3; }
+		public Keyword getRightCurlyBracketKeyword_4() { return cRightCurlyBracketKeyword_4; }
 	}
 
 	public class FnPrototypeElements extends AbstractParserRuleElementFinder {
@@ -912,70 +922,14 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		public RuleCall getVarVarParserRuleCall_1_0() { return cVarVarParserRuleCall_1_0; }
 	}
 
-	public class VarInitListElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "VarInitList");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cVarInitListAction_0 = (Action)cGroup.eContents().get(0);
-		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
-		private final Assignment cVarInitsAssignment_1_0 = (Assignment)cGroup_1.eContents().get(0);
-		private final RuleCall cVarInitsVarInitParserRuleCall_1_0_0 = (RuleCall)cVarInitsAssignment_1_0.eContents().get(0);
-		private final Keyword cSemicolonKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
-		
-		//VarInitList:
-		//	{VarInitList} (varInits+=VarInit ";")*;
-		@Override public ParserRule getRule() { return rule; }
-
-		//{VarInitList} (varInits+=VarInit ";")*
-		public Group getGroup() { return cGroup; }
-
-		//{VarInitList}
-		public Action getVarInitListAction_0() { return cVarInitListAction_0; }
-
-		//(varInits+=VarInit ";")*
-		public Group getGroup_1() { return cGroup_1; }
-
-		//varInits+=VarInit
-		public Assignment getVarInitsAssignment_1_0() { return cVarInitsAssignment_1_0; }
-
-		//VarInit
-		public RuleCall getVarInitsVarInitParserRuleCall_1_0_0() { return cVarInitsVarInitParserRuleCall_1_0_0; }
-
-		//";"
-		public Keyword getSemicolonKeyword_1_1() { return cSemicolonKeyword_1_1; }
-	}
-
-	public class StmtListElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "StmtList");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cStmtListAction_0 = (Action)cGroup.eContents().get(0);
-		private final Assignment cStmtsAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cStmtsStmtParserRuleCall_1_0 = (RuleCall)cStmtsAssignment_1.eContents().get(0);
-		
-		//StmtList:
-		//	{StmtList} stmts+=Stmt*;
-		@Override public ParserRule getRule() { return rule; }
-
-		//{StmtList} stmts+=Stmt*
-		public Group getGroup() { return cGroup; }
-
-		//{StmtList}
-		public Action getStmtListAction_0() { return cStmtListAction_0; }
-
-		//stmts+=Stmt*
-		public Assignment getStmtsAssignment_1() { return cStmtsAssignment_1; }
-
-		//Stmt
-		public RuleCall getStmtsStmtParserRuleCall_1_0() { return cStmtsStmtParserRuleCall_1_0; }
-	}
-
 	public class StmtElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Stmt");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
 		private final Action cNestedStmtAction_0_0 = (Action)cGroup_0.eContents().get(0);
 		private final Keyword cLeftCurlyBracketKeyword_0_1 = (Keyword)cGroup_0.eContents().get(1);
-		private final Assignment cStmtListAssignment_0_2 = (Assignment)cGroup_0.eContents().get(2);
-		private final RuleCall cStmtListStmtListParserRuleCall_0_2_0 = (RuleCall)cStmtListAssignment_0_2.eContents().get(0);
+		private final Assignment cStmtsAssignment_0_2 = (Assignment)cGroup_0.eContents().get(2);
+		private final RuleCall cStmtsStmtParserRuleCall_0_2_0 = (RuleCall)cStmtsAssignment_0_2.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_0_3 = (Keyword)cGroup_0.eContents().get(3);
 		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
 		private final RuleCall cAssignmentStmtParserRuleCall_1_0 = (RuleCall)cGroup_1.eContents().get(0);
@@ -1064,7 +1018,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cStmtStmtParserRuleCall_9_7_0 = (RuleCall)cStmtAssignment_9_7.eContents().get(0);
 		
 		//Stmt:
-		//	{NestedStmt} "{" stmtList=StmtList "}" | AssignmentStmt ";" | {WhileStmt} "while" "(" condition=Expr ")" stmt=Stmt |
+		//	{NestedStmt} "{" stmts+=Stmt* "}" | AssignmentStmt ";" | {WhileStmt} "while" "(" condition=Expr ")" stmt=Stmt |
 		//	{ForStmt} "for" "(" (inits+=AssignmentStmt ("," inits+=AssignmentStmt)*)? ";" condition=Expr? ";"
 		//	update=AssignmentStmt? ")" stmt=Stmt | {CondStmt} attrList=AttrList? "if" "(" condition=Expr ")" then=Stmt ("else"
 		//	else=Stmt)? | {SimpleStmt} name=SimpleStmtKeyword ";" | {ReturnValueStmt} "return" value=Expr ";" | CallExpr ";" |
@@ -1072,7 +1026,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//	"FORALL_DISTINCT_NODE_PAIR") "(" node1=TIDENTIFIER "," node2=TIDENTIFIER ")" stmt=Stmt;
 		@Override public ParserRule getRule() { return rule; }
 
-		//{NestedStmt} "{" stmtList=StmtList "}" | AssignmentStmt ";" | {WhileStmt} "while" "(" condition=Expr ")" stmt=Stmt |
+		//{NestedStmt} "{" stmts+=Stmt* "}" | AssignmentStmt ";" | {WhileStmt} "while" "(" condition=Expr ")" stmt=Stmt |
 		//{ForStmt} "for" "(" (inits+=AssignmentStmt ("," inits+=AssignmentStmt)*)? ";" condition=Expr? ";"
 		//update=AssignmentStmt? ")" stmt=Stmt | {CondStmt} attrList=AttrList? "if" "(" condition=Expr ")" then=Stmt ("else"
 		//else=Stmt)? | {SimpleStmt} name=SimpleStmtKeyword ";" | {ReturnValueStmt} "return" value=Expr ";" | CallExpr ";" |
@@ -1080,7 +1034,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//"FORALL_DISTINCT_NODE_PAIR") "(" node1=TIDENTIFIER "," node2=TIDENTIFIER ")" stmt=Stmt
 		public Alternatives getAlternatives() { return cAlternatives; }
 
-		//{NestedStmt} "{" stmtList=StmtList "}"
+		//{NestedStmt} "{" stmts+=Stmt* "}"
 		public Group getGroup_0() { return cGroup_0; }
 
 		//{NestedStmt}
@@ -1089,11 +1043,11 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//"{"
 		public Keyword getLeftCurlyBracketKeyword_0_1() { return cLeftCurlyBracketKeyword_0_1; }
 
-		//stmtList=StmtList
-		public Assignment getStmtListAssignment_0_2() { return cStmtListAssignment_0_2; }
+		//stmts+=Stmt*
+		public Assignment getStmtsAssignment_0_2() { return cStmtsAssignment_0_2; }
 
-		//StmtList
-		public RuleCall getStmtListStmtListParserRuleCall_0_2_0() { return cStmtListStmtListParserRuleCall_0_2_0; }
+		//Stmt
+		public RuleCall getStmtsStmtParserRuleCall_0_2_0() { return cStmtsStmtParserRuleCall_0_2_0; }
 
 		//"}"
 		public Keyword getRightCurlyBracketKeyword_0_3() { return cRightCurlyBracketKeyword_0_3; }
@@ -2895,8 +2849,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final AttrListElements pAttrList;
 	private final AttrElements pAttr;
 	private final ParamElements pParam;
-	private final VarInitListElements pVarInitList;
-	private final StmtListElements pStmtList;
 	private final StmtElements pStmt;
 	private final AssignmentStmtElements pAssignmentStmt;
 	private final LValElements pLVal;
@@ -2963,8 +2915,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pAttrList = new AttrListElements();
 		this.pAttr = new AttrElements();
 		this.pParam = new ParamElements();
-		this.pVarInitList = new VarInitListElements();
-		this.pStmtList = new StmtListElements();
 		this.pStmt = new StmtElements();
 		this.pAssignmentStmt = new AssignmentStmtElements();
 		this.pLVal = new LValElements();
@@ -3181,8 +3131,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getProcNoAttrAccess().getRule();
 	}
 
-	//FnBody: //TODO var_init_list and stmt_list
-	//	"{" varInitList=VarInitList stmtList=StmtList "}";
+	//FnBody:
+	//	{FnBody} "{" (varInits+=VarInit ";")* stmts+=Stmt* "}";
 	public FnBodyElements getFnBodyAccess() {
 		return pFnBody;
 	}
@@ -3233,28 +3183,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getParamAccess().getRule();
 	}
 
-	//VarInitList:
-	//	{VarInitList} (varInits+=VarInit ";")*;
-	public VarInitListElements getVarInitListAccess() {
-		return pVarInitList;
-	}
-	
-	public ParserRule getVarInitListRule() {
-		return getVarInitListAccess().getRule();
-	}
-
-	//StmtList:
-	//	{StmtList} stmts+=Stmt*;
-	public StmtListElements getStmtListAccess() {
-		return pStmtList;
-	}
-	
-	public ParserRule getStmtListRule() {
-		return getStmtListAccess().getRule();
-	}
-
 	//Stmt:
-	//	{NestedStmt} "{" stmtList=StmtList "}" | AssignmentStmt ";" | {WhileStmt} "while" "(" condition=Expr ")" stmt=Stmt |
+	//	{NestedStmt} "{" stmts+=Stmt* "}" | AssignmentStmt ";" | {WhileStmt} "while" "(" condition=Expr ")" stmt=Stmt |
 	//	{ForStmt} "for" "(" (inits+=AssignmentStmt ("," inits+=AssignmentStmt)*)? ";" condition=Expr? ";"
 	//	update=AssignmentStmt? ")" stmt=Stmt | {CondStmt} attrList=AttrList? "if" "(" condition=Expr ")" then=Stmt ("else"
 	//	else=Stmt)? | {SimpleStmt} name=SimpleStmtKeyword ";" | {ReturnValueStmt} "return" value=Expr ";" | CallExpr ";" |

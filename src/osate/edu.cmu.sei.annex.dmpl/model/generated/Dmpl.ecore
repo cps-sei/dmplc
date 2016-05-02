@@ -54,10 +54,10 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FnBody">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="varInitList" eType="#//VarInitList"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="stmtList" eType="#//StmtList"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="varInits" upperBound="-1"
+        eType="#//VarInit" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="stmts" upperBound="-1"
+        eType="#//Stmt" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FnPrototype">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="extern" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -76,14 +76,6 @@
   <eClassifiers xsi:type="ecore:EClass" name="Param">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Type" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//Var" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="VarInitList">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="varInits" upperBound="-1"
-        eType="#//VarInit" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="StmtList">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="stmts" upperBound="-1"
-        eType="#//Stmt" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Stmt"/>
   <eClassifiers xsi:type="ecore:EClass" name="AssignmentStmt" eSuperTypes="#//Stmt">
@@ -189,8 +181,8 @@
         eType="#//Param" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NestedStmt" eSuperTypes="#//Stmt">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="stmtList" eType="#//StmtList"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="stmts" upperBound="-1"
+        eType="#//Stmt" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="WhileStmt" eSuperTypes="#//Stmt">
     <eStructuralFeatures xsi:type="ecore:EReference" name="condition" eType="#//Expr"

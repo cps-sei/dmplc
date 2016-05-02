@@ -417,7 +417,7 @@ class ParserTest1 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+			(programElements.head as Procedure).procedure.fnBody => [
 				6.assertEquals(varInits.size)
 				(varInits.get(0).varAsgns.head as ExprVarAsgn).expr as LVal => [
 					"v7".assertEquals(name)
@@ -469,7 +469,7 @@ class ParserTest1 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+			(programElements.head as Procedure).procedure.fnBody => [
 				3.assertEquals(varInits.size)
 				((varInits.get(0).varAsgns.head as ExprVarAsgn).expr as CallExpr) => [
 					"f2".assertEquals(name)
@@ -501,7 +501,7 @@ class ParserTest1 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+			(programElements.head as Procedure).procedure.fnBody => [
 				4.assertEquals(varInits.size)
 				((varInits.get(0).varAsgns.head as ExprVarAsgn).expr as CallExpr) => [
 					namespace.assertNull
@@ -555,7 +555,7 @@ class ParserTest1 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+			(programElements.head as Procedure).procedure.fnBody => [
 				17.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
@@ -676,7 +676,7 @@ class ParserTest1 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+			(programElements.head as Procedure).procedure.fnBody => [
 				4.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
@@ -735,7 +735,7 @@ class ParserTest1 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+			(programElements.head as Procedure).procedure.fnBody => [
 				6.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
@@ -817,7 +817,7 @@ class ParserTest1 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+			(programElements.head as Procedure).procedure.fnBody => [
 				5.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
@@ -889,7 +889,7 @@ class ParserTest1 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(programElements.head as Procedure).procedure.fnBody.varInitList => [
+			(programElements.head as Procedure).procedure.fnBody => [
 				7.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
