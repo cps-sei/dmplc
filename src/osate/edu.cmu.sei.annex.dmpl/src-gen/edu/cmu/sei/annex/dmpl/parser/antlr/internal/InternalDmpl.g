@@ -1356,6 +1356,92 @@ ruleFnPrototype returns [EObject current=null]
 
 
 
+// Entry rule entryRuleAttrList
+entryRuleAttrList returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getAttrListRule()); }
+	 iv_ruleAttrList=ruleAttrList 
+	 { $current=$iv_ruleAttrList.current; } 
+	 EOF 
+;
+
+// Rule AttrList
+ruleAttrList returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+((
+(
+		{ 
+	        newCompositeNode(grammarAccess.getAttrListAccess().getAttrsAttrParserRuleCall_0_0()); 
+	    }
+		lv_attrs_0_0=ruleAttr		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getAttrListRule());
+	        }
+       		add(
+       			$current, 
+       			"attrs",
+        		lv_attrs_0_0, 
+        		"Attr");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)	otherlv_1=';' 
+    {
+    	newLeafNode(otherlv_1, grammarAccess.getAttrListAccess().getSemicolonKeyword_1());
+    }
+)+
+;
+
+
+
+
+
+// Entry rule entryRuleAttr
+entryRuleAttr returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getAttrRule()); }
+	 iv_ruleAttr=ruleAttr 
+	 { $current=$iv_ruleAttr.current; } 
+	 EOF 
+;
+
+// Rule Attr
+ruleAttr returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(	otherlv_0='@' 
+    {
+    	newLeafNode(otherlv_0, grammarAccess.getAttrAccess().getCommercialAtKeyword_0());
+    }
+(
+(
+		lv_name_1_0=RULE_TIDENTIFIER
+		{
+			newLeafNode(lv_name_1_0, grammarAccess.getAttrAccess().getNameTIDENTIFIERTerminalRuleCall_1_0()); 
+		}
+		{
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getAttrRule());
+	        }
+       		setWithLastConsumed(
+       			$current, 
+       			"name",
+        		lv_name_1_0, 
+        		"TIDENTIFIER");
+	    }
+
+)
+))
+;
+
+
+
+
+
 // Entry rule entryRuleParam
 entryRuleParam returns [EObject current=null] 
 	:
@@ -1521,25 +1607,43 @@ ruleCondStmt returns [EObject current=null]
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
-(
+((
 (
 		{ 
-	        newCompositeNode(grammarAccess.getCondStmtAccess().getStmtCondStmtNoAttrParserRuleCall_0()); 
+	        newCompositeNode(grammarAccess.getCondStmtAccess().getAttrListAttrListParserRuleCall_0_0()); 
 	    }
-		lv_stmt_0_0=ruleCondStmtNoAttr		{
+		lv_attrList_0_0=ruleAttrList		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getCondStmtRule());
+	        }
+       		set(
+       			$current, 
+       			"attrList",
+        		lv_attrList_0_0, 
+        		"AttrList");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)?(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getCondStmtAccess().getStmtCondStmtNoAttrParserRuleCall_1_0()); 
+	    }
+		lv_stmt_1_0=ruleCondStmtNoAttr		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getCondStmtRule());
 	        }
        		set(
        			$current, 
        			"stmt",
-        		lv_stmt_0_0, 
+        		lv_stmt_1_0, 
         		"CondStmtNoAttr");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-)
+))
 ;
 
 

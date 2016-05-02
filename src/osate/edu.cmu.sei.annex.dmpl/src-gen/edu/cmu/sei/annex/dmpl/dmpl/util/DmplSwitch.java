@@ -197,6 +197,20 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case DmplPackage.ATTR_LIST:
+      {
+        AttrList attrList = (AttrList)theEObject;
+        T result = caseAttrList(attrList);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.ATTR:
+      {
+        Attr attr = (Attr)theEObject;
+        T result = caseAttr(attr);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case DmplPackage.PARAM:
       {
         Param param = (Param)theEObject;
@@ -783,6 +797,38 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseFnPrototype(FnPrototype object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Attr List</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Attr List</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseAttrList(AttrList object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Attr</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Attr</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseAttr(Attr object)
   {
     return null;
   }

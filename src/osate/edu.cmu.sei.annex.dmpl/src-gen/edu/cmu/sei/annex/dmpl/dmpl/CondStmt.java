@@ -12,6 +12,7 @@ package edu.cmu.sei.annex.dmpl.dmpl;
  * The following features are supported:
  * </p>
  * <ul>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.CondStmt#getAttrList <em>Attr List</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.CondStmt#getStmt <em>Stmt</em>}</li>
  * </ul>
  *
@@ -21,6 +22,32 @@ package edu.cmu.sei.annex.dmpl.dmpl;
  */
 public interface CondStmt extends Stmt
 {
+  /**
+   * Returns the value of the '<em><b>Attr List</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Attr List</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Attr List</em>' containment reference.
+   * @see #setAttrList(AttrList)
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getCondStmt_AttrList()
+   * @model containment="true"
+   * @generated
+   */
+  AttrList getAttrList();
+
+  /**
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.CondStmt#getAttrList <em>Attr List</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Attr List</em>' containment reference.
+   * @see #getAttrList()
+   * @generated
+   */
+  void setAttrList(AttrList value);
+
   /**
    * Returns the value of the '<em><b>Stmt</b></em>' containment reference.
    * <!-- begin-user-doc -->

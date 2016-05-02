@@ -7,6 +7,8 @@ import edu.cmu.sei.annex.dmpl.dmpl.AdditiveOperator;
 import edu.cmu.sei.annex.dmpl.dmpl.AndExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.ArgList;
 import edu.cmu.sei.annex.dmpl.dmpl.AssignmentStmt;
+import edu.cmu.sei.annex.dmpl.dmpl.Attr;
+import edu.cmu.sei.annex.dmpl.dmpl.AttrList;
 import edu.cmu.sei.annex.dmpl.dmpl.BitwiseAndExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.BitwiseOrExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.BuiltInExpr;
@@ -204,6 +206,20 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass fnPrototypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass attrListEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass attrEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -1044,6 +1060,46 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getAttrList()
+  {
+    return attrListEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getAttrList_Attrs()
+  {
+    return (EReference)attrListEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getAttr()
+  {
+    return attrEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getAttr_Name()
+  {
+    return (EAttribute)attrEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getParam()
   {
     return paramEClass;
@@ -1124,9 +1180,19 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getCondStmt_Stmt()
+  public EReference getCondStmt_AttrList()
   {
     return (EReference)condStmtEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getCondStmt_Stmt()
+  {
+    return (EReference)condStmtEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -2404,6 +2470,12 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     createEAttribute(fnPrototypeEClass, FN_PROTOTYPE__PURE);
     createEAttribute(fnPrototypeEClass, FN_PROTOTYPE__NAME);
 
+    attrListEClass = createEClass(ATTR_LIST);
+    createEReference(attrListEClass, ATTR_LIST__ATTRS);
+
+    attrEClass = createEClass(ATTR);
+    createEAttribute(attrEClass, ATTR__NAME);
+
     paramEClass = createEClass(PARAM);
     createEReference(paramEClass, PARAM__TYPE);
     createEReference(paramEClass, PARAM__VAR);
@@ -2415,6 +2487,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     createEReference(stmtListEClass, STMT_LIST__STMTS);
 
     condStmtEClass = createEClass(COND_STMT);
+    createEReference(condStmtEClass, COND_STMT__ATTR_LIST);
     createEReference(condStmtEClass, COND_STMT__STMT);
 
     condStmtNoAttrEClass = createEClass(COND_STMT_NO_ATTR);
@@ -2707,6 +2780,12 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEAttribute(getFnPrototype_Pure(), ecorePackage.getEBoolean(), "pure", null, 0, 1, FnPrototype.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getFnPrototype_Name(), ecorePackage.getEString(), "name", null, 0, 1, FnPrototype.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(attrListEClass, AttrList.class, "AttrList", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getAttrList_Attrs(), this.getAttr(), null, "attrs", null, 0, -1, AttrList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(attrEClass, Attr.class, "Attr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getAttr_Name(), ecorePackage.getEString(), "name", null, 0, 1, Attr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     initEClass(paramEClass, Param.class, "Param", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getParam_Type(), this.getType(), null, "type", null, 0, 1, Param.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getParam_Var(), this.getVar(), null, "var", null, 0, 1, Param.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2718,6 +2797,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEReference(getStmtList_Stmts(), this.getStmt(), null, "stmts", null, 0, -1, StmtList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(condStmtEClass, CondStmt.class, "CondStmt", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getCondStmt_AttrList(), this.getAttrList(), null, "attrList", null, 0, 1, CondStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getCondStmt_Stmt(), this.getCondStmtNoAttr(), null, "stmt", null, 0, 1, CondStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(condStmtNoAttrEClass, CondStmtNoAttr.class, "CondStmtNoAttr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

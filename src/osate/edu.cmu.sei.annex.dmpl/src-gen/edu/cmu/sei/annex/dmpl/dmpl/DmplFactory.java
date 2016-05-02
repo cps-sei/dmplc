@@ -167,6 +167,24 @@ public interface DmplFactory extends EFactory
   FnPrototype createFnPrototype();
 
   /**
+   * Returns a new object of class '<em>Attr List</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Attr List</em>'.
+   * @generated
+   */
+  AttrList createAttrList();
+
+  /**
+   * Returns a new object of class '<em>Attr</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Attr</em>'.
+   * @generated
+   */
+  Attr createAttr();
+
+  /**
    * Returns a new object of class '<em>Param</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

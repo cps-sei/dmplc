@@ -831,4 +831,28 @@ class ParserTest2 {
 			]
 		]
 	}
+	
+	@Test
+	def void testAttr() {
+		'''
+			void f1() {
+				@attr1; @attr2; @attr3; if (v1)
+					v2 = 1;
+			}
+		'''.parse => [
+			assertNoIssues;
+			(programElements.head as Procedure).procedure => [
+				"f1".assertEquals(prototype.name)
+				fnBody.stmtList => [
+					1.assertEquals(stmts.size)
+					(stmts.head as CondStmt).attrList => [
+						3.assertEquals(attrs.size)
+						"attr1".assertEquals(attrs.get(0).name)
+						"attr2".assertEquals(attrs.get(1).name)
+						"attr3".assertEquals(attrs.get(2).name)
+					]
+				]
+			]
+		]
+	}
 }

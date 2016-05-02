@@ -2,6 +2,7 @@
  */
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
+import edu.cmu.sei.annex.dmpl.dmpl.AttrList;
 import edu.cmu.sei.annex.dmpl.dmpl.CondStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.CondStmtNoAttr;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
@@ -22,6 +23,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.CondStmtImpl#getAttrList <em>Attr List</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.CondStmtImpl#getStmt <em>Stmt</em>}</li>
  * </ul>
  *
@@ -29,6 +31,16 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class CondStmtImpl extends StmtImpl implements CondStmt
 {
+  /**
+   * The cached value of the '{@link #getAttrList() <em>Attr List</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getAttrList()
+   * @generated
+   * @ordered
+   */
+  protected AttrList attrList;
+
   /**
    * The cached value of the '{@link #getStmt() <em>Stmt</em>}' containment reference.
    * <!-- begin-user-doc -->
@@ -58,6 +70,54 @@ public class CondStmtImpl extends StmtImpl implements CondStmt
   protected EClass eStaticClass()
   {
     return DmplPackage.Literals.COND_STMT;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public AttrList getAttrList()
+  {
+    return attrList;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetAttrList(AttrList newAttrList, NotificationChain msgs)
+  {
+    AttrList oldAttrList = attrList;
+    attrList = newAttrList;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.COND_STMT__ATTR_LIST, oldAttrList, newAttrList);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setAttrList(AttrList newAttrList)
+  {
+    if (newAttrList != attrList)
+    {
+      NotificationChain msgs = null;
+      if (attrList != null)
+        msgs = ((InternalEObject)attrList).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.COND_STMT__ATTR_LIST, null, msgs);
+      if (newAttrList != null)
+        msgs = ((InternalEObject)newAttrList).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.COND_STMT__ATTR_LIST, null, msgs);
+      msgs = basicSetAttrList(newAttrList, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.COND_STMT__ATTR_LIST, newAttrList, newAttrList));
   }
 
   /**
@@ -118,6 +178,8 @@ public class CondStmtImpl extends StmtImpl implements CondStmt
   {
     switch (featureID)
     {
+      case DmplPackage.COND_STMT__ATTR_LIST:
+        return basicSetAttrList(null, msgs);
       case DmplPackage.COND_STMT__STMT:
         return basicSetStmt(null, msgs);
     }
@@ -134,6 +196,8 @@ public class CondStmtImpl extends StmtImpl implements CondStmt
   {
     switch (featureID)
     {
+      case DmplPackage.COND_STMT__ATTR_LIST:
+        return getAttrList();
       case DmplPackage.COND_STMT__STMT:
         return getStmt();
     }
@@ -150,6 +214,9 @@ public class CondStmtImpl extends StmtImpl implements CondStmt
   {
     switch (featureID)
     {
+      case DmplPackage.COND_STMT__ATTR_LIST:
+        setAttrList((AttrList)newValue);
+        return;
       case DmplPackage.COND_STMT__STMT:
         setStmt((CondStmtNoAttr)newValue);
         return;
@@ -167,6 +234,9 @@ public class CondStmtImpl extends StmtImpl implements CondStmt
   {
     switch (featureID)
     {
+      case DmplPackage.COND_STMT__ATTR_LIST:
+        setAttrList((AttrList)null);
+        return;
       case DmplPackage.COND_STMT__STMT:
         setStmt((CondStmtNoAttr)null);
         return;
@@ -184,6 +254,8 @@ public class CondStmtImpl extends StmtImpl implements CondStmt
   {
     switch (featureID)
     {
+      case DmplPackage.COND_STMT__ATTR_LIST:
+        return attrList != null;
       case DmplPackage.COND_STMT__STMT:
         return stmt != null;
     }
