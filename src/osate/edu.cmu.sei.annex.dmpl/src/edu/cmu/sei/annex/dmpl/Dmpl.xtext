@@ -64,13 +64,7 @@ Type:
 ;
 
 Procedure:
-	//TODO: OVERRIDE and attr_list
-	procedure=ProcNoAttr
-;
-
-ProcNoAttr:
-	//TODO: fn_body
-	prototype=FnPrototype (';' | fnBody=FnBody)
+	attrList=AttrList? override?='override'? prototype=FnPrototype (';' | fnBody=FnBody)
 ;
 
 FnBody:

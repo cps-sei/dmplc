@@ -49,7 +49,6 @@ import edu.cmu.sei.annex.dmpl.dmpl.NodeNumExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.NumberConst;
 import edu.cmu.sei.annex.dmpl.dmpl.OrExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.Param;
-import edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr;
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
 import edu.cmu.sei.annex.dmpl.dmpl.Program;
 import edu.cmu.sei.annex.dmpl.dmpl.ProgramElement;
@@ -181,13 +180,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass procedureEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass procNoAttrEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -918,7 +910,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getProcedure_Procedure()
+  public EReference getProcedure_AttrList()
   {
     return (EReference)procedureEClass.getEStructuralFeatures().get(0);
   }
@@ -928,9 +920,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getProcNoAttr()
+  public EAttribute getProcedure_Override()
   {
-    return procNoAttrEClass;
+    return (EAttribute)procedureEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -938,9 +930,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getProcNoAttr_Prototype()
+  public EReference getProcedure_Prototype()
   {
-    return (EReference)procNoAttrEClass.getEStructuralFeatures().get(0);
+    return (EReference)procedureEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -948,9 +940,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getProcNoAttr_FnBody()
+  public EReference getProcedure_FnBody()
   {
-    return (EReference)procNoAttrEClass.getEStructuralFeatures().get(1);
+    return (EReference)procedureEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -2353,11 +2345,10 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     createEAttribute(typeEClass, TYPE__SIMP_TYPE);
 
     procedureEClass = createEClass(PROCEDURE);
-    createEReference(procedureEClass, PROCEDURE__PROCEDURE);
-
-    procNoAttrEClass = createEClass(PROC_NO_ATTR);
-    createEReference(procNoAttrEClass, PROC_NO_ATTR__PROTOTYPE);
-    createEReference(procNoAttrEClass, PROC_NO_ATTR__FN_BODY);
+    createEReference(procedureEClass, PROCEDURE__ATTR_LIST);
+    createEAttribute(procedureEClass, PROCEDURE__OVERRIDE);
+    createEReference(procedureEClass, PROCEDURE__PROTOTYPE);
+    createEReference(procedureEClass, PROCEDURE__FN_BODY);
 
     fnBodyEClass = createEClass(FN_BODY);
     createEReference(fnBodyEClass, FN_BODY__VAR_INITS);
@@ -2652,11 +2643,10 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEAttribute(getType_SimpType(), this.getSimpTypeEnum(), "simpType", null, 0, 1, Type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(procedureEClass, Procedure.class, "Procedure", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getProcedure_Procedure(), this.getProcNoAttr(), null, "procedure", null, 0, 1, Procedure.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(procNoAttrEClass, ProcNoAttr.class, "ProcNoAttr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getProcNoAttr_Prototype(), this.getFnPrototype(), null, "prototype", null, 0, 1, ProcNoAttr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getProcNoAttr_FnBody(), this.getFnBody(), null, "fnBody", null, 0, 1, ProcNoAttr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getProcedure_AttrList(), this.getAttrList(), null, "attrList", null, 0, 1, Procedure.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getProcedure_Override(), ecorePackage.getEBoolean(), "override", null, 0, 1, Procedure.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getProcedure_Prototype(), this.getFnPrototype(), null, "prototype", null, 0, 1, Procedure.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getProcedure_FnBody(), this.getFnBody(), null, "fnBody", null, 0, 1, Procedure.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(fnBodyEClass, FnBody.class, "FnBody", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getFnBody_VarInits(), this.getVarInit(), null, "varInits", null, 0, -1, FnBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

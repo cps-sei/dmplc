@@ -41,7 +41,6 @@ import edu.cmu.sei.annex.dmpl.dmpl.NodeNumDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.OrExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.Param;
-import edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr;
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
 import edu.cmu.sei.annex.dmpl.dmpl.Program;
 import edu.cmu.sei.annex.dmpl.dmpl.ReturnValueStmt;
@@ -182,9 +181,6 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.PARAM:
 				sequence_Param(context, (Param) semanticObject); 
-				return; 
-			case DmplPackage.PROC_NO_ATTR:
-				sequence_ProcNoAttr(context, (ProcNoAttr) semanticObject); 
 				return; 
 			case DmplPackage.PROCEDURE:
 				sequence_Procedure(context, (Procedure) semanticObject); 
@@ -608,26 +604,10 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (prototype=FnPrototype fnBody=FnBody?)
-	 */
-	protected void sequence_ProcNoAttr(EObject context, ProcNoAttr semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     procedure=ProcNoAttr
+	 *     (attrList=AttrList? override?='override'? prototype=FnPrototype fnBody=FnBody?)
 	 */
 	protected void sequence_Procedure(EObject context, Procedure semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.PROCEDURE__PROCEDURE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.PROCEDURE__PROCEDURE));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getProcedureAccess().getProcedureProcNoAttrParserRuleCall_0(), semanticObject.getProcedure());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

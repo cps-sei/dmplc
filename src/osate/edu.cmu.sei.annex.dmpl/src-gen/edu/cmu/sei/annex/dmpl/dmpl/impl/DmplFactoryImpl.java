@@ -78,7 +78,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.DIMENSION: return createDimension();
       case DmplPackage.TYPE: return createType();
       case DmplPackage.PROCEDURE: return createProcedure();
-      case DmplPackage.PROC_NO_ATTR: return createProcNoAttr();
       case DmplPackage.FN_BODY: return createFnBody();
       case DmplPackage.FN_PROTOTYPE: return createFnPrototype();
       case DmplPackage.ATTR_LIST: return createAttrList();
@@ -345,17 +344,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     ProcedureImpl procedure = new ProcedureImpl();
     return procedure;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public ProcNoAttr createProcNoAttr()
-  {
-    ProcNoAttrImpl procNoAttr = new ProcNoAttrImpl();
-    return procNoAttr;
   }
 
   /**

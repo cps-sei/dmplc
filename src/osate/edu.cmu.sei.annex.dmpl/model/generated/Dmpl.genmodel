@@ -107,11 +107,10 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Type/simpType"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Procedure">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Procedure/procedure"/>
-    </genClasses>
-    <genClasses ecoreClass="Dmpl.ecore#//ProcNoAttr">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//ProcNoAttr/prototype"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//ProcNoAttr/fnBody"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Procedure/attrList"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Procedure/override"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Procedure/prototype"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Procedure/fnBody"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//FnBody">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnBody/varInits"/>

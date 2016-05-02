@@ -548,57 +548,54 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 	public class ProcedureElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Procedure");
-		private final Assignment cProcedureAssignment = (Assignment)rule.eContents().get(1);
-		private final RuleCall cProcedureProcNoAttrParserRuleCall_0 = (RuleCall)cProcedureAssignment.eContents().get(0);
-		
-		//Procedure: //TODO: OVERRIDE and attr_list
-		//	procedure=ProcNoAttr;
-		@Override public ParserRule getRule() { return rule; }
-
-		////TODO: OVERRIDE and attr_list
-		//procedure=ProcNoAttr
-		public Assignment getProcedureAssignment() { return cProcedureAssignment; }
-
-		//ProcNoAttr
-		public RuleCall getProcedureProcNoAttrParserRuleCall_0() { return cProcedureProcNoAttrParserRuleCall_0; }
-	}
-
-	public class ProcNoAttrElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "ProcNoAttr");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Assignment cPrototypeAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final RuleCall cPrototypeFnPrototypeParserRuleCall_0_0 = (RuleCall)cPrototypeAssignment_0.eContents().get(0);
-		private final Alternatives cAlternatives_1 = (Alternatives)cGroup.eContents().get(1);
-		private final Keyword cSemicolonKeyword_1_0 = (Keyword)cAlternatives_1.eContents().get(0);
-		private final Assignment cFnBodyAssignment_1_1 = (Assignment)cAlternatives_1.eContents().get(1);
-		private final RuleCall cFnBodyFnBodyParserRuleCall_1_1_0 = (RuleCall)cFnBodyAssignment_1_1.eContents().get(0);
+		private final Assignment cAttrListAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cAttrListAttrListParserRuleCall_0_0 = (RuleCall)cAttrListAssignment_0.eContents().get(0);
+		private final Assignment cOverrideAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final Keyword cOverrideOverrideKeyword_1_0 = (Keyword)cOverrideAssignment_1.eContents().get(0);
+		private final Assignment cPrototypeAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cPrototypeFnPrototypeParserRuleCall_2_0 = (RuleCall)cPrototypeAssignment_2.eContents().get(0);
+		private final Alternatives cAlternatives_3 = (Alternatives)cGroup.eContents().get(3);
+		private final Keyword cSemicolonKeyword_3_0 = (Keyword)cAlternatives_3.eContents().get(0);
+		private final Assignment cFnBodyAssignment_3_1 = (Assignment)cAlternatives_3.eContents().get(1);
+		private final RuleCall cFnBodyFnBodyParserRuleCall_3_1_0 = (RuleCall)cFnBodyAssignment_3_1.eContents().get(0);
 		
-		//ProcNoAttr: //TODO: fn_body
-		//	prototype=FnPrototype (";" | fnBody=FnBody);
+		//Procedure:
+		//	attrList=AttrList? override?="override"? prototype=FnPrototype (";" | fnBody=FnBody);
 		@Override public ParserRule getRule() { return rule; }
 
-		////TODO: fn_body
-		//prototype=FnPrototype (";" | fnBody=FnBody)
+		//attrList=AttrList? override?="override"? prototype=FnPrototype (";" | fnBody=FnBody)
 		public Group getGroup() { return cGroup; }
 
-		////TODO: fn_body
+		//attrList=AttrList?
+		public Assignment getAttrListAssignment_0() { return cAttrListAssignment_0; }
+
+		//AttrList
+		public RuleCall getAttrListAttrListParserRuleCall_0_0() { return cAttrListAttrListParserRuleCall_0_0; }
+
+		//override?="override"?
+		public Assignment getOverrideAssignment_1() { return cOverrideAssignment_1; }
+
+		//"override"
+		public Keyword getOverrideOverrideKeyword_1_0() { return cOverrideOverrideKeyword_1_0; }
+
 		//prototype=FnPrototype
-		public Assignment getPrototypeAssignment_0() { return cPrototypeAssignment_0; }
+		public Assignment getPrototypeAssignment_2() { return cPrototypeAssignment_2; }
 
 		//FnPrototype
-		public RuleCall getPrototypeFnPrototypeParserRuleCall_0_0() { return cPrototypeFnPrototypeParserRuleCall_0_0; }
+		public RuleCall getPrototypeFnPrototypeParserRuleCall_2_0() { return cPrototypeFnPrototypeParserRuleCall_2_0; }
 
 		//";" | fnBody=FnBody
-		public Alternatives getAlternatives_1() { return cAlternatives_1; }
+		public Alternatives getAlternatives_3() { return cAlternatives_3; }
 
 		//";"
-		public Keyword getSemicolonKeyword_1_0() { return cSemicolonKeyword_1_0; }
+		public Keyword getSemicolonKeyword_3_0() { return cSemicolonKeyword_3_0; }
 
 		//fnBody=FnBody
-		public Assignment getFnBodyAssignment_1_1() { return cFnBodyAssignment_1_1; }
+		public Assignment getFnBodyAssignment_3_1() { return cFnBodyAssignment_3_1; }
 
 		//FnBody
-		public RuleCall getFnBodyFnBodyParserRuleCall_1_1_0() { return cFnBodyFnBodyParserRuleCall_1_1_0; }
+		public RuleCall getFnBodyFnBodyParserRuleCall_3_1_0() { return cFnBodyFnBodyParserRuleCall_3_1_0; }
 	}
 
 	public class FnBodyElements extends AbstractParserRuleElementFinder {
@@ -2843,7 +2840,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final DimensionElements pDimension;
 	private final TypeElements pType;
 	private final ProcedureElements pProcedure;
-	private final ProcNoAttrElements pProcNoAttr;
 	private final FnBodyElements pFnBody;
 	private final FnPrototypeElements pFnPrototype;
 	private final AttrListElements pAttrList;
@@ -2909,7 +2905,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pDimension = new DimensionElements();
 		this.pType = new TypeElements();
 		this.pProcedure = new ProcedureElements();
-		this.pProcNoAttr = new ProcNoAttrElements();
 		this.pFnBody = new FnBodyElements();
 		this.pFnPrototype = new FnPrototypeElements();
 		this.pAttrList = new AttrListElements();
@@ -3111,24 +3106,14 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getTypeAccess().getRule();
 	}
 
-	//Procedure: //TODO: OVERRIDE and attr_list
-	//	procedure=ProcNoAttr;
+	//Procedure:
+	//	attrList=AttrList? override?="override"? prototype=FnPrototype (";" | fnBody=FnBody);
 	public ProcedureElements getProcedureAccess() {
 		return pProcedure;
 	}
 	
 	public ParserRule getProcedureRule() {
 		return getProcedureAccess().getRule();
-	}
-
-	//ProcNoAttr: //TODO: fn_body
-	//	prototype=FnPrototype (";" | fnBody=FnBody);
-	public ProcNoAttrElements getProcNoAttrAccess() {
-		return pProcNoAttr;
-	}
-	
-	public ParserRule getProcNoAttrRule() {
-		return getProcNoAttrAccess().getRule();
 	}
 
 	//FnBody:

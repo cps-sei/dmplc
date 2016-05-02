@@ -140,15 +140,6 @@ public interface DmplFactory extends EFactory
   Procedure createProcedure();
 
   /**
-   * Returns a new object of class '<em>Proc No Attr</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Proc No Attr</em>'.
-   * @generated
-   */
-  ProcNoAttr createProcNoAttr();
-
-  /**
    * Returns a new object of class '<em>Fn Body</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

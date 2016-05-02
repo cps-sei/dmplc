@@ -145,11 +145,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createProcedureAdapter();
       }
       @Override
-      public Adapter caseProcNoAttr(ProcNoAttr object)
-      {
-        return createProcNoAttrAdapter();
-      }
-      @Override
       public Adapter caseFnBody(FnBody object)
       {
         return createFnBodyAdapter();
@@ -592,21 +587,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createProcedureAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr <em>Proc No Attr</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr
-   * @generated
-   */
-  public Adapter createProcNoAttrAdapter()
   {
     return null;
   }

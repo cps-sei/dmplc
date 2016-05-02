@@ -44,7 +44,7 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getVarAsgnAccess().getAlternatives_1_1(), "rule__VarAsgn__Alternatives_1_1");
 					put(grammarAccess.getVarAsgnAccess().getAlternatives_2_1(), "rule__VarAsgn__Alternatives_2_1");
 					put(grammarAccess.getDimensionAccess().getAlternatives(), "rule__Dimension__Alternatives");
-					put(grammarAccess.getProcNoAttrAccess().getAlternatives_1(), "rule__ProcNoAttr__Alternatives_1");
+					put(grammarAccess.getProcedureAccess().getAlternatives_3(), "rule__Procedure__Alternatives_3");
 					put(grammarAccess.getFnPrototypeAccess().getAlternatives(), "rule__FnPrototype__Alternatives");
 					put(grammarAccess.getFnPrototypeAccess().getExternAlternatives_0_1_0(), "rule__FnPrototype__ExternAlternatives_0_1_0");
 					put(grammarAccess.getFnPrototypeAccess().getPureAlternatives_0_2_0(), "rule__FnPrototype__PureAlternatives_0_2_0");
@@ -92,7 +92,7 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getDimensionAccess().getGroup_1(), "rule__Dimension__Group_1__0");
 					put(grammarAccess.getDimensionAccess().getGroup_2(), "rule__Dimension__Group_2__0");
 					put(grammarAccess.getTypeAccess().getGroup(), "rule__Type__Group__0");
-					put(grammarAccess.getProcNoAttrAccess().getGroup(), "rule__ProcNoAttr__Group__0");
+					put(grammarAccess.getProcedureAccess().getGroup(), "rule__Procedure__Group__0");
 					put(grammarAccess.getFnBodyAccess().getGroup(), "rule__FnBody__Group__0");
 					put(grammarAccess.getFnBodyAccess().getGroup_2(), "rule__FnBody__Group_2__0");
 					put(grammarAccess.getFnPrototypeAccess().getGroup_0(), "rule__FnPrototype__Group_0__0");
@@ -205,9 +205,10 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getDimensionAccess().getIndexAssignment_2_1(), "rule__Dimension__IndexAssignment_2_1");
 					put(grammarAccess.getTypeAccess().getSignedAssignment_0(), "rule__Type__SignedAssignment_0");
 					put(grammarAccess.getTypeAccess().getSimpTypeAssignment_1(), "rule__Type__SimpTypeAssignment_1");
-					put(grammarAccess.getProcedureAccess().getProcedureAssignment(), "rule__Procedure__ProcedureAssignment");
-					put(grammarAccess.getProcNoAttrAccess().getPrototypeAssignment_0(), "rule__ProcNoAttr__PrototypeAssignment_0");
-					put(grammarAccess.getProcNoAttrAccess().getFnBodyAssignment_1_1(), "rule__ProcNoAttr__FnBodyAssignment_1_1");
+					put(grammarAccess.getProcedureAccess().getAttrListAssignment_0(), "rule__Procedure__AttrListAssignment_0");
+					put(grammarAccess.getProcedureAccess().getOverrideAssignment_1(), "rule__Procedure__OverrideAssignment_1");
+					put(grammarAccess.getProcedureAccess().getPrototypeAssignment_2(), "rule__Procedure__PrototypeAssignment_2");
+					put(grammarAccess.getProcedureAccess().getFnBodyAssignment_3_1(), "rule__Procedure__FnBodyAssignment_3_1");
 					put(grammarAccess.getFnBodyAccess().getVarInitsAssignment_2_0(), "rule__FnBody__VarInitsAssignment_2_0");
 					put(grammarAccess.getFnBodyAccess().getStmtsAssignment_3(), "rule__FnBody__StmtsAssignment_3");
 					put(grammarAccess.getFnPrototypeAccess().getExternAssignment_0_1(), "rule__FnPrototype__ExternAssignment_0_1");

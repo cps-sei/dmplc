@@ -44,10 +44,9 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="simpType" eType="#//SimpTypeEnum"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Procedure" eSuperTypes="#//ProgramElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="procedure" eType="#//ProcNoAttr"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attrList" eType="#//AttrList"
         containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ProcNoAttr">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="override" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="prototype" eType="#//FnPrototype"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="fnBody" eType="#//FnBody"
