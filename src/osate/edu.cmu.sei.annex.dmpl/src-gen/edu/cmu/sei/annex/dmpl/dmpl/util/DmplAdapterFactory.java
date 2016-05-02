@@ -185,11 +185,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createStmtListAdapter();
       }
       @Override
-      public Adapter caseCondStmt(CondStmt object)
-      {
-        return createCondStmtAdapter();
-      }
-      @Override
       public Adapter caseStmt(Stmt object)
       {
         return createStmtAdapter();
@@ -263,6 +258,11 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
       public Adapter caseForStmt(ForStmt object)
       {
         return createForStmtAdapter();
+      }
+      @Override
+      public Adapter caseCondStmt(CondStmt object)
+      {
+        return createCondStmtAdapter();
       }
       @Override
       public Adapter caseSimpleStmt(SimpleStmt object)
@@ -727,21 +727,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.CondStmt <em>Cond Stmt</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.CondStmt
-   * @generated
-   */
-  public Adapter createCondStmtAdapter()
-  {
-    return null;
-  }
-
-  /**
    * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Stmt <em>Stmt</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -962,6 +947,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createForStmtAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.CondStmt <em>Cond Stmt</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.CondStmt
+   * @generated
+   */
+  public Adapter createCondStmtAdapter()
   {
     return null;
   }

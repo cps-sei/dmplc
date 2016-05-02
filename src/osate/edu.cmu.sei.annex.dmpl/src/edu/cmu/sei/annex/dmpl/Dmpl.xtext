@@ -106,16 +106,12 @@ StmtList:
 	{StmtList} stmts+=Stmt*
 ;
 
-CondStmt:
-	attrList=AttrList? 'if' '(' condition=Expr ')' then=Stmt (=> 'else' else=Stmt)?
-;
-
 Stmt:
 	{NestedStmt} '{' stmtList=StmtList '}' |
 	AssignmentStmt ';' |
 	{WhileStmt} 'while' '(' condition=Expr ')' stmt=Stmt |
 	{ForStmt} 'for' '(' (inits+=AssignmentStmt (',' inits+=AssignmentStmt)*)? ';' condition=Expr? ';' update=AssignmentStmt? ')' stmt=Stmt |
-	CondStmt |
+	{CondStmt} attrList=AttrList? 'if' '(' condition=Expr ')' then=Stmt (=> 'else' else=Stmt)? |
 	{SimpleStmt} name=SimpleStmtKeyword ';' |
 	{ReturnValueStmt} 'return' value=Expr ';' |
 	CallExpr ';' |

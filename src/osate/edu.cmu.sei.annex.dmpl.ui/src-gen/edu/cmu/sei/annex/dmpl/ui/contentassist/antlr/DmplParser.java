@@ -106,14 +106,14 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getVarInitListAccess().getGroup(), "rule__VarInitList__Group__0");
 					put(grammarAccess.getVarInitListAccess().getGroup_1(), "rule__VarInitList__Group_1__0");
 					put(grammarAccess.getStmtListAccess().getGroup(), "rule__StmtList__Group__0");
-					put(grammarAccess.getCondStmtAccess().getGroup(), "rule__CondStmt__Group__0");
-					put(grammarAccess.getCondStmtAccess().getGroup_6(), "rule__CondStmt__Group_6__0");
 					put(grammarAccess.getStmtAccess().getGroup_0(), "rule__Stmt__Group_0__0");
 					put(grammarAccess.getStmtAccess().getGroup_1(), "rule__Stmt__Group_1__0");
 					put(grammarAccess.getStmtAccess().getGroup_2(), "rule__Stmt__Group_2__0");
 					put(grammarAccess.getStmtAccess().getGroup_3(), "rule__Stmt__Group_3__0");
 					put(grammarAccess.getStmtAccess().getGroup_3_3(), "rule__Stmt__Group_3_3__0");
 					put(grammarAccess.getStmtAccess().getGroup_3_3_1(), "rule__Stmt__Group_3_3_1__0");
+					put(grammarAccess.getStmtAccess().getGroup_4(), "rule__Stmt__Group_4__0");
+					put(grammarAccess.getStmtAccess().getGroup_4_7(), "rule__Stmt__Group_4_7__0");
 					put(grammarAccess.getStmtAccess().getGroup_5(), "rule__Stmt__Group_5__0");
 					put(grammarAccess.getStmtAccess().getGroup_6(), "rule__Stmt__Group_6__0");
 					put(grammarAccess.getStmtAccess().getGroup_7(), "rule__Stmt__Group_7__0");
@@ -229,10 +229,6 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getParamAccess().getVarAssignment_1(), "rule__Param__VarAssignment_1");
 					put(grammarAccess.getVarInitListAccess().getVarInitsAssignment_1_0(), "rule__VarInitList__VarInitsAssignment_1_0");
 					put(grammarAccess.getStmtListAccess().getStmtsAssignment_1(), "rule__StmtList__StmtsAssignment_1");
-					put(grammarAccess.getCondStmtAccess().getAttrListAssignment_0(), "rule__CondStmt__AttrListAssignment_0");
-					put(grammarAccess.getCondStmtAccess().getConditionAssignment_3(), "rule__CondStmt__ConditionAssignment_3");
-					put(grammarAccess.getCondStmtAccess().getThenAssignment_5(), "rule__CondStmt__ThenAssignment_5");
-					put(grammarAccess.getCondStmtAccess().getElseAssignment_6_1(), "rule__CondStmt__ElseAssignment_6_1");
 					put(grammarAccess.getStmtAccess().getStmtListAssignment_0_2(), "rule__Stmt__StmtListAssignment_0_2");
 					put(grammarAccess.getStmtAccess().getConditionAssignment_2_3(), "rule__Stmt__ConditionAssignment_2_3");
 					put(grammarAccess.getStmtAccess().getStmtAssignment_2_5(), "rule__Stmt__StmtAssignment_2_5");
@@ -241,6 +237,10 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getStmtAccess().getConditionAssignment_3_5(), "rule__Stmt__ConditionAssignment_3_5");
 					put(grammarAccess.getStmtAccess().getUpdateAssignment_3_7(), "rule__Stmt__UpdateAssignment_3_7");
 					put(grammarAccess.getStmtAccess().getStmtAssignment_3_9(), "rule__Stmt__StmtAssignment_3_9");
+					put(grammarAccess.getStmtAccess().getAttrListAssignment_4_1(), "rule__Stmt__AttrListAssignment_4_1");
+					put(grammarAccess.getStmtAccess().getConditionAssignment_4_4(), "rule__Stmt__ConditionAssignment_4_4");
+					put(grammarAccess.getStmtAccess().getThenAssignment_4_6(), "rule__Stmt__ThenAssignment_4_6");
+					put(grammarAccess.getStmtAccess().getElseAssignment_4_7_1(), "rule__Stmt__ElseAssignment_4_7_1");
 					put(grammarAccess.getStmtAccess().getNameAssignment_5_1(), "rule__Stmt__NameAssignment_5_1");
 					put(grammarAccess.getStmtAccess().getValueAssignment_6_2(), "rule__Stmt__ValueAssignment_6_2");
 					put(grammarAccess.getStmtAccess().getNameAssignment_8_1(), "rule__Stmt__NameAssignment_8_1");

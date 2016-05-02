@@ -245,13 +245,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass condStmtEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   private EClass stmtEClass = null;
 
   /**
@@ -351,6 +344,13 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass forStmtEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass condStmtEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -1164,56 +1164,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getCondStmt()
-  {
-    return condStmtEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getCondStmt_AttrList()
-  {
-    return (EReference)condStmtEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getCondStmt_Condition()
-  {
-    return (EReference)condStmtEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getCondStmt_Then()
-  {
-    return (EReference)condStmtEClass.getEStructuralFeatures().get(2);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getCondStmt_Else()
-  {
-    return (EReference)condStmtEClass.getEStructuralFeatures().get(3);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EClass getStmt()
   {
     return stmtEClass;
@@ -1577,6 +1527,56 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
   public EReference getForStmt_Stmt()
   {
     return (EReference)forStmtEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getCondStmt()
+  {
+    return condStmtEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getCondStmt_AttrList()
+  {
+    return (EReference)condStmtEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getCondStmt_Condition()
+  {
+    return (EReference)condStmtEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getCondStmt_Then()
+  {
+    return (EReference)condStmtEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getCondStmt_Else()
+  {
+    return (EReference)condStmtEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -2441,12 +2441,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     stmtListEClass = createEClass(STMT_LIST);
     createEReference(stmtListEClass, STMT_LIST__STMTS);
 
-    condStmtEClass = createEClass(COND_STMT);
-    createEReference(condStmtEClass, COND_STMT__ATTR_LIST);
-    createEReference(condStmtEClass, COND_STMT__CONDITION);
-    createEReference(condStmtEClass, COND_STMT__THEN);
-    createEReference(condStmtEClass, COND_STMT__ELSE);
-
     stmtEClass = createEClass(STMT);
 
     assignmentStmtEClass = createEClass(ASSIGNMENT_STMT);
@@ -2498,6 +2492,12 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     createEReference(forStmtEClass, FOR_STMT__CONDITION);
     createEReference(forStmtEClass, FOR_STMT__UPDATE);
     createEReference(forStmtEClass, FOR_STMT__STMT);
+
+    condStmtEClass = createEClass(COND_STMT);
+    createEReference(condStmtEClass, COND_STMT__ATTR_LIST);
+    createEReference(condStmtEClass, COND_STMT__CONDITION);
+    createEReference(condStmtEClass, COND_STMT__THEN);
+    createEReference(condStmtEClass, COND_STMT__ELSE);
 
     simpleStmtEClass = createEClass(SIMPLE_STMT);
     createEAttribute(simpleStmtEClass, SIMPLE_STMT__NAME);
@@ -2636,7 +2636,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     intConstEClass.getESuperTypes().add(this.getNumberConst());
     doubleConstEClass.getESuperTypes().add(this.getNumberConst());
     procedureEClass.getESuperTypes().add(this.getProgramElement());
-    condStmtEClass.getESuperTypes().add(this.getStmt());
     assignmentStmtEClass.getESuperTypes().add(this.getStmt());
     lValEClass.getESuperTypes().add(this.getExpr());
     callExprEClass.getESuperTypes().add(this.getStmt());
@@ -2651,6 +2650,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     nestedStmtEClass.getESuperTypes().add(this.getStmt());
     whileStmtEClass.getESuperTypes().add(this.getStmt());
     forStmtEClass.getESuperTypes().add(this.getStmt());
+    condStmtEClass.getESuperTypes().add(this.getStmt());
     simpleStmtEClass.getESuperTypes().add(this.getStmt());
     returnValueStmtEClass.getESuperTypes().add(this.getStmt());
     forAllStmtEClass.getESuperTypes().add(this.getStmt());
@@ -2746,12 +2746,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEClass(stmtListEClass, StmtList.class, "StmtList", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getStmtList_Stmts(), this.getStmt(), null, "stmts", null, 0, -1, StmtList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(condStmtEClass, CondStmt.class, "CondStmt", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getCondStmt_AttrList(), this.getAttrList(), null, "attrList", null, 0, 1, CondStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getCondStmt_Condition(), this.getExpr(), null, "condition", null, 0, 1, CondStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getCondStmt_Then(), this.getStmt(), null, "then", null, 0, 1, CondStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getCondStmt_Else(), this.getStmt(), null, "else", null, 0, 1, CondStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
     initEClass(stmtEClass, Stmt.class, "Stmt", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(assignmentStmtEClass, AssignmentStmt.class, "AssignmentStmt", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2803,6 +2797,12 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEReference(getForStmt_Condition(), this.getExpr(), null, "condition", null, 0, 1, ForStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getForStmt_Update(), this.getAssignmentStmt(), null, "update", null, 0, 1, ForStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getForStmt_Stmt(), this.getStmt(), null, "stmt", null, 0, 1, ForStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(condStmtEClass, CondStmt.class, "CondStmt", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getCondStmt_AttrList(), this.getAttrList(), null, "attrList", null, 0, 1, CondStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getCondStmt_Condition(), this.getExpr(), null, "condition", null, 0, 1, CondStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getCondStmt_Then(), this.getStmt(), null, "then", null, 0, 1, CondStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getCondStmt_Else(), this.getStmt(), null, "else", null, 0, 1, CondStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(simpleStmtEClass, SimpleStmt.class, "SimpleStmt", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getSimpleStmt_Name(), this.getSimpleStmtKeywordEnum(), "name", null, 0, 1, SimpleStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

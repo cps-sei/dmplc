@@ -86,7 +86,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.PARAM: return createParam();
       case DmplPackage.VAR_INIT_LIST: return createVarInitList();
       case DmplPackage.STMT_LIST: return createStmtList();
-      case DmplPackage.COND_STMT: return createCondStmt();
       case DmplPackage.STMT: return createStmt();
       case DmplPackage.ASSIGNMENT_STMT: return createAssignmentStmt();
       case DmplPackage.LVAL: return createLVal();
@@ -102,6 +101,7 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.NESTED_STMT: return createNestedStmt();
       case DmplPackage.WHILE_STMT: return createWhileStmt();
       case DmplPackage.FOR_STMT: return createForStmt();
+      case DmplPackage.COND_STMT: return createCondStmt();
       case DmplPackage.SIMPLE_STMT: return createSimpleStmt();
       case DmplPackage.RETURN_VALUE_STMT: return createReturnValueStmt();
       case DmplPackage.FOR_ALL_STMT: return createForAllStmt();
@@ -442,17 +442,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public CondStmt createCondStmt()
-  {
-    CondStmtImpl condStmt = new CondStmtImpl();
-    return condStmt;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public Stmt createStmt()
   {
     StmtImpl stmt = new StmtImpl();
@@ -611,6 +600,17 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     ForStmtImpl forStmt = new ForStmtImpl();
     return forStmt;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public CondStmt createCondStmt()
+  {
+    CondStmtImpl condStmt = new CondStmtImpl();
+    return condStmt;
   }
 
   /**

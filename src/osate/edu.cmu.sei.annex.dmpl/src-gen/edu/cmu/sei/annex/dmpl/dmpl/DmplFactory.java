@@ -212,15 +212,6 @@ public interface DmplFactory extends EFactory
   StmtList createStmtList();
 
   /**
-   * Returns a new object of class '<em>Cond Stmt</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Cond Stmt</em>'.
-   * @generated
-   */
-  CondStmt createCondStmt();
-
-  /**
    * Returns a new object of class '<em>Stmt</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -354,6 +345,15 @@ public interface DmplFactory extends EFactory
    * @generated
    */
   ForStmt createForStmt();
+
+  /**
+   * Returns a new object of class '<em>Cond Stmt</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Cond Stmt</em>'.
+   * @generated
+   */
+  CondStmt createCondStmt();
 
   /**
    * Returns a new object of class '<em>Simple Stmt</em>'.

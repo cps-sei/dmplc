@@ -111,7 +111,7 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				sequence_CompareExpr(context, (CompareExpr) semanticObject); 
 				return; 
 			case DmplPackage.COND_STMT:
-				sequence_CondStmt(context, (CondStmt) semanticObject); 
+				sequence_Stmt(context, (CondStmt) semanticObject); 
 				return; 
 			case DmplPackage.CONSTANT:
 				sequence_Constant(context, (Constant) semanticObject); 
@@ -384,15 +384,6 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 		feeder.accept(grammarAccess.getCompareExprAccess().getOperatorCompareOperatorEnumRuleCall_1_0_0_1_0(), semanticObject.getOperator());
 		feeder.accept(grammarAccess.getCompareExprAccess().getRightShiftExprParserRuleCall_1_1_0(), semanticObject.getRight());
 		feeder.finish();
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (attrList=AttrList? condition=Expr then=Stmt else=Stmt?)
-	 */
-	protected void sequence_CondStmt(EObject context, CondStmt semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -694,6 +685,15 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     (stmts+=Stmt*)
 	 */
 	protected void sequence_StmtList(EObject context, StmtList semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (attrList=AttrList? condition=Expr then=Stmt else=Stmt?)
+	 */
+	protected void sequence_Stmt(EObject context, CondStmt semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
