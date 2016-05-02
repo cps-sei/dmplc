@@ -165,11 +165,8 @@
     <genClasses ecoreClass="Dmpl.ecore#//CallExpr">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//CallExpr/namespace"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//CallExpr/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//CallExpr/argList"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//CallExpr/args"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//CallExpr/at"/>
-    </genClasses>
-    <genClasses ecoreClass="Dmpl.ecore#//ArgList">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//ArgList/args"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//ExprVarAsgn">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//ExprVarAsgn/expr"/>

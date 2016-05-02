@@ -118,13 +118,9 @@
   <eClassifiers xsi:type="ecore:EClass" name="CallExpr" eSuperTypes="#//Stmt #//Expr">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespace" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="argList" eType="#//ArgList"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="at" eType="#//Expr" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ArgList">
     <eStructuralFeatures xsi:type="ecore:EReference" name="args" upperBound="-1" eType="#//Expr"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="at" eType="#//Expr" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="SignEnum">
     <eLiterals name="unset" literal="unset"/>

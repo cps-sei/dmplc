@@ -2,18 +2,24 @@
  */
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
-import edu.cmu.sei.annex.dmpl.dmpl.ArgList;
 import edu.cmu.sei.annex.dmpl.dmpl.CallExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.Expr;
 
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -25,7 +31,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.CallExprImpl#getNamespace <em>Namespace</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.CallExprImpl#getName <em>Name</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.CallExprImpl#getArgList <em>Arg List</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.CallExprImpl#getArgs <em>Args</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.CallExprImpl#getAt <em>At</em>}</li>
  * </ul>
  *
@@ -74,14 +80,14 @@ public class CallExprImpl extends StmtImpl implements CallExpr
   protected String name = NAME_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getArgList() <em>Arg List</em>}' containment reference.
+   * The cached value of the '{@link #getArgs() <em>Args</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getArgList()
+   * @see #getArgs()
    * @generated
    * @ordered
    */
-  protected ArgList argList;
+  protected EList<Expr> args;
 
   /**
    * The cached value of the '{@link #getAt() <em>At</em>}' containment reference.
@@ -165,47 +171,13 @@ public class CallExprImpl extends StmtImpl implements CallExpr
    * <!-- end-user-doc -->
    * @generated
    */
-  public ArgList getArgList()
+  public EList<Expr> getArgs()
   {
-    return argList;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetArgList(ArgList newArgList, NotificationChain msgs)
-  {
-    ArgList oldArgList = argList;
-    argList = newArgList;
-    if (eNotificationRequired())
+    if (args == null)
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.CALL_EXPR__ARG_LIST, oldArgList, newArgList);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      args = new EObjectContainmentEList<Expr>(Expr.class, this, DmplPackage.CALL_EXPR__ARGS);
     }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setArgList(ArgList newArgList)
-  {
-    if (newArgList != argList)
-    {
-      NotificationChain msgs = null;
-      if (argList != null)
-        msgs = ((InternalEObject)argList).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.CALL_EXPR__ARG_LIST, null, msgs);
-      if (newArgList != null)
-        msgs = ((InternalEObject)newArgList).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.CALL_EXPR__ARG_LIST, null, msgs);
-      msgs = basicSetArgList(newArgList, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.CALL_EXPR__ARG_LIST, newArgList, newArgList));
+    return args;
   }
 
   /**
@@ -266,8 +238,8 @@ public class CallExprImpl extends StmtImpl implements CallExpr
   {
     switch (featureID)
     {
-      case DmplPackage.CALL_EXPR__ARG_LIST:
-        return basicSetArgList(null, msgs);
+      case DmplPackage.CALL_EXPR__ARGS:
+        return ((InternalEList<?>)getArgs()).basicRemove(otherEnd, msgs);
       case DmplPackage.CALL_EXPR__AT:
         return basicSetAt(null, msgs);
     }
@@ -288,8 +260,8 @@ public class CallExprImpl extends StmtImpl implements CallExpr
         return getNamespace();
       case DmplPackage.CALL_EXPR__NAME:
         return getName();
-      case DmplPackage.CALL_EXPR__ARG_LIST:
-        return getArgList();
+      case DmplPackage.CALL_EXPR__ARGS:
+        return getArgs();
       case DmplPackage.CALL_EXPR__AT:
         return getAt();
     }
@@ -301,6 +273,7 @@ public class CallExprImpl extends StmtImpl implements CallExpr
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
@@ -312,8 +285,9 @@ public class CallExprImpl extends StmtImpl implements CallExpr
       case DmplPackage.CALL_EXPR__NAME:
         setName((String)newValue);
         return;
-      case DmplPackage.CALL_EXPR__ARG_LIST:
-        setArgList((ArgList)newValue);
+      case DmplPackage.CALL_EXPR__ARGS:
+        getArgs().clear();
+        getArgs().addAll((Collection<? extends Expr>)newValue);
         return;
       case DmplPackage.CALL_EXPR__AT:
         setAt((Expr)newValue);
@@ -338,8 +312,8 @@ public class CallExprImpl extends StmtImpl implements CallExpr
       case DmplPackage.CALL_EXPR__NAME:
         setName(NAME_EDEFAULT);
         return;
-      case DmplPackage.CALL_EXPR__ARG_LIST:
-        setArgList((ArgList)null);
+      case DmplPackage.CALL_EXPR__ARGS:
+        getArgs().clear();
         return;
       case DmplPackage.CALL_EXPR__AT:
         setAt((Expr)null);
@@ -362,8 +336,8 @@ public class CallExprImpl extends StmtImpl implements CallExpr
         return NAMESPACE_EDEFAULT == null ? namespace != null : !NAMESPACE_EDEFAULT.equals(namespace);
       case DmplPackage.CALL_EXPR__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-      case DmplPackage.CALL_EXPR__ARG_LIST:
-        return argList != null;
+      case DmplPackage.CALL_EXPR__ARGS:
+        return args != null && !args.isEmpty();
       case DmplPackage.CALL_EXPR__AT:
         return at != null;
     }

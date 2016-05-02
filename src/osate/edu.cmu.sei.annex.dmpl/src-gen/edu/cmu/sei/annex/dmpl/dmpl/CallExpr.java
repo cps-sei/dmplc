@@ -2,6 +2,7 @@
  */
 package edu.cmu.sei.annex.dmpl.dmpl;
 
+import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -14,7 +15,7 @@ package edu.cmu.sei.annex.dmpl.dmpl;
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.CallExpr#getNamespace <em>Namespace</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.CallExpr#getName <em>Name</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.CallExpr#getArgList <em>Arg List</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.CallExpr#getArgs <em>Args</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.CallExpr#getAt <em>At</em>}</li>
  * </ul>
  *
@@ -77,30 +78,20 @@ public interface CallExpr extends Stmt, Expr
   void setName(String value);
 
   /**
-   * Returns the value of the '<em><b>Arg List</b></em>' containment reference.
+   * Returns the value of the '<em><b>Args</b></em>' containment reference list.
+   * The list contents are of type {@link edu.cmu.sei.annex.dmpl.dmpl.Expr}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Arg List</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Args</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Arg List</em>' containment reference.
-   * @see #setArgList(ArgList)
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getCallExpr_ArgList()
+   * @return the value of the '<em>Args</em>' containment reference list.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getCallExpr_Args()
    * @model containment="true"
    * @generated
    */
-  ArgList getArgList();
-
-  /**
-   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.CallExpr#getArgList <em>Arg List</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Arg List</em>' containment reference.
-   * @see #getArgList()
-   * @generated
-   */
-  void setArgList(ArgList value);
+  EList<Expr> getArgs();
 
   /**
    * Returns the value of the '<em><b>At</b></em>' containment reference.

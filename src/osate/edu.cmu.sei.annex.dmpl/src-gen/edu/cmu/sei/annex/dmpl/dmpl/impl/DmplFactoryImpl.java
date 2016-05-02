@@ -94,7 +94,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.LVAL: return createLVal();
       case DmplPackage.EXPR: return createExpr();
       case DmplPackage.CALL_EXPR: return createCallExpr();
-      case DmplPackage.ARG_LIST: return createArgList();
       case DmplPackage.EXPR_VAR_ASGN: return createExprVarAsgn();
       case DmplPackage.FN_VAR_ASGN: return createFnVarAsgn();
       case DmplPackage.INT_DIMENSION: return createIntDimension();
@@ -526,17 +525,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     CallExprImpl callExpr = new CallExprImpl();
     return callExpr;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public ArgList createArgList()
-  {
-    ArgListImpl argList = new ArgListImpl();
-    return argList;
   }
 
   /**

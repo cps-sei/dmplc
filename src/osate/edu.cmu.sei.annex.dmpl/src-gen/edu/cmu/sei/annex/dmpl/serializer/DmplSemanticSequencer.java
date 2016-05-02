@@ -7,7 +7,6 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import edu.cmu.sei.annex.dmpl.dmpl.AdditiveExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.AndExpr;
-import edu.cmu.sei.annex.dmpl.dmpl.ArgList;
 import edu.cmu.sei.annex.dmpl.dmpl.AssignmentStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.Attr;
 import edu.cmu.sei.annex.dmpl.dmpl.AttrList;
@@ -88,9 +87,6 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.AND_EXPR:
 				sequence_AndExpr(context, (AndExpr) semanticObject); 
-				return; 
-			case DmplPackage.ARG_LIST:
-				sequence_ArgList(context, (ArgList) semanticObject); 
 				return; 
 			case DmplPackage.ASSIGNMENT_STMT:
 				sequence_AssignmentStmt(context, (AssignmentStmt) semanticObject); 
@@ -295,15 +291,6 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     ((args+=Expr args+=Expr*)?)
-	 */
-	protected void sequence_ArgList(EObject context, ArgList semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
 	 *     (variable=LVal value=Expr)
 	 */
 	protected void sequence_AssignmentStmt(EObject context, AssignmentStmt semanticObject) {
@@ -388,7 +375,7 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (namespace=TIDENTIFIER? name=TIDENTIFIER argList=ArgList at=Expr?)
+	 *     (namespace=TIDENTIFIER? name=TIDENTIFIER (args+=Expr args+=Expr*)? at=Expr?)
 	 */
 	protected void sequence_CallExpr(EObject context, CallExpr semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

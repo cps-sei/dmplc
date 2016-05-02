@@ -178,10 +178,9 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getTerminalExprAccess().getGroup_8(), "rule__TerminalExpr__Group_8__0");
 					put(grammarAccess.getCallExprAccess().getGroup(), "rule__CallExpr__Group__0");
 					put(grammarAccess.getCallExprAccess().getGroup_0(), "rule__CallExpr__Group_0__0");
+					put(grammarAccess.getCallExprAccess().getGroup_3(), "rule__CallExpr__Group_3__0");
+					put(grammarAccess.getCallExprAccess().getGroup_3_1(), "rule__CallExpr__Group_3_1__0");
 					put(grammarAccess.getCallExprAccess().getGroup_5(), "rule__CallExpr__Group_5__0");
-					put(grammarAccess.getArgListAccess().getGroup(), "rule__ArgList__Group__0");
-					put(grammarAccess.getArgListAccess().getGroup_1(), "rule__ArgList__Group_1__0");
-					put(grammarAccess.getArgListAccess().getGroup_1_1(), "rule__ArgList__Group_1_1__0");
 					put(grammarAccess.getDoubleAccess().getGroup_1(), "rule__Double__Group_1__0");
 					put(grammarAccess.getProgramAccess().getProgramElementsAssignment_1(), "rule__Program__ProgramElementsAssignment_1");
 					put(grammarAccess.getDmplSubclauseAccess().getProgramAssignment_1(), "rule__DmplSubclause__ProgramAssignment_1");
@@ -285,10 +284,9 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getTerminalExprAccess().getSecondArgAssignment_6_5(), "rule__TerminalExpr__SecondArgAssignment_6_5");
 					put(grammarAccess.getCallExprAccess().getNamespaceAssignment_0_0(), "rule__CallExpr__NamespaceAssignment_0_0");
 					put(grammarAccess.getCallExprAccess().getNameAssignment_1(), "rule__CallExpr__NameAssignment_1");
-					put(grammarAccess.getCallExprAccess().getArgListAssignment_3(), "rule__CallExpr__ArgListAssignment_3");
+					put(grammarAccess.getCallExprAccess().getArgsAssignment_3_0(), "rule__CallExpr__ArgsAssignment_3_0");
+					put(grammarAccess.getCallExprAccess().getArgsAssignment_3_1_1(), "rule__CallExpr__ArgsAssignment_3_1_1");
 					put(grammarAccess.getCallExprAccess().getAtAssignment_5_1(), "rule__CallExpr__AtAssignment_5_1");
-					put(grammarAccess.getArgListAccess().getArgsAssignment_1_0(), "rule__ArgList__ArgsAssignment_1_0");
-					put(grammarAccess.getArgListAccess().getArgsAssignment_1_1_1(), "rule__ArgList__ArgsAssignment_1_1_1");
 				}
 			};
 		}

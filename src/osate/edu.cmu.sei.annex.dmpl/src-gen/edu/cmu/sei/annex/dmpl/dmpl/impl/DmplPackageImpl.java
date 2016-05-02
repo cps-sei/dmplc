@@ -5,7 +5,6 @@ package edu.cmu.sei.annex.dmpl.dmpl.impl;
 import edu.cmu.sei.annex.dmpl.dmpl.AdditiveExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.AdditiveOperator;
 import edu.cmu.sei.annex.dmpl.dmpl.AndExpr;
-import edu.cmu.sei.annex.dmpl.dmpl.ArgList;
 import edu.cmu.sei.annex.dmpl.dmpl.AssignmentStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.Attr;
 import edu.cmu.sei.annex.dmpl.dmpl.AttrList;
@@ -298,13 +297,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass callExprEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass argListEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -1398,7 +1390,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getCallExpr_ArgList()
+  public EReference getCallExpr_Args()
   {
     return (EReference)callExprEClass.getEStructuralFeatures().get(2);
   }
@@ -1411,26 +1403,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
   public EReference getCallExpr_At()
   {
     return (EReference)callExprEClass.getEStructuralFeatures().get(3);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getArgList()
-  {
-    return argListEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getArgList_Args()
-  {
-    return (EReference)argListEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -2553,11 +2525,8 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     callExprEClass = createEClass(CALL_EXPR);
     createEAttribute(callExprEClass, CALL_EXPR__NAMESPACE);
     createEAttribute(callExprEClass, CALL_EXPR__NAME);
-    createEReference(callExprEClass, CALL_EXPR__ARG_LIST);
+    createEReference(callExprEClass, CALL_EXPR__ARGS);
     createEReference(callExprEClass, CALL_EXPR__AT);
-
-    argListEClass = createEClass(ARG_LIST);
-    createEReference(argListEClass, ARG_LIST__ARGS);
 
     exprVarAsgnEClass = createEClass(EXPR_VAR_ASGN);
     createEReference(exprVarAsgnEClass, EXPR_VAR_ASGN__EXPR);
@@ -2867,11 +2836,8 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEClass(callExprEClass, CallExpr.class, "CallExpr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getCallExpr_Namespace(), ecorePackage.getEString(), "namespace", null, 0, 1, CallExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getCallExpr_Name(), ecorePackage.getEString(), "name", null, 0, 1, CallExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getCallExpr_ArgList(), this.getArgList(), null, "argList", null, 0, 1, CallExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getCallExpr_Args(), this.getExpr(), null, "args", null, 0, -1, CallExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getCallExpr_At(), this.getExpr(), null, "at", null, 0, 1, CallExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(argListEClass, ArgList.class, "ArgList", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getArgList_Args(), this.getExpr(), null, "args", null, 0, -1, ArgList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(exprVarAsgnEClass, ExprVarAsgn.class, "ExprVarAsgn", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getExprVarAsgn_Expr(), this.getExpr(), null, "expr", null, 0, 1, ExprVarAsgn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

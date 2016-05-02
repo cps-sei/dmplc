@@ -836,15 +836,13 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cParamListAttrParamListParserRuleCall_2_1_0 = (RuleCall)cParamListAssignment_2_1.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_2_2 = (Keyword)cGroup_2.eContents().get(2);
 		
-		//Attr: //TODO attr_param_list
+		//Attr:
 		//	"@" name=TIDENTIFIER ("(" paramList=AttrParamList ")")?;
 		@Override public ParserRule getRule() { return rule; }
 
-		////TODO attr_param_list
 		//"@" name=TIDENTIFIER ("(" paramList=AttrParamList ")")?
 		public Group getGroup() { return cGroup; }
 
-		////TODO attr_param_list
 		//"@"
 		public Keyword getCommercialAtKeyword_0() { return cCommercialAtKeyword_0; }
 
@@ -2182,8 +2180,13 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
 		private final Keyword cLeftParenthesisKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cArgListAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cArgListArgListParserRuleCall_3_0 = (RuleCall)cArgListAssignment_3.eContents().get(0);
+		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
+		private final Assignment cArgsAssignment_3_0 = (Assignment)cGroup_3.eContents().get(0);
+		private final RuleCall cArgsExprParserRuleCall_3_0_0 = (RuleCall)cArgsAssignment_3_0.eContents().get(0);
+		private final Group cGroup_3_1 = (Group)cGroup_3.eContents().get(1);
+		private final Keyword cCommaKeyword_3_1_0 = (Keyword)cGroup_3_1.eContents().get(0);
+		private final Assignment cArgsAssignment_3_1_1 = (Assignment)cGroup_3_1.eContents().get(1);
+		private final RuleCall cArgsExprParserRuleCall_3_1_1_0 = (RuleCall)cArgsAssignment_3_1_1.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		private final Group cGroup_5 = (Group)cGroup.eContents().get(5);
 		private final Keyword cCommercialAtKeyword_5_0 = (Keyword)cGroup_5.eContents().get(0);
@@ -2191,10 +2194,10 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cAtExprParserRuleCall_5_1_0 = (RuleCall)cAtAssignment_5_1.eContents().get(0);
 		
 		//CallExpr:
-		//	(namespace=TIDENTIFIER "::")? name=TIDENTIFIER "(" argList=ArgList ")" ("@" at=Expr)?;
+		//	(namespace=TIDENTIFIER "::")? name=TIDENTIFIER "(" (args+=Expr ("," args+=Expr)*)? ")" ("@" at=Expr)?;
 		@Override public ParserRule getRule() { return rule; }
 
-		//(namespace=TIDENTIFIER "::")? name=TIDENTIFIER "(" argList=ArgList ")" ("@" at=Expr)?
+		//(namespace=TIDENTIFIER "::")? name=TIDENTIFIER "(" (args+=Expr ("," args+=Expr)*)? ")" ("@" at=Expr)?
 		public Group getGroup() { return cGroup; }
 
 		//(namespace=TIDENTIFIER "::")?
@@ -2218,11 +2221,26 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//"("
 		public Keyword getLeftParenthesisKeyword_2() { return cLeftParenthesisKeyword_2; }
 
-		//argList=ArgList
-		public Assignment getArgListAssignment_3() { return cArgListAssignment_3; }
+		//(args+=Expr ("," args+=Expr)*)?
+		public Group getGroup_3() { return cGroup_3; }
 
-		//ArgList
-		public RuleCall getArgListArgListParserRuleCall_3_0() { return cArgListArgListParserRuleCall_3_0; }
+		//args+=Expr
+		public Assignment getArgsAssignment_3_0() { return cArgsAssignment_3_0; }
+
+		//Expr
+		public RuleCall getArgsExprParserRuleCall_3_0_0() { return cArgsExprParserRuleCall_3_0_0; }
+
+		//("," args+=Expr)*
+		public Group getGroup_3_1() { return cGroup_3_1; }
+
+		//","
+		public Keyword getCommaKeyword_3_1_0() { return cCommaKeyword_3_1_0; }
+
+		//args+=Expr
+		public Assignment getArgsAssignment_3_1_1() { return cArgsAssignment_3_1_1; }
+
+		//Expr
+		public RuleCall getArgsExprParserRuleCall_3_1_1_0() { return cArgsExprParserRuleCall_3_1_1_0; }
 
 		//")"
 		public Keyword getRightParenthesisKeyword_4() { return cRightParenthesisKeyword_4; }
@@ -2238,50 +2256,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 		//Expr
 		public RuleCall getAtExprParserRuleCall_5_1_0() { return cAtExprParserRuleCall_5_1_0; }
-	}
-
-	public class ArgListElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "ArgList");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cArgListAction_0 = (Action)cGroup.eContents().get(0);
-		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
-		private final Assignment cArgsAssignment_1_0 = (Assignment)cGroup_1.eContents().get(0);
-		private final RuleCall cArgsExprParserRuleCall_1_0_0 = (RuleCall)cArgsAssignment_1_0.eContents().get(0);
-		private final Group cGroup_1_1 = (Group)cGroup_1.eContents().get(1);
-		private final Keyword cCommaKeyword_1_1_0 = (Keyword)cGroup_1_1.eContents().get(0);
-		private final Assignment cArgsAssignment_1_1_1 = (Assignment)cGroup_1_1.eContents().get(1);
-		private final RuleCall cArgsExprParserRuleCall_1_1_1_0 = (RuleCall)cArgsAssignment_1_1_1.eContents().get(0);
-		
-		//ArgList:
-		//	{ArgList} (args+=Expr ("," args+=Expr)*)?;
-		@Override public ParserRule getRule() { return rule; }
-
-		//{ArgList} (args+=Expr ("," args+=Expr)*)?
-		public Group getGroup() { return cGroup; }
-
-		//{ArgList}
-		public Action getArgListAction_0() { return cArgListAction_0; }
-
-		//(args+=Expr ("," args+=Expr)*)?
-		public Group getGroup_1() { return cGroup_1; }
-
-		//args+=Expr
-		public Assignment getArgsAssignment_1_0() { return cArgsAssignment_1_0; }
-
-		//Expr
-		public RuleCall getArgsExprParserRuleCall_1_0_0() { return cArgsExprParserRuleCall_1_0_0; }
-
-		//("," args+=Expr)*
-		public Group getGroup_1_1() { return cGroup_1_1; }
-
-		//","
-		public Keyword getCommaKeyword_1_1_0() { return cCommaKeyword_1_1_0; }
-
-		//args+=Expr
-		public Assignment getArgsAssignment_1_1_1() { return cArgsAssignment_1_1_1; }
-
-		//Expr
-		public RuleCall getArgsExprParserRuleCall_1_1_1_0() { return cArgsExprParserRuleCall_1_1_1_0; }
 	}
 
 	public class SignElements extends AbstractParserRuleElementFinder {
@@ -2988,7 +2962,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final MultiplicativeExprElements pMultiplicativeExpr;
 	private final TerminalExprElements pTerminalExpr;
 	private final CallExprElements pCallExpr;
-	private final ArgListElements pArgList;
 	private final SignEnumElements unknownRuleSignEnum;
 	private final SignElements pSign;
 	private final SimpTypeEnumElements unknownRuleSimpTypeEnum;
@@ -3060,7 +3033,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pMultiplicativeExpr = new MultiplicativeExprElements();
 		this.pTerminalExpr = new TerminalExprElements();
 		this.pCallExpr = new CallExprElements();
-		this.pArgList = new ArgListElements();
 		this.unknownRuleSignEnum = new SignEnumElements();
 		this.pSign = new SignElements();
 		this.unknownRuleSimpTypeEnum = new SimpTypeEnumElements();
@@ -3293,7 +3265,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getAttrListAccess().getRule();
 	}
 
-	//Attr: //TODO attr_param_list
+	//Attr:
 	//	"@" name=TIDENTIFIER ("(" paramList=AttrParamList ")")?;
 	public AttrElements getAttrAccess() {
 		return pAttr;
@@ -3520,23 +3492,13 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//CallExpr:
-	//	(namespace=TIDENTIFIER "::")? name=TIDENTIFIER "(" argList=ArgList ")" ("@" at=Expr)?;
+	//	(namespace=TIDENTIFIER "::")? name=TIDENTIFIER "(" (args+=Expr ("," args+=Expr)*)? ")" ("@" at=Expr)?;
 	public CallExprElements getCallExprAccess() {
 		return pCallExpr;
 	}
 	
 	public ParserRule getCallExprRule() {
 		return getCallExprAccess().getRule();
-	}
-
-	//ArgList:
-	//	{ArgList} (args+=Expr ("," args+=Expr)*)?;
-	public ArgListElements getArgListAccess() {
-		return pArgList;
-	}
-	
-	public ParserRule getArgListRule() {
-		return getArgListAccess().getRule();
 	}
 
 	//enum SignEnum:

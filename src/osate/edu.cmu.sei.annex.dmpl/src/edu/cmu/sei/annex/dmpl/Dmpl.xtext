@@ -196,12 +196,7 @@ TerminalExpr returns Expr:
 ;
 
 CallExpr:
-	(namespace=TIDENTIFIER '::')? name=TIDENTIFIER '(' argList=ArgList ')' ('@' at=Expr)?
-;
-
-ArgList:
-	{ArgList}
-	(args+=Expr (',' args+=Expr)*)?
+	(namespace=TIDENTIFIER '::')? name=TIDENTIFIER '(' (args+=Expr (',' args+=Expr)*)? ')' ('@' at=Expr)?
 ;
 
 enum SignEnum:
