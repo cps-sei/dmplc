@@ -170,6 +170,11 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createAttrAdapter();
       }
       @Override
+      public Adapter caseAttrParamList(AttrParamList object)
+      {
+        return createAttrParamListAdapter();
+      }
+      @Override
       public Adapter caseParam(Param object)
       {
         return createParamAdapter();
@@ -687,6 +692,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createAttrAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.AttrParamList <em>Attr Param List</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.AttrParamList
+   * @generated
+   */
+  public Adapter createAttrParamListAdapter()
   {
     return null;
   }

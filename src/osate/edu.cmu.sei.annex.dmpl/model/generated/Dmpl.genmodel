@@ -127,6 +127,10 @@
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Attr">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Attr/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Attr/paramList"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//AttrParamList">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//AttrParamList/params"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Param">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Param/type"/>

@@ -211,6 +211,13 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case DmplPackage.ATTR_PARAM_LIST:
+      {
+        AttrParamList attrParamList = (AttrParamList)theEObject;
+        T result = caseAttrParamList(attrParamList);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case DmplPackage.PARAM:
       {
         Param param = (Param)theEObject;
@@ -829,6 +836,22 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseAttr(Attr object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Attr Param List</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Attr Param List</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseAttrParamList(AttrParamList object)
   {
     return null;
   }

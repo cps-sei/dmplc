@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.Attr#getName <em>Name</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.Attr#getParamList <em>Param List</em>}</li>
  * </ul>
  *
  * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getAttr()
@@ -47,5 +48,31 @@ public interface Attr extends EObject
    * @generated
    */
   void setName(String value);
+
+  /**
+   * Returns the value of the '<em><b>Param List</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Param List</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Param List</em>' containment reference.
+   * @see #setParamList(AttrParamList)
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getAttr_ParamList()
+   * @model containment="true"
+   * @generated
+   */
+  AttrParamList getParamList();
+
+  /**
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.Attr#getParamList <em>Param List</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Param List</em>' containment reference.
+   * @see #getParamList()
+   * @generated
+   */
+  void setParamList(AttrParamList value);
 
 } // Attr

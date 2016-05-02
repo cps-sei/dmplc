@@ -1435,7 +1435,94 @@ ruleAttr returns [EObject current=null]
 	    }
 
 )
-))
+)(	otherlv_2='(' 
+    {
+    	newLeafNode(otherlv_2, grammarAccess.getAttrAccess().getLeftParenthesisKeyword_2_0());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getAttrAccess().getParamListAttrParamListParserRuleCall_2_1_0()); 
+	    }
+		lv_paramList_3_0=ruleAttrParamList		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getAttrRule());
+	        }
+       		set(
+       			$current, 
+       			"paramList",
+        		lv_paramList_3_0, 
+        		"AttrParamList");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)	otherlv_4=')' 
+    {
+    	newLeafNode(otherlv_4, grammarAccess.getAttrAccess().getRightParenthesisKeyword_2_2());
+    }
+)?)
+;
+
+
+
+
+
+// Entry rule entryRuleAttrParamList
+entryRuleAttrParamList returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getAttrParamListRule()); }
+	 iv_ruleAttrParamList=ruleAttrParamList 
+	 { $current=$iv_ruleAttrParamList.current; } 
+	 EOF 
+;
+
+// Rule AttrParamList
+ruleAttrParamList returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+((
+(
+		{ 
+	        newCompositeNode(grammarAccess.getAttrParamListAccess().getParamsExprParserRuleCall_0_0()); 
+	    }
+		lv_params_0_0=ruleExpr		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getAttrParamListRule());
+	        }
+       		add(
+       			$current, 
+       			"params",
+        		lv_params_0_0, 
+        		"Expr");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)(	otherlv_1=',' 
+    {
+    	newLeafNode(otherlv_1, grammarAccess.getAttrParamListAccess().getCommaKeyword_1_0());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getAttrParamListAccess().getParamsExprParserRuleCall_1_1_0()); 
+	    }
+		lv_params_2_0=ruleExpr		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getAttrParamListRule());
+	        }
+       		add(
+       			$current, 
+       			"params",
+        		lv_params_2_0, 
+        		"Expr");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))*)
 ;
 
 

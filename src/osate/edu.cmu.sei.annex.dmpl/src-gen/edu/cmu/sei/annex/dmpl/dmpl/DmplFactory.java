@@ -185,6 +185,15 @@ public interface DmplFactory extends EFactory
   Attr createAttr();
 
   /**
+   * Returns a new object of class '<em>Attr Param List</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Attr Param List</em>'.
+   * @generated
+   */
+  AttrParamList createAttrParamList();
+
+  /**
    * Returns a new object of class '<em>Param</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

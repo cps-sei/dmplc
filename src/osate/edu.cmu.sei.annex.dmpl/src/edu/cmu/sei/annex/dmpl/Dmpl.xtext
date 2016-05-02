@@ -90,8 +90,11 @@ AttrList:
 ;
 
 Attr:
-	//TODO attr_param_list
-	'@' name=TIDENTIFIER
+	'@' name=TIDENTIFIER ('(' paramList=AttrParamList ')')?
+;
+
+AttrParamList:
+	params+=Expr (',' params+=Expr)*
 ;
 
 Param:

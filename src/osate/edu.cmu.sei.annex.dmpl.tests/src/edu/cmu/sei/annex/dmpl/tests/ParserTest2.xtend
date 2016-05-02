@@ -838,18 +838,44 @@ class ParserTest2 {
 			void f1() {
 				@attr1; @attr2; @attr3; if (v1)
 					v2 = 1;
+				@attr4(2); if (v3)
+					v4 = 3;
+				@attr5(4, 5, 6); if (v5)
+					v6 = 7;
 			}
 		'''.parse => [
 			assertNoIssues;
 			(programElements.head as Procedure).procedure => [
 				"f1".assertEquals(prototype.name)
 				fnBody.stmtList => [
-					1.assertEquals(stmts.size)
-					(stmts.head as CondStmt).attrList => [
+					3.assertEquals(stmts.size)
+					(stmts.get(0) as CondStmt).attrList => [
 						3.assertEquals(attrs.size)
 						"attr1".assertEquals(attrs.get(0).name)
 						"attr2".assertEquals(attrs.get(1).name)
 						"attr3".assertEquals(attrs.get(2).name)
+					]
+					(stmts.get(1) as CondStmt).attrList => [
+						1.assertEquals(attrs.size)
+						attrs.head => [
+							"attr4".assertEquals(name)
+							paramList => [
+								1.assertEquals(params.size)
+								2.assertEquals((params.get(0) as IntExpr).value)
+							]
+						]
+					]
+					(stmts.get(2) as CondStmt).attrList => [
+						1.assertEquals(attrs.size)
+						attrs.head => [
+							"attr5".assertEquals(name)
+							paramList => [
+								3.assertEquals(params.size)
+								4.assertEquals((params.get(0) as IntExpr).value)
+								5.assertEquals((params.get(1) as IntExpr).value)
+								6.assertEquals((params.get(2) as IntExpr).value)
+							]
+						]
 					]
 				]
 			]
