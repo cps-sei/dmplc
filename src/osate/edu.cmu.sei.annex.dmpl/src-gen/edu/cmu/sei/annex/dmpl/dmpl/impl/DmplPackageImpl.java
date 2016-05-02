@@ -8,7 +8,6 @@ import edu.cmu.sei.annex.dmpl.dmpl.AndExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.AssignmentStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.Attr;
 import edu.cmu.sei.annex.dmpl.dmpl.AttrList;
-import edu.cmu.sei.annex.dmpl.dmpl.AttrParamList;
 import edu.cmu.sei.annex.dmpl.dmpl.BitwiseAndExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.BitwiseOrExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.BuiltInExpr;
@@ -220,13 +219,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass attrEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass attrParamListEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -1100,29 +1092,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getAttr_ParamList()
+  public EReference getAttr_Params()
   {
     return (EReference)attrEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getAttrParamList()
-  {
-    return attrParamListEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getAttrParamList_Params()
-  {
-    return (EReference)attrParamListEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -2485,10 +2457,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     attrEClass = createEClass(ATTR);
     createEAttribute(attrEClass, ATTR__NAME);
-    createEReference(attrEClass, ATTR__PARAM_LIST);
-
-    attrParamListEClass = createEClass(ATTR_PARAM_LIST);
-    createEReference(attrParamListEClass, ATTR_PARAM_LIST__PARAMS);
+    createEReference(attrEClass, ATTR__PARAMS);
 
     paramEClass = createEClass(PARAM);
     createEReference(paramEClass, PARAM__TYPE);
@@ -2796,10 +2765,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     initEClass(attrEClass, Attr.class, "Attr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getAttr_Name(), ecorePackage.getEString(), "name", null, 0, 1, Attr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getAttr_ParamList(), this.getAttrParamList(), null, "paramList", null, 0, 1, Attr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(attrParamListEClass, AttrParamList.class, "AttrParamList", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getAttrParamList_Params(), this.getExpr(), null, "params", null, 0, -1, AttrParamList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getAttr_Params(), this.getExpr(), null, "params", null, 0, -1, Attr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(paramEClass, Param.class, "Param", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getParam_Type(), this.getType(), null, "type", null, 0, 1, Param.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

@@ -859,22 +859,18 @@ class ParserTest2 {
 						1.assertEquals(attrs.size)
 						attrs.head => [
 							"attr4".assertEquals(name)
-							paramList => [
-								1.assertEquals(params.size)
-								2.assertEquals((params.get(0) as IntExpr).value)
-							]
+							1.assertEquals(params.size)
+							2.assertEquals((params.get(0) as IntExpr).value)
 						]
 					]
 					(stmts.get(2) as CondStmt).attrList => [
 						1.assertEquals(attrs.size)
 						attrs.head => [
 							"attr5".assertEquals(name)
-							paramList => [
-								3.assertEquals(params.size)
-								4.assertEquals((params.get(0) as IntExpr).value)
-								5.assertEquals((params.get(1) as IntExpr).value)
-								6.assertEquals((params.get(2) as IntExpr).value)
-							]
+							3.assertEquals(params.size)
+							4.assertEquals((params.get(0) as IntExpr).value)
+							5.assertEquals((params.get(1) as IntExpr).value)
+							6.assertEquals((params.get(2) as IntExpr).value)
 						]
 					]
 				]

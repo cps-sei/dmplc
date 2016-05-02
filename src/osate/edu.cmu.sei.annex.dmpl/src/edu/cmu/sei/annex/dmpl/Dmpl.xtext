@@ -90,11 +90,7 @@ AttrList:
 ;
 
 Attr:
-	'@' name=TIDENTIFIER ('(' paramList=AttrParamList ')')?
-;
-
-AttrParamList:
-	params+=Expr (',' params+=Expr)*
+	'@' name=TIDENTIFIER ('(' params+=Expr (',' params+=Expr)* ')')?
 ;
 
 Param:

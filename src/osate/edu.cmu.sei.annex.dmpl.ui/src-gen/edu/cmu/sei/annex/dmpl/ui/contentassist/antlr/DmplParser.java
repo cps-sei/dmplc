@@ -101,8 +101,7 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getAttrListAccess().getGroup(), "rule__AttrList__Group__0");
 					put(grammarAccess.getAttrAccess().getGroup(), "rule__Attr__Group__0");
 					put(grammarAccess.getAttrAccess().getGroup_2(), "rule__Attr__Group_2__0");
-					put(grammarAccess.getAttrParamListAccess().getGroup(), "rule__AttrParamList__Group__0");
-					put(grammarAccess.getAttrParamListAccess().getGroup_1(), "rule__AttrParamList__Group_1__0");
+					put(grammarAccess.getAttrAccess().getGroup_2_2(), "rule__Attr__Group_2_2__0");
 					put(grammarAccess.getParamAccess().getGroup(), "rule__Param__Group__0");
 					put(grammarAccess.getVarInitListAccess().getGroup(), "rule__VarInitList__Group__0");
 					put(grammarAccess.getVarInitListAccess().getGroup_1(), "rule__VarInitList__Group_1__0");
@@ -225,9 +224,8 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getFnPrototypeAccess().getParamsAssignment_1_6_1_1(), "rule__FnPrototype__ParamsAssignment_1_6_1_1");
 					put(grammarAccess.getAttrListAccess().getAttrsAssignment_0(), "rule__AttrList__AttrsAssignment_0");
 					put(grammarAccess.getAttrAccess().getNameAssignment_1(), "rule__Attr__NameAssignment_1");
-					put(grammarAccess.getAttrAccess().getParamListAssignment_2_1(), "rule__Attr__ParamListAssignment_2_1");
-					put(grammarAccess.getAttrParamListAccess().getParamsAssignment_0(), "rule__AttrParamList__ParamsAssignment_0");
-					put(grammarAccess.getAttrParamListAccess().getParamsAssignment_1_1(), "rule__AttrParamList__ParamsAssignment_1_1");
+					put(grammarAccess.getAttrAccess().getParamsAssignment_2_1(), "rule__Attr__ParamsAssignment_2_1");
+					put(grammarAccess.getAttrAccess().getParamsAssignment_2_2_1(), "rule__Attr__ParamsAssignment_2_2_1");
 					put(grammarAccess.getParamAccess().getTypeAssignment_0(), "rule__Param__TypeAssignment_0");
 					put(grammarAccess.getParamAccess().getVarAssignment_1(), "rule__Param__VarAssignment_1");
 					put(grammarAccess.getVarInitListAccess().getVarInitsAssignment_1_0(), "rule__VarInitList__VarInitsAssignment_1_0");

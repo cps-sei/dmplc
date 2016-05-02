@@ -832,15 +832,19 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
 		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
 		private final Keyword cLeftParenthesisKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
-		private final Assignment cParamListAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
-		private final RuleCall cParamListAttrParamListParserRuleCall_2_1_0 = (RuleCall)cParamListAssignment_2_1.eContents().get(0);
-		private final Keyword cRightParenthesisKeyword_2_2 = (Keyword)cGroup_2.eContents().get(2);
+		private final Assignment cParamsAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
+		private final RuleCall cParamsExprParserRuleCall_2_1_0 = (RuleCall)cParamsAssignment_2_1.eContents().get(0);
+		private final Group cGroup_2_2 = (Group)cGroup_2.eContents().get(2);
+		private final Keyword cCommaKeyword_2_2_0 = (Keyword)cGroup_2_2.eContents().get(0);
+		private final Assignment cParamsAssignment_2_2_1 = (Assignment)cGroup_2_2.eContents().get(1);
+		private final RuleCall cParamsExprParserRuleCall_2_2_1_0 = (RuleCall)cParamsAssignment_2_2_1.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_2_3 = (Keyword)cGroup_2.eContents().get(3);
 		
 		//Attr:
-		//	"@" name=TIDENTIFIER ("(" paramList=AttrParamList ")")?;
+		//	"@" name=TIDENTIFIER ("(" params+=Expr ("," params+=Expr)* ")")?;
 		@Override public ParserRule getRule() { return rule; }
 
-		//"@" name=TIDENTIFIER ("(" paramList=AttrParamList ")")?
+		//"@" name=TIDENTIFIER ("(" params+=Expr ("," params+=Expr)* ")")?
 		public Group getGroup() { return cGroup; }
 
 		//"@"
@@ -852,56 +856,32 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//TIDENTIFIER
 		public RuleCall getNameTIDENTIFIERTerminalRuleCall_1_0() { return cNameTIDENTIFIERTerminalRuleCall_1_0; }
 
-		//("(" paramList=AttrParamList ")")?
+		//("(" params+=Expr ("," params+=Expr)* ")")?
 		public Group getGroup_2() { return cGroup_2; }
 
 		//"("
 		public Keyword getLeftParenthesisKeyword_2_0() { return cLeftParenthesisKeyword_2_0; }
 
-		//paramList=AttrParamList
-		public Assignment getParamListAssignment_2_1() { return cParamListAssignment_2_1; }
-
-		//AttrParamList
-		public RuleCall getParamListAttrParamListParserRuleCall_2_1_0() { return cParamListAttrParamListParserRuleCall_2_1_0; }
-
-		//")"
-		public Keyword getRightParenthesisKeyword_2_2() { return cRightParenthesisKeyword_2_2; }
-	}
-
-	public class AttrParamListElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "AttrParamList");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Assignment cParamsAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final RuleCall cParamsExprParserRuleCall_0_0 = (RuleCall)cParamsAssignment_0.eContents().get(0);
-		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
-		private final Keyword cCommaKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
-		private final Assignment cParamsAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
-		private final RuleCall cParamsExprParserRuleCall_1_1_0 = (RuleCall)cParamsAssignment_1_1.eContents().get(0);
-		
-		//AttrParamList:
-		//	params+=Expr ("," params+=Expr)*;
-		@Override public ParserRule getRule() { return rule; }
-
-		//params+=Expr ("," params+=Expr)*
-		public Group getGroup() { return cGroup; }
-
 		//params+=Expr
-		public Assignment getParamsAssignment_0() { return cParamsAssignment_0; }
+		public Assignment getParamsAssignment_2_1() { return cParamsAssignment_2_1; }
 
 		//Expr
-		public RuleCall getParamsExprParserRuleCall_0_0() { return cParamsExprParserRuleCall_0_0; }
+		public RuleCall getParamsExprParserRuleCall_2_1_0() { return cParamsExprParserRuleCall_2_1_0; }
 
 		//("," params+=Expr)*
-		public Group getGroup_1() { return cGroup_1; }
+		public Group getGroup_2_2() { return cGroup_2_2; }
 
 		//","
-		public Keyword getCommaKeyword_1_0() { return cCommaKeyword_1_0; }
+		public Keyword getCommaKeyword_2_2_0() { return cCommaKeyword_2_2_0; }
 
 		//params+=Expr
-		public Assignment getParamsAssignment_1_1() { return cParamsAssignment_1_1; }
+		public Assignment getParamsAssignment_2_2_1() { return cParamsAssignment_2_2_1; }
 
 		//Expr
-		public RuleCall getParamsExprParserRuleCall_1_1_0() { return cParamsExprParserRuleCall_1_1_0; }
+		public RuleCall getParamsExprParserRuleCall_2_2_1_0() { return cParamsExprParserRuleCall_2_2_1_0; }
+
+		//")"
+		public Keyword getRightParenthesisKeyword_2_3() { return cRightParenthesisKeyword_2_3; }
 	}
 
 	public class ParamElements extends AbstractParserRuleElementFinder {
@@ -2940,7 +2920,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final FnPrototypeElements pFnPrototype;
 	private final AttrListElements pAttrList;
 	private final AttrElements pAttr;
-	private final AttrParamListElements pAttrParamList;
 	private final ParamElements pParam;
 	private final VarInitListElements pVarInitList;
 	private final StmtListElements pStmtList;
@@ -3011,7 +2990,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pFnPrototype = new FnPrototypeElements();
 		this.pAttrList = new AttrListElements();
 		this.pAttr = new AttrElements();
-		this.pAttrParamList = new AttrParamListElements();
 		this.pParam = new ParamElements();
 		this.pVarInitList = new VarInitListElements();
 		this.pStmtList = new StmtListElements();
@@ -3266,23 +3244,13 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Attr:
-	//	"@" name=TIDENTIFIER ("(" paramList=AttrParamList ")")?;
+	//	"@" name=TIDENTIFIER ("(" params+=Expr ("," params+=Expr)* ")")?;
 	public AttrElements getAttrAccess() {
 		return pAttr;
 	}
 	
 	public ParserRule getAttrRule() {
 		return getAttrAccess().getRule();
-	}
-
-	//AttrParamList:
-	//	params+=Expr ("," params+=Expr)*;
-	public AttrParamListElements getAttrParamListAccess() {
-		return pAttrParamList;
-	}
-	
-	public ParserRule getAttrParamListRule() {
-		return getAttrParamListAccess().getRule();
 	}
 
 	//Param:

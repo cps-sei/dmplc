@@ -10,7 +10,6 @@ import edu.cmu.sei.annex.dmpl.dmpl.AndExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.AssignmentStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.Attr;
 import edu.cmu.sei.annex.dmpl.dmpl.AttrList;
-import edu.cmu.sei.annex.dmpl.dmpl.AttrParamList;
 import edu.cmu.sei.annex.dmpl.dmpl.BitwiseAndExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.BitwiseOrExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.BuiltInExpr;
@@ -96,9 +95,6 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.ATTR_LIST:
 				sequence_AttrList(context, (AttrList) semanticObject); 
-				return; 
-			case DmplPackage.ATTR_PARAM_LIST:
-				sequence_AttrParamList(context, (AttrParamList) semanticObject); 
 				return; 
 			case DmplPackage.BITWISE_AND_EXPR:
 				sequence_BitwiseAndExpr(context, (BitwiseAndExpr) semanticObject); 
@@ -319,16 +315,7 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (params+=Expr params+=Expr*)
-	 */
-	protected void sequence_AttrParamList(EObject context, AttrParamList semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (name=TIDENTIFIER paramList=AttrParamList?)
+	 *     (name=TIDENTIFIER (params+=Expr params+=Expr*)?)
 	 */
 	protected void sequence_Attr(EObject context, Attr semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

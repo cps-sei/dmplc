@@ -3,17 +3,24 @@
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.Attr;
-import edu.cmu.sei.annex.dmpl.dmpl.AttrParamList;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
+import edu.cmu.sei.annex.dmpl.dmpl.Expr;
+
+import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -24,7 +31,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * </p>
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.AttrImpl#getName <em>Name</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.AttrImpl#getParamList <em>Param List</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.AttrImpl#getParams <em>Params</em>}</li>
  * </ul>
  *
  * @generated
@@ -52,14 +59,14 @@ public class AttrImpl extends MinimalEObjectImpl.Container implements Attr
   protected String name = NAME_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getParamList() <em>Param List</em>}' containment reference.
+   * The cached value of the '{@link #getParams() <em>Params</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getParamList()
+   * @see #getParams()
    * @generated
    * @ordered
    */
-  protected AttrParamList paramList;
+  protected EList<Expr> params;
 
   /**
    * <!-- begin-user-doc -->
@@ -110,47 +117,13 @@ public class AttrImpl extends MinimalEObjectImpl.Container implements Attr
    * <!-- end-user-doc -->
    * @generated
    */
-  public AttrParamList getParamList()
+  public EList<Expr> getParams()
   {
-    return paramList;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetParamList(AttrParamList newParamList, NotificationChain msgs)
-  {
-    AttrParamList oldParamList = paramList;
-    paramList = newParamList;
-    if (eNotificationRequired())
+    if (params == null)
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.ATTR__PARAM_LIST, oldParamList, newParamList);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      params = new EObjectContainmentEList<Expr>(Expr.class, this, DmplPackage.ATTR__PARAMS);
     }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setParamList(AttrParamList newParamList)
-  {
-    if (newParamList != paramList)
-    {
-      NotificationChain msgs = null;
-      if (paramList != null)
-        msgs = ((InternalEObject)paramList).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.ATTR__PARAM_LIST, null, msgs);
-      if (newParamList != null)
-        msgs = ((InternalEObject)newParamList).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.ATTR__PARAM_LIST, null, msgs);
-      msgs = basicSetParamList(newParamList, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.ATTR__PARAM_LIST, newParamList, newParamList));
+    return params;
   }
 
   /**
@@ -163,8 +136,8 @@ public class AttrImpl extends MinimalEObjectImpl.Container implements Attr
   {
     switch (featureID)
     {
-      case DmplPackage.ATTR__PARAM_LIST:
-        return basicSetParamList(null, msgs);
+      case DmplPackage.ATTR__PARAMS:
+        return ((InternalEList<?>)getParams()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -181,8 +154,8 @@ public class AttrImpl extends MinimalEObjectImpl.Container implements Attr
     {
       case DmplPackage.ATTR__NAME:
         return getName();
-      case DmplPackage.ATTR__PARAM_LIST:
-        return getParamList();
+      case DmplPackage.ATTR__PARAMS:
+        return getParams();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -192,6 +165,7 @@ public class AttrImpl extends MinimalEObjectImpl.Container implements Attr
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
@@ -200,8 +174,9 @@ public class AttrImpl extends MinimalEObjectImpl.Container implements Attr
       case DmplPackage.ATTR__NAME:
         setName((String)newValue);
         return;
-      case DmplPackage.ATTR__PARAM_LIST:
-        setParamList((AttrParamList)newValue);
+      case DmplPackage.ATTR__PARAMS:
+        getParams().clear();
+        getParams().addAll((Collection<? extends Expr>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -220,8 +195,8 @@ public class AttrImpl extends MinimalEObjectImpl.Container implements Attr
       case DmplPackage.ATTR__NAME:
         setName(NAME_EDEFAULT);
         return;
-      case DmplPackage.ATTR__PARAM_LIST:
-        setParamList((AttrParamList)null);
+      case DmplPackage.ATTR__PARAMS:
+        getParams().clear();
         return;
     }
     super.eUnset(featureID);
@@ -239,8 +214,8 @@ public class AttrImpl extends MinimalEObjectImpl.Container implements Attr
     {
       case DmplPackage.ATTR__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-      case DmplPackage.ATTR__PARAM_LIST:
-        return paramList != null;
+      case DmplPackage.ATTR__PARAMS:
+        return params != null && !params.isEmpty();
     }
     return super.eIsSet(featureID);
   }
