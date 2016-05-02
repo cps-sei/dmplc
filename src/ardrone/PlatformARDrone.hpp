@@ -116,10 +116,7 @@ void flyingModeCallBack(int success)
     std::cerr << "failed to set flying mode ...\n";
 }
 
-/**
- * Make the drone takeoff
- **/
-void GRID_TAKEOFF()
+void doOrient()
 {
   int detectType = CAD_TYPE_MULTIPLE_DETECTION_MODE;
   ARDRONE_TOOL_CONFIGURATION_ADDEVENT(detect_type, &detectType, detectCallBack);
@@ -127,9 +124,23 @@ void GRID_TAKEOFF()
   ARDRONE_TOOL_CONFIGURATION_ADDEVENT(detections_select_v_hsync, &detectVhsync, detectCallBack);  
   int fMode = FLYING_MODE_HOVER_ON_TOP_OF_ORIENTED_ROUNDEL;  
   ARDRONE_TOOL_CONFIGURATION_ADDEVENT(flying_mode, &fMode, flyingModeCallBack);
+}
+
+/**
+ * Make the drone takeoff
+ **/
+void GRID_TAKEOFF()
+{
+  ardrone_tool_set_ui_pad_select(1);
   sleep(3);
+  ardrone_tool_set_ui_pad_select(0);
+  sleep(1);
+
+  doOrient();
+
+  sleep(1);
   ardrone_tool_set_ui_pad_start(1);
-  sleep(3);
+  sleep(1);
 }
 
 /**

@@ -6,12 +6,16 @@
 int main(int argc,char **argv)
 {
   GRID_INIT();
-  std::cout << "sleeping for 5 seconds ...\n";
-  sleep(3);
+  std::cout << "sleeping for X seconds ...\n";
+  sleep(1);
   GRID_PLACE(0,0,0);
   GRID_TAKEOFF();
-  sleep(10);
+  for (int i = 0; i < 30; i++) {
+    doOrient();
+    sleep(1);
+  }
+  //sleep(30);
   GRID_LAND();
-  sleep(3);
+  sleep(1);
   GRID_REMOVE();
 }
