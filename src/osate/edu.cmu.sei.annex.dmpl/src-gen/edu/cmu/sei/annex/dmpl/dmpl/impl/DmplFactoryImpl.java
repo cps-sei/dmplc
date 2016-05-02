@@ -87,7 +87,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.VAR_INIT_LIST: return createVarInitList();
       case DmplPackage.STMT_LIST: return createStmtList();
       case DmplPackage.COND_STMT: return createCondStmt();
-      case DmplPackage.COND_STMT_NO_ATTR: return createCondStmtNoAttr();
       case DmplPackage.STMT: return createStmt();
       case DmplPackage.ASSIGNMENT_STMT: return createAssignmentStmt();
       case DmplPackage.LVAL: return createLVal();
@@ -447,17 +446,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     CondStmtImpl condStmt = new CondStmtImpl();
     return condStmt;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public CondStmtNoAttr createCondStmtNoAttr()
-  {
-    CondStmtNoAttrImpl condStmtNoAttr = new CondStmtNoAttrImpl();
-    return condStmtNoAttr;
   }
 
   /**

@@ -798,7 +798,7 @@ class ParserTest2 {
 	}
 	
 	@Test
-	def void testCondStmtNoAttr() {
+	def void testCondStmt() {
 		'''
 			void f1() {
 				if (v1)
@@ -812,13 +812,13 @@ class ParserTest2 {
 				"f1".assertEquals(prototype.name)
 				fnBody.stmtList => [
 					1.assertEquals(stmts.size)
-					(stmts.head as CondStmt).stmt => [
+					stmts.head as CondStmt => [
 						"v1".assertEquals((condition as LVal).name)
 						then as AssignmentStmt => [
 							"v2".assertEquals(variable.name)
 							1.assertEquals((value as IntExpr).value)
 						]
-						(^else as CondStmt).stmt => [
+						^else as CondStmt => [
 							"v3".assertEquals((condition as LVal).name)
 							then as AssignmentStmt => [
 								"v4".assertEquals(variable.name)

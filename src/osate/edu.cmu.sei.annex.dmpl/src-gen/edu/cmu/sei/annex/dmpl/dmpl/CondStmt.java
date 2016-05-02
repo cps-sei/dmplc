@@ -13,7 +13,9 @@ package edu.cmu.sei.annex.dmpl.dmpl;
  * </p>
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.CondStmt#getAttrList <em>Attr List</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.CondStmt#getStmt <em>Stmt</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.CondStmt#getCondition <em>Condition</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.CondStmt#getThen <em>Then</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.CondStmt#getElse <em>Else</em>}</li>
  * </ul>
  *
  * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getCondStmt()
@@ -49,29 +51,81 @@ public interface CondStmt extends Stmt
   void setAttrList(AttrList value);
 
   /**
-   * Returns the value of the '<em><b>Stmt</b></em>' containment reference.
+   * Returns the value of the '<em><b>Condition</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Stmt</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Condition</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Stmt</em>' containment reference.
-   * @see #setStmt(CondStmtNoAttr)
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getCondStmt_Stmt()
+   * @return the value of the '<em>Condition</em>' containment reference.
+   * @see #setCondition(Expr)
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getCondStmt_Condition()
    * @model containment="true"
    * @generated
    */
-  CondStmtNoAttr getStmt();
+  Expr getCondition();
 
   /**
-   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.CondStmt#getStmt <em>Stmt</em>}' containment reference.
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.CondStmt#getCondition <em>Condition</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Stmt</em>' containment reference.
-   * @see #getStmt()
+   * @param value the new value of the '<em>Condition</em>' containment reference.
+   * @see #getCondition()
    * @generated
    */
-  void setStmt(CondStmtNoAttr value);
+  void setCondition(Expr value);
+
+  /**
+   * Returns the value of the '<em><b>Then</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Then</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Then</em>' containment reference.
+   * @see #setThen(Stmt)
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getCondStmt_Then()
+   * @model containment="true"
+   * @generated
+   */
+  Stmt getThen();
+
+  /**
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.CondStmt#getThen <em>Then</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Then</em>' containment reference.
+   * @see #getThen()
+   * @generated
+   */
+  void setThen(Stmt value);
+
+  /**
+   * Returns the value of the '<em><b>Else</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Else</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Else</em>' containment reference.
+   * @see #setElse(Stmt)
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getCondStmt_Else()
+   * @model containment="true"
+   * @generated
+   */
+  Stmt getElse();
+
+  /**
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.CondStmt#getElse <em>Else</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Else</em>' containment reference.
+   * @see #getElse()
+   * @generated
+   */
+  void setElse(Stmt value);
 
 } // CondStmt

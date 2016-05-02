@@ -16,7 +16,6 @@ import edu.cmu.sei.annex.dmpl.dmpl.BuiltInExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.CallExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.CompareExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.CondStmt;
-import edu.cmu.sei.annex.dmpl.dmpl.CondStmtNoAttr;
 import edu.cmu.sei.annex.dmpl.dmpl.Constant;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplSubclause;
@@ -113,9 +112,6 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.COND_STMT:
 				sequence_CondStmt(context, (CondStmt) semanticObject); 
-				return; 
-			case DmplPackage.COND_STMT_NO_ATTR:
-				sequence_CondStmtNoAttr(context, (CondStmtNoAttr) semanticObject); 
 				return; 
 			case DmplPackage.CONSTANT:
 				sequence_Constant(context, (Constant) semanticObject); 
@@ -393,16 +389,7 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (condition=Expr then=Stmt else=Stmt?)
-	 */
-	protected void sequence_CondStmtNoAttr(EObject context, CondStmtNoAttr semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (attrList=AttrList? stmt=CondStmtNoAttr)
+	 *     (attrList=AttrList? condition=Expr then=Stmt else=Stmt?)
 	 */
 	protected void sequence_CondStmt(EObject context, CondStmt semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

@@ -221,15 +221,6 @@ public interface DmplFactory extends EFactory
   CondStmt createCondStmt();
 
   /**
-   * Returns a new object of class '<em>Cond Stmt No Attr</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Cond Stmt No Attr</em>'.
-   * @generated
-   */
-  CondStmtNoAttr createCondStmtNoAttr();
-
-  /**
    * Returns a new object of class '<em>Stmt</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

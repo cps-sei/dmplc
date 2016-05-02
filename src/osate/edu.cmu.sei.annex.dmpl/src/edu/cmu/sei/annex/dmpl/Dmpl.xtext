@@ -107,11 +107,7 @@ StmtList:
 ;
 
 CondStmt:
-	attrList=AttrList? stmt=CondStmtNoAttr
-;
-
-CondStmtNoAttr:
-	'if' '(' condition=Expr ')' then=Stmt (=>'else' else=Stmt)?
+	attrList=AttrList? 'if' '(' condition=Expr ')' then=Stmt (=> 'else' else=Stmt)?
 ;
 
 Stmt:

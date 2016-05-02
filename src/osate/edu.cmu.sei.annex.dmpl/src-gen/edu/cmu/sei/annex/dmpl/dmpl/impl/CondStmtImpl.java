@@ -4,8 +4,9 @@ package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.AttrList;
 import edu.cmu.sei.annex.dmpl.dmpl.CondStmt;
-import edu.cmu.sei.annex.dmpl.dmpl.CondStmtNoAttr;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
+import edu.cmu.sei.annex.dmpl.dmpl.Expr;
+import edu.cmu.sei.annex.dmpl.dmpl.Stmt;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -24,7 +25,9 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * </p>
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.CondStmtImpl#getAttrList <em>Attr List</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.CondStmtImpl#getStmt <em>Stmt</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.CondStmtImpl#getCondition <em>Condition</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.CondStmtImpl#getThen <em>Then</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.CondStmtImpl#getElse <em>Else</em>}</li>
  * </ul>
  *
  * @generated
@@ -42,14 +45,34 @@ public class CondStmtImpl extends StmtImpl implements CondStmt
   protected AttrList attrList;
 
   /**
-   * The cached value of the '{@link #getStmt() <em>Stmt</em>}' containment reference.
+   * The cached value of the '{@link #getCondition() <em>Condition</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getStmt()
+   * @see #getCondition()
    * @generated
    * @ordered
    */
-  protected CondStmtNoAttr stmt;
+  protected Expr condition;
+
+  /**
+   * The cached value of the '{@link #getThen() <em>Then</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getThen()
+   * @generated
+   * @ordered
+   */
+  protected Stmt then;
+
+  /**
+   * The cached value of the '{@link #getElse() <em>Else</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getElse()
+   * @generated
+   * @ordered
+   */
+  protected Stmt else_;
 
   /**
    * <!-- begin-user-doc -->
@@ -125,9 +148,9 @@ public class CondStmtImpl extends StmtImpl implements CondStmt
    * <!-- end-user-doc -->
    * @generated
    */
-  public CondStmtNoAttr getStmt()
+  public Expr getCondition()
   {
-    return stmt;
+    return condition;
   }
 
   /**
@@ -135,13 +158,13 @@ public class CondStmtImpl extends StmtImpl implements CondStmt
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetStmt(CondStmtNoAttr newStmt, NotificationChain msgs)
+  public NotificationChain basicSetCondition(Expr newCondition, NotificationChain msgs)
   {
-    CondStmtNoAttr oldStmt = stmt;
-    stmt = newStmt;
+    Expr oldCondition = condition;
+    condition = newCondition;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.COND_STMT__STMT, oldStmt, newStmt);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.COND_STMT__CONDITION, oldCondition, newCondition);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -152,20 +175,116 @@ public class CondStmtImpl extends StmtImpl implements CondStmt
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setStmt(CondStmtNoAttr newStmt)
+  public void setCondition(Expr newCondition)
   {
-    if (newStmt != stmt)
+    if (newCondition != condition)
     {
       NotificationChain msgs = null;
-      if (stmt != null)
-        msgs = ((InternalEObject)stmt).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.COND_STMT__STMT, null, msgs);
-      if (newStmt != null)
-        msgs = ((InternalEObject)newStmt).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.COND_STMT__STMT, null, msgs);
-      msgs = basicSetStmt(newStmt, msgs);
+      if (condition != null)
+        msgs = ((InternalEObject)condition).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.COND_STMT__CONDITION, null, msgs);
+      if (newCondition != null)
+        msgs = ((InternalEObject)newCondition).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.COND_STMT__CONDITION, null, msgs);
+      msgs = basicSetCondition(newCondition, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.COND_STMT__STMT, newStmt, newStmt));
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.COND_STMT__CONDITION, newCondition, newCondition));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Stmt getThen()
+  {
+    return then;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetThen(Stmt newThen, NotificationChain msgs)
+  {
+    Stmt oldThen = then;
+    then = newThen;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.COND_STMT__THEN, oldThen, newThen);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setThen(Stmt newThen)
+  {
+    if (newThen != then)
+    {
+      NotificationChain msgs = null;
+      if (then != null)
+        msgs = ((InternalEObject)then).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.COND_STMT__THEN, null, msgs);
+      if (newThen != null)
+        msgs = ((InternalEObject)newThen).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.COND_STMT__THEN, null, msgs);
+      msgs = basicSetThen(newThen, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.COND_STMT__THEN, newThen, newThen));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Stmt getElse()
+  {
+    return else_;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetElse(Stmt newElse, NotificationChain msgs)
+  {
+    Stmt oldElse = else_;
+    else_ = newElse;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.COND_STMT__ELSE, oldElse, newElse);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setElse(Stmt newElse)
+  {
+    if (newElse != else_)
+    {
+      NotificationChain msgs = null;
+      if (else_ != null)
+        msgs = ((InternalEObject)else_).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.COND_STMT__ELSE, null, msgs);
+      if (newElse != null)
+        msgs = ((InternalEObject)newElse).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.COND_STMT__ELSE, null, msgs);
+      msgs = basicSetElse(newElse, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.COND_STMT__ELSE, newElse, newElse));
   }
 
   /**
@@ -180,8 +299,12 @@ public class CondStmtImpl extends StmtImpl implements CondStmt
     {
       case DmplPackage.COND_STMT__ATTR_LIST:
         return basicSetAttrList(null, msgs);
-      case DmplPackage.COND_STMT__STMT:
-        return basicSetStmt(null, msgs);
+      case DmplPackage.COND_STMT__CONDITION:
+        return basicSetCondition(null, msgs);
+      case DmplPackage.COND_STMT__THEN:
+        return basicSetThen(null, msgs);
+      case DmplPackage.COND_STMT__ELSE:
+        return basicSetElse(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -198,8 +321,12 @@ public class CondStmtImpl extends StmtImpl implements CondStmt
     {
       case DmplPackage.COND_STMT__ATTR_LIST:
         return getAttrList();
-      case DmplPackage.COND_STMT__STMT:
-        return getStmt();
+      case DmplPackage.COND_STMT__CONDITION:
+        return getCondition();
+      case DmplPackage.COND_STMT__THEN:
+        return getThen();
+      case DmplPackage.COND_STMT__ELSE:
+        return getElse();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -217,8 +344,14 @@ public class CondStmtImpl extends StmtImpl implements CondStmt
       case DmplPackage.COND_STMT__ATTR_LIST:
         setAttrList((AttrList)newValue);
         return;
-      case DmplPackage.COND_STMT__STMT:
-        setStmt((CondStmtNoAttr)newValue);
+      case DmplPackage.COND_STMT__CONDITION:
+        setCondition((Expr)newValue);
+        return;
+      case DmplPackage.COND_STMT__THEN:
+        setThen((Stmt)newValue);
+        return;
+      case DmplPackage.COND_STMT__ELSE:
+        setElse((Stmt)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -237,8 +370,14 @@ public class CondStmtImpl extends StmtImpl implements CondStmt
       case DmplPackage.COND_STMT__ATTR_LIST:
         setAttrList((AttrList)null);
         return;
-      case DmplPackage.COND_STMT__STMT:
-        setStmt((CondStmtNoAttr)null);
+      case DmplPackage.COND_STMT__CONDITION:
+        setCondition((Expr)null);
+        return;
+      case DmplPackage.COND_STMT__THEN:
+        setThen((Stmt)null);
+        return;
+      case DmplPackage.COND_STMT__ELSE:
+        setElse((Stmt)null);
         return;
     }
     super.eUnset(featureID);
@@ -256,8 +395,12 @@ public class CondStmtImpl extends StmtImpl implements CondStmt
     {
       case DmplPackage.COND_STMT__ATTR_LIST:
         return attrList != null;
-      case DmplPackage.COND_STMT__STMT:
-        return stmt != null;
+      case DmplPackage.COND_STMT__CONDITION:
+        return condition != null;
+      case DmplPackage.COND_STMT__THEN:
+        return then != null;
+      case DmplPackage.COND_STMT__ELSE:
+        return else_ != null;
     }
     return super.eIsSet(featureID);
   }

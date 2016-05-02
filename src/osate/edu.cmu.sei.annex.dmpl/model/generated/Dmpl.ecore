@@ -88,10 +88,6 @@
   <eClassifiers xsi:type="ecore:EClass" name="CondStmt" eSuperTypes="#//Stmt">
     <eStructuralFeatures xsi:type="ecore:EReference" name="attrList" eType="#//AttrList"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="stmt" eType="#//CondStmtNoAttr"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="CondStmtNoAttr">
     <eStructuralFeatures xsi:type="ecore:EReference" name="condition" eType="#//Expr"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="then" eType="#//Stmt" containment="true"/>

@@ -107,8 +107,7 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getVarInitListAccess().getGroup_1(), "rule__VarInitList__Group_1__0");
 					put(grammarAccess.getStmtListAccess().getGroup(), "rule__StmtList__Group__0");
 					put(grammarAccess.getCondStmtAccess().getGroup(), "rule__CondStmt__Group__0");
-					put(grammarAccess.getCondStmtNoAttrAccess().getGroup(), "rule__CondStmtNoAttr__Group__0");
-					put(grammarAccess.getCondStmtNoAttrAccess().getGroup_5(), "rule__CondStmtNoAttr__Group_5__0");
+					put(grammarAccess.getCondStmtAccess().getGroup_6(), "rule__CondStmt__Group_6__0");
 					put(grammarAccess.getStmtAccess().getGroup_0(), "rule__Stmt__Group_0__0");
 					put(grammarAccess.getStmtAccess().getGroup_1(), "rule__Stmt__Group_1__0");
 					put(grammarAccess.getStmtAccess().getGroup_2(), "rule__Stmt__Group_2__0");
@@ -231,10 +230,9 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getVarInitListAccess().getVarInitsAssignment_1_0(), "rule__VarInitList__VarInitsAssignment_1_0");
 					put(grammarAccess.getStmtListAccess().getStmtsAssignment_1(), "rule__StmtList__StmtsAssignment_1");
 					put(grammarAccess.getCondStmtAccess().getAttrListAssignment_0(), "rule__CondStmt__AttrListAssignment_0");
-					put(grammarAccess.getCondStmtAccess().getStmtAssignment_1(), "rule__CondStmt__StmtAssignment_1");
-					put(grammarAccess.getCondStmtNoAttrAccess().getConditionAssignment_2(), "rule__CondStmtNoAttr__ConditionAssignment_2");
-					put(grammarAccess.getCondStmtNoAttrAccess().getThenAssignment_4(), "rule__CondStmtNoAttr__ThenAssignment_4");
-					put(grammarAccess.getCondStmtNoAttrAccess().getElseAssignment_5_1(), "rule__CondStmtNoAttr__ElseAssignment_5_1");
+					put(grammarAccess.getCondStmtAccess().getConditionAssignment_3(), "rule__CondStmt__ConditionAssignment_3");
+					put(grammarAccess.getCondStmtAccess().getThenAssignment_5(), "rule__CondStmt__ThenAssignment_5");
+					put(grammarAccess.getCondStmtAccess().getElseAssignment_6_1(), "rule__CondStmt__ElseAssignment_6_1");
 					put(grammarAccess.getStmtAccess().getStmtListAssignment_0_2(), "rule__Stmt__StmtListAssignment_0_2");
 					put(grammarAccess.getStmtAccess().getConditionAssignment_2_3(), "rule__Stmt__ConditionAssignment_2_3");
 					put(grammarAccess.getStmtAccess().getStmtAssignment_2_5(), "rule__Stmt__StmtAssignment_2_5");
