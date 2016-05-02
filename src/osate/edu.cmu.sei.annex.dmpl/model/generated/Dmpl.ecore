@@ -64,6 +64,13 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="pure" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AttrList">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attrs" upperBound="-1"
+        eType="#//Attr" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Attr">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Param">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Type" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//Var" containment="true"/>
@@ -77,6 +84,8 @@
         eType="#//Stmt" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CondStmt" eSuperTypes="#//Stmt">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attrList" eType="#//AttrList"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="stmt" eType="#//CondStmtNoAttr"
         containment="true"/>
   </eClassifiers>

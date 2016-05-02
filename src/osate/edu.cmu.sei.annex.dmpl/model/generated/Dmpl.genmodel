@@ -122,6 +122,12 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//FnPrototype/pure"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//FnPrototype/name"/>
     </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//AttrList">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//AttrList/attrs"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//Attr">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Attr/name"/>
+    </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Param">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Param/type"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Param/var"/>
@@ -133,6 +139,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//StmtList/stmts"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//CondStmt">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//CondStmt/attrList"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//CondStmt/stmt"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//CondStmtNoAttr">

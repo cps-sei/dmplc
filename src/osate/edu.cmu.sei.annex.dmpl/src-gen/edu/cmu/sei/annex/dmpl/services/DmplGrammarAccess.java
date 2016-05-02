@@ -800,6 +800,56 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getRightParenthesisKeyword_1_7() { return cRightParenthesisKeyword_1_7; }
 	}
 
+	public class AttrListElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "AttrList");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cAttrsAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cAttrsAttrParserRuleCall_0_0 = (RuleCall)cAttrsAssignment_0.eContents().get(0);
+		private final Keyword cSemicolonKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		
+		//AttrList:
+		//	(attrs+=Attr ";")+;
+		@Override public ParserRule getRule() { return rule; }
+
+		//(attrs+=Attr ";")+
+		public Group getGroup() { return cGroup; }
+
+		//attrs+=Attr
+		public Assignment getAttrsAssignment_0() { return cAttrsAssignment_0; }
+
+		//Attr
+		public RuleCall getAttrsAttrParserRuleCall_0_0() { return cAttrsAttrParserRuleCall_0_0; }
+
+		//";"
+		public Keyword getSemicolonKeyword_1() { return cSemicolonKeyword_1; }
+	}
+
+	public class AttrElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Attr");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cCommercialAtKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		
+		//Attr: //TODO attr_param_list
+		//	"@" name=TIDENTIFIER;
+		@Override public ParserRule getRule() { return rule; }
+
+		////TODO attr_param_list
+		//"@" name=TIDENTIFIER
+		public Group getGroup() { return cGroup; }
+
+		////TODO attr_param_list
+		//"@"
+		public Keyword getCommercialAtKeyword_0() { return cCommercialAtKeyword_0; }
+
+		//name=TIDENTIFIER
+		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+
+		//TIDENTIFIER
+		public RuleCall getNameTIDENTIFIERTerminalRuleCall_1_0() { return cNameTIDENTIFIERTerminalRuleCall_1_0; }
+	}
+
 	public class ParamElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Param");
 		private final Group cGroup = (Group)rule.eContents().get(1);
@@ -886,18 +936,30 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 	public class CondStmtElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "CondStmt");
-		private final Assignment cStmtAssignment = (Assignment)rule.eContents().get(1);
-		private final RuleCall cStmtCondStmtNoAttrParserRuleCall_0 = (RuleCall)cStmtAssignment.eContents().get(0);
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cAttrListAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cAttrListAttrListParserRuleCall_0_0 = (RuleCall)cAttrListAssignment_0.eContents().get(0);
+		private final Assignment cStmtAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cStmtCondStmtNoAttrParserRuleCall_1_0 = (RuleCall)cStmtAssignment_1.eContents().get(0);
 		
 		//CondStmt:
-		//	stmt=CondStmtNoAttr;
+		//	attrList=AttrList? stmt=CondStmtNoAttr;
 		@Override public ParserRule getRule() { return rule; }
 
+		//attrList=AttrList? stmt=CondStmtNoAttr
+		public Group getGroup() { return cGroup; }
+
+		//attrList=AttrList?
+		public Assignment getAttrListAssignment_0() { return cAttrListAssignment_0; }
+
+		//AttrList
+		public RuleCall getAttrListAttrListParserRuleCall_0_0() { return cAttrListAttrListParserRuleCall_0_0; }
+
 		//stmt=CondStmtNoAttr
-		public Assignment getStmtAssignment() { return cStmtAssignment; }
+		public Assignment getStmtAssignment_1() { return cStmtAssignment_1; }
 
 		//CondStmtNoAttr
-		public RuleCall getStmtCondStmtNoAttrParserRuleCall_0() { return cStmtCondStmtNoAttrParserRuleCall_0; }
+		public RuleCall getStmtCondStmtNoAttrParserRuleCall_1_0() { return cStmtCondStmtNoAttrParserRuleCall_1_0; }
 	}
 
 	public class CondStmtNoAttrElements extends AbstractParserRuleElementFinder {
@@ -2846,6 +2908,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final ProcNoAttrElements pProcNoAttr;
 	private final FnBodyElements pFnBody;
 	private final FnPrototypeElements pFnPrototype;
+	private final AttrListElements pAttrList;
+	private final AttrElements pAttr;
 	private final ParamElements pParam;
 	private final VarInitListElements pVarInitList;
 	private final StmtListElements pStmtList;
@@ -2915,6 +2979,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pProcNoAttr = new ProcNoAttrElements();
 		this.pFnBody = new FnBodyElements();
 		this.pFnPrototype = new FnPrototypeElements();
+		this.pAttrList = new AttrListElements();
+		this.pAttr = new AttrElements();
 		this.pParam = new ParamElements();
 		this.pVarInitList = new VarInitListElements();
 		this.pStmtList = new StmtListElements();
@@ -3159,6 +3225,26 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getFnPrototypeAccess().getRule();
 	}
 
+	//AttrList:
+	//	(attrs+=Attr ";")+;
+	public AttrListElements getAttrListAccess() {
+		return pAttrList;
+	}
+	
+	public ParserRule getAttrListRule() {
+		return getAttrListAccess().getRule();
+	}
+
+	//Attr: //TODO attr_param_list
+	//	"@" name=TIDENTIFIER;
+	public AttrElements getAttrAccess() {
+		return pAttr;
+	}
+	
+	public ParserRule getAttrRule() {
+		return getAttrAccess().getRule();
+	}
+
 	//Param:
 	//	type=Type var=Var;
 	public ParamElements getParamAccess() {
@@ -3190,7 +3276,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//CondStmt:
-	//	stmt=CondStmtNoAttr;
+	//	attrList=AttrList? stmt=CondStmtNoAttr;
 	public CondStmtElements getCondStmtAccess() {
 		return pCondStmt;
 	}

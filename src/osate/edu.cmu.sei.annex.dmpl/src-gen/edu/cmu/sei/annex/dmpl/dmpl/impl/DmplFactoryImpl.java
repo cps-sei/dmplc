@@ -81,6 +81,8 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.PROC_NO_ATTR: return createProcNoAttr();
       case DmplPackage.FN_BODY: return createFnBody();
       case DmplPackage.FN_PROTOTYPE: return createFnPrototype();
+      case DmplPackage.ATTR_LIST: return createAttrList();
+      case DmplPackage.ATTR: return createAttr();
       case DmplPackage.PARAM: return createParam();
       case DmplPackage.VAR_INIT_LIST: return createVarInitList();
       case DmplPackage.STMT_LIST: return createStmtList();
@@ -380,6 +382,28 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     FnPrototypeImpl fnPrototype = new FnPrototypeImpl();
     return fnPrototype;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public AttrList createAttrList()
+  {
+    AttrListImpl attrList = new AttrListImpl();
+    return attrList;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Attr createAttr()
+  {
+    AttrImpl attr = new AttrImpl();
+    return attr;
   }
 
   /**

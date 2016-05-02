@@ -85,6 +85,15 @@ FnPrototype:
 	')'
 ;
 
+AttrList:
+	(attrs+=Attr ';')+
+;
+
+Attr:
+	//TODO attr_param_list
+	'@' name=TIDENTIFIER
+;
+
 Param:
 	type=Type var=Var
 ;
@@ -99,7 +108,7 @@ StmtList:
 ;
 
 CondStmt:
-	stmt=CondStmtNoAttr
+	attrList=AttrList? stmt=CondStmtNoAttr
 ;
 
 CondStmtNoAttr:
