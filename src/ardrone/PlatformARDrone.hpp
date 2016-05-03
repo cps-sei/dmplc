@@ -100,6 +100,21 @@ void GRID_PLACE(double x, double y, double z)
 {
 }
 
+/**
+ * Reset the drone. return 1 if takeoff is complete, 0 if it is still
+ * going on, and -1 if some error happens.
+ **/
+int DRONE_RESET()
+{
+  for(int i = 0;i < 5;++i) {
+    ardrone_tool_set_ui_pad_select(1);
+    sleep(1);
+  }
+  ardrone_tool_set_ui_pad_select(0);
+  return 1;
+}
+
+
 void detectCallBack(int success)
 {
   if(success)
@@ -116,35 +131,49 @@ void flyingModeCallBack(int success)
     std::cerr << "failed to set flying mode ...\n";
 }
 
-void doOrient()
+/**
+ * Make the drone detect, orient, and hover over a BW roundel. return
+ * 1 if takeoff is complete, 0 if it is still going on, and -1 if some
+ * error happens.
+ **/
+int DRONE_ORIENT()
 {
-  int detectType = CAD_TYPE_ORIENTED_COCARDE_BW;
-  ARDRONE_TOOL_CONFIGURATION_ADDEVENT(detect_type, &detectType, detectCallBack);
-  //int32_t detectVhsync = TAG_TYPE_MASK(TAG_TYPE_BLACK_ROUNDEL);
-  //ARDRONE_TOOL_CONFIGURATION_ADDEVENT(detections_select_v, &detectVhsync, detectCallBack);  
-  int fMode = FLYING_MODE_HOVER_ON_TOP_OF_ORIENTED_ROUNDEL;  
-  ARDRONE_TOOL_CONFIGURATION_ADDEVENT(flying_mode, &fMode, flyingModeCallBack);
+  for(int i = 0;i < 5;++i) {
+    int detectType = CAD_TYPE_ORIENTED_COCARDE_BW;
+    ARDRONE_TOOL_CONFIGURATION_ADDEVENT(detect_type, &detectType, detectCallBack);
+    //int32_t detectVhsync = TAG_TYPE_MASK(TAG_TYPE_BLACK_ROUNDEL);
+    //ARDRONE_TOOL_CONFIGURATION_ADDEVENT(detections_select_v, &detectVhsync, detectCallBack);  
+    int fMode = FLYING_MODE_HOVER_ON_TOP_OF_ORIENTED_ROUNDEL;  
+    ARDRONE_TOOL_CONFIGURATION_ADDEVENT(flying_mode, &fMode, flyingModeCallBack);
+    sleep(1);
+  }
+  
+  return 1;
 }
 
 /**
- * Make the drone takeoff
+ * Make the drone takeoff. return 1 if takeoff is complete, 0 if it is
+ * still going on, and -1 if some error happens.
  **/
-void GRID_TAKEOFF()
+int DRONE_TAKEOFF()
 {
   for(int i = 0;i < 5;++i) {
-    doOrient();
     ardrone_tool_set_ui_pad_start(1);
     sleep(1);
   }
+  return 1;
 }
 
 /**
  * Call after simulation is done, mainly to land the drone properly.
  **/
-void GRID_LAND()
+int DRONE_LAND()
 {
-  ardrone_tool_set_ui_pad_start(0);
-  sleep(3);
+  for(int i = 0;i < 3;++i) {
+    ardrone_tool_set_ui_pad_start(0);
+    sleep(1);
+  }
+  return 1;
 }
 
 /**
