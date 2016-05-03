@@ -118,10 +118,10 @@ void flyingModeCallBack(int success)
 
 void doOrient()
 {
-  int detectType = CAD_TYPE_MULTIPLE_DETECTION_MODE;
+  int detectType = CAD_TYPE_ORIENTED_COCARDE_BW;
   ARDRONE_TOOL_CONFIGURATION_ADDEVENT(detect_type, &detectType, detectCallBack);
-  int32_t detectVhsync = TAG_TYPE_MASK(TAG_TYPE_BLACK_ROUNDEL);
-  ARDRONE_TOOL_CONFIGURATION_ADDEVENT(detections_select_v_hsync, &detectVhsync, detectCallBack);  
+  //int32_t detectVhsync = TAG_TYPE_MASK(TAG_TYPE_BLACK_ROUNDEL);
+  //ARDRONE_TOOL_CONFIGURATION_ADDEVENT(detections_select_v, &detectVhsync, detectCallBack);  
   int fMode = FLYING_MODE_HOVER_ON_TOP_OF_ORIENTED_ROUNDEL;  
   ARDRONE_TOOL_CONFIGURATION_ADDEVENT(flying_mode, &fMode, flyingModeCallBack);
 }
@@ -131,16 +131,11 @@ void doOrient()
  **/
 void GRID_TAKEOFF()
 {
-  ardrone_tool_set_ui_pad_select(1);
-  sleep(3);
-  ardrone_tool_set_ui_pad_select(0);
-  sleep(1);
-
-  doOrient();
-
-  sleep(1);
-  ardrone_tool_set_ui_pad_start(1);
-  sleep(1);
+  for(int i = 0;i < 5;++i) {
+    doOrient();
+    ardrone_tool_set_ui_pad_start(1);
+    sleep(1);
+  }
 }
 
 /**
@@ -149,6 +144,7 @@ void GRID_TAKEOFF()
 void GRID_LAND()
 {
   ardrone_tool_set_ui_pad_start(0);
+  sleep(3);
 }
 
 /**
