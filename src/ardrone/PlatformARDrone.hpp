@@ -67,8 +67,12 @@ extern "C" {
 /********************************************************************/
 //-- ARDRONE variables
 /********************************************************************/
-//-- the flying state
+//-- this is set by navdata.c
 extern FLYING_STATE dmpl_flying_state;
+
+//-- detect mode and flying mode. used for orienting to roundel.
+int currDetectType = -1, targetDetectType = -1;
+int currFlyingMode = -1, targetFlyingMode = -1;
 
 /********************************************************************/
 //-- ARDRONE functions
@@ -119,17 +123,19 @@ int DRONE_RESET()
 
 void detectCallBack(int success)
 {
-  if(success)
+  if(success) {
+    currDetectType = targetDetectType;
     std::cerr << "successfully set detect type ...\n";
-  else
+  } else
     std::cerr << "failed to set detect type ...\n";
 }
 
 void flyingModeCallBack(int success)
 {
-  if(success)
+  if(success) {
+    currFlyingMode = targetFlyingMode;
     std::cerr << "successfully set flying mode ...\n";
-  else
+  } else
     std::cerr << "failed to set flying mode ...\n";
 }
 
@@ -140,17 +146,20 @@ void flyingModeCallBack(int success)
  **/
 int DRONE_ORIENT()
 {
-  for(int i = 0;i < 5;++i) {
-    int detectType = CAD_TYPE_ORIENTED_COCARDE_BW;
-    ARDRONE_TOOL_CONFIGURATION_ADDEVENT(detect_type, &detectType, detectCallBack);
-    //int32_t detectVhsync = TAG_TYPE_MASK(TAG_TYPE_BLACK_ROUNDEL);
-    //ARDRONE_TOOL_CONFIGURATION_ADDEVENT(detections_select_v, &detectVhsync, detectCallBack);  
-    int fMode = FLYING_MODE_HOVER_ON_TOP_OF_ORIENTED_ROUNDEL;  
-    ARDRONE_TOOL_CONFIGURATION_ADDEVENT(flying_mode, &fMode, flyingModeCallBack);
-    sleep(1);
-  }
-  
-  return 1;
+  int detectType = CAD_TYPE_ORIENTED_COCARDE_BW;
+  targetDetectType = detectType;
+  ARDRONE_TOOL_CONFIGURATION_ADDEVENT(detect_type, &detectType, detectCallBack);
+  //int32_t detectVhsync = TAG_TYPE_MASK(TAG_TYPE_BLACK_ROUNDEL);
+  //ARDRONE_TOOL_CONFIGURATION_ADDEVENT(detections_select_v, &detectVhsync, detectCallBack);  
+  int fMode = FLYING_MODE_HOVER_ON_TOP_OF_ORIENTED_ROUNDEL;
+  targetFlyingMode = fMode;
+  ARDRONE_TOOL_CONFIGURATION_ADDEVENT(flying_mode, &fMode, flyingModeCallBack);
+
+  if(currDetectType == targetDetectType && currFlyingMode == targetFlyingMode) {
+    targetDetectType = -1;
+    targetFlyingMode = -1;
+    return 1;
+  } else return 0;
 }
 
 /**
@@ -161,6 +170,15 @@ int DRONE_TAKEOFF()
 {
   ardrone_tool_set_ui_pad_start(1);
   return (dmpl_flying_state == FLYING_STATE_TAKING_OFF || dmpl_flying_state == FLYING_STATE_FLYING);
+}
+
+/**
+ * Make the drone fly. return 1 if flying is complete, 0 if it is
+ * still trying to fly, and -1 if some error happens.
+ **/
+int DRONE_FLYING()
+{
+  return (dmpl_flying_state == FLYING_STATE_FLYING);
 }
 
 /**
