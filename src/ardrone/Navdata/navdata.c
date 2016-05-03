@@ -12,7 +12,6 @@ inline C_RESULT demo_navdata_client_init( void* data )
 /* Receving navdata during the event loop */
 inline C_RESULT demo_navdata_client_process( const navdata_unpacked_t* const navdata )
 {
-  /*
   const navdata_demo_t*nd = &navdata->navdata_demo;
   
   printf("=====================\nNavdata for flight demonstrations =====================\n\n");
@@ -23,8 +22,8 @@ inline C_RESULT demo_navdata_client_process( const navdata_unpacked_t* const nav
   printf("Altitude      : %i\n",nd->altitude);
   printf("Speed         : [vX] %4.3f  [vY] %4.3f  [vZPsi] %4.3f\n",nd->theta,nd->phi,nd->psi);
   
-  printf("\033[8A");
-  */
+  
+  //printf("\033[8A");
   
   return C_OK;
 }
