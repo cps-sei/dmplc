@@ -19,6 +19,7 @@ int main(int argc,char **argv)
     int x = DRONE_TAKEOFF();
     if(x == -1) throw std::runtime_error("ERROR: could not take off!!");
     if(x == 1) break;
+    sleep(1);
   }
 
   for(;;) {
@@ -27,12 +28,13 @@ int main(int argc,char **argv)
     if(x == 1) break;
   }
 
-  sleep(15);
+  sleep(5);
 
   for(;;) {
     int x = DRONE_LAND();
     if(x == -1) throw std::runtime_error("ERROR: could not land!!");
     if(x == 1) break;
+    sleep(1);
   }
 
   GRID_REMOVE();

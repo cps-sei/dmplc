@@ -67,6 +67,8 @@ extern "C" {
 /********************************************************************/
 //-- ARDRONE variables
 /********************************************************************/
+//-- the flying state
+extern FLYING_STATE dmpl_flying_state;
 
 /********************************************************************/
 //-- ARDRONE functions
@@ -157,11 +159,8 @@ int DRONE_ORIENT()
  **/
 int DRONE_TAKEOFF()
 {
-  for(int i = 0;i < 5;++i) {
-    ardrone_tool_set_ui_pad_start(1);
-    sleep(1);
-  }
-  return 1;
+  ardrone_tool_set_ui_pad_start(1);
+  return (dmpl_flying_state == FLYING_STATE_TAKING_OFF || dmpl_flying_state == FLYING_STATE_FLYING);
 }
 
 /**
@@ -169,11 +168,8 @@ int DRONE_TAKEOFF()
  **/
 int DRONE_LAND()
 {
-  for(int i = 0;i < 3;++i) {
-    ardrone_tool_set_ui_pad_start(0);
-    sleep(1);
-  }
-  return 1;
+  ardrone_tool_set_ui_pad_start(0);
+  return (dmpl_flying_state == FLYING_STATE_LANDING || dmpl_flying_state == FLYING_STATE_LANDED);
 }
 
 /**

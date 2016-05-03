@@ -3,6 +3,9 @@
 #include <Navdata/navdata.h>
 #include <stdio.h>
 
+//-- the flying state
+FLYING_STATE dmpl_flying_state;
+
 /* Initialization local variables before event loop  */
 inline C_RESULT demo_navdata_client_init( void* data )
 {
@@ -24,6 +27,8 @@ inline C_RESULT demo_navdata_client_process( const navdata_unpacked_t* const nav
   
   
   //printf("\033[8A");
+
+  dmpl_flying_state = ardrone_academy_navdata_get_flying_state(navdata);
   
   return C_OK;
 }
