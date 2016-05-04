@@ -87,6 +87,9 @@ namespace
   //-- name of target thunk to dump from the DMPL file.
   std::string madara_target ("GNU_CPP");
 
+  //-- deadline for madara to filter out old packets
+  int madara_deadline (1);
+
   //-- parse and print the DMPL file
   bool do_print = false;
 
@@ -207,7 +210,7 @@ int main (int argc, char **argv)
   {
     //create a madara builder instance of the dmpl builder parse
     dmpl::CodeGenerator *gams_builder
-      = new dmpl::gams::GAMSBuilder (builder, madara_target, schedType, do_expect);
+      = new dmpl::gams::GAMSBuilder (builder, madara_target, madara_deadline, schedType, do_expect);
 
     //build the generated code
     gams_builder->build ();
@@ -468,8 +471,20 @@ void parse_options (int argc, char **argv)
       }
       else
       {
-        std::cerr << "ERROR: Target platform (-pf|--platform) must have a ";
-        std::cerr << " target (e.g. -t WIN_CPP)\n";
+        std::cerr << "ERROR: Target platform (-pf|--platform) must have a target (e.g. -t WIN_CPP)\n";
+        usage (argv[0]);
+      }
+      ++i;
+    }
+    else if (arg1 == "-dl" || arg1 == "--deadline")
+    {
+      if (i + 1 < argc)
+      {
+        madara_deadline = atoi(argv[i + 1]);
+      }
+      else
+      {
+        std::cerr << "ERROR: Deadline (-dl|--deadline) must have a value (e.g. -dl 2)\n";
         usage (argv[0]);
       }
       ++i;
@@ -608,6 +623,8 @@ void usage (char *cmd)
   std::cerr << "  -Z|--grid-z s              specify number of cells on Z dimension of grid\n";
   std::cerr << "  --map s                    specify map size (small|large)\n";
   std::cerr << "  -pf|--platform p           specify a target platform\n";
+  std::cerr << "  -dl|--deadline d           specify a deadline for MADARA to drop old packets\n";
+  std::cerr << "                             deadline of -1 (i.e., -dl -1) means no deadline\n";
   std::cerr << "                             Available platforms: WIN_CPP, GNU_CPP (default)\n";
 #if MZSRM==1
   std::cerr << "  -mz|--mzsrm                generate code that targets MZSRM scheduler\n";

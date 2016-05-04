@@ -75,7 +75,7 @@ namespace dmpl
        * Constructor
        * @param  builder   the source for building a program
        **/
-      GAMSBuilder (DmplBuilder & builder,const std::string &target, 
+      GAMSBuilder (DmplBuilder & builder,const std::string &target, const int deadline,
                    const SchedType &schedType, bool do_expect);
 
       /**
@@ -308,7 +308,10 @@ namespace dmpl
       void build_comment (const std::string &comment, const std::string &prefix,
                           const std::string &suffix, size_t indent);
 
-    private:      
+    private:
+      ///the deadline for MADARA to drop packets
+      int madara_deadline;
+      
       /// character buffer for holding results of build
       std::stringstream buffer_;
 

@@ -191,10 +191,11 @@ namespace
 //-- constructor
 /*********************************************************************/
 dmpl::gams::GAMSBuilder::GAMSBuilder (dmpl::DmplBuilder & builder,
-                                      const std::string &target, 
+                                      const std::string &target,
+                                      const int deadline,
                                       const SchedType & schedType,
                                       bool do_expect)
-  : CodeGenerator(builder,target, schedType, do_expect) {}
+  : CodeGenerator(builder, target, schedType, do_expect), madara_deadline(deadline) {}
 
 /*********************************************************************/
 //-- top level code generator
@@ -2487,7 +2488,8 @@ dmpl::gams::GAMSBuilder::build_main_function ()
   buffer_ << "  }\n\n";
   
   buffer_ << "  settings.queue_length = 1000000;\n";
-  buffer_ << "  settings.set_deadline(1);\n\n";
+  if(madara_deadline >= 0)
+    buffer_ << "  settings.set_deadline(" << madara_deadline << ");\n\n";
 
   buffer_ << "  //-- configure the knowledge base with the transport settings\n";
   buffer_ << "  knowledge.attach_transport(host, settings);\n\n";
