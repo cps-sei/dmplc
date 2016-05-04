@@ -71,6 +71,7 @@ extern "C" {
 extern FLYING_STATE dmpl_flying_state;
 extern int dmpl_battery_level;
 extern int dmpl_altitude;
+extern int dmpl_nb_detected;
 
 //-- detect mode and flying mode. used for orienting to roundel.
 int currDetectType = -1, targetDetectType = -1;
@@ -112,6 +113,7 @@ void GRID_PLACE(double x, double y, double z)
 void DISPLAY_STATS()
 {
   std::cout << "Battery Level : " << dmpl_battery_level << " mv, Altitude : " << dmpl_altitude << " mm\n";
+  std::cout << "Tags detected : " << dmpl_nb_detected << '\n';
 }
 
 /**
@@ -176,6 +178,8 @@ int DRONE_FLYING_MODE(int fMode)
 {
   DISPLAY_STATS();
 
+  DRONE_DETECT_TAG(CAD_TYPE_ORIENTED_COCARDE_BW);
+  
   //-- check if already set
   if(targetFlyingMode != -1 && currFlyingMode == targetFlyingMode) {
     targetFlyingMode = -1;
