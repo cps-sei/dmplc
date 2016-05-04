@@ -69,6 +69,8 @@ extern "C" {
 /********************************************************************/
 //-- this is set by navdata.c
 extern FLYING_STATE dmpl_flying_state;
+extern int dmpl_battery_level;
+extern int dmpl_altitude;
 
 //-- detect mode and flying mode. used for orienting to roundel.
 int currDetectType = -1, targetDetectType = -1;
