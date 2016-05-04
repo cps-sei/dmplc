@@ -39,6 +39,8 @@ int main(int argc,char **argv)
   std::cout << "hovering ...\n";
   sleep(5);
 
+  while(!DRONE_FLYING_MODE(FLYING_MODE_FREE_FLIGHT)) sleep(1);
+
   for(;;) {
     std::cout << "trying to land ...\n";
     int x = DRONE_LAND();
