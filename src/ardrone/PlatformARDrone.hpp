@@ -156,6 +156,14 @@ int DRONE_ORIENT()
 {
   DISPLAY_STATS();
 
+  //-- check if oriented
+  if(targetDetectType != -1 && currDetectType == targetDetectType &&
+     targetFlyingMode != -1 && currFlyingMode == targetFlyingMode) {
+    targetDetectType = -1;
+    targetFlyingMode = -1;
+    return 1;
+  }
+  
   int detectType = CAD_TYPE_ORIENTED_COCARDE_BW;
   targetDetectType = detectType;
   ARDRONE_TOOL_CONFIGURATION_ADDEVENT(detect_type, &detectType, detectCallBack);
