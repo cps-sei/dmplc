@@ -154,6 +154,8 @@ void flyingModeCallBack(int success)
  **/
 int DRONE_ORIENT()
 {
+  DISPLAY_STATS();
+
   int detectType = CAD_TYPE_ORIENTED_COCARDE_BW;
   targetDetectType = detectType;
   ARDRONE_TOOL_CONFIGURATION_ADDEVENT(detect_type, &detectType, detectCallBack);
@@ -176,6 +178,7 @@ int DRONE_ORIENT()
  **/
 int DRONE_TAKEOFF()
 {
+  DISPLAY_STATS();
   ardrone_tool_set_ui_pad_start(1);
   return (dmpl_flying_state == FLYING_STATE_TAKING_OFF || dmpl_flying_state == FLYING_STATE_FLYING);
 }
@@ -186,6 +189,7 @@ int DRONE_TAKEOFF()
  **/
 int DRONE_FLYING()
 {
+  DISPLAY_STATS();
   return (dmpl_flying_state == FLYING_STATE_FLYING);
 }
 
@@ -194,6 +198,7 @@ int DRONE_FLYING()
  **/
 int DRONE_LAND()
 {
+  DISPLAY_STATS();
   ardrone_tool_set_ui_pad_start(0);
   return (dmpl_flying_state == FLYING_STATE_LANDING || dmpl_flying_state == FLYING_STATE_LANDED);
 }
