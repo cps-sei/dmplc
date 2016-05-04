@@ -5,6 +5,8 @@
 
 //-- the flying state
 FLYING_STATE dmpl_flying_state;
+int dmpl_battery_level;
+int dmpl_altitude;
 
 /* Initialization local variables before event loop  */
 inline C_RESULT demo_navdata_client_init( void* data )
@@ -15,9 +17,9 @@ inline C_RESULT demo_navdata_client_init( void* data )
 /* Receving navdata during the event loop */
 inline C_RESULT demo_navdata_client_process( const navdata_unpacked_t* const navdata )
 {
-  /*
   const navdata_demo_t*nd = &navdata->navdata_demo;
-  
+
+  /*
   printf("=====================\nNavdata for flight demonstrations =====================\n\n");
   
   printf("Control state : %i\n",nd->ctrl_state);
@@ -31,6 +33,8 @@ inline C_RESULT demo_navdata_client_process( const navdata_unpacked_t* const nav
   */
   
   dmpl_flying_state = ardrone_academy_navdata_get_flying_state(navdata);
+  dmpl_battery_level = nd->vbat_flying_percentage;
+  dmpl_altitude = nd->altitude;
   
   return C_OK;
 }
