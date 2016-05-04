@@ -148,33 +148,46 @@ void flyingModeCallBack(int success)
 }
 
 /**
- * Make the drone detect, orient, and hover over a BW roundel. return
- * 1 if takeoff is complete, 0 if it is still going on, and -1 if some
- * error happens.
+ * Set the tag detection type
  **/
-int DRONE_ORIENT()
+int DRONE_DETECT_TAG(int detectType)
 {
   DISPLAY_STATS();
 
-  //-- check if oriented
-  if(targetDetectType != -1 && currDetectType == targetDetectType &&
-     targetFlyingMode != -1 && currFlyingMode == targetFlyingMode) {
+  //-- check if already set
+  if(targetDetectType != -1 && currDetectType == targetDetectType) {
     targetDetectType = -1;
+    return 1;
+  }
+  
+  targetDetectType = detectType;
+  ARDRONE_TOOL_CONFIGURATION_ADDEVENT(detect_type, &detectType, detectCallBack);
+  
+  if(currDetectType == targetDetectType) {
+    targetDetectType = -1;
+    return 1;
+  } else return 0;
+}
+
+/**
+ * Set the drone's flying mode
+ **/
+int DRONE_FLYING_MODE(int fMode)
+{
+  DISPLAY_STATS();
+
+  //-- check if already set
+  if(targetFlyingMode != -1 && currFlyingMode == targetFlyingMode) {
     targetFlyingMode = -1;
     return 1;
   }
   
-  int detectType = CAD_TYPE_ORIENTED_COCARDE_BW;
-  targetDetectType = detectType;
-  ARDRONE_TOOL_CONFIGURATION_ADDEVENT(detect_type, &detectType, detectCallBack);
   //int32_t detectVhsync = TAG_TYPE_MASK(TAG_TYPE_BLACK_ROUNDEL);
   //ARDRONE_TOOL_CONFIGURATION_ADDEVENT(detections_select_v, &detectVhsync, detectCallBack);  
-  int fMode = FLYING_MODE_HOVER_ON_TOP_OF_ORIENTED_ROUNDEL;
   targetFlyingMode = fMode;
   ARDRONE_TOOL_CONFIGURATION_ADDEVENT(flying_mode, &fMode, flyingModeCallBack);
-
-  if(currDetectType == targetDetectType && currFlyingMode == targetFlyingMode) {
-    targetDetectType = -1;
+  
+  if(currFlyingMode == targetFlyingMode) {
     targetFlyingMode = -1;
     return 1;
   } else return 0;
