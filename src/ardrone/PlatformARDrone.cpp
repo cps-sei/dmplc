@@ -16,7 +16,7 @@ int main(int argc,char **argv)
   GRID_PLACE(0,0,0);
   sleep(5);
 
-  while(!DRONE_DETECT_TAG(CAD_TYPE_ORIENTED_COCARDE_BW)) sleep(1);
+  //while(!DRONE_DETECT_TAG(CAD_TYPE_ORIENTED_COCARDE_BW)) sleep(1);
 
   for(;;) {
     std::cout << "trying to take off ...\n";
@@ -37,12 +37,31 @@ int main(int argc,char **argv)
   while(!DRONE_FLYING_MODE(FLYING_MODE_FREE_FLIGHT)) sleep(1);
 
   while(!DRONE_HOVER()) sleep(1);
+  sleep(3);
+
   for(int i = 0;i < 30;++i) {
     std::cout << "************ moving forward ...\n";
     DRONE_MOVE_FWD();
     usleep(200000);
   }
+  
   while(!DRONE_HOVER()) sleep(1);
+  sleep(3);
+
+  for(int i = 0;i < 30;++i) {
+    std::cout << "************ moving up ...\n";
+    DRONE_MOVE_UP();
+    usleep(200000);
+  }
+  
+  while(!DRONE_HOVER()) sleep(1);
+  sleep(3);
+
+  for(int i = 0;i < 30;++i) {
+    std::cout << "************ moving down ...\n";
+    DRONE_MOVE_DOWN();
+    usleep(200000);
+  }
 
   // sleep(1);
   // for(int i = 0;i < 5;++i) {

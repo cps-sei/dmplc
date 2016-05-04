@@ -178,8 +178,6 @@ int DRONE_FLYING_MODE(int fMode)
 {
   DISPLAY_STATS();
 
-  DRONE_DETECT_TAG(CAD_TYPE_ORIENTED_COCARDE_BW);
-  
   //-- check if already set
   if(targetFlyingMode != -1 && currFlyingMode == targetFlyingMode) {
     targetFlyingMode = -1;
@@ -244,7 +242,7 @@ int DRONE_HOVER()
 int DRONE_MOVE_FWD()
 {
   DISPLAY_STATS();
-  ardrone_at_set_progress_cmd(1,0,-1,0,0);
+  ardrone_at_set_progress_cmd(1,0,-0.8,0,0);
   return 1;
 }
 
@@ -255,6 +253,26 @@ int DRONE_MOVE_BWD()
 {
   DISPLAY_STATS();
   ardrone_at_set_progress_cmd(1,0,0.8,0,0);
+  return 1;
+}
+
+/**
+ * Move drone up
+ **/
+int DRONE_MOVE_UP()
+{
+  DISPLAY_STATS();
+  ardrone_at_set_progress_cmd(1,0,0,0.5,0);
+  return 1;
+}
+
+/**
+ * Move drone down
+ **/
+int DRONE_MOVE_DOWN()
+{
+  DISPLAY_STATS();
+  ardrone_at_set_progress_cmd(1,0,0,-0.5,0);
   return 1;
 }
 
