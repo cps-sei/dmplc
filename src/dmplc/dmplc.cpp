@@ -460,7 +460,7 @@ void parse_options (int argc, char **argv)
       }
       ++i;
     }
-    else if (arg1 == "-t" || arg1 == "--target" || arg1 == "--platform")
+    else if (arg1 == "-pf" || arg1 == "--platform")
     {
       if (i + 1 < argc)
       {
@@ -468,7 +468,7 @@ void parse_options (int argc, char **argv)
       }
       else
       {
-        std::cerr << "ERROR: Target platform (-t|--target|--platform) must have a ";
+        std::cerr << "ERROR: Target platform (-pf|--platform) must have a ";
         std::cerr << " target (e.g. -t WIN_CPP)\n";
         usage (argv[0]);
       }
@@ -607,7 +607,7 @@ void usage (char *cmd)
   std::cerr << "  -Y|--grid-y s              specify number of cells on Y dimension of grid\n";
   std::cerr << "  -Z|--grid-z s              specify number of cells on Z dimension of grid\n";
   std::cerr << "  --map s                    specify map size (small|large)\n";
-  std::cerr << "  -t|--target|--platform p   specify a target platform\n";
+  std::cerr << "  -pf|--platform p           specify a target platform\n";
   std::cerr << "                             Available platforms: WIN_CPP, GNU_CPP (default)\n";
 #if MZSRM==1
   std::cerr << "  -mz|--mzsrm                generate code that targets MZSRM scheduler\n";
