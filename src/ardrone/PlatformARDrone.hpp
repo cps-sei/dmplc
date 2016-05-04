@@ -106,6 +106,12 @@ void GRID_PLACE(double x, double y, double z)
 {
 }
 
+/** display statistics */
+void DISPLAY_STATS()
+{
+  std::cout << "Battery Level : " << dmpl_battery_level << " mv, Altitude : " << dmpl_altitude << " mm\n";
+}
+
 /**
  * Reset the drone. return 1 if takeoff is complete, 0 if it is still
  * going on, and -1 if some error happens.
