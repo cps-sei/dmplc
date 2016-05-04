@@ -33,8 +33,32 @@ int main(int argc,char **argv)
     if(x == 1) break;
     sleep(1);
   }
+  
+  while(!DRONE_FLYING_MODE(FLYING_MODE_FREE_FLIGHT)) sleep(1);
 
-  while(!DRONE_FLYING_MODE(FLYING_MODE_HOVER_ON_TOP_OF_ORIENTED_ROUNDEL)) sleep(1);
+  while(!DRONE_HOVER()) sleep(1);
+  for(int i = 0;i < 30;++i) {
+    std::cout << "************ moving forward ...\n";
+    DRONE_MOVE_FWD();
+    usleep(200000);
+  }
+  while(!DRONE_HOVER()) sleep(1);
+
+  // sleep(1);
+  // for(int i = 0;i < 5;++i) {
+  //   std::cout << "************ moving forward ...\n";
+  //   for(int j = 0;j < 5;++j) {
+  //     DRONE_MOVE_FWD();
+  //     sleep(1);
+  //   }
+  //   std::cout << "************ moving backward ...\n";
+  //   for(int j = 0;j < 5;++j) {
+  //     DRONE_MOVE_BWD();
+  //     sleep(1);
+  //   }
+  // }
+  
+  // while(!DRONE_FLYING_MODE(FLYING_MODE_HOVER_ON_TOP_OF_ORIENTED_ROUNDEL)) sleep(1);
 
   std::cout << "hovering ...\n";
   sleep(5);

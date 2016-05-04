@@ -229,6 +229,36 @@ int DRONE_LAND()
 }
 
 /**
+ * Hover drone over current location
+ **/
+int DRONE_HOVER()
+{
+  DISPLAY_STATS();
+  ardrone_at_set_progress_cmd(0,0,0,0,0);
+  return 1;
+}
+
+/**
+ * Move drone forward
+ **/
+int DRONE_MOVE_FWD()
+{
+  DISPLAY_STATS();
+  ardrone_at_set_progress_cmd(1,0,-1,0,0);
+  return 1;
+}
+
+/**
+ * Move drone backward
+ **/
+int DRONE_MOVE_BWD()
+{
+  DISPLAY_STATS();
+  ardrone_at_set_progress_cmd(1,0,0.8,0,0);
+  return 1;
+}
+
+/**
  * Call after GRID_LAND() to do other cleanup.
  **/
 void GRID_REMOVE()
