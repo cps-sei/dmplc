@@ -89,6 +89,12 @@
     <genClasses ecoreClass="Dmpl.ecore#//DoubleConst">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//DoubleConst/value"/>
     </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//Node">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Node/node"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//NodeNoAttr">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//NodeNoAttr/name"/>
+    </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//VarInit">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//VarInit/type"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//VarInit/varAsgns"/>

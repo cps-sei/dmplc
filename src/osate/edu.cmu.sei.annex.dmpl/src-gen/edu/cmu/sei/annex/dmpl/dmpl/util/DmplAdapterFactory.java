@@ -115,6 +115,16 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createDoubleConstAdapter();
       }
       @Override
+      public Adapter caseNode(Node object)
+      {
+        return createNodeAdapter();
+      }
+      @Override
+      public Adapter caseNodeNoAttr(NodeNoAttr object)
+      {
+        return createNodeNoAttrAdapter();
+      }
+      @Override
       public Adapter caseVarInit(VarInit object)
       {
         return createVarInitAdapter();
@@ -497,6 +507,36 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createDoubleConstAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Node <em>Node</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Node
+   * @generated
+   */
+  public Adapter createNodeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.NodeNoAttr <em>Node No Attr</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.NodeNoAttr
+   * @generated
+   */
+  public Adapter createNodeNoAttrAdapter()
   {
     return null;
   }

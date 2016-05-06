@@ -21,6 +21,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.ForStmt
 import edu.cmu.sei.annex.dmpl.dmpl.IntExpr
 import edu.cmu.sei.annex.dmpl.dmpl.LVal
 import edu.cmu.sei.annex.dmpl.dmpl.NestedStmt
+import edu.cmu.sei.annex.dmpl.dmpl.Node
 import edu.cmu.sei.annex.dmpl.dmpl.OrExpr
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure
 import edu.cmu.sei.annex.dmpl.dmpl.Program
@@ -920,6 +921,17 @@ class ParserTest2 {
 				override.assertTrue
 				fnBody.assertNotNull
 			]
+		]
+	}
+	
+	@Test
+	def void testNodeNoAttr() {
+		'''
+			node n1;
+		'''.parse => [
+			assertNoIssues
+			1.assertEquals(programElements.size)
+			"n1".assertEquals((programElements.head as Node).node.name)
 		]
 	}
 }

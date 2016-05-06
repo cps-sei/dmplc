@@ -40,6 +40,7 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getProgramElementAccess().getAlternatives(), "rule__ProgramElement__Alternatives");
 					put(grammarAccess.getConstantAccess().getAlternatives_0(), "rule__Constant__Alternatives_0");
 					put(grammarAccess.getNumberConstAccess().getAlternatives(), "rule__NumberConst__Alternatives");
+					put(grammarAccess.getNodeNoAttrAccess().getAlternatives_0(), "rule__NodeNoAttr__Alternatives_0");
 					put(grammarAccess.getVarAsgnAccess().getAlternatives(), "rule__VarAsgn__Alternatives");
 					put(grammarAccess.getVarAsgnAccess().getAlternatives_1_1(), "rule__VarAsgn__Alternatives_1_1");
 					put(grammarAccess.getVarAsgnAccess().getAlternatives_2_1(), "rule__VarAsgn__Alternatives_2_1");
@@ -77,6 +78,7 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getConstantAccess().getGroup(), "rule__Constant__Group__0");
 					put(grammarAccess.getIntConstAccess().getGroup(), "rule__IntConst__Group__0");
 					put(grammarAccess.getDoubleConstAccess().getGroup(), "rule__DoubleConst__Group__0");
+					put(grammarAccess.getNodeNoAttrAccess().getGroup(), "rule__NodeNoAttr__Group__0");
 					put(grammarAccess.getVarInitAccess().getGroup(), "rule__VarInit__Group__0");
 					put(grammarAccess.getVarInitAccess().getGroup_2(), "rule__VarInit__Group_2__0");
 					put(grammarAccess.getVarAsgnAccess().getGroup_0(), "rule__VarAsgn__Group_0__0");
@@ -186,6 +188,8 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getIntConstAccess().getValueAssignment_1(), "rule__IntConst__ValueAssignment_1");
 					put(grammarAccess.getDoubleConstAccess().getSignAssignment_0(), "rule__DoubleConst__SignAssignment_0");
 					put(grammarAccess.getDoubleConstAccess().getValueAssignment_1(), "rule__DoubleConst__ValueAssignment_1");
+					put(grammarAccess.getNodeAccess().getNodeAssignment(), "rule__Node__NodeAssignment");
+					put(grammarAccess.getNodeNoAttrAccess().getNameAssignment_1(), "rule__NodeNoAttr__NameAssignment_1");
 					put(grammarAccess.getVarInitAccess().getTypeAssignment_0(), "rule__VarInit__TypeAssignment_0");
 					put(grammarAccess.getVarInitAccess().getVarAsgnsAssignment_1(), "rule__VarInit__VarAsgnsAssignment_1");
 					put(grammarAccess.getVarInitAccess().getVarAsgnsAssignment_2_1(), "rule__VarInit__VarAsgnsAssignment_2_1");

@@ -44,6 +44,8 @@ import edu.cmu.sei.annex.dmpl.dmpl.LVal;
 import edu.cmu.sei.annex.dmpl.dmpl.MultiplicativeExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.MultiplicativeOperator;
 import edu.cmu.sei.annex.dmpl.dmpl.NestedStmt;
+import edu.cmu.sei.annex.dmpl.dmpl.Node;
+import edu.cmu.sei.annex.dmpl.dmpl.NodeNoAttr;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.NumberConst;
@@ -138,6 +140,20 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass doubleConstEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass nodeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass nodeNoAttrEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -763,6 +779,46 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
   public EAttribute getDoubleConst_Value()
   {
     return (EAttribute)doubleConstEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getNode()
+  {
+    return nodeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getNode_Node()
+  {
+    return (EReference)nodeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getNodeNoAttr()
+  {
+    return nodeNoAttrEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getNodeNoAttr_Name()
+  {
+    return (EAttribute)nodeNoAttrEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -2326,6 +2382,12 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     doubleConstEClass = createEClass(DOUBLE_CONST);
     createEAttribute(doubleConstEClass, DOUBLE_CONST__VALUE);
 
+    nodeEClass = createEClass(NODE);
+    createEReference(nodeEClass, NODE__NODE);
+
+    nodeNoAttrEClass = createEClass(NODE_NO_ATTR);
+    createEAttribute(nodeNoAttrEClass, NODE_NO_ATTR__NAME);
+
     varInitEClass = createEClass(VAR_INIT);
     createEReference(varInitEClass, VAR_INIT__TYPE);
     createEReference(varInitEClass, VAR_INIT__VAR_ASGNS);
@@ -2564,6 +2626,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     constantEClass.getESuperTypes().add(this.getProgramElement());
     intConstEClass.getESuperTypes().add(this.getNumberConst());
     doubleConstEClass.getESuperTypes().add(this.getNumberConst());
+    nodeEClass.getESuperTypes().add(this.getProgramElement());
     procedureEClass.getESuperTypes().add(this.getProgramElement());
     assignmentStmtEClass.getESuperTypes().add(this.getStmt());
     lValEClass.getESuperTypes().add(this.getExpr());
@@ -2623,6 +2686,12 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     initEClass(doubleConstEClass, DoubleConst.class, "DoubleConst", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getDoubleConst_Value(), ecorePackage.getEDouble(), "value", null, 0, 1, DoubleConst.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(nodeEClass, Node.class, "Node", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getNode_Node(), this.getNodeNoAttr(), null, "node", null, 0, 1, Node.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(nodeNoAttrEClass, NodeNoAttr.class, "NodeNoAttr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getNodeNoAttr_Name(), ecorePackage.getEString(), "name", null, 0, 1, NodeNoAttr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(varInitEClass, VarInit.class, "VarInit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getVarInit_Type(), this.getType(), null, "type", null, 0, 1, VarInit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

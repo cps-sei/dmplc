@@ -72,6 +72,8 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.NUMBER_CONST: return createNumberConst();
       case DmplPackage.INT_CONST: return createIntConst();
       case DmplPackage.DOUBLE_CONST: return createDoubleConst();
+      case DmplPackage.NODE: return createNode();
+      case DmplPackage.NODE_NO_ATTR: return createNodeNoAttr();
       case DmplPackage.VAR_INIT: return createVarInit();
       case DmplPackage.VAR_ASGN: return createVarAsgn();
       case DmplPackage.VAR: return createVar();
@@ -278,6 +280,28 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     DoubleConstImpl doubleConst = new DoubleConstImpl();
     return doubleConst;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Node createNode()
+  {
+    NodeImpl node = new NodeImpl();
+    return node;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NodeNoAttr createNodeNoAttr()
+  {
+    NodeNoAttrImpl nodeNoAttr = new NodeNoAttrImpl();
+    return nodeNoAttr;
   }
 
   /**

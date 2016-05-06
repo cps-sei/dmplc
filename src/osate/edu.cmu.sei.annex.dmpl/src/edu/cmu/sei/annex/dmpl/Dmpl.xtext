@@ -20,7 +20,7 @@ DmplSubclause: {DmplSubclause}
 
 ProgramElement:
 	//TODO: target, node
-	Constant | Procedure
+	Constant | Node | Procedure
 ;
 
 Constant:
@@ -37,6 +37,16 @@ IntConst:
 
 DoubleConst:
 	sign=Sign? value=Double
+;
+
+//TODO
+Node:
+	node=NodeNoAttr
+;
+
+//TODO
+NodeNoAttr:
+	('node' | 'NODE') name=TIDENTIFIER ';'
 ;
 
 VarInit:

@@ -82,22 +82,26 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "ProgramElement");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final RuleCall cConstantParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
-		private final RuleCall cProcedureParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cNodeParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cProcedureParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
 		
 		//ProgramElement: //TODO: target, node
-		//	Constant | Procedure;
+		//	Constant | Node | Procedure;
 		@Override public ParserRule getRule() { return rule; }
 
 		////TODO: target, node
-		//Constant | Procedure
+		//Constant | Node | Procedure
 		public Alternatives getAlternatives() { return cAlternatives; }
 
 		////TODO: target, node
 		//Constant
 		public RuleCall getConstantParserRuleCall_0() { return cConstantParserRuleCall_0; }
 
+		//Node
+		public RuleCall getNodeParserRuleCall_1() { return cNodeParserRuleCall_1; }
+
 		//Procedure
-		public RuleCall getProcedureParserRuleCall_1() { return cProcedureParserRuleCall_1; }
+		public RuleCall getProcedureParserRuleCall_2() { return cProcedureParserRuleCall_2; }
 	}
 
 	public class ConstantElements extends AbstractParserRuleElementFinder {
@@ -222,6 +226,60 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 		//Double
 		public RuleCall getValueDoubleParserRuleCall_1_0() { return cValueDoubleParserRuleCall_1_0; }
+	}
+
+	public class NodeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Node");
+		private final Assignment cNodeAssignment = (Assignment)rule.eContents().get(1);
+		private final RuleCall cNodeNodeNoAttrParserRuleCall_0 = (RuleCall)cNodeAssignment.eContents().get(0);
+		
+		////TODO
+		//Node:
+		//	node=NodeNoAttr;
+		@Override public ParserRule getRule() { return rule; }
+
+		//node=NodeNoAttr
+		public Assignment getNodeAssignment() { return cNodeAssignment; }
+
+		//NodeNoAttr
+		public RuleCall getNodeNodeNoAttrParserRuleCall_0() { return cNodeNodeNoAttrParserRuleCall_0; }
+	}
+
+	public class NodeNoAttrElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "NodeNoAttr");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Alternatives cAlternatives_0 = (Alternatives)cGroup.eContents().get(0);
+		private final Keyword cNodeKeyword_0_0 = (Keyword)cAlternatives_0.eContents().get(0);
+		private final Keyword cNODEKeyword_0_1 = (Keyword)cAlternatives_0.eContents().get(1);
+		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Keyword cSemicolonKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		
+		////TODO
+		//NodeNoAttr:
+		//	("node" | "NODE") name=TIDENTIFIER ";";
+		@Override public ParserRule getRule() { return rule; }
+
+		//("node" | "NODE") name=TIDENTIFIER ";"
+		public Group getGroup() { return cGroup; }
+
+		//"node" | "NODE"
+		public Alternatives getAlternatives_0() { return cAlternatives_0; }
+
+		//"node"
+		public Keyword getNodeKeyword_0_0() { return cNodeKeyword_0_0; }
+
+		//"NODE"
+		public Keyword getNODEKeyword_0_1() { return cNODEKeyword_0_1; }
+
+		//name=TIDENTIFIER
+		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+
+		//TIDENTIFIER
+		public RuleCall getNameTIDENTIFIERTerminalRuleCall_1_0() { return cNameTIDENTIFIERTerminalRuleCall_1_0; }
+
+		//";"
+		public Keyword getSemicolonKeyword_2() { return cSemicolonKeyword_2; }
 	}
 
 	public class VarInitElements extends AbstractParserRuleElementFinder {
@@ -2834,6 +2892,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final NumberConstElements pNumberConst;
 	private final IntConstElements pIntConst;
 	private final DoubleConstElements pDoubleConst;
+	private final NodeElements pNode;
+	private final NodeNoAttrElements pNodeNoAttr;
 	private final VarInitElements pVarInit;
 	private final VarAsgnElements pVarAsgn;
 	private final VarElements pVar;
@@ -2899,6 +2959,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pNumberConst = new NumberConstElements();
 		this.pIntConst = new IntConstElements();
 		this.pDoubleConst = new DoubleConstElements();
+		this.pNode = new NodeElements();
+		this.pNodeNoAttr = new NodeNoAttrElements();
 		this.pVarInit = new VarInitElements();
 		this.pVarAsgn = new VarAsgnElements();
 		this.pVar = new VarElements();
@@ -3006,7 +3068,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//ProgramElement: //TODO: target, node
-	//	Constant | Procedure;
+	//	Constant | Node | Procedure;
 	public ProgramElementElements getProgramElementAccess() {
 		return pProgramElement;
 	}
@@ -3053,6 +3115,28 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getDoubleConstRule() {
 		return getDoubleConstAccess().getRule();
+	}
+
+	////TODO
+	//Node:
+	//	node=NodeNoAttr;
+	public NodeElements getNodeAccess() {
+		return pNode;
+	}
+	
+	public ParserRule getNodeRule() {
+		return getNodeAccess().getRule();
+	}
+
+	////TODO
+	//NodeNoAttr:
+	//	("node" | "NODE") name=TIDENTIFIER ";";
+	public NodeNoAttrElements getNodeNoAttrAccess() {
+		return pNodeNoAttr;
+	}
+	
+	public ParserRule getNodeNoAttrRule() {
+		return getNodeNoAttrAccess().getRule();
 	}
 
 	//VarInit:

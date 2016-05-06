@@ -37,6 +37,8 @@ import edu.cmu.sei.annex.dmpl.dmpl.IntExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.LVal;
 import edu.cmu.sei.annex.dmpl.dmpl.MultiplicativeExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.NestedStmt;
+import edu.cmu.sei.annex.dmpl.dmpl.Node;
+import edu.cmu.sei.annex.dmpl.dmpl.NodeNoAttr;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.OrExpr;
@@ -169,6 +171,12 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.NESTED_STMT:
 				sequence_Stmt(context, (NestedStmt) semanticObject); 
+				return; 
+			case DmplPackage.NODE:
+				sequence_Node(context, (Node) semanticObject); 
+				return; 
+			case DmplPackage.NODE_NO_ATTR:
+				sequence_NodeNoAttr(context, (NodeNoAttr) semanticObject); 
 				return; 
 			case DmplPackage.NODE_NUM_DIMENSION:
 				sequence_Dimension(context, (NodeNumDimension) semanticObject); 
@@ -560,6 +568,38 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 		feeder.accept(grammarAccess.getMultiplicativeExprAccess().getMultiplicativeExprLeftAction_1_0_0_0(), semanticObject.getLeft());
 		feeder.accept(grammarAccess.getMultiplicativeExprAccess().getOperatorMultiplicativeOperatorEnumRuleCall_1_0_0_1_0(), semanticObject.getOperator());
 		feeder.accept(grammarAccess.getMultiplicativeExprAccess().getRightTerminalExprParserRuleCall_1_1_0(), semanticObject.getRight());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     name=TIDENTIFIER
+	 */
+	protected void sequence_NodeNoAttr(EObject context, NodeNoAttr semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.NODE_NO_ATTR__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.NODE_NO_ATTR__NAME));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getNodeNoAttrAccess().getNameTIDENTIFIERTerminalRuleCall_1_0(), semanticObject.getName());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     node=NodeNoAttr
+	 */
+	protected void sequence_Node(EObject context, Node semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.NODE__NODE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.NODE__NODE));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getNodeAccess().getNodeNodeNoAttrParserRuleCall_0(), semanticObject.getNode());
 		feeder.finish();
 	}
 	

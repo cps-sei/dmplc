@@ -86,6 +86,24 @@ public interface DmplFactory extends EFactory
   DoubleConst createDoubleConst();
 
   /**
+   * Returns a new object of class '<em>Node</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Node</em>'.
+   * @generated
+   */
+  Node createNode();
+
+  /**
+   * Returns a new object of class '<em>Node No Attr</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Node No Attr</em>'.
+   * @generated
+   */
+  NodeNoAttr createNodeNoAttr();
+
+  /**
    * Returns a new object of class '<em>Var Init</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
