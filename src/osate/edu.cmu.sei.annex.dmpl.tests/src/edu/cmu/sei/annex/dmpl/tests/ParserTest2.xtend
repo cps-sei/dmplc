@@ -928,10 +928,20 @@ class ParserTest2 {
 	def void testNodeNoAttr() {
 		'''
 			node n1;
+			node n2 {
+				void f1();
+			}
 		'''.parse => [
 			assertNoIssues
-			1.assertEquals(programElements.size)
-			"n1".assertEquals((programElements.head as Node).node.name)
+			2.assertEquals(programElements.size)
+			"n1".assertEquals((programElements.get(0) as Node).node.name)
+			(programElements.get(1) as Node).node => [
+				"n2".assertEquals(name)
+				body => [
+					1.assertEquals(elements.size)
+					"f1".assertEquals(elements.head.prototype.name)
+				]
+			]
 		]
 	}
 }

@@ -38,6 +38,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.LVal;
 import edu.cmu.sei.annex.dmpl.dmpl.MultiplicativeExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.NestedStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.Node;
+import edu.cmu.sei.annex.dmpl.dmpl.NodeBody;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNoAttr;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumExpr;
@@ -174,6 +175,9 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.NODE:
 				sequence_Node(context, (Node) semanticObject); 
+				return; 
+			case DmplPackage.NODE_BODY:
+				sequence_NodeBody(context, (NodeBody) semanticObject); 
 				return; 
 			case DmplPackage.NODE_NO_ATTR:
 				sequence_NodeNoAttr(context, (NodeNoAttr) semanticObject); 
@@ -574,17 +578,19 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     name=TIDENTIFIER
+	 *     (elements+=Procedure*)
+	 */
+	protected void sequence_NodeBody(EObject context, NodeBody semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (name=TIDENTIFIER body=NodeBody?)
 	 */
 	protected void sequence_NodeNoAttr(EObject context, NodeNoAttr semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.NODE_NO_ATTR__NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.NODE_NO_ATTR__NAME));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getNodeNoAttrAccess().getNameTIDENTIFIERTerminalRuleCall_1_0(), semanticObject.getName());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

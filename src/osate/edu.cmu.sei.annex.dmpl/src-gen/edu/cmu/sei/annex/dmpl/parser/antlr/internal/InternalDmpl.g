@@ -514,11 +514,83 @@ ruleNodeNoAttr returns [EObject current=null]
 	    }
 
 )
-)	otherlv_3=';' 
+)(	otherlv_3=';' 
     {
-    	newLeafNode(otherlv_3, grammarAccess.getNodeNoAttrAccess().getSemicolonKeyword_2());
+    	newLeafNode(otherlv_3, grammarAccess.getNodeNoAttrAccess().getSemicolonKeyword_2_0());
     }
+
+    |(	otherlv_4='{' 
+    {
+    	newLeafNode(otherlv_4, grammarAccess.getNodeNoAttrAccess().getLeftCurlyBracketKeyword_2_1_0());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getNodeNoAttrAccess().getBodyNodeBodyParserRuleCall_2_1_1_0()); 
+	    }
+		lv_body_5_0=ruleNodeBody		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getNodeNoAttrRule());
+	        }
+       		set(
+       			$current, 
+       			"body",
+        		lv_body_5_0, 
+        		"NodeBody");
+	        afterParserOrEnumRuleCall();
+	    }
+
 )
+)	otherlv_6='}' 
+    {
+    	newLeafNode(otherlv_6, grammarAccess.getNodeNoAttrAccess().getRightCurlyBracketKeyword_2_1_2());
+    }
+)))
+;
+
+
+
+
+
+// Entry rule entryRuleNodeBody
+entryRuleNodeBody returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getNodeBodyRule()); }
+	 iv_ruleNodeBody=ruleNodeBody 
+	 { $current=$iv_ruleNodeBody.current; } 
+	 EOF 
+;
+
+// Rule NodeBody
+ruleNodeBody returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+((
+    {
+        $current = forceCreateModelElement(
+            grammarAccess.getNodeBodyAccess().getNodeBodyAction_0(),
+            $current);
+    }
+)(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getNodeBodyAccess().getElementsProcedureParserRuleCall_1_0()); 
+	    }
+		lv_elements_1_0=ruleProcedure		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getNodeBodyRule());
+	        }
+       		add(
+       			$current, 
+       			"elements",
+        		lv_elements_1_0, 
+        		"Procedure");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)*)
 ;
 
 

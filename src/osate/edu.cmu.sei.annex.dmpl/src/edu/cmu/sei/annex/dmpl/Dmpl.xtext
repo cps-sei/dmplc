@@ -46,7 +46,12 @@ Node:
 
 //TODO
 NodeNoAttr:
-	('node' | 'NODE') name=TIDENTIFIER ';'
+	('node' | 'NODE') name=TIDENTIFIER (';' | '{' body=NodeBody '}')
+;
+
+//TODO
+NodeBody:
+	{NodeBody} elements+=Procedure*
 ;
 
 VarInit:

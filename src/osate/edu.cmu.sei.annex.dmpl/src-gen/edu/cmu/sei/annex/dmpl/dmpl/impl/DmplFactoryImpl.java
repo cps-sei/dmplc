@@ -74,6 +74,7 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.DOUBLE_CONST: return createDoubleConst();
       case DmplPackage.NODE: return createNode();
       case DmplPackage.NODE_NO_ATTR: return createNodeNoAttr();
+      case DmplPackage.NODE_BODY: return createNodeBody();
       case DmplPackage.VAR_INIT: return createVarInit();
       case DmplPackage.VAR_ASGN: return createVarAsgn();
       case DmplPackage.VAR: return createVar();
@@ -302,6 +303,17 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     NodeNoAttrImpl nodeNoAttr = new NodeNoAttrImpl();
     return nodeNoAttr;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NodeBody createNodeBody()
+  {
+    NodeBodyImpl nodeBody = new NodeBodyImpl();
+    return nodeBody;
   }
 
   /**
