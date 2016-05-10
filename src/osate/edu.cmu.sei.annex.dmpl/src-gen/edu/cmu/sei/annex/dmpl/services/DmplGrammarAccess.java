@@ -355,26 +355,33 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	public class VarBlockElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "VarBlock");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Assignment cVarAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final RuleCall cVarNodeVarInitParserRuleCall_0_0 = (RuleCall)cVarAssignment_0.eContents().get(0);
-		private final Keyword cSemicolonKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cOverrideAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final Keyword cOverrideOverrideKeyword_0_0 = (Keyword)cOverrideAssignment_0.eContents().get(0);
+		private final Assignment cVarAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cVarNodeVarInitParserRuleCall_1_0 = (RuleCall)cVarAssignment_1.eContents().get(0);
+		private final Keyword cSemicolonKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		
-		////TODO
 		//VarBlock:
-		//	var=NodeVarInit ";";
+		//	override?="override"? var=NodeVarInit ";";
 		@Override public ParserRule getRule() { return rule; }
 
-		//var=NodeVarInit ";"
+		//override?="override"? var=NodeVarInit ";"
 		public Group getGroup() { return cGroup; }
 
+		//override?="override"?
+		public Assignment getOverrideAssignment_0() { return cOverrideAssignment_0; }
+
+		//"override"
+		public Keyword getOverrideOverrideKeyword_0_0() { return cOverrideOverrideKeyword_0_0; }
+
 		//var=NodeVarInit
-		public Assignment getVarAssignment_0() { return cVarAssignment_0; }
+		public Assignment getVarAssignment_1() { return cVarAssignment_1; }
 
 		//NodeVarInit
-		public RuleCall getVarNodeVarInitParserRuleCall_0_0() { return cVarNodeVarInitParserRuleCall_0_0; }
+		public RuleCall getVarNodeVarInitParserRuleCall_1_0() { return cVarNodeVarInitParserRuleCall_1_0; }
 
 		//";"
-		public Keyword getSemicolonKeyword_1() { return cSemicolonKeyword_1; }
+		public Keyword getSemicolonKeyword_2() { return cSemicolonKeyword_2; }
 	}
 
 	public class NodeVarInitElements extends AbstractParserRuleElementFinder {
@@ -3364,9 +3371,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getNodeBodyElementAccess().getRule();
 	}
 
-	////TODO
 	//VarBlock:
-	//	var=NodeVarInit ";";
+	//	override?="override"? var=NodeVarInit ";";
 	public VarBlockElements getVarBlockAccess() {
 		return pVarBlock;
 	}

@@ -935,8 +935,8 @@ class ParserTest2 {
 				global int v1;
 				GLOBAL int v2;
 				local int v3;
-				LOCAL int v4;
-				group int v5;
+				override LOCAL int v4;
+				override group int v5;
 			}
 		'''.parse => [
 			assertNoIssues
@@ -947,25 +947,40 @@ class ParserTest2 {
 				body => [
 					6.assertEquals(elements.size)
 					"f1".assertEquals((elements.get(0) as Procedure).prototype.name)
-					(elements.get(1) as VarBlock).^var => [
-						NodeVarScopeEnum.GLOBAL.assertEquals(scope)
-						"v1".assertEquals(^var.varAsgns.head.^var.name)
+					elements.get(1) as VarBlock => [
+						override.assertFalse
+						^var => [
+							NodeVarScopeEnum.GLOBAL.assertEquals(scope)
+							"v1".assertEquals(^var.varAsgns.head.^var.name)
+						]
 					]
-					(elements.get(2) as VarBlock).^var => [
-						NodeVarScopeEnum.GLOBAL.assertEquals(scope)
-						"v2".assertEquals(^var.varAsgns.head.^var.name)
+					elements.get(2) as VarBlock => [
+						override.assertFalse
+						^var => [
+							NodeVarScopeEnum.GLOBAL.assertEquals(scope)
+							"v2".assertEquals(^var.varAsgns.head.^var.name)
+						]
 					]
-					(elements.get(3) as VarBlock).^var => [
-						NodeVarScopeEnum.LOCAL.assertEquals(scope)
-						"v3".assertEquals(^var.varAsgns.head.^var.name)
+					elements.get(3) as VarBlock => [
+						override.assertFalse
+						^var => [
+							NodeVarScopeEnum.LOCAL.assertEquals(scope)
+							"v3".assertEquals(^var.varAsgns.head.^var.name)
+						]
 					]
-					(elements.get(4) as VarBlock).^var => [
-						NodeVarScopeEnum.LOCAL.assertEquals(scope)
-						"v4".assertEquals(^var.varAsgns.head.^var.name)
+					elements.get(4) as VarBlock => [
+						override.assertTrue
+						^var => [
+							NodeVarScopeEnum.LOCAL.assertEquals(scope)
+							"v4".assertEquals(^var.varAsgns.head.^var.name)
+						]
 					]
-					(elements.get(5) as VarBlock).^var => [
-						NodeVarScopeEnum.GROUP.assertEquals(scope)
-						"v5".assertEquals(^var.varAsgns.head.^var.name)
+					elements.get(5) as VarBlock => [
+						override.assertTrue
+						^var => [
+							NodeVarScopeEnum.GROUP.assertEquals(scope)
+							"v5".assertEquals(^var.varAsgns.head.^var.name)
+						]
 					]
 				]
 			]

@@ -653,25 +653,40 @@ ruleVarBlock returns [EObject current=null]
     @after { leaveRule(); }:
 ((
 (
-		{ 
-	        newCompositeNode(grammarAccess.getVarBlockAccess().getVarNodeVarInitParserRuleCall_0_0()); 
+		lv_override_0_0=	'override' 
+    {
+        newLeafNode(lv_override_0_0, grammarAccess.getVarBlockAccess().getOverrideOverrideKeyword_0_0());
+    }
+ 
+	    {
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getVarBlockRule());
+	        }
+       		setWithLastConsumed($current, "override", true, "override");
 	    }
-		lv_var_0_0=ruleNodeVarInit		{
+
+)
+)?(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getVarBlockAccess().getVarNodeVarInitParserRuleCall_1_0()); 
+	    }
+		lv_var_1_0=ruleNodeVarInit		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getVarBlockRule());
 	        }
        		set(
        			$current, 
        			"var",
-        		lv_var_0_0, 
+        		lv_var_1_0, 
         		"NodeVarInit");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-)	otherlv_1=';' 
+)	otherlv_2=';' 
     {
-    	newLeafNode(otherlv_1, grammarAccess.getVarBlockAccess().getSemicolonKeyword_1());
+    	newLeafNode(otherlv_2, grammarAccess.getVarBlockAccess().getSemicolonKeyword_2());
     }
 )
 ;

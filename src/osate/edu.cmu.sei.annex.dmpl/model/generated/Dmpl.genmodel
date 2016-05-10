@@ -104,7 +104,9 @@
     <genClasses ecoreClass="Dmpl.ecore#//NodeBody">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//NodeBody/elements"/>
     </genClasses>
-    <genClasses ecoreClass="Dmpl.ecore#//NodeBodyElement"/>
+    <genClasses ecoreClass="Dmpl.ecore#//NodeBodyElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//NodeBodyElement/override"/>
+    </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//VarBlock">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//VarBlock/var"/>
     </genClasses>
@@ -131,7 +133,6 @@
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Procedure">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Procedure/attrList"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Procedure/override"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Procedure/prototype"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Procedure/fnBody"/>
     </genClasses>

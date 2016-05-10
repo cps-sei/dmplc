@@ -59,9 +59,8 @@ NodeBodyElement:
 	VarBlock | Procedure
 ;
 
-//TODO
 VarBlock:
-	var=NodeVarInit ';'
+	override?='override'? var=NodeVarInit ';'
 ;
 
 NodeVarInit:

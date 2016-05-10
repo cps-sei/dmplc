@@ -431,13 +431,22 @@ public interface DmplPackage extends EPackage
   int NODE_BODY_ELEMENT = 10;
 
   /**
+   * The feature id for the '<em><b>Override</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int NODE_BODY_ELEMENT__OVERRIDE = 0;
+
+  /**
    * The number of structural features of the '<em>Node Body Element</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int NODE_BODY_ELEMENT_FEATURE_COUNT = 0;
+  int NODE_BODY_ELEMENT_FEATURE_COUNT = 1;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarBlockImpl <em>Var Block</em>}' class.
@@ -448,6 +457,15 @@ public interface DmplPackage extends EPackage
    * @generated
    */
   int VAR_BLOCK = 11;
+
+  /**
+   * The feature id for the '<em><b>Override</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int VAR_BLOCK__OVERRIDE = NODE_BODY_ELEMENT__OVERRIDE;
 
   /**
    * The feature id for the '<em><b>Var</b></em>' containment reference.
@@ -682,22 +700,22 @@ public interface DmplPackage extends EPackage
   int PROCEDURE = 18;
 
   /**
-   * The feature id for the '<em><b>Attr List</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PROCEDURE__ATTR_LIST = PROGRAM_ELEMENT_FEATURE_COUNT + 0;
-
-  /**
    * The feature id for the '<em><b>Override</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int PROCEDURE__OVERRIDE = PROGRAM_ELEMENT_FEATURE_COUNT + 1;
+  int PROCEDURE__OVERRIDE = PROGRAM_ELEMENT_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Attr List</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int PROCEDURE__ATTR_LIST = PROGRAM_ELEMENT_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>Prototype</b></em>' containment reference.
@@ -2688,6 +2706,17 @@ public interface DmplPackage extends EPackage
   EClass getNodeBodyElement();
 
   /**
+   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.NodeBodyElement#isOverride <em>Override</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Override</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.NodeBodyElement#isOverride()
+   * @see #getNodeBodyElement()
+   * @generated
+   */
+  EAttribute getNodeBodyElement_Override();
+
+  /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.VarBlock <em>Var Block</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2898,17 +2927,6 @@ public interface DmplPackage extends EPackage
    * @generated
    */
   EReference getProcedure_AttrList();
-
-  /**
-   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.Procedure#isOverride <em>Override</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Override</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.Procedure#isOverride()
-   * @see #getProcedure()
-   * @generated
-   */
-  EAttribute getProcedure_Override();
 
   /**
    * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.Procedure#getPrototype <em>Prototype</em>}'.
@@ -4573,6 +4591,14 @@ public interface DmplPackage extends EPackage
     EClass NODE_BODY_ELEMENT = eINSTANCE.getNodeBodyElement();
 
     /**
+     * The meta object literal for the '<em><b>Override</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute NODE_BODY_ELEMENT__OVERRIDE = eINSTANCE.getNodeBodyElement_Override();
+
+    /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarBlockImpl <em>Var Block</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4747,14 +4773,6 @@ public interface DmplPackage extends EPackage
      * @generated
      */
     EReference PROCEDURE__ATTR_LIST = eINSTANCE.getProcedure_AttrList();
-
-    /**
-     * The meta object literal for the '<em><b>Override</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute PROCEDURE__OVERRIDE = eINSTANCE.getProcedure_Override();
 
     /**
      * The meta object literal for the '<em><b>Prototype</b></em>' containment reference feature.
