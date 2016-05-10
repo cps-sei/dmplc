@@ -575,9 +575,9 @@ ruleNodeBody returns [EObject current=null]
 )(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getNodeBodyAccess().getElementsProcedureParserRuleCall_1_0()); 
+	        newCompositeNode(grammarAccess.getNodeBodyAccess().getElementsNodeBodyElementParserRuleCall_1_0()); 
 	    }
-		lv_elements_1_0=ruleProcedure		{
+		lv_elements_1_0=ruleNodeBodyElement		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getNodeBodyRule());
 	        }
@@ -585,12 +585,152 @@ ruleNodeBody returns [EObject current=null]
        			$current, 
        			"elements",
         		lv_elements_1_0, 
-        		"Procedure");
+        		"NodeBodyElement");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
 )*)
+;
+
+
+
+
+
+// Entry rule entryRuleNodeBodyElement
+entryRuleNodeBodyElement returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getNodeBodyElementRule()); }
+	 iv_ruleNodeBodyElement=ruleNodeBodyElement 
+	 { $current=$iv_ruleNodeBodyElement.current; } 
+	 EOF 
+;
+
+// Rule NodeBodyElement
+ruleNodeBodyElement returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(
+    { 
+        newCompositeNode(grammarAccess.getNodeBodyElementAccess().getVarBlockParserRuleCall_0()); 
+    }
+    this_VarBlock_0=ruleVarBlock
+    { 
+        $current = $this_VarBlock_0.current; 
+        afterParserOrEnumRuleCall();
+    }
+
+    |
+    { 
+        newCompositeNode(grammarAccess.getNodeBodyElementAccess().getProcedureParserRuleCall_1()); 
+    }
+    this_Procedure_1=ruleProcedure
+    { 
+        $current = $this_Procedure_1.current; 
+        afterParserOrEnumRuleCall();
+    }
+)
+;
+
+
+
+
+
+// Entry rule entryRuleVarBlock
+entryRuleVarBlock returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getVarBlockRule()); }
+	 iv_ruleVarBlock=ruleVarBlock 
+	 { $current=$iv_ruleVarBlock.current; } 
+	 EOF 
+;
+
+// Rule VarBlock
+ruleVarBlock returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+((
+(
+		{ 
+	        newCompositeNode(grammarAccess.getVarBlockAccess().getVarNodeVarInitParserRuleCall_0_0()); 
+	    }
+		lv_var_0_0=ruleNodeVarInit		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getVarBlockRule());
+	        }
+       		set(
+       			$current, 
+       			"var",
+        		lv_var_0_0, 
+        		"NodeVarInit");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)	otherlv_1=';' 
+    {
+    	newLeafNode(otherlv_1, grammarAccess.getVarBlockAccess().getSemicolonKeyword_1());
+    }
+)
+;
+
+
+
+
+
+// Entry rule entryRuleNodeVarInit
+entryRuleNodeVarInit returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getNodeVarInitRule()); }
+	 iv_ruleNodeVarInit=ruleNodeVarInit 
+	 { $current=$iv_ruleNodeVarInit.current; } 
+	 EOF 
+;
+
+// Rule NodeVarInit
+ruleNodeVarInit returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+((
+(
+		{ 
+	        newCompositeNode(grammarAccess.getNodeVarInitAccess().getScopeNodeVarScopeParserRuleCall_0_0()); 
+	    }
+		lv_scope_0_0=ruleNodeVarScope		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getNodeVarInitRule());
+	        }
+       		set(
+       			$current, 
+       			"scope",
+        		lv_scope_0_0, 
+        		"NodeVarScope");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getNodeVarInitAccess().getVarVarInitParserRuleCall_1_0()); 
+	    }
+		lv_var_1_0=ruleVarInit		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getNodeVarInitRule());
+	        }
+       		set(
+       			$current, 
+       			"var",
+        		lv_var_1_0, 
+        		"VarInit");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))
 ;
 
 
@@ -3829,6 +3969,61 @@ ruleForAllFunction returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRule
 
 
 
+// Entry rule entryRuleNodeVarScope
+entryRuleNodeVarScope returns [String current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getNodeVarScopeRule()); } 
+	 iv_ruleNodeVarScope=ruleNodeVarScope 
+	 { $current=$iv_ruleNodeVarScope.current.getText(); }  
+	 EOF 
+;
+
+// Rule NodeVarScope
+ruleNodeVarScope returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(
+	kw='global' 
+    {
+        $current.merge(kw);
+        newLeafNode(kw, grammarAccess.getNodeVarScopeAccess().getGlobalKeyword_0()); 
+    }
+
+    |
+	kw='GLOBAL' 
+    {
+        $current.merge(kw);
+        newLeafNode(kw, grammarAccess.getNodeVarScopeAccess().getGLOBALKeyword_1()); 
+    }
+
+    |
+	kw='local' 
+    {
+        $current.merge(kw);
+        newLeafNode(kw, grammarAccess.getNodeVarScopeAccess().getLocalKeyword_2()); 
+    }
+
+    |
+	kw='LOCAL' 
+    {
+        $current.merge(kw);
+        newLeafNode(kw, grammarAccess.getNodeVarScopeAccess().getLOCALKeyword_3()); 
+    }
+
+    |
+	kw='group' 
+    {
+        $current.merge(kw);
+        newLeafNode(kw, grammarAccess.getNodeVarScopeAccess().getGroupKeyword_4()); 
+    }
+)
+    ;
+
+
+
+
+
 // Entry rule entryRuleBuiltInFunction
 entryRuleBuiltInFunction returns [String current=null] 
 	:
@@ -3934,6 +4129,8 @@ ruleDouble returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()]
     }
 )?))
     ;
+
+
 
 
 

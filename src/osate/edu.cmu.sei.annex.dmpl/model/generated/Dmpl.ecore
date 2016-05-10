@@ -35,7 +35,17 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodeBody">
     <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
-        eType="#//Procedure" containment="true"/>
+        eType="#//NodeBodyElement" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeBodyElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="VarBlock" eSuperTypes="#//NodeBodyElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//NodeVarInit"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeVarInit">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="scope" eType="#//NodeVarScopeEnum"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//VarInit"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VarInit">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Type" containment="true"/>
@@ -56,7 +66,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="signed" eType="#//SignedEnum"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="simpType" eType="#//SimpTypeEnum"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Procedure" eSuperTypes="#//ProgramElement">
+  <eClassifiers xsi:type="ecore:EClass" name="Procedure" eSuperTypes="#//ProgramElement #//NodeBodyElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="attrList" eType="#//AttrList"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="override" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -137,6 +147,11 @@
     <eLiterals name="forall_other" value="1" literal="forall_other"/>
     <eLiterals name="forall_other_lower" value="2" literal="forall_other_lower"/>
     <eLiterals name="forall_other_higher" value="3" literal="forall_other_higher"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="NodeVarScopeEnum">
+    <eLiterals name="global" literal="global"/>
+    <eLiterals name="local" value="1" literal="local"/>
+    <eLiterals name="group" value="2" literal="group"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="EqualityOperator">
     <eLiterals name="EQUAL" literal="=="/>

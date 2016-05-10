@@ -155,6 +155,28 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case DmplPackage.NODE_BODY_ELEMENT:
+      {
+        NodeBodyElement nodeBodyElement = (NodeBodyElement)theEObject;
+        T result = caseNodeBodyElement(nodeBodyElement);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.VAR_BLOCK:
+      {
+        VarBlock varBlock = (VarBlock)theEObject;
+        T result = caseVarBlock(varBlock);
+        if (result == null) result = caseNodeBodyElement(varBlock);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.NODE_VAR_INIT:
+      {
+        NodeVarInit nodeVarInit = (NodeVarInit)theEObject;
+        T result = caseNodeVarInit(nodeVarInit);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case DmplPackage.VAR_INIT:
       {
         VarInit varInit = (VarInit)theEObject;
@@ -195,6 +217,7 @@ public class DmplSwitch<T> extends Switch<T>
         Procedure procedure = (Procedure)theEObject;
         T result = caseProcedure(procedure);
         if (result == null) result = caseProgramElement(procedure);
+        if (result == null) result = caseNodeBodyElement(procedure);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -688,6 +711,54 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseNodeBody(NodeBody object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Node Body Element</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Node Body Element</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseNodeBodyElement(NodeBodyElement object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Var Block</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Var Block</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseVarBlock(VarBlock object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Node Var Init</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Node Var Init</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseNodeVarInit(NodeVarInit object)
   {
     return null;
   }

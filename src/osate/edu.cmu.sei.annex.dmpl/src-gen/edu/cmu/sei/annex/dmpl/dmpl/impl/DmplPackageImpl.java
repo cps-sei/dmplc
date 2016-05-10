@@ -46,9 +46,12 @@ import edu.cmu.sei.annex.dmpl.dmpl.MultiplicativeOperator;
 import edu.cmu.sei.annex.dmpl.dmpl.NestedStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.Node;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeBody;
+import edu.cmu.sei.annex.dmpl.dmpl.NodeBodyElement;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNoAttr;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumExpr;
+import edu.cmu.sei.annex.dmpl.dmpl.NodeVarInit;
+import edu.cmu.sei.annex.dmpl.dmpl.NodeVarScopeEnum;
 import edu.cmu.sei.annex.dmpl.dmpl.NumberConst;
 import edu.cmu.sei.annex.dmpl.dmpl.OrExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.Param;
@@ -71,6 +74,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.UnaryExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.UnaryOperator;
 import edu.cmu.sei.annex.dmpl.dmpl.Var;
 import edu.cmu.sei.annex.dmpl.dmpl.VarAsgn;
+import edu.cmu.sei.annex.dmpl.dmpl.VarBlock;
 import edu.cmu.sei.annex.dmpl.dmpl.VarInit;
 import edu.cmu.sei.annex.dmpl.dmpl.WhileStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.XorExpr;
@@ -162,6 +166,27 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass nodeBodyEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass nodeBodyElementEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass varBlockEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass nodeVarInitEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -539,6 +564,13 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EEnum nodeVarScopeEnumEEnum = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EEnum equalityOperatorEEnum = null;
 
   /**
@@ -857,6 +889,66 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
   public EReference getNodeBody_Elements()
   {
     return (EReference)nodeBodyEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getNodeBodyElement()
+  {
+    return nodeBodyElementEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getVarBlock()
+  {
+    return varBlockEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getVarBlock_Var()
+  {
+    return (EReference)varBlockEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getNodeVarInit()
+  {
+    return nodeVarInitEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getNodeVarInit_Scope()
+  {
+    return (EAttribute)nodeVarInitEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getNodeVarInit_Var()
+  {
+    return (EReference)nodeVarInitEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -2304,6 +2396,16 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EEnum getNodeVarScopeEnum()
+  {
+    return nodeVarScopeEnumEEnum;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EEnum getEqualityOperator()
   {
     return equalityOperatorEEnum;
@@ -2429,6 +2531,15 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     nodeBodyEClass = createEClass(NODE_BODY);
     createEReference(nodeBodyEClass, NODE_BODY__ELEMENTS);
+
+    nodeBodyElementEClass = createEClass(NODE_BODY_ELEMENT);
+
+    varBlockEClass = createEClass(VAR_BLOCK);
+    createEReference(varBlockEClass, VAR_BLOCK__VAR);
+
+    nodeVarInitEClass = createEClass(NODE_VAR_INIT);
+    createEAttribute(nodeVarInitEClass, NODE_VAR_INIT__SCOPE);
+    createEReference(nodeVarInitEClass, NODE_VAR_INIT__VAR);
 
     varInitEClass = createEClass(VAR_INIT);
     createEReference(varInitEClass, VAR_INIT__TYPE);
@@ -2623,6 +2734,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     signedEnumEEnum = createEEnum(SIGNED_ENUM);
     simpleStmtKeywordEnumEEnum = createEEnum(SIMPLE_STMT_KEYWORD_ENUM);
     forAllFunctionEnumEEnum = createEEnum(FOR_ALL_FUNCTION_ENUM);
+    nodeVarScopeEnumEEnum = createEEnum(NODE_VAR_SCOPE_ENUM);
     equalityOperatorEEnum = createEEnum(EQUALITY_OPERATOR);
     compareOperatorEEnum = createEEnum(COMPARE_OPERATOR);
     shiftOperatorEEnum = createEEnum(SHIFT_OPERATOR);
@@ -2669,7 +2781,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     intConstEClass.getESuperTypes().add(this.getNumberConst());
     doubleConstEClass.getESuperTypes().add(this.getNumberConst());
     nodeEClass.getESuperTypes().add(this.getProgramElement());
+    varBlockEClass.getESuperTypes().add(this.getNodeBodyElement());
     procedureEClass.getESuperTypes().add(this.getProgramElement());
+    procedureEClass.getESuperTypes().add(this.getNodeBodyElement());
     assignmentStmtEClass.getESuperTypes().add(this.getStmt());
     lValEClass.getESuperTypes().add(this.getExpr());
     callExprEClass.getESuperTypes().add(this.getStmt());
@@ -2737,7 +2851,16 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEReference(getNodeNoAttr_Body(), this.getNodeBody(), null, "body", null, 0, 1, NodeNoAttr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(nodeBodyEClass, NodeBody.class, "NodeBody", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getNodeBody_Elements(), this.getProcedure(), null, "elements", null, 0, -1, NodeBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getNodeBody_Elements(), this.getNodeBodyElement(), null, "elements", null, 0, -1, NodeBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(nodeBodyElementEClass, NodeBodyElement.class, "NodeBodyElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(varBlockEClass, VarBlock.class, "VarBlock", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getVarBlock_Var(), this.getNodeVarInit(), null, "var", null, 0, 1, VarBlock.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(nodeVarInitEClass, NodeVarInit.class, "NodeVarInit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getNodeVarInit_Scope(), this.getNodeVarScopeEnum(), "scope", null, 0, 1, NodeVarInit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getNodeVarInit_Var(), this.getVarInit(), null, "var", null, 0, 1, NodeVarInit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(varInitEClass, VarInit.class, "VarInit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getVarInit_Type(), this.getType(), null, "type", null, 0, 1, VarInit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2954,6 +3077,11 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     addEEnumLiteral(forAllFunctionEnumEEnum, ForAllFunctionEnum.FORALL_OTHER);
     addEEnumLiteral(forAllFunctionEnumEEnum, ForAllFunctionEnum.FORALL_OTHER_LOWER);
     addEEnumLiteral(forAllFunctionEnumEEnum, ForAllFunctionEnum.FORALL_OTHER_HIGHER);
+
+    initEEnum(nodeVarScopeEnumEEnum, NodeVarScopeEnum.class, "NodeVarScopeEnum");
+    addEEnumLiteral(nodeVarScopeEnumEEnum, NodeVarScopeEnum.GLOBAL);
+    addEEnumLiteral(nodeVarScopeEnumEEnum, NodeVarScopeEnum.LOCAL);
+    addEEnumLiteral(nodeVarScopeEnumEEnum, NodeVarScopeEnum.GROUP);
 
     initEEnum(equalityOperatorEEnum, EqualityOperator.class, "EqualityOperator");
     addEEnumLiteral(equalityOperatorEEnum, EqualityOperator.EQUAL);

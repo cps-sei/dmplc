@@ -4,7 +4,7 @@ package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeBody;
-import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
+import edu.cmu.sei.annex.dmpl.dmpl.NodeBodyElement;
 
 import java.util.Collection;
 
@@ -43,7 +43,7 @@ public class NodeBodyImpl extends MinimalEObjectImpl.Container implements NodeBo
    * @generated
    * @ordered
    */
-  protected EList<Procedure> elements;
+  protected EList<NodeBodyElement> elements;
 
   /**
    * <!-- begin-user-doc -->
@@ -71,11 +71,11 @@ public class NodeBodyImpl extends MinimalEObjectImpl.Container implements NodeBo
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<Procedure> getElements()
+  public EList<NodeBodyElement> getElements()
   {
     if (elements == null)
     {
-      elements = new EObjectContainmentEList<Procedure>(Procedure.class, this, DmplPackage.NODE_BODY__ELEMENTS);
+      elements = new EObjectContainmentEList<NodeBodyElement>(NodeBodyElement.class, this, DmplPackage.NODE_BODY__ELEMENTS);
     }
     return elements;
   }
@@ -125,7 +125,7 @@ public class NodeBodyImpl extends MinimalEObjectImpl.Container implements NodeBo
     {
       case DmplPackage.NODE_BODY__ELEMENTS:
         getElements().clear();
-        getElements().addAll((Collection<? extends Procedure>)newValue);
+        getElements().addAll((Collection<? extends NodeBodyElement>)newValue);
         return;
     }
     super.eSet(featureID, newValue);

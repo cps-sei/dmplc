@@ -311,24 +311,98 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Action cNodeBodyAction_0 = (Action)cGroup.eContents().get(0);
 		private final Assignment cElementsAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cElementsProcedureParserRuleCall_1_0 = (RuleCall)cElementsAssignment_1.eContents().get(0);
+		private final RuleCall cElementsNodeBodyElementParserRuleCall_1_0 = (RuleCall)cElementsAssignment_1.eContents().get(0);
 		
 		////TODO
 		//NodeBody:
-		//	{NodeBody} elements+=Procedure*;
+		//	{NodeBody} elements+=NodeBodyElement*;
 		@Override public ParserRule getRule() { return rule; }
 
-		//{NodeBody} elements+=Procedure*
+		//{NodeBody} elements+=NodeBodyElement*
 		public Group getGroup() { return cGroup; }
 
 		//{NodeBody}
 		public Action getNodeBodyAction_0() { return cNodeBodyAction_0; }
 
-		//elements+=Procedure*
+		//elements+=NodeBodyElement*
 		public Assignment getElementsAssignment_1() { return cElementsAssignment_1; }
 
+		//NodeBodyElement
+		public RuleCall getElementsNodeBodyElementParserRuleCall_1_0() { return cElementsNodeBodyElementParserRuleCall_1_0; }
+	}
+
+	public class NodeBodyElementElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "NodeBodyElement");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final RuleCall cVarBlockParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cProcedureParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		
+		////TODO
+		//NodeBodyElement:
+		//	VarBlock | Procedure;
+		@Override public ParserRule getRule() { return rule; }
+
+		//VarBlock | Procedure
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//VarBlock
+		public RuleCall getVarBlockParserRuleCall_0() { return cVarBlockParserRuleCall_0; }
+
 		//Procedure
-		public RuleCall getElementsProcedureParserRuleCall_1_0() { return cElementsProcedureParserRuleCall_1_0; }
+		public RuleCall getProcedureParserRuleCall_1() { return cProcedureParserRuleCall_1; }
+	}
+
+	public class VarBlockElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "VarBlock");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cVarAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cVarNodeVarInitParserRuleCall_0_0 = (RuleCall)cVarAssignment_0.eContents().get(0);
+		private final Keyword cSemicolonKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		
+		////TODO
+		//VarBlock:
+		//	var=NodeVarInit ";";
+		@Override public ParserRule getRule() { return rule; }
+
+		//var=NodeVarInit ";"
+		public Group getGroup() { return cGroup; }
+
+		//var=NodeVarInit
+		public Assignment getVarAssignment_0() { return cVarAssignment_0; }
+
+		//NodeVarInit
+		public RuleCall getVarNodeVarInitParserRuleCall_0_0() { return cVarNodeVarInitParserRuleCall_0_0; }
+
+		//";"
+		public Keyword getSemicolonKeyword_1() { return cSemicolonKeyword_1; }
+	}
+
+	public class NodeVarInitElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "NodeVarInit");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cScopeAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cScopeNodeVarScopeParserRuleCall_0_0 = (RuleCall)cScopeAssignment_0.eContents().get(0);
+		private final Assignment cVarAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cVarVarInitParserRuleCall_1_0 = (RuleCall)cVarAssignment_1.eContents().get(0);
+		
+		//NodeVarInit:
+		//	scope=NodeVarScope var=VarInit;
+		@Override public ParserRule getRule() { return rule; }
+
+		//scope=NodeVarScope var=VarInit
+		public Group getGroup() { return cGroup; }
+
+		//scope=NodeVarScope
+		public Assignment getScopeAssignment_0() { return cScopeAssignment_0; }
+
+		//NodeVarScope
+		public RuleCall getScopeNodeVarScopeParserRuleCall_0_0() { return cScopeNodeVarScopeParserRuleCall_0_0; }
+
+		//var=VarInit
+		public Assignment getVarAssignment_1() { return cVarAssignment_1; }
+
+		//VarInit
+		public RuleCall getVarVarInitParserRuleCall_1_0() { return cVarVarInitParserRuleCall_1_0; }
 	}
 
 	public class VarInitElements extends AbstractParserRuleElementFinder {
@@ -2416,6 +2490,38 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getFORALL_OTHER_HIGHERKeyword_7() { return cFORALL_OTHER_HIGHERKeyword_7; }
 	}
 
+	public class NodeVarScopeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "NodeVarScope");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final Keyword cGlobalKeyword_0 = (Keyword)cAlternatives.eContents().get(0);
+		private final Keyword cGLOBALKeyword_1 = (Keyword)cAlternatives.eContents().get(1);
+		private final Keyword cLocalKeyword_2 = (Keyword)cAlternatives.eContents().get(2);
+		private final Keyword cLOCALKeyword_3 = (Keyword)cAlternatives.eContents().get(3);
+		private final Keyword cGroupKeyword_4 = (Keyword)cAlternatives.eContents().get(4);
+		
+		//NodeVarScope returns NodeVarScopeEnum:
+		//	"global" | "GLOBAL" | "local" | "LOCAL" | "group";
+		@Override public ParserRule getRule() { return rule; }
+
+		//"global" | "GLOBAL" | "local" | "LOCAL" | "group"
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//"global"
+		public Keyword getGlobalKeyword_0() { return cGlobalKeyword_0; }
+
+		//"GLOBAL"
+		public Keyword getGLOBALKeyword_1() { return cGLOBALKeyword_1; }
+
+		//"local"
+		public Keyword getLocalKeyword_2() { return cLocalKeyword_2; }
+
+		//"LOCAL"
+		public Keyword getLOCALKeyword_3() { return cLOCALKeyword_3; }
+
+		//"group"
+		public Keyword getGroupKeyword_4() { return cGroupKeyword_4; }
+	}
+
 	public class BuiltInFunctionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "BuiltInFunction");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
@@ -2689,6 +2795,42 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getForall_other_higherForall_other_higherKeyword_3_0() { return cForall_other_higherForall_other_higherKeyword_3_0; }
 	}
 
+	public class NodeVarScopeEnumElements extends AbstractEnumRuleElementFinder {
+		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "NodeVarScopeEnum");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final EnumLiteralDeclaration cGlobalEnumLiteralDeclaration_0 = (EnumLiteralDeclaration)cAlternatives.eContents().get(0);
+		private final Keyword cGlobalGlobalKeyword_0_0 = (Keyword)cGlobalEnumLiteralDeclaration_0.eContents().get(0);
+		private final EnumLiteralDeclaration cLocalEnumLiteralDeclaration_1 = (EnumLiteralDeclaration)cAlternatives.eContents().get(1);
+		private final Keyword cLocalLocalKeyword_1_0 = (Keyword)cLocalEnumLiteralDeclaration_1.eContents().get(0);
+		private final EnumLiteralDeclaration cGroupEnumLiteralDeclaration_2 = (EnumLiteralDeclaration)cAlternatives.eContents().get(2);
+		private final Keyword cGroupGroupKeyword_2_0 = (Keyword)cGroupEnumLiteralDeclaration_2.eContents().get(0);
+		
+		//enum NodeVarScopeEnum:
+		//	global | local | group;
+		public EnumRule getRule() { return rule; }
+
+		//global | local | group
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//global
+		public EnumLiteralDeclaration getGlobalEnumLiteralDeclaration_0() { return cGlobalEnumLiteralDeclaration_0; }
+
+		//"global"
+		public Keyword getGlobalGlobalKeyword_0_0() { return cGlobalGlobalKeyword_0_0; }
+
+		//local
+		public EnumLiteralDeclaration getLocalEnumLiteralDeclaration_1() { return cLocalEnumLiteralDeclaration_1; }
+
+		//"local"
+		public Keyword getLocalLocalKeyword_1_0() { return cLocalLocalKeyword_1_0; }
+
+		//group
+		public EnumLiteralDeclaration getGroupEnumLiteralDeclaration_2() { return cGroupEnumLiteralDeclaration_2; }
+
+		//"group"
+		public Keyword getGroupGroupKeyword_2_0() { return cGroupGroupKeyword_2_0; }
+	}
+
 	public class EqualityOperatorElements extends AbstractEnumRuleElementFinder {
 		private final EnumRule rule = (EnumRule) GrammarUtil.findRuleForName(getGrammar(), "EqualityOperator");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
@@ -2944,6 +3086,9 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final NodeElements pNode;
 	private final NodeNoAttrElements pNodeNoAttr;
 	private final NodeBodyElements pNodeBody;
+	private final NodeBodyElementElements pNodeBodyElement;
+	private final VarBlockElements pVarBlock;
+	private final NodeVarInitElements pNodeVarInit;
 	private final VarInitElements pVarInit;
 	private final VarAsgnElements pVarAsgn;
 	private final VarElements pVar;
@@ -2981,6 +3126,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final SimpleStmtKeywordElements pSimpleStmtKeyword;
 	private final ForAllFunctionEnumElements unknownRuleForAllFunctionEnum;
 	private final ForAllFunctionElements pForAllFunction;
+	private final NodeVarScopeEnumElements unknownRuleNodeVarScopeEnum;
+	private final NodeVarScopeElements pNodeVarScope;
 	private final EqualityOperatorElements unknownRuleEqualityOperator;
 	private final CompareOperatorElements unknownRuleCompareOperator;
 	private final ShiftOperatorElements unknownRuleShiftOperator;
@@ -3012,6 +3159,9 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pNode = new NodeElements();
 		this.pNodeNoAttr = new NodeNoAttrElements();
 		this.pNodeBody = new NodeBodyElements();
+		this.pNodeBodyElement = new NodeBodyElementElements();
+		this.pVarBlock = new VarBlockElements();
+		this.pNodeVarInit = new NodeVarInitElements();
 		this.pVarInit = new VarInitElements();
 		this.pVarAsgn = new VarAsgnElements();
 		this.pVar = new VarElements();
@@ -3049,6 +3199,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pSimpleStmtKeyword = new SimpleStmtKeywordElements();
 		this.unknownRuleForAllFunctionEnum = new ForAllFunctionEnumElements();
 		this.pForAllFunction = new ForAllFunctionElements();
+		this.unknownRuleNodeVarScopeEnum = new NodeVarScopeEnumElements();
+		this.pNodeVarScope = new NodeVarScopeElements();
 		this.unknownRuleEqualityOperator = new EqualityOperatorElements();
 		this.unknownRuleCompareOperator = new CompareOperatorElements();
 		this.unknownRuleShiftOperator = new ShiftOperatorElements();
@@ -3192,13 +3344,45 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 	////TODO
 	//NodeBody:
-	//	{NodeBody} elements+=Procedure*;
+	//	{NodeBody} elements+=NodeBodyElement*;
 	public NodeBodyElements getNodeBodyAccess() {
 		return pNodeBody;
 	}
 	
 	public ParserRule getNodeBodyRule() {
 		return getNodeBodyAccess().getRule();
+	}
+
+	////TODO
+	//NodeBodyElement:
+	//	VarBlock | Procedure;
+	public NodeBodyElementElements getNodeBodyElementAccess() {
+		return pNodeBodyElement;
+	}
+	
+	public ParserRule getNodeBodyElementRule() {
+		return getNodeBodyElementAccess().getRule();
+	}
+
+	////TODO
+	//VarBlock:
+	//	var=NodeVarInit ";";
+	public VarBlockElements getVarBlockAccess() {
+		return pVarBlock;
+	}
+	
+	public ParserRule getVarBlockRule() {
+		return getVarBlockAccess().getRule();
+	}
+
+	//NodeVarInit:
+	//	scope=NodeVarScope var=VarInit;
+	public NodeVarInitElements getNodeVarInitAccess() {
+		return pNodeVarInit;
+	}
+	
+	public ParserRule getNodeVarInitRule() {
+		return getNodeVarInitAccess().getRule();
 	}
 
 	//VarInit:
@@ -3580,6 +3764,26 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getForAllFunctionRule() {
 		return getForAllFunctionAccess().getRule();
+	}
+
+	//enum NodeVarScopeEnum:
+	//	global | local | group;
+	public NodeVarScopeEnumElements getNodeVarScopeEnumAccess() {
+		return unknownRuleNodeVarScopeEnum;
+	}
+	
+	public EnumRule getNodeVarScopeEnumRule() {
+		return getNodeVarScopeEnumAccess().getRule();
+	}
+
+	//NodeVarScope returns NodeVarScopeEnum:
+	//	"global" | "GLOBAL" | "local" | "LOCAL" | "group";
+	public NodeVarScopeElements getNodeVarScopeAccess() {
+		return pNodeVarScope;
+	}
+	
+	public ParserRule getNodeVarScopeRule() {
+		return getNodeVarScopeAccess().getRule();
 	}
 
 	//enum EqualityOperator:

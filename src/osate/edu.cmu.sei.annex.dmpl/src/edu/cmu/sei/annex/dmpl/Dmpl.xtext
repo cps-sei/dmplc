@@ -51,7 +51,21 @@ NodeNoAttr:
 
 //TODO
 NodeBody:
-	{NodeBody} elements+=Procedure*
+	{NodeBody} (elements+=NodeBodyElement)*
+;
+
+//TODO
+NodeBodyElement:
+	VarBlock | Procedure
+;
+
+//TODO
+VarBlock:
+	var=NodeVarInit ';'
+;
+
+NodeVarInit:
+	scope=NodeVarScope var=VarInit
 ;
 
 VarInit:
@@ -226,6 +240,14 @@ enum ForAllFunctionEnum:
 
 ForAllFunction returns ForAllFunctionEnum:
 	'forall_node' | 'FORALL_NODE' | 'forall_other' | 'FORALL_OTHER' | 'forall_other_lower' | 'FORALL_OTHER_LOWER' | 'forall_other_higher' | 'FORALL_OTHER_HIGHER'
+;
+
+enum NodeVarScopeEnum:
+	global | local | group
+;
+
+NodeVarScope returns NodeVarScopeEnum:
+	'global' | 'GLOBAL' | 'local' | 'LOCAL' | 'group'
 ;
 
 enum EqualityOperator:

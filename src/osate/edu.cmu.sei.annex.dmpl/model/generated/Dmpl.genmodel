@@ -35,6 +35,11 @@
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//ForAllFunctionEnum/forall_other_lower"/>
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//ForAllFunctionEnum/forall_other_higher"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Dmpl.ecore#//NodeVarScopeEnum">
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//NodeVarScopeEnum/global"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//NodeVarScopeEnum/local"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//NodeVarScopeEnum/group"/>
+    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Dmpl.ecore#//EqualityOperator">
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//EqualityOperator/EQUAL"/>
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//EqualityOperator/NOT_EQUAL"/>
@@ -98,6 +103,14 @@
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//NodeBody">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//NodeBody/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//NodeBodyElement"/>
+    <genClasses ecoreClass="Dmpl.ecore#//VarBlock">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//VarBlock/var"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//NodeVarInit">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//NodeVarInit/scope"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//NodeVarInit/var"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//VarInit">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//VarInit/type"/>

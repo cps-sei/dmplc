@@ -42,6 +42,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.NodeBody;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNoAttr;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumExpr;
+import edu.cmu.sei.annex.dmpl.dmpl.NodeVarInit;
 import edu.cmu.sei.annex.dmpl.dmpl.OrExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.Param;
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
@@ -55,6 +56,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.Type;
 import edu.cmu.sei.annex.dmpl.dmpl.UnaryExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.Var;
 import edu.cmu.sei.annex.dmpl.dmpl.VarAsgn;
+import edu.cmu.sei.annex.dmpl.dmpl.VarBlock;
 import edu.cmu.sei.annex.dmpl.dmpl.VarInit;
 import edu.cmu.sei.annex.dmpl.dmpl.WhileStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.XorExpr;
@@ -188,6 +190,9 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 			case DmplPackage.NODE_NUM_EXPR:
 				sequence_TerminalExpr(context, (NodeNumExpr) semanticObject); 
 				return; 
+			case DmplPackage.NODE_VAR_INIT:
+				sequence_NodeVarInit(context, (NodeVarInit) semanticObject); 
+				return; 
 			case DmplPackage.OR_EXPR:
 				sequence_OrExpr(context, (OrExpr) semanticObject); 
 				return; 
@@ -226,6 +231,9 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.VAR_ASGN:
 				sequence_VarAsgn(context, (VarAsgn) semanticObject); 
+				return; 
+			case DmplPackage.VAR_BLOCK:
+				sequence_VarBlock(context, (VarBlock) semanticObject); 
 				return; 
 			case DmplPackage.VAR_INIT:
 				sequence_VarInit(context, (VarInit) semanticObject); 
@@ -578,7 +586,7 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (elements+=Procedure*)
+	 *     (elements+=NodeBodyElement*)
 	 */
 	protected void sequence_NodeBody(EObject context, NodeBody semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -591,6 +599,25 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 */
 	protected void sequence_NodeNoAttr(EObject context, NodeNoAttr semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (scope=NodeVarScope var=VarInit)
+	 */
+	protected void sequence_NodeVarInit(EObject context, NodeVarInit semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.NODE_VAR_INIT__SCOPE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.NODE_VAR_INIT__SCOPE));
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.NODE_VAR_INIT__VAR) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.NODE_VAR_INIT__VAR));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getNodeVarInitAccess().getScopeNodeVarScopeParserRuleCall_0_0(), semanticObject.getScope());
+		feeder.accept(grammarAccess.getNodeVarInitAccess().getVarVarInitParserRuleCall_1_0(), semanticObject.getVar());
+		feeder.finish();
 	}
 	
 	
@@ -934,6 +961,22 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 */
 	protected void sequence_VarAsgn(EObject context, VarAsgn semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     var=NodeVarInit
+	 */
+	protected void sequence_VarBlock(EObject context, VarBlock semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.VAR_BLOCK__VAR) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.VAR_BLOCK__VAR));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getVarBlockAccess().getVarNodeVarInitParserRuleCall_0_0(), semanticObject.getVar());
+		feeder.finish();
 	}
 	
 	

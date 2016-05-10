@@ -113,6 +113,33 @@ public interface DmplFactory extends EFactory
   NodeBody createNodeBody();
 
   /**
+   * Returns a new object of class '<em>Node Body Element</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Node Body Element</em>'.
+   * @generated
+   */
+  NodeBodyElement createNodeBodyElement();
+
+  /**
+   * Returns a new object of class '<em>Var Block</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Var Block</em>'.
+   * @generated
+   */
+  VarBlock createVarBlock();
+
+  /**
+   * Returns a new object of class '<em>Node Var Init</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Node Var Init</em>'.
+   * @generated
+   */
+  NodeVarInit createNodeVarInit();
+
+  /**
    * Returns a new object of class '<em>Var Init</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

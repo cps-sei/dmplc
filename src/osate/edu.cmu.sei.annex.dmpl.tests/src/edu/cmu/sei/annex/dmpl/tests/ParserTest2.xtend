@@ -22,6 +22,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.IntExpr
 import edu.cmu.sei.annex.dmpl.dmpl.LVal
 import edu.cmu.sei.annex.dmpl.dmpl.NestedStmt
 import edu.cmu.sei.annex.dmpl.dmpl.Node
+import edu.cmu.sei.annex.dmpl.dmpl.NodeVarScopeEnum
 import edu.cmu.sei.annex.dmpl.dmpl.OrExpr
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure
 import edu.cmu.sei.annex.dmpl.dmpl.Program
@@ -30,6 +31,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmt
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmtKeywordEnum
 import edu.cmu.sei.annex.dmpl.dmpl.TernaryExpr
+import edu.cmu.sei.annex.dmpl.dmpl.VarBlock
 import edu.cmu.sei.annex.dmpl.dmpl.WhileStmt
 import edu.cmu.sei.annex.dmpl.dmpl.XorExpr
 import org.eclipse.xtext.junit4.InjectWith
@@ -930,6 +932,11 @@ class ParserTest2 {
 			node n1;
 			node n2 {
 				void f1();
+				global int v1;
+				GLOBAL int v2;
+				local int v3;
+				LOCAL int v4;
+				group int v5;
 			}
 		'''.parse => [
 			assertNoIssues
@@ -938,8 +945,28 @@ class ParserTest2 {
 			(programElements.get(1) as Node).node => [
 				"n2".assertEquals(name)
 				body => [
-					1.assertEquals(elements.size)
-					"f1".assertEquals(elements.head.prototype.name)
+					6.assertEquals(elements.size)
+					"f1".assertEquals((elements.get(0) as Procedure).prototype.name)
+					(elements.get(1) as VarBlock).^var => [
+						NodeVarScopeEnum.GLOBAL.assertEquals(scope)
+						"v1".assertEquals(^var.varAsgns.head.^var.name)
+					]
+					(elements.get(2) as VarBlock).^var => [
+						NodeVarScopeEnum.GLOBAL.assertEquals(scope)
+						"v2".assertEquals(^var.varAsgns.head.^var.name)
+					]
+					(elements.get(3) as VarBlock).^var => [
+						NodeVarScopeEnum.LOCAL.assertEquals(scope)
+						"v3".assertEquals(^var.varAsgns.head.^var.name)
+					]
+					(elements.get(4) as VarBlock).^var => [
+						NodeVarScopeEnum.LOCAL.assertEquals(scope)
+						"v4".assertEquals(^var.varAsgns.head.^var.name)
+					]
+					(elements.get(5) as VarBlock).^var => [
+						NodeVarScopeEnum.GROUP.assertEquals(scope)
+						"v5".assertEquals(^var.varAsgns.head.^var.name)
+					]
 				]
 			]
 		]

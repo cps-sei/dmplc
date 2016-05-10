@@ -22,7 +22,7 @@ package edu.cmu.sei.annex.dmpl.dmpl;
  * @model
  * @generated
  */
-public interface Procedure extends ProgramElement
+public interface Procedure extends ProgramElement, NodeBodyElement
 {
   /**
    * Returns the value of the '<em><b>Attr List</b></em>' containment reference.

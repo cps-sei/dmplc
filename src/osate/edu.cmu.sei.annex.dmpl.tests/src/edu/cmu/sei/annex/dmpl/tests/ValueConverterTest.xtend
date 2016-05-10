@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import edu.cmu.sei.annex.dmpl.DmplInjectorProvider
 import edu.cmu.sei.annex.dmpl.dmpl.BuiltInFunctionEnum
 import edu.cmu.sei.annex.dmpl.dmpl.ForAllFunctionEnum
+import edu.cmu.sei.annex.dmpl.dmpl.NodeVarScopeEnum
 import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum
 import edu.cmu.sei.annex.dmpl.services.DmplGrammarAccess
 import org.eclipse.xtext.conversion.IValueConverterService
@@ -84,5 +85,20 @@ class ValueConverterTest {
 		"forall_other".assertEquals(valueConverter.toString(ForAllFunctionEnum.FORALL_OTHER, grammarAccess.forAllFunctionRule.name))
 		"forall_other_lower".assertEquals(valueConverter.toString(ForAllFunctionEnum.FORALL_OTHER_LOWER, grammarAccess.forAllFunctionRule.name))
 		"forall_other_higher".assertEquals(valueConverter.toString(ForAllFunctionEnum.FORALL_OTHER_HIGHER, grammarAccess.forAllFunctionRule.name))
+	}
+	
+	@Test
+	def void testNodeVarScope() {
+		//toValue
+		NodeVarScopeEnum.GLOBAL.assertEquals(valueConverter.toValue("global", grammarAccess.nodeVarScopeRule.name, null))
+		NodeVarScopeEnum.GLOBAL.assertEquals(valueConverter.toValue("GLOBAL", grammarAccess.nodeVarScopeRule.name, null))
+		NodeVarScopeEnum.LOCAL.assertEquals(valueConverter.toValue("local", grammarAccess.nodeVarScopeRule.name, null))
+		NodeVarScopeEnum.LOCAL.assertEquals(valueConverter.toValue("LOCAL", grammarAccess.nodeVarScopeRule.name, null))
+		NodeVarScopeEnum.GROUP.assertEquals(valueConverter.toValue("group", grammarAccess.nodeVarScopeRule.name, null))
+		
+		//toString
+		"global".assertEquals(valueConverter.toString(NodeVarScopeEnum.GLOBAL, grammarAccess.nodeVarScopeRule.name))
+		"local".assertEquals(valueConverter.toString(NodeVarScopeEnum.LOCAL, grammarAccess.nodeVarScopeRule.name))
+		"group".assertEquals(valueConverter.toString(NodeVarScopeEnum.GROUP, grammarAccess.nodeVarScopeRule.name))
 	}
 }

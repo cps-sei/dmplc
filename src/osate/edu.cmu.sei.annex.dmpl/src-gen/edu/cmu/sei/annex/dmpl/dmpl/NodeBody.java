@@ -26,7 +26,7 @@ public interface NodeBody extends EObject
 {
   /**
    * Returns the value of the '<em><b>Elements</b></em>' containment reference list.
-   * The list contents are of type {@link edu.cmu.sei.annex.dmpl.dmpl.Procedure}.
+   * The list contents are of type {@link edu.cmu.sei.annex.dmpl.dmpl.NodeBodyElement}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Elements</em>' containment reference list isn't clear,
@@ -38,6 +38,6 @@ public interface NodeBody extends EObject
    * @model containment="true"
    * @generated
    */
-  EList<Procedure> getElements();
+  EList<NodeBodyElement> getElements();
 
 } // NodeBody

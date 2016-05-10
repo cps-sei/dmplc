@@ -75,6 +75,9 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.NODE: return createNode();
       case DmplPackage.NODE_NO_ATTR: return createNodeNoAttr();
       case DmplPackage.NODE_BODY: return createNodeBody();
+      case DmplPackage.NODE_BODY_ELEMENT: return createNodeBodyElement();
+      case DmplPackage.VAR_BLOCK: return createVarBlock();
+      case DmplPackage.NODE_VAR_INIT: return createNodeVarInit();
       case DmplPackage.VAR_INIT: return createVarInit();
       case DmplPackage.VAR_ASGN: return createVarAsgn();
       case DmplPackage.VAR: return createVar();
@@ -148,6 +151,8 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
         return createSimpleStmtKeywordEnumFromString(eDataType, initialValue);
       case DmplPackage.FOR_ALL_FUNCTION_ENUM:
         return createForAllFunctionEnumFromString(eDataType, initialValue);
+      case DmplPackage.NODE_VAR_SCOPE_ENUM:
+        return createNodeVarScopeEnumFromString(eDataType, initialValue);
       case DmplPackage.EQUALITY_OPERATOR:
         return createEqualityOperatorFromString(eDataType, initialValue);
       case DmplPackage.COMPARE_OPERATOR:
@@ -187,6 +192,8 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
         return convertSimpleStmtKeywordEnumToString(eDataType, instanceValue);
       case DmplPackage.FOR_ALL_FUNCTION_ENUM:
         return convertForAllFunctionEnumToString(eDataType, instanceValue);
+      case DmplPackage.NODE_VAR_SCOPE_ENUM:
+        return convertNodeVarScopeEnumToString(eDataType, instanceValue);
       case DmplPackage.EQUALITY_OPERATOR:
         return convertEqualityOperatorToString(eDataType, instanceValue);
       case DmplPackage.COMPARE_OPERATOR:
@@ -314,6 +321,39 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     NodeBodyImpl nodeBody = new NodeBodyImpl();
     return nodeBody;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NodeBodyElement createNodeBodyElement()
+  {
+    NodeBodyElementImpl nodeBodyElement = new NodeBodyElementImpl();
+    return nodeBodyElement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public VarBlock createVarBlock()
+  {
+    VarBlockImpl varBlock = new VarBlockImpl();
+    return varBlock;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NodeVarInit createNodeVarInit()
+  {
+    NodeVarInitImpl nodeVarInit = new NodeVarInitImpl();
+    return nodeVarInit;
   }
 
   /**
@@ -950,6 +990,28 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * @generated
    */
   public String convertForAllFunctionEnumToString(EDataType eDataType, Object instanceValue)
+  {
+    return instanceValue == null ? null : instanceValue.toString();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NodeVarScopeEnum createNodeVarScopeEnumFromString(EDataType eDataType, String initialValue)
+  {
+    NodeVarScopeEnum result = NodeVarScopeEnum.get(initialValue);
+    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+    return result;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertNodeVarScopeEnumToString(EDataType eDataType, Object instanceValue)
   {
     return instanceValue == null ? null : instanceValue.toString();
   }

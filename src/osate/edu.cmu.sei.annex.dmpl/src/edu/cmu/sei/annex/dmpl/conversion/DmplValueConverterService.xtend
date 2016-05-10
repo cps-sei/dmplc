@@ -3,6 +3,7 @@ package edu.cmu.sei.annex.dmpl.conversion
 import edu.cmu.sei.annex.dmpl.dmpl.BuiltInFunctionEnum
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage
 import edu.cmu.sei.annex.dmpl.dmpl.ForAllFunctionEnum
+import edu.cmu.sei.annex.dmpl.dmpl.NodeVarScopeEnum
 import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum
 import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.xtext.common.services.DefaultTerminalConverters
@@ -92,6 +93,25 @@ class DmplValueConverterService extends DefaultTerminalConverters {
 			
 			override toString(ForAllFunctionEnum value) throws ValueConverterException {
 				forAllFunctionEnumConverter.toString(value)
+			}
+		}
+	}
+	
+	@ValueConverter(rule = "NodeVarScope")
+	def IValueConverter<NodeVarScopeEnum> NodeVarScope() {
+		new IValueConverter<NodeVarScopeEnum> {
+			val nodeVarScopeEnumConverter = new EFactoryValueConverter(DmplPackage.eINSTANCE.nodeVarScopeEnum)
+			
+			override toValue(String string, INode node) throws ValueConverterException {
+				switch string?.trim {
+					case "GLOBAL": NodeVarScopeEnum.GLOBAL
+					case "LOCAL": NodeVarScopeEnum.LOCAL
+					default: nodeVarScopeEnumConverter.toValue(string, node) as NodeVarScopeEnum
+				}
+			}
+			
+			override toString(NodeVarScopeEnum value) throws ValueConverterException {
+				nodeVarScopeEnumConverter.toString(value)
 			}
 		}
 	}

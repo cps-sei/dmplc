@@ -42,6 +42,7 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getNumberConstAccess().getAlternatives(), "rule__NumberConst__Alternatives");
 					put(grammarAccess.getNodeNoAttrAccess().getAlternatives_0(), "rule__NodeNoAttr__Alternatives_0");
 					put(grammarAccess.getNodeNoAttrAccess().getAlternatives_2(), "rule__NodeNoAttr__Alternatives_2");
+					put(grammarAccess.getNodeBodyElementAccess().getAlternatives(), "rule__NodeBodyElement__Alternatives");
 					put(grammarAccess.getVarAsgnAccess().getAlternatives(), "rule__VarAsgn__Alternatives");
 					put(grammarAccess.getVarAsgnAccess().getAlternatives_1_1(), "rule__VarAsgn__Alternatives_1_1");
 					put(grammarAccess.getVarAsgnAccess().getAlternatives_2_1(), "rule__VarAsgn__Alternatives_2_1");
@@ -60,6 +61,7 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getSignedAccess().getAlternatives(), "rule__Signed__Alternatives");
 					put(grammarAccess.getSimpleStmtKeywordAccess().getAlternatives(), "rule__SimpleStmtKeyword__Alternatives");
 					put(grammarAccess.getForAllFunctionAccess().getAlternatives(), "rule__ForAllFunction__Alternatives");
+					put(grammarAccess.getNodeVarScopeAccess().getAlternatives(), "rule__NodeVarScope__Alternatives");
 					put(grammarAccess.getBuiltInFunctionAccess().getAlternatives(), "rule__BuiltInFunction__Alternatives");
 					put(grammarAccess.getDoubleAccess().getAlternatives(), "rule__Double__Alternatives");
 					put(grammarAccess.getSignEnumAccess().getAlternatives(), "rule__SignEnum__Alternatives");
@@ -67,6 +69,7 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getSignedEnumAccess().getAlternatives(), "rule__SignedEnum__Alternatives");
 					put(grammarAccess.getSimpleStmtKeywordEnumAccess().getAlternatives(), "rule__SimpleStmtKeywordEnum__Alternatives");
 					put(grammarAccess.getForAllFunctionEnumAccess().getAlternatives(), "rule__ForAllFunctionEnum__Alternatives");
+					put(grammarAccess.getNodeVarScopeEnumAccess().getAlternatives(), "rule__NodeVarScopeEnum__Alternatives");
 					put(grammarAccess.getEqualityOperatorAccess().getAlternatives(), "rule__EqualityOperator__Alternatives");
 					put(grammarAccess.getCompareOperatorAccess().getAlternatives(), "rule__CompareOperator__Alternatives");
 					put(grammarAccess.getShiftOperatorAccess().getAlternatives(), "rule__ShiftOperator__Alternatives");
@@ -82,6 +85,8 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getNodeNoAttrAccess().getGroup(), "rule__NodeNoAttr__Group__0");
 					put(grammarAccess.getNodeNoAttrAccess().getGroup_2_1(), "rule__NodeNoAttr__Group_2_1__0");
 					put(grammarAccess.getNodeBodyAccess().getGroup(), "rule__NodeBody__Group__0");
+					put(grammarAccess.getVarBlockAccess().getGroup(), "rule__VarBlock__Group__0");
+					put(grammarAccess.getNodeVarInitAccess().getGroup(), "rule__NodeVarInit__Group__0");
 					put(grammarAccess.getVarInitAccess().getGroup(), "rule__VarInit__Group__0");
 					put(grammarAccess.getVarInitAccess().getGroup_2(), "rule__VarInit__Group_2__0");
 					put(grammarAccess.getVarAsgnAccess().getGroup_0(), "rule__VarAsgn__Group_0__0");
@@ -195,6 +200,9 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getNodeNoAttrAccess().getNameAssignment_1(), "rule__NodeNoAttr__NameAssignment_1");
 					put(grammarAccess.getNodeNoAttrAccess().getBodyAssignment_2_1_1(), "rule__NodeNoAttr__BodyAssignment_2_1_1");
 					put(grammarAccess.getNodeBodyAccess().getElementsAssignment_1(), "rule__NodeBody__ElementsAssignment_1");
+					put(grammarAccess.getVarBlockAccess().getVarAssignment_0(), "rule__VarBlock__VarAssignment_0");
+					put(grammarAccess.getNodeVarInitAccess().getScopeAssignment_0(), "rule__NodeVarInit__ScopeAssignment_0");
+					put(grammarAccess.getNodeVarInitAccess().getVarAssignment_1(), "rule__NodeVarInit__VarAssignment_1");
 					put(grammarAccess.getVarInitAccess().getTypeAssignment_0(), "rule__VarInit__TypeAssignment_0");
 					put(grammarAccess.getVarInitAccess().getVarAsgnsAssignment_1(), "rule__VarInit__VarAsgnsAssignment_1");
 					put(grammarAccess.getVarInitAccess().getVarAsgnsAssignment_2_1(), "rule__VarInit__VarAsgnsAssignment_2_1");
