@@ -28,7 +28,8 @@ ProgramElementNoTarget:
 ;
 
 AttributableNodeOrProcedure:
-	Node | Procedure
+	{Node} ('node' | 'NODE') name=TIDENTIFIER (';' | '{' elements+=NodeBodyElement* '}') |
+	Procedure
 ;
 
 NumberConst:
@@ -41,10 +42,6 @@ IntConst:
 
 DoubleConst:
 	sign=Sign? value=Double
-;
-
-Node:
-	('node' | 'NODE') name=TIDENTIFIER (';' | '{' elements+=NodeBodyElement* '}')
 ;
 
 Specification:

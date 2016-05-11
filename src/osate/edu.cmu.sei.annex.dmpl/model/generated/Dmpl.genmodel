@@ -94,9 +94,6 @@
     <genClasses ecoreClass="Dmpl.ecore#//DoubleConst">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//DoubleConst/value"/>
     </genClasses>
-    <genClasses ecoreClass="Dmpl.ecore#//Node">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Node/elements"/>
-    </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Specification">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Specification/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Specification/function"/>
@@ -183,6 +180,9 @@
     <genClasses ecoreClass="Dmpl.ecore#//AttributableProgramElement">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//AttributableProgramElement/attrs"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//AttributableProgramElement/element"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//Node">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Node/elements"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//AtEndSpec"/>
     <genClasses ecoreClass="Dmpl.ecore#//AtLeastSpec">

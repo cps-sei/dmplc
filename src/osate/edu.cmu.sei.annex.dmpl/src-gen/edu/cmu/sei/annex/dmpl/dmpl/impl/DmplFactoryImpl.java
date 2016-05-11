@@ -73,7 +73,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.NUMBER_CONST: return createNumberConst();
       case DmplPackage.INT_CONST: return createIntConst();
       case DmplPackage.DOUBLE_CONST: return createDoubleConst();
-      case DmplPackage.NODE: return createNode();
       case DmplPackage.SPECIFICATION: return createSpecification();
       case DmplPackage.NODE_BODY_ELEMENT: return createNodeBodyElement();
       case DmplPackage.ATTRIBUTABLE_ELEMENT: return createAttributableElement();
@@ -99,6 +98,7 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.TARGET: return createTarget();
       case DmplPackage.CONSTANT: return createConstant();
       case DmplPackage.ATTRIBUTABLE_PROGRAM_ELEMENT: return createAttributableProgramElement();
+      case DmplPackage.NODE: return createNode();
       case DmplPackage.AT_END_SPEC: return createAtEndSpec();
       case DmplPackage.AT_LEAST_SPEC: return createAtLeastSpec();
       case DmplPackage.REQUIRE_SPEC: return createRequireSpec();
@@ -311,17 +311,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     DoubleConstImpl doubleConst = new DoubleConstImpl();
     return doubleConst;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Node createNode()
-  {
-    NodeImpl node = new NodeImpl();
-    return node;
   }
 
   /**
@@ -597,6 +586,17 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     AttributableProgramElementImpl attributableProgramElement = new AttributableProgramElementImpl();
     return attributableProgramElement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Node createNode()
+  {
+    NodeImpl node = new NodeImpl();
+    return node;
   }
 
   /**

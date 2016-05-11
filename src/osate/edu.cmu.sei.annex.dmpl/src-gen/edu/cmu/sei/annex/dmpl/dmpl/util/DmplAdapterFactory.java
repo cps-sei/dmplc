@@ -120,11 +120,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createDoubleConstAdapter();
       }
       @Override
-      public Adapter caseNode(Node object)
-      {
-        return createNodeAdapter();
-      }
-      @Override
       public Adapter caseSpecification(Specification object)
       {
         return createSpecificationAdapter();
@@ -248,6 +243,11 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
       public Adapter caseAttributableProgramElement(AttributableProgramElement object)
       {
         return createAttributableProgramElementAdapter();
+      }
+      @Override
+      public Adapter caseNode(Node object)
+      {
+        return createNodeAdapter();
       }
       @Override
       public Adapter caseAtEndSpec(AtEndSpec object)
@@ -602,21 +602,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createDoubleConstAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Node <em>Node</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.Node
-   * @generated
-   */
-  public Adapter createNodeAdapter()
   {
     return null;
   }
@@ -992,6 +977,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createAttributableProgramElementAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Node <em>Node</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Node
+   * @generated
+   */
+  public Adapter createNodeAdapter()
   {
     return null;
   }

@@ -197,7 +197,7 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				sequence_Stmt(context, (NestedStmt) semanticObject); 
 				return; 
 			case DmplPackage.NODE:
-				sequence_Node(context, (Node) semanticObject); 
+				sequence_AttributableNodeOrProcedure(context, (Node) semanticObject); 
 				return; 
 			case DmplPackage.NODE_NUM_DIMENSION:
 				sequence_Dimension(context, (NodeNumDimension) semanticObject); 
@@ -355,6 +355,15 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     (name=TIDENTIFIER elements+=RoleBodyElement*)
 	 */
 	protected void sequence_AttributableElement(EObject context, SimpleRole semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (name=TIDENTIFIER elements+=NodeBodyElement*)
+	 */
+	protected void sequence_AttributableNodeOrProcedure(EObject context, Node semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -605,15 +614,6 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 		feeder.accept(grammarAccess.getNodeVarInitAccess().getScopeNodeVarScopeParserRuleCall_0_0(), semanticObject.getScope());
 		feeder.accept(grammarAccess.getNodeVarInitAccess().getVarVarInitParserRuleCall_1_0(), semanticObject.getVar());
 		feeder.finish();
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (name=TIDENTIFIER elements+=NodeBodyElement*)
-	 */
-	protected void sequence_Node(EObject context, Node semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

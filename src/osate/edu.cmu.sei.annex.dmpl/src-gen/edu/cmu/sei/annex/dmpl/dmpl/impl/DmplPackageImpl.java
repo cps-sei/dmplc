@@ -170,13 +170,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass nodeEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   private EClass specificationEClass = null;
 
   /**
@@ -346,6 +339,13 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass attributableProgramElementEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass nodeEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -915,26 +915,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
   public EAttribute getDoubleConst_Value()
   {
     return (EAttribute)doubleConstEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getNode()
-  {
-    return nodeEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getNode_Elements()
-  {
-    return (EReference)nodeEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1625,6 +1605,26 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
   public EReference getAttributableProgramElement_Element()
   {
     return (EReference)attributableProgramElementEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getNode()
+  {
+    return nodeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getNode_Elements()
+  {
+    return (EReference)nodeEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -2899,9 +2899,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     doubleConstEClass = createEClass(DOUBLE_CONST);
     createEAttribute(doubleConstEClass, DOUBLE_CONST__VALUE);
 
-    nodeEClass = createEClass(NODE);
-    createEReference(nodeEClass, NODE__ELEMENTS);
-
     specificationEClass = createEClass(SPECIFICATION);
     createEAttribute(specificationEClass, SPECIFICATION__NAME);
     createEAttribute(specificationEClass, SPECIFICATION__FUNCTION);
@@ -2995,6 +2992,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     attributableProgramElementEClass = createEClass(ATTRIBUTABLE_PROGRAM_ELEMENT);
     createEReference(attributableProgramElementEClass, ATTRIBUTABLE_PROGRAM_ELEMENT__ATTRS);
     createEReference(attributableProgramElementEClass, ATTRIBUTABLE_PROGRAM_ELEMENT__ELEMENT);
+
+    nodeEClass = createEClass(NODE);
+    createEReference(nodeEClass, NODE__ELEMENTS);
 
     atEndSpecEClass = createEClass(AT_END_SPEC);
 
@@ -3196,7 +3196,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     programElementNoTargetEClass.getESuperTypes().add(this.getProgramElement());
     intConstEClass.getESuperTypes().add(this.getNumberConst());
     doubleConstEClass.getESuperTypes().add(this.getNumberConst());
-    nodeEClass.getESuperTypes().add(this.getAttributableNodeOrProcedure());
     specificationEClass.getESuperTypes().add(this.getAttributableElement());
     specificationEClass.getESuperTypes().add(this.getAttributableNoRoleElement());
     varBlockEClass.getESuperTypes().add(this.getNodeBodyElement());
@@ -3213,6 +3212,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     targetEClass.getESuperTypes().add(this.getProgramElement());
     constantEClass.getESuperTypes().add(this.getProgramElementNoTarget());
     attributableProgramElementEClass.getESuperTypes().add(this.getProgramElementNoTarget());
+    nodeEClass.getESuperTypes().add(this.getAttributableNodeOrProcedure());
     atEndSpecEClass.getESuperTypes().add(this.getSpecification());
     atLeastSpecEClass.getESuperTypes().add(this.getSpecification());
     requireSpecEClass.getESuperTypes().add(this.getSpecification());
@@ -3275,9 +3275,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     initEClass(doubleConstEClass, DoubleConst.class, "DoubleConst", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getDoubleConst_Value(), ecorePackage.getEDouble(), "value", null, 0, 1, DoubleConst.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(nodeEClass, Node.class, "Node", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getNode_Elements(), this.getNodeBodyElement(), null, "elements", null, 0, -1, Node.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(specificationEClass, Specification.class, "Specification", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getSpecification_Name(), ecorePackage.getEString(), "name", null, 0, 1, Specification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3372,6 +3369,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEClass(attributableProgramElementEClass, AttributableProgramElement.class, "AttributableProgramElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getAttributableProgramElement_Attrs(), this.getAttr(), null, "attrs", null, 0, -1, AttributableProgramElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getAttributableProgramElement_Element(), this.getAttributableNodeOrProcedure(), null, "element", null, 0, 1, AttributableProgramElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(nodeEClass, Node.class, "Node", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getNode_Elements(), this.getNodeBodyElement(), null, "elements", null, 0, -1, Node.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(atEndSpecEClass, AtEndSpec.class, "AtEndSpec", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

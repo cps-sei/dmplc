@@ -140,14 +140,6 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case DmplPackage.NODE:
-      {
-        Node node = (Node)theEObject;
-        T result = caseNode(node);
-        if (result == null) result = caseAttributableNodeOrProcedure(node);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
       case DmplPackage.SPECIFICATION:
       {
         Specification specification = (Specification)theEObject;
@@ -338,6 +330,14 @@ public class DmplSwitch<T> extends Switch<T>
         T result = caseAttributableProgramElement(attributableProgramElement);
         if (result == null) result = caseProgramElementNoTarget(attributableProgramElement);
         if (result == null) result = caseProgramElement(attributableProgramElement);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.NODE:
+      {
+        Node node = (Node)theEObject;
+        T result = caseNode(node);
+        if (result == null) result = caseAttributableNodeOrProcedure(node);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -798,22 +798,6 @@ public class DmplSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Node</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Node</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseNode(Node object)
-  {
-    return null;
-  }
-
-  /**
    * Returns the result of interpreting the object as an instance of '<em>Specification</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -1209,6 +1193,22 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseAttributableProgramElement(AttributableProgramElement object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Node</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Node</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseNode(Node object)
   {
     return null;
   }
