@@ -49,9 +49,8 @@ NodeNoAttr:
 	('node' | 'NODE') name=TIDENTIFIER (';' | '{' body=NodeBody '}')
 ;
 
-//TODO
 Specification:
-	spec=SpecNoAttr
+	attrList=AttrList? spec=SpecNoAttr
 ;
 
 SpecNoAttr:
@@ -67,7 +66,15 @@ NodeBody:
 
 //TODO
 NodeBodyElement:
-	VarBlock | RecordBlock | Procedure | Specification
+	VarBlock | RecordBlock | Attributable
+;
+
+Attributable:
+	attrList=AttrList? element=AttributableElement
+;
+
+AttributableElement:
+	ProcNoAttr | SpecNoAttr
 ;
 
 VarBlock:
@@ -107,7 +114,11 @@ Type:
 ;
 
 Procedure:
-	attrList=AttrList? override?='override'? prototype=FnPrototype (';' | fnBody=FnBody)
+	attrList=AttrList? proc=ProcNoAttr
+;
+
+ProcNoAttr:
+	override?='override'? prototype=FnPrototype (';' | fnBody=FnBody)
 ;
 
 FnBody:

@@ -33,11 +33,13 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//NodeBody"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Specification" eSuperTypes="#//NodeBodyElement">
+  <eClassifiers xsi:type="ecore:EClass" name="Specification">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attrList" eType="#//AttrList"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="spec" eType="#//SpecNoAttr"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SpecNoAttr">
+  <eClassifiers xsi:type="ecore:EClass" name="SpecNoAttr" eSuperTypes="#//AttributableElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="function" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
@@ -46,6 +48,13 @@
         eType="#//NodeBodyElement" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodeBodyElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Attributable" eSuperTypes="#//NodeBodyElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attrList" eType="#//AttrList"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="#//AttributableElement"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AttributableElement"/>
   <eClassifiers xsi:type="ecore:EClass" name="VarBlock" eSuperTypes="#//NodeBodyElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="override" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//NodeVarInit"
@@ -85,9 +94,13 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="signed" eType="#//SignedEnum"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="simpType" eType="#//SimpTypeEnum"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Procedure" eSuperTypes="#//ProgramElement #//NodeBodyElement">
+  <eClassifiers xsi:type="ecore:EClass" name="Procedure" eSuperTypes="#//ProgramElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="attrList" eType="#//AttrList"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="proc" eType="#//ProcNoAttr"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ProcNoAttr" eSuperTypes="#//AttributableElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="override" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="prototype" eType="#//FnPrototype"
         containment="true"/>

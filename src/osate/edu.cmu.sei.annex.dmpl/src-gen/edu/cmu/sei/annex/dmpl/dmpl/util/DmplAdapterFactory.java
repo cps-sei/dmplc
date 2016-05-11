@@ -145,6 +145,16 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createNodeBodyElementAdapter();
       }
       @Override
+      public Adapter caseAttributable(Attributable object)
+      {
+        return createAttributableAdapter();
+      }
+      @Override
+      public Adapter caseAttributableElement(AttributableElement object)
+      {
+        return createAttributableElementAdapter();
+      }
+      @Override
       public Adapter caseVarBlock(VarBlock object)
       {
         return createVarBlockAdapter();
@@ -188,6 +198,11 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
       public Adapter caseProcedure(Procedure object)
       {
         return createProcedureAdapter();
+      }
+      @Override
+      public Adapter caseProcNoAttr(ProcNoAttr object)
+      {
+        return createProcNoAttrAdapter();
       }
       @Override
       public Adapter caseFnBody(FnBody object)
@@ -652,6 +667,36 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Attributable <em>Attributable</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Attributable
+   * @generated
+   */
+  public Adapter createAttributableAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.AttributableElement <em>Attributable Element</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.AttributableElement
+   * @generated
+   */
+  public Adapter createAttributableElementAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.VarBlock <em>Var Block</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -782,6 +827,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createProcedureAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr <em>Proc No Attr</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr
+   * @generated
+   */
+  public Adapter createProcNoAttrAdapter()
   {
     return null;
   }

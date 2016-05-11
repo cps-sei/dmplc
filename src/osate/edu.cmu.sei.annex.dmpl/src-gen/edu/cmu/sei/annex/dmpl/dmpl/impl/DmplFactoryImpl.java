@@ -78,6 +78,8 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.SPEC_NO_ATTR: return createSpecNoAttr();
       case DmplPackage.NODE_BODY: return createNodeBody();
       case DmplPackage.NODE_BODY_ELEMENT: return createNodeBodyElement();
+      case DmplPackage.ATTRIBUTABLE: return createAttributable();
+      case DmplPackage.ATTRIBUTABLE_ELEMENT: return createAttributableElement();
       case DmplPackage.VAR_BLOCK: return createVarBlock();
       case DmplPackage.RECORD_BLOCK: return createRecordBlock();
       case DmplPackage.NODE_VAR_INIT: return createNodeVarInit();
@@ -87,6 +89,7 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.DIMENSION: return createDimension();
       case DmplPackage.TYPE: return createType();
       case DmplPackage.PROCEDURE: return createProcedure();
+      case DmplPackage.PROC_NO_ATTR: return createProcNoAttr();
       case DmplPackage.FN_BODY: return createFnBody();
       case DmplPackage.FN_PROTOTYPE: return createFnPrototype();
       case DmplPackage.ATTR_LIST: return createAttrList();
@@ -367,6 +370,28 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  public Attributable createAttributable()
+  {
+    AttributableImpl attributable = new AttributableImpl();
+    return attributable;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public AttributableElement createAttributableElement()
+  {
+    AttributableElementImpl attributableElement = new AttributableElementImpl();
+    return attributableElement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public VarBlock createVarBlock()
   {
     VarBlockImpl varBlock = new VarBlockImpl();
@@ -459,6 +484,17 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     ProcedureImpl procedure = new ProcedureImpl();
     return procedure;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ProcNoAttr createProcNoAttr()
+  {
+    ProcNoAttrImpl procNoAttr = new ProcNoAttrImpl();
+    return procNoAttr;
   }
 
   /**

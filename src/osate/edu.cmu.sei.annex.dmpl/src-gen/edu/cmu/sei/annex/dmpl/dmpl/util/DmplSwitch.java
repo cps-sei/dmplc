@@ -152,7 +152,6 @@ public class DmplSwitch<T> extends Switch<T>
       {
         Specification specification = (Specification)theEObject;
         T result = caseSpecification(specification);
-        if (result == null) result = caseNodeBodyElement(specification);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -160,6 +159,7 @@ public class DmplSwitch<T> extends Switch<T>
       {
         SpecNoAttr specNoAttr = (SpecNoAttr)theEObject;
         T result = caseSpecNoAttr(specNoAttr);
+        if (result == null) result = caseAttributableElement(specNoAttr);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -174,6 +174,21 @@ public class DmplSwitch<T> extends Switch<T>
       {
         NodeBodyElement nodeBodyElement = (NodeBodyElement)theEObject;
         T result = caseNodeBodyElement(nodeBodyElement);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.ATTRIBUTABLE:
+      {
+        Attributable attributable = (Attributable)theEObject;
+        T result = caseAttributable(attributable);
+        if (result == null) result = caseNodeBodyElement(attributable);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.ATTRIBUTABLE_ELEMENT:
+      {
+        AttributableElement attributableElement = (AttributableElement)theEObject;
+        T result = caseAttributableElement(attributableElement);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -240,7 +255,14 @@ public class DmplSwitch<T> extends Switch<T>
         Procedure procedure = (Procedure)theEObject;
         T result = caseProcedure(procedure);
         if (result == null) result = caseProgramElement(procedure);
-        if (result == null) result = caseNodeBodyElement(procedure);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.PROC_NO_ATTR:
+      {
+        ProcNoAttr procNoAttr = (ProcNoAttr)theEObject;
+        T result = caseProcNoAttr(procNoAttr);
+        if (result == null) result = caseAttributableElement(procNoAttr);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -323,6 +345,7 @@ public class DmplSwitch<T> extends Switch<T>
         AtEndSpec atEndSpec = (AtEndSpec)theEObject;
         T result = caseAtEndSpec(atEndSpec);
         if (result == null) result = caseSpecNoAttr(atEndSpec);
+        if (result == null) result = caseAttributableElement(atEndSpec);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -331,6 +354,7 @@ public class DmplSwitch<T> extends Switch<T>
         AtLeastSpec atLeastSpec = (AtLeastSpec)theEObject;
         T result = caseAtLeastSpec(atLeastSpec);
         if (result == null) result = caseSpecNoAttr(atLeastSpec);
+        if (result == null) result = caseAttributableElement(atLeastSpec);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -339,6 +363,7 @@ public class DmplSwitch<T> extends Switch<T>
         RequireSpec requireSpec = (RequireSpec)theEObject;
         T result = caseRequireSpec(requireSpec);
         if (result == null) result = caseSpecNoAttr(requireSpec);
+        if (result == null) result = caseAttributableElement(requireSpec);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -811,6 +836,38 @@ public class DmplSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>Attributable</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Attributable</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseAttributable(Attributable object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Attributable Element</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Attributable Element</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseAttributableElement(AttributableElement object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Var Block</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -950,6 +1007,22 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseProcedure(Procedure object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Proc No Attr</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Proc No Attr</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseProcNoAttr(ProcNoAttr object)
   {
     return null;
   }

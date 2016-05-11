@@ -12,6 +12,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.AtEndSpec;
 import edu.cmu.sei.annex.dmpl.dmpl.AtLeastSpec;
 import edu.cmu.sei.annex.dmpl.dmpl.Attr;
 import edu.cmu.sei.annex.dmpl.dmpl.AttrList;
+import edu.cmu.sei.annex.dmpl.dmpl.Attributable;
 import edu.cmu.sei.annex.dmpl.dmpl.BitwiseAndExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.BitwiseOrExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.BuiltInExpr;
@@ -47,6 +48,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.NodeNumExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeVarInit;
 import edu.cmu.sei.annex.dmpl.dmpl.OrExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.Param;
+import edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr;
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
 import edu.cmu.sei.annex.dmpl.dmpl.Program;
 import edu.cmu.sei.annex.dmpl.dmpl.RecordBlock;
@@ -107,6 +109,9 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.ATTR_LIST:
 				sequence_AttrList(context, (AttrList) semanticObject); 
+				return; 
+			case DmplPackage.ATTRIBUTABLE:
+				sequence_Attributable(context, (Attributable) semanticObject); 
 				return; 
 			case DmplPackage.BITWISE_AND_EXPR:
 				sequence_BitwiseAndExpr(context, (BitwiseAndExpr) semanticObject); 
@@ -209,6 +214,9 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.PARAM:
 				sequence_Param(context, (Param) semanticObject); 
+				return; 
+			case DmplPackage.PROC_NO_ATTR:
+				sequence_ProcNoAttr(context, (ProcNoAttr) semanticObject); 
 				return; 
 			case DmplPackage.PROCEDURE:
 				sequence_Procedure(context, (Procedure) semanticObject); 
@@ -342,6 +350,15 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     (name=TIDENTIFIER (params+=Expr params+=Expr*)?)
 	 */
 	protected void sequence_Attr(EObject context, Attr semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (attrList=AttrList? element=AttributableElement)
+	 */
+	protected void sequence_Attributable(EObject context, Attributable semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -697,7 +714,16 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (attrList=AttrList? override?='override'? prototype=FnPrototype fnBody=FnBody?)
+	 *     (override?='override'? prototype=FnPrototype fnBody=FnBody?)
+	 */
+	protected void sequence_ProcNoAttr(EObject context, ProcNoAttr semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (attrList=AttrList? proc=ProcNoAttr)
 	 */
 	protected void sequence_Procedure(EObject context, Procedure semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -806,17 +832,10 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     spec=SpecNoAttr
+	 *     (attrList=AttrList? spec=SpecNoAttr)
 	 */
 	protected void sequence_Specification(EObject context, Specification semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.SPECIFICATION__SPEC) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.SPECIFICATION__SPEC));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getSpecificationAccess().getSpecSpecNoAttrParserRuleCall_0(), semanticObject.getSpec());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

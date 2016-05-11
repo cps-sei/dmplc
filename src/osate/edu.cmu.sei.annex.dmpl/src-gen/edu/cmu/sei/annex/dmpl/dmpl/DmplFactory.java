@@ -140,6 +140,24 @@ public interface DmplFactory extends EFactory
   NodeBodyElement createNodeBodyElement();
 
   /**
+   * Returns a new object of class '<em>Attributable</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Attributable</em>'.
+   * @generated
+   */
+  Attributable createAttributable();
+
+  /**
+   * Returns a new object of class '<em>Attributable Element</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Attributable Element</em>'.
+   * @generated
+   */
+  AttributableElement createAttributableElement();
+
+  /**
    * Returns a new object of class '<em>Var Block</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -219,6 +237,15 @@ public interface DmplFactory extends EFactory
    * @generated
    */
   Procedure createProcedure();
+
+  /**
+   * Returns a new object of class '<em>Proc No Attr</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Proc No Attr</em>'.
+   * @generated
+   */
+  ProcNoAttr createProcNoAttr();
 
   /**
    * Returns a new object of class '<em>Fn Body</em>'.

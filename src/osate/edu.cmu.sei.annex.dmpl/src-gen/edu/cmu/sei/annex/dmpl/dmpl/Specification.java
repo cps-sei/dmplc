@@ -2,6 +2,7 @@
  */
 package edu.cmu.sei.annex.dmpl.dmpl;
 
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -12,6 +13,7 @@ package edu.cmu.sei.annex.dmpl.dmpl;
  * The following features are supported:
  * </p>
  * <ul>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.Specification#getAttrList <em>Attr List</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.Specification#getSpec <em>Spec</em>}</li>
  * </ul>
  *
@@ -19,8 +21,34 @@ package edu.cmu.sei.annex.dmpl.dmpl;
  * @model
  * @generated
  */
-public interface Specification extends NodeBodyElement
+public interface Specification extends EObject
 {
+  /**
+   * Returns the value of the '<em><b>Attr List</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Attr List</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Attr List</em>' containment reference.
+   * @see #setAttrList(AttrList)
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getSpecification_AttrList()
+   * @model containment="true"
+   * @generated
+   */
+  AttrList getAttrList();
+
+  /**
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.Specification#getAttrList <em>Attr List</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Attr List</em>' containment reference.
+   * @see #getAttrList()
+   * @generated
+   */
+  void setAttrList(AttrList value);
+
   /**
    * Returns the value of the '<em><b>Spec</b></em>' containment reference.
    * <!-- begin-user-doc -->

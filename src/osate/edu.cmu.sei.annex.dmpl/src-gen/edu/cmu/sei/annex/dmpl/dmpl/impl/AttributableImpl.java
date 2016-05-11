@@ -3,9 +3,9 @@
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.AttrList;
+import edu.cmu.sei.annex.dmpl.dmpl.Attributable;
+import edu.cmu.sei.annex.dmpl.dmpl.AttributableElement;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
-import edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr;
-import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -17,19 +17,19 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Procedure</b></em>'.
+ * An implementation of the model object '<em><b>Attributable</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcedureImpl#getAttrList <em>Attr List</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcedureImpl#getProc <em>Proc</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.AttributableImpl#getAttrList <em>Attr List</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.AttributableImpl#getElement <em>Element</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ProcedureImpl extends ProgramElementImpl implements Procedure
+public class AttributableImpl extends NodeBodyElementImpl implements Attributable
 {
   /**
    * The cached value of the '{@link #getAttrList() <em>Attr List</em>}' containment reference.
@@ -42,21 +42,21 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
   protected AttrList attrList;
 
   /**
-   * The cached value of the '{@link #getProc() <em>Proc</em>}' containment reference.
+   * The cached value of the '{@link #getElement() <em>Element</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getProc()
+   * @see #getElement()
    * @generated
    * @ordered
    */
-  protected ProcNoAttr proc;
+  protected AttributableElement element;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected ProcedureImpl()
+  protected AttributableImpl()
   {
     super();
   }
@@ -69,7 +69,7 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
   @Override
   protected EClass eStaticClass()
   {
-    return DmplPackage.Literals.PROCEDURE;
+    return DmplPackage.Literals.ATTRIBUTABLE;
   }
 
   /**
@@ -93,7 +93,7 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
     attrList = newAttrList;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.PROCEDURE__ATTR_LIST, oldAttrList, newAttrList);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.ATTRIBUTABLE__ATTR_LIST, oldAttrList, newAttrList);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -110,14 +110,14 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
     {
       NotificationChain msgs = null;
       if (attrList != null)
-        msgs = ((InternalEObject)attrList).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.PROCEDURE__ATTR_LIST, null, msgs);
+        msgs = ((InternalEObject)attrList).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.ATTRIBUTABLE__ATTR_LIST, null, msgs);
       if (newAttrList != null)
-        msgs = ((InternalEObject)newAttrList).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.PROCEDURE__ATTR_LIST, null, msgs);
+        msgs = ((InternalEObject)newAttrList).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.ATTRIBUTABLE__ATTR_LIST, null, msgs);
       msgs = basicSetAttrList(newAttrList, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.PROCEDURE__ATTR_LIST, newAttrList, newAttrList));
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.ATTRIBUTABLE__ATTR_LIST, newAttrList, newAttrList));
   }
 
   /**
@@ -125,9 +125,9 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
    * <!-- end-user-doc -->
    * @generated
    */
-  public ProcNoAttr getProc()
+  public AttributableElement getElement()
   {
-    return proc;
+    return element;
   }
 
   /**
@@ -135,13 +135,13 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetProc(ProcNoAttr newProc, NotificationChain msgs)
+  public NotificationChain basicSetElement(AttributableElement newElement, NotificationChain msgs)
   {
-    ProcNoAttr oldProc = proc;
-    proc = newProc;
+    AttributableElement oldElement = element;
+    element = newElement;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.PROCEDURE__PROC, oldProc, newProc);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.ATTRIBUTABLE__ELEMENT, oldElement, newElement);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -152,20 +152,20 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setProc(ProcNoAttr newProc)
+  public void setElement(AttributableElement newElement)
   {
-    if (newProc != proc)
+    if (newElement != element)
     {
       NotificationChain msgs = null;
-      if (proc != null)
-        msgs = ((InternalEObject)proc).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.PROCEDURE__PROC, null, msgs);
-      if (newProc != null)
-        msgs = ((InternalEObject)newProc).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.PROCEDURE__PROC, null, msgs);
-      msgs = basicSetProc(newProc, msgs);
+      if (element != null)
+        msgs = ((InternalEObject)element).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.ATTRIBUTABLE__ELEMENT, null, msgs);
+      if (newElement != null)
+        msgs = ((InternalEObject)newElement).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.ATTRIBUTABLE__ELEMENT, null, msgs);
+      msgs = basicSetElement(newElement, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.PROCEDURE__PROC, newProc, newProc));
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.ATTRIBUTABLE__ELEMENT, newElement, newElement));
   }
 
   /**
@@ -178,10 +178,10 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
   {
     switch (featureID)
     {
-      case DmplPackage.PROCEDURE__ATTR_LIST:
+      case DmplPackage.ATTRIBUTABLE__ATTR_LIST:
         return basicSetAttrList(null, msgs);
-      case DmplPackage.PROCEDURE__PROC:
-        return basicSetProc(null, msgs);
+      case DmplPackage.ATTRIBUTABLE__ELEMENT:
+        return basicSetElement(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -196,10 +196,10 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
   {
     switch (featureID)
     {
-      case DmplPackage.PROCEDURE__ATTR_LIST:
+      case DmplPackage.ATTRIBUTABLE__ATTR_LIST:
         return getAttrList();
-      case DmplPackage.PROCEDURE__PROC:
-        return getProc();
+      case DmplPackage.ATTRIBUTABLE__ELEMENT:
+        return getElement();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -214,11 +214,11 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
   {
     switch (featureID)
     {
-      case DmplPackage.PROCEDURE__ATTR_LIST:
+      case DmplPackage.ATTRIBUTABLE__ATTR_LIST:
         setAttrList((AttrList)newValue);
         return;
-      case DmplPackage.PROCEDURE__PROC:
-        setProc((ProcNoAttr)newValue);
+      case DmplPackage.ATTRIBUTABLE__ELEMENT:
+        setElement((AttributableElement)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -234,11 +234,11 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
   {
     switch (featureID)
     {
-      case DmplPackage.PROCEDURE__ATTR_LIST:
+      case DmplPackage.ATTRIBUTABLE__ATTR_LIST:
         setAttrList((AttrList)null);
         return;
-      case DmplPackage.PROCEDURE__PROC:
-        setProc((ProcNoAttr)null);
+      case DmplPackage.ATTRIBUTABLE__ELEMENT:
+        setElement((AttributableElement)null);
         return;
     }
     super.eUnset(featureID);
@@ -254,12 +254,12 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
   {
     switch (featureID)
     {
-      case DmplPackage.PROCEDURE__ATTR_LIST:
+      case DmplPackage.ATTRIBUTABLE__ATTR_LIST:
         return attrList != null;
-      case DmplPackage.PROCEDURE__PROC:
-        return proc != null;
+      case DmplPackage.ATTRIBUTABLE__ELEMENT:
+        return element != null;
     }
     return super.eIsSet(featureID);
   }
 
-} //ProcedureImpl
+} //AttributableImpl

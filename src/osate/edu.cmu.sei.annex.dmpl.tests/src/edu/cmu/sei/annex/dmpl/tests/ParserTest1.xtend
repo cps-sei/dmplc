@@ -154,27 +154,27 @@ class ParserTest1 {
 		'''.parse => [
 			assertNoIssues
 			7.assertEquals(programElements.size)
-			(programElements.get(0) as Procedure).prototype as ThreadDeclaration => [
+			(programElements.get(0) as Procedure).proc.prototype as ThreadDeclaration => [
 				"t1".assertEquals(name)
 				pure.assertFalse
 				extern.assertFalse
 			]
-			(programElements.get(1) as Procedure).prototype as ThreadDeclaration => [
+			(programElements.get(1) as Procedure).proc.prototype as ThreadDeclaration => [
 				"t2".assertEquals(name)
 				pure.assertTrue
 				extern.assertFalse
 			]
-			(programElements.get(2) as Procedure).prototype as ThreadDeclaration => [
+			(programElements.get(2) as Procedure).proc.prototype as ThreadDeclaration => [
 				"t3".assertEquals(name)
 				pure.assertFalse
 				extern.assertTrue
 			]
-			(programElements.get(3) as Procedure).prototype as ThreadDeclaration => [
+			(programElements.get(3) as Procedure).proc.prototype as ThreadDeclaration => [
 				"t4".assertEquals(name)
 				pure.assertTrue
 				extern.assertTrue
 			]
-			(programElements.get(4) as Procedure).prototype as FnPrototypeDeclaration => [
+			(programElements.get(4) as Procedure).proc.prototype as FnPrototypeDeclaration => [
 				"f1".assertEquals(name)
 				pure.assertTrue
 				extern.assertFalse
@@ -183,7 +183,7 @@ class ParserTest1 {
 					SimpTypeEnum.INT.assertEquals(simpType)
 				]
 			]
-			(programElements.get(5) as Procedure).prototype as FnPrototypeDeclaration => [
+			(programElements.get(5) as Procedure).proc.prototype as FnPrototypeDeclaration => [
 				"f2".assertEquals(name)
 				pure.assertFalse
 				extern.assertTrue
@@ -192,7 +192,7 @@ class ParserTest1 {
 					SimpTypeEnum.INT.assertEquals(simpType)
 				]
 			]
-			(programElements.get(6) as Procedure).prototype as FnPrototypeDeclaration => [
+			(programElements.get(6) as Procedure).proc.prototype as FnPrototypeDeclaration => [
 				"f3".assertEquals(name)
 				pure.assertTrue
 				extern.assertTrue
@@ -218,56 +218,56 @@ class ParserTest1 {
 		'''.parse => [
 			assertNoIssues
 			8.assertEquals(programElements.size)
-			(programElements.get(0) as Procedure).prototype as FnPrototypeDeclaration => [
+			(programElements.get(0) as Procedure).proc.prototype as FnPrototypeDeclaration => [
 				"f1".assertEquals(name)
 				type => [
 					SignedEnum.UNSET.assertEquals(signed)
 					SimpTypeEnum.BOOL.assertEquals(simpType)
 				]
 			]
-			(programElements.get(1) as Procedure).prototype as FnPrototypeDeclaration => [
+			(programElements.get(1) as Procedure).proc.prototype as FnPrototypeDeclaration => [
 				"f2".assertEquals(name)
 				type => [
 					SignedEnum.UNSET.assertEquals(signed)
 					SimpTypeEnum.BOOL.assertEquals(simpType)
 				]
 			]
-			(programElements.get(2) as Procedure).prototype as FnPrototypeDeclaration => [
+			(programElements.get(2) as Procedure).proc.prototype as FnPrototypeDeclaration => [
 				"f3".assertEquals(name)
 				type => [
 					SignedEnum.UNSET.assertEquals(signed)
 					SimpTypeEnum.INT.assertEquals(simpType)
 				]
 			]
-			(programElements.get(3) as Procedure).prototype as FnPrototypeDeclaration => [
+			(programElements.get(3) as Procedure).proc.prototype as FnPrototypeDeclaration => [
 				"f4".assertEquals(name)
 				type => [
 					SignedEnum.UNSET.assertEquals(signed)
 					SimpTypeEnum.DOUBLE.assertEquals(simpType)
 				]
 			]
-			(programElements.get(4) as Procedure).prototype as FnPrototypeDeclaration => [
+			(programElements.get(4) as Procedure).proc.prototype as FnPrototypeDeclaration => [
 				"f5".assertEquals(name)
 				type => [
 					SignedEnum.UNSET.assertEquals(signed)
 					SimpTypeEnum.VOID.assertEquals(simpType)
 				]
 			]
-			(programElements.get(5) as Procedure).prototype as FnPrototypeDeclaration => [
+			(programElements.get(5) as Procedure).proc.prototype as FnPrototypeDeclaration => [
 				"f6".assertEquals(name)
 				type => [
 					SignedEnum.UNSET.assertEquals(signed)
 					SimpTypeEnum.CHAR.assertEquals(simpType)
 				]
 			]
-			(programElements.get(6) as Procedure).prototype as FnPrototypeDeclaration => [
+			(programElements.get(6) as Procedure).proc.prototype as FnPrototypeDeclaration => [
 				"f7".assertEquals(name)
 				type => [
 					SignedEnum.SIGNED.assertEquals(signed)
 					SimpTypeEnum.INT.assertEquals(simpType)
 				]
 			]
-			(programElements.get(7) as Procedure).prototype as FnPrototypeDeclaration => [
+			(programElements.get(7) as Procedure).proc.prototype as FnPrototypeDeclaration => [
 				"f8".assertEquals(name)
 				type => [
 					SignedEnum.UNSIGNED.assertEquals(signed)
@@ -287,11 +287,11 @@ class ParserTest1 {
 		'''.parse => [
 			assertNoIssues
 			4.assertEquals(programElements.size)
-			(programElements.get(0) as Procedure).prototype as FnPrototypeDeclaration => [
+			(programElements.get(0) as Procedure).proc.prototype as FnPrototypeDeclaration => [
 				"f1".assertEquals(name)
 				params.empty.assertTrue
 			]
-			(programElements.get(1) as Procedure).prototype as FnPrototypeDeclaration => [
+			(programElements.get(1) as Procedure).proc.prototype as FnPrototypeDeclaration => [
 				"f2".assertEquals(name)
 				1.assertEquals(params.size)
 				params.head => [
@@ -302,7 +302,7 @@ class ParserTest1 {
 					"p1".assertEquals(^var.name)
 				]
 			]
-			(programElements.get(2) as Procedure).prototype as FnPrototypeDeclaration => [
+			(programElements.get(2) as Procedure).proc.prototype as FnPrototypeDeclaration => [
 				"f3".assertEquals(name)
 				2.assertEquals(params.size)
 				params.get(0) => [
@@ -320,7 +320,7 @@ class ParserTest1 {
 					"p2".assertEquals(^var.name)
 				]
 			]
-			(programElements.get(3) as Procedure).prototype as FnPrototypeDeclaration => [
+			(programElements.get(3) as Procedure).proc.prototype as FnPrototypeDeclaration => [
 				"f4".assertEquals(name)
 				3.assertEquals(params.size)
 				params.get(0) => [
@@ -356,7 +356,7 @@ class ParserTest1 {
 		'''.parse => [
 			assertNoIssues
 			2.assertEquals(programElements.size)
-			(programElements.get(0) as Procedure).prototype as FnPrototypeDeclaration => [
+			(programElements.get(0) as Procedure).proc.prototype as FnPrototypeDeclaration => [
 				"f1".assertEquals(name)
 				4.assertEquals(params.size)
 				params.get(0).^var => [
@@ -382,7 +382,7 @@ class ParserTest1 {
 					5.assertEquals((dimensions.get(2) as IntDimension).index)
 				]
 			]
-			(programElements.get(1) as Procedure).prototype as FnPrototypeDeclaration => [
+			(programElements.get(1) as Procedure).proc.prototype as FnPrototypeDeclaration => [
 				"f2".assertEquals(name)
 				3.assertEquals(params.size)
 				params.get(0).^var => [
@@ -417,7 +417,7 @@ class ParserTest1 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(programElements.head as Procedure).fnBody => [
+			(programElements.head as Procedure).proc.fnBody => [
 				6.assertEquals(varInits.size)
 				(varInits.get(0).varAsgns.head as ExprVarAsgn).expr as LVal => [
 					"v7".assertEquals(name)
@@ -469,7 +469,7 @@ class ParserTest1 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(programElements.head as Procedure).fnBody => [
+			(programElements.head as Procedure).proc.fnBody => [
 				3.assertEquals(varInits.size)
 				((varInits.get(0).varAsgns.head as ExprVarAsgn).expr as CallExpr) => [
 					"f2".assertEquals(name)
@@ -501,7 +501,7 @@ class ParserTest1 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(programElements.head as Procedure).fnBody => [
+			(programElements.head as Procedure).proc.fnBody => [
 				4.assertEquals(varInits.size)
 				((varInits.get(0).varAsgns.head as ExprVarAsgn).expr as CallExpr) => [
 					namespace.assertNull
@@ -555,7 +555,7 @@ class ParserTest1 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(programElements.head as Procedure).fnBody => [
+			(programElements.head as Procedure).proc.fnBody => [
 				17.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
@@ -676,7 +676,7 @@ class ParserTest1 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(programElements.head as Procedure).fnBody => [
+			(programElements.head as Procedure).proc.fnBody => [
 				4.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
@@ -735,7 +735,7 @@ class ParserTest1 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(programElements.head as Procedure).fnBody => [
+			(programElements.head as Procedure).proc.fnBody => [
 				6.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
@@ -817,7 +817,7 @@ class ParserTest1 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(programElements.head as Procedure).fnBody => [
+			(programElements.head as Procedure).proc.fnBody => [
 				5.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
@@ -889,7 +889,7 @@ class ParserTest1 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(programElements.head as Procedure).fnBody => [
+			(programElements.head as Procedure).proc.fnBody => [
 				7.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
