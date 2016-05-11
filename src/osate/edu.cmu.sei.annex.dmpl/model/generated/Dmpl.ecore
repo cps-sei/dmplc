@@ -2,7 +2,7 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="dmpl" nsURI="http://www.cmu.edu/sei/annex/dmpl/Dmpl" nsPrefix="dmpl">
   <eClassifiers xsi:type="ecore:EClass" name="Program">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="programElements" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
         eType="#//ProgramElement" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DmplSubclause" eSuperTypes="platform:/resource/org.osate.aadl2/model/aadl2.ecore#//AnnexSubclause">
@@ -11,18 +11,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ProgramElement"/>
   <eClassifiers xsi:type="ecore:EClass" name="ProgramElementNoTarget" eSuperTypes="#//ProgramElement"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Target" eSuperTypes="#//ProgramElement">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="names" unique="false" upperBound="-1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
-        eType="#//ProgramElementNoTarget" containment="true"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AttributableNodeOrProcedure"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Constant" eSuperTypes="#//ProgramElementNoTarget">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//NumberConst"
-        containment="true"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NumberConst">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="sign" eType="#//SignEnum"/>
   </eClassifiers>
@@ -198,6 +187,17 @@
     <eLiterals name="exists_other" literal="exists_other"/>
     <eLiterals name="exists_higher" value="1" literal="exists_higher"/>
     <eLiterals name="exists_lower" value="2" literal="exists_lower"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Target" eSuperTypes="#//ProgramElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="names" unique="false" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
+        eType="#//ProgramElementNoTarget" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Constant" eSuperTypes="#//ProgramElementNoTarget">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//NumberConst"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AttributableProgramElement" eSuperTypes="#//ProgramElementNoTarget">
     <eStructuralFeatures xsi:type="ecore:EReference" name="attrs" upperBound="-1"

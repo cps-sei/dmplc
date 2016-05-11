@@ -69,9 +69,7 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.DMPL_SUBCLAUSE: return createDmplSubclause();
       case DmplPackage.PROGRAM_ELEMENT: return createProgramElement();
       case DmplPackage.PROGRAM_ELEMENT_NO_TARGET: return createProgramElementNoTarget();
-      case DmplPackage.TARGET: return createTarget();
       case DmplPackage.ATTRIBUTABLE_NODE_OR_PROCEDURE: return createAttributableNodeOrProcedure();
-      case DmplPackage.CONSTANT: return createConstant();
       case DmplPackage.NUMBER_CONST: return createNumberConst();
       case DmplPackage.INT_CONST: return createIntConst();
       case DmplPackage.DOUBLE_CONST: return createDoubleConst();
@@ -99,6 +97,8 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.LVAL: return createLVal();
       case DmplPackage.EXPR: return createExpr();
       case DmplPackage.CALL_EXPR: return createCallExpr();
+      case DmplPackage.TARGET: return createTarget();
+      case DmplPackage.CONSTANT: return createConstant();
       case DmplPackage.ATTRIBUTABLE_PROGRAM_ELEMENT: return createAttributableProgramElement();
       case DmplPackage.AT_END_SPEC: return createAtEndSpec();
       case DmplPackage.AT_LEAST_SPEC: return createAtLeastSpec();
@@ -275,32 +275,10 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public Target createTarget()
-  {
-    TargetImpl target = new TargetImpl();
-    return target;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public AttributableNodeOrProcedure createAttributableNodeOrProcedure()
   {
     AttributableNodeOrProcedureImpl attributableNodeOrProcedure = new AttributableNodeOrProcedureImpl();
     return attributableNodeOrProcedure;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Constant createConstant()
-  {
-    ConstantImpl constant = new ConstantImpl();
-    return constant;
   }
 
   /**
@@ -598,6 +576,28 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     CallExprImpl callExpr = new CallExprImpl();
     return callExpr;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Target createTarget()
+  {
+    TargetImpl target = new TargetImpl();
+    return target;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Constant createConstant()
+  {
+    ConstantImpl constant = new ConstantImpl();
+    return constant;
   }
 
   /**

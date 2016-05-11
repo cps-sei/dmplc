@@ -110,27 +110,10 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case DmplPackage.TARGET:
-      {
-        Target target = (Target)theEObject;
-        T result = caseTarget(target);
-        if (result == null) result = caseProgramElement(target);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
       case DmplPackage.ATTRIBUTABLE_NODE_OR_PROCEDURE:
       {
         AttributableNodeOrProcedure attributableNodeOrProcedure = (AttributableNodeOrProcedure)theEObject;
         T result = caseAttributableNodeOrProcedure(attributableNodeOrProcedure);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case DmplPackage.CONSTANT:
-      {
-        Constant constant = (Constant)theEObject;
-        T result = caseConstant(constant);
-        if (result == null) result = caseProgramElementNoTarget(constant);
-        if (result == null) result = caseProgramElement(constant);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -336,6 +319,23 @@ public class DmplSwitch<T> extends Switch<T>
         T result = caseCallExpr(callExpr);
         if (result == null) result = caseStmt(callExpr);
         if (result == null) result = caseExpr(callExpr);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.TARGET:
+      {
+        Target target = (Target)theEObject;
+        T result = caseTarget(target);
+        if (result == null) result = caseProgramElement(target);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.CONSTANT:
+      {
+        Constant constant = (Constant)theEObject;
+        T result = caseConstant(constant);
+        if (result == null) result = caseProgramElementNoTarget(constant);
+        if (result == null) result = caseProgramElement(constant);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -735,22 +735,6 @@ public class DmplSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Target</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Target</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseTarget(Target object)
-  {
-    return null;
-  }
-
-  /**
    * Returns the result of interpreting the object as an instance of '<em>Attributable Node Or Procedure</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -762,22 +746,6 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseAttributableNodeOrProcedure(AttributableNodeOrProcedure object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Constant</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Constant</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseConstant(Constant object)
   {
     return null;
   }
@@ -1210,6 +1178,38 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseCallExpr(CallExpr object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Target</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Target</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseTarget(Target object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Constant</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Constant</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseConstant(Constant object)
   {
     return null;
   }

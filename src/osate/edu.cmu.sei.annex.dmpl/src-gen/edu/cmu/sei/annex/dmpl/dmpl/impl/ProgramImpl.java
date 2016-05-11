@@ -28,7 +28,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProgramImpl#getProgramElements <em>Program Elements</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProgramImpl#getElements <em>Elements</em>}</li>
  * </ul>
  *
  * @generated
@@ -36,14 +36,14 @@ import org.eclipse.emf.ecore.util.InternalEList;
 public class ProgramImpl extends MinimalEObjectImpl.Container implements Program
 {
   /**
-   * The cached value of the '{@link #getProgramElements() <em>Program Elements</em>}' containment reference list.
+   * The cached value of the '{@link #getElements() <em>Elements</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getProgramElements()
+   * @see #getElements()
    * @generated
    * @ordered
    */
-  protected EList<ProgramElement> programElements;
+  protected EList<ProgramElement> elements;
 
   /**
    * <!-- begin-user-doc -->
@@ -71,13 +71,13 @@ public class ProgramImpl extends MinimalEObjectImpl.Container implements Program
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<ProgramElement> getProgramElements()
+  public EList<ProgramElement> getElements()
   {
-    if (programElements == null)
+    if (elements == null)
     {
-      programElements = new EObjectContainmentEList<ProgramElement>(ProgramElement.class, this, DmplPackage.PROGRAM__PROGRAM_ELEMENTS);
+      elements = new EObjectContainmentEList<ProgramElement>(ProgramElement.class, this, DmplPackage.PROGRAM__ELEMENTS);
     }
-    return programElements;
+    return elements;
   }
 
   /**
@@ -90,8 +90,8 @@ public class ProgramImpl extends MinimalEObjectImpl.Container implements Program
   {
     switch (featureID)
     {
-      case DmplPackage.PROGRAM__PROGRAM_ELEMENTS:
-        return ((InternalEList<?>)getProgramElements()).basicRemove(otherEnd, msgs);
+      case DmplPackage.PROGRAM__ELEMENTS:
+        return ((InternalEList<?>)getElements()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -106,8 +106,8 @@ public class ProgramImpl extends MinimalEObjectImpl.Container implements Program
   {
     switch (featureID)
     {
-      case DmplPackage.PROGRAM__PROGRAM_ELEMENTS:
-        return getProgramElements();
+      case DmplPackage.PROGRAM__ELEMENTS:
+        return getElements();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -123,9 +123,9 @@ public class ProgramImpl extends MinimalEObjectImpl.Container implements Program
   {
     switch (featureID)
     {
-      case DmplPackage.PROGRAM__PROGRAM_ELEMENTS:
-        getProgramElements().clear();
-        getProgramElements().addAll((Collection<? extends ProgramElement>)newValue);
+      case DmplPackage.PROGRAM__ELEMENTS:
+        getElements().clear();
+        getElements().addAll((Collection<? extends ProgramElement>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -141,8 +141,8 @@ public class ProgramImpl extends MinimalEObjectImpl.Container implements Program
   {
     switch (featureID)
     {
-      case DmplPackage.PROGRAM__PROGRAM_ELEMENTS:
-        getProgramElements().clear();
+      case DmplPackage.PROGRAM__ELEMENTS:
+        getElements().clear();
         return;
     }
     super.eUnset(featureID);
@@ -158,8 +158,8 @@ public class ProgramImpl extends MinimalEObjectImpl.Container implements Program
   {
     switch (featureID)
     {
-      case DmplPackage.PROGRAM__PROGRAM_ELEMENTS:
-        return programElements != null && !programElements.isEmpty();
+      case DmplPackage.PROGRAM__ELEMENTS:
+        return elements != null && !elements.isEmpty();
     }
     return super.eIsSet(featureID);
   }

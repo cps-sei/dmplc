@@ -38,10 +38,10 @@ public class DmplParser extends AbstractContentAssistParser {
 				private static final long serialVersionUID = 1L;
 				{
 					put(grammarAccess.getProgramElementAccess().getAlternatives(), "rule__ProgramElement__Alternatives");
+					put(grammarAccess.getProgramElementAccess().getAlternatives_0_1(), "rule__ProgramElement__Alternatives_0_1");
 					put(grammarAccess.getProgramElementNoTargetAccess().getAlternatives(), "rule__ProgramElementNoTarget__Alternatives");
-					put(grammarAccess.getTargetAccess().getAlternatives_0(), "rule__Target__Alternatives_0");
+					put(grammarAccess.getProgramElementNoTargetAccess().getAlternatives_0_1(), "rule__ProgramElementNoTarget__Alternatives_0_1");
 					put(grammarAccess.getAttributableNodeOrProcedureAccess().getAlternatives(), "rule__AttributableNodeOrProcedure__Alternatives");
-					put(grammarAccess.getConstantAccess().getAlternatives_0(), "rule__Constant__Alternatives_0");
 					put(grammarAccess.getNumberConstAccess().getAlternatives(), "rule__NumberConst__Alternatives");
 					put(grammarAccess.getNodeAccess().getAlternatives_0(), "rule__Node__Alternatives_0");
 					put(grammarAccess.getNodeAccess().getAlternatives_2(), "rule__Node__Alternatives_2");
@@ -86,10 +86,10 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getBuiltInFunctionEnumAccess().getAlternatives(), "rule__BuiltInFunctionEnum__Alternatives");
 					put(grammarAccess.getProgramAccess().getGroup(), "rule__Program__Group__0");
 					put(grammarAccess.getDmplSubclauseAccess().getGroup(), "rule__DmplSubclause__Group__0");
+					put(grammarAccess.getProgramElementAccess().getGroup_0(), "rule__ProgramElement__Group_0__0");
+					put(grammarAccess.getProgramElementAccess().getGroup_0_3(), "rule__ProgramElement__Group_0_3__0");
+					put(grammarAccess.getProgramElementNoTargetAccess().getGroup_0(), "rule__ProgramElementNoTarget__Group_0__0");
 					put(grammarAccess.getProgramElementNoTargetAccess().getGroup_1(), "rule__ProgramElementNoTarget__Group_1__0");
-					put(grammarAccess.getTargetAccess().getGroup(), "rule__Target__Group__0");
-					put(grammarAccess.getTargetAccess().getGroup_2(), "rule__Target__Group_2__0");
-					put(grammarAccess.getConstantAccess().getGroup(), "rule__Constant__Group__0");
 					put(grammarAccess.getIntConstAccess().getGroup(), "rule__IntConst__Group__0");
 					put(grammarAccess.getDoubleConstAccess().getGroup(), "rule__DoubleConst__Group__0");
 					put(grammarAccess.getNodeAccess().getGroup(), "rule__Node__Group__0");
@@ -207,15 +207,15 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getCallExprAccess().getGroup_3_1(), "rule__CallExpr__Group_3_1__0");
 					put(grammarAccess.getCallExprAccess().getGroup_5(), "rule__CallExpr__Group_5__0");
 					put(grammarAccess.getDoubleAccess().getGroup_1(), "rule__Double__Group_1__0");
-					put(grammarAccess.getProgramAccess().getProgramElementsAssignment_1(), "rule__Program__ProgramElementsAssignment_1");
+					put(grammarAccess.getProgramAccess().getElementsAssignment_1(), "rule__Program__ElementsAssignment_1");
 					put(grammarAccess.getDmplSubclauseAccess().getProgramAssignment_1(), "rule__DmplSubclause__ProgramAssignment_1");
+					put(grammarAccess.getProgramElementAccess().getNamesAssignment_0_2(), "rule__ProgramElement__NamesAssignment_0_2");
+					put(grammarAccess.getProgramElementAccess().getNamesAssignment_0_3_1(), "rule__ProgramElement__NamesAssignment_0_3_1");
+					put(grammarAccess.getProgramElementAccess().getElementsAssignment_0_5(), "rule__ProgramElement__ElementsAssignment_0_5");
+					put(grammarAccess.getProgramElementNoTargetAccess().getNameAssignment_0_2(), "rule__ProgramElementNoTarget__NameAssignment_0_2");
+					put(grammarAccess.getProgramElementNoTargetAccess().getValueAssignment_0_4(), "rule__ProgramElementNoTarget__ValueAssignment_0_4");
 					put(grammarAccess.getProgramElementNoTargetAccess().getAttrsAssignment_1_1(), "rule__ProgramElementNoTarget__AttrsAssignment_1_1");
 					put(grammarAccess.getProgramElementNoTargetAccess().getElementAssignment_1_2(), "rule__ProgramElementNoTarget__ElementAssignment_1_2");
-					put(grammarAccess.getTargetAccess().getNamesAssignment_1(), "rule__Target__NamesAssignment_1");
-					put(grammarAccess.getTargetAccess().getNamesAssignment_2_1(), "rule__Target__NamesAssignment_2_1");
-					put(grammarAccess.getTargetAccess().getElementsAssignment_4(), "rule__Target__ElementsAssignment_4");
-					put(grammarAccess.getConstantAccess().getNameAssignment_1(), "rule__Constant__NameAssignment_1");
-					put(grammarAccess.getConstantAccess().getValueAssignment_3(), "rule__Constant__ValueAssignment_3");
 					put(grammarAccess.getIntConstAccess().getSignAssignment_0(), "rule__IntConst__SignAssignment_0");
 					put(grammarAccess.getIntConstAccess().getValueAssignment_1(), "rule__IntConst__ValueAssignment_1");
 					put(grammarAccess.getDoubleConstAccess().getSignAssignment_0(), "rule__DoubleConst__SignAssignment_0");

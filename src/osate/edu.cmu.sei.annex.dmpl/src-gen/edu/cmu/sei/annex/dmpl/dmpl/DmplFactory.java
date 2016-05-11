@@ -59,15 +59,6 @@ public interface DmplFactory extends EFactory
   ProgramElementNoTarget createProgramElementNoTarget();
 
   /**
-   * Returns a new object of class '<em>Target</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Target</em>'.
-   * @generated
-   */
-  Target createTarget();
-
-  /**
    * Returns a new object of class '<em>Attributable Node Or Procedure</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -75,15 +66,6 @@ public interface DmplFactory extends EFactory
    * @generated
    */
   AttributableNodeOrProcedure createAttributableNodeOrProcedure();
-
-  /**
-   * Returns a new object of class '<em>Constant</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Constant</em>'.
-   * @generated
-   */
-  Constant createConstant();
 
   /**
    * Returns a new object of class '<em>Number Const</em>'.
@@ -327,6 +309,24 @@ public interface DmplFactory extends EFactory
    * @generated
    */
   CallExpr createCallExpr();
+
+  /**
+   * Returns a new object of class '<em>Target</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Target</em>'.
+   * @generated
+   */
+  Target createTarget();
+
+  /**
+   * Returns a new object of class '<em>Constant</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Constant</em>'.
+   * @generated
+   */
+  Constant createConstant();
 
   /**
    * Returns a new object of class '<em>Attributable Program Element</em>'.

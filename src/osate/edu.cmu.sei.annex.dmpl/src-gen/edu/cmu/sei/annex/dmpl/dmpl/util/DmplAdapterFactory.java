@@ -100,19 +100,9 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createProgramElementNoTargetAdapter();
       }
       @Override
-      public Adapter caseTarget(Target object)
-      {
-        return createTargetAdapter();
-      }
-      @Override
       public Adapter caseAttributableNodeOrProcedure(AttributableNodeOrProcedure object)
       {
         return createAttributableNodeOrProcedureAdapter();
-      }
-      @Override
-      public Adapter caseConstant(Constant object)
-      {
-        return createConstantAdapter();
       }
       @Override
       public Adapter caseNumberConst(NumberConst object)
@@ -248,6 +238,16 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
       public Adapter caseCallExpr(CallExpr object)
       {
         return createCallExprAdapter();
+      }
+      @Override
+      public Adapter caseTarget(Target object)
+      {
+        return createTargetAdapter();
+      }
+      @Override
+      public Adapter caseConstant(Constant object)
+      {
+        return createConstantAdapter();
       }
       @Override
       public Adapter caseAttributableProgramElement(AttributableProgramElement object)
@@ -552,21 +552,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Target <em>Target</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.Target
-   * @generated
-   */
-  public Adapter createTargetAdapter()
-  {
-    return null;
-  }
-
-  /**
    * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.AttributableNodeOrProcedure <em>Attributable Node Or Procedure</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -577,21 +562,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createAttributableNodeOrProcedureAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Constant <em>Constant</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.Constant
-   * @generated
-   */
-  public Adapter createConstantAdapter()
   {
     return null;
   }
@@ -997,6 +967,36 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createCallExprAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Target <em>Target</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Target
+   * @generated
+   */
+  public Adapter createTargetAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Constant <em>Constant</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Constant
+   * @generated
+   */
+  public Adapter createConstantAdapter()
   {
     return null;
   }

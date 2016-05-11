@@ -75,22 +75,14 @@
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//BuiltInFunctionEnum/exists_lower"/>
     </genEnums>
     <genClasses ecoreClass="Dmpl.ecore#//Program">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Program/programElements"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Program/elements"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//DmplSubclause">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//DmplSubclause/program"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//ProgramElement"/>
     <genClasses ecoreClass="Dmpl.ecore#//ProgramElementNoTarget"/>
-    <genClasses ecoreClass="Dmpl.ecore#//Target">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Target/names"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Target/elements"/>
-    </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//AttributableNodeOrProcedure"/>
-    <genClasses ecoreClass="Dmpl.ecore#//Constant">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Constant/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Constant/value"/>
-    </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//NumberConst">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//NumberConst/sign"/>
     </genClasses>
@@ -182,6 +174,14 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//CallExpr/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//CallExpr/args"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//CallExpr/at"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//Target">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Target/names"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Target/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//Constant">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Constant/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Constant/value"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//AttributableProgramElement">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//AttributableProgramElement/attrs"/>

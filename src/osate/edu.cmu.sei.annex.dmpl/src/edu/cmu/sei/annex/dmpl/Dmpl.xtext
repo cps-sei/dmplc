@@ -6,38 +6,29 @@ import "http://aadl.info/AADL/2.0" as aadl2
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 
 Program:
-	{Program}
-	programElements+=ProgramElement*
+	{Program} elements+=ProgramElement*
 ;
 
 AnnexSubclause returns aadl2::AnnexSubclause:
 	DmplSubclause
 ;
 
-DmplSubclause: {DmplSubclause}
-	program=Program
+DmplSubclause:
+	{DmplSubclause} program=Program
 ;
 
 ProgramElement:
-	//TODO: target
-	Target | ProgramElementNoTarget
+	{Target} ('target' | 'TARGET') names+=TIDENTIFIER (',' names+=TIDENTIFIER)* '%%{' elements+=ProgramElementNoTarget* '%%}' |
+	ProgramElementNoTarget
 ;
 
 ProgramElementNoTarget:
-	Constant |
+	{Constant} ('const' | 'CONST') name=TIDENTIFIER '=' value=NumberConst ';' |
 	{AttributableProgramElement} attrs+=Attr* element=AttributableNodeOrProcedure
-;
-
-Target:
-	('target' | 'TARGET') names+=TIDENTIFIER (',' names+=TIDENTIFIER)* '%%{' elements+=ProgramElementNoTarget* '%%}'
 ;
 
 AttributableNodeOrProcedure:
 	Node | Procedure
-;
-
-Constant:
-	('const' | 'CONST') name=TIDENTIFIER '=' value=NumberConst ';'
 ;
 
 NumberConst:

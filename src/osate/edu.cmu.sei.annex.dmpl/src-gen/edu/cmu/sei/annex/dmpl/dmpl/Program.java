@@ -15,7 +15,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.Program#getProgramElements <em>Program Elements</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.Program#getElements <em>Elements</em>}</li>
  * </ul>
  *
  * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getProgram()
@@ -25,19 +25,19 @@ import org.eclipse.emf.ecore.EObject;
 public interface Program extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Program Elements</b></em>' containment reference list.
+   * Returns the value of the '<em><b>Elements</b></em>' containment reference list.
    * The list contents are of type {@link edu.cmu.sei.annex.dmpl.dmpl.ProgramElement}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Program Elements</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Elements</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Program Elements</em>' containment reference list.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getProgram_ProgramElements()
+   * @return the value of the '<em>Elements</em>' containment reference list.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getProgram_Elements()
    * @model containment="true"
    * @generated
    */
-  EList<ProgramElement> getProgramElements();
+  EList<ProgramElement> getElements();
 
 } // Program
