@@ -99,14 +99,11 @@
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//NodeNoAttr">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//NodeNoAttr/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//NodeNoAttr/body"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//NodeNoAttr/elements"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//SpecNoAttr">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//SpecNoAttr/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//SpecNoAttr/function"/>
-    </genClasses>
-    <genClasses ecoreClass="Dmpl.ecore#//NodeBody">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//NodeBody/elements"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//NodeBodyElement"/>
     <genClasses ecoreClass="Dmpl.ecore#//AttributableElement"/>

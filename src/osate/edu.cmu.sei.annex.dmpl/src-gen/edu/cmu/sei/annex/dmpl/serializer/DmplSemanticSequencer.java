@@ -43,7 +43,6 @@ import edu.cmu.sei.annex.dmpl.dmpl.LVal;
 import edu.cmu.sei.annex.dmpl.dmpl.MultiplicativeExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.NestedStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.Node;
-import edu.cmu.sei.annex.dmpl.dmpl.NodeBody;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNoAttr;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumExpr;
@@ -201,9 +200,6 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.NODE:
 				sequence_Node(context, (Node) semanticObject); 
-				return; 
-			case DmplPackage.NODE_BODY:
-				sequence_NodeBody(context, (NodeBody) semanticObject); 
 				return; 
 			case DmplPackage.NODE_NO_ATTR:
 				sequence_NodeNoAttr(context, (NodeNoAttr) semanticObject); 
@@ -649,16 +645,7 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (elements+=NodeBodyElement*)
-	 */
-	protected void sequence_NodeBody(EObject context, NodeBody semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (name=TIDENTIFIER body=NodeBody?)
+	 *     (name=TIDENTIFIER elements+=NodeBodyElement*)
 	 */
 	protected void sequence_NodeNoAttr(EObject context, NodeNoAttr semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

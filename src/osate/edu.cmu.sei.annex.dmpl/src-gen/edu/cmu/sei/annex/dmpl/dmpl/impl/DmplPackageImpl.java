@@ -52,7 +52,6 @@ import edu.cmu.sei.annex.dmpl.dmpl.MultiplicativeExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.MultiplicativeOperator;
 import edu.cmu.sei.annex.dmpl.dmpl.NestedStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.Node;
-import edu.cmu.sei.annex.dmpl.dmpl.NodeBody;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeBodyElement;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNoAttr;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumDimension;
@@ -179,13 +178,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass specNoAttrEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass nodeBodyEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -970,7 +962,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getNodeNoAttr_Body()
+  public EReference getNodeNoAttr_Elements()
   {
     return (EReference)nodeNoAttrEClass.getEStructuralFeatures().get(1);
   }
@@ -1003,26 +995,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
   public EAttribute getSpecNoAttr_Function()
   {
     return (EAttribute)specNoAttrEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getNodeBody()
-  {
-    return nodeBodyEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getNodeBody_Elements()
-  {
-    return (EReference)nodeBodyEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -2951,14 +2923,11 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     nodeNoAttrEClass = createEClass(NODE_NO_ATTR);
     createEAttribute(nodeNoAttrEClass, NODE_NO_ATTR__NAME);
-    createEReference(nodeNoAttrEClass, NODE_NO_ATTR__BODY);
+    createEReference(nodeNoAttrEClass, NODE_NO_ATTR__ELEMENTS);
 
     specNoAttrEClass = createEClass(SPEC_NO_ATTR);
     createEAttribute(specNoAttrEClass, SPEC_NO_ATTR__NAME);
     createEAttribute(specNoAttrEClass, SPEC_NO_ATTR__FUNCTION);
-
-    nodeBodyEClass = createEClass(NODE_BODY);
-    createEReference(nodeBodyEClass, NODE_BODY__ELEMENTS);
 
     nodeBodyElementEClass = createEClass(NODE_BODY_ELEMENT);
 
@@ -3330,14 +3299,11 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     initEClass(nodeNoAttrEClass, NodeNoAttr.class, "NodeNoAttr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getNodeNoAttr_Name(), ecorePackage.getEString(), "name", null, 0, 1, NodeNoAttr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getNodeNoAttr_Body(), this.getNodeBody(), null, "body", null, 0, 1, NodeNoAttr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getNodeNoAttr_Elements(), this.getNodeBodyElement(), null, "elements", null, 0, -1, NodeNoAttr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(specNoAttrEClass, SpecNoAttr.class, "SpecNoAttr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getSpecNoAttr_Name(), ecorePackage.getEString(), "name", null, 0, 1, SpecNoAttr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getSpecNoAttr_Function(), ecorePackage.getEString(), "function", null, 0, 1, SpecNoAttr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(nodeBodyEClass, NodeBody.class, "NodeBody", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getNodeBody_Elements(), this.getNodeBodyElement(), null, "elements", null, 0, -1, NodeBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(nodeBodyElementEClass, NodeBodyElement.class, "NodeBodyElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

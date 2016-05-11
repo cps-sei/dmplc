@@ -44,19 +44,14 @@ Node:
 	node=NodeNoAttr
 ;
 
-//TODO
 NodeNoAttr:
-	('node' | 'NODE') name=TIDENTIFIER (';' | '{' body=NodeBody '}')
+	('node' | 'NODE') name=TIDENTIFIER (';' | '{' elements+=NodeBodyElement* '}')
 ;
 
 SpecNoAttr:
 	{AtEndSpec} 'expect' name=TIDENTIFIER ':' 'at_end' '=>' function=TIDENTIFIER ';' |
 	{AtLeastSpec} 'expect' name=TIDENTIFIER ':' 'at_least' threshold=DoubleConst '=>' function=TIDENTIFIER ';' |
 	{RequireSpec} 'require' name=TIDENTIFIER '=>' function=TIDENTIFIER ';'
-;
-
-NodeBody:
-	{NodeBody} (elements+=NodeBodyElement)*
 ;
 
 NodeBodyElement:

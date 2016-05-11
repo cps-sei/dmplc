@@ -91,7 +91,6 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getSpecNoAttrAccess().getGroup_0(), "rule__SpecNoAttr__Group_0__0");
 					put(grammarAccess.getSpecNoAttrAccess().getGroup_1(), "rule__SpecNoAttr__Group_1__0");
 					put(grammarAccess.getSpecNoAttrAccess().getGroup_2(), "rule__SpecNoAttr__Group_2__0");
-					put(grammarAccess.getNodeBodyAccess().getGroup(), "rule__NodeBody__Group__0");
 					put(grammarAccess.getNodeBodyElementAccess().getGroup_2(), "rule__NodeBodyElement__Group_2__0");
 					put(grammarAccess.getAttributableElementAccess().getGroup_1(), "rule__AttributableElement__Group_1__0");
 					put(grammarAccess.getAttributableElementAccess().getGroup_2(), "rule__AttributableElement__Group_2__0");
@@ -214,7 +213,7 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getDoubleConstAccess().getValueAssignment_1(), "rule__DoubleConst__ValueAssignment_1");
 					put(grammarAccess.getNodeAccess().getNodeAssignment(), "rule__Node__NodeAssignment");
 					put(grammarAccess.getNodeNoAttrAccess().getNameAssignment_1(), "rule__NodeNoAttr__NameAssignment_1");
-					put(grammarAccess.getNodeNoAttrAccess().getBodyAssignment_2_1_1(), "rule__NodeNoAttr__BodyAssignment_2_1_1");
+					put(grammarAccess.getNodeNoAttrAccess().getElementsAssignment_2_1_1(), "rule__NodeNoAttr__ElementsAssignment_2_1_1");
 					put(grammarAccess.getSpecNoAttrAccess().getNameAssignment_0_2(), "rule__SpecNoAttr__NameAssignment_0_2");
 					put(grammarAccess.getSpecNoAttrAccess().getFunctionAssignment_0_6(), "rule__SpecNoAttr__FunctionAssignment_0_6");
 					put(grammarAccess.getSpecNoAttrAccess().getNameAssignment_1_2(), "rule__SpecNoAttr__NameAssignment_1_2");
@@ -222,7 +221,6 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getSpecNoAttrAccess().getFunctionAssignment_1_7(), "rule__SpecNoAttr__FunctionAssignment_1_7");
 					put(grammarAccess.getSpecNoAttrAccess().getNameAssignment_2_2(), "rule__SpecNoAttr__NameAssignment_2_2");
 					put(grammarAccess.getSpecNoAttrAccess().getFunctionAssignment_2_4(), "rule__SpecNoAttr__FunctionAssignment_2_4");
-					put(grammarAccess.getNodeBodyAccess().getElementsAssignment_1(), "rule__NodeBody__ElementsAssignment_1");
 					put(grammarAccess.getNodeBodyElementAccess().getAttrListAssignment_2_1(), "rule__NodeBodyElement__AttrListAssignment_2_1");
 					put(grammarAccess.getNodeBodyElementAccess().getElementAssignment_2_2(), "rule__NodeBodyElement__ElementAssignment_2_2");
 					put(grammarAccess.getAttributableElementAccess().getNameAssignment_1_2(), "rule__AttributableElement__NameAssignment_1_2");

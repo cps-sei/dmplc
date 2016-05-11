@@ -113,15 +113,6 @@ public interface DmplFactory extends EFactory
   SpecNoAttr createSpecNoAttr();
 
   /**
-   * Returns a new object of class '<em>Node Body</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Node Body</em>'.
-   * @generated
-   */
-  NodeBody createNodeBody();
-
-  /**
    * Returns a new object of class '<em>Node Body Element</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

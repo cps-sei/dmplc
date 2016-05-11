@@ -947,7 +947,7 @@ class ParserTest2 {
 	def void testNodeNoAttr() {
 		'''
 			node n1;
-			node n2 {
+			NODE n2 {
 				void f1();
 				
 				global int v1;
@@ -1009,126 +1009,124 @@ class ParserTest2 {
 			"n1".assertEquals((programElements.get(0) as Node).node.name)
 			(programElements.get(1) as Node).node => [
 				"n2".assertEquals(name)
-				body => [
-					15.assertEquals(elements.size)
-					"f1".assertEquals(((elements.get(0) as Attributable).element as ProcNoAttr).prototype.name)
-					elements.get(1) as VarBlock => [
-						override.assertFalse
-						^var => [
-							NodeVarScopeEnum.GLOBAL.assertEquals(scope)
-							"v1".assertEquals(^var.varAsgns.head.^var.name)
-						]
+				15.assertEquals(elements.size)
+				"f1".assertEquals(((elements.get(0) as Attributable).element as ProcNoAttr).prototype.name)
+				elements.get(1) as VarBlock => [
+					override.assertFalse
+					^var => [
+						NodeVarScopeEnum.GLOBAL.assertEquals(scope)
+						"v1".assertEquals(^var.varAsgns.head.^var.name)
 					]
-					elements.get(2) as VarBlock => [
-						override.assertFalse
-						^var => [
-							NodeVarScopeEnum.GLOBAL.assertEquals(scope)
-							"v2".assertEquals(^var.varAsgns.head.^var.name)
-						]
+				]
+				elements.get(2) as VarBlock => [
+					override.assertFalse
+					^var => [
+						NodeVarScopeEnum.GLOBAL.assertEquals(scope)
+						"v2".assertEquals(^var.varAsgns.head.^var.name)
 					]
-					elements.get(3) as VarBlock => [
-						override.assertFalse
-						^var => [
-							NodeVarScopeEnum.LOCAL.assertEquals(scope)
-							"v3".assertEquals(^var.varAsgns.head.^var.name)
-						]
+				]
+				elements.get(3) as VarBlock => [
+					override.assertFalse
+					^var => [
+						NodeVarScopeEnum.LOCAL.assertEquals(scope)
+						"v3".assertEquals(^var.varAsgns.head.^var.name)
 					]
-					elements.get(4) as VarBlock => [
-						override.assertTrue
-						^var => [
-							NodeVarScopeEnum.LOCAL.assertEquals(scope)
-							"v4".assertEquals(^var.varAsgns.head.^var.name)
-						]
+				]
+				elements.get(4) as VarBlock => [
+					override.assertTrue
+					^var => [
+						NodeVarScopeEnum.LOCAL.assertEquals(scope)
+						"v4".assertEquals(^var.varAsgns.head.^var.name)
 					]
-					elements.get(5) as VarBlock => [
-						override.assertTrue
-						^var => [
-							NodeVarScopeEnum.GROUP.assertEquals(scope)
-							"v5".assertEquals(^var.varAsgns.head.^var.name)
-						]
+				]
+				elements.get(5) as VarBlock => [
+					override.assertTrue
+					^var => [
+						NodeVarScopeEnum.GROUP.assertEquals(scope)
+						"v5".assertEquals(^var.varAsgns.head.^var.name)
 					]
-					elements.get(6) as RecordBlock => [
-						override.assertFalse
-						"r1".assertEquals(name)
-						3.assertEquals(vars.size)
-						"v6".assertEquals(vars.get(0).^var.varAsgns.head.^var.name)
-						"v7".assertEquals(vars.get(1).^var.varAsgns.head.^var.name)
-						"v8".assertEquals(vars.get(2).^var.varAsgns.head.^var.name)
-						equalsBody.assertNull
-						complementBody.assertNull
+				]
+				elements.get(6) as RecordBlock => [
+					override.assertFalse
+					"r1".assertEquals(name)
+					3.assertEquals(vars.size)
+					"v6".assertEquals(vars.get(0).^var.varAsgns.head.^var.name)
+					"v7".assertEquals(vars.get(1).^var.varAsgns.head.^var.name)
+					"v8".assertEquals(vars.get(2).^var.varAsgns.head.^var.name)
+					equalsBody.assertNull
+					complementBody.assertNull
+				]
+				elements.get(7) as RecordBlock => [
+					override.assertFalse
+					"r2".assertEquals(name)
+					"v9".assertEquals(vars.head.^var.varAsgns.head.^var.name)
+					"proc1".assertEquals((equalsBody.stmts.head as CallExpr).name)
+					complementBody.assertNull
+				]
+				elements.get(8) as RecordBlock => [
+					override.assertTrue
+					"r3".assertEquals(name)
+					"v10".assertEquals(vars.head.^var.varAsgns.head.^var.name)
+					equalsBody.assertNull
+					"proc2".assertEquals((complementBody.stmts.head as CallExpr).name)
+				]
+				elements.get(9) as RecordBlock => [
+					override.assertTrue
+					"r4".assertEquals(name)
+					"v11".assertEquals(vars.head.^var.varAsgns.head.^var.name)
+					"proc3".assertEquals((equalsBody.stmts.head as CallExpr).name)
+					"proc4".assertEquals((complementBody.stmts.head as CallExpr).name)
+				]
+				elements.get(10) as Attributable => [
+					attrList.assertNull
+					element as AtEndSpec => [
+						"s1".assertEquals(name)
+						"f2".assertEquals(function)
 					]
-					elements.get(7) as RecordBlock => [
-						override.assertFalse
-						"r2".assertEquals(name)
-						"v9".assertEquals(vars.head.^var.varAsgns.head.^var.name)
-						"proc1".assertEquals((equalsBody.stmts.head as CallExpr).name)
-						complementBody.assertNull
+				]
+				elements.get(11) as Attributable => [
+					attrList.assertNull
+					element as AtLeastSpec => [
+						"s2".assertEquals(name)
+						3.14.assertEquals(threshold.value, 0.0)
+						"f3".assertEquals(function)
 					]
-					elements.get(8) as RecordBlock => [
-						override.assertTrue
-						"r3".assertEquals(name)
-						"v10".assertEquals(vars.head.^var.varAsgns.head.^var.name)
-						equalsBody.assertNull
-						"proc2".assertEquals((complementBody.stmts.head as CallExpr).name)
+				]
+				elements.get(12) as Attributable => [
+					attrList => [
+						3.assertEquals(attrs.size)
+						"attr1".assertEquals(attrs.get(0).name)
+						"attr2".assertEquals(attrs.get(1).name)
+						"attr3".assertEquals(attrs.get(2).name)
 					]
-					elements.get(9) as RecordBlock => [
-						override.assertTrue
-						"r4".assertEquals(name)
-						"v11".assertEquals(vars.head.^var.varAsgns.head.^var.name)
-						"proc3".assertEquals((equalsBody.stmts.head as CallExpr).name)
-						"proc4".assertEquals((complementBody.stmts.head as CallExpr).name)
+					element as RequireSpec => [
+						"s3".assertEquals(name)
+						"f4".assertEquals(function)
 					]
-					elements.get(10) as Attributable => [
+				]
+				(elements.get(13) as Attributable).element as SimpleRole => [
+					"role1".assertEquals(name)
+					4.assertEquals(elements.size)
+					"v12".assertEquals((elements.get(0) as VarBlock).^var.^var.varAsgns.head.^var.name)
+					"r5".assertEquals((elements.get(1) as RecordBlock).name)
+					elements.get(2) as AttributableNoRole => [
 						attrList.assertNull
-						element as AtEndSpec => [
-							"s1".assertEquals(name)
-							"f2".assertEquals(function)
-						]
+						"f5".assertEquals((element as ProcNoAttr).prototype.name)
 					]
-					elements.get(11) as Attributable => [
-						attrList.assertNull
-						element as AtLeastSpec => [
-							"s2".assertEquals(name)
-							3.14.assertEquals(threshold.value, 0.0)
-							"f3".assertEquals(function)
-						]
-					]
-					elements.get(12) as Attributable => [
+					elements.get(3) as AttributableNoRole => [
 						attrList => [
 							3.assertEquals(attrs.size)
-							"attr1".assertEquals(attrs.get(0).name)
-							"attr2".assertEquals(attrs.get(1).name)
-							"attr3".assertEquals(attrs.get(2).name)
+							"attr4".assertEquals(attrs.get(0).name)
+							"attr5".assertEquals(attrs.get(1).name)
+							"attr6".assertEquals(attrs.get(2).name)
 						]
-						element as RequireSpec => [
-							"s3".assertEquals(name)
-							"f4".assertEquals(function)
-						]
+						"s4".assertEquals((element as RequireSpec).name)
 					]
-					(elements.get(13) as Attributable).element as SimpleRole => [
-						"role1".assertEquals(name)
-						4.assertEquals(elements.size)
-						"v12".assertEquals((elements.get(0) as VarBlock).^var.^var.varAsgns.head.^var.name)
-						"r5".assertEquals((elements.get(1) as RecordBlock).name)
-						elements.get(2) as AttributableNoRole => [
-							attrList.assertNull
-							"f5".assertEquals((element as ProcNoAttr).prototype.name)
-						]
-						elements.get(3) as AttributableNoRole => [
-							attrList => [
-								3.assertEquals(attrs.size)
-								"attr4".assertEquals(attrs.get(0).name)
-								"attr5".assertEquals(attrs.get(1).name)
-								"attr6".assertEquals(attrs.get(2).name)
-							]
-							"s4".assertEquals((element as RequireSpec).name)
-						]
-					]
-					(elements.get(14) as Attributable).element as IdRole => [
-						"role2".assertEquals(name)
-						42.assertEquals(id)
-						elements.empty.assertTrue
-					]
+				]
+				(elements.get(14) as Attributable).element as IdRole => [
+					"role2".assertEquals(name)
+					42.assertEquals(id)
+					elements.empty.assertTrue
 				]
 			]
 		]

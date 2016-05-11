@@ -257,16 +257,15 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cSemicolonKeyword_2_0 = (Keyword)cAlternatives_2.eContents().get(0);
 		private final Group cGroup_2_1 = (Group)cAlternatives_2.eContents().get(1);
 		private final Keyword cLeftCurlyBracketKeyword_2_1_0 = (Keyword)cGroup_2_1.eContents().get(0);
-		private final Assignment cBodyAssignment_2_1_1 = (Assignment)cGroup_2_1.eContents().get(1);
-		private final RuleCall cBodyNodeBodyParserRuleCall_2_1_1_0 = (RuleCall)cBodyAssignment_2_1_1.eContents().get(0);
+		private final Assignment cElementsAssignment_2_1_1 = (Assignment)cGroup_2_1.eContents().get(1);
+		private final RuleCall cElementsNodeBodyElementParserRuleCall_2_1_1_0 = (RuleCall)cElementsAssignment_2_1_1.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_2_1_2 = (Keyword)cGroup_2_1.eContents().get(2);
 		
-		////TODO
 		//NodeNoAttr:
-		//	("node" | "NODE") name=TIDENTIFIER (";" | "{" body=NodeBody "}");
+		//	("node" | "NODE") name=TIDENTIFIER (";" | "{" elements+=NodeBodyElement* "}");
 		@Override public ParserRule getRule() { return rule; }
 
-		//("node" | "NODE") name=TIDENTIFIER (";" | "{" body=NodeBody "}")
+		//("node" | "NODE") name=TIDENTIFIER (";" | "{" elements+=NodeBodyElement* "}")
 		public Group getGroup() { return cGroup; }
 
 		//"node" | "NODE"
@@ -284,23 +283,23 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//TIDENTIFIER
 		public RuleCall getNameTIDENTIFIERTerminalRuleCall_1_0() { return cNameTIDENTIFIERTerminalRuleCall_1_0; }
 
-		//";" | "{" body=NodeBody "}"
+		//";" | "{" elements+=NodeBodyElement* "}"
 		public Alternatives getAlternatives_2() { return cAlternatives_2; }
 
 		//";"
 		public Keyword getSemicolonKeyword_2_0() { return cSemicolonKeyword_2_0; }
 
-		//"{" body=NodeBody "}"
+		//"{" elements+=NodeBodyElement* "}"
 		public Group getGroup_2_1() { return cGroup_2_1; }
 
 		//"{"
 		public Keyword getLeftCurlyBracketKeyword_2_1_0() { return cLeftCurlyBracketKeyword_2_1_0; }
 
-		//body=NodeBody
-		public Assignment getBodyAssignment_2_1_1() { return cBodyAssignment_2_1_1; }
+		//elements+=NodeBodyElement*
+		public Assignment getElementsAssignment_2_1_1() { return cElementsAssignment_2_1_1; }
 
-		//NodeBody
-		public RuleCall getBodyNodeBodyParserRuleCall_2_1_1_0() { return cBodyNodeBodyParserRuleCall_2_1_1_0; }
+		//NodeBodyElement
+		public RuleCall getElementsNodeBodyElementParserRuleCall_2_1_1_0() { return cElementsNodeBodyElementParserRuleCall_2_1_1_0; }
 
 		//"}"
 		public Keyword getRightCurlyBracketKeyword_2_1_2() { return cRightCurlyBracketKeyword_2_1_2; }
@@ -452,30 +451,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 		//";"
 		public Keyword getSemicolonKeyword_2_5() { return cSemicolonKeyword_2_5; }
-	}
-
-	public class NodeBodyElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "NodeBody");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Action cNodeBodyAction_0 = (Action)cGroup.eContents().get(0);
-		private final Assignment cElementsAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cElementsNodeBodyElementParserRuleCall_1_0 = (RuleCall)cElementsAssignment_1.eContents().get(0);
-		
-		//NodeBody:
-		//	{NodeBody} elements+=NodeBodyElement*;
-		@Override public ParserRule getRule() { return rule; }
-
-		//{NodeBody} elements+=NodeBodyElement*
-		public Group getGroup() { return cGroup; }
-
-		//{NodeBody}
-		public Action getNodeBodyAction_0() { return cNodeBodyAction_0; }
-
-		//elements+=NodeBodyElement*
-		public Assignment getElementsAssignment_1() { return cElementsAssignment_1; }
-
-		//NodeBodyElement
-		public RuleCall getElementsNodeBodyElementParserRuleCall_1_0() { return cElementsNodeBodyElementParserRuleCall_1_0; }
 	}
 
 	public class NodeBodyElementElements extends AbstractParserRuleElementFinder {
@@ -3543,7 +3518,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final NodeElements pNode;
 	private final NodeNoAttrElements pNodeNoAttr;
 	private final SpecNoAttrElements pSpecNoAttr;
-	private final NodeBodyElements pNodeBody;
 	private final NodeBodyElementElements pNodeBodyElement;
 	private final AttributableElementElements pAttributableElement;
 	private final RoleBodyElementElements pRoleBodyElement;
@@ -3622,7 +3596,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pNode = new NodeElements();
 		this.pNodeNoAttr = new NodeNoAttrElements();
 		this.pSpecNoAttr = new SpecNoAttrElements();
-		this.pNodeBody = new NodeBodyElements();
 		this.pNodeBodyElement = new NodeBodyElementElements();
 		this.pAttributableElement = new AttributableElementElements();
 		this.pRoleBodyElement = new RoleBodyElementElements();
@@ -3800,9 +3773,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getNodeAccess().getRule();
 	}
 
-	////TODO
 	//NodeNoAttr:
-	//	("node" | "NODE") name=TIDENTIFIER (";" | "{" body=NodeBody "}");
+	//	("node" | "NODE") name=TIDENTIFIER (";" | "{" elements+=NodeBodyElement* "}");
 	public NodeNoAttrElements getNodeNoAttrAccess() {
 		return pNodeNoAttr;
 	}
@@ -3821,16 +3793,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getSpecNoAttrRule() {
 		return getSpecNoAttrAccess().getRule();
-	}
-
-	//NodeBody:
-	//	{NodeBody} elements+=NodeBodyElement*;
-	public NodeBodyElements getNodeBodyAccess() {
-		return pNodeBody;
-	}
-	
-	public ParserRule getNodeBodyRule() {
-		return getNodeBodyAccess().getRule();
 	}
 
 	//NodeBodyElement:

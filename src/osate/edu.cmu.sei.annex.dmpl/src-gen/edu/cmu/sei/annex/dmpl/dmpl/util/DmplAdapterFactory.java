@@ -130,11 +130,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createSpecNoAttrAdapter();
       }
       @Override
-      public Adapter caseNodeBody(NodeBody object)
-      {
-        return createNodeBodyAdapter();
-      }
-      @Override
       public Adapter caseNodeBodyElement(NodeBodyElement object)
       {
         return createNodeBodyElementAdapter();
@@ -637,21 +632,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createSpecNoAttrAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.NodeBody <em>Node Body</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.NodeBody
-   * @generated
-   */
-  public Adapter createNodeBodyAdapter()
   {
     return null;
   }

@@ -75,7 +75,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.NODE: return createNode();
       case DmplPackage.NODE_NO_ATTR: return createNodeNoAttr();
       case DmplPackage.SPEC_NO_ATTR: return createSpecNoAttr();
-      case DmplPackage.NODE_BODY: return createNodeBody();
       case DmplPackage.NODE_BODY_ELEMENT: return createNodeBodyElement();
       case DmplPackage.ATTRIBUTABLE_ELEMENT: return createAttributableElement();
       case DmplPackage.ROLE_BODY_ELEMENT: return createRoleBodyElement();
@@ -334,17 +333,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     SpecNoAttrImpl specNoAttr = new SpecNoAttrImpl();
     return specNoAttr;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NodeBody createNodeBody()
-  {
-    NodeBodyImpl nodeBody = new NodeBodyImpl();
-    return nodeBody;
   }
 
   /**

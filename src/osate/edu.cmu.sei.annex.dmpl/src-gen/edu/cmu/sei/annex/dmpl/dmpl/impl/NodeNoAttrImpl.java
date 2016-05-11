@@ -3,17 +3,24 @@
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
-import edu.cmu.sei.annex.dmpl.dmpl.NodeBody;
+import edu.cmu.sei.annex.dmpl.dmpl.NodeBodyElement;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNoAttr;
+
+import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -24,7 +31,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * </p>
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.NodeNoAttrImpl#getName <em>Name</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.NodeNoAttrImpl#getBody <em>Body</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.NodeNoAttrImpl#getElements <em>Elements</em>}</li>
  * </ul>
  *
  * @generated
@@ -52,14 +59,14 @@ public class NodeNoAttrImpl extends MinimalEObjectImpl.Container implements Node
   protected String name = NAME_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
+   * The cached value of the '{@link #getElements() <em>Elements</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getBody()
+   * @see #getElements()
    * @generated
    * @ordered
    */
-  protected NodeBody body;
+  protected EList<NodeBodyElement> elements;
 
   /**
    * <!-- begin-user-doc -->
@@ -110,47 +117,13 @@ public class NodeNoAttrImpl extends MinimalEObjectImpl.Container implements Node
    * <!-- end-user-doc -->
    * @generated
    */
-  public NodeBody getBody()
+  public EList<NodeBodyElement> getElements()
   {
-    return body;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetBody(NodeBody newBody, NotificationChain msgs)
-  {
-    NodeBody oldBody = body;
-    body = newBody;
-    if (eNotificationRequired())
+    if (elements == null)
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.NODE_NO_ATTR__BODY, oldBody, newBody);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      elements = new EObjectContainmentEList<NodeBodyElement>(NodeBodyElement.class, this, DmplPackage.NODE_NO_ATTR__ELEMENTS);
     }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setBody(NodeBody newBody)
-  {
-    if (newBody != body)
-    {
-      NotificationChain msgs = null;
-      if (body != null)
-        msgs = ((InternalEObject)body).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.NODE_NO_ATTR__BODY, null, msgs);
-      if (newBody != null)
-        msgs = ((InternalEObject)newBody).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.NODE_NO_ATTR__BODY, null, msgs);
-      msgs = basicSetBody(newBody, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.NODE_NO_ATTR__BODY, newBody, newBody));
+    return elements;
   }
 
   /**
@@ -163,8 +136,8 @@ public class NodeNoAttrImpl extends MinimalEObjectImpl.Container implements Node
   {
     switch (featureID)
     {
-      case DmplPackage.NODE_NO_ATTR__BODY:
-        return basicSetBody(null, msgs);
+      case DmplPackage.NODE_NO_ATTR__ELEMENTS:
+        return ((InternalEList<?>)getElements()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -181,8 +154,8 @@ public class NodeNoAttrImpl extends MinimalEObjectImpl.Container implements Node
     {
       case DmplPackage.NODE_NO_ATTR__NAME:
         return getName();
-      case DmplPackage.NODE_NO_ATTR__BODY:
-        return getBody();
+      case DmplPackage.NODE_NO_ATTR__ELEMENTS:
+        return getElements();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -192,6 +165,7 @@ public class NodeNoAttrImpl extends MinimalEObjectImpl.Container implements Node
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
@@ -200,8 +174,9 @@ public class NodeNoAttrImpl extends MinimalEObjectImpl.Container implements Node
       case DmplPackage.NODE_NO_ATTR__NAME:
         setName((String)newValue);
         return;
-      case DmplPackage.NODE_NO_ATTR__BODY:
-        setBody((NodeBody)newValue);
+      case DmplPackage.NODE_NO_ATTR__ELEMENTS:
+        getElements().clear();
+        getElements().addAll((Collection<? extends NodeBodyElement>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -220,8 +195,8 @@ public class NodeNoAttrImpl extends MinimalEObjectImpl.Container implements Node
       case DmplPackage.NODE_NO_ATTR__NAME:
         setName(NAME_EDEFAULT);
         return;
-      case DmplPackage.NODE_NO_ATTR__BODY:
-        setBody((NodeBody)null);
+      case DmplPackage.NODE_NO_ATTR__ELEMENTS:
+        getElements().clear();
         return;
     }
     super.eUnset(featureID);
@@ -239,8 +214,8 @@ public class NodeNoAttrImpl extends MinimalEObjectImpl.Container implements Node
     {
       case DmplPackage.NODE_NO_ATTR__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-      case DmplPackage.NODE_NO_ATTR__BODY:
-        return body != null;
+      case DmplPackage.NODE_NO_ATTR__ELEMENTS:
+        return elements != null && !elements.isEmpty();
     }
     return super.eIsSet(featureID);
   }

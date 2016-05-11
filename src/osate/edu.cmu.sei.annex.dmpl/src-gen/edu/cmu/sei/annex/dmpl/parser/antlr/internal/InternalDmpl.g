@@ -526,22 +526,22 @@ ruleNodeNoAttr returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getNodeNoAttrAccess().getBodyNodeBodyParserRuleCall_2_1_1_0()); 
+	        newCompositeNode(grammarAccess.getNodeNoAttrAccess().getElementsNodeBodyElementParserRuleCall_2_1_1_0()); 
 	    }
-		lv_body_5_0=ruleNodeBody		{
+		lv_elements_5_0=ruleNodeBodyElement		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getNodeNoAttrRule());
 	        }
-       		set(
+       		add(
        			$current, 
-       			"body",
-        		lv_body_5_0, 
-        		"NodeBody");
+       			"elements",
+        		lv_elements_5_0, 
+        		"NodeBodyElement");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
-)	otherlv_6='}' 
+)*	otherlv_6='}' 
     {
     	newLeafNode(otherlv_6, grammarAccess.getNodeNoAttrAccess().getRightCurlyBracketKeyword_2_1_2());
     }
@@ -765,51 +765,6 @@ ruleSpecNoAttr returns [EObject current=null]
     	newLeafNode(otherlv_22, grammarAccess.getSpecNoAttrAccess().getSemicolonKeyword_2_5());
     }
 ))
-;
-
-
-
-
-
-// Entry rule entryRuleNodeBody
-entryRuleNodeBody returns [EObject current=null] 
-	:
-	{ newCompositeNode(grammarAccess.getNodeBodyRule()); }
-	 iv_ruleNodeBody=ruleNodeBody 
-	 { $current=$iv_ruleNodeBody.current; } 
-	 EOF 
-;
-
-// Rule NodeBody
-ruleNodeBody returns [EObject current=null] 
-    @init { enterRule(); 
-    }
-    @after { leaveRule(); }:
-((
-    {
-        $current = forceCreateModelElement(
-            grammarAccess.getNodeBodyAccess().getNodeBodyAction_0(),
-            $current);
-    }
-)(
-(
-		{ 
-	        newCompositeNode(grammarAccess.getNodeBodyAccess().getElementsNodeBodyElementParserRuleCall_1_0()); 
-	    }
-		lv_elements_1_0=ruleNodeBodyElement		{
-	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getNodeBodyRule());
-	        }
-       		add(
-       			$current, 
-       			"elements",
-        		lv_elements_1_0, 
-        		"NodeBodyElement");
-	        afterParserOrEnumRuleCall();
-	    }
-
-)
-)*)
 ;
 
 
