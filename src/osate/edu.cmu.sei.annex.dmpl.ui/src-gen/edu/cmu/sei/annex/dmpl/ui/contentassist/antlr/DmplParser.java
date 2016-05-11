@@ -45,6 +45,8 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getSpecNoAttrAccess().getAlternatives(), "rule__SpecNoAttr__Alternatives");
 					put(grammarAccess.getNodeBodyElementAccess().getAlternatives(), "rule__NodeBodyElement__Alternatives");
 					put(grammarAccess.getAttributableElementAccess().getAlternatives(), "rule__AttributableElement__Alternatives");
+					put(grammarAccess.getRoleBodyElementAccess().getAlternatives(), "rule__RoleBodyElement__Alternatives");
+					put(grammarAccess.getAttributableNoRoleElementAccess().getAlternatives(), "rule__AttributableNoRoleElement__Alternatives");
 					put(grammarAccess.getVarAsgnAccess().getAlternatives(), "rule__VarAsgn__Alternatives");
 					put(grammarAccess.getVarAsgnAccess().getAlternatives_1_1(), "rule__VarAsgn__Alternatives_1_1");
 					put(grammarAccess.getVarAsgnAccess().getAlternatives_2_1(), "rule__VarAsgn__Alternatives_2_1");
@@ -86,12 +88,14 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getDoubleConstAccess().getGroup(), "rule__DoubleConst__Group__0");
 					put(grammarAccess.getNodeNoAttrAccess().getGroup(), "rule__NodeNoAttr__Group__0");
 					put(grammarAccess.getNodeNoAttrAccess().getGroup_2_1(), "rule__NodeNoAttr__Group_2_1__0");
-					put(grammarAccess.getSpecificationAccess().getGroup(), "rule__Specification__Group__0");
 					put(grammarAccess.getSpecNoAttrAccess().getGroup_0(), "rule__SpecNoAttr__Group_0__0");
 					put(grammarAccess.getSpecNoAttrAccess().getGroup_1(), "rule__SpecNoAttr__Group_1__0");
 					put(grammarAccess.getSpecNoAttrAccess().getGroup_2(), "rule__SpecNoAttr__Group_2__0");
 					put(grammarAccess.getNodeBodyAccess().getGroup(), "rule__NodeBody__Group__0");
 					put(grammarAccess.getAttributableAccess().getGroup(), "rule__Attributable__Group__0");
+					put(grammarAccess.getRoleNoAttrAccess().getGroup(), "rule__RoleNoAttr__Group__0");
+					put(grammarAccess.getRoleBodyAccess().getGroup(), "rule__RoleBody__Group__0");
+					put(grammarAccess.getRoleBodyElementAccess().getGroup_2(), "rule__RoleBodyElement__Group_2__0");
 					put(grammarAccess.getVarBlockAccess().getGroup(), "rule__VarBlock__Group__0");
 					put(grammarAccess.getRecordBlockAccess().getGroup(), "rule__RecordBlock__Group__0");
 					put(grammarAccess.getRecordBlockAccess().getGroup_4(), "rule__RecordBlock__Group_4__0");
@@ -211,8 +215,6 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getNodeAccess().getNodeAssignment(), "rule__Node__NodeAssignment");
 					put(grammarAccess.getNodeNoAttrAccess().getNameAssignment_1(), "rule__NodeNoAttr__NameAssignment_1");
 					put(grammarAccess.getNodeNoAttrAccess().getBodyAssignment_2_1_1(), "rule__NodeNoAttr__BodyAssignment_2_1_1");
-					put(grammarAccess.getSpecificationAccess().getAttrListAssignment_0(), "rule__Specification__AttrListAssignment_0");
-					put(grammarAccess.getSpecificationAccess().getSpecAssignment_1(), "rule__Specification__SpecAssignment_1");
 					put(grammarAccess.getSpecNoAttrAccess().getNameAssignment_0_2(), "rule__SpecNoAttr__NameAssignment_0_2");
 					put(grammarAccess.getSpecNoAttrAccess().getFunctionAssignment_0_6(), "rule__SpecNoAttr__FunctionAssignment_0_6");
 					put(grammarAccess.getSpecNoAttrAccess().getNameAssignment_1_2(), "rule__SpecNoAttr__NameAssignment_1_2");
@@ -223,6 +225,12 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getNodeBodyAccess().getElementsAssignment_1(), "rule__NodeBody__ElementsAssignment_1");
 					put(grammarAccess.getAttributableAccess().getAttrListAssignment_0(), "rule__Attributable__AttrListAssignment_0");
 					put(grammarAccess.getAttributableAccess().getElementAssignment_1(), "rule__Attributable__ElementAssignment_1");
+					put(grammarAccess.getRoleAccess().getRoleAssignment(), "rule__Role__RoleAssignment");
+					put(grammarAccess.getRoleNoAttrAccess().getNameAssignment_1(), "rule__RoleNoAttr__NameAssignment_1");
+					put(grammarAccess.getRoleNoAttrAccess().getBodyAssignment_3(), "rule__RoleNoAttr__BodyAssignment_3");
+					put(grammarAccess.getRoleBodyAccess().getElementsAssignment_1(), "rule__RoleBody__ElementsAssignment_1");
+					put(grammarAccess.getRoleBodyElementAccess().getAttrListAssignment_2_1(), "rule__RoleBodyElement__AttrListAssignment_2_1");
+					put(grammarAccess.getRoleBodyElementAccess().getElementAssignment_2_2(), "rule__RoleBodyElement__ElementAssignment_2_2");
 					put(grammarAccess.getVarBlockAccess().getOverrideAssignment_0(), "rule__VarBlock__OverrideAssignment_0");
 					put(grammarAccess.getVarBlockAccess().getVarAssignment_1(), "rule__VarBlock__VarAssignment_1");
 					put(grammarAccess.getRecordBlockAccess().getOverrideAssignment_0(), "rule__RecordBlock__OverrideAssignment_0");

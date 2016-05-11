@@ -104,15 +104,6 @@ public interface DmplFactory extends EFactory
   NodeNoAttr createNodeNoAttr();
 
   /**
-   * Returns a new object of class '<em>Specification</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Specification</em>'.
-   * @generated
-   */
-  Specification createSpecification();
-
-  /**
    * Returns a new object of class '<em>Spec No Attr</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -156,6 +147,51 @@ public interface DmplFactory extends EFactory
    * @generated
    */
   AttributableElement createAttributableElement();
+
+  /**
+   * Returns a new object of class '<em>Role</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Role</em>'.
+   * @generated
+   */
+  Role createRole();
+
+  /**
+   * Returns a new object of class '<em>Role No Attr</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Role No Attr</em>'.
+   * @generated
+   */
+  RoleNoAttr createRoleNoAttr();
+
+  /**
+   * Returns a new object of class '<em>Role Body</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Role Body</em>'.
+   * @generated
+   */
+  RoleBody createRoleBody();
+
+  /**
+   * Returns a new object of class '<em>Role Body Element</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Role Body Element</em>'.
+   * @generated
+   */
+  RoleBodyElement createRoleBodyElement();
+
+  /**
+   * Returns a new object of class '<em>Attributable No Role Element</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Attributable No Role Element</em>'.
+   * @generated
+   */
+  AttributableNoRoleElement createAttributableNoRoleElement();
 
   /**
    * Returns a new object of class '<em>Var Block</em>'.
@@ -363,6 +399,15 @@ public interface DmplFactory extends EFactory
    * @generated
    */
   RequireSpec createRequireSpec();
+
+  /**
+   * Returns a new object of class '<em>Attributable No Role</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Attributable No Role</em>'.
+   * @generated
+   */
+  AttributableNoRole createAttributableNoRole();
 
   /**
    * Returns a new object of class '<em>Expr Var Asgn</em>'.

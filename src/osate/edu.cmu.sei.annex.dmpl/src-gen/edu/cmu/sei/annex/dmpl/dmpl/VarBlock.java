@@ -20,7 +20,7 @@ package edu.cmu.sei.annex.dmpl.dmpl;
  * @model
  * @generated
  */
-public interface VarBlock extends NodeBodyElement
+public interface VarBlock extends NodeBodyElement, RoleBodyElement
 {
   /**
    * Returns the value of the '<em><b>Override</b></em>' attribute.

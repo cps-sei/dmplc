@@ -20,7 +20,7 @@ package edu.cmu.sei.annex.dmpl.dmpl;
  * @model
  * @generated
  */
-public interface SpecNoAttr extends AttributableElement
+public interface SpecNoAttr extends AttributableElement, AttributableNoRoleElement
 {
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.

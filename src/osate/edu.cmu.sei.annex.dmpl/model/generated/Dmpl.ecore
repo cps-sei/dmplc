@@ -33,13 +33,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//NodeBody"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Specification">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="attrList" eType="#//AttrList"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="spec" eType="#//SpecNoAttr"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SpecNoAttr" eSuperTypes="#//AttributableElement">
+  <eClassifiers xsi:type="ecore:EClass" name="SpecNoAttr" eSuperTypes="#//AttributableElement #//AttributableNoRoleElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="function" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
@@ -55,12 +49,27 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AttributableElement"/>
-  <eClassifiers xsi:type="ecore:EClass" name="VarBlock" eSuperTypes="#//NodeBodyElement">
+  <eClassifiers xsi:type="ecore:EClass" name="Role" eSuperTypes="#//AttributableElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="role" eType="#//RoleNoAttr"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RoleNoAttr">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//RoleBody"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RoleBody">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
+        eType="#//RoleBodyElement" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RoleBodyElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AttributableNoRoleElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="VarBlock" eSuperTypes="#//NodeBodyElement #//RoleBodyElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="override" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//NodeVarInit"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RecordBlock" eSuperTypes="#//NodeBodyElement">
+  <eClassifiers xsi:type="ecore:EClass" name="RecordBlock" eSuperTypes="#//NodeBodyElement #//RoleBodyElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="override" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="vars" upperBound="-1" eType="#//NodeVarInit"
@@ -100,7 +109,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="proc" eType="#//ProcNoAttr"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ProcNoAttr" eSuperTypes="#//AttributableElement">
+  <eClassifiers xsi:type="ecore:EClass" name="ProcNoAttr" eSuperTypes="#//AttributableElement #//AttributableNoRoleElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="override" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="prototype" eType="#//FnPrototype"
         containment="true"/>
@@ -225,6 +234,12 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RequireSpec" eSuperTypes="#//SpecNoAttr"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AttributableNoRole" eSuperTypes="#//RoleBodyElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attrList" eType="#//AttrList"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="#//AttributableNoRoleElement"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ExprVarAsgn" eSuperTypes="#//VarAsgn">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//Expr" containment="true"/>
   </eClassifiers>

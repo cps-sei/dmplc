@@ -552,8 +552,6 @@ ruleNodeNoAttr returns [EObject current=null]
 
 
 
-
-
 // Entry rule entryRuleSpecNoAttr
 entryRuleSpecNoAttr returns [EObject current=null] 
 	:
@@ -951,7 +949,293 @@ ruleAttributableElement returns [EObject current=null]
 
     |
     { 
-        newCompositeNode(grammarAccess.getAttributableElementAccess().getSpecNoAttrParserRuleCall_1()); 
+        newCompositeNode(grammarAccess.getAttributableElementAccess().getRoleParserRuleCall_1()); 
+    }
+    this_Role_1=ruleRole
+    { 
+        $current = $this_Role_1.current; 
+        afterParserOrEnumRuleCall();
+    }
+
+    |
+    { 
+        newCompositeNode(grammarAccess.getAttributableElementAccess().getSpecNoAttrParserRuleCall_2()); 
+    }
+    this_SpecNoAttr_2=ruleSpecNoAttr
+    { 
+        $current = $this_SpecNoAttr_2.current; 
+        afterParserOrEnumRuleCall();
+    }
+)
+;
+
+
+
+
+
+// Entry rule entryRuleRole
+entryRuleRole returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getRoleRule()); }
+	 iv_ruleRole=ruleRole 
+	 { $current=$iv_ruleRole.current; } 
+	 EOF 
+;
+
+// Rule Role
+ruleRole returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getRoleAccess().getRoleRoleNoAttrParserRuleCall_0()); 
+	    }
+		lv_role_0_0=ruleRoleNoAttr		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getRoleRule());
+	        }
+       		set(
+       			$current, 
+       			"role",
+        		lv_role_0_0, 
+        		"RoleNoAttr");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)
+;
+
+
+
+
+
+// Entry rule entryRuleRoleNoAttr
+entryRuleRoleNoAttr returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getRoleNoAttrRule()); }
+	 iv_ruleRoleNoAttr=ruleRoleNoAttr 
+	 { $current=$iv_ruleRoleNoAttr.current; } 
+	 EOF 
+;
+
+// Rule RoleNoAttr
+ruleRoleNoAttr returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(	otherlv_0='role' 
+    {
+    	newLeafNode(otherlv_0, grammarAccess.getRoleNoAttrAccess().getRoleKeyword_0());
+    }
+(
+(
+		lv_name_1_0=RULE_TIDENTIFIER
+		{
+			newLeafNode(lv_name_1_0, grammarAccess.getRoleNoAttrAccess().getNameTIDENTIFIERTerminalRuleCall_1_0()); 
+		}
+		{
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getRoleNoAttrRule());
+	        }
+       		setWithLastConsumed(
+       			$current, 
+       			"name",
+        		lv_name_1_0, 
+        		"TIDENTIFIER");
+	    }
+
+)
+)	otherlv_2='{' 
+    {
+    	newLeafNode(otherlv_2, grammarAccess.getRoleNoAttrAccess().getLeftCurlyBracketKeyword_2());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getRoleNoAttrAccess().getBodyRoleBodyParserRuleCall_3_0()); 
+	    }
+		lv_body_3_0=ruleRoleBody		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getRoleNoAttrRule());
+	        }
+       		set(
+       			$current, 
+       			"body",
+        		lv_body_3_0, 
+        		"RoleBody");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)	otherlv_4='}' 
+    {
+    	newLeafNode(otherlv_4, grammarAccess.getRoleNoAttrAccess().getRightCurlyBracketKeyword_4());
+    }
+)
+;
+
+
+
+
+
+// Entry rule entryRuleRoleBody
+entryRuleRoleBody returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getRoleBodyRule()); }
+	 iv_ruleRoleBody=ruleRoleBody 
+	 { $current=$iv_ruleRoleBody.current; } 
+	 EOF 
+;
+
+// Rule RoleBody
+ruleRoleBody returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+((
+    {
+        $current = forceCreateModelElement(
+            grammarAccess.getRoleBodyAccess().getRoleBodyAction_0(),
+            $current);
+    }
+)(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getRoleBodyAccess().getElementsRoleBodyElementParserRuleCall_1_0()); 
+	    }
+		lv_elements_1_0=ruleRoleBodyElement		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getRoleBodyRule());
+	        }
+       		add(
+       			$current, 
+       			"elements",
+        		lv_elements_1_0, 
+        		"RoleBodyElement");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)*)
+;
+
+
+
+
+
+// Entry rule entryRuleRoleBodyElement
+entryRuleRoleBodyElement returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getRoleBodyElementRule()); }
+	 iv_ruleRoleBodyElement=ruleRoleBodyElement 
+	 { $current=$iv_ruleRoleBodyElement.current; } 
+	 EOF 
+;
+
+// Rule RoleBodyElement
+ruleRoleBodyElement returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(
+    { 
+        newCompositeNode(grammarAccess.getRoleBodyElementAccess().getVarBlockParserRuleCall_0()); 
+    }
+    this_VarBlock_0=ruleVarBlock
+    { 
+        $current = $this_VarBlock_0.current; 
+        afterParserOrEnumRuleCall();
+    }
+
+    |
+    { 
+        newCompositeNode(grammarAccess.getRoleBodyElementAccess().getRecordBlockParserRuleCall_1()); 
+    }
+    this_RecordBlock_1=ruleRecordBlock
+    { 
+        $current = $this_RecordBlock_1.current; 
+        afterParserOrEnumRuleCall();
+    }
+
+    |((
+    {
+        $current = forceCreateModelElement(
+            grammarAccess.getRoleBodyElementAccess().getAttributableNoRoleAction_2_0(),
+            $current);
+    }
+)(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getRoleBodyElementAccess().getAttrListAttrListParserRuleCall_2_1_0()); 
+	    }
+		lv_attrList_3_0=ruleAttrList		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getRoleBodyElementRule());
+	        }
+       		set(
+       			$current, 
+       			"attrList",
+        		lv_attrList_3_0, 
+        		"AttrList");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)?(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getRoleBodyElementAccess().getElementAttributableNoRoleElementParserRuleCall_2_2_0()); 
+	    }
+		lv_element_4_0=ruleAttributableNoRoleElement		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getRoleBodyElementRule());
+	        }
+       		set(
+       			$current, 
+       			"element",
+        		lv_element_4_0, 
+        		"AttributableNoRoleElement");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)))
+;
+
+
+
+
+
+// Entry rule entryRuleAttributableNoRoleElement
+entryRuleAttributableNoRoleElement returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getAttributableNoRoleElementRule()); }
+	 iv_ruleAttributableNoRoleElement=ruleAttributableNoRoleElement 
+	 { $current=$iv_ruleAttributableNoRoleElement.current; } 
+	 EOF 
+;
+
+// Rule AttributableNoRoleElement
+ruleAttributableNoRoleElement returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(
+    { 
+        newCompositeNode(grammarAccess.getAttributableNoRoleElementAccess().getProcNoAttrParserRuleCall_0()); 
+    }
+    this_ProcNoAttr_0=ruleProcNoAttr
+    { 
+        $current = $this_ProcNoAttr_0.current; 
+        afterParserOrEnumRuleCall();
+    }
+
+    |
+    { 
+        newCompositeNode(grammarAccess.getAttributableNoRoleElementAccess().getSpecNoAttrParserRuleCall_1()); 
     }
     this_SpecNoAttr_1=ruleSpecNoAttr
     { 

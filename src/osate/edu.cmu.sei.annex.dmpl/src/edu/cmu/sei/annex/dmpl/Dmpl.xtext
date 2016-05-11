@@ -49,10 +49,6 @@ NodeNoAttr:
 	('node' | 'NODE') name=TIDENTIFIER (';' | '{' body=NodeBody '}')
 ;
 
-Specification:
-	attrList=AttrList? spec=SpecNoAttr
-;
-
 SpecNoAttr:
 	{AtEndSpec} 'expect' name=TIDENTIFIER ':' 'at_end' '=>' function=TIDENTIFIER ';' |
 	{AtLeastSpec} 'expect' name=TIDENTIFIER ':' 'at_least' threshold=DoubleConst '=>' function=TIDENTIFIER ';' |
@@ -74,6 +70,30 @@ Attributable:
 ;
 
 AttributableElement:
+	ProcNoAttr | Role | SpecNoAttr
+;
+
+//TODO
+Role:
+	role=RoleNoAttr
+;
+
+//TODO
+RoleNoAttr:
+	'role' name=TIDENTIFIER '{' body=RoleBody '}'
+;
+
+RoleBody:
+	{RoleBody} (elements+=RoleBodyElement)*
+;
+
+RoleBodyElement:
+	VarBlock |
+	RecordBlock |
+	{AttributableNoRole} attrList=AttrList? element=AttributableNoRoleElement
+;
+
+AttributableNoRoleElement:
 	ProcNoAttr | SpecNoAttr
 ;
 

@@ -125,11 +125,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createNodeNoAttrAdapter();
       }
       @Override
-      public Adapter caseSpecification(Specification object)
-      {
-        return createSpecificationAdapter();
-      }
-      @Override
       public Adapter caseSpecNoAttr(SpecNoAttr object)
       {
         return createSpecNoAttrAdapter();
@@ -153,6 +148,31 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
       public Adapter caseAttributableElement(AttributableElement object)
       {
         return createAttributableElementAdapter();
+      }
+      @Override
+      public Adapter caseRole(Role object)
+      {
+        return createRoleAdapter();
+      }
+      @Override
+      public Adapter caseRoleNoAttr(RoleNoAttr object)
+      {
+        return createRoleNoAttrAdapter();
+      }
+      @Override
+      public Adapter caseRoleBody(RoleBody object)
+      {
+        return createRoleBodyAdapter();
+      }
+      @Override
+      public Adapter caseRoleBodyElement(RoleBodyElement object)
+      {
+        return createRoleBodyElementAdapter();
+      }
+      @Override
+      public Adapter caseAttributableNoRoleElement(AttributableNoRoleElement object)
+      {
+        return createAttributableNoRoleElementAdapter();
       }
       @Override
       public Adapter caseVarBlock(VarBlock object)
@@ -268,6 +288,11 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
       public Adapter caseRequireSpec(RequireSpec object)
       {
         return createRequireSpecAdapter();
+      }
+      @Override
+      public Adapter caseAttributableNoRole(AttributableNoRole object)
+      {
+        return createAttributableNoRoleAdapter();
       }
       @Override
       public Adapter caseExprVarAsgn(ExprVarAsgn object)
@@ -607,21 +632,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Specification <em>Specification</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.Specification
-   * @generated
-   */
-  public Adapter createSpecificationAdapter()
-  {
-    return null;
-  }
-
-  /**
    * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.SpecNoAttr <em>Spec No Attr</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -692,6 +702,81 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createAttributableElementAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Role <em>Role</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Role
+   * @generated
+   */
+  public Adapter createRoleAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.RoleNoAttr <em>Role No Attr</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.RoleNoAttr
+   * @generated
+   */
+  public Adapter createRoleNoAttrAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.RoleBody <em>Role Body</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.RoleBody
+   * @generated
+   */
+  public Adapter createRoleBodyAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.RoleBodyElement <em>Role Body Element</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.RoleBodyElement
+   * @generated
+   */
+  public Adapter createRoleBodyElementAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.AttributableNoRoleElement <em>Attributable No Role Element</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.AttributableNoRoleElement
+   * @generated
+   */
+  public Adapter createAttributableNoRoleElementAdapter()
   {
     return null;
   }
@@ -1037,6 +1122,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createRequireSpecAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.AttributableNoRole <em>Attributable No Role</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.AttributableNoRole
+   * @generated
+   */
+  public Adapter createAttributableNoRoleAdapter()
   {
     return null;
   }

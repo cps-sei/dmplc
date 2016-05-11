@@ -21,7 +21,7 @@ package edu.cmu.sei.annex.dmpl.dmpl;
  * @model
  * @generated
  */
-public interface ProcNoAttr extends AttributableElement
+public interface ProcNoAttr extends AttributableElement, AttributableNoRoleElement
 {
   /**
    * Returns the value of the '<em><b>Override</b></em>' attribute.

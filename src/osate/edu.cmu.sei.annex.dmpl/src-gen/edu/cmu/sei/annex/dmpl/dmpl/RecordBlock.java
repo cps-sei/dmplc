@@ -24,7 +24,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface RecordBlock extends NodeBodyElement
+public interface RecordBlock extends NodeBodyElement, RoleBodyElement
 {
   /**
    * Returns the value of the '<em><b>Override</b></em>' attribute.

@@ -74,12 +74,16 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.DOUBLE_CONST: return createDoubleConst();
       case DmplPackage.NODE: return createNode();
       case DmplPackage.NODE_NO_ATTR: return createNodeNoAttr();
-      case DmplPackage.SPECIFICATION: return createSpecification();
       case DmplPackage.SPEC_NO_ATTR: return createSpecNoAttr();
       case DmplPackage.NODE_BODY: return createNodeBody();
       case DmplPackage.NODE_BODY_ELEMENT: return createNodeBodyElement();
       case DmplPackage.ATTRIBUTABLE: return createAttributable();
       case DmplPackage.ATTRIBUTABLE_ELEMENT: return createAttributableElement();
+      case DmplPackage.ROLE: return createRole();
+      case DmplPackage.ROLE_NO_ATTR: return createRoleNoAttr();
+      case DmplPackage.ROLE_BODY: return createRoleBody();
+      case DmplPackage.ROLE_BODY_ELEMENT: return createRoleBodyElement();
+      case DmplPackage.ATTRIBUTABLE_NO_ROLE_ELEMENT: return createAttributableNoRoleElement();
       case DmplPackage.VAR_BLOCK: return createVarBlock();
       case DmplPackage.RECORD_BLOCK: return createRecordBlock();
       case DmplPackage.NODE_VAR_INIT: return createNodeVarInit();
@@ -103,6 +107,7 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.AT_END_SPEC: return createAtEndSpec();
       case DmplPackage.AT_LEAST_SPEC: return createAtLeastSpec();
       case DmplPackage.REQUIRE_SPEC: return createRequireSpec();
+      case DmplPackage.ATTRIBUTABLE_NO_ROLE: return createAttributableNoRole();
       case DmplPackage.EXPR_VAR_ASGN: return createExprVarAsgn();
       case DmplPackage.FN_VAR_ASGN: return createFnVarAsgn();
       case DmplPackage.INT_DIMENSION: return createIntDimension();
@@ -326,17 +331,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public Specification createSpecification()
-  {
-    SpecificationImpl specification = new SpecificationImpl();
-    return specification;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public SpecNoAttr createSpecNoAttr()
   {
     SpecNoAttrImpl specNoAttr = new SpecNoAttrImpl();
@@ -385,6 +379,61 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     AttributableElementImpl attributableElement = new AttributableElementImpl();
     return attributableElement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Role createRole()
+  {
+    RoleImpl role = new RoleImpl();
+    return role;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public RoleNoAttr createRoleNoAttr()
+  {
+    RoleNoAttrImpl roleNoAttr = new RoleNoAttrImpl();
+    return roleNoAttr;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public RoleBody createRoleBody()
+  {
+    RoleBodyImpl roleBody = new RoleBodyImpl();
+    return roleBody;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public RoleBodyElement createRoleBodyElement()
+  {
+    RoleBodyElementImpl roleBodyElement = new RoleBodyElementImpl();
+    return roleBodyElement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public AttributableNoRoleElement createAttributableNoRoleElement()
+  {
+    AttributableNoRoleElementImpl attributableNoRoleElement = new AttributableNoRoleElementImpl();
+    return attributableNoRoleElement;
   }
 
   /**
@@ -638,6 +687,17 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     RequireSpecImpl requireSpec = new RequireSpecImpl();
     return requireSpec;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public AttributableNoRole createAttributableNoRole()
+  {
+    AttributableNoRoleImpl attributableNoRole = new AttributableNoRoleImpl();
+    return attributableNoRole;
   }
 
   /**

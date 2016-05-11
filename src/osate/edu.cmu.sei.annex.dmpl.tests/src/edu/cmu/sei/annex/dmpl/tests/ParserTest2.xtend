@@ -7,6 +7,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.AssignmentStmt
 import edu.cmu.sei.annex.dmpl.dmpl.AtEndSpec
 import edu.cmu.sei.annex.dmpl.dmpl.AtLeastSpec
 import edu.cmu.sei.annex.dmpl.dmpl.Attributable
+import edu.cmu.sei.annex.dmpl.dmpl.AttributableNoRole
 import edu.cmu.sei.annex.dmpl.dmpl.BitwiseAndExpr
 import edu.cmu.sei.annex.dmpl.dmpl.BitwiseOrExpr
 import edu.cmu.sei.annex.dmpl.dmpl.CallExpr
@@ -33,6 +34,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.Program
 import edu.cmu.sei.annex.dmpl.dmpl.RecordBlock
 import edu.cmu.sei.annex.dmpl.dmpl.RequireSpec
 import edu.cmu.sei.annex.dmpl.dmpl.ReturnValueStmt
+import edu.cmu.sei.annex.dmpl.dmpl.Role
 import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmt
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmtKeywordEnum
@@ -985,6 +987,18 @@ class ParserTest2 {
 				@attr2;
 				@attr3;
 				require s3 => f4;
+				
+				role role1 {
+					global int v12;
+					record r5 {
+						global int v13;
+					}
+					void f5();
+					@attr4;
+					@attr5;
+					@attr6;
+					require s4 => f6;
+				}
 			}
 		'''.parse => [
 			assertNoIssues
@@ -993,7 +1007,7 @@ class ParserTest2 {
 			(programElements.get(1) as Node).node => [
 				"n2".assertEquals(name)
 				body => [
-					13.assertEquals(elements.size)
+					14.assertEquals(elements.size)
 					"f1".assertEquals(((elements.get(0) as Attributable).element as ProcNoAttr).prototype.name)
 					elements.get(1) as VarBlock => [
 						override.assertFalse
@@ -1086,6 +1100,27 @@ class ParserTest2 {
 						element as RequireSpec => [
 							"s3".assertEquals(name)
 							"f4".assertEquals(function)
+						]
+					]
+					((elements.get(13) as Attributable).element as Role).role => [
+						"role1".assertEquals(name)
+						body => [
+							4.assertEquals(elements.size)
+							"v12".assertEquals((elements.get(0) as VarBlock).^var.^var.varAsgns.head.^var.name)
+							"r5".assertEquals((elements.get(1) as RecordBlock).name)
+							elements.get(2) as AttributableNoRole => [
+								attrList.assertNull
+								"f5".assertEquals((element as ProcNoAttr).prototype.name)
+							]
+							elements.get(3) as AttributableNoRole => [
+								attrList => [
+									3.assertEquals(attrs.size)
+									"attr4".assertEquals(attrs.get(0).name)
+									"attr5".assertEquals(attrs.get(1).name)
+									"attr6".assertEquals(attrs.get(2).name)
+								]
+								"s4".assertEquals((element as RequireSpec).name)
+							]
 						]
 					]
 				]
