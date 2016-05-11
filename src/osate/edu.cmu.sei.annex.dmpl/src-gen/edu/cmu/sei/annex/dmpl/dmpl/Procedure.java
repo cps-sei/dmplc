@@ -13,7 +13,8 @@ package edu.cmu.sei.annex.dmpl.dmpl;
  * </p>
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.Procedure#isOverride <em>Override</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.Procedure#getPrototype <em>Prototype</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.Procedure#isExtern <em>Extern</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.Procedure#isPure <em>Pure</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.Procedure#getFnBody <em>Fn Body</em>}</li>
  * </ul>
  *
@@ -50,30 +51,56 @@ public interface Procedure extends AttributableNodeOrProcedure, AttributableElem
   void setOverride(boolean value);
 
   /**
-   * Returns the value of the '<em><b>Prototype</b></em>' containment reference.
+   * Returns the value of the '<em><b>Extern</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Prototype</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Extern</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Prototype</em>' containment reference.
-   * @see #setPrototype(FnPrototype)
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getProcedure_Prototype()
-   * @model containment="true"
+   * @return the value of the '<em>Extern</em>' attribute.
+   * @see #setExtern(boolean)
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getProcedure_Extern()
+   * @model
    * @generated
    */
-  FnPrototype getPrototype();
+  boolean isExtern();
 
   /**
-   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.Procedure#getPrototype <em>Prototype</em>}' containment reference.
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.Procedure#isExtern <em>Extern</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Prototype</em>' containment reference.
-   * @see #getPrototype()
+   * @param value the new value of the '<em>Extern</em>' attribute.
+   * @see #isExtern()
    * @generated
    */
-  void setPrototype(FnPrototype value);
+  void setExtern(boolean value);
+
+  /**
+   * Returns the value of the '<em><b>Pure</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Pure</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Pure</em>' attribute.
+   * @see #setPure(boolean)
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getProcedure_Pure()
+   * @model
+   * @generated
+   */
+  boolean isPure();
+
+  /**
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.Procedure#isPure <em>Pure</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Pure</em>' attribute.
+   * @see #isPure()
+   * @generated
+   */
+  void setPure(boolean value);
 
   /**
    * Returns the value of the '<em><b>Fn Body</b></em>' containment reference.

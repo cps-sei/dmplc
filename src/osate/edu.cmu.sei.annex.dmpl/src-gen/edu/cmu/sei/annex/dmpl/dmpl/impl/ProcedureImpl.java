@@ -4,7 +4,6 @@ package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.FnBody;
-import edu.cmu.sei.annex.dmpl.dmpl.FnPrototype;
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -24,7 +23,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * </p>
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcedureImpl#isOverride <em>Override</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcedureImpl#getPrototype <em>Prototype</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcedureImpl#isExtern <em>Extern</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcedureImpl#isPure <em>Pure</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcedureImpl#getFnBody <em>Fn Body</em>}</li>
  * </ul>
  *
@@ -53,14 +53,44 @@ public class ProcedureImpl extends AttributableNodeOrProcedureImpl implements Pr
   protected boolean override = OVERRIDE_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getPrototype() <em>Prototype</em>}' containment reference.
+   * The default value of the '{@link #isExtern() <em>Extern</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getPrototype()
+   * @see #isExtern()
    * @generated
    * @ordered
    */
-  protected FnPrototype prototype;
+  protected static final boolean EXTERN_EDEFAULT = false;
+
+  /**
+   * The cached value of the '{@link #isExtern() <em>Extern</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #isExtern()
+   * @generated
+   * @ordered
+   */
+  protected boolean extern = EXTERN_EDEFAULT;
+
+  /**
+   * The default value of the '{@link #isPure() <em>Pure</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #isPure()
+   * @generated
+   * @ordered
+   */
+  protected static final boolean PURE_EDEFAULT = false;
+
+  /**
+   * The cached value of the '{@link #isPure() <em>Pure</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #isPure()
+   * @generated
+   * @ordered
+   */
+  protected boolean pure = PURE_EDEFAULT;
 
   /**
    * The cached value of the '{@link #getFnBody() <em>Fn Body</em>}' containment reference.
@@ -121,9 +151,9 @@ public class ProcedureImpl extends AttributableNodeOrProcedureImpl implements Pr
    * <!-- end-user-doc -->
    * @generated
    */
-  public FnPrototype getPrototype()
+  public boolean isExtern()
   {
-    return prototype;
+    return extern;
   }
 
   /**
@@ -131,16 +161,12 @@ public class ProcedureImpl extends AttributableNodeOrProcedureImpl implements Pr
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetPrototype(FnPrototype newPrototype, NotificationChain msgs)
+  public void setExtern(boolean newExtern)
   {
-    FnPrototype oldPrototype = prototype;
-    prototype = newPrototype;
+    boolean oldExtern = extern;
+    extern = newExtern;
     if (eNotificationRequired())
-    {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.PROCEDURE__PROTOTYPE, oldPrototype, newPrototype);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
-    }
-    return msgs;
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.PROCEDURE__EXTERN, oldExtern, extern));
   }
 
   /**
@@ -148,20 +174,22 @@ public class ProcedureImpl extends AttributableNodeOrProcedureImpl implements Pr
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setPrototype(FnPrototype newPrototype)
+  public boolean isPure()
   {
-    if (newPrototype != prototype)
-    {
-      NotificationChain msgs = null;
-      if (prototype != null)
-        msgs = ((InternalEObject)prototype).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.PROCEDURE__PROTOTYPE, null, msgs);
-      if (newPrototype != null)
-        msgs = ((InternalEObject)newPrototype).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.PROCEDURE__PROTOTYPE, null, msgs);
-      msgs = basicSetPrototype(newPrototype, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.PROCEDURE__PROTOTYPE, newPrototype, newPrototype));
+    return pure;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setPure(boolean newPure)
+  {
+    boolean oldPure = pure;
+    pure = newPure;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.PROCEDURE__PURE, oldPure, pure));
   }
 
   /**
@@ -222,8 +250,6 @@ public class ProcedureImpl extends AttributableNodeOrProcedureImpl implements Pr
   {
     switch (featureID)
     {
-      case DmplPackage.PROCEDURE__PROTOTYPE:
-        return basicSetPrototype(null, msgs);
       case DmplPackage.PROCEDURE__FN_BODY:
         return basicSetFnBody(null, msgs);
     }
@@ -242,8 +268,10 @@ public class ProcedureImpl extends AttributableNodeOrProcedureImpl implements Pr
     {
       case DmplPackage.PROCEDURE__OVERRIDE:
         return isOverride();
-      case DmplPackage.PROCEDURE__PROTOTYPE:
-        return getPrototype();
+      case DmplPackage.PROCEDURE__EXTERN:
+        return isExtern();
+      case DmplPackage.PROCEDURE__PURE:
+        return isPure();
       case DmplPackage.PROCEDURE__FN_BODY:
         return getFnBody();
     }
@@ -263,8 +291,11 @@ public class ProcedureImpl extends AttributableNodeOrProcedureImpl implements Pr
       case DmplPackage.PROCEDURE__OVERRIDE:
         setOverride((Boolean)newValue);
         return;
-      case DmplPackage.PROCEDURE__PROTOTYPE:
-        setPrototype((FnPrototype)newValue);
+      case DmplPackage.PROCEDURE__EXTERN:
+        setExtern((Boolean)newValue);
+        return;
+      case DmplPackage.PROCEDURE__PURE:
+        setPure((Boolean)newValue);
         return;
       case DmplPackage.PROCEDURE__FN_BODY:
         setFnBody((FnBody)newValue);
@@ -286,8 +317,11 @@ public class ProcedureImpl extends AttributableNodeOrProcedureImpl implements Pr
       case DmplPackage.PROCEDURE__OVERRIDE:
         setOverride(OVERRIDE_EDEFAULT);
         return;
-      case DmplPackage.PROCEDURE__PROTOTYPE:
-        setPrototype((FnPrototype)null);
+      case DmplPackage.PROCEDURE__EXTERN:
+        setExtern(EXTERN_EDEFAULT);
+        return;
+      case DmplPackage.PROCEDURE__PURE:
+        setPure(PURE_EDEFAULT);
         return;
       case DmplPackage.PROCEDURE__FN_BODY:
         setFnBody((FnBody)null);
@@ -308,8 +342,10 @@ public class ProcedureImpl extends AttributableNodeOrProcedureImpl implements Pr
     {
       case DmplPackage.PROCEDURE__OVERRIDE:
         return override != OVERRIDE_EDEFAULT;
-      case DmplPackage.PROCEDURE__PROTOTYPE:
-        return prototype != null;
+      case DmplPackage.PROCEDURE__EXTERN:
+        return extern != EXTERN_EDEFAULT;
+      case DmplPackage.PROCEDURE__PURE:
+        return pure != PURE_EDEFAULT;
       case DmplPackage.PROCEDURE__FN_BODY:
         return fnBody != null;
     }
@@ -329,6 +365,10 @@ public class ProcedureImpl extends AttributableNodeOrProcedureImpl implements Pr
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (override: ");
     result.append(override);
+    result.append(", extern: ");
+    result.append(extern);
+    result.append(", pure: ");
+    result.append(pure);
     result.append(')');
     return result.toString();
   }

@@ -200,11 +200,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createFnBodyAdapter();
       }
       @Override
-      public Adapter caseFnPrototype(FnPrototype object)
-      {
-        return createFnPrototypeAdapter();
-      }
-      @Override
       public Adapter caseAttr(Attr object)
       {
         return createAttrAdapter();
@@ -320,9 +315,9 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createThreadDeclarationAdapter();
       }
       @Override
-      public Adapter caseFnPrototypeDeclaration(FnPrototypeDeclaration object)
+      public Adapter caseFunctionDeclaration(FunctionDeclaration object)
       {
-        return createFnPrototypeDeclarationAdapter();
+        return createFunctionDeclarationAdapter();
       }
       @Override
       public Adapter caseNestedStmt(NestedStmt object)
@@ -852,21 +847,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototype <em>Fn Prototype</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.FnPrototype
-   * @generated
-   */
-  public Adapter createFnPrototypeAdapter()
-  {
-    return null;
-  }
-
-  /**
    * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Attr <em>Attr</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -1212,16 +1192,16 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration <em>Fn Prototype Declaration</em>}'.
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.FunctionDeclaration <em>Function Declaration</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration
+   * @see edu.cmu.sei.annex.dmpl.dmpl.FunctionDeclaration
    * @generated
    */
-  public Adapter createFnPrototypeDeclarationAdapter()
+  public Adapter createFunctionDeclarationAdapter()
   {
     return null;
   }

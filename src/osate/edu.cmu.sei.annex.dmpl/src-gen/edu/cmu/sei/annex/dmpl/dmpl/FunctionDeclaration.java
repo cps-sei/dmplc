@@ -6,22 +6,22 @@ import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Fn Prototype Declaration</b></em>'.
+ * A representation of the model object '<em><b>Function Declaration</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration#getType <em>Type</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration#getParams <em>Params</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.FunctionDeclaration#getType <em>Type</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.FunctionDeclaration#getParams <em>Params</em>}</li>
  * </ul>
  *
- * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getFnPrototypeDeclaration()
+ * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getFunctionDeclaration()
  * @model
  * @generated
  */
-public interface FnPrototypeDeclaration extends FnPrototype
+public interface FunctionDeclaration extends Procedure
 {
   /**
    * Returns the value of the '<em><b>Type</b></em>' containment reference.
@@ -33,14 +33,14 @@ public interface FnPrototypeDeclaration extends FnPrototype
    * <!-- end-user-doc -->
    * @return the value of the '<em>Type</em>' containment reference.
    * @see #setType(Type)
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getFnPrototypeDeclaration_Type()
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getFunctionDeclaration_Type()
    * @model containment="true"
    * @generated
    */
   Type getType();
 
   /**
-   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration#getType <em>Type</em>}' containment reference.
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.FunctionDeclaration#getType <em>Type</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Type</em>' containment reference.
@@ -59,10 +59,10 @@ public interface FnPrototypeDeclaration extends FnPrototype
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Params</em>' containment reference list.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getFnPrototypeDeclaration_Params()
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getFunctionDeclaration_Params()
    * @model containment="true"
    * @generated
    */
   EList<Param> getParams();
 
-} // FnPrototypeDeclaration
+} // FunctionDeclaration

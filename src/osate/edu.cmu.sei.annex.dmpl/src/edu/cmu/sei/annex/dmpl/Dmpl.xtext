@@ -113,18 +113,14 @@ Type:
 ;
 
 Procedure:
-	override?='override'? prototype=FnPrototype (';' | fnBody=FnBody)
+	{ThreadDeclaration} override?='override'? extern?=('extern' | 'EXTERN')? pure?=('pure' | 'PURE')? 'thread' name=TIDENTIFIER (';' | fnBody=FnBody) |
+	{FunctionDeclaration} override?='override'? extern?=('extern' | 'EXTERN')? pure?=('pure' | 'PURE')? type=Type name=TIDENTIFIER '('
+		(params+=Param (',' params+=Param)*)?
+	')' (';' | fnBody=FnBody)
 ;
 
 FnBody:
 	{FnBody} '{' (varInits+=VarInit ';')* stmts+=Stmt* '}'
-;
-
-FnPrototype:
-	{ThreadDeclaration} extern?=('extern' | 'EXTERN')? pure?=('pure' | 'PURE')? 'thread' name=TIDENTIFIER |
-	{FnPrototypeDeclaration} extern?=('extern' | 'EXTERN')? pure?=('pure' | 'PURE')? type=Type name=TIDENTIFIER '('
-		(params+=Param (',' params+=Param)*)?
-	')'
 ;
 
 Attr:

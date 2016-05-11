@@ -24,6 +24,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.FnVarAsgn
 import edu.cmu.sei.annex.dmpl.dmpl.ForAllFunctionEnum
 import edu.cmu.sei.annex.dmpl.dmpl.ForAllStmt
 import edu.cmu.sei.annex.dmpl.dmpl.ForStmt
+import edu.cmu.sei.annex.dmpl.dmpl.FunctionDeclaration
 import edu.cmu.sei.annex.dmpl.dmpl.IdRole
 import edu.cmu.sei.annex.dmpl.dmpl.IntExpr
 import edu.cmu.sei.annex.dmpl.dmpl.LVal
@@ -31,7 +32,6 @@ import edu.cmu.sei.annex.dmpl.dmpl.NestedStmt
 import edu.cmu.sei.annex.dmpl.dmpl.Node
 import edu.cmu.sei.annex.dmpl.dmpl.NodeVarScopeEnum
 import edu.cmu.sei.annex.dmpl.dmpl.OrExpr
-import edu.cmu.sei.annex.dmpl.dmpl.Procedure
 import edu.cmu.sei.annex.dmpl.dmpl.Program
 import edu.cmu.sei.annex.dmpl.dmpl.RecordBlock
 import edu.cmu.sei.annex.dmpl.dmpl.RequireSpec
@@ -78,7 +78,7 @@ class ParserTest2 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			((elements.head as AttributableProgramElement).element as Procedure).fnBody => [
+			((elements.head as AttributableProgramElement).element as FunctionDeclaration).fnBody => [
 				5.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
@@ -146,7 +146,7 @@ class ParserTest2 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			((elements.head as AttributableProgramElement).element as Procedure).fnBody => [
+			((elements.head as AttributableProgramElement).element as FunctionDeclaration).fnBody => [
 				3.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
@@ -191,7 +191,7 @@ class ParserTest2 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			((elements.head as AttributableProgramElement).element as Procedure).fnBody => [
+			((elements.head as AttributableProgramElement).element as FunctionDeclaration).fnBody => [
 				3.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
@@ -234,7 +234,7 @@ class ParserTest2 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			((elements.head as AttributableProgramElement).element as Procedure).fnBody => [
+			((elements.head as AttributableProgramElement).element as FunctionDeclaration).fnBody => [
 				3.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
@@ -277,7 +277,7 @@ class ParserTest2 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			((elements.head as AttributableProgramElement).element as Procedure).fnBody => [
+			((elements.head as AttributableProgramElement).element as FunctionDeclaration).fnBody => [
 				3.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
@@ -320,7 +320,7 @@ class ParserTest2 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			((elements.head as AttributableProgramElement).element as Procedure).fnBody => [
+			((elements.head as AttributableProgramElement).element as FunctionDeclaration).fnBody => [
 				3.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
@@ -366,7 +366,7 @@ class ParserTest2 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			((elements.head as AttributableProgramElement).element as Procedure).fnBody => [
+			((elements.head as AttributableProgramElement).element as FunctionDeclaration).fnBody => [
 				6.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head as ExprVarAsgn => [
 					"v1".assertEquals(^var.name)
@@ -452,7 +452,7 @@ class ParserTest2 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			((elements.head as AttributableProgramElement).element as Procedure).fnBody => [
+			((elements.head as AttributableProgramElement).element as FunctionDeclaration).fnBody => [
 				6.assertEquals(varInits.size)
 				varInits.get(0).varAsgns.head => [
 					"v1".assertEquals(^var.name)
@@ -496,7 +496,7 @@ class ParserTest2 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			((elements.head as AttributableProgramElement).element as Procedure).fnBody => [
+			((elements.head as AttributableProgramElement).element as FunctionDeclaration).fnBody => [
 				3.assertEquals(varInits.size)
 				varInits.get(0) => [
 					SimpTypeEnum.INT.assertEquals(type.simpType)
@@ -534,19 +534,19 @@ class ParserTest2 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(elements.get(0) as AttributableProgramElement).element as Procedure => [
-				"f1".assertEquals(prototype.name)
+			(elements.get(0) as AttributableProgramElement).element as FunctionDeclaration => [
+				"f1".assertEquals(name)
 				fnBody.varInits.empty.assertTrue
 			]
-			(elements.get(1) as AttributableProgramElement).element as Procedure => [
-				"f2".assertEquals(prototype.name)
+			(elements.get(1) as AttributableProgramElement).element as FunctionDeclaration => [
+				"f2".assertEquals(name)
 				fnBody => [
 					1.assertEquals(varInits.size)
 					"v1".assertEquals(varInits.head.varAsgns.head.^var.name)
 				]
 			]
-			(elements.get(2) as AttributableProgramElement).element as Procedure => [
-				"f3".assertEquals(prototype.name)
+			(elements.get(2) as AttributableProgramElement).element as FunctionDeclaration => [
+				"f3".assertEquals(name)
 				fnBody => [
 					2.assertEquals(varInits.size)
 					"v2".assertEquals(varInits.get(0).varAsgns.head.^var.name)
@@ -603,8 +603,8 @@ class ParserTest2 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(elements.head as AttributableProgramElement).element as Procedure => [
-				"f1".assertEquals(prototype.name)
+			(elements.head as AttributableProgramElement).element as FunctionDeclaration => [
+				"f1".assertEquals(name)
 				fnBody => [
 					20.assertEquals(stmts.size)
 					(stmts.get(0) as NestedStmt).stmts.empty.assertTrue;
@@ -754,8 +754,8 @@ class ParserTest2 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(elements.head as AttributableProgramElement).element as Procedure => [
-				"f1".assertEquals(prototype.name)
+			(elements.head as AttributableProgramElement).element as FunctionDeclaration => [
+				"f1".assertEquals(name)
 				fnBody => [
 					3.assertEquals(stmts.size)
 					stmts.get(0) as ForStmt => [
@@ -820,8 +820,8 @@ class ParserTest2 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(elements.head as AttributableProgramElement).element as Procedure => [
-				"f1".assertEquals(prototype.name)
+			(elements.head as AttributableProgramElement).element as FunctionDeclaration => [
+				"f1".assertEquals(name)
 				fnBody => [
 					1.assertEquals(stmts.size)
 					stmts.head as CondStmt => [
@@ -857,8 +857,8 @@ class ParserTest2 {
 			}
 		'''.parse => [
 			assertNoIssues;
-			(elements.head as AttributableProgramElement).element as Procedure => [
-				"f1".assertEquals(prototype.name)
+			(elements.head as AttributableProgramElement).element as FunctionDeclaration => [
+				"f1".assertEquals(name)
 				fnBody => [
 					3.assertEquals(stmts.size)
 					stmts.get(0) as CondStmt => [
@@ -904,16 +904,16 @@ class ParserTest2 {
 			4.assertEquals(elements.size)
 			elements.get(0) as AttributableProgramElement => [
 				attrs.empty.assertTrue
-				element as Procedure => [
-					"f1".assertEquals(prototype.name)
+				element as FunctionDeclaration => [
+					"f1".assertEquals(name)
 					override.assertFalse
 					fnBody.assertNull
 				]
 			]
 			elements.get(1) as AttributableProgramElement => [
 				attrs.empty.assertTrue
-				element as Procedure => [
-					"f2".assertEquals(prototype.name)
+				element as FunctionDeclaration => [
+					"f2".assertEquals(name)
 					override.assertTrue
 					fnBody.assertNull
 				]
@@ -921,8 +921,8 @@ class ParserTest2 {
 			elements.get(2) as AttributableProgramElement => [
 				1.assertEquals(attrs.size)
 				"attr1".assertEquals(attrs.head.name)
-				element as Procedure => [
-					"f3".assertEquals(prototype.name)
+				element as FunctionDeclaration => [
+					"f3".assertEquals(name)
 					override.assertFalse
 					fnBody.assertNotNull
 				]
@@ -932,8 +932,8 @@ class ParserTest2 {
 				"attr2".assertEquals(attrs.get(0).name)
 				"attr3".assertEquals(attrs.get(1).name)
 				"attr4".assertEquals(attrs.get(2).name)
-				element as Procedure => [
-					"f4".assertEquals(prototype.name)
+				element as FunctionDeclaration => [
+					"f4".assertEquals(name)
 					override.assertTrue
 					fnBody.assertNotNull
 				]
@@ -1008,7 +1008,7 @@ class ParserTest2 {
 			(elements.get(1) as AttributableProgramElement).element as Node => [
 				"n2".assertEquals(name)
 				15.assertEquals(elements.size)
-				"f1".assertEquals(((elements.get(0) as Attributable).element as Procedure).prototype.name)
+				"f1".assertEquals(((elements.get(0) as Attributable).element as FunctionDeclaration).name)
 				elements.get(1) as VarBlock => [
 					override.assertFalse
 					^var => [
@@ -1107,7 +1107,7 @@ class ParserTest2 {
 					"r5".assertEquals((elements.get(1) as RecordBlock).name)
 					elements.get(2) as AttributableNoRole => [
 						attrs.empty.assertTrue
-						"f5".assertEquals((element as Procedure).prototype.name)
+						"f5".assertEquals((element as FunctionDeclaration).name)
 					]
 					elements.get(3) as AttributableNoRole => [
 						3.assertEquals(attrs.size)

@@ -239,15 +239,6 @@ public interface DmplFactory extends EFactory
   FnBody createFnBody();
 
   /**
-   * Returns a new object of class '<em>Fn Prototype</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Fn Prototype</em>'.
-   * @generated
-   */
-  FnPrototype createFnPrototype();
-
-  /**
    * Returns a new object of class '<em>Attr</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -455,13 +446,13 @@ public interface DmplFactory extends EFactory
   ThreadDeclaration createThreadDeclaration();
 
   /**
-   * Returns a new object of class '<em>Fn Prototype Declaration</em>'.
+   * Returns a new object of class '<em>Function Declaration</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Fn Prototype Declaration</em>'.
+   * @return a new object of class '<em>Function Declaration</em>'.
    * @generated
    */
-  FnPrototypeDeclaration createFnPrototypeDeclaration();
+  FunctionDeclaration createFunctionDeclaration();
 
   /**
    * Returns a new object of class '<em>Nested Stmt</em>'.

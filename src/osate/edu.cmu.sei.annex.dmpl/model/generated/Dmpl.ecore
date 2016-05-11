@@ -11,7 +11,9 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ProgramElement"/>
   <eClassifiers xsi:type="ecore:EClass" name="ProgramElementNoTarget" eSuperTypes="#//ProgramElement"/>
-  <eClassifiers xsi:type="ecore:EClass" name="AttributableNodeOrProcedure"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AttributableNodeOrProcedure">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NumberConst">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="sign" eType="#//SignEnum"/>
   </eClassifiers>
@@ -22,7 +24,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Node" eSuperTypes="#//AttributableNodeOrProcedure">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
         eType="#//NodeBodyElement" containment="true"/>
   </eClassifiers>
@@ -75,8 +76,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Procedure" eSuperTypes="#//AttributableNodeOrProcedure #//AttributableElement #//AttributableNoRoleElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="override" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="prototype" eType="#//FnPrototype"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="extern" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="pure" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="fnBody" eType="#//FnBody"
         containment="true"/>
   </eClassifiers>
@@ -85,11 +86,6 @@
         eType="#//VarInit" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="stmts" upperBound="-1"
         eType="#//Stmt" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="FnPrototype">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="extern" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="pure" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Attr">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -248,8 +244,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="IdDimension" eSuperTypes="#//Dimension">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="index" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ThreadDeclaration" eSuperTypes="#//FnPrototype"/>
-  <eClassifiers xsi:type="ecore:EClass" name="FnPrototypeDeclaration" eSuperTypes="#//FnPrototype">
+  <eClassifiers xsi:type="ecore:EClass" name="ThreadDeclaration" eSuperTypes="#//Procedure"/>
+  <eClassifiers xsi:type="ecore:EClass" name="FunctionDeclaration" eSuperTypes="#//Procedure">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Type" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"
         eType="#//Param" containment="true"/>

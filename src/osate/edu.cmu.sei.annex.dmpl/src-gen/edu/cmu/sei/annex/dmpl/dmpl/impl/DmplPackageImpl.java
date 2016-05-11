@@ -36,12 +36,11 @@ import edu.cmu.sei.annex.dmpl.dmpl.Expr;
 import edu.cmu.sei.annex.dmpl.dmpl.ExprVarAsgn;
 import edu.cmu.sei.annex.dmpl.dmpl.FadnpStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.FnBody;
-import edu.cmu.sei.annex.dmpl.dmpl.FnPrototype;
-import edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration;
 import edu.cmu.sei.annex.dmpl.dmpl.FnVarAsgn;
 import edu.cmu.sei.annex.dmpl.dmpl.ForAllFunctionEnum;
 import edu.cmu.sei.annex.dmpl.dmpl.ForAllStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.ForStmt;
+import edu.cmu.sei.annex.dmpl.dmpl.FunctionDeclaration;
 import edu.cmu.sei.annex.dmpl.dmpl.IdDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.IdExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.IdRole;
@@ -283,13 +282,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass fnPrototypeEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   private EClass attrEClass = null;
 
   /**
@@ -451,7 +443,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass fnPrototypeDeclarationEClass = null;
+  private EClass functionDeclarationEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -860,6 +852,16 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EAttribute getAttributableNodeOrProcedure_Name()
+  {
+    return (EAttribute)attributableNodeOrProcedureEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getNumberConst()
   {
     return numberConstEClass;
@@ -930,19 +932,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getNode_Name()
-  {
-    return (EAttribute)nodeEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EReference getNode_Elements()
   {
-    return (EReference)nodeEClass.getEStructuralFeatures().get(1);
+    return (EReference)nodeEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1290,9 +1282,19 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getProcedure_Prototype()
+  public EAttribute getProcedure_Extern()
   {
-    return (EReference)procedureEClass.getEStructuralFeatures().get(1);
+    return (EAttribute)procedureEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getProcedure_Pure()
+  {
+    return (EAttribute)procedureEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -1302,7 +1304,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    */
   public EReference getProcedure_FnBody()
   {
-    return (EReference)procedureEClass.getEStructuralFeatures().get(2);
+    return (EReference)procedureEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -1333,46 +1335,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
   public EReference getFnBody_Stmts()
   {
     return (EReference)fnBodyEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getFnPrototype()
-  {
-    return fnPrototypeEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getFnPrototype_Extern()
-  {
-    return (EAttribute)fnPrototypeEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getFnPrototype_Pure()
-  {
-    return (EAttribute)fnPrototypeEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getFnPrototype_Name()
-  {
-    return (EAttribute)fnPrototypeEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -1940,9 +1902,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getFnPrototypeDeclaration()
+  public EClass getFunctionDeclaration()
   {
-    return fnPrototypeDeclarationEClass;
+    return functionDeclarationEClass;
   }
 
   /**
@@ -1950,9 +1912,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getFnPrototypeDeclaration_Type()
+  public EReference getFunctionDeclaration_Type()
   {
-    return (EReference)fnPrototypeDeclarationEClass.getEStructuralFeatures().get(0);
+    return (EReference)functionDeclarationEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1960,9 +1922,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getFnPrototypeDeclaration_Params()
+  public EReference getFunctionDeclaration_Params()
   {
-    return (EReference)fnPrototypeDeclarationEClass.getEStructuralFeatures().get(1);
+    return (EReference)functionDeclarationEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -2926,6 +2888,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     programElementNoTargetEClass = createEClass(PROGRAM_ELEMENT_NO_TARGET);
 
     attributableNodeOrProcedureEClass = createEClass(ATTRIBUTABLE_NODE_OR_PROCEDURE);
+    createEAttribute(attributableNodeOrProcedureEClass, ATTRIBUTABLE_NODE_OR_PROCEDURE__NAME);
 
     numberConstEClass = createEClass(NUMBER_CONST);
     createEAttribute(numberConstEClass, NUMBER_CONST__SIGN);
@@ -2937,7 +2900,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     createEAttribute(doubleConstEClass, DOUBLE_CONST__VALUE);
 
     nodeEClass = createEClass(NODE);
-    createEAttribute(nodeEClass, NODE__NAME);
     createEReference(nodeEClass, NODE__ELEMENTS);
 
     specificationEClass = createEClass(SPECIFICATION);
@@ -2987,17 +2949,13 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     procedureEClass = createEClass(PROCEDURE);
     createEAttribute(procedureEClass, PROCEDURE__OVERRIDE);
-    createEReference(procedureEClass, PROCEDURE__PROTOTYPE);
+    createEAttribute(procedureEClass, PROCEDURE__EXTERN);
+    createEAttribute(procedureEClass, PROCEDURE__PURE);
     createEReference(procedureEClass, PROCEDURE__FN_BODY);
 
     fnBodyEClass = createEClass(FN_BODY);
     createEReference(fnBodyEClass, FN_BODY__VAR_INITS);
     createEReference(fnBodyEClass, FN_BODY__STMTS);
-
-    fnPrototypeEClass = createEClass(FN_PROTOTYPE);
-    createEAttribute(fnPrototypeEClass, FN_PROTOTYPE__EXTERN);
-    createEAttribute(fnPrototypeEClass, FN_PROTOTYPE__PURE);
-    createEAttribute(fnPrototypeEClass, FN_PROTOTYPE__NAME);
 
     attrEClass = createEClass(ATTR);
     createEAttribute(attrEClass, ATTR__NAME);
@@ -3078,9 +3036,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     threadDeclarationEClass = createEClass(THREAD_DECLARATION);
 
-    fnPrototypeDeclarationEClass = createEClass(FN_PROTOTYPE_DECLARATION);
-    createEReference(fnPrototypeDeclarationEClass, FN_PROTOTYPE_DECLARATION__TYPE);
-    createEReference(fnPrototypeDeclarationEClass, FN_PROTOTYPE_DECLARATION__PARAMS);
+    functionDeclarationEClass = createEClass(FUNCTION_DECLARATION);
+    createEReference(functionDeclarationEClass, FUNCTION_DECLARATION__TYPE);
+    createEReference(functionDeclarationEClass, FUNCTION_DECLARATION__PARAMS);
 
     nestedStmtEClass = createEClass(NESTED_STMT);
     createEReference(nestedStmtEClass, NESTED_STMT__STMTS);
@@ -3267,8 +3225,8 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     intDimensionEClass.getESuperTypes().add(this.getDimension());
     nodeNumDimensionEClass.getESuperTypes().add(this.getDimension());
     idDimensionEClass.getESuperTypes().add(this.getDimension());
-    threadDeclarationEClass.getESuperTypes().add(this.getFnPrototype());
-    fnPrototypeDeclarationEClass.getESuperTypes().add(this.getFnPrototype());
+    threadDeclarationEClass.getESuperTypes().add(this.getProcedure());
+    functionDeclarationEClass.getESuperTypes().add(this.getProcedure());
     nestedStmtEClass.getESuperTypes().add(this.getStmt());
     whileStmtEClass.getESuperTypes().add(this.getStmt());
     forStmtEClass.getESuperTypes().add(this.getStmt());
@@ -3307,6 +3265,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEClass(programElementNoTargetEClass, ProgramElementNoTarget.class, "ProgramElementNoTarget", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(attributableNodeOrProcedureEClass, AttributableNodeOrProcedure.class, "AttributableNodeOrProcedure", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getAttributableNodeOrProcedure_Name(), ecorePackage.getEString(), "name", null, 0, 1, AttributableNodeOrProcedure.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(numberConstEClass, NumberConst.class, "NumberConst", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getNumberConst_Sign(), this.getSignEnum(), "sign", null, 0, 1, NumberConst.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3318,7 +3277,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEAttribute(getDoubleConst_Value(), ecorePackage.getEDouble(), "value", null, 0, 1, DoubleConst.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(nodeEClass, Node.class, "Node", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getNode_Name(), ecorePackage.getEString(), "name", null, 0, 1, Node.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getNode_Elements(), this.getNodeBodyElement(), null, "elements", null, 0, -1, Node.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(specificationEClass, Specification.class, "Specification", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -3368,17 +3326,13 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     initEClass(procedureEClass, Procedure.class, "Procedure", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getProcedure_Override(), ecorePackage.getEBoolean(), "override", null, 0, 1, Procedure.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getProcedure_Prototype(), this.getFnPrototype(), null, "prototype", null, 0, 1, Procedure.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getProcedure_Extern(), ecorePackage.getEBoolean(), "extern", null, 0, 1, Procedure.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getProcedure_Pure(), ecorePackage.getEBoolean(), "pure", null, 0, 1, Procedure.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getProcedure_FnBody(), this.getFnBody(), null, "fnBody", null, 0, 1, Procedure.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(fnBodyEClass, FnBody.class, "FnBody", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getFnBody_VarInits(), this.getVarInit(), null, "varInits", null, 0, -1, FnBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getFnBody_Stmts(), this.getStmt(), null, "stmts", null, 0, -1, FnBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(fnPrototypeEClass, FnPrototype.class, "FnPrototype", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getFnPrototype_Extern(), ecorePackage.getEBoolean(), "extern", null, 0, 1, FnPrototype.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getFnPrototype_Pure(), ecorePackage.getEBoolean(), "pure", null, 0, 1, FnPrototype.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getFnPrototype_Name(), ecorePackage.getEString(), "name", null, 0, 1, FnPrototype.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(attrEClass, Attr.class, "Attr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getAttr_Name(), ecorePackage.getEString(), "name", null, 0, 1, Attr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3459,9 +3413,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     initEClass(threadDeclarationEClass, ThreadDeclaration.class, "ThreadDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-    initEClass(fnPrototypeDeclarationEClass, FnPrototypeDeclaration.class, "FnPrototypeDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getFnPrototypeDeclaration_Type(), this.getType(), null, "type", null, 0, 1, FnPrototypeDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getFnPrototypeDeclaration_Params(), this.getParam(), null, "params", null, 0, -1, FnPrototypeDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(functionDeclarationEClass, FunctionDeclaration.class, "FunctionDeclaration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getFunctionDeclaration_Type(), this.getType(), null, "type", null, 0, 1, FunctionDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getFunctionDeclaration_Params(), this.getParam(), null, "params", null, 0, -1, FunctionDeclaration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(nestedStmtEClass, NestedStmt.class, "NestedStmt", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getNestedStmt_Stmts(), this.getStmt(), null, "stmts", null, 0, -1, NestedStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

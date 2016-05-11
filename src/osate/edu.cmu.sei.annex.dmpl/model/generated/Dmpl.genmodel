@@ -82,7 +82,9 @@
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//ProgramElement"/>
     <genClasses ecoreClass="Dmpl.ecore#//ProgramElementNoTarget"/>
-    <genClasses ecoreClass="Dmpl.ecore#//AttributableNodeOrProcedure"/>
+    <genClasses ecoreClass="Dmpl.ecore#//AttributableNodeOrProcedure">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//AttributableNodeOrProcedure/name"/>
+    </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//NumberConst">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//NumberConst/sign"/>
     </genClasses>
@@ -93,7 +95,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//DoubleConst/value"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Node">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Node/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Node/elements"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Specification">
@@ -138,17 +139,13 @@
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Procedure">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Procedure/override"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Procedure/prototype"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Procedure/extern"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Procedure/pure"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Procedure/fnBody"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//FnBody">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnBody/varInits"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnBody/stmts"/>
-    </genClasses>
-    <genClasses ecoreClass="Dmpl.ecore#//FnPrototype">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//FnPrototype/extern"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//FnPrototype/pure"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//FnPrototype/name"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Attr">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Attr/name"/>
@@ -223,9 +220,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//IdDimension/index"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//ThreadDeclaration"/>
-    <genClasses ecoreClass="Dmpl.ecore#//FnPrototypeDeclaration">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnPrototypeDeclaration/type"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnPrototypeDeclaration/params"/>
+    <genClasses ecoreClass="Dmpl.ecore#//FunctionDeclaration">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FunctionDeclaration/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FunctionDeclaration/params"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//NestedStmt">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//NestedStmt/stmts"/>

@@ -3,7 +3,7 @@
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
-import edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration;
+import edu.cmu.sei.annex.dmpl.dmpl.FunctionDeclaration;
 import edu.cmu.sei.annex.dmpl.dmpl.Param;
 import edu.cmu.sei.annex.dmpl.dmpl.Type;
 
@@ -24,19 +24,19 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Fn Prototype Declaration</b></em>'.
+ * An implementation of the model object '<em><b>Function Declaration</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnPrototypeDeclarationImpl#getType <em>Type</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FnPrototypeDeclarationImpl#getParams <em>Params</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FunctionDeclarationImpl#getType <em>Type</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.FunctionDeclarationImpl#getParams <em>Params</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class FnPrototypeDeclarationImpl extends FnPrototypeImpl implements FnPrototypeDeclaration
+public class FunctionDeclarationImpl extends ProcedureImpl implements FunctionDeclaration
 {
   /**
    * The cached value of the '{@link #getType() <em>Type</em>}' containment reference.
@@ -63,7 +63,7 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeImpl implements FnPro
    * <!-- end-user-doc -->
    * @generated
    */
-  protected FnPrototypeDeclarationImpl()
+  protected FunctionDeclarationImpl()
   {
     super();
   }
@@ -76,7 +76,7 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeImpl implements FnPro
   @Override
   protected EClass eStaticClass()
   {
-    return DmplPackage.Literals.FN_PROTOTYPE_DECLARATION;
+    return DmplPackage.Literals.FUNCTION_DECLARATION;
   }
 
   /**
@@ -100,7 +100,7 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeImpl implements FnPro
     type = newType;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.FN_PROTOTYPE_DECLARATION__TYPE, oldType, newType);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.FUNCTION_DECLARATION__TYPE, oldType, newType);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -117,14 +117,14 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeImpl implements FnPro
     {
       NotificationChain msgs = null;
       if (type != null)
-        msgs = ((InternalEObject)type).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.FN_PROTOTYPE_DECLARATION__TYPE, null, msgs);
+        msgs = ((InternalEObject)type).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.FUNCTION_DECLARATION__TYPE, null, msgs);
       if (newType != null)
-        msgs = ((InternalEObject)newType).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.FN_PROTOTYPE_DECLARATION__TYPE, null, msgs);
+        msgs = ((InternalEObject)newType).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.FUNCTION_DECLARATION__TYPE, null, msgs);
       msgs = basicSetType(newType, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.FN_PROTOTYPE_DECLARATION__TYPE, newType, newType));
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.FUNCTION_DECLARATION__TYPE, newType, newType));
   }
 
   /**
@@ -136,7 +136,7 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeImpl implements FnPro
   {
     if (params == null)
     {
-      params = new EObjectContainmentEList<Param>(Param.class, this, DmplPackage.FN_PROTOTYPE_DECLARATION__PARAMS);
+      params = new EObjectContainmentEList<Param>(Param.class, this, DmplPackage.FUNCTION_DECLARATION__PARAMS);
     }
     return params;
   }
@@ -151,9 +151,9 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeImpl implements FnPro
   {
     switch (featureID)
     {
-      case DmplPackage.FN_PROTOTYPE_DECLARATION__TYPE:
+      case DmplPackage.FUNCTION_DECLARATION__TYPE:
         return basicSetType(null, msgs);
-      case DmplPackage.FN_PROTOTYPE_DECLARATION__PARAMS:
+      case DmplPackage.FUNCTION_DECLARATION__PARAMS:
         return ((InternalEList<?>)getParams()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -169,9 +169,9 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeImpl implements FnPro
   {
     switch (featureID)
     {
-      case DmplPackage.FN_PROTOTYPE_DECLARATION__TYPE:
+      case DmplPackage.FUNCTION_DECLARATION__TYPE:
         return getType();
-      case DmplPackage.FN_PROTOTYPE_DECLARATION__PARAMS:
+      case DmplPackage.FUNCTION_DECLARATION__PARAMS:
         return getParams();
     }
     return super.eGet(featureID, resolve, coreType);
@@ -188,10 +188,10 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeImpl implements FnPro
   {
     switch (featureID)
     {
-      case DmplPackage.FN_PROTOTYPE_DECLARATION__TYPE:
+      case DmplPackage.FUNCTION_DECLARATION__TYPE:
         setType((Type)newValue);
         return;
-      case DmplPackage.FN_PROTOTYPE_DECLARATION__PARAMS:
+      case DmplPackage.FUNCTION_DECLARATION__PARAMS:
         getParams().clear();
         getParams().addAll((Collection<? extends Param>)newValue);
         return;
@@ -209,10 +209,10 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeImpl implements FnPro
   {
     switch (featureID)
     {
-      case DmplPackage.FN_PROTOTYPE_DECLARATION__TYPE:
+      case DmplPackage.FUNCTION_DECLARATION__TYPE:
         setType((Type)null);
         return;
-      case DmplPackage.FN_PROTOTYPE_DECLARATION__PARAMS:
+      case DmplPackage.FUNCTION_DECLARATION__PARAMS:
         getParams().clear();
         return;
     }
@@ -229,12 +229,12 @@ public class FnPrototypeDeclarationImpl extends FnPrototypeImpl implements FnPro
   {
     switch (featureID)
     {
-      case DmplPackage.FN_PROTOTYPE_DECLARATION__TYPE:
+      case DmplPackage.FUNCTION_DECLARATION__TYPE:
         return type != null;
-      case DmplPackage.FN_PROTOTYPE_DECLARATION__PARAMS:
+      case DmplPackage.FUNCTION_DECLARATION__PARAMS:
         return params != null && !params.isEmpty();
     }
     return super.eIsSet(featureID);
   }
 
-} //FnPrototypeDeclarationImpl
+} //FunctionDeclarationImpl

@@ -262,13 +262,6 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case DmplPackage.FN_PROTOTYPE:
-      {
-        FnPrototype fnPrototype = (FnPrototype)theEObject;
-        T result = caseFnPrototype(fnPrototype);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
       case DmplPackage.ATTR:
       {
         Attr attr = (Attr)theEObject;
@@ -454,15 +447,21 @@ public class DmplSwitch<T> extends Switch<T>
       {
         ThreadDeclaration threadDeclaration = (ThreadDeclaration)theEObject;
         T result = caseThreadDeclaration(threadDeclaration);
-        if (result == null) result = caseFnPrototype(threadDeclaration);
+        if (result == null) result = caseProcedure(threadDeclaration);
+        if (result == null) result = caseAttributableNodeOrProcedure(threadDeclaration);
+        if (result == null) result = caseAttributableElement(threadDeclaration);
+        if (result == null) result = caseAttributableNoRoleElement(threadDeclaration);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case DmplPackage.FN_PROTOTYPE_DECLARATION:
+      case DmplPackage.FUNCTION_DECLARATION:
       {
-        FnPrototypeDeclaration fnPrototypeDeclaration = (FnPrototypeDeclaration)theEObject;
-        T result = caseFnPrototypeDeclaration(fnPrototypeDeclaration);
-        if (result == null) result = caseFnPrototype(fnPrototypeDeclaration);
+        FunctionDeclaration functionDeclaration = (FunctionDeclaration)theEObject;
+        T result = caseFunctionDeclaration(functionDeclaration);
+        if (result == null) result = caseProcedure(functionDeclaration);
+        if (result == null) result = caseAttributableNodeOrProcedure(functionDeclaration);
+        if (result == null) result = caseAttributableElement(functionDeclaration);
+        if (result == null) result = caseAttributableNoRoleElement(functionDeclaration);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -1055,22 +1054,6 @@ public class DmplSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Fn Prototype</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Fn Prototype</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseFnPrototype(FnPrototype object)
-  {
-    return null;
-  }
-
-  /**
    * Returns the result of interpreting the object as an instance of '<em>Attr</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -1439,17 +1422,17 @@ public class DmplSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Fn Prototype Declaration</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Function Declaration</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Fn Prototype Declaration</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Function Declaration</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseFnPrototypeDeclaration(FnPrototypeDeclaration object)
+  public T caseFunctionDeclaration(FunctionDeclaration object)
   {
     return null;
   }

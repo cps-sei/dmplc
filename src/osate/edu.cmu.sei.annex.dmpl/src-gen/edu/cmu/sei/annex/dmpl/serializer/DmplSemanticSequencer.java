@@ -29,10 +29,10 @@ import edu.cmu.sei.annex.dmpl.dmpl.EqualityExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.ExprVarAsgn;
 import edu.cmu.sei.annex.dmpl.dmpl.FadnpStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.FnBody;
-import edu.cmu.sei.annex.dmpl.dmpl.FnPrototypeDeclaration;
 import edu.cmu.sei.annex.dmpl.dmpl.FnVarAsgn;
 import edu.cmu.sei.annex.dmpl.dmpl.ForAllStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.ForStmt;
+import edu.cmu.sei.annex.dmpl.dmpl.FunctionDeclaration;
 import edu.cmu.sei.annex.dmpl.dmpl.IdDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.IdExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.IdRole;
@@ -48,7 +48,6 @@ import edu.cmu.sei.annex.dmpl.dmpl.NodeNumExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeVarInit;
 import edu.cmu.sei.annex.dmpl.dmpl.OrExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.Param;
-import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
 import edu.cmu.sei.annex.dmpl.dmpl.Program;
 import edu.cmu.sei.annex.dmpl.dmpl.RecordBlock;
 import edu.cmu.sei.annex.dmpl.dmpl.RequireSpec;
@@ -158,9 +157,6 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 			case DmplPackage.FN_BODY:
 				sequence_FnBody(context, (FnBody) semanticObject); 
 				return; 
-			case DmplPackage.FN_PROTOTYPE_DECLARATION:
-				sequence_FnPrototype(context, (FnPrototypeDeclaration) semanticObject); 
-				return; 
 			case DmplPackage.FN_VAR_ASGN:
 				sequence_VarAsgn(context, (FnVarAsgn) semanticObject); 
 				return; 
@@ -169,6 +165,9 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.FOR_STMT:
 				sequence_Stmt(context, (ForStmt) semanticObject); 
+				return; 
+			case DmplPackage.FUNCTION_DECLARATION:
+				sequence_Procedure(context, (FunctionDeclaration) semanticObject); 
 				return; 
 			case DmplPackage.ID_DIMENSION:
 				sequence_Dimension(context, (IdDimension) semanticObject); 
@@ -215,9 +214,6 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 			case DmplPackage.PARAM:
 				sequence_Param(context, (Param) semanticObject); 
 				return; 
-			case DmplPackage.PROCEDURE:
-				sequence_Procedure(context, (Procedure) semanticObject); 
-				return; 
 			case DmplPackage.PROGRAM:
 				sequence_Program(context, (Program) semanticObject); 
 				return; 
@@ -246,7 +242,7 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				sequence_Expr(context, (TernaryExpr) semanticObject); 
 				return; 
 			case DmplPackage.THREAD_DECLARATION:
-				sequence_FnPrototype(context, (ThreadDeclaration) semanticObject); 
+				sequence_Procedure(context, (ThreadDeclaration) semanticObject); 
 				return; 
 			case DmplPackage.TYPE:
 				sequence_Type(context, (Type) semanticObject); 
@@ -546,24 +542,6 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     ((extern?='extern' | extern?='EXTERN')? (pure?='pure' | pure?='PURE')? type=Type name=TIDENTIFIER (params+=Param params+=Param*)?)
-	 */
-	protected void sequence_FnPrototype(EObject context, FnPrototypeDeclaration semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     ((extern?='extern' | extern?='EXTERN')? (pure?='pure' | pure?='PURE')? name=TIDENTIFIER)
-	 */
-	protected void sequence_FnPrototype(EObject context, ThreadDeclaration semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
 	 *     (sign=Sign? value=INT)
 	 */
 	protected void sequence_IntConst(EObject context, IntConst semanticObject) {
@@ -679,9 +657,26 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (override?='override'? prototype=FnPrototype fnBody=FnBody?)
+	 *     (
+	 *         override?='override'? 
+	 *         (extern?='extern' | extern?='EXTERN')? 
+	 *         (pure?='pure' | pure?='PURE')? 
+	 *         type=Type 
+	 *         name=TIDENTIFIER 
+	 *         (params+=Param params+=Param*)? 
+	 *         fnBody=FnBody?
+	 *     )
 	 */
-	protected void sequence_Procedure(EObject context, Procedure semanticObject) {
+	protected void sequence_Procedure(EObject context, FunctionDeclaration semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (override?='override'? (extern?='extern' | extern?='EXTERN')? (pure?='pure' | pure?='PURE')? name=TIDENTIFIER fnBody=FnBody?)
+	 */
+	protected void sequence_Procedure(EObject context, ThreadDeclaration semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

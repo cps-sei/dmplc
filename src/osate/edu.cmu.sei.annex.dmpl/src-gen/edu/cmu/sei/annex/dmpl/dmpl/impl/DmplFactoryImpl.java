@@ -89,7 +89,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.TYPE: return createType();
       case DmplPackage.PROCEDURE: return createProcedure();
       case DmplPackage.FN_BODY: return createFnBody();
-      case DmplPackage.FN_PROTOTYPE: return createFnPrototype();
       case DmplPackage.ATTR: return createAttr();
       case DmplPackage.PARAM: return createParam();
       case DmplPackage.STMT: return createStmt();
@@ -113,7 +112,7 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.NODE_NUM_DIMENSION: return createNodeNumDimension();
       case DmplPackage.ID_DIMENSION: return createIdDimension();
       case DmplPackage.THREAD_DECLARATION: return createThreadDeclaration();
-      case DmplPackage.FN_PROTOTYPE_DECLARATION: return createFnPrototypeDeclaration();
+      case DmplPackage.FUNCTION_DECLARATION: return createFunctionDeclaration();
       case DmplPackage.NESTED_STMT: return createNestedStmt();
       case DmplPackage.WHILE_STMT: return createWhileStmt();
       case DmplPackage.FOR_STMT: return createForStmt();
@@ -495,17 +494,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public FnPrototype createFnPrototype()
-  {
-    FnPrototypeImpl fnPrototype = new FnPrototypeImpl();
-    return fnPrototype;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public Attr createAttr()
   {
     AttrImpl attr = new AttrImpl();
@@ -759,10 +747,10 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public FnPrototypeDeclaration createFnPrototypeDeclaration()
+  public FunctionDeclaration createFunctionDeclaration()
   {
-    FnPrototypeDeclarationImpl fnPrototypeDeclaration = new FnPrototypeDeclarationImpl();
-    return fnPrototypeDeclaration;
+    FunctionDeclarationImpl functionDeclaration = new FunctionDeclarationImpl();
+    return functionDeclaration;
   }
 
   /**

@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class ThreadDeclarationImpl extends FnPrototypeImpl implements ThreadDeclaration
+public class ThreadDeclarationImpl extends ProcedureImpl implements ThreadDeclaration
 {
   /**
    * <!-- begin-user-doc -->
