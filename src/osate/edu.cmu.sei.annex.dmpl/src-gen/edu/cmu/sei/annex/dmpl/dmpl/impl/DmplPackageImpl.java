@@ -6,6 +6,8 @@ import edu.cmu.sei.annex.dmpl.dmpl.AdditiveExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.AdditiveOperator;
 import edu.cmu.sei.annex.dmpl.dmpl.AndExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.AssignmentStmt;
+import edu.cmu.sei.annex.dmpl.dmpl.AtEndSpec;
+import edu.cmu.sei.annex.dmpl.dmpl.AtLeastSpec;
 import edu.cmu.sei.annex.dmpl.dmpl.Attr;
 import edu.cmu.sei.annex.dmpl.dmpl.AttrList;
 import edu.cmu.sei.annex.dmpl.dmpl.BitwiseAndExpr;
@@ -59,6 +61,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
 import edu.cmu.sei.annex.dmpl.dmpl.Program;
 import edu.cmu.sei.annex.dmpl.dmpl.ProgramElement;
 import edu.cmu.sei.annex.dmpl.dmpl.RecordBlock;
+import edu.cmu.sei.annex.dmpl.dmpl.RequireSpec;
 import edu.cmu.sei.annex.dmpl.dmpl.ReturnValueStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.ShiftExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.ShiftOperator;
@@ -67,6 +70,8 @@ import edu.cmu.sei.annex.dmpl.dmpl.SignedEnum;
 import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum;
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmtKeywordEnum;
+import edu.cmu.sei.annex.dmpl.dmpl.SpecNoAttr;
+import edu.cmu.sei.annex.dmpl.dmpl.Specification;
 import edu.cmu.sei.annex.dmpl.dmpl.Stmt;
 import edu.cmu.sei.annex.dmpl.dmpl.TernaryExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.ThreadDeclaration;
@@ -160,6 +165,20 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass nodeNoAttrEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass specificationEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass specNoAttrEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -307,6 +326,27 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass callExprEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass atEndSpecEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass atLeastSpecEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass requireSpecEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -884,6 +924,56 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getSpecification()
+  {
+    return specificationEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getSpecification_Spec()
+  {
+    return (EReference)specificationEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getSpecNoAttr()
+  {
+    return specNoAttrEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getSpecNoAttr_Name()
+  {
+    return (EAttribute)specNoAttrEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getSpecNoAttr_Function()
+  {
+    return (EAttribute)specNoAttrEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getNodeBody()
   {
     return nodeBodyEClass;
@@ -914,16 +1004,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getNodeBodyElement_Override()
-  {
-    return (EAttribute)nodeBodyElementEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EClass getVarBlock()
   {
     return varBlockEClass;
@@ -934,9 +1014,19 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EAttribute getVarBlock_Override()
+  {
+    return (EAttribute)varBlockEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EReference getVarBlock_Var()
   {
-    return (EReference)varBlockEClass.getEStructuralFeatures().get(0);
+    return (EReference)varBlockEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -954,7 +1044,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getRecordBlock_Name()
+  public EAttribute getRecordBlock_Override()
   {
     return (EAttribute)recordBlockEClass.getEStructuralFeatures().get(0);
   }
@@ -964,9 +1054,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getRecordBlock_Vars()
+  public EAttribute getRecordBlock_Name()
   {
-    return (EReference)recordBlockEClass.getEStructuralFeatures().get(1);
+    return (EAttribute)recordBlockEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -974,7 +1064,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getRecordBlock_EqualsBody()
+  public EReference getRecordBlock_Vars()
   {
     return (EReference)recordBlockEClass.getEStructuralFeatures().get(2);
   }
@@ -984,9 +1074,19 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getRecordBlock_ComplementBody()
+  public EReference getRecordBlock_EqualsBody()
   {
     return (EReference)recordBlockEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getRecordBlock_ComplementBody()
+  {
+    return (EReference)recordBlockEClass.getEStructuralFeatures().get(4);
   }
 
   /**
@@ -1174,9 +1274,19 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EAttribute getProcedure_Override()
+  {
+    return (EAttribute)procedureEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EReference getProcedure_Prototype()
   {
-    return (EReference)procedureEClass.getEStructuralFeatures().get(1);
+    return (EReference)procedureEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -1186,7 +1296,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    */
   public EReference getProcedure_FnBody()
   {
-    return (EReference)procedureEClass.getEStructuralFeatures().get(2);
+    return (EReference)procedureEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -1477,6 +1587,46 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
   public EReference getCallExpr_At()
   {
     return (EReference)callExprEClass.getEStructuralFeatures().get(3);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getAtEndSpec()
+  {
+    return atEndSpecEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getAtLeastSpec()
+  {
+    return atLeastSpecEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getAtLeastSpec_Threshold()
+  {
+    return (EReference)atLeastSpecEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getRequireSpec()
+  {
+    return requireSpecEClass;
   }
 
   /**
@@ -2587,16 +2737,24 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     createEAttribute(nodeNoAttrEClass, NODE_NO_ATTR__NAME);
     createEReference(nodeNoAttrEClass, NODE_NO_ATTR__BODY);
 
+    specificationEClass = createEClass(SPECIFICATION);
+    createEReference(specificationEClass, SPECIFICATION__SPEC);
+
+    specNoAttrEClass = createEClass(SPEC_NO_ATTR);
+    createEAttribute(specNoAttrEClass, SPEC_NO_ATTR__NAME);
+    createEAttribute(specNoAttrEClass, SPEC_NO_ATTR__FUNCTION);
+
     nodeBodyEClass = createEClass(NODE_BODY);
     createEReference(nodeBodyEClass, NODE_BODY__ELEMENTS);
 
     nodeBodyElementEClass = createEClass(NODE_BODY_ELEMENT);
-    createEAttribute(nodeBodyElementEClass, NODE_BODY_ELEMENT__OVERRIDE);
 
     varBlockEClass = createEClass(VAR_BLOCK);
+    createEAttribute(varBlockEClass, VAR_BLOCK__OVERRIDE);
     createEReference(varBlockEClass, VAR_BLOCK__VAR);
 
     recordBlockEClass = createEClass(RECORD_BLOCK);
+    createEAttribute(recordBlockEClass, RECORD_BLOCK__OVERRIDE);
     createEAttribute(recordBlockEClass, RECORD_BLOCK__NAME);
     createEReference(recordBlockEClass, RECORD_BLOCK__VARS);
     createEReference(recordBlockEClass, RECORD_BLOCK__EQUALS_BODY);
@@ -2626,6 +2784,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     procedureEClass = createEClass(PROCEDURE);
     createEReference(procedureEClass, PROCEDURE__ATTR_LIST);
+    createEAttribute(procedureEClass, PROCEDURE__OVERRIDE);
     createEReference(procedureEClass, PROCEDURE__PROTOTYPE);
     createEReference(procedureEClass, PROCEDURE__FN_BODY);
 
@@ -2667,6 +2826,13 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     createEAttribute(callExprEClass, CALL_EXPR__NAME);
     createEReference(callExprEClass, CALL_EXPR__ARGS);
     createEReference(callExprEClass, CALL_EXPR__AT);
+
+    atEndSpecEClass = createEClass(AT_END_SPEC);
+
+    atLeastSpecEClass = createEClass(AT_LEAST_SPEC);
+    createEReference(atLeastSpecEClass, AT_LEAST_SPEC__THRESHOLD);
+
+    requireSpecEClass = createEClass(REQUIRE_SPEC);
 
     exprVarAsgnEClass = createEClass(EXPR_VAR_ASGN);
     createEReference(exprVarAsgnEClass, EXPR_VAR_ASGN__EXPR);
@@ -2845,6 +3011,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     intConstEClass.getESuperTypes().add(this.getNumberConst());
     doubleConstEClass.getESuperTypes().add(this.getNumberConst());
     nodeEClass.getESuperTypes().add(this.getProgramElement());
+    specificationEClass.getESuperTypes().add(this.getNodeBodyElement());
     varBlockEClass.getESuperTypes().add(this.getNodeBodyElement());
     recordBlockEClass.getESuperTypes().add(this.getNodeBodyElement());
     procedureEClass.getESuperTypes().add(this.getProgramElement());
@@ -2853,6 +3020,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     lValEClass.getESuperTypes().add(this.getExpr());
     callExprEClass.getESuperTypes().add(this.getStmt());
     callExprEClass.getESuperTypes().add(this.getExpr());
+    atEndSpecEClass.getESuperTypes().add(this.getSpecNoAttr());
+    atLeastSpecEClass.getESuperTypes().add(this.getSpecNoAttr());
+    requireSpecEClass.getESuperTypes().add(this.getSpecNoAttr());
     exprVarAsgnEClass.getESuperTypes().add(this.getVarAsgn());
     fnVarAsgnEClass.getESuperTypes().add(this.getVarAsgn());
     intDimensionEClass.getESuperTypes().add(this.getDimension());
@@ -2915,16 +3085,24 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEAttribute(getNodeNoAttr_Name(), ecorePackage.getEString(), "name", null, 0, 1, NodeNoAttr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getNodeNoAttr_Body(), this.getNodeBody(), null, "body", null, 0, 1, NodeNoAttr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(specificationEClass, Specification.class, "Specification", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getSpecification_Spec(), this.getSpecNoAttr(), null, "spec", null, 0, 1, Specification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(specNoAttrEClass, SpecNoAttr.class, "SpecNoAttr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getSpecNoAttr_Name(), ecorePackage.getEString(), "name", null, 0, 1, SpecNoAttr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getSpecNoAttr_Function(), ecorePackage.getEString(), "function", null, 0, 1, SpecNoAttr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     initEClass(nodeBodyEClass, NodeBody.class, "NodeBody", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getNodeBody_Elements(), this.getNodeBodyElement(), null, "elements", null, 0, -1, NodeBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(nodeBodyElementEClass, NodeBodyElement.class, "NodeBodyElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getNodeBodyElement_Override(), ecorePackage.getEBoolean(), "override", null, 0, 1, NodeBodyElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(varBlockEClass, VarBlock.class, "VarBlock", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getVarBlock_Override(), ecorePackage.getEBoolean(), "override", null, 0, 1, VarBlock.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getVarBlock_Var(), this.getNodeVarInit(), null, "var", null, 0, 1, VarBlock.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(recordBlockEClass, RecordBlock.class, "RecordBlock", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getRecordBlock_Override(), ecorePackage.getEBoolean(), "override", null, 0, 1, RecordBlock.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getRecordBlock_Name(), ecorePackage.getEString(), "name", null, 0, 1, RecordBlock.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getRecordBlock_Vars(), this.getNodeVarInit(), null, "vars", null, 0, -1, RecordBlock.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getRecordBlock_EqualsBody(), this.getFnBody(), null, "equalsBody", null, 0, 1, RecordBlock.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2954,6 +3132,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     initEClass(procedureEClass, Procedure.class, "Procedure", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getProcedure_AttrList(), this.getAttrList(), null, "attrList", null, 0, 1, Procedure.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getProcedure_Override(), ecorePackage.getEBoolean(), "override", null, 0, 1, Procedure.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getProcedure_Prototype(), this.getFnPrototype(), null, "prototype", null, 0, 1, Procedure.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getProcedure_FnBody(), this.getFnBody(), null, "fnBody", null, 0, 1, Procedure.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -2995,6 +3174,13 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEAttribute(getCallExpr_Name(), ecorePackage.getEString(), "name", null, 0, 1, CallExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getCallExpr_Args(), this.getExpr(), null, "args", null, 0, -1, CallExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getCallExpr_At(), this.getExpr(), null, "at", null, 0, 1, CallExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(atEndSpecEClass, AtEndSpec.class, "AtEndSpec", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(atLeastSpecEClass, AtLeastSpec.class, "AtLeastSpec", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getAtLeastSpec_Threshold(), this.getDoubleConst(), null, "threshold", null, 0, 1, AtLeastSpec.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(requireSpecEClass, RequireSpec.class, "RequireSpec", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(exprVarAsgnEClass, ExprVarAsgn.class, "ExprVarAsgn", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getExprVarAsgn_Expr(), this.getExpr(), null, "expr", null, 0, 1, ExprVarAsgn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

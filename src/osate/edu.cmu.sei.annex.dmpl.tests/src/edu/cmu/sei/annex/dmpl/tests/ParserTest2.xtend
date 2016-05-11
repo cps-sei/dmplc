@@ -4,6 +4,8 @@ import com.google.inject.Inject
 import edu.cmu.sei.annex.dmpl.DmplInjectorProvider
 import edu.cmu.sei.annex.dmpl.dmpl.AndExpr
 import edu.cmu.sei.annex.dmpl.dmpl.AssignmentStmt
+import edu.cmu.sei.annex.dmpl.dmpl.AtEndSpec
+import edu.cmu.sei.annex.dmpl.dmpl.AtLeastSpec
 import edu.cmu.sei.annex.dmpl.dmpl.BitwiseAndExpr
 import edu.cmu.sei.annex.dmpl.dmpl.BitwiseOrExpr
 import edu.cmu.sei.annex.dmpl.dmpl.CallExpr
@@ -27,10 +29,12 @@ import edu.cmu.sei.annex.dmpl.dmpl.OrExpr
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure
 import edu.cmu.sei.annex.dmpl.dmpl.Program
 import edu.cmu.sei.annex.dmpl.dmpl.RecordBlock
+import edu.cmu.sei.annex.dmpl.dmpl.RequireSpec
 import edu.cmu.sei.annex.dmpl.dmpl.ReturnValueStmt
 import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmt
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmtKeywordEnum
+import edu.cmu.sei.annex.dmpl.dmpl.Specification
 import edu.cmu.sei.annex.dmpl.dmpl.TernaryExpr
 import edu.cmu.sei.annex.dmpl.dmpl.VarBlock
 import edu.cmu.sei.annex.dmpl.dmpl.WhileStmt
@@ -965,6 +969,10 @@ class ParserTest2 {
 				} ~ {
 					proc4();
 				}
+				
+				expect s1: at_end => f2;
+				expect s2: at_least 3.14 => f3;
+				require s3 => f4;
 			}
 		'''.parse => [
 			assertNoIssues
@@ -973,7 +981,7 @@ class ParserTest2 {
 			(programElements.get(1) as Node).node => [
 				"n2".assertEquals(name)
 				body => [
-					10.assertEquals(elements.size)
+					13.assertEquals(elements.size)
 					"f1".assertEquals((elements.get(0) as Procedure).prototype.name)
 					elements.get(1) as VarBlock => [
 						override.assertFalse
@@ -1040,6 +1048,19 @@ class ParserTest2 {
 						"v11".assertEquals(vars.head.^var.varAsgns.head.^var.name)
 						"proc3".assertEquals((equalsBody.stmts.head as CallExpr).name)
 						"proc4".assertEquals((complementBody.stmts.head as CallExpr).name)
+					]
+					(elements.get(10) as Specification).spec as AtEndSpec => [
+						"s1".assertEquals(name)
+						"f2".assertEquals(function)
+					]
+					(elements.get(11) as Specification).spec as AtLeastSpec => [
+						"s2".assertEquals(name)
+						3.14.assertEquals(threshold.value, 0.0)
+						"f3".assertEquals(function)
+					]
+					(elements.get(12) as Specification).spec as RequireSpec => [
+						"s3".assertEquals(name)
+						"f4".assertEquals(function)
 					]
 				]
 			]

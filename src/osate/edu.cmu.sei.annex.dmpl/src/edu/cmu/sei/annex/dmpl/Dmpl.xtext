@@ -50,13 +50,24 @@ NodeNoAttr:
 ;
 
 //TODO
+Specification:
+	spec=SpecNoAttr
+;
+
+SpecNoAttr:
+	{AtEndSpec} 'expect' name=TIDENTIFIER ':' 'at_end' '=>' function=TIDENTIFIER ';' |
+	{AtLeastSpec} 'expect' name=TIDENTIFIER ':' 'at_least' threshold=DoubleConst '=>' function=TIDENTIFIER ';' |
+	{RequireSpec} 'require' name=TIDENTIFIER '=>' function=TIDENTIFIER ';'
+;
+
+//TODO
 NodeBody:
 	{NodeBody} (elements+=NodeBodyElement)*
 ;
 
 //TODO
 NodeBodyElement:
-	VarBlock | RecordBlock | Procedure
+	VarBlock | RecordBlock | Procedure | Specification
 ;
 
 VarBlock:

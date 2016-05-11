@@ -33,18 +33,26 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//NodeBody"
         containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Specification" eSuperTypes="#//NodeBodyElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="spec" eType="#//SpecNoAttr"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SpecNoAttr">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="function" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodeBody">
     <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
         eType="#//NodeBodyElement" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NodeBodyElement">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="override" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeBodyElement"/>
   <eClassifiers xsi:type="ecore:EClass" name="VarBlock" eSuperTypes="#//NodeBodyElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="override" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//NodeVarInit"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RecordBlock" eSuperTypes="#//NodeBodyElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="override" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="vars" upperBound="-1" eType="#//NodeVarInit"
         containment="true"/>
@@ -80,6 +88,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="Procedure" eSuperTypes="#//ProgramElement #//NodeBodyElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="attrList" eType="#//AttrList"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="override" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="prototype" eType="#//FnPrototype"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="fnBody" eType="#//FnBody"
@@ -197,6 +206,12 @@
     <eLiterals name="exists_higher" value="1" literal="exists_higher"/>
     <eLiterals name="exists_lower" value="2" literal="exists_lower"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AtEndSpec" eSuperTypes="#//SpecNoAttr"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AtLeastSpec" eSuperTypes="#//SpecNoAttr">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="threshold" eType="#//DoubleConst"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RequireSpec" eSuperTypes="#//SpecNoAttr"/>
   <eClassifiers xsi:type="ecore:EClass" name="ExprVarAsgn" eSuperTypes="#//VarAsgn">
     <eStructuralFeatures xsi:type="ecore:EReference" name="expr" eType="#//Expr" containment="true"/>
   </eClassifiers>

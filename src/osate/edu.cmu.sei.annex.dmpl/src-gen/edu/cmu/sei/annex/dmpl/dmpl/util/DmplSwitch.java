@@ -148,6 +148,21 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case DmplPackage.SPECIFICATION:
+      {
+        Specification specification = (Specification)theEObject;
+        T result = caseSpecification(specification);
+        if (result == null) result = caseNodeBodyElement(specification);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.SPEC_NO_ATTR:
+      {
+        SpecNoAttr specNoAttr = (SpecNoAttr)theEObject;
+        T result = caseSpecNoAttr(specNoAttr);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case DmplPackage.NODE_BODY:
       {
         NodeBody nodeBody = (NodeBody)theEObject;
@@ -300,6 +315,30 @@ public class DmplSwitch<T> extends Switch<T>
         T result = caseCallExpr(callExpr);
         if (result == null) result = caseStmt(callExpr);
         if (result == null) result = caseExpr(callExpr);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.AT_END_SPEC:
+      {
+        AtEndSpec atEndSpec = (AtEndSpec)theEObject;
+        T result = caseAtEndSpec(atEndSpec);
+        if (result == null) result = caseSpecNoAttr(atEndSpec);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.AT_LEAST_SPEC:
+      {
+        AtLeastSpec atLeastSpec = (AtLeastSpec)theEObject;
+        T result = caseAtLeastSpec(atLeastSpec);
+        if (result == null) result = caseSpecNoAttr(atLeastSpec);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.REQUIRE_SPEC:
+      {
+        RequireSpec requireSpec = (RequireSpec)theEObject;
+        T result = caseRequireSpec(requireSpec);
+        if (result == null) result = caseSpecNoAttr(requireSpec);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -708,6 +747,38 @@ public class DmplSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>Specification</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Specification</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSpecification(Specification object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Spec No Attr</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Spec No Attr</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSpecNoAttr(SpecNoAttr object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Node Body</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -1039,6 +1110,54 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseCallExpr(CallExpr object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>At End Spec</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>At End Spec</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseAtEndSpec(AtEndSpec object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>At Least Spec</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>At Least Spec</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseAtLeastSpec(AtLeastSpec object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Require Spec</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Require Spec</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseRequireSpec(RequireSpec object)
   {
     return null;
   }

@@ -306,6 +306,172 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getRightCurlyBracketKeyword_2_1_2() { return cRightCurlyBracketKeyword_2_1_2; }
 	}
 
+	public class SpecificationElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Specification");
+		private final Assignment cSpecAssignment = (Assignment)rule.eContents().get(1);
+		private final RuleCall cSpecSpecNoAttrParserRuleCall_0 = (RuleCall)cSpecAssignment.eContents().get(0);
+		
+		////TODO
+		//Specification:
+		//	spec=SpecNoAttr;
+		@Override public ParserRule getRule() { return rule; }
+
+		//spec=SpecNoAttr
+		public Assignment getSpecAssignment() { return cSpecAssignment; }
+
+		//SpecNoAttr
+		public RuleCall getSpecSpecNoAttrParserRuleCall_0() { return cSpecSpecNoAttrParserRuleCall_0; }
+	}
+
+	public class SpecNoAttrElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "SpecNoAttr");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
+		private final Action cAtEndSpecAction_0_0 = (Action)cGroup_0.eContents().get(0);
+		private final Keyword cExpectKeyword_0_1 = (Keyword)cGroup_0.eContents().get(1);
+		private final Assignment cNameAssignment_0_2 = (Assignment)cGroup_0.eContents().get(2);
+		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_0_2_0 = (RuleCall)cNameAssignment_0_2.eContents().get(0);
+		private final Keyword cColonKeyword_0_3 = (Keyword)cGroup_0.eContents().get(3);
+		private final Keyword cAt_endKeyword_0_4 = (Keyword)cGroup_0.eContents().get(4);
+		private final Keyword cEqualsSignGreaterThanSignKeyword_0_5 = (Keyword)cGroup_0.eContents().get(5);
+		private final Assignment cFunctionAssignment_0_6 = (Assignment)cGroup_0.eContents().get(6);
+		private final RuleCall cFunctionTIDENTIFIERTerminalRuleCall_0_6_0 = (RuleCall)cFunctionAssignment_0_6.eContents().get(0);
+		private final Keyword cSemicolonKeyword_0_7 = (Keyword)cGroup_0.eContents().get(7);
+		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
+		private final Action cAtLeastSpecAction_1_0 = (Action)cGroup_1.eContents().get(0);
+		private final Keyword cExpectKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
+		private final Assignment cNameAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
+		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_1_2_0 = (RuleCall)cNameAssignment_1_2.eContents().get(0);
+		private final Keyword cColonKeyword_1_3 = (Keyword)cGroup_1.eContents().get(3);
+		private final Keyword cAt_leastKeyword_1_4 = (Keyword)cGroup_1.eContents().get(4);
+		private final Assignment cThresholdAssignment_1_5 = (Assignment)cGroup_1.eContents().get(5);
+		private final RuleCall cThresholdDoubleConstParserRuleCall_1_5_0 = (RuleCall)cThresholdAssignment_1_5.eContents().get(0);
+		private final Keyword cEqualsSignGreaterThanSignKeyword_1_6 = (Keyword)cGroup_1.eContents().get(6);
+		private final Assignment cFunctionAssignment_1_7 = (Assignment)cGroup_1.eContents().get(7);
+		private final RuleCall cFunctionTIDENTIFIERTerminalRuleCall_1_7_0 = (RuleCall)cFunctionAssignment_1_7.eContents().get(0);
+		private final Keyword cSemicolonKeyword_1_8 = (Keyword)cGroup_1.eContents().get(8);
+		private final Group cGroup_2 = (Group)cAlternatives.eContents().get(2);
+		private final Action cRequireSpecAction_2_0 = (Action)cGroup_2.eContents().get(0);
+		private final Keyword cRequireKeyword_2_1 = (Keyword)cGroup_2.eContents().get(1);
+		private final Assignment cNameAssignment_2_2 = (Assignment)cGroup_2.eContents().get(2);
+		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_2_2_0 = (RuleCall)cNameAssignment_2_2.eContents().get(0);
+		private final Keyword cEqualsSignGreaterThanSignKeyword_2_3 = (Keyword)cGroup_2.eContents().get(3);
+		private final Assignment cFunctionAssignment_2_4 = (Assignment)cGroup_2.eContents().get(4);
+		private final RuleCall cFunctionTIDENTIFIERTerminalRuleCall_2_4_0 = (RuleCall)cFunctionAssignment_2_4.eContents().get(0);
+		private final Keyword cSemicolonKeyword_2_5 = (Keyword)cGroup_2.eContents().get(5);
+		
+		////TODO
+		//SpecNoAttr:
+		//	{AtEndSpec} "expect" name=TIDENTIFIER ":" "at_end" "=>" function=TIDENTIFIER ";" | {AtLeastSpec} "expect"
+		//	name=TIDENTIFIER ":" "at_least" threshold=DoubleConst "=>" function=TIDENTIFIER ";" | {RequireSpec} "require"
+		//	name=TIDENTIFIER "=>" function=TIDENTIFIER ";";
+		@Override public ParserRule getRule() { return rule; }
+
+		//{AtEndSpec} "expect" name=TIDENTIFIER ":" "at_end" "=>" function=TIDENTIFIER ";" | {AtLeastSpec} "expect"
+		//name=TIDENTIFIER ":" "at_least" threshold=DoubleConst "=>" function=TIDENTIFIER ";" | {RequireSpec} "require"
+		//name=TIDENTIFIER "=>" function=TIDENTIFIER ";"
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		//{AtEndSpec} "expect" name=TIDENTIFIER ":" "at_end" "=>" function=TIDENTIFIER ";"
+		public Group getGroup_0() { return cGroup_0; }
+
+		//{AtEndSpec}
+		public Action getAtEndSpecAction_0_0() { return cAtEndSpecAction_0_0; }
+
+		//"expect"
+		public Keyword getExpectKeyword_0_1() { return cExpectKeyword_0_1; }
+
+		//name=TIDENTIFIER
+		public Assignment getNameAssignment_0_2() { return cNameAssignment_0_2; }
+
+		//TIDENTIFIER
+		public RuleCall getNameTIDENTIFIERTerminalRuleCall_0_2_0() { return cNameTIDENTIFIERTerminalRuleCall_0_2_0; }
+
+		//":"
+		public Keyword getColonKeyword_0_3() { return cColonKeyword_0_3; }
+
+		//"at_end"
+		public Keyword getAt_endKeyword_0_4() { return cAt_endKeyword_0_4; }
+
+		//"=>"
+		public Keyword getEqualsSignGreaterThanSignKeyword_0_5() { return cEqualsSignGreaterThanSignKeyword_0_5; }
+
+		//function=TIDENTIFIER
+		public Assignment getFunctionAssignment_0_6() { return cFunctionAssignment_0_6; }
+
+		//TIDENTIFIER
+		public RuleCall getFunctionTIDENTIFIERTerminalRuleCall_0_6_0() { return cFunctionTIDENTIFIERTerminalRuleCall_0_6_0; }
+
+		//";"
+		public Keyword getSemicolonKeyword_0_7() { return cSemicolonKeyword_0_7; }
+
+		//{AtLeastSpec} "expect" name=TIDENTIFIER ":" "at_least" threshold=DoubleConst "=>" function=TIDENTIFIER ";"
+		public Group getGroup_1() { return cGroup_1; }
+
+		//{AtLeastSpec}
+		public Action getAtLeastSpecAction_1_0() { return cAtLeastSpecAction_1_0; }
+
+		//"expect"
+		public Keyword getExpectKeyword_1_1() { return cExpectKeyword_1_1; }
+
+		//name=TIDENTIFIER
+		public Assignment getNameAssignment_1_2() { return cNameAssignment_1_2; }
+
+		//TIDENTIFIER
+		public RuleCall getNameTIDENTIFIERTerminalRuleCall_1_2_0() { return cNameTIDENTIFIERTerminalRuleCall_1_2_0; }
+
+		//":"
+		public Keyword getColonKeyword_1_3() { return cColonKeyword_1_3; }
+
+		//"at_least"
+		public Keyword getAt_leastKeyword_1_4() { return cAt_leastKeyword_1_4; }
+
+		//threshold=DoubleConst
+		public Assignment getThresholdAssignment_1_5() { return cThresholdAssignment_1_5; }
+
+		//DoubleConst
+		public RuleCall getThresholdDoubleConstParserRuleCall_1_5_0() { return cThresholdDoubleConstParserRuleCall_1_5_0; }
+
+		//"=>"
+		public Keyword getEqualsSignGreaterThanSignKeyword_1_6() { return cEqualsSignGreaterThanSignKeyword_1_6; }
+
+		//function=TIDENTIFIER
+		public Assignment getFunctionAssignment_1_7() { return cFunctionAssignment_1_7; }
+
+		//TIDENTIFIER
+		public RuleCall getFunctionTIDENTIFIERTerminalRuleCall_1_7_0() { return cFunctionTIDENTIFIERTerminalRuleCall_1_7_0; }
+
+		//";"
+		public Keyword getSemicolonKeyword_1_8() { return cSemicolonKeyword_1_8; }
+
+		//{RequireSpec} "require" name=TIDENTIFIER "=>" function=TIDENTIFIER ";"
+		public Group getGroup_2() { return cGroup_2; }
+
+		//{RequireSpec}
+		public Action getRequireSpecAction_2_0() { return cRequireSpecAction_2_0; }
+
+		//"require"
+		public Keyword getRequireKeyword_2_1() { return cRequireKeyword_2_1; }
+
+		//name=TIDENTIFIER
+		public Assignment getNameAssignment_2_2() { return cNameAssignment_2_2; }
+
+		//TIDENTIFIER
+		public RuleCall getNameTIDENTIFIERTerminalRuleCall_2_2_0() { return cNameTIDENTIFIERTerminalRuleCall_2_2_0; }
+
+		//"=>"
+		public Keyword getEqualsSignGreaterThanSignKeyword_2_3() { return cEqualsSignGreaterThanSignKeyword_2_3; }
+
+		//function=TIDENTIFIER
+		public Assignment getFunctionAssignment_2_4() { return cFunctionAssignment_2_4; }
+
+		//TIDENTIFIER
+		public RuleCall getFunctionTIDENTIFIERTerminalRuleCall_2_4_0() { return cFunctionTIDENTIFIERTerminalRuleCall_2_4_0; }
+
+		//";"
+		public Keyword getSemicolonKeyword_2_5() { return cSemicolonKeyword_2_5; }
+	}
+
 	public class NodeBodyElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "NodeBody");
 		private final Group cGroup = (Group)rule.eContents().get(1);
@@ -337,13 +503,14 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cVarBlockParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final RuleCall cRecordBlockParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		private final RuleCall cProcedureParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		private final RuleCall cSpecificationParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		
 		////TODO
 		//NodeBodyElement:
-		//	VarBlock | RecordBlock | Procedure;
+		//	VarBlock | RecordBlock | Procedure | Specification;
 		@Override public ParserRule getRule() { return rule; }
 
-		//VarBlock | RecordBlock | Procedure
+		//VarBlock | RecordBlock | Procedure | Specification
 		public Alternatives getAlternatives() { return cAlternatives; }
 
 		//VarBlock
@@ -354,6 +521,9 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 		//Procedure
 		public RuleCall getProcedureParserRuleCall_2() { return cProcedureParserRuleCall_2; }
+
+		//Specification
+		public RuleCall getSpecificationParserRuleCall_3() { return cSpecificationParserRuleCall_3; }
 	}
 
 	public class VarBlockElements extends AbstractParserRuleElementFinder {
@@ -3186,6 +3356,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final DoubleConstElements pDoubleConst;
 	private final NodeElements pNode;
 	private final NodeNoAttrElements pNodeNoAttr;
+	private final SpecificationElements pSpecification;
+	private final SpecNoAttrElements pSpecNoAttr;
 	private final NodeBodyElements pNodeBody;
 	private final NodeBodyElementElements pNodeBodyElement;
 	private final VarBlockElements pVarBlock;
@@ -3260,6 +3432,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pDoubleConst = new DoubleConstElements();
 		this.pNode = new NodeElements();
 		this.pNodeNoAttr = new NodeNoAttrElements();
+		this.pSpecification = new SpecificationElements();
+		this.pSpecNoAttr = new SpecNoAttrElements();
 		this.pNodeBody = new NodeBodyElements();
 		this.pNodeBodyElement = new NodeBodyElementElements();
 		this.pVarBlock = new VarBlockElements();
@@ -3446,6 +3620,30 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	////TODO
+	//Specification:
+	//	spec=SpecNoAttr;
+	public SpecificationElements getSpecificationAccess() {
+		return pSpecification;
+	}
+	
+	public ParserRule getSpecificationRule() {
+		return getSpecificationAccess().getRule();
+	}
+
+	////TODO
+	//SpecNoAttr:
+	//	{AtEndSpec} "expect" name=TIDENTIFIER ":" "at_end" "=>" function=TIDENTIFIER ";" | {AtLeastSpec} "expect"
+	//	name=TIDENTIFIER ":" "at_least" threshold=DoubleConst "=>" function=TIDENTIFIER ";" | {RequireSpec} "require"
+	//	name=TIDENTIFIER "=>" function=TIDENTIFIER ";";
+	public SpecNoAttrElements getSpecNoAttrAccess() {
+		return pSpecNoAttr;
+	}
+	
+	public ParserRule getSpecNoAttrRule() {
+		return getSpecNoAttrAccess().getRule();
+	}
+
+	////TODO
 	//NodeBody:
 	//	{NodeBody} elements+=NodeBodyElement*;
 	public NodeBodyElements getNodeBodyAccess() {
@@ -3458,7 +3656,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 	////TODO
 	//NodeBodyElement:
-	//	VarBlock | RecordBlock | Procedure;
+	//	VarBlock | RecordBlock | Procedure | Specification;
 	public NodeBodyElementElements getNodeBodyElementAccess() {
 		return pNodeBodyElement;
 	}

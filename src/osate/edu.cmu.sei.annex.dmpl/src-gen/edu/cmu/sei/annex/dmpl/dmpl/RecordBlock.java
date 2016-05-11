@@ -13,6 +13,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.RecordBlock#isOverride <em>Override</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.RecordBlock#getName <em>Name</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.RecordBlock#getVars <em>Vars</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.RecordBlock#getEqualsBody <em>Equals Body</em>}</li>
@@ -25,6 +26,32 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface RecordBlock extends NodeBodyElement
 {
+  /**
+   * Returns the value of the '<em><b>Override</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Override</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Override</em>' attribute.
+   * @see #setOverride(boolean)
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getRecordBlock_Override()
+   * @model
+   * @generated
+   */
+  boolean isOverride();
+
+  /**
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.RecordBlock#isOverride <em>Override</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Override</em>' attribute.
+   * @see #isOverride()
+   * @generated
+   */
+  void setOverride(boolean value);
+
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->

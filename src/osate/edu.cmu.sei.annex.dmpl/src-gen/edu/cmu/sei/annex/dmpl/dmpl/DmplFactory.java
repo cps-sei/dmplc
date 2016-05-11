@@ -104,6 +104,24 @@ public interface DmplFactory extends EFactory
   NodeNoAttr createNodeNoAttr();
 
   /**
+   * Returns a new object of class '<em>Specification</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Specification</em>'.
+   * @generated
+   */
+  Specification createSpecification();
+
+  /**
+   * Returns a new object of class '<em>Spec No Attr</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Spec No Attr</em>'.
+   * @generated
+   */
+  SpecNoAttr createSpecNoAttr();
+
+  /**
    * Returns a new object of class '<em>Node Body</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -291,6 +309,33 @@ public interface DmplFactory extends EFactory
    * @generated
    */
   CallExpr createCallExpr();
+
+  /**
+   * Returns a new object of class '<em>At End Spec</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>At End Spec</em>'.
+   * @generated
+   */
+  AtEndSpec createAtEndSpec();
+
+  /**
+   * Returns a new object of class '<em>At Least Spec</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>At Least Spec</em>'.
+   * @generated
+   */
+  AtLeastSpec createAtLeastSpec();
+
+  /**
+   * Returns a new object of class '<em>Require Spec</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Require Spec</em>'.
+   * @generated
+   */
+  RequireSpec createRequireSpec();
 
   /**
    * Returns a new object of class '<em>Expr Var Asgn</em>'.

@@ -74,6 +74,8 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.DOUBLE_CONST: return createDoubleConst();
       case DmplPackage.NODE: return createNode();
       case DmplPackage.NODE_NO_ATTR: return createNodeNoAttr();
+      case DmplPackage.SPECIFICATION: return createSpecification();
+      case DmplPackage.SPEC_NO_ATTR: return createSpecNoAttr();
       case DmplPackage.NODE_BODY: return createNodeBody();
       case DmplPackage.NODE_BODY_ELEMENT: return createNodeBodyElement();
       case DmplPackage.VAR_BLOCK: return createVarBlock();
@@ -95,6 +97,9 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.LVAL: return createLVal();
       case DmplPackage.EXPR: return createExpr();
       case DmplPackage.CALL_EXPR: return createCallExpr();
+      case DmplPackage.AT_END_SPEC: return createAtEndSpec();
+      case DmplPackage.AT_LEAST_SPEC: return createAtLeastSpec();
+      case DmplPackage.REQUIRE_SPEC: return createRequireSpec();
       case DmplPackage.EXPR_VAR_ASGN: return createExprVarAsgn();
       case DmplPackage.FN_VAR_ASGN: return createFnVarAsgn();
       case DmplPackage.INT_DIMENSION: return createIntDimension();
@@ -311,6 +316,28 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     NodeNoAttrImpl nodeNoAttr = new NodeNoAttrImpl();
     return nodeNoAttr;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Specification createSpecification()
+  {
+    SpecificationImpl specification = new SpecificationImpl();
+    return specification;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public SpecNoAttr createSpecNoAttr()
+  {
+    SpecNoAttrImpl specNoAttr = new SpecNoAttrImpl();
+    return specNoAttr;
   }
 
   /**
@@ -542,6 +569,39 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     CallExprImpl callExpr = new CallExprImpl();
     return callExpr;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public AtEndSpec createAtEndSpec()
+  {
+    AtEndSpecImpl atEndSpec = new AtEndSpecImpl();
+    return atEndSpec;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public AtLeastSpec createAtLeastSpec()
+  {
+    AtLeastSpecImpl atLeastSpec = new AtLeastSpecImpl();
+    return atLeastSpec;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public RequireSpec createRequireSpec()
+  {
+    RequireSpecImpl requireSpec = new RequireSpecImpl();
+    return requireSpec;
   }
 
   /**

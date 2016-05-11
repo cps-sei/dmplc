@@ -2,28 +2,26 @@
  */
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
+import edu.cmu.sei.annex.dmpl.dmpl.AtEndSpec;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
-import edu.cmu.sei.annex.dmpl.dmpl.NodeBodyElement;
 
 import org.eclipse.emf.ecore.EClass;
 
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Node Body Element</b></em>'.
+ * An implementation of the model object '<em><b>At End Spec</b></em>'.
  * <!-- end-user-doc -->
  *
  * @generated
  */
-public class NodeBodyElementImpl extends MinimalEObjectImpl.Container implements NodeBodyElement
+public class AtEndSpecImpl extends SpecNoAttrImpl implements AtEndSpec
 {
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected NodeBodyElementImpl()
+  protected AtEndSpecImpl()
   {
     super();
   }
@@ -36,7 +34,7 @@ public class NodeBodyElementImpl extends MinimalEObjectImpl.Container implements
   @Override
   protected EClass eStaticClass()
   {
-    return DmplPackage.Literals.NODE_BODY_ELEMENT;
+    return DmplPackage.Literals.AT_END_SPEC;
   }
 
-} //NodeBodyElementImpl
+} //AtEndSpecImpl

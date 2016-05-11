@@ -552,6 +552,264 @@ ruleNodeNoAttr returns [EObject current=null]
 
 
 
+// Entry rule entryRuleSpecification
+entryRuleSpecification returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getSpecificationRule()); }
+	 iv_ruleSpecification=ruleSpecification 
+	 { $current=$iv_ruleSpecification.current; } 
+	 EOF 
+;
+
+// Rule Specification
+ruleSpecification returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getSpecificationAccess().getSpecSpecNoAttrParserRuleCall_0()); 
+	    }
+		lv_spec_0_0=ruleSpecNoAttr		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getSpecificationRule());
+	        }
+       		set(
+       			$current, 
+       			"spec",
+        		lv_spec_0_0, 
+        		"SpecNoAttr");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)
+;
+
+
+
+
+
+// Entry rule entryRuleSpecNoAttr
+entryRuleSpecNoAttr returns [EObject current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getSpecNoAttrRule()); }
+	 iv_ruleSpecNoAttr=ruleSpecNoAttr 
+	 { $current=$iv_ruleSpecNoAttr.current; } 
+	 EOF 
+;
+
+// Rule SpecNoAttr
+ruleSpecNoAttr returns [EObject current=null] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+(((
+    {
+        $current = forceCreateModelElement(
+            grammarAccess.getSpecNoAttrAccess().getAtEndSpecAction_0_0(),
+            $current);
+    }
+)	otherlv_1='expect' 
+    {
+    	newLeafNode(otherlv_1, grammarAccess.getSpecNoAttrAccess().getExpectKeyword_0_1());
+    }
+(
+(
+		lv_name_2_0=RULE_TIDENTIFIER
+		{
+			newLeafNode(lv_name_2_0, grammarAccess.getSpecNoAttrAccess().getNameTIDENTIFIERTerminalRuleCall_0_2_0()); 
+		}
+		{
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getSpecNoAttrRule());
+	        }
+       		setWithLastConsumed(
+       			$current, 
+       			"name",
+        		lv_name_2_0, 
+        		"TIDENTIFIER");
+	    }
+
+)
+)	otherlv_3=':' 
+    {
+    	newLeafNode(otherlv_3, grammarAccess.getSpecNoAttrAccess().getColonKeyword_0_3());
+    }
+	otherlv_4='at_end' 
+    {
+    	newLeafNode(otherlv_4, grammarAccess.getSpecNoAttrAccess().getAt_endKeyword_0_4());
+    }
+	otherlv_5='=>' 
+    {
+    	newLeafNode(otherlv_5, grammarAccess.getSpecNoAttrAccess().getEqualsSignGreaterThanSignKeyword_0_5());
+    }
+(
+(
+		lv_function_6_0=RULE_TIDENTIFIER
+		{
+			newLeafNode(lv_function_6_0, grammarAccess.getSpecNoAttrAccess().getFunctionTIDENTIFIERTerminalRuleCall_0_6_0()); 
+		}
+		{
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getSpecNoAttrRule());
+	        }
+       		setWithLastConsumed(
+       			$current, 
+       			"function",
+        		lv_function_6_0, 
+        		"TIDENTIFIER");
+	    }
+
+)
+)	otherlv_7=';' 
+    {
+    	newLeafNode(otherlv_7, grammarAccess.getSpecNoAttrAccess().getSemicolonKeyword_0_7());
+    }
+)
+    |((
+    {
+        $current = forceCreateModelElement(
+            grammarAccess.getSpecNoAttrAccess().getAtLeastSpecAction_1_0(),
+            $current);
+    }
+)	otherlv_9='expect' 
+    {
+    	newLeafNode(otherlv_9, grammarAccess.getSpecNoAttrAccess().getExpectKeyword_1_1());
+    }
+(
+(
+		lv_name_10_0=RULE_TIDENTIFIER
+		{
+			newLeafNode(lv_name_10_0, grammarAccess.getSpecNoAttrAccess().getNameTIDENTIFIERTerminalRuleCall_1_2_0()); 
+		}
+		{
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getSpecNoAttrRule());
+	        }
+       		setWithLastConsumed(
+       			$current, 
+       			"name",
+        		lv_name_10_0, 
+        		"TIDENTIFIER");
+	    }
+
+)
+)	otherlv_11=':' 
+    {
+    	newLeafNode(otherlv_11, grammarAccess.getSpecNoAttrAccess().getColonKeyword_1_3());
+    }
+	otherlv_12='at_least' 
+    {
+    	newLeafNode(otherlv_12, grammarAccess.getSpecNoAttrAccess().getAt_leastKeyword_1_4());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getSpecNoAttrAccess().getThresholdDoubleConstParserRuleCall_1_5_0()); 
+	    }
+		lv_threshold_13_0=ruleDoubleConst		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getSpecNoAttrRule());
+	        }
+       		set(
+       			$current, 
+       			"threshold",
+        		lv_threshold_13_0, 
+        		"DoubleConst");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)	otherlv_14='=>' 
+    {
+    	newLeafNode(otherlv_14, grammarAccess.getSpecNoAttrAccess().getEqualsSignGreaterThanSignKeyword_1_6());
+    }
+(
+(
+		lv_function_15_0=RULE_TIDENTIFIER
+		{
+			newLeafNode(lv_function_15_0, grammarAccess.getSpecNoAttrAccess().getFunctionTIDENTIFIERTerminalRuleCall_1_7_0()); 
+		}
+		{
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getSpecNoAttrRule());
+	        }
+       		setWithLastConsumed(
+       			$current, 
+       			"function",
+        		lv_function_15_0, 
+        		"TIDENTIFIER");
+	    }
+
+)
+)	otherlv_16=';' 
+    {
+    	newLeafNode(otherlv_16, grammarAccess.getSpecNoAttrAccess().getSemicolonKeyword_1_8());
+    }
+)
+    |((
+    {
+        $current = forceCreateModelElement(
+            grammarAccess.getSpecNoAttrAccess().getRequireSpecAction_2_0(),
+            $current);
+    }
+)	otherlv_18='require' 
+    {
+    	newLeafNode(otherlv_18, grammarAccess.getSpecNoAttrAccess().getRequireKeyword_2_1());
+    }
+(
+(
+		lv_name_19_0=RULE_TIDENTIFIER
+		{
+			newLeafNode(lv_name_19_0, grammarAccess.getSpecNoAttrAccess().getNameTIDENTIFIERTerminalRuleCall_2_2_0()); 
+		}
+		{
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getSpecNoAttrRule());
+	        }
+       		setWithLastConsumed(
+       			$current, 
+       			"name",
+        		lv_name_19_0, 
+        		"TIDENTIFIER");
+	    }
+
+)
+)	otherlv_20='=>' 
+    {
+    	newLeafNode(otherlv_20, grammarAccess.getSpecNoAttrAccess().getEqualsSignGreaterThanSignKeyword_2_3());
+    }
+(
+(
+		lv_function_21_0=RULE_TIDENTIFIER
+		{
+			newLeafNode(lv_function_21_0, grammarAccess.getSpecNoAttrAccess().getFunctionTIDENTIFIERTerminalRuleCall_2_4_0()); 
+		}
+		{
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getSpecNoAttrRule());
+	        }
+       		setWithLastConsumed(
+       			$current, 
+       			"function",
+        		lv_function_21_0, 
+        		"TIDENTIFIER");
+	    }
+
+)
+)	otherlv_22=';' 
+    {
+    	newLeafNode(otherlv_22, grammarAccess.getSpecNoAttrAccess().getSemicolonKeyword_2_5());
+    }
+))
+;
+
+
+
+
+
 // Entry rule entryRuleNodeBody
 entryRuleNodeBody returns [EObject current=null] 
 	:
@@ -638,6 +896,16 @@ ruleNodeBodyElement returns [EObject current=null]
     this_Procedure_2=ruleProcedure
     { 
         $current = $this_Procedure_2.current; 
+        afterParserOrEnumRuleCall();
+    }
+
+    |
+    { 
+        newCompositeNode(grammarAccess.getNodeBodyElementAccess().getSpecificationParserRuleCall_3()); 
+    }
+    this_Specification_3=ruleSpecification
+    { 
+        $current = $this_Specification_3.current; 
         afterParserOrEnumRuleCall();
     }
 )

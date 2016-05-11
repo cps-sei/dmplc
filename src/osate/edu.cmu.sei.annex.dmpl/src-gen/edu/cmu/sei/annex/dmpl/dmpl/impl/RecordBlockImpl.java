@@ -30,6 +30,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.RecordBlockImpl#isOverride <em>Override</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.RecordBlockImpl#getName <em>Name</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.RecordBlockImpl#getVars <em>Vars</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.RecordBlockImpl#getEqualsBody <em>Equals Body</em>}</li>
@@ -40,6 +41,26 @@ import org.eclipse.emf.ecore.util.InternalEList;
  */
 public class RecordBlockImpl extends NodeBodyElementImpl implements RecordBlock
 {
+  /**
+   * The default value of the '{@link #isOverride() <em>Override</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #isOverride()
+   * @generated
+   * @ordered
+   */
+  protected static final boolean OVERRIDE_EDEFAULT = false;
+
+  /**
+   * The cached value of the '{@link #isOverride() <em>Override</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #isOverride()
+   * @generated
+   * @ordered
+   */
+  protected boolean override = OVERRIDE_EDEFAULT;
+
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
@@ -109,6 +130,29 @@ public class RecordBlockImpl extends NodeBodyElementImpl implements RecordBlock
   protected EClass eStaticClass()
   {
     return DmplPackage.Literals.RECORD_BLOCK;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public boolean isOverride()
+  {
+    return override;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setOverride(boolean newOverride)
+  {
+    boolean oldOverride = override;
+    override = newOverride;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.RECORD_BLOCK__OVERRIDE, oldOverride, override));
   }
 
   /**
@@ -274,6 +318,8 @@ public class RecordBlockImpl extends NodeBodyElementImpl implements RecordBlock
   {
     switch (featureID)
     {
+      case DmplPackage.RECORD_BLOCK__OVERRIDE:
+        return isOverride();
       case DmplPackage.RECORD_BLOCK__NAME:
         return getName();
       case DmplPackage.RECORD_BLOCK__VARS:
@@ -297,6 +343,9 @@ public class RecordBlockImpl extends NodeBodyElementImpl implements RecordBlock
   {
     switch (featureID)
     {
+      case DmplPackage.RECORD_BLOCK__OVERRIDE:
+        setOverride((Boolean)newValue);
+        return;
       case DmplPackage.RECORD_BLOCK__NAME:
         setName((String)newValue);
         return;
@@ -324,6 +373,9 @@ public class RecordBlockImpl extends NodeBodyElementImpl implements RecordBlock
   {
     switch (featureID)
     {
+      case DmplPackage.RECORD_BLOCK__OVERRIDE:
+        setOverride(OVERRIDE_EDEFAULT);
+        return;
       case DmplPackage.RECORD_BLOCK__NAME:
         setName(NAME_EDEFAULT);
         return;
@@ -350,6 +402,8 @@ public class RecordBlockImpl extends NodeBodyElementImpl implements RecordBlock
   {
     switch (featureID)
     {
+      case DmplPackage.RECORD_BLOCK__OVERRIDE:
+        return override != OVERRIDE_EDEFAULT;
       case DmplPackage.RECORD_BLOCK__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case DmplPackage.RECORD_BLOCK__VARS:
@@ -373,7 +427,9 @@ public class RecordBlockImpl extends NodeBodyElementImpl implements RecordBlock
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (name: ");
+    result.append(" (override: ");
+    result.append(override);
+    result.append(", name: ");
     result.append(name);
     result.append(')');
     return result.toString();

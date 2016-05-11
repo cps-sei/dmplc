@@ -8,6 +8,8 @@ import com.google.inject.Provider;
 import edu.cmu.sei.annex.dmpl.dmpl.AdditiveExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.AndExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.AssignmentStmt;
+import edu.cmu.sei.annex.dmpl.dmpl.AtEndSpec;
+import edu.cmu.sei.annex.dmpl.dmpl.AtLeastSpec;
 import edu.cmu.sei.annex.dmpl.dmpl.Attr;
 import edu.cmu.sei.annex.dmpl.dmpl.AttrList;
 import edu.cmu.sei.annex.dmpl.dmpl.BitwiseAndExpr;
@@ -48,9 +50,11 @@ import edu.cmu.sei.annex.dmpl.dmpl.Param;
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
 import edu.cmu.sei.annex.dmpl.dmpl.Program;
 import edu.cmu.sei.annex.dmpl.dmpl.RecordBlock;
+import edu.cmu.sei.annex.dmpl.dmpl.RequireSpec;
 import edu.cmu.sei.annex.dmpl.dmpl.ReturnValueStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.ShiftExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmt;
+import edu.cmu.sei.annex.dmpl.dmpl.Specification;
 import edu.cmu.sei.annex.dmpl.dmpl.TernaryExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.ThreadDeclaration;
 import edu.cmu.sei.annex.dmpl.dmpl.Type;
@@ -91,6 +95,12 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.ASSIGNMENT_STMT:
 				sequence_AssignmentStmt(context, (AssignmentStmt) semanticObject); 
+				return; 
+			case DmplPackage.AT_END_SPEC:
+				sequence_SpecNoAttr(context, (AtEndSpec) semanticObject); 
+				return; 
+			case DmplPackage.AT_LEAST_SPEC:
+				sequence_SpecNoAttr(context, (AtLeastSpec) semanticObject); 
 				return; 
 			case DmplPackage.ATTR:
 				sequence_Attr(context, (Attr) semanticObject); 
@@ -209,6 +219,9 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 			case DmplPackage.RECORD_BLOCK:
 				sequence_RecordBlock(context, (RecordBlock) semanticObject); 
 				return; 
+			case DmplPackage.REQUIRE_SPEC:
+				sequence_SpecNoAttr(context, (RequireSpec) semanticObject); 
+				return; 
 			case DmplPackage.RETURN_VALUE_STMT:
 				sequence_Stmt(context, (ReturnValueStmt) semanticObject); 
 				return; 
@@ -217,6 +230,9 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.SIMPLE_STMT:
 				sequence_Stmt(context, (SimpleStmt) semanticObject); 
+				return; 
+			case DmplPackage.SPECIFICATION:
+				sequence_Specification(context, (Specification) semanticObject); 
 				return; 
 			case DmplPackage.TERNARY_EXPR:
 				sequence_Expr(context, (TernaryExpr) semanticObject); 
@@ -724,6 +740,82 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 		feeder.accept(grammarAccess.getShiftExprAccess().getShiftExprLeftAction_1_0_0_0(), semanticObject.getLeft());
 		feeder.accept(grammarAccess.getShiftExprAccess().getOperatorShiftOperatorEnumRuleCall_1_0_0_1_0(), semanticObject.getOperator());
 		feeder.accept(grammarAccess.getShiftExprAccess().getRightAdditiveExprParserRuleCall_1_1_0(), semanticObject.getRight());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (name=TIDENTIFIER function=TIDENTIFIER)
+	 */
+	protected void sequence_SpecNoAttr(EObject context, AtEndSpec semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.SPEC_NO_ATTR__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.SPEC_NO_ATTR__NAME));
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.SPEC_NO_ATTR__FUNCTION) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.SPEC_NO_ATTR__FUNCTION));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getSpecNoAttrAccess().getNameTIDENTIFIERTerminalRuleCall_0_2_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getSpecNoAttrAccess().getFunctionTIDENTIFIERTerminalRuleCall_0_6_0(), semanticObject.getFunction());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (name=TIDENTIFIER threshold=DoubleConst function=TIDENTIFIER)
+	 */
+	protected void sequence_SpecNoAttr(EObject context, AtLeastSpec semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.SPEC_NO_ATTR__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.SPEC_NO_ATTR__NAME));
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.SPEC_NO_ATTR__FUNCTION) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.SPEC_NO_ATTR__FUNCTION));
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.AT_LEAST_SPEC__THRESHOLD) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.AT_LEAST_SPEC__THRESHOLD));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getSpecNoAttrAccess().getNameTIDENTIFIERTerminalRuleCall_1_2_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getSpecNoAttrAccess().getThresholdDoubleConstParserRuleCall_1_5_0(), semanticObject.getThreshold());
+		feeder.accept(grammarAccess.getSpecNoAttrAccess().getFunctionTIDENTIFIERTerminalRuleCall_1_7_0(), semanticObject.getFunction());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (name=TIDENTIFIER function=TIDENTIFIER)
+	 */
+	protected void sequence_SpecNoAttr(EObject context, RequireSpec semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.SPEC_NO_ATTR__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.SPEC_NO_ATTR__NAME));
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.SPEC_NO_ATTR__FUNCTION) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.SPEC_NO_ATTR__FUNCTION));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getSpecNoAttrAccess().getNameTIDENTIFIERTerminalRuleCall_2_2_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getSpecNoAttrAccess().getFunctionTIDENTIFIERTerminalRuleCall_2_4_0(), semanticObject.getFunction());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     spec=SpecNoAttr
+	 */
+	protected void sequence_Specification(EObject context, Specification semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.SPECIFICATION__SPEC) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.SPECIFICATION__SPEC));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getSpecificationAccess().getSpecSpecNoAttrParserRuleCall_0(), semanticObject.getSpec());
 		feeder.finish();
 	}
 	

@@ -125,6 +125,16 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createNodeNoAttrAdapter();
       }
       @Override
+      public Adapter caseSpecification(Specification object)
+      {
+        return createSpecificationAdapter();
+      }
+      @Override
+      public Adapter caseSpecNoAttr(SpecNoAttr object)
+      {
+        return createSpecNoAttrAdapter();
+      }
+      @Override
       public Adapter caseNodeBody(NodeBody object)
       {
         return createNodeBodyAdapter();
@@ -228,6 +238,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
       public Adapter caseCallExpr(CallExpr object)
       {
         return createCallExprAdapter();
+      }
+      @Override
+      public Adapter caseAtEndSpec(AtEndSpec object)
+      {
+        return createAtEndSpecAdapter();
+      }
+      @Override
+      public Adapter caseAtLeastSpec(AtLeastSpec object)
+      {
+        return createAtLeastSpecAdapter();
+      }
+      @Override
+      public Adapter caseRequireSpec(RequireSpec object)
+      {
+        return createRequireSpecAdapter();
       }
       @Override
       public Adapter caseExprVarAsgn(ExprVarAsgn object)
@@ -567,6 +592,36 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Specification <em>Specification</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Specification
+   * @generated
+   */
+  public Adapter createSpecificationAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.SpecNoAttr <em>Spec No Attr</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.SpecNoAttr
+   * @generated
+   */
+  public Adapter createSpecNoAttrAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.NodeBody <em>Node Body</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -877,6 +932,51 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createCallExprAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.AtEndSpec <em>At End Spec</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.AtEndSpec
+   * @generated
+   */
+  public Adapter createAtEndSpecAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.AtLeastSpec <em>At Least Spec</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.AtLeastSpec
+   * @generated
+   */
+  public Adapter createAtLeastSpecAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.RequireSpec <em>Require Spec</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.RequireSpec
+   * @generated
+   */
+  public Adapter createRequireSpecAdapter()
   {
     return null;
   }
