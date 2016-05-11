@@ -558,23 +558,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 	public class RoleElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Role");
-		private final Assignment cRoleAssignment = (Assignment)rule.eContents().get(1);
-		private final RuleCall cRoleRoleNoAttrParserRuleCall_0 = (RuleCall)cRoleAssignment.eContents().get(0);
-		
-		////TODO
-		//Role:
-		//	role=RoleNoAttr;
-		@Override public ParserRule getRule() { return rule; }
-
-		//role=RoleNoAttr
-		public Assignment getRoleAssignment() { return cRoleAssignment; }
-
-		//RoleNoAttr
-		public RuleCall getRoleRoleNoAttrParserRuleCall_0() { return cRoleRoleNoAttrParserRuleCall_0; }
-	}
-
-	public class RoleNoAttrElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "RoleNoAttr");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
 		private final Action cSimpleRoleAction_0_0 = (Action)cGroup_0.eContents().get(0);
@@ -598,7 +581,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cElementsRoleBodyElementParserRuleCall_1_6_0 = (RuleCall)cElementsAssignment_1_6.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_1_7 = (Keyword)cGroup_1.eContents().get(7);
 		
-		//RoleNoAttr:
+		//Role:
 		//	{SimpleRole} "role" name=TIDENTIFIER "{" elements+=RoleBodyElement* "}" | {IdRole} "role" name=TIDENTIFIER "id" id=INT
 		//	"{" elements+=RoleBodyElement* "}";
 		@Override public ParserRule getRule() { return rule; }
@@ -3591,7 +3574,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final AttributableElements pAttributable;
 	private final AttributableElementElements pAttributableElement;
 	private final RoleElements pRole;
-	private final RoleNoAttrElements pRoleNoAttr;
 	private final RoleBodyElementElements pRoleBodyElement;
 	private final AttributableNoRoleElementElements pAttributableNoRoleElement;
 	private final VarBlockElements pVarBlock;
@@ -3673,7 +3655,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pAttributable = new AttributableElements();
 		this.pAttributableElement = new AttributableElementElements();
 		this.pRole = new RoleElements();
-		this.pRoleNoAttr = new RoleNoAttrElements();
 		this.pRoleBodyElement = new RoleBodyElementElements();
 		this.pAttributableNoRoleElement = new AttributableNoRoleElementElements();
 		this.pVarBlock = new VarBlockElements();
@@ -3914,26 +3895,15 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getAttributableElementAccess().getRule();
 	}
 
-	////TODO
 	//Role:
-	//	role=RoleNoAttr;
+	//	{SimpleRole} "role" name=TIDENTIFIER "{" elements+=RoleBodyElement* "}" | {IdRole} "role" name=TIDENTIFIER "id" id=INT
+	//	"{" elements+=RoleBodyElement* "}";
 	public RoleElements getRoleAccess() {
 		return pRole;
 	}
 	
 	public ParserRule getRoleRule() {
 		return getRoleAccess().getRule();
-	}
-
-	//RoleNoAttr:
-	//	{SimpleRole} "role" name=TIDENTIFIER "{" elements+=RoleBodyElement* "}" | {IdRole} "role" name=TIDENTIFIER "id" id=INT
-	//	"{" elements+=RoleBodyElement* "}";
-	public RoleNoAttrElements getRoleNoAttrAccess() {
-		return pRoleNoAttr;
-	}
-	
-	public ParserRule getRoleNoAttrRule() {
-		return getRoleNoAttrAccess().getRule();
 	}
 
 	//RoleBodyElement:

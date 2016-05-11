@@ -35,7 +35,6 @@ import edu.cmu.sei.annex.dmpl.dmpl.Program
 import edu.cmu.sei.annex.dmpl.dmpl.RecordBlock
 import edu.cmu.sei.annex.dmpl.dmpl.RequireSpec
 import edu.cmu.sei.annex.dmpl.dmpl.ReturnValueStmt
-import edu.cmu.sei.annex.dmpl.dmpl.Role
 import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleRole
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmt
@@ -1106,7 +1105,7 @@ class ParserTest2 {
 							"f4".assertEquals(function)
 						]
 					]
-					((elements.get(13) as Attributable).element as Role).role as SimpleRole => [
+					(elements.get(13) as Attributable).element as SimpleRole => [
 						"role1".assertEquals(name)
 						4.assertEquals(elements.size)
 						"v12".assertEquals((elements.get(0) as VarBlock).^var.^var.varAsgns.head.^var.name)
@@ -1125,7 +1124,7 @@ class ParserTest2 {
 							"s4".assertEquals((element as RequireSpec).name)
 						]
 					]
-					((elements.get(14) as Attributable).element as Role).role as IdRole => [
+					(elements.get(14) as Attributable).element as IdRole => [
 						"role2".assertEquals(name)
 						42.assertEquals(id)
 						elements.empty.assertTrue

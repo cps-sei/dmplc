@@ -115,11 +115,8 @@
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//AttributableElement"/>
     <genClasses ecoreClass="Dmpl.ecore#//Role">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Role/role"/>
-    </genClasses>
-    <genClasses ecoreClass="Dmpl.ecore#//RoleNoAttr">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//RoleNoAttr/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//RoleNoAttr/elements"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Role/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Role/elements"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//RoleBodyElement"/>
     <genClasses ecoreClass="Dmpl.ecore#//AttributableNoRoleElement"/>

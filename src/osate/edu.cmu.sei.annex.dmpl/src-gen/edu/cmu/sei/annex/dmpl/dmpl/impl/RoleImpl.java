@@ -4,15 +4,22 @@ package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.Role;
-import edu.cmu.sei.annex.dmpl.dmpl.RoleNoAttr;
+import edu.cmu.sei.annex.dmpl.dmpl.RoleBodyElement;
+
+import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,7 +29,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.RoleImpl#getRole <em>Role</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.RoleImpl#getName <em>Name</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.RoleImpl#getElements <em>Elements</em>}</li>
  * </ul>
  *
  * @generated
@@ -30,14 +38,34 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 public class RoleImpl extends AttributableElementImpl implements Role
 {
   /**
-   * The cached value of the '{@link #getRole() <em>Role</em>}' containment reference.
+   * The default value of the '{@link #getName() <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getRole()
+   * @see #getName()
    * @generated
    * @ordered
    */
-  protected RoleNoAttr role;
+  protected static final String NAME_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getName()
+   * @generated
+   * @ordered
+   */
+  protected String name = NAME_EDEFAULT;
+
+  /**
+   * The cached value of the '{@link #getElements() <em>Elements</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getElements()
+   * @generated
+   * @ordered
+   */
+  protected EList<RoleBodyElement> elements;
 
   /**
    * <!-- begin-user-doc -->
@@ -65,9 +93,9 @@ public class RoleImpl extends AttributableElementImpl implements Role
    * <!-- end-user-doc -->
    * @generated
    */
-  public RoleNoAttr getRole()
+  public String getName()
   {
-    return role;
+    return name;
   }
 
   /**
@@ -75,16 +103,12 @@ public class RoleImpl extends AttributableElementImpl implements Role
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetRole(RoleNoAttr newRole, NotificationChain msgs)
+  public void setName(String newName)
   {
-    RoleNoAttr oldRole = role;
-    role = newRole;
+    String oldName = name;
+    name = newName;
     if (eNotificationRequired())
-    {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.ROLE__ROLE, oldRole, newRole);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
-    }
-    return msgs;
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.ROLE__NAME, oldName, name));
   }
 
   /**
@@ -92,20 +116,13 @@ public class RoleImpl extends AttributableElementImpl implements Role
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setRole(RoleNoAttr newRole)
+  public EList<RoleBodyElement> getElements()
   {
-    if (newRole != role)
+    if (elements == null)
     {
-      NotificationChain msgs = null;
-      if (role != null)
-        msgs = ((InternalEObject)role).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.ROLE__ROLE, null, msgs);
-      if (newRole != null)
-        msgs = ((InternalEObject)newRole).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.ROLE__ROLE, null, msgs);
-      msgs = basicSetRole(newRole, msgs);
-      if (msgs != null) msgs.dispatch();
+      elements = new EObjectContainmentEList<RoleBodyElement>(RoleBodyElement.class, this, DmplPackage.ROLE__ELEMENTS);
     }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.ROLE__ROLE, newRole, newRole));
+    return elements;
   }
 
   /**
@@ -118,8 +135,8 @@ public class RoleImpl extends AttributableElementImpl implements Role
   {
     switch (featureID)
     {
-      case DmplPackage.ROLE__ROLE:
-        return basicSetRole(null, msgs);
+      case DmplPackage.ROLE__ELEMENTS:
+        return ((InternalEList<?>)getElements()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -134,8 +151,10 @@ public class RoleImpl extends AttributableElementImpl implements Role
   {
     switch (featureID)
     {
-      case DmplPackage.ROLE__ROLE:
-        return getRole();
+      case DmplPackage.ROLE__NAME:
+        return getName();
+      case DmplPackage.ROLE__ELEMENTS:
+        return getElements();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -145,13 +164,18 @@ public class RoleImpl extends AttributableElementImpl implements Role
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case DmplPackage.ROLE__ROLE:
-        setRole((RoleNoAttr)newValue);
+      case DmplPackage.ROLE__NAME:
+        setName((String)newValue);
+        return;
+      case DmplPackage.ROLE__ELEMENTS:
+        getElements().clear();
+        getElements().addAll((Collection<? extends RoleBodyElement>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -167,8 +191,11 @@ public class RoleImpl extends AttributableElementImpl implements Role
   {
     switch (featureID)
     {
-      case DmplPackage.ROLE__ROLE:
-        setRole((RoleNoAttr)null);
+      case DmplPackage.ROLE__NAME:
+        setName(NAME_EDEFAULT);
+        return;
+      case DmplPackage.ROLE__ELEMENTS:
+        getElements().clear();
         return;
     }
     super.eUnset(featureID);
@@ -184,10 +211,29 @@ public class RoleImpl extends AttributableElementImpl implements Role
   {
     switch (featureID)
     {
-      case DmplPackage.ROLE__ROLE:
-        return role != null;
+      case DmplPackage.ROLE__NAME:
+        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      case DmplPackage.ROLE__ELEMENTS:
+        return elements != null && !elements.isEmpty();
     }
     return super.eIsSet(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String toString()
+  {
+    if (eIsProxy()) return super.toString();
+
+    StringBuffer result = new StringBuffer(super.toString());
+    result.append(" (name: ");
+    result.append(name);
+    result.append(')');
+    return result.toString();
   }
 
 } //RoleImpl

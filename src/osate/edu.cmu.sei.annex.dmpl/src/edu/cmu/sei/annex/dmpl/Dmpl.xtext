@@ -73,12 +73,7 @@ AttributableElement:
 	ProcNoAttr | Role | SpecNoAttr
 ;
 
-//TODO
 Role:
-	role=RoleNoAttr
-;
-
-RoleNoAttr:
 	{SimpleRole} 'role' name=TIDENTIFIER '{' elements+=RoleBodyElement* '}' |
 	{IdRole} 'role' name=TIDENTIFIER 'id' id=INT '{' elements+=RoleBodyElement* '}'
 ;

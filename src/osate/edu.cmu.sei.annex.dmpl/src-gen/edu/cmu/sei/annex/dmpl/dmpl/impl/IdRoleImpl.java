@@ -24,7 +24,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class IdRoleImpl extends RoleNoAttrImpl implements IdRole
+public class IdRoleImpl extends RoleImpl implements IdRole
 {
   /**
    * The default value of the '{@link #getId() <em>Id</em>}' attribute.

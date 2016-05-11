@@ -80,7 +80,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.ATTRIBUTABLE: return createAttributable();
       case DmplPackage.ATTRIBUTABLE_ELEMENT: return createAttributableElement();
       case DmplPackage.ROLE: return createRole();
-      case DmplPackage.ROLE_NO_ATTR: return createRoleNoAttr();
       case DmplPackage.ROLE_BODY_ELEMENT: return createRoleBodyElement();
       case DmplPackage.ATTRIBUTABLE_NO_ROLE_ELEMENT: return createAttributableNoRoleElement();
       case DmplPackage.VAR_BLOCK: return createVarBlock();
@@ -391,17 +390,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     RoleImpl role = new RoleImpl();
     return role;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public RoleNoAttr createRoleNoAttr()
-  {
-    RoleNoAttrImpl roleNoAttr = new RoleNoAttrImpl();
-    return roleNoAttr;
   }
 
   /**

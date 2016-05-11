@@ -56,7 +56,6 @@ import edu.cmu.sei.annex.dmpl.dmpl.Program;
 import edu.cmu.sei.annex.dmpl.dmpl.RecordBlock;
 import edu.cmu.sei.annex.dmpl.dmpl.RequireSpec;
 import edu.cmu.sei.annex.dmpl.dmpl.ReturnValueStmt;
-import edu.cmu.sei.annex.dmpl.dmpl.Role;
 import edu.cmu.sei.annex.dmpl.dmpl.ShiftExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleRole;
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmt;
@@ -180,7 +179,7 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				sequence_TerminalExpr(context, (IdExpr) semanticObject); 
 				return; 
 			case DmplPackage.ID_ROLE:
-				sequence_RoleNoAttr(context, (IdRole) semanticObject); 
+				sequence_Role(context, (IdRole) semanticObject); 
 				return; 
 			case DmplPackage.INT_CONST:
 				sequence_IntConst(context, (IntConst) semanticObject); 
@@ -242,14 +241,11 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 			case DmplPackage.RETURN_VALUE_STMT:
 				sequence_Stmt(context, (ReturnValueStmt) semanticObject); 
 				return; 
-			case DmplPackage.ROLE:
-				sequence_Role(context, (Role) semanticObject); 
-				return; 
 			case DmplPackage.SHIFT_EXPR:
 				sequence_ShiftExpr(context, (ShiftExpr) semanticObject); 
 				return; 
 			case DmplPackage.SIMPLE_ROLE:
-				sequence_RoleNoAttr(context, (SimpleRole) semanticObject); 
+				sequence_Role(context, (SimpleRole) semanticObject); 
 				return; 
 			case DmplPackage.SIMPLE_STMT:
 				sequence_Stmt(context, (SimpleStmt) semanticObject); 
@@ -773,7 +769,7 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 * Constraint:
 	 *     (name=TIDENTIFIER id=INT elements+=RoleBodyElement*)
 	 */
-	protected void sequence_RoleNoAttr(EObject context, IdRole semanticObject) {
+	protected void sequence_Role(EObject context, IdRole semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -782,24 +778,8 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 * Constraint:
 	 *     (name=TIDENTIFIER elements+=RoleBodyElement*)
 	 */
-	protected void sequence_RoleNoAttr(EObject context, SimpleRole semanticObject) {
+	protected void sequence_Role(EObject context, SimpleRole semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     role=RoleNoAttr
-	 */
-	protected void sequence_Role(EObject context, Role semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.ROLE__ROLE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.ROLE__ROLE));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getRoleAccess().getRoleRoleNoAttrParserRuleCall_0(), semanticObject.getRole());
-		feeder.finish();
 	}
 	
 	

@@ -19,7 +19,7 @@ package edu.cmu.sei.annex.dmpl.dmpl;
  * @model
  * @generated
  */
-public interface IdRole extends RoleNoAttr
+public interface IdRole extends Role
 {
   /**
    * Returns the value of the '<em><b>Id</b></em>' attribute.

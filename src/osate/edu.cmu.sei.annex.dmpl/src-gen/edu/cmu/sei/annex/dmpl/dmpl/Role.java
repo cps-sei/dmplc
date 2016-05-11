@@ -2,6 +2,7 @@
  */
 package edu.cmu.sei.annex.dmpl.dmpl;
 
+import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -12,7 +13,8 @@ package edu.cmu.sei.annex.dmpl.dmpl;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.Role#getRole <em>Role</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.Role#getName <em>Name</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.Role#getElements <em>Elements</em>}</li>
  * </ul>
  *
  * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getRole()
@@ -22,29 +24,45 @@ package edu.cmu.sei.annex.dmpl.dmpl;
 public interface Role extends AttributableElement
 {
   /**
-   * Returns the value of the '<em><b>Role</b></em>' containment reference.
+   * Returns the value of the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Role</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Name</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Role</em>' containment reference.
-   * @see #setRole(RoleNoAttr)
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getRole_Role()
+   * @return the value of the '<em>Name</em>' attribute.
+   * @see #setName(String)
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getRole_Name()
+   * @model
+   * @generated
+   */
+  String getName();
+
+  /**
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.Role#getName <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Name</em>' attribute.
+   * @see #getName()
+   * @generated
+   */
+  void setName(String value);
+
+  /**
+   * Returns the value of the '<em><b>Elements</b></em>' containment reference list.
+   * The list contents are of type {@link edu.cmu.sei.annex.dmpl.dmpl.RoleBodyElement}.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Elements</em>' containment reference list isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Elements</em>' containment reference list.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getRole_Elements()
    * @model containment="true"
    * @generated
    */
-  RoleNoAttr getRole();
-
-  /**
-   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.Role#getRole <em>Role</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Role</em>' containment reference.
-   * @see #getRole()
-   * @generated
-   */
-  void setRole(RoleNoAttr value);
+  EList<RoleBodyElement> getElements();
 
 } // Role

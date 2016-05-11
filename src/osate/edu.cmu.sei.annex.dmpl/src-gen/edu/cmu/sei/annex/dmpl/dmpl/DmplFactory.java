@@ -158,15 +158,6 @@ public interface DmplFactory extends EFactory
   Role createRole();
 
   /**
-   * Returns a new object of class '<em>Role No Attr</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Role No Attr</em>'.
-   * @generated
-   */
-  RoleNoAttr createRoleNoAttr();
-
-  /**
    * Returns a new object of class '<em>Role Body Element</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

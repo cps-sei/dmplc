@@ -155,11 +155,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createRoleAdapter();
       }
       @Override
-      public Adapter caseRoleNoAttr(RoleNoAttr object)
-      {
-        return createRoleNoAttrAdapter();
-      }
-      @Override
       public Adapter caseRoleBodyElement(RoleBodyElement object)
       {
         return createRoleBodyElementAdapter();
@@ -722,21 +717,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createRoleAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.RoleNoAttr <em>Role No Attr</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.RoleNoAttr
-   * @generated
-   */
-  public Adapter createRoleNoAttrAdapter()
   {
     return null;
   }

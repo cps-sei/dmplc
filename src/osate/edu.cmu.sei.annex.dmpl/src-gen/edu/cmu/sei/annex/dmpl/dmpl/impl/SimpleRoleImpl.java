@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class SimpleRoleImpl extends RoleNoAttrImpl implements SimpleRole
+public class SimpleRoleImpl extends RoleImpl implements SimpleRole
 {
   /**
    * <!-- begin-user-doc -->

@@ -13,6 +13,6 @@ package edu.cmu.sei.annex.dmpl.dmpl;
  * @model
  * @generated
  */
-public interface SimpleRole extends RoleNoAttr
+public interface SimpleRole extends Role
 {
 } // SimpleRole
