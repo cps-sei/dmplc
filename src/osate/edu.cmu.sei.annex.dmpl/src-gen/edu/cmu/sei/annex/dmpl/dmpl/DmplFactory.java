@@ -50,6 +50,24 @@ public interface DmplFactory extends EFactory
   ProgramElement createProgramElement();
 
   /**
+   * Returns a new object of class '<em>Program Element No Target</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Program Element No Target</em>'.
+   * @generated
+   */
+  ProgramElementNoTarget createProgramElementNoTarget();
+
+  /**
+   * Returns a new object of class '<em>Target</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Target</em>'.
+   * @generated
+   */
+  Target createTarget();
+
+  /**
    * Returns a new object of class '<em>Attributable Node Or Procedure</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

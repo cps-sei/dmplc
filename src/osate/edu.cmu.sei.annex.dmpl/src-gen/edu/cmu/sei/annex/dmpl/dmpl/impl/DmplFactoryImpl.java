@@ -68,6 +68,8 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.PROGRAM: return createProgram();
       case DmplPackage.DMPL_SUBCLAUSE: return createDmplSubclause();
       case DmplPackage.PROGRAM_ELEMENT: return createProgramElement();
+      case DmplPackage.PROGRAM_ELEMENT_NO_TARGET: return createProgramElementNoTarget();
+      case DmplPackage.TARGET: return createTarget();
       case DmplPackage.ATTRIBUTABLE_NODE_OR_PROCEDURE: return createAttributableNodeOrProcedure();
       case DmplPackage.CONSTANT: return createConstant();
       case DmplPackage.NUMBER_CONST: return createNumberConst();
@@ -255,6 +257,28 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     ProgramElementImpl programElement = new ProgramElementImpl();
     return programElement;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ProgramElementNoTarget createProgramElementNoTarget()
+  {
+    ProgramElementNoTargetImpl programElementNoTarget = new ProgramElementNoTargetImpl();
+    return programElementNoTarget;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Target createTarget()
+  {
+    TargetImpl target = new TargetImpl();
+    return target;
   }
 
   /**

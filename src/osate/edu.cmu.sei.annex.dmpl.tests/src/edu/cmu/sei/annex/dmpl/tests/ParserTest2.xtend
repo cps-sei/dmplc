@@ -15,6 +15,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.CallExpr
 import edu.cmu.sei.annex.dmpl.dmpl.CompareExpr
 import edu.cmu.sei.annex.dmpl.dmpl.CompareOperator
 import edu.cmu.sei.annex.dmpl.dmpl.CondStmt
+import edu.cmu.sei.annex.dmpl.dmpl.Constant
 import edu.cmu.sei.annex.dmpl.dmpl.EqualityExpr
 import edu.cmu.sei.annex.dmpl.dmpl.EqualityOperator
 import edu.cmu.sei.annex.dmpl.dmpl.ExprVarAsgn
@@ -39,6 +40,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleRole
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmt
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmtKeywordEnum
+import edu.cmu.sei.annex.dmpl.dmpl.Target
 import edu.cmu.sei.annex.dmpl.dmpl.TernaryExpr
 import edu.cmu.sei.annex.dmpl.dmpl.VarBlock
 import edu.cmu.sei.annex.dmpl.dmpl.WhileStmt
@@ -1120,6 +1122,37 @@ class ParserTest2 {
 					42.assertEquals(id)
 					elements.empty.assertTrue
 				]
+			]
+		]
+	}
+	
+	@Test
+	def void testTarget() {
+		'''
+			target t1 %%{
+			%%}
+			TARGET t2, t3, t4 %%{
+				const c1 = 1;
+				const c2 = 2;
+				const c3 = 3;
+			%%}
+		'''.parse => [
+			assertNoIssues
+			2.assertEquals(programElements.size)
+			programElements.get(0) as Target => [
+				1.assertEquals(names.size)
+				"t1".assertEquals(names.head)
+				elements.empty.assertTrue
+			]
+			programElements.get(1) as Target => [
+				3.assertEquals(names.size)
+				"t2".assertEquals(names.get(0))
+				"t3".assertEquals(names.get(1))
+				"t4".assertEquals(names.get(2))
+				3.assertEquals(elements.size)
+				"c1".assertEquals((elements.get(0) as Constant).name)
+				"c2".assertEquals((elements.get(1) as Constant).name)
+				"c3".assertEquals((elements.get(2) as Constant).name)
 			]
 		]
 	}

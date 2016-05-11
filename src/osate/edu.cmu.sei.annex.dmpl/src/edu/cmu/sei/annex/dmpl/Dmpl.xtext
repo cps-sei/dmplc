@@ -20,8 +20,16 @@ DmplSubclause: {DmplSubclause}
 
 ProgramElement:
 	//TODO: target
+	Target | ProgramElementNoTarget
+;
+
+ProgramElementNoTarget:
 	Constant |
 	{AttributableProgramElement} attrs+=Attr* element=AttributableNodeOrProcedure
+;
+
+Target:
+	('target' | 'TARGET') names+=TIDENTIFIER (',' names+=TIDENTIFIER)* '%%{' elements+=ProgramElementNoTarget* '%%}'
 ;
 
 AttributableNodeOrProcedure:

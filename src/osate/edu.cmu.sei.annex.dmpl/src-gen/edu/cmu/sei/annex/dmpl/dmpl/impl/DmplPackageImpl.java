@@ -64,6 +64,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.Param;
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
 import edu.cmu.sei.annex.dmpl.dmpl.Program;
 import edu.cmu.sei.annex.dmpl.dmpl.ProgramElement;
+import edu.cmu.sei.annex.dmpl.dmpl.ProgramElementNoTarget;
 import edu.cmu.sei.annex.dmpl.dmpl.RecordBlock;
 import edu.cmu.sei.annex.dmpl.dmpl.RequireSpec;
 import edu.cmu.sei.annex.dmpl.dmpl.ReturnValueStmt;
@@ -78,6 +79,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmtKeywordEnum;
 import edu.cmu.sei.annex.dmpl.dmpl.Specification;
 import edu.cmu.sei.annex.dmpl.dmpl.Stmt;
+import edu.cmu.sei.annex.dmpl.dmpl.Target;
 import edu.cmu.sei.annex.dmpl.dmpl.TernaryExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.ThreadDeclaration;
 import edu.cmu.sei.annex.dmpl.dmpl.Type;
@@ -128,6 +130,20 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass programElementEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass programElementNoTargetEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass targetEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -817,6 +833,46 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
   public EClass getProgramElement()
   {
     return programElementEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getProgramElementNoTarget()
+  {
+    return programElementNoTargetEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getTarget()
+  {
+    return targetEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getTarget_Names()
+  {
+    return (EAttribute)targetEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getTarget_Elements()
+  {
+    return (EReference)targetEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -2867,6 +2923,12 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     programElementEClass = createEClass(PROGRAM_ELEMENT);
 
+    programElementNoTargetEClass = createEClass(PROGRAM_ELEMENT_NO_TARGET);
+
+    targetEClass = createEClass(TARGET);
+    createEAttribute(targetEClass, TARGET__NAMES);
+    createEReference(targetEClass, TARGET__ELEMENTS);
+
     attributableNodeOrProcedureEClass = createEClass(ATTRIBUTABLE_NODE_OR_PROCEDURE);
 
     constantEClass = createEClass(CONSTANT);
@@ -3173,7 +3235,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     // Add supertypes to classes
     dmplSubclauseEClass.getESuperTypes().add(theAadl2Package.getAnnexSubclause());
-    constantEClass.getESuperTypes().add(this.getProgramElement());
+    programElementNoTargetEClass.getESuperTypes().add(this.getProgramElement());
+    targetEClass.getESuperTypes().add(this.getProgramElement());
+    constantEClass.getESuperTypes().add(this.getProgramElementNoTarget());
     intConstEClass.getESuperTypes().add(this.getNumberConst());
     doubleConstEClass.getESuperTypes().add(this.getNumberConst());
     nodeEClass.getESuperTypes().add(this.getAttributableNodeOrProcedure());
@@ -3190,7 +3254,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     lValEClass.getESuperTypes().add(this.getExpr());
     callExprEClass.getESuperTypes().add(this.getStmt());
     callExprEClass.getESuperTypes().add(this.getExpr());
-    attributableProgramElementEClass.getESuperTypes().add(this.getProgramElement());
+    attributableProgramElementEClass.getESuperTypes().add(this.getProgramElementNoTarget());
     atEndSpecEClass.getESuperTypes().add(this.getSpecification());
     atLeastSpecEClass.getESuperTypes().add(this.getSpecification());
     requireSpecEClass.getESuperTypes().add(this.getSpecification());
@@ -3239,6 +3303,12 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEReference(getDmplSubclause_Program(), this.getProgram(), null, "program", null, 0, 1, DmplSubclause.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(programElementEClass, ProgramElement.class, "ProgramElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(programElementNoTargetEClass, ProgramElementNoTarget.class, "ProgramElementNoTarget", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(targetEClass, Target.class, "Target", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getTarget_Names(), ecorePackage.getEString(), "names", null, 0, -1, Target.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getTarget_Elements(), this.getProgramElementNoTarget(), null, "elements", null, 0, -1, Target.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(attributableNodeOrProcedureEClass, AttributableNodeOrProcedure.class, "AttributableNodeOrProcedure", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

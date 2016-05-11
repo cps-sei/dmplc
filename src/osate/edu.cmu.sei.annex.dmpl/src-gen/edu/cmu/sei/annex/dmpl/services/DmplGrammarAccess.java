@@ -81,6 +81,28 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	public class ProgramElementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "ProgramElement");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final RuleCall cTargetParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cProgramElementNoTargetParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		
+		//ProgramElement: //TODO: target
+		//	Target | ProgramElementNoTarget;
+		@Override public ParserRule getRule() { return rule; }
+
+		////TODO: target
+		//Target | ProgramElementNoTarget
+		public Alternatives getAlternatives() { return cAlternatives; }
+
+		////TODO: target
+		//Target
+		public RuleCall getTargetParserRuleCall_0() { return cTargetParserRuleCall_0; }
+
+		//ProgramElementNoTarget
+		public RuleCall getProgramElementNoTargetParserRuleCall_1() { return cProgramElementNoTargetParserRuleCall_1; }
+	}
+
+	public class ProgramElementNoTargetElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "ProgramElementNoTarget");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final RuleCall cConstantParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
 		private final Action cAttributableProgramElementAction_1_0 = (Action)cGroup_1.eContents().get(0);
@@ -89,15 +111,13 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cElementAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
 		private final RuleCall cElementAttributableNodeOrProcedureParserRuleCall_1_2_0 = (RuleCall)cElementAssignment_1_2.eContents().get(0);
 		
-		//ProgramElement: //TODO: target
+		//ProgramElementNoTarget:
 		//	Constant | {AttributableProgramElement} attrs+=Attr* element=AttributableNodeOrProcedure;
 		@Override public ParserRule getRule() { return rule; }
 
-		////TODO: target
 		//Constant | {AttributableProgramElement} attrs+=Attr* element=AttributableNodeOrProcedure
 		public Alternatives getAlternatives() { return cAlternatives; }
 
-		////TODO: target
 		//Constant
 		public RuleCall getConstantParserRuleCall_0() { return cConstantParserRuleCall_0; }
 
@@ -118,6 +138,70 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 		//AttributableNodeOrProcedure
 		public RuleCall getElementAttributableNodeOrProcedureParserRuleCall_1_2_0() { return cElementAttributableNodeOrProcedureParserRuleCall_1_2_0; }
+	}
+
+	public class TargetElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Target");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Alternatives cAlternatives_0 = (Alternatives)cGroup.eContents().get(0);
+		private final Keyword cTargetKeyword_0_0 = (Keyword)cAlternatives_0.eContents().get(0);
+		private final Keyword cTARGETKeyword_0_1 = (Keyword)cAlternatives_0.eContents().get(1);
+		private final Assignment cNamesAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cNamesTIDENTIFIERTerminalRuleCall_1_0 = (RuleCall)cNamesAssignment_1.eContents().get(0);
+		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
+		private final Keyword cCommaKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
+		private final Assignment cNamesAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
+		private final RuleCall cNamesTIDENTIFIERTerminalRuleCall_2_1_0 = (RuleCall)cNamesAssignment_2_1.eContents().get(0);
+		private final Keyword cPercentSignPercentSignLeftCurlyBracketKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Assignment cElementsAssignment_4 = (Assignment)cGroup.eContents().get(4);
+		private final RuleCall cElementsProgramElementNoTargetParserRuleCall_4_0 = (RuleCall)cElementsAssignment_4.eContents().get(0);
+		private final Keyword cPercentSignPercentSignRightCurlyBracketKeyword_5 = (Keyword)cGroup.eContents().get(5);
+		
+		//Target:
+		//	("target" | "TARGET") names+=TIDENTIFIER ("," names+=TIDENTIFIER)* "%%{" elements+=ProgramElementNoTarget* "%%}";
+		@Override public ParserRule getRule() { return rule; }
+
+		//("target" | "TARGET") names+=TIDENTIFIER ("," names+=TIDENTIFIER)* "%%{" elements+=ProgramElementNoTarget* "%%}"
+		public Group getGroup() { return cGroup; }
+
+		//"target" | "TARGET"
+		public Alternatives getAlternatives_0() { return cAlternatives_0; }
+
+		//"target"
+		public Keyword getTargetKeyword_0_0() { return cTargetKeyword_0_0; }
+
+		//"TARGET"
+		public Keyword getTARGETKeyword_0_1() { return cTARGETKeyword_0_1; }
+
+		//names+=TIDENTIFIER
+		public Assignment getNamesAssignment_1() { return cNamesAssignment_1; }
+
+		//TIDENTIFIER
+		public RuleCall getNamesTIDENTIFIERTerminalRuleCall_1_0() { return cNamesTIDENTIFIERTerminalRuleCall_1_0; }
+
+		//("," names+=TIDENTIFIER)*
+		public Group getGroup_2() { return cGroup_2; }
+
+		//","
+		public Keyword getCommaKeyword_2_0() { return cCommaKeyword_2_0; }
+
+		//names+=TIDENTIFIER
+		public Assignment getNamesAssignment_2_1() { return cNamesAssignment_2_1; }
+
+		//TIDENTIFIER
+		public RuleCall getNamesTIDENTIFIERTerminalRuleCall_2_1_0() { return cNamesTIDENTIFIERTerminalRuleCall_2_1_0; }
+
+		//"%%{"
+		public Keyword getPercentSignPercentSignLeftCurlyBracketKeyword_3() { return cPercentSignPercentSignLeftCurlyBracketKeyword_3; }
+
+		//elements+=ProgramElementNoTarget*
+		public Assignment getElementsAssignment_4() { return cElementsAssignment_4; }
+
+		//ProgramElementNoTarget
+		public RuleCall getElementsProgramElementNoTargetParserRuleCall_4_0() { return cElementsProgramElementNoTargetParserRuleCall_4_0; }
+
+		//"%%}"
+		public Keyword getPercentSignPercentSignRightCurlyBracketKeyword_5() { return cPercentSignPercentSignRightCurlyBracketKeyword_5; }
 	}
 
 	public class AttributableNodeOrProcedureElements extends AbstractParserRuleElementFinder {
@@ -3482,6 +3566,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final AnnexSubclauseElements pAnnexSubclause;
 	private final DmplSubclauseElements pDmplSubclause;
 	private final ProgramElementElements pProgramElement;
+	private final ProgramElementNoTargetElements pProgramElementNoTarget;
+	private final TargetElements pTarget;
 	private final AttributableNodeOrProcedureElements pAttributableNodeOrProcedure;
 	private final ConstantElements pConstant;
 	private final NumberConstElements pNumberConst;
@@ -3558,6 +3644,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pAnnexSubclause = new AnnexSubclauseElements();
 		this.pDmplSubclause = new DmplSubclauseElements();
 		this.pProgramElement = new ProgramElementElements();
+		this.pProgramElementNoTarget = new ProgramElementNoTargetElements();
+		this.pTarget = new TargetElements();
 		this.pAttributableNodeOrProcedure = new AttributableNodeOrProcedureElements();
 		this.pConstant = new ConstantElements();
 		this.pNumberConst = new NumberConstElements();
@@ -3680,13 +3768,33 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//ProgramElement: //TODO: target
-	//	Constant | {AttributableProgramElement} attrs+=Attr* element=AttributableNodeOrProcedure;
+	//	Target | ProgramElementNoTarget;
 	public ProgramElementElements getProgramElementAccess() {
 		return pProgramElement;
 	}
 	
 	public ParserRule getProgramElementRule() {
 		return getProgramElementAccess().getRule();
+	}
+
+	//ProgramElementNoTarget:
+	//	Constant | {AttributableProgramElement} attrs+=Attr* element=AttributableNodeOrProcedure;
+	public ProgramElementNoTargetElements getProgramElementNoTargetAccess() {
+		return pProgramElementNoTarget;
+	}
+	
+	public ParserRule getProgramElementNoTargetRule() {
+		return getProgramElementNoTargetAccess().getRule();
+	}
+
+	//Target:
+	//	("target" | "TARGET") names+=TIDENTIFIER ("," names+=TIDENTIFIER)* "%%{" elements+=ProgramElementNoTarget* "%%}";
+	public TargetElements getTargetAccess() {
+		return pTarget;
+	}
+	
+	public ParserRule getTargetRule() {
+		return getTargetAccess().getRule();
 	}
 
 	//AttributableNodeOrProcedure:

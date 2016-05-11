@@ -20,7 +20,7 @@ package edu.cmu.sei.annex.dmpl.dmpl;
  * @model
  * @generated
  */
-public interface Constant extends ProgramElement
+public interface Constant extends ProgramElementNoTarget
 {
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.

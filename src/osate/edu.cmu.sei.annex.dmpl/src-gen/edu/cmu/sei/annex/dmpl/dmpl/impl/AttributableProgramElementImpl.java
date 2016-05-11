@@ -36,7 +36,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *
  * @generated
  */
-public class AttributableProgramElementImpl extends ProgramElementImpl implements AttributableProgramElement
+public class AttributableProgramElementImpl extends ProgramElementNoTargetImpl implements AttributableProgramElement
 {
   /**
    * The cached value of the '{@link #getAttrs() <em>Attrs</em>}' containment reference list.

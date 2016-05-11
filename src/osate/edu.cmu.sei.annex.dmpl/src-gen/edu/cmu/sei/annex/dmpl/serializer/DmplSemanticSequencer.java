@@ -56,6 +56,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.ReturnValueStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.ShiftExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleRole;
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmt;
+import edu.cmu.sei.annex.dmpl.dmpl.Target;
 import edu.cmu.sei.annex.dmpl.dmpl.TernaryExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.ThreadDeclaration;
 import edu.cmu.sei.annex.dmpl.dmpl.Type;
@@ -113,7 +114,7 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				sequence_RoleBodyElement(context, (AttributableNoRole) semanticObject); 
 				return; 
 			case DmplPackage.ATTRIBUTABLE_PROGRAM_ELEMENT:
-				sequence_ProgramElement(context, (AttributableProgramElement) semanticObject); 
+				sequence_ProgramElementNoTarget(context, (AttributableProgramElement) semanticObject); 
 				return; 
 			case DmplPackage.BITWISE_AND_EXPR:
 				sequence_BitwiseAndExpr(context, (BitwiseAndExpr) semanticObject); 
@@ -237,6 +238,9 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.SIMPLE_STMT:
 				sequence_Stmt(context, (SimpleStmt) semanticObject); 
+				return; 
+			case DmplPackage.TARGET:
+				sequence_Target(context, (Target) semanticObject); 
 				return; 
 			case DmplPackage.TERNARY_EXPR:
 				sequence_Expr(context, (TernaryExpr) semanticObject); 
@@ -705,7 +709,7 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 * Constraint:
 	 *     (attrs+=Attr* element=AttributableNodeOrProcedure)
 	 */
-	protected void sequence_ProgramElement(EObject context, AttributableProgramElement semanticObject) {
+	protected void sequence_ProgramElementNoTarget(EObject context, AttributableProgramElement semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -938,6 +942,15 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 		feeder.accept(grammarAccess.getStmtAccess().getConditionExprParserRuleCall_2_3_0(), semanticObject.getCondition());
 		feeder.accept(grammarAccess.getStmtAccess().getStmtStmtParserRuleCall_2_5_0(), semanticObject.getStmt());
 		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (names+=TIDENTIFIER names+=TIDENTIFIER* elements+=ProgramElementNoTarget*)
+	 */
+	protected void sequence_Target(EObject context, Target semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

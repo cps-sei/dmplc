@@ -102,6 +102,22 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case DmplPackage.PROGRAM_ELEMENT_NO_TARGET:
+      {
+        ProgramElementNoTarget programElementNoTarget = (ProgramElementNoTarget)theEObject;
+        T result = caseProgramElementNoTarget(programElementNoTarget);
+        if (result == null) result = caseProgramElement(programElementNoTarget);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.TARGET:
+      {
+        Target target = (Target)theEObject;
+        T result = caseTarget(target);
+        if (result == null) result = caseProgramElement(target);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case DmplPackage.ATTRIBUTABLE_NODE_OR_PROCEDURE:
       {
         AttributableNodeOrProcedure attributableNodeOrProcedure = (AttributableNodeOrProcedure)theEObject;
@@ -113,6 +129,7 @@ public class DmplSwitch<T> extends Switch<T>
       {
         Constant constant = (Constant)theEObject;
         T result = caseConstant(constant);
+        if (result == null) result = caseProgramElementNoTarget(constant);
         if (result == null) result = caseProgramElement(constant);
         if (result == null) result = defaultCase(theEObject);
         return result;
@@ -326,6 +343,7 @@ public class DmplSwitch<T> extends Switch<T>
       {
         AttributableProgramElement attributableProgramElement = (AttributableProgramElement)theEObject;
         T result = caseAttributableProgramElement(attributableProgramElement);
+        if (result == null) result = caseProgramElementNoTarget(attributableProgramElement);
         if (result == null) result = caseProgramElement(attributableProgramElement);
         if (result == null) result = defaultCase(theEObject);
         return result;
@@ -696,6 +714,38 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseProgramElement(ProgramElement object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Program Element No Target</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Program Element No Target</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseProgramElementNoTarget(ProgramElementNoTarget object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Target</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Target</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseTarget(Target object)
   {
     return null;
   }

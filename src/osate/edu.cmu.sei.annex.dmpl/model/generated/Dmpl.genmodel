@@ -81,6 +81,11 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//DmplSubclause/program"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//ProgramElement"/>
+    <genClasses ecoreClass="Dmpl.ecore#//ProgramElementNoTarget"/>
+    <genClasses ecoreClass="Dmpl.ecore#//Target">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Target/names"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Target/elements"/>
+    </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//AttributableNodeOrProcedure"/>
     <genClasses ecoreClass="Dmpl.ecore#//Constant">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Constant/name"/>

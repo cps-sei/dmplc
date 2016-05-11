@@ -10,8 +10,15 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ProgramElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ProgramElementNoTarget" eSuperTypes="#//ProgramElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Target" eSuperTypes="#//ProgramElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="names" unique="false" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
+        eType="#//ProgramElementNoTarget" containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AttributableNodeOrProcedure"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Constant" eSuperTypes="#//ProgramElement">
+  <eClassifiers xsi:type="ecore:EClass" name="Constant" eSuperTypes="#//ProgramElementNoTarget">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//NumberConst"
         containment="true"/>
@@ -192,7 +199,7 @@
     <eLiterals name="exists_higher" value="1" literal="exists_higher"/>
     <eLiterals name="exists_lower" value="2" literal="exists_lower"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="AttributableProgramElement" eSuperTypes="#//ProgramElement">
+  <eClassifiers xsi:type="ecore:EClass" name="AttributableProgramElement" eSuperTypes="#//ProgramElementNoTarget">
     <eStructuralFeatures xsi:type="ecore:EReference" name="attrs" upperBound="-1"
         eType="#//Attr" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="#//AttributableNodeOrProcedure"

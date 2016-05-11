@@ -28,7 +28,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class ConstantImpl extends ProgramElementImpl implements Constant
+public class ConstantImpl extends ProgramElementNoTargetImpl implements Constant
 {
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.

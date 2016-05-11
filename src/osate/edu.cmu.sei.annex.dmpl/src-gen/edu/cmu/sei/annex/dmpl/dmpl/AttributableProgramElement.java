@@ -21,7 +21,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface AttributableProgramElement extends ProgramElement
+public interface AttributableProgramElement extends ProgramElementNoTarget
 {
   /**
    * Returns the value of the '<em><b>Attrs</b></em>' containment reference list.

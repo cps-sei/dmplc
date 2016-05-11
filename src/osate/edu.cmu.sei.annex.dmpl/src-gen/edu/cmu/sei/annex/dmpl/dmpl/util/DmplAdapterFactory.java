@@ -95,6 +95,16 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createProgramElementAdapter();
       }
       @Override
+      public Adapter caseProgramElementNoTarget(ProgramElementNoTarget object)
+      {
+        return createProgramElementNoTargetAdapter();
+      }
+      @Override
+      public Adapter caseTarget(Target object)
+      {
+        return createTargetAdapter();
+      }
+      @Override
       public Adapter caseAttributableNodeOrProcedure(AttributableNodeOrProcedure object)
       {
         return createAttributableNodeOrProcedureAdapter();
@@ -522,6 +532,36 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createProgramElementAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.ProgramElementNoTarget <em>Program Element No Target</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ProgramElementNoTarget
+   * @generated
+   */
+  public Adapter createProgramElementNoTargetAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Target <em>Target</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Target
+   * @generated
+   */
+  public Adapter createTargetAdapter()
   {
     return null;
   }
