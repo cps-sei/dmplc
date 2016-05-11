@@ -22,6 +22,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.FnVarAsgn
 import edu.cmu.sei.annex.dmpl.dmpl.ForAllFunctionEnum
 import edu.cmu.sei.annex.dmpl.dmpl.ForAllStmt
 import edu.cmu.sei.annex.dmpl.dmpl.ForStmt
+import edu.cmu.sei.annex.dmpl.dmpl.IdRole
 import edu.cmu.sei.annex.dmpl.dmpl.IntExpr
 import edu.cmu.sei.annex.dmpl.dmpl.LVal
 import edu.cmu.sei.annex.dmpl.dmpl.NestedStmt
@@ -36,6 +37,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.RequireSpec
 import edu.cmu.sei.annex.dmpl.dmpl.ReturnValueStmt
 import edu.cmu.sei.annex.dmpl.dmpl.Role
 import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum
+import edu.cmu.sei.annex.dmpl.dmpl.SimpleRole
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmt
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmtKeywordEnum
 import edu.cmu.sei.annex.dmpl.dmpl.TernaryExpr
@@ -999,6 +1001,8 @@ class ParserTest2 {
 					@attr6;
 					require s4 => f6;
 				}
+				role role2 id 42 {
+				}
 			}
 		'''.parse => [
 			assertNoIssues
@@ -1007,7 +1011,7 @@ class ParserTest2 {
 			(programElements.get(1) as Node).node => [
 				"n2".assertEquals(name)
 				body => [
-					14.assertEquals(elements.size)
+					15.assertEquals(elements.size)
 					"f1".assertEquals(((elements.get(0) as Attributable).element as ProcNoAttr).prototype.name)
 					elements.get(1) as VarBlock => [
 						override.assertFalse
@@ -1102,26 +1106,29 @@ class ParserTest2 {
 							"f4".assertEquals(function)
 						]
 					]
-					((elements.get(13) as Attributable).element as Role).role => [
+					((elements.get(13) as Attributable).element as Role).role as SimpleRole => [
 						"role1".assertEquals(name)
-						body => [
-							4.assertEquals(elements.size)
-							"v12".assertEquals((elements.get(0) as VarBlock).^var.^var.varAsgns.head.^var.name)
-							"r5".assertEquals((elements.get(1) as RecordBlock).name)
-							elements.get(2) as AttributableNoRole => [
-								attrList.assertNull
-								"f5".assertEquals((element as ProcNoAttr).prototype.name)
-							]
-							elements.get(3) as AttributableNoRole => [
-								attrList => [
-									3.assertEquals(attrs.size)
-									"attr4".assertEquals(attrs.get(0).name)
-									"attr5".assertEquals(attrs.get(1).name)
-									"attr6".assertEquals(attrs.get(2).name)
-								]
-								"s4".assertEquals((element as RequireSpec).name)
-							]
+						4.assertEquals(elements.size)
+						"v12".assertEquals((elements.get(0) as VarBlock).^var.^var.varAsgns.head.^var.name)
+						"r5".assertEquals((elements.get(1) as RecordBlock).name)
+						elements.get(2) as AttributableNoRole => [
+							attrList.assertNull
+							"f5".assertEquals((element as ProcNoAttr).prototype.name)
 						]
+						elements.get(3) as AttributableNoRole => [
+							attrList => [
+								3.assertEquals(attrs.size)
+								"attr4".assertEquals(attrs.get(0).name)
+								"attr5".assertEquals(attrs.get(1).name)
+								"attr6".assertEquals(attrs.get(2).name)
+							]
+							"s4".assertEquals((element as RequireSpec).name)
+						]
+					]
+					((elements.get(14) as Attributable).element as Role).role as IdRole => [
+						"role2".assertEquals(name)
+						42.assertEquals(id)
+						elements.empty.assertTrue
 					]
 				]
 			]

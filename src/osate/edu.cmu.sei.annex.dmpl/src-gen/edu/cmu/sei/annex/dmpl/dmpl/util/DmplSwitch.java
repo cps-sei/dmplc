@@ -201,13 +201,6 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case DmplPackage.ROLE_BODY:
-      {
-        RoleBody roleBody = (RoleBody)theEObject;
-        T result = caseRoleBody(roleBody);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
       case DmplPackage.ROLE_BODY_ELEMENT:
       {
         RoleBodyElement roleBodyElement = (RoleBodyElement)theEObject;
@@ -400,6 +393,22 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = caseSpecNoAttr(requireSpec);
         if (result == null) result = caseAttributableElement(requireSpec);
         if (result == null) result = caseAttributableNoRoleElement(requireSpec);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.SIMPLE_ROLE:
+      {
+        SimpleRole simpleRole = (SimpleRole)theEObject;
+        T result = caseSimpleRole(simpleRole);
+        if (result == null) result = caseRoleNoAttr(simpleRole);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.ID_ROLE:
+      {
+        IdRole idRole = (IdRole)theEObject;
+        T result = caseIdRole(idRole);
+        if (result == null) result = caseRoleNoAttr(idRole);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -928,22 +937,6 @@ public class DmplSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Role Body</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Role Body</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseRoleBody(RoleBody object)
-  {
-    return null;
-  }
-
-  /**
    * Returns the result of interpreting the object as an instance of '<em>Role Body Element</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -1339,6 +1332,38 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseRequireSpec(RequireSpec object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Simple Role</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Simple Role</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseSimpleRole(SimpleRole object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Id Role</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Id Role</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseIdRole(IdRole object)
   {
     return null;
   }

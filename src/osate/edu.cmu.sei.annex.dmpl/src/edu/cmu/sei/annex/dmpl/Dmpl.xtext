@@ -78,13 +78,9 @@ Role:
 	role=RoleNoAttr
 ;
 
-//TODO
 RoleNoAttr:
-	'role' name=TIDENTIFIER '{' body=RoleBody '}'
-;
-
-RoleBody:
-	{RoleBody} (elements+=RoleBodyElement)*
+	{SimpleRole} 'role' name=TIDENTIFIER '{' elements+=RoleBodyElement* '}' |
+	{IdRole} 'role' name=TIDENTIFIER 'id' id=INT '{' elements+=RoleBodyElement* '}'
 ;
 
 RoleBodyElement:

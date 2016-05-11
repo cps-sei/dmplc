@@ -3,17 +3,24 @@
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
-import edu.cmu.sei.annex.dmpl.dmpl.RoleBody;
+import edu.cmu.sei.annex.dmpl.dmpl.RoleBodyElement;
 import edu.cmu.sei.annex.dmpl.dmpl.RoleNoAttr;
+
+import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -24,7 +31,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * </p>
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.RoleNoAttrImpl#getName <em>Name</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.RoleNoAttrImpl#getBody <em>Body</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.RoleNoAttrImpl#getElements <em>Elements</em>}</li>
  * </ul>
  *
  * @generated
@@ -52,14 +59,14 @@ public class RoleNoAttrImpl extends MinimalEObjectImpl.Container implements Role
   protected String name = NAME_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference.
+   * The cached value of the '{@link #getElements() <em>Elements</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getBody()
+   * @see #getElements()
    * @generated
    * @ordered
    */
-  protected RoleBody body;
+  protected EList<RoleBodyElement> elements;
 
   /**
    * <!-- begin-user-doc -->
@@ -110,47 +117,13 @@ public class RoleNoAttrImpl extends MinimalEObjectImpl.Container implements Role
    * <!-- end-user-doc -->
    * @generated
    */
-  public RoleBody getBody()
+  public EList<RoleBodyElement> getElements()
   {
-    return body;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetBody(RoleBody newBody, NotificationChain msgs)
-  {
-    RoleBody oldBody = body;
-    body = newBody;
-    if (eNotificationRequired())
+    if (elements == null)
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.ROLE_NO_ATTR__BODY, oldBody, newBody);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      elements = new EObjectContainmentEList<RoleBodyElement>(RoleBodyElement.class, this, DmplPackage.ROLE_NO_ATTR__ELEMENTS);
     }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setBody(RoleBody newBody)
-  {
-    if (newBody != body)
-    {
-      NotificationChain msgs = null;
-      if (body != null)
-        msgs = ((InternalEObject)body).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.ROLE_NO_ATTR__BODY, null, msgs);
-      if (newBody != null)
-        msgs = ((InternalEObject)newBody).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.ROLE_NO_ATTR__BODY, null, msgs);
-      msgs = basicSetBody(newBody, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.ROLE_NO_ATTR__BODY, newBody, newBody));
+    return elements;
   }
 
   /**
@@ -163,8 +136,8 @@ public class RoleNoAttrImpl extends MinimalEObjectImpl.Container implements Role
   {
     switch (featureID)
     {
-      case DmplPackage.ROLE_NO_ATTR__BODY:
-        return basicSetBody(null, msgs);
+      case DmplPackage.ROLE_NO_ATTR__ELEMENTS:
+        return ((InternalEList<?>)getElements()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -181,8 +154,8 @@ public class RoleNoAttrImpl extends MinimalEObjectImpl.Container implements Role
     {
       case DmplPackage.ROLE_NO_ATTR__NAME:
         return getName();
-      case DmplPackage.ROLE_NO_ATTR__BODY:
-        return getBody();
+      case DmplPackage.ROLE_NO_ATTR__ELEMENTS:
+        return getElements();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -192,6 +165,7 @@ public class RoleNoAttrImpl extends MinimalEObjectImpl.Container implements Role
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
@@ -200,8 +174,9 @@ public class RoleNoAttrImpl extends MinimalEObjectImpl.Container implements Role
       case DmplPackage.ROLE_NO_ATTR__NAME:
         setName((String)newValue);
         return;
-      case DmplPackage.ROLE_NO_ATTR__BODY:
-        setBody((RoleBody)newValue);
+      case DmplPackage.ROLE_NO_ATTR__ELEMENTS:
+        getElements().clear();
+        getElements().addAll((Collection<? extends RoleBodyElement>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -220,8 +195,8 @@ public class RoleNoAttrImpl extends MinimalEObjectImpl.Container implements Role
       case DmplPackage.ROLE_NO_ATTR__NAME:
         setName(NAME_EDEFAULT);
         return;
-      case DmplPackage.ROLE_NO_ATTR__BODY:
-        setBody((RoleBody)null);
+      case DmplPackage.ROLE_NO_ATTR__ELEMENTS:
+        getElements().clear();
         return;
     }
     super.eUnset(featureID);
@@ -239,8 +214,8 @@ public class RoleNoAttrImpl extends MinimalEObjectImpl.Container implements Role
     {
       case DmplPackage.ROLE_NO_ATTR__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-      case DmplPackage.ROLE_NO_ATTR__BODY:
-        return body != null;
+      case DmplPackage.ROLE_NO_ATTR__ELEMENTS:
+        return elements != null && !elements.isEmpty();
     }
     return super.eIsSet(featureID);
   }

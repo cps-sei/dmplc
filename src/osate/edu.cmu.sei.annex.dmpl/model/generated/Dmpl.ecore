@@ -55,10 +55,6 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RoleNoAttr">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#//RoleBody"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RoleBody">
     <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
         eType="#//RoleBodyElement" containment="true"/>
   </eClassifiers>
@@ -234,6 +230,10 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RequireSpec" eSuperTypes="#//SpecNoAttr"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SimpleRole" eSuperTypes="#//RoleNoAttr"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IdRole" eSuperTypes="#//RoleNoAttr">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AttributableNoRole" eSuperTypes="#//RoleBodyElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="attrList" eType="#//AttrList"
         containment="true"/>

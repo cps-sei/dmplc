@@ -167,15 +167,6 @@ public interface DmplFactory extends EFactory
   RoleNoAttr createRoleNoAttr();
 
   /**
-   * Returns a new object of class '<em>Role Body</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Role Body</em>'.
-   * @generated
-   */
-  RoleBody createRoleBody();
-
-  /**
    * Returns a new object of class '<em>Role Body Element</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -399,6 +390,24 @@ public interface DmplFactory extends EFactory
    * @generated
    */
   RequireSpec createRequireSpec();
+
+  /**
+   * Returns a new object of class '<em>Simple Role</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Simple Role</em>'.
+   * @generated
+   */
+  SimpleRole createSimpleRole();
+
+  /**
+   * Returns a new object of class '<em>Id Role</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Id Role</em>'.
+   * @generated
+   */
+  IdRole createIdRole();
 
   /**
    * Returns a new object of class '<em>Attributable No Role</em>'.

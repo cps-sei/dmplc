@@ -2,6 +2,8 @@
  */
 package edu.cmu.sei.annex.dmpl.dmpl;
 
+import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -14,7 +16,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.RoleNoAttr#getName <em>Name</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.RoleNoAttr#getBody <em>Body</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.RoleNoAttr#getElements <em>Elements</em>}</li>
  * </ul>
  *
  * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getRoleNoAttr()
@@ -50,29 +52,19 @@ public interface RoleNoAttr extends EObject
   void setName(String value);
 
   /**
-   * Returns the value of the '<em><b>Body</b></em>' containment reference.
+   * Returns the value of the '<em><b>Elements</b></em>' containment reference list.
+   * The list contents are of type {@link edu.cmu.sei.annex.dmpl.dmpl.RoleBodyElement}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Body</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Elements</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Body</em>' containment reference.
-   * @see #setBody(RoleBody)
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getRoleNoAttr_Body()
+   * @return the value of the '<em>Elements</em>' containment reference list.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getRoleNoAttr_Elements()
    * @model containment="true"
    * @generated
    */
-  RoleBody getBody();
-
-  /**
-   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.RoleNoAttr#getBody <em>Body</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Body</em>' containment reference.
-   * @see #getBody()
-   * @generated
-   */
-  void setBody(RoleBody value);
+  EList<RoleBodyElement> getElements();
 
 } // RoleNoAttr

@@ -160,11 +160,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createRoleNoAttrAdapter();
       }
       @Override
-      public Adapter caseRoleBody(RoleBody object)
-      {
-        return createRoleBodyAdapter();
-      }
-      @Override
       public Adapter caseRoleBodyElement(RoleBodyElement object)
       {
         return createRoleBodyElementAdapter();
@@ -288,6 +283,16 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
       public Adapter caseRequireSpec(RequireSpec object)
       {
         return createRequireSpecAdapter();
+      }
+      @Override
+      public Adapter caseSimpleRole(SimpleRole object)
+      {
+        return createSimpleRoleAdapter();
+      }
+      @Override
+      public Adapter caseIdRole(IdRole object)
+      {
+        return createIdRoleAdapter();
       }
       @Override
       public Adapter caseAttributableNoRole(AttributableNoRole object)
@@ -737,21 +742,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.RoleBody <em>Role Body</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.RoleBody
-   * @generated
-   */
-  public Adapter createRoleBodyAdapter()
-  {
-    return null;
-  }
-
-  /**
    * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.RoleBodyElement <em>Role Body Element</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -1122,6 +1112,36 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createRequireSpecAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.SimpleRole <em>Simple Role</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.SimpleRole
+   * @generated
+   */
+  public Adapter createSimpleRoleAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.IdRole <em>Id Role</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.IdRole
+   * @generated
+   */
+  public Adapter createIdRoleAdapter()
   {
     return null;
   }

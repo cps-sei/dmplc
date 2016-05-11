@@ -43,6 +43,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.ForAllStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.ForStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.IdDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.IdExpr;
+import edu.cmu.sei.annex.dmpl.dmpl.IdRole;
 import edu.cmu.sei.annex.dmpl.dmpl.IntConst;
 import edu.cmu.sei.annex.dmpl.dmpl.IntDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.IntExpr;
@@ -69,7 +70,6 @@ import edu.cmu.sei.annex.dmpl.dmpl.RecordBlock;
 import edu.cmu.sei.annex.dmpl.dmpl.RequireSpec;
 import edu.cmu.sei.annex.dmpl.dmpl.ReturnValueStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.Role;
-import edu.cmu.sei.annex.dmpl.dmpl.RoleBody;
 import edu.cmu.sei.annex.dmpl.dmpl.RoleBodyElement;
 import edu.cmu.sei.annex.dmpl.dmpl.RoleNoAttr;
 import edu.cmu.sei.annex.dmpl.dmpl.ShiftExpr;
@@ -77,6 +77,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.ShiftOperator;
 import edu.cmu.sei.annex.dmpl.dmpl.SignEnum;
 import edu.cmu.sei.annex.dmpl.dmpl.SignedEnum;
 import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum;
+import edu.cmu.sei.annex.dmpl.dmpl.SimpleRole;
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmtKeywordEnum;
 import edu.cmu.sei.annex.dmpl.dmpl.SpecNoAttr;
@@ -222,13 +223,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass roleNoAttrEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass roleBodyEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -404,6 +398,20 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass requireSpecEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass simpleRoleEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass idRoleEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -1128,29 +1136,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getRoleNoAttr_Body()
+  public EReference getRoleNoAttr_Elements()
   {
     return (EReference)roleNoAttrEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getRoleBody()
-  {
-    return roleBodyEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EReference getRoleBody_Elements()
-  {
-    return (EReference)roleBodyEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1821,6 +1809,36 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
   public EClass getRequireSpec()
   {
     return requireSpecEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getSimpleRole()
+  {
+    return simpleRoleEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getIdRole()
+  {
+    return idRoleEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getIdRole_Id()
+  {
+    return (EAttribute)idRoleEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -2981,10 +2999,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     roleNoAttrEClass = createEClass(ROLE_NO_ATTR);
     createEAttribute(roleNoAttrEClass, ROLE_NO_ATTR__NAME);
-    createEReference(roleNoAttrEClass, ROLE_NO_ATTR__BODY);
-
-    roleBodyEClass = createEClass(ROLE_BODY);
-    createEReference(roleBodyEClass, ROLE_BODY__ELEMENTS);
+    createEReference(roleNoAttrEClass, ROLE_NO_ATTR__ELEMENTS);
 
     roleBodyElementEClass = createEClass(ROLE_BODY_ELEMENT);
 
@@ -3077,6 +3092,11 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     createEReference(atLeastSpecEClass, AT_LEAST_SPEC__THRESHOLD);
 
     requireSpecEClass = createEClass(REQUIRE_SPEC);
+
+    simpleRoleEClass = createEClass(SIMPLE_ROLE);
+
+    idRoleEClass = createEClass(ID_ROLE);
+    createEAttribute(idRoleEClass, ID_ROLE__ID);
 
     attributableNoRoleEClass = createEClass(ATTRIBUTABLE_NO_ROLE);
     createEReference(attributableNoRoleEClass, ATTRIBUTABLE_NO_ROLE__ATTR_LIST);
@@ -3277,6 +3297,8 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     atEndSpecEClass.getESuperTypes().add(this.getSpecNoAttr());
     atLeastSpecEClass.getESuperTypes().add(this.getSpecNoAttr());
     requireSpecEClass.getESuperTypes().add(this.getSpecNoAttr());
+    simpleRoleEClass.getESuperTypes().add(this.getRoleNoAttr());
+    idRoleEClass.getESuperTypes().add(this.getRoleNoAttr());
     attributableNoRoleEClass.getESuperTypes().add(this.getRoleBodyElement());
     exprVarAsgnEClass.getESuperTypes().add(this.getVarAsgn());
     fnVarAsgnEClass.getESuperTypes().add(this.getVarAsgn());
@@ -3360,10 +3382,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     initEClass(roleNoAttrEClass, RoleNoAttr.class, "RoleNoAttr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getRoleNoAttr_Name(), ecorePackage.getEString(), "name", null, 0, 1, RoleNoAttr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getRoleNoAttr_Body(), this.getRoleBody(), null, "body", null, 0, 1, RoleNoAttr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(roleBodyEClass, RoleBody.class, "RoleBody", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getRoleBody_Elements(), this.getRoleBodyElement(), null, "elements", null, 0, -1, RoleBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRoleNoAttr_Elements(), this.getRoleBodyElement(), null, "elements", null, 0, -1, RoleNoAttr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(roleBodyElementEClass, RoleBodyElement.class, "RoleBodyElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -3456,6 +3475,11 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEReference(getAtLeastSpec_Threshold(), this.getDoubleConst(), null, "threshold", null, 0, 1, AtLeastSpec.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(requireSpecEClass, RequireSpec.class, "RequireSpec", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(simpleRoleEClass, SimpleRole.class, "SimpleRole", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(idRoleEClass, IdRole.class, "IdRole", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getIdRole_Id(), ecorePackage.getEInt(), "id", null, 0, 1, IdRole.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(attributableNoRoleEClass, AttributableNoRole.class, "AttributableNoRole", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getAttributableNoRole_AttrList(), this.getAttrList(), null, "attrList", null, 0, 1, AttributableNoRole.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

@@ -81,7 +81,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.ATTRIBUTABLE_ELEMENT: return createAttributableElement();
       case DmplPackage.ROLE: return createRole();
       case DmplPackage.ROLE_NO_ATTR: return createRoleNoAttr();
-      case DmplPackage.ROLE_BODY: return createRoleBody();
       case DmplPackage.ROLE_BODY_ELEMENT: return createRoleBodyElement();
       case DmplPackage.ATTRIBUTABLE_NO_ROLE_ELEMENT: return createAttributableNoRoleElement();
       case DmplPackage.VAR_BLOCK: return createVarBlock();
@@ -107,6 +106,8 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.AT_END_SPEC: return createAtEndSpec();
       case DmplPackage.AT_LEAST_SPEC: return createAtLeastSpec();
       case DmplPackage.REQUIRE_SPEC: return createRequireSpec();
+      case DmplPackage.SIMPLE_ROLE: return createSimpleRole();
+      case DmplPackage.ID_ROLE: return createIdRole();
       case DmplPackage.ATTRIBUTABLE_NO_ROLE: return createAttributableNoRole();
       case DmplPackage.EXPR_VAR_ASGN: return createExprVarAsgn();
       case DmplPackage.FN_VAR_ASGN: return createFnVarAsgn();
@@ -408,17 +409,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public RoleBody createRoleBody()
-  {
-    RoleBodyImpl roleBody = new RoleBodyImpl();
-    return roleBody;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public RoleBodyElement createRoleBodyElement()
   {
     RoleBodyElementImpl roleBodyElement = new RoleBodyElementImpl();
@@ -687,6 +677,28 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     RequireSpecImpl requireSpec = new RequireSpecImpl();
     return requireSpec;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public SimpleRole createSimpleRole()
+  {
+    SimpleRoleImpl simpleRole = new SimpleRoleImpl();
+    return simpleRole;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public IdRole createIdRole()
+  {
+    IdRoleImpl idRole = new IdRoleImpl();
+    return idRole;
   }
 
   /**
