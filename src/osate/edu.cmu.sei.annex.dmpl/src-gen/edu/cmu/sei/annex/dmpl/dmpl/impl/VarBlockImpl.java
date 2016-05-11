@@ -22,7 +22,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarBlockImpl#isOverride <em>Override</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarBlockImpl#getVar <em>Var</em>}</li>
  * </ul>
  *
@@ -30,26 +29,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class VarBlockImpl extends NodeBodyElementImpl implements VarBlock
 {
-  /**
-   * The default value of the '{@link #isOverride() <em>Override</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #isOverride()
-   * @generated
-   * @ordered
-   */
-  protected static final boolean OVERRIDE_EDEFAULT = false;
-
-  /**
-   * The cached value of the '{@link #isOverride() <em>Override</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #isOverride()
-   * @generated
-   * @ordered
-   */
-  protected boolean override = OVERRIDE_EDEFAULT;
-
   /**
    * The cached value of the '{@link #getVar() <em>Var</em>}' containment reference.
    * <!-- begin-user-doc -->
@@ -79,29 +58,6 @@ public class VarBlockImpl extends NodeBodyElementImpl implements VarBlock
   protected EClass eStaticClass()
   {
     return DmplPackage.Literals.VAR_BLOCK;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public boolean isOverride()
-  {
-    return override;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setOverride(boolean newOverride)
-  {
-    boolean oldOverride = override;
-    override = newOverride;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.VAR_BLOCK__OVERRIDE, oldOverride, override));
   }
 
   /**
@@ -178,8 +134,6 @@ public class VarBlockImpl extends NodeBodyElementImpl implements VarBlock
   {
     switch (featureID)
     {
-      case DmplPackage.VAR_BLOCK__OVERRIDE:
-        return isOverride();
       case DmplPackage.VAR_BLOCK__VAR:
         return getVar();
     }
@@ -196,9 +150,6 @@ public class VarBlockImpl extends NodeBodyElementImpl implements VarBlock
   {
     switch (featureID)
     {
-      case DmplPackage.VAR_BLOCK__OVERRIDE:
-        setOverride((Boolean)newValue);
-        return;
       case DmplPackage.VAR_BLOCK__VAR:
         setVar((NodeVarInit)newValue);
         return;
@@ -216,9 +167,6 @@ public class VarBlockImpl extends NodeBodyElementImpl implements VarBlock
   {
     switch (featureID)
     {
-      case DmplPackage.VAR_BLOCK__OVERRIDE:
-        setOverride(OVERRIDE_EDEFAULT);
-        return;
       case DmplPackage.VAR_BLOCK__VAR:
         setVar((NodeVarInit)null);
         return;
@@ -236,29 +184,10 @@ public class VarBlockImpl extends NodeBodyElementImpl implements VarBlock
   {
     switch (featureID)
     {
-      case DmplPackage.VAR_BLOCK__OVERRIDE:
-        return override != OVERRIDE_EDEFAULT;
       case DmplPackage.VAR_BLOCK__VAR:
         return var != null;
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public String toString()
-  {
-    if (eIsProxy()) return super.toString();
-
-    StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (override: ");
-    result.append(override);
-    result.append(')');
-    return result.toString();
   }
 
 } //VarBlockImpl

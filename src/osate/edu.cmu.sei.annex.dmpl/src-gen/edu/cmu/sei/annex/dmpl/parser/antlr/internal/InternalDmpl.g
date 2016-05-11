@@ -719,25 +719,118 @@ ruleRecordBlock returns [EObject current=null]
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
+((
+(
+		lv_override_0_0=	'override' 
+    {
+        newLeafNode(lv_override_0_0, grammarAccess.getRecordBlockAccess().getOverrideOverrideKeyword_0_0());
+    }
+ 
+	    {
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getRecordBlockRule());
+	        }
+       		setWithLastConsumed($current, "override", true, "override");
+	    }
+
+)
+)?	otherlv_1='record' 
+    {
+    	newLeafNode(otherlv_1, grammarAccess.getRecordBlockAccess().getRecordKeyword_1());
+    }
+(
+(
+		lv_name_2_0=RULE_TIDENTIFIER
+		{
+			newLeafNode(lv_name_2_0, grammarAccess.getRecordBlockAccess().getNameTIDENTIFIERTerminalRuleCall_2_0()); 
+		}
+		{
+	        if ($current==null) {
+	            $current = createModelElement(grammarAccess.getRecordBlockRule());
+	        }
+       		setWithLastConsumed(
+       			$current, 
+       			"name",
+        		lv_name_2_0, 
+        		"TIDENTIFIER");
+	    }
+
+)
+)	otherlv_3='{' 
+    {
+    	newLeafNode(otherlv_3, grammarAccess.getRecordBlockAccess().getLeftCurlyBracketKeyword_3());
+    }
+((
+(
+		{ 
+	        newCompositeNode(grammarAccess.getRecordBlockAccess().getVarsNodeVarInitParserRuleCall_4_0_0()); 
+	    }
+		lv_vars_4_0=ruleNodeVarInit		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getRecordBlockRule());
+	        }
+       		add(
+       			$current, 
+       			"vars",
+        		lv_vars_4_0, 
+        		"NodeVarInit");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)	otherlv_5=';' 
+    {
+    	newLeafNode(otherlv_5, grammarAccess.getRecordBlockAccess().getSemicolonKeyword_4_1());
+    }
+)+	otherlv_6='}' 
+    {
+    	newLeafNode(otherlv_6, grammarAccess.getRecordBlockAccess().getRightCurlyBracketKeyword_5());
+    }
+(	otherlv_7='=' 
+    {
+    	newLeafNode(otherlv_7, grammarAccess.getRecordBlockAccess().getEqualsSignKeyword_6_0());
+    }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getRecordBlockAccess().getRecordRecordParserRuleCall_0()); 
+	        newCompositeNode(grammarAccess.getRecordBlockAccess().getEqualsBodyFnBodyParserRuleCall_6_1_0()); 
 	    }
-		lv_record_0_0=ruleRecord		{
+		lv_equalsBody_8_0=ruleFnBody		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getRecordBlockRule());
 	        }
        		set(
        			$current, 
-       			"record",
-        		lv_record_0_0, 
-        		"Record");
+       			"equalsBody",
+        		lv_equalsBody_8_0, 
+        		"FnBody");
 	        afterParserOrEnumRuleCall();
 	    }
 
 )
+))?(	otherlv_9='~' 
+    {
+    	newLeafNode(otherlv_9, grammarAccess.getRecordBlockAccess().getTildeKeyword_7_0());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getRecordBlockAccess().getComplementBodyFnBodyParserRuleCall_7_1_0()); 
+	    }
+		lv_complementBody_10_0=ruleFnBody		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getRecordBlockRule());
+	        }
+       		set(
+       			$current, 
+       			"complementBody",
+        		lv_complementBody_10_0, 
+        		"FnBody");
+	        afterParserOrEnumRuleCall();
+	    }
+
 )
+))?)
 ;
 
 
@@ -795,123 +888,6 @@ ruleNodeVarInit returns [EObject current=null]
 
 )
 ))
-;
-
-
-
-
-
-// Entry rule entryRuleRecord
-entryRuleRecord returns [EObject current=null] 
-	:
-	{ newCompositeNode(grammarAccess.getRecordRule()); }
-	 iv_ruleRecord=ruleRecord 
-	 { $current=$iv_ruleRecord.current; } 
-	 EOF 
-;
-
-// Rule Record
-ruleRecord returns [EObject current=null] 
-    @init { enterRule(); 
-    }
-    @after { leaveRule(); }:
-(	otherlv_0='record' 
-    {
-    	newLeafNode(otherlv_0, grammarAccess.getRecordAccess().getRecordKeyword_0());
-    }
-(
-(
-		lv_name_1_0=RULE_TIDENTIFIER
-		{
-			newLeafNode(lv_name_1_0, grammarAccess.getRecordAccess().getNameTIDENTIFIERTerminalRuleCall_1_0()); 
-		}
-		{
-	        if ($current==null) {
-	            $current = createModelElement(grammarAccess.getRecordRule());
-	        }
-       		setWithLastConsumed(
-       			$current, 
-       			"name",
-        		lv_name_1_0, 
-        		"TIDENTIFIER");
-	    }
-
-)
-)	otherlv_2='{' 
-    {
-    	newLeafNode(otherlv_2, grammarAccess.getRecordAccess().getLeftCurlyBracketKeyword_2());
-    }
-((
-(
-		{ 
-	        newCompositeNode(grammarAccess.getRecordAccess().getVarsNodeVarInitParserRuleCall_3_0_0()); 
-	    }
-		lv_vars_3_0=ruleNodeVarInit		{
-	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getRecordRule());
-	        }
-       		add(
-       			$current, 
-       			"vars",
-        		lv_vars_3_0, 
-        		"NodeVarInit");
-	        afterParserOrEnumRuleCall();
-	    }
-
-)
-)	otherlv_4=';' 
-    {
-    	newLeafNode(otherlv_4, grammarAccess.getRecordAccess().getSemicolonKeyword_3_1());
-    }
-)+	otherlv_5='}' 
-    {
-    	newLeafNode(otherlv_5, grammarAccess.getRecordAccess().getRightCurlyBracketKeyword_4());
-    }
-(	otherlv_6='=' 
-    {
-    	newLeafNode(otherlv_6, grammarAccess.getRecordAccess().getEqualsSignKeyword_5_0());
-    }
-(
-(
-		{ 
-	        newCompositeNode(grammarAccess.getRecordAccess().getEqualsBodyFnBodyParserRuleCall_5_1_0()); 
-	    }
-		lv_equalsBody_7_0=ruleFnBody		{
-	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getRecordRule());
-	        }
-       		set(
-       			$current, 
-       			"equalsBody",
-        		lv_equalsBody_7_0, 
-        		"FnBody");
-	        afterParserOrEnumRuleCall();
-	    }
-
-)
-))?(	otherlv_8='~' 
-    {
-    	newLeafNode(otherlv_8, grammarAccess.getRecordAccess().getTildeKeyword_6_0());
-    }
-(
-(
-		{ 
-	        newCompositeNode(grammarAccess.getRecordAccess().getComplementBodyFnBodyParserRuleCall_6_1_0()); 
-	    }
-		lv_complementBody_9_0=ruleFnBody		{
-	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getRecordRule());
-	        }
-       		set(
-       			$current, 
-       			"complementBody",
-        		lv_complementBody_9_0, 
-        		"FnBody");
-	        afterParserOrEnumRuleCall();
-	    }
-
-)
-))?)
 ;
 
 

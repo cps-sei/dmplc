@@ -149,15 +149,6 @@ public interface DmplFactory extends EFactory
   NodeVarInit createNodeVarInit();
 
   /**
-   * Returns a new object of class '<em>Record</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Record</em>'.
-   * @generated
-   */
-  Record createRecord();
-
-  /**
    * Returns a new object of class '<em>Var Init</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

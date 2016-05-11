@@ -150,11 +150,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createNodeVarInitAdapter();
       }
       @Override
-      public Adapter caseRecord(Record object)
-      {
-        return createRecordAdapter();
-      }
-      @Override
       public Adapter caseVarInit(VarInit object)
       {
         return createVarInitAdapter();
@@ -642,21 +637,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createNodeVarInitAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Record <em>Record</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.Record
-   * @generated
-   */
-  public Adapter createRecordAdapter()
   {
     return null;
   }

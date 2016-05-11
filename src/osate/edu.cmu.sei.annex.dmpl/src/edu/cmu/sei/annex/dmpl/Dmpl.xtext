@@ -63,17 +63,12 @@ VarBlock:
 	override?='override'? var=NodeVarInit ';'
 ;
 
-//TODO
 RecordBlock:
-	record=Record
+	override?='override'? 'record' name=TIDENTIFIER '{' (vars+=NodeVarInit ';')+ '}' ('=' equalsBody=FnBody)? ('~' complementBody=FnBody)?
 ;
 
 NodeVarInit:
 	scope=NodeVarScope var=VarInit
-;
-
-Record:
-	'record' name=TIDENTIFIER '{' (vars+=NodeVarInit ';')+ '}' ('=' equalsBody=FnBody)? ('~' complementBody=FnBody)?
 ;
 
 VarInit:

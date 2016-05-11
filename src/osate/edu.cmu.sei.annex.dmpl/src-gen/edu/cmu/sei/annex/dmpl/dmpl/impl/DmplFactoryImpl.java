@@ -79,7 +79,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.VAR_BLOCK: return createVarBlock();
       case DmplPackage.RECORD_BLOCK: return createRecordBlock();
       case DmplPackage.NODE_VAR_INIT: return createNodeVarInit();
-      case DmplPackage.RECORD: return createRecord();
       case DmplPackage.VAR_INIT: return createVarInit();
       case DmplPackage.VAR_ASGN: return createVarAsgn();
       case DmplPackage.VAR: return createVar();
@@ -367,17 +366,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     NodeVarInitImpl nodeVarInit = new NodeVarInitImpl();
     return nodeVarInit;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Record createRecord()
-  {
-    RecordImpl record = new RecordImpl();
-    return record;
   }
 
   /**

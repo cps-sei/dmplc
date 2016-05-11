@@ -3,16 +3,24 @@
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
-import edu.cmu.sei.annex.dmpl.dmpl.Record;
+import edu.cmu.sei.annex.dmpl.dmpl.FnBody;
+import edu.cmu.sei.annex.dmpl.dmpl.NodeVarInit;
 import edu.cmu.sei.annex.dmpl.dmpl.RecordBlock;
+
+import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,7 +30,10 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.RecordBlockImpl#getRecord <em>Record</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.RecordBlockImpl#getName <em>Name</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.RecordBlockImpl#getVars <em>Vars</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.RecordBlockImpl#getEqualsBody <em>Equals Body</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.RecordBlockImpl#getComplementBody <em>Complement Body</em>}</li>
  * </ul>
  *
  * @generated
@@ -30,14 +41,54 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 public class RecordBlockImpl extends NodeBodyElementImpl implements RecordBlock
 {
   /**
-   * The cached value of the '{@link #getRecord() <em>Record</em>}' containment reference.
+   * The default value of the '{@link #getName() <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getRecord()
+   * @see #getName()
    * @generated
    * @ordered
    */
-  protected Record record;
+  protected static final String NAME_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getName()
+   * @generated
+   * @ordered
+   */
+  protected String name = NAME_EDEFAULT;
+
+  /**
+   * The cached value of the '{@link #getVars() <em>Vars</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getVars()
+   * @generated
+   * @ordered
+   */
+  protected EList<NodeVarInit> vars;
+
+  /**
+   * The cached value of the '{@link #getEqualsBody() <em>Equals Body</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getEqualsBody()
+   * @generated
+   * @ordered
+   */
+  protected FnBody equalsBody;
+
+  /**
+   * The cached value of the '{@link #getComplementBody() <em>Complement Body</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getComplementBody()
+   * @generated
+   * @ordered
+   */
+  protected FnBody complementBody;
 
   /**
    * <!-- begin-user-doc -->
@@ -65,9 +116,9 @@ public class RecordBlockImpl extends NodeBodyElementImpl implements RecordBlock
    * <!-- end-user-doc -->
    * @generated
    */
-  public Record getRecord()
+  public String getName()
   {
-    return record;
+    return name;
   }
 
   /**
@@ -75,13 +126,50 @@ public class RecordBlockImpl extends NodeBodyElementImpl implements RecordBlock
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetRecord(Record newRecord, NotificationChain msgs)
+  public void setName(String newName)
   {
-    Record oldRecord = record;
-    record = newRecord;
+    String oldName = name;
+    name = newName;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.RECORD_BLOCK__NAME, oldName, name));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EList<NodeVarInit> getVars()
+  {
+    if (vars == null)
+    {
+      vars = new EObjectContainmentEList<NodeVarInit>(NodeVarInit.class, this, DmplPackage.RECORD_BLOCK__VARS);
+    }
+    return vars;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public FnBody getEqualsBody()
+  {
+    return equalsBody;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetEqualsBody(FnBody newEqualsBody, NotificationChain msgs)
+  {
+    FnBody oldEqualsBody = equalsBody;
+    equalsBody = newEqualsBody;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.RECORD_BLOCK__RECORD, oldRecord, newRecord);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.RECORD_BLOCK__EQUALS_BODY, oldEqualsBody, newEqualsBody);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -92,20 +180,68 @@ public class RecordBlockImpl extends NodeBodyElementImpl implements RecordBlock
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setRecord(Record newRecord)
+  public void setEqualsBody(FnBody newEqualsBody)
   {
-    if (newRecord != record)
+    if (newEqualsBody != equalsBody)
     {
       NotificationChain msgs = null;
-      if (record != null)
-        msgs = ((InternalEObject)record).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.RECORD_BLOCK__RECORD, null, msgs);
-      if (newRecord != null)
-        msgs = ((InternalEObject)newRecord).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.RECORD_BLOCK__RECORD, null, msgs);
-      msgs = basicSetRecord(newRecord, msgs);
+      if (equalsBody != null)
+        msgs = ((InternalEObject)equalsBody).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.RECORD_BLOCK__EQUALS_BODY, null, msgs);
+      if (newEqualsBody != null)
+        msgs = ((InternalEObject)newEqualsBody).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.RECORD_BLOCK__EQUALS_BODY, null, msgs);
+      msgs = basicSetEqualsBody(newEqualsBody, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.RECORD_BLOCK__RECORD, newRecord, newRecord));
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.RECORD_BLOCK__EQUALS_BODY, newEqualsBody, newEqualsBody));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public FnBody getComplementBody()
+  {
+    return complementBody;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetComplementBody(FnBody newComplementBody, NotificationChain msgs)
+  {
+    FnBody oldComplementBody = complementBody;
+    complementBody = newComplementBody;
+    if (eNotificationRequired())
+    {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.RECORD_BLOCK__COMPLEMENT_BODY, oldComplementBody, newComplementBody);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
+    }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setComplementBody(FnBody newComplementBody)
+  {
+    if (newComplementBody != complementBody)
+    {
+      NotificationChain msgs = null;
+      if (complementBody != null)
+        msgs = ((InternalEObject)complementBody).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.RECORD_BLOCK__COMPLEMENT_BODY, null, msgs);
+      if (newComplementBody != null)
+        msgs = ((InternalEObject)newComplementBody).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.RECORD_BLOCK__COMPLEMENT_BODY, null, msgs);
+      msgs = basicSetComplementBody(newComplementBody, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.RECORD_BLOCK__COMPLEMENT_BODY, newComplementBody, newComplementBody));
   }
 
   /**
@@ -118,8 +254,12 @@ public class RecordBlockImpl extends NodeBodyElementImpl implements RecordBlock
   {
     switch (featureID)
     {
-      case DmplPackage.RECORD_BLOCK__RECORD:
-        return basicSetRecord(null, msgs);
+      case DmplPackage.RECORD_BLOCK__VARS:
+        return ((InternalEList<?>)getVars()).basicRemove(otherEnd, msgs);
+      case DmplPackage.RECORD_BLOCK__EQUALS_BODY:
+        return basicSetEqualsBody(null, msgs);
+      case DmplPackage.RECORD_BLOCK__COMPLEMENT_BODY:
+        return basicSetComplementBody(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -134,8 +274,14 @@ public class RecordBlockImpl extends NodeBodyElementImpl implements RecordBlock
   {
     switch (featureID)
     {
-      case DmplPackage.RECORD_BLOCK__RECORD:
-        return getRecord();
+      case DmplPackage.RECORD_BLOCK__NAME:
+        return getName();
+      case DmplPackage.RECORD_BLOCK__VARS:
+        return getVars();
+      case DmplPackage.RECORD_BLOCK__EQUALS_BODY:
+        return getEqualsBody();
+      case DmplPackage.RECORD_BLOCK__COMPLEMENT_BODY:
+        return getComplementBody();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -145,13 +291,24 @@ public class RecordBlockImpl extends NodeBodyElementImpl implements RecordBlock
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case DmplPackage.RECORD_BLOCK__RECORD:
-        setRecord((Record)newValue);
+      case DmplPackage.RECORD_BLOCK__NAME:
+        setName((String)newValue);
+        return;
+      case DmplPackage.RECORD_BLOCK__VARS:
+        getVars().clear();
+        getVars().addAll((Collection<? extends NodeVarInit>)newValue);
+        return;
+      case DmplPackage.RECORD_BLOCK__EQUALS_BODY:
+        setEqualsBody((FnBody)newValue);
+        return;
+      case DmplPackage.RECORD_BLOCK__COMPLEMENT_BODY:
+        setComplementBody((FnBody)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -167,8 +324,17 @@ public class RecordBlockImpl extends NodeBodyElementImpl implements RecordBlock
   {
     switch (featureID)
     {
-      case DmplPackage.RECORD_BLOCK__RECORD:
-        setRecord((Record)null);
+      case DmplPackage.RECORD_BLOCK__NAME:
+        setName(NAME_EDEFAULT);
+        return;
+      case DmplPackage.RECORD_BLOCK__VARS:
+        getVars().clear();
+        return;
+      case DmplPackage.RECORD_BLOCK__EQUALS_BODY:
+        setEqualsBody((FnBody)null);
+        return;
+      case DmplPackage.RECORD_BLOCK__COMPLEMENT_BODY:
+        setComplementBody((FnBody)null);
         return;
     }
     super.eUnset(featureID);
@@ -184,10 +350,33 @@ public class RecordBlockImpl extends NodeBodyElementImpl implements RecordBlock
   {
     switch (featureID)
     {
-      case DmplPackage.RECORD_BLOCK__RECORD:
-        return record != null;
+      case DmplPackage.RECORD_BLOCK__NAME:
+        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      case DmplPackage.RECORD_BLOCK__VARS:
+        return vars != null && !vars.isEmpty();
+      case DmplPackage.RECORD_BLOCK__EQUALS_BODY:
+        return equalsBody != null;
+      case DmplPackage.RECORD_BLOCK__COMPLEMENT_BODY:
+        return complementBody != null;
     }
     return super.eIsSet(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String toString()
+  {
+    if (eIsProxy()) return super.toString();
+
+    StringBuffer result = new StringBuffer(super.toString());
+    result.append(" (name: ");
+    result.append(name);
+    result.append(')');
+    return result.toString();
   }
 
 } //RecordBlockImpl

@@ -47,7 +47,6 @@ import edu.cmu.sei.annex.dmpl.dmpl.OrExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.Param;
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
 import edu.cmu.sei.annex.dmpl.dmpl.Program;
-import edu.cmu.sei.annex.dmpl.dmpl.Record;
 import edu.cmu.sei.annex.dmpl.dmpl.RecordBlock;
 import edu.cmu.sei.annex.dmpl.dmpl.ReturnValueStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.ShiftExpr;
@@ -206,9 +205,6 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.PROGRAM:
 				sequence_Program(context, (Program) semanticObject); 
-				return; 
-			case DmplPackage.RECORD:
-				sequence_Record(context, (Record) semanticObject); 
 				return; 
 			case DmplPackage.RECORD_BLOCK:
 				sequence_RecordBlock(context, (RecordBlock) semanticObject); 
@@ -703,25 +699,9 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     record=Record
+	 *     (override?='override'? name=TIDENTIFIER vars+=NodeVarInit+ equalsBody=FnBody? complementBody=FnBody?)
 	 */
 	protected void sequence_RecordBlock(EObject context, RecordBlock semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.RECORD_BLOCK__RECORD) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.RECORD_BLOCK__RECORD));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getRecordBlockAccess().getRecordRecordParserRuleCall_0(), semanticObject.getRecord());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (name=TIDENTIFIER vars+=NodeVarInit+ equalsBody=FnBody? complementBody=FnBody?)
-	 */
-	protected void sequence_Record(EObject context, Record semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
