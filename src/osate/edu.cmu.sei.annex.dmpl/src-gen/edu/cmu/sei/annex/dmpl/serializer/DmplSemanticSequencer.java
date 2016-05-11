@@ -113,7 +113,7 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				sequence_AttrList(context, (AttrList) semanticObject); 
 				return; 
 			case DmplPackage.ATTRIBUTABLE:
-				sequence_Attributable(context, (Attributable) semanticObject); 
+				sequence_NodeBodyElement(context, (Attributable) semanticObject); 
 				return; 
 			case DmplPackage.ATTRIBUTABLE_NO_ROLE:
 				sequence_RoleBodyElement(context, (AttributableNoRole) semanticObject); 
@@ -179,7 +179,7 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				sequence_TerminalExpr(context, (IdExpr) semanticObject); 
 				return; 
 			case DmplPackage.ID_ROLE:
-				sequence_Role(context, (IdRole) semanticObject); 
+				sequence_AttributableElement(context, (IdRole) semanticObject); 
 				return; 
 			case DmplPackage.INT_CONST:
 				sequence_IntConst(context, (IntConst) semanticObject); 
@@ -245,7 +245,7 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				sequence_ShiftExpr(context, (ShiftExpr) semanticObject); 
 				return; 
 			case DmplPackage.SIMPLE_ROLE:
-				sequence_Role(context, (SimpleRole) semanticObject); 
+				sequence_AttributableElement(context, (SimpleRole) semanticObject); 
 				return; 
 			case DmplPackage.SIMPLE_STMT:
 				sequence_Stmt(context, (SimpleStmt) semanticObject); 
@@ -364,9 +364,18 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (attrList=AttrList? element=AttributableElement)
+	 *     (name=TIDENTIFIER id=INT elements+=RoleBodyElement*)
 	 */
-	protected void sequence_Attributable(EObject context, Attributable semanticObject) {
+	protected void sequence_AttributableElement(EObject context, IdRole semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (name=TIDENTIFIER elements+=RoleBodyElement*)
+	 */
+	protected void sequence_AttributableElement(EObject context, SimpleRole semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -631,6 +640,15 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
+	 *     (attrList=AttrList? element=AttributableElement)
+	 */
+	protected void sequence_NodeBodyElement(EObject context, Attributable semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
 	 *     (elements+=NodeBodyElement*)
 	 */
 	protected void sequence_NodeBody(EObject context, NodeBody semanticObject) {
@@ -761,24 +779,6 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     (attrList=AttrList? element=AttributableNoRoleElement)
 	 */
 	protected void sequence_RoleBodyElement(EObject context, AttributableNoRole semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (name=TIDENTIFIER id=INT elements+=RoleBodyElement*)
-	 */
-	protected void sequence_Role(EObject context, IdRole semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     (name=TIDENTIFIER elements+=RoleBodyElement*)
-	 */
-	protected void sequence_Role(EObject context, SimpleRole semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

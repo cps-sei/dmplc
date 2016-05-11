@@ -140,19 +140,9 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createNodeBodyElementAdapter();
       }
       @Override
-      public Adapter caseAttributable(Attributable object)
-      {
-        return createAttributableAdapter();
-      }
-      @Override
       public Adapter caseAttributableElement(AttributableElement object)
       {
         return createAttributableElementAdapter();
-      }
-      @Override
-      public Adapter caseRole(Role object)
-      {
-        return createRoleAdapter();
       }
       @Override
       public Adapter caseRoleBodyElement(RoleBodyElement object)
@@ -278,6 +268,11 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
       public Adapter caseRequireSpec(RequireSpec object)
       {
         return createRequireSpecAdapter();
+      }
+      @Override
+      public Adapter caseAttributable(Attributable object)
+      {
+        return createAttributableAdapter();
       }
       @Override
       public Adapter caseSimpleRole(SimpleRole object)
@@ -677,21 +672,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Attributable <em>Attributable</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.Attributable
-   * @generated
-   */
-  public Adapter createAttributableAdapter()
-  {
-    return null;
-  }
-
-  /**
    * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.AttributableElement <em>Attributable Element</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -702,21 +682,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createAttributableElementAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Role <em>Role</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.Role
-   * @generated
-   */
-  public Adapter createRoleAdapter()
   {
     return null;
   }
@@ -1092,6 +1057,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createRequireSpecAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Attributable <em>Attributable</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Attributable
+   * @generated
+   */
+  public Adapter createAttributableAdapter()
   {
     return null;
   }

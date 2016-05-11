@@ -109,15 +109,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//NodeBody/elements"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//NodeBodyElement"/>
-    <genClasses ecoreClass="Dmpl.ecore#//Attributable">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Attributable/attrList"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Attributable/element"/>
-    </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//AttributableElement"/>
-    <genClasses ecoreClass="Dmpl.ecore#//Role">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Role/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Role/elements"/>
-    </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//RoleBodyElement"/>
     <genClasses ecoreClass="Dmpl.ecore#//AttributableNoRoleElement"/>
     <genClasses ecoreClass="Dmpl.ecore#//VarBlock">
@@ -203,9 +195,18 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//AtLeastSpec/threshold"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//RequireSpec"/>
-    <genClasses ecoreClass="Dmpl.ecore#//SimpleRole"/>
+    <genClasses ecoreClass="Dmpl.ecore#//Attributable">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Attributable/attrList"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Attributable/element"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//SimpleRole">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//SimpleRole/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//SimpleRole/elements"/>
+    </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//IdRole">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//IdRole/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//IdRole/id"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//IdRole/elements"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//AttributableNoRole">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//AttributableNoRole/attrList"/>

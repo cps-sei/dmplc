@@ -461,7 +461,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cElementsAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cElementsNodeBodyElementParserRuleCall_1_0 = (RuleCall)cElementsAssignment_1.eContents().get(0);
 		
-		////TODO
 		//NodeBody:
 		//	{NodeBody} elements+=NodeBodyElement*;
 		@Override public ParserRule getRule() { return rule; }
@@ -484,14 +483,18 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final RuleCall cVarBlockParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final RuleCall cRecordBlockParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
-		private final RuleCall cAttributableParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		private final Group cGroup_2 = (Group)cAlternatives.eContents().get(2);
+		private final Action cAttributableAction_2_0 = (Action)cGroup_2.eContents().get(0);
+		private final Assignment cAttrListAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
+		private final RuleCall cAttrListAttrListParserRuleCall_2_1_0 = (RuleCall)cAttrListAssignment_2_1.eContents().get(0);
+		private final Assignment cElementAssignment_2_2 = (Assignment)cGroup_2.eContents().get(2);
+		private final RuleCall cElementAttributableElementParserRuleCall_2_2_0 = (RuleCall)cElementAssignment_2_2.eContents().get(0);
 		
-		////TODO
 		//NodeBodyElement:
-		//	VarBlock | RecordBlock | Attributable;
+		//	VarBlock | RecordBlock | {Attributable} attrList=AttrList? element=AttributableElement;
 		@Override public ParserRule getRule() { return rule; }
 
-		//VarBlock | RecordBlock | Attributable
+		//VarBlock | RecordBlock | {Attributable} attrList=AttrList? element=AttributableElement
 		public Alternatives getAlternatives() { return cAlternatives; }
 
 		//VarBlock
@@ -500,128 +503,69 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//RecordBlock
 		public RuleCall getRecordBlockParserRuleCall_1() { return cRecordBlockParserRuleCall_1; }
 
-		//Attributable
-		public RuleCall getAttributableParserRuleCall_2() { return cAttributableParserRuleCall_2; }
-	}
+		//{Attributable} attrList=AttrList? element=AttributableElement
+		public Group getGroup_2() { return cGroup_2; }
 
-	public class AttributableElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Attributable");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Assignment cAttrListAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final RuleCall cAttrListAttrListParserRuleCall_0_0 = (RuleCall)cAttrListAssignment_0.eContents().get(0);
-		private final Assignment cElementAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cElementAttributableElementParserRuleCall_1_0 = (RuleCall)cElementAssignment_1.eContents().get(0);
-		
-		//Attributable:
-		//	attrList=AttrList? element=AttributableElement;
-		@Override public ParserRule getRule() { return rule; }
-
-		//attrList=AttrList? element=AttributableElement
-		public Group getGroup() { return cGroup; }
+		//{Attributable}
+		public Action getAttributableAction_2_0() { return cAttributableAction_2_0; }
 
 		//attrList=AttrList?
-		public Assignment getAttrListAssignment_0() { return cAttrListAssignment_0; }
+		public Assignment getAttrListAssignment_2_1() { return cAttrListAssignment_2_1; }
 
 		//AttrList
-		public RuleCall getAttrListAttrListParserRuleCall_0_0() { return cAttrListAttrListParserRuleCall_0_0; }
+		public RuleCall getAttrListAttrListParserRuleCall_2_1_0() { return cAttrListAttrListParserRuleCall_2_1_0; }
 
 		//element=AttributableElement
-		public Assignment getElementAssignment_1() { return cElementAssignment_1; }
+		public Assignment getElementAssignment_2_2() { return cElementAssignment_2_2; }
 
 		//AttributableElement
-		public RuleCall getElementAttributableElementParserRuleCall_1_0() { return cElementAttributableElementParserRuleCall_1_0; }
+		public RuleCall getElementAttributableElementParserRuleCall_2_2_0() { return cElementAttributableElementParserRuleCall_2_2_0; }
 	}
 
 	public class AttributableElementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "AttributableElement");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final RuleCall cProcNoAttrParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
-		private final RuleCall cRoleParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
-		private final RuleCall cSpecNoAttrParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
+		private final Action cSimpleRoleAction_1_0 = (Action)cGroup_1.eContents().get(0);
+		private final Keyword cRoleKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
+		private final Assignment cNameAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
+		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_1_2_0 = (RuleCall)cNameAssignment_1_2.eContents().get(0);
+		private final Keyword cLeftCurlyBracketKeyword_1_3 = (Keyword)cGroup_1.eContents().get(3);
+		private final Assignment cElementsAssignment_1_4 = (Assignment)cGroup_1.eContents().get(4);
+		private final RuleCall cElementsRoleBodyElementParserRuleCall_1_4_0 = (RuleCall)cElementsAssignment_1_4.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_1_5 = (Keyword)cGroup_1.eContents().get(5);
+		private final Group cGroup_2 = (Group)cAlternatives.eContents().get(2);
+		private final Action cIdRoleAction_2_0 = (Action)cGroup_2.eContents().get(0);
+		private final Keyword cRoleKeyword_2_1 = (Keyword)cGroup_2.eContents().get(1);
+		private final Assignment cNameAssignment_2_2 = (Assignment)cGroup_2.eContents().get(2);
+		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_2_2_0 = (RuleCall)cNameAssignment_2_2.eContents().get(0);
+		private final Keyword cIdKeyword_2_3 = (Keyword)cGroup_2.eContents().get(3);
+		private final Assignment cIdAssignment_2_4 = (Assignment)cGroup_2.eContents().get(4);
+		private final RuleCall cIdINTTerminalRuleCall_2_4_0 = (RuleCall)cIdAssignment_2_4.eContents().get(0);
+		private final Keyword cLeftCurlyBracketKeyword_2_5 = (Keyword)cGroup_2.eContents().get(5);
+		private final Assignment cElementsAssignment_2_6 = (Assignment)cGroup_2.eContents().get(6);
+		private final RuleCall cElementsRoleBodyElementParserRuleCall_2_6_0 = (RuleCall)cElementsAssignment_2_6.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_2_7 = (Keyword)cGroup_2.eContents().get(7);
+		private final RuleCall cSpecNoAttrParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		
 		//AttributableElement:
-		//	ProcNoAttr | Role | SpecNoAttr;
+		//	ProcNoAttr | {SimpleRole} "role" name=TIDENTIFIER "{" elements+=RoleBodyElement* "}" | {IdRole} "role"
+		//	name=TIDENTIFIER "id" id=INT "{" elements+=RoleBodyElement* "}" | SpecNoAttr;
 		@Override public ParserRule getRule() { return rule; }
 
-		//ProcNoAttr | Role | SpecNoAttr
+		//ProcNoAttr | {SimpleRole} "role" name=TIDENTIFIER "{" elements+=RoleBodyElement* "}" | {IdRole} "role" name=TIDENTIFIER
+		//"id" id=INT "{" elements+=RoleBodyElement* "}" | SpecNoAttr
 		public Alternatives getAlternatives() { return cAlternatives; }
 
 		//ProcNoAttr
 		public RuleCall getProcNoAttrParserRuleCall_0() { return cProcNoAttrParserRuleCall_0; }
 
-		//Role
-		public RuleCall getRoleParserRuleCall_1() { return cRoleParserRuleCall_1; }
-
-		//SpecNoAttr
-		public RuleCall getSpecNoAttrParserRuleCall_2() { return cSpecNoAttrParserRuleCall_2; }
-	}
-
-	public class RoleElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Role");
-		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
-		private final Action cSimpleRoleAction_0_0 = (Action)cGroup_0.eContents().get(0);
-		private final Keyword cRoleKeyword_0_1 = (Keyword)cGroup_0.eContents().get(1);
-		private final Assignment cNameAssignment_0_2 = (Assignment)cGroup_0.eContents().get(2);
-		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_0_2_0 = (RuleCall)cNameAssignment_0_2.eContents().get(0);
-		private final Keyword cLeftCurlyBracketKeyword_0_3 = (Keyword)cGroup_0.eContents().get(3);
-		private final Assignment cElementsAssignment_0_4 = (Assignment)cGroup_0.eContents().get(4);
-		private final RuleCall cElementsRoleBodyElementParserRuleCall_0_4_0 = (RuleCall)cElementsAssignment_0_4.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_0_5 = (Keyword)cGroup_0.eContents().get(5);
-		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
-		private final Action cIdRoleAction_1_0 = (Action)cGroup_1.eContents().get(0);
-		private final Keyword cRoleKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
-		private final Assignment cNameAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
-		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_1_2_0 = (RuleCall)cNameAssignment_1_2.eContents().get(0);
-		private final Keyword cIdKeyword_1_3 = (Keyword)cGroup_1.eContents().get(3);
-		private final Assignment cIdAssignment_1_4 = (Assignment)cGroup_1.eContents().get(4);
-		private final RuleCall cIdINTTerminalRuleCall_1_4_0 = (RuleCall)cIdAssignment_1_4.eContents().get(0);
-		private final Keyword cLeftCurlyBracketKeyword_1_5 = (Keyword)cGroup_1.eContents().get(5);
-		private final Assignment cElementsAssignment_1_6 = (Assignment)cGroup_1.eContents().get(6);
-		private final RuleCall cElementsRoleBodyElementParserRuleCall_1_6_0 = (RuleCall)cElementsAssignment_1_6.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_1_7 = (Keyword)cGroup_1.eContents().get(7);
-		
-		//Role:
-		//	{SimpleRole} "role" name=TIDENTIFIER "{" elements+=RoleBodyElement* "}" | {IdRole} "role" name=TIDENTIFIER "id" id=INT
-		//	"{" elements+=RoleBodyElement* "}";
-		@Override public ParserRule getRule() { return rule; }
-
-		//{SimpleRole} "role" name=TIDENTIFIER "{" elements+=RoleBodyElement* "}" | {IdRole} "role" name=TIDENTIFIER "id" id=INT
-		//"{" elements+=RoleBodyElement* "}"
-		public Alternatives getAlternatives() { return cAlternatives; }
-
 		//{SimpleRole} "role" name=TIDENTIFIER "{" elements+=RoleBodyElement* "}"
-		public Group getGroup_0() { return cGroup_0; }
-
-		//{SimpleRole}
-		public Action getSimpleRoleAction_0_0() { return cSimpleRoleAction_0_0; }
-
-		//"role"
-		public Keyword getRoleKeyword_0_1() { return cRoleKeyword_0_1; }
-
-		//name=TIDENTIFIER
-		public Assignment getNameAssignment_0_2() { return cNameAssignment_0_2; }
-
-		//TIDENTIFIER
-		public RuleCall getNameTIDENTIFIERTerminalRuleCall_0_2_0() { return cNameTIDENTIFIERTerminalRuleCall_0_2_0; }
-
-		//"{"
-		public Keyword getLeftCurlyBracketKeyword_0_3() { return cLeftCurlyBracketKeyword_0_3; }
-
-		//elements+=RoleBodyElement*
-		public Assignment getElementsAssignment_0_4() { return cElementsAssignment_0_4; }
-
-		//RoleBodyElement
-		public RuleCall getElementsRoleBodyElementParserRuleCall_0_4_0() { return cElementsRoleBodyElementParserRuleCall_0_4_0; }
-
-		//"}"
-		public Keyword getRightCurlyBracketKeyword_0_5() { return cRightCurlyBracketKeyword_0_5; }
-
-		//{IdRole} "role" name=TIDENTIFIER "id" id=INT "{" elements+=RoleBodyElement* "}"
 		public Group getGroup_1() { return cGroup_1; }
 
-		//{IdRole}
-		public Action getIdRoleAction_1_0() { return cIdRoleAction_1_0; }
+		//{SimpleRole}
+		public Action getSimpleRoleAction_1_0() { return cSimpleRoleAction_1_0; }
 
 		//"role"
 		public Keyword getRoleKeyword_1_1() { return cRoleKeyword_1_1; }
@@ -632,26 +576,56 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//TIDENTIFIER
 		public RuleCall getNameTIDENTIFIERTerminalRuleCall_1_2_0() { return cNameTIDENTIFIERTerminalRuleCall_1_2_0; }
 
-		//"id"
-		public Keyword getIdKeyword_1_3() { return cIdKeyword_1_3; }
-
-		//id=INT
-		public Assignment getIdAssignment_1_4() { return cIdAssignment_1_4; }
-
-		//INT
-		public RuleCall getIdINTTerminalRuleCall_1_4_0() { return cIdINTTerminalRuleCall_1_4_0; }
-
 		//"{"
-		public Keyword getLeftCurlyBracketKeyword_1_5() { return cLeftCurlyBracketKeyword_1_5; }
+		public Keyword getLeftCurlyBracketKeyword_1_3() { return cLeftCurlyBracketKeyword_1_3; }
 
 		//elements+=RoleBodyElement*
-		public Assignment getElementsAssignment_1_6() { return cElementsAssignment_1_6; }
+		public Assignment getElementsAssignment_1_4() { return cElementsAssignment_1_4; }
 
 		//RoleBodyElement
-		public RuleCall getElementsRoleBodyElementParserRuleCall_1_6_0() { return cElementsRoleBodyElementParserRuleCall_1_6_0; }
+		public RuleCall getElementsRoleBodyElementParserRuleCall_1_4_0() { return cElementsRoleBodyElementParserRuleCall_1_4_0; }
 
 		//"}"
-		public Keyword getRightCurlyBracketKeyword_1_7() { return cRightCurlyBracketKeyword_1_7; }
+		public Keyword getRightCurlyBracketKeyword_1_5() { return cRightCurlyBracketKeyword_1_5; }
+
+		//{IdRole} "role" name=TIDENTIFIER "id" id=INT "{" elements+=RoleBodyElement* "}"
+		public Group getGroup_2() { return cGroup_2; }
+
+		//{IdRole}
+		public Action getIdRoleAction_2_0() { return cIdRoleAction_2_0; }
+
+		//"role"
+		public Keyword getRoleKeyword_2_1() { return cRoleKeyword_2_1; }
+
+		//name=TIDENTIFIER
+		public Assignment getNameAssignment_2_2() { return cNameAssignment_2_2; }
+
+		//TIDENTIFIER
+		public RuleCall getNameTIDENTIFIERTerminalRuleCall_2_2_0() { return cNameTIDENTIFIERTerminalRuleCall_2_2_0; }
+
+		//"id"
+		public Keyword getIdKeyword_2_3() { return cIdKeyword_2_3; }
+
+		//id=INT
+		public Assignment getIdAssignment_2_4() { return cIdAssignment_2_4; }
+
+		//INT
+		public RuleCall getIdINTTerminalRuleCall_2_4_0() { return cIdINTTerminalRuleCall_2_4_0; }
+
+		//"{"
+		public Keyword getLeftCurlyBracketKeyword_2_5() { return cLeftCurlyBracketKeyword_2_5; }
+
+		//elements+=RoleBodyElement*
+		public Assignment getElementsAssignment_2_6() { return cElementsAssignment_2_6; }
+
+		//RoleBodyElement
+		public RuleCall getElementsRoleBodyElementParserRuleCall_2_6_0() { return cElementsRoleBodyElementParserRuleCall_2_6_0; }
+
+		//"}"
+		public Keyword getRightCurlyBracketKeyword_2_7() { return cRightCurlyBracketKeyword_2_7; }
+
+		//SpecNoAttr
+		public RuleCall getSpecNoAttrParserRuleCall_3() { return cSpecNoAttrParserRuleCall_3; }
 	}
 
 	public class RoleBodyElementElements extends AbstractParserRuleElementFinder {
@@ -3571,9 +3545,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final SpecNoAttrElements pSpecNoAttr;
 	private final NodeBodyElements pNodeBody;
 	private final NodeBodyElementElements pNodeBodyElement;
-	private final AttributableElements pAttributable;
 	private final AttributableElementElements pAttributableElement;
-	private final RoleElements pRole;
 	private final RoleBodyElementElements pRoleBodyElement;
 	private final AttributableNoRoleElementElements pAttributableNoRoleElement;
 	private final VarBlockElements pVarBlock;
@@ -3652,9 +3624,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pSpecNoAttr = new SpecNoAttrElements();
 		this.pNodeBody = new NodeBodyElements();
 		this.pNodeBodyElement = new NodeBodyElementElements();
-		this.pAttributable = new AttributableElements();
 		this.pAttributableElement = new AttributableElementElements();
-		this.pRole = new RoleElements();
 		this.pRoleBodyElement = new RoleBodyElementElements();
 		this.pAttributableNoRoleElement = new AttributableNoRoleElementElements();
 		this.pVarBlock = new VarBlockElements();
@@ -3853,7 +3823,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getSpecNoAttrAccess().getRule();
 	}
 
-	////TODO
 	//NodeBody:
 	//	{NodeBody} elements+=NodeBodyElement*;
 	public NodeBodyElements getNodeBodyAccess() {
@@ -3864,9 +3833,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getNodeBodyAccess().getRule();
 	}
 
-	////TODO
 	//NodeBodyElement:
-	//	VarBlock | RecordBlock | Attributable;
+	//	VarBlock | RecordBlock | {Attributable} attrList=AttrList? element=AttributableElement;
 	public NodeBodyElementElements getNodeBodyElementAccess() {
 		return pNodeBodyElement;
 	}
@@ -3875,35 +3843,15 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getNodeBodyElementAccess().getRule();
 	}
 
-	//Attributable:
-	//	attrList=AttrList? element=AttributableElement;
-	public AttributableElements getAttributableAccess() {
-		return pAttributable;
-	}
-	
-	public ParserRule getAttributableRule() {
-		return getAttributableAccess().getRule();
-	}
-
 	//AttributableElement:
-	//	ProcNoAttr | Role | SpecNoAttr;
+	//	ProcNoAttr | {SimpleRole} "role" name=TIDENTIFIER "{" elements+=RoleBodyElement* "}" | {IdRole} "role"
+	//	name=TIDENTIFIER "id" id=INT "{" elements+=RoleBodyElement* "}" | SpecNoAttr;
 	public AttributableElementElements getAttributableElementAccess() {
 		return pAttributableElement;
 	}
 	
 	public ParserRule getAttributableElementRule() {
 		return getAttributableElementAccess().getRule();
-	}
-
-	//Role:
-	//	{SimpleRole} "role" name=TIDENTIFIER "{" elements+=RoleBodyElement* "}" | {IdRole} "role" name=TIDENTIFIER "id" id=INT
-	//	"{" elements+=RoleBodyElement* "}";
-	public RoleElements getRoleAccess() {
-		return pRole;
-	}
-	
-	public ParserRule getRoleRule() {
-		return getRoleAccess().getRule();
 	}
 
 	//RoleBodyElement:

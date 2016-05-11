@@ -55,27 +55,21 @@ SpecNoAttr:
 	{RequireSpec} 'require' name=TIDENTIFIER '=>' function=TIDENTIFIER ';'
 ;
 
-//TODO
 NodeBody:
 	{NodeBody} (elements+=NodeBodyElement)*
 ;
 
-//TODO
 NodeBodyElement:
-	VarBlock | RecordBlock | Attributable
-;
-
-Attributable:
-	attrList=AttrList? element=AttributableElement
+	VarBlock |
+	RecordBlock |
+	{Attributable} attrList=AttrList? element=AttributableElement
 ;
 
 AttributableElement:
-	ProcNoAttr | Role | SpecNoAttr
-;
-
-Role:
+	ProcNoAttr |
 	{SimpleRole} 'role' name=TIDENTIFIER '{' elements+=RoleBodyElement* '}' |
-	{IdRole} 'role' name=TIDENTIFIER 'id' id=INT '{' elements+=RoleBodyElement* '}'
+	{IdRole} 'role' name=TIDENTIFIER 'id' id=INT '{' elements+=RoleBodyElement* '}' |
+	SpecNoAttr
 ;
 
 RoleBodyElement:

@@ -77,9 +77,7 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.SPEC_NO_ATTR: return createSpecNoAttr();
       case DmplPackage.NODE_BODY: return createNodeBody();
       case DmplPackage.NODE_BODY_ELEMENT: return createNodeBodyElement();
-      case DmplPackage.ATTRIBUTABLE: return createAttributable();
       case DmplPackage.ATTRIBUTABLE_ELEMENT: return createAttributableElement();
-      case DmplPackage.ROLE: return createRole();
       case DmplPackage.ROLE_BODY_ELEMENT: return createRoleBodyElement();
       case DmplPackage.ATTRIBUTABLE_NO_ROLE_ELEMENT: return createAttributableNoRoleElement();
       case DmplPackage.VAR_BLOCK: return createVarBlock();
@@ -105,6 +103,7 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.AT_END_SPEC: return createAtEndSpec();
       case DmplPackage.AT_LEAST_SPEC: return createAtLeastSpec();
       case DmplPackage.REQUIRE_SPEC: return createRequireSpec();
+      case DmplPackage.ATTRIBUTABLE: return createAttributable();
       case DmplPackage.SIMPLE_ROLE: return createSimpleRole();
       case DmplPackage.ID_ROLE: return createIdRole();
       case DmplPackage.ATTRIBUTABLE_NO_ROLE: return createAttributableNoRole();
@@ -364,32 +363,10 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public Attributable createAttributable()
-  {
-    AttributableImpl attributable = new AttributableImpl();
-    return attributable;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public AttributableElement createAttributableElement()
   {
     AttributableElementImpl attributableElement = new AttributableElementImpl();
     return attributableElement;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Role createRole()
-  {
-    RoleImpl role = new RoleImpl();
-    return role;
   }
 
   /**
@@ -665,6 +642,17 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     RequireSpecImpl requireSpec = new RequireSpecImpl();
     return requireSpec;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Attributable createAttributable()
+  {
+    AttributableImpl attributable = new AttributableImpl();
+    return attributable;
   }
 
   /**

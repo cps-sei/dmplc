@@ -400,7 +400,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAttributableElement()
    * @generated
    */
-  int ATTRIBUTABLE_ELEMENT = 13;
+  int ATTRIBUTABLE_ELEMENT = 12;
 
   /**
    * The number of structural features of the '<em>Attributable Element</em>' class.
@@ -496,80 +496,6 @@ public interface DmplPackage extends EPackage
   int NODE_BODY_ELEMENT_FEATURE_COUNT = 0;
 
   /**
-   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.AttributableImpl <em>Attributable</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.AttributableImpl
-   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAttributable()
-   * @generated
-   */
-  int ATTRIBUTABLE = 12;
-
-  /**
-   * The feature id for the '<em><b>Attr List</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ATTRIBUTABLE__ATTR_LIST = NODE_BODY_ELEMENT_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Element</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ATTRIBUTABLE__ELEMENT = NODE_BODY_ELEMENT_FEATURE_COUNT + 1;
-
-  /**
-   * The number of structural features of the '<em>Attributable</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ATTRIBUTABLE_FEATURE_COUNT = NODE_BODY_ELEMENT_FEATURE_COUNT + 2;
-
-  /**
-   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.RoleImpl <em>Role</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.RoleImpl
-   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getRole()
-   * @generated
-   */
-  int ROLE = 14;
-
-  /**
-   * The feature id for the '<em><b>Name</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ROLE__NAME = ATTRIBUTABLE_ELEMENT_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Elements</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ROLE__ELEMENTS = ATTRIBUTABLE_ELEMENT_FEATURE_COUNT + 1;
-
-  /**
-   * The number of structural features of the '<em>Role</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ROLE_FEATURE_COUNT = ATTRIBUTABLE_ELEMENT_FEATURE_COUNT + 2;
-
-  /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.RoleBodyElementImpl <em>Role Body Element</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -577,7 +503,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getRoleBodyElement()
    * @generated
    */
-  int ROLE_BODY_ELEMENT = 15;
+  int ROLE_BODY_ELEMENT = 13;
 
   /**
    * The number of structural features of the '<em>Role Body Element</em>' class.
@@ -596,7 +522,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAttributableNoRoleElement()
    * @generated
    */
-  int ATTRIBUTABLE_NO_ROLE_ELEMENT = 16;
+  int ATTRIBUTABLE_NO_ROLE_ELEMENT = 14;
 
   /**
    * The number of structural features of the '<em>Attributable No Role Element</em>' class.
@@ -615,7 +541,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getVarBlock()
    * @generated
    */
-  int VAR_BLOCK = 17;
+  int VAR_BLOCK = 15;
 
   /**
    * The feature id for the '<em><b>Override</b></em>' attribute.
@@ -652,7 +578,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getRecordBlock()
    * @generated
    */
-  int RECORD_BLOCK = 18;
+  int RECORD_BLOCK = 16;
 
   /**
    * The feature id for the '<em><b>Override</b></em>' attribute.
@@ -716,7 +642,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getNodeVarInit()
    * @generated
    */
-  int NODE_VAR_INIT = 19;
+  int NODE_VAR_INIT = 17;
 
   /**
    * The feature id for the '<em><b>Scope</b></em>' attribute.
@@ -753,7 +679,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getVarInit()
    * @generated
    */
-  int VAR_INIT = 20;
+  int VAR_INIT = 18;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -790,7 +716,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getVarAsgn()
    * @generated
    */
-  int VAR_ASGN = 21;
+  int VAR_ASGN = 19;
 
   /**
    * The feature id for the '<em><b>Input</b></em>' attribute.
@@ -827,7 +753,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getVar()
    * @generated
    */
-  int VAR = 22;
+  int VAR = 20;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -864,7 +790,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getDimension()
    * @generated
    */
-  int DIMENSION = 23;
+  int DIMENSION = 21;
 
   /**
    * The number of structural features of the '<em>Dimension</em>' class.
@@ -883,7 +809,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getType()
    * @generated
    */
-  int TYPE = 24;
+  int TYPE = 22;
 
   /**
    * The feature id for the '<em><b>Signed</b></em>' attribute.
@@ -920,7 +846,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getProcedure()
    * @generated
    */
-  int PROCEDURE = 25;
+  int PROCEDURE = 23;
 
   /**
    * The feature id for the '<em><b>Attr List</b></em>' containment reference.
@@ -957,7 +883,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getProcNoAttr()
    * @generated
    */
-  int PROC_NO_ATTR = 26;
+  int PROC_NO_ATTR = 24;
 
   /**
    * The feature id for the '<em><b>Override</b></em>' attribute.
@@ -1003,7 +929,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnBody()
    * @generated
    */
-  int FN_BODY = 27;
+  int FN_BODY = 25;
 
   /**
    * The feature id for the '<em><b>Var Inits</b></em>' containment reference list.
@@ -1040,7 +966,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnPrototype()
    * @generated
    */
-  int FN_PROTOTYPE = 28;
+  int FN_PROTOTYPE = 26;
 
   /**
    * The feature id for the '<em><b>Extern</b></em>' attribute.
@@ -1086,7 +1012,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAttrList()
    * @generated
    */
-  int ATTR_LIST = 29;
+  int ATTR_LIST = 27;
 
   /**
    * The feature id for the '<em><b>Attrs</b></em>' containment reference list.
@@ -1114,7 +1040,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAttr()
    * @generated
    */
-  int ATTR = 30;
+  int ATTR = 28;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1151,7 +1077,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getParam()
    * @generated
    */
-  int PARAM = 31;
+  int PARAM = 29;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -1188,7 +1114,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getStmt()
    * @generated
    */
-  int STMT = 32;
+  int STMT = 30;
 
   /**
    * The number of structural features of the '<em>Stmt</em>' class.
@@ -1207,7 +1133,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAssignmentStmt()
    * @generated
    */
-  int ASSIGNMENT_STMT = 33;
+  int ASSIGNMENT_STMT = 31;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -1244,7 +1170,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getExpr()
    * @generated
    */
-  int EXPR = 35;
+  int EXPR = 33;
 
   /**
    * The number of structural features of the '<em>Expr</em>' class.
@@ -1263,7 +1189,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getLVal()
    * @generated
    */
-  int LVAL = 34;
+  int LVAL = 32;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1309,7 +1235,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getCallExpr()
    * @generated
    */
-  int CALL_EXPR = 36;
+  int CALL_EXPR = 34;
 
   /**
    * The feature id for the '<em><b>Namespace</b></em>' attribute.
@@ -1364,7 +1290,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAtEndSpec()
    * @generated
    */
-  int AT_END_SPEC = 37;
+  int AT_END_SPEC = 35;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1401,7 +1327,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAtLeastSpec()
    * @generated
    */
-  int AT_LEAST_SPEC = 38;
+  int AT_LEAST_SPEC = 36;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1447,7 +1373,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getRequireSpec()
    * @generated
    */
-  int REQUIRE_SPEC = 39;
+  int REQUIRE_SPEC = 37;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1477,6 +1403,43 @@ public interface DmplPackage extends EPackage
   int REQUIRE_SPEC_FEATURE_COUNT = SPEC_NO_ATTR_FEATURE_COUNT + 0;
 
   /**
+   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.AttributableImpl <em>Attributable</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.AttributableImpl
+   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAttributable()
+   * @generated
+   */
+  int ATTRIBUTABLE = 38;
+
+  /**
+   * The feature id for the '<em><b>Attr List</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ATTRIBUTABLE__ATTR_LIST = NODE_BODY_ELEMENT_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Element</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ATTRIBUTABLE__ELEMENT = NODE_BODY_ELEMENT_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>Attributable</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ATTRIBUTABLE_FEATURE_COUNT = NODE_BODY_ELEMENT_FEATURE_COUNT + 2;
+
+  /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.SimpleRoleImpl <em>Simple Role</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1484,7 +1447,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSimpleRole()
    * @generated
    */
-  int SIMPLE_ROLE = 40;
+  int SIMPLE_ROLE = 39;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1493,7 +1456,7 @@ public interface DmplPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SIMPLE_ROLE__NAME = ROLE__NAME;
+  int SIMPLE_ROLE__NAME = ATTRIBUTABLE_ELEMENT_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Elements</b></em>' containment reference list.
@@ -1502,7 +1465,7 @@ public interface DmplPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SIMPLE_ROLE__ELEMENTS = ROLE__ELEMENTS;
+  int SIMPLE_ROLE__ELEMENTS = ATTRIBUTABLE_ELEMENT_FEATURE_COUNT + 1;
 
   /**
    * The number of structural features of the '<em>Simple Role</em>' class.
@@ -1511,7 +1474,7 @@ public interface DmplPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SIMPLE_ROLE_FEATURE_COUNT = ROLE_FEATURE_COUNT + 0;
+  int SIMPLE_ROLE_FEATURE_COUNT = ATTRIBUTABLE_ELEMENT_FEATURE_COUNT + 2;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.IdRoleImpl <em>Id Role</em>}' class.
@@ -1521,7 +1484,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIdRole()
    * @generated
    */
-  int ID_ROLE = 41;
+  int ID_ROLE = 40;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1530,16 +1493,7 @@ public interface DmplPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ID_ROLE__NAME = ROLE__NAME;
-
-  /**
-   * The feature id for the '<em><b>Elements</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int ID_ROLE__ELEMENTS = ROLE__ELEMENTS;
+  int ID_ROLE__NAME = ATTRIBUTABLE_ELEMENT_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -1548,7 +1502,16 @@ public interface DmplPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ID_ROLE__ID = ROLE_FEATURE_COUNT + 0;
+  int ID_ROLE__ID = ATTRIBUTABLE_ELEMENT_FEATURE_COUNT + 1;
+
+  /**
+   * The feature id for the '<em><b>Elements</b></em>' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ID_ROLE__ELEMENTS = ATTRIBUTABLE_ELEMENT_FEATURE_COUNT + 2;
 
   /**
    * The number of structural features of the '<em>Id Role</em>' class.
@@ -1557,7 +1520,7 @@ public interface DmplPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ID_ROLE_FEATURE_COUNT = ROLE_FEATURE_COUNT + 1;
+  int ID_ROLE_FEATURE_COUNT = ATTRIBUTABLE_ELEMENT_FEATURE_COUNT + 3;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.AttributableNoRoleImpl <em>Attributable No Role</em>}' class.
@@ -1567,7 +1530,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAttributableNoRole()
    * @generated
    */
-  int ATTRIBUTABLE_NO_ROLE = 42;
+  int ATTRIBUTABLE_NO_ROLE = 41;
 
   /**
    * The feature id for the '<em><b>Attr List</b></em>' containment reference.
@@ -1604,7 +1567,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getExprVarAsgn()
    * @generated
    */
-  int EXPR_VAR_ASGN = 43;
+  int EXPR_VAR_ASGN = 42;
 
   /**
    * The feature id for the '<em><b>Input</b></em>' attribute.
@@ -1650,7 +1613,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnVarAsgn()
    * @generated
    */
-  int FN_VAR_ASGN = 44;
+  int FN_VAR_ASGN = 43;
 
   /**
    * The feature id for the '<em><b>Input</b></em>' attribute.
@@ -1696,7 +1659,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIntDimension()
    * @generated
    */
-  int INT_DIMENSION = 45;
+  int INT_DIMENSION = 44;
 
   /**
    * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -1724,7 +1687,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getNodeNumDimension()
    * @generated
    */
-  int NODE_NUM_DIMENSION = 46;
+  int NODE_NUM_DIMENSION = 45;
 
   /**
    * The number of structural features of the '<em>Node Num Dimension</em>' class.
@@ -1743,7 +1706,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIdDimension()
    * @generated
    */
-  int ID_DIMENSION = 47;
+  int ID_DIMENSION = 46;
 
   /**
    * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -1771,7 +1734,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getThreadDeclaration()
    * @generated
    */
-  int THREAD_DECLARATION = 48;
+  int THREAD_DECLARATION = 47;
 
   /**
    * The feature id for the '<em><b>Extern</b></em>' attribute.
@@ -1817,7 +1780,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnPrototypeDeclaration()
    * @generated
    */
-  int FN_PROTOTYPE_DECLARATION = 49;
+  int FN_PROTOTYPE_DECLARATION = 48;
 
   /**
    * The feature id for the '<em><b>Extern</b></em>' attribute.
@@ -1881,7 +1844,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getNestedStmt()
    * @generated
    */
-  int NESTED_STMT = 50;
+  int NESTED_STMT = 49;
 
   /**
    * The feature id for the '<em><b>Stmts</b></em>' containment reference list.
@@ -1909,7 +1872,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getWhileStmt()
    * @generated
    */
-  int WHILE_STMT = 51;
+  int WHILE_STMT = 50;
 
   /**
    * The feature id for the '<em><b>Condition</b></em>' containment reference.
@@ -1946,7 +1909,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getForStmt()
    * @generated
    */
-  int FOR_STMT = 52;
+  int FOR_STMT = 51;
 
   /**
    * The feature id for the '<em><b>Inits</b></em>' containment reference list.
@@ -2001,7 +1964,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getCondStmt()
    * @generated
    */
-  int COND_STMT = 53;
+  int COND_STMT = 52;
 
   /**
    * The feature id for the '<em><b>Attr List</b></em>' containment reference.
@@ -2056,7 +2019,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSimpleStmt()
    * @generated
    */
-  int SIMPLE_STMT = 54;
+  int SIMPLE_STMT = 53;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2084,7 +2047,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getReturnValueStmt()
    * @generated
    */
-  int RETURN_VALUE_STMT = 55;
+  int RETURN_VALUE_STMT = 54;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' containment reference.
@@ -2112,7 +2075,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getForAllStmt()
    * @generated
    */
-  int FOR_ALL_STMT = 56;
+  int FOR_ALL_STMT = 55;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2158,7 +2121,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFadnpStmt()
    * @generated
    */
-  int FADNP_STMT = 57;
+  int FADNP_STMT = 56;
 
   /**
    * The feature id for the '<em><b>Node1</b></em>' attribute.
@@ -2204,7 +2167,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getTernaryExpr()
    * @generated
    */
-  int TERNARY_EXPR = 58;
+  int TERNARY_EXPR = 57;
 
   /**
    * The feature id for the '<em><b>Condition</b></em>' containment reference.
@@ -2250,7 +2213,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getOrExpr()
    * @generated
    */
-  int OR_EXPR = 59;
+  int OR_EXPR = 58;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2287,7 +2250,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAndExpr()
    * @generated
    */
-  int AND_EXPR = 60;
+  int AND_EXPR = 59;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2324,7 +2287,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBitwiseOrExpr()
    * @generated
    */
-  int BITWISE_OR_EXPR = 61;
+  int BITWISE_OR_EXPR = 60;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2361,7 +2324,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getXorExpr()
    * @generated
    */
-  int XOR_EXPR = 62;
+  int XOR_EXPR = 61;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2398,7 +2361,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBitwiseAndExpr()
    * @generated
    */
-  int BITWISE_AND_EXPR = 63;
+  int BITWISE_AND_EXPR = 62;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2435,7 +2398,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getEqualityExpr()
    * @generated
    */
-  int EQUALITY_EXPR = 64;
+  int EQUALITY_EXPR = 63;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2481,7 +2444,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getCompareExpr()
    * @generated
    */
-  int COMPARE_EXPR = 65;
+  int COMPARE_EXPR = 64;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2527,7 +2490,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getShiftExpr()
    * @generated
    */
-  int SHIFT_EXPR = 66;
+  int SHIFT_EXPR = 65;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2573,7 +2536,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAdditiveExpr()
    * @generated
    */
-  int ADDITIVE_EXPR = 67;
+  int ADDITIVE_EXPR = 66;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2619,7 +2582,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getMultiplicativeExpr()
    * @generated
    */
-  int MULTIPLICATIVE_EXPR = 68;
+  int MULTIPLICATIVE_EXPR = 67;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2665,7 +2628,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIdExpr()
    * @generated
    */
-  int ID_EXPR = 69;
+  int ID_EXPR = 68;
 
   /**
    * The number of structural features of the '<em>Id Expr</em>' class.
@@ -2684,7 +2647,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIntExpr()
    * @generated
    */
-  int INT_EXPR = 70;
+  int INT_EXPR = 69;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -2712,7 +2675,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getDoubleExpr()
    * @generated
    */
-  int DOUBLE_EXPR = 71;
+  int DOUBLE_EXPR = 70;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -2740,7 +2703,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getNodeNumExpr()
    * @generated
    */
-  int NODE_NUM_EXPR = 72;
+  int NODE_NUM_EXPR = 71;
 
   /**
    * The number of structural features of the '<em>Node Num Expr</em>' class.
@@ -2759,7 +2722,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getUnaryExpr()
    * @generated
    */
-  int UNARY_EXPR = 73;
+  int UNARY_EXPR = 72;
 
   /**
    * The feature id for the '<em><b>Operator</b></em>' attribute.
@@ -2796,7 +2759,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBuiltInExpr()
    * @generated
    */
-  int BUILT_IN_EXPR = 74;
+  int BUILT_IN_EXPR = 73;
 
   /**
    * The feature id for the '<em><b>Function</b></em>' attribute.
@@ -2842,7 +2805,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignEnum()
    * @generated
    */
-  int SIGN_ENUM = 75;
+  int SIGN_ENUM = 74;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum <em>Simp Type Enum</em>}' enum.
@@ -2852,7 +2815,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSimpTypeEnum()
    * @generated
    */
-  int SIMP_TYPE_ENUM = 76;
+  int SIMP_TYPE_ENUM = 75;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SignedEnum <em>Signed Enum</em>}' enum.
@@ -2862,7 +2825,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignedEnum()
    * @generated
    */
-  int SIGNED_ENUM = 77;
+  int SIGNED_ENUM = 76;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SimpleStmtKeywordEnum <em>Simple Stmt Keyword Enum</em>}' enum.
@@ -2872,7 +2835,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSimpleStmtKeywordEnum()
    * @generated
    */
-  int SIMPLE_STMT_KEYWORD_ENUM = 78;
+  int SIMPLE_STMT_KEYWORD_ENUM = 77;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.ForAllFunctionEnum <em>For All Function Enum</em>}' enum.
@@ -2882,7 +2845,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getForAllFunctionEnum()
    * @generated
    */
-  int FOR_ALL_FUNCTION_ENUM = 79;
+  int FOR_ALL_FUNCTION_ENUM = 78;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.NodeVarScopeEnum <em>Node Var Scope Enum</em>}' enum.
@@ -2892,7 +2855,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getNodeVarScopeEnum()
    * @generated
    */
-  int NODE_VAR_SCOPE_ENUM = 80;
+  int NODE_VAR_SCOPE_ENUM = 79;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.EqualityOperator <em>Equality Operator</em>}' enum.
@@ -2902,7 +2865,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getEqualityOperator()
    * @generated
    */
-  int EQUALITY_OPERATOR = 81;
+  int EQUALITY_OPERATOR = 80;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.CompareOperator <em>Compare Operator</em>}' enum.
@@ -2912,7 +2875,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getCompareOperator()
    * @generated
    */
-  int COMPARE_OPERATOR = 82;
+  int COMPARE_OPERATOR = 81;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.ShiftOperator <em>Shift Operator</em>}' enum.
@@ -2922,7 +2885,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getShiftOperator()
    * @generated
    */
-  int SHIFT_OPERATOR = 83;
+  int SHIFT_OPERATOR = 82;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.AdditiveOperator <em>Additive Operator</em>}' enum.
@@ -2932,7 +2895,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAdditiveOperator()
    * @generated
    */
-  int ADDITIVE_OPERATOR = 84;
+  int ADDITIVE_OPERATOR = 83;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.MultiplicativeOperator <em>Multiplicative Operator</em>}' enum.
@@ -2942,7 +2905,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getMultiplicativeOperator()
    * @generated
    */
-  int MULTIPLICATIVE_OPERATOR = 85;
+  int MULTIPLICATIVE_OPERATOR = 84;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.UnaryOperator <em>Unary Operator</em>}' enum.
@@ -2952,7 +2915,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getUnaryOperator()
    * @generated
    */
-  int UNARY_OPERATOR = 86;
+  int UNARY_OPERATOR = 85;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.BuiltInFunctionEnum <em>Built In Function Enum</em>}' enum.
@@ -2962,7 +2925,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBuiltInFunctionEnum()
    * @generated
    */
-  int BUILT_IN_FUNCTION_ENUM = 87;
+  int BUILT_IN_FUNCTION_ENUM = 86;
 
 
   /**
@@ -3229,38 +3192,6 @@ public interface DmplPackage extends EPackage
   EClass getNodeBodyElement();
 
   /**
-   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.Attributable <em>Attributable</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Attributable</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.Attributable
-   * @generated
-   */
-  EClass getAttributable();
-
-  /**
-   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.Attributable#getAttrList <em>Attr List</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Attr List</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.Attributable#getAttrList()
-   * @see #getAttributable()
-   * @generated
-   */
-  EReference getAttributable_AttrList();
-
-  /**
-   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.Attributable#getElement <em>Element</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Element</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.Attributable#getElement()
-   * @see #getAttributable()
-   * @generated
-   */
-  EReference getAttributable_Element();
-
-  /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.AttributableElement <em>Attributable Element</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -3269,38 +3200,6 @@ public interface DmplPackage extends EPackage
    * @generated
    */
   EClass getAttributableElement();
-
-  /**
-   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.Role <em>Role</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Role</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.Role
-   * @generated
-   */
-  EClass getRole();
-
-  /**
-   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.Role#getName <em>Name</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Name</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.Role#getName()
-   * @see #getRole()
-   * @generated
-   */
-  EAttribute getRole_Name();
-
-  /**
-   * Returns the meta object for the containment reference list '{@link edu.cmu.sei.annex.dmpl.dmpl.Role#getElements <em>Elements</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Elements</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.Role#getElements()
-   * @see #getRole()
-   * @generated
-   */
-  EReference getRole_Elements();
 
   /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.RoleBodyElement <em>Role Body Element</em>}'.
@@ -4015,6 +3914,38 @@ public interface DmplPackage extends EPackage
   EClass getRequireSpec();
 
   /**
+   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.Attributable <em>Attributable</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Attributable</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Attributable
+   * @generated
+   */
+  EClass getAttributable();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.Attributable#getAttrList <em>Attr List</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Attr List</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Attributable#getAttrList()
+   * @see #getAttributable()
+   * @generated
+   */
+  EReference getAttributable_AttrList();
+
+  /**
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.Attributable#getElement <em>Element</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Element</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Attributable#getElement()
+   * @see #getAttributable()
+   * @generated
+   */
+  EReference getAttributable_Element();
+
+  /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.SimpleRole <em>Simple Role</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -4023,6 +3954,28 @@ public interface DmplPackage extends EPackage
    * @generated
    */
   EClass getSimpleRole();
+
+  /**
+   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.SimpleRole#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.SimpleRole#getName()
+   * @see #getSimpleRole()
+   * @generated
+   */
+  EAttribute getSimpleRole_Name();
+
+  /**
+   * Returns the meta object for the containment reference list '{@link edu.cmu.sei.annex.dmpl.dmpl.SimpleRole#getElements <em>Elements</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>Elements</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.SimpleRole#getElements()
+   * @see #getSimpleRole()
+   * @generated
+   */
+  EReference getSimpleRole_Elements();
 
   /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.IdRole <em>Id Role</em>}'.
@@ -4035,6 +3988,17 @@ public interface DmplPackage extends EPackage
   EClass getIdRole();
 
   /**
+   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.IdRole#getName <em>Name</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Name</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.IdRole#getName()
+   * @see #getIdRole()
+   * @generated
+   */
+  EAttribute getIdRole_Name();
+
+  /**
    * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.IdRole#getId <em>Id</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -4044,6 +4008,17 @@ public interface DmplPackage extends EPackage
    * @generated
    */
   EAttribute getIdRole_Id();
+
+  /**
+   * Returns the meta object for the containment reference list '{@link edu.cmu.sei.annex.dmpl.dmpl.IdRole#getElements <em>Elements</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference list '<em>Elements</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.IdRole#getElements()
+   * @see #getIdRole()
+   * @generated
+   */
+  EReference getIdRole_Elements();
 
   /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.AttributableNoRole <em>Attributable No Role</em>}'.
@@ -5435,32 +5410,6 @@ public interface DmplPackage extends EPackage
     EClass NODE_BODY_ELEMENT = eINSTANCE.getNodeBodyElement();
 
     /**
-     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.AttributableImpl <em>Attributable</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.AttributableImpl
-     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAttributable()
-     * @generated
-     */
-    EClass ATTRIBUTABLE = eINSTANCE.getAttributable();
-
-    /**
-     * The meta object literal for the '<em><b>Attr List</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference ATTRIBUTABLE__ATTR_LIST = eINSTANCE.getAttributable_AttrList();
-
-    /**
-     * The meta object literal for the '<em><b>Element</b></em>' containment reference feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference ATTRIBUTABLE__ELEMENT = eINSTANCE.getAttributable_Element();
-
-    /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.AttributableElementImpl <em>Attributable Element</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -5469,32 +5418,6 @@ public interface DmplPackage extends EPackage
      * @generated
      */
     EClass ATTRIBUTABLE_ELEMENT = eINSTANCE.getAttributableElement();
-
-    /**
-     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.RoleImpl <em>Role</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.RoleImpl
-     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getRole()
-     * @generated
-     */
-    EClass ROLE = eINSTANCE.getRole();
-
-    /**
-     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute ROLE__NAME = eINSTANCE.getRole_Name();
-
-    /**
-     * The meta object literal for the '<em><b>Elements</b></em>' containment reference list feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EReference ROLE__ELEMENTS = eINSTANCE.getRole_Elements();
 
     /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.RoleBodyElementImpl <em>Role Body Element</em>}' class.
@@ -6083,6 +6006,32 @@ public interface DmplPackage extends EPackage
     EClass REQUIRE_SPEC = eINSTANCE.getRequireSpec();
 
     /**
+     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.AttributableImpl <em>Attributable</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.AttributableImpl
+     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAttributable()
+     * @generated
+     */
+    EClass ATTRIBUTABLE = eINSTANCE.getAttributable();
+
+    /**
+     * The meta object literal for the '<em><b>Attr List</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference ATTRIBUTABLE__ATTR_LIST = eINSTANCE.getAttributable_AttrList();
+
+    /**
+     * The meta object literal for the '<em><b>Element</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference ATTRIBUTABLE__ELEMENT = eINSTANCE.getAttributable_Element();
+
+    /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.SimpleRoleImpl <em>Simple Role</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -6091,6 +6040,22 @@ public interface DmplPackage extends EPackage
      * @generated
      */
     EClass SIMPLE_ROLE = eINSTANCE.getSimpleRole();
+
+    /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute SIMPLE_ROLE__NAME = eINSTANCE.getSimpleRole_Name();
+
+    /**
+     * The meta object literal for the '<em><b>Elements</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference SIMPLE_ROLE__ELEMENTS = eINSTANCE.getSimpleRole_Elements();
 
     /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.IdRoleImpl <em>Id Role</em>}' class.
@@ -6103,12 +6068,28 @@ public interface DmplPackage extends EPackage
     EClass ID_ROLE = eINSTANCE.getIdRole();
 
     /**
+     * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute ID_ROLE__NAME = eINSTANCE.getIdRole_Name();
+
+    /**
      * The meta object literal for the '<em><b>Id</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
     EAttribute ID_ROLE__ID = eINSTANCE.getIdRole_Id();
+
+    /**
+     * The meta object literal for the '<em><b>Elements</b></em>' containment reference list feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference ID_ROLE__ELEMENTS = eINSTANCE.getIdRole_Elements();
 
     /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.AttributableNoRoleImpl <em>Attributable No Role</em>}' class.

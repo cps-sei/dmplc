@@ -171,26 +171,10 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case DmplPackage.ATTRIBUTABLE:
-      {
-        Attributable attributable = (Attributable)theEObject;
-        T result = caseAttributable(attributable);
-        if (result == null) result = caseNodeBodyElement(attributable);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
       case DmplPackage.ATTRIBUTABLE_ELEMENT:
       {
         AttributableElement attributableElement = (AttributableElement)theEObject;
         T result = caseAttributableElement(attributableElement);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case DmplPackage.ROLE:
-      {
-        Role role = (Role)theEObject;
-        T result = caseRole(role);
-        if (result == null) result = caseAttributableElement(role);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -389,11 +373,18 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case DmplPackage.ATTRIBUTABLE:
+      {
+        Attributable attributable = (Attributable)theEObject;
+        T result = caseAttributable(attributable);
+        if (result == null) result = caseNodeBodyElement(attributable);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case DmplPackage.SIMPLE_ROLE:
       {
         SimpleRole simpleRole = (SimpleRole)theEObject;
         T result = caseSimpleRole(simpleRole);
-        if (result == null) result = caseRole(simpleRole);
         if (result == null) result = caseAttributableElement(simpleRole);
         if (result == null) result = defaultCase(theEObject);
         return result;
@@ -402,7 +393,6 @@ public class DmplSwitch<T> extends Switch<T>
       {
         IdRole idRole = (IdRole)theEObject;
         T result = caseIdRole(idRole);
-        if (result == null) result = caseRole(idRole);
         if (result == null) result = caseAttributableElement(idRole);
         if (result == null) result = defaultCase(theEObject);
         return result;
@@ -868,22 +858,6 @@ public class DmplSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Attributable</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Attributable</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseAttributable(Attributable object)
-  {
-    return null;
-  }
-
-  /**
    * Returns the result of interpreting the object as an instance of '<em>Attributable Element</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -895,22 +869,6 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseAttributableElement(AttributableElement object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Role</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Role</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseRole(Role object)
   {
     return null;
   }
@@ -1311,6 +1269,22 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseRequireSpec(RequireSpec object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Attributable</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Attributable</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseAttributable(Attributable object)
   {
     return null;
   }

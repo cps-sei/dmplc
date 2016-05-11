@@ -131,15 +131,6 @@ public interface DmplFactory extends EFactory
   NodeBodyElement createNodeBodyElement();
 
   /**
-   * Returns a new object of class '<em>Attributable</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Attributable</em>'.
-   * @generated
-   */
-  Attributable createAttributable();
-
-  /**
    * Returns a new object of class '<em>Attributable Element</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -147,15 +138,6 @@ public interface DmplFactory extends EFactory
    * @generated
    */
   AttributableElement createAttributableElement();
-
-  /**
-   * Returns a new object of class '<em>Role</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Role</em>'.
-   * @generated
-   */
-  Role createRole();
 
   /**
    * Returns a new object of class '<em>Role Body Element</em>'.
@@ -381,6 +363,15 @@ public interface DmplFactory extends EFactory
    * @generated
    */
   RequireSpec createRequireSpec();
+
+  /**
+   * Returns a new object of class '<em>Attributable</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Attributable</em>'.
+   * @generated
+   */
+  Attributable createAttributable();
 
   /**
    * Returns a new object of class '<em>Simple Role</em>'.
