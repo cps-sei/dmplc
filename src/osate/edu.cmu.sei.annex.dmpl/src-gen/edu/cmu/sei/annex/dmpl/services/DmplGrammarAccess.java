@@ -335,21 +335,25 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "NodeBodyElement");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final RuleCall cVarBlockParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
-		private final RuleCall cProcedureParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cRecordBlockParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cProcedureParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
 		
 		////TODO
 		//NodeBodyElement:
-		//	VarBlock | Procedure;
+		//	VarBlock | RecordBlock | Procedure;
 		@Override public ParserRule getRule() { return rule; }
 
-		//VarBlock | Procedure
+		//VarBlock | RecordBlock | Procedure
 		public Alternatives getAlternatives() { return cAlternatives; }
 
 		//VarBlock
 		public RuleCall getVarBlockParserRuleCall_0() { return cVarBlockParserRuleCall_0; }
 
+		//RecordBlock
+		public RuleCall getRecordBlockParserRuleCall_1() { return cRecordBlockParserRuleCall_1; }
+
 		//Procedure
-		public RuleCall getProcedureParserRuleCall_1() { return cProcedureParserRuleCall_1; }
+		public RuleCall getProcedureParserRuleCall_2() { return cProcedureParserRuleCall_2; }
 	}
 
 	public class VarBlockElements extends AbstractParserRuleElementFinder {
@@ -384,6 +388,23 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getSemicolonKeyword_2() { return cSemicolonKeyword_2; }
 	}
 
+	public class RecordBlockElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "RecordBlock");
+		private final Assignment cRecordAssignment = (Assignment)rule.eContents().get(1);
+		private final RuleCall cRecordRecordParserRuleCall_0 = (RuleCall)cRecordAssignment.eContents().get(0);
+		
+		////TODO
+		//RecordBlock:
+		//	record=Record;
+		@Override public ParserRule getRule() { return rule; }
+
+		//record=Record
+		public Assignment getRecordAssignment() { return cRecordAssignment; }
+
+		//Record
+		public RuleCall getRecordRecordParserRuleCall_0() { return cRecordRecordParserRuleCall_0; }
+	}
+
 	public class NodeVarInitElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "NodeVarInit");
 		private final Group cGroup = (Group)rule.eContents().get(1);
@@ -410,6 +431,71 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 		//VarInit
 		public RuleCall getVarVarInitParserRuleCall_1_0() { return cVarVarInitParserRuleCall_1_0; }
+	}
+
+	public class RecordElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Record");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cRecordKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
+		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cVarsAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cVarsNodeVarInitListParserRuleCall_3_0 = (RuleCall)cVarsAssignment_3.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		
+		////TODO
+		//Record:
+		//	"record" name=TIDENTIFIER "{" vars=NodeVarInitList "}";
+		@Override public ParserRule getRule() { return rule; }
+
+		//"record" name=TIDENTIFIER "{" vars=NodeVarInitList "}"
+		public Group getGroup() { return cGroup; }
+
+		//"record"
+		public Keyword getRecordKeyword_0() { return cRecordKeyword_0; }
+
+		//name=TIDENTIFIER
+		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+
+		//TIDENTIFIER
+		public RuleCall getNameTIDENTIFIERTerminalRuleCall_1_0() { return cNameTIDENTIFIERTerminalRuleCall_1_0; }
+
+		//"{"
+		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
+
+		//vars=NodeVarInitList
+		public Assignment getVarsAssignment_3() { return cVarsAssignment_3; }
+
+		//NodeVarInitList
+		public RuleCall getVarsNodeVarInitListParserRuleCall_3_0() { return cVarsNodeVarInitListParserRuleCall_3_0; }
+
+		//"}"
+		public Keyword getRightCurlyBracketKeyword_4() { return cRightCurlyBracketKeyword_4; }
+	}
+
+	public class NodeVarInitListElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "NodeVarInitList");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Assignment cVarsAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cVarsNodeVarInitParserRuleCall_0_0 = (RuleCall)cVarsAssignment_0.eContents().get(0);
+		private final Keyword cSemicolonKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		
+		//NodeVarInitList:
+		//	(vars+=NodeVarInit ";")+;
+		@Override public ParserRule getRule() { return rule; }
+
+		//(vars+=NodeVarInit ";")+
+		public Group getGroup() { return cGroup; }
+
+		//vars+=NodeVarInit
+		public Assignment getVarsAssignment_0() { return cVarsAssignment_0; }
+
+		//NodeVarInit
+		public RuleCall getVarsNodeVarInitParserRuleCall_0_0() { return cVarsNodeVarInitParserRuleCall_0_0; }
+
+		//";"
+		public Keyword getSemicolonKeyword_1() { return cSemicolonKeyword_1; }
 	}
 
 	public class VarInitElements extends AbstractParserRuleElementFinder {
@@ -3095,7 +3181,10 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final NodeBodyElements pNodeBody;
 	private final NodeBodyElementElements pNodeBodyElement;
 	private final VarBlockElements pVarBlock;
+	private final RecordBlockElements pRecordBlock;
 	private final NodeVarInitElements pNodeVarInit;
+	private final RecordElements pRecord;
+	private final NodeVarInitListElements pNodeVarInitList;
 	private final VarInitElements pVarInit;
 	private final VarAsgnElements pVarAsgn;
 	private final VarElements pVar;
@@ -3168,7 +3257,10 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pNodeBody = new NodeBodyElements();
 		this.pNodeBodyElement = new NodeBodyElementElements();
 		this.pVarBlock = new VarBlockElements();
+		this.pRecordBlock = new RecordBlockElements();
 		this.pNodeVarInit = new NodeVarInitElements();
+		this.pRecord = new RecordElements();
+		this.pNodeVarInitList = new NodeVarInitListElements();
 		this.pVarInit = new VarInitElements();
 		this.pVarAsgn = new VarAsgnElements();
 		this.pVar = new VarElements();
@@ -3362,7 +3454,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 	////TODO
 	//NodeBodyElement:
-	//	VarBlock | Procedure;
+	//	VarBlock | RecordBlock | Procedure;
 	public NodeBodyElementElements getNodeBodyElementAccess() {
 		return pNodeBodyElement;
 	}
@@ -3381,6 +3473,17 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getVarBlockAccess().getRule();
 	}
 
+	////TODO
+	//RecordBlock:
+	//	record=Record;
+	public RecordBlockElements getRecordBlockAccess() {
+		return pRecordBlock;
+	}
+	
+	public ParserRule getRecordBlockRule() {
+		return getRecordBlockAccess().getRule();
+	}
+
 	//NodeVarInit:
 	//	scope=NodeVarScope var=VarInit;
 	public NodeVarInitElements getNodeVarInitAccess() {
@@ -3389,6 +3492,27 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getNodeVarInitRule() {
 		return getNodeVarInitAccess().getRule();
+	}
+
+	////TODO
+	//Record:
+	//	"record" name=TIDENTIFIER "{" vars=NodeVarInitList "}";
+	public RecordElements getRecordAccess() {
+		return pRecord;
+	}
+	
+	public ParserRule getRecordRule() {
+		return getRecordAccess().getRule();
+	}
+
+	//NodeVarInitList:
+	//	(vars+=NodeVarInit ";")+;
+	public NodeVarInitListElements getNodeVarInitListAccess() {
+		return pNodeVarInitList;
+	}
+	
+	public ParserRule getNodeVarInitListRule() {
+		return getNodeVarInitListAccess().getRule();
 	}
 
 	//VarInit:

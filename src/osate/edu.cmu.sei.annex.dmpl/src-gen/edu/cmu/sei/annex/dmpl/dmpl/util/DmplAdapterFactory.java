@@ -140,9 +140,24 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createVarBlockAdapter();
       }
       @Override
+      public Adapter caseRecordBlock(RecordBlock object)
+      {
+        return createRecordBlockAdapter();
+      }
+      @Override
       public Adapter caseNodeVarInit(NodeVarInit object)
       {
         return createNodeVarInitAdapter();
+      }
+      @Override
+      public Adapter caseRecord(Record object)
+      {
+        return createRecordAdapter();
+      }
+      @Override
+      public Adapter caseNodeVarInitList(NodeVarInitList object)
+      {
+        return createNodeVarInitListAdapter();
       }
       @Override
       public Adapter caseVarInit(VarInit object)
@@ -607,6 +622,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.RecordBlock <em>Record Block</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.RecordBlock
+   * @generated
+   */
+  public Adapter createRecordBlockAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.NodeVarInit <em>Node Var Init</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -617,6 +647,36 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createNodeVarInitAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Record <em>Record</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Record
+   * @generated
+   */
+  public Adapter createRecordAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.NodeVarInitList <em>Node Var Init List</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.NodeVarInitList
+   * @generated
+   */
+  public Adapter createNodeVarInitListAdapter()
   {
     return null;
   }

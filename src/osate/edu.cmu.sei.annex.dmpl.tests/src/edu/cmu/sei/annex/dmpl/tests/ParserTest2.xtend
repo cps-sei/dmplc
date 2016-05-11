@@ -26,6 +26,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.NodeVarScopeEnum
 import edu.cmu.sei.annex.dmpl.dmpl.OrExpr
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure
 import edu.cmu.sei.annex.dmpl.dmpl.Program
+import edu.cmu.sei.annex.dmpl.dmpl.RecordBlock
 import edu.cmu.sei.annex.dmpl.dmpl.ReturnValueStmt
 import edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmt
@@ -932,11 +933,18 @@ class ParserTest2 {
 			node n1;
 			node n2 {
 				void f1();
+				
 				global int v1;
 				GLOBAL int v2;
 				local int v3;
 				override LOCAL int v4;
 				override group int v5;
+				
+				record r1 {
+					global int v6;
+					global int v7;
+					global int v8;
+				}
 			}
 		'''.parse => [
 			assertNoIssues
@@ -945,7 +953,7 @@ class ParserTest2 {
 			(programElements.get(1) as Node).node => [
 				"n2".assertEquals(name)
 				body => [
-					6.assertEquals(elements.size)
+					7.assertEquals(elements.size)
 					"f1".assertEquals((elements.get(0) as Procedure).prototype.name)
 					elements.get(1) as VarBlock => [
 						override.assertFalse
@@ -980,6 +988,15 @@ class ParserTest2 {
 						^var => [
 							NodeVarScopeEnum.GROUP.assertEquals(scope)
 							"v5".assertEquals(^var.varAsgns.head.^var.name)
+						]
+					]
+					(elements.get(6) as RecordBlock).record => [
+						"r1".assertEquals(name)
+						vars => [
+							3.assertEquals(vars.size)
+							"v6".assertEquals(vars.get(0).^var.varAsgns.head.^var.name)
+							"v7".assertEquals(vars.get(1).^var.varAsgns.head.^var.name)
+							"v8".assertEquals(vars.get(2).^var.varAsgns.head.^var.name)
 						]
 					]
 				]

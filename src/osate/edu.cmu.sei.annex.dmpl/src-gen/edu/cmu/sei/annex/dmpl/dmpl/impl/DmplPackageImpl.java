@@ -51,6 +51,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.NodeNoAttr;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeVarInit;
+import edu.cmu.sei.annex.dmpl.dmpl.NodeVarInitList;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeVarScopeEnum;
 import edu.cmu.sei.annex.dmpl.dmpl.NumberConst;
 import edu.cmu.sei.annex.dmpl.dmpl.OrExpr;
@@ -58,6 +59,8 @@ import edu.cmu.sei.annex.dmpl.dmpl.Param;
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
 import edu.cmu.sei.annex.dmpl.dmpl.Program;
 import edu.cmu.sei.annex.dmpl.dmpl.ProgramElement;
+import edu.cmu.sei.annex.dmpl.dmpl.Record;
+import edu.cmu.sei.annex.dmpl.dmpl.RecordBlock;
 import edu.cmu.sei.annex.dmpl.dmpl.ReturnValueStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.ShiftExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.ShiftOperator;
@@ -186,7 +189,28 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass recordBlockEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass nodeVarInitEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass recordEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass nodeVarInitListEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -906,16 +930,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getNodeBodyElement_Override()
-  {
-    return (EAttribute)nodeBodyElementEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EClass getVarBlock()
   {
     return varBlockEClass;
@@ -926,9 +940,39 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EAttribute getVarBlock_Override()
+  {
+    return (EAttribute)varBlockEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EReference getVarBlock_Var()
   {
-    return (EReference)varBlockEClass.getEStructuralFeatures().get(0);
+    return (EReference)varBlockEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getRecordBlock()
+  {
+    return recordBlockEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getRecordBlock_Record()
+  {
+    return (EReference)recordBlockEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -959,6 +1003,56 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
   public EReference getNodeVarInit_Var()
   {
     return (EReference)nodeVarInitEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getRecord()
+  {
+    return recordEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getRecord_Name()
+  {
+    return (EAttribute)recordEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getRecord_Vars()
+  {
+    return (EReference)recordEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getNodeVarInitList()
+  {
+    return nodeVarInitListEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getNodeVarInitList_Vars()
+  {
+    return (EReference)nodeVarInitListEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1116,9 +1210,19 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EAttribute getProcedure_Override()
+  {
+    return (EAttribute)procedureEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EReference getProcedure_Prototype()
   {
-    return (EReference)procedureEClass.getEStructuralFeatures().get(1);
+    return (EReference)procedureEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -1128,7 +1232,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    */
   public EReference getProcedure_FnBody()
   {
-    return (EReference)procedureEClass.getEStructuralFeatures().get(2);
+    return (EReference)procedureEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -2533,14 +2637,24 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     createEReference(nodeBodyEClass, NODE_BODY__ELEMENTS);
 
     nodeBodyElementEClass = createEClass(NODE_BODY_ELEMENT);
-    createEAttribute(nodeBodyElementEClass, NODE_BODY_ELEMENT__OVERRIDE);
 
     varBlockEClass = createEClass(VAR_BLOCK);
+    createEAttribute(varBlockEClass, VAR_BLOCK__OVERRIDE);
     createEReference(varBlockEClass, VAR_BLOCK__VAR);
+
+    recordBlockEClass = createEClass(RECORD_BLOCK);
+    createEReference(recordBlockEClass, RECORD_BLOCK__RECORD);
 
     nodeVarInitEClass = createEClass(NODE_VAR_INIT);
     createEAttribute(nodeVarInitEClass, NODE_VAR_INIT__SCOPE);
     createEReference(nodeVarInitEClass, NODE_VAR_INIT__VAR);
+
+    recordEClass = createEClass(RECORD);
+    createEAttribute(recordEClass, RECORD__NAME);
+    createEReference(recordEClass, RECORD__VARS);
+
+    nodeVarInitListEClass = createEClass(NODE_VAR_INIT_LIST);
+    createEReference(nodeVarInitListEClass, NODE_VAR_INIT_LIST__VARS);
 
     varInitEClass = createEClass(VAR_INIT);
     createEReference(varInitEClass, VAR_INIT__TYPE);
@@ -2562,6 +2676,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     procedureEClass = createEClass(PROCEDURE);
     createEReference(procedureEClass, PROCEDURE__ATTR_LIST);
+    createEAttribute(procedureEClass, PROCEDURE__OVERRIDE);
     createEReference(procedureEClass, PROCEDURE__PROTOTYPE);
     createEReference(procedureEClass, PROCEDURE__FN_BODY);
 
@@ -2782,6 +2897,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     doubleConstEClass.getESuperTypes().add(this.getNumberConst());
     nodeEClass.getESuperTypes().add(this.getProgramElement());
     varBlockEClass.getESuperTypes().add(this.getNodeBodyElement());
+    recordBlockEClass.getESuperTypes().add(this.getNodeBodyElement());
     procedureEClass.getESuperTypes().add(this.getProgramElement());
     procedureEClass.getESuperTypes().add(this.getNodeBodyElement());
     assignmentStmtEClass.getESuperTypes().add(this.getStmt());
@@ -2854,14 +2970,24 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEReference(getNodeBody_Elements(), this.getNodeBodyElement(), null, "elements", null, 0, -1, NodeBody.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(nodeBodyElementEClass, NodeBodyElement.class, "NodeBodyElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getNodeBodyElement_Override(), ecorePackage.getEBoolean(), "override", null, 0, 1, NodeBodyElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(varBlockEClass, VarBlock.class, "VarBlock", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getVarBlock_Override(), ecorePackage.getEBoolean(), "override", null, 0, 1, VarBlock.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getVarBlock_Var(), this.getNodeVarInit(), null, "var", null, 0, 1, VarBlock.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(recordBlockEClass, RecordBlock.class, "RecordBlock", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getRecordBlock_Record(), this.getRecord(), null, "record", null, 0, 1, RecordBlock.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(nodeVarInitEClass, NodeVarInit.class, "NodeVarInit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getNodeVarInit_Scope(), this.getNodeVarScopeEnum(), "scope", null, 0, 1, NodeVarInit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getNodeVarInit_Var(), this.getVarInit(), null, "var", null, 0, 1, NodeVarInit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(recordEClass, Record.class, "Record", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getRecord_Name(), ecorePackage.getEString(), "name", null, 0, 1, Record.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRecord_Vars(), this.getNodeVarInitList(), null, "vars", null, 0, 1, Record.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(nodeVarInitListEClass, NodeVarInitList.class, "NodeVarInitList", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getNodeVarInitList_Vars(), this.getNodeVarInit(), null, "vars", null, 0, -1, NodeVarInitList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(varInitEClass, VarInit.class, "VarInit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getVarInit_Type(), this.getType(), null, "type", null, 0, 1, VarInit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2883,6 +3009,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     initEClass(procedureEClass, Procedure.class, "Procedure", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getProcedure_AttrList(), this.getAttrList(), null, "attrList", null, 0, 1, Procedure.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getProcedure_Override(), ecorePackage.getEBoolean(), "override", null, 0, 1, Procedure.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getProcedure_Prototype(), this.getFnPrototype(), null, "prototype", null, 0, 1, Procedure.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getProcedure_FnBody(), this.getFnBody(), null, "fnBody", null, 0, 1, Procedure.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

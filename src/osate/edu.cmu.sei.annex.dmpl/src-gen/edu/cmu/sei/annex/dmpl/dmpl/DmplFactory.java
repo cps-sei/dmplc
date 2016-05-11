@@ -131,6 +131,15 @@ public interface DmplFactory extends EFactory
   VarBlock createVarBlock();
 
   /**
+   * Returns a new object of class '<em>Record Block</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Record Block</em>'.
+   * @generated
+   */
+  RecordBlock createRecordBlock();
+
+  /**
    * Returns a new object of class '<em>Node Var Init</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -138,6 +147,24 @@ public interface DmplFactory extends EFactory
    * @generated
    */
   NodeVarInit createNodeVarInit();
+
+  /**
+   * Returns a new object of class '<em>Record</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Record</em>'.
+   * @generated
+   */
+  Record createRecord();
+
+  /**
+   * Returns a new object of class '<em>Node Var Init List</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Node Var Init List</em>'.
+   * @generated
+   */
+  NodeVarInitList createNodeVarInitList();
 
   /**
    * Returns a new object of class '<em>Var Init</em>'.

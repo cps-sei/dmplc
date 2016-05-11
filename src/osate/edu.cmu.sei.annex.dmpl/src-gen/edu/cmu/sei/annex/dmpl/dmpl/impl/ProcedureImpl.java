@@ -6,7 +6,6 @@ import edu.cmu.sei.annex.dmpl.dmpl.AttrList;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.FnBody;
 import edu.cmu.sei.annex.dmpl.dmpl.FnPrototype;
-import edu.cmu.sei.annex.dmpl.dmpl.NodeBodyElement;
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -25,8 +24,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcedureImpl#isOverride <em>Override</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcedureImpl#getAttrList <em>Attr List</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcedureImpl#isOverride <em>Override</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcedureImpl#getPrototype <em>Prototype</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcedureImpl#getFnBody <em>Fn Body</em>}</li>
  * </ul>
@@ -35,6 +34,16 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class ProcedureImpl extends ProgramElementImpl implements Procedure
 {
+  /**
+   * The cached value of the '{@link #getAttrList() <em>Attr List</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getAttrList()
+   * @generated
+   * @ordered
+   */
+  protected AttrList attrList;
+
   /**
    * The default value of the '{@link #isOverride() <em>Override</em>}' attribute.
    * <!-- begin-user-doc -->
@@ -54,16 +63,6 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
    * @ordered
    */
   protected boolean override = OVERRIDE_EDEFAULT;
-
-  /**
-   * The cached value of the '{@link #getAttrList() <em>Attr List</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getAttrList()
-   * @generated
-   * @ordered
-   */
-  protected AttrList attrList;
 
   /**
    * The cached value of the '{@link #getPrototype() <em>Prototype</em>}' containment reference.
@@ -104,29 +103,6 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
   protected EClass eStaticClass()
   {
     return DmplPackage.Literals.PROCEDURE;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public boolean isOverride()
-  {
-    return override;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setOverride(boolean newOverride)
-  {
-    boolean oldOverride = override;
-    override = newOverride;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.PROCEDURE__OVERRIDE, oldOverride, override));
   }
 
   /**
@@ -175,6 +151,29 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
     }
     else if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.PROCEDURE__ATTR_LIST, newAttrList, newAttrList));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public boolean isOverride()
+  {
+    return override;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setOverride(boolean newOverride)
+  {
+    boolean oldOverride = override;
+    override = newOverride;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.PROCEDURE__OVERRIDE, oldOverride, override));
   }
 
   /**
@@ -303,10 +302,10 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
   {
     switch (featureID)
     {
-      case DmplPackage.PROCEDURE__OVERRIDE:
-        return isOverride();
       case DmplPackage.PROCEDURE__ATTR_LIST:
         return getAttrList();
+      case DmplPackage.PROCEDURE__OVERRIDE:
+        return isOverride();
       case DmplPackage.PROCEDURE__PROTOTYPE:
         return getPrototype();
       case DmplPackage.PROCEDURE__FN_BODY:
@@ -325,11 +324,11 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
   {
     switch (featureID)
     {
-      case DmplPackage.PROCEDURE__OVERRIDE:
-        setOverride((Boolean)newValue);
-        return;
       case DmplPackage.PROCEDURE__ATTR_LIST:
         setAttrList((AttrList)newValue);
+        return;
+      case DmplPackage.PROCEDURE__OVERRIDE:
+        setOverride((Boolean)newValue);
         return;
       case DmplPackage.PROCEDURE__PROTOTYPE:
         setPrototype((FnPrototype)newValue);
@@ -351,11 +350,11 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
   {
     switch (featureID)
     {
-      case DmplPackage.PROCEDURE__OVERRIDE:
-        setOverride(OVERRIDE_EDEFAULT);
-        return;
       case DmplPackage.PROCEDURE__ATTR_LIST:
         setAttrList((AttrList)null);
+        return;
+      case DmplPackage.PROCEDURE__OVERRIDE:
+        setOverride(OVERRIDE_EDEFAULT);
         return;
       case DmplPackage.PROCEDURE__PROTOTYPE:
         setPrototype((FnPrototype)null);
@@ -377,54 +376,16 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
   {
     switch (featureID)
     {
-      case DmplPackage.PROCEDURE__OVERRIDE:
-        return override != OVERRIDE_EDEFAULT;
       case DmplPackage.PROCEDURE__ATTR_LIST:
         return attrList != null;
+      case DmplPackage.PROCEDURE__OVERRIDE:
+        return override != OVERRIDE_EDEFAULT;
       case DmplPackage.PROCEDURE__PROTOTYPE:
         return prototype != null;
       case DmplPackage.PROCEDURE__FN_BODY:
         return fnBody != null;
     }
     return super.eIsSet(featureID);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
-  {
-    if (baseClass == NodeBodyElement.class)
-    {
-      switch (derivedFeatureID)
-      {
-        case DmplPackage.PROCEDURE__OVERRIDE: return DmplPackage.NODE_BODY_ELEMENT__OVERRIDE;
-        default: return -1;
-      }
-    }
-    return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  @Override
-  public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
-  {
-    if (baseClass == NodeBodyElement.class)
-    {
-      switch (baseFeatureID)
-      {
-        case DmplPackage.NODE_BODY_ELEMENT__OVERRIDE: return DmplPackage.PROCEDURE__OVERRIDE;
-        default: return -1;
-      }
-    }
-    return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
   }
 
   /**

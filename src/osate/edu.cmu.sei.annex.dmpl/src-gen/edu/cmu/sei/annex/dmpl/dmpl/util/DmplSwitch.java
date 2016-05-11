@@ -170,10 +170,32 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case DmplPackage.RECORD_BLOCK:
+      {
+        RecordBlock recordBlock = (RecordBlock)theEObject;
+        T result = caseRecordBlock(recordBlock);
+        if (result == null) result = caseNodeBodyElement(recordBlock);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case DmplPackage.NODE_VAR_INIT:
       {
         NodeVarInit nodeVarInit = (NodeVarInit)theEObject;
         T result = caseNodeVarInit(nodeVarInit);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.RECORD:
+      {
+        Record record = (Record)theEObject;
+        T result = caseRecord(record);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.NODE_VAR_INIT_LIST:
+      {
+        NodeVarInitList nodeVarInitList = (NodeVarInitList)theEObject;
+        T result = caseNodeVarInitList(nodeVarInitList);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -748,6 +770,22 @@ public class DmplSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>Record Block</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Record Block</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseRecordBlock(RecordBlock object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Node Var Init</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -759,6 +797,38 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseNodeVarInit(NodeVarInit object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Record</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Record</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseRecord(Record object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Node Var Init List</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Node Var Init List</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseNodeVarInitList(NodeVarInitList object)
   {
     return null;
   }

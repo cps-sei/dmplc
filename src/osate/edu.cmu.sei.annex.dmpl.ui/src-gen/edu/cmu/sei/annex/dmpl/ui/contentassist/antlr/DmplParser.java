@@ -87,6 +87,8 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getNodeBodyAccess().getGroup(), "rule__NodeBody__Group__0");
 					put(grammarAccess.getVarBlockAccess().getGroup(), "rule__VarBlock__Group__0");
 					put(grammarAccess.getNodeVarInitAccess().getGroup(), "rule__NodeVarInit__Group__0");
+					put(grammarAccess.getRecordAccess().getGroup(), "rule__Record__Group__0");
+					put(grammarAccess.getNodeVarInitListAccess().getGroup(), "rule__NodeVarInitList__Group__0");
 					put(grammarAccess.getVarInitAccess().getGroup(), "rule__VarInit__Group__0");
 					put(grammarAccess.getVarInitAccess().getGroup_2(), "rule__VarInit__Group_2__0");
 					put(grammarAccess.getVarAsgnAccess().getGroup_0(), "rule__VarAsgn__Group_0__0");
@@ -202,8 +204,12 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getNodeBodyAccess().getElementsAssignment_1(), "rule__NodeBody__ElementsAssignment_1");
 					put(grammarAccess.getVarBlockAccess().getOverrideAssignment_0(), "rule__VarBlock__OverrideAssignment_0");
 					put(grammarAccess.getVarBlockAccess().getVarAssignment_1(), "rule__VarBlock__VarAssignment_1");
+					put(grammarAccess.getRecordBlockAccess().getRecordAssignment(), "rule__RecordBlock__RecordAssignment");
 					put(grammarAccess.getNodeVarInitAccess().getScopeAssignment_0(), "rule__NodeVarInit__ScopeAssignment_0");
 					put(grammarAccess.getNodeVarInitAccess().getVarAssignment_1(), "rule__NodeVarInit__VarAssignment_1");
+					put(grammarAccess.getRecordAccess().getNameAssignment_1(), "rule__Record__NameAssignment_1");
+					put(grammarAccess.getRecordAccess().getVarsAssignment_3(), "rule__Record__VarsAssignment_3");
+					put(grammarAccess.getNodeVarInitListAccess().getVarsAssignment_0(), "rule__NodeVarInitList__VarsAssignment_0");
 					put(grammarAccess.getVarInitAccess().getTypeAssignment_0(), "rule__VarInit__TypeAssignment_0");
 					put(grammarAccess.getVarInitAccess().getVarAsgnsAssignment_1(), "rule__VarInit__VarAsgnsAssignment_1");
 					put(grammarAccess.getVarInitAccess().getVarAsgnsAssignment_2_1(), "rule__VarInit__VarAsgnsAssignment_2_1");

@@ -43,10 +43,13 @@ import edu.cmu.sei.annex.dmpl.dmpl.NodeNoAttr;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeVarInit;
+import edu.cmu.sei.annex.dmpl.dmpl.NodeVarInitList;
 import edu.cmu.sei.annex.dmpl.dmpl.OrExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.Param;
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
 import edu.cmu.sei.annex.dmpl.dmpl.Program;
+import edu.cmu.sei.annex.dmpl.dmpl.Record;
+import edu.cmu.sei.annex.dmpl.dmpl.RecordBlock;
 import edu.cmu.sei.annex.dmpl.dmpl.ReturnValueStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.ShiftExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmt;
@@ -193,6 +196,9 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 			case DmplPackage.NODE_VAR_INIT:
 				sequence_NodeVarInit(context, (NodeVarInit) semanticObject); 
 				return; 
+			case DmplPackage.NODE_VAR_INIT_LIST:
+				sequence_NodeVarInitList(context, (NodeVarInitList) semanticObject); 
+				return; 
 			case DmplPackage.OR_EXPR:
 				sequence_OrExpr(context, (OrExpr) semanticObject); 
 				return; 
@@ -204,6 +210,12 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.PROGRAM:
 				sequence_Program(context, (Program) semanticObject); 
+				return; 
+			case DmplPackage.RECORD:
+				sequence_Record(context, (Record) semanticObject); 
+				return; 
+			case DmplPackage.RECORD_BLOCK:
+				sequence_RecordBlock(context, (RecordBlock) semanticObject); 
 				return; 
 			case DmplPackage.RETURN_VALUE_STMT:
 				sequence_Stmt(context, (ReturnValueStmt) semanticObject); 
@@ -604,6 +616,15 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
+	 *     vars+=NodeVarInit+
+	 */
+	protected void sequence_NodeVarInitList(EObject context, NodeVarInitList semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
 	 *     (scope=NodeVarScope var=VarInit)
 	 */
 	protected void sequence_NodeVarInit(EObject context, NodeVarInit semanticObject) {
@@ -690,6 +711,41 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 */
 	protected void sequence_Program(EObject context, Program semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     record=Record
+	 */
+	protected void sequence_RecordBlock(EObject context, RecordBlock semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.RECORD_BLOCK__RECORD) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.RECORD_BLOCK__RECORD));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getRecordBlockAccess().getRecordRecordParserRuleCall_0(), semanticObject.getRecord());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (name=TIDENTIFIER vars=NodeVarInitList)
+	 */
+	protected void sequence_Record(EObject context, Record semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.RECORD__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.RECORD__NAME));
+			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.RECORD__VARS) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.RECORD__VARS));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getRecordAccess().getNameTIDENTIFIERTerminalRuleCall_1_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getRecordAccess().getVarsNodeVarInitListParserRuleCall_3_0(), semanticObject.getVars());
+		feeder.finish();
 	}
 	
 	

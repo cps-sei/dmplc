@@ -37,16 +37,28 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
         eType="#//NodeBodyElement" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NodeBodyElement">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="override" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeBodyElement"/>
   <eClassifiers xsi:type="ecore:EClass" name="VarBlock" eSuperTypes="#//NodeBodyElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="override" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//NodeVarInit"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RecordBlock" eSuperTypes="#//NodeBodyElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="record" eType="#//Record"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="NodeVarInit">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="scope" eType="#//NodeVarScopeEnum"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//VarInit"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Record">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="vars" eType="#//NodeVarInitList"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeVarInitList">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="vars" upperBound="-1" eType="#//NodeVarInit"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VarInit">
@@ -71,6 +83,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="Procedure" eSuperTypes="#//ProgramElement #//NodeBodyElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="attrList" eType="#//AttrList"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="override" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="prototype" eType="#//FnPrototype"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="fnBody" eType="#//FnBody"

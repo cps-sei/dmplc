@@ -56,15 +56,29 @@ NodeBody:
 
 //TODO
 NodeBodyElement:
-	VarBlock | Procedure
+	VarBlock | RecordBlock | Procedure
 ;
 
 VarBlock:
 	override?='override'? var=NodeVarInit ';'
 ;
 
+//TODO
+RecordBlock:
+	record=Record
+;
+
 NodeVarInit:
 	scope=NodeVarScope var=VarInit
+;
+
+//TODO
+Record:
+	'record' name=TIDENTIFIER '{' vars=NodeVarInitList '}'
+;
+
+NodeVarInitList:
+	(vars+=NodeVarInit ';')+
 ;
 
 VarInit:

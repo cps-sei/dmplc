@@ -3,8 +3,8 @@
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
-import edu.cmu.sei.annex.dmpl.dmpl.NodeVarInit;
-import edu.cmu.sei.annex.dmpl.dmpl.VarBlock;
+import edu.cmu.sei.annex.dmpl.dmpl.NodeVarInitList;
+import edu.cmu.sei.annex.dmpl.dmpl.Record;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -13,59 +13,60 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Var Block</b></em>'.
+ * An implementation of the model object '<em><b>Record</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarBlockImpl#isOverride <em>Override</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarBlockImpl#getVar <em>Var</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.RecordImpl#getName <em>Name</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.RecordImpl#getVars <em>Vars</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class VarBlockImpl extends NodeBodyElementImpl implements VarBlock
+public class RecordImpl extends MinimalEObjectImpl.Container implements Record
 {
   /**
-   * The default value of the '{@link #isOverride() <em>Override</em>}' attribute.
+   * The default value of the '{@link #getName() <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #isOverride()
+   * @see #getName()
    * @generated
    * @ordered
    */
-  protected static final boolean OVERRIDE_EDEFAULT = false;
+  protected static final String NAME_EDEFAULT = null;
 
   /**
-   * The cached value of the '{@link #isOverride() <em>Override</em>}' attribute.
+   * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #isOverride()
+   * @see #getName()
    * @generated
    * @ordered
    */
-  protected boolean override = OVERRIDE_EDEFAULT;
+  protected String name = NAME_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getVar() <em>Var</em>}' containment reference.
+   * The cached value of the '{@link #getVars() <em>Vars</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getVar()
+   * @see #getVars()
    * @generated
    * @ordered
    */
-  protected NodeVarInit var;
+  protected NodeVarInitList vars;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected VarBlockImpl()
+  protected RecordImpl()
   {
     super();
   }
@@ -78,7 +79,7 @@ public class VarBlockImpl extends NodeBodyElementImpl implements VarBlock
   @Override
   protected EClass eStaticClass()
   {
-    return DmplPackage.Literals.VAR_BLOCK;
+    return DmplPackage.Literals.RECORD;
   }
 
   /**
@@ -86,9 +87,9 @@ public class VarBlockImpl extends NodeBodyElementImpl implements VarBlock
    * <!-- end-user-doc -->
    * @generated
    */
-  public boolean isOverride()
+  public String getName()
   {
-    return override;
+    return name;
   }
 
   /**
@@ -96,12 +97,12 @@ public class VarBlockImpl extends NodeBodyElementImpl implements VarBlock
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setOverride(boolean newOverride)
+  public void setName(String newName)
   {
-    boolean oldOverride = override;
-    override = newOverride;
+    String oldName = name;
+    name = newName;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.VAR_BLOCK__OVERRIDE, oldOverride, override));
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.RECORD__NAME, oldName, name));
   }
 
   /**
@@ -109,9 +110,9 @@ public class VarBlockImpl extends NodeBodyElementImpl implements VarBlock
    * <!-- end-user-doc -->
    * @generated
    */
-  public NodeVarInit getVar()
+  public NodeVarInitList getVars()
   {
-    return var;
+    return vars;
   }
 
   /**
@@ -119,13 +120,13 @@ public class VarBlockImpl extends NodeBodyElementImpl implements VarBlock
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetVar(NodeVarInit newVar, NotificationChain msgs)
+  public NotificationChain basicSetVars(NodeVarInitList newVars, NotificationChain msgs)
   {
-    NodeVarInit oldVar = var;
-    var = newVar;
+    NodeVarInitList oldVars = vars;
+    vars = newVars;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.VAR_BLOCK__VAR, oldVar, newVar);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.RECORD__VARS, oldVars, newVars);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -136,20 +137,20 @@ public class VarBlockImpl extends NodeBodyElementImpl implements VarBlock
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setVar(NodeVarInit newVar)
+  public void setVars(NodeVarInitList newVars)
   {
-    if (newVar != var)
+    if (newVars != vars)
     {
       NotificationChain msgs = null;
-      if (var != null)
-        msgs = ((InternalEObject)var).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.VAR_BLOCK__VAR, null, msgs);
-      if (newVar != null)
-        msgs = ((InternalEObject)newVar).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.VAR_BLOCK__VAR, null, msgs);
-      msgs = basicSetVar(newVar, msgs);
+      if (vars != null)
+        msgs = ((InternalEObject)vars).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.RECORD__VARS, null, msgs);
+      if (newVars != null)
+        msgs = ((InternalEObject)newVars).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.RECORD__VARS, null, msgs);
+      msgs = basicSetVars(newVars, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.VAR_BLOCK__VAR, newVar, newVar));
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.RECORD__VARS, newVars, newVars));
   }
 
   /**
@@ -162,8 +163,8 @@ public class VarBlockImpl extends NodeBodyElementImpl implements VarBlock
   {
     switch (featureID)
     {
-      case DmplPackage.VAR_BLOCK__VAR:
-        return basicSetVar(null, msgs);
+      case DmplPackage.RECORD__VARS:
+        return basicSetVars(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -178,10 +179,10 @@ public class VarBlockImpl extends NodeBodyElementImpl implements VarBlock
   {
     switch (featureID)
     {
-      case DmplPackage.VAR_BLOCK__OVERRIDE:
-        return isOverride();
-      case DmplPackage.VAR_BLOCK__VAR:
-        return getVar();
+      case DmplPackage.RECORD__NAME:
+        return getName();
+      case DmplPackage.RECORD__VARS:
+        return getVars();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -196,11 +197,11 @@ public class VarBlockImpl extends NodeBodyElementImpl implements VarBlock
   {
     switch (featureID)
     {
-      case DmplPackage.VAR_BLOCK__OVERRIDE:
-        setOverride((Boolean)newValue);
+      case DmplPackage.RECORD__NAME:
+        setName((String)newValue);
         return;
-      case DmplPackage.VAR_BLOCK__VAR:
-        setVar((NodeVarInit)newValue);
+      case DmplPackage.RECORD__VARS:
+        setVars((NodeVarInitList)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -216,11 +217,11 @@ public class VarBlockImpl extends NodeBodyElementImpl implements VarBlock
   {
     switch (featureID)
     {
-      case DmplPackage.VAR_BLOCK__OVERRIDE:
-        setOverride(OVERRIDE_EDEFAULT);
+      case DmplPackage.RECORD__NAME:
+        setName(NAME_EDEFAULT);
         return;
-      case DmplPackage.VAR_BLOCK__VAR:
-        setVar((NodeVarInit)null);
+      case DmplPackage.RECORD__VARS:
+        setVars((NodeVarInitList)null);
         return;
     }
     super.eUnset(featureID);
@@ -236,10 +237,10 @@ public class VarBlockImpl extends NodeBodyElementImpl implements VarBlock
   {
     switch (featureID)
     {
-      case DmplPackage.VAR_BLOCK__OVERRIDE:
-        return override != OVERRIDE_EDEFAULT;
-      case DmplPackage.VAR_BLOCK__VAR:
-        return var != null;
+      case DmplPackage.RECORD__NAME:
+        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      case DmplPackage.RECORD__VARS:
+        return vars != null;
     }
     return super.eIsSet(featureID);
   }
@@ -255,10 +256,10 @@ public class VarBlockImpl extends NodeBodyElementImpl implements VarBlock
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (override: ");
-    result.append(override);
+    result.append(" (name: ");
+    result.append(name);
     result.append(')');
     return result.toString();
   }
 
-} //VarBlockImpl
+} //RecordImpl
