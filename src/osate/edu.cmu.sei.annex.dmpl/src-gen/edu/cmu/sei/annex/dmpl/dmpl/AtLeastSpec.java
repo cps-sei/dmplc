@@ -19,7 +19,7 @@ package edu.cmu.sei.annex.dmpl.dmpl;
  * @model
  * @generated
  */
-public interface AtLeastSpec extends SpecNoAttr
+public interface AtLeastSpec extends Specification
 {
   /**
    * Returns the value of the '<em><b>Threshold</b></em>' containment reference.

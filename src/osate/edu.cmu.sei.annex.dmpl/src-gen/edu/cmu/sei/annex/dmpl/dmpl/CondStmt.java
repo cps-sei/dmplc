@@ -2,6 +2,7 @@
  */
 package edu.cmu.sei.annex.dmpl.dmpl;
 
+import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -12,7 +13,7 @@ package edu.cmu.sei.annex.dmpl.dmpl;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.CondStmt#getAttrList <em>Attr List</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.CondStmt#getAttrs <em>Attrs</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.CondStmt#getCondition <em>Condition</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.CondStmt#getThen <em>Then</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.CondStmt#getElse <em>Else</em>}</li>
@@ -25,30 +26,20 @@ package edu.cmu.sei.annex.dmpl.dmpl;
 public interface CondStmt extends Stmt
 {
   /**
-   * Returns the value of the '<em><b>Attr List</b></em>' containment reference.
+   * Returns the value of the '<em><b>Attrs</b></em>' containment reference list.
+   * The list contents are of type {@link edu.cmu.sei.annex.dmpl.dmpl.Attr}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Attr List</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Attrs</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Attr List</em>' containment reference.
-   * @see #setAttrList(AttrList)
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getCondStmt_AttrList()
+   * @return the value of the '<em>Attrs</em>' containment reference list.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getCondStmt_Attrs()
    * @model containment="true"
    * @generated
    */
-  AttrList getAttrList();
-
-  /**
-   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.CondStmt#getAttrList <em>Attr List</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Attr List</em>' containment reference.
-   * @see #getAttrList()
-   * @generated
-   */
-  void setAttrList(AttrList value);
+  EList<Attr> getAttrs();
 
   /**
    * Returns the value of the '<em><b>Condition</b></em>' containment reference.

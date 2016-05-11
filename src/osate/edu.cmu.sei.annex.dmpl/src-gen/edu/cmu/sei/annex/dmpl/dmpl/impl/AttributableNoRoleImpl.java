@@ -2,18 +2,25 @@
  */
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
-import edu.cmu.sei.annex.dmpl.dmpl.AttrList;
+import edu.cmu.sei.annex.dmpl.dmpl.Attr;
 import edu.cmu.sei.annex.dmpl.dmpl.AttributableNoRole;
 import edu.cmu.sei.annex.dmpl.dmpl.AttributableNoRoleElement;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -23,7 +30,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.AttributableNoRoleImpl#getAttrList <em>Attr List</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.AttributableNoRoleImpl#getAttrs <em>Attrs</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.AttributableNoRoleImpl#getElement <em>Element</em>}</li>
  * </ul>
  *
@@ -32,14 +39,14 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 public class AttributableNoRoleImpl extends RoleBodyElementImpl implements AttributableNoRole
 {
   /**
-   * The cached value of the '{@link #getAttrList() <em>Attr List</em>}' containment reference.
+   * The cached value of the '{@link #getAttrs() <em>Attrs</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getAttrList()
+   * @see #getAttrs()
    * @generated
    * @ordered
    */
-  protected AttrList attrList;
+  protected EList<Attr> attrs;
 
   /**
    * The cached value of the '{@link #getElement() <em>Element</em>}' containment reference.
@@ -77,47 +84,13 @@ public class AttributableNoRoleImpl extends RoleBodyElementImpl implements Attri
    * <!-- end-user-doc -->
    * @generated
    */
-  public AttrList getAttrList()
+  public EList<Attr> getAttrs()
   {
-    return attrList;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetAttrList(AttrList newAttrList, NotificationChain msgs)
-  {
-    AttrList oldAttrList = attrList;
-    attrList = newAttrList;
-    if (eNotificationRequired())
+    if (attrs == null)
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.ATTRIBUTABLE_NO_ROLE__ATTR_LIST, oldAttrList, newAttrList);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      attrs = new EObjectContainmentEList<Attr>(Attr.class, this, DmplPackage.ATTRIBUTABLE_NO_ROLE__ATTRS);
     }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setAttrList(AttrList newAttrList)
-  {
-    if (newAttrList != attrList)
-    {
-      NotificationChain msgs = null;
-      if (attrList != null)
-        msgs = ((InternalEObject)attrList).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.ATTRIBUTABLE_NO_ROLE__ATTR_LIST, null, msgs);
-      if (newAttrList != null)
-        msgs = ((InternalEObject)newAttrList).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.ATTRIBUTABLE_NO_ROLE__ATTR_LIST, null, msgs);
-      msgs = basicSetAttrList(newAttrList, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.ATTRIBUTABLE_NO_ROLE__ATTR_LIST, newAttrList, newAttrList));
+    return attrs;
   }
 
   /**
@@ -178,8 +151,8 @@ public class AttributableNoRoleImpl extends RoleBodyElementImpl implements Attri
   {
     switch (featureID)
     {
-      case DmplPackage.ATTRIBUTABLE_NO_ROLE__ATTR_LIST:
-        return basicSetAttrList(null, msgs);
+      case DmplPackage.ATTRIBUTABLE_NO_ROLE__ATTRS:
+        return ((InternalEList<?>)getAttrs()).basicRemove(otherEnd, msgs);
       case DmplPackage.ATTRIBUTABLE_NO_ROLE__ELEMENT:
         return basicSetElement(null, msgs);
     }
@@ -196,8 +169,8 @@ public class AttributableNoRoleImpl extends RoleBodyElementImpl implements Attri
   {
     switch (featureID)
     {
-      case DmplPackage.ATTRIBUTABLE_NO_ROLE__ATTR_LIST:
-        return getAttrList();
+      case DmplPackage.ATTRIBUTABLE_NO_ROLE__ATTRS:
+        return getAttrs();
       case DmplPackage.ATTRIBUTABLE_NO_ROLE__ELEMENT:
         return getElement();
     }
@@ -209,13 +182,15 @@ public class AttributableNoRoleImpl extends RoleBodyElementImpl implements Attri
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case DmplPackage.ATTRIBUTABLE_NO_ROLE__ATTR_LIST:
-        setAttrList((AttrList)newValue);
+      case DmplPackage.ATTRIBUTABLE_NO_ROLE__ATTRS:
+        getAttrs().clear();
+        getAttrs().addAll((Collection<? extends Attr>)newValue);
         return;
       case DmplPackage.ATTRIBUTABLE_NO_ROLE__ELEMENT:
         setElement((AttributableNoRoleElement)newValue);
@@ -234,8 +209,8 @@ public class AttributableNoRoleImpl extends RoleBodyElementImpl implements Attri
   {
     switch (featureID)
     {
-      case DmplPackage.ATTRIBUTABLE_NO_ROLE__ATTR_LIST:
-        setAttrList((AttrList)null);
+      case DmplPackage.ATTRIBUTABLE_NO_ROLE__ATTRS:
+        getAttrs().clear();
         return;
       case DmplPackage.ATTRIBUTABLE_NO_ROLE__ELEMENT:
         setElement((AttributableNoRoleElement)null);
@@ -254,8 +229,8 @@ public class AttributableNoRoleImpl extends RoleBodyElementImpl implements Attri
   {
     switch (featureID)
     {
-      case DmplPackage.ATTRIBUTABLE_NO_ROLE__ATTR_LIST:
-        return attrList != null;
+      case DmplPackage.ATTRIBUTABLE_NO_ROLE__ATTRS:
+        return attrs != null && !attrs.isEmpty();
       case DmplPackage.ATTRIBUTABLE_NO_ROLE__ELEMENT:
         return element != null;
     }

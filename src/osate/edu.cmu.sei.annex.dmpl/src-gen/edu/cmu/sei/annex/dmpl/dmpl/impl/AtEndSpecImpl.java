@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class AtEndSpecImpl extends SpecNoAttrImpl implements AtEndSpec
+public class AtEndSpecImpl extends SpecificationImpl implements AtEndSpec
 {
   /**
    * <!-- begin-user-doc -->

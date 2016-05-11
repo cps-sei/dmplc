@@ -5,22 +5,22 @@ package edu.cmu.sei.annex.dmpl.dmpl;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Spec No Attr</b></em>'.
+ * A representation of the model object '<em><b>Specification</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.SpecNoAttr#getName <em>Name</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.SpecNoAttr#getFunction <em>Function</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.Specification#getName <em>Name</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.Specification#getFunction <em>Function</em>}</li>
  * </ul>
  *
- * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getSpecNoAttr()
+ * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getSpecification()
  * @model
  * @generated
  */
-public interface SpecNoAttr extends AttributableElement, AttributableNoRoleElement
+public interface Specification extends AttributableElement, AttributableNoRoleElement
 {
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.
@@ -32,14 +32,14 @@ public interface SpecNoAttr extends AttributableElement, AttributableNoRoleEleme
    * <!-- end-user-doc -->
    * @return the value of the '<em>Name</em>' attribute.
    * @see #setName(String)
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getSpecNoAttr_Name()
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getSpecification_Name()
    * @model
    * @generated
    */
   String getName();
 
   /**
-   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.SpecNoAttr#getName <em>Name</em>}' attribute.
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.Specification#getName <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Name</em>' attribute.
@@ -58,14 +58,14 @@ public interface SpecNoAttr extends AttributableElement, AttributableNoRoleEleme
    * <!-- end-user-doc -->
    * @return the value of the '<em>Function</em>' attribute.
    * @see #setFunction(String)
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getSpecNoAttr_Function()
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getSpecification_Function()
    * @model
    * @generated
    */
   String getFunction();
 
   /**
-   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.SpecNoAttr#getFunction <em>Function</em>}' attribute.
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.Specification#getFunction <em>Function</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Function</em>' attribute.
@@ -74,4 +74,4 @@ public interface SpecNoAttr extends AttributableElement, AttributableNoRoleEleme
    */
   void setFunction(String value);
 
-} // SpecNoAttr
+} // Specification

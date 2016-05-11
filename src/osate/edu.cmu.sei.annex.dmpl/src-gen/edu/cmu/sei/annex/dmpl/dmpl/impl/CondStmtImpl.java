@@ -2,19 +2,26 @@
  */
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
-import edu.cmu.sei.annex.dmpl.dmpl.AttrList;
+import edu.cmu.sei.annex.dmpl.dmpl.Attr;
 import edu.cmu.sei.annex.dmpl.dmpl.CondStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.Expr;
 import edu.cmu.sei.annex.dmpl.dmpl.Stmt;
 
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -24,7 +31,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.CondStmtImpl#getAttrList <em>Attr List</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.CondStmtImpl#getAttrs <em>Attrs</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.CondStmtImpl#getCondition <em>Condition</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.CondStmtImpl#getThen <em>Then</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.CondStmtImpl#getElse <em>Else</em>}</li>
@@ -35,14 +42,14 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 public class CondStmtImpl extends StmtImpl implements CondStmt
 {
   /**
-   * The cached value of the '{@link #getAttrList() <em>Attr List</em>}' containment reference.
+   * The cached value of the '{@link #getAttrs() <em>Attrs</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getAttrList()
+   * @see #getAttrs()
    * @generated
    * @ordered
    */
-  protected AttrList attrList;
+  protected EList<Attr> attrs;
 
   /**
    * The cached value of the '{@link #getCondition() <em>Condition</em>}' containment reference.
@@ -100,47 +107,13 @@ public class CondStmtImpl extends StmtImpl implements CondStmt
    * <!-- end-user-doc -->
    * @generated
    */
-  public AttrList getAttrList()
+  public EList<Attr> getAttrs()
   {
-    return attrList;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetAttrList(AttrList newAttrList, NotificationChain msgs)
-  {
-    AttrList oldAttrList = attrList;
-    attrList = newAttrList;
-    if (eNotificationRequired())
+    if (attrs == null)
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.COND_STMT__ATTR_LIST, oldAttrList, newAttrList);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
+      attrs = new EObjectContainmentEList<Attr>(Attr.class, this, DmplPackage.COND_STMT__ATTRS);
     }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setAttrList(AttrList newAttrList)
-  {
-    if (newAttrList != attrList)
-    {
-      NotificationChain msgs = null;
-      if (attrList != null)
-        msgs = ((InternalEObject)attrList).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.COND_STMT__ATTR_LIST, null, msgs);
-      if (newAttrList != null)
-        msgs = ((InternalEObject)newAttrList).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.COND_STMT__ATTR_LIST, null, msgs);
-      msgs = basicSetAttrList(newAttrList, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.COND_STMT__ATTR_LIST, newAttrList, newAttrList));
+    return attrs;
   }
 
   /**
@@ -297,8 +270,8 @@ public class CondStmtImpl extends StmtImpl implements CondStmt
   {
     switch (featureID)
     {
-      case DmplPackage.COND_STMT__ATTR_LIST:
-        return basicSetAttrList(null, msgs);
+      case DmplPackage.COND_STMT__ATTRS:
+        return ((InternalEList<?>)getAttrs()).basicRemove(otherEnd, msgs);
       case DmplPackage.COND_STMT__CONDITION:
         return basicSetCondition(null, msgs);
       case DmplPackage.COND_STMT__THEN:
@@ -319,8 +292,8 @@ public class CondStmtImpl extends StmtImpl implements CondStmt
   {
     switch (featureID)
     {
-      case DmplPackage.COND_STMT__ATTR_LIST:
-        return getAttrList();
+      case DmplPackage.COND_STMT__ATTRS:
+        return getAttrs();
       case DmplPackage.COND_STMT__CONDITION:
         return getCondition();
       case DmplPackage.COND_STMT__THEN:
@@ -336,13 +309,15 @@ public class CondStmtImpl extends StmtImpl implements CondStmt
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case DmplPackage.COND_STMT__ATTR_LIST:
-        setAttrList((AttrList)newValue);
+      case DmplPackage.COND_STMT__ATTRS:
+        getAttrs().clear();
+        getAttrs().addAll((Collection<? extends Attr>)newValue);
         return;
       case DmplPackage.COND_STMT__CONDITION:
         setCondition((Expr)newValue);
@@ -367,8 +342,8 @@ public class CondStmtImpl extends StmtImpl implements CondStmt
   {
     switch (featureID)
     {
-      case DmplPackage.COND_STMT__ATTR_LIST:
-        setAttrList((AttrList)null);
+      case DmplPackage.COND_STMT__ATTRS:
+        getAttrs().clear();
         return;
       case DmplPackage.COND_STMT__CONDITION:
         setCondition((Expr)null);
@@ -393,8 +368,8 @@ public class CondStmtImpl extends StmtImpl implements CondStmt
   {
     switch (featureID)
     {
-      case DmplPackage.COND_STMT__ATTR_LIST:
-        return attrList != null;
+      case DmplPackage.COND_STMT__ATTRS:
+        return attrs != null && !attrs.isEmpty();
       case DmplPackage.COND_STMT__CONDITION:
         return condition != null;
       case DmplPackage.COND_STMT__THEN:

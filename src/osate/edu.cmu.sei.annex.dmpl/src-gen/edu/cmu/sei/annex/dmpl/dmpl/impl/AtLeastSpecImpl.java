@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class AtLeastSpecImpl extends SpecNoAttrImpl implements AtLeastSpec
+public class AtLeastSpecImpl extends SpecificationImpl implements AtLeastSpec
 {
   /**
    * The cached value of the '{@link #getThreshold() <em>Threshold</em>}' containment reference.

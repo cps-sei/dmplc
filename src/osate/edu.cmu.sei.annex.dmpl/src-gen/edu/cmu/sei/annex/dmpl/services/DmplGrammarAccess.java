@@ -82,26 +82,62 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "ProgramElement");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final RuleCall cConstantParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
-		private final RuleCall cNodeParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
-		private final RuleCall cProcedureParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
+		private final Action cAttributableProgramElementAction_1_0 = (Action)cGroup_1.eContents().get(0);
+		private final Assignment cAttrsAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
+		private final RuleCall cAttrsAttrParserRuleCall_1_1_0 = (RuleCall)cAttrsAssignment_1_1.eContents().get(0);
+		private final Assignment cElementAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
+		private final RuleCall cElementAttributableNodeOrProcedureParserRuleCall_1_2_0 = (RuleCall)cElementAssignment_1_2.eContents().get(0);
 		
-		//ProgramElement: //TODO: target, node
-		//	Constant | Node | Procedure;
+		//ProgramElement: //TODO: target
+		//	Constant | {AttributableProgramElement} attrs+=Attr* element=AttributableNodeOrProcedure;
 		@Override public ParserRule getRule() { return rule; }
 
-		////TODO: target, node
-		//Constant | Node | Procedure
+		////TODO: target
+		//Constant | {AttributableProgramElement} attrs+=Attr* element=AttributableNodeOrProcedure
 		public Alternatives getAlternatives() { return cAlternatives; }
 
-		////TODO: target, node
+		////TODO: target
 		//Constant
 		public RuleCall getConstantParserRuleCall_0() { return cConstantParserRuleCall_0; }
 
+		//{AttributableProgramElement} attrs+=Attr* element=AttributableNodeOrProcedure
+		public Group getGroup_1() { return cGroup_1; }
+
+		//{AttributableProgramElement}
+		public Action getAttributableProgramElementAction_1_0() { return cAttributableProgramElementAction_1_0; }
+
+		//attrs+=Attr*
+		public Assignment getAttrsAssignment_1_1() { return cAttrsAssignment_1_1; }
+
+		//Attr
+		public RuleCall getAttrsAttrParserRuleCall_1_1_0() { return cAttrsAttrParserRuleCall_1_1_0; }
+
+		//element=AttributableNodeOrProcedure
+		public Assignment getElementAssignment_1_2() { return cElementAssignment_1_2; }
+
+		//AttributableNodeOrProcedure
+		public RuleCall getElementAttributableNodeOrProcedureParserRuleCall_1_2_0() { return cElementAttributableNodeOrProcedureParserRuleCall_1_2_0; }
+	}
+
+	public class AttributableNodeOrProcedureElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "AttributableNodeOrProcedure");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final RuleCall cNodeParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cProcedureParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		
+		//AttributableNodeOrProcedure:
+		//	Node | Procedure;
+		@Override public ParserRule getRule() { return rule; }
+
+		//Node | Procedure
+		public Alternatives getAlternatives() { return cAlternatives; }
+
 		//Node
-		public RuleCall getNodeParserRuleCall_1() { return cNodeParserRuleCall_1; }
+		public RuleCall getNodeParserRuleCall_0() { return cNodeParserRuleCall_0; }
 
 		//Procedure
-		public RuleCall getProcedureParserRuleCall_2() { return cProcedureParserRuleCall_2; }
+		public RuleCall getProcedureParserRuleCall_1() { return cProcedureParserRuleCall_1; }
 	}
 
 	public class ConstantElements extends AbstractParserRuleElementFinder {
@@ -230,23 +266,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 	public class NodeElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Node");
-		private final Assignment cNodeAssignment = (Assignment)rule.eContents().get(1);
-		private final RuleCall cNodeNodeNoAttrParserRuleCall_0 = (RuleCall)cNodeAssignment.eContents().get(0);
-		
-		////TODO
-		//Node:
-		//	node=NodeNoAttr;
-		@Override public ParserRule getRule() { return rule; }
-
-		//node=NodeNoAttr
-		public Assignment getNodeAssignment() { return cNodeAssignment; }
-
-		//NodeNoAttr
-		public RuleCall getNodeNodeNoAttrParserRuleCall_0() { return cNodeNodeNoAttrParserRuleCall_0; }
-	}
-
-	public class NodeNoAttrElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "NodeNoAttr");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Alternatives cAlternatives_0 = (Alternatives)cGroup.eContents().get(0);
 		private final Keyword cNodeKeyword_0_0 = (Keyword)cAlternatives_0.eContents().get(0);
@@ -261,7 +280,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cElementsNodeBodyElementParserRuleCall_2_1_1_0 = (RuleCall)cElementsAssignment_2_1_1.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_2_1_2 = (Keyword)cGroup_2_1.eContents().get(2);
 		
-		//NodeNoAttr:
+		//Node:
 		//	("node" | "NODE") name=TIDENTIFIER (";" | "{" elements+=NodeBodyElement* "}");
 		@Override public ParserRule getRule() { return rule; }
 
@@ -305,8 +324,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getRightCurlyBracketKeyword_2_1_2() { return cRightCurlyBracketKeyword_2_1_2; }
 	}
 
-	public class SpecNoAttrElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "SpecNoAttr");
+	public class SpecificationElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Specification");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
 		private final Action cAtEndSpecAction_0_0 = (Action)cGroup_0.eContents().get(0);
@@ -342,7 +361,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cFunctionTIDENTIFIERTerminalRuleCall_2_4_0 = (RuleCall)cFunctionAssignment_2_4.eContents().get(0);
 		private final Keyword cSemicolonKeyword_2_5 = (Keyword)cGroup_2.eContents().get(5);
 		
-		//SpecNoAttr:
+		//Specification:
 		//	{AtEndSpec} "expect" name=TIDENTIFIER ":" "at_end" "=>" function=TIDENTIFIER ";" | {AtLeastSpec} "expect"
 		//	name=TIDENTIFIER ":" "at_least" threshold=DoubleConst "=>" function=TIDENTIFIER ";" | {RequireSpec} "require"
 		//	name=TIDENTIFIER "=>" function=TIDENTIFIER ";";
@@ -460,16 +479,16 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cRecordBlockParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		private final Group cGroup_2 = (Group)cAlternatives.eContents().get(2);
 		private final Action cAttributableAction_2_0 = (Action)cGroup_2.eContents().get(0);
-		private final Assignment cAttrListAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
-		private final RuleCall cAttrListAttrListParserRuleCall_2_1_0 = (RuleCall)cAttrListAssignment_2_1.eContents().get(0);
+		private final Assignment cAttrsAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
+		private final RuleCall cAttrsAttrParserRuleCall_2_1_0 = (RuleCall)cAttrsAssignment_2_1.eContents().get(0);
 		private final Assignment cElementAssignment_2_2 = (Assignment)cGroup_2.eContents().get(2);
 		private final RuleCall cElementAttributableElementParserRuleCall_2_2_0 = (RuleCall)cElementAssignment_2_2.eContents().get(0);
 		
 		//NodeBodyElement:
-		//	VarBlock | RecordBlock | {Attributable} attrList=AttrList? element=AttributableElement;
+		//	VarBlock | RecordBlock | {Attributable} attrs+=Attr* element=AttributableElement;
 		@Override public ParserRule getRule() { return rule; }
 
-		//VarBlock | RecordBlock | {Attributable} attrList=AttrList? element=AttributableElement
+		//VarBlock | RecordBlock | {Attributable} attrs+=Attr* element=AttributableElement
 		public Alternatives getAlternatives() { return cAlternatives; }
 
 		//VarBlock
@@ -478,17 +497,17 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//RecordBlock
 		public RuleCall getRecordBlockParserRuleCall_1() { return cRecordBlockParserRuleCall_1; }
 
-		//{Attributable} attrList=AttrList? element=AttributableElement
+		//{Attributable} attrs+=Attr* element=AttributableElement
 		public Group getGroup_2() { return cGroup_2; }
 
 		//{Attributable}
 		public Action getAttributableAction_2_0() { return cAttributableAction_2_0; }
 
-		//attrList=AttrList?
-		public Assignment getAttrListAssignment_2_1() { return cAttrListAssignment_2_1; }
+		//attrs+=Attr*
+		public Assignment getAttrsAssignment_2_1() { return cAttrsAssignment_2_1; }
 
-		//AttrList
-		public RuleCall getAttrListAttrListParserRuleCall_2_1_0() { return cAttrListAttrListParserRuleCall_2_1_0; }
+		//Attr
+		public RuleCall getAttrsAttrParserRuleCall_2_1_0() { return cAttrsAttrParserRuleCall_2_1_0; }
 
 		//element=AttributableElement
 		public Assignment getElementAssignment_2_2() { return cElementAssignment_2_2; }
@@ -500,7 +519,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	public class AttributableElementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "AttributableElement");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final RuleCall cProcNoAttrParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cProcedureParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
 		private final Action cSimpleRoleAction_1_0 = (Action)cGroup_1.eContents().get(0);
 		private final Keyword cRoleKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
@@ -522,19 +541,19 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cElementsAssignment_2_6 = (Assignment)cGroup_2.eContents().get(6);
 		private final RuleCall cElementsRoleBodyElementParserRuleCall_2_6_0 = (RuleCall)cElementsAssignment_2_6.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_2_7 = (Keyword)cGroup_2.eContents().get(7);
-		private final RuleCall cSpecNoAttrParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
+		private final RuleCall cSpecificationParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		
 		//AttributableElement:
-		//	ProcNoAttr | {SimpleRole} "role" name=TIDENTIFIER "{" elements+=RoleBodyElement* "}" | {IdRole} "role"
-		//	name=TIDENTIFIER "id" id=INT "{" elements+=RoleBodyElement* "}" | SpecNoAttr;
+		//	Procedure | {SimpleRole} "role" name=TIDENTIFIER "{" elements+=RoleBodyElement* "}" | {IdRole} "role" name=TIDENTIFIER
+		//	"id" id=INT "{" elements+=RoleBodyElement* "}" | Specification;
 		@Override public ParserRule getRule() { return rule; }
 
-		//ProcNoAttr | {SimpleRole} "role" name=TIDENTIFIER "{" elements+=RoleBodyElement* "}" | {IdRole} "role" name=TIDENTIFIER
-		//"id" id=INT "{" elements+=RoleBodyElement* "}" | SpecNoAttr
+		//Procedure | {SimpleRole} "role" name=TIDENTIFIER "{" elements+=RoleBodyElement* "}" | {IdRole} "role" name=TIDENTIFIER
+		//"id" id=INT "{" elements+=RoleBodyElement* "}" | Specification
 		public Alternatives getAlternatives() { return cAlternatives; }
 
-		//ProcNoAttr
-		public RuleCall getProcNoAttrParserRuleCall_0() { return cProcNoAttrParserRuleCall_0; }
+		//Procedure
+		public RuleCall getProcedureParserRuleCall_0() { return cProcedureParserRuleCall_0; }
 
 		//{SimpleRole} "role" name=TIDENTIFIER "{" elements+=RoleBodyElement* "}"
 		public Group getGroup_1() { return cGroup_1; }
@@ -599,8 +618,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//"}"
 		public Keyword getRightCurlyBracketKeyword_2_7() { return cRightCurlyBracketKeyword_2_7; }
 
-		//SpecNoAttr
-		public RuleCall getSpecNoAttrParserRuleCall_3() { return cSpecNoAttrParserRuleCall_3; }
+		//Specification
+		public RuleCall getSpecificationParserRuleCall_3() { return cSpecificationParserRuleCall_3; }
 	}
 
 	public class RoleBodyElementElements extends AbstractParserRuleElementFinder {
@@ -610,16 +629,16 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cRecordBlockParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		private final Group cGroup_2 = (Group)cAlternatives.eContents().get(2);
 		private final Action cAttributableNoRoleAction_2_0 = (Action)cGroup_2.eContents().get(0);
-		private final Assignment cAttrListAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
-		private final RuleCall cAttrListAttrListParserRuleCall_2_1_0 = (RuleCall)cAttrListAssignment_2_1.eContents().get(0);
+		private final Assignment cAttrsAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
+		private final RuleCall cAttrsAttrParserRuleCall_2_1_0 = (RuleCall)cAttrsAssignment_2_1.eContents().get(0);
 		private final Assignment cElementAssignment_2_2 = (Assignment)cGroup_2.eContents().get(2);
 		private final RuleCall cElementAttributableNoRoleElementParserRuleCall_2_2_0 = (RuleCall)cElementAssignment_2_2.eContents().get(0);
 		
 		//RoleBodyElement:
-		//	VarBlock | RecordBlock | {AttributableNoRole} attrList=AttrList? element=AttributableNoRoleElement;
+		//	VarBlock | RecordBlock | {AttributableNoRole} attrs+=Attr* element=AttributableNoRoleElement;
 		@Override public ParserRule getRule() { return rule; }
 
-		//VarBlock | RecordBlock | {AttributableNoRole} attrList=AttrList? element=AttributableNoRoleElement
+		//VarBlock | RecordBlock | {AttributableNoRole} attrs+=Attr* element=AttributableNoRoleElement
 		public Alternatives getAlternatives() { return cAlternatives; }
 
 		//VarBlock
@@ -628,17 +647,17 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//RecordBlock
 		public RuleCall getRecordBlockParserRuleCall_1() { return cRecordBlockParserRuleCall_1; }
 
-		//{AttributableNoRole} attrList=AttrList? element=AttributableNoRoleElement
+		//{AttributableNoRole} attrs+=Attr* element=AttributableNoRoleElement
 		public Group getGroup_2() { return cGroup_2; }
 
 		//{AttributableNoRole}
 		public Action getAttributableNoRoleAction_2_0() { return cAttributableNoRoleAction_2_0; }
 
-		//attrList=AttrList?
-		public Assignment getAttrListAssignment_2_1() { return cAttrListAssignment_2_1; }
+		//attrs+=Attr*
+		public Assignment getAttrsAssignment_2_1() { return cAttrsAssignment_2_1; }
 
-		//AttrList
-		public RuleCall getAttrListAttrListParserRuleCall_2_1_0() { return cAttrListAttrListParserRuleCall_2_1_0; }
+		//Attr
+		public RuleCall getAttrsAttrParserRuleCall_2_1_0() { return cAttrsAttrParserRuleCall_2_1_0; }
 
 		//element=AttributableNoRoleElement
 		public Assignment getElementAssignment_2_2() { return cElementAssignment_2_2; }
@@ -650,21 +669,21 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	public class AttributableNoRoleElementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "AttributableNoRoleElement");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final RuleCall cProcNoAttrParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
-		private final RuleCall cSpecNoAttrParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		private final RuleCall cProcedureParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cSpecificationParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
 		//AttributableNoRoleElement:
-		//	ProcNoAttr | SpecNoAttr;
+		//	Procedure | Specification;
 		@Override public ParserRule getRule() { return rule; }
 
-		//ProcNoAttr | SpecNoAttr
+		//Procedure | Specification
 		public Alternatives getAlternatives() { return cAlternatives; }
 
-		//ProcNoAttr
-		public RuleCall getProcNoAttrParserRuleCall_0() { return cProcNoAttrParserRuleCall_0; }
+		//Procedure
+		public RuleCall getProcedureParserRuleCall_0() { return cProcedureParserRuleCall_0; }
 
-		//SpecNoAttr
-		public RuleCall getSpecNoAttrParserRuleCall_1() { return cSpecNoAttrParserRuleCall_1; }
+		//Specification
+		public RuleCall getSpecificationParserRuleCall_1() { return cSpecificationParserRuleCall_1; }
 	}
 
 	public class VarBlockElements extends AbstractParserRuleElementFinder {
@@ -1142,34 +1161,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	public class ProcedureElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Procedure");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Assignment cAttrListAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final RuleCall cAttrListAttrListParserRuleCall_0_0 = (RuleCall)cAttrListAssignment_0.eContents().get(0);
-		private final Assignment cProcAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cProcProcNoAttrParserRuleCall_1_0 = (RuleCall)cProcAssignment_1.eContents().get(0);
-		
-		//Procedure:
-		//	attrList=AttrList? proc=ProcNoAttr;
-		@Override public ParserRule getRule() { return rule; }
-
-		//attrList=AttrList? proc=ProcNoAttr
-		public Group getGroup() { return cGroup; }
-
-		//attrList=AttrList?
-		public Assignment getAttrListAssignment_0() { return cAttrListAssignment_0; }
-
-		//AttrList
-		public RuleCall getAttrListAttrListParserRuleCall_0_0() { return cAttrListAttrListParserRuleCall_0_0; }
-
-		//proc=ProcNoAttr
-		public Assignment getProcAssignment_1() { return cProcAssignment_1; }
-
-		//ProcNoAttr
-		public RuleCall getProcProcNoAttrParserRuleCall_1_0() { return cProcProcNoAttrParserRuleCall_1_0; }
-	}
-
-	public class ProcNoAttrElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "ProcNoAttr");
-		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cOverrideAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final Keyword cOverrideOverrideKeyword_0_0 = (Keyword)cOverrideAssignment_0.eContents().get(0);
 		private final Assignment cPrototypeAssignment_1 = (Assignment)cGroup.eContents().get(1);
@@ -1179,7 +1170,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cFnBodyAssignment_2_1 = (Assignment)cAlternatives_2.eContents().get(1);
 		private final RuleCall cFnBodyFnBodyParserRuleCall_2_1_0 = (RuleCall)cFnBodyAssignment_2_1.eContents().get(0);
 		
-		//ProcNoAttr:
+		//Procedure:
 		//	override?="override"? prototype=FnPrototype (";" | fnBody=FnBody);
 		@Override public ParserRule getRule() { return rule; }
 
@@ -1420,30 +1411,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getRightParenthesisKeyword_1_7() { return cRightParenthesisKeyword_1_7; }
 	}
 
-	public class AttrListElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "AttrList");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Assignment cAttrsAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final RuleCall cAttrsAttrParserRuleCall_0_0 = (RuleCall)cAttrsAssignment_0.eContents().get(0);
-		private final Keyword cSemicolonKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		
-		//AttrList:
-		//	(attrs+=Attr ";")+;
-		@Override public ParserRule getRule() { return rule; }
-
-		//(attrs+=Attr ";")+
-		public Group getGroup() { return cGroup; }
-
-		//attrs+=Attr
-		public Assignment getAttrsAssignment_0() { return cAttrsAssignment_0; }
-
-		//Attr
-		public RuleCall getAttrsAttrParserRuleCall_0_0() { return cAttrsAttrParserRuleCall_0_0; }
-
-		//";"
-		public Keyword getSemicolonKeyword_1() { return cSemicolonKeyword_1; }
-	}
-
 	public class AttrElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Attr");
 		private final Group cGroup = (Group)rule.eContents().get(1);
@@ -1459,12 +1426,13 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cParamsAssignment_2_2_1 = (Assignment)cGroup_2_2.eContents().get(1);
 		private final RuleCall cParamsExprParserRuleCall_2_2_1_0 = (RuleCall)cParamsAssignment_2_2_1.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_2_3 = (Keyword)cGroup_2.eContents().get(3);
+		private final Keyword cSemicolonKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		
 		//Attr:
-		//	"@" name=TIDENTIFIER ("(" params+=Expr ("," params+=Expr)* ")")?;
+		//	"@" name=TIDENTIFIER ("(" params+=Expr ("," params+=Expr)* ")")? ";";
 		@Override public ParserRule getRule() { return rule; }
 
-		//"@" name=TIDENTIFIER ("(" params+=Expr ("," params+=Expr)* ")")?
+		//"@" name=TIDENTIFIER ("(" params+=Expr ("," params+=Expr)* ")")? ";"
 		public Group getGroup() { return cGroup; }
 
 		//"@"
@@ -1502,6 +1470,9 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 		//")"
 		public Keyword getRightParenthesisKeyword_2_3() { return cRightParenthesisKeyword_2_3; }
+
+		//";"
+		public Keyword getSemicolonKeyword_3() { return cSemicolonKeyword_3; }
 	}
 
 	public class ParamElements extends AbstractParserRuleElementFinder {
@@ -1575,8 +1546,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cStmtStmtParserRuleCall_3_9_0 = (RuleCall)cStmtAssignment_3_9.eContents().get(0);
 		private final Group cGroup_4 = (Group)cAlternatives.eContents().get(4);
 		private final Action cCondStmtAction_4_0 = (Action)cGroup_4.eContents().get(0);
-		private final Assignment cAttrListAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
-		private final RuleCall cAttrListAttrListParserRuleCall_4_1_0 = (RuleCall)cAttrListAssignment_4_1.eContents().get(0);
+		private final Assignment cAttrsAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
+		private final RuleCall cAttrsAttrParserRuleCall_4_1_0 = (RuleCall)cAttrsAssignment_4_1.eContents().get(0);
 		private final Keyword cIfKeyword_4_2 = (Keyword)cGroup_4.eContents().get(2);
 		private final Keyword cLeftParenthesisKeyword_4_3 = (Keyword)cGroup_4.eContents().get(3);
 		private final Assignment cConditionAssignment_4_4 = (Assignment)cGroup_4.eContents().get(4);
@@ -1630,7 +1601,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//Stmt:
 		//	{NestedStmt} "{" stmts+=Stmt* "}" | AssignmentStmt ";" | {WhileStmt} "while" "(" condition=Expr ")" stmt=Stmt |
 		//	{ForStmt} "for" "(" (inits+=AssignmentStmt ("," inits+=AssignmentStmt)*)? ";" condition=Expr? ";"
-		//	update=AssignmentStmt? ")" stmt=Stmt | {CondStmt} attrList=AttrList? "if" "(" condition=Expr ")" then=Stmt ("else"
+		//	update=AssignmentStmt? ")" stmt=Stmt | {CondStmt} attrs+=Attr* "if" "(" condition=Expr ")" then=Stmt ("else"
 		//	else=Stmt)? | {SimpleStmt} name=SimpleStmtKeyword ";" | {ReturnValueStmt} "return" value=Expr ";" | CallExpr ";" |
 		//	{ForAllStmt} name=ForAllFunction "(" node=TIDENTIFIER ")" stmt=Stmt | {FadnpStmt} ("forall_distinct_node_pair" |
 		//	"FORALL_DISTINCT_NODE_PAIR") "(" node1=TIDENTIFIER "," node2=TIDENTIFIER ")" stmt=Stmt;
@@ -1638,7 +1609,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 
 		//{NestedStmt} "{" stmts+=Stmt* "}" | AssignmentStmt ";" | {WhileStmt} "while" "(" condition=Expr ")" stmt=Stmt |
 		//{ForStmt} "for" "(" (inits+=AssignmentStmt ("," inits+=AssignmentStmt)*)? ";" condition=Expr? ";"
-		//update=AssignmentStmt? ")" stmt=Stmt | {CondStmt} attrList=AttrList? "if" "(" condition=Expr ")" then=Stmt ("else"
+		//update=AssignmentStmt? ")" stmt=Stmt | {CondStmt} attrs+=Attr* "if" "(" condition=Expr ")" then=Stmt ("else"
 		//else=Stmt)? | {SimpleStmt} name=SimpleStmtKeyword ";" | {ReturnValueStmt} "return" value=Expr ";" | CallExpr ";" |
 		//{ForAllStmt} name=ForAllFunction "(" node=TIDENTIFIER ")" stmt=Stmt | {FadnpStmt} ("forall_distinct_node_pair" |
 		//"FORALL_DISTINCT_NODE_PAIR") "(" node1=TIDENTIFIER "," node2=TIDENTIFIER ")" stmt=Stmt
@@ -1759,17 +1730,17 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//Stmt
 		public RuleCall getStmtStmtParserRuleCall_3_9_0() { return cStmtStmtParserRuleCall_3_9_0; }
 
-		//{CondStmt} attrList=AttrList? "if" "(" condition=Expr ")" then=Stmt ("else" else=Stmt)?
+		//{CondStmt} attrs+=Attr* "if" "(" condition=Expr ")" then=Stmt ("else" else=Stmt)?
 		public Group getGroup_4() { return cGroup_4; }
 
 		//{CondStmt}
 		public Action getCondStmtAction_4_0() { return cCondStmtAction_4_0; }
 
-		//attrList=AttrList?
-		public Assignment getAttrListAssignment_4_1() { return cAttrListAssignment_4_1; }
+		//attrs+=Attr*
+		public Assignment getAttrsAssignment_4_1() { return cAttrsAssignment_4_1; }
 
-		//AttrList
-		public RuleCall getAttrListAttrListParserRuleCall_4_1_0() { return cAttrListAttrListParserRuleCall_4_1_0; }
+		//Attr
+		public RuleCall getAttrsAttrParserRuleCall_4_1_0() { return cAttrsAttrParserRuleCall_4_1_0; }
 
 		//"if"
 		public Keyword getIfKeyword_4_2() { return cIfKeyword_4_2; }
@@ -3511,13 +3482,13 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final AnnexSubclauseElements pAnnexSubclause;
 	private final DmplSubclauseElements pDmplSubclause;
 	private final ProgramElementElements pProgramElement;
+	private final AttributableNodeOrProcedureElements pAttributableNodeOrProcedure;
 	private final ConstantElements pConstant;
 	private final NumberConstElements pNumberConst;
 	private final IntConstElements pIntConst;
 	private final DoubleConstElements pDoubleConst;
 	private final NodeElements pNode;
-	private final NodeNoAttrElements pNodeNoAttr;
-	private final SpecNoAttrElements pSpecNoAttr;
+	private final SpecificationElements pSpecification;
 	private final NodeBodyElementElements pNodeBodyElement;
 	private final AttributableElementElements pAttributableElement;
 	private final RoleBodyElementElements pRoleBodyElement;
@@ -3531,10 +3502,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final DimensionElements pDimension;
 	private final TypeElements pType;
 	private final ProcedureElements pProcedure;
-	private final ProcNoAttrElements pProcNoAttr;
 	private final FnBodyElements pFnBody;
 	private final FnPrototypeElements pFnPrototype;
-	private final AttrListElements pAttrList;
 	private final AttrElements pAttr;
 	private final ParamElements pParam;
 	private final StmtElements pStmt;
@@ -3589,13 +3558,13 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pAnnexSubclause = new AnnexSubclauseElements();
 		this.pDmplSubclause = new DmplSubclauseElements();
 		this.pProgramElement = new ProgramElementElements();
+		this.pAttributableNodeOrProcedure = new AttributableNodeOrProcedureElements();
 		this.pConstant = new ConstantElements();
 		this.pNumberConst = new NumberConstElements();
 		this.pIntConst = new IntConstElements();
 		this.pDoubleConst = new DoubleConstElements();
 		this.pNode = new NodeElements();
-		this.pNodeNoAttr = new NodeNoAttrElements();
-		this.pSpecNoAttr = new SpecNoAttrElements();
+		this.pSpecification = new SpecificationElements();
 		this.pNodeBodyElement = new NodeBodyElementElements();
 		this.pAttributableElement = new AttributableElementElements();
 		this.pRoleBodyElement = new RoleBodyElementElements();
@@ -3609,10 +3578,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pDimension = new DimensionElements();
 		this.pType = new TypeElements();
 		this.pProcedure = new ProcedureElements();
-		this.pProcNoAttr = new ProcNoAttrElements();
 		this.pFnBody = new FnBodyElements();
 		this.pFnPrototype = new FnPrototypeElements();
-		this.pAttrList = new AttrListElements();
 		this.pAttr = new AttrElements();
 		this.pParam = new ParamElements();
 		this.pStmt = new StmtElements();
@@ -3712,14 +3679,24 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getDmplSubclauseAccess().getRule();
 	}
 
-	//ProgramElement: //TODO: target, node
-	//	Constant | Node | Procedure;
+	//ProgramElement: //TODO: target
+	//	Constant | {AttributableProgramElement} attrs+=Attr* element=AttributableNodeOrProcedure;
 	public ProgramElementElements getProgramElementAccess() {
 		return pProgramElement;
 	}
 	
 	public ParserRule getProgramElementRule() {
 		return getProgramElementAccess().getRule();
+	}
+
+	//AttributableNodeOrProcedure:
+	//	Node | Procedure;
+	public AttributableNodeOrProcedureElements getAttributableNodeOrProcedureAccess() {
+		return pAttributableNodeOrProcedure;
+	}
+	
+	public ParserRule getAttributableNodeOrProcedureRule() {
+		return getAttributableNodeOrProcedureAccess().getRule();
 	}
 
 	//Constant:
@@ -3762,9 +3739,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getDoubleConstAccess().getRule();
 	}
 
-	////TODO
 	//Node:
-	//	node=NodeNoAttr;
+	//	("node" | "NODE") name=TIDENTIFIER (";" | "{" elements+=NodeBodyElement* "}");
 	public NodeElements getNodeAccess() {
 		return pNode;
 	}
@@ -3773,30 +3749,20 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getNodeAccess().getRule();
 	}
 
-	//NodeNoAttr:
-	//	("node" | "NODE") name=TIDENTIFIER (";" | "{" elements+=NodeBodyElement* "}");
-	public NodeNoAttrElements getNodeNoAttrAccess() {
-		return pNodeNoAttr;
-	}
-	
-	public ParserRule getNodeNoAttrRule() {
-		return getNodeNoAttrAccess().getRule();
-	}
-
-	//SpecNoAttr:
+	//Specification:
 	//	{AtEndSpec} "expect" name=TIDENTIFIER ":" "at_end" "=>" function=TIDENTIFIER ";" | {AtLeastSpec} "expect"
 	//	name=TIDENTIFIER ":" "at_least" threshold=DoubleConst "=>" function=TIDENTIFIER ";" | {RequireSpec} "require"
 	//	name=TIDENTIFIER "=>" function=TIDENTIFIER ";";
-	public SpecNoAttrElements getSpecNoAttrAccess() {
-		return pSpecNoAttr;
+	public SpecificationElements getSpecificationAccess() {
+		return pSpecification;
 	}
 	
-	public ParserRule getSpecNoAttrRule() {
-		return getSpecNoAttrAccess().getRule();
+	public ParserRule getSpecificationRule() {
+		return getSpecificationAccess().getRule();
 	}
 
 	//NodeBodyElement:
-	//	VarBlock | RecordBlock | {Attributable} attrList=AttrList? element=AttributableElement;
+	//	VarBlock | RecordBlock | {Attributable} attrs+=Attr* element=AttributableElement;
 	public NodeBodyElementElements getNodeBodyElementAccess() {
 		return pNodeBodyElement;
 	}
@@ -3806,8 +3772,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//AttributableElement:
-	//	ProcNoAttr | {SimpleRole} "role" name=TIDENTIFIER "{" elements+=RoleBodyElement* "}" | {IdRole} "role"
-	//	name=TIDENTIFIER "id" id=INT "{" elements+=RoleBodyElement* "}" | SpecNoAttr;
+	//	Procedure | {SimpleRole} "role" name=TIDENTIFIER "{" elements+=RoleBodyElement* "}" | {IdRole} "role" name=TIDENTIFIER
+	//	"id" id=INT "{" elements+=RoleBodyElement* "}" | Specification;
 	public AttributableElementElements getAttributableElementAccess() {
 		return pAttributableElement;
 	}
@@ -3817,7 +3783,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//RoleBodyElement:
-	//	VarBlock | RecordBlock | {AttributableNoRole} attrList=AttrList? element=AttributableNoRoleElement;
+	//	VarBlock | RecordBlock | {AttributableNoRole} attrs+=Attr* element=AttributableNoRoleElement;
 	public RoleBodyElementElements getRoleBodyElementAccess() {
 		return pRoleBodyElement;
 	}
@@ -3827,7 +3793,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//AttributableNoRoleElement:
-	//	ProcNoAttr | SpecNoAttr;
+	//	Procedure | Specification;
 	public AttributableNoRoleElementElements getAttributableNoRoleElementAccess() {
 		return pAttributableNoRoleElement;
 	}
@@ -3919,23 +3885,13 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Procedure:
-	//	attrList=AttrList? proc=ProcNoAttr;
+	//	override?="override"? prototype=FnPrototype (";" | fnBody=FnBody);
 	public ProcedureElements getProcedureAccess() {
 		return pProcedure;
 	}
 	
 	public ParserRule getProcedureRule() {
 		return getProcedureAccess().getRule();
-	}
-
-	//ProcNoAttr:
-	//	override?="override"? prototype=FnPrototype (";" | fnBody=FnBody);
-	public ProcNoAttrElements getProcNoAttrAccess() {
-		return pProcNoAttr;
-	}
-	
-	public ParserRule getProcNoAttrRule() {
-		return getProcNoAttrAccess().getRule();
 	}
 
 	//FnBody:
@@ -3960,18 +3916,8 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getFnPrototypeAccess().getRule();
 	}
 
-	//AttrList:
-	//	(attrs+=Attr ";")+;
-	public AttrListElements getAttrListAccess() {
-		return pAttrList;
-	}
-	
-	public ParserRule getAttrListRule() {
-		return getAttrListAccess().getRule();
-	}
-
 	//Attr:
-	//	"@" name=TIDENTIFIER ("(" params+=Expr ("," params+=Expr)* ")")?;
+	//	"@" name=TIDENTIFIER ("(" params+=Expr ("," params+=Expr)* ")")? ";";
 	public AttrElements getAttrAccess() {
 		return pAttr;
 	}
@@ -3993,7 +3939,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	//Stmt:
 	//	{NestedStmt} "{" stmts+=Stmt* "}" | AssignmentStmt ";" | {WhileStmt} "while" "(" condition=Expr ")" stmt=Stmt |
 	//	{ForStmt} "for" "(" (inits+=AssignmentStmt ("," inits+=AssignmentStmt)*)? ";" condition=Expr? ";"
-	//	update=AssignmentStmt? ")" stmt=Stmt | {CondStmt} attrList=AttrList? "if" "(" condition=Expr ")" then=Stmt ("else"
+	//	update=AssignmentStmt? ")" stmt=Stmt | {CondStmt} attrs+=Attr* "if" "(" condition=Expr ")" then=Stmt ("else"
 	//	else=Stmt)? | {SimpleStmt} name=SimpleStmtKeyword ";" | {ReturnValueStmt} "return" value=Expr ";" | CallExpr ";" |
 	//	{ForAllStmt} name=ForAllFunction "(" node=TIDENTIFIER ")" stmt=Stmt | {FadnpStmt} ("forall_distinct_node_pair" |
 	//	"FORALL_DISTINCT_NODE_PAIR") "(" node1=TIDENTIFIER "," node2=TIDENTIFIER ")" stmt=Stmt;

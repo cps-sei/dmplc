@@ -12,66 +12,93 @@ package edu.cmu.sei.annex.dmpl.dmpl;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.Procedure#getAttrList <em>Attr List</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.Procedure#getProc <em>Proc</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.Procedure#isOverride <em>Override</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.Procedure#getPrototype <em>Prototype</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.Procedure#getFnBody <em>Fn Body</em>}</li>
  * </ul>
  *
  * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getProcedure()
  * @model
  * @generated
  */
-public interface Procedure extends ProgramElement
+public interface Procedure extends AttributableNodeOrProcedure, AttributableElement, AttributableNoRoleElement
 {
   /**
-   * Returns the value of the '<em><b>Attr List</b></em>' containment reference.
+   * Returns the value of the '<em><b>Override</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Attr List</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Override</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Attr List</em>' containment reference.
-   * @see #setAttrList(AttrList)
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getProcedure_AttrList()
-   * @model containment="true"
+   * @return the value of the '<em>Override</em>' attribute.
+   * @see #setOverride(boolean)
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getProcedure_Override()
+   * @model
    * @generated
    */
-  AttrList getAttrList();
+  boolean isOverride();
 
   /**
-   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.Procedure#getAttrList <em>Attr List</em>}' containment reference.
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.Procedure#isOverride <em>Override</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Attr List</em>' containment reference.
-   * @see #getAttrList()
+   * @param value the new value of the '<em>Override</em>' attribute.
+   * @see #isOverride()
    * @generated
    */
-  void setAttrList(AttrList value);
+  void setOverride(boolean value);
 
   /**
-   * Returns the value of the '<em><b>Proc</b></em>' containment reference.
+   * Returns the value of the '<em><b>Prototype</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Proc</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Prototype</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Proc</em>' containment reference.
-   * @see #setProc(ProcNoAttr)
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getProcedure_Proc()
+   * @return the value of the '<em>Prototype</em>' containment reference.
+   * @see #setPrototype(FnPrototype)
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getProcedure_Prototype()
    * @model containment="true"
    * @generated
    */
-  ProcNoAttr getProc();
+  FnPrototype getPrototype();
 
   /**
-   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.Procedure#getProc <em>Proc</em>}' containment reference.
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.Procedure#getPrototype <em>Prototype</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Proc</em>' containment reference.
-   * @see #getProc()
+   * @param value the new value of the '<em>Prototype</em>' containment reference.
+   * @see #getPrototype()
    * @generated
    */
-  void setProc(ProcNoAttr value);
+  void setPrototype(FnPrototype value);
+
+  /**
+   * Returns the value of the '<em><b>Fn Body</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Fn Body</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Fn Body</em>' containment reference.
+   * @see #setFnBody(FnBody)
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getProcedure_FnBody()
+   * @model containment="true"
+   * @generated
+   */
+  FnBody getFnBody();
+
+  /**
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.Procedure#getFnBody <em>Fn Body</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Fn Body</em>' containment reference.
+   * @see #getFnBody()
+   * @generated
+   */
+  void setFnBody(FnBody value);
 
 } // Procedure

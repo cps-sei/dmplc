@@ -13,6 +13,6 @@ package edu.cmu.sei.annex.dmpl.dmpl;
  * @model
  * @generated
  */
-public interface RequireSpec extends SpecNoAttr
+public interface RequireSpec extends Specification
 {
 } // RequireSpec

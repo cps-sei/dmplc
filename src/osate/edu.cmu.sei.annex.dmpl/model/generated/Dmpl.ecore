@@ -10,6 +10,7 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ProgramElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AttributableNodeOrProcedure"/>
   <eClassifiers xsi:type="ecore:EClass" name="Constant" eSuperTypes="#//ProgramElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//NumberConst"
@@ -24,16 +25,12 @@
   <eClassifiers xsi:type="ecore:EClass" name="DoubleConst" eSuperTypes="#//NumberConst">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Node" eSuperTypes="#//ProgramElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="node" eType="#//NodeNoAttr"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NodeNoAttr">
+  <eClassifiers xsi:type="ecore:EClass" name="Node" eSuperTypes="#//AttributableNodeOrProcedure">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
         eType="#//NodeBodyElement" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SpecNoAttr" eSuperTypes="#//AttributableElement #//AttributableNoRoleElement">
+  <eClassifiers xsi:type="ecore:EClass" name="Specification" eSuperTypes="#//AttributableElement #//AttributableNoRoleElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="function" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
@@ -80,13 +77,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="signed" eType="#//SignedEnum"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="simpType" eType="#//SimpTypeEnum"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Procedure" eSuperTypes="#//ProgramElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="attrList" eType="#//AttrList"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="proc" eType="#//ProcNoAttr"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ProcNoAttr" eSuperTypes="#//AttributableElement #//AttributableNoRoleElement">
+  <eClassifiers xsi:type="ecore:EClass" name="Procedure" eSuperTypes="#//AttributableNodeOrProcedure #//AttributableElement #//AttributableNoRoleElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="override" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="prototype" eType="#//FnPrototype"
         containment="true"/>
@@ -103,10 +94,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="extern" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="pure" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="AttrList">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="attrs" upperBound="-1"
-        eType="#//Attr" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Attr">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -205,15 +192,21 @@
     <eLiterals name="exists_higher" value="1" literal="exists_higher"/>
     <eLiterals name="exists_lower" value="2" literal="exists_lower"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="AtEndSpec" eSuperTypes="#//SpecNoAttr"/>
-  <eClassifiers xsi:type="ecore:EClass" name="AtLeastSpec" eSuperTypes="#//SpecNoAttr">
+  <eClassifiers xsi:type="ecore:EClass" name="AttributableProgramElement" eSuperTypes="#//ProgramElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attrs" upperBound="-1"
+        eType="#//Attr" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="#//AttributableNodeOrProcedure"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AtEndSpec" eSuperTypes="#//Specification"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AtLeastSpec" eSuperTypes="#//Specification">
     <eStructuralFeatures xsi:type="ecore:EReference" name="threshold" eType="#//DoubleConst"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="RequireSpec" eSuperTypes="#//SpecNoAttr"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RequireSpec" eSuperTypes="#//Specification"/>
   <eClassifiers xsi:type="ecore:EClass" name="Attributable" eSuperTypes="#//NodeBodyElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="attrList" eType="#//AttrList"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attrs" upperBound="-1"
+        eType="#//Attr" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="#//AttributableElement"
         containment="true"/>
   </eClassifiers>
@@ -229,8 +222,8 @@
         eType="#//RoleBodyElement" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AttributableNoRole" eSuperTypes="#//RoleBodyElement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="attrList" eType="#//AttrList"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attrs" upperBound="-1"
+        eType="#//Attr" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="#//AttributableNoRoleElement"
         containment="true"/>
   </eClassifiers>
@@ -273,8 +266,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="stmt" eType="#//Stmt" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CondStmt" eSuperTypes="#//Stmt">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="attrList" eType="#//AttrList"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attrs" upperBound="-1"
+        eType="#//Attr" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="condition" eType="#//Expr"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="then" eType="#//Stmt" containment="true"/>

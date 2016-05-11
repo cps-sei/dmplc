@@ -3,8 +3,8 @@
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.Attr;
-import edu.cmu.sei.annex.dmpl.dmpl.Attributable;
-import edu.cmu.sei.annex.dmpl.dmpl.AttributableElement;
+import edu.cmu.sei.annex.dmpl.dmpl.AttributableNodeOrProcedure;
+import edu.cmu.sei.annex.dmpl.dmpl.AttributableProgramElement;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 
 import java.util.Collection;
@@ -24,19 +24,19 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Attributable</b></em>'.
+ * An implementation of the model object '<em><b>Attributable Program Element</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.AttributableImpl#getAttrs <em>Attrs</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.AttributableImpl#getElement <em>Element</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.AttributableProgramElementImpl#getAttrs <em>Attrs</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.AttributableProgramElementImpl#getElement <em>Element</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class AttributableImpl extends NodeBodyElementImpl implements Attributable
+public class AttributableProgramElementImpl extends ProgramElementImpl implements AttributableProgramElement
 {
   /**
    * The cached value of the '{@link #getAttrs() <em>Attrs</em>}' containment reference list.
@@ -56,14 +56,14 @@ public class AttributableImpl extends NodeBodyElementImpl implements Attributabl
    * @generated
    * @ordered
    */
-  protected AttributableElement element;
+  protected AttributableNodeOrProcedure element;
 
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected AttributableImpl()
+  protected AttributableProgramElementImpl()
   {
     super();
   }
@@ -76,7 +76,7 @@ public class AttributableImpl extends NodeBodyElementImpl implements Attributabl
   @Override
   protected EClass eStaticClass()
   {
-    return DmplPackage.Literals.ATTRIBUTABLE;
+    return DmplPackage.Literals.ATTRIBUTABLE_PROGRAM_ELEMENT;
   }
 
   /**
@@ -88,7 +88,7 @@ public class AttributableImpl extends NodeBodyElementImpl implements Attributabl
   {
     if (attrs == null)
     {
-      attrs = new EObjectContainmentEList<Attr>(Attr.class, this, DmplPackage.ATTRIBUTABLE__ATTRS);
+      attrs = new EObjectContainmentEList<Attr>(Attr.class, this, DmplPackage.ATTRIBUTABLE_PROGRAM_ELEMENT__ATTRS);
     }
     return attrs;
   }
@@ -98,7 +98,7 @@ public class AttributableImpl extends NodeBodyElementImpl implements Attributabl
    * <!-- end-user-doc -->
    * @generated
    */
-  public AttributableElement getElement()
+  public AttributableNodeOrProcedure getElement()
   {
     return element;
   }
@@ -108,13 +108,13 @@ public class AttributableImpl extends NodeBodyElementImpl implements Attributabl
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetElement(AttributableElement newElement, NotificationChain msgs)
+  public NotificationChain basicSetElement(AttributableNodeOrProcedure newElement, NotificationChain msgs)
   {
-    AttributableElement oldElement = element;
+    AttributableNodeOrProcedure oldElement = element;
     element = newElement;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.ATTRIBUTABLE__ELEMENT, oldElement, newElement);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.ATTRIBUTABLE_PROGRAM_ELEMENT__ELEMENT, oldElement, newElement);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -125,20 +125,20 @@ public class AttributableImpl extends NodeBodyElementImpl implements Attributabl
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setElement(AttributableElement newElement)
+  public void setElement(AttributableNodeOrProcedure newElement)
   {
     if (newElement != element)
     {
       NotificationChain msgs = null;
       if (element != null)
-        msgs = ((InternalEObject)element).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.ATTRIBUTABLE__ELEMENT, null, msgs);
+        msgs = ((InternalEObject)element).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.ATTRIBUTABLE_PROGRAM_ELEMENT__ELEMENT, null, msgs);
       if (newElement != null)
-        msgs = ((InternalEObject)newElement).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.ATTRIBUTABLE__ELEMENT, null, msgs);
+        msgs = ((InternalEObject)newElement).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.ATTRIBUTABLE_PROGRAM_ELEMENT__ELEMENT, null, msgs);
       msgs = basicSetElement(newElement, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.ATTRIBUTABLE__ELEMENT, newElement, newElement));
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.ATTRIBUTABLE_PROGRAM_ELEMENT__ELEMENT, newElement, newElement));
   }
 
   /**
@@ -151,9 +151,9 @@ public class AttributableImpl extends NodeBodyElementImpl implements Attributabl
   {
     switch (featureID)
     {
-      case DmplPackage.ATTRIBUTABLE__ATTRS:
+      case DmplPackage.ATTRIBUTABLE_PROGRAM_ELEMENT__ATTRS:
         return ((InternalEList<?>)getAttrs()).basicRemove(otherEnd, msgs);
-      case DmplPackage.ATTRIBUTABLE__ELEMENT:
+      case DmplPackage.ATTRIBUTABLE_PROGRAM_ELEMENT__ELEMENT:
         return basicSetElement(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -169,9 +169,9 @@ public class AttributableImpl extends NodeBodyElementImpl implements Attributabl
   {
     switch (featureID)
     {
-      case DmplPackage.ATTRIBUTABLE__ATTRS:
+      case DmplPackage.ATTRIBUTABLE_PROGRAM_ELEMENT__ATTRS:
         return getAttrs();
-      case DmplPackage.ATTRIBUTABLE__ELEMENT:
+      case DmplPackage.ATTRIBUTABLE_PROGRAM_ELEMENT__ELEMENT:
         return getElement();
     }
     return super.eGet(featureID, resolve, coreType);
@@ -188,12 +188,12 @@ public class AttributableImpl extends NodeBodyElementImpl implements Attributabl
   {
     switch (featureID)
     {
-      case DmplPackage.ATTRIBUTABLE__ATTRS:
+      case DmplPackage.ATTRIBUTABLE_PROGRAM_ELEMENT__ATTRS:
         getAttrs().clear();
         getAttrs().addAll((Collection<? extends Attr>)newValue);
         return;
-      case DmplPackage.ATTRIBUTABLE__ELEMENT:
-        setElement((AttributableElement)newValue);
+      case DmplPackage.ATTRIBUTABLE_PROGRAM_ELEMENT__ELEMENT:
+        setElement((AttributableNodeOrProcedure)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -209,11 +209,11 @@ public class AttributableImpl extends NodeBodyElementImpl implements Attributabl
   {
     switch (featureID)
     {
-      case DmplPackage.ATTRIBUTABLE__ATTRS:
+      case DmplPackage.ATTRIBUTABLE_PROGRAM_ELEMENT__ATTRS:
         getAttrs().clear();
         return;
-      case DmplPackage.ATTRIBUTABLE__ELEMENT:
-        setElement((AttributableElement)null);
+      case DmplPackage.ATTRIBUTABLE_PROGRAM_ELEMENT__ELEMENT:
+        setElement((AttributableNodeOrProcedure)null);
         return;
     }
     super.eUnset(featureID);
@@ -229,12 +229,12 @@ public class AttributableImpl extends NodeBodyElementImpl implements Attributabl
   {
     switch (featureID)
     {
-      case DmplPackage.ATTRIBUTABLE__ATTRS:
+      case DmplPackage.ATTRIBUTABLE_PROGRAM_ELEMENT__ATTRS:
         return attrs != null && !attrs.isEmpty();
-      case DmplPackage.ATTRIBUTABLE__ELEMENT:
+      case DmplPackage.ATTRIBUTABLE_PROGRAM_ELEMENT__ELEMENT:
         return element != null;
     }
     return super.eIsSet(featureID);
   }
 
-} //AttributableImpl
+} //AttributableProgramElementImpl

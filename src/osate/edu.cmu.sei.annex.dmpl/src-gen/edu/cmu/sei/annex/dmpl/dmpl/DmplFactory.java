@@ -50,6 +50,15 @@ public interface DmplFactory extends EFactory
   ProgramElement createProgramElement();
 
   /**
+   * Returns a new object of class '<em>Attributable Node Or Procedure</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Attributable Node Or Procedure</em>'.
+   * @generated
+   */
+  AttributableNodeOrProcedure createAttributableNodeOrProcedure();
+
+  /**
    * Returns a new object of class '<em>Constant</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -95,22 +104,13 @@ public interface DmplFactory extends EFactory
   Node createNode();
 
   /**
-   * Returns a new object of class '<em>Node No Attr</em>'.
+   * Returns a new object of class '<em>Specification</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Node No Attr</em>'.
+   * @return a new object of class '<em>Specification</em>'.
    * @generated
    */
-  NodeNoAttr createNodeNoAttr();
-
-  /**
-   * Returns a new object of class '<em>Spec No Attr</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Spec No Attr</em>'.
-   * @generated
-   */
-  SpecNoAttr createSpecNoAttr();
+  Specification createSpecification();
 
   /**
    * Returns a new object of class '<em>Node Body Element</em>'.
@@ -230,15 +230,6 @@ public interface DmplFactory extends EFactory
   Procedure createProcedure();
 
   /**
-   * Returns a new object of class '<em>Proc No Attr</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Proc No Attr</em>'.
-   * @generated
-   */
-  ProcNoAttr createProcNoAttr();
-
-  /**
    * Returns a new object of class '<em>Fn Body</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -255,15 +246,6 @@ public interface DmplFactory extends EFactory
    * @generated
    */
   FnPrototype createFnPrototype();
-
-  /**
-   * Returns a new object of class '<em>Attr List</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Attr List</em>'.
-   * @generated
-   */
-  AttrList createAttrList();
 
   /**
    * Returns a new object of class '<em>Attr</em>'.
@@ -327,6 +309,15 @@ public interface DmplFactory extends EFactory
    * @generated
    */
   CallExpr createCallExpr();
+
+  /**
+   * Returns a new object of class '<em>Attributable Program Element</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Attributable Program Element</em>'.
+   * @generated
+   */
+  AttributableProgramElement createAttributableProgramElement();
 
   /**
    * Returns a new object of class '<em>At End Spec</em>'.

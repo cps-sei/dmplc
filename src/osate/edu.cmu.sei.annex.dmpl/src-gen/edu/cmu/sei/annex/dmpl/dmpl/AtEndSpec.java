@@ -13,6 +13,6 @@ package edu.cmu.sei.annex.dmpl.dmpl;
  * @model
  * @generated
  */
-public interface AtEndSpec extends SpecNoAttr
+public interface AtEndSpec extends Specification
 {
 } // AtEndSpec

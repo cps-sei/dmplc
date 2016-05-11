@@ -68,13 +68,13 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.PROGRAM: return createProgram();
       case DmplPackage.DMPL_SUBCLAUSE: return createDmplSubclause();
       case DmplPackage.PROGRAM_ELEMENT: return createProgramElement();
+      case DmplPackage.ATTRIBUTABLE_NODE_OR_PROCEDURE: return createAttributableNodeOrProcedure();
       case DmplPackage.CONSTANT: return createConstant();
       case DmplPackage.NUMBER_CONST: return createNumberConst();
       case DmplPackage.INT_CONST: return createIntConst();
       case DmplPackage.DOUBLE_CONST: return createDoubleConst();
       case DmplPackage.NODE: return createNode();
-      case DmplPackage.NODE_NO_ATTR: return createNodeNoAttr();
-      case DmplPackage.SPEC_NO_ATTR: return createSpecNoAttr();
+      case DmplPackage.SPECIFICATION: return createSpecification();
       case DmplPackage.NODE_BODY_ELEMENT: return createNodeBodyElement();
       case DmplPackage.ATTRIBUTABLE_ELEMENT: return createAttributableElement();
       case DmplPackage.ROLE_BODY_ELEMENT: return createRoleBodyElement();
@@ -88,10 +88,8 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.DIMENSION: return createDimension();
       case DmplPackage.TYPE: return createType();
       case DmplPackage.PROCEDURE: return createProcedure();
-      case DmplPackage.PROC_NO_ATTR: return createProcNoAttr();
       case DmplPackage.FN_BODY: return createFnBody();
       case DmplPackage.FN_PROTOTYPE: return createFnPrototype();
-      case DmplPackage.ATTR_LIST: return createAttrList();
       case DmplPackage.ATTR: return createAttr();
       case DmplPackage.PARAM: return createParam();
       case DmplPackage.STMT: return createStmt();
@@ -99,6 +97,7 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.LVAL: return createLVal();
       case DmplPackage.EXPR: return createExpr();
       case DmplPackage.CALL_EXPR: return createCallExpr();
+      case DmplPackage.ATTRIBUTABLE_PROGRAM_ELEMENT: return createAttributableProgramElement();
       case DmplPackage.AT_END_SPEC: return createAtEndSpec();
       case DmplPackage.AT_LEAST_SPEC: return createAtLeastSpec();
       case DmplPackage.REQUIRE_SPEC: return createRequireSpec();
@@ -263,6 +262,17 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  public AttributableNodeOrProcedure createAttributableNodeOrProcedure()
+  {
+    AttributableNodeOrProcedureImpl attributableNodeOrProcedure = new AttributableNodeOrProcedureImpl();
+    return attributableNodeOrProcedure;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public Constant createConstant()
   {
     ConstantImpl constant = new ConstantImpl();
@@ -318,21 +328,10 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public NodeNoAttr createNodeNoAttr()
+  public Specification createSpecification()
   {
-    NodeNoAttrImpl nodeNoAttr = new NodeNoAttrImpl();
-    return nodeNoAttr;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public SpecNoAttr createSpecNoAttr()
-  {
-    SpecNoAttrImpl specNoAttr = new SpecNoAttrImpl();
-    return specNoAttr;
+    SpecificationImpl specification = new SpecificationImpl();
+    return specification;
   }
 
   /**
@@ -483,17 +482,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public ProcNoAttr createProcNoAttr()
-  {
-    ProcNoAttrImpl procNoAttr = new ProcNoAttrImpl();
-    return procNoAttr;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public FnBody createFnBody()
   {
     FnBodyImpl fnBody = new FnBodyImpl();
@@ -509,17 +497,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     FnPrototypeImpl fnPrototype = new FnPrototypeImpl();
     return fnPrototype;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public AttrList createAttrList()
-  {
-    AttrListImpl attrList = new AttrListImpl();
-    return attrList;
   }
 
   /**
@@ -597,6 +574,17 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     CallExprImpl callExpr = new CallExprImpl();
     return callExpr;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public AttributableProgramElement createAttributableProgramElement()
+  {
+    AttributableProgramElementImpl attributableProgramElement = new AttributableProgramElementImpl();
+    return attributableProgramElement;
   }
 
   /**

@@ -4,15 +4,22 @@ package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.Node;
-import edu.cmu.sei.annex.dmpl.dmpl.NodeNoAttr;
+import edu.cmu.sei.annex.dmpl.dmpl.NodeBodyElement;
+
+import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,22 +29,43 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.NodeImpl#getNode <em>Node</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.NodeImpl#getName <em>Name</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.NodeImpl#getElements <em>Elements</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class NodeImpl extends ProgramElementImpl implements Node
+public class NodeImpl extends AttributableNodeOrProcedureImpl implements Node
 {
   /**
-   * The cached value of the '{@link #getNode() <em>Node</em>}' containment reference.
+   * The default value of the '{@link #getName() <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getNode()
+   * @see #getName()
    * @generated
    * @ordered
    */
-  protected NodeNoAttr node;
+  protected static final String NAME_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getName()
+   * @generated
+   * @ordered
+   */
+  protected String name = NAME_EDEFAULT;
+
+  /**
+   * The cached value of the '{@link #getElements() <em>Elements</em>}' containment reference list.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getElements()
+   * @generated
+   * @ordered
+   */
+  protected EList<NodeBodyElement> elements;
 
   /**
    * <!-- begin-user-doc -->
@@ -65,9 +93,9 @@ public class NodeImpl extends ProgramElementImpl implements Node
    * <!-- end-user-doc -->
    * @generated
    */
-  public NodeNoAttr getNode()
+  public String getName()
   {
-    return node;
+    return name;
   }
 
   /**
@@ -75,16 +103,12 @@ public class NodeImpl extends ProgramElementImpl implements Node
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetNode(NodeNoAttr newNode, NotificationChain msgs)
+  public void setName(String newName)
   {
-    NodeNoAttr oldNode = node;
-    node = newNode;
+    String oldName = name;
+    name = newName;
     if (eNotificationRequired())
-    {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.NODE__NODE, oldNode, newNode);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
-    }
-    return msgs;
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.NODE__NAME, oldName, name));
   }
 
   /**
@@ -92,20 +116,13 @@ public class NodeImpl extends ProgramElementImpl implements Node
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setNode(NodeNoAttr newNode)
+  public EList<NodeBodyElement> getElements()
   {
-    if (newNode != node)
+    if (elements == null)
     {
-      NotificationChain msgs = null;
-      if (node != null)
-        msgs = ((InternalEObject)node).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.NODE__NODE, null, msgs);
-      if (newNode != null)
-        msgs = ((InternalEObject)newNode).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.NODE__NODE, null, msgs);
-      msgs = basicSetNode(newNode, msgs);
-      if (msgs != null) msgs.dispatch();
+      elements = new EObjectContainmentEList<NodeBodyElement>(NodeBodyElement.class, this, DmplPackage.NODE__ELEMENTS);
     }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.NODE__NODE, newNode, newNode));
+    return elements;
   }
 
   /**
@@ -118,8 +135,8 @@ public class NodeImpl extends ProgramElementImpl implements Node
   {
     switch (featureID)
     {
-      case DmplPackage.NODE__NODE:
-        return basicSetNode(null, msgs);
+      case DmplPackage.NODE__ELEMENTS:
+        return ((InternalEList<?>)getElements()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -134,8 +151,10 @@ public class NodeImpl extends ProgramElementImpl implements Node
   {
     switch (featureID)
     {
-      case DmplPackage.NODE__NODE:
-        return getNode();
+      case DmplPackage.NODE__NAME:
+        return getName();
+      case DmplPackage.NODE__ELEMENTS:
+        return getElements();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -145,13 +164,18 @@ public class NodeImpl extends ProgramElementImpl implements Node
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
-      case DmplPackage.NODE__NODE:
-        setNode((NodeNoAttr)newValue);
+      case DmplPackage.NODE__NAME:
+        setName((String)newValue);
+        return;
+      case DmplPackage.NODE__ELEMENTS:
+        getElements().clear();
+        getElements().addAll((Collection<? extends NodeBodyElement>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -167,8 +191,11 @@ public class NodeImpl extends ProgramElementImpl implements Node
   {
     switch (featureID)
     {
-      case DmplPackage.NODE__NODE:
-        setNode((NodeNoAttr)null);
+      case DmplPackage.NODE__NAME:
+        setName(NAME_EDEFAULT);
+        return;
+      case DmplPackage.NODE__ELEMENTS:
+        getElements().clear();
         return;
     }
     super.eUnset(featureID);
@@ -184,10 +211,29 @@ public class NodeImpl extends ProgramElementImpl implements Node
   {
     switch (featureID)
     {
-      case DmplPackage.NODE__NODE:
-        return node != null;
+      case DmplPackage.NODE__NAME:
+        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      case DmplPackage.NODE__ELEMENTS:
+        return elements != null && !elements.isEmpty();
     }
     return super.eIsSet(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String toString()
+  {
+    if (eIsProxy()) return super.toString();
+
+    StringBuffer result = new StringBuffer(super.toString());
+    result.append(" (name: ");
+    result.append(name);
+    result.append(')');
+    return result.toString();
   }
 
 } //NodeImpl

@@ -19,8 +19,13 @@ DmplSubclause: {DmplSubclause}
 ;
 
 ProgramElement:
-	//TODO: target, node
-	Constant | Node | Procedure
+	//TODO: target
+	Constant |
+	{AttributableProgramElement} attrs+=Attr* element=AttributableNodeOrProcedure
+;
+
+AttributableNodeOrProcedure:
+	Node | Procedure
 ;
 
 Constant:
@@ -39,16 +44,11 @@ DoubleConst:
 	sign=Sign? value=Double
 ;
 
-//TODO
 Node:
-	node=NodeNoAttr
-;
-
-NodeNoAttr:
 	('node' | 'NODE') name=TIDENTIFIER (';' | '{' elements+=NodeBodyElement* '}')
 ;
 
-SpecNoAttr:
+Specification:
 	{AtEndSpec} 'expect' name=TIDENTIFIER ':' 'at_end' '=>' function=TIDENTIFIER ';' |
 	{AtLeastSpec} 'expect' name=TIDENTIFIER ':' 'at_least' threshold=DoubleConst '=>' function=TIDENTIFIER ';' |
 	{RequireSpec} 'require' name=TIDENTIFIER '=>' function=TIDENTIFIER ';'
@@ -57,24 +57,24 @@ SpecNoAttr:
 NodeBodyElement:
 	VarBlock |
 	RecordBlock |
-	{Attributable} attrList=AttrList? element=AttributableElement
+	{Attributable} attrs+=Attr* element=AttributableElement
 ;
 
 AttributableElement:
-	ProcNoAttr |
+	Procedure |
 	{SimpleRole} 'role' name=TIDENTIFIER '{' elements+=RoleBodyElement* '}' |
 	{IdRole} 'role' name=TIDENTIFIER 'id' id=INT '{' elements+=RoleBodyElement* '}' |
-	SpecNoAttr
+	Specification
 ;
 
 RoleBodyElement:
 	VarBlock |
 	RecordBlock |
-	{AttributableNoRole} attrList=AttrList? element=AttributableNoRoleElement
+	{AttributableNoRole} attrs+=Attr* element=AttributableNoRoleElement
 ;
 
 AttributableNoRoleElement:
-	ProcNoAttr | SpecNoAttr
+	Procedure | Specification
 ;
 
 VarBlock:
@@ -114,10 +114,6 @@ Type:
 ;
 
 Procedure:
-	attrList=AttrList? proc=ProcNoAttr
-;
-
-ProcNoAttr:
 	override?='override'? prototype=FnPrototype (';' | fnBody=FnBody)
 ;
 
@@ -132,12 +128,8 @@ FnPrototype:
 	')'
 ;
 
-AttrList:
-	(attrs+=Attr ';')+
-;
-
 Attr:
-	'@' name=TIDENTIFIER ('(' params+=Expr (',' params+=Expr)* ')')?
+	'@' name=TIDENTIFIER ('(' params+=Expr (',' params+=Expr)* ')')? ';'
 ;
 
 Param:
@@ -149,7 +141,7 @@ Stmt:
 	AssignmentStmt ';' |
 	{WhileStmt} 'while' '(' condition=Expr ')' stmt=Stmt |
 	{ForStmt} 'for' '(' (inits+=AssignmentStmt (',' inits+=AssignmentStmt)*)? ';' condition=Expr? ';' update=AssignmentStmt? ')' stmt=Stmt |
-	{CondStmt} attrList=AttrList? 'if' '(' condition=Expr ')' then=Stmt (=> 'else' else=Stmt)? |
+	{CondStmt} attrs+=Attr* 'if' '(' condition=Expr ')' then=Stmt (=> 'else' else=Stmt)? |
 	{SimpleStmt} name=SimpleStmtKeyword ';' |
 	{ReturnValueStmt} 'return' value=Expr ';' |
 	CallExpr ';' |

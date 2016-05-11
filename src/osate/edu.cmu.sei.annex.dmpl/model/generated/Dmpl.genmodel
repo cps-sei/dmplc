@@ -81,6 +81,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//DmplSubclause/program"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//ProgramElement"/>
+    <genClasses ecoreClass="Dmpl.ecore#//AttributableNodeOrProcedure"/>
     <genClasses ecoreClass="Dmpl.ecore#//Constant">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Constant/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Constant/value"/>
@@ -95,15 +96,12 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//DoubleConst/value"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Node">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Node/node"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Node/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Node/elements"/>
     </genClasses>
-    <genClasses ecoreClass="Dmpl.ecore#//NodeNoAttr">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//NodeNoAttr/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//NodeNoAttr/elements"/>
-    </genClasses>
-    <genClasses ecoreClass="Dmpl.ecore#//SpecNoAttr">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//SpecNoAttr/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//SpecNoAttr/function"/>
+    <genClasses ecoreClass="Dmpl.ecore#//Specification">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Specification/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Specification/function"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//NodeBodyElement"/>
     <genClasses ecoreClass="Dmpl.ecore#//AttributableElement"/>
@@ -142,13 +140,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Type/simpType"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Procedure">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Procedure/attrList"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Procedure/proc"/>
-    </genClasses>
-    <genClasses ecoreClass="Dmpl.ecore#//ProcNoAttr">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//ProcNoAttr/override"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//ProcNoAttr/prototype"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//ProcNoAttr/fnBody"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Procedure/override"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Procedure/prototype"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Procedure/fnBody"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//FnBody">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//FnBody/varInits"/>
@@ -158,9 +152,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//FnPrototype/extern"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//FnPrototype/pure"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//FnPrototype/name"/>
-    </genClasses>
-    <genClasses ecoreClass="Dmpl.ecore#//AttrList">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//AttrList/attrs"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Attr">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Attr/name"/>
@@ -187,13 +178,17 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//CallExpr/args"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//CallExpr/at"/>
     </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//AttributableProgramElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//AttributableProgramElement/attrs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//AttributableProgramElement/element"/>
+    </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//AtEndSpec"/>
     <genClasses ecoreClass="Dmpl.ecore#//AtLeastSpec">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//AtLeastSpec/threshold"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//RequireSpec"/>
     <genClasses ecoreClass="Dmpl.ecore#//Attributable">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Attributable/attrList"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Attributable/attrs"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Attributable/element"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//SimpleRole">
@@ -206,7 +201,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//IdRole/elements"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//AttributableNoRole">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//AttributableNoRole/attrList"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//AttributableNoRole/attrs"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//AttributableNoRole/element"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//ExprVarAsgn">
@@ -241,7 +236,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//ForStmt/stmt"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//CondStmt">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//CondStmt/attrList"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//CondStmt/attrs"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//CondStmt/condition"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//CondStmt/then"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//CondStmt/else"/>

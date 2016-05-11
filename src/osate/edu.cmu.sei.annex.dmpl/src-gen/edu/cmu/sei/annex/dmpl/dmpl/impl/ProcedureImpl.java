@@ -2,9 +2,9 @@
  */
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
-import edu.cmu.sei.annex.dmpl.dmpl.AttrList;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
-import edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr;
+import edu.cmu.sei.annex.dmpl.dmpl.FnBody;
+import edu.cmu.sei.annex.dmpl.dmpl.FnPrototype;
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -23,33 +23,54 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcedureImpl#getAttrList <em>Attr List</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcedureImpl#getProc <em>Proc</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcedureImpl#isOverride <em>Override</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcedureImpl#getPrototype <em>Prototype</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.ProcedureImpl#getFnBody <em>Fn Body</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ProcedureImpl extends ProgramElementImpl implements Procedure
+public class ProcedureImpl extends AttributableNodeOrProcedureImpl implements Procedure
 {
   /**
-   * The cached value of the '{@link #getAttrList() <em>Attr List</em>}' containment reference.
+   * The default value of the '{@link #isOverride() <em>Override</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getAttrList()
+   * @see #isOverride()
    * @generated
    * @ordered
    */
-  protected AttrList attrList;
+  protected static final boolean OVERRIDE_EDEFAULT = false;
 
   /**
-   * The cached value of the '{@link #getProc() <em>Proc</em>}' containment reference.
+   * The cached value of the '{@link #isOverride() <em>Override</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getProc()
+   * @see #isOverride()
    * @generated
    * @ordered
    */
-  protected ProcNoAttr proc;
+  protected boolean override = OVERRIDE_EDEFAULT;
+
+  /**
+   * The cached value of the '{@link #getPrototype() <em>Prototype</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getPrototype()
+   * @generated
+   * @ordered
+   */
+  protected FnPrototype prototype;
+
+  /**
+   * The cached value of the '{@link #getFnBody() <em>Fn Body</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getFnBody()
+   * @generated
+   * @ordered
+   */
+  protected FnBody fnBody;
 
   /**
    * <!-- begin-user-doc -->
@@ -77,9 +98,9 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
    * <!-- end-user-doc -->
    * @generated
    */
-  public AttrList getAttrList()
+  public boolean isOverride()
   {
-    return attrList;
+    return override;
   }
 
   /**
@@ -87,13 +108,36 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetAttrList(AttrList newAttrList, NotificationChain msgs)
+  public void setOverride(boolean newOverride)
   {
-    AttrList oldAttrList = attrList;
-    attrList = newAttrList;
+    boolean oldOverride = override;
+    override = newOverride;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.PROCEDURE__OVERRIDE, oldOverride, override));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public FnPrototype getPrototype()
+  {
+    return prototype;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public NotificationChain basicSetPrototype(FnPrototype newPrototype, NotificationChain msgs)
+  {
+    FnPrototype oldPrototype = prototype;
+    prototype = newPrototype;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.PROCEDURE__ATTR_LIST, oldAttrList, newAttrList);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.PROCEDURE__PROTOTYPE, oldPrototype, newPrototype);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -104,20 +148,20 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setAttrList(AttrList newAttrList)
+  public void setPrototype(FnPrototype newPrototype)
   {
-    if (newAttrList != attrList)
+    if (newPrototype != prototype)
     {
       NotificationChain msgs = null;
-      if (attrList != null)
-        msgs = ((InternalEObject)attrList).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.PROCEDURE__ATTR_LIST, null, msgs);
-      if (newAttrList != null)
-        msgs = ((InternalEObject)newAttrList).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.PROCEDURE__ATTR_LIST, null, msgs);
-      msgs = basicSetAttrList(newAttrList, msgs);
+      if (prototype != null)
+        msgs = ((InternalEObject)prototype).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.PROCEDURE__PROTOTYPE, null, msgs);
+      if (newPrototype != null)
+        msgs = ((InternalEObject)newPrototype).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.PROCEDURE__PROTOTYPE, null, msgs);
+      msgs = basicSetPrototype(newPrototype, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.PROCEDURE__ATTR_LIST, newAttrList, newAttrList));
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.PROCEDURE__PROTOTYPE, newPrototype, newPrototype));
   }
 
   /**
@@ -125,9 +169,9 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
    * <!-- end-user-doc -->
    * @generated
    */
-  public ProcNoAttr getProc()
+  public FnBody getFnBody()
   {
-    return proc;
+    return fnBody;
   }
 
   /**
@@ -135,13 +179,13 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetProc(ProcNoAttr newProc, NotificationChain msgs)
+  public NotificationChain basicSetFnBody(FnBody newFnBody, NotificationChain msgs)
   {
-    ProcNoAttr oldProc = proc;
-    proc = newProc;
+    FnBody oldFnBody = fnBody;
+    fnBody = newFnBody;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.PROCEDURE__PROC, oldProc, newProc);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DmplPackage.PROCEDURE__FN_BODY, oldFnBody, newFnBody);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -152,20 +196,20 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setProc(ProcNoAttr newProc)
+  public void setFnBody(FnBody newFnBody)
   {
-    if (newProc != proc)
+    if (newFnBody != fnBody)
     {
       NotificationChain msgs = null;
-      if (proc != null)
-        msgs = ((InternalEObject)proc).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.PROCEDURE__PROC, null, msgs);
-      if (newProc != null)
-        msgs = ((InternalEObject)newProc).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.PROCEDURE__PROC, null, msgs);
-      msgs = basicSetProc(newProc, msgs);
+      if (fnBody != null)
+        msgs = ((InternalEObject)fnBody).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DmplPackage.PROCEDURE__FN_BODY, null, msgs);
+      if (newFnBody != null)
+        msgs = ((InternalEObject)newFnBody).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DmplPackage.PROCEDURE__FN_BODY, null, msgs);
+      msgs = basicSetFnBody(newFnBody, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.PROCEDURE__PROC, newProc, newProc));
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.PROCEDURE__FN_BODY, newFnBody, newFnBody));
   }
 
   /**
@@ -178,10 +222,10 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
   {
     switch (featureID)
     {
-      case DmplPackage.PROCEDURE__ATTR_LIST:
-        return basicSetAttrList(null, msgs);
-      case DmplPackage.PROCEDURE__PROC:
-        return basicSetProc(null, msgs);
+      case DmplPackage.PROCEDURE__PROTOTYPE:
+        return basicSetPrototype(null, msgs);
+      case DmplPackage.PROCEDURE__FN_BODY:
+        return basicSetFnBody(null, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -196,10 +240,12 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
   {
     switch (featureID)
     {
-      case DmplPackage.PROCEDURE__ATTR_LIST:
-        return getAttrList();
-      case DmplPackage.PROCEDURE__PROC:
-        return getProc();
+      case DmplPackage.PROCEDURE__OVERRIDE:
+        return isOverride();
+      case DmplPackage.PROCEDURE__PROTOTYPE:
+        return getPrototype();
+      case DmplPackage.PROCEDURE__FN_BODY:
+        return getFnBody();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -214,11 +260,14 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
   {
     switch (featureID)
     {
-      case DmplPackage.PROCEDURE__ATTR_LIST:
-        setAttrList((AttrList)newValue);
+      case DmplPackage.PROCEDURE__OVERRIDE:
+        setOverride((Boolean)newValue);
         return;
-      case DmplPackage.PROCEDURE__PROC:
-        setProc((ProcNoAttr)newValue);
+      case DmplPackage.PROCEDURE__PROTOTYPE:
+        setPrototype((FnPrototype)newValue);
+        return;
+      case DmplPackage.PROCEDURE__FN_BODY:
+        setFnBody((FnBody)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -234,11 +283,14 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
   {
     switch (featureID)
     {
-      case DmplPackage.PROCEDURE__ATTR_LIST:
-        setAttrList((AttrList)null);
+      case DmplPackage.PROCEDURE__OVERRIDE:
+        setOverride(OVERRIDE_EDEFAULT);
         return;
-      case DmplPackage.PROCEDURE__PROC:
-        setProc((ProcNoAttr)null);
+      case DmplPackage.PROCEDURE__PROTOTYPE:
+        setPrototype((FnPrototype)null);
+        return;
+      case DmplPackage.PROCEDURE__FN_BODY:
+        setFnBody((FnBody)null);
         return;
     }
     super.eUnset(featureID);
@@ -254,12 +306,31 @@ public class ProcedureImpl extends ProgramElementImpl implements Procedure
   {
     switch (featureID)
     {
-      case DmplPackage.PROCEDURE__ATTR_LIST:
-        return attrList != null;
-      case DmplPackage.PROCEDURE__PROC:
-        return proc != null;
+      case DmplPackage.PROCEDURE__OVERRIDE:
+        return override != OVERRIDE_EDEFAULT;
+      case DmplPackage.PROCEDURE__PROTOTYPE:
+        return prototype != null;
+      case DmplPackage.PROCEDURE__FN_BODY:
+        return fnBody != null;
     }
     return super.eIsSet(featureID);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public String toString()
+  {
+    if (eIsProxy()) return super.toString();
+
+    StringBuffer result = new StringBuffer(super.toString());
+    result.append(" (override: ");
+    result.append(override);
+    result.append(')');
+    return result.toString();
   }
 
 } //ProcedureImpl

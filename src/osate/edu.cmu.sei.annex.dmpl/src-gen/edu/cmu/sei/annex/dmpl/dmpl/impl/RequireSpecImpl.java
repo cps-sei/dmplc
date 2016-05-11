@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EClass;
  *
  * @generated
  */
-public class RequireSpecImpl extends SpecNoAttrImpl implements RequireSpec
+public class RequireSpecImpl extends SpecificationImpl implements RequireSpec
 {
   /**
    * <!-- begin-user-doc -->

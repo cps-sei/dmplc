@@ -6,22 +6,22 @@ import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Attributable No Role</b></em>'.
+ * A representation of the model object '<em><b>Attributable Program Element</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.AttributableNoRole#getAttrs <em>Attrs</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.AttributableNoRole#getElement <em>Element</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.AttributableProgramElement#getAttrs <em>Attrs</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.AttributableProgramElement#getElement <em>Element</em>}</li>
  * </ul>
  *
- * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getAttributableNoRole()
+ * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getAttributableProgramElement()
  * @model
  * @generated
  */
-public interface AttributableNoRole extends RoleBodyElement
+public interface AttributableProgramElement extends ProgramElement
 {
   /**
    * Returns the value of the '<em><b>Attrs</b></em>' containment reference list.
@@ -33,7 +33,7 @@ public interface AttributableNoRole extends RoleBodyElement
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Attrs</em>' containment reference list.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getAttributableNoRole_Attrs()
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getAttributableProgramElement_Attrs()
    * @model containment="true"
    * @generated
    */
@@ -48,21 +48,21 @@ public interface AttributableNoRole extends RoleBodyElement
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Element</em>' containment reference.
-   * @see #setElement(AttributableNoRoleElement)
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getAttributableNoRole_Element()
+   * @see #setElement(AttributableNodeOrProcedure)
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getAttributableProgramElement_Element()
    * @model containment="true"
    * @generated
    */
-  AttributableNoRoleElement getElement();
+  AttributableNodeOrProcedure getElement();
 
   /**
-   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.AttributableNoRole#getElement <em>Element</em>}' containment reference.
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.AttributableProgramElement#getElement <em>Element</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Element</em>' containment reference.
    * @see #getElement()
    * @generated
    */
-  void setElement(AttributableNoRoleElement value);
+  void setElement(AttributableNodeOrProcedure value);
 
-} // AttributableNoRole
+} // AttributableProgramElement

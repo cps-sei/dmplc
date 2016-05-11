@@ -95,6 +95,11 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createProgramElementAdapter();
       }
       @Override
+      public Adapter caseAttributableNodeOrProcedure(AttributableNodeOrProcedure object)
+      {
+        return createAttributableNodeOrProcedureAdapter();
+      }
+      @Override
       public Adapter caseConstant(Constant object)
       {
         return createConstantAdapter();
@@ -120,14 +125,9 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createNodeAdapter();
       }
       @Override
-      public Adapter caseNodeNoAttr(NodeNoAttr object)
+      public Adapter caseSpecification(Specification object)
       {
-        return createNodeNoAttrAdapter();
-      }
-      @Override
-      public Adapter caseSpecNoAttr(SpecNoAttr object)
-      {
-        return createSpecNoAttrAdapter();
+        return createSpecificationAdapter();
       }
       @Override
       public Adapter caseNodeBodyElement(NodeBodyElement object)
@@ -195,11 +195,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createProcedureAdapter();
       }
       @Override
-      public Adapter caseProcNoAttr(ProcNoAttr object)
-      {
-        return createProcNoAttrAdapter();
-      }
-      @Override
       public Adapter caseFnBody(FnBody object)
       {
         return createFnBodyAdapter();
@@ -208,11 +203,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
       public Adapter caseFnPrototype(FnPrototype object)
       {
         return createFnPrototypeAdapter();
-      }
-      @Override
-      public Adapter caseAttrList(AttrList object)
-      {
-        return createAttrListAdapter();
       }
       @Override
       public Adapter caseAttr(Attr object)
@@ -248,6 +238,11 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
       public Adapter caseCallExpr(CallExpr object)
       {
         return createCallExprAdapter();
+      }
+      @Override
+      public Adapter caseAttributableProgramElement(AttributableProgramElement object)
+      {
+        return createAttributableProgramElementAdapter();
       }
       @Override
       public Adapter caseAtEndSpec(AtEndSpec object)
@@ -532,6 +527,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.AttributableNodeOrProcedure <em>Attributable Node Or Procedure</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.AttributableNodeOrProcedure
+   * @generated
+   */
+  public Adapter createAttributableNodeOrProcedureAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Constant <em>Constant</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -607,31 +617,16 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.NodeNoAttr <em>Node No Attr</em>}'.
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Specification <em>Specification</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.NodeNoAttr
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Specification
    * @generated
    */
-  public Adapter createNodeNoAttrAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.SpecNoAttr <em>Spec No Attr</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.SpecNoAttr
-   * @generated
-   */
-  public Adapter createSpecNoAttrAdapter()
+  public Adapter createSpecificationAdapter()
   {
     return null;
   }
@@ -832,21 +827,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr <em>Proc No Attr</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.ProcNoAttr
-   * @generated
-   */
-  public Adapter createProcNoAttrAdapter()
-  {
-    return null;
-  }
-
-  /**
    * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.FnBody <em>Fn Body</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -872,21 +852,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createFnPrototypeAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.AttrList <em>Attr List</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.AttrList
-   * @generated
-   */
-  public Adapter createAttrListAdapter()
   {
     return null;
   }
@@ -992,6 +957,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createCallExprAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.AttributableProgramElement <em>Attributable Program Element</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.AttributableProgramElement
+   * @generated
+   */
+  public Adapter createAttributableProgramElementAdapter()
   {
     return null;
   }
