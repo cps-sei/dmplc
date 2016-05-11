@@ -156,13 +156,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass intConstEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   private EClass doubleConstEClass = null;
 
   /**
@@ -346,6 +339,13 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass nodeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass intConstEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -875,26 +875,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
   public EAttribute getNumberConst_Sign()
   {
     return (EAttribute)numberConstEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EClass getIntConst()
-  {
-    return intConstEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getIntConst_Value()
-  {
-    return (EAttribute)intConstEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1625,6 +1605,26 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
   public EReference getNode_Elements()
   {
     return (EReference)nodeEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getIntConst()
+  {
+    return intConstEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getIntConst_Value()
+  {
+    return (EAttribute)intConstEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -2893,9 +2893,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     numberConstEClass = createEClass(NUMBER_CONST);
     createEAttribute(numberConstEClass, NUMBER_CONST__SIGN);
 
-    intConstEClass = createEClass(INT_CONST);
-    createEAttribute(intConstEClass, INT_CONST__VALUE);
-
     doubleConstEClass = createEClass(DOUBLE_CONST);
     createEAttribute(doubleConstEClass, DOUBLE_CONST__VALUE);
 
@@ -2995,6 +2992,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     nodeEClass = createEClass(NODE);
     createEReference(nodeEClass, NODE__ELEMENTS);
+
+    intConstEClass = createEClass(INT_CONST);
+    createEAttribute(intConstEClass, INT_CONST__VALUE);
 
     atEndSpecEClass = createEClass(AT_END_SPEC);
 
@@ -3194,7 +3194,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     // Add supertypes to classes
     dmplSubclauseEClass.getESuperTypes().add(theAadl2Package.getAnnexSubclause());
     programElementNoTargetEClass.getESuperTypes().add(this.getProgramElement());
-    intConstEClass.getESuperTypes().add(this.getNumberConst());
     doubleConstEClass.getESuperTypes().add(this.getNumberConst());
     specificationEClass.getESuperTypes().add(this.getAttributableElement());
     specificationEClass.getESuperTypes().add(this.getAttributableNoRoleElement());
@@ -3213,6 +3212,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     constantEClass.getESuperTypes().add(this.getProgramElementNoTarget());
     attributableProgramElementEClass.getESuperTypes().add(this.getProgramElementNoTarget());
     nodeEClass.getESuperTypes().add(this.getAttributableNodeOrProcedure());
+    intConstEClass.getESuperTypes().add(this.getNumberConst());
     atEndSpecEClass.getESuperTypes().add(this.getSpecification());
     atLeastSpecEClass.getESuperTypes().add(this.getSpecification());
     requireSpecEClass.getESuperTypes().add(this.getSpecification());
@@ -3269,9 +3269,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     initEClass(numberConstEClass, NumberConst.class, "NumberConst", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getNumberConst_Sign(), this.getSignEnum(), "sign", null, 0, 1, NumberConst.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(intConstEClass, IntConst.class, "IntConst", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getIntConst_Value(), ecorePackage.getEInt(), "value", null, 0, 1, IntConst.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(doubleConstEClass, DoubleConst.class, "DoubleConst", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getDoubleConst_Value(), ecorePackage.getEDouble(), "value", null, 0, 1, DoubleConst.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3372,6 +3369,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     initEClass(nodeEClass, Node.class, "Node", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getNode_Elements(), this.getNodeBodyElement(), null, "elements", null, 0, -1, Node.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(intConstEClass, IntConst.class, "IntConst", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getIntConst_Value(), ecorePackage.getEInt(), "value", null, 0, 1, IntConst.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(atEndSpecEClass, AtEndSpec.class, "AtEndSpec", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

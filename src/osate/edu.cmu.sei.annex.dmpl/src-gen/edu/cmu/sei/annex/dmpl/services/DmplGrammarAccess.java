@@ -314,49 +314,41 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	public class NumberConstElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "NumberConst");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final RuleCall cIntConstParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
+		private final Action cIntConstAction_0_0 = (Action)cGroup_0.eContents().get(0);
+		private final Assignment cSignAssignment_0_1 = (Assignment)cGroup_0.eContents().get(1);
+		private final RuleCall cSignSignParserRuleCall_0_1_0 = (RuleCall)cSignAssignment_0_1.eContents().get(0);
+		private final Assignment cValueAssignment_0_2 = (Assignment)cGroup_0.eContents().get(2);
+		private final RuleCall cValueINTTerminalRuleCall_0_2_0 = (RuleCall)cValueAssignment_0_2.eContents().get(0);
 		private final RuleCall cDoubleConstParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
 		//NumberConst:
-		//	IntConst | DoubleConst;
+		//	{IntConst} sign=Sign? value=INT | DoubleConst;
 		@Override public ParserRule getRule() { return rule; }
 
-		//IntConst | DoubleConst
+		//{IntConst} sign=Sign? value=INT | DoubleConst
 		public Alternatives getAlternatives() { return cAlternatives; }
 
-		//IntConst
-		public RuleCall getIntConstParserRuleCall_0() { return cIntConstParserRuleCall_0; }
+		//{IntConst} sign=Sign? value=INT
+		public Group getGroup_0() { return cGroup_0; }
+
+		//{IntConst}
+		public Action getIntConstAction_0_0() { return cIntConstAction_0_0; }
+
+		//sign=Sign?
+		public Assignment getSignAssignment_0_1() { return cSignAssignment_0_1; }
+
+		//Sign
+		public RuleCall getSignSignParserRuleCall_0_1_0() { return cSignSignParserRuleCall_0_1_0; }
+
+		//value=INT
+		public Assignment getValueAssignment_0_2() { return cValueAssignment_0_2; }
+
+		//INT
+		public RuleCall getValueINTTerminalRuleCall_0_2_0() { return cValueINTTerminalRuleCall_0_2_0; }
 
 		//DoubleConst
 		public RuleCall getDoubleConstParserRuleCall_1() { return cDoubleConstParserRuleCall_1; }
-	}
-
-	public class IntConstElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "IntConst");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Assignment cSignAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final RuleCall cSignSignParserRuleCall_0_0 = (RuleCall)cSignAssignment_0.eContents().get(0);
-		private final Assignment cValueAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cValueINTTerminalRuleCall_1_0 = (RuleCall)cValueAssignment_1.eContents().get(0);
-		
-		//IntConst:
-		//	sign=Sign? value=INT;
-		@Override public ParserRule getRule() { return rule; }
-
-		//sign=Sign? value=INT
-		public Group getGroup() { return cGroup; }
-
-		//sign=Sign?
-		public Assignment getSignAssignment_0() { return cSignAssignment_0; }
-
-		//Sign
-		public RuleCall getSignSignParserRuleCall_0_0() { return cSignSignParserRuleCall_0_0; }
-
-		//value=INT
-		public Assignment getValueAssignment_1() { return cValueAssignment_1; }
-
-		//INT
-		public RuleCall getValueINTTerminalRuleCall_1_0() { return cValueINTTerminalRuleCall_1_0; }
 	}
 
 	public class DoubleConstElements extends AbstractParserRuleElementFinder {
@@ -3554,7 +3546,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final ProgramElementNoTargetElements pProgramElementNoTarget;
 	private final AttributableNodeOrProcedureElements pAttributableNodeOrProcedure;
 	private final NumberConstElements pNumberConst;
-	private final IntConstElements pIntConst;
 	private final DoubleConstElements pDoubleConst;
 	private final SpecificationElements pSpecification;
 	private final NodeBodyElementElements pNodeBodyElement;
@@ -3628,7 +3619,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pProgramElementNoTarget = new ProgramElementNoTargetElements();
 		this.pAttributableNodeOrProcedure = new AttributableNodeOrProcedureElements();
 		this.pNumberConst = new NumberConstElements();
-		this.pIntConst = new IntConstElements();
 		this.pDoubleConst = new DoubleConstElements();
 		this.pSpecification = new SpecificationElements();
 		this.pNodeBodyElement = new NodeBodyElementElements();
@@ -3777,23 +3767,13 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//NumberConst:
-	//	IntConst | DoubleConst;
+	//	{IntConst} sign=Sign? value=INT | DoubleConst;
 	public NumberConstElements getNumberConstAccess() {
 		return pNumberConst;
 	}
 	
 	public ParserRule getNumberConstRule() {
 		return getNumberConstAccess().getRule();
-	}
-
-	//IntConst:
-	//	sign=Sign? value=INT;
-	public IntConstElements getIntConstAccess() {
-		return pIntConst;
-	}
-	
-	public ParserRule getIntConstRule() {
-		return getIntConstAccess().getRule();
 	}
 
 	//DoubleConst:

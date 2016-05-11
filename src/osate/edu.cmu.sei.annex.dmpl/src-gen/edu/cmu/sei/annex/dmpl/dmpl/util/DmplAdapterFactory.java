@@ -110,11 +110,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createNumberConstAdapter();
       }
       @Override
-      public Adapter caseIntConst(IntConst object)
-      {
-        return createIntConstAdapter();
-      }
-      @Override
       public Adapter caseDoubleConst(DoubleConst object)
       {
         return createDoubleConstAdapter();
@@ -248,6 +243,11 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
       public Adapter caseNode(Node object)
       {
         return createNodeAdapter();
+      }
+      @Override
+      public Adapter caseIntConst(IntConst object)
+      {
+        return createIntConstAdapter();
       }
       @Override
       public Adapter caseAtEndSpec(AtEndSpec object)
@@ -572,21 +572,6 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createNumberConstAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.IntConst <em>Int Const</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.IntConst
-   * @generated
-   */
-  public Adapter createIntConstAdapter()
   {
     return null;
   }
@@ -992,6 +977,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createNodeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.IntConst <em>Int Const</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.IntConst
+   * @generated
+   */
+  public Adapter createIntConstAdapter()
   {
     return null;
   }

@@ -500,59 +500,25 @@ ruleNumberConst returns [EObject current=null]
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
-(
-    { 
-        newCompositeNode(grammarAccess.getNumberConstAccess().getIntConstParserRuleCall_0()); 
+(((
+    {
+        $current = forceCreateModelElement(
+            grammarAccess.getNumberConstAccess().getIntConstAction_0_0(),
+            $current);
     }
-    this_IntConst_0=ruleIntConst
-    { 
-        $current = $this_IntConst_0.current; 
-        afterParserOrEnumRuleCall();
-    }
-
-    |
-    { 
-        newCompositeNode(grammarAccess.getNumberConstAccess().getDoubleConstParserRuleCall_1()); 
-    }
-    this_DoubleConst_1=ruleDoubleConst
-    { 
-        $current = $this_DoubleConst_1.current; 
-        afterParserOrEnumRuleCall();
-    }
-)
-;
-
-
-
-
-
-// Entry rule entryRuleIntConst
-entryRuleIntConst returns [EObject current=null] 
-	:
-	{ newCompositeNode(grammarAccess.getIntConstRule()); }
-	 iv_ruleIntConst=ruleIntConst 
-	 { $current=$iv_ruleIntConst.current; } 
-	 EOF 
-;
-
-// Rule IntConst
-ruleIntConst returns [EObject current=null] 
-    @init { enterRule(); 
-    }
-    @after { leaveRule(); }:
-((
+)(
 (
 		{ 
-	        newCompositeNode(grammarAccess.getIntConstAccess().getSignSignParserRuleCall_0_0()); 
+	        newCompositeNode(grammarAccess.getNumberConstAccess().getSignSignParserRuleCall_0_1_0()); 
 	    }
-		lv_sign_0_0=ruleSign		{
+		lv_sign_1_0=ruleSign		{
 	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getIntConstRule());
+	            $current = createModelElementForParent(grammarAccess.getNumberConstRule());
 	        }
        		set(
        			$current, 
        			"sign",
-        		lv_sign_0_0, 
+        		lv_sign_1_0, 
         		"Sign");
 	        afterParserOrEnumRuleCall();
 	    }
@@ -560,23 +526,33 @@ ruleIntConst returns [EObject current=null]
 )
 )?(
 (
-		lv_value_1_0=RULE_INT
+		lv_value_2_0=RULE_INT
 		{
-			newLeafNode(lv_value_1_0, grammarAccess.getIntConstAccess().getValueINTTerminalRuleCall_1_0()); 
+			newLeafNode(lv_value_2_0, grammarAccess.getNumberConstAccess().getValueINTTerminalRuleCall_0_2_0()); 
 		}
 		{
 	        if ($current==null) {
-	            $current = createModelElement(grammarAccess.getIntConstRule());
+	            $current = createModelElement(grammarAccess.getNumberConstRule());
 	        }
        		setWithLastConsumed(
        			$current, 
        			"value",
-        		lv_value_1_0, 
+        		lv_value_2_0, 
         		"INT");
 	    }
 
 )
 ))
+    |
+    { 
+        newCompositeNode(grammarAccess.getNumberConstAccess().getDoubleConstParserRuleCall_1()); 
+    }
+    this_DoubleConst_3=ruleDoubleConst
+    { 
+        $current = $this_DoubleConst_3.current; 
+        afterParserOrEnumRuleCall();
+    }
+)
 ;
 
 

@@ -93,7 +93,7 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getProgramElementNoTargetAccess().getGroup_1(), "rule__ProgramElementNoTarget__Group_1__0");
 					put(grammarAccess.getAttributableNodeOrProcedureAccess().getGroup_0(), "rule__AttributableNodeOrProcedure__Group_0__0");
 					put(grammarAccess.getAttributableNodeOrProcedureAccess().getGroup_0_3_1(), "rule__AttributableNodeOrProcedure__Group_0_3_1__0");
-					put(grammarAccess.getIntConstAccess().getGroup(), "rule__IntConst__Group__0");
+					put(grammarAccess.getNumberConstAccess().getGroup_0(), "rule__NumberConst__Group_0__0");
 					put(grammarAccess.getDoubleConstAccess().getGroup(), "rule__DoubleConst__Group__0");
 					put(grammarAccess.getSpecificationAccess().getGroup_0(), "rule__Specification__Group_0__0");
 					put(grammarAccess.getSpecificationAccess().getGroup_1(), "rule__Specification__Group_1__0");
@@ -218,8 +218,8 @@ public class DmplParser extends AbstractContentAssistParser {
 					put(grammarAccess.getProgramElementNoTargetAccess().getElementAssignment_1_2(), "rule__ProgramElementNoTarget__ElementAssignment_1_2");
 					put(grammarAccess.getAttributableNodeOrProcedureAccess().getNameAssignment_0_2(), "rule__AttributableNodeOrProcedure__NameAssignment_0_2");
 					put(grammarAccess.getAttributableNodeOrProcedureAccess().getElementsAssignment_0_3_1_1(), "rule__AttributableNodeOrProcedure__ElementsAssignment_0_3_1_1");
-					put(grammarAccess.getIntConstAccess().getSignAssignment_0(), "rule__IntConst__SignAssignment_0");
-					put(grammarAccess.getIntConstAccess().getValueAssignment_1(), "rule__IntConst__ValueAssignment_1");
+					put(grammarAccess.getNumberConstAccess().getSignAssignment_0_1(), "rule__NumberConst__SignAssignment_0_1");
+					put(grammarAccess.getNumberConstAccess().getValueAssignment_0_2(), "rule__NumberConst__ValueAssignment_0_2");
 					put(grammarAccess.getDoubleConstAccess().getSignAssignment_0(), "rule__DoubleConst__SignAssignment_0");
 					put(grammarAccess.getDoubleConstAccess().getValueAssignment_1(), "rule__DoubleConst__ValueAssignment_1");
 					put(grammarAccess.getSpecificationAccess().getNameAssignment_0_2(), "rule__Specification__NameAssignment_0_2");

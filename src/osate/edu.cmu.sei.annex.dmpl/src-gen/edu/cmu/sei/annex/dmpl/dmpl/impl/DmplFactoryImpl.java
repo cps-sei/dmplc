@@ -71,7 +71,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.PROGRAM_ELEMENT_NO_TARGET: return createProgramElementNoTarget();
       case DmplPackage.ATTRIBUTABLE_NODE_OR_PROCEDURE: return createAttributableNodeOrProcedure();
       case DmplPackage.NUMBER_CONST: return createNumberConst();
-      case DmplPackage.INT_CONST: return createIntConst();
       case DmplPackage.DOUBLE_CONST: return createDoubleConst();
       case DmplPackage.SPECIFICATION: return createSpecification();
       case DmplPackage.NODE_BODY_ELEMENT: return createNodeBodyElement();
@@ -99,6 +98,7 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.CONSTANT: return createConstant();
       case DmplPackage.ATTRIBUTABLE_PROGRAM_ELEMENT: return createAttributableProgramElement();
       case DmplPackage.NODE: return createNode();
+      case DmplPackage.INT_CONST: return createIntConst();
       case DmplPackage.AT_END_SPEC: return createAtEndSpec();
       case DmplPackage.AT_LEAST_SPEC: return createAtLeastSpec();
       case DmplPackage.REQUIRE_SPEC: return createRequireSpec();
@@ -289,17 +289,6 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     NumberConstImpl numberConst = new NumberConstImpl();
     return numberConst;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public IntConst createIntConst()
-  {
-    IntConstImpl intConst = new IntConstImpl();
-    return intConst;
   }
 
   /**
@@ -597,6 +586,17 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     NodeImpl node = new NodeImpl();
     return node;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public IntConst createIntConst()
+  {
+    IntConstImpl intConst = new IntConstImpl();
+    return intConst;
   }
 
   /**

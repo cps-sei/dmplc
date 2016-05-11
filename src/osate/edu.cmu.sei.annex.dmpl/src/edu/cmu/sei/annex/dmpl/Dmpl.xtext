@@ -33,11 +33,8 @@ AttributableNodeOrProcedure:
 ;
 
 NumberConst:
-	IntConst | DoubleConst
-;
-
-IntConst:
-	sign=Sign? value=INT
+	{IntConst} sign=Sign? value=INT |
+	DoubleConst
 ;
 
 DoubleConst:

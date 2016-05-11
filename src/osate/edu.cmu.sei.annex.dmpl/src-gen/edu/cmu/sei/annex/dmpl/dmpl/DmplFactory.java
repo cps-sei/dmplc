@@ -77,15 +77,6 @@ public interface DmplFactory extends EFactory
   NumberConst createNumberConst();
 
   /**
-   * Returns a new object of class '<em>Int Const</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Int Const</em>'.
-   * @generated
-   */
-  IntConst createIntConst();
-
-  /**
    * Returns a new object of class '<em>Double Const</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -327,6 +318,15 @@ public interface DmplFactory extends EFactory
    * @generated
    */
   Node createNode();
+
+  /**
+   * Returns a new object of class '<em>Int Const</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Int Const</em>'.
+   * @generated
+   */
+  IntConst createIntConst();
 
   /**
    * Returns a new object of class '<em>At End Spec</em>'.

@@ -179,7 +179,7 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				sequence_AttributableElement(context, (IdRole) semanticObject); 
 				return; 
 			case DmplPackage.INT_CONST:
-				sequence_IntConst(context, (IntConst) semanticObject); 
+				sequence_NumberConst(context, (IntConst) semanticObject); 
 				return; 
 			case DmplPackage.INT_DIMENSION:
 				sequence_Dimension(context, (IntDimension) semanticObject); 
@@ -551,15 +551,6 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (sign=Sign? value=INT)
-	 */
-	protected void sequence_IntConst(EObject context, IntConst semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
 	 *     (name=TIDENTIFIER indices+=Expr* at=Expr?)
 	 */
 	protected void sequence_LVal(EObject context, LVal semanticObject) {
@@ -614,6 +605,15 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 		feeder.accept(grammarAccess.getNodeVarInitAccess().getScopeNodeVarScopeParserRuleCall_0_0(), semanticObject.getScope());
 		feeder.accept(grammarAccess.getNodeVarInitAccess().getVarVarInitParserRuleCall_1_0(), semanticObject.getVar());
 		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (sign=Sign? value=INT)
+	 */
+	protected void sequence_NumberConst(EObject context, IntConst semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

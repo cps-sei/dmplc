@@ -227,34 +227,6 @@ finally {
 
 
 
-// Entry rule entryRuleIntConst
-entryRuleIntConst 
-:
-{ before(grammarAccess.getIntConstRule()); }
-	 ruleIntConst
-{ after(grammarAccess.getIntConstRule()); } 
-	 EOF 
-;
-
-// Rule IntConst
-ruleIntConst
-    @init {
-		int stackSize = keepStackSize();
-    }
-	:
-(
-{ before(grammarAccess.getIntConstAccess().getGroup()); }
-(rule__IntConst__Group__0)
-{ after(grammarAccess.getIntConstAccess().getGroup()); }
-)
-
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-
-
 // Entry rule entryRuleDoubleConst
 entryRuleDoubleConst 
 :
@@ -1734,9 +1706,9 @@ rule__NumberConst__Alternatives
     }
 :
 (
-{ before(grammarAccess.getNumberConstAccess().getIntConstParserRuleCall_0()); }
-	ruleIntConst
-{ after(grammarAccess.getNumberConstAccess().getIntConstParserRuleCall_0()); }
+{ before(grammarAccess.getNumberConstAccess().getGroup_0()); }
+(rule__NumberConst__Group_0__0)
+{ after(grammarAccess.getNumberConstAccess().getGroup_0()); }
 )
 
     |(
@@ -3779,27 +3751,29 @@ finally {
 
 
 
-rule__IntConst__Group__0
+rule__NumberConst__Group_0__0
     @init {
 		int stackSize = keepStackSize();
     }
 :
-	rule__IntConst__Group__0__Impl
-	rule__IntConst__Group__1
+	rule__NumberConst__Group_0__0__Impl
+	rule__NumberConst__Group_0__1
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__IntConst__Group__0__Impl
+rule__NumberConst__Group_0__0__Impl
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getIntConstAccess().getSignAssignment_0()); }
-(rule__IntConst__SignAssignment_0)?
-{ after(grammarAccess.getIntConstAccess().getSignAssignment_0()); }
+{ before(grammarAccess.getNumberConstAccess().getIntConstAction_0_0()); }
+(
+
+)
+{ after(grammarAccess.getNumberConstAccess().getIntConstAction_0_0()); }
 )
 
 ;
@@ -3808,32 +3782,63 @@ finally {
 }
 
 
-rule__IntConst__Group__1
+rule__NumberConst__Group_0__1
     @init {
 		int stackSize = keepStackSize();
     }
 :
-	rule__IntConst__Group__1__Impl
+	rule__NumberConst__Group_0__1__Impl
+	rule__NumberConst__Group_0__2
 ;
 finally {
 	restoreStackSize(stackSize);
 }
 
-rule__IntConst__Group__1__Impl
+rule__NumberConst__Group_0__1__Impl
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getIntConstAccess().getValueAssignment_1()); }
-(rule__IntConst__ValueAssignment_1)
-{ after(grammarAccess.getIntConstAccess().getValueAssignment_1()); }
+{ before(grammarAccess.getNumberConstAccess().getSignAssignment_0_1()); }
+(rule__NumberConst__SignAssignment_0_1)?
+{ after(grammarAccess.getNumberConstAccess().getSignAssignment_0_1()); }
 )
 
 ;
 finally {
 	restoreStackSize(stackSize);
 }
+
+
+rule__NumberConst__Group_0__2
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+	rule__NumberConst__Group_0__2__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__NumberConst__Group_0__2__Impl
+    @init {
+		int stackSize = keepStackSize();
+    }
+:
+(
+{ before(grammarAccess.getNumberConstAccess().getValueAssignment_0_2()); }
+(rule__NumberConst__ValueAssignment_0_2)
+{ after(grammarAccess.getNumberConstAccess().getValueAssignment_0_2()); }
+)
+
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
 
 
 
@@ -14309,14 +14314,14 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__IntConst__SignAssignment_0
+rule__NumberConst__SignAssignment_0_1
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getIntConstAccess().getSignSignParserRuleCall_0_0()); }
-	ruleSign{ after(grammarAccess.getIntConstAccess().getSignSignParserRuleCall_0_0()); }
+{ before(grammarAccess.getNumberConstAccess().getSignSignParserRuleCall_0_1_0()); }
+	ruleSign{ after(grammarAccess.getNumberConstAccess().getSignSignParserRuleCall_0_1_0()); }
 )
 
 ;
@@ -14324,14 +14329,14 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__IntConst__ValueAssignment_1
+rule__NumberConst__ValueAssignment_0_2
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getIntConstAccess().getValueINTTerminalRuleCall_1_0()); }
-	RULE_INT{ after(grammarAccess.getIntConstAccess().getValueINTTerminalRuleCall_1_0()); }
+{ before(grammarAccess.getNumberConstAccess().getValueINTTerminalRuleCall_0_2_0()); }
+	RULE_INT{ after(grammarAccess.getNumberConstAccess().getValueINTTerminalRuleCall_0_2_0()); }
 )
 
 ;

@@ -88,9 +88,6 @@
     <genClasses ecoreClass="Dmpl.ecore#//NumberConst">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//NumberConst/sign"/>
     </genClasses>
-    <genClasses ecoreClass="Dmpl.ecore#//IntConst">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//IntConst/value"/>
-    </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//DoubleConst">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//DoubleConst/value"/>
     </genClasses>
@@ -183,6 +180,9 @@
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Node">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Node/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//IntConst">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//IntConst/value"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//AtEndSpec"/>
     <genClasses ecoreClass="Dmpl.ecore#//AtLeastSpec">

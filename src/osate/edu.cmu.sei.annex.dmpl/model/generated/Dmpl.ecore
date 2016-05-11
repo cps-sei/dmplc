@@ -17,9 +17,6 @@
   <eClassifiers xsi:type="ecore:EClass" name="NumberConst">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="sign" eType="#//SignEnum"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="IntConst" eSuperTypes="#//NumberConst">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DoubleConst" eSuperTypes="#//NumberConst">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
   </eClassifiers>
@@ -200,6 +197,9 @@
   <eClassifiers xsi:type="ecore:EClass" name="Node" eSuperTypes="#//AttributableNodeOrProcedure">
     <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
         eType="#//NodeBodyElement" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IntConst" eSuperTypes="#//NumberConst">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AtEndSpec" eSuperTypes="#//Specification"/>
   <eClassifiers xsi:type="ecore:EClass" name="AtLeastSpec" eSuperTypes="#//Specification">
