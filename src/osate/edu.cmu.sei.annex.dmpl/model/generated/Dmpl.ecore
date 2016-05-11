@@ -54,11 +54,11 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Record">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="vars" eType="#//NodeVarInitList"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="NodeVarInitList">
     <eStructuralFeatures xsi:type="ecore:EReference" name="vars" upperBound="-1" eType="#//NodeVarInit"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="equalsBody" eType="#//FnBody"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="complementBody" eType="#//FnBody"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="VarInit">

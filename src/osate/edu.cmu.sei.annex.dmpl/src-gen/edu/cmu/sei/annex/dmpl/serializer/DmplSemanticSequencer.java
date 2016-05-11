@@ -43,7 +43,6 @@ import edu.cmu.sei.annex.dmpl.dmpl.NodeNoAttr;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeVarInit;
-import edu.cmu.sei.annex.dmpl.dmpl.NodeVarInitList;
 import edu.cmu.sei.annex.dmpl.dmpl.OrExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.Param;
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
@@ -195,9 +194,6 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case DmplPackage.NODE_VAR_INIT:
 				sequence_NodeVarInit(context, (NodeVarInit) semanticObject); 
-				return; 
-			case DmplPackage.NODE_VAR_INIT_LIST:
-				sequence_NodeVarInitList(context, (NodeVarInitList) semanticObject); 
 				return; 
 			case DmplPackage.OR_EXPR:
 				sequence_OrExpr(context, (OrExpr) semanticObject); 
@@ -616,15 +612,6 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     vars+=NodeVarInit+
-	 */
-	protected void sequence_NodeVarInitList(EObject context, NodeVarInitList semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
 	 *     (scope=NodeVarScope var=VarInit)
 	 */
 	protected void sequence_NodeVarInit(EObject context, NodeVarInit semanticObject) {
@@ -732,20 +719,10 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=TIDENTIFIER vars=NodeVarInitList)
+	 *     (name=TIDENTIFIER vars+=NodeVarInit+ equalsBody=FnBody? complementBody=FnBody?)
 	 */
 	protected void sequence_Record(EObject context, Record semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.RECORD__NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.RECORD__NAME));
-			if(transientValues.isValueTransient(semanticObject, DmplPackage.Literals.RECORD__VARS) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, DmplPackage.Literals.RECORD__VARS));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getRecordAccess().getNameTIDENTIFIERTerminalRuleCall_1_0(), semanticObject.getName());
-		feeder.accept(grammarAccess.getRecordAccess().getVarsNodeVarInitListParserRuleCall_3_0(), semanticObject.getVars());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

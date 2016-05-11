@@ -945,6 +945,26 @@ class ParserTest2 {
 					global int v7;
 					global int v8;
 				}
+				
+				record r2 {
+					global int v9;
+				} = {
+					proc1();
+				}
+				
+				record r3 {
+					global int v10;
+				} ~ {
+					proc2();
+				}
+				
+				record r4 {
+					global int v11;
+				} = {
+					proc3();
+				} ~ {
+					proc4();
+				}
 			}
 		'''.parse => [
 			assertNoIssues
@@ -953,7 +973,7 @@ class ParserTest2 {
 			(programElements.get(1) as Node).node => [
 				"n2".assertEquals(name)
 				body => [
-					7.assertEquals(elements.size)
+					10.assertEquals(elements.size)
 					"f1".assertEquals((elements.get(0) as Procedure).prototype.name)
 					elements.get(1) as VarBlock => [
 						override.assertFalse
@@ -992,12 +1012,30 @@ class ParserTest2 {
 					]
 					(elements.get(6) as RecordBlock).record => [
 						"r1".assertEquals(name)
-						vars => [
-							3.assertEquals(vars.size)
-							"v6".assertEquals(vars.get(0).^var.varAsgns.head.^var.name)
-							"v7".assertEquals(vars.get(1).^var.varAsgns.head.^var.name)
-							"v8".assertEquals(vars.get(2).^var.varAsgns.head.^var.name)
-						]
+						3.assertEquals(vars.size)
+						"v6".assertEquals(vars.get(0).^var.varAsgns.head.^var.name)
+						"v7".assertEquals(vars.get(1).^var.varAsgns.head.^var.name)
+						"v8".assertEquals(vars.get(2).^var.varAsgns.head.^var.name)
+						equalsBody.assertNull
+						complementBody.assertNull
+					]
+					(elements.get(7) as RecordBlock).record => [
+						"r2".assertEquals(name)
+						"v9".assertEquals(vars.head.^var.varAsgns.head.^var.name)
+						"proc1".assertEquals((equalsBody.stmts.head as CallExpr).name)
+						complementBody.assertNull
+					]
+					(elements.get(8) as RecordBlock).record => [
+						"r3".assertEquals(name)
+						"v10".assertEquals(vars.head.^var.varAsgns.head.^var.name)
+						equalsBody.assertNull
+						"proc2".assertEquals((complementBody.stmts.head as CallExpr).name)
+					]
+					(elements.get(9) as RecordBlock).record => [
+						"r4".assertEquals(name)
+						"v11".assertEquals(vars.head.^var.varAsgns.head.^var.name)
+						"proc3".assertEquals((equalsBody.stmts.head as CallExpr).name)
+						"proc4".assertEquals((complementBody.stmts.head as CallExpr).name)
 					]
 				]
 			]

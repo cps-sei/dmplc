@@ -440,16 +440,25 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cNameTIDENTIFIERTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
 		private final Keyword cLeftCurlyBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Assignment cVarsAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cVarsNodeVarInitListParserRuleCall_3_0 = (RuleCall)cVarsAssignment_3.eContents().get(0);
+		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
+		private final Assignment cVarsAssignment_3_0 = (Assignment)cGroup_3.eContents().get(0);
+		private final RuleCall cVarsNodeVarInitParserRuleCall_3_0_0 = (RuleCall)cVarsAssignment_3_0.eContents().get(0);
+		private final Keyword cSemicolonKeyword_3_1 = (Keyword)cGroup_3.eContents().get(1);
 		private final Keyword cRightCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		private final Group cGroup_5 = (Group)cGroup.eContents().get(5);
+		private final Keyword cEqualsSignKeyword_5_0 = (Keyword)cGroup_5.eContents().get(0);
+		private final Assignment cEqualsBodyAssignment_5_1 = (Assignment)cGroup_5.eContents().get(1);
+		private final RuleCall cEqualsBodyFnBodyParserRuleCall_5_1_0 = (RuleCall)cEqualsBodyAssignment_5_1.eContents().get(0);
+		private final Group cGroup_6 = (Group)cGroup.eContents().get(6);
+		private final Keyword cTildeKeyword_6_0 = (Keyword)cGroup_6.eContents().get(0);
+		private final Assignment cComplementBodyAssignment_6_1 = (Assignment)cGroup_6.eContents().get(1);
+		private final RuleCall cComplementBodyFnBodyParserRuleCall_6_1_0 = (RuleCall)cComplementBodyAssignment_6_1.eContents().get(0);
 		
-		////TODO
 		//Record:
-		//	"record" name=TIDENTIFIER "{" vars=NodeVarInitList "}";
+		//	"record" name=TIDENTIFIER "{" (vars+=NodeVarInit ";")+ "}" ("=" equalsBody=FnBody)? ("~" complementBody=FnBody)?;
 		@Override public ParserRule getRule() { return rule; }
 
-		//"record" name=TIDENTIFIER "{" vars=NodeVarInitList "}"
+		//"record" name=TIDENTIFIER "{" (vars+=NodeVarInit ";")+ "}" ("=" equalsBody=FnBody)? ("~" complementBody=FnBody)?
 		public Group getGroup() { return cGroup; }
 
 		//"record"
@@ -464,38 +473,44 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//"{"
 		public Keyword getLeftCurlyBracketKeyword_2() { return cLeftCurlyBracketKeyword_2; }
 
-		//vars=NodeVarInitList
-		public Assignment getVarsAssignment_3() { return cVarsAssignment_3; }
+		//(vars+=NodeVarInit ";")+
+		public Group getGroup_3() { return cGroup_3; }
 
-		//NodeVarInitList
-		public RuleCall getVarsNodeVarInitListParserRuleCall_3_0() { return cVarsNodeVarInitListParserRuleCall_3_0; }
+		//vars+=NodeVarInit
+		public Assignment getVarsAssignment_3_0() { return cVarsAssignment_3_0; }
+
+		//NodeVarInit
+		public RuleCall getVarsNodeVarInitParserRuleCall_3_0_0() { return cVarsNodeVarInitParserRuleCall_3_0_0; }
+
+		//";"
+		public Keyword getSemicolonKeyword_3_1() { return cSemicolonKeyword_3_1; }
 
 		//"}"
 		public Keyword getRightCurlyBracketKeyword_4() { return cRightCurlyBracketKeyword_4; }
-	}
 
-	public class NodeVarInitListElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "NodeVarInitList");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Assignment cVarsAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final RuleCall cVarsNodeVarInitParserRuleCall_0_0 = (RuleCall)cVarsAssignment_0.eContents().get(0);
-		private final Keyword cSemicolonKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		
-		//NodeVarInitList:
-		//	(vars+=NodeVarInit ";")+;
-		@Override public ParserRule getRule() { return rule; }
+		//("=" equalsBody=FnBody)?
+		public Group getGroup_5() { return cGroup_5; }
 
-		//(vars+=NodeVarInit ";")+
-		public Group getGroup() { return cGroup; }
+		//"="
+		public Keyword getEqualsSignKeyword_5_0() { return cEqualsSignKeyword_5_0; }
 
-		//vars+=NodeVarInit
-		public Assignment getVarsAssignment_0() { return cVarsAssignment_0; }
+		//equalsBody=FnBody
+		public Assignment getEqualsBodyAssignment_5_1() { return cEqualsBodyAssignment_5_1; }
 
-		//NodeVarInit
-		public RuleCall getVarsNodeVarInitParserRuleCall_0_0() { return cVarsNodeVarInitParserRuleCall_0_0; }
+		//FnBody
+		public RuleCall getEqualsBodyFnBodyParserRuleCall_5_1_0() { return cEqualsBodyFnBodyParserRuleCall_5_1_0; }
 
-		//";"
-		public Keyword getSemicolonKeyword_1() { return cSemicolonKeyword_1; }
+		//("~" complementBody=FnBody)?
+		public Group getGroup_6() { return cGroup_6; }
+
+		//"~"
+		public Keyword getTildeKeyword_6_0() { return cTildeKeyword_6_0; }
+
+		//complementBody=FnBody
+		public Assignment getComplementBodyAssignment_6_1() { return cComplementBodyAssignment_6_1; }
+
+		//FnBody
+		public RuleCall getComplementBodyFnBodyParserRuleCall_6_1_0() { return cComplementBodyFnBodyParserRuleCall_6_1_0; }
 	}
 
 	public class VarInitElements extends AbstractParserRuleElementFinder {
@@ -3184,7 +3199,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final RecordBlockElements pRecordBlock;
 	private final NodeVarInitElements pNodeVarInit;
 	private final RecordElements pRecord;
-	private final NodeVarInitListElements pNodeVarInitList;
 	private final VarInitElements pVarInit;
 	private final VarAsgnElements pVarAsgn;
 	private final VarElements pVar;
@@ -3260,7 +3274,6 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pRecordBlock = new RecordBlockElements();
 		this.pNodeVarInit = new NodeVarInitElements();
 		this.pRecord = new RecordElements();
-		this.pNodeVarInitList = new NodeVarInitListElements();
 		this.pVarInit = new VarInitElements();
 		this.pVarAsgn = new VarAsgnElements();
 		this.pVar = new VarElements();
@@ -3494,25 +3507,14 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		return getNodeVarInitAccess().getRule();
 	}
 
-	////TODO
 	//Record:
-	//	"record" name=TIDENTIFIER "{" vars=NodeVarInitList "}";
+	//	"record" name=TIDENTIFIER "{" (vars+=NodeVarInit ";")+ "}" ("=" equalsBody=FnBody)? ("~" complementBody=FnBody)?;
 	public RecordElements getRecordAccess() {
 		return pRecord;
 	}
 	
 	public ParserRule getRecordRule() {
 		return getRecordAccess().getRule();
-	}
-
-	//NodeVarInitList:
-	//	(vars+=NodeVarInit ";")+;
-	public NodeVarInitListElements getNodeVarInitListAccess() {
-		return pNodeVarInitList;
-	}
-	
-	public ParserRule getNodeVarInitListRule() {
-		return getNodeVarInitListAccess().getRule();
 	}
 
 	//VarInit:

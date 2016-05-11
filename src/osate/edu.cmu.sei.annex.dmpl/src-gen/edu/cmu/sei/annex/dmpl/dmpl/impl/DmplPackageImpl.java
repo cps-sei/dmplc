@@ -51,7 +51,6 @@ import edu.cmu.sei.annex.dmpl.dmpl.NodeNoAttr;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeNumExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeVarInit;
-import edu.cmu.sei.annex.dmpl.dmpl.NodeVarInitList;
 import edu.cmu.sei.annex.dmpl.dmpl.NodeVarScopeEnum;
 import edu.cmu.sei.annex.dmpl.dmpl.NumberConst;
 import edu.cmu.sei.annex.dmpl.dmpl.OrExpr;
@@ -204,13 +203,6 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass recordEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass nodeVarInitListEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -1040,9 +1032,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getNodeVarInitList()
+  public EReference getRecord_EqualsBody()
   {
-    return nodeVarInitListEClass;
+    return (EReference)recordEClass.getEStructuralFeatures().get(2);
   }
 
   /**
@@ -1050,9 +1042,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getNodeVarInitList_Vars()
+  public EReference getRecord_ComplementBody()
   {
-    return (EReference)nodeVarInitListEClass.getEStructuralFeatures().get(0);
+    return (EReference)recordEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -2652,9 +2644,8 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     recordEClass = createEClass(RECORD);
     createEAttribute(recordEClass, RECORD__NAME);
     createEReference(recordEClass, RECORD__VARS);
-
-    nodeVarInitListEClass = createEClass(NODE_VAR_INIT_LIST);
-    createEReference(nodeVarInitListEClass, NODE_VAR_INIT_LIST__VARS);
+    createEReference(recordEClass, RECORD__EQUALS_BODY);
+    createEReference(recordEClass, RECORD__COMPLEMENT_BODY);
 
     varInitEClass = createEClass(VAR_INIT);
     createEReference(varInitEClass, VAR_INIT__TYPE);
@@ -2984,10 +2975,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     initEClass(recordEClass, Record.class, "Record", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getRecord_Name(), ecorePackage.getEString(), "name", null, 0, 1, Record.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getRecord_Vars(), this.getNodeVarInitList(), null, "vars", null, 0, 1, Record.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(nodeVarInitListEClass, NodeVarInitList.class, "NodeVarInitList", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getNodeVarInitList_Vars(), this.getNodeVarInit(), null, "vars", null, 0, -1, NodeVarInitList.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRecord_Vars(), this.getNodeVarInit(), null, "vars", null, 0, -1, Record.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRecord_EqualsBody(), this.getFnBody(), null, "equalsBody", null, 0, 1, Record.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRecord_ComplementBody(), this.getFnBody(), null, "complementBody", null, 0, 1, Record.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(varInitEClass, VarInit.class, "VarInit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getVarInit_Type(), this.getType(), null, "type", null, 0, 1, VarInit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

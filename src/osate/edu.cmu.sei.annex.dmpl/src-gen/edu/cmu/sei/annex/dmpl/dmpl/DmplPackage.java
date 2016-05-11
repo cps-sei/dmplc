@@ -561,7 +561,7 @@ public interface DmplPackage extends EPackage
   int RECORD__NAME = 0;
 
   /**
-   * The feature id for the '<em><b>Vars</b></em>' containment reference.
+   * The feature id for the '<em><b>Vars</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -570,41 +570,31 @@ public interface DmplPackage extends EPackage
   int RECORD__VARS = 1;
 
   /**
+   * The feature id for the '<em><b>Equals Body</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RECORD__EQUALS_BODY = 2;
+
+  /**
+   * The feature id for the '<em><b>Complement Body</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int RECORD__COMPLEMENT_BODY = 3;
+
+  /**
    * The number of structural features of the '<em>Record</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int RECORD_FEATURE_COUNT = 2;
-
-  /**
-   * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.NodeVarInitListImpl <em>Node Var Init List</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.NodeVarInitListImpl
-   * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getNodeVarInitList()
-   * @generated
-   */
-  int NODE_VAR_INIT_LIST = 15;
-
-  /**
-   * The feature id for the '<em><b>Vars</b></em>' containment reference list.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int NODE_VAR_INIT_LIST__VARS = 0;
-
-  /**
-   * The number of structural features of the '<em>Node Var Init List</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int NODE_VAR_INIT_LIST_FEATURE_COUNT = 1;
+  int RECORD_FEATURE_COUNT = 4;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarInitImpl <em>Var Init</em>}' class.
@@ -614,7 +604,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getVarInit()
    * @generated
    */
-  int VAR_INIT = 16;
+  int VAR_INIT = 15;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -651,7 +641,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getVarAsgn()
    * @generated
    */
-  int VAR_ASGN = 17;
+  int VAR_ASGN = 16;
 
   /**
    * The feature id for the '<em><b>Input</b></em>' attribute.
@@ -688,7 +678,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getVar()
    * @generated
    */
-  int VAR = 18;
+  int VAR = 17;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -725,7 +715,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getDimension()
    * @generated
    */
-  int DIMENSION = 19;
+  int DIMENSION = 18;
 
   /**
    * The number of structural features of the '<em>Dimension</em>' class.
@@ -744,7 +734,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getType()
    * @generated
    */
-  int TYPE = 20;
+  int TYPE = 19;
 
   /**
    * The feature id for the '<em><b>Signed</b></em>' attribute.
@@ -781,7 +771,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getProcedure()
    * @generated
    */
-  int PROCEDURE = 21;
+  int PROCEDURE = 20;
 
   /**
    * The feature id for the '<em><b>Attr List</b></em>' containment reference.
@@ -836,7 +826,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnBody()
    * @generated
    */
-  int FN_BODY = 22;
+  int FN_BODY = 21;
 
   /**
    * The feature id for the '<em><b>Var Inits</b></em>' containment reference list.
@@ -873,7 +863,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnPrototype()
    * @generated
    */
-  int FN_PROTOTYPE = 23;
+  int FN_PROTOTYPE = 22;
 
   /**
    * The feature id for the '<em><b>Extern</b></em>' attribute.
@@ -919,7 +909,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAttrList()
    * @generated
    */
-  int ATTR_LIST = 24;
+  int ATTR_LIST = 23;
 
   /**
    * The feature id for the '<em><b>Attrs</b></em>' containment reference list.
@@ -947,7 +937,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAttr()
    * @generated
    */
-  int ATTR = 25;
+  int ATTR = 24;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -984,7 +974,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getParam()
    * @generated
    */
-  int PARAM = 26;
+  int PARAM = 25;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -1021,7 +1011,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getStmt()
    * @generated
    */
-  int STMT = 27;
+  int STMT = 26;
 
   /**
    * The number of structural features of the '<em>Stmt</em>' class.
@@ -1040,7 +1030,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAssignmentStmt()
    * @generated
    */
-  int ASSIGNMENT_STMT = 28;
+  int ASSIGNMENT_STMT = 27;
 
   /**
    * The feature id for the '<em><b>Variable</b></em>' containment reference.
@@ -1077,7 +1067,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getExpr()
    * @generated
    */
-  int EXPR = 30;
+  int EXPR = 29;
 
   /**
    * The number of structural features of the '<em>Expr</em>' class.
@@ -1096,7 +1086,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getLVal()
    * @generated
    */
-  int LVAL = 29;
+  int LVAL = 28;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1142,7 +1132,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getCallExpr()
    * @generated
    */
-  int CALL_EXPR = 31;
+  int CALL_EXPR = 30;
 
   /**
    * The feature id for the '<em><b>Namespace</b></em>' attribute.
@@ -1197,7 +1187,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getExprVarAsgn()
    * @generated
    */
-  int EXPR_VAR_ASGN = 32;
+  int EXPR_VAR_ASGN = 31;
 
   /**
    * The feature id for the '<em><b>Input</b></em>' attribute.
@@ -1243,7 +1233,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnVarAsgn()
    * @generated
    */
-  int FN_VAR_ASGN = 33;
+  int FN_VAR_ASGN = 32;
 
   /**
    * The feature id for the '<em><b>Input</b></em>' attribute.
@@ -1289,7 +1279,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIntDimension()
    * @generated
    */
-  int INT_DIMENSION = 34;
+  int INT_DIMENSION = 33;
 
   /**
    * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -1317,7 +1307,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getNodeNumDimension()
    * @generated
    */
-  int NODE_NUM_DIMENSION = 35;
+  int NODE_NUM_DIMENSION = 34;
 
   /**
    * The number of structural features of the '<em>Node Num Dimension</em>' class.
@@ -1336,7 +1326,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIdDimension()
    * @generated
    */
-  int ID_DIMENSION = 36;
+  int ID_DIMENSION = 35;
 
   /**
    * The feature id for the '<em><b>Index</b></em>' attribute.
@@ -1364,7 +1354,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getThreadDeclaration()
    * @generated
    */
-  int THREAD_DECLARATION = 37;
+  int THREAD_DECLARATION = 36;
 
   /**
    * The feature id for the '<em><b>Extern</b></em>' attribute.
@@ -1410,7 +1400,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFnPrototypeDeclaration()
    * @generated
    */
-  int FN_PROTOTYPE_DECLARATION = 38;
+  int FN_PROTOTYPE_DECLARATION = 37;
 
   /**
    * The feature id for the '<em><b>Extern</b></em>' attribute.
@@ -1474,7 +1464,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getNestedStmt()
    * @generated
    */
-  int NESTED_STMT = 39;
+  int NESTED_STMT = 38;
 
   /**
    * The feature id for the '<em><b>Stmts</b></em>' containment reference list.
@@ -1502,7 +1492,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getWhileStmt()
    * @generated
    */
-  int WHILE_STMT = 40;
+  int WHILE_STMT = 39;
 
   /**
    * The feature id for the '<em><b>Condition</b></em>' containment reference.
@@ -1539,7 +1529,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getForStmt()
    * @generated
    */
-  int FOR_STMT = 41;
+  int FOR_STMT = 40;
 
   /**
    * The feature id for the '<em><b>Inits</b></em>' containment reference list.
@@ -1594,7 +1584,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getCondStmt()
    * @generated
    */
-  int COND_STMT = 42;
+  int COND_STMT = 41;
 
   /**
    * The feature id for the '<em><b>Attr List</b></em>' containment reference.
@@ -1649,7 +1639,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSimpleStmt()
    * @generated
    */
-  int SIMPLE_STMT = 43;
+  int SIMPLE_STMT = 42;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1677,7 +1667,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getReturnValueStmt()
    * @generated
    */
-  int RETURN_VALUE_STMT = 44;
+  int RETURN_VALUE_STMT = 43;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' containment reference.
@@ -1705,7 +1695,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getForAllStmt()
    * @generated
    */
-  int FOR_ALL_STMT = 45;
+  int FOR_ALL_STMT = 44;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1751,7 +1741,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getFadnpStmt()
    * @generated
    */
-  int FADNP_STMT = 46;
+  int FADNP_STMT = 45;
 
   /**
    * The feature id for the '<em><b>Node1</b></em>' attribute.
@@ -1797,7 +1787,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getTernaryExpr()
    * @generated
    */
-  int TERNARY_EXPR = 47;
+  int TERNARY_EXPR = 46;
 
   /**
    * The feature id for the '<em><b>Condition</b></em>' containment reference.
@@ -1843,7 +1833,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getOrExpr()
    * @generated
    */
-  int OR_EXPR = 48;
+  int OR_EXPR = 47;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1880,7 +1870,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAndExpr()
    * @generated
    */
-  int AND_EXPR = 49;
+  int AND_EXPR = 48;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1917,7 +1907,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBitwiseOrExpr()
    * @generated
    */
-  int BITWISE_OR_EXPR = 50;
+  int BITWISE_OR_EXPR = 49;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1954,7 +1944,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getXorExpr()
    * @generated
    */
-  int XOR_EXPR = 51;
+  int XOR_EXPR = 50;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1991,7 +1981,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBitwiseAndExpr()
    * @generated
    */
-  int BITWISE_AND_EXPR = 52;
+  int BITWISE_AND_EXPR = 51;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2028,7 +2018,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getEqualityExpr()
    * @generated
    */
-  int EQUALITY_EXPR = 53;
+  int EQUALITY_EXPR = 52;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2074,7 +2064,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getCompareExpr()
    * @generated
    */
-  int COMPARE_EXPR = 54;
+  int COMPARE_EXPR = 53;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2120,7 +2110,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getShiftExpr()
    * @generated
    */
-  int SHIFT_EXPR = 55;
+  int SHIFT_EXPR = 54;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2166,7 +2156,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAdditiveExpr()
    * @generated
    */
-  int ADDITIVE_EXPR = 56;
+  int ADDITIVE_EXPR = 55;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2212,7 +2202,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getMultiplicativeExpr()
    * @generated
    */
-  int MULTIPLICATIVE_EXPR = 57;
+  int MULTIPLICATIVE_EXPR = 56;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2258,7 +2248,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIdExpr()
    * @generated
    */
-  int ID_EXPR = 58;
+  int ID_EXPR = 57;
 
   /**
    * The number of structural features of the '<em>Id Expr</em>' class.
@@ -2277,7 +2267,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getIntExpr()
    * @generated
    */
-  int INT_EXPR = 59;
+  int INT_EXPR = 58;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -2305,7 +2295,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getDoubleExpr()
    * @generated
    */
-  int DOUBLE_EXPR = 60;
+  int DOUBLE_EXPR = 59;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -2333,7 +2323,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getNodeNumExpr()
    * @generated
    */
-  int NODE_NUM_EXPR = 61;
+  int NODE_NUM_EXPR = 60;
 
   /**
    * The number of structural features of the '<em>Node Num Expr</em>' class.
@@ -2352,7 +2342,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getUnaryExpr()
    * @generated
    */
-  int UNARY_EXPR = 62;
+  int UNARY_EXPR = 61;
 
   /**
    * The feature id for the '<em><b>Operator</b></em>' attribute.
@@ -2389,7 +2379,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBuiltInExpr()
    * @generated
    */
-  int BUILT_IN_EXPR = 63;
+  int BUILT_IN_EXPR = 62;
 
   /**
    * The feature id for the '<em><b>Function</b></em>' attribute.
@@ -2435,7 +2425,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignEnum()
    * @generated
    */
-  int SIGN_ENUM = 64;
+  int SIGN_ENUM = 63;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SimpTypeEnum <em>Simp Type Enum</em>}' enum.
@@ -2445,7 +2435,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSimpTypeEnum()
    * @generated
    */
-  int SIMP_TYPE_ENUM = 65;
+  int SIMP_TYPE_ENUM = 64;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SignedEnum <em>Signed Enum</em>}' enum.
@@ -2455,7 +2445,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSignedEnum()
    * @generated
    */
-  int SIGNED_ENUM = 66;
+  int SIGNED_ENUM = 65;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.SimpleStmtKeywordEnum <em>Simple Stmt Keyword Enum</em>}' enum.
@@ -2465,7 +2455,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getSimpleStmtKeywordEnum()
    * @generated
    */
-  int SIMPLE_STMT_KEYWORD_ENUM = 67;
+  int SIMPLE_STMT_KEYWORD_ENUM = 66;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.ForAllFunctionEnum <em>For All Function Enum</em>}' enum.
@@ -2475,7 +2465,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getForAllFunctionEnum()
    * @generated
    */
-  int FOR_ALL_FUNCTION_ENUM = 68;
+  int FOR_ALL_FUNCTION_ENUM = 67;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.NodeVarScopeEnum <em>Node Var Scope Enum</em>}' enum.
@@ -2485,7 +2475,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getNodeVarScopeEnum()
    * @generated
    */
-  int NODE_VAR_SCOPE_ENUM = 69;
+  int NODE_VAR_SCOPE_ENUM = 68;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.EqualityOperator <em>Equality Operator</em>}' enum.
@@ -2495,7 +2485,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getEqualityOperator()
    * @generated
    */
-  int EQUALITY_OPERATOR = 70;
+  int EQUALITY_OPERATOR = 69;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.CompareOperator <em>Compare Operator</em>}' enum.
@@ -2505,7 +2495,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getCompareOperator()
    * @generated
    */
-  int COMPARE_OPERATOR = 71;
+  int COMPARE_OPERATOR = 70;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.ShiftOperator <em>Shift Operator</em>}' enum.
@@ -2515,7 +2505,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getShiftOperator()
    * @generated
    */
-  int SHIFT_OPERATOR = 72;
+  int SHIFT_OPERATOR = 71;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.AdditiveOperator <em>Additive Operator</em>}' enum.
@@ -2525,7 +2515,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getAdditiveOperator()
    * @generated
    */
-  int ADDITIVE_OPERATOR = 73;
+  int ADDITIVE_OPERATOR = 72;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.MultiplicativeOperator <em>Multiplicative Operator</em>}' enum.
@@ -2535,7 +2525,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getMultiplicativeOperator()
    * @generated
    */
-  int MULTIPLICATIVE_OPERATOR = 74;
+  int MULTIPLICATIVE_OPERATOR = 73;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.UnaryOperator <em>Unary Operator</em>}' enum.
@@ -2545,7 +2535,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getUnaryOperator()
    * @generated
    */
-  int UNARY_OPERATOR = 75;
+  int UNARY_OPERATOR = 74;
 
   /**
    * The meta object id for the '{@link edu.cmu.sei.annex.dmpl.dmpl.BuiltInFunctionEnum <em>Built In Function Enum</em>}' enum.
@@ -2555,7 +2545,7 @@ public interface DmplPackage extends EPackage
    * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getBuiltInFunctionEnum()
    * @generated
    */
-  int BUILT_IN_FUNCTION_ENUM = 76;
+  int BUILT_IN_FUNCTION_ENUM = 75;
 
 
   /**
@@ -2896,10 +2886,10 @@ public interface DmplPackage extends EPackage
   EAttribute getRecord_Name();
 
   /**
-   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.Record#getVars <em>Vars</em>}'.
+   * Returns the meta object for the containment reference list '{@link edu.cmu.sei.annex.dmpl.dmpl.Record#getVars <em>Vars</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Vars</em>'.
+   * @return the meta object for the containment reference list '<em>Vars</em>'.
    * @see edu.cmu.sei.annex.dmpl.dmpl.Record#getVars()
    * @see #getRecord()
    * @generated
@@ -2907,25 +2897,26 @@ public interface DmplPackage extends EPackage
   EReference getRecord_Vars();
 
   /**
-   * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.NodeVarInitList <em>Node Var Init List</em>}'.
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.Record#getEqualsBody <em>Equals Body</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Node Var Init List</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.NodeVarInitList
+   * @return the meta object for the containment reference '<em>Equals Body</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Record#getEqualsBody()
+   * @see #getRecord()
    * @generated
    */
-  EClass getNodeVarInitList();
+  EReference getRecord_EqualsBody();
 
   /**
-   * Returns the meta object for the containment reference list '{@link edu.cmu.sei.annex.dmpl.dmpl.NodeVarInitList#getVars <em>Vars</em>}'.
+   * Returns the meta object for the containment reference '{@link edu.cmu.sei.annex.dmpl.dmpl.Record#getComplementBody <em>Complement Body</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Vars</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.NodeVarInitList#getVars()
-   * @see #getNodeVarInitList()
+   * @return the meta object for the containment reference '<em>Complement Body</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Record#getComplementBody()
+   * @see #getRecord()
    * @generated
    */
-  EReference getNodeVarInitList_Vars();
+  EReference getRecord_ComplementBody();
 
   /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.VarInit <em>Var Init</em>}'.
@@ -4848,7 +4839,7 @@ public interface DmplPackage extends EPackage
     EAttribute RECORD__NAME = eINSTANCE.getRecord_Name();
 
     /**
-     * The meta object literal for the '<em><b>Vars</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Vars</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -4856,22 +4847,20 @@ public interface DmplPackage extends EPackage
     EReference RECORD__VARS = eINSTANCE.getRecord_Vars();
 
     /**
-     * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.NodeVarInitListImpl <em>Node Var Init List</em>}' class.
+     * The meta object literal for the '<em><b>Equals Body</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.NodeVarInitListImpl
-     * @see edu.cmu.sei.annex.dmpl.dmpl.impl.DmplPackageImpl#getNodeVarInitList()
      * @generated
      */
-    EClass NODE_VAR_INIT_LIST = eINSTANCE.getNodeVarInitList();
+    EReference RECORD__EQUALS_BODY = eINSTANCE.getRecord_EqualsBody();
 
     /**
-     * The meta object literal for the '<em><b>Vars</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>Complement Body</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference NODE_VAR_INIT_LIST__VARS = eINSTANCE.getNodeVarInitList_Vars();
+    EReference RECORD__COMPLEMENT_BODY = eINSTANCE.getRecord_ComplementBody();
 
     /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.VarInitImpl <em>Var Init</em>}' class.
