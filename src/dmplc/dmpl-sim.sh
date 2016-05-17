@@ -55,6 +55,7 @@
 
 DEBUG=0
 NODE_DEBUG=""
+DMPL_DEADLINE=1	# default deadline for purging MADARA messages older than 1 second
 
 function usage {
     echo "Usage : dmpl-sim.sh [-args] file.mission"
@@ -65,6 +66,7 @@ function usage {
     echo "   -nd | --node-debug   Run nodes with --debug option"
     echo "   -ts | --taskset      Bind each node to a specifi CPU"
     echo "    -h | --headless     Run V-REP in headless mode"
+    echo "    -k | --deadline $DL Set deadline for dropping old messages (-1 disables)"
     echo "    -M | --manual-start Don't start the simulation automatically"
     echo '    -e | --expect $L    Evaluate expect specs using $L as log file'
     echo '    -p | --platform $P  Pass $P as the --platform option to the executable'
@@ -109,6 +111,13 @@ while true; do
             ;;
         -h|--headless)
             HEADLESS=1
+            ;;
+        -k|--deadline)
+            shift
+            DMPL_DEADLINE="$1"
+            if [ -z "{$DMPL_DEADLINE}" ]; then
+                echo "ERROR: No deadline specified!!"; usage; exit 1
+            fi
             ;;
         -M|--manual-start)
             MANUALSTART=1
@@ -301,7 +310,7 @@ if [ ! -z "$PRE_DMPLC_CMD" ]; then
     $PRE_DMPLC_CMD &
     wait
 fi
-DMPLC_OPTS="-g"
+DMPLC_OPTS="-g -dl ${DMPL_DEADLINE}"
 [ -n "$OUTLOG" ] && DMPLC_OPTS="$DMPLC_OPTS -e"
 compile_dmpl $CPP_FILE "$DMPLC_OPTS" $DMPL &
 wait
