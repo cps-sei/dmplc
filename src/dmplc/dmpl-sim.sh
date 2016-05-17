@@ -66,7 +66,7 @@ function usage {
     echo "   -nd | --node-debug   Run nodes with --debug option"
     echo "   -ts | --taskset      Bind each node to a specifi CPU"
     echo "    -h | --headless     Run V-REP in headless mode"
-    echo "    -k | --deadline $DL Set deadline for dropping old messages (-1 disables)"
+    echo '    -k | --deadline $DL Set deadline for dropping old messages (-1 disables)'
     echo "    -M | --manual-start Don't start the simulation automatically"
     echo '    -e | --expect $L    Evaluate expect specs using $L as log file'
     echo '    -p | --platform $P  Pass $P as the --platform option to the executable'
