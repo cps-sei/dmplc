@@ -74,10 +74,16 @@ function usage {
     echo "    -r | --realtime     Run V-REP in realtime mode"
     echo "    -R | --record       Run V-REP in recording mode"
     echo "    -G | --debug        Build node binaries with debug flag"
+    echo "    -F | --fastdeploy   (re-)Deployed mission without compile or checks"
+    echo "    -T | --timeset      use date over ssh to set date/time before deployment"
+    echo "    -D | --deploy       Build nodes to distributed devices"
 }
 
 #flags
 HEADLESS=0
+DEPLOY=0
+FASTDEPLOY=0
+TIMESET=0
 REALTIME=0
 FORCEBUILD=0
 BUILDONLY=0
@@ -124,6 +130,16 @@ while true; do
             ;;
         -r|--realtime)
             REALTIME=1
+            ;;
+        -D|--deploy)
+            DEPLOY=1
+            ;;
+        -F|--fastdeploy)
+            DEPLOY=1
+            FASTDEPLOY=1
+            ;;
+        -T|--timeset)
+            TIMESET=1
             ;;
         -R|--record)
             RECORD="--record"
@@ -183,7 +199,20 @@ if [ -z "$MISSION" ]; then
     exit 1
 fi
 
-. $MISSION
+SSH_OPTS="-o PreferredAuthentications=publickey -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=quiet"
+
+source $MISSION
+
+if [ ${DEPLOY} -gt 0 ]; then
+  deployfile=$(echo ${MISSION}|sed 's/.mission$/.deploy/g')
+  if [ ! -f "${deployfile}" ]; then
+    echo No .deploy file specified for ${MISSION}
+    usage
+    exit 1
+  fi
+  source ${deployfile}
+  echo "Will deploy nodes to devices specified in ${deployfile}"
+fi
 
 #compute NODE_NUM
 NODENUM=$(echo $ROLEDESC | awk -F':' '{out=$3; for(i=6;i<=NF;i=i+3){out=out"+"$i}; print out}' | bc -l)
@@ -195,6 +224,193 @@ status_file=""
 #map from node pids to command lines and node ids
 declare -A pid2cmd
 declare -A pid2node
+declare -A device2pilot
+declare -A device2commandnet
+declare -A device2drivepath
+
+MISSION_MCAST=239.255.0.0/24
+MISSION_MDOMAIN=239.255.0.1:4150
+#
+# assumes COMMAND messages are on the same subnet as VREP server
+#
+VREPSERVERIPN=$(ifconfig -a | \
+               egrep --only-matching "(${COMMAND_SUBNET}\.[[:digit:]]*)"| \
+               head -1| \
+               sed "s/${COMMAND_SUBNET}.//g")
+VREPSERVERIP=${COMMAND_SUBNET}.${VREPSERVERIPN}
+[ ${DEPLOY} -gt 0 ] && PLATFORM=$(echo $PLATFORM | sed "s/::/:${VREPSERVERIP}:/")
+#
+# tell remote node where DART HOME is which should
+# become the basis for 'vrep' and 'dmplc' HOMEs
+#
+# this field is not yet supported in init_vrep() (gen'ed from dmplc)
+#
+[ ${DEPLOY} -gt 0 ] && PLATFORM=$(echo $PLATFORM:$(dirname $(realpath ${VREP_ROOT})))
+
+function setpilots() {
+  for d in $(seq 0 $(($NODENUM-1))); do
+    _v=$(echo ${DEVICES[${d}]}|cut -d: -f1)
+    if [ -z "${_v}" ]; then
+       echo malformed field in DEVICES[${d}], found "${DEVICES[${d}]}"
+       exit 1
+    fi
+    device2pilot[${d}]=${_v}
+  done
+}
+
+function setcommandnet() {
+  for d in $(seq 0 $(($NODENUM-1))); do
+    _v=$(echo ${DEVICES[${d}]}|cut -d: -f2)
+    if [ -z "${_v}" ]; then
+       echo malformed field in DEVICES[${d}], found "${DEVICES[${d}]}"
+       exit 1
+    fi
+    device2commandnet[${d}]=${_v}
+  done
+}
+
+function setdrivepath() {
+  for d in $(seq 0 $(($NODENUM-1))); do
+    _v=$(echo ${DEVICES[${d}]}|cut -d: -f3)
+    if [ -z "${_v}" ]; then
+       echo malformed field in DEVICES[${d}], found "${DEVICES[${d}]}"
+       exit 1
+    fi
+    device2drivepath[${d}]=${_v}
+  done
+}
+
+function setdatetime_ssh() {
+  for d in $(seq 0 $(($NODENUM-1))); do
+    if [ "${device2commandnet[${d}]}" = "${VREPSERVERIP}" ]; then
+      echo "matched ip address"
+      continue
+    fi
+    _epochseconds=$(date +%s)
+    ssh ${SSH_OPTS} \
+      ${device2pilot[${d}]}@${device2commandnet[${d}]} \
+      "sudo /bin/date --set=@${_epochseconds}"
+    [ ! "${?}" = "0" ] && \
+      echo "add/append '%sudo   ALL=(ALL) NOPASSWD: /bin/date' to ${device2pilot[${d}]}@${device2commandnet[${d}]}:/etc/sudoers" && \
+    _rc=${?}
+  done
+}
+
+function test_missionsubnet() {
+  if [ "${COMMAND_SUBNET}" = "${MISSION_SUBNET}" ]; then
+    # subnets are the same no need to test
+    return
+  fi
+
+  _out=0
+  for d in $(seq 0 $(($NODENUM-1))); do
+    ssh ${SSH_OPTS} \
+      ${device2pilot[${d}]}@${device2commandnet[${d}]} \
+      "ifconfig -a | grep ${MISSION_SUBNET}"
+    [ ! "${?}" = "0" ] && \
+      echo "mission subnet: ${MISSION_SUBNET} does not appear to exist at ${device2commandnet[${d}]}" && _out=$((_out+1))
+  done
+
+  [ ${_out} -gt 0 ] && echo ${_out} out of ${NODENUM} not on ${MISSION_SUBNET} && exit -1
+  return
+}
+
+function test_passwdless_ssh() {
+
+  for d in $(seq 0 $(($NODENUM-1))); do
+    echo testing for ssh to: ${device2pilot[${d}]}@${device2commandnet[${d}]}
+    #
+    # test for authorized_keys on deployment device and correct drivepath
+    #
+    ssh ${SSH_OPTS} \
+      ${device2pilot[${d}]}@${device2commandnet[${d}]} \
+      "ls -ld ${device2drivepath[${d}]}/setenv.sh >/dev/null 2>&1"
+    _rc=${?}
+    #
+    [ "${_rc}" = "255" ] && \
+      echo "host not found -OR- add/append .ssh/id_rsa.pub to ${device2pilot[${d}]}@${device2commandnet[${d}]}:.ssh/authorized_keys" && \
+      exit
+    #
+    [ "${_rc}" = "2" ] && \
+      echo "the DART file '${device2drivepath[${d}]}/setenv.sh' was not found at ${device2pilot[${d}]}@${device2commandnet[${d}]}" && \
+      exit
+    #
+    [ ! "${_rc}" = "0" ] && \
+      echo "${_rc}: something else failed when communicating with ${device2pilot[${d}]}@${device2commandnet[${d}]}, please send the error report in /tmp/darterror${$}.txt" && \
+      set > /tmp/darterror${$}.txt && \
+      exit
+    #
+    # test to see that ID on deployment device can manipulate route table
+    # MADARA multicast message must be routed to the network_if used for the mission
+    #
+    ssh ${SSH_OPTS} \
+      ${device2pilot[${d}]}@${device2commandnet[${d}]} \
+      "sudo route -n >/dev/null"
+    [ ! "${?}" = "0" ] && \
+      echo "add/append '%sudo   ALL=(ALL) NOPASSWD: /sbin/route' to ${device2pilot[${d}]}@${device2commandnet[${d}]}:/etc/sudoers" && \
+      exit
+  done
+}
+
+[ ${DEPLOY} -gt 0 ] && setpilots && setcommandnet && setdrivepath 
+
+[ ${FASTDEPLOY} -eq 0 -a ${DEPLOY} -gt 0 ] && test_passwdless_ssh && echo done test of passwdless ssh test
+
+[ ${TIMESET} -gt 0 -a ${DEPLOY} -gt 0 ] && setdatetime_ssh
+
+[ ${DEPLOY} -gt 0 ] && test_missionsubnet
+
+function dmplc-build-device() {
+  #
+  # TBD: VREPSERVERIPN will be used to build the local node
+  # so ignore that particular node for this purpose
+  #
+  for d in $(seq 0 $(($NODENUM-1))); do
+    if [ "${device2commandnet[${d}]}" = "${VREPSERVERIP}" ]; then
+      continue
+    fi
+    devindex=${d}
+    echo ${devindex} && return
+  done
+  echo ""
+}
+
+function launch() {
+  #
+  # runs a command in a screen session as a daemon and routes output to log file
+  #
+  cp /dev/null $OUTDIR/${1}.out
+  echo ${2} | sed 's/\$/\\$/g' > /tmp/remote.${1}.cmd
+  screen -dmS ${1} \
+    sh -c \
+    "pwd >$OUTDIR/${1}.out 2>&1; $(cat /tmp/remote.${1}.cmd) >>$OUTDIR/${1}.out 2>&1"
+}
+
+function deploymentwait() {
+  if [ ${DEPLOY} -gt 0 ]; then
+    # build nodesup logic in karl
+    echo ".nodes.ready = 0 ;>" >  /tmp/nodesup.krl
+    echo "startSync.0 >= 2 &&" >> /tmp/nodesup.krl 
+
+    for x in $(seq 1 $((NODENUM - 1))); do
+      cat <<__KARLSCRIPT >> /tmp/nodesup.krl
+  startSync.${x} >= 2 &&
+__KARLSCRIPT
+    done
+
+    echo "  1 == 1 => .nodes.ready = 1 ;>" >> /tmp/nodesup.krl
+    echo "(.nodes.ready > 0)" >> /tmp/nodesup.krl
+
+    scp ${SSH_OPTS} \
+      /tmp/nodesup.krl \
+      ${device2pilot[0]}@${device2commandnet[0]}:/tmp/nodesup.krl
+
+    ssh ${SSH_OPTS} \
+      ${device2pilot[0]}@${device2commandnet[0]} \
+      "source ${device2drivepath[0]}/setenv.sh; \
+       karl -m ${MISSION_MDOMAIN} -i /tmp/nodesup.krl -y 10 -ky  -w 30000 -c > /tmp/karl.out 2>&1"
+  fi
+}
 
 function cleanup {
     echo "Cleaning up ..."
@@ -211,14 +427,20 @@ function cleanup {
     #remove status file
     [ -n "$status_file" ] && rm $status_file
 
-    #count number of alive nodes
+    #count number of alive local nodes
     bin_count=0
     for k in "${!pid2cmd[@]}"; do
         kill -0 $k &> /dev/null
         if [ "$?" == "0" ]; then bin_count=$(expr $bin_count + 1); fi
     done
     
-    #kill nodes and VREP
+    #kill off remote nodes!
+    [ ${DEPLOY} -gt 0 ] && for k in $(seq 0 $(($NODENUM-1))); do
+	  echo node running at device: ${device2commandnet[${k}]}, killing...
+	  ssh ${SSH_OPTS} ${device2pilot[${k}]}@${device2commandnet[${k}]} "killall ${BIN}; sudo route del -net ${MISSION_MCAST}"
+	done
+
+    #kill local nodes and VREP
     for p in $(pstree -pal $$ | cut -d, -f2 | cut -d' ' -f1 | grep -v "$$$"); do
         kill $p &> /dev/null
     done
@@ -233,6 +455,13 @@ function cleanup {
     #restore the VREP system/settings.dat
     [ -f $SDF.saved.mcda-vrep ] && cp $SDF.saved.mcda-vrep $SDF
     
+    #
+    # do this locally as well, node 0 is always here
+    # SAH: will not always be true
+    # TBD: should only need to be done if any node is deployed here (locally with VREP)
+    #
+    [ ${DEPLOY} -gt 0 ] && sudo route del -net ${MISSION_MCAST}
+
     echo "alive_nodes=$bin_count, total_nodes=$NODENUM, vrep_graceful_exit=$VREP_GRACEFUL_EXIT ..."
     [ "$MISSION_EXIT" == "1" ] && bin_count=$NODENUM
     if [ "$bin_count" -eq $NODENUM ] && [ "$VREP_GRACEFUL_EXIT" -ge 1 ]; then
@@ -321,6 +550,55 @@ if [ -n "$OUTLOG" ]; then
     [ ! -f $ANALYZE_FILE ] && cleanup
 fi
 
+function compile_cpp_on_node() {
+  # pick a device to build the mission on
+  _di=$(dmplc-build-device)
+  [ -z "${_di}" ] && echo "running locally, no remote compilation necessary" && return
+  echo deviceindex: ${_di}
+
+  # copy/rsync
+  echo copying files
+  rsync -avz \
+    -e "ssh ${SSH_OPTS}" \
+    --progress ${DMPL} ${MISSION} \
+    ${device2pilot[${_di}]}@${device2commandnet[${_di}]}:$(ssh ${SSH_OPTS} ${device2pilot[${_di}]}@${device2commandnet[${_di}]} "source ${device2drivepath[${_di}]}/setenv.sh; echo \$DMPL_ROOT/docs/tutorial/")
+
+  echo remotely building
+  #
+  # -B build only; -b force build (may not need -b here)
+  #
+  ssh ${SSH_OPTS} \
+    ${device2pilot[${_di}]}@${device2commandnet[${_di}]} \
+    "source ${device2drivepath[${_di}]}/setenv.sh; cd \$DMPL_ROOT/docs/tutorial; pwd; dmpl-sim.sh -k ${DMPL_DEADLINE} -B -b ${MISSION};"
+
+  [ ! "${?}" = "0" ] && \
+    echo "remote build at ${device2pilot[${_di}]}@${device2commandnet[${_di}]} failed...stopping remote deployment and mission" && \
+    exit
+
+  echo replicating binary to other nodes
+  scp ${SSH_OPTS} \
+    ${device2pilot[${_di}]}@${device2commandnet[${_di}]}:$(ssh ${SSH_OPTS} ${device2pilot[${_di}]}@${device2commandnet[${_di}]} "source ${device2drivepath[${_di}]}/setenv.sh; echo \$DMPL_ROOT/docs/tutorial/")/${BIN} \
+    /tmp/${BIN}.node-compiled
+
+  for d in $(seq 0 $(($NODENUM-1))); do
+    #
+    # skip 'this' node
+    #
+    if [ "${device2commandnet[${d}]}" = "${VREPSERVERIP}" ]; then
+      echo "matched ip address"
+      continue
+    fi
+    scp ${SSH_OPTS} \
+      /tmp/${BIN}.node-compiled \
+      ${device2pilot[${d}]}@${device2commandnet[${d}]}:$(ssh ${SSH_OPTS} ${device2pilot[${d}]}@${device2commandnet[${d}]} "source ${device2drivepath[${d}]}/setenv.sh; echo \$DMPL_ROOT/docs/tutorial/")${BIN}
+    ssh ${SSH_OPTS} \
+      ${device2pilot[${d}]}@${device2commandnet[${d}]} \
+      "source ${device2drivepath[${d}]}/setenv.sh; md5sum \$DMPL_ROOT/docs/tutorial/${BIN}"
+  done
+
+  echo remote build and deployment done.
+}
+
 #function to compile CPP file with g++. takes two arguments -- the
 #output executable and the CPP file.
 function compile_cpp {
@@ -349,6 +627,9 @@ if [ -n "$OUTLOG" ]; then
     wait
     [ ! -f ${BIN}_analyze ] && cleanup
 fi
+
+[ ${FASTDEPLOY} -eq 0 -a ${DEPLOY} -gt 0 ] \
+   && compile_cpp_on_node ${BIN} $CPP_FILE
 
 [ "$BUILDONLY" -eq 1 ] && exit 0
 
@@ -442,13 +723,37 @@ for x in $(seq 1 $((NODENUM - 1))); do
     if [ "$TASKSET" == "1" ]; then
         taskset -c ${cpu_id} $cmd &> $OUTDIR/node${x}.out &
     else
+      if [ ${DEPLOY} -gt 0 ]; then
+        echo deploying node ${x} to ${device2pilot[${x}]}@${device2commandnet[${x}]}
+
+        launch \
+          "node${x}" \
+          "ssh ${SSH_OPTS} \
+            ${device2pilot[${x}]}@${device2commandnet[${x}]} \
+            \"source ${device2drivepath[${x}]}/setenv.sh; \
+            cd \$DMPL_ROOT/docs/tutorial; \
+            pwd; \
+            sudo route add -net ${MISSION_MCAST} dev \
+              \$(ifconfig -a | grep --before-context=2 inet\ addr:${MISSION_SUBNET} | egrep --only-matching "^[[:alnum:]]?*"); \
+            ${cmd}\" "
+      else
         $cmd &> $OUTDIR/node${x}.out &
+      fi
     fi
-    pid=$!
-    echo "started node $x pid=$pid : cmd=$cmd"
+    if [ ${DEPLOY} -gt 0 ]; then
+      pid=$(screen -ls|grep node${x}|cut -d. -f1)
+      while [ -z "${pid}" ]; do
+        echo race condition: pid empty, retrying...; sleep 0.5
+        pid=$(screen -ls|grep node${x}|cut -d. -f1)
+      done
+    else
+      pid=$!
+      echo "started node $x pid=$pid : cmd=$cmd"
+    fi
     pid2cmd[$pid]="$cmd"
     pid2node[$pid]="$x"
 done
+
 ELOG=""
 [ -n "$OUTLOG" ] && ELOG="-e $OUTDIR/expect0.log"
 #gdb --args $GDB ./$BIN $ELOG --platform $PLATFORM --id 0 $ARGS_0 # &> $OUTDIR/node0.out &
@@ -456,10 +761,29 @@ cmd="$GDB ./$BIN $ELOG --platform $PLATFORM --id 0 -l $LOG_LEVEL $NODE_DEBUG $AR
 if [ "$TASKSET" == "1" ]; then
     taskset -c 0 $cmd &> $OUTDIR/node0.out &
 else
-    $cmd &> $OUTDIR/node0.out &
+    if [ ${DEPLOY} -gt 0 ]; then
+      x=0
+      echo deploying node ${x} to ${device2pilot[${x}]}@${device2commandnet[${x}]}
+      launch \
+        "node${x}" \
+        "ssh ${SSH_OPTS} \
+          ${device2pilot[${x}]}@${device2commandnet[${x}]} \
+          \"source ${device2drivepath[${x}]}/setenv.sh; \
+          cd \$DMPL_ROOT/docs/tutorial; \
+          pwd; \
+          sudo route add -net ${MISSION_MCAST} dev \
+          \$(ifconfig -a | grep --before-context=2 inet\ addr:${MISSION_SUBNET} | egrep --only-matching "^[[:alnum:]]?*"); \
+          ${cmd}\" "
+    else
+      $cmd &> $OUTDIR/node0.out &
+    fi
 fi
-pid=$!
-echo "started node 0 pid=$pid : cmd=$cmd" 
+if [ ${DEPLOY} -gt 0 ]; then
+  pid=$(screen -ls|grep node${x}|cut -d. -f1)
+else
+  pid=$!
+  echo "started node $x pid=$pid : cmd=$cmd"
+fi
 pid2cmd[$pid]="$cmd"
 pid2node[$pid]="0"
 
@@ -471,9 +795,17 @@ else
     sleep 2
 fi
 
+[ ${DEPLOY} -gt 0 ] && deploymentwait
+
 [ "$MANUALSTART" -ne 1 ] && ( cd $SCDIR; ./startSim.py $RECORD )
 
 if [ -z $MISSION_TIME ]; then SAFETY_TIME=240; else SAFETY_TIME=$MISSION_TIME; fi
+
+echo "Mission time is ${MISSION_TIME}"
+
+echo pid2cmd: ${!pid2cmd[@]}
+echo pid2node: ${!pid2node[@]}
+
 START_TIME=$(date +%s)
 while [ "$(grep COMPLETE $status_file | wc -l)" -lt 1 ]; do
     #check for timeout
