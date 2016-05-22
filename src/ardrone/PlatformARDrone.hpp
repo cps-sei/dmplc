@@ -85,6 +85,16 @@ char *ardrone_args[] = { (char*)"PlatformARDrone", (char*)"-ip", (char*)"192.168
  **/
 void GRID_INIT()
 {
+  //-- initialize ardrone state
+  dmplArdrone.flying_state = FLYING_STATE_LANDED;
+  dmplArdrone.battery_level = 0;
+  dmplArdrone.altitude = 0;
+  dmplArdrone.nb_detected = 0;
+  dmplArdrone.odo_x = 0;
+  dmplArdrone.odo_y = 0;
+  dmplArdrone.recv_time = NAN;
+
+  //-- start ardrone_tool in separate thread
   pthread_create(&ardrone_thread, NULL, ardrone_testing_tool_main, ardrone_args);
 }
 
