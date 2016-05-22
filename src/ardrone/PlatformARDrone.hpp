@@ -104,6 +104,9 @@ void GRID_PLACE(double x, double y, double z)
 /** display statistics */
 void DISPLAY_STATS()
 {
+  std::cout << "Time : " << dmplArdrone.recv_time
+            << ", X : " << dmplArdrone.odo_x
+            << ", Y : " << dmplArdrone.odo_y << "\n";
   std::cout << "Battery Level : " << dmplArdrone.battery_level
             << " mv, Altitude : " << dmplArdrone.altitude << " mm\n";
   std::cout << "Tags detected : " << dmplArdrone.nb_detected << '\n';

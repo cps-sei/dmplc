@@ -29,11 +29,29 @@ inline C_RESULT demo_navdata_client_process( const navdata_unpacked_t* const nav
   
   //printf("\033[8A");
   */
-  
+
+  //-- update ardrone state
   dmplArdrone.flying_state = ardrone_academy_navdata_get_flying_state(navdata);
   dmplArdrone.battery_level = nd->vbat_flying_percentage;
   dmplArdrone.altitude = nd->altitude;
 
+  //-- update odometry
+  int ndt_sec = (int)((navdata->navdata_time.time & TSECMASK) >> TSECDEC);
+  int ndt_usec = (int)(navdata->navdata_time.time & TUSECMASK);
+  double timestamp = ndt_sec + ndt_usec * 0.000001;
+
+  if(!isnan(dmplArdrone.recv_time)) {
+    double delta_t = timestamp - dmplArdrone.recv_time;
+    dmplArdrone.odo_x += ((cos((nd->psi / 180000.0) * M_PI) * nd->vx -
+                           sin((nd->psi / 180000.0) * M_PI) * -nd->vy) * delta_t) / 1000.0;
+    dmplArdrone.odo_y += ((sin((nd->psi / 180000.0) * M_PI) * nd->vx +
+                           cos((nd->psi / 180000.0) * M_PI) * -nd->vy) * delta_t) / 1000.0;
+  }
+
+  //-- update timestamp
+  dmplArdrone.recv_time = timestamp;
+  
+  //-- updated number of tags detected
   const navdata_vision_detect_t* pndvision = &navdata->navdata_vision_detect;
   dmplArdrone.nb_detected = pndvision->nb_detected;
   
