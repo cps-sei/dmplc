@@ -13,4 +13,7 @@ typedef struct
   int nb_detected;
 } DmplArdrone;
 
+//-- declare interface variables
+extern DmplArdrone dmplArdrone;
+
 #endif // _NAVDATA_H_

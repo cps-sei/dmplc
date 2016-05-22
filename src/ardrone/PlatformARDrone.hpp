@@ -65,11 +65,6 @@ extern "C" {
 #include "./Navdata/navdata.h"
 }
 
-/********************************************************************/
-//-- ARDRONE variables
-/********************************************************************/
-extern DmplArdrone dmplArdrone;
-
 //-- detect mode and flying mode. used for orienting to roundel.
 int currDetectType = -1, targetDetectType = -1;
 int currFlyingMode = -1, targetFlyingMode = -1;
