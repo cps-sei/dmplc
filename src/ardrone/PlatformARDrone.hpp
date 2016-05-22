@@ -62,16 +62,13 @@ extern "C" {
 #include <ardrone_tool/ardrone_tool_configuration.h>
 #include <config_keys.h>
 #include "ardrone_testing_tool.h"
+#include "./Navdata/navdata.h"
 }
 
 /********************************************************************/
 //-- ARDRONE variables
 /********************************************************************/
-//-- this is set by navdata.c
-extern FLYING_STATE dmpl_flying_state;
-extern int dmpl_battery_level;
-extern int dmpl_altitude;
-extern int dmpl_nb_detected;
+extern DmplArdrone dmplArdrone;
 
 //-- detect mode and flying mode. used for orienting to roundel.
 int currDetectType = -1, targetDetectType = -1;
@@ -112,8 +109,9 @@ void GRID_PLACE(double x, double y, double z)
 /** display statistics */
 void DISPLAY_STATS()
 {
-  std::cout << "Battery Level : " << dmpl_battery_level << " mv, Altitude : " << dmpl_altitude << " mm\n";
-  std::cout << "Tags detected : " << dmpl_nb_detected << '\n';
+  std::cout << "Battery Level : " << dmplArdrone.battery_level
+            << " mv, Altitude : " << dmplArdrone.altitude << " mm\n";
+  std::cout << "Tags detected : " << dmplArdrone.nb_detected << '\n';
 }
 
 /**
@@ -203,7 +201,8 @@ int DRONE_TAKEOFF()
 {
   DISPLAY_STATS();
   ardrone_tool_set_ui_pad_start(1);
-  return (dmpl_flying_state == FLYING_STATE_TAKING_OFF || dmpl_flying_state == FLYING_STATE_FLYING);
+  return (dmplArdrone.flying_state == FLYING_STATE_TAKING_OFF ||
+          dmplArdrone.flying_state == FLYING_STATE_FLYING);
 }
 
 /**
@@ -213,7 +212,7 @@ int DRONE_TAKEOFF()
 int DRONE_FLYING()
 {
   DISPLAY_STATS();
-  return (dmpl_flying_state == FLYING_STATE_FLYING);
+  return (dmplArdrone.flying_state == FLYING_STATE_FLYING);
 }
 
 /**
@@ -223,7 +222,8 @@ int DRONE_LAND()
 {
   DISPLAY_STATS();
   ardrone_tool_set_ui_pad_start(0);
-  return (dmpl_flying_state == FLYING_STATE_LANDING || dmpl_flying_state == FLYING_STATE_LANDED);
+  return (dmplArdrone.flying_state == FLYING_STATE_LANDING ||
+          dmplArdrone.flying_state == FLYING_STATE_LANDED);
 }
 
 /**
