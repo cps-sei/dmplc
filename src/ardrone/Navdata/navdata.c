@@ -1,7 +1,7 @@
 #include <ardrone_tool/Navdata/ardrone_navdata_client.h>
 
-#include <Navdata/navdata.h>
 #include <stdio.h>
+#include "./navdata.h"
 
 //-- the flying state
 FLYING_STATE dmpl_flying_state;

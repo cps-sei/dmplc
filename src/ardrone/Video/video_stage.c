@@ -44,7 +44,7 @@
 
 #include <ardrone_tool/Video/video_com_stage.h>
 
-#include "Video/video_stage.h"
+#include "./video_stage.h"
 
 #define NB_STAGES 10
 
