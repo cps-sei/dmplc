@@ -1,0 +1,34 @@
+#!/bin/bash
+
+#
+# this structure maps a node to a specific device / platform
+#
+# field1:field2:field3
+# where:
+#   field1 is the login userid that will pilot the node, this
+#          userid has sudo permissions to run /bin/date for
+#          the --timeset operation; /sbin/route to set the
+#          route for multicast packets
+#   field2 is the specific ip address for ssh commands
+#          on the command subnet to configure and initiate
+#          deployment (launch) of the node to start the mission 
+#   field3 is the drive path on the node where the mission
+#          software and plan is to be executed
+#
+
+COMMAND_SUBNET=192.168.2    # vrep, ssh, rsync all run here
+MISSION_SUBNET=192.168.100  # msgs between nodes (madara msgs) occur here
+
+DEVICES=( \
+  odroid:${COMMAND_SUBNET}.101:/home/odroid/dart \
+  odroid:${COMMAND_SUBNET}.102:/home/odroid/dart \
+  odroid:${COMMAND_SUBNET}.103:/home/odroid/dart \
+  odroid:${COMMAND_SUBNET}.104:/home/odroid/dart \
+  odroid:${COMMAND_SUBNET}.105:/home/odroid/dart \
+  odroid:${COMMAND_SUBNET}.106:/home/odroid/dart \
+  odroid:${COMMAND_SUBNET}.107:/home/odroid/dart \
+  odroid:${COMMAND_SUBNET}.108:/home/odroid/dart \
+  odroid:${COMMAND_SUBNET}.109:/home/odroid/dart \
+  odroid:${COMMAND_SUBNET}.111:/home/odroid/dart \
+)
+
