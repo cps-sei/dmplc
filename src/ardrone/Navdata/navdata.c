@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include "./navdata.h"
 
+//milli-degrees to radians
+#define MDTORAD (M_PI/180000.0)
+
 //-- define variables used to interface with DMPL
 DmplArdrone dmplArdrone;
 
@@ -46,10 +49,10 @@ inline C_RESULT demo_navdata_client_process( const navdata_unpacked_t* const nav
 
   if(!isnan(dmplArdrone.recv_time)) {
     double delta_t = timestamp - dmplArdrone.recv_time;
-    dmplArdrone.odo_x += ((cos((nd->psi / 180000.0) * M_PI) * nd->vx -
-                           sin((nd->psi / 180000.0) * M_PI) * -nd->vy) * delta_t) / 1000.0;
-    dmplArdrone.odo_y += ((sin((nd->psi / 180000.0) * M_PI) * nd->vx +
-                           cos((nd->psi / 180000.0) * M_PI) * -nd->vy) * delta_t) / 1000.0;
+    dmplArdrone.odo_x += ((cos(nd->psi * MDTORAD) * nd->vx -
+                           sin(nd->psi * MDTORAD) * -nd->vy) * delta_t) / 1000.0;
+    dmplArdrone.odo_y += ((sin(nd->psi * MDTORAD) * nd->vx +
+                           cos(nd->psi * MDTORAD) * -nd->vy) * delta_t) / 1000.0;
   }
 
   //-- update timestamp
