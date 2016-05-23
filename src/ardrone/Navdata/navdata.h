@@ -12,7 +12,9 @@ typedef struct
   int nb_detected;            //-- number of tags detected
   double odo_x;               //-- distance traveled along X
   double odo_y;               //-- distance traveled along Y
-  double recv_time;           //-- time last navdata received 
+  double recv_time;           //-- time last navdata received
+  double psi;                 //-- latest psi (aka yaw) value
+  double init_psi;            //-- initial psi (aka yaw) value
 } DmplArdrone;
 
 //-- declare interface variables

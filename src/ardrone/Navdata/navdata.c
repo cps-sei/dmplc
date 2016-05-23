@@ -35,6 +35,10 @@ inline C_RESULT demo_navdata_client_process( const navdata_unpacked_t* const nav
   dmplArdrone.battery_level = nd->vbat_flying_percentage;
   dmplArdrone.altitude = nd->altitude;
 
+  //-- update psi and initial psi
+  dmplArdrone.psi = nd->psi;
+  if(isnan(dmplArdrone.init_psi)) dmplArdrone.init_psi = nd->psi;
+  
   //-- update odometry
   int ndt_sec = (int)((navdata->navdata_time.time & TSECMASK) >> TSECDEC);
   int ndt_usec = (int)(navdata->navdata_time.time & TUSECMASK);

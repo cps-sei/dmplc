@@ -93,6 +93,8 @@ void GRID_INIT()
   dmplArdrone.odo_x = 0;
   dmplArdrone.odo_y = 0;
   dmplArdrone.recv_time = NAN;
+  dmplArdrone.psi = 0;
+  dmplArdrone.init_psi = NAN;
 
   //-- start ardrone_tool in separate thread
   pthread_create(&ardrone_thread, NULL, ardrone_testing_tool_main, ardrone_args);
@@ -116,7 +118,9 @@ void DISPLAY_STATS()
 {
   std::cout << "Time : " << dmplArdrone.recv_time
             << ", X : " << dmplArdrone.odo_x
-            << ", Y : " << dmplArdrone.odo_y << "\n";
+            << ", Y : " << dmplArdrone.odo_y << '\n';
+  std::cout << "Init Psi : " << (dmplArdrone.init_psi / 1000)
+            << ", Curr Psi : " << (dmplArdrone.psi / 1000) << '\n';
   std::cout << "Battery Level : " << dmplArdrone.battery_level
             << " mv, Altitude : " << dmplArdrone.altitude << " mm\n";
   std::cout << "Tags detected : " << dmplArdrone.nb_detected << '\n';
