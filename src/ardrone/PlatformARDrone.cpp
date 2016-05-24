@@ -37,8 +37,60 @@ int main(int argc,char **argv)
   while(!DRONE_FLYING_MODE(FLYING_MODE_FREE_FLIGHT)) sleep(1);
 
   while(!DRONE_HOVER()) sleep(1);
-  sleep(3);
+  std::cout << "hovering ...\n";
+  sleep(5);
 
+  DRONE_MOVE_FWD();
+  std::cout << "************ moving forward ...\n";
+  sleep(1);
+
+  while(!DRONE_HOVER()) sleep(1);
+  std::cout << "hovering ...\n";
+  sleep(1);
+
+  DRONE_MOVE_BWD();
+  std::cout << "************ moving backward ...\n";
+  sleep(1);
+
+  while(!DRONE_HOVER()) sleep(1);
+  std::cout << "hovering ...\n";
+  sleep(1);
+
+  DRONE_MOVE_RIGHT();
+  std::cout << "************ moving right ...\n";
+  sleep(1);
+
+  while(!DRONE_HOVER()) sleep(1);
+  std::cout << "hovering ...\n";
+  sleep(1);
+
+  DRONE_MOVE_LEFT();
+  std::cout << "************ moving left ...\n";
+  sleep(1);
+
+  while(!DRONE_HOVER()) sleep(1);
+  std::cout << "hovering ...\n";
+  sleep(1);
+
+  DRONE_MOVE_UP();
+  std::cout << "************ moving up ...\n";
+  sleep(1);
+
+  while(!DRONE_HOVER()) sleep(1);
+  std::cout << "hovering ...\n";
+  sleep(1);
+
+  DRONE_MOVE_DOWN();
+  std::cout << "************ moving down ...\n";
+  sleep(1);
+
+  while(!DRONE_HOVER()) sleep(1);
+  std::cout << "hovering ...\n";
+  sleep(1);
+
+  sleep(5);
+
+  /*
   for(int i = 0;i < 30;++i) {
     std::cout << "************ moving forward ...\n";
     DRONE_MOVE_FWD();
@@ -62,7 +114,8 @@ int main(int argc,char **argv)
     DRONE_MOVE_DOWN();
     usleep(200000);
   }
-
+  */
+  
   // sleep(1);
   // for(int i = 0;i < 5;++i) {
   //   std::cout << "************ moving forward ...\n";
@@ -78,9 +131,6 @@ int main(int argc,char **argv)
   // }
   
   // while(!DRONE_FLYING_MODE(FLYING_MODE_HOVER_ON_TOP_OF_ORIENTED_ROUNDEL)) sleep(1);
-
-  std::cout << "hovering ...\n";
-  sleep(5);
 
   while(!DRONE_FLYING_MODE(FLYING_MODE_FREE_FLIGHT)) sleep(1);
 
