@@ -116,6 +116,9 @@ void GRID_PLACE(double x, double y, double z)
 /** display statistics */
 void DISPLAY_STATS()
 {
+  std::cout << "Time : tag : " << dmplArdrone.ndtime.tag
+            << ", size : " << dmplArdrone.ndtime.size
+            << ", time : " << dmplArdrone.ndtime.time << '\n';
   std::cout << "Time : " << dmplArdrone.recv_time
             << ", X : " << dmplArdrone.odo_x
             << ", Y : " << dmplArdrone.odo_y << '\n';
