@@ -43,6 +43,7 @@ inline C_RESULT demo_navdata_client_process( const navdata_unpacked_t* const nav
   if(isnan(dmplArdrone.init_psi)) dmplArdrone.init_psi = nd->psi;
   
   //-- update odometry
+  dmplArdrone.ndtime = navdata->navdata_time;
   int ndt_sec = (int)((navdata->navdata_time.time & TSECMASK) >> TSECDEC);
   int ndt_usec = (int)(navdata->navdata_time.time & TUSECMASK);
   double timestamp = ndt_sec + ndt_usec * 0.000001;
