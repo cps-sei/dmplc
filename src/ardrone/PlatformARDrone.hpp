@@ -294,7 +294,7 @@ int DRONE_MOVE_LEFT()
 int DRONE_MOVE_UP()
 {
   DISPLAY_STATS();
-  ardrone_at_set_progress_cmd(1,0,0,0.5,0);
+  ardrone_tool_set_progressive_cmd(1,0,0,0.3,0,0,0);
   return 1;
 }
 
@@ -304,7 +304,7 @@ int DRONE_MOVE_UP()
 int DRONE_MOVE_DOWN()
 {
   DISPLAY_STATS();
-  ardrone_at_set_progress_cmd(1,0,0,-0.5,0);
+  ardrone_tool_set_progressive_cmd(1,0,0,-0.3,0,0,0);
   return 1;
 }
 
