@@ -269,6 +269,26 @@ int DRONE_MOVE_BWD()
 }
 
 /**
+ * Move drone right
+ **/
+int DRONE_MOVE_RIGHT()
+{
+  DISPLAY_STATS();
+  ardrone_tool_set_progressive_cmd(1,0.3,0,0,0,0,0);
+  return 1;
+}
+
+/**
+ * Move drone left
+ **/
+int DRONE_MOVE_LEFT()
+{
+  DISPLAY_STATS();
+  ardrone_tool_set_progressive_cmd(1,-0.3,0,0,0,0,0);
+  return 1;
+}
+
+/**
  * Move drone up
  **/
 int DRONE_MOVE_UP()
