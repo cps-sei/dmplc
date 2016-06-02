@@ -109,8 +109,23 @@ void GRID_INIT()
  * @param y the y coordinate
  * @param z the altitude
  **/
+int heightFlag = 0;
+void altMaxFunc(int success)
+{
+  if(success) {
+    std::cerr << "successfully set max altitude ...\n";
+    heightFlag = 1;
+  } else
+    std::cerr << "failed to set max altitude ...\n";
+}
+
 void GRID_PLACE(double x, double y, double z)
 {
+  int32_t altMax = 2000; // mm
+  heightFlag = 0;
+  sleep(2); // give other threads a chance to spin up
+  ARDRONE_TOOL_CONFIGURATION_ADDEVENT (altitude_max, &altMax, altMaxFunc);
+  while (!heightFlag) usleep(200000);
 }
 
 /** display statistics */
