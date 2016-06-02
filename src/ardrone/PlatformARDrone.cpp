@@ -40,6 +40,14 @@ int main(int argc,char **argv)
   std::cout << "hovering ...\n";
   sleep(5);
 
+  DRONE_MOVE_UP();
+  std::cout << "************ moving up ...\n";
+  sleep(1);
+
+  while(!DRONE_HOVER()) sleep(1);
+  std::cout << "hovering ...\n";
+  sleep(5);
+
   DRONE_MOVE_FWD();
   std::cout << "************ moving forward ...\n";
   sleep(1);
