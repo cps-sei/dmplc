@@ -5,6 +5,7 @@ package edu.cmu.sei.annex.dmpl.dmpl.impl;
 import edu.cmu.sei.annex.dmpl.dmpl.AdditiveExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.AdditiveOperator;
 import edu.cmu.sei.annex.dmpl.dmpl.AndExpr;
+import edu.cmu.sei.annex.dmpl.dmpl.AssignmentOrIncrementStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.AssignmentStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.AtEndSpec;
 import edu.cmu.sei.annex.dmpl.dmpl.AtLeastSpec;
@@ -24,6 +25,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.CompareExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.CompareOperator;
 import edu.cmu.sei.annex.dmpl.dmpl.CondStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.Constant;
+import edu.cmu.sei.annex.dmpl.dmpl.Defineline;
 import edu.cmu.sei.annex.dmpl.dmpl.Dimension;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplFactory;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
@@ -44,6 +46,9 @@ import edu.cmu.sei.annex.dmpl.dmpl.FunctionDeclaration;
 import edu.cmu.sei.annex.dmpl.dmpl.IdDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.IdExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.IdRole;
+import edu.cmu.sei.annex.dmpl.dmpl.Includeline;
+import edu.cmu.sei.annex.dmpl.dmpl.IncrementStmt;
+import edu.cmu.sei.annex.dmpl.dmpl.InitAssignmentStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.IntConst;
 import edu.cmu.sei.annex.dmpl.dmpl.IntDimension;
 import edu.cmu.sei.annex.dmpl.dmpl.IntExpr;
@@ -60,6 +65,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.NodeVarScopeEnum;
 import edu.cmu.sei.annex.dmpl.dmpl.NumberConst;
 import edu.cmu.sei.annex.dmpl.dmpl.OrExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.Param;
+import edu.cmu.sei.annex.dmpl.dmpl.ParenthesizedExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.Procedure;
 import edu.cmu.sei.annex.dmpl.dmpl.Program;
 import edu.cmu.sei.annex.dmpl.dmpl.ProgramElement;
@@ -78,6 +84,7 @@ import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.SimpleStmtKeywordEnum;
 import edu.cmu.sei.annex.dmpl.dmpl.Specification;
 import edu.cmu.sei.annex.dmpl.dmpl.Stmt;
+import edu.cmu.sei.annex.dmpl.dmpl.StringExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.Target;
 import edu.cmu.sei.annex.dmpl.dmpl.TernaryExpr;
 import edu.cmu.sei.annex.dmpl.dmpl.ThreadDeclaration;
@@ -289,6 +296,27 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass assignmentOrIncrementStmtEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass incrementStmtEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass initAssignmentStmtEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass assignmentStmtEClass = null;
 
   /**
@@ -318,6 +346,20 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass targetEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass includelineEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass definelineEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -604,6 +646,13 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass stringExprEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass nodeNumExprEClass = null;
 
   /**
@@ -619,6 +668,13 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * @generated
    */
   private EClass builtInExprEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass parenthesizedExprEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -1372,6 +1428,76 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getAssignmentOrIncrementStmt()
+  {
+    return assignmentOrIncrementStmtEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getIncrementStmt()
+  {
+    return incrementStmtEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getIncrementStmt_Var()
+  {
+    return (EAttribute)incrementStmtEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getInitAssignmentStmt()
+  {
+    return initAssignmentStmtEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getInitAssignmentStmt_Type()
+  {
+    return (EReference)initAssignmentStmtEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getInitAssignmentStmt_Variable()
+  {
+    return (EReference)initAssignmentStmtEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getInitAssignmentStmt_Value()
+  {
+    return (EReference)initAssignmentStmtEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getAssignmentStmt()
   {
     return assignmentStmtEClass;
@@ -1462,7 +1588,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getCallExpr_Namespace()
+  public EAttribute getCallExpr_Namespaces()
   {
     return (EAttribute)callExprEClass.getEStructuralFeatures().get(0);
   }
@@ -1525,6 +1651,46 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
   public EReference getTarget_Elements()
   {
     return (EReference)targetEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getIncludeline()
+  {
+    return includelineEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getIncludeline_Line()
+  {
+    return (EAttribute)includelineEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getDefineline()
+  {
+    return definelineEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getDefineline_Line()
+  {
+    return (EAttribute)definelineEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -2642,6 +2808,26 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getStringExpr()
+  {
+    return stringExprEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getStringExpr_Value()
+  {
+    return (EAttribute)stringExprEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getNodeNumExpr()
   {
     return nodeNumExprEClass;
@@ -2715,6 +2901,26 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
   public EReference getBuiltInExpr_SecondArg()
   {
     return (EReference)builtInExprEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getParenthesizedExpr()
+  {
+    return parenthesizedExprEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getParenthesizedExpr_Expr()
+  {
+    return (EReference)parenthesizedExprEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -2961,6 +3167,16 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     stmtEClass = createEClass(STMT);
 
+    assignmentOrIncrementStmtEClass = createEClass(ASSIGNMENT_OR_INCREMENT_STMT);
+
+    incrementStmtEClass = createEClass(INCREMENT_STMT);
+    createEAttribute(incrementStmtEClass, INCREMENT_STMT__VAR);
+
+    initAssignmentStmtEClass = createEClass(INIT_ASSIGNMENT_STMT);
+    createEReference(initAssignmentStmtEClass, INIT_ASSIGNMENT_STMT__TYPE);
+    createEReference(initAssignmentStmtEClass, INIT_ASSIGNMENT_STMT__VARIABLE);
+    createEReference(initAssignmentStmtEClass, INIT_ASSIGNMENT_STMT__VALUE);
+
     assignmentStmtEClass = createEClass(ASSIGNMENT_STMT);
     createEReference(assignmentStmtEClass, ASSIGNMENT_STMT__VARIABLE);
     createEReference(assignmentStmtEClass, ASSIGNMENT_STMT__VALUE);
@@ -2973,7 +3189,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     exprEClass = createEClass(EXPR);
 
     callExprEClass = createEClass(CALL_EXPR);
-    createEAttribute(callExprEClass, CALL_EXPR__NAMESPACE);
+    createEAttribute(callExprEClass, CALL_EXPR__NAMESPACES);
     createEAttribute(callExprEClass, CALL_EXPR__NAME);
     createEReference(callExprEClass, CALL_EXPR__ARGS);
     createEReference(callExprEClass, CALL_EXPR__AT);
@@ -2981,6 +3197,12 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     targetEClass = createEClass(TARGET);
     createEAttribute(targetEClass, TARGET__NAMES);
     createEReference(targetEClass, TARGET__ELEMENTS);
+
+    includelineEClass = createEClass(INCLUDELINE);
+    createEAttribute(includelineEClass, INCLUDELINE__LINE);
+
+    definelineEClass = createEClass(DEFINELINE);
+    createEAttribute(definelineEClass, DEFINELINE__LINE);
 
     constantEClass = createEClass(CONSTANT);
     createEAttribute(constantEClass, CONSTANT__NAME);
@@ -3133,6 +3355,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     doubleExprEClass = createEClass(DOUBLE_EXPR);
     createEAttribute(doubleExprEClass, DOUBLE_EXPR__VALUE);
 
+    stringExprEClass = createEClass(STRING_EXPR);
+    createEAttribute(stringExprEClass, STRING_EXPR__VALUE);
+
     nodeNumExprEClass = createEClass(NODE_NUM_EXPR);
 
     unaryExprEClass = createEClass(UNARY_EXPR);
@@ -3143,6 +3368,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     createEAttribute(builtInExprEClass, BUILT_IN_EXPR__FUNCTION);
     createEAttribute(builtInExprEClass, BUILT_IN_EXPR__FIRST_ARG);
     createEReference(builtInExprEClass, BUILT_IN_EXPR__SECOND_ARG);
+
+    parenthesizedExprEClass = createEClass(PARENTHESIZED_EXPR);
+    createEReference(parenthesizedExprEClass, PARENTHESIZED_EXPR__EXPR);
 
     // Create enums
     signEnumEEnum = createEEnum(SIGN_ENUM);
@@ -3204,11 +3432,15 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     procedureEClass.getESuperTypes().add(this.getAttributableNodeOrProcedure());
     procedureEClass.getESuperTypes().add(this.getAttributableElement());
     procedureEClass.getESuperTypes().add(this.getAttributableNoRoleElement());
+    incrementStmtEClass.getESuperTypes().add(this.getAssignmentOrIncrementStmt());
     assignmentStmtEClass.getESuperTypes().add(this.getStmt());
+    assignmentStmtEClass.getESuperTypes().add(this.getAssignmentOrIncrementStmt());
     lValEClass.getESuperTypes().add(this.getExpr());
     callExprEClass.getESuperTypes().add(this.getStmt());
     callExprEClass.getESuperTypes().add(this.getExpr());
     targetEClass.getESuperTypes().add(this.getProgramElement());
+    includelineEClass.getESuperTypes().add(this.getProgramElementNoTarget());
+    definelineEClass.getESuperTypes().add(this.getProgramElementNoTarget());
     constantEClass.getESuperTypes().add(this.getProgramElementNoTarget());
     attributableProgramElementEClass.getESuperTypes().add(this.getProgramElementNoTarget());
     nodeEClass.getESuperTypes().add(this.getAttributableNodeOrProcedure());
@@ -3249,9 +3481,11 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     idExprEClass.getESuperTypes().add(this.getExpr());
     intExprEClass.getESuperTypes().add(this.getExpr());
     doubleExprEClass.getESuperTypes().add(this.getExpr());
+    stringExprEClass.getESuperTypes().add(this.getExpr());
     nodeNumExprEClass.getESuperTypes().add(this.getExpr());
     unaryExprEClass.getESuperTypes().add(this.getExpr());
     builtInExprEClass.getESuperTypes().add(this.getExpr());
+    parenthesizedExprEClass.getESuperTypes().add(this.getExpr());
 
     // Initialize classes and features; add operations and parameters
     initEClass(programEClass, Program.class, "Program", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -3338,6 +3572,16 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     initEClass(stmtEClass, Stmt.class, "Stmt", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+    initEClass(assignmentOrIncrementStmtEClass, AssignmentOrIncrementStmt.class, "AssignmentOrIncrementStmt", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(incrementStmtEClass, IncrementStmt.class, "IncrementStmt", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getIncrementStmt_Var(), ecorePackage.getEString(), "var", null, 0, 1, IncrementStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(initAssignmentStmtEClass, InitAssignmentStmt.class, "InitAssignmentStmt", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getInitAssignmentStmt_Type(), this.getType(), null, "type", null, 0, 1, InitAssignmentStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getInitAssignmentStmt_Variable(), this.getLVal(), null, "variable", null, 0, 1, InitAssignmentStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getInitAssignmentStmt_Value(), this.getExpr(), null, "value", null, 0, 1, InitAssignmentStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     initEClass(assignmentStmtEClass, AssignmentStmt.class, "AssignmentStmt", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getAssignmentStmt_Variable(), this.getLVal(), null, "variable", null, 0, 1, AssignmentStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getAssignmentStmt_Value(), this.getExpr(), null, "value", null, 0, 1, AssignmentStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3350,7 +3594,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEClass(exprEClass, Expr.class, "Expr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(callExprEClass, CallExpr.class, "CallExpr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getCallExpr_Namespace(), ecorePackage.getEString(), "namespace", null, 0, 1, CallExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getCallExpr_Namespaces(), ecorePackage.getEString(), "namespaces", null, 0, -1, CallExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getCallExpr_Name(), ecorePackage.getEString(), "name", null, 0, 1, CallExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getCallExpr_Args(), this.getExpr(), null, "args", null, 0, -1, CallExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getCallExpr_At(), this.getExpr(), null, "at", null, 0, 1, CallExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3358,6 +3602,12 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEClass(targetEClass, Target.class, "Target", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getTarget_Names(), ecorePackage.getEString(), "names", null, 0, -1, Target.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getTarget_Elements(), this.getProgramElementNoTarget(), null, "elements", null, 0, -1, Target.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(includelineEClass, Includeline.class, "Includeline", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getIncludeline_Line(), ecorePackage.getEString(), "line", null, 0, 1, Includeline.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(definelineEClass, Defineline.class, "Defineline", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getDefineline_Line(), ecorePackage.getEString(), "line", null, 0, 1, Defineline.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(constantEClass, Constant.class, "Constant", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getConstant_Name(), ecorePackage.getEString(), "name", null, 0, 1, Constant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3425,9 +3675,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEReference(getWhileStmt_Stmt(), this.getStmt(), null, "stmt", null, 0, 1, WhileStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(forStmtEClass, ForStmt.class, "ForStmt", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getForStmt_Inits(), this.getAssignmentStmt(), null, "inits", null, 0, -1, ForStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getForStmt_Inits(), this.getInitAssignmentStmt(), null, "inits", null, 0, -1, ForStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getForStmt_Condition(), this.getExpr(), null, "condition", null, 0, 1, ForStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getForStmt_Update(), this.getAssignmentStmt(), null, "update", null, 0, 1, ForStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getForStmt_Update(), this.getAssignmentOrIncrementStmt(), null, "update", null, 0, 1, ForStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getForStmt_Stmt(), this.getStmt(), null, "stmt", null, 0, 1, ForStmt.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(condStmtEClass, CondStmt.class, "CondStmt", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -3510,6 +3760,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEClass(doubleExprEClass, DoubleExpr.class, "DoubleExpr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getDoubleExpr_Value(), ecorePackage.getEDouble(), "value", null, 0, 1, DoubleExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(stringExprEClass, StringExpr.class, "StringExpr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getStringExpr_Value(), ecorePackage.getEString(), "value", null, 0, 1, StringExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     initEClass(nodeNumExprEClass, NodeNumExpr.class, "NodeNumExpr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
     initEClass(unaryExprEClass, UnaryExpr.class, "UnaryExpr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -3520,6 +3773,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     initEAttribute(getBuiltInExpr_Function(), this.getBuiltInFunctionEnum(), "function", null, 0, 1, BuiltInExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getBuiltInExpr_FirstArg(), ecorePackage.getEString(), "firstArg", null, 0, 1, BuiltInExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getBuiltInExpr_SecondArg(), this.getExpr(), null, "secondArg", null, 0, 1, BuiltInExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(parenthesizedExprEClass, ParenthesizedExpr.class, "ParenthesizedExpr", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getParenthesizedExpr_Expr(), this.getExpr(), null, "expr", null, 0, 1, ParenthesizedExpr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Initialize enums and add enum literals
     initEEnum(signEnumEEnum, SignEnum.class, "SignEnum");
@@ -3583,6 +3839,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
     addEEnumLiteral(unaryOperatorEEnum, UnaryOperator.PLUS);
     addEEnumLiteral(unaryOperatorEEnum, UnaryOperator.LOGICAL_NOT);
     addEEnumLiteral(unaryOperatorEEnum, UnaryOperator.BITWISE_NOT);
+    addEEnumLiteral(unaryOperatorEEnum, UnaryOperator.INCR);
 
     initEEnum(builtInFunctionEnumEEnum, BuiltInFunctionEnum.class, "BuiltInFunctionEnum");
     addEEnumLiteral(builtInFunctionEnumEEnum, BuiltInFunctionEnum.EXISTS_OTHER);

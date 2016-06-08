@@ -57,7 +57,17 @@ public enum UnaryOperator implements Enumerator
    * @generated
    * @ordered
    */
-  BITWISE_NOT(3, "BITWISE_NOT", "~");
+  BITWISE_NOT(3, "BITWISE_NOT", "~"),
+
+  /**
+   * The '<em><b>INCR</b></em>' literal object.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #INCR_VALUE
+   * @generated
+   * @ordered
+   */
+  INCR(4, "INCR", "++");
 
   /**
    * The '<em><b>MINUS</b></em>' literal value.
@@ -120,6 +130,21 @@ public enum UnaryOperator implements Enumerator
   public static final int BITWISE_NOT_VALUE = 3;
 
   /**
+   * The '<em><b>INCR</b></em>' literal value.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of '<em><b>INCR</b></em>' literal object isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @see #INCR
+   * @model literal="++"
+   * @generated
+   * @ordered
+   */
+  public static final int INCR_VALUE = 4;
+
+  /**
    * An array of all the '<em><b>Unary Operator</b></em>' enumerators.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -132,6 +157,7 @@ public enum UnaryOperator implements Enumerator
       PLUS,
       LOGICAL_NOT,
       BITWISE_NOT,
+      INCR,
     };
 
   /**
@@ -200,6 +226,7 @@ public enum UnaryOperator implements Enumerator
       case PLUS_VALUE: return PLUS;
       case LOGICAL_NOT_VALUE: return LOGICAL_NOT;
       case BITWISE_NOT_VALUE: return BITWISE_NOT;
+      case INCR_VALUE: return INCR;
     }
     return null;
   }

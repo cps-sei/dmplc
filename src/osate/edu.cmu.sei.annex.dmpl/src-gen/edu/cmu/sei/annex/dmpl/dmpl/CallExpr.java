@@ -13,7 +13,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.CallExpr#getNamespace <em>Namespace</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.CallExpr#getNamespaces <em>Namespaces</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.CallExpr#getName <em>Name</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.CallExpr#getArgs <em>Args</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.CallExpr#getAt <em>At</em>}</li>
@@ -26,30 +26,20 @@ import org.eclipse.emf.common.util.EList;
 public interface CallExpr extends Stmt, Expr
 {
   /**
-   * Returns the value of the '<em><b>Namespace</b></em>' attribute.
+   * Returns the value of the '<em><b>Namespaces</b></em>' attribute list.
+   * The list contents are of type {@link java.lang.String}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Namespace</em>' attribute isn't clear,
+   * If the meaning of the '<em>Namespaces</em>' attribute list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Namespace</em>' attribute.
-   * @see #setNamespace(String)
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getCallExpr_Namespace()
-   * @model
+   * @return the value of the '<em>Namespaces</em>' attribute list.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getCallExpr_Namespaces()
+   * @model unique="false"
    * @generated
    */
-  String getNamespace();
-
-  /**
-   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.CallExpr#getNamespace <em>Namespace</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Namespace</em>' attribute.
-   * @see #getNamespace()
-   * @generated
-   */
-  void setNamespace(String value);
+  EList<String> getNamespaces();
 
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.

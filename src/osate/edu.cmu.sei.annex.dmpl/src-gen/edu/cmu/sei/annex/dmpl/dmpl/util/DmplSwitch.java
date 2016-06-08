@@ -267,11 +267,34 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case DmplPackage.ASSIGNMENT_OR_INCREMENT_STMT:
+      {
+        AssignmentOrIncrementStmt assignmentOrIncrementStmt = (AssignmentOrIncrementStmt)theEObject;
+        T result = caseAssignmentOrIncrementStmt(assignmentOrIncrementStmt);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.INCREMENT_STMT:
+      {
+        IncrementStmt incrementStmt = (IncrementStmt)theEObject;
+        T result = caseIncrementStmt(incrementStmt);
+        if (result == null) result = caseAssignmentOrIncrementStmt(incrementStmt);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.INIT_ASSIGNMENT_STMT:
+      {
+        InitAssignmentStmt initAssignmentStmt = (InitAssignmentStmt)theEObject;
+        T result = caseInitAssignmentStmt(initAssignmentStmt);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case DmplPackage.ASSIGNMENT_STMT:
       {
         AssignmentStmt assignmentStmt = (AssignmentStmt)theEObject;
         T result = caseAssignmentStmt(assignmentStmt);
         if (result == null) result = caseStmt(assignmentStmt);
+        if (result == null) result = caseAssignmentOrIncrementStmt(assignmentStmt);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -304,6 +327,24 @@ public class DmplSwitch<T> extends Switch<T>
         Target target = (Target)theEObject;
         T result = caseTarget(target);
         if (result == null) result = caseProgramElement(target);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.INCLUDELINE:
+      {
+        Includeline includeline = (Includeline)theEObject;
+        T result = caseIncludeline(includeline);
+        if (result == null) result = caseProgramElementNoTarget(includeline);
+        if (result == null) result = caseProgramElement(includeline);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.DEFINELINE:
+      {
+        Defineline defineline = (Defineline)theEObject;
+        T result = caseDefineline(defineline);
+        if (result == null) result = caseProgramElementNoTarget(defineline);
+        if (result == null) result = caseProgramElement(defineline);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -641,6 +682,14 @@ public class DmplSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case DmplPackage.STRING_EXPR:
+      {
+        StringExpr stringExpr = (StringExpr)theEObject;
+        T result = caseStringExpr(stringExpr);
+        if (result == null) result = caseExpr(stringExpr);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case DmplPackage.NODE_NUM_EXPR:
       {
         NodeNumExpr nodeNumExpr = (NodeNumExpr)theEObject;
@@ -662,6 +711,14 @@ public class DmplSwitch<T> extends Switch<T>
         BuiltInExpr builtInExpr = (BuiltInExpr)theEObject;
         T result = caseBuiltInExpr(builtInExpr);
         if (result == null) result = caseExpr(builtInExpr);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case DmplPackage.PARENTHESIZED_EXPR:
+      {
+        ParenthesizedExpr parenthesizedExpr = (ParenthesizedExpr)theEObject;
+        T result = caseParenthesizedExpr(parenthesizedExpr);
+        if (result == null) result = caseExpr(parenthesizedExpr);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -1070,6 +1127,54 @@ public class DmplSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>Assignment Or Increment Stmt</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Assignment Or Increment Stmt</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseAssignmentOrIncrementStmt(AssignmentOrIncrementStmt object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Increment Stmt</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Increment Stmt</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseIncrementStmt(IncrementStmt object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Init Assignment Stmt</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Init Assignment Stmt</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseInitAssignmentStmt(InitAssignmentStmt object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Assignment Stmt</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -1145,6 +1250,38 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseTarget(Target object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Includeline</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Includeline</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseIncludeline(Includeline object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Defineline</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Defineline</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseDefineline(Defineline object)
   {
     return null;
   }
@@ -1790,6 +1927,22 @@ public class DmplSwitch<T> extends Switch<T>
   }
 
   /**
+   * Returns the result of interpreting the object as an instance of '<em>String Expr</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>String Expr</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseStringExpr(StringExpr object)
+  {
+    return null;
+  }
+
+  /**
    * Returns the result of interpreting the object as an instance of '<em>Node Num Expr</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
@@ -1833,6 +1986,22 @@ public class DmplSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseBuiltInExpr(BuiltInExpr object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Parenthesized Expr</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Parenthesized Expr</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseParenthesizedExpr(ParenthesizedExpr object)
   {
     return null;
   }

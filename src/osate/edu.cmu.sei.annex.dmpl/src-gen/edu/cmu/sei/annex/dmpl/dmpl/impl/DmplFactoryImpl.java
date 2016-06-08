@@ -90,11 +90,16 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.ATTR: return createAttr();
       case DmplPackage.PARAM: return createParam();
       case DmplPackage.STMT: return createStmt();
+      case DmplPackage.ASSIGNMENT_OR_INCREMENT_STMT: return createAssignmentOrIncrementStmt();
+      case DmplPackage.INCREMENT_STMT: return createIncrementStmt();
+      case DmplPackage.INIT_ASSIGNMENT_STMT: return createInitAssignmentStmt();
       case DmplPackage.ASSIGNMENT_STMT: return createAssignmentStmt();
       case DmplPackage.LVAL: return createLVal();
       case DmplPackage.EXPR: return createExpr();
       case DmplPackage.CALL_EXPR: return createCallExpr();
       case DmplPackage.TARGET: return createTarget();
+      case DmplPackage.INCLUDELINE: return createIncludeline();
+      case DmplPackage.DEFINELINE: return createDefineline();
       case DmplPackage.CONSTANT: return createConstant();
       case DmplPackage.ATTRIBUTABLE_PROGRAM_ELEMENT: return createAttributableProgramElement();
       case DmplPackage.NODE: return createNode();
@@ -135,9 +140,11 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
       case DmplPackage.ID_EXPR: return createIdExpr();
       case DmplPackage.INT_EXPR: return createIntExpr();
       case DmplPackage.DOUBLE_EXPR: return createDoubleExpr();
+      case DmplPackage.STRING_EXPR: return createStringExpr();
       case DmplPackage.NODE_NUM_EXPR: return createNodeNumExpr();
       case DmplPackage.UNARY_EXPR: return createUnaryExpr();
       case DmplPackage.BUILT_IN_EXPR: return createBuiltInExpr();
+      case DmplPackage.PARENTHESIZED_EXPR: return createParenthesizedExpr();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -505,6 +512,39 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  public AssignmentOrIncrementStmt createAssignmentOrIncrementStmt()
+  {
+    AssignmentOrIncrementStmtImpl assignmentOrIncrementStmt = new AssignmentOrIncrementStmtImpl();
+    return assignmentOrIncrementStmt;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public IncrementStmt createIncrementStmt()
+  {
+    IncrementStmtImpl incrementStmt = new IncrementStmtImpl();
+    return incrementStmt;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public InitAssignmentStmt createInitAssignmentStmt()
+  {
+    InitAssignmentStmtImpl initAssignmentStmt = new InitAssignmentStmtImpl();
+    return initAssignmentStmt;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public AssignmentStmt createAssignmentStmt()
   {
     AssignmentStmtImpl assignmentStmt = new AssignmentStmtImpl();
@@ -553,6 +593,28 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     TargetImpl target = new TargetImpl();
     return target;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Includeline createIncludeline()
+  {
+    IncludelineImpl includeline = new IncludelineImpl();
+    return includeline;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public Defineline createDefineline()
+  {
+    DefinelineImpl defineline = new DefinelineImpl();
+    return defineline;
   }
 
   /**
@@ -1000,6 +1062,17 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
    * <!-- end-user-doc -->
    * @generated
    */
+  public StringExpr createStringExpr()
+  {
+    StringExprImpl stringExpr = new StringExprImpl();
+    return stringExpr;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public NodeNumExpr createNodeNumExpr()
   {
     NodeNumExprImpl nodeNumExpr = new NodeNumExprImpl();
@@ -1026,6 +1099,17 @@ public class DmplFactoryImpl extends EFactoryImpl implements DmplFactory
   {
     BuiltInExprImpl builtInExpr = new BuiltInExprImpl();
     return builtInExpr;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ParenthesizedExpr createParenthesizedExpr()
+  {
+    ParenthesizedExprImpl parenthesizedExpr = new ParenthesizedExprImpl();
+    return parenthesizedExpr;
   }
 
   /**

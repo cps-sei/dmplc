@@ -2,10 +2,11 @@
  */
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
-import edu.cmu.sei.annex.dmpl.dmpl.AssignmentStmt;
+import edu.cmu.sei.annex.dmpl.dmpl.AssignmentOrIncrementStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
 import edu.cmu.sei.annex.dmpl.dmpl.Expr;
 import edu.cmu.sei.annex.dmpl.dmpl.ForStmt;
+import edu.cmu.sei.annex.dmpl.dmpl.InitAssignmentStmt;
 import edu.cmu.sei.annex.dmpl.dmpl.Stmt;
 
 import java.util.Collection;
@@ -49,7 +50,7 @@ public class ForStmtImpl extends StmtImpl implements ForStmt
    * @generated
    * @ordered
    */
-  protected EList<AssignmentStmt> inits;
+  protected EList<InitAssignmentStmt> inits;
 
   /**
    * The cached value of the '{@link #getCondition() <em>Condition</em>}' containment reference.
@@ -69,7 +70,7 @@ public class ForStmtImpl extends StmtImpl implements ForStmt
    * @generated
    * @ordered
    */
-  protected AssignmentStmt update;
+  protected AssignmentOrIncrementStmt update;
 
   /**
    * The cached value of the '{@link #getStmt() <em>Stmt</em>}' containment reference.
@@ -107,11 +108,11 @@ public class ForStmtImpl extends StmtImpl implements ForStmt
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<AssignmentStmt> getInits()
+  public EList<InitAssignmentStmt> getInits()
   {
     if (inits == null)
     {
-      inits = new EObjectContainmentEList<AssignmentStmt>(AssignmentStmt.class, this, DmplPackage.FOR_STMT__INITS);
+      inits = new EObjectContainmentEList<InitAssignmentStmt>(InitAssignmentStmt.class, this, DmplPackage.FOR_STMT__INITS);
     }
     return inits;
   }
@@ -169,7 +170,7 @@ public class ForStmtImpl extends StmtImpl implements ForStmt
    * <!-- end-user-doc -->
    * @generated
    */
-  public AssignmentStmt getUpdate()
+  public AssignmentOrIncrementStmt getUpdate()
   {
     return update;
   }
@@ -179,9 +180,9 @@ public class ForStmtImpl extends StmtImpl implements ForStmt
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetUpdate(AssignmentStmt newUpdate, NotificationChain msgs)
+  public NotificationChain basicSetUpdate(AssignmentOrIncrementStmt newUpdate, NotificationChain msgs)
   {
-    AssignmentStmt oldUpdate = update;
+    AssignmentOrIncrementStmt oldUpdate = update;
     update = newUpdate;
     if (eNotificationRequired())
     {
@@ -196,7 +197,7 @@ public class ForStmtImpl extends StmtImpl implements ForStmt
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setUpdate(AssignmentStmt newUpdate)
+  public void setUpdate(AssignmentOrIncrementStmt newUpdate)
   {
     if (newUpdate != update)
     {
@@ -317,13 +318,13 @@ public class ForStmtImpl extends StmtImpl implements ForStmt
     {
       case DmplPackage.FOR_STMT__INITS:
         getInits().clear();
-        getInits().addAll((Collection<? extends AssignmentStmt>)newValue);
+        getInits().addAll((Collection<? extends InitAssignmentStmt>)newValue);
         return;
       case DmplPackage.FOR_STMT__CONDITION:
         setCondition((Expr)newValue);
         return;
       case DmplPackage.FOR_STMT__UPDATE:
-        setUpdate((AssignmentStmt)newValue);
+        setUpdate((AssignmentOrIncrementStmt)newValue);
         return;
       case DmplPackage.FOR_STMT__STMT:
         setStmt((Stmt)newValue);
@@ -349,7 +350,7 @@ public class ForStmtImpl extends StmtImpl implements ForStmt
         setCondition((Expr)null);
         return;
       case DmplPackage.FOR_STMT__UPDATE:
-        setUpdate((AssignmentStmt)null);
+        setUpdate((AssignmentOrIncrementStmt)null);
         return;
       case DmplPackage.FOR_STMT__STMT:
         setStmt((Stmt)null);

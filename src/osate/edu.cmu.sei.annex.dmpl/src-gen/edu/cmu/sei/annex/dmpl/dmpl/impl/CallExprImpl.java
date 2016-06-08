@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.eclipse.emf.ecore.util.EDataTypeEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -29,7 +30,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.CallExprImpl#getNamespace <em>Namespace</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.CallExprImpl#getNamespaces <em>Namespaces</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.CallExprImpl#getName <em>Name</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.CallExprImpl#getArgs <em>Args</em>}</li>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.CallExprImpl#getAt <em>At</em>}</li>
@@ -40,24 +41,14 @@ import org.eclipse.emf.ecore.util.InternalEList;
 public class CallExprImpl extends StmtImpl implements CallExpr
 {
   /**
-   * The default value of the '{@link #getNamespace() <em>Namespace</em>}' attribute.
+   * The cached value of the '{@link #getNamespaces() <em>Namespaces</em>}' attribute list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getNamespace()
+   * @see #getNamespaces()
    * @generated
    * @ordered
    */
-  protected static final String NAMESPACE_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getNamespace() <em>Namespace</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getNamespace()
-   * @generated
-   * @ordered
-   */
-  protected String namespace = NAMESPACE_EDEFAULT;
+  protected EList<String> namespaces;
 
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -125,22 +116,13 @@ public class CallExprImpl extends StmtImpl implements CallExpr
    * <!-- end-user-doc -->
    * @generated
    */
-  public String getNamespace()
+  public EList<String> getNamespaces()
   {
-    return namespace;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setNamespace(String newNamespace)
-  {
-    String oldNamespace = namespace;
-    namespace = newNamespace;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.CALL_EXPR__NAMESPACE, oldNamespace, namespace));
+    if (namespaces == null)
+    {
+      namespaces = new EDataTypeEList<String>(String.class, this, DmplPackage.CALL_EXPR__NAMESPACES);
+    }
+    return namespaces;
   }
 
   /**
@@ -256,8 +238,8 @@ public class CallExprImpl extends StmtImpl implements CallExpr
   {
     switch (featureID)
     {
-      case DmplPackage.CALL_EXPR__NAMESPACE:
-        return getNamespace();
+      case DmplPackage.CALL_EXPR__NAMESPACES:
+        return getNamespaces();
       case DmplPackage.CALL_EXPR__NAME:
         return getName();
       case DmplPackage.CALL_EXPR__ARGS:
@@ -279,8 +261,9 @@ public class CallExprImpl extends StmtImpl implements CallExpr
   {
     switch (featureID)
     {
-      case DmplPackage.CALL_EXPR__NAMESPACE:
-        setNamespace((String)newValue);
+      case DmplPackage.CALL_EXPR__NAMESPACES:
+        getNamespaces().clear();
+        getNamespaces().addAll((Collection<? extends String>)newValue);
         return;
       case DmplPackage.CALL_EXPR__NAME:
         setName((String)newValue);
@@ -306,8 +289,8 @@ public class CallExprImpl extends StmtImpl implements CallExpr
   {
     switch (featureID)
     {
-      case DmplPackage.CALL_EXPR__NAMESPACE:
-        setNamespace(NAMESPACE_EDEFAULT);
+      case DmplPackage.CALL_EXPR__NAMESPACES:
+        getNamespaces().clear();
         return;
       case DmplPackage.CALL_EXPR__NAME:
         setName(NAME_EDEFAULT);
@@ -332,8 +315,8 @@ public class CallExprImpl extends StmtImpl implements CallExpr
   {
     switch (featureID)
     {
-      case DmplPackage.CALL_EXPR__NAMESPACE:
-        return NAMESPACE_EDEFAULT == null ? namespace != null : !NAMESPACE_EDEFAULT.equals(namespace);
+      case DmplPackage.CALL_EXPR__NAMESPACES:
+        return namespaces != null && !namespaces.isEmpty();
       case DmplPackage.CALL_EXPR__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case DmplPackage.CALL_EXPR__ARGS:
@@ -355,8 +338,8 @@ public class CallExprImpl extends StmtImpl implements CallExpr
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (namespace: ");
-    result.append(namespace);
+    result.append(" (namespaces: ");
+    result.append(namespaces);
     result.append(", name: ");
     result.append(name);
     result.append(')');

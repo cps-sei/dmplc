@@ -24,22 +24,18 @@ public class DmplSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected DmplGrammarAccess grammarAccess;
 	protected AbstractElementAlias match_AttributableNodeOrProcedure_NODEKeyword_0_1_1_or_NodeKeyword_0_1_0;
 	protected AbstractElementAlias match_AttributableNodeOrProcedure_SemicolonKeyword_0_3_0_or___LeftCurlyBracketKeyword_0_3_1_0_RightCurlyBracketKeyword_0_3_1_2__;
-	protected AbstractElementAlias match_ProgramElementNoTarget_CONSTKeyword_0_1_1_or_ConstKeyword_0_1_0;
+	protected AbstractElementAlias match_ProgramElementNoTarget_CONSTKeyword_2_1_1_or_ConstKeyword_2_1_0;
 	protected AbstractElementAlias match_ProgramElement_TARGETKeyword_0_1_1_or_TargetKeyword_0_1_0;
 	protected AbstractElementAlias match_Stmt_FORALL_DISTINCT_NODE_PAIRKeyword_9_1_1_or_Forall_distinct_node_pairKeyword_9_1_0;
-	protected AbstractElementAlias match_TerminalExpr_LeftParenthesisKeyword_8_0_a;
-	protected AbstractElementAlias match_TerminalExpr_LeftParenthesisKeyword_8_0_p;
 	
 	@Inject
 	protected void init(IGrammarAccess access) {
 		grammarAccess = (DmplGrammarAccess) access;
 		match_AttributableNodeOrProcedure_NODEKeyword_0_1_1_or_NodeKeyword_0_1_0 = new AlternativeAlias(false, false, new TokenAlias(false, false, grammarAccess.getAttributableNodeOrProcedureAccess().getNODEKeyword_0_1_1()), new TokenAlias(false, false, grammarAccess.getAttributableNodeOrProcedureAccess().getNodeKeyword_0_1_0()));
 		match_AttributableNodeOrProcedure_SemicolonKeyword_0_3_0_or___LeftCurlyBracketKeyword_0_3_1_0_RightCurlyBracketKeyword_0_3_1_2__ = new AlternativeAlias(false, false, new GroupAlias(false, false, new TokenAlias(false, false, grammarAccess.getAttributableNodeOrProcedureAccess().getLeftCurlyBracketKeyword_0_3_1_0()), new TokenAlias(false, false, grammarAccess.getAttributableNodeOrProcedureAccess().getRightCurlyBracketKeyword_0_3_1_2())), new TokenAlias(false, false, grammarAccess.getAttributableNodeOrProcedureAccess().getSemicolonKeyword_0_3_0()));
-		match_ProgramElementNoTarget_CONSTKeyword_0_1_1_or_ConstKeyword_0_1_0 = new AlternativeAlias(false, false, new TokenAlias(false, false, grammarAccess.getProgramElementNoTargetAccess().getCONSTKeyword_0_1_1()), new TokenAlias(false, false, grammarAccess.getProgramElementNoTargetAccess().getConstKeyword_0_1_0()));
+		match_ProgramElementNoTarget_CONSTKeyword_2_1_1_or_ConstKeyword_2_1_0 = new AlternativeAlias(false, false, new TokenAlias(false, false, grammarAccess.getProgramElementNoTargetAccess().getCONSTKeyword_2_1_1()), new TokenAlias(false, false, grammarAccess.getProgramElementNoTargetAccess().getConstKeyword_2_1_0()));
 		match_ProgramElement_TARGETKeyword_0_1_1_or_TargetKeyword_0_1_0 = new AlternativeAlias(false, false, new TokenAlias(false, false, grammarAccess.getProgramElementAccess().getTARGETKeyword_0_1_1()), new TokenAlias(false, false, grammarAccess.getProgramElementAccess().getTargetKeyword_0_1_0()));
 		match_Stmt_FORALL_DISTINCT_NODE_PAIRKeyword_9_1_1_or_Forall_distinct_node_pairKeyword_9_1_0 = new AlternativeAlias(false, false, new TokenAlias(false, false, grammarAccess.getStmtAccess().getFORALL_DISTINCT_NODE_PAIRKeyword_9_1_1()), new TokenAlias(false, false, grammarAccess.getStmtAccess().getForall_distinct_node_pairKeyword_9_1_0()));
-		match_TerminalExpr_LeftParenthesisKeyword_8_0_a = new TokenAlias(true, true, grammarAccess.getTerminalExprAccess().getLeftParenthesisKeyword_8_0());
-		match_TerminalExpr_LeftParenthesisKeyword_8_0_p = new TokenAlias(true, false, grammarAccess.getTerminalExprAccess().getLeftParenthesisKeyword_8_0());
 	}
 	
 	@Override
@@ -58,16 +54,12 @@ public class DmplSyntacticSequencer extends AbstractSyntacticSequencer {
 				emit_AttributableNodeOrProcedure_NODEKeyword_0_1_1_or_NodeKeyword_0_1_0(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_AttributableNodeOrProcedure_SemicolonKeyword_0_3_0_or___LeftCurlyBracketKeyword_0_3_1_0_RightCurlyBracketKeyword_0_3_1_2__.equals(syntax))
 				emit_AttributableNodeOrProcedure_SemicolonKeyword_0_3_0_or___LeftCurlyBracketKeyword_0_3_1_0_RightCurlyBracketKeyword_0_3_1_2__(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_ProgramElementNoTarget_CONSTKeyword_0_1_1_or_ConstKeyword_0_1_0.equals(syntax))
-				emit_ProgramElementNoTarget_CONSTKeyword_0_1_1_or_ConstKeyword_0_1_0(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_ProgramElementNoTarget_CONSTKeyword_2_1_1_or_ConstKeyword_2_1_0.equals(syntax))
+				emit_ProgramElementNoTarget_CONSTKeyword_2_1_1_or_ConstKeyword_2_1_0(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_ProgramElement_TARGETKeyword_0_1_1_or_TargetKeyword_0_1_0.equals(syntax))
 				emit_ProgramElement_TARGETKeyword_0_1_1_or_TargetKeyword_0_1_0(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_Stmt_FORALL_DISTINCT_NODE_PAIRKeyword_9_1_1_or_Forall_distinct_node_pairKeyword_9_1_0.equals(syntax))
 				emit_Stmt_FORALL_DISTINCT_NODE_PAIRKeyword_9_1_1_or_Forall_distinct_node_pairKeyword_9_1_0(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_TerminalExpr_LeftParenthesisKeyword_8_0_a.equals(syntax))
-				emit_TerminalExpr_LeftParenthesisKeyword_8_0_a(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if(match_TerminalExpr_LeftParenthesisKeyword_8_0_p.equals(syntax))
-				emit_TerminalExpr_LeftParenthesisKeyword_8_0_p(semanticObject, getLastNavigableState(), syntaxNodes);
 			else acceptNodes(getLastNavigableState(), syntaxNodes);
 		}
 	}
@@ -101,7 +93,7 @@ public class DmplSyntacticSequencer extends AbstractSyntacticSequencer {
 	 * This ambiguous syntax occurs at:
 	 *     (rule start) (ambiguity) name=TIDENTIFIER
 	 */
-	protected void emit_ProgramElementNoTarget_CONSTKeyword_0_1_1_or_ConstKeyword_0_1_0(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_ProgramElementNoTarget_CONSTKeyword_2_1_1_or_ConstKeyword_2_1_0(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	
@@ -124,56 +116,6 @@ public class DmplSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) '(' node1=TIDENTIFIER
 	 */
 	protected void emit_Stmt_FORALL_DISTINCT_NODE_PAIRKeyword_9_1_1_or_Forall_distinct_node_pairKeyword_9_1_0(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Ambiguous syntax:
-	 *     '('*
-	 *
-	 * This ambiguous syntax occurs at:
-	 *     (rule start) (ambiguity) '#N' (rule start)
-	 *     (rule start) (ambiguity) 'id' (rule start)
-	 *     (rule start) (ambiguity) function=BuiltInFunction
-	 *     (rule start) (ambiguity) name=TIDENTIFIER
-	 *     (rule start) (ambiguity) namespace=TIDENTIFIER
-	 *     (rule start) (ambiguity) operator=UnaryOperator
-	 *     (rule start) (ambiguity) value=Double
-	 *     (rule start) (ambiguity) value=INT
-	 *     (rule start) (ambiguity) {AdditiveExpr.left=}
-	 *     (rule start) (ambiguity) {AndExpr.left=}
-	 *     (rule start) (ambiguity) {BitwiseAndExpr.left=}
-	 *     (rule start) (ambiguity) {BitwiseOrExpr.left=}
-	 *     (rule start) (ambiguity) {CompareExpr.left=}
-	 *     (rule start) (ambiguity) {EqualityExpr.left=}
-	 *     (rule start) (ambiguity) {MultiplicativeExpr.left=}
-	 *     (rule start) (ambiguity) {OrExpr.left=}
-	 *     (rule start) (ambiguity) {ShiftExpr.left=}
-	 *     (rule start) (ambiguity) {TernaryExpr.condition=}
-	 *     (rule start) (ambiguity) {XorExpr.left=}
-	 */
-	protected void emit_TerminalExpr_LeftParenthesisKeyword_8_0_a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Ambiguous syntax:
-	 *     '('+
-	 *
-	 * This ambiguous syntax occurs at:
-	 *     (rule start) (ambiguity) {AdditiveExpr.left=}
-	 *     (rule start) (ambiguity) {AndExpr.left=}
-	 *     (rule start) (ambiguity) {BitwiseAndExpr.left=}
-	 *     (rule start) (ambiguity) {BitwiseOrExpr.left=}
-	 *     (rule start) (ambiguity) {CompareExpr.left=}
-	 *     (rule start) (ambiguity) {EqualityExpr.left=}
-	 *     (rule start) (ambiguity) {MultiplicativeExpr.left=}
-	 *     (rule start) (ambiguity) {OrExpr.left=}
-	 *     (rule start) (ambiguity) {ShiftExpr.left=}
-	 *     (rule start) (ambiguity) {TernaryExpr.condition=}
-	 *     (rule start) (ambiguity) {XorExpr.left=}
-	 */
-	protected void emit_TerminalExpr_LeftParenthesisKeyword_8_0_p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

@@ -27,7 +27,7 @@ public interface ForStmt extends Stmt
 {
   /**
    * Returns the value of the '<em><b>Inits</b></em>' containment reference list.
-   * The list contents are of type {@link edu.cmu.sei.annex.dmpl.dmpl.AssignmentStmt}.
+   * The list contents are of type {@link edu.cmu.sei.annex.dmpl.dmpl.InitAssignmentStmt}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Inits</em>' containment reference list isn't clear,
@@ -39,7 +39,7 @@ public interface ForStmt extends Stmt
    * @model containment="true"
    * @generated
    */
-  EList<AssignmentStmt> getInits();
+  EList<InitAssignmentStmt> getInits();
 
   /**
    * Returns the value of the '<em><b>Condition</b></em>' containment reference.
@@ -76,12 +76,12 @@ public interface ForStmt extends Stmt
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Update</em>' containment reference.
-   * @see #setUpdate(AssignmentStmt)
+   * @see #setUpdate(AssignmentOrIncrementStmt)
    * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getForStmt_Update()
    * @model containment="true"
    * @generated
    */
-  AssignmentStmt getUpdate();
+  AssignmentOrIncrementStmt getUpdate();
 
   /**
    * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.ForStmt#getUpdate <em>Update</em>}' containment reference.
@@ -91,7 +91,7 @@ public interface ForStmt extends Stmt
    * @see #getUpdate()
    * @generated
    */
-  void setUpdate(AssignmentStmt value);
+  void setUpdate(AssignmentOrIncrementStmt value);
 
   /**
    * Returns the value of the '<em><b>Stmt</b></em>' containment reference.

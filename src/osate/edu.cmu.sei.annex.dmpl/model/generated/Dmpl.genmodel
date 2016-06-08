@@ -68,6 +68,7 @@
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//UnaryOperator/PLUS"/>
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//UnaryOperator/LOGICAL_NOT"/>
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//UnaryOperator/BITWISE_NOT"/>
+      <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//UnaryOperator/INCR"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Dmpl.ecore#//BuiltInFunctionEnum">
       <genEnumLiterals ecoreEnumLiteral="Dmpl.ecore#//BuiltInFunctionEnum/exists_other"/>
@@ -150,6 +151,15 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Param/var"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Stmt"/>
+    <genClasses ecoreClass="Dmpl.ecore#//AssignmentOrIncrementStmt"/>
+    <genClasses ecoreClass="Dmpl.ecore#//IncrementStmt">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//IncrementStmt/var"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//InitAssignmentStmt">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//InitAssignmentStmt/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//InitAssignmentStmt/variable"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//InitAssignmentStmt/value"/>
+    </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//AssignmentStmt">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//AssignmentStmt/variable"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//AssignmentStmt/value"/>
@@ -161,7 +171,7 @@
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Expr"/>
     <genClasses ecoreClass="Dmpl.ecore#//CallExpr">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//CallExpr/namespace"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//CallExpr/namespaces"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//CallExpr/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//CallExpr/args"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//CallExpr/at"/>
@@ -169,6 +179,12 @@
     <genClasses ecoreClass="Dmpl.ecore#//Target">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Target/names"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//Target/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//Includeline">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Includeline/line"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//Defineline">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Defineline/line"/>
     </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//Constant">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//Constant/name"/>
@@ -316,6 +332,9 @@
     <genClasses ecoreClass="Dmpl.ecore#//DoubleExpr">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//DoubleExpr/value"/>
     </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//StringExpr">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//StringExpr/value"/>
+    </genClasses>
     <genClasses ecoreClass="Dmpl.ecore#//NodeNumExpr"/>
     <genClasses ecoreClass="Dmpl.ecore#//UnaryExpr">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//UnaryExpr/operator"/>
@@ -325,6 +344,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//BuiltInExpr/function"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Dmpl.ecore#//BuiltInExpr/firstArg"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//BuiltInExpr/secondArg"/>
+    </genClasses>
+    <genClasses ecoreClass="Dmpl.ecore#//ParenthesizedExpr">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Dmpl.ecore#//ParenthesizedExpr/expr"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

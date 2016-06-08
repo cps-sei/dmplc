@@ -205,6 +205,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createStmtAdapter();
       }
       @Override
+      public Adapter caseAssignmentOrIncrementStmt(AssignmentOrIncrementStmt object)
+      {
+        return createAssignmentOrIncrementStmtAdapter();
+      }
+      @Override
+      public Adapter caseIncrementStmt(IncrementStmt object)
+      {
+        return createIncrementStmtAdapter();
+      }
+      @Override
+      public Adapter caseInitAssignmentStmt(InitAssignmentStmt object)
+      {
+        return createInitAssignmentStmtAdapter();
+      }
+      @Override
       public Adapter caseAssignmentStmt(AssignmentStmt object)
       {
         return createAssignmentStmtAdapter();
@@ -228,6 +243,16 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
       public Adapter caseTarget(Target object)
       {
         return createTargetAdapter();
+      }
+      @Override
+      public Adapter caseIncludeline(Includeline object)
+      {
+        return createIncludelineAdapter();
+      }
+      @Override
+      public Adapter caseDefineline(Defineline object)
+      {
+        return createDefinelineAdapter();
       }
       @Override
       public Adapter caseConstant(Constant object)
@@ -430,6 +455,11 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
         return createDoubleExprAdapter();
       }
       @Override
+      public Adapter caseStringExpr(StringExpr object)
+      {
+        return createStringExprAdapter();
+      }
+      @Override
       public Adapter caseNodeNumExpr(NodeNumExpr object)
       {
         return createNodeNumExprAdapter();
@@ -443,6 +473,11 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
       public Adapter caseBuiltInExpr(BuiltInExpr object)
       {
         return createBuiltInExprAdapter();
+      }
+      @Override
+      public Adapter caseParenthesizedExpr(ParenthesizedExpr object)
+      {
+        return createParenthesizedExprAdapter();
       }
       @Override
       public Adapter caseElement(Element object)
@@ -862,6 +897,51 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.AssignmentOrIncrementStmt <em>Assignment Or Increment Stmt</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.AssignmentOrIncrementStmt
+   * @generated
+   */
+  public Adapter createAssignmentOrIncrementStmtAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.IncrementStmt <em>Increment Stmt</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.IncrementStmt
+   * @generated
+   */
+  public Adapter createIncrementStmtAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.InitAssignmentStmt <em>Init Assignment Stmt</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.InitAssignmentStmt
+   * @generated
+   */
+  public Adapter createInitAssignmentStmtAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.AssignmentStmt <em>Assignment Stmt</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -932,6 +1012,36 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createTargetAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Includeline <em>Includeline</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Includeline
+   * @generated
+   */
+  public Adapter createIncludelineAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.Defineline <em>Defineline</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Defineline
+   * @generated
+   */
+  public Adapter createDefinelineAdapter()
   {
     return null;
   }
@@ -1537,6 +1647,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.StringExpr <em>String Expr</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.StringExpr
+   * @generated
+   */
+  public Adapter createStringExprAdapter()
+  {
+    return null;
+  }
+
+  /**
    * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.NodeNumExpr <em>Node Num Expr</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
@@ -1577,6 +1702,21 @@ public class DmplAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createBuiltInExprAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link edu.cmu.sei.annex.dmpl.dmpl.ParenthesizedExpr <em>Parenthesized Expr</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.ParenthesizedExpr
+   * @generated
+   */
+  public Adapter createParenthesizedExprAdapter()
   {
     return null;
   }

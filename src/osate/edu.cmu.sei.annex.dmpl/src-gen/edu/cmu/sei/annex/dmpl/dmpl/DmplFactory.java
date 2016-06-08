@@ -248,6 +248,33 @@ public interface DmplFactory extends EFactory
   Stmt createStmt();
 
   /**
+   * Returns a new object of class '<em>Assignment Or Increment Stmt</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Assignment Or Increment Stmt</em>'.
+   * @generated
+   */
+  AssignmentOrIncrementStmt createAssignmentOrIncrementStmt();
+
+  /**
+   * Returns a new object of class '<em>Increment Stmt</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Increment Stmt</em>'.
+   * @generated
+   */
+  IncrementStmt createIncrementStmt();
+
+  /**
+   * Returns a new object of class '<em>Init Assignment Stmt</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Init Assignment Stmt</em>'.
+   * @generated
+   */
+  InitAssignmentStmt createInitAssignmentStmt();
+
+  /**
    * Returns a new object of class '<em>Assignment Stmt</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -291,6 +318,24 @@ public interface DmplFactory extends EFactory
    * @generated
    */
   Target createTarget();
+
+  /**
+   * Returns a new object of class '<em>Includeline</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Includeline</em>'.
+   * @generated
+   */
+  Includeline createIncludeline();
+
+  /**
+   * Returns a new object of class '<em>Defineline</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Defineline</em>'.
+   * @generated
+   */
+  Defineline createDefineline();
 
   /**
    * Returns a new object of class '<em>Constant</em>'.
@@ -653,6 +698,15 @@ public interface DmplFactory extends EFactory
   DoubleExpr createDoubleExpr();
 
   /**
+   * Returns a new object of class '<em>String Expr</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>String Expr</em>'.
+   * @generated
+   */
+  StringExpr createStringExpr();
+
+  /**
    * Returns a new object of class '<em>Node Num Expr</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -678,6 +732,15 @@ public interface DmplFactory extends EFactory
    * @generated
    */
   BuiltInExpr createBuiltInExpr();
+
+  /**
+   * Returns a new object of class '<em>Parenthesized Expr</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Parenthesized Expr</em>'.
+   * @generated
+   */
+  ParenthesizedExpr createParenthesizedExpr();
 
   /**
    * Returns the package supported by this factory.

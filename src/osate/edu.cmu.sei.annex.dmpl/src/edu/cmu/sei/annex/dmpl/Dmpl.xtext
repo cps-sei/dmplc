@@ -23,9 +23,15 @@ ProgramElement:
 ;
 
 ProgramElementNoTarget:
+	{Includeline} line=INCLUDE_LINE |
+	{Defineline} line=DEFINE_LINE |
 	{Constant} ('const' | 'CONST') name=TIDENTIFIER '=' value=NumberConst ';' |
 	{AttributableProgramElement} attrs+=Attr* element=AttributableNodeOrProcedure
 ;
+
+
+terminal INCLUDE_LINE : '#include' !('\n'|'\r')* ('\r'? '\n')?;
+terminal DEFINE_LINE:   '#define'!('\n'|'\r')* ('\r'? '\n')?;
 
 AttributableNodeOrProcedure:
 	{Node} ('node' | 'NODE') name=TIDENTIFIER (';' | '{' elements+=NodeBodyElement* '}') |
@@ -129,13 +135,25 @@ Stmt:
 	{NestedStmt} '{' stmts+=Stmt* '}' |
 	AssignmentStmt ';' |
 	{WhileStmt} 'while' '(' condition=Expr ')' stmt=Stmt |
-	{ForStmt} 'for' '(' (inits+=AssignmentStmt (',' inits+=AssignmentStmt)*)? ';' condition=Expr? ';' update=AssignmentStmt? ')' stmt=Stmt |
+	{ForStmt} 'for' '(' (inits+=InitAssignmentStmt (',' inits+=InitAssignmentStmt)*)? ';' condition=Expr? ';' update=AssignmentOrIncrementStmt? ')' stmt=Stmt |
 	{CondStmt} attrs+=Attr* 'if' '(' condition=Expr ')' then=Stmt (=> 'else' else=Stmt)? |
 	{SimpleStmt} name=SimpleStmtKeyword ';' |
 	{ReturnValueStmt} 'return' value=Expr ';' |
 	CallExpr ';' |
 	{ForAllStmt} name=ForAllFunction '(' node=TIDENTIFIER ')' stmt=Stmt |
 	{FadnpStmt} ('forall_distinct_node_pair' | 'FORALL_DISTINCT_NODE_PAIR') '(' node1=TIDENTIFIER ',' node2=TIDENTIFIER ')' stmt=Stmt
+;
+
+AssignmentOrIncrementStmt:
+	AssignmentStmt | IncrementStmt
+;
+
+IncrementStmt:
+	var=TIDENTIFIER '++'| '++' var=TIDENTIFIER
+;
+
+InitAssignmentStmt:
+	(type=Type)? variable=LVal '=' value=Expr
 ;
 
 AssignmentStmt:
@@ -195,15 +213,16 @@ TerminalExpr returns Expr:
 	{IdExpr} 'id' |
 	{IntExpr} value=INT |
 	{DoubleExpr} value=Double |
+	{StringExpr} value=STRING |
 	{NodeNumExpr} '#N' |
 	{UnaryExpr} operator=UnaryOperator operand=Expr |
 	{BuiltInExpr} function=BuiltInFunction '(' firstArg=TIDENTIFIER ',' secondArg=Expr ')' |
 	CallExpr |
-	'(' Expr ')'
+	{ParenthesizedExpr} '(' expr=Expr ')'
 ;
 
 CallExpr:
-	(namespace=TIDENTIFIER '::')? name=TIDENTIFIER '(' (args+=Expr (',' args+=Expr)*)? ')' ('@' at=Expr)?
+	(namespaces+=TIDENTIFIER '::')* name=TIDENTIFIER '(' (args+=Expr (',' args+=Expr)*)? ')' ('@' at=Expr)?
 ;
 
 enum SignEnum:
@@ -288,7 +307,8 @@ enum UnaryOperator:
 	MINUS='-' |
 	PLUS='+' |
 	LOGICAL_NOT='!' |
-	BITWISE_NOT='~'
+	BITWISE_NOT='~' |
+	INCR='++'
 ;
 
 enum BuiltInFunctionEnum:

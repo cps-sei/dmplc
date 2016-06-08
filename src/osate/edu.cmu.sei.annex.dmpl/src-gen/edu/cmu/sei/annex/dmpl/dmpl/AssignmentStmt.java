@@ -20,7 +20,7 @@ package edu.cmu.sei.annex.dmpl.dmpl;
  * @model
  * @generated
  */
-public interface AssignmentStmt extends Stmt
+public interface AssignmentStmt extends Stmt, AssignmentOrIncrementStmt
 {
   /**
    * Returns the value of the '<em><b>Variable</b></em>' containment reference.
