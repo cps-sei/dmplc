@@ -150,6 +150,9 @@ example-12d: Like example-12c but the nodes move diagonally.
 
 example-12d-3D: Like example-12d but the nodes move in 3D.
 
+example-13: A very simple example with one node moving diagonally from
+(0,0) to (9,9). Used for the tutorial.
+
 Subdirectories:
 --------------
 

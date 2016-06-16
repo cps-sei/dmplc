@@ -1,0 +1,16 @@
+#!/bin/bash
+
+DMPL="example-13.dmpl"
+BIN=example-13
+
+OUTDIR=outdir
+MAPNAME=small
+REC_CAM_POS="0.0421 -0.2489 11.2217"
+GRIDSIZE=10
+ROLEDESC=uav:Uav:1
+
+EXPECT_LOG_PERIOD=0.2
+
+MISSION_TIME=120
+
+ARGS_0=""
