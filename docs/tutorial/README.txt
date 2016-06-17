@@ -163,6 +163,10 @@ mission file.
 example-13d: Like example-13c but we added some heavy computation to
 the MOVER thread to show the bad effect of deadline misses.
 
+example-13e: This example has four nodes moving from one side of the
+grid to another. They take turns to move, thus avoiding
+collision, using a global variable to coordinate this movement.
+
 Subdirectories:
 --------------
 
