@@ -153,6 +153,9 @@ example-12d-3D: Like example-12d but the nodes move in 3D.
 example-13: A very simple example with one node moving diagonally from
 (0,0) to (9,9). Used for the tutorial.
 
+example-13b: Like example-13 but demonstrates the use of constants,
+PRINT(), external functions and internal functions.
+
 Subdirectories:
 --------------
 

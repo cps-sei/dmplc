@@ -1,0 +1,160 @@
+/**
+ * Copyright (c) 2015 Carnegie Mellon University. All Rights Reserved.
+
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+
+ * 1. Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following acknowledgments
+ * and disclaimers.
+
+ * 2. Redistributions in binary form must reproduce the above
+ * copyright notice, this list of conditions and the following
+ * disclaimer in the documentation and/or other materials provided
+ * with the distribution.
+
+ * 3. The names "Carnegie Mellon University," "SEI" and/or "Software
+ * Engineering Institute" shall not be used to endorse or promote
+ * products derived from this software without prior written
+ * permission. For written permission, please contact
+ * permission@sei.cmu.edu.
+
+ * 4. Products derived from this software may not be called "SEI" nor
+ * may "SEI" appear in their names without prior written permission of
+ * permission@sei.cmu.edu.
+
+ * 5. Redistributions of any form whatsoever must retain the following
+ * acknowledgment:
+
+ * This material is based upon work funded and supported by the
+ * Department of Defense under Contract No. FA8721-05-C-0003 with
+ * Carnegie Mellon University for the operation of the Software
+ * Engineering Institute, a federally funded research and development
+ * center.
+
+ * Any opinions, findings and conclusions or recommendations expressed
+ * in this material are those of the author(s) and do not necessarily
+ * reflect the views of the United States Department of Defense.
+
+ * NO WARRANTY. THIS CARNEGIE MELLON UNIVERSITY AND SOFTWARE
+ * ENGINEERING INSTITUTE MATERIAL IS FURNISHED ON AN "AS-IS"
+ * BASIS. CARNEGIE MELLON UNIVERSITY MAKES NO WARRANTIES OF ANY KIND,
+ * EITHER EXPRESSED OR IMPLIED, AS TO ANY MATTER INCLUDING, BUT NOT
+ * LIMITED TO, WARRANTY OF FITNESS FOR PURPOSE OR MERCHANTABILITY,
+ * EXCLUSIVITY, OR RESULTS OBTAINED FROM USE OF THE MATERIAL. CARNEGIE
+ * MELLON UNIVERSITY DOES NOT MAKE ANY WARRANTY OF ANY KIND WITH
+ * RESPECT TO FREEDOM FROM PATENT, TRADEMARK, OR COPYRIGHT
+ * INFRINGEMENT.
+
+ * This material has been approved for public release and unlimited
+ * distribution.
+
+ * DM-0002494
+**/
+
+//-- this is a generic example demonstrating the DART
+//-- read-execute-write computational model
+
+/* note that DMPL allows both C and C++ style comments */
+
+//-- DMPL's syntax is designed to be compatible with the C-mode in
+//-- emacs.
+
+//-- this external blob is useful for interacting with the non-DMPL
+//-- world, i.e., libraries, OS services, etc.
+
+target GNU_CPP,WIN_CPP %%{
+#define GNU_WIN
+#include <stdio.h>
+#include <math.h>
+
+  void print_distance(int x1, int y1, int x2, int y2)
+  {
+    double d = sqrt(pow(x1-x2,2) + pow(y1-y2,2));
+    printf("distance to goal : %lf\n", d);
+  }
+
+%%}
+
+//-- you can define constants. can be integers, doubles, or strings.
+const INITX = 0;
+const INITY = 0;
+const MARKER = "position = ";
+
+//-- must declare external functions invoked
+extern void print_distance(int x1, int y1, int x2, int y2);
+
+//-- this is how you start definining a DMPL node.
+node uav
+{
+  //-- local variables are shared between multiple threads on a node
+
+  local unsigned char x = INITX, y = INITY; //-- current position
+  local unsigned char wp_x = x, wp_y = y; //-- next waypoint
+
+  //------ begin thread attributes ------------//
+  @Period(100000);     //-- thread period
+  @Criticality(4);     //-- thread criticality
+  @PlatformController; //-- this thread controls the platform. there
+                       //-- can ne atmost one such thread per node.
+  //------ end thread attributes ---------------//
+  thread MOVER
+  {
+    //-- if we are at the final location, exit
+    if(x == 9 && y == 9) EXIT(id); //-- EXIT() is a built-in DMPL
+                                   //-- function. id is a built-in
+                                   //-- variable whose value equals
+                                   //-- the id of the node. node ids
+                                   //-- range from 0 to N-1 where N is
+                                   //-- the number of nodes in the
+                                   //-- system.
+    
+    //-- if we are already at the waypoint
+    if(x == wp_x && y == wp_y) return;
+
+    //-- if we are still moving toward the next waypoint, go back and
+    //-- check again at the next period. 
+    if(GRID_MOVE(wp_x,wp_y,1)) return; //-- GRID_MOVE() is a built-in DMPL function
+
+    //-- update positions and print new position
+    x = wp_x; y = wp_y;
+    PRINT(MARKER, "(", x, ",", y, ")\n");
+    print_distance(x,y,9,9);
+  }
+
+  //-- DMPL supports functions. this one updates the waypoint.
+  void UPDATE_WAYPOINT()
+  {
+    wp_x = x+1;
+    wp_y = y+1;
+  }
+
+  //-- thread waypoint updater --//
+  @Period(50000);      //-- thread period
+  @Criticality(2);     //-- thread criticality
+  thread WAYPOINT
+  {
+    //-- if we are still moving toward the waypoint do nothing
+    if(x != wp_x || y != wp_y) return;
+
+    UPDATE_WAYPOINT();
+  }
+  
+  //-- each node plays a role. this is what actually gets instantiated
+  //-- at runtime.
+  role Uav {
+    //-- inside the role we define the threads that will run
+    thread MOVER;
+    thread WAYPOINT;
+  }
+
+  
+  @InitSim; //-- this function is to be called once at the start of
+            //-- the simulation
+  void StartingPosition ()
+  {
+    GRID_INIT();         //-- built-in DMPL function. initializes the simulation.
+    GRID_PLACE(x, y, 1); //-- built-in DMPL function. places the node at a specific point.
+  }
+}
