@@ -167,6 +167,9 @@ example-13e: This example has four nodes moving from one side of the
 grid to another. They take turns to move, thus avoiding
 collision, using a global variable to coordinate this movement.
 
+example-13f: Like example-13e but uses a collision avoidance protocol
+to allow simultaneous movement while avoiding collisions.
+
 Subdirectories:
 --------------
 
