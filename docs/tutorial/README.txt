@@ -156,6 +156,10 @@ example-13: A very simple example with one node moving diagonally from
 example-13b: Like example-13 but demonstrates the use of constants,
 PRINT(), external functions and internal functions.
 
+example-13c: Like example-13b but the initial and final positions of
+the node are now inputs so they can be controlled more easily via the
+mission file.
+
 Subdirectories:
 --------------
 

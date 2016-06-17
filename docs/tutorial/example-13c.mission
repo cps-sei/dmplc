@@ -1,0 +1,36 @@
+#!/bin/bash
+
+#the mission file is a bash script that is "sourced" by dmpl-sim.sh to
+#compile and run a mission. it defines various variables pertinent to
+#the mission.
+
+#the name of the DMPL file
+DMPL="example-13c.dmpl"
+
+#the name of the generated binary
+BIN=example-13c
+
+#the directory in which output from the nodes as well as VREP will be
+#stored.
+OUTDIR=outdir
+
+#the name of the map. possible values are small and large.
+MAPNAME=small
+
+#the camera position for recording a simulation using VREP
+REC_CAM_POS="0.0421 -0.2489 11.2217"
+
+#the grid size. this defines a cubic 10x10x10 grid
+GRIDSIZE=10
+
+#the nodes and the roles they play. this defines a DART mission with a
+#single node playing the Uav role.
+ROLEDESC=uav:Uav:1
+
+#time after which the mission will time out.
+MISSION_TIME=120
+
+#command line arguments passed to node 0. this is typically used to
+#supply initial values of input variables. in this example, we specify
+#the initial and final position of the node for the mission
+ARGS_0="--var_x 1 --var_y 1 --var_xf 7 --var_yf 7"
