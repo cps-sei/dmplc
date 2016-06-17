@@ -160,6 +160,9 @@ example-13c: Like example-13b but the initial and final positions of
 the node are now inputs so they can be controlled more easily via the
 mission file.
 
+example-13d: Like example-13c but we added some heavy computation to
+the MOVER thread to show the bad effect of deadline misses.
+
 Subdirectories:
 --------------
 
