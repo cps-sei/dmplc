@@ -1,11 +1,11 @@
-#DMPLC
-
 This is the repository for DMPLC, the compiler for the DART Modeling
 and Programming Language (DMPL). It must be installed as part of the
 [DART](https://github.com/cps-sei/dart) toolchain. Here are the
 [instructions](https://github.com/cps-sei/dart/wiki/Building-DART-v0.2--(and-later)-Software).
 
 #### Changelog
+**2016-06-18 : [v0.3.2]** Added new scenarios to DMPLC. AADL Annex for DMPL now being tested.
+
 **2016-04-20 : [v0.3.1]** Added new scenarios to DMPLC.
 
 **2016-04-14 : [v0.3.0]** Bug fixes to DMPLC. New built-in DMPL functions, e.g., PRINT() and EXIT(). Ported to latest V-REP version 3.3.0.
