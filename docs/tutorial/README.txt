@@ -170,6 +170,9 @@ collision, using a global variable to coordinate this movement.
 example-13f: Like example-13e but uses a collision avoidance protocol
 to allow simultaneous movement while avoiding collisions.
 
+example-13g: Used to demonstrate functional verification. Adapted from
+example-01-ag.dmpl.
+
 Subdirectories:
 --------------
 
