@@ -4,8 +4,12 @@
 package edu.cmu.sei.annex.dmpl;
 
 import org.eclipse.xtext.conversion.IValueConverterService;
+import org.eclipse.xtext.parsetree.reconstr.ITransientValueService;
+import org.eclipse.xtext.serializer.ISerializer;
 
 import edu.cmu.sei.annex.dmpl.conversion.DmplValueConverterService;
+import edu.cmu.sei.annex.dmpl.serializer.DmplSerializer;
+import edu.cmu.sei.annex.dmpl.serializer.DmplTransientValueService;
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
@@ -14,5 +18,15 @@ public class DmplRuntimeModule extends edu.cmu.sei.annex.dmpl.AbstractDmplRuntim
 	@Override
 	public Class<? extends IValueConverterService> bindIValueConverterService() {
 		return DmplValueConverterService.class;
+	}
+	
+	@Override
+	public Class<? extends ISerializer> bindISerializer() {
+		return DmplSerializer.class;
+	}
+	
+	@Override
+	public Class<? extends ITransientValueService> bindITransientValueService() {
+		return DmplTransientValueService.class;
 	}
 }
