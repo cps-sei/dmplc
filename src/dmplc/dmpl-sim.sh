@@ -231,13 +231,16 @@ declare -A device2drivepath
 MISSION_MCAST=239.255.0.0/24
 MISSION_MDOMAIN=239.255.0.1:4150
 #
-# assumes COMMAND messages are on the same subnet as VREP server
+# determine which local net iface is used to get to the COMMAND_SUBNET
+# as the IP addr of that iface will be the IP addr VREP can accept connections
 #
-VREPSERVERIPN=$(ifconfig -a | \
-               egrep --only-matching "(${COMMAND_SUBNET}\.[[:digit:]]*)"| \
-               head -1| \
-               sed "s/${COMMAND_SUBNET}.//g")
-VREPSERVERIP=${COMMAND_SUBNET}.${VREPSERVERIPN}
+VREPSERVERIF=$(ip -o route get ${COMMAND_SUBNET}.0 | \
+              egrep --only-matching "dev[[:space:]][[:alnum:]]*[[:space:]]" | \
+              sed 's/dev //g')
+VREPSERVERIP=$(ifconfig -a ${VREPSERVERIF} | \
+              grep "inet addr" | \
+              cut -d: -f2 | cut -d\  -f1)
+
 [ ${DEPLOY} -gt 0 ] && PLATFORM=$(echo $PLATFORM | sed "s/::/:${VREPSERVERIP}:/")
 #
 # tell remote node where DART HOME is which should
@@ -362,7 +365,7 @@ function test_passwdless_ssh() {
 
 function dmplc-build-device() {
   #
-  # TBD: VREPSERVERIPN will be used to build the local node
+  # TBD: VREPSERVERIP will be used to build the local node
   # so ignore that particular node for this purpose
   #
   for d in $(seq 0 $(($NODENUM-1))); do
@@ -782,7 +785,7 @@ if [ ${DEPLOY} -gt 0 ]; then
   pid=$(screen -ls|grep node${x}|cut -d. -f1)
 else
   pid=$!
-  echo "started node $x pid=$pid : cmd=$cmd"
+  echo "started node 0 pid=$pid : cmd=$cmd"
 fi
 pid2cmd[$pid]="$cmd"
 pid2node[$pid]="0"
