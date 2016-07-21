@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.osate.aadl2.CalledSubprogram;
 import org.osate.aadl2.ComponentCategory;
@@ -21,6 +22,7 @@ import org.osate.aadl2.instance.SystemInstance;
 import org.osate.aadl2.instance.SystemOperationMode;
 import org.osate.aadl2.modelsupport.errorreporting.AnalysisErrorReporterManager;
 import org.osate.aadl2.modelsupport.modeltraversal.ForAllElement;
+import org.osate.aadl2.modelsupport.resources.OsateResourceUtil;
 import org.osate.aadl2.properties.PropertyNotPresentException;
 import org.osate.analysis.resource.zsrmscheduling.actions.ZSRMTask;
 import org.osate.ui.actions.AbstractInstanceOrDeclarativeModelReadOnlyAction;
@@ -76,6 +78,8 @@ public class DMPLGeneratorAction extends AbstractInstanceOrDeclarativeModelReadO
 	protected void analyzeInstanceModel(IProgressMonitor monitor, final AnalysisErrorReporterManager errManager,
 			SystemInstance root, SystemOperationMode som) {
 
+		//IResource is = OsateResourceUtil.convertToIResource(root.eResource());
+		
 		tasks.clear();
 		processes.clear();
 		proc2taskset.clear();
