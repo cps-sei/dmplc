@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+     <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="edu.cmu.sei.annex.dmpl.generator.actionSet"
+            label="DMPL Annex Generator"
+            visible="true">
+         <menu
+               id="menu.osate"
+               label="OSATE"
+               path="project">
+            <groupMarker name="file.grp"/>
+            <separator name="instance.grp"/>
+            <separator name="general.grp"/>
+         </menu>
+ 
+        <menu
+               id="menu.analyses"
+               label="Analyses"
+               path="menu.osate">
+            <groupMarker name="top.grp"/>
+            <groupMarker name="bottom.grp"/>
+         </menu>           
+
+         <menu
+               id="menu.rsrc"
+               label="Scheduling"
+               path="menu.analyses/top.grp">
+            <groupMarker name="stuff.grp"/>
+         </menu>
+                 
+         <action
+         	   id="edu.cmu.sei.annex.dmpl.generator.action"
+               label="Generate Annex DMPL File"
+               tooltip="%Schedule.toolTip"
+               icon="%Schedule.icon"
+               disabledIcon="%Schedule.disabledIcon"
+               class="edu.cmu.sei.annex.dmpl.generator.actions.AnnexDMPLGeneratorAction"
+               menubarPath="menu.analyses/menu.rsrc/stuff.grp"
+               enablesFor="1">
+         </action>      
+      </actionSet>      
+      </extension>
+      
+   <extension
+   	   point="org.eclipse.ui.perspectiveExtensions">
+   	   <perspectiveExtension
+   		   targetID="org.osate.ui.perspective.AadlPerspective">
+   		   <actionSet
+   		 	   id="org.osate.analysis.resource.dmp.generator.actionSet"/>
+   	   </perspectiveExtension>
+   </extension>
+      
+      <extension
+         id="ResourceAnnexDMPLGeneratorObjectMarker"
+         name="Annex DMPL Generator Marker"
+         point="org.eclipse.core.resources.markers">
+         <super type="org.osate.aadl2.modelsupport.AadlObjectMarker"/>
+         <persistent value="true"/>
+      </extension>
+</plugin>
