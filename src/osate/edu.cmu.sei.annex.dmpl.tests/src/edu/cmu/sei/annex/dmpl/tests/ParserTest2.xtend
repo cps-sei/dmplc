@@ -795,7 +795,7 @@ class ParserTest2 {
 							6.assertEquals((value as IntExpr).value)
 						]
 						"v7".assertEquals((condition as LVal).name)
-						update => [
+						update as AssignmentStmt => [
 							"v8".assertEquals(variable.name)
 							7.assertEquals((value as IntExpr).value)
 						]

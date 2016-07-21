@@ -504,25 +504,27 @@ class ParserTest1 {
 			((elements.head as AttributableProgramElement).element as FunctionDeclaration).fnBody => [
 				4.assertEquals(varInits.size)
 				((varInits.get(0).varAsgns.head as ExprVarAsgn).expr as CallExpr) => [
-					namespace.assertNull
+					namespaces.empty.assertTrue
 					"f2".assertEquals(name)
 					args.empty.assertTrue
 					at.assertNull
 				]
 				((varInits.get(1).varAsgns.head as ExprVarAsgn).expr as CallExpr) => [
-					"ns1".assertEquals(namespace)
+					1.assertEquals(namespaces.size)
+					"ns1".assertEquals(namespaces.head)
 					"f3".assertEquals(name)
 					args.empty.assertTrue
 					at.assertNull
 				]
 				((varInits.get(2).varAsgns.head as ExprVarAsgn).expr as CallExpr) => [
-					namespace.assertNull
+					namespaces.empty.assertTrue
 					"f4".assertEquals(name)
 					args.empty.assertTrue
 					52.assertEquals((at as IntExpr).value)
 				]
 				((varInits.get(3).varAsgns.head as ExprVarAsgn).expr as CallExpr) => [
-					"ns2".assertEquals(namespace)
+					1.assertEquals(namespaces.size)
+					"ns2".assertEquals(namespaces.head)
 					"f5".assertEquals(name)
 					args.empty.assertTrue
 					95.assertEquals((at as IntExpr).value)
