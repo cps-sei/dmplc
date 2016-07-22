@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.xtext.serializer.ISerializer;
 import org.osate.aadl2.AnnexSubclause;
@@ -26,6 +27,7 @@ import org.osate.aadl2.instance.SystemInstance;
 import org.osate.aadl2.instance.SystemOperationMode;
 import org.osate.aadl2.modelsupport.errorreporting.AnalysisErrorReporterManager;
 import org.osate.aadl2.modelsupport.modeltraversal.ForAllElement;
+import org.osate.aadl2.modelsupport.resources.OsateResourceUtil;
 import org.osate.ui.actions.AbstractInstanceOrDeclarativeModelReadOnlyAction;
 import org.osate.xtext.aadl2.properties.util.AadlProject;
 import org.osate.xtext.aadl2.properties.util.GetProperties;
@@ -213,6 +215,8 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
 
 	protected void analyzeInstanceModel(IProgressMonitor monitor, final AnalysisErrorReporterManager errManager,
 			SystemInstance root, SystemOperationMode som) {
+		
+		IResource is = OsateResourceUtil.convertToIResource(root.eResource());
 
 		printed.clear();
 		node2roles.clear();
