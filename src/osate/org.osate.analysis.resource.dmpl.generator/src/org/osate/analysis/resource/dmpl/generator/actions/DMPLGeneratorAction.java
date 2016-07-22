@@ -29,7 +29,6 @@ import org.osate.xtext.aadl2.properties.util.PropertyUtils;
 
 public class DMPLGeneratorAction extends AbstractInstanceOrDeclarativeModelReadOnlyAction
 {
-
   @Override
   protected void analyzeDeclarativeModel(IProgressMonitor monitor, AnalysisErrorReporterManager errManager,
                                          Element declarativeObject)
