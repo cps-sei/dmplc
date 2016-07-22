@@ -236,7 +236,7 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
     printed.clear();
     node2roles.clear();
 
-    //-- get the directory of the instance file
+    //-- create the directory where the generated files will be kept
     IPath dir = OsateResourceUtil.convertToIResource(root.eResource()).getLocation().removeLastSegments(2).append("DART");
     String dirStr = dir.toOSString();
     File dirFile = new File(dirStr);
