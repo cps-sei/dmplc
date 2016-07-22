@@ -144,7 +144,6 @@ public class DMPLGeneratorAction extends AbstractInstanceOrDeclarativeModelReadO
   {
     return "DMPLGenerator";
   }
-
 }
 
 /*********************************************************************/
