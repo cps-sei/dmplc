@@ -63,7 +63,8 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
   }
 
   @Override
-  protected void analyzeDeclarativeModel(IProgressMonitor monitor, AnalysisErrorReporterManager errManager,
+  protected void analyzeDeclarativeModel(IProgressMonitor monitor,
+                                         AnalysisErrorReporterManager errManager,
                                          Element declarativeObject)
   {
     // TODO Auto-generated method stub
@@ -106,7 +107,10 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
     }
 		
     if (program == null && othersc != null){
-      System.out.println("WARNING:  no DMPL subclause for Classifier("+classifier.getName()+") but found other "+othersc+" and dmplsubclause is "+subclause);
+      System.out.println("WARNING:  no DMPL subclause for Classifier(" +
+                         classifier.getName() +
+                         ") but found other "+ othersc +
+                         " and dmplsubclause is "+ subclause);
     }
 		
     return program;
@@ -196,7 +200,8 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
     return val;
   }
 
-  public double getTimePropertyValue(ComponentInstance ci, String propSet, String propName, String unitLiteral)
+  public double getTimePropertyValue(ComponentInstance ci, String propSet, String propName,
+                                     String unitLiteral)
   {
     double val = 0;
     Property pd = GetProperties.lookupPropertyDefinition(ci, propSet, propName);
@@ -227,11 +232,13 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
   boolean containNodes;
   Classifier systemClassifier;
 
-  HashMap<Classifier, ArrayList<ComponentInstance>> node2roles = new HashMap<Classifier, ArrayList<ComponentInstance>>();
+  HashMap<Classifier, ArrayList<ComponentInstance>> node2roles =
+    new HashMap<Classifier, ArrayList<ComponentInstance>>();
 
   // HashMap<Classifier, Classifier> overwrites = new HashMap<Classifier, Classifier>();
 
-  protected void analyzeInstanceModel(IProgressMonitor monitor, final AnalysisErrorReporterManager errManager,
+  protected void analyzeInstanceModel(IProgressMonitor monitor,
+                                      final AnalysisErrorReporterManager errManager,
                                       SystemInstance root, SystemOperationMode som)
   {
     printed.clear();
@@ -334,21 +341,21 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
       }
 			
       // if no annex yet traverse the "implemented" hierarchy
-      //			if (sc.length() == 0) {
-      //				rootClassifier = root.getComponentClassifier();
-      //				if (rootClassifier instanceof SystemImplementationImpl) {
-      //					Realization rel = ((SystemImplementationImpl) rootClassifier).getOwnedRealization();
-      //					System.out.println("root Realization: " + rel);
-      //					if (rel != null) {
-      //						ComponentType type = rel.getImplemented();
-      //						while (type != null && sc.length() == 0) {
-      //							System.out.println("Implemented: rootClassifier: " + type);
-      //							sc = getAnnexSubclause(type);
-      //							type = type.getExtended();
-      //						}
-      //					}
-      //				}
-      //			}
+      //if (sc.length() == 0) {
+      //rootClassifier = root.getComponentClassifier();
+      //if (rootClassifier instanceof SystemImplementationImpl) {
+      //Realization rel = ((SystemImplementationImpl) rootClassifier).getOwnedRealization();
+      //System.out.println("root Realization: " + rel);
+      //if (rel != null) {
+      //ComponentType type = rel.getImplemented();
+      //while (type != null && sc.length() == 0) {
+      //System.out.println("Implemented: rootClassifier: " + type);
+      //sc = getAnnexSubclause(type);
+      //type = type.getExtended();
+      //}
+      //}
+      //}
+      //}
 
       if (prg!= null){
         String str = serializer.serialize(prg);
@@ -373,8 +380,8 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                     if (extendedProcessClassifier != null) {
                       if (!printed.contains(extendedProcessClassifier)) {
                         printed.add(extendedProcessClassifier);
-                        //										pw.println("node " + extendedProcessClassifier.getName().replace('.', '_')
-                        //												+ " {");
+                        //pw.println("node " + extendedProcessClassifier.getName().replace('.', '_')
+                        //+ " {");
                         //pw.println(getAnnexSubclause(extendedProcessClassifier));
 										
                         Program prg = getAnnexSubclauseProgram(extendedProcessClassifier);
@@ -388,7 +395,8 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                               AttributableProgramElement ae = (AttributableProgramElement) pelem;
                               if (ae.getElement() instanceof Node){
                                 Node n = (Node)ae.getElement();
-                                pw.println("node "+extendedProcessClassifier.getName().replace('.', '_')+"{");
+                                pw.println("node " +
+                                           extendedProcessClassifier.getName().replace('.', '_') + "{");
                                 for (NodeBodyElement nbe : n.getElements()){
                                   pw.print(serializer.serialize(nbe));
                                 }
@@ -432,9 +440,9 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                                     }
                                   }
                                 }
-                                //													for (String dir : directives) {
-                                //														pw.println(dir + ";");
-                                //													}
+                                //for (String dir : directives) {
+                                //pw.println(dir + ";");
+                                //}
                                 //pw.println("thread " + threadClassifier.getName() + "{");
                                 //pw.println(getAnnexSubclause(threadClassifier));
                                 if (threadPrg != null){
@@ -448,7 +456,8 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                                         tstr +="extern ";
                                       if (td.isPure())
                                         tstr += "pure ";
-                                      tstr+= "thread "+threadClassifier.getName()+" "+serializer.serialize(td.getFnBody()).trim();
+                                      tstr+= "thread "+threadClassifier.getName() + " " +
+                                        serializer.serialize(td.getFnBody()).trim();
                                       pw.print(tstr);
                                     } else {
                                       pw.print(serializer.serialize(pe).trim());
@@ -477,10 +486,10 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
 
                           pw.println("role " + processClassifier.getName().replace('.', '_') + " {");
                           // not expecting a subclause here
-                          //											String sc = getAnnexSubclause(processClassifier);
-                          //											if (sc.length() != 0) {
-                          //												pw.println(sc);
-                          //											}
+                          //String sc = getAnnexSubclause(processClassifier);
+                          //if (sc.length() != 0) {
+                          //pw.println(sc);
+                          //}
                           final ForAllElement visitThreads1 = new ForAllElement(errManager) {
                               public void process(Element obj) {
                                 ComponentInstance thread = (ComponentInstance) obj;
@@ -525,7 +534,8 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                                             tstr +="extern ";
                                           if (td.isPure())
                                             tstr += "pure ";
-                                          tstr+= "thread "+extendedThreadClassifier.getName()+" "+serializer.serialize(td.getFnBody()).trim();
+                                          tstr+= "thread " + extendedThreadClassifier.getName() + " " +
+                                            serializer.serialize(td.getFnBody()).trim();
                                           pw.print(tstr);
                                           pw.println(" ");
                                         } else {
@@ -535,22 +545,22 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                                       }
                                       pw.println(" ");
                                     }
-                                    //															ArrayList<String> directives = getDirectives(thread);
-                                    //															// print directives
-                                    //															for (String dir : directives) {
-                                    //																pw.println(dir + ";");
-                                    //															}
-                                    //															pw.println("override thread "
-                                    //																	+ extendedThreadClassifier.getName() + "{");
+                                    //ArrayList<String> directives = getDirectives(thread);
+                                    //// print directives
+                                    //for (String dir : directives) {
+                                    //pw.println(dir + ";");
+                                    //}
+                                    //pw.println("override thread "
+                                    //+ extendedThreadClassifier.getName() + "{");
                                     //pw.println(getAnnexSubclause(threadClassifier));
-                                    //															if (threadPrg != null){
-                                    //																for (ProgramElement pe:threadPrg.getElements()){
-                                    //																	pw.print(serializer.serialize(pe).trim());
-                                    //																}
-                                    //															} else {
-                                    //																pw.println("DEBUG: threadPrg == null");
-                                    //															}
-                                    //															pw.println("}");
+                                    //if (threadPrg != null){
+                                    //for (ProgramElement pe:threadPrg.getElements()){
+                                    //pw.print(serializer.serialize(pe).trim());
+                                    //}
+                                    //} else {
+                                    //pw.println("DEBUG: threadPrg == null");
+                                    //}
+                                    //pw.println("}");
                                     printed.add(threadClassifier);
                                   }
                                 }
@@ -631,7 +641,8 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
           }
 
           missionWriter.println("echo --node " + nodename + " --role "
-                                + ci.getComponentClassifier().getName().replace(".", "_") + " " + varstring);
+                                + ci.getComponentClassifier().getName().replace(".", "_") +
+                                " " + varstring);
         }
       }
       pw.close();
