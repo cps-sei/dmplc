@@ -2,13 +2,15 @@ package edu.cmu.sei.annex.dmpl.generator.actions;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.xtext.serializer.ISerializer;
@@ -635,6 +637,15 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
       }
       pw.close();
       missionWriter.close();
+
+      //-- refresh so that the DART folder and its contents become visible
+      IResource ires = OsateResourceUtil.convertToIResource(root.eResource());
+      try {
+        ires.getParent().getParent().refreshLocal(IResource.DEPTH_INFINITE, monitor);
+      } catch (CoreException e) {
+        System.err.println("ERROR: Could not refresh project after creating DART folder");
+      }
+      
       System.out.println("Annex DMPL Generator Finished");
     } catch (FileNotFoundException e) {
       e.printStackTrace();
