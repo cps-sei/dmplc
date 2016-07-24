@@ -234,7 +234,6 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
   protected void analyzeInstanceModel(IProgressMonitor monitor, final AnalysisErrorReporterManager errManager,
                                       SystemInstance root, SystemOperationMode som)
   {
-
     printed.clear();
     node2roles.clear();
 
