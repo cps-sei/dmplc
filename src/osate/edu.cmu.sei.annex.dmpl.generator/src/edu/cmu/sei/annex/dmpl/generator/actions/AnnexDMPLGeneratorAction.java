@@ -258,22 +258,22 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
     
     //-- various filenames and other constants
     final String targetFilename = dirStr + "/" + instFile + ".dmpl";
+    if (targetFilename == null) {
+      errManager.error(root, "ERROR: could not create DMPL file name");
+      return;
+    }
+
     final String missionFilename = dirStr + "/" + instFile + ".mission";
+    if (missionFilename == null) {
+      errManager.error(root, "ERROR: could not create mission file name");
+      return;
+    }
+    
     final String mapName = getStringPropertyValue(root, "DMPLProperties", "Map_Name");
     final long gridSize = getIntegerPropertyValue(root, "DMPLProperties", "Grid_Size");
     final String platform = getStringPropertyValue(root, "DMPLProperties", "Platform");
     final double expectLogPeriod = getRealPropertyValue(root, "DMPLProperties", "Expect_Log_Period");
     final double missionTime = getTimePropertyValue(root, "DMPLProperties", "Mission_Time", AadlProject.SEC_LITERAL);
-
-    if (targetFilename == null) {
-      errManager.error(root, "Missing 'DMPLProperties::DMPL_Target_File' Property");
-      return;
-    }
-
-    if (missionFilename == null) {
-      errManager.error(root, "Missing 'DMPLProperties::DMPL_Mission_File' Property");
-      return;
-    }
 
     try {
 
