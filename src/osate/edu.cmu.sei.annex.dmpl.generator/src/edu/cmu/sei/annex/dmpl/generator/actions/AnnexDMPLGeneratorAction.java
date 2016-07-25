@@ -435,7 +435,7 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                                 // print directives
                                 if (threadPrg != null){
                                   for (ProgramElement pe: threadPrg.getElements()){
-                                    if (pe instanceof AttributableProgramElement){
+                                    if (pe instanceof AttributableProgramElement && pe instanceof ThreadDeclaration){
                                       AttributableProgramElement ape = (AttributableProgramElement)pe;
                                       for (Attr a:ape.getAttrs()){
                                         String name = a.getName();
