@@ -256,19 +256,21 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
     //-- get the name of the instance file without the extension
     String instFile = OsateResourceUtil.convertToIResource(root.eResource()).getLocation().removeFileExtension().lastSegment();
     
-    //-- various filenames and other constants
+    //-- create DMPL file name
     final String targetFilename = dirStr + "/" + instFile + ".dmpl";
     if (targetFilename == null) {
       errManager.error(root, "ERROR: could not create DMPL file name");
       return;
     }
 
+    //-- create mission file name
     final String missionFilename = dirStr + "/" + instFile + ".mission";
     if (missionFilename == null) {
       errManager.error(root, "ERROR: could not create mission file name");
       return;
     }
     
+    //-- various filenames and other constants
     final String mapName = getStringPropertyValue(root, "DMPLProperties", "Map_Name");
     final long gridSize = getIntegerPropertyValue(root, "DMPLProperties", "Grid_Size");
     final String platform = getStringPropertyValue(root, "DMPLProperties", "Platform");
