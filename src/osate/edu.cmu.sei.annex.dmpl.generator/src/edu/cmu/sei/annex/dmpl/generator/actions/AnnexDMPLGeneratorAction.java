@@ -320,6 +320,7 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
 
       // print the annex in the root type
       Classifier rootClassifier = root.getComponentClassifier();
+
       // traverse first the "extended" hierarchy
       Program prg = this.getAnnexSubclauseProgram(rootClassifier);
       String sc = getAnnexSubclause(rootClassifier);
@@ -376,6 +377,7 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
       //			}
 
       printed.clear();
+      
       final ForAllElement visitSystems1 = new ForAllElement(errManager) {
           public void process(Element obj) {
             ComponentInstance ci = (ComponentInstance) obj;
