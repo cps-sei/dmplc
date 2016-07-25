@@ -70,6 +70,8 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
     // TODO Auto-generated method stub
   }
 
+  //-- strip the annex markers, \n and \r characters from the
+  //-- beginning and end of a string.
   protected String trimSource(String source)
   {
     source = source.substring(source.indexOf("{**") + "{**".length());
@@ -132,6 +134,8 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
     return str;
   }
 
+  //-- return the list of DMPL directives associated with a component,
+  //-- e.g., @period associated with a thread
   ArrayList<String> getDirectives(ComponentInstance ci)
   {
     ArrayList<String> dirs = new ArrayList<String>();
