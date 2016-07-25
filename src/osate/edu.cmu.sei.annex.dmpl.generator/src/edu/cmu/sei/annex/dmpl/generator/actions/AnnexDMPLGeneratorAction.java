@@ -253,9 +253,12 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
     File dirFile = new File(dirStr);
     dirFile.mkdir();
 
+    //-- get the name of the instance file without the extension
+    String instFile = OsateResourceUtil.convertToIResource(root.eResource()).getLocation().removeFileExtension().lastSegment();
+    
     //-- various filenames and other constants
-    final String targetFilename = dirStr + "/" + getStringPropertyValue(root, "DMPLProperties", "DMPL_Target_File");
-    final String missionFilename = dirStr + "/" + getStringPropertyValue(root, "DMPLProperties", "DMPL_Mission_File");
+    final String targetFilename = dirStr + "/" + instFile + ".dmpl";
+    final String missionFilename = dirStr + "/" + instFile + ".mission";
     final String mapName = getStringPropertyValue(root, "DMPLProperties", "Map_Name");
     final long gridSize = getIntegerPropertyValue(root, "DMPLProperties", "Grid_Size");
     final String platform = getStringPropertyValue(root, "DMPLProperties", "Platform");

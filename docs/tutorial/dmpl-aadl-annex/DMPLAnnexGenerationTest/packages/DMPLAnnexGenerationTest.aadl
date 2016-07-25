@@ -330,8 +330,8 @@ system implementation main.i
 		leader_node: system leader.i;
 		protector_node: system protector.i[2];
 	properties
-		DMPLProperties::DMPL_Target_File =>"test.dmpl"; 
-		DMPLProperties::DMPL_Mission_File => "mission.txt";
+		-- DMPLProperties::DMPL_Target_File =>"test.dmpl"; 
+		-- DMPLProperties::DMPL_Mission_File => "mission.txt";
 		DMPLProperties::Grid_Size => 10;
 		DMPLProperties::Map_Name => "maptest";
 		DMPLProperties::Mission_Time => 120 sec;
