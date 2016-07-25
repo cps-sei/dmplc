@@ -68,7 +68,6 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                                          Element declarativeObject)
   {
     // TODO Auto-generated method stub
-
   }
 
   protected String trimSource(String source)
