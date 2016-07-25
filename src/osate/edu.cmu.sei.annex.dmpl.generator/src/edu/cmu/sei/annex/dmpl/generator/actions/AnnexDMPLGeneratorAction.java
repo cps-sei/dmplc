@@ -252,7 +252,8 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
     String dirStr = dir.toOSString();
     File dirFile = new File(dirStr);
     dirFile.mkdir();
-    
+
+    //-- various filenames and other constants
     final String targetFilename = dirStr + "/" + getStringPropertyValue(root, "DMPLProperties", "DMPL_Target_File");
     final String missionFilename = dirStr + "/" + getStringPropertyValue(root, "DMPLProperties", "DMPL_Mission_File");
     final String mapName = getStringPropertyValue(root, "DMPLProperties", "Map_Name");
@@ -274,8 +275,8 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
     try {
 
       final PrintWriter pw = new PrintWriter(targetFilename);
-      final PrintWriter missionWriter = new PrintWriter(missionFilename);
 
+      //-- this the top-level code generator for the entire system
       final ForAllElement visitSystems0 = new ForAllElement(errManager) {
           public void process(Element obj) {
             ComponentInstance ci = (ComponentInstance) obj;
@@ -601,6 +602,9 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
           }
         };
       visitSystems1.processPreOrderComponentInstance(root, ComponentCategory.SYSTEM);
+
+      //-- printer for the mission file
+      final PrintWriter missionWriter = new PrintWriter(missionFilename);
 
       // generate mission file
       missionWriter.println("#!/bin/bash");
