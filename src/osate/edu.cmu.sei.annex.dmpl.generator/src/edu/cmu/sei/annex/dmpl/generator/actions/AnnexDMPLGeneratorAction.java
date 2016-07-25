@@ -419,10 +419,11 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                               Classifier threadClassifier = thread.getComponentClassifier();
                               Classifier extendedThreadClassifier = threadClassifier.getExtended();
                               Program threadPrg = getAnnexSubclauseProgram(threadClassifier);
-                              if (extendedThreadClassifier == null) {													
+                              if (extendedThreadClassifier == null) {									   //-- print period				
                                 if (period != 0) {
-                                  pw.println("@Period(" + ((int) period) + ")");
+                                  pw.println("@Period(" + ((int) period) + ");");
                                 }
+                                
                                 // print directives
                                 if (threadPrg != null){
                                   for (ProgramElement pe: threadPrg.getElements()){
@@ -430,15 +431,23 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                                       AttributableProgramElement ape = (AttributableProgramElement)pe;
                                       for (Attr a:ape.getAttrs()){
                                         String name = a.getName();
-                                        if (name.equalsIgnoreCase("PERIOD"))
+
+                                        //-- skip period attributes
+                                        if (name.equalsIgnoreCase("PERIOD")) continue;
+
+                                        //-- empty parameter list
+                                        if(a.getParams().isEmpty()) {
+                                          pw.println("@" + name + ";");
                                           continue;
+                                        }
+                                        
                                         String params = "";
                                         String sep = "";
                                         for (Expr p:a.getParams()){
                                           params += sep+serializer.serialize(p);
                                           sep=", ";
                                         }
-                                        pw.println("@"+name+"("+params+")");
+                                        pw.println("@" + name + "(" + params + ");");
                                       }
                                     }
                                   }
@@ -505,7 +514,7 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                                   } else {
                                     double period = GetProperties.getPeriodinMS(thread);
                                     if (period != 0) {
-                                      pw.println("@Period(" + ((int) period) + ")");
+                                      pw.println("@Period(" + ((int) period) + ");");
                                     }
                                     Program threadPrg = getAnnexSubclauseProgram(threadClassifier);
                                     if (threadPrg == null){
@@ -517,15 +526,23 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                                           AttributableProgramElement ape = (AttributableProgramElement)pe;
                                           for (Attr a:ape.getAttrs()){
                                             String name = a.getName();
-                                            if (name.equalsIgnoreCase("PERIOD"))
+
+                                            //-- skip period attributes
+                                            if (name.equalsIgnoreCase("PERIOD")) continue;
+
+                                            //-- empty parameter list
+                                            if(a.getParams().isEmpty()) {
+                                              pw.println("@" + name + ";");
                                               continue;
+                                            }
+                                            
                                             String params = "";
                                             String sep = "";
                                             for (Expr p:a.getParams()){
                                               params += sep+serializer.serialize(p);
                                               sep=", ";
                                             }
-                                            pw.println("@"+name+"("+params+")");
+                                            pw.println("@" + name + "(" + params + ");");
                                           }
                                         }
                                         if (pe instanceof ThreadDeclaration){
