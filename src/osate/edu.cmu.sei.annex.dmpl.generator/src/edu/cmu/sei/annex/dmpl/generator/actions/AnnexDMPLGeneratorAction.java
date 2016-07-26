@@ -727,7 +727,14 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
       ProcessBuilder pb = new ProcessBuilder("dmpl-sim.sh", instFile + ".mission");
       pb.directory(new File(dirStr));
       Process p = pb.start();
-      Thread.sleep(30000);
+      
+      //-- open a dialog to terminate the mission
+      getShell().getDisplay().syncExec(new Runnable() {
+        @Override
+        public void run() {
+          MessageDialog.openInformation(getShell(), "StopMission", "Press OK to abort mission");
+        }
+      });
       p.destroy();
     } catch(Exception ex) {
       System.err.println("ERROR: could not execute mission " + instFile + ".mission !!");
