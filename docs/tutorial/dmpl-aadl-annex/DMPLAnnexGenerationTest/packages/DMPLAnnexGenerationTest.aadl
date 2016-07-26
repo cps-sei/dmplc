@@ -333,7 +333,7 @@ public
     system implementation main.i
     subcomponents
       leader_node: system leader.i;
-      protector_node: system protector.i[2];
+      protector_node: system protector.i[4];
     properties
       -- DMPLProperties::DMPL_Target_File =>"test.dmpl"; 
       -- DMPLProperties::DMPL_Mission_File => "mission.txt";
