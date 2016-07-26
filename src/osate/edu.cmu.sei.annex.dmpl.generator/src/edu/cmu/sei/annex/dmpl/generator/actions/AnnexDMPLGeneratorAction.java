@@ -375,7 +375,9 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
 
       if (prg!= null){
         String str = serializer.serialize(prg);
-        pw.println(str.trim());//replaceAll("\\p{C}", " ").trim());
+        pw.println("//-- begin external stuff");
+        pw.println(str);//replaceAll("\\p{C}", " ").trim());
+        pw.println("//-- end external stuff");
       }
 			
       //if (sc.length() != 0) {
@@ -419,7 +421,7 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                                 }
                               }
                             } else {
-                              pw.print(serializer.serialize(pelem).trim());
+                              pw.print(serializer.serialize(pelem));
                             }
                           }
                           pw.println(" ");
@@ -483,10 +485,12 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                                       if (td.isPure())
                                         tstr += "pure ";
                                       tstr+= "thread "+threadClassifier.getName() + " " +
-                                        serializer.serialize(td.getFnBody()).trim();
+                                        serializer.serialize(td.getFnBody());
                                       pw.print(tstr);
                                     } else {
-                                      pw.print(serializer.serialize(pe).trim());
+                                      pw.println("//-- begin node-level thread");
+                                      pw.print(serializer.serialize(pe));
+                                      pw.println("//-- end node-level thread");
                                     }
                                   }
                                   pw.println(" ");
@@ -569,11 +573,13 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                                           if (td.isPure())
                                             tstr += "pure ";
                                           tstr+= "thread " + extendedThreadClassifier.getName() + " " +
-                                            serializer.serialize(td.getFnBody()).trim();
+                                            serializer.serialize(td.getFnBody());
                                           pw.print(tstr);
                                           pw.println(" ");
                                         } else {
-                                          pw.print(serializer.serialize(pe).trim());
+                                          pw.println("//-- begin role-level thread");
+                                          pw.print(serializer.serialize(pe));
+                                          pw.println("//-- end role-level thread");
                                         }
 
                                       }
