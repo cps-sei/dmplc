@@ -177,13 +177,6 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
     return str;
   }
 
-  String targetFileName = null;
-
-  public void setTargetFileName(String f)
-  {
-    targetFileName = f;
-  }
-
   public long getIntegerPropertyValue(ComponentInstance ci, String propSet, String propName)
   {
     long val = 0;
@@ -236,50 +229,28 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
   boolean containNodes;
   Classifier systemClassifier;
 
+  //-- global map from nodes to roles in the instantiated system
   HashMap<Classifier, ArrayList<ComponentInstance>> node2roles =
     new HashMap<Classifier, ArrayList<ComponentInstance>>();
 
   // HashMap<Classifier, Classifier> overwrites = new HashMap<Classifier, Classifier>();
 
-  protected void analyzeInstanceModel(IProgressMonitor monitor,
-                                      final AnalysisErrorReporterManager errManager,
-                                      SystemInstance root, SystemOperationMode som)
+  /*******************************************************************/
+  //-- generate DMPL file
+  /*******************************************************************/
+  protected void generateDmplFile(IProgressMonitor monitor,
+                                  final AnalysisErrorReporterManager errManager,
+                                  SystemInstance root, SystemOperationMode som,
+                                  final String dmplFilename)
   {
+    //-- clear global data structures
     printed.clear();
     node2roles.clear();
 
-    //-- create the directory where the generated files will be kept
-    IPath dir = OsateResourceUtil.convertToIResource(root.eResource()).getLocation().removeLastSegments(2).append("DART");
-    String dirStr = dir.toOSString();
-    File dirFile = new File(dirStr);
-    dirFile.mkdir();
-
-    //-- get the name of the instance file without the extension
-    String instFile = OsateResourceUtil.convertToIResource(root.eResource()).getLocation().removeFileExtension().lastSegment();
-    
-    //-- create DMPL file name
-    final String targetFilename = dirStr + "/" + instFile + ".dmpl";
-    if (targetFilename == null) {
-      errManager.error(root, "ERROR: could not create DMPL file name");
-      return;
-    }
-
-    //-- create mission file name
-    final String missionFilename = dirStr + "/" + instFile + ".mission";
-    if (missionFilename == null) {
-      errManager.error(root, "ERROR: could not create mission file name");
-      return;
-    }
-    
-    //-- various filenames and other constants
-    final String platform = getStringPropertyValue(root, "DMPLProperties", "Platform");
-    final double expectLogPeriod = getRealPropertyValue(root, "DMPLProperties", "Expect_Log_Period");
-    final double missionTime = getTimePropertyValue(root, "DMPLProperties", "Mission_Time", AadlProject.SEC_LITERAL);
-
     try {
-
-      final PrintWriter pw = new PrintWriter(targetFilename);
-
+      //-- open writer to DMPL file
+      final PrintWriter pw = new PrintWriter(dmplFilename);
+    
       //-- visitor to create map from nodes to roles
       final ForAllElement visitSystems0 = new ForAllElement(errManager) {
 
@@ -638,6 +609,25 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
         };
       visitSystems1.processPreOrderComponentInstance(root, ComponentCategory.SYSTEM);
 
+      //-- close writer to DMPL file
+      pw.close();
+
+      System.out.println("Annex DMPL Generator Finished ...");
+    } catch (FileNotFoundException ex) {
+      System.err.println("ERROR: could not open DMPL file " + dmplFilename + "!!");
+    }
+  }
+
+  /*******************************************************************/
+  //-- generate mission file
+  /*******************************************************************/
+  protected void generateMissionFile(IProgressMonitor monitor,
+                                     final AnalysisErrorReporterManager errManager,
+                                     SystemInstance root, SystemOperationMode som,
+                                     final String instFile,
+                                     final String missionFilename)
+  {
+    try {      
       //-- printer for the mission file
       final PrintWriter missionWriter = new PrintWriter(missionFilename);
 
@@ -699,10 +689,13 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
 
       missionWriter.println("ROLEDESC=" + roledesc);
       missionWriter.println("");
-      missionWriter.println("PLATFORM=" + platform);
-      missionWriter.println("EXPECT_LOG_PERIOD=" + expectLogPeriod);
+      missionWriter.println("PLATFORM=" + getStringPropertyValue(root, "DMPLProperties", "Platform"));
+      missionWriter.println("EXPECT_LOG_PERIOD=" +
+                            getRealPropertyValue(root, "DMPLProperties", "Expect_Log_Period"));
       missionWriter.println("");
-      missionWriter.println("MISSION_TIME=" + (long) missionTime);
+      missionWriter.println("MISSION_TIME=" +
+                            (long) getTimePropertyValue(root, "DMPLProperties", "Mission_Time",
+                                                        AadlProject.SEC_LITERAL));
       missionWriter.println("");
       missionWriter.println("");
 
@@ -712,21 +705,56 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
         missionWriter.println("ARGS_" + nodeId + "=\"" + na + "\"");
         ++nodeId;
       }
-      
-      pw.close();
+
+      //-- close printer for mission file
       missionWriter.close();
 
-      //-- refresh so that the DART folder and its contents become visible
-      IResource ires = OsateResourceUtil.convertToIResource(root.eResource());
-      try {
-        ires.getParent().getParent().refreshLocal(IResource.DEPTH_INFINITE, monitor);
-      } catch (CoreException e) {
-        System.err.println("ERROR: Could not refresh project after creating DART folder");
-      }
-      
-      System.out.println("Annex DMPL Generator Finished");
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
+      System.out.println("Annex Mission Generator Finished ...");
+    } catch (FileNotFoundException ex) {
+      System.err.println("ERROR: could not open mission file " + missionFilename + "!!");
+    }
+  }
+  
+  /*******************************************************************/
+  //-- the top-level method called from OSATE
+  /*******************************************************************/
+  protected void analyzeInstanceModel(IProgressMonitor monitor,
+                                      final AnalysisErrorReporterManager errManager,
+                                      SystemInstance root, SystemOperationMode som)
+  {
+    //-- create the directory where the generated files will be kept
+    IPath dir = OsateResourceUtil.convertToIResource(root.eResource()).getLocation().removeLastSegments(2).append("DART");
+    String dirStr = dir.toOSString();
+    File dirFile = new File(dirStr);
+    dirFile.mkdir();
+
+    //-- get the name of the instance file without the extension
+    final String instFile = OsateResourceUtil.convertToIResource(root.eResource()).getLocation().removeFileExtension().lastSegment();
+    
+    //-- create DMPL file name
+    final String dmplFilename = dirStr + "/" + instFile + ".dmpl";
+    if (dmplFilename == null) {
+      errManager.error(root, "ERROR: could not create DMPL file name");
+      return;
+    }
+
+    //-- create mission file name
+    final String missionFilename = dirStr + "/" + instFile + ".mission";
+    if (missionFilename == null) {
+      errManager.error(root, "ERROR: could not create mission file name");
+      return;
+    }
+
+    //-- generate DMPL and mission files
+    generateDmplFile(monitor,errManager,root,som,dmplFilename);
+    generateMissionFile(monitor,errManager,root,som,instFile,missionFilename);
+    
+    //-- refresh so that the DART folder and its contents become visible
+    IResource ires = OsateResourceUtil.convertToIResource(root.eResource());
+    try {
+      ires.getParent().getParent().refreshLocal(IResource.DEPTH_INFINITE, monitor);
+    } catch (CoreException e) {
+      System.err.println("ERROR: Could not refresh project after creating DART folder");
     }
   }
 
