@@ -283,7 +283,9 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
 
       //-- visitor to create map from nodes to roles
       final ForAllElement visitSystems0 = new ForAllElement(errManager) {
-          public void process(Element obj) {
+
+          public void process(Element obj)
+          {
             ComponentInstance ci = (ComponentInstance) obj;
             containNodes = false;
             Classifier sysClassifier = ci.getComponentClassifier();
@@ -337,7 +339,7 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
       }
 			
       // Warning! this may interfere with the sc search in the next if
-      if (prg == null){
+      if (prg == null) {
         rootClassifier = root.getComponentClassifier();
         if (rootClassifier instanceof SystemImplementationImpl) {
           Realization rel = ((SystemImplementationImpl) rootClassifier).getOwnedRealization();
@@ -375,9 +377,9 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
         pw.println(str.trim());//replaceAll("\\p{C}", " ").trim());
       }
 			
-      //			if (sc.length() != 0) {
-      //				pw.println(sc);
-      //			}
+      //if (sc.length() != 0) {
+      //pw.println(sc);
+      //}
 
       printed.clear();
       
