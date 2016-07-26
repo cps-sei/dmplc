@@ -3,12 +3,13 @@ package edu.cmu.sei.annex.dmpl.generator.actions;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -651,22 +652,43 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
       missionWriter.println("REC_CAM_POS=\"" + getStringPropertyValue(root, "DMPLProperties", "Record_Camera_Pos") + "\"");
       missionWriter.println("GRIDSIZE=" + getIntegerPropertyValue(root, "DMPLProperties", "Grid_Size"));
 
+      //-- create the role description, and the arguments to the nodes
       String roledesc = "";
       String nodesep = "";
+      LinkedList<Entry<Classifier,Integer>> roleCounts = new LinkedList<Entry<Classifier,Integer>>();
+      List<String> nodeArgs = new LinkedList<String>();
       for (Entry<Classifier, ArrayList<ComponentInstance>> entry : node2roles.entrySet()) {
         String node = entry.getKey().getName();
         node = node.replace('.', '_');
-        HashMap<Classifier, Integer> categoryCounter = new HashMap<Classifier, Integer>();
+        
         for (ComponentInstance role : entry.getValue()) {
-          Integer count = categoryCounter.get(role.getComponentClassifier());
-          if (count == null) {
-            count = new Integer(0);
-            categoryCounter.put(role.getComponentClassifier(), count);
+          //-- update role count
+          Classifier cc = role.getComponentClassifier();
+          if(roleCounts.isEmpty() || !roleCounts.peekLast().getKey().equals(cc)) {
+            roleCounts.add(new AbstractMap.SimpleEntry<Classifier,Integer>(cc,1));
+          } else {
+            Entry<Classifier,Integer> e = roleCounts.removeLast();
+            e.setValue(e.getValue()+1);
+            roleCounts.addLast(e);
           }
-          count = count + 1;
-          categoryCounter.put(role.getComponentClassifier(), count);
+          
+          //-- generate the node argument
+          ArrayList<String> vars = getStringPropertyValueList(role, "DMPLProperties",
+              "Initial_Parameter_Values");
+          String varstring = "";
+          String varname = null;
+          for (String var : vars) {
+            if (varname == null) {
+              varname = var;
+            } else {
+              varstring += " --var_" + varname + " " + var;
+              varname = null;
+            }
+          }
+          nodeArgs.add(varstring);
         }
-        for (Entry<Classifier, Integer> ccount : categoryCounter.entrySet()) {
+        
+        for (Entry<Classifier, Integer> ccount : roleCounts) {
           String rolename = ccount.getKey().getName();
           rolename = rolename.replace('.', '_');
           int count = ccount.getValue();
@@ -684,27 +706,13 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
       missionWriter.println("");
       missionWriter.println("");
 
+      //-- print the node arguments
       int nodeId = 0;
-      for (Entry<Classifier, ArrayList<ComponentInstance>> entry : node2roles.entrySet()) {
-        String nodename = entry.getKey().getName();
-        for (ComponentInstance ci : entry.getValue()) {
-          ArrayList<String> vars = getStringPropertyValueList(ci, "DMPLProperties",
-                                                              "Initial_Parameter_Values");
-          String varstring = "";
-          String varname = null;
-          for (String var : vars) {
-            if (varname == null) {
-              varname = var;
-            } else {
-              varstring += " --var_" + varname + " " + var;
-              varname = null;
-            }
-          }
-
-          missionWriter.println("ARGS_" + nodeId + "=\"" + varstring + "\"");
-          ++nodeId;
-        }
+      for(String na : nodeArgs) {
+        missionWriter.println("ARGS_" + nodeId + "=\"" + na + "\"");
+        ++nodeId;
       }
+      
       pw.close();
       missionWriter.close();
 
