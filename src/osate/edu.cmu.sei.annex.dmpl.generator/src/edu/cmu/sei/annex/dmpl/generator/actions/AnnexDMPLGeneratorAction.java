@@ -375,9 +375,14 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
 
       if (prg!= null){
         String str = serializer.serialize(prg);
-        pw.println("//-- begin external stuff");
+        str = "    " + str.trim();
+        pw.println("    //----------------------------------------------------------------------");
+        pw.println("    //-- begin external stuff");
+        pw.println("    //----------------------------------------------------------------------");
         pw.println(str);//replaceAll("\\p{C}", " ").trim());
-        pw.println("//-- end external stuff");
+        pw.println("    //----------------------------------------------------------------------");
+        pw.println("    //-- end external stuff");
+        pw.println("    //----------------------------------------------------------------------");
       }
 			
       //if (sc.length() != 0) {
@@ -414,8 +419,8 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                               AttributableProgramElement ae = (AttributableProgramElement) pelem;
                               if (ae.getElement() instanceof Node){
                                 Node n = (Node)ae.getElement();
-                                pw.println("node " +
-                                           extendedProcessClassifier.getName().replace('.', '_') + "{");
+                                pw.println("    node " +
+                                           extendedProcessClassifier.getName().replace('.', '_') + " {");
                                 for (NodeBodyElement nbe : n.getElements()){
                                   pw.print(serializer.serialize(nbe));
                                 }
@@ -437,7 +442,7 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                               Program threadPrg = getAnnexSubclauseProgram(threadClassifier);
                               if (extendedThreadClassifier == null) {									   //-- print period				
                                 if (period != 0) {
-                                  pw.println("@Period(" + ((int) period) + ");");
+                                  pw.println("    @Period(" + ((int) period) + ");");
                                 }
                                 
                                 // print directives
@@ -476,7 +481,7 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                                 if (threadPrg != null){
                                   for (ProgramElement pe:threadPrg.getElements()){
                                     if (pe instanceof ThreadDeclaration){
-                                      String tstr="";
+                                      String tstr="    ";
                                       ThreadDeclaration td = (ThreadDeclaration)pe;
                                       if (td.isOverride())
                                         tstr += "override ";
@@ -486,11 +491,17 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                                         tstr += "pure ";
                                       tstr+= "thread "+threadClassifier.getName() + " " +
                                         serializer.serialize(td.getFnBody());
-                                      pw.print(tstr);
+                                      pw.println(tstr);
                                     } else {
-                                      pw.println("//-- begin node-level thread");
-                                      pw.print(serializer.serialize(pe));
-                                      pw.println("//-- end node-level thread");
+                                      pw.println("    //---------------------------------------------");
+                                      pw.println("    //-- begin node-level thread");
+                                      pw.println("    //---------------------------------------------");
+                                      String str = serializer.serialize(pe);
+                                      str = "    " + str.trim();
+                                      pw.println(str);
+                                      pw.println("    //---------------------------------------------");
+                                      pw.println("    //-- end node-level thread");
+                                      pw.println("    //---------------------------------------------");
                                     }
                                   }
                                   pw.println(" ");
@@ -514,7 +525,7 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                             continue;
                           rolesProcessed.add(processClassifier);
 
-                          pw.println("role " + processClassifier.getName().replace('.', '_') + " {");
+                          pw.println("    role " + processClassifier.getName().replace('.', '_') + " {");
                           // not expecting a subclause here
                           //String sc = getAnnexSubclause(processClassifier);
                           //if (sc.length() != 0) {
@@ -528,11 +539,11 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                                   Classifier extendedThreadClassifier = threadClassifier
                                     .getExtended();
                                   if (extendedThreadClassifier == null) {
-                                    pw.println("thread " + threadClassifier.getName() + ";");
+                                    pw.println("      thread " + threadClassifier.getName() + ";");
                                   } else {
                                     double period = GetProperties.getPeriodinMS(thread);
                                     if (period != 0) {
-                                      pw.println("@Period(" + ((int) period) + ");");
+                                      pw.println("      @Period(" + ((int) period) + ");");
                                     }
                                     Program threadPrg = getAnnexSubclauseProgram(threadClassifier);
                                     if (threadPrg == null){
@@ -564,7 +575,7 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                                           }
                                         }
                                         if (pe instanceof ThreadDeclaration){
-                                          String tstr="";
+                                          String tstr="    ";
                                           ThreadDeclaration td = (ThreadDeclaration)pe;
                                           if (td.isOverride())
                                             tstr += "override ";
@@ -574,12 +585,18 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                                             tstr += "pure ";
                                           tstr+= "thread " + extendedThreadClassifier.getName() + " " +
                                             serializer.serialize(td.getFnBody());
-                                          pw.print(tstr);
+                                          pw.println(tstr);
                                           pw.println(" ");
                                         } else {
-                                          pw.println("//-- begin role-level thread");
-                                          pw.print(serializer.serialize(pe));
-                                          pw.println("//-- end role-level thread");
+                                          pw.println("      //-------------------------------------------");
+                                          pw.println("      //-- begin role-level thread");
+                                          pw.println("      //-------------------------------------------");
+                                          String str = serializer.serialize(pe);
+                                          str = "      " + str.trim();
+                                          pw.println(str);
+                                          pw.println("      //-------------------------------------------");
+                                          pw.println("      //-- end role-level thread");
+                                          pw.println("      //-------------------------------------------");
                                         }
 
                                       }
@@ -608,9 +625,9 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                             };
                           visitThreads1.processPreOrderComponentInstance(proc,
                                                                          ComponentCategory.THREAD);
-                          pw.println("}\n");
+                          pw.println("    }\n");
                         }
-                        pw.println("}\n");
+                        pw.println("    }\n");
                       }
                     }
                   }
