@@ -852,9 +852,10 @@ dmpl::gams::GAMSBuilder::build_parse_args ()
   buffer_ << "    }\n";
   buffer_ << "    else if (arg1 == \"-d\" || arg1 == \"--domain\")\n";
   buffer_ << "    {\n";
-  buffer_ << "      if (i + 1 < argc)\n";
-  buffer_ << "        settings.domains = argv[i + 1];\n";
-  buffer_ << "      else goto WRONG_ARG;\n";
+  buffer_ << "      if (i + 1 < argc) {\n";
+  buffer_ << "        settings.write_domain = argv[i + 1];\n";
+  buffer_ << "        settings.add_read_domain(argv[i + 1]);\n";
+  buffer_ << "      } else goto WRONG_ARG;\n";
   buffer_ << "      ++i;\n";
   buffer_ << "    }\n";
   buffer_ << "    else if (arg1 == \"-i\" || arg1 == \"--id\")\n";
@@ -2567,6 +2568,17 @@ dmpl::gams::GAMSBuilder::build_main_function ()
   buffer_ << "  for(int i = 0; i < algos.size(); i++)\n";
   buffer_ << "    algos[i]->start(threader);\n";
   
+  buffer_ << "  std::stringstream buffer;\n";
+  buffer_ << "  buffer << \"(vrep_ready = 1) && S0.init\";\n";
+  buffer_ << "  for(unsigned int i = 1; i < num_processes; ++i)\n";
+  buffer_ << "    buffer << \" && S\" << i << \".init\";\n";
+  buffer_ << "  std::string expression = buffer.str ();\n";
+  buffer_ << "  madara::knowledge::CompiledExpression compiled;\n";
+  buffer_ << "  compiled = knowledge.compile (expression);\n";
+  buffer_ << "  std::cerr << \"waiting for \" << num_processes << \" agent(s) to come online...\" << std::endl;\n";
+  buffer_ << "  knowledge.wait (compiled);\n";
+  buffer_ << "\n";
+
   buffer_ << "  knowledge.set(\"begin_sim\", \"1\");\n";
   
   if(do_expect_)
