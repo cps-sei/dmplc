@@ -53,6 +53,9 @@ public
     properties
       Zero_Slack_Scheduling::Criticality => 1 applies to collision_avoidance_thread;
       Zero_Slack_Scheduling::Criticality => 1 applies to waypoint_thread;
+      Period => 100000 ms applies to collision_avoidance_thread; 
+      Compute_Execution_Time => 2 ms .. 2 ms applies to collision_avoidance_thread;
+
       annex dmpl{**
       node uav_process_i {
         //shared variables -- visible across nodes. 
