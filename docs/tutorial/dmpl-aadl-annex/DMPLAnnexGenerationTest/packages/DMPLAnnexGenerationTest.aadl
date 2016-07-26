@@ -337,6 +337,7 @@ public
     properties
       -- DMPLProperties::DMPL_Target_File =>"test.dmpl"; 
       -- DMPLProperties::DMPL_Mission_File => "mission.txt";
+      DMPLProperties::Output_Dir => "outdir";
       DMPLProperties::Grid_Size => 10;
       DMPLProperties::Map_Name => "maptest";
       DMPLProperties::Mission_Time => 120 sec;
