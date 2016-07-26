@@ -323,7 +323,8 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
         }
       }
 
-      // print the annex in the root type
+      // print the annex in the root type. this is usually the extern
+      // thunk, constant definitions, and extern function declarations.
       Classifier rootClassifier = root.getComponentClassifier();
 
       // traverse first the "extended" hierarchy
