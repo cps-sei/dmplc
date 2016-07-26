@@ -701,9 +701,7 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
             }
           }
 
-          missionWriter.println("ARGS_" + nodeId + "=$(echo --node " + nodename + " --role "
-                                + ci.getComponentClassifier().getName().replace(".", "_")
-                                + varstring + ")");
+          missionWriter.println("ARGS_" + nodeId + "=\"" + varstring + "\"");
           ++nodeId;
         }
       }
