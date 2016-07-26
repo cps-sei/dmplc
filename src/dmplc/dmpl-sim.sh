@@ -230,16 +230,18 @@ declare -A device2drivepath
 
 MISSION_MCAST=239.255.0.0/24
 MISSION_MDOMAIN=239.255.0.1:4150
-#
-# determine which local net iface is used to get to the COMMAND_SUBNET
-# as the IP addr of that iface will be the IP addr VREP can accept connections
-#
-VREPSERVERIF=$(ip -o route get ${COMMAND_SUBNET}.0 | \
-              egrep --only-matching "dev[[:space:]][[:alnum:]]*[[:space:]]" | \
-              sed 's/dev //g')
-VREPSERVERIP=$(ifconfig -a ${VREPSERVERIF} | \
-              grep "inet addr" | \
-              cut -d: -f2 | cut -d\  -f1)
+if [ ${DEPLOY} -gt 0 ]; then
+  #
+  # determine which local net iface is used to get to the COMMAND_SUBNET
+  # as the IP addr of that iface will be the IP addr VREP can accept connections
+  #
+  VREPSERVERIF=$(ip -o route get ${COMMAND_SUBNET}.0 | \
+                egrep --only-matching "dev[[:space:]][[:alnum:]]*[[:space:]]" | \
+                sed 's/dev //g')
+  VREPSERVERIP=$(ifconfig -a ${VREPSERVERIF} | \
+                grep "inet addr" | \
+                cut -d: -f2 | cut -d\  -f1)
+fi
 
 [ ${DEPLOY} -gt 0 ] && PLATFORM=$(echo $PLATFORM | sed "s/::/:${VREPSERVERIP}:/")
 #
