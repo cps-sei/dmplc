@@ -796,9 +796,7 @@ printf "press Ctrl-C to terminate the simulation ..."
 
 function localwait() {
   KARLFILE=`tempfile` || return 1
-  echo $KARLFILE
   karl -m $MISSION_MDOMAIN -y 10 -c -w 30 "begin_sim == 1" -s $KARLFILE
-  cat $KARLFILE
   if grep "begin_sim=\"1\"" $KARLFILE; then
     rm $KARLFILE
     return 0
