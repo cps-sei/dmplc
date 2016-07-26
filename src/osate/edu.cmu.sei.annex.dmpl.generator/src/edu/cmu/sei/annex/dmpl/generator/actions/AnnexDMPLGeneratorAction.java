@@ -9,11 +9,13 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.xtext.serializer.ISerializer;
 import org.osate.aadl2.AnnexSubclause;
 import org.osate.aadl2.Classifier;
@@ -739,6 +741,15 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                                       final AnalysisErrorReporterManager errManager,
                                       SystemInstance root, SystemOperationMode som)
   {
+    //-- check whether the mission must be run also after generation
+    final AtomicBoolean runMission = new AtomicBoolean(false);
+    getShell().getDisplay().syncExec(new Runnable() {
+      @Override
+      public void run() {
+        runMission.set(MessageDialog.openQuestion(getShell(), "Confirm", "Run mission after generating?"));
+      }
+    });
+    
     //-- create the directory where the generated files will be kept
     final IPath dir = OsateResourceUtil.convertToIResource(root.eResource()).getLocation().removeLastSegments(2).append("DART");
     final String dirStr = dir.toOSString();
@@ -775,7 +786,7 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
     }
 
     //-- execute the mission
-    executeMission(dirStr,instFile);
+    if(runMission.get()) executeMission(dirStr,instFile);
   }
 
   protected String getActionName()
