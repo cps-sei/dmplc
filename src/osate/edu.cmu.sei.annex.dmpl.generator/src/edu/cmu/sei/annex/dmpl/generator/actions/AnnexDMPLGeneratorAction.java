@@ -281,7 +281,7 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
 
       final PrintWriter pw = new PrintWriter(targetFilename);
 
-      //-- this the top-level code generator for the entire system
+      //-- visitor to create map from nodes to roles
       final ForAllElement visitSystems0 = new ForAllElement(errManager) {
           public void process(Element obj) {
             ComponentInstance ci = (ComponentInstance) obj;
@@ -309,8 +309,11 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
               systemClassifier = sysClassifier;
           }
         };
+
+      //-- create the map from nodes to roles
       visitSystems0.processPreOrderComponentInstance(root, ComponentCategory.SYSTEM);
 
+      //-- debug output. print map from nodes to roles
       for (Entry<Classifier, ArrayList<ComponentInstance>> roles : node2roles.entrySet()) {
         System.out.println("node: " + roles.getKey().getName());
         for (ComponentInstance ci : roles.getValue()) {
