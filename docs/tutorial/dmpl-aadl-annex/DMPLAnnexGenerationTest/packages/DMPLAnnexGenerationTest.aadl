@@ -342,9 +342,9 @@ public
       -- DMPLProperties::DMPL_Mission_File => "mission.txt";
       DMPLProperties::Output_Dir => "outdir";
       DMPLProperties::Grid_Size => 10;
-      DMPLProperties::Map_Name => "large";
-      DMPLProperties::Record_Camera_Pos => "-3.2090 1.2665 39.7362";
-      DMPLProperties::Mission_Time => 120 sec;
+      DMPLProperties::Map_Name => "small";
+      DMPLProperties::Record_Camera_Pos => "0.0421 -0.2489 11.2217";
+      DMPLProperties::Mission_Time => 240 sec;
       DMPLProperties::Expect_Log_Period =>0.2;
       DMPLProperties::Platform => "vrep-uav::::0.1";
       DMPLProperties::Initial_Parameter_Values => ("x","1","y","1","xt","8","yt","8") applies to leader_node.sw;
