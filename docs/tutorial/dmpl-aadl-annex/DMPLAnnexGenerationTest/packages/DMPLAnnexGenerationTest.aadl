@@ -267,8 +267,8 @@ public
 
     int my_sleep (int seconds)
     {
-    madara::utility::sleep (seconds);
-    return 0;
+      madara::utility::sleep (seconds);
+      return 0;
     }
 
     //int roundNum = 0;
@@ -276,38 +276,38 @@ public
 
     void print_int(int i)
     {
-    printf("%i\n", i);
+      printf("%i\n", i);
     }
 
     void print_line(int _X)
     {
-    printf("-");
-    for(int i = 0;i < _X;++i) printf("--");
-    printf("\n");
+      printf("-");
+      for(int i = 0;i < _X;++i) printf("--");
+      printf("\n");
     }
 
     void print_state(int _X,int _Y,int id_, int x, int y, int xf, int yf)
     {
-    if(roundNum == 0) {
-    xi = x; yi = y;
-    }
+      if(roundNum == 0) {
+        xi = x; yi = y;
+      }
 
-    for(int i = 0;i < 150;++i) printf("\n");
+      for(int i = 0;i < 150;++i) printf("\n");
     
-    printf("round = %d : id = %d\n", ++roundNum, id);
-    printf("_X = %d _Y = %d\n",_X,_Y);
-    print_line(_X);
-    for(int i = 0;i < _Y;++i) {
-    printf("|");
-    for(int j = 0;j < _X;++j) {
-    //printf("i = %d j = %d\n", i, j);
-    if(j == xf && i == yf) printf("o|");        
-    else if(j == x && i == y) printf("%d|",id);
-    else printf(" |");
-    }
-    printf("\n");
-    print_line(_X);
-    }
+      printf("round = %d : id = %d\n", ++roundNum, id);
+      printf("_X = %d _Y = %d\n",_X,_Y);
+      print_line(_X);
+      for(int i = 0;i < _Y;++i) {
+        printf("|");
+        for(int j = 0;j < _X;++j) {
+          //printf("i = %d j = %d\n", i, j);
+          if(j == xf && i == yf) printf("o|");        
+          else if(j == x && i == y) printf("%d|",id);
+          else printf(" |");
+        }
+        printf("\n");
+        print_line(_X);
+      }
     }
     %%}
 
