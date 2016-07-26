@@ -105,76 +105,76 @@ public
         {
           GRID_INIT();
           GRID_PLACE(x, y, 1);
-          }
+        }
           
-          //the safety property checked at the beginning of each round
-          pure bool NoCollisions ()
-          {
-            //-- the main property
-            FORALL_DISTINCT_NODE_PAIR (id1,id2) {
-              if(x@id1 == x@id2 && y@id1 == y@id2) return false;
-            }
-      
-            //-- supporting invariants for inductiveness
-            
-            FORALL_NODE(idp) {
-              /** state has to be between 0 and 4, (x,y), (xf,yf), and (xp,yp)
-              have to be between 0 and X-1,Y-1 */
-              if(!(state@idp >= NEXT && state@idp <= MOVE)) return false;
-              if(!(x@idp >= 0 && x@idp < X)) return false;
-              if(!(y@idp >= 0 && y@idp < Y)) return false;
-              //if(!(xt@idp >= 0 && xt@idp < X)) return false;
-              //if(!(yt@idp >= 0 && yt@idp < Y)) return false;
-              if(!(xp@idp >= 0 && xp@idp < X)) return false;
-              if(!(yp@idp >= 0 && yp@idp < Y)) return false;
-              /** if we are in not in NEXT, then xp,yp != x,y */
-              if(!(state@idp == NEXT || x@idp != xp@idp || y@idp != yp@idp)) return false;
-              /** if we are in NEXT, REQUEST, WAITING or MOVE, we have lock on
-              x,y */
-              if(!((state@idp != NEXT && state@idp != REQUEST && state@idp != WAITING && state@idp != MOVE) ||
-              lock[x@idp][y@idp]@idp)) return false;
-              /** if we are in NEXT, WAITING or MOVE, then we have lock on x,y
-              and xp,yp */
-              if(!((state@idp != NEXT && state@idp != WAITING && state@idp != MOVE) ||
-              (lock[x@idp][y@idp]@idp && lock[xp@idp][yp@idp]@idp))) return false;
-              /** if we are not in NEXT, then x,y and xp,yp are
-              adjacent */
-              if(!(state@idp == NEXT || (((x@idp == xp@idp - 1) || (x@idp == xp@idp + 1)) ^ ((y@idp == yp@idp - 1) || (y@idp == yp@idp + 1))))) return false;
-            }
-      
-            //-- the rest are supporting invariants. you only need them for
-            //-- plain induction. you can skip them (by uncommenting the
-            //-- following return statement) out if you are doing K-induction
-            //-- with K>=3.
-            //return true;
-      
-            FORALL_DISTINCT_NODE_PAIR (id1,id2) {
-              /** if node1 is in MOVE/NEXT and has lower id than node2 which is
-              WAITING then they have different xp,yp */
-              if(!((state@id1 != NEXT && state@id1 != MOVE) || state@id2 != WAITING || id1 >= id2 || xp@id1 != xp@id2 || yp@id1 != yp@id2)) return false;
-              /** if two distinct nodes are in MOVE, they have different
-              (xp,yp) */
-              if(!(state@id1 != MOVE || state@id2 != MOVE ||                        
-              ((xp@id1 != xp@id2 || yp@id1 != yp@id2) &&             
-              (xp@id1 != x@id2 || yp@id1 != y@id2) &&               
-              (x@id1 != xp@id2 || y@id1 != yp@id2) &&               
-              (x@id1 != x@id2 || y@id1 != y@id2)))) return false;
-              /** if node2 in WAITING, and node1 has lower id than node 2, then
-              node1.(x,y) != node2.(xp,yp) */
-              if(!(state@id2 != WAITING || id1 >= id2 || x@id1 != xp@id2 || y@id1 != yp@id2)) return false;
-              /** if node2 in MOVE, then node1.(x,y) != node2.(xp,yp) */
-              if(!((state@id2 != MOVE || x@id1 != xp@id2 || y@id1 != yp@id2) && (state@id1 != 4 || xp@id1 != x@id2 || yp@id1 != y@id2))) return false;
-              /** two distinct nodes have different (x,y) */
-              if(!(x@id1 != x@id2 || y@id1 != y@id2)) return false;
-            }
-      
-            return true;
+        //the safety property checked at the beginning of each round
+        pure bool NoCollisions ()
+        {
+          //-- the main property
+          FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+            if(x@id1 == x@id2 && y@id1 == y@id2) return false;
           }
+      
+          //-- supporting invariants for inductiveness
+          
+          FORALL_NODE(idp) {
+            /** state has to be between 0 and 4, (x,y), (xf,yf), and (xp,yp)
+            have to be between 0 and X-1,Y-1 */
+            if(!(state@idp >= NEXT && state@idp <= MOVE)) return false;
+            if(!(x@idp >= 0 && x@idp < X)) return false;
+            if(!(y@idp >= 0 && y@idp < Y)) return false;
+            //if(!(xt@idp >= 0 && xt@idp < X)) return false;
+            //if(!(yt@idp >= 0 && yt@idp < Y)) return false;
+            if(!(xp@idp >= 0 && xp@idp < X)) return false;
+            if(!(yp@idp >= 0 && yp@idp < Y)) return false;
+            /** if we are in not in NEXT, then xp,yp != x,y */
+            if(!(state@idp == NEXT || x@idp != xp@idp || y@idp != yp@idp)) return false;
+            /** if we are in NEXT, REQUEST, WAITING or MOVE, we have lock on
+            x,y */
+            if(!((state@idp != NEXT && state@idp != REQUEST && state@idp != WAITING && state@idp != MOVE) ||
+            lock[x@idp][y@idp]@idp)) return false;
+            /** if we are in NEXT, WAITING or MOVE, then we have lock on x,y
+            and xp,yp */
+            if(!((state@idp != NEXT && state@idp != WAITING && state@idp != MOVE) ||
+            (lock[x@idp][y@idp]@idp && lock[xp@idp][yp@idp]@idp))) return false;
+            /** if we are not in NEXT, then x,y and xp,yp are
+            adjacent */
+            if(!(state@idp == NEXT || (((x@idp == xp@idp - 1) || (x@idp == xp@idp + 1)) ^ ((y@idp == yp@idp - 1) || (y@idp == yp@idp + 1))))) return false;
+          }
+      
+          //-- the rest are supporting invariants. you only need them for
+          //-- plain induction. you can skip them (by uncommenting the
+          //-- following return statement) out if you are doing K-induction
+          //-- with K>=3.
+          //return true;
+          
+          FORALL_DISTINCT_NODE_PAIR (id1,id2) {
+            /** if node1 is in MOVE/NEXT and has lower id than node2 which is
+            WAITING then they have different xp,yp */
+            if(!((state@id1 != NEXT && state@id1 != MOVE) || state@id2 != WAITING || id1 >= id2 || xp@id1 != xp@id2 || yp@id1 != yp@id2)) return false;
+            /** if two distinct nodes are in MOVE, they have different
+            (xp,yp) */
+            if(!(state@id1 != MOVE || state@id2 != MOVE ||                        
+            ((xp@id1 != xp@id2 || yp@id1 != yp@id2) &&             
+            (xp@id1 != x@id2 || yp@id1 != y@id2) &&               
+            (x@id1 != xp@id2 || y@id1 != yp@id2) &&               
+            (x@id1 != x@id2 || y@id1 != y@id2)))) return false;
+            /** if node2 in WAITING, and node1 has lower id than node 2, then
+            node1.(x,y) != node2.(xp,yp) */
+            if(!(state@id2 != WAITING || id1 >= id2 || x@id1 != xp@id2 || y@id1 != yp@id2)) return false;
+            /** if node2 in MOVE, then node1.(x,y) != node2.(xp,yp) */
+            if(!((state@id2 != MOVE || x@id1 != xp@id2 || y@id1 != yp@id2) && (state@id1 != 4 || xp@id1 != x@id2 || yp@id1 != y@id2))) return false;
+            /** two distinct nodes have different (x,y) */
+            if(!(x@id1 != x@id2 || y@id1 != y@id2)) return false;
+          }
+      
+          return true;
+        }
 
-          //-- guaranteed properties
-          require NoCollision => NoCollisions;
-          }
-          **};
+        //-- guaranteed properties
+        require NoCollision => NoCollisions;
+      }
+      **};
     end uav_process.i;
 
     system implementation node.i
