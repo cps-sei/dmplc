@@ -344,8 +344,11 @@ public
       DMPLProperties::Mission_Time => 120 sec;
       DMPLProperties::Expect_Log_Period =>0.2;
       DMPLProperties::Platform => "vrep-uav::::0.1";
-      DMPLProperties::Initial_Parameter_Values => ("x","1","y","2") applies to leader_node.sw;
-      DMPLProperties::Initial_Parameter_Values => ("x","1","y","2") applies to protector_node.sw;
+      DMPLProperties::Initial_Parameter_Values => ("x","1","y","1","xt","8","yt","8") applies to leader_node.sw;
+      DMPLProperties::Initial_Parameter_Values => ("x","2","y","2","xt","9","yt","9") applies to protector_node[1].sw;
+      DMPLProperties::Initial_Parameter_Values => ("x","0","y","2","xt","7","yt","9") applies to protector_node[2].sw;
+      DMPLProperties::Initial_Parameter_Values => ("x","0","y","0","xt","7","yt","7") applies to protector_node[3].sw;
+      DMPLProperties::Initial_Parameter_Values => ("x","2","y","0","xt","9","yt","7") applies to protector_node[4].sw;
       -- to generate "echo --node uav_process_i --role $6 --var_<varname> <value> --var_<varname> <value>"
       -- example with the current property: "echo --node xxx --role xxx --var_x 1 --var_y 2"
     end main.i;	
