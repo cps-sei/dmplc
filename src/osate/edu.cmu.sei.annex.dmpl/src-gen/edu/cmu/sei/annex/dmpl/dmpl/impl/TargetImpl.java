@@ -3,21 +3,19 @@
 package edu.cmu.sei.annex.dmpl.dmpl.impl;
 
 import edu.cmu.sei.annex.dmpl.dmpl.DmplPackage;
-import edu.cmu.sei.annex.dmpl.dmpl.ProgramElementNoTarget;
 import edu.cmu.sei.annex.dmpl.dmpl.Target;
 
 import java.util.Collection;
 
-import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
+
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.eclipse.emf.ecore.util.EDataTypeEList;
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -28,7 +26,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * </p>
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.TargetImpl#getNames <em>Names</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.TargetImpl#getElements <em>Elements</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.impl.TargetImpl#getThunk <em>Thunk</em>}</li>
  * </ul>
  *
  * @generated
@@ -46,14 +44,24 @@ public class TargetImpl extends ProgramElementImpl implements Target
   protected EList<String> names;
 
   /**
-   * The cached value of the '{@link #getElements() <em>Elements</em>}' containment reference list.
+   * The default value of the '{@link #getThunk() <em>Thunk</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getElements()
+   * @see #getThunk()
    * @generated
    * @ordered
    */
-  protected EList<ProgramElementNoTarget> elements;
+  protected static final String THUNK_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getThunk() <em>Thunk</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getThunk()
+   * @generated
+   * @ordered
+   */
+  protected String thunk = THUNK_EDEFAULT;
 
   /**
    * <!-- begin-user-doc -->
@@ -95,13 +103,9 @@ public class TargetImpl extends ProgramElementImpl implements Target
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<ProgramElementNoTarget> getElements()
+  public String getThunk()
   {
-    if (elements == null)
-    {
-      elements = new EObjectContainmentEList<ProgramElementNoTarget>(ProgramElementNoTarget.class, this, DmplPackage.TARGET__ELEMENTS);
-    }
-    return elements;
+    return thunk;
   }
 
   /**
@@ -109,15 +113,12 @@ public class TargetImpl extends ProgramElementImpl implements Target
    * <!-- end-user-doc -->
    * @generated
    */
-  @Override
-  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+  public void setThunk(String newThunk)
   {
-    switch (featureID)
-    {
-      case DmplPackage.TARGET__ELEMENTS:
-        return ((InternalEList<?>)getElements()).basicRemove(otherEnd, msgs);
-    }
-    return super.eInverseRemove(otherEnd, featureID, msgs);
+    String oldThunk = thunk;
+    thunk = newThunk;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, DmplPackage.TARGET__THUNK, oldThunk, thunk));
   }
 
   /**
@@ -132,8 +133,8 @@ public class TargetImpl extends ProgramElementImpl implements Target
     {
       case DmplPackage.TARGET__NAMES:
         return getNames();
-      case DmplPackage.TARGET__ELEMENTS:
-        return getElements();
+      case DmplPackage.TARGET__THUNK:
+        return getThunk();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -153,9 +154,8 @@ public class TargetImpl extends ProgramElementImpl implements Target
         getNames().clear();
         getNames().addAll((Collection<? extends String>)newValue);
         return;
-      case DmplPackage.TARGET__ELEMENTS:
-        getElements().clear();
-        getElements().addAll((Collection<? extends ProgramElementNoTarget>)newValue);
+      case DmplPackage.TARGET__THUNK:
+        setThunk((String)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -174,8 +174,8 @@ public class TargetImpl extends ProgramElementImpl implements Target
       case DmplPackage.TARGET__NAMES:
         getNames().clear();
         return;
-      case DmplPackage.TARGET__ELEMENTS:
-        getElements().clear();
+      case DmplPackage.TARGET__THUNK:
+        setThunk(THUNK_EDEFAULT);
         return;
     }
     super.eUnset(featureID);
@@ -193,8 +193,8 @@ public class TargetImpl extends ProgramElementImpl implements Target
     {
       case DmplPackage.TARGET__NAMES:
         return names != null && !names.isEmpty();
-      case DmplPackage.TARGET__ELEMENTS:
-        return elements != null && !elements.isEmpty();
+      case DmplPackage.TARGET__THUNK:
+        return THUNK_EDEFAULT == null ? thunk != null : !THUNK_EDEFAULT.equals(thunk);
     }
     return super.eIsSet(featureID);
   }
@@ -212,6 +212,8 @@ public class TargetImpl extends ProgramElementImpl implements Target
     StringBuffer result = new StringBuffer(super.toString());
     result.append(" (names: ");
     result.append(names);
+    result.append(", thunk: ");
+    result.append(thunk);
     result.append(')');
     return result.toString();
   }

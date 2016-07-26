@@ -92,23 +92,18 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cCommaKeyword_0_3_0 = (Keyword)cGroup_0_3.eContents().get(0);
 		private final Assignment cNamesAssignment_0_3_1 = (Assignment)cGroup_0_3.eContents().get(1);
 		private final RuleCall cNamesTIDENTIFIERTerminalRuleCall_0_3_1_0 = (RuleCall)cNamesAssignment_0_3_1.eContents().get(0);
-		private final Keyword cPercentSignPercentSignLeftCurlyBracketKeyword_0_4 = (Keyword)cGroup_0.eContents().get(4);
-		private final Assignment cElementsAssignment_0_5 = (Assignment)cGroup_0.eContents().get(5);
-		private final RuleCall cElementsProgramElementNoTargetParserRuleCall_0_5_0 = (RuleCall)cElementsAssignment_0_5.eContents().get(0);
-		private final Keyword cPercentSignPercentSignRightCurlyBracketKeyword_0_6 = (Keyword)cGroup_0.eContents().get(6);
+		private final Assignment cThunkAssignment_0_4 = (Assignment)cGroup_0.eContents().get(4);
+		private final RuleCall cThunkTHUNKTEXTTerminalRuleCall_0_4_0 = (RuleCall)cThunkAssignment_0_4.eContents().get(0);
 		private final RuleCall cProgramElementNoTargetParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
 		//ProgramElement:
-		//	{Target} ("target" | "TARGET") names+=TIDENTIFIER ("," names+=TIDENTIFIER)* "%%{" elements+=ProgramElementNoTarget*
-		//	"%%}" | ProgramElementNoTarget;
+		//	{Target} ("target" | "TARGET") names+=TIDENTIFIER ("," names+=TIDENTIFIER)* thunk=THUNKTEXT | ProgramElementNoTarget;
 		@Override public ParserRule getRule() { return rule; }
 
-		//{Target} ("target" | "TARGET") names+=TIDENTIFIER ("," names+=TIDENTIFIER)* "%%{" elements+=ProgramElementNoTarget*
-		//"%%}" | ProgramElementNoTarget
+		//{Target} ("target" | "TARGET") names+=TIDENTIFIER ("," names+=TIDENTIFIER)* thunk=THUNKTEXT | ProgramElementNoTarget
 		public Alternatives getAlternatives() { return cAlternatives; }
 
-		//{Target} ("target" | "TARGET") names+=TIDENTIFIER ("," names+=TIDENTIFIER)* "%%{" elements+=ProgramElementNoTarget*
-		//"%%}"
+		//{Target} ("target" | "TARGET") names+=TIDENTIFIER ("," names+=TIDENTIFIER)* thunk=THUNKTEXT
 		public Group getGroup_0() { return cGroup_0; }
 
 		//{Target}
@@ -141,17 +136,11 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		//TIDENTIFIER
 		public RuleCall getNamesTIDENTIFIERTerminalRuleCall_0_3_1_0() { return cNamesTIDENTIFIERTerminalRuleCall_0_3_1_0; }
 
-		//"%%{"
-		public Keyword getPercentSignPercentSignLeftCurlyBracketKeyword_0_4() { return cPercentSignPercentSignLeftCurlyBracketKeyword_0_4; }
+		//thunk=THUNKTEXT
+		public Assignment getThunkAssignment_0_4() { return cThunkAssignment_0_4; }
 
-		//elements+=ProgramElementNoTarget*
-		public Assignment getElementsAssignment_0_5() { return cElementsAssignment_0_5; }
-
-		//ProgramElementNoTarget
-		public RuleCall getElementsProgramElementNoTargetParserRuleCall_0_5_0() { return cElementsProgramElementNoTargetParserRuleCall_0_5_0; }
-
-		//"%%}"
-		public Keyword getPercentSignPercentSignRightCurlyBracketKeyword_0_6() { return cPercentSignPercentSignRightCurlyBracketKeyword_0_6; }
+		//THUNKTEXT
+		public RuleCall getThunkTHUNKTEXTTerminalRuleCall_0_4_0() { return cThunkTHUNKTEXTTerminalRuleCall_0_4_0; }
 
 		//ProgramElementNoTarget
 		public RuleCall getProgramElementNoTargetParserRuleCall_1() { return cProgramElementNoTargetParserRuleCall_1; }
@@ -3711,6 +3700,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	private final AnnexSubclauseElements pAnnexSubclause;
 	private final DmplSubclauseElements pDmplSubclause;
 	private final ProgramElementElements pProgramElement;
+	private final TerminalRule tTHUNKTEXT;
 	private final ProgramElementNoTargetElements pProgramElementNoTarget;
 	private final TerminalRule tINCLUDE_LINE;
 	private final TerminalRule tDEFINE_LINE;
@@ -3789,6 +3779,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 		this.pAnnexSubclause = new AnnexSubclauseElements();
 		this.pDmplSubclause = new DmplSubclauseElements();
 		this.pProgramElement = new ProgramElementElements();
+		this.tTHUNKTEXT = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "THUNKTEXT");
 		this.pProgramElementNoTarget = new ProgramElementNoTargetElements();
 		this.tINCLUDE_LINE = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "INCLUDE_LINE");
 		this.tDEFINE_LINE = (TerminalRule) GrammarUtil.findRuleForName(getGrammar(), "DEFINE_LINE");
@@ -3913,8 +3904,7 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//ProgramElement:
-	//	{Target} ("target" | "TARGET") names+=TIDENTIFIER ("," names+=TIDENTIFIER)* "%%{" elements+=ProgramElementNoTarget*
-	//	"%%}" | ProgramElementNoTarget;
+	//	{Target} ("target" | "TARGET") names+=TIDENTIFIER ("," names+=TIDENTIFIER)* thunk=THUNKTEXT | ProgramElementNoTarget;
 	public ProgramElementElements getProgramElementAccess() {
 		return pProgramElement;
 	}
@@ -3922,6 +3912,12 @@ public class DmplGrammarAccess extends AbstractGrammarElementFinder {
 	public ParserRule getProgramElementRule() {
 		return getProgramElementAccess().getRule();
 	}
+
+	//terminal THUNKTEXT:
+	//	"%%{"->"%%}";
+	public TerminalRule getTHUNKTEXTRule() {
+		return tTHUNKTEXT;
+	} 
 
 	//ProgramElementNoTarget:
 	//	{Includeline} line=INCLUDE_LINE | {Defineline} line=DEFINE_LINE | {Constant} ("const" | "CONST") name=TIDENTIFIER "="

@@ -18,8 +18,12 @@ DmplSubclause:
 ;
 
 ProgramElement:
-	{Target} ('target' | 'TARGET') names+=TIDENTIFIER (',' names+=TIDENTIFIER)* '%%{' elements+=ProgramElementNoTarget* '%%}' |
+	{Target} ('target' | 'TARGET') names+=TIDENTIFIER (',' names+=TIDENTIFIER)* thunk=THUNKTEXT |
 	ProgramElementNoTarget
+;
+
+terminal THUNKTEXT:
+	'%%{' -> '%%}'
 ;
 
 ProgramElementNoTarget:

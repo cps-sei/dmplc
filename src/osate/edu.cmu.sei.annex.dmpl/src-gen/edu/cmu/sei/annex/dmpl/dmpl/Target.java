@@ -14,7 +14,7 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  * <ul>
  *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.Target#getNames <em>Names</em>}</li>
- *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.Target#getElements <em>Elements</em>}</li>
+ *   <li>{@link edu.cmu.sei.annex.dmpl.dmpl.Target#getThunk <em>Thunk</em>}</li>
  * </ul>
  *
  * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getTarget()
@@ -40,19 +40,29 @@ public interface Target extends ProgramElement
   EList<String> getNames();
 
   /**
-   * Returns the value of the '<em><b>Elements</b></em>' containment reference list.
-   * The list contents are of type {@link edu.cmu.sei.annex.dmpl.dmpl.ProgramElementNoTarget}.
+   * Returns the value of the '<em><b>Thunk</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Elements</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Thunk</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Elements</em>' containment reference list.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getTarget_Elements()
-   * @model containment="true"
+   * @return the value of the '<em>Thunk</em>' attribute.
+   * @see #setThunk(String)
+   * @see edu.cmu.sei.annex.dmpl.dmpl.DmplPackage#getTarget_Thunk()
+   * @model
    * @generated
    */
-  EList<ProgramElementNoTarget> getElements();
+  String getThunk();
+
+  /**
+   * Sets the value of the '{@link edu.cmu.sei.annex.dmpl.dmpl.Target#getThunk <em>Thunk</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Thunk</em>' attribute.
+   * @see #getThunk()
+   * @generated
+   */
+  void setThunk(String value);
 
 } // Target

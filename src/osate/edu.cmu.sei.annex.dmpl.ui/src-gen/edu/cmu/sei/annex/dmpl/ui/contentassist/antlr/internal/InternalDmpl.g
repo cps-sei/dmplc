@@ -3237,7 +3237,6 @@ rule__ProgramElement__Group_0__4
     }
 :
 	rule__ProgramElement__Group_0__4__Impl
-	rule__ProgramElement__Group_0__5
 ;
 finally {
 	restoreStackSize(stackSize);
@@ -3249,80 +3248,15 @@ rule__ProgramElement__Group_0__4__Impl
     }
 :
 (
-{ before(grammarAccess.getProgramElementAccess().getPercentSignPercentSignLeftCurlyBracketKeyword_0_4()); }
-
-	'%%{' 
-
-{ after(grammarAccess.getProgramElementAccess().getPercentSignPercentSignLeftCurlyBracketKeyword_0_4()); }
+{ before(grammarAccess.getProgramElementAccess().getThunkAssignment_0_4()); }
+(rule__ProgramElement__ThunkAssignment_0_4)
+{ after(grammarAccess.getProgramElementAccess().getThunkAssignment_0_4()); }
 )
 
 ;
 finally {
 	restoreStackSize(stackSize);
 }
-
-
-rule__ProgramElement__Group_0__5
-    @init {
-		int stackSize = keepStackSize();
-    }
-:
-	rule__ProgramElement__Group_0__5__Impl
-	rule__ProgramElement__Group_0__6
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProgramElement__Group_0__5__Impl
-    @init {
-		int stackSize = keepStackSize();
-    }
-:
-(
-{ before(grammarAccess.getProgramElementAccess().getElementsAssignment_0_5()); }
-(rule__ProgramElement__ElementsAssignment_0_5)*
-{ after(grammarAccess.getProgramElementAccess().getElementsAssignment_0_5()); }
-)
-
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-
-rule__ProgramElement__Group_0__6
-    @init {
-		int stackSize = keepStackSize();
-    }
-:
-	rule__ProgramElement__Group_0__6__Impl
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__ProgramElement__Group_0__6__Impl
-    @init {
-		int stackSize = keepStackSize();
-    }
-:
-(
-{ before(grammarAccess.getProgramElementAccess().getPercentSignPercentSignRightCurlyBracketKeyword_0_6()); }
-
-	'%%}' 
-
-{ after(grammarAccess.getProgramElementAccess().getPercentSignPercentSignRightCurlyBracketKeyword_0_6()); }
-)
-
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-
-
-
 
 
 
@@ -14835,14 +14769,14 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__ProgramElement__ElementsAssignment_0_5
+rule__ProgramElement__ThunkAssignment_0_4
     @init {
 		int stackSize = keepStackSize();
     }
 :
 (
-{ before(grammarAccess.getProgramElementAccess().getElementsProgramElementNoTargetParserRuleCall_0_5_0()); }
-	ruleProgramElementNoTarget{ after(grammarAccess.getProgramElementAccess().getElementsProgramElementNoTargetParserRuleCall_0_5_0()); }
+{ before(grammarAccess.getProgramElementAccess().getThunkTHUNKTEXTTerminalRuleCall_0_4_0()); }
+	RULE_THUNKTEXT{ after(grammarAccess.getProgramElementAccess().getThunkTHUNKTEXTTerminalRuleCall_0_4_0()); }
 )
 
 ;
@@ -16965,6 +16899,8 @@ finally {
 	restoreStackSize(stackSize);
 }
 
+
+RULE_THUNKTEXT : '%%{' ( options {greedy=false;} : . )*'%%}';
 
 RULE_INCLUDE_LINE : '#include' ~(('\n'|'\r'))* ('\r'? '\n')?;
 

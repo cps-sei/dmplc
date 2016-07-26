@@ -1648,9 +1648,9 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getTarget_Elements()
+  public EAttribute getTarget_Thunk()
   {
-    return (EReference)targetEClass.getEStructuralFeatures().get(1);
+    return (EAttribute)targetEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -3196,7 +3196,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     targetEClass = createEClass(TARGET);
     createEAttribute(targetEClass, TARGET__NAMES);
-    createEReference(targetEClass, TARGET__ELEMENTS);
+    createEAttribute(targetEClass, TARGET__THUNK);
 
     includelineEClass = createEClass(INCLUDELINE);
     createEAttribute(includelineEClass, INCLUDELINE__LINE);
@@ -3601,7 +3601,7 @@ public class DmplPackageImpl extends EPackageImpl implements DmplPackage
 
     initEClass(targetEClass, Target.class, "Target", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getTarget_Names(), ecorePackage.getEString(), "names", null, 0, -1, Target.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getTarget_Elements(), this.getProgramElementNoTarget(), null, "elements", null, 0, -1, Target.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getTarget_Thunk(), ecorePackage.getEString(), "thunk", null, 0, 1, Target.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(includelineEClass, Includeline.class, "Includeline", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getIncludeline_Line(), ecorePackage.getEString(), "line", null, 0, 1, Includeline.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

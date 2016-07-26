@@ -225,40 +225,32 @@ ruleProgramElement returns [EObject current=null]
 	    }
 
 )
-))*	otherlv_6='%%{' 
-    {
-    	newLeafNode(otherlv_6, grammarAccess.getProgramElementAccess().getPercentSignPercentSignLeftCurlyBracketKeyword_0_4());
-    }
+))*(
 (
-(
-		{ 
-	        newCompositeNode(grammarAccess.getProgramElementAccess().getElementsProgramElementNoTargetParserRuleCall_0_5_0()); 
-	    }
-		lv_elements_7_0=ruleProgramElementNoTarget		{
+		lv_thunk_6_0=RULE_THUNKTEXT
+		{
+			newLeafNode(lv_thunk_6_0, grammarAccess.getProgramElementAccess().getThunkTHUNKTEXTTerminalRuleCall_0_4_0()); 
+		}
+		{
 	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getProgramElementRule());
+	            $current = createModelElement(grammarAccess.getProgramElementRule());
 	        }
-       		add(
+       		setWithLastConsumed(
        			$current, 
-       			"elements",
-        		lv_elements_7_0, 
-        		"ProgramElementNoTarget");
-	        afterParserOrEnumRuleCall();
+       			"thunk",
+        		lv_thunk_6_0, 
+        		"THUNKTEXT");
 	    }
 
 )
-)*	otherlv_8='%%}' 
-    {
-    	newLeafNode(otherlv_8, grammarAccess.getProgramElementAccess().getPercentSignPercentSignRightCurlyBracketKeyword_0_6());
-    }
-)
+))
     |
     { 
         newCompositeNode(grammarAccess.getProgramElementAccess().getProgramElementNoTargetParserRuleCall_1()); 
     }
-    this_ProgramElementNoTarget_9=ruleProgramElementNoTarget
+    this_ProgramElementNoTarget_7=ruleProgramElementNoTarget
     { 
-        $current = $this_ProgramElementNoTarget_9.current; 
+        $current = $this_ProgramElementNoTarget_7.current; 
         afterParserOrEnumRuleCall();
     }
 )
@@ -5237,6 +5229,8 @@ ruleUnaryOperator returns [Enumerator current=null]
 
 
 
+
+RULE_THUNKTEXT : '%%{' ( options {greedy=false;} : . )*'%%}';
 
 RULE_INCLUDE_LINE : '#include' ~(('\n'|'\r'))* ('\r'? '\n')?;
 

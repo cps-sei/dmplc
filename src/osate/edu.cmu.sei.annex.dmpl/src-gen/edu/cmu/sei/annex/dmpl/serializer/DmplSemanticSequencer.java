@@ -785,7 +785,7 @@ public class DmplSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (names+=TIDENTIFIER names+=TIDENTIFIER* elements+=ProgramElementNoTarget*)
+	 *     (names+=TIDENTIFIER names+=TIDENTIFIER* thunk=THUNKTEXT)
 	 */
 	protected void sequence_ProgramElement(EObject context, Target semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

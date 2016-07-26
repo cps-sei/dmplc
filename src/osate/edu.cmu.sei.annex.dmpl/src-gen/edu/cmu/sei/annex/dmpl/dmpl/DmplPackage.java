@@ -1182,13 +1182,13 @@ public interface DmplPackage extends EPackage
   int TARGET__NAMES = PROGRAM_ELEMENT_FEATURE_COUNT + 0;
 
   /**
-   * The feature id for the '<em><b>Elements</b></em>' containment reference list.
+   * The feature id for the '<em><b>Thunk</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int TARGET__ELEMENTS = PROGRAM_ELEMENT_FEATURE_COUNT + 1;
+  int TARGET__THUNK = PROGRAM_ELEMENT_FEATURE_COUNT + 1;
 
   /**
    * The number of structural features of the '<em>Target</em>' class.
@@ -4000,15 +4000,15 @@ public interface DmplPackage extends EPackage
   EAttribute getTarget_Names();
 
   /**
-   * Returns the meta object for the containment reference list '{@link edu.cmu.sei.annex.dmpl.dmpl.Target#getElements <em>Elements</em>}'.
+   * Returns the meta object for the attribute '{@link edu.cmu.sei.annex.dmpl.dmpl.Target#getThunk <em>Thunk</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Elements</em>'.
-   * @see edu.cmu.sei.annex.dmpl.dmpl.Target#getElements()
+   * @return the meta object for the attribute '<em>Thunk</em>'.
+   * @see edu.cmu.sei.annex.dmpl.dmpl.Target#getThunk()
    * @see #getTarget()
    * @generated
    */
-  EReference getTarget_Elements();
+  EAttribute getTarget_Thunk();
 
   /**
    * Returns the meta object for class '{@link edu.cmu.sei.annex.dmpl.dmpl.Includeline <em>Includeline</em>}'.
@@ -6228,12 +6228,12 @@ public interface DmplPackage extends EPackage
     EAttribute TARGET__NAMES = eINSTANCE.getTarget_Names();
 
     /**
-     * The meta object literal for the '<em><b>Elements</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>Thunk</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference TARGET__ELEMENTS = eINSTANCE.getTarget_Elements();
+    EAttribute TARGET__THUNK = eINSTANCE.getTarget_Thunk();
 
     /**
      * The meta object literal for the '{@link edu.cmu.sei.annex.dmpl.dmpl.impl.IncludelineImpl <em>Includeline</em>}' class.
