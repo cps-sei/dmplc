@@ -716,6 +716,23 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
   }
   
   /*******************************************************************/
+  //-- execute a mission file
+  /*******************************************************************/
+  protected void executeMission(final String dirStr,final String instFile)
+  {
+    try {
+      System.out.println("running mission file " + instFile + ".mission in dir " + dirStr);
+      ProcessBuilder pb = new ProcessBuilder("dmpl-sim.sh", instFile + ".mission");
+      pb.directory(new File(dirStr));
+      Process p = pb.start();
+      Thread.sleep(30000);
+      p.destroy();
+    } catch(Exception ex) {
+      System.err.println("ERROR: could not execute mission " + instFile + ".mission !!");
+    }
+  }
+  
+  /*******************************************************************/
   //-- the top-level method called from OSATE
   /*******************************************************************/
   protected void analyzeInstanceModel(IProgressMonitor monitor,
@@ -723,9 +740,9 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                                       SystemInstance root, SystemOperationMode som)
   {
     //-- create the directory where the generated files will be kept
-    IPath dir = OsateResourceUtil.convertToIResource(root.eResource()).getLocation().removeLastSegments(2).append("DART");
-    String dirStr = dir.toOSString();
-    File dirFile = new File(dirStr);
+    final IPath dir = OsateResourceUtil.convertToIResource(root.eResource()).getLocation().removeLastSegments(2).append("DART");
+    final String dirStr = dir.toOSString();
+    final File dirFile = new File(dirStr);
     dirFile.mkdir();
 
     //-- get the name of the instance file without the extension
@@ -748,7 +765,7 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
     //-- generate DMPL and mission files
     generateDmplFile(monitor,errManager,root,som,dmplFilename);
     generateMissionFile(monitor,errManager,root,som,instFile,missionFilename);
-    
+
     //-- refresh so that the DART folder and its contents become visible
     IResource ires = OsateResourceUtil.convertToIResource(root.eResource());
     try {
@@ -756,6 +773,9 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
     } catch (CoreException e) {
       System.err.println("ERROR: Could not refresh project after creating DART folder");
     }
+
+    //-- execute the mission
+    executeMission(dirStr,instFile);
   }
 
   protected String getActionName()
