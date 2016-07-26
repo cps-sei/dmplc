@@ -27,7 +27,7 @@ public
         if(EXISTS_HIGHER(idp, lock[xp][yp]@idp != 0)) return;
         state = MOVE;
       } else if(state == MOVE) {
-        //now we have the lock on (x’,y’)
+        //now we have the lock on (x',y')
         if(GRID_MOVE(xp,yp,1)) return;
         lock[x][y] = 0; 
         x = xp; y = yp;
