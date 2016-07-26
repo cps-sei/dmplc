@@ -5,6 +5,7 @@ Directives: list of aadlstring applies to (thread);
 Output_Dir: aadlstring applies to (system);
 Grid_Size: aadlinteger applies to (system);
 Map_Name: aadlstring applies to (system);
+Record_Camera_Pos: aadlstring applies to (system);
 Mission_Time: Time applies to (system);
 Platform: aadlstring applies to (system);
 Expect_Log_Period: aadlreal applies to (system);
