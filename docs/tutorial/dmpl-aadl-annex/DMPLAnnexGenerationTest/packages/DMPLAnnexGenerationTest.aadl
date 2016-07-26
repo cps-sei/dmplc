@@ -194,7 +194,7 @@ public
       Compute_Execution_Time => 2 ms .. 2 ms ;
 
       annex dmpl{**
-      override thread waypoint {
+      thread waypoint {
         waypointValid = 1;
         ly = yp;
         lx = xp;
@@ -221,7 +221,7 @@ public
       Period =>100000 ms; 
       annex dmpl {**
       
-      override thread waypoint{
+      thread waypoint {
         if (init@0 == 0) return;
         waypointValid = 1;
       
