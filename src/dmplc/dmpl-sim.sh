@@ -800,7 +800,19 @@ else
     sleep 2
 fi
 
-[ ${DEPLOY} -gt 0 ] && deploymentwait
+function localwait() {
+  $KARLFILE=`tempfile` || return 1
+  karl -m $MISSION_MDOMAIN -y 10 -c -w 30 "begin_sim == 1" -s $KARLFILE
+  if grep "begin_sim=\"1\"" $KARLFILE; then
+    rm $KARLFILE
+    return 0
+  else
+    rm $KARLFILE
+    return 1
+  fi
+}
+
+[ ${DEPLOY} -gt 0 ] && deploymentwait || localwait
 
 [ "$MANUALSTART" -ne 1 ] && ( cd $SCDIR; ./startSim.py $RECORD )
 

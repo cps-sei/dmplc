@@ -2569,7 +2569,7 @@ dmpl::gams::GAMSBuilder::build_main_function ()
   buffer_ << "    algos[i]->start(threader);\n";
   
   buffer_ << "  std::stringstream buffer;\n";
-  buffer_ << "  buffer << \"(vrep_ready = 1) && S0.init\";\n";
+  buffer_ << "  buffer << \"(vrep_ready = 1) && (S\" << id << \".init = S\" << id << \".init) && S0.init\";\n";
   buffer_ << "  for(unsigned int i = 1; i < num_processes; ++i)\n";
   buffer_ << "    buffer << \" && S\" << i << \".init\";\n";
   buffer_ << "  std::string expression = buffer.str ();\n";
@@ -2580,6 +2580,8 @@ dmpl::gams::GAMSBuilder::build_main_function ()
   buffer_ << "\n";
 
   buffer_ << "  knowledge.set(\"begin_sim\", \"1\");\n";
+
+  buffer_ << "  std::cerr << \"*** AGENT \" << id << \" READY ***\" << std::endl;\n";
   
   if(do_expect_)
     buffer_ << "  if(expect_thread) threader.run(5.0, \"expect_thread\", expect_thread);\n";
