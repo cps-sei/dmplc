@@ -271,8 +271,6 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
     }
     
     //-- various filenames and other constants
-    final String mapName = getStringPropertyValue(root, "DMPLProperties", "Map_Name");
-    final long gridSize = getIntegerPropertyValue(root, "DMPLProperties", "Grid_Size");
     final String platform = getStringPropertyValue(root, "DMPLProperties", "Platform");
     final double expectLogPeriod = getRealPropertyValue(root, "DMPLProperties", "Expect_Log_Period");
     final double missionTime = getTimePropertyValue(root, "DMPLProperties", "Mission_Time", AadlProject.SEC_LITERAL);
@@ -645,12 +643,13 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
       // generate mission file
       missionWriter.println("#!/bin/bash");
       missionWriter.println("");
-      missionWriter.println("DMPL=\"" + targetFilename + "\"");
-      missionWriter.println("BIN=" + targetFilename.substring(0, targetFilename.indexOf(".")) + "");
+      missionWriter.println("DMPL=\"" + instFile + ".dmpl\"");
+      missionWriter.println("BIN=\"" + instFile + "\"");
       missionWriter.println("");
-      missionWriter.println("OUTDIR=");
-      missionWriter.println("MAPNAME=" + mapName);
-      missionWriter.println("GRIDSIZE=" + gridSize);
+      missionWriter.println("OUTDIR=" + getStringPropertyValue(root, "DMPLProperties", "Output_Dir"));
+      missionWriter.println("MAPNAME=" + getStringPropertyValue(root, "DMPLProperties", "Map_Name"));
+      missionWriter.println("REC_CAM_POS=\"" + getStringPropertyValue(root, "DMPLProperties", "Record_Camera_Pos") + "\"");
+      missionWriter.println("GRIDSIZE=" + getIntegerPropertyValue(root, "DMPLProperties", "Grid_Size"));
 
       String roledesc = "";
       String nodesep = "";
@@ -684,6 +683,8 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
       missionWriter.println("MISSION_TIME=" + (long) missionTime);
       missionWriter.println("");
       missionWriter.println("");
+
+      int nodeId = 0;
       for (Entry<Classifier, ArrayList<ComponentInstance>> entry : node2roles.entrySet()) {
         String nodename = entry.getKey().getName();
         for (ComponentInstance ci : entry.getValue()) {
@@ -695,14 +696,15 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
             if (varname == null) {
               varname = var;
             } else {
-              varstring += "--var_" + varname + " " + var;
+              varstring += " --var_" + varname + " " + var;
               varname = null;
             }
           }
 
-          missionWriter.println("echo --node " + nodename + " --role "
-                                + ci.getComponentClassifier().getName().replace(".", "_") +
-                                " " + varstring);
+          missionWriter.println("ARGS_" + nodeId + "=$(echo --node " + nodename + " --role "
+                                + ci.getComponentClassifier().getName().replace(".", "_")
+                                + varstring + ")");
+          ++nodeId;
         }
       }
       pw.close();
