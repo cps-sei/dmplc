@@ -437,7 +437,14 @@ void parse_options (int argc, char **argv)
     {
       if (i + 1 < argc)
       {
-        if(std::string(argv[i+1]) == "small") {
+        if(std::string(argv[i+1]) == "tiny") {
+          const_def["TopY"] = "0.5";
+          const_def["LeftX"] = "-0.5";
+          const_def["BottomY"] = "-0.5";
+          const_def["RightX"] = "0.5";
+          const_def["TopZ"] = "1.5";
+          const_def["BottomZ"] = "0.0";
+        } else if(std::string(argv[i+1]) == "small") {
           const_def["TopY"] = "2.25";
           const_def["LeftX"] = "-2.25";
           const_def["BottomY"] = "-2.25";

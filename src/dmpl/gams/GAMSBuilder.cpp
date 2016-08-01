@@ -375,7 +375,7 @@ dmpl::gams::GAMSBuilder::build_common_global_variables ()
   buffer_ << "std::string host (\"\");\n";
   buffer_ << "std::vector<std::string> platform_params;\n";
   buffer_ << "std::string platform_name (\"debug\");\n";
-  buffer_ << "typedef void (*PlatformInitFn)(const std::vector<std::string> &, engine::KnowledgeBase &);\n";
+  buffer_ << "typedef void (*PlatformInitFn)(const std::vector<std::string> &, engine::KnowledgeBase &, engine::KnowledgeMap &);\n";
   buffer_ << "typedef std::map<std::string, PlatformInitFn> PlatformInitFns;\n";
   buffer_ << "PlatformInitFns platform_init_fns;\n";
   buffer_ << "const std::string default_multicast (\"239.255.0.1:4150\");\n";
@@ -1811,6 +1811,7 @@ dmpl::gams::GAMSBuilder::build_algo_declaration ()
   buffer_ << "    const std::string &exec_func,\n";
   buffer_ << "    madara::knowledge::KnowledgeBase * knowledge = 0,\n";
   buffer_ << "    const std::string &platform_name = \"\",\n";
+  buffer_ << "    const engine::KnowledgeMap *platform_args = NULL,\n";
   buffer_ << "    variables::Sensors * sensors = 0,\n";
   buffer_ << "    variables::Self * self = 0);\n";
   buffer_ << "  ~Algo (void);\n";
@@ -1840,6 +1841,7 @@ dmpl::gams::GAMSBuilder::build_algo_declaration ()
   buffer_ << "  controllers::BaseController loop;\n";
   buffer_ << "  engine::KnowledgeBase *knowledge_;\n";
   buffer_ << "  std::string _exec_func, _platform_name;\n";
+  buffer_ << "  const engine::KnowledgeMap *_platform_args;\n";
 
 #if USE_MZSRM==1
   if(schedType_ == MZSRM) {
@@ -1869,6 +1871,7 @@ dmpl::gams::GAMSBuilder::build_algo_declaration ()
   buffer_ << "    const std::string &thread_name,\n";
   buffer_ << "    madara::knowledge::KnowledgeBase * knowledge = 0,\n";
   buffer_ << "    const std::string &platform_name = \"\",\n";
+  buffer_ << "    const engine::KnowledgeMap *platform_args = NULL,\n";
   buffer_ << "    variables::Sensors * sensors = 0,\n";
   buffer_ << "    variables::Self * self = 0);\n";
   buffer_ << "  ~SyncAlgo (void);\n";
@@ -1912,17 +1915,19 @@ dmpl::gams::GAMSBuilder::build_algo_functions ()
   buffer_ << "    const std::string &exec_func,\n";
   buffer_ << "    madara::knowledge::KnowledgeBase * knowledge,\n";
   buffer_ << "    const std::string &platform_name,\n";
+  buffer_ << "    const engine::KnowledgeMap *platform_args,\n";
   buffer_ << "    variables::Sensors * sensors,\n";
 
 #if USE_MZSRM==1
   if(schedType_ == MZSRM) {
     buffer_ << "    variables::Self * self) : sched(0), rid(0),\n";
-    buffer_ << "      loop(*knowledge), _platform_name(platform_name),\n";
+    buffer_ << "      loop(*knowledge), _platform_name(platform_name), _platform_args(platform_args),\n";
   }
   else
 #endif
   {
-    buffer_ << "    variables::Self * self) : loop(*knowledge), _platform_name(platform_name),\n";
+    buffer_ << "    variables::Self * self) : loop(*knowledge),\n";
+    buffer_ << "      _platform_name(platform_name), _platform_args(platform_args),\n";
   }
 
   buffer_ << "      BaseAlgorithm (knowledge, 0, sensors, self), knowledge_(knowledge),\n";
@@ -2044,7 +2049,7 @@ dmpl::gams::GAMSBuilder::build_algo_functions ()
     
   buffer_ << "void Algo::init_platform ()\n";
   buffer_ << "{\n";
-  buffer_ << "  loop.init_platform (_platform_name);\n";
+  buffer_ << "  loop.init_platform (_platform_name, *_platform_args);\n";
   buffer_ << "  platform = loop.get_platform();\n";
   //buffer_ << "  std::cout << \"Platform init\" << std::endl;\n";
   buffer_ << "}\n";
@@ -2101,18 +2106,19 @@ dmpl::gams::GAMSBuilder::build_algo_functions ()
   buffer_ << "    const std::string &thread_name,\n";
   buffer_ << "    madara::knowledge::KnowledgeBase * knowledge,\n";
   buffer_ << "    const std::string &platform_name,\n";
+  buffer_ << "    const engine::KnowledgeMap *platform_args,\n";
   buffer_ << "    variables::Sensors * sensors,\n";
   buffer_ << "    variables::Self * self) : phase(0), mbarrier(\"mbarrier_\" + thread_name),\n";
 
 #if USE_MZSRM==1
   if(schedType_ == MZSRM) {
     buffer_ << "      Algo (period, priority, criticality, zsinst,\n";
-    buffer_ << "            exec_func, knowledge, platform_name, sensors, self)\n";
+    buffer_ << "            exec_func, knowledge, platform_name, platform_args, sensors, self)\n";
   }
   else
 #endif
   {
-    buffer_ << "      Algo (period, exec_func, knowledge, platform_name, sensors, self)\n";
+    buffer_ << "      Algo (period, exec_func, knowledge, platform_name, platform_args, sensors, self)\n";
   }
 
   buffer_ << "{\n";
@@ -2435,24 +2441,31 @@ dmpl::gams::GAMSBuilder::build_main_function ()
   buffer_ << "}\n";
 
   build_comment("//-- Initialize VREP", "\n", "\n", 0);
-  buffer_ << "void init_vrep(const std::vector<std::string> &params, engine::KnowledgeBase &knowledge)\n";
+  buffer_ << "void init_vrep(const std::vector<std::string> &params, engine::KnowledgeBase &knowledge, engine::KnowledgeMap &platform_args)\n";
   buffer_ << "{\n";
   buffer_ << "  if(params.size() >= 2 && params[1].size() > 0)\n";
   buffer_ << "    knowledge.set(\".vrep_host\", params[1]);\n";
   buffer_ << "  else\n";
   buffer_ << "    knowledge.set(\".vrep_host\", \"127.0.0.1\");\n";
+
   buffer_ << "  if(params.size() >= 3 && params[2].size() > 0)\n";
   buffer_ << "    knowledge.set(\".vrep_port\", params[2]);\n";
   buffer_ << "  else\n";
   buffer_ << "    knowledge.set(\".vrep_port\", to_string(19905+settings.id));\n";
+
   buffer_ << "  if(params.size() >= 4 && params[3].size() > 0)\n";
   buffer_ << "    knowledge.set(\".vrep_sw_position\", params[3]);\n";
   buffer_ << "  else\n";
   buffer_ << "    knowledge.set(\".vrep_sw_position\", \"40.4464255,-79.9499426\");\n";
+
   buffer_ << "  if(params.size() >= 5 && params[4].size() > 0)\n";
   buffer_ << "    knowledge.set(\".vrep_max_delta\", params[4]);\n";
   buffer_ << "  else\n";
   buffer_ << "    knowledge.set(\".vrep_max_delta\", 0.4);\n";
+
+  buffer_ << "  if(params.size() >= 6 && params[5].size() > 0)\n";
+  buffer_ << "    platform_args[\"resource_dir\"] = params[5];\n";
+
   buffer_ << "  knowledge.set(\".vrep_max_rotate_delta\", M_PI/32.0);\n";
   buffer_ << "  knowledge.set(\".vrep_move_thread_rate\", \"0\");\n";
   buffer_ << "  knowledge.set(\"vrep_ready\", \"1\");\n";
@@ -2529,9 +2542,12 @@ dmpl::gams::GAMSBuilder::build_main_function ()
           << "  }\n\n";
   
   buffer_ << "  //-- Initializing platform\n";
+  buffer_ << "  engine::KnowledgeMap platform_args;\n";
   buffer_ << "  PlatformInitFns::iterator init_fn = platform_init_fns.find(platform_name);\n";
   buffer_ << "  if(init_fn != platform_init_fns.end())\n";
-  buffer_ << "    init_fn->second(platform_params, knowledge);\n";
+  buffer_ << "    init_fn->second(platform_params, knowledge, platform_args);\n";
+  buffer_ << "  else\n";
+  buffer_ << "    init_vrep(platform_params, knowledge, platform_args);\n";
 
   //-- generate simulation initialization
   buffer_ << "\n  //-- Initializing simulation\n";
@@ -2670,7 +2686,7 @@ void dmpl::gams::GAMSBuilder::build_algo_creation (const Node &node, const Role 
                   << period << ", " << priority << ", " 
                   << criticality << ", " << zsinst << ", \"" << funcName(node, role, thread)
                   << "\", \"" << thread->name 
-                  << "\", &knowledge, platform_name);\n";
+                  << "\", &knowledge, platform_name, &platform_args);\n";
         else
           buffer_ << "    algo = new SyncAlgo("
                   << period << ", " << priority << ", " 
@@ -2684,7 +2700,7 @@ void dmpl::gams::GAMSBuilder::build_algo_creation (const Node &node, const Role 
           if (platformFunction == thread)
             buffer_ << "    algo = new SyncAlgo(" << period << ", \"" << funcName(node, role, thread)
                     << "\", \"" << thread->name 
-                    << "\", &knowledge, platform_name);\n";
+                    << "\", &knowledge, platform_name, &platform_args);\n";
           else
             buffer_ << "    algo = new SyncAlgo(" << period << ", \"" << funcName(node, role, thread)
                     << "\", \"" << thread->name 
@@ -2699,7 +2715,7 @@ void dmpl::gams::GAMSBuilder::build_algo_creation (const Node &node, const Role 
           buffer_ << "    algo = new Algo(" << period << ", " 
                   << period << ", " << priority << ", " 
                   << criticality << ", " << zsinst << ", \"" << funcName(node, role, thread)
-                  << "\", &knowledge, platform_name);\n";
+                  << "\", &knowledge, platform_name, &platform_args);\n";
         else
           buffer_ << "    algo = new Algo(" << period << ", "
                   << period << ", " << priority << ", " 
@@ -2711,7 +2727,7 @@ void dmpl::gams::GAMSBuilder::build_algo_creation (const Node &node, const Role 
         {
           if (platformFunction == thread)
             buffer_ << "    algo = new Algo(" << period << ", \"" << funcName(node, role, thread)
-                    << "\", &knowledge, platform_name);\n";
+                    << "\", &knowledge, platform_name, &platform_args);\n";
           else
             buffer_ << "    algo = new Algo(" << period << ", \"" << funcName(node, role, thread)
                     << "\", &knowledge);\n";
