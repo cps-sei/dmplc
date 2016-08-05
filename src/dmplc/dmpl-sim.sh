@@ -250,7 +250,7 @@ fi
 #
 # this field is not yet supported in init_vrep() (gen'ed from dmplc)
 #
-[ ${DEPLOY} -gt 0 ] && PLATFORM=$(echo $PLATFORM:$(dirname $(realpath ${GAMS_ROOT}/resources/vrep)))
+[ ${DEPLOY} -gt 0 ] && PLATFORM=$(echo $PLATFORM:$(realpath ${GAMS_ROOT}/resources/vrep))
 
 function setpilots() {
   for d in $(seq 0 $(($NODENUM-1))); do
