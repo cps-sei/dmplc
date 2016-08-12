@@ -513,8 +513,10 @@ system implementation main.i
 		Dispatch_Protocol => Aperiodic applies to protector_node[2].sw.waypoint_thread;
 		Dispatch_Protocol => Aperiodic applies to protector_node[2].sw.collision_avoidance_thread;
 		Dispatch_Protocol => Periodic  applies to protector_node[2].sw.motion_controller_thread;
+		DMPLProperties::Output_Dir => "outdir";
 		DMPLProperties::DMPL_Target_File =>"test.dmpl"; 
 		DMPLProperties::DMPL_Mission_File => "mission.txt";
+		DMPLProperties::Record_Camera_Pos => "0.0421 -0.2489 11.2217";
 		DMPLProperties::Grid_Size => 10;
 		DMPLProperties::Map_Name => "maptest";
 		DMPLProperties::Mission_Time => 120 sec;

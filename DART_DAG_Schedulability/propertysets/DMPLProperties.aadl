@@ -1,4 +1,6 @@
 property set DMPLProperties is
+Record_Camera_Pos: aadlstring applies to (system);
+Output_Dir: aadlstring applies to (system);
 DMPL_Target_File: aadlstring applies to (system);
 DMPL_Mission_File: aadlstring applies to (system);
 Directives: list of aadlstring applies to (thread);
