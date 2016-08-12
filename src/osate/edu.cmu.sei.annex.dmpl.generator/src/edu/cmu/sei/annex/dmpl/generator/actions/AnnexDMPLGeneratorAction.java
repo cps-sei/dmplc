@@ -434,7 +434,7 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                         final ForAllElement visitThreads0 = new ForAllElement(errManager) {
                             public void process(Element obj) {
                               ComponentInstance thread = (ComponentInstance) obj;
-                              double period = GetProperties.getPeriodinMS(thread);
+                              double period = GetProperties.getPeriodinMicroSec(thread);
                               ArrayList<String> directives = getDirectives(thread);
                               Classifier threadClassifier = thread.getComponentClassifier();
                               Classifier extendedThreadClassifier = threadClassifier.getExtended();
@@ -550,7 +550,7 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                                   if (extendedThreadClassifier == null && threadType == null) {
                                     pw.println("      thread " + threadClassifier.getName() + ";");
                                   } else {
-                                    double period = GetProperties.getPeriodinMS(thread);
+                                    double period = GetProperties.getPeriodinMicroSec(thread);
                                     if (period != 0) {
                                       pw.println("      @Period(" + ((int) period) + ");");
                                     }
