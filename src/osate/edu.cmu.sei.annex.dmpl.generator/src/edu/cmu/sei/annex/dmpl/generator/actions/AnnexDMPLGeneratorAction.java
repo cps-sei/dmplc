@@ -28,10 +28,12 @@ import org.osate.aadl2.Property;
 import org.osate.aadl2.PropertyExpression;
 import org.osate.aadl2.Realization;
 import org.osate.aadl2.StringLiteral;
+import org.osate.aadl2.ThreadImplementation;
 import org.osate.aadl2.impl.SystemImplementationImpl;
 import org.osate.aadl2.instance.ComponentInstance;
 import org.osate.aadl2.instance.SystemInstance;
 import org.osate.aadl2.instance.SystemOperationMode;
+import org.osate.aadl2.instance.impl.ComponentInstanceImpl;
 import org.osate.aadl2.modelsupport.errorreporting.AnalysisErrorReporterManager;
 import org.osate.aadl2.modelsupport.modeltraversal.ForAllElement;
 import org.osate.aadl2.modelsupport.resources.OsateResourceUtil;
@@ -236,6 +238,31 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
     new HashMap<Classifier, ArrayList<ComponentInstance>>();
 
   // HashMap<Classifier, Classifier> overwrites = new HashMap<Classifier, Classifier>();
+  
+  protected Program getThreadSubannexProgram(ComponentInstance thread){
+	  Program prg=null;
+	  
+	  // First try to get the program from the implementation hierarchy
+	  Classifier classifier = thread.getComponentClassifier();
+      if (classifier instanceof ThreadImplementation){
+    	  Realization rel = ((ThreadImplementation)classifier).getOwnedRealization();
+    	  ComponentType type = rel.getImplemented();
+    	  while (type != null && prg == null) {
+    		  prg = getAnnexSubclauseProgram(type);
+    		  type = type.getExtended();
+    	  }
+      }
+      
+      // if we could not find the subclause in the implementations try the types
+      if (prg==null){
+    	  while (classifier != null && prg == null){
+    		  prg = getAnnexSubclauseProgram(classifier);
+    		  classifier = classifier.getExtended();
+    	  }
+      }
+
+	  return prg;
+  }
 
   /*******************************************************************/
   //-- generate DMPL file
@@ -411,8 +438,13 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                               ArrayList<String> directives = getDirectives(thread);
                               Classifier threadClassifier = thread.getComponentClassifier();
                               Classifier extendedThreadClassifier = threadClassifier.getExtended();
+                              ComponentType threadType=null;
+                              if (threadClassifier instanceof ThreadImplementation){
+                            	  Realization rel = ((ThreadImplementation)threadClassifier).getOwnedRealization();
+                            	  threadType = rel.getImplemented();
+                              }
                               Program threadPrg = getAnnexSubclauseProgram(threadClassifier);
-                              if (extendedThreadClassifier == null) {									   //-- print period				
+                              if (extendedThreadClassifier == null && threadType == null) {									   //-- print period				
                                 if (period != 0) {
                                   pw.println("    @Period(" + ((int) period) + ");");
                                 }
@@ -510,17 +542,22 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                                 if (!printed.contains(threadClassifier)) {
                                   Classifier extendedThreadClassifier = threadClassifier
                                     .getExtended();
-                                  if (extendedThreadClassifier == null) {
+                                  ComponentType threadType=null;
+                                  if (threadClassifier instanceof ThreadImplementation){
+                                	  Realization rel = ((ThreadImplementation)threadClassifier).getOwnedRealization();
+                                	  threadType = rel.getImplemented();
+                                  }
+                                  if (extendedThreadClassifier == null && threadType == null) {
                                     pw.println("      thread " + threadClassifier.getName() + ";");
                                   } else {
                                     double period = GetProperties.getPeriodinMS(thread);
                                     if (period != 0) {
                                       pw.println("      @Period(" + ((int) period) + ");");
                                     }
-                                    Program threadPrg = getAnnexSubclauseProgram(threadClassifier);
-                                    if (threadPrg == null){
-                                      threadPrg = getAnnexSubclauseProgram(extendedThreadClassifier);
-                                    }
+                                    Program threadPrg = getThreadSubannexProgram(thread); 
+//                                    if (threadPrg == null){
+//                                      threadPrg = getAnnexSubclauseProgram(extendedThreadClassifier);
+//                                    }
                                     if (threadPrg != null){
                                       for (ProgramElement pe: threadPrg.getElements()){
                                         if (pe instanceof AttributableProgramElement){
