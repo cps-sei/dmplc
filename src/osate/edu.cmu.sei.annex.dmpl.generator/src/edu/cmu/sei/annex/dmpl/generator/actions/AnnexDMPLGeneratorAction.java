@@ -239,6 +239,32 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
 
   // HashMap<Classifier, Classifier> overwrites = new HashMap<Classifier, Classifier>();
   
+  protected String getThreadSubannexContainingClassifierName(ComponentInstance thread){
+	  String str="";
+	  Program prg=null;
+	  Classifier classifier = thread.getComponentClassifier();
+      if (classifier instanceof ThreadImplementation){
+    	  Realization rel = ((ThreadImplementation)classifier).getOwnedRealization();
+    	  ComponentType type = rel.getImplemented();
+    	  while (type != null && prg == null) {
+    		  prg = getAnnexSubclauseProgram(type);
+    		  str = type.getName();
+    		  type = type.getExtended();
+    	  }
+      }
+      
+      // if we could not find the subclause in the implementations try the types
+      if (prg==null){
+    	  while (classifier != null && prg == null){
+    		  prg = getAnnexSubclauseProgram(classifier);
+    		  str = classifier.getName();
+    		  classifier = classifier.getExtended();
+    	  }
+      }
+	  
+	  return str;
+  }
+  
   protected Program getThreadSubannexProgram(ComponentInstance thread){
 	  Program prg=null;
 	  
@@ -443,8 +469,8 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                             	  Realization rel = ((ThreadImplementation)threadClassifier).getOwnedRealization();
                             	  threadType = rel.getImplemented();
                               }
-                              Program threadPrg = getAnnexSubclauseProgram(threadClassifier);
-                              if (extendedThreadClassifier == null && threadType == null) {									   //-- print period				
+                              Program threadPrg = getThreadSubannexProgram(thread);//getThreadAnnexubclauseProgram(threadClassifier);
+                              if (extendedThreadClassifier == null) {									   //-- print period				
                                 if (period != 0) {
                                   pw.println("    @Period(" + ((int) period) + ");");
                                 }
@@ -547,8 +573,8 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                                 	  Realization rel = ((ThreadImplementation)threadClassifier).getOwnedRealization();
                                 	  threadType = rel.getImplemented();
                                   }
-                                  if (extendedThreadClassifier == null && threadType == null) {
-                                    pw.println("      thread " + threadClassifier.getName() + ";");
+                                  if (extendedThreadClassifier == null) {
+                                    pw.println("      thread " + getThreadSubannexContainingClassifierName(thread) + ";");
                                   } else {
                                     double period = GetProperties.getPeriodinMicroSec(thread);
                                     if (period != 0) {
