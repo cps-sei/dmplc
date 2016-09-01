@@ -71,7 +71,7 @@ namespace dmpl
     "grid_topY", "grid_bottomY",
     "grid_topZ", "grid_bottomZ",
     "grid_cellX", "grid_cellY", "grid_cellZ",
-    "PLACE", "MOVE",
+    "GAMS_PLACE", "GAMS_MOVE",
     "GRID_INIT", "GRID_PLACE", "GRID_MOVE",
     "GRID_SETPOINT", "GRID_ARRIVED",
     "GET_CELL_SIZE_X", "GET_CELL_SIZE_Y", "GET_CELL_SIZE_Z",
