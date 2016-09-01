@@ -56,6 +56,8 @@
 #ifndef __DMPL_PLATFORM_GAMS_HPP__
 #define __DMPL_PLATFORM_GAMS_HPP__
 
+#include <gams/platforms/vrep/VREPBase.h>
+
 /********************************************************************/
 //-- GAMS variables
 /********************************************************************/
@@ -106,6 +108,21 @@ void GRID_PLACE(double x, double y, double z)
 }
 
 /**
+ * Call before simulation start to initialize where the platform should spawn
+ *
+ * @param x the x coordinate (left/right from default V-REP perspective)
+ * @param y the y coordinate (up/down from default V-REP perspective)
+ * @param z the altitude
+ **/
+void PLACE(double x, double y, double z)
+{
+  //std::cerr << "GRID_PLACE" << x << " " << y << " "  << y << std::endl;
+  knowledge.set(".initial_x", x);
+  knowledge.set(".initial_y", y);
+  knowledge.set(".initial_alt", z);
+}
+
+/**
  * Command platform to move to grid location X, Y, Z
  * 
  * @param x the x coordinate (left/right from default V-REP perspective)
@@ -119,6 +136,22 @@ int GRID_MOVE(double x, double y, double z, double epsilon = 0.1)
 {
   //std::cerr << "GRID_MOVE" << x << " " << y << " " << z << std::endl;
   int ret = platform->move(gams::utility::Position(grid_leftX + x * grid_cellX, grid_topY + y * grid_cellY, grid_topZ + z * grid_cellZ), epsilon);
+  return ret != 2;
+}
+
+/**
+ * Command platform to move to continuous location X, Y, Z
+ * 
+ * @param x the x coordinate (left/right from default V-REP perspective)
+ * @param y the y coordinate (up/down from default V-REP perspective)
+ * @param z the altitude
+ * @param epsilon distance in meters to consider "good enough" for ending movement
+ *
+ * @return true if the platform is still moving, false otherwise
+ **/
+int MOVE(double x, double y, double z, double epsilon = 0.1)
+{
+  int ret = platform->move(gams::utility::Position(x, y, z), epsilon);
   return ret != 2;
 }
 
@@ -193,6 +226,26 @@ double GET_LNG()
 {
   if(platform == NULL) return NAN;
   return platform->get_location().lng();
+}
+
+/// Returns vrep X coordinate
+double GET_X()
+{
+  using gams::platforms::VREPBase;
+  VREPBase *vplat = dynamic_cast<VREPBase*>(platform);
+
+  if(vplat == NULL) return NAN;
+  return vplat->get_location().transform_to(vplat->get_vrep_frame()).x();
+}
+
+/// Returns vrep Y coordinate
+double GET_Y()
+{
+  using gams::platforms::VREPBase;
+  VREPBase *vplat = dynamic_cast<VREPBase*>(platform);
+
+  if(vplat == NULL) return NAN;
+  return vplat->get_location().transform_to(vplat->get_vrep_frame()).y();
 }
 
 /// Returns altitude
