@@ -32,14 +32,52 @@
          </menu>
                  
          <action
-         	   id="edu.cmu.sei.annex.dmpl.generator.action"
-               label="Generate Annex DMPL File"
-               tooltip="%Schedule.toolTip"
+         	   id="edu.cmu.sei.annex.dmpl.generator.action.DMPLCodeGeneration"
+               label="DMPL Code Generation"
+               tooltip="Generate DMPL Code"
                icon="%Schedule.icon"
                disabledIcon="%Schedule.disabledIcon"
                class="edu.cmu.sei.annex.dmpl.generator.actions.AnnexDMPLGeneratorAction"
-               menubarPath="menu.analyses/menu.rsrc/stuff.grp"
+               menubarPath="menu.analyses/menu.DART/DART.grp"
                enablesFor="1">
+         </action>
+         <menu
+               id="menu.DART"
+               label="DART"
+               path="menu.analyses/top.grp">
+            <groupMarker
+                  name="DART.grp">
+            </groupMarker>
+         </menu>
+         <action
+               class="edu.cmu.sei.annex.dmpl.generator.actions.VREPSimulationAction"
+               disabledIcon="%Schedule.disabledIcon"
+               enablesFor="1"
+               icon="%Schedule.icon"
+               id="edu.cmu.sei.annex.dmpl.generator.action.VREPSimulation"
+               label="VREP Simulation"
+               menubarPath="menu.analyses/menu.DART/DART.grp"
+               tooltip="Run VREP Simulation">
+         </action>
+         <action
+               class="edu.cmu.sei.annex.dmpl.generator.actions.LogicalVerificationAction"
+               disabledIcon="%Schedule.disabledIcon"
+               enablesFor="1"
+               icon="%Schedule.icon"
+               id="edu.cmu.sei.annex.dmpl.generator.action.LogicalVerification"
+               label="Logical Verification"
+               menubarPath="menu.analyses/menu.DART/DART.grp"
+               tooltip="Perform logical verification with software model checking.">
+         </action>
+         <action
+               class="edu.cmu.sei.annex.dmpl.generator.actions.StatisticalVerificationAction"
+               disabledIcon="%Schedule.disabledIcon"
+               enablesFor="1"
+               icon="%Schedule.icon"
+               id="edu.cmu.sei.annex.dmpl.generator.action.StatisticalVerification"
+               label="Statistical Verification"
+               menubarPath="menu.analyses/menu.DART/DART.grp"
+               tooltip="Perform statistical verification with statistical model checking.">
          </action>      
       </actionSet>      
       </extension>
