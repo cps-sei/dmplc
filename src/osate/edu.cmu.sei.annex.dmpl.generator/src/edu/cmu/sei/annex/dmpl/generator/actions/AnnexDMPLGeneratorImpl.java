@@ -457,14 +457,8 @@ public class AnnexDMPLGeneratorImpl
                             public void process(Element obj) {
                               ComponentInstance thread = (ComponentInstance) obj;
                               double period = GetProperties.getPeriodinMicroSec(thread);
-                              ArrayList<String> directives = getDirectives(thread);
                               Classifier threadClassifier = thread.getComponentClassifier();
                               Classifier extendedThreadClassifier = threadClassifier.getExtended();
-                              ComponentType threadType=null;
-                              if (threadClassifier instanceof ThreadImplementation){
-                            	  Realization rel = ((ThreadImplementation)threadClassifier).getOwnedRealization();
-                            	  threadType = rel.getImplemented();
-                              }
                               Program threadPrg = getThreadSubannexProgram(thread);//getThreadAnnexubclauseProgram(threadClassifier);
                               if (extendedThreadClassifier == null) {									   //-- print period				
                                 if (period != 0) {
@@ -562,13 +556,7 @@ public class AnnexDMPLGeneratorImpl
                                 ComponentInstance thread = (ComponentInstance) obj;
                                 Classifier threadClassifier = thread.getComponentClassifier();
                                 if (!printed.contains(threadClassifier)) {
-                                  Classifier extendedThreadClassifier = threadClassifier
-                                    .getExtended();
-                                  ComponentType threadType=null;
-                                  if (threadClassifier instanceof ThreadImplementation){
-                                	  Realization rel = ((ThreadImplementation)threadClassifier).getOwnedRealization();
-                                	  threadType = rel.getImplemented();
-                                  }
+                                  Classifier extendedThreadClassifier = threadClassifier.getExtended();
                                   if (extendedThreadClassifier == null) {
                                     pw.println("      thread " + getThreadSubannexContainingClassifierName(thread) + ";");
                                   } else {
