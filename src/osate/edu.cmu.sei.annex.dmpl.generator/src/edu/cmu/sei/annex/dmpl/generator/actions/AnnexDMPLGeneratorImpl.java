@@ -805,9 +805,9 @@ public class AnnexDMPLGeneratorImpl
   /*******************************************************************/
   //-- the top-level method called from OSATE
   /*******************************************************************/
-  protected void analyzeInstanceModel(IProgressMonitor monitor,
-                                      final AnalysisErrorReporterManager errManager,
-                                      SystemInstance root, SystemOperationMode som)
+  protected void generateDARTFiles(IProgressMonitor monitor,
+                                   final AnalysisErrorReporterManager errManager,
+                                   SystemInstance root, SystemOperationMode som)
   {
     //-- check whether the mission must be run also after generation
     final AtomicBoolean runMission = new AtomicBoolean(false);
