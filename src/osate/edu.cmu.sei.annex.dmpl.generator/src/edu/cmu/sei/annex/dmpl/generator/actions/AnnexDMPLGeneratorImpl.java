@@ -812,20 +812,16 @@ public class AnnexDMPLGeneratorImpl
 
     //-- get the name of the instance file without the extension
     instFile = OsateResourceUtil.convertToIResource(root.eResource()).getLocation().removeFileExtension().lastSegment();
+    if (instFile == null) {
+      errManager.error(root, "ERROR: could not get instance file name");
+      return;
+    }
     
     //-- create DMPL file name
     final String dmplFilename = dirStr + "/" + instFile + ".dmpl";
-    if (dmplFilename == null) {
-      errManager.error(root, "ERROR: could not create DMPL file name");
-      return;
-    }
 
     //-- create mission file name
     final String missionFilename = dirStr + "/" + instFile + ".mission";
-    if (missionFilename == null) {
-      errManager.error(root, "ERROR: could not create mission file name");
-      return;
-    }
 
     //-- generate DMPL and mission files
     generateDmplFile(monitor,errManager,root,som,dmplFilename);
