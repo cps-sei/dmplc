@@ -345,7 +345,7 @@ public
       DMPLProperties::Map_Name => "small";
       DMPLProperties::Record_Camera_Pos => "0.0421 -0.2489 11.2217";
       DMPLProperties::Mission_Time => 240 sec;
-      DMPLProperties::Expect_Log_Period =>0.2;
+      DMPLProperties::Expect_Log_Period => 0.2;
       DMPLProperties::Platform => "vrep-uav::::0.1";
       DMPLProperties::Initial_Parameter_Values => ("x","1","y","1","xt","8","yt","8") applies to leader_node.sw;
       DMPLProperties::Initial_Parameter_Values => ("x","2","y","2","xt","9","yt","9") applies to protector_node[1].sw;
