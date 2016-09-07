@@ -54,6 +54,13 @@ public class VREPSimulationAction extends AbstractInstanceOrDeclarativeModelRead
                                       SystemInstance root, SystemOperationMode som)
   {
     System.out.println("VREP Simulation Executed!!");
+
+    //-- generate DMPL and mission files
+    AnnexDMPLGeneratorImpl gen = new AnnexDMPLGeneratorImpl(getShell());
+    gen.generateDARTFiles(monitor,errManager,root,som);
+
+    //-- execute mission in simulator
+    executeMission(gen.getDirStr(), gen.getInstFile());
   }
 
   protected String getActionName()

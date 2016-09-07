@@ -775,30 +775,16 @@ public class AnnexDMPLGeneratorImpl
       System.err.println("ERROR: could not open mission file " + missionFilename + "!!");
     }
   }
-  
-  /*******************************************************************/
-  //-- execute a mission file
-  /*******************************************************************/
-  protected void executeMission(final String dirStr,final String instFile)
-  {
-    try {
-      System.out.println("running mission file " + instFile + ".mission in dir " + dirStr);
-      ProcessBuilder pb = new ProcessBuilder("dmpl-sim.sh", instFile + ".mission");
-      pb.directory(new File(dirStr));
-      Process p = pb.start();
-      
-      //-- open a dialog to terminate the mission
-      getShell().getDisplay().syncExec(new Runnable() {
-        @Override
-        public void run() {
-          MessageDialog.openInformation(getShell(), "StopMission", "Press OK to abort mission");
-        }
-      });
-      p.destroy();
-    } catch(Exception ex) {
-      System.err.println("ERROR: could not execute mission " + instFile + ".mission !!");
-    }
-  }
+
+  //-- name of directory in which files are generated, and getter for name
+  private String dirStr = null;
+
+  public String getDirStr() { return dirStr; }
+
+  //-- name of AADL instance file, and getter for name
+  private String instFile = null;
+
+  public String getInstFile() { return instFile; }
   
   /*******************************************************************/
   //-- the top-level method called from OSATE
@@ -807,6 +793,7 @@ public class AnnexDMPLGeneratorImpl
                                    final AnalysisErrorReporterManager errManager,
                                    SystemInstance root, SystemOperationMode som)
   {
+    /*
     //-- check whether the mission must be run also after generation
     final AtomicBoolean runMission = new AtomicBoolean(false);
     getShell().getDisplay().syncExec(new Runnable() {
@@ -815,15 +802,16 @@ public class AnnexDMPLGeneratorImpl
         runMission.set(MessageDialog.openQuestion(getShell(), "Confirm", "Run mission after generating?"));
       }
     });
+    */
     
     //-- create the directory where the generated files will be kept
     final IPath dir = OsateResourceUtil.convertToIResource(root.eResource()).getLocation().removeLastSegments(2).append("DART");
-    final String dirStr = dir.toOSString();
+    dirStr = dir.toOSString();
     final File dirFile = new File(dirStr);
     dirFile.mkdir();
 
     //-- get the name of the instance file without the extension
-    final String instFile = OsateResourceUtil.convertToIResource(root.eResource()).getLocation().removeFileExtension().lastSegment();
+    instFile = OsateResourceUtil.convertToIResource(root.eResource()).getLocation().removeFileExtension().lastSegment();
     
     //-- create DMPL file name
     final String dmplFilename = dirStr + "/" + instFile + ".dmpl";
@@ -850,9 +838,6 @@ public class AnnexDMPLGeneratorImpl
     } catch (CoreException e) {
       System.err.println("ERROR: Could not refresh project after creating DART folder");
     }
-
-    //-- execute the mission
-    if(runMission.get()) executeMission(dirStr,instFile);
   }
 }
 
