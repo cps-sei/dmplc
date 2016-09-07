@@ -53,7 +53,7 @@ public
     properties
       Zero_Slack_Scheduling::Criticality => 1 applies to collision_avoidance_thread;
       Zero_Slack_Scheduling::Criticality => 1 applies to waypoint_thread;
-      Period => 100000 ms applies to collision_avoidance_thread; 
+      Period => 100 ms applies to collision_avoidance_thread; 
       Compute_Execution_Time => 2 ms .. 2 ms applies to collision_avoidance_thread;
 
       annex dmpl{**
@@ -193,7 +193,7 @@ public
 
     thread waypoint_leader extends waypoint
     properties 
-      Period => 100000 ms; 
+      Period => 100 ms; 
       Compute_Execution_Time => 2 ms .. 2 ms ;
 
       annex dmpl{**
@@ -221,7 +221,7 @@ public
 
     thread waypoint_protector extends waypoint
     properties
-      Period =>100000 ms; 
+      Period => 100 ms; 
       annex dmpl {**
       
       thread waypoint {
