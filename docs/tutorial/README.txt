@@ -173,6 +173,8 @@ to allow simultaneous movement while avoiding collisions.
 example-13g: Used to demonstrate functional verification. Adapted from
 example-01-ag.dmpl.
 
+example-14: Based on example-01 to demonstrate platooning.
+
 Subdirectories:
 --------------
 
