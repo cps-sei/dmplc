@@ -141,10 +141,10 @@ node uav
   local unsigned char state = NEXT; //the state
 
   //current coordinates
-  local unsigned char input x ~ (0 <= x && x < X), input y ~ (0 <= y && y < Y);
-  local unsigned char xp = x, yp = y; //next coordinates
+  local double input x ~ (0 <= x && x < X), input y ~ (0 <= y && y < Y);
+  local double xp = x, yp = y; //next coordinates
   //final coordinates
-  local unsigned char input xt ~ (0 <= xt && xt < X), input yt ~ (0 <= yt && yt < Y);
+  local double input xt ~ (0 <= xt && xt < X), input yt ~ (0 <= yt && yt < Y);
   
   local bool waypointValid = 0; //xt, yt are valid
 
@@ -175,30 +175,38 @@ node uav
   }
 
   @Period(100000);
-  @Criticality(4);
+  @Criticality(3);
   @WCExecTimeNominal(15000);
   @WCExecTimeOverload(30000);
   @BarrierSync;
-  @PlatformController;
   thread COLLISION_AVOIDANCE {
     print_state(X,Y,id,x,y,xt,yt);
-    //my_sleep(1);
     if(state == NEXT) {
       //compute next point on route
       if(x == xt && y == yt) return;
       if(NEXT_XY()) return;
       state = MOVE_MDL;
     }
+    if(state == LOCK) {
+      if(lock[xp][yp] != 0) return;
+      lock[xp][yp] = 1;
+      state = MOVE;
+    }
+  }
+
+  @Period(25000);
+  @Criticality(4);
+  @WCExecTimeNominal(15000);
+  @WCExecTimeOverload(20000);
+  @BarrierSync;
+  @PlatformController;
+  thread MOVER {
+    //print_state(X,Y,id,x,y,xt,yt);
     if(state == MOVE_MDL) {
       //now we have the lock on (x’,y’)
       if(GRID_MOVE((x+xp)/2,(y+yp)/2,1)) return;
       lock[x][y] = 0; 
       state = LOCK;
-    }
-    if(state == LOCK) {
-      if(lock[xp][yp] != 0) return;
-      lock[xp][yp] = 1;
-      state = MOVE;
     }
     if(state == MOVE) {
       //now we have the lock on (x’,y’)
@@ -221,8 +229,9 @@ node uav
       init = 1;
     }
   
-    //-- inherit the collision avoidance thread
+    //-- inherit the collision avoidance and mover threads
     thread COLLISION_AVOIDANCE;
+    thread MOVER;
   }
 
   //-- generic follower
@@ -243,8 +252,9 @@ node uav
       yt = ly@Leader + oy;
     }
 
-    //-- inherit the collision avoidance thread
+    //-- inherit the collision avoidance and mover threads
     thread COLLISION_AVOIDANCE;
+    thread MOVER;
   }
   
   @InitSim;
