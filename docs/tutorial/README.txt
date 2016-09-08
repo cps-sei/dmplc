@@ -175,6 +175,13 @@ example-01-ag.dmpl.
 
 example-14: Based on example-01 to demonstrate platooning.
 
+example-14-dag: Based on example-14 but used to demonstrate
+DAG-scheduling. Two key differences with example-14 are: (i) each node
+moves immediately to the boundary between current and next cells; (ii)
+once it reaches the boundary it releases the lock to the current cell;
+(iii) it then waits for the lock on the next cell before moving into
+it.
+
 Subdirectories:
 --------------
 
