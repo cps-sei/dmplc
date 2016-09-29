@@ -28,8 +28,8 @@ public class LogicalVerificationAction extends AbstractInstanceOrDeclarativeMode
   protected void verify(final String dirStr,final String instFile)
   {
     try {
-      System.out.println("running mission file " + instFile + ".mission in dir " + dirStr);
-      ProcessBuilder pb = new ProcessBuilder("dmpl-sim.sh", instFile + ".mission");
+      System.out.println("running verification file " + instFile + ".verif in dir " + dirStr);
+      ProcessBuilder pb = new ProcessBuilder("dmpl-verif.sh", instFile + ".verif");
       pb.directory(new File(dirStr));
       Process p = pb.start();
       
@@ -37,12 +37,12 @@ public class LogicalVerificationAction extends AbstractInstanceOrDeclarativeMode
       getShell().getDisplay().syncExec(new Runnable() {
         @Override
         public void run() {
-          MessageDialog.openInformation(getShell(), "StopMission", "Press OK to abort mission");
+          MessageDialog.openInformation(getShell(), "StopVerification", "Press OK to abort verification");
         }
       });
       p.destroy();
     } catch(Exception ex) {
-      System.err.println("ERROR: could not execute mission " + instFile + ".mission !!");
+      System.err.println("ERROR: could not verify " + instFile + ".verif !!");
     }
   }
   
@@ -58,6 +58,7 @@ public class LogicalVerificationAction extends AbstractInstanceOrDeclarativeMode
     //-- generate DMPL and mission files
     AnnexDMPLGeneratorImpl gen = new AnnexDMPLGeneratorImpl(getShell());
     gen.generateDMPLFile(monitor,errManager,root,som);
+    gen.generateVerifFile(monitor,errManager,root,som);
 
     //-- do logical verification
     verify(gen.getDirStr(), gen.getInstFile());
