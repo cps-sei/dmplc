@@ -137,6 +137,7 @@ public class AnnexDMPLGeneratorImpl
 
   //-- return the list of DMPL directives associated with a component,
   //-- e.g., @period associated with a thread
+  /*
   ArrayList<String> getDirectives(ComponentInstance ci)
   {
     ArrayList<String> dirs = new ArrayList<String>();
@@ -147,7 +148,8 @@ public class AnnexDMPLGeneratorImpl
     }
     return dirs;
   }
-
+  */
+  
   ArrayList<String> getStringPropertyValueList(ComponentInstance ci, String propSet, String propName)
   {
     ArrayList<String> dirs = new ArrayList<String>();
