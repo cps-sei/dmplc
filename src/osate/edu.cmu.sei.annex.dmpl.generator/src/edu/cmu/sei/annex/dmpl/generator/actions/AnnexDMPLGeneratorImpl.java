@@ -688,10 +688,10 @@ public class AnnexDMPLGeneratorImpl
       missionWriter.println("DMPL=\"" + instFile + ".dmpl\"");
       missionWriter.println("BIN=\"" + instFile + "\"");
       missionWriter.println("");
-      missionWriter.println("OUTDIR=" + getStringPropertyValue(root, "DMPLProperties", "Output_Dir"));
-      missionWriter.println("MAPNAME=" + getStringPropertyValue(root, "DMPLProperties", "Map_Name"));
-      missionWriter.println("REC_CAM_POS=\"" + getStringPropertyValue(root, "DMPLProperties", "Record_Camera_Pos") + "\"");
-      missionWriter.println("GRIDSIZE=" + getIntegerPropertyValue(root, "DMPLProperties", "Grid_Size"));
+      missionWriter.println("OUTDIR=" + getStringPropertyValue(root, "DMPLMission", "Output_Dir"));
+      missionWriter.println("MAPNAME=" + getStringPropertyValue(root, "DMPLMission", "Map_Name"));
+      missionWriter.println("REC_CAM_POS=\"" + getStringPropertyValue(root, "DMPLMission", "Record_Camera_Pos") + "\"");
+      missionWriter.println("GRIDSIZE=" + getIntegerPropertyValue(root, "DMPLMission", "Grid_Size"));
 
       //-- create the role description, and the arguments to the nodes
       String roledesc = "";
@@ -740,12 +740,12 @@ public class AnnexDMPLGeneratorImpl
 
       missionWriter.println("ROLEDESC=" + roledesc);
       missionWriter.println("");
-      missionWriter.println("PLATFORM=" + getStringPropertyValue(root, "DMPLProperties", "Platform"));
+      missionWriter.println("PLATFORM=" + getStringPropertyValue(root, "DMPLMission", "Platform"));
       missionWriter.println("EXPECT_LOG_PERIOD=" +
-                            getRealPropertyValue(root, "DMPLProperties", "Expect_Log_Period"));
+                            getRealPropertyValue(root, "DMPLMission", "Expect_Log_Period"));
       missionWriter.println("");
       missionWriter.println("MISSION_TIME=" +
-                            (long) getTimePropertyValue(root, "DMPLProperties", "Mission_Time",
+                            (long) getTimePropertyValue(root, "DMPLMission", "Mission_Time",
                                                         AadlProject.SEC_LITERAL));
       missionWriter.println("");
       missionWriter.println("");
