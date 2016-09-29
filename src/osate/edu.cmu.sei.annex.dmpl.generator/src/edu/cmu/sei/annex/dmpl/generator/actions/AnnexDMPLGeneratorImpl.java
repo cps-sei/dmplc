@@ -714,8 +714,7 @@ public class AnnexDMPLGeneratorImpl
           }
           
           //-- generate the node argument
-          ArrayList<String> vars = getStringPropertyValueList(role, "DMPLProperties",
-              "Initial_Parameter_Values");
+          ArrayList<String> vars = getStringPropertyValueList(role, "DMPLMission", "Node_Arguments");
           String varstring = "";
           String varname = null;
           for (String var : vars) {
