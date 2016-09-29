@@ -57,7 +57,7 @@ public class LogicalVerificationAction extends AbstractInstanceOrDeclarativeMode
 
     //-- generate DMPL and mission files
     AnnexDMPLGeneratorImpl gen = new AnnexDMPLGeneratorImpl(getShell());
-    gen.generateDARTFiles(monitor,errManager,root,som);
+    gen.generateDMPLFile(monitor,errManager,root,som);
 
     //-- do logical verification
     verify(gen.getDirStr(), gen.getInstFile());

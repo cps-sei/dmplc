@@ -675,7 +675,6 @@ public class AnnexDMPLGeneratorImpl
   protected void generateMissionFile(IProgressMonitor monitor,
                                      final AnalysisErrorReporterManager errManager,
                                      SystemInstance root, SystemOperationMode som,
-                                     final String instFile,
                                      final String missionFilename)
   {
     try {      
@@ -776,11 +775,48 @@ public class AnnexDMPLGeneratorImpl
   public String getInstFile() { return instFile; }
   
   /*******************************************************************/
-  //-- the top-level method called from OSATE
+  //-- create folder for DART files
   /*******************************************************************/
-  protected void generateDARTFiles(IProgressMonitor monitor,
-                                   final AnalysisErrorReporterManager errManager,
-                                   SystemInstance root, SystemOperationMode som)
+  protected void createDARTFolder(SystemInstance root)
+  {
+    //-- create the directory where the generated files will be kept
+    final IPath dir = OsateResourceUtil.convertToIResource(root.eResource()).getLocation().removeLastSegments(2).append("DART");
+    dirStr = dir.toOSString();
+    final File dirFile = new File(dirStr);
+    dirFile.mkdir();
+  }
+
+  /*******************************************************************/    
+  //-- set the name of the instance file without the extension
+  /*******************************************************************/
+  protected void setInstFile(SystemInstance root,final AnalysisErrorReporterManager errManager)
+  {
+    instFile = OsateResourceUtil.convertToIResource(root.eResource()).getLocation().removeFileExtension().lastSegment();
+    if (instFile == null) {
+      errManager.error(root, "ERROR: could not get instance file name");
+      return;
+    }
+  }
+
+  /*******************************************************************/
+  //-- refresh the DART folder view
+  /*******************************************************************/
+  protected void refreshDARTFolder(SystemInstance root,IProgressMonitor monitor)
+  {
+    IResource ires = OsateResourceUtil.convertToIResource(root.eResource());
+    try {
+      ires.getParent().getParent().refreshLocal(IResource.DEPTH_INFINITE, monitor);
+    } catch (CoreException e) {
+      System.err.println("ERROR: Could not refresh project after creating DART folder");
+    }
+  }
+  
+  /*******************************************************************/
+  //-- generate the DMPL file
+  /*******************************************************************/
+  protected void generateDMPLFile(IProgressMonitor monitor,
+                                  final AnalysisErrorReporterManager errManager,
+                                  SystemInstance root, SystemOperationMode som)
   {
     /*
     //-- check whether the mission must be run also after generation
@@ -792,37 +828,26 @@ public class AnnexDMPLGeneratorImpl
       }
     });
     */
-    
-    //-- create the directory where the generated files will be kept
-    final IPath dir = OsateResourceUtil.convertToIResource(root.eResource()).getLocation().removeLastSegments(2).append("DART");
-    dirStr = dir.toOSString();
-    final File dirFile = new File(dirStr);
-    dirFile.mkdir();
 
-    //-- get the name of the instance file without the extension
-    instFile = OsateResourceUtil.convertToIResource(root.eResource()).getLocation().removeFileExtension().lastSegment();
-    if (instFile == null) {
-      errManager.error(root, "ERROR: could not get instance file name");
-      return;
-    }
-    
-    //-- create DMPL file name
+    createDARTFolder(root);
+    setInstFile(root,errManager);
     final String dmplFilename = dirStr + "/" + instFile + ".dmpl";
-
-    //-- create mission file name
-    final String missionFilename = dirStr + "/" + instFile + ".mission";
-
-    //-- generate DMPL and mission files
     generateDmplFile(monitor,errManager,root,som,dmplFilename);
-    generateMissionFile(monitor,errManager,root,som,instFile,missionFilename);
-
-    //-- refresh so that the DART folder and its contents become visible
-    IResource ires = OsateResourceUtil.convertToIResource(root.eResource());
-    try {
-      ires.getParent().getParent().refreshLocal(IResource.DEPTH_INFINITE, monitor);
-    } catch (CoreException e) {
-      System.err.println("ERROR: Could not refresh project after creating DART folder");
-    }
+    refreshDARTFolder(root,monitor);
+  }
+  
+  /*******************************************************************/
+  //-- generate the DMPL file
+  /*******************************************************************/
+  protected void generateMissionFile(IProgressMonitor monitor,
+                                     final AnalysisErrorReporterManager errManager,
+                                     SystemInstance root, SystemOperationMode som)
+  {
+    createDARTFolder(root);
+    setInstFile(root,errManager);
+    final String missionFilename = dirStr + "/" + instFile + ".mission";
+    generateMissionFile(monitor,errManager,root,som,missionFilename);
+    refreshDARTFolder(root,monitor);
   }
 }
 

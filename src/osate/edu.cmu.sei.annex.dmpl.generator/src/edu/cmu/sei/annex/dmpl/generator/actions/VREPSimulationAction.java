@@ -57,7 +57,8 @@ public class VREPSimulationAction extends AbstractInstanceOrDeclarativeModelRead
 
     //-- generate DMPL and mission files
     AnnexDMPLGeneratorImpl gen = new AnnexDMPLGeneratorImpl(getShell());
-    gen.generateDARTFiles(monitor,errManager,root,som);
+    gen.generateDMPLFile(monitor,errManager,root,som);
+    gen.generateMissionFile(monitor,errManager,root,som);
 
     //-- execute mission in simulator
     executeMission(gen.getDirStr(), gen.getInstFile());

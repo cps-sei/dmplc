@@ -26,7 +26,7 @@ public class AnnexDMPLGeneratorAction extends AbstractInstanceOrDeclarativeModel
                                       final AnalysisErrorReporterManager errManager,
                                       SystemInstance root, SystemOperationMode som)
   {
-    new AnnexDMPLGeneratorImpl(getShell()).generateDARTFiles(monitor,errManager,root,som);
+    new AnnexDMPLGeneratorImpl(getShell()).generateDMPLFile(monitor,errManager,root,som);
   }
 
   protected String getActionName()
