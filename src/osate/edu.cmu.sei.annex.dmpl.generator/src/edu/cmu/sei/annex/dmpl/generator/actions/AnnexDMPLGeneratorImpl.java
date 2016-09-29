@@ -764,6 +764,69 @@ public class AnnexDMPLGeneratorImpl
     }
   }
 
+  /*******************************************************************/
+  //-- generate verif file
+  /*******************************************************************/
+  protected void generateVerifFile(IProgressMonitor monitor,
+                                   final AnalysisErrorReporterManager errManager,
+                                   SystemInstance root, SystemOperationMode som,
+                                   final String verifFilename)
+  {
+    try {      
+      //-- printer for the verif file
+      final PrintWriter verifWriter = new PrintWriter(verifFilename);
+
+      // generate verif file
+      verifWriter.println("#!/bin/bash");
+      verifWriter.println("");
+      verifWriter.println("VERIF_NAME=\"" + instFile + "\"");
+      verifWriter.println("OUT=" + getStringPropertyValue(root, "DMPLVerif", "Expected_Output"));
+      verifWriter.println("DMPL=\"" + instFile + ".dmpl\"");
+      verifWriter.println("GRIDSIZE=" + getIntegerPropertyValue(root, "DMPLVerif", "Grid_Size"));
+
+      //-- create the role description
+      String roledesc = "";
+      String nodesep = "";
+      LinkedList<Entry<Classifier,Integer>> roleCounts = new LinkedList<Entry<Classifier,Integer>>();
+      for (Entry<Classifier, ArrayList<ComponentInstance>> entry : node2roles.entrySet()) {
+        String node = entry.getKey().getName();
+        node = node.replace('.', '_');
+        
+        for (ComponentInstance role : entry.getValue()) {
+          //-- update role count
+          Classifier cc = role.getComponentClassifier();
+          if(roleCounts.isEmpty() || !roleCounts.peekLast().getKey().equals(cc)) {
+            roleCounts.add(new AbstractMap.SimpleEntry<Classifier,Integer>(cc,1));
+          } else {
+            Entry<Classifier,Integer> e = roleCounts.removeLast();
+            e.setValue(e.getValue()+1);
+            roleCounts.addLast(e);
+          }
+        }
+        
+        for (Entry<Classifier, Integer> ccount : roleCounts) {
+          String rolename = ccount.getKey().getName();
+          rolename = rolename.replace('.', '_');
+          int count = ccount.getValue();
+          roledesc += nodesep + node + ":" + rolename + ":" + count;
+          nodesep = ":";
+        }
+      }
+
+      verifWriter.println("ROLEDESC=" + roledesc);
+      verifWriter.println("PROPERTY=" + getStringPropertyValue(root, "DMPLVerif", "Property_Name"));
+      verifWriter.println("VERIF=" + getStringPropertyValue(root, "DMPLVerif", "Verif_Type"));
+      verifWriter.println("ROUNDS=" + getIntegerPropertyValue(root, "DMPLVerif", "Round_Num"));
+
+      //-- close printer for verif file
+      verifWriter.close();
+
+      System.out.println("Annex Verif Generator Finished ...");
+    } catch (FileNotFoundException ex) {
+      System.err.println("ERROR: could not open verif file " + verifFilename + "!!");
+    }
+  }
+
   //-- name of directory in which files are generated, and getter for name
   private String dirStr = null;
 
@@ -847,6 +910,20 @@ public class AnnexDMPLGeneratorImpl
     setInstFile(root,errManager);
     final String missionFilename = dirStr + "/" + instFile + ".mission";
     generateMissionFile(monitor,errManager,root,som,missionFilename);
+    refreshDARTFolder(root,monitor);
+  }
+  
+  /*******************************************************************/
+  //-- generate the verif file
+  /*******************************************************************/
+  protected void generateVerifFile(IProgressMonitor monitor,
+                                   final AnalysisErrorReporterManager errManager,
+                                   SystemInstance root, SystemOperationMode som)
+  {
+    createDARTFolder(root);
+    setInstFile(root,errManager);
+    final String verifFilename = dirStr + "/" + instFile + ".verif";
+    generateVerifFile(monitor,errManager,root,som,verifFilename);
     refreshDARTFolder(root,monitor);
   }
 }
