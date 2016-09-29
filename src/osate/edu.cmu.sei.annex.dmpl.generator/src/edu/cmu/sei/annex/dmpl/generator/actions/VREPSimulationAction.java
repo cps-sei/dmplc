@@ -65,7 +65,7 @@ public class VREPSimulationAction extends AbstractInstanceOrDeclarativeModelRead
 
   protected String getActionName()
   {
-    return "AnnexDMPLGenerator";
+    return "DMPLVREPSimulation";
   }
 }
 
