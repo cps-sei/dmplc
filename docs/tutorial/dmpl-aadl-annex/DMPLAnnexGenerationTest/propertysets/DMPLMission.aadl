@@ -1,4 +1,4 @@
-property set DMPLProperties is
+property set DMPLMission is
    Output_Dir: aadlstring applies to (system);
    Grid_Size: aadlinteger applies to (system);
    Map_Name: aadlstring applies to (system);
@@ -7,4 +7,4 @@ property set DMPLProperties is
    Platform: aadlstring applies to (system);
    Expect_Log_Period: aadlreal applies to (system);
    Node_Arguments: list of aadlstring applies to (system,process);
-end DMPLProperties;
+end DMPLMission;
