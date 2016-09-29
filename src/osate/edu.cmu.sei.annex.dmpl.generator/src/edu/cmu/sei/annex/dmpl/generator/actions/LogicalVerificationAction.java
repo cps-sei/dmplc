@@ -29,7 +29,7 @@ public class LogicalVerificationAction extends AbstractInstanceOrDeclarativeMode
   {
     try {
       System.out.println("running verification file " + instFile + ".verif in dir " + dirStr);
-      ProcessBuilder pb = new ProcessBuilder("dmpl-verif.sh", instFile + ".verif");
+      ProcessBuilder pb = new ProcessBuilder("dmpl-verif.sh", instFile + ".verif", instFile + ".verif.out");
       pb.directory(new File(dirStr));
       Process p = pb.start();
       
