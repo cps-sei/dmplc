@@ -355,7 +355,7 @@ public
 
       -- properties needed for verification
       DMPLVerif::Expected_Output => "FAILED";
-      DMPLVerif::Grid_Size => 10;
+      DMPLVerif::Grid_Size => 3;
       DMPLVerif::Property_Name => "NoCollision";
       DMPLVerif::Verif_Type => "bounded";
       DMPLVerif::Round_Num => 5;
