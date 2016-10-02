@@ -29,10 +29,11 @@ public class VREPSimulationAction extends AbstractInstanceOrDeclarativeModelRead
   {
     try {
       System.out.println("running mission file " + instFile + ".mission in dir " + dirStr);
-      ProcessBuilder pb = new ProcessBuilder("dmpl-sim.sh", instFile + ".mission");
+      ProcessBuilder pb = new ProcessBuilder("/usr/bin/xterm", "-e", "dmpl-sim.sh", instFile + ".mission");
       pb.directory(new File(dirStr));
       Process p = pb.start();
-      
+
+      /*
       //-- open a dialog to terminate the mission
       getShell().getDisplay().syncExec(new Runnable() {
         @Override
@@ -40,7 +41,9 @@ public class VREPSimulationAction extends AbstractInstanceOrDeclarativeModelRead
           MessageDialog.openInformation(getShell(), "StopMission", "Press OK to abort mission");
         }
       });
-      p.destroy();
+      */
+      
+      p.waitFor();
     } catch(Exception ex) {
       System.err.println("ERROR: could not execute mission " + instFile + ".mission !!");
     }
