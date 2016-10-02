@@ -29,18 +29,11 @@ public class LogicalVerificationAction extends AbstractInstanceOrDeclarativeMode
   {
     try {
       System.out.println("running verification file " + instFile + ".verif in dir " + dirStr);
-      ProcessBuilder pb = new ProcessBuilder("dmpl-verif.sh", instFile + ".verif", instFile + ".verif.out");
+      ProcessBuilder pb = new ProcessBuilder("/usr/bin/xterm", "-e", "dmpl-verif.sh", instFile + ".verif",
+                                             instFile + ".verif.out");
       pb.directory(new File(dirStr));
-      Process p = pb.start();
-      
-      //-- open a dialog to terminate the mission
-      getShell().getDisplay().syncExec(new Runnable() {
-        @Override
-        public void run() {
-          MessageDialog.openInformation(getShell(), "StopVerification", "Press OK to abort verification");
-        }
-      });
-      p.destroy();
+      Process p = pb.start();      
+      p.waitFor();
     } catch(Exception ex) {
       System.err.println("ERROR: could not verify " + instFile + ".verif !!");
     }
