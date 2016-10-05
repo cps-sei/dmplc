@@ -370,7 +370,7 @@ public
       DMPLSmc::Predicates => ("expProp4.0", "expect property expProp4 for node 0.",
       "expProp5.0", "expect property expProp5 for node 0");
       DMPLSmc::Dmpl_Branch => "develop";      
-      DMPLSmc::Dmpl_Dir => "docs/tutorial";
+      DMPLSmc::Dmpl_Dir => "docs/tutorial/dmpl-aadl-annex/DMPLAnnexGenerationTest/DART";
       DMPLSmc::Input_Dists => ("ix", "iuniform(1,3)", "iy", "iuniform(1,3)",
       "fx", "iuniform(6,8)", "fy", "iuniform(6,8)", "ox.1", "-1",  "oy.1", "-1",
       "ox.3", "-1",  "oy.3", "1");
