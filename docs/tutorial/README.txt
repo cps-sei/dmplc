@@ -182,6 +182,9 @@ once it reaches the boundary it releases the lock to the current cell;
 (iii) it then waits for the lock on the next cell before moving into
 it.
 
+example-15: Based on example-02 to demonstrate DMPL/AADL integration
+at HILT'16.
+
 Subdirectories:
 --------------
 
