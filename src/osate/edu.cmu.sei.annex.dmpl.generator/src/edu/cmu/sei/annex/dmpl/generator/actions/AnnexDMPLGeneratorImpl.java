@@ -784,32 +784,36 @@ public class AnnexDMPLGeneratorImpl
       verifWriter.println("DMPL=\"" + instFile + ".dmpl\"");
       verifWriter.println("GRIDSIZE=" + getIntegerPropertyValue(root, "DMPLVerif", "Grid_Size"));
 
-      //-- create the role description
-      String roledesc = "";
-      String nodesep = "";
-      LinkedList<Entry<Classifier,Integer>> roleCounts = new LinkedList<Entry<Classifier,Integer>>();
-      for (Entry<Classifier, ArrayList<ComponentInstance>> entry : node2roles.entrySet()) {
-        String node = entry.getKey().getName();
-        node = node.replace('.', '_');
-        
-        for (ComponentInstance role : entry.getValue()) {
-          //-- update role count
-          Classifier cc = role.getComponentClassifier();
-          if(roleCounts.isEmpty() || !roleCounts.peekLast().getKey().equals(cc)) {
-            roleCounts.add(new AbstractMap.SimpleEntry<Classifier,Integer>(cc,1));
-          } else {
-            Entry<Classifier,Integer> e = roleCounts.removeLast();
-            e.setValue(e.getValue()+1);
-            roleCounts.addLast(e);
+      //-- create the role description. first check if it has been
+      //-- specified as a property. if not, get it from the aadl file.
+      String roledesc = getStringPropertyValue(root, "DMPLVerif", "Role_Desc");
+      if(roledesc == null) {
+        roledesc = "";
+        String nodesep = "";
+        LinkedList<Entry<Classifier,Integer>> roleCounts = new LinkedList<Entry<Classifier,Integer>>();
+        for (Entry<Classifier, ArrayList<ComponentInstance>> entry : node2roles.entrySet()) {
+          String node = entry.getKey().getName();
+          node = node.replace('.', '_');
+          
+          for (ComponentInstance role : entry.getValue()) {
+            //-- update role count
+            Classifier cc = role.getComponentClassifier();
+            if(roleCounts.isEmpty() || !roleCounts.peekLast().getKey().equals(cc)) {
+              roleCounts.add(new AbstractMap.SimpleEntry<Classifier,Integer>(cc,1));
+            } else {
+              Entry<Classifier,Integer> e = roleCounts.removeLast();
+              e.setValue(e.getValue()+1);
+              roleCounts.addLast(e);
+            }
           }
-        }
         
-        for (Entry<Classifier, Integer> ccount : roleCounts) {
-          String rolename = ccount.getKey().getName();
-          rolename = rolename.replace('.', '_');
-          int count = ccount.getValue();
-          roledesc += nodesep + node + ":" + rolename + ":" + count;
-          nodesep = ":";
+          for (Entry<Classifier, Integer> ccount : roleCounts) {
+            String rolename = ccount.getKey().getName();
+            rolename = rolename.replace('.', '_');
+            int count = ccount.getValue();
+            roledesc += nodesep + node + ":" + rolename + ":" + count;
+            nodesep = ":";
+          }
         }
       }
 
