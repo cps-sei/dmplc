@@ -1,6 +1,6 @@
 package DMPLAnnexGenerationTest
 public
-  with DMPLMission,DMPLVerif,Zero_Slack_Scheduling;
+  with DMPLMission,DMPLSmc,DMPLVerif,Zero_Slack_Scheduling;
   
   thread collision_avoidance
     --properties
@@ -359,6 +359,21 @@ public
       DMPLVerif::Property_Name => "NoCollision";
       DMPLVerif::Verif_Type => "bounded";
       DMPLVerif::Round_Num => 5;
+
+      -- properties needed for SMC
+      DMPLSmc::Name => "dart-example-02-expect-docker";
+      DMPLSmc::Scenario => "example-02-expect";
+      DMPLSmc::Target_RE => "0.05";
+      DMPLSmc::Description => "This simulation consists of a leader and four protectors.";
+      DMPLSmc::Weight => "4";
+      DMPLSmc::Predicates => ("expProp4.0", "expect property expProp4 for node 0.",
+      "expProp5.0", "expect property expProp5 for node 0");
+      DMPLSmc::Dmpl_Branch => "develop";      
+      DMPLSmc::Dmpl_Dir => "docs/tutorial";
+      DMPLSmc::Input_Dists => ("ix", "iuniform(1,3)", "iy", "iuniform(1,3)",
+      "fx", "iuniform(6,8)", "fy", "iuniform(6,8)", "ox.1", "-1",  "oy.1", "-1",
+      "ox.3", "-1",  "oy.3", "1");
+      DMPLSmc::Sup_Props => ("expProp7.0", "expProp8.0");
     end main.i;	
 
     -- other physical things that can be modeled:
