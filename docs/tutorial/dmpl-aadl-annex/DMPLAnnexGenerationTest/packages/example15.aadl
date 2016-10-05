@@ -352,26 +352,28 @@ public
       -- example with the current property: "echo --node xxx --role xxx --var_x 1 --var_y 2"
 
       -- properties needed for logical verification
-      DMPLVerif::Expected_Output => "FAILED";
-      DMPLVerif::Grid_Size => 3;
+      DMPLVerif::Expected_Output => "SUCCESSFUL";
+      DMPLVerif::Grid_Size => 6;
+      DMPLVerif::Role_Desc => "uav_process_i:process_leader_i:1:uav_process_i:process_protector_i:1";
       DMPLVerif::Property_Name => "NoCollision";
       DMPLVerif::Verif_Type => "bounded";
       DMPLVerif::Round_Num => 5;
 
       -- properties needed for SMC
-      DMPLSmc::Name => "dart-example-02-expect-docker";
-      DMPLSmc::Scenario => "example-02-expect";
+      DMPLSmc::Name => "dart-example-15";
+      DMPLSmc::Scenario => "example-15";
       DMPLSmc::Target_RE => "0.05";
       DMPLSmc::Description => "This simulation consists of a leader and four protectors.";
-      DMPLSmc::Weight => "4";
-      DMPLSmc::Predicates => ("expProp4.0", "expect property expProp4 for node 0.",
-      "expProp5.0", "expect property expProp5 for node 0");
-      DMPLSmc::Dmpl_Branch => "develop";      
-      DMPLSmc::Dmpl_Dir => "docs/tutorial";
-      DMPLSmc::Input_Dists => ("ix", "iuniform(1,3)", "iy", "iuniform(1,3)",
+      DMPLSmc::Weight => "3";
+      DMPLSmc::Predicates => ("expProp1.0", "expect property expProp1 for node 0.",
+      "expProp2.0", "expect property expProp2 for node 0");
+      DMPLSmc::Dmpl_Branch => "hilt-16";
+      DMPLSmc::Dmpl_Dir => "docs/tutorial/dmpl-aadl-annex/DMPLAnnexGenerationTest/DART";
+      DMPLSmc::Input_Dists => ("expect_log_period", "0.2", "mission_time", "10",
+      "ix", "iuniform(1,3)", "iy", "iuniform(1,3)",
       "fx", "iuniform(6,8)", "fy", "iuniform(6,8)", "ox.1", "-1",  "oy.1", "-1",
       "ox.3", "-1",  "oy.3", "1");
-      DMPLSmc::Sup_Props => ("expProp7.0", "expProp8.0");
+      DMPLSmc::Sup_Props => ("expProp1.2", "expProp2.2");
       Zero_Slack_Scheduling::Scheduling_Protocol => ZSRM;
     end main.i;	
 
