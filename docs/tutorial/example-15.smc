@@ -37,7 +37,7 @@ This simulation consists of a leader and four protectors.
 @begin(predicate)[expProp1.0]
 expect property expProp1 for node 0.
 @end(predicate)
-@begin(predicate)[expProp1.0]
+@begin(predicate)[expProp2.0]
 expect property expProp2 for node 0.
 @end(predicate)
 
@@ -45,7 +45,7 @@ expect property expProp2 for node 0.
 // Input variables and their distributions. Variables are of the form X.Y
 // where X is the variable name and Y is the node id.
 //
-dmpl_branch = "develop";
+dmpl_branch = "hilt-16";
 dmpl_dir = "docs/tutorial";
 expect_log_period = 0.2;
 mission_time = 10;
