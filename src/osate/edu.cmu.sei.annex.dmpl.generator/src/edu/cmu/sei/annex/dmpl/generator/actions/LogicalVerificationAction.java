@@ -46,9 +46,9 @@ public class LogicalVerificationAction extends AbstractInstanceOrDeclarativeMode
                                       final AnalysisErrorReporterManager errManager,
                                       SystemInstance root, SystemOperationMode som)
   {
-    System.out.println("VREP Simulation Executed!!");
+    System.out.println("Logical Verification Executed!!");
 
-    //-- generate DMPL and mission files
+    //-- generate DMPL and .verif files
     AnnexDMPLGeneratorImpl gen = new AnnexDMPLGeneratorImpl(getShell());
     gen.generateDMPLFile(monitor,errManager,root,som);
     gen.generateVerifFile(monitor,errManager,root,som);
