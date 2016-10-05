@@ -65,6 +65,7 @@
 TARGET GNU_CPP,WIN_CPP %%{
 #define GNU_WIN
 #include <stdio.h>
+#include <stdlib.h>
 
 int roundNum = 0;
 int xi,yi;
@@ -99,6 +100,15 @@ void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
     print_line(_X);
   }
 }
+
+double myrandom(double _lower, double _upper)
+{
+  double x = random() * 1.0 / RAND_MAX;
+  x = _lower + (_upper - _lower) * x;
+  printf("rnd = %lf\n", x);
+  return x;
+}
+
 %%}
 
 //states of each node
@@ -108,6 +118,7 @@ const WAITING = 3;
 const MOVE = 4;
 
 extern void print_state(int XX,int YY,int my_id, int x, int y, int xf, int yf);
+extern pure double myrandom(double _lower, double _upper);
 
 node uav
 {
@@ -287,4 +298,19 @@ node uav
 
   //-- guaranteed properties
   require NoCollision => NoCollisions;
+
+  //-- used to evaluate statistical property
+  pure int expPropFunc()
+  {
+    return myrandom(0,1) <= 0.6;
+  }
+
+  //-- expected result = 0.6. see expPropFunc for details.
+  expect expProp1 : at_end => expPropFunc; 
+
+  //-- expected result = 0.56103 since there are about 50 samples of
+  //-- expPropFunc() in each trial and probability of a binomial
+  //-- variable x >= 30 with p=.6 and N=50 is 0.56103 computed using
+  //-- http://stattrek.com/online-calculator/binomial.aspx
+  expect expProp2 : at_least 0.6 => expPropFunc;
 }

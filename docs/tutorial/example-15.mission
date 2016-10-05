@@ -9,17 +9,18 @@ REC_CAM_POS="0.0421 -0.2489 11.2217"
 GRIDSIZE=10
 ROLEDESC=uav:Leader:1:uav:Protector:4
 
-EXPECT_LOG_PERIOD=0.2
+EXPECT_LOG_PERIOD=${expect_log_period:-0.2}
 
-MISSION_TIME=240
+MISSION_TIME=${mission_time:-240}
 
-IX=1
-IY=1
-FX=8
-FY=8
+ix=${ix:-1}
+iy=${iy:-1}
+fx=${fx:-8}
+fy=${fy:-8}
 
-ARGS_0="--var_x $IX --var_y $IY --var_xt $FX --var_yt $FY"
-ARGS_1="--var_x $((IX-1)) --var_y $((IY-1)) --var_ox -1 --var_oy -1"
-ARGS_2="--var_x $((IX+1)) --var_y $((IY+1)) --var_ox 1 --var_oy 1"
-ARGS_3="--var_x $((IX-1)) --var_y $((IY+1)) --var_ox -1 --var_oy 1"
-ARGS_4="--var_x $((IX+1)) --var_y $((IY-1)) --var_ox 1 --var_oy -1"
+ARGS_0="--var_x $ix --var_y $iy --var_xt $fx --var_yt $fy"
+ARGS_1="--var_x $((ix-1)) --var_y $((iy-1)) --var_ox -1 --var_oy -1"
+ARGS_2="--var_x $((ix+1)) --var_y $((iy+1)) --var_ox 1 --var_oy 1"
+ARGS_3="--var_x $((ix-1)) --var_y $((iy+1)) --var_ox -1 --var_oy 1"
+ARGS_4="--var_x $((ix+1)) --var_y $((iy-1)) --var_ox 1 --var_oy -1"
+
