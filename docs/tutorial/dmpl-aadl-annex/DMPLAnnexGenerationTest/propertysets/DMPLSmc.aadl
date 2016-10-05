@@ -2,6 +2,7 @@ property set DMPLSmc is
    Name: aadlstring applies to (system);
    Scenario: aadlstring applies to (system);
    Target_RE: aadlstring applies to (system);
+   Description: aadlstring applies to (system);
    Weight: aadlstring applies to (system);
    Predicates: list of aadlstring applies to (system,process);
    Dmpl_Branch: aadlstring applies to (system);
