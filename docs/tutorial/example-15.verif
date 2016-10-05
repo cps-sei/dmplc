@@ -1,0 +1,10 @@
+#!/bin/bash
+
+VERIF_NAME="example-15"
+OUT="SUCCESSFUL"
+DMPL="example-15.dmpl"
+GRIDSIZE=6
+ROLEDESC=uav:Leader:1:uav:Protector:1
+PROPERTY="NoCollision"
+VERIF=bounded
+ROUNDS=5
