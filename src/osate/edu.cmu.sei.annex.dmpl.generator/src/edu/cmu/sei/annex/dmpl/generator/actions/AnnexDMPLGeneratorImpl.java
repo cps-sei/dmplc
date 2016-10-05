@@ -238,55 +238,57 @@ public class AnnexDMPLGeneratorImpl
 
   // HashMap<Classifier, Classifier> overwrites = new HashMap<Classifier, Classifier>();
   
-  protected String getThreadSubannexContainingClassifierName(ComponentInstance thread){
-	  String str="";
-	  Program prg=null;
-	  Classifier classifier = thread.getComponentClassifier();
-      if (classifier instanceof ThreadImplementation){
-    	  Realization rel = ((ThreadImplementation)classifier).getOwnedRealization();
-    	  ComponentType type = rel.getImplemented();
-    	  while (type != null && prg == null) {
-    		  prg = getAnnexSubclauseProgram(type);
-    		  str = type.getName();
-    		  type = type.getExtended();
-    	  }
+  protected String getThreadSubannexContainingClassifierName(ComponentInstance thread)
+  {
+    String str="";
+    Program prg=null;
+    Classifier classifier = thread.getComponentClassifier();
+    if (classifier instanceof ThreadImplementation){
+      Realization rel = ((ThreadImplementation)classifier).getOwnedRealization();
+      ComponentType type = rel.getImplemented();
+      while (type != null && prg == null) {
+        prg = getAnnexSubclauseProgram(type);
+        str = type.getName();
+        type = type.getExtended();
       }
-      
-      // if we could not find the subclause in the implementations try the types
-      if (prg==null){
-    	  while (classifier != null && prg == null){
-    		  prg = getAnnexSubclauseProgram(classifier);
-    		  str = classifier.getName();
-    		  classifier = classifier.getExtended();
-    	  }
+    }
+    
+    // if we could not find the subclause in the implementations try the types
+    if (prg==null){
+      while (classifier != null && prg == null){
+        prg = getAnnexSubclauseProgram(classifier);
+        str = classifier.getName();
+        classifier = classifier.getExtended();
       }
-	  
-	  return str;
+    }
+    
+    return str;
   }
   
-  protected Program getThreadSubannexProgram(ComponentInstance thread){
-	  Program prg=null;
+  protected Program getThreadSubannexProgram(ComponentInstance thread)
+  {
+    Program prg=null;
 	  
-	  // First try to get the program from the implementation hierarchy
-	  Classifier classifier = thread.getComponentClassifier();
-      if (classifier instanceof ThreadImplementation){
-    	  Realization rel = ((ThreadImplementation)classifier).getOwnedRealization();
-    	  ComponentType type = rel.getImplemented();
-    	  while (type != null && prg == null) {
-    		  prg = getAnnexSubclauseProgram(type);
-    		  type = type.getExtended();
-    	  }
+    // First try to get the program from the implementation hierarchy
+    Classifier classifier = thread.getComponentClassifier();
+    if (classifier instanceof ThreadImplementation){
+      Realization rel = ((ThreadImplementation)classifier).getOwnedRealization();
+      ComponentType type = rel.getImplemented();
+      while (type != null && prg == null) {
+        prg = getAnnexSubclauseProgram(type);
+        type = type.getExtended();
       }
-      
-      // if we could not find the subclause in the implementations try the types
-      if (prg==null){
-    	  while (classifier != null && prg == null){
-    		  prg = getAnnexSubclauseProgram(classifier);
-    		  classifier = classifier.getExtended();
-    	  }
+    }
+    
+    // if we could not find the subclause in the implementations try the types
+    if (prg==null){
+      while (classifier != null && prg == null){
+        prg = getAnnexSubclauseProgram(classifier);
+        classifier = classifier.getExtended();
       }
-
-	  return prg;
+    }
+    
+    return prg;
   }
 
   /*******************************************************************/
