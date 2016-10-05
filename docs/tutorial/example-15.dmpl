@@ -118,7 +118,7 @@ const WAITING = 3;
 const MOVE = 4;
 
 extern void print_state(int XX,int YY,int my_id, int x, int y, int xf, int yf);
-extern pure double myrandom(double _lower, double _upper);
+extern double myrandom(double _lower, double _upper);
 
 node uav
 {
