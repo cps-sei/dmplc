@@ -741,11 +741,10 @@ public class AnnexDMPLGeneratorImpl
       missionWriter.println("");
       missionWriter.println("PLATFORM=" + getStringPropertyValue(root, "DMPLMission", "Platform"));
       missionWriter.println("EXPECT_LOG_PERIOD=" +
-                            getRealPropertyValue(root, "DMPLMission", "Expect_Log_Period"));
+                            getStringPropertyValue(root, "DMPLMission", "Expect_Log_Period"));
       missionWriter.println("");
       missionWriter.println("MISSION_TIME=" +
-                            (long) getTimePropertyValue(root, "DMPLMission", "Mission_Time",
-                                                        AadlProject.SEC_LITERAL));
+                            getStringPropertyValue(root, "DMPLMission", "Mission_Time"));
       missionWriter.println("");
       missionWriter.println("");
 
