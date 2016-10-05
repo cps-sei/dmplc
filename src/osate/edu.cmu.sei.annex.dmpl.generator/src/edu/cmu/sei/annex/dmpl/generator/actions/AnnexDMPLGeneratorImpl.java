@@ -29,6 +29,7 @@ import org.osate.aadl2.PropertyExpression;
 import org.osate.aadl2.Realization;
 import org.osate.aadl2.StringLiteral;
 import org.osate.aadl2.ThreadImplementation;
+import org.osate.aadl2.UnitLiteral;
 import org.osate.aadl2.impl.SystemImplementationImpl;
 import org.osate.aadl2.instance.ComponentInstance;
 import org.osate.aadl2.instance.SystemInstance;
@@ -292,6 +293,17 @@ public class AnnexDMPLGeneratorImpl
   }
 
   /*******************************************************************/
+  //-- return the Zero_Slack_Instance property of a component
+  /*******************************************************************/
+  protected double getZeroSlackInstant(ComponentInstance comp)
+  {
+    Property zsiProp = GetProperties.lookupPropertyDefinition(comp, "Zero_Slack_Scheduling",
+                                                              "Zero_Slack_Instant");
+    UnitLiteral zsius = GetProperties.findUnitLiteral(zsiProp, AadlProject.US_LITERAL);
+    return PropertyUtils.getScaledNumberValue(comp, zsiProp, zsius, 0.0);
+  }
+  
+  /*******************************************************************/
   //-- generate DMPL file
   /*******************************************************************/
   protected void generateDmplFile(IProgressMonitor monitor,
@@ -461,14 +473,18 @@ public class AnnexDMPLGeneratorImpl
                         final ForAllElement visitThreads0 = new ForAllElement(errManager) {
                             public void process(Element obj) {
                               ComponentInstance thread = (ComponentInstance) obj;
-                              double period = GetProperties.getPeriodinMicroSec(thread);
                               Classifier threadClassifier = thread.getComponentClassifier();
                               Classifier extendedThreadClassifier = threadClassifier.getExtended();
                               Program threadPrg = getThreadSubannexProgram(thread);//getThreadAnnexubclauseProgram(threadClassifier);
-                              if (extendedThreadClassifier == null) {									   //-- print period				
-                                if (period != 0) {
+                              if (extendedThreadClassifier == null) {
+                                //-- print period
+                                double period = GetProperties.getPeriodinMicroSec(thread);
+                                if (period != 0)
                                   pw.println("    @Period(" + ((int) period) + ");");
-                                }
+                                
+                                //-- print zero slack instant
+                                double zsi = getZeroSlackInstant(thread);
+                                if(zsi != 0) pw.println("    @ZeroSlackInstant(" + ((int)zsi) + ");");
                                 
                                 // print directives
                                 if (threadPrg != null){
@@ -565,10 +581,16 @@ public class AnnexDMPLGeneratorImpl
                                   if (extendedThreadClassifier == null) {
                                     pw.println("      thread " + getThreadSubannexContainingClassifierName(thread) + ";");
                                   } else {
+                                    //-- print period
                                     double period = GetProperties.getPeriodinMicroSec(thread);
-                                    if (period != 0) {
+                                    if (period != 0)
                                       pw.println("      @Period(" + ((int) period) + ");");
-                                    }
+
+                                    //-- print zero slack instant
+                                    double zsi = getZeroSlackInstant(thread);
+                                    if (zsi != 0)
+                                      pw.println("      @ZeroSlackInstant(" + ((int)zsi) + ");");
+                                    
                                     Program threadPrg = getThreadSubannexProgram(thread); 
 //                                    if (threadPrg == null){
 //                                      threadPrg = getAnnexSubclauseProgram(extendedThreadClassifier);
