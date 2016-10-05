@@ -169,6 +169,7 @@ node uav
   @Criticality(1);
   @WCExecTimeNominal(2000);
   @WCExecTimeOverload(2000);
+  @ZeroSlackInstant(100000);
   thread COLLISION_AVOIDANCE {
     print_state(X,Y,id,x,y,xt,yt);
     if(state == NEXT) {
@@ -201,6 +202,7 @@ node uav
     @Criticality(2);
     @WCExecTimeNominal(2000);
     @WCExecTimeOverload(2000);
+    @ZeroSlackInstant(100000);
     thread WAYPOINT {
       waypointValid = 1;
       ly = yp;
@@ -222,6 +224,7 @@ node uav
     @Criticality(2);
     @WCExecTimeNominal(2000);
     @WCExecTimeOverload(2000);
+    @ZeroSlackInstant(100000);
     thread WAYPOINT {
       if(init@Leader == 0) return;
       waypointValid = 1;
