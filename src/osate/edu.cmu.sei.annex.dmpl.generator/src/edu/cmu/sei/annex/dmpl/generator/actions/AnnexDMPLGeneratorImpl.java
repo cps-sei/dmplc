@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -827,6 +828,80 @@ public class AnnexDMPLGeneratorImpl
     }
   }
 
+  /*******************************************************************/
+  //-- generate smc file
+  /*******************************************************************/
+  protected void generateSmcFile(IProgressMonitor monitor,
+                                 final AnalysisErrorReporterManager errManager,
+                                 SystemInstance root, SystemOperationMode som,
+                                 final String smcFilename)
+  {
+    try {      
+      //-- printer for the smc file
+      final PrintWriter smcWriter = new PrintWriter(smcFilename);
+
+      // generate smc file
+      smcWriter.println("@target(DART)");
+      smcWriter.println("");
+
+      smcWriter.println("@name(" + getStringPropertyValue(root, "DMPLSmc", "Name") + ");");
+      smcWriter.println("@scenario(" + getStringPropertyValue(root, "DMPLSmc", "Scenario") + ");");
+      smcWriter.println("");
+
+      smcWriter.println("@targetRE(" + getStringPropertyValue(root, "DMPLSmc", "Target_RE") + ");");
+      smcWriter.println("");
+
+      //-- print description, if any
+      String desc = getStringPropertyValue(root, "DMPLSmc", "Description");
+      if(desc != null) {
+        smcWriter.println("@begin(description)");
+        smcWriter.println(desc);
+        smcWriter.println("@end(description)");
+        smcWriter.println("");
+      }
+      
+      smcWriter.println("@weight(" + getStringPropertyValue(root, "DMPLSmc", "Weight") + ");");
+      smcWriter.println("");
+
+      //-- print predicates
+      ArrayList<String> preds = getStringPropertyValueList(root, "DMPLSmc", "Predicates");
+      for(Iterator<String> it = preds.iterator();it.hasNext();) {
+        smcWriter.println("@begin(predicate)[" + it.next() + "]");
+        smcWriter.println(it.next());
+        smcWriter.println("@end(predicate)");
+      }
+      smcWriter.println("");
+
+      //-- print branch and directory in dmpl repo
+      smcWriter.println("dmpl_branch = \"" + getStringPropertyValue(root, "DMPLSmc", "Dmpl_Branch") + "\";");
+      smcWriter.println("dmpl_dir = \"" + getStringPropertyValue(root, "DMPLSmc", "Dmpl_Dir") + "\";");
+      smcWriter.println("");
+
+      //-- print variable input distributions
+      ArrayList<String> inputDists = getStringPropertyValueList(root, "DMPLSmc", "Input_Dists");
+      for(Iterator<String> it = inputDists.iterator();it.hasNext();) {
+        smcWriter.println(it.next() + " = " + it.next() + ";");
+      }
+      smcWriter.println("");
+
+      //-- print supplementary properties
+      ArrayList<String> supProps = getStringPropertyValueList(root, "DMPLSmc", "Sup_Props");
+      int supPropNum = 0;
+      for(Iterator<String> it = supProps.iterator();it.hasNext();) {
+        smcWriter.println("sup_prop_" + supPropNum + " = " + it.next() + ";");
+        ++supPropNum;
+      }
+      smcWriter.println("");
+      
+      //-- close printer for smc file
+      smcWriter.close();
+
+      System.out.println("Annex Smc Generator Finished ...");
+    } catch (FileNotFoundException ex) {
+      System.err.println("ERROR: could not open smc file " + smcFilename + "!!");
+    }
+  }
+
   //-- name of directory in which files are generated, and getter for name
   private String dirStr = null;
 
@@ -924,6 +999,20 @@ public class AnnexDMPLGeneratorImpl
     setInstFile(root,errManager);
     final String verifFilename = dirStr + "/" + instFile + ".verif";
     generateVerifFile(monitor,errManager,root,som,verifFilename);
+    refreshDARTFolder(root,monitor);
+  }
+  
+  /*******************************************************************/
+  //-- generate the smc file
+  /*******************************************************************/
+  protected void generateSmcFile(IProgressMonitor monitor,
+                                 final AnalysisErrorReporterManager errManager,
+                                 SystemInstance root, SystemOperationMode som)
+  {
+    createDARTFolder(root);
+    setInstFile(root,errManager);
+    final String smcFilename = dirStr + "/" + instFile + ".smc";
+    generateSmcFile(monitor,errManager,root,som,smcFilename);
     refreshDARTFolder(root,monitor);
   }
 }
