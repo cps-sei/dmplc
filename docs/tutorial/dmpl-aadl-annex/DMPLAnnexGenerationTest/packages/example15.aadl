@@ -6,13 +6,12 @@ public
     properties
       Period => 100 ms; 
       Compute_Execution_Time => 2 ms .. 2 ms ;
-      Zero_Slack_Scheduling::Criticality =>1;
+      Zero_Slack_Scheduling::Criticality => 1;
     annex dmpl{**
     @BarrierSync;
     @PlatformController;
     thread collision_avoidance {
       print_state(X,Y,id,x,y,xt,yt);
-      //my_sleep(1);
       if(state == NEXT) {
         //compute next point on route
         if(x == xt && y == yt) return;
@@ -42,10 +41,10 @@ public
     end node;
 
     thread waypoint
-    	properties
-    		Period => 100 ms; 
-      		Compute_Execution_Time => 2 ms .. 2 ms ;    
-      		Zero_Slack_Scheduling::Criticality =>2;		
+    properties
+      Period => 100 ms; 
+      Compute_Execution_Time => 2 ms .. 2 ms ;    
+      Zero_Slack_Scheduling::Criticality =>2;		
     end waypoint;
 
     process uav_process
@@ -80,21 +79,13 @@ public
         local unsigned char xp = x, yp = y; //next coordinates
         //final coordinates
         local unsigned char input xt ~ (0 <= xt && xt < X), input yt ~ (0 <= yt && yt < Y);
+
+        //offset, only used by followers
+        local char input ox;
+        local char input oy;
       
         local bool waypointValid = 0; //xt, yt are valid
         
-        pure int expProp1Func() { return x < 5; }
-        pure int expProp2Func() { return y < 5; }
-        
-        expect expProp1 : at_end => expProp1Func;
-        expect expProp2 : at_end => expProp2Func;
-        
-        pure int coverage()
-        {
-          return (GET_LAT() - GET_LNG()@0) > 0.9;
-        }
-
-        expect expProp3 : at_least 0.5 => coverage;
         
         bool NEXT_XY () {
           if(!waypointValid) return 1;
@@ -181,6 +172,22 @@ public
 
         //-- guaranteed properties
         require NoCollision => NoCollisions;
+
+        //-- used to evaluate statistical property
+        pure int expPropFunc()
+        {
+          return myrandom(0,1) <= 0.6;
+        }
+
+        //-- expected result = 0.6. see expPropFunc for details.
+        expect expProp1 : at_end => expPropFunc; 
+        
+        //-- expected result = 0.56103 since there are about 50 samples of
+        //-- expPropFunc() in each trial and probability of a binomial
+        //-- variable x >= 30 with p=.6 and N=50 is 0.56103 computed using
+        //-- http://stattrek.com/online-calculator/binomial.aspx
+        expect expProp2 : at_least 0.6 => expPropFunc;
+        
       }**};
     end uav_process.i;
 
@@ -227,22 +234,10 @@ public
       Period => 100 ms; 
       annex dmpl {**
       thread waypoint {
-        if (init@0 == 0) return;
+        if (init@process_leader_i == 0) return;
         waypointValid = 1;
-      
-        if(id == 1) {
-          xt = lx@0 + 1;
-          yt = ly@0 + 1;
-        } else if(id == 2) {
-          xt = lx@0 - 1;
-          yt = ly@0 + 1;
-        } else if(id == 3) {
-          xt = lx@0 - 1;
-          yt = ly@0 - 1;
-        } else if(id == 4) {
-          xt = lx@0 + 1;
-          yt = ly@0 - 1;
-        }
+        xt = lx@process_leader_i + ox;
+        yt = ly@process_leader_i + oy;
       }**};
     end waypoint_protector;
     
@@ -266,23 +261,13 @@ public
     annex dmpl {**
     TARGET GNU_CPP,WIN_CPP %%{
     #define GNU_WIN
+    #include <stdio.h>
     #include <stdlib.h>
-    #include "madara/utility/Utility.h"
-
+    #include <time.h>
+    
     int roundNum = 0;
     int xi,yi;
-
-    int my_sleep (int seconds)
-    {
-      madara::utility::sleep (seconds);
-      return 0;
-    }
     
-    void print_int(int i)
-    {
-      printf("%i\n", i);
-    }
-
     void print_line(int _X)
     {
       printf("-");
@@ -290,15 +275,15 @@ public
       printf("\n");
     }
 
-    void print_state(int _X,int _Y,int id_, int x, int y, int xf, int yf)
+    void print_state(int _X,int _Y,int id, int x, int y, int xf, int yf)
     {
       if(roundNum == 0) {
         xi = x; yi = y;
       }
 
       for(int i = 0;i < 150;++i) printf("\n");
-    
-      printf("round = %d : id = %d\n", ++roundNum, id_);
+  
+      printf("round = %d : id = %d\n", ++roundNum, id);
       printf("_X = %d _Y = %d\n",_X,_Y);
       print_line(_X);
       for(int i = 0;i < _Y;++i) {
@@ -306,12 +291,27 @@ public
         for(int j = 0;j < _X;++j) {
           //printf("i = %d j = %d\n", i, j);
           if(j == xf && i == yf) printf("o|");        
-          else if(j == x && i == y) printf("%d|",id_);
+          else if(j == x && i == y) printf("%d|",id);
           else printf(" |");
         }
         printf("\n");
         print_line(_X);
       }
+    }
+
+    int seed_randomized = 0;
+    
+    double myrandom(double _lower, double _upper)
+    {
+      if(!seed_randomized) {
+        srand(time(NULL));
+        seed_randomized = 1;
+      }
+  
+      double x = random() * 1.0 / RAND_MAX;
+      x = _lower + (_upper - _lower) * x;
+      printf("rnd = %lf\n", x);
+      return x;
     }
     %%}
 
@@ -321,11 +321,8 @@ public
     const WAITING = 3;
     const MOVE = 4;
 
-
-    extern void INIT_CONTROLLER(unsigned char x,unsigned char y);
-    extern int my_sleep(int seconds);
     extern void print_state(int XX,int YY,int my_id, int x, int y, int xf, int yf);
-    extern void print_int(int i);**};	
+    extern double myrandom(double _lower, double _upper);**};
     end main;
 
     -- DMPL command line to generate:
@@ -343,14 +340,14 @@ public
       DMPLMission::Grid_Size => 10;
       DMPLMission::Map_Name => "small";
       DMPLMission::Record_Camera_Pos => "0.0421 -0.2489 11.2217";
-      DMPLMission::Mission_Time => 240 sec;
-      DMPLMission::Expect_Log_Period => 0.2;
+      DMPLMission::Mission_Time => "${mission_time:-240}";
+      DMPLMission::Expect_Log_Period => "${expect_log_period:-0.2}";
       DMPLMission::Platform => "vrep-uav::::0.1";
       DMPLMission::Node_Arguments => ("x","1","y","1","xt","8","yt","8") applies to leader_node.sw;
-      DMPLMission::Node_Arguments => ("x","2","y","2","xt","9","yt","9") applies to protector_node[1].sw;
-      DMPLMission::Node_Arguments => ("x","0","y","2","xt","7","yt","9") applies to protector_node[2].sw;
-      DMPLMission::Node_Arguments => ("x","0","y","0","xt","7","yt","7") applies to protector_node[3].sw;
-      DMPLMission::Node_Arguments => ("x","2","y","0","xt","9","yt","7") applies to protector_node[4].sw;
+      DMPLMission::Node_Arguments => ("x","0","y","0","ox","-1","oy","-1") applies to protector_node[1].sw;
+      DMPLMission::Node_Arguments => ("x","2","y","2","ox","1","oy","1") applies to protector_node[2].sw;
+      DMPLMission::Node_Arguments => ("x","0","y","2","ox","-1","oy","1") applies to protector_node[3].sw;
+      DMPLMission::Node_Arguments => ("x","2","y","0","ox","1","oy","-1") applies to protector_node[4].sw;
       -- to generate "echo --node uav_process_i --role $6 --var_<varname> <value> --var_<varname> <value>"
       -- example with the current property: "echo --node xxx --role xxx --var_x 1 --var_y 2"
 
