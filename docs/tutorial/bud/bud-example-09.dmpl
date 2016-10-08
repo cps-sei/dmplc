@@ -214,7 +214,7 @@ node uav
       //-- if the next position has an obstacle, move up to avoid it
       if(z != OBSHT && obstacleIsNext()) { state = REQUEST_OBS; }
       //-- check if we should and can move down
-      else if(z == zinit || overObstacle() || EXISTS_LOWER(idp,lock[x][y][zinit]@idp != 0)) {
+      else if(z == zinit || obstacleIsNext() || overObstacle() || EXISTS_LOWER(idp,lock[x][y][zinit]@idp != 0)) {
         state = REQUEST;
       } else {
         lock[x][y][zinit] = 1;
