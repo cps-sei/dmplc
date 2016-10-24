@@ -107,7 +107,7 @@ bool runPrism(const char* modelPath, const char* adversaryPath, const char* stat
 		int status = execlp(PRISM, PRISM, modelPath, "-pctl", PRISM_PROPERTY, "-exportadv", adversaryPath,
 				"-exportstates", statesPath, "-exportlabels", labelsPath, (char*) 0);
 		if (status == -1) { // the only option really, otherwise execlp doesn't return
-		    cout << "runPrism() error: " << strerror(errno) << endl;
+		    std::cout << "runPrism() error: " << strerror(errno) << endl;
 			return false; // error
 		}
 	} else if (pid == -1) {
@@ -143,7 +143,7 @@ set<int> getNowStates(const char* statesPath) {
 	set<int> states;
 	ifstream fin(statesPath);
 	if (!fin) {
-		cout << "Could not read input file " << statesPath << endl;
+		std::cout << "Could not read input file " << statesPath << endl;
 		throw runtime_error("error AdaptationPlanner::getNowStates file not found");
 	}
 
@@ -162,7 +162,7 @@ set<int> getNowStates(const char* statesPath) {
 			if (++it != tokens.end()) {
 				if (*it == "0") {
 					states.insert(state);
-					//cout << "State @0: " << state << endl;
+					//std::cout << "State @0: " << state << endl;
 					continue;
 				}
 			}
@@ -207,7 +207,7 @@ vector<string> getActions(const char* adversaryPath, const char* labelsPath,
 	StringSet actionSet;
 	ifstream fin(adversaryPath);
 	if (!fin) {
-		cout << "Could not read input file " << adversaryPath << endl;
+		std::cout << "Could not read input file " << adversaryPath << endl;
 		throw runtime_error("error AdaptationPlanner::getActions file not found");
 	}
 
@@ -256,7 +256,7 @@ vector<string> getActions(const char* adversaryPath, const char* labelsPath,
 	int state = -1;
 	ifstream labels(labelsPath);
 	if (!labels) {
-		cout << "Could not read input file " << labelsPath << endl;
+		std::cout << "Could not read input file " << labelsPath << endl;
 		return actions;
 	}
 	firstLine = false;
@@ -308,22 +308,22 @@ bool AdaptationPlanner::generateModel(string environmentModel, string initialSta
 
 	ofstream fout(modelPath);
 	if (!fout) {
-		cout << "Could not write output file " << modelPath << endl;
+		std::cout << "Could not write output file " << modelPath << endl;
 		return false;
 	}
 
 	ifstream fin(modelTemplatePath.c_str());
 	if (!fin) {
-		cout << "Could not read input file " << get_current_dir_name() << '/' << modelTemplatePath << endl;
-		cout << "Error is: " << strerror(errno) << endl;
-		cout << "Retrying..." << endl;
+		std::cout << "Could not read input file " << get_current_dir_name() << '/' << modelTemplatePath << endl;
+		std::cout << "Error is: " << strerror(errno) << endl;
+		std::cout << "Retrying..." << endl;
 	    fin.open(modelTemplatePath.c_str(), ifstream::in);
 	    if (!fin) {
-	        cout << "Could not read input file " << get_current_dir_name() << '/' << modelTemplatePath << endl;
-	        cout << "Error is: " << strerror(errno) << endl;
+	        std::cout << "Could not read input file " << get_current_dir_name() << '/' << modelTemplatePath << endl;
+	        std::cout << "Error is: " << strerror(errno) << endl;
 	        return false;
 	    }
-		cout << "it worked!" << endl;
+		std::cout << "it worked!" << endl;
 	}
 
 	string line;
@@ -423,7 +423,7 @@ void AdaptationPlanner::test() {
 	set<int> states = getNowStates("test/s.sta");
 	vector<string> actions = getActions("test/a.adv", "test/l.lab", states);
 	for (unsigned i = 0; i < actions.size(); i++) {
-		cout << "Action: " << actions[i] << endl;
+		std::cout << "Action: " << actions[i] << endl;
 	}
 }
 
