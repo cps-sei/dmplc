@@ -230,7 +230,7 @@ node uav
     @Criticality(3);
     @WCExecTimeNominal(10000);
     @WCExecTimeOverload(20000);
-    override thread WAYPOINT {
+    thread WAYPOINT {
       waypointValid = 1;
       ly = ypp;
       lx = xpp;
@@ -248,7 +248,7 @@ node uav
     @Criticality(3);
     @WCExecTimeNominal(10000);
     @WCExecTimeOverload(20000);
-    override thread WAYPOINT {
+    thread WAYPOINT {
       if(init@0 == 0) return;
       waypointValid = 1;
       
