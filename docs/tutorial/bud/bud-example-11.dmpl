@@ -67,6 +67,8 @@ int my_sleep (int seconds)
   return 0;
 }
 
+int my_isnan(double x) { return std::isnan(x); }
+
 int roundNum = 0;
 int xi,yi;
 
@@ -137,7 +139,7 @@ const HTCH = 3;
 extern int my_sleep(int seconds);
 extern void print_state(int XX,int YY,int state,int my_id, int x, int y, int xf, int yf);
 extern void print_int(int i);
-extern int isnan(double x);
+extern int my_isnan(double x);
 extern void print_range(int x, int y, int xp, int yp, double ma, double r,int opos);
 
 node uav
@@ -242,7 +244,7 @@ node uav
     double range = GET_RANGE();
 
     //-- if an obstacle was detected
-    if(!isnan(range) && range >= 0) {
+    if(!my_isnan(range) && range >= 0) {
       if(moveAngle == 0) {
         if(range <= GET_CELL_SIZE_X()) {
           obs_pos = x + 1;
