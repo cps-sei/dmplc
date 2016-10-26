@@ -284,7 +284,7 @@ test_seq_ind_param SIP3 test-example-01-ag-await-a.dmpl uav:Uav:2
 
 #test building
 COUNT=1
-for i in ../../docs/tutorial/*.mission ../../docs/tutorial/example-05/dmpl/*.mission ; do
+for i in ../../docs/tutorial/*.mission ../../docs/tutorial/bud/*.mission ../../docs/tutorial/example-05/dmpl/*.mission ; do
     test_build BD${COUNT} $i
     COUNT=$((COUNT + 1))
 done

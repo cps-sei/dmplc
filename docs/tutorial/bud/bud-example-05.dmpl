@@ -156,13 +156,6 @@ node uav
   expect expProp1 : at_end => expProp1Func;
   expect expProp2 : at_end => expProp2Func;
 
-  pure int coverage()
-  {
-    return (GET_LAT() - GET_LNG()@0) > 0.9;
-  }
-
-  expect expProp3 : at_least 0.5 => coverage;
-  
   bool NEXT_XY () {
     if(!waypointValid) return 1;
     if(xf < 0 || xf >= X || yf < 0 || yf >= Y) return 1;
